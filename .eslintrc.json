@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }]
+  },
+  "extends": [
+    "sznm/react",
+    "plugin:react/jsx-runtime",
+    "plugin:@next/next/recommended"
+  ]
+}

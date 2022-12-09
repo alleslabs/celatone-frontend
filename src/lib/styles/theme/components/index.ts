@@ -1,0 +1,33 @@
+import { Alert } from "./alert";
+import { Badge } from "./badge";
+import { Button } from "./button";
+import { Form } from "./form";
+import { Heading } from "./heading";
+import { Input } from "./input";
+import { Link } from "./link";
+import { Menu } from "./menu";
+import { Modal } from "./modal";
+import { Radio } from "./radio";
+import { Select } from "./select";
+import { Table } from "./table";
+import { Text } from "./text";
+import { Textarea } from "./textarea";
+import { Tooltip } from "./tooltip";
+
+export const components = {
+  Button,
+  Heading,
+  Text,
+  Link,
+  Form,
+  Input,
+  Modal,
+  Radio,
+  Select,
+  Badge,
+  Menu,
+  Alert,
+  Tooltip,
+  Textarea,
+  Table,
+};
