@@ -1,4 +1,4 @@
-# Celatone (Cosmos Dev tool)
+# Celatone Frontend
 
 ## Pre-requisites
 
