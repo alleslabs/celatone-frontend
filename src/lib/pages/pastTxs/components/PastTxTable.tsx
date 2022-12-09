@@ -456,7 +456,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
       <Tr
         key={element.hash}
         onClick={onToggle}
-        _hover={{ background: "rgba(255, 255, 255, 0.12)" }}
+        _hover={{ background: "divider.main" }}
         sx={{
           "& td:first-child": { pl: "48px" },
           "& td:last-child": { pr: "48px" },
@@ -467,7 +467,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             <ExplorerLink
               value={element.hash.substring(2)}
               type="tx_hash"
-              hover
+              isHover
             />
           </Flex>
         </Td>

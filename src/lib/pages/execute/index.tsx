@@ -6,19 +6,14 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import {
-  useContractStore,
-  useEndpoint,
-  useMobile,
-  useUserKey,
-} from "lib/hooks";
+import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import {
-  truncate,
   getFirstQueryParam,
   decode,
   jsonPrettify,
@@ -29,18 +24,11 @@ import {
 import { ExecuteArea } from "./components/ExecuteArea";
 import { LoadingOverlay } from "./components/LoadingOverlay";
 
-const getAddrText = (contractAddress: string, isMobile: boolean) => {
-  if (contractAddress.length === 0) return "Not Selected";
-  if (isMobile) return truncate(contractAddress);
-  return contractAddress;
-};
-
 const Execute = () => {
   const router = useRouter();
   const isMobile = useMobile();
   const { getContractInfo } = useContractStore();
   const { address = "" } = useWallet();
-  const userKey = useUserKey();
   const endpoint = useEndpoint();
 
   const [contractAddress, setContractAddress] = useState<string>("");
@@ -104,7 +92,7 @@ const Execute = () => {
   useEffect(() => {
     (async () => {
       const contract = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(userKey, contract);
+      const contractState = getContractInfo(contract);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contract);
@@ -126,7 +114,7 @@ const Execute = () => {
       setContractAddress(contract);
       setInitialMsg(jsonMsg);
     })();
-  }, [router, endpoint, userKey, getContractInfo, onContractSelect]);
+  }, [router, endpoint, getContractInfo, onContractSelect]);
 
   const notSelected = contractAddress.length === 0;
 
@@ -164,16 +152,27 @@ const Execute = () => {
         justify="space-between"
         align="center"
       >
-        <Flex gap="24px">
-          <Flex color="text.main" direction="column">
+        <Flex flex={1}>
+          <Flex
+            color="text.main"
+            direction="column"
+            flex={notSelected ? 0.15 : 0.6}
+          >
             Contract Address
-            <Text
-              mt={1}
-              color={notSelected ? "gray.500" : "primary.main"}
-              variant="body2"
-            >
-              {getAddrText(contractAddress, isMobile)}
-            </Text>
+            {notSelected ? (
+              <Text mt={1} color="text.disabled" variant="body2">
+                Not Selected
+              </Text>
+            ) : (
+              <ExplorerLink
+                value={contractAddress}
+                type="contract_address"
+                truncateText={isMobile}
+                fontSize={14}
+                mt={1}
+                isHover
+              />
+            )}
           </Flex>
           <Flex color="text.main" direction="column">
             Contract Name

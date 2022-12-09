@@ -21,7 +21,7 @@ import { IoList } from "react-icons/io5";
 import { MdChevronLeft } from "react-icons/md";
 
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
+import { useContractStore, useEndpoint } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { queryContract } from "lib/services/contract";
 import type { RpcContractError } from "lib/types";
@@ -46,12 +46,8 @@ export const SelectContract = ({
   const [searchInList, setSearchInList] = useState("");
   const [invalid, setInvalid] = useState("");
 
-  const userKey = useUserKey();
   const { getContractLists } = useContractStore();
-  const contractLists = [
-    useInstantiatedByMe(true),
-    ...getContractLists(userKey),
-  ];
+  const contractLists = [useInstantiatedByMe(true), ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
   const endpoint = useEndpoint();
@@ -126,6 +122,7 @@ export const SelectContract = ({
                     const inputValue = e.target.value;
                     setSearchManual(inputValue);
                   }}
+                  // TODO: dynamic placeholder
                   placeholder="ex. terra1e2lv8v8qq98rtmxry209k4yl5ylk59d8nclgvqp6x3gvs6kpwe5q0p67q3"
                   size="md"
                 />

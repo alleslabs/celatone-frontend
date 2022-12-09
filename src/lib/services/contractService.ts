@@ -6,7 +6,7 @@ import { indexerGraphClient } from "lib/data/graphql";
 import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
-} from "lib/data/query";
+} from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 
 export const useInstantiatedCountByUserQuery = (

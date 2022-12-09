@@ -16,6 +16,8 @@ import App from "next/app";
 import Head from "next/head";
 
 import defaultSEOConfig from "../../next-seo.config";
+import { CELATONE_CONSTANTS, FALLBACK_GAS_REGISTRY } from "env";
+import { AppProvider } from "lib/app-provider/contexts/app";
 import { TxBroadcastProvider } from "lib/app-provider/tx/tx-broadcast";
 import { Chakra } from "lib/components/Chakra";
 import Layout from "lib/layout";
@@ -53,18 +55,23 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           signerOptions={signerOptions}
         >
           <StoreProvider>
-            <TxBroadcastProvider>
-              <Head>
-                <meta
-                  name="viewport"
-                  content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
-                />
-              </Head>
-              <DefaultSeo {...defaultSEOConfig} />
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </TxBroadcastProvider>
+            <AppProvider
+              fallbackGasRegistry={FALLBACK_GAS_REGISTRY}
+              constants={CELATONE_CONSTANTS}
+            >
+              <TxBroadcastProvider>
+                <Head>
+                  <meta
+                    name="viewport"
+                    content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
+                  />
+                </Head>
+                <DefaultSeo {...defaultSEOConfig} />
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </TxBroadcastProvider>
+            </AppProvider>
           </StoreProvider>
         </WalletProvider>
       </QueryClientProvider>

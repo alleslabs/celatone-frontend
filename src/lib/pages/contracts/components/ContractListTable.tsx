@@ -13,7 +13,9 @@ import {
   MenuList,
   MenuButton,
   MenuDivider,
+  Text,
 } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
 import {
   MdMoreVert,
@@ -22,6 +24,7 @@ import {
   MdDelete,
 } from "react-icons/md";
 
+import { useApp } from "lib/app-provider";
 import {
   AddToOtherList,
   EditContract,
@@ -44,10 +47,13 @@ interface ContractListProps {
   contracts: ContractInfo[];
   isContractRemovable?: Option;
 }
-export const ContractList = ({
+export const ContractListTable = ({
   contracts = [],
   isContractRemovable,
 }: ContractListProps) => {
+  const { explorerLink } = useApp();
+  const { address } = useWallet();
+
   return (
     <TableContainer w="full">
       <Table variant="simple">
@@ -84,8 +90,7 @@ export const ContractList = ({
               <Td>
                 <TextLink
                   value={item.address}
-                  // TODO: dynamic explorer url
-                  url={`https://finder.terra.money/mainnet/address/${item.address}`}
+                  url={`${explorerLink.contractAddr}/${item.address}`}
                   isTruncate
                 />
               </Td>
@@ -98,12 +103,18 @@ export const ContractList = ({
               {/* Instantiator */}
               {/* TODO: check if address match wallet address => show 'Me' instead */}
               <Td>
-                <TextLink
-                  value={item.instantiator}
-                  // TODO: dynamic explorer url
-                  url={`https://finder.terra.money/mainnet/address/${item.instantiator}`}
-                  isTruncate
-                />
+                {/* TODO: use AddressRender */}
+                {address === item.instantiator ? (
+                  <Text variant="body2" color="primary.main">
+                    Me
+                  </Text>
+                ) : (
+                  <TextLink
+                    value={item.instantiator}
+                    url={`${explorerLink.address}/${item.instantiator}`}
+                    isTruncate
+                  />
+                )}
               </Td>
               <Td>
                 <Flex gap={3} justifyContent="flex-end">

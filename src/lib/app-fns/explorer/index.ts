@@ -28,31 +28,12 @@ export const getExplorerContractAddressUrl = (chainName: string) => {
     // TODO: find osmosis and terra suffix for contract address
     case "osmosis":
     case "osmosistestnet":
-      pathSuffix = "account";
-      break;
     case "juno":
       pathSuffix = "wasm/contract";
       break;
     // case "terra2":
     //   pathSuffix = "tx";
     //   break;
-    default:
-      break;
-  }
-  return `${explorerMap[chainName]}/${pathSuffix}`;
-};
-
-export const getExplorerUserAddressUrl = (chainName: string) => {
-  let pathSuffix = "";
-  switch (chainName) {
-    case "osmosis":
-    case "osmosistestnet":
-    case "juno":
-      pathSuffix = "account";
-      break;
-    case "terra2":
-      pathSuffix = "address";
-      break;
     default:
       break;
   }

@@ -5,8 +5,8 @@ import type { Dispatch, SetStateAction } from "react";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { ZeroState } from "lib/components/state/ZeroState";
-import { ContractList } from "lib/pages/contracts/components/ContractList";
 import { ContractListReadOnly } from "lib/pages/contracts/components/ContractListReadOnly";
+import { ContractListTable } from "lib/pages/contracts/components/ContractListTable";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
 import type { Option } from "lib/types";
 
@@ -47,7 +47,7 @@ instantiator names."
     );
   if (!isReadOnly)
     return (
-      <ContractList
+      <ContractListTable
         contracts={filteredContracts}
         isContractRemovable={isContractRemovable}
       />

@@ -14,14 +14,16 @@ import { Copier } from "./copier";
 interface ExplorerLinkProps extends BoxProps {
   value: string;
   type?: "tx_hash" | "contract_address" | "user_address";
-  hover?: boolean;
+  truncateText?: boolean;
+  isHover?: boolean;
   copy?: string;
 }
 
 export const ExplorerLink = ({
   value,
   type,
-  hover = false,
+  truncateText = true,
+  isHover = false,
   copy,
   ...componentProps
 }: ExplorerLinkProps) => {
@@ -50,6 +52,7 @@ export const ExplorerLink = ({
     }
     return undefined;
   };
+
   return (
     <Box
       role="group"
@@ -65,12 +68,12 @@ export const ExplorerLink = ({
         data-peer
         onClick={(e) => e.stopPropagation()}
       >
-        {truncate(value)}
+        {truncateText ? truncate(value) : value}
       </Link>
       <Box
         alignItems="center"
-        display={hover ? "none" : undefined}
-        _groupHover={hover ? { display: "flex" } : undefined}
+        display={isHover ? "none" : undefined}
+        _groupHover={isHover ? { display: "flex" } : undefined}
       >
         <Copier value={copy || value} ml="8px" />
       </Box>

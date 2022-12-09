@@ -6,7 +6,7 @@ import { indexerGraphClient } from "lib/data/graphql";
 import {
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
-} from "lib/data/query";
+} from "lib/data/queries";
 import type { CodeInfo } from "lib/types";
 
 export const useCodeListByUserQuery = (

@@ -24,7 +24,13 @@ export const Copier = ({ value, ml = "8px" }: CopierProps) => {
       arrowSize={8}
       mb="4px"
     >
-      <span style={{ display: "flex", alignItems: "center", marginLeft: ml }}>
+      <span
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginLeft: ml,
+        }}
+      >
         <Icon
           as={MdOutlineContentCopy}
           fontSize="16px"

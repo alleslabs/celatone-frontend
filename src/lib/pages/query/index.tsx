@@ -5,9 +5,10 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
+import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract, queryData } from "lib/services/contract";
 import type { RpcQueryError } from "lib/types";
 import {
@@ -19,16 +20,11 @@ import {
 
 import { QueryArea } from "./components/QueryArea";
 
-const getAddrText = (addr: string) => {
-  if (addr.length === 0) return "Not Selected";
-  return addr;
-};
-
 const Query = () => {
   const router = useRouter();
   const { getContractInfo } = useContractStore();
-  const userKey = useUserKey();
   const endpoint = useEndpoint();
+  const isMobile = useMobile();
 
   const [addr, setAddr] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -87,7 +83,7 @@ const Query = () => {
   useEffect(() => {
     (async () => {
       const contract = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(userKey, contract);
+      const contractState = getContractInfo(contract);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contract);
@@ -109,9 +105,10 @@ const Query = () => {
       setAddr(contract);
       setInitialMsg(jsonMsg);
     })();
-  }, [router, endpoint, userKey, getContractInfo, onContractSelect]);
+  }, [router, endpoint, getContractInfo, onContractSelect]);
 
   const notSelected = addr.length === 0;
+
   return (
     <PageContainer>
       <Button
@@ -143,18 +140,29 @@ const Query = () => {
         justify="space-between"
         align="center"
       >
-        <Flex gap="24px">
-          <Box textColor="white">
+        <Flex flex={1}>
+          <Flex
+            color="text.main"
+            direction="column"
+            flex={notSelected ? 0.15 : 0.6}
+          >
             Contract Address
-            <Text
-              mt={1}
-              color={notSelected ? "text.disabled" : "primary.main"}
-              variant="body2"
-            >
-              {getAddrText(addr)}
-            </Text>
-          </Box>
-          <Box textColor="white">
+            {notSelected ? (
+              <Text mt={1} color="text.disabled" variant="body2">
+                Not Selected
+              </Text>
+            ) : (
+              <ExplorerLink
+                value={addr}
+                type="contract_address"
+                truncateText={isMobile}
+                fontSize={14}
+                mt={1}
+                isHover
+              />
+            )}
+          </Flex>
+          <Flex color="text.main" direction="column">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
@@ -163,7 +171,7 @@ const Query = () => {
             >
               {notSelected ? "Not Selected" : name}
             </Text>
-          </Box>
+          </Flex>
         </Flex>
         <SelectContract
           notSelected={notSelected}
