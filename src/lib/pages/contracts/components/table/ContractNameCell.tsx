@@ -34,10 +34,13 @@ export const ContractName = ({
     setIsEdit(true);
   };
   const handleCancel = () => {
+    setValue(contractInfo.name ?? contractInfo.label);
     setIsEdit(false);
   };
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setValue(event.target.value);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newVal = event.target.value;
+    setValue(newVal);
+  };
 
   const showName = isHoverText && value.length > 20;
   const handleSave = useHandleContractSave({
@@ -100,7 +103,7 @@ export const ContractName = ({
               whiteSpace="nowrap"
               textOverflow="ellipsis"
               maxW="150px"
-              color={value ? "text.main" : "text.dark"}
+              color="text.main"
             >
               {value}
             </Text>
