@@ -1,7 +1,7 @@
 import { Flex, Tag } from "@chakra-ui/react";
 import { snakeCase } from "snake-case";
 
-interface MultipleMsgProps {
+export interface MultipleMsgProps {
   type: string;
   tags?: Array<string>;
   length: number;
