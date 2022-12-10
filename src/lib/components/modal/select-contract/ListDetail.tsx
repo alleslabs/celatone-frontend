@@ -1,10 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 
-import { TextInput } from "lib/components/forms";
+import { TagSelection, TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { ZeroState } from "lib/components/state/ZeroState";
+import { useContractStore, useUserKey } from "lib/hooks";
 import { ContractList } from "lib/pages/contracts/components/ContractList";
 import { ContractListReadOnly } from "lib/pages/contracts/components/ContractListReadOnly";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
@@ -12,6 +14,7 @@ import type { Option } from "lib/types";
 
 interface FilteredListDetailProps {
   search: string;
+  tagFilter: string[];
   contracts: ContractInfo[];
   isReadOnly: boolean;
   isContractRemovable?: Option;
@@ -29,6 +32,7 @@ interface ListDetailProps {
 
 const FilteredListDetail = ({
   search,
+  tagFilter,
   contracts,
   isReadOnly,
   isContractRemovable,
@@ -36,7 +40,11 @@ const FilteredListDetail = ({
 }: FilteredListDetailProps) => {
   const filteredContracts = matchSorter(contracts, search, {
     keys: ["name", "description", "label", "address"],
-  });
+  }).filter((contract) =>
+    tagFilter.length
+      ? tagFilter.every((tag) => contract.tags?.includes(tag))
+      : contract
+  );
   if (filteredContracts.length === 0)
     return (
       <EmptyState
@@ -68,6 +76,11 @@ export const ListDetail = ({
   isContractRemovable,
   onContractSelect,
 }: ListDetailProps) => {
+  const userKey = useUserKey();
+  const { getAllTags } = useContractStore();
+
+  const [tagFilter, setTagFilter] = useState<string[]>([]);
+
   return (
     <Box minH="xs">
       <Box px={isReadOnly ? "0px" : "48px"}>
@@ -77,31 +90,20 @@ export const ListDetail = ({
             value={search}
             setInputState={setSearch}
             placeholder="Search with contract address or contract description"
-            size="md"
+            size="lg"
           />
-          {/* TODO: change select component and fix size */}
-          {/* {!isReadOnly && (
-            <>
-              <Select
-                focusBorderColor="primary.main"
-                w="300px"
-                defaultValue="recents"
-              >
-                <option value="recents">All Tags</option>
-                <option value="ascendingAlphabetic">A → Z</option>
-                <option value="descendingAlphabetic">Z → A</option>
-              </Select>
-              <Select
-                focusBorderColor="primary.main"
-                w="300px"
-                defaultValue="recents"
-              >
-                <option value="recents">Recently Created</option>
-                <option value="ascendingAlphabetic">A → Z</option>
-                <option value="descendingAlphabetic">Z → A</option>
-              </Select>
-            </>
-          )} */}
+          {!isReadOnly && (
+            <TagSelection
+              options={getAllTags(userKey)}
+              result={tagFilter}
+              setResult={(selectedTags) => setTagFilter(selectedTags)}
+              placeholder="No tag selected"
+              label="Filter by tag"
+              labelBgColor="background.main"
+              boxWidth="400px"
+              creatable={false}
+            />
+          )}
         </Flex>
       </Box>
       {contractListInfo.contracts.length === 0 ? (
@@ -112,6 +114,7 @@ export const ListDetail = ({
       ) : (
         <FilteredListDetail
           search={search}
+          tagFilter={tagFilter}
           contracts={contractListInfo.contracts}
           isReadOnly={isReadOnly}
           isContractRemovable={isContractRemovable}

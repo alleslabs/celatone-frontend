@@ -42,7 +42,11 @@ export const ControllerTextarea = <T extends FieldValues>({
           {label}
         </FormLabel>
       )}
-      <Textarea resize="none" placeholder={placeholder} />
+      <Textarea
+        resize="none"
+        placeholder={placeholder}
+        _placeholder={{ color: "text.dark" }}
+      />
       <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       {!error && (
         <FormHelperText className="helper-text">{helperText}</FormHelperText>

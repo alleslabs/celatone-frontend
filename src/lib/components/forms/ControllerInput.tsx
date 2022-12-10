@@ -52,6 +52,7 @@ export const ControllerInput = <T extends FieldValues>({
       <Input
         size={size}
         placeholder={placeholder}
+        _placeholder={{ color: "text.dark" }}
         type={type}
         value={watcher}
         onChange={field.onChange}

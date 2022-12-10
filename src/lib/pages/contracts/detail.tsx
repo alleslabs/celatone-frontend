@@ -32,7 +32,6 @@ import { useContractStore, useUserKey } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
-/* TODO: change data ->  contracts */
 const ContractList = observer(() => {
   const router = useRouter();
   const [searchKeyword, setSearchKeyword] = useState("");
