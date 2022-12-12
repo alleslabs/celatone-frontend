@@ -14,7 +14,8 @@ export const ContractName = ({
   contractInfo,
   isReadOnly = false,
 }: ContractNameProps) => {
-  const [value, setValue] = useState(contractInfo.name ?? contractInfo.label);
+  const displayName = contractInfo.name ?? contractInfo.label;
+  const [value, setValue] = useState(displayName);
   const [isHover, setIsHover] = useState(false);
   const [isHoverText, setIsHoverText] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -34,7 +35,7 @@ export const ContractName = ({
     setIsEdit(true);
   };
   const handleCancel = () => {
-    setValue(contractInfo.name ?? contractInfo.label);
+    setValue(displayName);
     setIsEdit(false);
   };
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -99,9 +100,7 @@ export const ContractName = ({
             {/* TODO change to css */}
             <Text
               variant="body2"
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
+              className="ellipsis"
               maxW="150px"
               color="text.main"
             >
