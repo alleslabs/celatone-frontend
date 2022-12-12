@@ -16,7 +16,7 @@ const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
     case "success":
       return <Text color="success.main">{statusInfo.message}</Text>;
     case "error":
-      return <Text color="error.light">{statusInfo.message}</Text>;
+      return <Text color="error.main">{statusInfo.message}</Text>;
     case "init":
     case "loading":
     default:
@@ -53,6 +53,7 @@ export const ControllerInput = <T extends FieldValues>({
     <FormControl
       className={`${size}-form`}
       size={size}
+      isInvalid={!!error || status?.state === "error"}
       {...componentProps}
       {...field}
     >
