@@ -3,6 +3,7 @@ import type { ChangeEvent } from "react";
 import { useState } from "react";
 import { MdMode, MdInfo, MdCheck, MdClose } from "react-icons/md";
 
+import { MAX_CONTRACT_NAME_LENGTH } from "lib/data";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
 
@@ -78,6 +79,7 @@ export const ContractName = ({
             onChange={handleChange}
             width="full"
             minWidth="300px"
+            maxLength={MAX_CONTRACT_NAME_LENGTH}
           />
           <Button size="sm" onClick={handleSave} variant="ghost-gray">
             <Icon as={MdCheck} color="success.main" />

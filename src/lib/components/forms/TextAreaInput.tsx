@@ -5,8 +5,24 @@ import {
   FormHelperText,
   FormLabel,
   Textarea,
+  Text,
 } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
+
+import type { FormStatus } from "./TextInput";
+
+const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
+  switch (statusInfo.state) {
+    case "success":
+      return <Text color="success.main">{statusInfo.message}</Text>;
+    case "error":
+      return <Text color="error.light">{statusInfo.message}</Text>;
+    case "init":
+    case "loading":
+    default:
+      return <Text color="text.dark">{helperText}</Text>;
+  }
+};
 
 export interface TextAreaProps extends FormControlProps {
   value: string;
@@ -15,7 +31,7 @@ export interface TextAreaProps extends FormControlProps {
   labelBgColor?: string;
   helperText?: string;
   error?: string;
-  rows?: number;
+  status?: FormStatus;
 }
 
 export const TextAreaInput = ({
@@ -26,6 +42,7 @@ export const TextAreaInput = ({
   helperText,
   placeholder = " ",
   error,
+  status,
   ...componentProps
 }: TextAreaProps) => {
   return (
@@ -49,9 +66,16 @@ export const TextAreaInput = ({
         value={value}
         onChange={(e) => setInputState(e.target.value)}
       />
-      <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      {!error && (
-        <FormHelperText className="helper-text">{helperText}</FormHelperText>
+      {error ? (
+        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+      ) : (
+        <FormHelperText className="helper-text">
+          {status?.message ? (
+            getResponseMsg(status, helperText)
+          ) : (
+            <Text color="text.dark">{helperText}</Text>
+          )}
+        </FormHelperText>
       )}
     </FormControl>
   );

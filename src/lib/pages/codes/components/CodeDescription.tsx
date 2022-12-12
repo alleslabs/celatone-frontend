@@ -3,6 +3,7 @@ import type { ChangeEvent } from "react";
 import { useState } from "react";
 import { MdMode, MdCheckCircle, MdCheck, MdClose } from "react-icons/md";
 
+import { MAX_CODE_DESCRIPTION_LENGTH } from "lib/data";
 import { useCodeStore, useUserKey } from "lib/hooks";
 
 /** This component is duplicated by ContractNameCell
@@ -98,6 +99,7 @@ export const CodeDescription = ({
             onChange={handleChange}
             width="full"
             minWidth="300px"
+            maxLength={MAX_CODE_DESCRIPTION_LENGTH}
           />
           <Button size="sm" onClick={handleSave} variant="ghost-gray">
             <Icon as={MdCheck} color="success.main" />

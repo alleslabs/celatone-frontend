@@ -107,7 +107,7 @@ export const TextInput = ({
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
         <FormHelperText className="helper-text">
-          {status ? (
+          {status?.message ? (
             getResponseMsg(status, helperText)
           ) : (
             <Text color="text.dark">{helperText}</Text>

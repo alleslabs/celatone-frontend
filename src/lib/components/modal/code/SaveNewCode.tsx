@@ -8,6 +8,10 @@ import { NumberInput } from "lib/components/forms/NumberInput";
 import { TextInput } from "lib/components/forms/TextInput";
 import type { FormStatus } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
+import {
+  getMaxCodeDescriptionLengthError,
+  MAX_CODE_DESCRIPTION_LENGTH,
+} from "lib/data";
 import { useCodeStore, useEndpoint, useUserKey } from "lib/hooks";
 import { getCodeIDInfo } from "lib/services/contract";
 
@@ -26,6 +30,21 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     state: "init",
   });
   const [description, setDescription] = useState("");
+  const [descriptionStatus, setDescriptionStatus] = useState<FormStatus>({
+    state: "init",
+  });
+
+  useEffect(() => {
+    const trimedDescription = description.trim();
+    if (trimedDescription.length === 0) {
+      setDescriptionStatus({ state: "init" });
+    } else if (trimedDescription.length > MAX_CODE_DESCRIPTION_LENGTH)
+      setDescriptionStatus({
+        state: "error",
+        message: getMaxCodeDescriptionLengthError(trimedDescription.length),
+      });
+    else setDescriptionStatus({ state: "success" });
+  }, [description]);
 
   /* DEPENDENCY */
   const toast = useToast();
@@ -145,8 +164,12 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   /* LOGIC */
   const disableMain = useMemo(() => {
     // HACK: check uploader address
-    return codeIDStatus.state !== "success" || uploader.length < 20;
-  }, [codeIDStatus, uploader]);
+    return (
+      codeIDStatus.state !== "success" ||
+      uploader.length < 20 ||
+      description.trim().length > MAX_CODE_DESCRIPTION_LENGTH
+    );
+  }, [codeIDStatus, uploader, description]);
 
   return (
     <ActionModal
@@ -184,6 +207,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           label="Code Description"
           labelBgColor="gray.800"
           helperText="Fill in code description to define its use as a reminder"
+          status={descriptionStatus}
         />
       </FormControl>
     </ActionModal>

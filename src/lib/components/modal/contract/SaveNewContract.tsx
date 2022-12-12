@@ -9,7 +9,12 @@ import type { FormStatus } from "lib/components/forms/TextInput";
 import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { OffChainDetail } from "lib/components/OffChain/OffChainDetail";
-import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
+import {
+  DEFAULT_RPC_ERROR,
+  INSTANTIATED_LIST_NAME,
+  MAX_CONTRACT_DESCRIPTION_LENGTH,
+  MAX_CONTRACT_NAME_LENGTH,
+} from "lib/data";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryContractWithTime } from "lib/services/contract";
@@ -113,8 +118,8 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
     instantiator,
     label,
     created,
-    name: name.trim().length > 0 ? name : undefined,
-    description: description.trim().length > 0 ? description : undefined,
+    name,
+    description,
     tags,
     lists,
     actions: reset,
@@ -127,7 +132,11 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}
-      disabledMain={status.state !== "success"}
+      disabledMain={
+        status.state !== "success" ||
+        name.trim().length > MAX_CONTRACT_NAME_LENGTH ||
+        description.trim().length > MAX_CONTRACT_DESCRIPTION_LENGTH
+      }
       otherBtnTitle="Cancel"
       otherAction={reset}
     >

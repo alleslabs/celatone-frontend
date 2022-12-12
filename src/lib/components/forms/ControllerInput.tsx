@@ -4,11 +4,25 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  Text,
 } from "@chakra-ui/react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { useWatch, useController } from "react-hook-form";
 
-import type { TextInputProps } from "./TextInput";
+import type { FormStatus, TextInputProps } from "./TextInput";
+
+const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
+  switch (statusInfo.state) {
+    case "success":
+      return <Text color="success.main">{statusInfo.message}</Text>;
+    case "error":
+      return <Text color="error.light">{statusInfo.message}</Text>;
+    case "init":
+    case "loading":
+    default:
+      return <Text color="text.dark">{helperText}</Text>;
+  }
+};
 
 interface ControllerInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {
@@ -26,6 +40,7 @@ export const ControllerInput = <T extends FieldValues>({
   placeholder = " ",
   size = "lg",
   type = "text",
+  status,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const { field } = useController({ name, control });
@@ -56,9 +71,16 @@ export const ControllerInput = <T extends FieldValues>({
         value={watcher}
         onChange={field.onChange}
       />
-      <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      {!error && (
-        <FormHelperText className="helper-text">{helperText}</FormHelperText>
+      {error ? (
+        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+      ) : (
+        <FormHelperText className="helper-text">
+          {status?.message ? (
+            getResponseMsg(status, helperText)
+          ) : (
+            <Text color="text.dark">{helperText}</Text>
+          )}
+        </FormHelperText>
       )}
     </FormControl>
   );
