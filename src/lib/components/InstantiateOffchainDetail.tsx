@@ -155,8 +155,8 @@ export const InstantiateOffChainDetail = observer(
               w="128px"
               onClick={saveContract}
               isDisabled={
-                nameState.trim().length > MAX_CONTRACT_NAME_LENGTH ||
-                descriptionState.trim().length > MAX_CONTRACT_DESCRIPTION_LENGTH
+                nameStatus.state === "error" ||
+                descriptionStatus.state === "error"
               }
             >
               Save

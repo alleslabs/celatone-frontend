@@ -167,9 +167,9 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     return (
       codeIDStatus.state !== "success" ||
       uploader.length < 20 ||
-      description.trim().length > MAX_CODE_DESCRIPTION_LENGTH
+      descriptionStatus.state === "error"
     );
-  }, [codeIDStatus, uploader, description]);
+  }, [codeIDStatus, uploader, descriptionStatus]);
 
   return (
     <ActionModal
