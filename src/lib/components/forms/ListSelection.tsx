@@ -164,7 +164,6 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               minW="200px"
               size="lg"
               placeholder={result.length ? undefined : placeholder}
-              _placeholder={{ color: "text.dark" }}
               onChange={(e) => filterOptions(e.currentTarget.value)}
               onFocus={() => {
                 if (!inputValue) {

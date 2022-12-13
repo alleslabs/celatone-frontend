@@ -47,9 +47,8 @@ const FilteredListDetail = ({
   if (filteredContracts.length === 0)
     return (
       <EmptyState
-        message="No past transaction matches found with your input. You can search with
-transaction hash, contract address, contract name, tags, and
-instantiator names."
+        message="No contracts match found. 
+        Make sure you are searching with contract address, name, or description."
       />
     );
 
@@ -87,7 +86,7 @@ export const ListDetail = ({
             variant="floating"
             value={search}
             setInputState={setSearch}
-            placeholder="Search with contract address or contract description"
+            placeholder="Search with contract address, name, or description"
             size="lg"
           />
           {!isReadOnly && (

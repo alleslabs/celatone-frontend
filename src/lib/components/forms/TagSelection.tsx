@@ -166,7 +166,6 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
               minW="200px"
               size="lg"
               placeholder={result.length ? "" : placeholder}
-              _placeholder={{ color: "text.dark" }}
               onChange={(e) => filterOptions(e.currentTarget.value)}
               onKeyDown={handleKeydown}
               onFocus={() => {
@@ -215,7 +214,9 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
               {/* header */}
               <ListItem
                 p={2}
-                borderBottom="1px solid"
+                borderBottom={
+                  !partialResult.length && !creatable ? "none" : "1px solid"
+                }
                 borderBottomColor="divider.main"
               >
                 {!partialResult.length && !creatable ? (

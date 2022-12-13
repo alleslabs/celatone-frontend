@@ -93,7 +93,6 @@ export const TextInput = ({
         <Input
           size={size}
           placeholder={placeholder}
-          _placeholder={{ color: "text.dark" }}
           type={type}
           value={value}
           pr={status && "36px"}

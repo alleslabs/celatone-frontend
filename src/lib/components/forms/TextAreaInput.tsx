@@ -46,7 +46,6 @@ export const TextAreaInput = ({
       <Textarea
         resize="none"
         placeholder={placeholder}
-        _placeholder={{ color: "text.dark" }}
         value={value}
         onChange={(e) => setInputState(e.target.value)}
       />
