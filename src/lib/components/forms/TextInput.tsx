@@ -82,7 +82,7 @@ export const TextInput = ({
     >
       {label && (
         <FormLabel
-          className={value.length !== 0 ? "floating" : ""}
+          className={value.length ? "floating" : ""}
           backgroundColor={labelBgColor}
         >
           {label}
