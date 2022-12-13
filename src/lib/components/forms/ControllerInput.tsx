@@ -9,20 +9,8 @@ import {
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { useWatch, useController } from "react-hook-form";
 
-import type { FormStatus, TextInputProps } from "./TextInput";
-
-const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
-  switch (statusInfo.state) {
-    case "success":
-      return <Text color="success.main">{statusInfo.message}</Text>;
-    case "error":
-      return <Text color="error.main">{statusInfo.message}</Text>;
-    case "init":
-    case "loading":
-    default:
-      return <Text color="text.dark">{helperText}</Text>;
-  }
-};
+import { getResponseMsg } from "./FormStatus";
+import type { TextInputProps } from "./TextInput";
 
 interface ControllerInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {

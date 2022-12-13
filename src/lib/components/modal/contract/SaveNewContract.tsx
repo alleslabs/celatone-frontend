@@ -5,8 +5,8 @@ import type { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { MdBookmark } from "react-icons/md";
 
-import type { FormStatus } from "lib/components/forms/TextInput";
-import { TextInput } from "lib/components/forms/TextInput";
+import type { FormStatus } from "lib/components/forms";
+import { TextInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { OffChainDetail } from "lib/components/OffChain/OffChainDetail";
 import {
@@ -127,7 +127,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   return (
     <ActionModal
-      title="Save new contract"
+      title="Save New Contract"
       icon={MdBookmark}
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save"

@@ -7,46 +7,12 @@ import {
   FormLabel,
   Input,
   Text,
-  Spinner,
-  Icon,
 } from "@chakra-ui/react";
 import type { FormControlProps } from "@chakra-ui/react";
 import type { HTMLInputTypeAttribute, Dispatch, SetStateAction } from "react";
-import { MdCheckCircle, MdOutlineWarning } from "react-icons/md";
 
-type ResponseState = "init" | "loading" | "success" | "error";
-
-export interface FormStatus {
-  state: ResponseState;
-  message?: string;
-}
-
-const getStatusIcon = (state: ResponseState) => {
-  switch (state) {
-    case "loading":
-      return <Spinner size="sm" />;
-    case "success":
-      return <Icon color="success.main" as={MdCheckCircle} />;
-    case "error":
-      return <Icon color="error.light" as={MdOutlineWarning} />;
-    case "init":
-    default:
-      return null;
-  }
-};
-
-const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
-  switch (statusInfo.state) {
-    case "success":
-      return <Text color="success.main">{statusInfo.message}</Text>;
-    case "error":
-      return <Text color="error.main">{statusInfo.message}</Text>;
-    case "init":
-    case "loading":
-    default:
-      return <Text color="text.dark">{helperText}</Text>;
-  }
-};
+import type { FormStatus } from "./FormStatus";
+import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 export interface TextInputProps extends FormControlProps {
   value: string;

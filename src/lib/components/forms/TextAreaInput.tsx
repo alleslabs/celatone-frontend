@@ -9,20 +9,8 @@ import {
 } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
-import type { FormStatus } from "./TextInput";
-
-const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
-  switch (statusInfo.state) {
-    case "success":
-      return <Text color="success.main">{statusInfo.message}</Text>;
-    case "error":
-      return <Text color="error.main">{statusInfo.message}</Text>;
-    case "init":
-    case "loading":
-    default:
-      return <Text color="text.dark">{helperText}</Text>;
-  }
-};
+import type { FormStatus } from "./FormStatus";
+import { getResponseMsg } from "./FormStatus";
 
 export interface TextAreaProps extends FormControlProps {
   value: string;

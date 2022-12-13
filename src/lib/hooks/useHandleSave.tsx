@@ -3,7 +3,8 @@ import { MdCheckCircle } from "react-icons/md";
 
 import type { Option } from "lib/types";
 
-import { useContractStore, useUserKey } from ".";
+import { useContractStore } from "./store";
+import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {
   title: string;

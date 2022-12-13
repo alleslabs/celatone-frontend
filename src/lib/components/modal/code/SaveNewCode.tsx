@@ -4,9 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { MdBookmark, MdCheckCircle } from "react-icons/md";
 
-import { NumberInput } from "lib/components/forms/NumberInput";
-import { TextInput } from "lib/components/forms/TextInput";
-import type { FormStatus } from "lib/components/forms/TextInput";
+import type { FormStatus } from "lib/components/forms";
+import { TextInput, NumberInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import {
   getMaxCodeDescriptionLengthError,
@@ -173,7 +172,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
 
   return (
     <ActionModal
-      title="Save new Code"
+      title="Save New Code"
       icon={MdBookmark}
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save New Code"
@@ -191,6 +190,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           label="Code ID"
           labelBgColor="gray.800"
           status={codeIDStatus}
+          helperText="ex. 1150"
         />
         <TextInput
           value={uploader}

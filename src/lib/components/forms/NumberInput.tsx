@@ -5,24 +5,17 @@ import {
   FormLabel,
   Input,
   Text,
-  Spinner,
-  Icon,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
 import type { FormControlProps } from "@chakra-ui/react";
 import type { HTMLInputTypeAttribute, ChangeEvent } from "react";
 import { useCallback } from "react";
-import { MdCheckCircle, MdOutlineWarning } from "react-icons/md";
 
 import { useRestrictedNumberInput } from "lib/app-provider/hooks";
 
-type ResponseState = "init" | "loading" | "success" | "error";
-
-export interface FormStatus {
-  state: ResponseState;
-  message?: string;
-}
+import type { FormStatus } from "./FormStatus";
+import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 /** TODO: refactor later */
 export interface NumberInputProps extends FormControlProps {
@@ -48,37 +41,6 @@ export const NumberInput = ({
   onInputChange,
   ...componentProps
 }: NumberInputProps) => {
-  const getStatusIcon = (state: ResponseState) => {
-    switch (state) {
-      case "loading":
-        return <Spinner size="sm" />;
-      case "success":
-        return (
-          <Icon color="success.main" as={MdCheckCircle} fontSize="1.2rem" />
-        );
-      case "error":
-        return (
-          <Icon color="error.light" as={MdOutlineWarning} fontSize="1.2rem" />
-        );
-      case "init":
-      default:
-        return null;
-    }
-  };
-
-  const getResponseMsg = (statusInfo: FormStatus) => {
-    switch (statusInfo.state) {
-      case "success":
-        return <Text color="success.main">{statusInfo.message}</Text>;
-      case "error":
-        return <Text color="error.main">{statusInfo.message}</Text>;
-      case "init":
-      case "loading":
-      default:
-        return <Text color="text.dark">{helperText}</Text>;
-    }
-  };
-
   const inputOnChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
       onInputChange(target.value);
@@ -118,7 +80,7 @@ export const NumberInput = ({
         />
         {status && (
           <InputRightElement h="full">
-            {getStatusIcon(status.state)}
+            {getStatusIcon(status.state, "1.2em")}
           </InputRightElement>
         )}
       </InputGroup>
@@ -129,7 +91,7 @@ export const NumberInput = ({
       ) : (
         <FormHelperText className="helper-text">
           {status ? (
-            getResponseMsg(status)
+            getResponseMsg(status, helperText)
           ) : (
             <Text color="text.dark">{helperText}</Text>
           )}
