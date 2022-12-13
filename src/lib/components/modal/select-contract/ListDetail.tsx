@@ -41,9 +41,7 @@ const FilteredListDetail = ({
   const filteredContracts = matchSorter(contracts, search, {
     keys: ["name", "description", "label", "address"],
   }).filter((contract) =>
-    tagFilter.length
-      ? tagFilter.every((tag) => contract.tags?.includes(tag))
-      : contract
+    tagFilter.every((tag) => contract.tags?.includes(tag))
   );
   if (filteredContracts.length === 0)
     return (
