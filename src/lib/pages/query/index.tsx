@@ -59,7 +59,7 @@ const Query = () => {
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", endpoint, addr, '{"": {}}'],
+    ["query", "cmds", endpoint, addr, '{"": {}}'],
     async () => queryData(endpoint, addr, '{"": {}}'),
     {
       enabled: !!addr,
