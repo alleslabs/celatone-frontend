@@ -6,16 +6,21 @@ import {
   Textarea,
   Text,
 } from "@chakra-ui/react";
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
+import type {
+  Control,
+  FieldPath,
+  FieldValues,
+  UseControllerProps,
+} from "react-hook-form";
 import { useController } from "react-hook-form";
 
-import { getResponseMsg } from "./FormStatus";
 import type { TextAreaProps } from "./TextAreaInput";
 
 interface ControllerTextareaProps<T extends FieldValues>
   extends Omit<TextAreaProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
+  rules?: UseControllerProps["rules"];
 }
 
 export const ControllerTextarea = <T extends FieldValues>({
@@ -26,15 +31,18 @@ export const ControllerTextarea = <T extends FieldValues>({
   helperText,
   placeholder = " ",
   error,
-  status,
+  rules = {},
   ...componentProps
 }: ControllerTextareaProps<T>) => {
-  const { field } = useController({ name, control });
+  const { field } = useController({ name, control, rules });
+
+  const isError = !!error;
+
   return (
     <FormControl
       className="textarea-form"
       size="md"
-      isInvalid={!!error || status?.state === "error"}
+      isInvalid={isError}
       {...componentProps}
       {...field}
     >
@@ -47,15 +55,11 @@ export const ControllerTextarea = <T extends FieldValues>({
         </FormLabel>
       )}
       <Textarea resize="none" placeholder={placeholder} />
-      {error ? (
+      {isError ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
         <FormHelperText className="helper-text">
-          {status?.message ? (
-            getResponseMsg(status, helperText)
-          ) : (
-            <Text color="text.dark">{helperText}</Text>
-          )}
+          <Text>{helperText}</Text>
         </FormHelperText>
       )}
     </FormControl>
