@@ -73,7 +73,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
     data.messages.forEach((msgs) => {
       const type = extractMsgType(msgs.type);
       // Case where msg does not failed
-      if (Object.keys(msgs.detail).length !== 0) {
+      if (Object.keys(msgs.detail).length) {
         switch (type) {
           case "MsgInstantiateContract": {
             const detailInstantiate = msgs.detail as DetailInstantiate;

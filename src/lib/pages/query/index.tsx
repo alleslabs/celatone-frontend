@@ -5,6 +5,7 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
@@ -44,7 +45,7 @@ const Query = () => {
 
   const onContractSelect = useCallback(
     (contract: string) => {
-      router.replace(
+      router.push(
         {
           pathname: "/query",
           query: { ...(contract && { contract }) },
@@ -57,7 +58,7 @@ const Query = () => {
   );
 
   // TODO: Abstract query and make query key
-  useQuery(
+  const { isFetching } = useQuery(
     ["query", endpoint, addr, '{"": {}}'],
     async () => queryData(endpoint, addr, '{"": {}}'),
     {
@@ -69,32 +70,26 @@ const Query = () => {
         const queryCmds: string[] = [];
         Array.from(e.response?.data.message?.matchAll(/`(.*?)`/g) || [])
           .slice(1)
-          .forEach((match) => {
-            queryCmds.push(match[1]);
-          });
-        setCmds(
-          queryCmds.map((cmd) => {
-            return [cmd, `{"${cmd}": {}}`];
-          })
-        );
+          .forEach((match) => queryCmds.push(match[1]));
+        setCmds(queryCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       },
     }
   );
 
   useEffect(() => {
     (async () => {
-      const contract = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(userKey, contract);
+      const contractAddr = getFirstQueryParam(router.query.contract);
+      const contractState = getContractInfo(userKey, contractAddr);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contract);
+        onContractSelect(contractAddr);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contract);
+          const onChainDetail = await queryContract(endpoint, contractAddr);
           setName(onChainDetail.result?.label);
         } catch {
           setName("Invalid Contract");
@@ -103,14 +98,16 @@ const Query = () => {
         setName(contractState.name ?? contractState.label);
       }
 
-      setAddr(contract);
+      setAddr(contractAddr);
       setInitialMsg(jsonMsg);
+      if (!contractAddr) setCmds([]);
     })();
   }, [router, endpoint, userKey, getContractInfo, onContractSelect]);
 
   const notSelected = addr.length === 0;
   return (
     <PageContainer>
+      {isFetching && <LoadingOverlay />}
       <Button
         variant="ghost-primary"
         onClick={() => router.back()}
