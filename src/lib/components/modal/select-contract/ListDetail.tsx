@@ -40,6 +40,7 @@ const FilteredListDetail = ({
 }: FilteredListDetailProps) => {
   const filteredContracts = matchSorter(contracts, search, {
     keys: ["name", "description", "label", "address"],
+    sorter: (sortedItem) => sortedItem,
   }).filter((contract) =>
     tagFilter.every((tag) => contract.tags?.includes(tag))
   );
@@ -51,14 +52,13 @@ transaction hash, contract address, contract name, tags, and
 instantiator names."
       />
     );
-  if (!isReadOnly)
-    return (
-      <ContractList
-        contracts={filteredContracts}
-        isContractRemovable={isContractRemovable}
-      />
-    );
-  return (
+
+  return !isReadOnly ? (
+    <ContractList
+      contracts={filteredContracts}
+      isContractRemovable={isContractRemovable}
+    />
+  ) : (
     <ContractListReadOnly
       contracts={filteredContracts}
       onContractSelect={onContractSelect}
