@@ -61,7 +61,7 @@ export const typeUrlDict = {
   [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
 };
 
-export const DEFAULT_RPC_ERROR = "Something went wrong";
+export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
 // TODO
 export const ENDPOINT_REGISTRY: Record<string, string> = {
   osmosis: "https://lcd.osmosis.zone",

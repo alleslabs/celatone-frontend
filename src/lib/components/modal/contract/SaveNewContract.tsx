@@ -46,8 +46,8 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const userKey = useUserKey();
   const { getContractInfo } = useContractStore();
 
-  const reset = () => {
-    setContractAddress("");
+  const reset = (resetContractAddress = true) => {
+    if (resetContractAddress) setContractAddress("");
     setName("");
     setTags([]);
     setLists(initialList);
@@ -59,7 +59,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", contractAddress],
+    ["query", "contractWithTime", contractAddress],
     async () => queryContractWithTime(endpoint, contractAddress),
     {
       enabled: false,
@@ -90,7 +90,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
         }
       },
       onError(err: AxiosError<RpcContractError>) {
-        reset();
+        reset(false);
         setStatus({
           state: "error",
           message: err.response?.data.error || DEFAULT_RPC_ERROR,
@@ -100,7 +100,11 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   );
 
   useEffect(() => {
-    if (contractAddress.length > 0) {
+    if (contractAddress.trim().length === 0) {
+      setStatus({
+        state: "init",
+      });
+    } else {
       setStatus({
         state: "loading",
       });
