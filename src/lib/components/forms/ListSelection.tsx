@@ -106,6 +106,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
     const selectOptionFromList = (option: Option) => {
       selectOption(option);
       setDisplayOptions(false);
+      setInputValue("");
       if (inputRef && inputRef.current !== null) {
         inputRef.current.value = "";
       }
