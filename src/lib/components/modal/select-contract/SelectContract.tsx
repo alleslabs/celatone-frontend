@@ -72,7 +72,7 @@ export const SelectContract = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", searchManual],
+    ["query", "contract", searchManual],
     async () => queryContract(endpoint, searchManual),
     {
       enabled: false,
@@ -139,7 +139,9 @@ export const SelectContract = ({
                   Submit
                 </Button>
               </Flex>
-              <Text color="error.main"> {invalid} </Text>
+              <Text variant="body3" color="error.main" mt={1} ml={3}>
+                {invalid}
+              </Text>
 
               <Flex my="24px" gap="8px" alignItems="center">
                 <Divider borderColor="gray.500" />

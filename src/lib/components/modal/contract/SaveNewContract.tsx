@@ -54,7 +54,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", contractAddress],
+    ["query", "contractWithTime", contractAddress],
     async () => queryContractWithTime(endpoint, contractAddress),
     {
       enabled: false,
