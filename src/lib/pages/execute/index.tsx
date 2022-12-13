@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import {
@@ -164,22 +165,21 @@ const Execute = () => {
         justify="space-between"
         align="center"
       >
-        <Flex gap="24px">
-          <Flex color="text.main" direction="column">
+        <Flex gap="24px" width="80%">
+          <Flex direction="column" width="60%">
             Contract Address
-            <Text
-              mt={1}
-              color={notSelected ? "gray.500" : "primary.main"}
-              variant="body2"
-            >
-              {getAddrText(contractAddress, isMobile)}
-            </Text>
+            <ExplorerLink
+              value={getAddrText(contractAddress, isMobile)}
+              type={notSelected ? undefined : "contract_address"}
+              canCopy={!notSelected}
+              canCopyWithHover={!notSelected}
+              isTruncate={false}
+            />
           </Flex>
-          <Flex color="text.main" direction="column">
+          <Flex direction="column">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
-              mt={1}
               variant="body2"
             >
               {notSelected ? "Not Selected" : contractName}

@@ -20,6 +20,7 @@ import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
 import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import type { CodeInfo } from "lib/types";
 import { truncate } from "lib/utils";
@@ -134,7 +135,7 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
       }}
     >
       <Td width="10%" color="primary.main">
-        {code.id}
+        <ExplorerLink value={code.id.toString()} canCopyWithHover />
       </Td>
       <Td width="45%">
         <CodeDescription codeId={code.id} description={code.description} />

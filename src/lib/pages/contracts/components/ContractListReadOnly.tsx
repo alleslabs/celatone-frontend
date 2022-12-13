@@ -49,6 +49,7 @@ export const ContractListReadOnly = ({
                   value={item.address}
                   type="contract_address"
                   isReadOnly
+                  canCopy={false}
                 />
               </Td>
               <Td width="40%">
@@ -64,6 +65,7 @@ export const ContractListReadOnly = ({
                   type="user_address"
                   value={item.instantiator}
                   isReadOnly
+                  canCopy={false}
                 />
               </Td>
             </Tr>

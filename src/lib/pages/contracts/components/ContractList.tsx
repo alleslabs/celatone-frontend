@@ -85,7 +85,7 @@ export const ContractList = ({
                 <ExplorerLink
                   value={item.address}
                   type="contract_address"
-                  canCopy
+                  canCopyWithHover
                 />
               </Td>
               <Td>
@@ -100,7 +100,7 @@ export const ContractList = ({
                 <ExplorerLink
                   value={item.instantiator}
                   type="user_address"
-                  canCopy
+                  canCopyWithHover
                 />
               </Td>
               <Td>

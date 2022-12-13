@@ -70,11 +70,13 @@ export const SingleMsg = ({
           value={link1}
           copyValue={link1Copy}
           type={linkType(link1Copy || link1)}
-          canCopy
+          canCopyWithHover
         />
       )}
       {/* Text2 */} {text2} {/* Link with copy */}
-      {link2 && <ExplorerLink value={link2} type={linkType(link2)} canCopy />}
+      {link2 && (
+        <ExplorerLink value={link2} type={linkType(link2)} canCopyWithHover />
+      )}
     </Flex>
   );
 };

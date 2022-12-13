@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { MdSearch, MdInput } from "react-icons/md";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useContractStore, useUserKey } from "lib/hooks";
 import { truncate } from "lib/utils";
 
@@ -32,7 +33,7 @@ export const RecentActivities = observer(() => {
               <Flex
                 direction="column"
                 gap={3}
-                minW="320px"
+                minW="360px"
                 p={6}
                 bg="gray.900"
                 borderRadius="8px"
@@ -60,9 +61,11 @@ export const RecentActivities = observer(() => {
                     {item.action}
                   </Text>
                   <Text variant="body3">on</Text>
-                  <Text variant="body3" color="primary.main">
-                    {truncate(item.contractAddress)}
-                  </Text>
+                  <ExplorerLink
+                    value={item.contractAddress}
+                    type="contract_address"
+                    canCopyWithHover
+                  />
                 </Flex>
                 <Text variant="body2" color="text.main">
                   {dayjs(item.timestamp).toNow(true)} ago{" "}

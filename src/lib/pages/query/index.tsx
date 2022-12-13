@@ -5,6 +5,7 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
@@ -143,27 +144,26 @@ const Query = () => {
         justify="space-between"
         align="center"
       >
-        <Flex gap="24px">
-          <Box textColor="white">
+        <Flex gap="24px" width="80%">
+          <Flex direction="column" width="60%">
             Contract Address
-            <Text
-              mt={1}
-              color={notSelected ? "text.disabled" : "primary.main"}
-              variant="body2"
-            >
-              {getAddrText(addr)}
-            </Text>
-          </Box>
-          <Box textColor="white">
+            <ExplorerLink
+              value={getAddrText(addr)}
+              type={notSelected ? undefined : "contract_address"}
+              canCopy={!notSelected}
+              canCopyWithHover={!notSelected}
+              isTruncate={false}
+            />
+          </Flex>
+          <Flex direction="column">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
-              mt={1}
               variant="body2"
             >
               {notSelected ? "Not Selected" : name}
             </Text>
-          </Box>
+          </Flex>
         </Flex>
         <SelectContract
           notSelected={notSelected}
