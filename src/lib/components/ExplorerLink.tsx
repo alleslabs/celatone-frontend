@@ -14,8 +14,8 @@ import { Copier } from "./copier";
 interface ExplorerLinkProps extends BoxProps {
   value: string;
   type?: "tx_hash" | "contract_address" | "user_address";
-  hover?: boolean;
-  copy?: string;
+  canCopy?: boolean;
+  copyValue?: string;
   isTruncate?: boolean;
   isReadOnly?: boolean;
 }
@@ -23,8 +23,8 @@ interface ExplorerLinkProps extends BoxProps {
 export const ExplorerLink = ({
   value,
   type,
-  copy,
-  hover = false,
+  copyValue,
+  canCopy = false,
   isReadOnly = false,
   isTruncate = true,
   ...componentProps
@@ -46,9 +46,10 @@ export const ExplorerLink = ({
   }
 
   const hrefLink = () => {
+    // copyValue is used in case where the value displayed is not the same as the copy value
     if (explorerLink) {
-      if (copy) {
-        return `${explorerLink}/${copy}`;
+      if (copyValue) {
+        return `${explorerLink}/${copyValue}`;
       }
       return `${explorerLink}/${value}`;
     }
@@ -59,7 +60,6 @@ export const ExplorerLink = ({
       role="group"
       display="inline-flex"
       alignItems="center"
-      pointerEvents={isReadOnly ? "none" : "auto"}
       {...componentProps}
     >
       <Link
@@ -69,15 +69,16 @@ export const ExplorerLink = ({
         color="primary.main"
         data-peer
         onClick={(e) => e.stopPropagation()}
+        pointerEvents={isReadOnly || !hrefLink() ? "none" : "auto"}
       >
         {isTruncate ? truncate(value) : value}
       </Link>
       <Box
         alignItems="center"
-        display={hover ? "none" : undefined}
-        _groupHover={hover ? { display: "flex" } : undefined}
+        display={canCopy ? "none" : undefined}
+        _groupHover={canCopy ? { display: "flex" } : undefined}
       >
-        <Copier value={copy || value} ml="8px" />
+        <Copier value={copyValue || value} ml="8px" />
       </Box>
     </Box>
   );

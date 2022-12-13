@@ -45,7 +45,11 @@ export const ContractListReadOnly = ({
               cursor="pointer"
             >
               <Td width="10%">
-                <ExplorerLink value={item.address} isReadOnly />
+                <ExplorerLink
+                  value={item.address}
+                  type="contract_address"
+                  isReadOnly
+                />
               </Td>
               <Td width="40%">
                 <ContractName contractInfo={item} isReadOnly />
@@ -56,7 +60,11 @@ export const ContractListReadOnly = ({
               {/* Instantiator */}
               {/* TODO: make AddressRender later, check if address match wallet address => show 'Me' instead */}
               <Td width="10%">
-                <ExplorerLink value={item.instantiator} isReadOnly />
+                <ExplorerLink
+                  type="user_address"
+                  value={item.instantiator}
+                  isReadOnly
+                />
               </Td>
             </Tr>
           ))}

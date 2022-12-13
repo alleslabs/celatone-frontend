@@ -467,7 +467,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             <ExplorerLink
               value={element.hash.substring(2)}
               type="tx_hash"
-              hover
+              canCopy
             />
           </Flex>
         </Td>

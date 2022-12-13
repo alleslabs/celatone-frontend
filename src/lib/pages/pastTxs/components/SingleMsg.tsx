@@ -68,13 +68,13 @@ export const SingleMsg = ({
       {link1 && (
         <ExplorerLink
           value={link1}
-          copy={link1Copy}
+          copyValue={link1Copy}
           type={linkType(link1Copy || link1)}
-          hover
+          canCopy
         />
       )}
       {/* Text2 */} {text2} {/* Link with copy */}
-      {link2 && <ExplorerLink value={link2} type={linkType(link2)} hover />}
+      {link2 && <ExplorerLink value={link2} type={linkType(link2)} canCopy />}
     </Flex>
   );
 };
