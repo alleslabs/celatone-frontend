@@ -84,7 +84,7 @@ const Execute = () => {
         setCmds([]);
       } else {
         const executeCmds: string[] = [];
-        Array.from(e.message?.matchAll(/`(.*?)`/) || [])
+        Array.from(e.message?.matchAll(/`(.*?)`/g) || [])
           .slice(1)
           .forEach((match) => {
             executeCmds.push(match[1]);

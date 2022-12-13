@@ -67,7 +67,7 @@ const Query = () => {
       refetchOnWindowFocus: false,
       onError: (e: AxiosError<RpcQueryError>) => {
         const queryCmds: string[] = [];
-        Array.from(e.response?.data.message?.matchAll(/`(.*?)`/) || [])
+        Array.from(e.response?.data.message?.matchAll(/`(.*?)`/g) || [])
           .slice(1)
           .forEach((match) => {
             queryCmds.push(match[1]);
