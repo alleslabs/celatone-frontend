@@ -131,7 +131,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
             maxW="100%"
             overflowX="scroll"
           >
-            {result && result.length > 0 && (
+            {result && result.length && (
               <Flex alignItems="center" pl="2">
                 {[...result].map((option) => (
                   <Flex
