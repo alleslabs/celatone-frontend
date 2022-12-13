@@ -16,13 +16,17 @@ interface ExplorerLinkProps extends BoxProps {
   type?: "tx_hash" | "contract_address" | "user_address";
   hover?: boolean;
   copy?: string;
+  isTruncate?: boolean;
+  isReadOnly?: boolean;
 }
 
 export const ExplorerLink = ({
   value,
   type,
-  hover = false,
   copy,
+  hover = false,
+  isReadOnly = false,
+  isTruncate = true,
   ...componentProps
 }: ExplorerLinkProps) => {
   const { currentChainName } = useWallet();
@@ -55,6 +59,7 @@ export const ExplorerLink = ({
       role="group"
       display="inline-flex"
       alignItems="center"
+      pointerEvents={isReadOnly ? "none" : "auto"}
       {...componentProps}
     >
       <Link
@@ -65,7 +70,7 @@ export const ExplorerLink = ({
         data-peer
         onClick={(e) => e.stopPropagation()}
       >
-        {truncate(value)}
+        {isTruncate ? truncate(value) : value}
       </Link>
       <Box
         alignItems="center"

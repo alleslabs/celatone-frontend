@@ -9,7 +9,11 @@ export const getExplorerTxUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
     case "osmosis":
+      pathSuffix = "txs";
+      break;
     case "osmosistestnet":
+      pathSuffix = "txs";
+      break;
     case "juno":
       pathSuffix = "txs";
       break;
@@ -25,17 +29,18 @@ export const getExplorerTxUrl = (chainName: string) => {
 export const getExplorerContractAddressUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
-    // TODO: find osmosis and terra suffix for contract address
     case "osmosis":
+      pathSuffix = "account";
+      break;
     case "osmosistestnet":
       pathSuffix = "account";
       break;
     case "juno":
       pathSuffix = "wasm/contract";
       break;
-    // case "terra2":
-    //   pathSuffix = "tx";
-    //   break;
+    case "terra2":
+      pathSuffix = "address";
+      break;
     default:
       break;
   }
@@ -45,16 +50,18 @@ export const getExplorerContractAddressUrl = (chainName: string) => {
 export const getExplorerUserAddressUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
-    // TODO: find osmosis and terra suffix for contract address
     case "osmosis":
+      pathSuffix = "account";
+      break;
     case "osmosistestnet":
       pathSuffix = "account";
       break;
     case "juno":
+      pathSuffix = "account";
       break;
-    // case "terra2":
-    //   pathSuffix = "tx";
-    //   break;
+    case "terra2":
+      pathSuffix = "address";
+      break;
     default:
       break;
   }

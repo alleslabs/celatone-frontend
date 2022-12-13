@@ -8,11 +8,11 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ContractInfo } from "lib/stores/contract";
 
 import { ContractName } from "./table/ContractNameCell";
 import { Tags } from "./table/TagsCell";
-import { TextLink } from "./table/TextLinkCell";
 
 interface ContractListReadOnlyProps {
   contracts: ContractInfo[];
@@ -45,7 +45,7 @@ export const ContractListReadOnly = ({
               cursor="pointer"
             >
               <Td width="10%">
-                <TextLink value={item.address} isTruncate isReadOnly />
+                <ExplorerLink value={item.address} isReadOnly />
               </Td>
               <Td width="40%">
                 <ContractName contractInfo={item} isReadOnly />
@@ -56,7 +56,7 @@ export const ContractListReadOnly = ({
               {/* Instantiator */}
               {/* TODO: make AddressRender later, check if address match wallet address => show 'Me' instead */}
               <Td width="10%">
-                <TextLink value={item.instantiator} isTruncate isReadOnly />
+                <ExplorerLink value={item.instantiator} isReadOnly />
               </Td>
             </Tr>
           ))}

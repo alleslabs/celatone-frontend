@@ -22,6 +22,7 @@ import {
   MdDelete,
 } from "react-icons/md";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
   EditContract,
@@ -32,7 +33,6 @@ import type { Option } from "lib/types";
 
 import { ContractName } from "./table/ContractNameCell";
 import { Tags } from "./table/TagsCell";
-import { TextLink } from "./table/TextLinkCell";
 
 const iconProps = {
   boxSize: "4",
@@ -82,11 +82,10 @@ export const ContractList = ({
               }}
             >
               <Td>
-                <TextLink
+                <ExplorerLink
                   value={item.address}
-                  // TODO: dynamic explorer url
-                  url={`https://finder.terra.money/mainnet/address/${item.address}`}
-                  isTruncate
+                  type="contract_address"
+                  hover
                 />
               </Td>
               <Td>
@@ -98,11 +97,10 @@ export const ContractList = ({
               {/* Instantiator */}
               {/* TODO: check if address match wallet address => show 'Me' instead */}
               <Td>
-                <TextLink
+                <ExplorerLink
                   value={item.instantiator}
-                  // TODO: dynamic explorer url
-                  url={`https://finder.terra.money/mainnet/address/${item.instantiator}`}
-                  isTruncate
+                  type="user_address"
+                  hover
                 />
               </Td>
               <Td>
