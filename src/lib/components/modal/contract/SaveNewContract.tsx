@@ -112,7 +112,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   }, [contractAddress, refetch]);
 
   const handleSave = useHandleContractSave({
-    title: `Saved ${name.trim().length > 0 ? name : label}`,
+    title: `Saved ${name.trim().length ? name : label}`,
     address: contractAddress,
     instantiator,
     label,

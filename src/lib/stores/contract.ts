@@ -240,10 +240,11 @@ export class ContractStore {
     };
 
     if (name !== undefined)
-      contractInfo.name = name.trim().length > 0 ? name.trim() : undefined;
+      contractInfo.name = name.trim().length ? name.trim() : undefined;
     if (description !== undefined)
-      contractInfo.description =
-        description.trim().length > 0 ? description.trim() : undefined;
+      contractInfo.description = description.trim().length
+        ? description.trim()
+        : undefined;
     if (tags !== undefined) {
       this.updateContractInfoTags(
         userKey,

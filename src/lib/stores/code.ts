@@ -79,13 +79,21 @@ export class CodeStore {
   updateCodeInfo(
     userKey: string,
     id: number,
-    newCodeInfo: Partial<CodeLocalInfo>
+    newCodeInfo: CodeLocalInfo
   ): void {
-    const codeInfo = this.codeInfo[userKey]?.[id];
+    const codeInfo = this.codeInfo[userKey]?.[id] || {};
+
+    if (newCodeInfo.description !== undefined) {
+      codeInfo.description = newCodeInfo.description.trim().length
+        ? newCodeInfo.description.trim()
+        : undefined;
+    }
+    if (newCodeInfo.uploader !== undefined)
+      codeInfo.uploader = newCodeInfo.uploader;
 
     this.codeInfo[userKey] = {
       ...this.codeInfo[userKey],
-      [id]: { ...codeInfo, ...newCodeInfo },
+      [id]: codeInfo,
     };
   }
 }
