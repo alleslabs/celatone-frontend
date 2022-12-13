@@ -20,8 +20,8 @@ interface ModalProps {
 
 export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   /* STATE */
-  const [codeID, setCodeID] = useState("");
-  const [codeIDStatus, setCodeIDStatus] = useState<FormStatus>({
+  const [codeId, setCodeID] = useState("");
+  const [codeIdStatus, setCodeIDStatus] = useState<FormStatus>({
     state: "init",
   });
   const [uploader, setUploader] = useState("No Description");
@@ -53,8 +53,8 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   const endpoint = useEndpoint();
 
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", endpoint, codeID],
-    async () => getCodeIDInfo(endpoint, Number(codeID)),
+    ["query", endpoint, codeId],
+    async () => getCodeIDInfo(endpoint, Number(codeId)),
     {
       enabled: false,
       retry: false,
@@ -82,7 +82,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   };
 
   const handleSave = () => {
-    const id = Number(codeID);
+    const id = Number(codeId);
 
     saveNewCode(userKey, id);
 
@@ -99,7 +99,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
 
     // TODO: abstract toast to template later
     toast({
-      title: `Saved ${codeID} to Saved Codes`,
+      title: `Saved ${codeId} to Saved Codes`,
       status: "success",
       duration: 5000,
       isClosable: false,
@@ -127,14 +127,14 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     }
   }, [isFetching, isRefetching]);
 
-  // update codeIDStatus
+  // update codeIdStatus
   useEffect(() => {
-    if (codeID.trim().length === 0) {
+    if (codeId.trim().length === 0) {
       setCodeIDStatus({ state: "init" });
     } else {
       setCodeIDStatus({ state: "loading" });
 
-      if (isCodeIDExist(userKey, Number(codeID))) {
+      if (isCodeIDExist(userKey, Number(codeId))) {
         setCodeIDStatus({
           state: "error",
           message: "You already added this Code ID",
@@ -149,26 +149,26 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     }
 
     return () => {};
-  }, [userKey, isCodeIDExist, codeID, refetch]);
+  }, [userKey, isCodeIDExist, codeId, refetch]);
 
   // update code description
   useEffect(() => {
-    if (codeIDStatus.state === "success") {
+    if (codeIdStatus.state === "success") {
       const localDescription =
-        getCodeLocalInfo(userKey, Number(codeID))?.description ?? "";
+        getCodeLocalInfo(userKey, Number(codeId))?.description ?? "";
       setDescription(localDescription);
     }
-  }, [codeID, codeIDStatus.state, getCodeLocalInfo, setDescription, userKey]);
+  }, [codeId, codeIdStatus.state, getCodeLocalInfo, setDescription, userKey]);
 
   /* LOGIC */
   const disableMain = useMemo(() => {
     // HACK: check uploader address
     return (
-      codeIDStatus.state !== "success" ||
+      codeIdStatus.state !== "success" ||
       uploader.length < 20 ||
       descriptionStatus.state === "error"
     );
-  }, [codeIDStatus, uploader, descriptionStatus]);
+  }, [codeIdStatus, uploader, descriptionStatus]);
 
   return (
     <ActionModal
@@ -185,11 +185,11 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
         Save other stored Codes to your &quot;Saved Codes&quot; list
         <NumberInput
           variant="floating"
-          value={codeID}
+          value={codeId}
           onInputChange={setCodeID}
           label="Code ID"
           labelBgColor="gray.800"
-          status={codeIDStatus}
+          status={codeIdStatus}
           helperText="ex. 1150"
         />
         <TextInput
