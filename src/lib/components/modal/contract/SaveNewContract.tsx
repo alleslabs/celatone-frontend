@@ -95,7 +95,11 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   );
 
   useEffect(() => {
-    if (contractAddress.length > 0) {
+    if (contractAddress.trim().length === 0) {
+      setStatus({
+        state: "init",
+      });
+    } else {
       setStatus({
         state: "loading",
       });
