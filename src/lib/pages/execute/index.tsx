@@ -83,17 +83,14 @@ const Execute = () => {
         setContractAddress("");
         setCmds([]);
       } else {
-        const queryCmds =
-          e.message
-            ?.match(
-              "(?: expected one of )(.*)(?=: execute wasm contract failed: invalid request)"
-            )
-            ?.at(1)
-            ?.split(", ") || [];
-
+        const executeCmds: string[] = [];
+        Array.from(e.message?.matchAll(/`(.*?)`/) || [])
+          .slice(1)
+          .forEach((match) => {
+            executeCmds.push(match[1]);
+          });
         setCmds(
-          queryCmds.map((v) => {
-            const cmd = v.slice(1, -1);
+          executeCmds.map((cmd) => {
             return [cmd, `{"${cmd}": {}}`];
           })
         );

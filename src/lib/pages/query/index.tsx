@@ -66,17 +66,14 @@ const Query = () => {
       cacheTime: 0,
       refetchOnWindowFocus: false,
       onError: (e: AxiosError<RpcQueryError>) => {
-        const queryCmds =
-          e.response?.data.message
-            ?.match(
-              "(?: expected one of )(.*)(?=: query wasm contract failed: invalid request)"
-            )
-            ?.at(1)
-            ?.split(", ") || [];
-
+        const queryCmds: string[] = [];
+        Array.from(e.response?.data.message?.matchAll(/`(.*?)`/) || [])
+          .slice(1)
+          .forEach((match) => {
+            queryCmds.push(match[1]);
+          });
         setCmds(
-          queryCmds.map((v) => {
-            const cmd = v.slice(1, -1);
+          queryCmds.map((cmd) => {
             return [cmd, `{"${cmd}": {}}`];
           })
         );
