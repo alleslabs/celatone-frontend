@@ -97,7 +97,6 @@ export const ContractName = ({
             onMouseOver={handleMouseEnterText}
             onMouseOut={handleMouseOutText}
           >
-            {/* TODO change to css */}
             <Text
               variant="body2"
               className="ellipsis"
