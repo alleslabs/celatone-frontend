@@ -4,9 +4,9 @@ import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { LoadingOverlay } from "../../components/LoadingOverlay";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import {
