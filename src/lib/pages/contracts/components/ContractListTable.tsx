@@ -43,14 +43,14 @@ const iconProps = {
   alignItems: "center",
 };
 
-interface ContractListProps {
+interface ContractListTableProps {
   contracts: ContractInfo[];
   isContractRemovable?: Option;
 }
 export const ContractListTable = ({
   contracts = [],
   isContractRemovable,
-}: ContractListProps) => {
+}: ContractListTableProps) => {
   const { explorerLink } = useApp();
   const { address } = useWallet();
 
@@ -101,7 +101,6 @@ export const ContractListTable = ({
                 <Tags contractInfo={item} />
               </Td>
               {/* Instantiator */}
-              {/* TODO: check if address match wallet address => show 'Me' instead */}
               <Td>
                 {/* TODO: use AddressRender */}
                 {address === item.instantiator ? (

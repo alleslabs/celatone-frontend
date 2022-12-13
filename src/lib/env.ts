@@ -1,4 +1,4 @@
-export const MAINNET_CHAIN_NAMES = ["osmosis", "juno"];
+export const MAINNET_CHAIN_NAMES = ["osmosis"];
 
 export const TESTNET_CHAIN_NAMES = ["osmosistestnet"];
 

@@ -167,7 +167,7 @@ const Execute = () => {
               <ExplorerLink
                 value={contractAddress}
                 type="contract_address"
-                truncateText={isMobile}
+                isTruncate={isMobile}
                 fontSize={14}
                 mt={1}
                 isHover

@@ -14,7 +14,7 @@ import { Copier } from "./copier";
 interface ExplorerLinkProps extends BoxProps {
   value: string;
   type?: "tx_hash" | "contract_address" | "user_address";
-  truncateText?: boolean;
+  isTruncate?: boolean;
   isHover?: boolean;
   copy?: string;
 }
@@ -22,7 +22,7 @@ interface ExplorerLinkProps extends BoxProps {
 export const ExplorerLink = ({
   value,
   type,
-  truncateText = true,
+  isTruncate = true,
   isHover = false,
   copy,
   ...componentProps
@@ -68,7 +68,7 @@ export const ExplorerLink = ({
         data-peer
         onClick={(e) => e.stopPropagation()}
       >
-        {truncateText ? truncate(value) : value}
+        {isTruncate ? truncate(value) : value}
       </Link>
       <Box
         alignItems="center"

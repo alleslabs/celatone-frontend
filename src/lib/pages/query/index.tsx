@@ -155,7 +155,7 @@ const Query = () => {
               <ExplorerLink
                 value={addr}
                 type="contract_address"
-                truncateText={isMobile}
+                isTruncate={isMobile}
                 fontSize={14}
                 mt={1}
                 isHover

@@ -18,11 +18,6 @@ const extendedColors: BasicColor = {
     light: "#f6a5c0",
     dark: "#aa647b",
   },
-  secondary: {
-    main: "#f48fb1",
-    light: "#f6a5c0",
-    dark: "#aa647b",
-  },
   error: {
     main: "#f44336",
     light: "#e57373",
