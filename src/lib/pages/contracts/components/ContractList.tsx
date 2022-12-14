@@ -50,7 +50,7 @@ export const ContractList = ({
 }: ContractListProps) => {
   return (
     <TableContainer w="full">
-      <Table variant="simple">
+      <Table variant="simple" sx={{ tableLayout: "auto" }}>
         <Thead>
           <Tr
             sx={{

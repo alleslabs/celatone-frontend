@@ -25,7 +25,7 @@ export const ContractListReadOnly = ({
 }: ContractListReadOnlyProps) => {
   return (
     <TableContainer w="full" my="16px">
-      <Table variant="simple">
+      <Table variant="simple" sx={{ tableLayout: "auto" }}>
         <Thead>
           <Tr>
             <Th width="10%">Contract Address</Th>

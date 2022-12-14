@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import {
@@ -28,7 +29,6 @@ import {
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
-import { LoadingOverlay } from "./components/LoadingOverlay";
 
 const getAddrText = (contractAddress: string, isMobile: boolean) => {
   if (contractAddress.length === 0) return "Not Selected";
@@ -57,7 +57,7 @@ const Execute = () => {
   };
   const onContractSelect = useCallback(
     (contract: string) => {
-      router.replace(
+      router.push(
         {
           pathname: "/execute",
           query: { ...(contract && { contract }) },
@@ -84,38 +84,29 @@ const Execute = () => {
         setContractAddress("");
         setCmds([]);
       } else {
-        const queryCmds =
-          e.message
-            ?.match(
-              "(?: expected one of )(.*)(?=: execute wasm contract failed: invalid request)"
-            )
-            ?.at(1)
-            ?.split(", ") || [];
-
-        setCmds(
-          queryCmds.map((v) => {
-            const cmd = v.slice(1, -1);
-            return [cmd, `{"${cmd}": {}}`];
-          })
-        );
+        const executeCmds: string[] = [];
+        Array.from(e.message?.matchAll(/`(.*?)`/g) || [])
+          .slice(1)
+          .forEach((match) => executeCmds.push(match[1]));
+        setCmds(executeCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       }
     },
   });
 
   useEffect(() => {
     (async () => {
-      const contract = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(userKey, contract);
+      const contractAddr = getFirstQueryParam(router.query.contract);
+      const contractState = getContractInfo(userKey, contractAddr);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contract);
+        onContractSelect(contractAddr);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contract);
+          const onChainDetail = await queryContract(endpoint, contractAddr);
           setContractName(onChainDetail.result?.label);
         } catch {
           setContractName("Invalid Contract");
@@ -124,8 +115,9 @@ const Execute = () => {
         setContractName(contractState.name ?? contractState.label);
       }
 
-      setContractAddress(contract);
+      setContractAddress(contractAddr);
       setInitialMsg(jsonMsg);
+      if (!contractAddr) setCmds([]);
     })();
   }, [router, endpoint, userKey, getContractInfo, onContractSelect]);
 

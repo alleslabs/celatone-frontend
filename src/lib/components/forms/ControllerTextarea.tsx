@@ -37,7 +37,7 @@ export const ControllerTextarea = <T extends FieldValues>({
       {label && (
         <FormLabel
           bgColor={labelBgColor}
-          className={field.value.length !== 0 ? "floating" : ""}
+          className={field.value.length ? "floating" : ""}
         >
           {label}
         </FormLabel>

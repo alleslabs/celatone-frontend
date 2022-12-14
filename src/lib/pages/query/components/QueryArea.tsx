@@ -1,10 +1,11 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { Box, Flex, Spacer, Button, ButtonGroup } from "@chakra-ui/react";
+import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
+import ContractCmdButton from "lib/components/ContractCmdButton";
 import CopyButton from "lib/components/CopyButton";
 import JsonInput from "lib/components/Json/JsonInput";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -14,7 +15,6 @@ import type { RpcQueryError } from "lib/types";
 import { encode, jsonPrettify, jsonValidate } from "lib/utils";
 
 import JsonReadOnly from "./JsonReadOnly";
-import QueryCmdButton from "./QueryCmdButton";
 
 interface QueryAreaProps {
   contractAddress: string;
@@ -80,32 +80,36 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Flex
-        width="full"
-        mb="16px"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <ButtonGroup
-          width="90%"
-          flexWrap="wrap"
-          rowGap="8px"
-          sx={{
-            "> button": {
-              marginInlineStart: "0 !important",
-              marginInlineEnd: "1",
-            },
-          }}
-        >
-          {cmds.map(([cmd, queryMsg]) => (
-            <QueryCmdButton
-              key={`query-cmd-${cmd}`}
-              cmd={cmd}
-              msg={jsonPrettify(queryMsg)}
-              setMsg={setMsg}
-            />
-          ))}
-        </ButtonGroup>
+      <Flex width="full" mb="16px" alignItems="center">
+        {cmds.length ? (
+          <ButtonGroup
+            width="90%"
+            flexWrap="wrap"
+            rowGap="8px"
+            sx={{
+              "> button": {
+                marginInlineStart: "0 !important",
+                marginInlineEnd: "1",
+              },
+            }}
+          >
+            {cmds.map(([cmd, queryMsg]) => (
+              <ContractCmdButton
+                key={`query-cmd-${cmd}`}
+                cmd={cmd}
+                msg={jsonPrettify(queryMsg)}
+                setMsg={setMsg}
+              />
+            ))}
+          </ButtonGroup>
+        ) : (
+          contractAddress && (
+            <Text ml="16px" variant="body2" color="text.dark">
+              No QueryMsgs suggestion available
+            </Text>
+          )
+        )}
+        <Spacer />
         <CopyButton isDisable={res.length === 0} value={res} />
       </Flex>
       <Flex gap="16px">

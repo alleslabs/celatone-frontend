@@ -8,11 +8,11 @@ import { IoIosWarning } from "react-icons/io";
 import { useFabricateFee, useTxBroadcast } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { useExecuteContractTx } from "lib/app-provider/tx/execute";
+import ContractCmdButton from "lib/components/ContractCmdButton";
 import CopyButton from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import JsonInput from "lib/components/Json/JsonInput";
 import { useContractStore } from "lib/hooks";
-import QueryCmdButton from "lib/pages/query/components/QueryCmdButton";
 import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
@@ -42,7 +42,7 @@ export const ExecuteArea = ({
   const [processing, setProcessing] = useState(false);
 
   const enableExecute = !!(
-    msg.trim().length !== 0 &&
+    msg.trim().length &&
     jsonValidate(msg) === null &&
     address &&
     contractAddress
@@ -111,7 +111,7 @@ export const ExecuteArea = ({
 
   return (
     <Box w="full">
-      {cmds.length !== 0 && (
+      {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
           rowGap="8px"
@@ -124,7 +124,7 @@ export const ExecuteArea = ({
           }}
         >
           {cmds.map(([cmd, queryMsg]) => (
-            <QueryCmdButton
+            <ContractCmdButton
               key={`query-cmd-${cmd}`}
               cmd={cmd}
               msg={jsonPrettify(queryMsg)}
@@ -132,6 +132,12 @@ export const ExecuteArea = ({
             />
           ))}
         </ButtonGroup>
+      ) : (
+        contractAddress && (
+          <Text m="16px" variant="body2" color="text.dark">
+            No ExecuteMsgs suggestion available
+          </Text>
+        )
       )}
       <JsonInput
         topic="Execute Msg"
