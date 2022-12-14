@@ -2,13 +2,12 @@ import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { Copier } from "lib/components/copier/index";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { OffChainForm } from "lib/components/OffChain/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
 import type { Option } from "lib/types";
-import { truncate } from "lib/utils";
 
 interface ModalProps {
   contractInfo: ContractInfo;
@@ -53,12 +52,7 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
           <Text variant="body2" color="text.main" fontWeight="600">
             Contract Address
           </Text>
-          <Text variant="body2" color="text.dark">
-            {truncate(contractInfo.address)}
-          </Text>
-          <Flex gap="1">
-            <Copier value={contractInfo.address} ml="4" />
-          </Flex>
+          <ExplorerLink value={contractInfo.address} type="contract_address" />
         </Flex>
       }
       trigger={<MenuItem {...menuItemProps} />}
