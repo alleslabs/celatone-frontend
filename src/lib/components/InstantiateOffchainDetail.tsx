@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import type { Option } from "lib/components/forms";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import {
+  getMaxContractDescriptionLengthError,
+  getMaxContractNameLengthError,
   MAX_CONTRACT_DESCRIPTION_LENGTH,
   MAX_CONTRACT_NAME_LENGTH,
 } from "lib/data";
@@ -96,10 +98,7 @@ export const InstantiateOffChainDetail = observer(
           rules={{
             maxLength: MAX_CONTRACT_NAME_LENGTH,
           }}
-          error={
-            errors.name &&
-            `Contract name is too long. (${nameState.length}/${MAX_CONTRACT_NAME_LENGTH})`
-          }
+          error={errors.name && getMaxContractNameLengthError(nameState.length)}
         />
         <ControllerTextarea
           name="description"
@@ -112,7 +111,7 @@ export const InstantiateOffChainDetail = observer(
           }}
           error={
             errors.description &&
-            `Contract description is too long. (${descriptionState.length}/${MAX_CONTRACT_DESCRIPTION_LENGTH})`
+            getMaxContractDescriptionLengthError(descriptionState.length)
           }
         />
         <TagSelection
