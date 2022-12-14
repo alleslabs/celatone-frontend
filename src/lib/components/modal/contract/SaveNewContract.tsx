@@ -143,7 +143,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           label="Contract Address"
           labelBgColor="gray.800"
           helperText="ex. terra1ff1asdf7988aw49efa4vw9846789"
-          size="md"
           status={status}
         />
         <TextInput
@@ -152,7 +151,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           setInputState={setInstantiator}
           label="Instantiator"
           labelBgColor="gray.800"
-          size="md"
           isDisabled
         />
         <OffChainDetail

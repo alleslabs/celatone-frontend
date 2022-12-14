@@ -67,6 +67,7 @@ export const ExecuteArea = ({
         addActivity(userKey, activity);
         setProcessing(false);
       },
+      onTxFailed: () => setProcessing(false),
       estimatedFee: fee,
       contractAddress,
       msg: JSON.parse(msg),

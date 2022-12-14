@@ -43,7 +43,6 @@ export const OffChainDetail = ({
         label="Name"
         labelBgColor="gray.800"
         helperText="Set name for your contract"
-        size="md"
       />
       <TextAreaInput
         variant="floating"
