@@ -24,7 +24,7 @@ export const MultipleMsg = ({ type, tags, length, text }: MultipleMsgProps) => {
         <Tag borderRadius="full">{length}</Tag>
       )}
       {/* For Execute */}
-      {tags && tags.length && "on"} {text}
+      {!!tags?.length && "on"} {text}
     </Flex>
   );
 };

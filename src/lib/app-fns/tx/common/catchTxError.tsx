@@ -10,11 +10,13 @@ import { TxStreamPhase } from "lib/types";
 import { formatStdFee } from "lib/utils/formatter/denom";
 
 export const catchTxError = (
-  fee: StdFee
+  fee: StdFee,
+  onTxFailed?: () => void
 ): OperatorFunction<TxResultRendering, TxResultRendering> => {
   return catchError((error: Error) => {
     const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.at(1);
 
+    onTxFailed?.();
     return Promise.resolve<TxResultRendering>(
       error.message === "Request rejected"
         ? {

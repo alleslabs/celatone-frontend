@@ -8,6 +8,7 @@ import type { Activity } from "lib/stores/contract";
 
 export interface ExecuteStreamParams {
   onTxSucceed?: (userKey: string, activity: Activity) => void;
+  onTxFailed?: () => void;
   estimatedFee: StdFee | undefined;
   contractAddress: string;
   msg: object;
@@ -20,6 +21,7 @@ export const useExecuteContractTx = () => {
   return useCallback(
     async ({
       onTxSucceed,
+      onTxFailed,
       estimatedFee,
       contractAddress,
       msg,
@@ -37,6 +39,7 @@ export const useExecuteContractTx = () => {
         client,
         userKey,
         onTxSucceed,
+        onTxFailed,
       });
     },
     [address, userKey, getCosmWasmClient]
