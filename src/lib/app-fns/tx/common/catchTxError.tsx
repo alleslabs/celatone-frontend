@@ -9,6 +9,18 @@ import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatStdFee } from "lib/utils/formatter/denom";
 
+const getTxHashReceipt = (txHash?: string) => {
+  return txHash
+    ? [
+        {
+          title: "Tx Hash",
+          value: txHash,
+          html: <ExplorerLink type="tx_hash" value={txHash ?? ""} />,
+        },
+      ]
+    : [];
+};
+
 export const catchTxError = (
   fee: StdFee,
   onTxFailed?: () => void
@@ -42,11 +54,7 @@ export const catchTxError = (
               ),
             },
             receipts: [
-              {
-                title: "Tx Hash",
-                value: txHash,
-                html: <ExplorerLink type="tx_hash" value={txHash ?? ""} />,
-              },
+              ...getTxHashReceipt(txHash),
               {
                 title: "Tx Fee",
                 value: formatStdFee(fee),
