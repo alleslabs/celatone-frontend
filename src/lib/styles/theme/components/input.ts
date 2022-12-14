@@ -26,6 +26,7 @@ export const Input: ComponentStyleConfig = {
         _invalid: {
           borderColor: "error.main",
         },
+        _placeholder: { color: "text.dark" },
       },
     },
   },

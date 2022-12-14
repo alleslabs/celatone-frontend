@@ -10,6 +10,7 @@ import {
   useTxBroadcast,
   useResendTx,
 } from "lib/app-provider";
+import { useContractStore, useUserKey } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
 import type {
   DetailExecute,
@@ -42,48 +43,60 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
   const [button, setButton] = useState<"redo" | "resend" | "">("");
   const [showButton, setShowButton] = useState(false);
   const { currentChainName } = useWallet();
+  const userKey = useUserKey();
+  const { getContractInfo } = useContractStore();
 
+  // TODO - Refactor to reduce complexity
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const displayMsg = useMemo(() => {
     const type = extractMsgType(msg.type);
+    // Type Execute
     if (type === "MsgExecuteContract") {
       const detailExecute = msg.detail as DetailExecute;
+      const contractInfo = getContractInfo(userKey, detailExecute.contract);
+      // Able to redo even fail transaction
       setButton("redo");
       const singleMsgProps: SingleMsgProps = success
         ? {
             type: "Execute",
             tags: [Object.keys(detailExecute.msg)[0]],
             text2: "on",
-            link2: detailExecute.contract,
+            link1: contractInfo?.name || detailExecute.contract,
+            link1Copy: detailExecute.contract,
           }
         : {
             type: "Failed",
             text1: "to execute message from",
-            link2: detailExecute.contract,
+            link1: contractInfo?.name || detailExecute.contract,
+            link1Copy: detailExecute.contract,
           };
       return <SingleMsg {...singleMsgProps} />;
-      // Type Upload
     }
+    // Type Upload
     if (type === "MsgStoreCode") {
       const msgUpload = msg.detail as DetailUpload;
+      // Not able to resend or redo
       setButton("");
       const singleMsgProps: SingleMsgProps = success
         ? {
             type: "Upload",
             text1: "WASM to Code ID",
-            text2: msgUpload.id?.toString(),
+            text3: msgUpload.id?.toString(),
           }
         : {
-            type: "Failed ",
+            type: "Failed",
             text1: "to upload WASM file",
           };
       return <SingleMsg {...singleMsgProps} />;
-
-      // Type Instantiate
     }
-    // TODO - Refactor
-
+    // Type Instantiate
     if (type === "MsgInstantiateContract") {
       const msgInstantiate = msg.detail as DetailInstantiate;
+      const contractInfo = getContractInfo(
+        userKey,
+        msgInstantiate.contractAddress
+      );
+      // Not able to redo if failure
       if (!success) {
         setButton("");
         return (
@@ -99,15 +112,13 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
         <SingleMsg
           type="Instantiate"
           text1="contract"
-          link1={msgInstantiate.label}
+          link1={contractInfo?.name || msgInstantiate.contractAddress}
           link1Copy={msgInstantiate.contractAddress}
-          text2={`from Code ID ${msgInstantiate.codeId.toString()}`}
+          text3={`from Code ID ${msgInstantiate.codeId.toString()}`}
         />
       );
-      // Send message
     }
-    // TODO - Refactor
-
+    // Type Send
     if (type === "MsgSend") {
       const msgSend = msg.detail as DetailSend;
       setButton("resend");
@@ -119,6 +130,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
           )} `
       );
 
+      // Not able to resend if failure
       if (!success) {
         // Not able to resend if failed
         setButton("");
@@ -139,6 +151,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
         />
       );
     }
+    // Type Others
     if (type) {
       if (!success) {
         // Not able to resend if failed
@@ -155,7 +168,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
       return <SingleMsg type="Message" tags={[type.substring(3)]} />;
     }
     return null;
-  }, [msg.detail, msg.type, success]);
+  }, [getContractInfo, msg.detail, msg.type, success, userKey]);
 
   const fabricateFee = useFabricateFee();
   const { simulate } = useSimulateFee();

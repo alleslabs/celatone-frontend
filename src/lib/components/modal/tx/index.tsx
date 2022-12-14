@@ -33,7 +33,7 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
           {result.receiptInfo.headerIcon}
           {result.receiptInfo.header}
         </ModalHeader>
-        {(result.receiptInfo.description || result.receipts.length) && (
+        {(result.receiptInfo.description || result.receipts.length > 0) && (
           <ModalBody>
             {result.receiptInfo.description && (
               <Text variant="body1" color="text.main" mb="16px">

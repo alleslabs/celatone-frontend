@@ -1,4 +1,4 @@
-import type { InputProps } from "@chakra-ui/react";
+import type { InputProps, LayoutProps } from "@chakra-ui/react";
 import {
   FormControl,
   FormHelperText,
@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { CSSProperties, KeyboardEvent } from "react";
-import { useState, useRef, forwardRef } from "react";
+import { useEffect, useState, useRef, forwardRef } from "react";
 import { MdCheckCircle, MdClose } from "react-icons/md";
 
 import mergeRefs from "lib/utils/mergeRefs";
@@ -28,6 +28,9 @@ export interface TagSelectionProps extends InputProps {
   badgeBgColor?: string;
   helperText?: string;
   labelBgColor?: string;
+  label?: string;
+  boxWidth?: LayoutProps["width"];
+  creatable?: boolean;
 }
 
 const listItemProps: CSSProperties = {
@@ -57,13 +60,16 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
       badgeBgColor = "info.dark",
       helperText,
       labelBgColor = "gray.800",
+      label = "Tags",
+      boxWidth = "full",
+      creatable = true,
       ...rest
     }: TagSelectionProps,
     ref
     // TODO: refactor to reduce complexity
     // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
-    const [optionsCopy, setOptionsCopy] = useState<string[]>(options);
+    const [optionsCopy, setOptionsCopy] = useState<string[]>([]);
     const [partialResult, setPartialResult] = useState<string[]>([]);
     const [displayOptions, setDisplayOptions] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
@@ -106,9 +112,11 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
       }
     };
 
-    const canCreateOption = !optionsCopy.find(
-      (each) => each === inputValue?.toLowerCase()
-    );
+    const canCreateOption =
+      !optionsCopy.find((each) => each === inputValue?.toLowerCase()) &&
+      creatable;
+
+    const noResultAndUncreatable = !partialResult.length && !creatable;
 
     const handleKeydown = (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter" && canCreateOption) {
@@ -121,9 +129,13 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
       handler: () => setDisplayOptions(false),
     });
 
+    useEffect(() => {
+      setOptionsCopy(options);
+    }, [options]);
+
     return (
-      <Box ref={boxRef} w="full">
-        <FormControl>
+      <Box ref={boxRef} w={boxWidth}>
+        <FormControl w={boxWidth}>
           <Flex
             alignItems="center"
             color="text.main"
@@ -134,7 +146,7 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
             maxW="100%"
             overflowX="scroll"
           >
-            {result && result.length && (
+            {result.length > 0 && (
               <Flex alignItems="center" pl="2">
                 {[...result].reverse().map((option) => (
                   <Flex
@@ -180,7 +192,7 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
               lineHeight="1.2"
               transform="scale(0.75) translateY(-24px) translateX(8px)"
             >
-              Tags
+              {label}
             </FormLabel>
           </Flex>
           <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">
@@ -202,8 +214,20 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
               overflow="scroll"
             >
               {/* header */}
-              <ListItem p={2} borderBottomWidth="1" borderColor="gray.300">
-                <Text variant="body3">Select tag or create a new one</Text>
+              <ListItem
+                p={2}
+                borderBottomColor="divider.main"
+                borderBottomWidth={noResultAndUncreatable ? "0" : "1px"}
+              >
+                {noResultAndUncreatable ? (
+                  <Text variant="body3" color="text.dark">
+                    No tags found
+                  </Text>
+                ) : (
+                  <Text variant="body3">
+                    Select tag {creatable && "or create a new one"}
+                  </Text>
+                )}
               </ListItem>
               {/* option selection section */}
               {partialResult.map((option) => (
