@@ -18,7 +18,6 @@ interface ExplorerLinkProps extends BoxProps {
   canCopyWithHover?: boolean;
   copyValue?: string;
   isTruncate?: boolean;
-  isReadOnly?: boolean;
 }
 
 export const ExplorerLink = ({
@@ -27,7 +26,6 @@ export const ExplorerLink = ({
   copyValue,
   canCopy = true,
   canCopyWithHover = false,
-  isReadOnly = false,
   isTruncate = true,
   ...componentProps
 }: ExplorerLinkProps) => {
@@ -71,7 +69,7 @@ export const ExplorerLink = ({
         color="primary.main"
         data-peer
         onClick={(e) => e.stopPropagation()}
-        pointerEvents={isReadOnly || !hrefLink() ? "none" : "auto"}
+        pointerEvents={!hrefLink() ? "none" : "auto"}
       >
         {isTruncate ? truncate(value) : value}
       </Link>
