@@ -116,7 +116,7 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
       !optionsCopy.find((each) => each === inputValue?.toLowerCase()) &&
       creatable;
 
-    const noResultAndUnCreatable = !partialResult.length && !creatable;
+    const noResultAndUncreatable = !partialResult.length && !creatable;
 
     const handleKeydown = (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter" && canCreateOption) {
@@ -216,10 +216,10 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
               {/* header */}
               <ListItem
                 p={2}
-                borderBottom={noResultAndUnCreatable ? "none" : "1px solid"}
                 borderBottomColor="divider.main"
+                borderBottomWidth={noResultAndUncreatable ? "0" : "1px"}
               >
-                {noResultAndUnCreatable ? (
+                {noResultAndUncreatable ? (
                   <Text variant="body3" color="text.dark">
                     No tags found
                   </Text>
