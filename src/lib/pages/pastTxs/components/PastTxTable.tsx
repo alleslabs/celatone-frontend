@@ -29,6 +29,7 @@ import {
 } from "lib/app-provider";
 import { useResendTx } from "lib/app-provider/tx/resend";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useContractStore, useUserKey } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
 import type {
   DetailExecute,
@@ -49,7 +50,9 @@ import {
 } from "lib/utils";
 
 import MsgDetail from "./MsgDetail";
+import type { MultipleMsgProps } from "./MultipleMsg";
 import { MultipleMsg } from "./MultipleMsg";
+import type { SingleMsgProps } from "./SingleMsg";
 import { SingleMsg } from "./SingleMsg";
 
 interface PastTxTableProps {
@@ -63,6 +66,9 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [error, setError] = useState("");
   const { currentChainName } = useWallet();
+
+  const userKey = useUserKey();
+  const { getContractInfo } = useContractStore();
 
   const extractMessage = useCallback((data: Transaction) => {
     const uploadMsgs: DetailUpload[] = [];
@@ -110,34 +116,34 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
   // TODO - Refactor
   const renderUpload = useCallback(
     (uploadMsgs: Array<DetailUpload>) => {
+      // Multiple Upload/Store code Msgs
       if (uploadMsgs.length > 1) {
-        if (!element.success) {
-          return (
-            <MultipleMsg
-              type="Failed to upload"
-              length={uploadMsgs.length}
-              text="WASM files"
-            />
-          );
-        }
-        return (
-          <MultipleMsg
-            type="Upload"
-            length={uploadMsgs.length}
-            text="WASM files"
-          />
-        );
+        const multipleMsgProps: MultipleMsgProps = element.success
+          ? {
+              type: "Upload",
+              length: uploadMsgs.length,
+              text: "WASM files",
+            }
+          : {
+              type: "Failed to upload",
+              length: uploadMsgs.length,
+              text: "WASM files",
+            };
+        return <MultipleMsg {...multipleMsgProps} />;
       }
-      if (!element.success) {
-        return <SingleMsg type="Failed " text1="to upload WASM file" />;
-      }
-      return (
-        <SingleMsg
-          type="Upload"
-          text1="WASM to Code ID"
-          text2={uploadMsgs[0].id.toString()}
-        />
-      );
+
+      // Only 1 Upload/Store code Msg
+      const singleMsgProps: SingleMsgProps = element.success
+        ? {
+            type: "Upload",
+            text1: "WASM to Code ID",
+            text3: uploadMsgs[0].id.toString(),
+          }
+        : {
+            type: "Failed",
+            text1: "to upload WASM file",
+          };
+      return <SingleMsg {...singleMsgProps} />;
     },
     [element.success]
   );
@@ -145,6 +151,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
   // TODO - Refactor
   const renderInstantiate = useCallback(
     (instantiateMsgs: Array<DetailInstantiate>) => {
+      // Multiple Instantiate Msgs
       if (instantiateMsgs.length > 1) {
         setIsAccordion(true);
         setButton("resend");
@@ -168,26 +175,27 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         );
       }
       setButton("redo");
-      if (!element.success) {
-        return (
-          <SingleMsg
-            type="Fail"
-            text1="to instantiate contract from Code ID"
-            link2={instantiateMsgs[0].codeId.toString()}
-          />
-        );
-      }
-      return (
-        <SingleMsg
-          type="Instantiate"
-          text1="contract"
-          link1={instantiateMsgs[0].label}
-          link1Copy={instantiateMsgs[0].contractAddress}
-          text2={`from Code ID ${instantiateMsgs[0].codeId.toString()}`}
-        />
+      const contractInfo = getContractInfo(
+        userKey,
+        instantiateMsgs[0].contractAddress
       );
+      // Only 1 Instantiate Msgs
+      const singleMsgProps: SingleMsgProps = element.success
+        ? {
+            type: "Instantiate",
+            text1: "contract",
+            link1: contractInfo?.name || instantiateMsgs[0].contractAddress,
+            link1Copy: instantiateMsgs[0].contractAddress,
+            text3: `from Code ID ${instantiateMsgs[0].codeId.toString()}`,
+          }
+        : {
+            type: "Fail",
+            text1: "to instantiate contract from Code ID",
+            link2: instantiateMsgs[0].codeId.toString(),
+          };
+      return <SingleMsg {...singleMsgProps} />;
     },
-    [element.success]
+    [element.success, getContractInfo, userKey]
   );
 
   // TODO - Refactor
@@ -199,16 +207,15 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         tags.push(Object.keys(executeMsgs[1].msg)[0]);
       }
 
+      setIsAccordion(true);
+      setButton("resend");
+      // Multiple Execute msgs
       if (executeMsgs.some((msg) => msg.contract !== contractAddr)) {
-        setIsAccordion(true);
-        setButton("resend");
-
         if (!element.success) {
           setButton("");
-
           return (
             <MultipleMsg
-              type="Failed to execute messages from "
+              type="Failed to execute messages from"
               length={executeMsgs.length}
               text="contracts"
             />
@@ -226,75 +233,75 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
       }
       if (executeMsgs.length === 1) {
         setButton("redo");
-      } else {
-        setIsAccordion(true);
-        setButton("resend");
+        setIsAccordion(false);
       }
 
-      if (!element.success) {
-        return (
-          <SingleMsg
-            type="Failed"
-            text1="to execute message from"
-            link2={executeMsgs[0].contract}
-          />
-        );
-      }
-      return (
-        <SingleMsg
-          type="Execute"
-          tags={tags}
-          length={executeMsgs.length}
-          text2="on"
-          link2={executeMsgs[0].contract}
-        />
-      );
+      const contractInfo = getContractInfo(userKey, executeMsgs[0].contract);
+
+      // Only 1 Execute Msg
+      const singleMsgProps: SingleMsgProps = element.success
+        ? {
+            type: "Execute",
+            tags,
+            length: executeMsgs.length,
+            text2: "on",
+            link1: contractInfo?.name || executeMsgs[0].contract,
+            link1Copy: executeMsgs[0].contract,
+          }
+        : {
+            type: "Failed",
+            text1: "to execute message from",
+            link1: contractInfo?.name || executeMsgs[0].contract,
+            link1Copy: executeMsgs[0].contract,
+          };
+      return <SingleMsg {...singleMsgProps} />;
     },
-    [element.success]
+    [element.success, getContractInfo, userKey]
   );
 
   // TODO - Refactor
   const renderSend = useCallback(
     (sendMsgs: Array<DetailSend>) => {
       setButton("resend");
-      if (!element.success) {
-        setButton("");
-
-        return <SingleMsg type="Failed" text1="to send assets" />;
-      }
-      if (sendMsgs.length === 1) {
-        const coins = sendMsgs[0].amount.map(
-          (amount) =>
-            `${formatUToken(amount.amount as U<Token>)} ${formatUDenom(
-              amount.denom
-            )}`
-        );
-        return (
-          <SingleMsg
-            type="Send"
-            bolds={coins}
-            text2="to"
-            link2={sendMsgs[0].toAddress}
-          />
-        );
-      }
-      setIsAccordion(true);
-      if (!element.success) {
-        setButton("");
-
+      // Multiple Send msgs
+      if (sendMsgs.length > 1) {
+        setIsAccordion(true);
+        if (!element.success) {
+          setButton("");
+          return (
+            <MultipleMsg
+              type="Failed to send"
+              length={sendMsgs.length}
+              text="to addresses"
+            />
+          );
+        }
         return (
           <MultipleMsg
-            type="Failed to send "
+            type="Send assets to"
             length={sendMsgs.length}
-            text="to addresses"
+            text="addresses"
           />
         );
       }
+
+      // Only 1 Send msg -> Resend
+      if (!element.success) {
+        setButton("");
+        return <SingleMsg type="Failed" text1="to send assets" />;
+      }
+      const coins = sendMsgs[0].amount.map(
+        (amount) =>
+          `${formatUToken(amount.amount as U<Token>)} ${formatUDenom(
+            amount.denom
+          )}`
+      );
       return (
-        <MultipleMsg
-          type="Send assets to"
-          length={sendMsgs.length}
-          text="addresses"
+        <SingleMsg
+          type="Send"
+          bolds={coins}
+          text2="to"
+          link1={sendMsgs[0].toAddress}
         />
       );
     },
