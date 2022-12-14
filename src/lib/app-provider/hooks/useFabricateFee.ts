@@ -21,7 +21,7 @@ export const useFabricateFee = () => {
             amount: big(adjustedGas).mul(chainFee.gasPrice).toFixed(0),
           },
         ],
-        gas: adjustedGas as Gas<string>,
+        gas: estimatedGas.toFixed(0) as Gas<string>,
       };
     },
     [chainFee]

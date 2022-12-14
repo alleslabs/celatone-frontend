@@ -23,13 +23,13 @@ const getTxHashReceipt = (txHash?: string) =>
         {
           title: "Tx Hash",
           value: txHash,
-          html: <ExplorerLink type="tx_hash" value={txHash ?? ""} />,
+          html: <ExplorerLink type="tx_hash" value={txHash} />,
         },
       ]
     : [];
 
-const getActionVariant = (txHash?: string) =>
-  !txHash ? "rejected" : undefined;
+const getActionVariant = (isRejected: boolean) =>
+  isRejected ? "rejected" : undefined;
 
 export const catchTxError = (
   onTxFailed?: () => void
@@ -48,7 +48,7 @@ export const catchTxError = (
         ),
       },
       receipts: getTxHashReceipt(txHash),
-      actionVariant: getActionVariant(),
+      actionVariant: getActionVariant(!txHash),
     });
   });
 };
