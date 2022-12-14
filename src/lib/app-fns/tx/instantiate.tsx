@@ -49,5 +49,5 @@ export const instantiateContractTx = ({
       // TODO: this is type hack
       return null as unknown as TxResultRendering;
     }
-  )().pipe(catchTxError(fee));
+  )().pipe(catchTxError());
 };

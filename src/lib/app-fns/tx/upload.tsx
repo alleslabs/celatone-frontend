@@ -93,5 +93,5 @@ export const uploadContractTx = ({
         actionVariant: "upload",
       } as TxResultRendering;
     }
-  )().pipe(catchTxError(fee));
+  )().pipe(catchTxError());
 };

@@ -1,5 +1,4 @@
 import { Icon } from "@chakra-ui/react";
-import type { StdFee } from "@cosmjs/stargate";
 import { IoIosWarning } from "react-icons/io";
 import type { OperatorFunction } from "rxjs";
 import { catchError } from "rxjs";
@@ -7,10 +6,19 @@ import { catchError } from "rxjs";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { formatStdFee } from "lib/utils/formatter/denom";
 
-const getTxHashReceipt = (txHash?: string) => {
-  return txHash
+const getReceiptInfo = (error: Error) =>
+  error.message === "Request rejected"
+    ? {
+        header: "Rejected by user",
+      }
+    : {
+        header: "Transaction Failed",
+        description: error.message,
+      };
+
+const getTxHashReceipt = (txHash?: string) =>
+  txHash
     ? [
         {
           title: "Tx Hash",
@@ -19,49 +27,28 @@ const getTxHashReceipt = (txHash?: string) => {
         },
       ]
     : [];
-};
+
+const getActionVariant = (txHash?: string) =>
+  !txHash ? "rejected" : undefined;
 
 export const catchTxError = (
-  fee: StdFee,
   onTxFailed?: () => void
 ): OperatorFunction<TxResultRendering, TxResultRendering> => {
   return catchError((error: Error) => {
     const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.at(1);
 
     onTxFailed?.();
-    return Promise.resolve<TxResultRendering>(
-      error.message === "Request rejected"
-        ? {
-            value: null,
-            phase: TxStreamPhase.FAILED,
-            receiptInfo: {
-              header: "Request rejected",
-              headerIcon: (
-                <Icon as={IoIosWarning} fontSize="24px" color="error.light" />
-              ),
-            },
-            receipts: [],
-            actionVariant: "rejected",
-          }
-        : {
-            value: null,
-            phase: TxStreamPhase.FAILED,
-            receiptInfo: {
-              header: "Transaction Failed",
-              description: error.message,
-              headerIcon: (
-                <Icon as={IoIosWarning} fontSize="24px" color="error.light" />
-              ),
-            },
-            receipts: [
-              ...getTxHashReceipt(txHash),
-              {
-                title: "Tx Fee",
-                value: formatStdFee(fee),
-              },
-            ],
-            actionVariant: !txHash ? "rejected" : undefined,
-          }
-    );
+    return Promise.resolve<TxResultRendering>({
+      value: null,
+      phase: TxStreamPhase.FAILED,
+      receiptInfo: {
+        ...getReceiptInfo(error),
+        headerIcon: (
+          <Icon as={IoIosWarning} fontSize="24px" color="error.light" />
+        ),
+      },
+      receipts: getTxHashReceipt(txHash),
+      actionVariant: getActionVariant(),
+    });
   });
 };

@@ -78,5 +78,5 @@ export const executeContractTx = ({
         },
       } as TxResultRendering;
     }
-  )().pipe(catchTxError(fee, onTxFailed));
+  )().pipe(catchTxError(onTxFailed));
 };
