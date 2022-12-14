@@ -136,11 +136,11 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
       const singleMsgProps: SingleMsgProps = element.success
         ? {
             type: "Upload",
-            text1: "WASM to Code ID ",
+            text1: "WASM to Code ID",
             text3: uploadMsgs[0].id.toString(),
           }
         : {
-            type: "Failed ",
+            type: "Failed",
             text1: "to upload WASM file",
           };
       return <SingleMsg {...singleMsgProps} />;
@@ -215,7 +215,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
           setButton("");
           return (
             <MultipleMsg
-              type="Failed to execute messages from "
+              type="Failed to execute messages from"
               length={executeMsgs.length}
               text="contracts"
             />
@@ -270,7 +270,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
           setButton("");
           return (
             <MultipleMsg
-              type="Failed to send "
+              type="Failed to send"
               length={sendMsgs.length}
               text="to addresses"
             />
