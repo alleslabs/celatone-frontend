@@ -9,10 +9,11 @@ export interface SingleMsgProps {
   bolds?: Array<string>;
   tags?: Array<string>;
   length?: number;
+  text2?: string;
   link1?: string;
   // TODO - Change this
   link1Copy?: string;
-  text2?: string;
+  text3?: string;
   link2?: string;
 }
 
@@ -22,9 +23,10 @@ export const SingleMsg = ({
   bolds,
   tags,
   length,
+  text2,
   link1,
   link1Copy,
-  text2,
+  text3,
   link2,
 }: SingleMsgProps) => {
   const linkType = (text: string) => {
@@ -65,6 +67,7 @@ export const SingleMsg = ({
       {/* Length  */}
       {!tags && length && <Tag>{length}</Tag>}
       {/* Link */}
+      {text2}
       {link1 && (
         <ExplorerLink
           value={link1}
@@ -73,7 +76,7 @@ export const SingleMsg = ({
           isHover
         />
       )}
-      {/* Text2 */} {text2} {/* Link with copy */}
+      {/* Text3 */} {text3} {/* Link with copy */}
       {link2 && <ExplorerLink value={link2} type={linkType(link2)} isHover />}
     </Flex>
   );

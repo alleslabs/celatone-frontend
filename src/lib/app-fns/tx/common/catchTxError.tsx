@@ -43,10 +43,12 @@ const getErrorResult = (error: Error, fee: StdFee): TxResultRendering => {
 };
 
 export const catchTxError = (
-  fee: StdFee
+  fee: StdFee,
+  onTxFailed?: () => void
 ): OperatorFunction<TxResultRendering, TxResultRendering> => {
   // TODO: Figure out how to get txHash
   return catchError((error) => {
+    onTxFailed?.();
     return Promise.resolve<TxResultRendering>(getErrorResult(error, fee));
   });
 };

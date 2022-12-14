@@ -232,7 +232,7 @@ const PastTxs = () => {
               <Tr
                 color="text.dark"
                 sx={{
-                  "& th:first-child": { pl: "48px", pr: "0" },
+                  "& th:first-of-type": { pl: "48px", pr: "0" },
                   "& td:last-child": { pr: "48px" },
                 }}
               >
