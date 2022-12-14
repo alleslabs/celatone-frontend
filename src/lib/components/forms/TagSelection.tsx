@@ -134,7 +134,7 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
             maxW="100%"
             overflowX="scroll"
           >
-            {result && result.length && (
+            {result && result.length > 0 && (
               <Flex alignItems="center" pl="2">
                 {[...result].reverse().map((option) => (
                   <Flex
