@@ -153,7 +153,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
 
           return (
             <MultipleMsg
-              type="Fail to instantiate"
+              type="Failed to instantiate"
               length={instantiateMsgs.length}
               text="contracts"
             />
@@ -171,9 +171,9 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
       if (!element.success) {
         return (
           <SingleMsg
-            type="Fail"
+            type="Failed"
             text1="to instantiate contract from Code ID"
-            link2={instantiateMsgs[0].codeId.toString()}
+            text2={instantiateMsgs[0].codeId.toString()}
           />
         );
       }
