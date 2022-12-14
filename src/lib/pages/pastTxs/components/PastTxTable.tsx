@@ -443,10 +443,12 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
     const localDate = element.block.timestamp.concat("Z");
     return (
       <Flex direction="column">
-        <Text>
+        <Text variant="body2" color="text.dark">
           {dayjs(localDate).utc().format("MMM DD, YYYY, h:mm:ss A [UTC]")}
         </Text>
-        <Text>({dayjs(localDate).fromNow()})</Text>
+        <Text variant="body2" color="text.dark">
+          ({dayjs(localDate).fromNow()})
+        </Text>
       </Flex>
     );
   };
@@ -458,7 +460,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         onClick={onToggle}
         _hover={{ background: "rgba(255, 255, 255, 0.12)" }}
         sx={{
-          "& td:first-child": { pl: "48px" },
+          "& td:first-of-type": { pl: "48px" },
           "& td:last-child": { pr: "48px" },
         }}
       >
@@ -488,11 +490,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             )}
           </Flex>
         </Td>
-        <Td border={hideBorder}>
-          <Text variant="body2" color="text.dark">
-            {renderTimestamp()}
-          </Text>
-        </Td>
+        <Td border={hideBorder}>{renderTimestamp()}</Td>
         <Td border={hideBorder} color="text.dark">
           <Flex justify="end">
             {button === "redo" && (
