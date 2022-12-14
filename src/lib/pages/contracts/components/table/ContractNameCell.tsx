@@ -14,7 +14,8 @@ export const ContractName = ({
   contractInfo,
   isReadOnly = false,
 }: ContractNameProps) => {
-  const [value, setValue] = useState(contractInfo.name ?? contractInfo.label);
+  const displayName = contractInfo.name ?? contractInfo.label;
+  const [value, setValue] = useState(displayName);
   const [isHover, setIsHover] = useState(false);
   const [isHoverText, setIsHoverText] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -34,10 +35,13 @@ export const ContractName = ({
     setIsEdit(true);
   };
   const handleCancel = () => {
+    setValue(displayName);
     setIsEdit(false);
   };
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setValue(event.target.value);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newVal = event.target.value;
+    setValue(newVal);
+  };
 
   const showName = isHoverText && value.length > 20;
   const handleSave = useHandleContractSave({
@@ -93,14 +97,11 @@ export const ContractName = ({
             onMouseOver={handleMouseEnterText}
             onMouseOut={handleMouseOutText}
           >
-            {/* TODO change to css */}
             <Text
               variant="body2"
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
+              className="ellipsis"
               maxW="150px"
-              color={value ? "text.main" : "text.dark"}
+              color="text.main"
             >
               {value}
             </Text>

@@ -59,7 +59,9 @@ const ContractList = observer(() => {
     alignItems: "center",
   };
 
-  return contractListInfo !== undefined ? (
+  if (!contractListInfo) return null;
+
+  return (
     <>
       <Box p="48px" pb="0">
         <Breadcrumb
@@ -181,8 +183,6 @@ const ContractList = observer(() => {
         }
       />
     </>
-  ) : (
-    <Box />
   );
 });
 

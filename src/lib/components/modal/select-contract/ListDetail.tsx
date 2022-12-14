@@ -36,7 +36,9 @@ const FilteredListDetail = ({
 }: FilteredListDetailProps) => {
   const filteredContracts = matchSorter(contracts, search, {
     keys: ["name", "description", "label", "address"],
+    sorter: (sortedItem) => sortedItem,
   });
+
   if (filteredContracts.length === 0)
     return (
       <EmptyState

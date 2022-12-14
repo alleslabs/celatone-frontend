@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
@@ -40,7 +41,7 @@ const Query = () => {
 
   const onContractSelect = useCallback(
     (contract: string) => {
-      router.replace(
+      router.push(
         {
           pathname: "/query",
           query: { ...(contract && { contract }) },
@@ -53,8 +54,8 @@ const Query = () => {
   );
 
   // TODO: Abstract query and make query key
-  useQuery(
-    ["query", endpoint, addr, '{"": {}}'],
+  const { isFetching } = useQuery(
+    ["query", "cmds", endpoint, addr, '{"": {}}'],
     async () => queryData(endpoint, addr, '{"": {}}'),
     {
       enabled: !!addr,
@@ -62,38 +63,29 @@ const Query = () => {
       cacheTime: 0,
       refetchOnWindowFocus: false,
       onError: (e: AxiosError<RpcQueryError>) => {
-        const queryCmds =
-          e.response?.data.message
-            ?.match(
-              "(?: expected one of )(.*)(?=: query wasm contract failed: invalid request)"
-            )
-            ?.at(1)
-            ?.split(", ") || [];
-
-        setCmds(
-          queryCmds.map((v) => {
-            const cmd = v.slice(1, -1);
-            return [cmd, `{"${cmd}": {}}`];
-          })
-        );
+        const queryCmds: string[] = [];
+        Array.from(e.response?.data.message?.matchAll(/`(.*?)`/g) || [])
+          .slice(1)
+          .forEach((match) => queryCmds.push(match[1]));
+        setCmds(queryCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       },
     }
   );
 
   useEffect(() => {
     (async () => {
-      const contract = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(contract);
+      const contractAddr = getFirstQueryParam(router.query.contract);
+      const contractState = getContractInfo(contractAddr);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contract);
+        onContractSelect(contractAddr);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contract);
+          const onChainDetail = await queryContract(endpoint, contractAddr);
           setName(onChainDetail.result?.label);
         } catch {
           setName("Invalid Contract");
@@ -102,8 +94,9 @@ const Query = () => {
         setName(contractState.name ?? contractState.label);
       }
 
-      setAddr(contract);
+      setAddr(contractAddr);
       setInitialMsg(jsonMsg);
+      if (!contractAddr) setCmds([]);
     })();
   }, [router, endpoint, getContractInfo, onContractSelect]);
 
@@ -111,6 +104,7 @@ const Query = () => {
 
   return (
     <PageContainer>
+      {isFetching && <LoadingOverlay />}
       <Button
         variant="ghost-primary"
         onClick={() => router.back()}
