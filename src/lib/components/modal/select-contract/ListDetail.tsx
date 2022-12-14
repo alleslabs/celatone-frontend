@@ -93,7 +93,7 @@ export const ListDetail = ({
             <TagSelection
               options={getAllTags(userKey)}
               result={tagFilter}
-              setResult={(selectedTags) => setTagFilter(selectedTags)}
+              setResult={setTagFilter}
               placeholder="No tag selected"
               label="Filter by tag"
               labelBgColor="background.main"
