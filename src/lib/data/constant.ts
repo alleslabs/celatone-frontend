@@ -19,7 +19,7 @@ export const getListIcon = (listName: string) => {
 
 export const DEFAULT_ADDRESS = "default-address";
 
-export const MAX_FILE_SIZE = 3_000_000;
+export const MAX_FILE_SIZE = 800_000;
 
 export const MICRO = 1000000;
 

@@ -24,7 +24,7 @@ import {
   MdDelete,
 } from "react-icons/md";
 
-import { useApp } from "lib/app-provider";
+import { useCelatoneApp } from "lib/app-provider";
 import {
   AddToOtherList,
   EditContract,
@@ -51,7 +51,7 @@ export const ContractListTable = ({
   contracts = [],
   isContractRemovable,
 }: ContractListTableProps) => {
-  const { explorerLink } = useApp();
+  const { explorerLink } = useCelatoneApp();
   const { address } = useWallet();
 
   return (

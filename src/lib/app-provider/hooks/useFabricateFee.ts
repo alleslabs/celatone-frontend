@@ -2,11 +2,12 @@ import type { StdFee } from "@cosmjs/stargate";
 import big from "big.js";
 import { useCallback } from "react";
 
-import { useApp } from "../contexts";
 import type { Gas } from "lib/types";
 
+import { useCelatoneApp } from "./useCelatoneApp";
+
 export const useFabricateFee = () => {
-  const { constants, chainGas } = useApp();
+  const { constants, chainGas } = useCelatoneApp();
 
   return useCallback(
     (estimatedGas: number): StdFee => {

@@ -18,7 +18,7 @@ export const ENDPOINT_REGISTRY: Record<string, string> = {
   osmosistestnet: "https://lcd-test.osmosis.zone",
 };
 
-export const MAX_FILE_SIZE = 3_000_000;
+export const MAX_FILE_SIZE = 800_000;
 
 export const DIRECTORY_DEFAULT = {
   instantiatedList: "Instantiated by me",

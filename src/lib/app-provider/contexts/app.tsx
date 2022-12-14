@@ -10,6 +10,7 @@ import {
   getExplorerTxUrl,
 } from "lib/app-fns/explorer";
 import { DEFAULT_ADDRESS, getExplorerUserAddressUrl } from "lib/data";
+import { DEFAULT_CHAIN } from "lib/env";
 import { useCodeStore, useContractStore } from "lib/hooks";
 import type { ChainGas, Gas } from "lib/types";
 import { formatUserKey } from "lib/utils";
@@ -31,7 +32,6 @@ interface AppContextInterface<Constants extends AppConstants = AppConstants> {
     address: string;
   };
   indexerGraphClient: GraphQLClient;
-  userKey: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,7 +44,6 @@ const AppContext = createContext<AppContextInterface<any>>({
     address: "",
   },
   indexerGraphClient: new GraphQLClient(""),
-  userKey: "",
 });
 
 export const AppProvider = <Constants extends AppConstants>({
@@ -52,7 +51,7 @@ export const AppProvider = <Constants extends AppConstants>({
   fallbackGasRegistry,
   constants,
 }: AppProviderProps<Constants>) => {
-  const { currentChainName, currentChainRecord } = useWallet();
+  const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
   const { setCodeUserKey } = useCodeStore();
   const { setContractUserKey } = useContractStore();
 
@@ -78,7 +77,6 @@ export const AppProvider = <Constants extends AppConstants>({
         address: getExplorerUserAddressUrl(currentChainName),
       },
       indexerGraphClient: getIndexerGraphClient(currentChainName),
-      userKey: formatUserKey(currentChainName, DEFAULT_ADDRESS),
     };
   }, [currentChainName]);
 
@@ -97,6 +95,11 @@ export const AppProvider = <Constants extends AppConstants>({
       setContractUserKey(userKey);
     }
   }, [currentChainName, setCodeUserKey, setContractUserKey]);
+
+  useEffect(() => {
+    setCurrentChain(DEFAULT_CHAIN);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
 };

@@ -10,19 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
-import { useEffect } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
 import { WalletSection } from "lib/components/Wallet";
-import { CHAIN_NAMES, DEFAULT_CHAIN } from "lib/env";
+import { CHAIN_NAMES } from "lib/env";
 
 const Header = () => {
   const { currentChainName, setCurrentChain } = useWallet();
-
-  useEffect(() => {
-    setCurrentChain(DEFAULT_CHAIN);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Flex
