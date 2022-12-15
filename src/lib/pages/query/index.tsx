@@ -146,7 +146,8 @@ const Query = () => {
                 value={getAddrText(addr)}
                 type="contract_address"
                 canCopyWithHover
-                isTruncate={false}
+                textFormat="normal"
+                maxWidth="none"
               />
             ) : (
               <Text textColor="text.disabled" variant="body2">

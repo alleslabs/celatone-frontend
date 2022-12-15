@@ -165,7 +165,8 @@ const Execute = () => {
                 value={getAddrText(contractAddress, isMobile)}
                 type="contract_address"
                 canCopyWithHover
-                isTruncate={false}
+                textFormat="normal"
+                maxWidth="none"
               />
             ) : (
               <Text textColor="text.disabled" variant="body2">

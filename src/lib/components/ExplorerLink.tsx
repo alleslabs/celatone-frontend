@@ -16,7 +16,8 @@ interface ExplorerLinkProps extends BoxProps {
   type?: "tx_hash" | "contract_address" | "user_address";
   canCopyWithHover?: boolean;
   copyValue?: string;
-  isTruncate?: boolean;
+  textFormat?: "truncate" | "ellipsis" | "normal";
+  maxWidth?: string;
 }
 
 export const ExplorerLink = ({
@@ -24,7 +25,8 @@ export const ExplorerLink = ({
   type,
   copyValue,
   canCopyWithHover = false,
-  isTruncate = true,
+  textFormat = "truncate",
+  maxWidth = "150px",
   ...componentProps
 }: ExplorerLinkProps) => {
   const { currentChainName } = useWallet();
@@ -68,8 +70,10 @@ export const ExplorerLink = ({
         data-peer
         onClick={(e) => e.stopPropagation()}
         pointerEvents={!hrefLink() ? "none" : "auto"}
+        className={textFormat === "ellipsis" ? "ellipsis" : ""}
+        maxW={maxWidth}
       >
-        {isTruncate ? truncate(value) : value}
+        {textFormat === "truncate" ? truncate(value) : value}
       </Link>
       <Box
         alignItems="center"
