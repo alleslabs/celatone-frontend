@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 import type { FC } from "react";
 import { useContext } from "react";
 
-import { PaginatorContext } from "lib/providers/PaginatorProvider";
+import { PaginatorContext } from "lib/components/pagination/PaginatorProvider";
 
 export const Next: FC<ButtonProps> = ({ children, ...buttonProps }) => {
   const { actions, state } = useContext(PaginatorContext);

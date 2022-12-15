@@ -3,12 +3,12 @@ import type { FC } from "react";
 import type React from "react";
 
 import { INITIAL_VALUES } from "lib/data/pagination";
-import { PaginatorProvider } from "lib/providers/PaginatorProvider";
 import type { IconType } from "lib/types";
+
+import { PaginatorProvider } from "./PaginatorProvider";
 
 export type PaginatorProps = {
   children?: React.ReactNode;
-
   pagesQuantity?: number;
   onPageChange: (page: number) => void;
   normalStyles?: ButtonProps;
