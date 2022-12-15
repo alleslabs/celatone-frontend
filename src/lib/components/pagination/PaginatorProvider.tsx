@@ -8,10 +8,11 @@ import {
 } from "react";
 import type React from "react";
 import type { FC, SetStateAction, Dispatch } from "react";
+import type { IconType } from "react-icons";
 
-import type { IconType } from "../types";
-import { isDecimalNumber } from "../utils";
-import { INITIAL_VALUES } from "lib/data/pagination";
+import { isDecimalNumber } from "lib/utils";
+
+import { INITIAL_VALUES } from "./paginationData";
 
 export type PaginatorContextValues = {
   state: {
