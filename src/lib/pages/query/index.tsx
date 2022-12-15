@@ -141,13 +141,18 @@ const Query = () => {
         <Flex gap="24px" width="80%">
           <Flex direction="column" width="60%">
             Contract Address
-            <ExplorerLink
-              value={getAddrText(addr)}
-              type={notSelected ? undefined : "contract_address"}
-              canCopy={!notSelected}
-              canCopyWithHover={!notSelected}
-              isTruncate={false}
-            />
+            {!notSelected ? (
+              <ExplorerLink
+                value={getAddrText(addr)}
+                type="contract_address"
+                canCopyWithHover
+                isTruncate={false}
+              />
+            ) : (
+              <Text textColor="text.disabled" variant="body2">
+                Not Selected
+              </Text>
+            )}
           </Flex>
           <Flex direction="column">
             Contract Name

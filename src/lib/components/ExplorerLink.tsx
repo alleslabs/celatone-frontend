@@ -14,7 +14,6 @@ import { Copier } from "./copier";
 interface ExplorerLinkProps extends BoxProps {
   value: string;
   type?: "tx_hash" | "contract_address" | "user_address";
-  canCopy?: boolean;
   canCopyWithHover?: boolean;
   copyValue?: string;
   isTruncate?: boolean;
@@ -24,7 +23,6 @@ export const ExplorerLink = ({
   value,
   type,
   copyValue,
-  canCopy = true,
   canCopyWithHover = false,
   isTruncate = true,
   ...componentProps
@@ -75,7 +73,7 @@ export const ExplorerLink = ({
       </Link>
       <Box
         alignItems="center"
-        display={canCopyWithHover || !canCopy ? "none" : undefined}
+        display={canCopyWithHover ? "none" : undefined}
         _groupHover={canCopyWithHover ? { display: "flex" } : undefined}
       >
         <Copier value={copyValue || value} ml="8px" />
