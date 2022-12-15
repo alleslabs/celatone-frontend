@@ -52,7 +52,11 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
           <Text variant="body2" color="text.main" fontWeight="600">
             Contract Address
           </Text>
-          <ExplorerLink value={contractInfo.address} type="contract_address" />
+          <ExplorerLink
+            fontWeight="400"
+            value={contractInfo.address}
+            type="contract_address"
+          />
         </Flex>
       }
       trigger={<MenuItem {...menuItemProps} />}

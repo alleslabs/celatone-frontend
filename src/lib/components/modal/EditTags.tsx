@@ -47,12 +47,11 @@ export function EditTags({ contractInfo }: EditTagsProps) {
             <Text variant="body2" color="text.main">
               {contractInfo.name ?? contractInfo.label}
             </Text>
-            <Flex alignItems="center" gap="16px">
-              <ExplorerLink
-                value={contractInfo.address}
-                type="contract_address"
-              />
-            </Flex>
+            <ExplorerLink
+              fontWeight="400"
+              value={contractInfo.address}
+              type="contract_address"
+            />
           </Flex>
         </Flex>
       }
