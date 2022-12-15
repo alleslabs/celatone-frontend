@@ -1,4 +1,5 @@
 import { useWallet } from "@cosmos-kit/react";
+import big from "big.js";
 import { GraphQLClient } from "graphql-request";
 import type { ReactNode } from "react";
 import { useEffect, useContext, useMemo, createContext } from "react";
@@ -13,19 +14,19 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_ADDRESS, getExplorerUserAddressUrl } from "lib/data";
 import { DEFAULT_CHAIN } from "lib/env";
 import { useCodeStore, useContractStore } from "lib/hooks";
-import type { ChainGasPrice, Gas } from "lib/types";
+import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
 
 interface AppProviderProps<Constants extends AppConstants> {
   children: ReactNode;
 
-  fallbackGasRegistry: Record<string, ChainGasPrice>;
+  fallbackGasPrice: Record<string, ChainGasPrice>;
 
   constants: Constants;
 }
 
 interface AppContextInterface<Constants extends AppConstants = AppConstants> {
-  chainGas: ChainGasPrice;
+  chainGasPrice: ChainGasPrice;
   constants: Constants;
   explorerLink: {
     contractAddr: string;
@@ -37,7 +38,7 @@ interface AppContextInterface<Constants extends AppConstants = AppConstants> {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppContext = createContext<AppContextInterface<any>>({
-  chainGas: { denom: "", gasPrice: 0 as Gas },
+  chainGasPrice: { denom: "", gasPrice: "0" as U<Token> },
   constants: {},
   explorerLink: {
     contractAddr: "",
@@ -49,26 +50,27 @@ const AppContext = createContext<AppContextInterface<any>>({
 
 export const AppProvider = <Constants extends AppConstants>({
   children,
-  fallbackGasRegistry,
+  fallbackGasPrice,
   constants,
 }: AppProviderProps<Constants>) => {
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
   const { setCodeUserKey } = useCodeStore();
   const { setContractUserKey } = useContractStore();
 
-  const chainGas = useMemo(() => {
+  const chainGasPrice = useMemo(() => {
     if (
       !currentChainRecord ||
       !currentChainRecord.chain.fees ||
       !currentChainRecord.chain.fees.fee_tokens[0].average_gas_price
     )
-      return fallbackGasRegistry[currentChainName];
+      return fallbackGasPrice[currentChainName];
     return {
       denom: currentChainRecord.chain.fees?.fee_tokens[0].denom as string,
-      gasPrice: currentChainRecord.chain.fees?.fee_tokens[0]
-        .average_gas_price as Gas<number>,
+      gasPrice: big(
+        currentChainRecord.chain.fees?.fee_tokens[0].average_gas_price ?? "0"
+      ).toFixed() as U<Token>,
     };
-  }, [currentChainName, currentChainRecord, fallbackGasRegistry]);
+  }, [currentChainName, currentChainRecord, fallbackGasPrice]);
 
   const chainBoundStates = useMemo(() => {
     return {
@@ -83,11 +85,11 @@ export const AppProvider = <Constants extends AppConstants>({
 
   const states = useMemo<AppContextInterface<Constants>>(() => {
     return {
-      chainGas,
+      chainGasPrice,
       constants,
       ...chainBoundStates,
     };
-  }, [chainGas, constants, chainBoundStates]);
+  }, [chainGasPrice, constants, chainBoundStates]);
 
   useEffect(() => {
     if (currentChainName) {

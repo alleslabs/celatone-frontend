@@ -10,5 +10,5 @@ export type Token<T = string> = T & NominalType<string>;
 
 export interface ChainGasPrice {
   denom: string;
-  gasPrice: Gas<number>;
+  gasPrice: U<Token>;
 }

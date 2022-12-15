@@ -7,7 +7,7 @@ import type { Gas } from "lib/types";
 import { useCelatoneApp } from "./useCelatoneApp";
 
 export const useFabricateFee = () => {
-  const { constants, chainGas } = useCelatoneApp();
+  const { constants, chainGasPrice } = useCelatoneApp();
 
   return useCallback(
     (estimatedGas: number): StdFee => {
@@ -18,13 +18,13 @@ export const useFabricateFee = () => {
       return {
         amount: [
           {
-            denom: chainGas.denom,
-            amount: big(adjustedGas).mul(chainGas.gasPrice).toFixed(0),
+            denom: chainGasPrice.denom,
+            amount: big(adjustedGas).mul(chainGasPrice.gasPrice).toFixed(0),
           },
         ],
         gas: adjustedGas as Gas<string>,
       };
     },
-    [chainGas, constants.gasAdjustment]
+    [chainGasPrice, constants.gasAdjustment]
   );
 };
