@@ -1,5 +1,5 @@
-import { Icon, Tooltip, useClipboard } from "@chakra-ui/react";
-import { MdOutlineContentCopy } from "react-icons/md";
+import { CopyIcon } from "@chakra-ui/icons";
+import { Tooltip, useClipboard } from "@chakra-ui/react";
 
 interface CopierProps {
   value: string;
@@ -24,18 +24,17 @@ export const Copier = ({ value, ml = "8px" }: CopierProps) => {
       arrowSize={8}
       mb="4px"
     >
-      <span style={{ display: "flex", alignItems: "center", marginLeft: ml }}>
-        <Icon
-          as={MdOutlineContentCopy}
-          fontSize="16px"
-          color="text.dark"
-          cursor="pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            onCopy();
-          }}
-        />
-      </span>
+      <CopyIcon
+        display="flex"
+        boxSize="16px"
+        color="text.dark"
+        cursor="pointer"
+        marginLeft={ml}
+        onClick={(e) => {
+          e.stopPropagation();
+          onCopy();
+        }}
+      />
     </Tooltip>
   );
 };

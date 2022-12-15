@@ -9,7 +9,7 @@ import {
 } from "lib/data";
 import { truncate } from "lib/utils";
 
-import { Copier } from "./copier";
+import { Copier } from "./Copier";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
