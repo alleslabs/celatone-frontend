@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 import type { FC } from "react";
 import { useContext } from "react";
 
-import { PaginatorContext } from "lib/components/pagination/PaginatorProvider";
+import { PaginatorContext } from "./PaginatorProvider";
 
 export const Next: FC<ButtonProps> = ({ children, ...buttonProps }) => {
   const { actions, state } = useContext(PaginatorContext);
@@ -20,8 +20,8 @@ export const Next: FC<ButtonProps> = ({ children, ...buttonProps }) => {
     <Button
       aria-label="Next page"
       isDisabled={isLast || isDisabled}
-      onClick={handleNextClick}
       pointerEvents={isDisabled ? "none" : "auto"}
+      onClick={handleNextClick}
       {...(isLast || isDisabled ? { "aria-disabled": true } : {})}
       {...buttonProps}
     >

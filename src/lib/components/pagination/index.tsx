@@ -1,5 +1,6 @@
 import { Flex, Icon, Select, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
+import { useMemo } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { TiArrowSortedDown } from "react-icons/ti";
 
@@ -8,28 +9,38 @@ import { Paginator } from "./Paginator";
 import { Previous } from "./Previous";
 
 interface PaginationProps {
-  onPageChange: (pageNumber: number) => void;
-  handlePageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   currentPage: number;
   pagesQuantity: number;
   offset: number;
   totalData?: number;
   pageSize: number;
+  onPageChange: (pageNumber: number) => void;
+  onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 export const Pagination = ({
-  onPageChange,
   currentPage,
   pagesQuantity,
-  handlePageSizeChange,
   offset,
   totalData,
   pageSize,
+  onPageChange,
+  onPageSizeChange,
 }: PaginationProps) => {
+  const { offsetData, lastDataInPage } = useMemo(() => {
+    return {
+      offsetData: offset + 1,
+      lastDataInPage:
+        currentPage !== pagesQuantity && (totalData || totalData === 0)
+          ? pageSize * currentPage
+          : totalData,
+    };
+  }, [currentPage, offset, pageSize, pagesQuantity, totalData]);
+
   return (
     <Paginator
-      onPageChange={onPageChange}
       currentPage={currentPage}
       pagesQuantity={pagesQuantity}
+      onPageChange={onPageChange}
     >
       <Flex align="center" justify="center" w="full" p={4}>
         <Text variant="body3" color="text.dark">
@@ -42,8 +53,8 @@ export const Pagination = ({
           focusBorderColor="none"
           icon={<TiArrowSortedDown />}
           iconSize="15px"
-          onChange={handlePageSizeChange}
           cursor="pointer"
+          onChange={onPageSizeChange}
         >
           <option value="10">10</option>
           <option value="20">20</option>
@@ -51,11 +62,7 @@ export const Pagination = ({
           <option value="100">100</option>
         </Select>
         <Text variant="body3" mx="30px">
-          {offset + 1} -{" "}
-          {currentPage !== pagesQuantity && totalData
-            ? pageSize * currentPage
-            : totalData}{" "}
-          of {totalData}
+          {`${offsetData} - ${lastDataInPage} of ${totalData}`}
         </Text>
         <Previous variant="unstyled" display="flex">
           <Icon as={MdKeyboardArrowLeft} w={5} h={5} color="gray.600" />

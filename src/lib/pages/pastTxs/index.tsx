@@ -143,7 +143,7 @@ const PastTxs = () => {
   };
 
   // Page change
-  const handlePageChange = useCallback(
+  const onPageChange = useCallback(
     (nextPage: number) => {
       setCurrentPage(nextPage);
     },
@@ -151,7 +151,7 @@ const PastTxs = () => {
   );
 
   // Page Sizing
-  const handlePageSizeChange = useCallback(
+  const onPageSizeChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
       const size = Number(e.target.value);
       setPageSize(size);
@@ -248,13 +248,13 @@ const PastTxs = () => {
           </Table>
         </TableContainer>
         <Pagination
-          onPageChange={handlePageChange}
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
-          handlePageSizeChange={handlePageSizeChange}
           offset={offset}
           totalData={totalData}
           pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
         />
       </>
     );
@@ -264,8 +264,8 @@ const PastTxs = () => {
     data?.length,
     displayRow,
     executeButton,
-    handlePageChange,
-    handlePageSizeChange,
+    onPageChange,
+    onPageSizeChange,
     ibcButton,
     input,
     instantiateButton,
