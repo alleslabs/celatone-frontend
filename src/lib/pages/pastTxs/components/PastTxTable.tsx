@@ -160,7 +160,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
 
           return (
             <MultipleMsg
-              type="Fail to instantiate"
+              type="Failed to instantiate"
               length={instantiateMsgs.length}
               text="contracts"
             />
@@ -189,9 +189,9 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             text3: `from Code ID ${instantiateMsgs[0].codeId.toString()}`,
           }
         : {
-            type: "Fail",
+            type: "Failed",
             text1: "to instantiate contract from Code ID",
-            link2: instantiateMsgs[0].codeId.toString(),
+            text3: instantiateMsgs[0].codeId.toString(),
           };
       return <SingleMsg {...singleMsgProps} />;
     },
@@ -476,7 +476,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             <ExplorerLink
               value={element.hash.substring(2)}
               type="tx_hash"
-              hover
+              canCopyWithHover
             />
           </Flex>
         </Td>

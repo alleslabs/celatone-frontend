@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
@@ -19,7 +20,6 @@ import { queryContract } from "lib/services/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import {
-  truncate,
   getFirstQueryParam,
   decode,
   jsonPrettify,
@@ -28,12 +28,6 @@ import {
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
-
-const getAddrText = (contractAddress: string, isMobile: boolean) => {
-  if (contractAddress.length === 0) return "Not Selected";
-  if (isMobile) return truncate(contractAddress);
-  return contractAddress;
-};
 
 const Execute = () => {
   const router = useRouter();
@@ -156,22 +150,28 @@ const Execute = () => {
         justify="space-between"
         align="center"
       >
-        <Flex gap="24px">
-          <Flex color="text.main" direction="column">
+        <Flex gap="24px" width="80%">
+          <Flex direction="column" width="60%">
             Contract Address
-            <Text
-              mt={1}
-              color={notSelected ? "gray.500" : "primary.main"}
-              variant="body2"
-            >
-              {getAddrText(contractAddress, isMobile)}
-            </Text>
+            {!notSelected ? (
+              <ExplorerLink
+                value={contractAddress}
+                type="contract_address"
+                canCopyWithHover
+                // TODO - Revisit not necessary if disable UI for mobile is implemented
+                textFormat={isMobile ? "truncate" : "normal"}
+                maxWidth="none"
+              />
+            ) : (
+              <Text textColor="text.disabled" variant="body2">
+                Not Selected
+              </Text>
+            )}
           </Flex>
-          <Flex color="text.main" direction="column">
+          <Flex direction="column">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
-              mt={1}
               variant="body2"
             >
               {notSelected ? "Not Selected" : contractName}
