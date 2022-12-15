@@ -24,7 +24,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import type { CodeInfo } from "lib/types";
 
-import { CodeDescription } from "./CodeDescription";
+import { CodeDescriptionCell } from "./CodeDescriptionCell";
 
 type TableType = "stored" | "saved";
 interface CodesTableProps {
@@ -137,7 +137,7 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
         <ExplorerLink value={code.id.toString()} canCopyWithHover />
       </Td>
       <Td width="45%">
-        <CodeDescription codeId={code.id} description={code.description} />
+        <CodeDescriptionCell codeId={code.id} description={code.description} />
       </Td>
       <Td width="10%" textAlign="center">
         {code.contracts}

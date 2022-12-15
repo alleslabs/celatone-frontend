@@ -31,8 +31,8 @@ import {
 import type { ContractInfo } from "lib/stores/contract";
 import type { Option } from "lib/types";
 
-import { ContractName } from "./table/ContractNameCell";
-import { Tags } from "./table/TagsCell";
+import { ContractNameCell } from "./table/ContractNameCell";
+import { TagsCell } from "./table/TagsCell";
 
 const iconProps = {
   boxSize: "4",
@@ -44,6 +44,7 @@ interface ContractListProps {
   contracts: ContractInfo[];
   isContractRemovable?: Option;
 }
+
 export const ContractList = ({
   contracts = [],
   isContractRemovable,
@@ -89,10 +90,10 @@ export const ContractList = ({
                 />
               </Td>
               <Td>
-                <ContractName contractInfo={item} />
+                <ContractNameCell contract={item} />
               </Td>
               <Td>
-                <Tags contractInfo={item} />
+                <TagsCell contractInfo={item} />
               </Td>
               {/* Instantiator */}
               {/* TODO: check if address match wallet address => show 'Me' instead */}

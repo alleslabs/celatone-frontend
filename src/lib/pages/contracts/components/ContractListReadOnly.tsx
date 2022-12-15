@@ -12,8 +12,8 @@ import {
 import type { ContractInfo } from "lib/stores/contract";
 import { truncate } from "lib/utils";
 
-import { ContractName } from "./table/ContractNameCell";
-import { Tags } from "./table/TagsCell";
+import { ContractNameCell } from "./table/ContractNameCell";
+import { TagsCell } from "./table/TagsCell";
 
 interface ContractListReadOnlyProps {
   contracts: ContractInfo[];
@@ -49,10 +49,10 @@ export const ContractListReadOnly = ({
                 <Text variant="body2">{truncate(item.address)}</Text>
               </Td>
               <Td width="40%">
-                <ContractName contractInfo={item} isReadOnly />
+                <ContractNameCell contract={item} isReadOnly />
               </Td>
               <Td width="30%">
-                <Tags contractInfo={item} isReadOnly />
+                <TagsCell contractInfo={item} isReadOnly />
               </Td>
               {/* Instantiator */}
               {/* TODO: make AddressRender later, check if address match wallet address => show 'Me' instead */}
