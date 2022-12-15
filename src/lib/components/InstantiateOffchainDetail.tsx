@@ -2,10 +2,9 @@ import { Text, Flex, Heading, Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import type { FormStatus, Option } from "lib/components/forms";
+import type { Option } from "lib/components/forms";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import {
   getMaxContractDescriptionLengthError,
@@ -40,49 +39,26 @@ export const InstantiateOffChainDetail = observer(
     const { updateContractInfo, getAllTags } = useContractStore();
     const userKey = useUserKey();
 
-    const { control, setValue, watch, handleSubmit } = useForm({
+    const {
+      control,
+      setValue,
+      watch,
+      handleSubmit,
+      formState: { errors },
+    } = useForm({
       defaultValues: {
         name: "",
         description: "",
         tags: [] as string[],
         contractLists: [] as Option[],
       },
+      mode: "all",
     });
+
     const nameState = watch("name");
     const descriptionState = watch("description");
     const tagsState = watch("tags");
     const contractListState = watch("contractLists");
-
-    const [nameStatus, setNameStatus] = useState<FormStatus>({ state: "init" });
-    const [descriptionStatus, setDescriptionStatus] = useState<FormStatus>({
-      state: "init",
-    });
-
-    useEffect(() => {
-      const trimedName = nameState.trim();
-      if (trimedName.length === 0) {
-        setNameStatus({ state: "init" });
-      } else if (trimedName.length > MAX_CONTRACT_NAME_LENGTH)
-        setNameStatus({
-          state: "error",
-          message: getMaxContractNameLengthError(trimedName.length),
-        });
-      else setNameStatus({ state: "success" });
-    }, [nameState]);
-
-    useEffect(() => {
-      const trimedDescription = descriptionState.trim();
-      if (trimedDescription.length === 0) {
-        setDescriptionStatus({ state: "init" });
-      } else if (trimedDescription.length > MAX_CONTRACT_DESCRIPTION_LENGTH)
-        setDescriptionStatus({
-          state: "error",
-          message: getMaxContractDescriptionLengthError(
-            trimedDescription.length
-          ),
-        });
-      else setDescriptionStatus({ state: "success" });
-    }, [descriptionState]);
 
     const saveContract = () => {
       handleSubmit((data) => {
@@ -119,7 +95,10 @@ export const InstantiateOffChainDetail = observer(
           label="Name"
           helperText="Set name for your contract"
           variant="floating"
-          status={nameStatus}
+          rules={{
+            maxLength: MAX_CONTRACT_NAME_LENGTH,
+          }}
+          error={errors.name && getMaxContractNameLengthError(nameState.length)}
         />
         <ControllerTextarea
           name="description"
@@ -127,7 +106,13 @@ export const InstantiateOffChainDetail = observer(
           label="Description"
           helperText="Help understanding what this contract do and how it works"
           variant="floating"
-          status={descriptionStatus}
+          rules={{
+            maxLength: MAX_CONTRACT_DESCRIPTION_LENGTH,
+          }}
+          error={
+            errors.description &&
+            getMaxContractDescriptionLengthError(descriptionState.length)
+          }
         />
         <TagSelection
           options={getAllTags(userKey)}
@@ -154,10 +139,7 @@ export const InstantiateOffChainDetail = observer(
             <Button
               w="128px"
               onClick={saveContract}
-              isDisabled={
-                nameStatus.state === "error" ||
-                descriptionStatus.state === "error"
-              }
+              isDisabled={!!Object.keys(errors).length}
             >
               Save
             </Button>
