@@ -16,7 +16,7 @@ import App from "next/app";
 import Head from "next/head";
 
 import defaultSEOConfig from "../../next-seo.config";
-import { CELATONE_CONSTANTS, FALLBACK_GAS_PRICES } from "env";
+import { CELATONE_CONSTANTS, FALLBACK_GAS_PRICE } from "env";
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { TxBroadcastProvider } from "lib/app-provider/tx/tx-broadcast";
 import { Chakra } from "lib/components/Chakra";
@@ -56,7 +56,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         >
           <StoreProvider>
             <AppProvider
-              fallbackGasPrices={FALLBACK_GAS_PRICES}
+              fallbackGasPrice={FALLBACK_GAS_PRICE}
               constants={CELATONE_CONSTANTS}
             >
               <TxBroadcastProvider>

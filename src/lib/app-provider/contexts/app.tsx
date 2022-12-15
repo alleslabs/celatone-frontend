@@ -20,7 +20,7 @@ import { formatUserKey } from "lib/utils";
 interface AppProviderProps<Constants extends AppConstants> {
   children: ReactNode;
 
-  fallbackGasPrices: Record<string, ChainGasPrice>;
+  fallbackGasPrice: Record<string, ChainGasPrice>;
 
   constants: Constants;
 }
@@ -50,7 +50,7 @@ const AppContext = createContext<AppContextInterface<any>>({
 
 export const AppProvider = <Constants extends AppConstants>({
   children,
-  fallbackGasPrices,
+  fallbackGasPrice,
   constants,
 }: AppProviderProps<Constants>) => {
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
@@ -63,14 +63,14 @@ export const AppProvider = <Constants extends AppConstants>({
       !currentChainRecord.chain.fees ||
       !currentChainRecord.chain.fees.fee_tokens[0].average_gas_price
     )
-      return fallbackGasPrices[currentChainName];
+      return fallbackGasPrice[currentChainName];
     return {
       denom: currentChainRecord.chain.fees?.fee_tokens[0].denom as string,
       gasPrice: big(
         currentChainRecord.chain.fees?.fee_tokens[0].average_gas_price ?? "0"
       ).toFixed() as U<Token>,
     };
-  }, [currentChainName, currentChainRecord, fallbackGasPrices]);
+  }, [currentChainName, currentChainRecord, fallbackGasPrice]);
 
   const chainBoundStates = useMemo(() => {
     return {
