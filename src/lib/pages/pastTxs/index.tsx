@@ -41,7 +41,7 @@ const PastTxs = () => {
   const [sendButton, setSendButton] = useState(false);
 
   const [data, setData] = useState<Transaction[]>();
-  const [totalData, setTotalData] = useState<number>();
+  const [totalData, setTotalData] = useState<number>(0);
 
   const {
     pagesQuantity,

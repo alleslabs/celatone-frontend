@@ -12,7 +12,7 @@ interface PaginationProps {
   currentPage: number;
   pagesQuantity: number;
   offset: number;
-  totalData?: number;
+  totalData: number;
   pageSize: number;
   onPageChange: (pageNumber: number) => void;
   onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -30,9 +30,7 @@ export const Pagination = ({
     return {
       offsetData: offset + 1,
       lastDataInPage:
-        currentPage !== pagesQuantity && (totalData || totalData === 0)
-          ? pageSize * currentPage
-          : totalData,
+        currentPage !== pagesQuantity ? pageSize * currentPage : totalData,
     };
   }, [currentPage, offset, pageSize, pagesQuantity, totalData]);
 
