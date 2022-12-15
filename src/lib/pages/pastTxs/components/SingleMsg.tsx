@@ -71,13 +71,23 @@ export const SingleMsg = ({
       {link1 && (
         <ExplorerLink
           value={link1}
-          copy={link1Copy}
+          copyValue={link1Copy}
           type={linkType(link1Copy || link1)}
-          hover
+          canCopyWithHover
+          // Should ellipse when it is not tx hash, contract addr, user addr
+          textFormat={linkType(link1) ? "truncate" : "ellipsis"}
         />
       )}
       {/* Text3 */} {text3} {/* Link with copy */}
-      {link2 && <ExplorerLink value={link2} type={linkType(link2)} hover />}
+      {link2 && (
+        <ExplorerLink
+          value={link2}
+          type={linkType(link2)}
+          canCopyWithHover
+          // Should ellipse when it is not tx hash, contract addr, user addr
+          textFormat={linkType(link2) ? "truncate" : "ellipsis"}
+        />
+      )}{" "}
     </Flex>
   );
 };
