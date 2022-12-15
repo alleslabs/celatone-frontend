@@ -13,9 +13,7 @@ import {
   MenuList,
   MenuButton,
   MenuDivider,
-  Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
 import {
   MdMoreVert,
@@ -24,7 +22,7 @@ import {
   MdDelete,
 } from "react-icons/md";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
   EditContract,
@@ -35,7 +33,6 @@ import type { Option } from "lib/types";
 
 import { ContractName } from "./table/ContractNameCell";
 import { Tags } from "./table/TagsCell";
-import { TextLink } from "./table/TextLinkCell";
 
 const iconProps = {
   boxSize: "4",
@@ -51,12 +48,9 @@ export const ContractListTable = ({
   contracts = [],
   isContractRemovable,
 }: ContractListTableProps) => {
-  const { explorerLink } = useCelatoneApp();
-  const { address } = useWallet();
-
   return (
     <TableContainer w="full">
-      <Table variant="simple" sx={{ tableLayout: "auto" }}>
+      <Table variant="simple">
         <Thead>
           <Tr
             sx={{
@@ -64,9 +58,9 @@ export const ContractListTable = ({
             }}
           >
             <Th width="15%">Contract Address</Th>
-            <Th width="30%">Contract Name</Th>
+            <Th width="25%">Contract Name</Th>
             <Th width="25%">Tags</Th>
-            <Th width="20%">Instantiator</Th>
+            <Th width="25%">Instantiator</Th>
             <Th width="10%" />
           </Tr>
         </Thead>
@@ -88,10 +82,10 @@ export const ContractListTable = ({
               }}
             >
               <Td>
-                <TextLink
+                <ExplorerLink
                   value={item.address}
-                  url={`${explorerLink.contractAddr}/${item.address}`}
-                  isTruncate
+                  type="contract_address"
+                  canCopyWithHover
                 />
               </Td>
               <Td>
@@ -102,18 +96,11 @@ export const ContractListTable = ({
               </Td>
               {/* Instantiator */}
               <Td>
-                {/* TODO: use AddressRender */}
-                {address === item.instantiator ? (
-                  <Text variant="body2" color="primary.main">
-                    Me
-                  </Text>
-                ) : (
-                  <TextLink
-                    value={item.instantiator}
-                    url={`${explorerLink.address}/${item.instantiator}`}
-                    isTruncate
-                  />
-                )}
+                <ExplorerLink
+                  value={item.instantiator}
+                  type="user_address"
+                  canCopyWithHover
+                />
               </Td>
               <Td>
                 <Flex gap={3} justifyContent="flex-end">

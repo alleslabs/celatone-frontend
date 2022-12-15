@@ -9,22 +9,24 @@ import {
 } from "lib/data";
 import { truncate } from "lib/utils";
 
-import { Copier } from "./copier";
+import { Copier } from "./Copier";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
   type?: "tx_hash" | "contract_address" | "user_address";
-  isTruncate?: boolean;
-  isHover?: boolean;
-  copy?: string;
+  canCopyWithHover?: boolean;
+  copyValue?: string;
+  textFormat?: "truncate" | "ellipsis" | "normal";
+  maxWidth?: string;
 }
 
 export const ExplorerLink = ({
   value,
   type,
-  isTruncate = true,
-  isHover = false,
-  copy,
+  copyValue,
+  canCopyWithHover = false,
+  textFormat = "truncate",
+  maxWidth = "150px",
   ...componentProps
 }: ExplorerLinkProps) => {
   const { currentChainName } = useWallet();
@@ -43,10 +45,14 @@ export const ExplorerLink = ({
       break;
   }
 
+  /**
+   * @remarks
+   * The `copyValue` is used in case where the value displayed is not the same as the copy value
+   */
   const hrefLink = () => {
     if (explorerLink) {
-      if (copy) {
-        return `${explorerLink}/${copy}`;
+      if (copyValue) {
+        return `${explorerLink}/${copyValue}`;
       }
       return `${explorerLink}/${value}`;
     }
@@ -61,21 +67,25 @@ export const ExplorerLink = ({
       {...componentProps}
     >
       <Link
+        fontWeight="400"
         href={hrefLink()}
         target="_blank"
         rel="noopener noreferrer"
         color="primary.main"
         data-peer
         onClick={(e) => e.stopPropagation()}
+        pointerEvents={!hrefLink() ? "none" : "auto"}
+        className={textFormat === "ellipsis" ? "ellipsis" : undefined}
+        maxW={maxWidth}
       >
-        {isTruncate ? truncate(value) : value}
+        {textFormat === "truncate" ? truncate(value) : value}
       </Link>
       <Box
         alignItems="center"
-        display={isHover ? "none" : undefined}
-        _groupHover={isHover ? { display: "flex" } : undefined}
+        display={canCopyWithHover ? "none" : undefined}
+        _groupHover={canCopyWithHover ? { display: "flex" } : undefined}
       >
-        <Copier value={copy || value} ml="8px" />
+        <Copier value={copyValue || value} ml="8px" />
       </Box>
     </Box>
   );

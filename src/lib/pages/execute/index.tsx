@@ -144,33 +144,28 @@ const Execute = () => {
         justify="space-between"
         align="center"
       >
-        <Flex flex={1}>
-          <Flex
-            color="text.main"
-            direction="column"
-            flex={notSelected ? 0.15 : 0.6}
-          >
+        <Flex gap="24px" width="80%">
+          <Flex direction="column" width="60%">
             Contract Address
-            {notSelected ? (
-              <Text mt={1} color="text.disabled" variant="body2">
-                Not Selected
-              </Text>
-            ) : (
+            {!notSelected ? (
               <ExplorerLink
                 value={contractAddress}
                 type="contract_address"
-                isTruncate={isMobile}
-                fontSize={14}
-                mt={1}
-                isHover
+                canCopyWithHover
+                // TODO - Revisit not necessary if disable UI for mobile is implemented
+                textFormat={isMobile ? "truncate" : "normal"}
+                maxWidth="none"
               />
+            ) : (
+              <Text textColor="text.disabled" variant="body2">
+                Not Selected
+              </Text>
             )}
           </Flex>
-          <Flex color="text.main" direction="column">
+          <Flex direction="column">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
-              mt={1}
               variant="body2"
             >
               {notSelected ? "Not Selected" : contractName}

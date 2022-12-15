@@ -68,5 +68,5 @@ export const resendTx = ({
         actionVariant: "resend",
       } as TxResultRendering;
     }
-  )().pipe(catchTxError(fee));
+  )().pipe(catchTxError());
 };

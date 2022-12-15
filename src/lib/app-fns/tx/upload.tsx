@@ -8,7 +8,6 @@ import { pipe } from "@rx-stream/pipe";
 import { MdCloudUpload } from "react-icons/md";
 import type { Observable } from "rxjs";
 
-import { Copier } from "lib/components/copier";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxStreamPhase } from "lib/types";
 import type { TxResultRendering } from "lib/types";
@@ -55,8 +54,7 @@ export const uploadContractTx = ({
             value: txInfo.codeId,
             html: (
               <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <p>{txInfo.codeId}</p>
-                <Copier value={txInfo.codeId.toString()} ml="8px" />
+                <ExplorerLink value={txInfo.codeId.toString()} />
               </div>
             ),
           },
@@ -93,5 +91,5 @@ export const uploadContractTx = ({
         actionVariant: "upload",
       } as TxResultRendering;
     }
-  )().pipe(catchTxError(fee));
+  )().pipe(catchTxError());
 };

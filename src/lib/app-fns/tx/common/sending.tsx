@@ -13,7 +13,7 @@ export const sendingTx = (fee: StdFee) => {
       phase: TxStreamPhase.BROADCAST,
       receipts: [
         {
-          title: "Tx Fee",
+          title: "Estimated Tx Fee",
           value: formatStdFee(fee),
         },
       ],
