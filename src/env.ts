@@ -2,7 +2,7 @@ import { MsgType } from "lib/types";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import type { CelatoneConstants } from "types";
 
-export const FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
+export const FALLBACK_GAS_PRICES: Record<string, ChainGasPrice> = {
   osmosistestnet: {
     denom: "uosmo",
     gasPrice: "0.025" as U<Token>,
@@ -34,7 +34,7 @@ export const MSG_TYPE_URL = {
 
 export const CELATONE_CONSTANTS: CelatoneConstants = {
   gasAdjustment: 1.6,
-  fallbackGasRegistry: FALLBACK_GAS_PRICE,
+  fallbackGasPrices: FALLBACK_GAS_PRICES,
   endpointRegistry: ENDPOINT_REGISTRY,
   maxFileSize: MAX_FILE_SIZE,
   directoryDefault: DIRECTORY_DEFAULT,
