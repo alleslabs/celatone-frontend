@@ -132,7 +132,7 @@ export const EditableCell = ({
               </Flex>
             </Tooltip>
           )}
-          {!!handleSave && (
+          {!!onSave && (
             <Icon
               opacity={isHover ? 1 : 0}
               as={MdMode}
