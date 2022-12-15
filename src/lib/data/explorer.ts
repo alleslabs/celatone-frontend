@@ -1,3 +1,6 @@
+/**
+ * TODO: Overhaul this later
+ */
 export const explorerMap: Record<string, string> = {
   osmosis: "https://www.mintscan.io/osmosis",
   terra2: "https://finder.terra.money/mainnet",

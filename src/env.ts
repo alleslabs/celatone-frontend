@@ -1,8 +1,8 @@
 import { MsgType } from "lib/types";
-import type { ChainGas, Gas } from "lib/types";
+import type { ChainGasPrice, Gas } from "lib/types";
 import type { CelatoneConstants } from "types";
 
-export const FALLBACK_GAS_REGISTRY: Record<string, ChainGas> = {
+export const FALLBACK_GAS_REGISTRY: Record<string, ChainGasPrice> = {
   osmosistestnet: {
     denom: "uosmo",
     gasPrice: 0.025 as Gas<number>,

@@ -1,8 +1,8 @@
 import type { AppConstants } from "lib/app-provider/types";
-import type { ChainGas, MsgType } from "lib/types";
+import type { ChainGasPrice, MsgType } from "lib/types";
 
 export interface CelatoneConstants extends AppConstants {
-  fallbackGasRegistry: Record<string, ChainGas>;
+  fallbackGasRegistry: Record<string, ChainGasPrice>;
   endpointRegistry: Record<string, string>;
   maxFileSize: number;
   directoryDefault: {

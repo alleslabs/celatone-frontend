@@ -9,22 +9,23 @@ import {
   getExplorerContractAddressUrl,
   getExplorerTxUrl,
 } from "lib/app-fns/explorer";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_ADDRESS, getExplorerUserAddressUrl } from "lib/data";
 import { DEFAULT_CHAIN } from "lib/env";
 import { useCodeStore, useContractStore } from "lib/hooks";
-import type { ChainGas, Gas } from "lib/types";
+import type { ChainGasPrice, Gas } from "lib/types";
 import { formatUserKey } from "lib/utils";
 
 interface AppProviderProps<Constants extends AppConstants> {
   children: ReactNode;
 
-  fallbackGasRegistry: Record<string, ChainGas>;
+  fallbackGasRegistry: Record<string, ChainGasPrice>;
 
   constants: Constants;
 }
 
 interface AppContextInterface<Constants extends AppConstants = AppConstants> {
-  chainGas: ChainGas;
+  chainGas: ChainGasPrice;
   constants: Constants;
   explorerLink: {
     contractAddr: string;
@@ -100,6 +101,8 @@ export const AppProvider = <Constants extends AppConstants>({
     setCurrentChain(DEFAULT_CHAIN);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!currentChainName) return <LoadingOverlay />;
 
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
 };
