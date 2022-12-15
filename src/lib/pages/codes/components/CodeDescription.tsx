@@ -98,6 +98,11 @@ export const CodeDescription = ({
             onChange={handleChange}
             width="full"
             minWidth="300px"
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSave();
+              else if (e.key === "Escape") handleCancel();
+            }}
           />
           <Button size="sm" onClick={handleSave} variant="ghost-gray">
             <Icon as={MdCheck} color="success.main" />
