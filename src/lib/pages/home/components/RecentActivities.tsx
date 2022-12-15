@@ -30,6 +30,7 @@ export const RecentActivities = observer(() => {
               direction="column"
               gap={3}
               minW="360px"
+              cursor="pointer"
               p={6}
               bg="gray.900"
               borderRadius="8px"
@@ -73,6 +74,7 @@ export const RecentActivities = observer(() => {
                 <Text variant="body2" color="text.main">
                   {dayjs(item.timestamp).toNow(true)} ago{" "}
                 </Text>
+                {/* TODO - check address as me */}
                 {item.sender && (
                   <>
                     <Text variant="body2" color="text.main">

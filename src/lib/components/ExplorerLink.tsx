@@ -45,8 +45,11 @@ export const ExplorerLink = ({
       break;
   }
 
+  /**
+   * @remarks
+   * The `copyValue` is used in case where the value displayed is not the same as the copy value
+   */
   const hrefLink = () => {
-    // copyValue is used in case where the value displayed is not the same as the copy value
     if (explorerLink) {
       if (copyValue) {
         return `${explorerLink}/${copyValue}`;
@@ -63,6 +66,7 @@ export const ExplorerLink = ({
       {...componentProps}
     >
       <Link
+        fontWeight="400"
         href={hrefLink()}
         target="_blank"
         rel="noopener noreferrer"
@@ -70,7 +74,7 @@ export const ExplorerLink = ({
         data-peer
         onClick={(e) => e.stopPropagation()}
         pointerEvents={!hrefLink() ? "none" : "auto"}
-        className={textFormat === "ellipsis" ? "ellipsis" : ""}
+        className={textFormat === "ellipsis" ? "ellipsis" : undefined}
         maxW={maxWidth}
       >
         {textFormat === "truncate" ? truncate(value) : value}

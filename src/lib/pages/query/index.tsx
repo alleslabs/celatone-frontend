@@ -9,7 +9,12 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
+import {
+  useContractStore,
+  useEndpoint,
+  useMobile,
+  useUserKey,
+} from "lib/hooks";
 import { queryContract, queryData } from "lib/services/contract";
 import type { RpcQueryError } from "lib/types";
 import {
@@ -21,16 +26,12 @@ import {
 
 import { QueryArea } from "./components/QueryArea";
 
-const getAddrText = (addr: string) => {
-  if (addr.length === 0) return "Not Selected";
-  return addr;
-};
-
 const Query = () => {
   const router = useRouter();
   const { getContractInfo } = useContractStore();
   const userKey = useUserKey();
   const endpoint = useEndpoint();
+  const isMobile = useMobile();
 
   const [addr, setAddr] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -143,10 +144,11 @@ const Query = () => {
             Contract Address
             {!notSelected ? (
               <ExplorerLink
-                value={getAddrText(addr)}
+                value={addr}
                 type="contract_address"
                 canCopyWithHover
-                textFormat="normal"
+                // TODO - Revisit not necessary if disable UI for mobile is implemented
+                textFormat={isMobile ? "truncate" : "normal"}
                 maxWidth="none"
               />
             ) : (

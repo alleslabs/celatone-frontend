@@ -20,7 +20,6 @@ import { queryContract } from "lib/services/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import {
-  truncate,
   getFirstQueryParam,
   decode,
   jsonPrettify,
@@ -29,12 +28,6 @@ import {
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
-
-const getAddrText = (contractAddress: string, isMobile: boolean) => {
-  if (contractAddress.length === 0) return "Not Selected";
-  if (isMobile) return truncate(contractAddress);
-  return contractAddress;
-};
 
 const Execute = () => {
   const router = useRouter();
@@ -162,10 +155,11 @@ const Execute = () => {
             Contract Address
             {!notSelected ? (
               <ExplorerLink
-                value={getAddrText(contractAddress, isMobile)}
+                value={contractAddress}
                 type="contract_address"
                 canCopyWithHover
-                textFormat="normal"
+                // TODO - Revisit not necessary if disable UI for mobile is implemented
+                textFormat={isMobile ? "truncate" : "normal"}
                 maxWidth="none"
               />
             ) : (

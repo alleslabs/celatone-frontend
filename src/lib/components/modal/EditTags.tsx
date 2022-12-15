@@ -48,7 +48,6 @@ export function EditTags({ contractInfo }: EditTagsProps) {
               {contractInfo.name ?? contractInfo.label}
             </Text>
             <ExplorerLink
-              fontWeight="400"
               value={contractInfo.address}
               type="contract_address"
             />
