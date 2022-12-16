@@ -253,16 +253,11 @@ export class ContractStore {
         ? description.trim()
         : undefined;
     if (tags !== undefined) {
-      this.updateContractInfoTags(
-        userKey,
-        contractAddr,
-        contractInfo.tags ?? [],
-        tags
-      );
+      this.updateAllTags(userKey, contractAddr, contractInfo.tags ?? [], tags);
       contractInfo.tags = tags.length ? tags : undefined;
     }
     if (lists !== undefined) {
-      this.updateContractInfoLists(
+      this.updateContractInAllLists(
         userKey,
         contractAddr,
         contractInfo.lists ?? [],
@@ -277,7 +272,7 @@ export class ContractStore {
     };
   }
 
-  private updateContractInfoTags(
+  private updateAllTags(
     userKey: string,
     contractAddr: string,
     oldTags: string[],
@@ -308,7 +303,7 @@ export class ContractStore {
     this.allTags[userKey] = tags;
   }
 
-  private updateContractInfoLists(
+  private updateContractInAllLists(
     userKey: string,
     contractAddr: string,
     oldLists: Option[],

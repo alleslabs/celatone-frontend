@@ -48,6 +48,7 @@ export const EditableCell = ({
     onSave?.(inputValue);
   };
 
+  // TODO: reconsider 20
   const showName = isHoverText && (inputValue ?? "").length > 20;
   return (
     <Flex
@@ -120,14 +121,13 @@ export const EditableCell = ({
           </Flex>
           {!!tooltip && (
             <Tooltip hasArrow label={tooltip} bg="primary.dark" placement="top">
-              <Flex alignItems="center">
-                <Icon
-                  as={MdInfo}
-                  color="gray.600"
-                  boxSize="4"
-                  cursor="pointer"
-                />
-              </Flex>
+              <Icon
+                as={MdInfo}
+                alignItems="center"
+                color="gray.600"
+                boxSize="4"
+                cursor="pointer"
+              />
             </Tooltip>
           )}
           {!!onSave && (
