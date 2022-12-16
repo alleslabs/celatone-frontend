@@ -3,9 +3,10 @@ import { MenuItem, useToast, Icon } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
-import type { FormStatus } from "lib/components/forms/TextInput";
+import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
+import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useContractStore, useUserKey } from "lib/hooks";
 import type { Option } from "lib/types";
 import { formatSlugName, shortenName } from "lib/utils";
@@ -21,14 +22,15 @@ export function EditList({ list, menuItemProps }: ModalProps) {
   const [listName, setListName] = useState<string>(list.label);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
 
+  // TODO: apply use-react-form later
   useEffect(() => {
     const trimedListName = listName.trim();
     if (trimedListName.length === 0) {
       setStatus({ state: "init" });
-    } else if (trimedListName.length > 50)
+    } else if (trimedListName.length > MAX_LIST_NAME_LENGTH)
       setStatus({
         state: "error",
-        message: `List name is too long. (${trimedListName.length}/50)`,
+        message: getMaxListNameLengthError(trimedListName.length),
       });
     else if (
       formatSlugName(listName) !== list.value &&

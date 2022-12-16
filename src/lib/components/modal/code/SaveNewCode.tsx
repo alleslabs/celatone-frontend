@@ -4,12 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { MdBookmark, MdCheckCircle } from "react-icons/md";
 
-import { NumberInput } from "lib/components/forms/NumberInput";
-import { TextInput } from "lib/components/forms/TextInput";
-import type { FormStatus } from "lib/components/forms/TextInput";
+import type { FormStatus } from "lib/components/forms";
+import { TextInput, NumberInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
+import {
+  getMaxCodeDescriptionLengthError,
+  MAX_CODE_DESCRIPTION_LENGTH,
+} from "lib/data";
 import { useCodeStore, useEndpoint, useUserKey } from "lib/hooks";
-import { getCodeIDInfo } from "lib/services/contract";
+import { getCodeIdInfo } from "lib/services/contract";
 
 interface ModalProps {
   buttonProps: ButtonProps;
@@ -17,8 +20,8 @@ interface ModalProps {
 
 export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   /* STATE */
-  const [codeID, setCodeID] = useState("");
-  const [codeIDStatus, setCodeIDStatus] = useState<FormStatus>({
+  const [codeId, setCodeId] = useState("");
+  const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
     state: "init",
   });
   const [uploader, setUploader] = useState("No Description");
@@ -26,28 +29,44 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     state: "init",
   });
   const [description, setDescription] = useState("");
+  const [descriptionStatus, setDescriptionStatus] = useState<FormStatus>({
+    state: "init",
+  });
+
+  // TODO: apply use-react-form later
+  useEffect(() => {
+    const trimedDescription = description.trim();
+    if (trimedDescription.length === 0) {
+      setDescriptionStatus({ state: "init" });
+    } else if (trimedDescription.length > MAX_CODE_DESCRIPTION_LENGTH)
+      setDescriptionStatus({
+        state: "error",
+        message: getMaxCodeDescriptionLengthError(trimedDescription.length),
+      });
+    else setDescriptionStatus({ state: "success" });
+  }, [description]);
 
   /* DEPENDENCY */
   const toast = useToast();
   const userKey = useUserKey();
-  const { isCodeIDExist, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
+  const { isCodeIdExist, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
   const endpoint = useEndpoint();
 
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", endpoint, codeID],
-    async () => getCodeIDInfo(endpoint, Number(codeID)),
+    ["query", endpoint, codeId],
+    async () => getCodeIdInfo(endpoint, Number(codeId)),
     {
       enabled: false,
       retry: false,
       cacheTime: 0,
       onSuccess(data) {
-        setCodeIDStatus({ state: "success", message: "Valid Code ID" });
+        setCodeIdStatus({ state: "success", message: "Valid Code ID" });
         setUploader(data.code_info.creator);
         setUploaderStatus({ state: "success" });
       },
       onError() {
-        setCodeIDStatus({ state: "error", message: "Invalid Code ID" });
+        setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
         setUploader("Not Found");
         setUploaderStatus({ state: "error" });
       },
@@ -56,15 +75,15 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
 
   /* CALLBACK */
   const reset = () => {
-    setCodeID("");
-    setCodeIDStatus({ state: "init" });
+    setCodeId("");
+    setCodeIdStatus({ state: "init" });
     setUploader("");
     setUploaderStatus({ state: "init" });
     setDescription("");
   };
 
   const handleSave = () => {
-    const id = Number(codeID);
+    const id = Number(codeId);
 
     saveNewCode(userKey, id);
 
@@ -81,7 +100,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
 
     // TODO: abstract toast to template later
     toast({
-      title: `Saved ${codeID} to Saved Codes`,
+      title: `Saved ${codeId} to Saved Codes`,
       status: "success",
       duration: 5000,
       isClosable: false,
@@ -109,15 +128,15 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     }
   }, [isFetching, isRefetching]);
 
-  // update codeIDStatus
+  // update codeIdStatus
   useEffect(() => {
-    if (codeID.trim().length === 0) {
-      setCodeIDStatus({ state: "init" });
+    if (codeId.trim().length === 0) {
+      setCodeIdStatus({ state: "init" });
     } else {
-      setCodeIDStatus({ state: "loading" });
+      setCodeIdStatus({ state: "loading" });
 
-      if (isCodeIDExist(userKey, Number(codeID))) {
-        setCodeIDStatus({
+      if (isCodeIdExist(userKey, Number(codeId))) {
+        setCodeIdStatus({
           state: "error",
           message: "You already added this Code ID",
         });
@@ -131,26 +150,31 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     }
 
     return () => {};
-  }, [userKey, isCodeIDExist, codeID, refetch]);
+  }, [userKey, isCodeIdExist, codeId, refetch]);
 
   // update code description
   useEffect(() => {
-    if (codeIDStatus.state === "success") {
+    if (codeIdStatus.state === "success") {
       const localDescription =
-        getCodeLocalInfo(userKey, Number(codeID))?.description ?? "";
+        getCodeLocalInfo(userKey, Number(codeId))?.description ?? "";
       setDescription(localDescription);
     }
-  }, [codeID, codeIDStatus.state, getCodeLocalInfo, setDescription, userKey]);
+  }, [codeId, codeIdStatus.state, getCodeLocalInfo, setDescription, userKey]);
 
   /* LOGIC */
+  // TODO: apply use-react-form later
   const disableMain = useMemo(() => {
     // HACK: check uploader address
-    return codeIDStatus.state !== "success" || uploader.length < 20;
-  }, [codeIDStatus, uploader]);
+    return (
+      codeIdStatus.state !== "success" ||
+      uploader.length < 20 ||
+      descriptionStatus.state === "error"
+    );
+  }, [codeIdStatus, uploader, descriptionStatus]);
 
   return (
     <ActionModal
-      title="Save new Code"
+      title="Save New Code"
       icon={MdBookmark}
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save New Code"
@@ -163,11 +187,12 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
         Save other stored Codes to your &quot;Saved Codes&quot; list
         <NumberInput
           variant="floating"
-          value={codeID}
-          onInputChange={setCodeID}
+          value={codeId}
+          onInputChange={setCodeId}
           label="Code ID"
           labelBgColor="gray.800"
-          status={codeIDStatus}
+          status={codeIdStatus}
+          helperText="ex. 1150"
         />
         <TextInput
           value={uploader}
@@ -184,6 +209,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           label="Code Description"
           labelBgColor="gray.800"
           helperText="Fill in code description to define its use as a reminder"
+          status={descriptionStatus}
         />
       </FormControl>
     </ActionModal>

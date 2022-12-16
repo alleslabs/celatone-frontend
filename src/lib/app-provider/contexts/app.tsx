@@ -1,6 +1,7 @@
 import { useWallet } from "@cosmos-kit/react";
 import big from "big.js";
 import { GraphQLClient } from "graphql-request";
+import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import { useEffect, useContext, useMemo, createContext } from "react";
 
@@ -65,8 +66,8 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   constants,
 }: AppProviderProps<ContractAddress, Constants>) => {
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
-  const { setCodeUserKey } = useCodeStore();
-  const { setContractUserKey } = useContractStore();
+  const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
+  const { setContractUserKey, isContractUserKeyExist } = useContractStore();
 
   const chainGasPrice = useMemo(() => {
     if (
@@ -124,9 +125,15 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!currentChainName) return <LoadingOverlay />;
+  const AppContent = observer(() => {
+    if (isCodeUserKeyExist() && isContractUserKeyExist())
+      return (
+        <AppContext.Provider value={states}>{children}</AppContext.Provider>
+      );
+    return <LoadingOverlay />;
+  });
 
-  return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
+  return <AppContent />;
 };
 
 export const useApp = <
