@@ -1,4 +1,5 @@
 import { EditableCell } from "lib/components/table";
+import { MAX_CONTRACT_NAME_LENGTH } from "lib/data";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
 
@@ -22,6 +23,7 @@ export const ContractNameCell = ({
     <EditableCell
       initialValue={contract.name}
       defaultValue={contract.label}
+      maxLength={MAX_CONTRACT_NAME_LENGTH}
       tooltip={contract.description}
       onSave={!isReadOnly ? onSave : undefined}
     />

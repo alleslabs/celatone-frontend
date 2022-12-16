@@ -5,6 +5,10 @@ import { useState } from "react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { OffChainForm } from "lib/components/OffChain/OffChainForm";
+import {
+  MAX_CONTRACT_DESCRIPTION_LENGTH,
+  MAX_CONTRACT_NAME_LENGTH,
+} from "lib/data";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
 import type { Option } from "lib/types";
@@ -56,6 +60,11 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
       trigger={<MenuItem {...menuItemProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}
+      // TODO: apply use-react-form later
+      disabledMain={
+        name.trim().length > MAX_CONTRACT_NAME_LENGTH ||
+        description.trim().length > MAX_CONTRACT_DESCRIPTION_LENGTH
+      }
       otherBtnTitle="Cancel"
       otherAction={reset}
     >

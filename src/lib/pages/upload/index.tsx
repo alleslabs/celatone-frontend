@@ -14,9 +14,14 @@ import {
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import {
+  getMaxCodeDescriptionLengthError,
+  MAX_CODE_DESCRIPTION_LENGTH,
+} from "lib/data";
 import { useCodeStore, useUserKey } from "lib/hooks";
 import type { HumanAddr } from "lib/types";
 import { AccessType, MsgType } from "lib/types";
@@ -36,6 +41,9 @@ const Upload = () => {
 
   const [wasmFile, setFile] = useState<File>();
   const [codeDesc, setCodeDesc] = useState("");
+  const [descStatus, setDescStatus] = useState<FormStatus>({
+    state: "init",
+  });
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateStatus, setSimulateStatus] =
     useState<SimulateStatus>("Pending");
@@ -46,6 +54,19 @@ const Upload = () => {
     wasmFile?.arrayBuffer(),
     estimatedFee
   );
+
+  // TODO: apply useForm
+  useEffect(() => {
+    const trimedDescription = codeDesc.trim();
+    if (trimedDescription.length === 0) {
+      setDescStatus({ state: "init" });
+    } else if (trimedDescription.length > MAX_CODE_DESCRIPTION_LENGTH)
+      setDescStatus({
+        state: "error",
+        message: getMaxCodeDescriptionLengthError(trimedDescription.length),
+      });
+    else setDescStatus({ state: "success" });
+  }, [codeDesc]);
 
   const proceed = useCallback(async () => {
     const stream = await postUploadTx({
@@ -120,6 +141,7 @@ const Upload = () => {
         label="Code Description (Optional)"
         helperText="Define what your code works on in one sentence. You can add this later."
         my="32px"
+        status={descStatus}
       />
       <Flex
         fontSize="14px"
@@ -148,7 +170,7 @@ const Upload = () => {
           size="md"
           variant="primary"
           w="128px"
-          disabled={!estimatedFee || !wasmFile}
+          disabled={!estimatedFee || !wasmFile || descStatus.state === "error"}
           onClick={proceed}
         >
           Upload

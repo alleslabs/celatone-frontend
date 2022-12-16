@@ -6,12 +6,14 @@ import { MdMode, MdInfo, MdCheck, MdClose } from "react-icons/md";
 interface EditableCellProps {
   initialValue?: string;
   defaultValue: string;
+  maxLength: number;
   tooltip?: string;
   onSave?: (value?: string) => void;
 }
 export const EditableCell = ({
   initialValue,
   defaultValue,
+  maxLength,
   tooltip,
   onSave,
 }: EditableCellProps) => {
@@ -75,6 +77,7 @@ export const EditableCell = ({
             onChange={handleChange}
             width="full"
             minWidth="300px"
+            maxLength={maxLength}
             autoFocus
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSave();

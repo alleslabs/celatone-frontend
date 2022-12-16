@@ -2,6 +2,7 @@ import { Icon, useToast } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 
 import { EditableCell } from "lib/components/table";
+import { MAX_CODE_DESCRIPTION_LENGTH } from "lib/data";
 import { useCodeStore, useUserKey } from "lib/hooks";
 
 interface CodeDescriptionCellProps {
@@ -40,6 +41,7 @@ export const CodeDescriptionCell = ({
     <EditableCell
       initialValue={description}
       defaultValue="No Description"
+      maxLength={MAX_CODE_DESCRIPTION_LENGTH}
       onSave={onSave}
     />
   );

@@ -17,12 +17,12 @@ interface SavedCodeInfo {
 export class CodeStore {
   private userKey: string;
 
-  savedCodeIDs: Dict<string, number[]>;
+  savedCodeIds: Dict<string, number[]>;
 
   codeInfo: Dict<string, Dict<number, CodeLocalInfo>>;
 
   constructor() {
-    this.savedCodeIDs = {};
+    this.savedCodeIds = {};
     this.codeInfo = {};
     this.userKey = "";
 
@@ -30,7 +30,7 @@ export class CodeStore {
 
     makePersistable(this, {
       name: "CodeStore",
-      properties: ["savedCodeIDs", "codeInfo"],
+      properties: ["savedCodeIds", "codeInfo"],
     });
   }
 
@@ -42,20 +42,20 @@ export class CodeStore {
     return this.codeInfo[userKey]?.[id];
   }
 
-  isCodeIDExist(userKey: string, id: number): boolean {
-    return this.savedCodeIDs[userKey]?.includes(id) ?? false;
+  isCodeIdExist(userKey: string, id: number): boolean {
+    return this.savedCodeIds[userKey]?.includes(id) ?? false;
   }
 
-  lastSavedCodeIDs(userKey: string): number[] {
-    return this.savedCodeIDs[userKey]?.slice().reverse() ?? [];
+  lastSavedCodeIds(userKey: string): number[] {
+    return this.savedCodeIds[userKey]?.slice().reverse() ?? [];
   }
 
   lastSavedCodes(userKey: string): SavedCodeInfo[] {
-    const savedCodeIDsByUserKey = this.savedCodeIDs[userKey];
+    const savedCodeIdsByUserKey = this.savedCodeIds[userKey];
 
-    if (!savedCodeIDsByUserKey) return [];
+    if (!savedCodeIdsByUserKey) return [];
 
-    return savedCodeIDsByUserKey
+    return savedCodeIdsByUserKey
       .map((codeId) => ({
         id: codeId,
         description: this.codeInfo[userKey]?.[codeId]?.description,
@@ -65,15 +65,15 @@ export class CodeStore {
   }
 
   saveNewCode(userKey: string, id: number): void {
-    if (this.savedCodeIDs[userKey]) {
-      this.savedCodeIDs[userKey]?.push(id);
+    if (this.savedCodeIds[userKey]) {
+      this.savedCodeIds[userKey]?.push(id);
     } else {
-      this.savedCodeIDs[userKey] = [id];
+      this.savedCodeIds[userKey] = [id];
     }
   }
 
   removeSavedCode(userKey: string, id: number): void {
-    this.savedCodeIDs[userKey] = this.savedCodeIDs[userKey]?.filter(
+    this.savedCodeIds[userKey] = this.savedCodeIds[userKey]?.filter(
       (each) => each !== id
     );
   }

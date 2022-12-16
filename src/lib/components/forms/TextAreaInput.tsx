@@ -5,8 +5,12 @@ import {
   FormHelperText,
   FormLabel,
   Textarea,
+  Text,
 } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
+
+import type { FormStatus } from "./FormStatus";
+import { getResponseMsg } from "./FormStatus";
 
 export interface TextAreaProps extends FormControlProps {
   value: string;
@@ -15,7 +19,7 @@ export interface TextAreaProps extends FormControlProps {
   labelBgColor?: string;
   helperText?: string;
   error?: string;
-  rows?: number;
+  status?: FormStatus;
 }
 
 export const TextAreaInput = ({
@@ -26,12 +30,13 @@ export const TextAreaInput = ({
   helperText,
   placeholder = " ",
   error,
+  status,
   ...componentProps
 }: TextAreaProps) => {
   return (
     <FormControl
       className="textarea-form"
-      isInvalid={!!error}
+      isInvalid={!!error || status?.state === "error"}
       size="md"
       {...componentProps}
     >
@@ -49,9 +54,16 @@ export const TextAreaInput = ({
         value={value}
         onChange={(e) => setInputState(e.target.value)}
       />
-      <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      {!error && (
-        <FormHelperText className="helper-text">{helperText}</FormHelperText>
+      {error ? (
+        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+      ) : (
+        <FormHelperText className="helper-text">
+          {status?.message ? (
+            getResponseMsg(status, helperText)
+          ) : (
+            <Text color="text.dark">{helperText}</Text>
+          )}
+        </FormHelperText>
       )}
     </FormControl>
   );

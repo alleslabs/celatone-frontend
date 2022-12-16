@@ -18,13 +18,13 @@ interface CodeListData {
 
 export const useCodeListData = (keyword?: string): CodeListData => {
   const { address } = useWallet();
-  const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIDs } = useCodeStore();
+  const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds } = useCodeStore();
 
   const { data: rawStoredCodes = [] } = useCodeListByUserQuery(address);
 
   const userKey = useUserKey();
 
-  const savedCodeIds = lastSavedCodeIDs(userKey);
+  const savedCodeIds = lastSavedCodeIds(userKey);
   const { data: querySavedCodeInfos = [] } =
     useCodeListByIDsQuery(savedCodeIds);
 
