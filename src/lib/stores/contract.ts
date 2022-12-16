@@ -53,7 +53,7 @@ export interface Activity {
 }
 
 export class ContractStore {
-  userKey: string;
+  private userKey: string;
 
   private defaultContractList: ContractList[] = [
     {
@@ -101,7 +101,7 @@ export class ContractStore {
     return isHydrated(this);
   }
 
-  get isContractUserKeyExist(): boolean {
+  isContractUserKeyExist(): boolean {
     return !!this.userKey;
   }
 

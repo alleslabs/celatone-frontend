@@ -106,7 +106,7 @@ export const AppProvider = <Constants extends AppConstants>({
   }, []);
 
   const AppContent = observer(() => {
-    if (isCodeUserKeyExist && isContractUserKeyExist)
+    if (isCodeUserKeyExist() && isContractUserKeyExist())
       return (
         <AppContext.Provider value={states}>{children}</AppContext.Provider>
       );
