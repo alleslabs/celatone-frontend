@@ -252,7 +252,7 @@ export class ContractStore {
         contractInfo.tags ?? [],
         tags
       );
-      contractInfo.tags = tags;
+      contractInfo.tags = tags.length ? tags : undefined;
     }
     if (lists !== undefined) {
       this.updateContractInfoLists(
@@ -261,17 +261,13 @@ export class ContractStore {
         contractInfo.lists ?? [],
         lists
       );
-      contractInfo.lists = lists;
+      contractInfo.lists = lists.length ? lists : undefined;
     }
 
-    if (lists && lists.length === 0) {
-      delete this.contractInfo[userKey]?.[contractAddr];
-    } else {
-      this.contractInfo[userKey] = {
-        ...this.contractInfo[userKey],
-        [contractAddr]: contractInfo,
-      };
-    }
+    this.contractInfo[userKey] = {
+      ...this.contractInfo[userKey],
+      [contractAddr]: contractInfo,
+    };
   }
 
   private updateContractInfoTags(
