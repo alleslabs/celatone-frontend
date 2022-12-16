@@ -5,7 +5,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
 
-import { useFabricateFee, useTxBroadcast } from "lib/app-provider";
+import { useFabricateFee } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { useExecuteContractTx } from "lib/app-provider/tx/execute";
 import ContractCmdButton from "lib/components/ContractCmdButton";
@@ -13,6 +13,7 @@ import CopyButton from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import JsonInput from "lib/components/Json/JsonInput";
 import { useContractStore } from "lib/hooks";
+import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";

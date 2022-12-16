@@ -13,7 +13,7 @@ import Link from "next/link";
 import { FiChevronDown } from "react-icons/fi";
 
 import { WalletSection } from "lib/components/Wallet";
-import { CHAIN_NAMES } from "lib/env";
+import { CHAIN_NAMES } from "lib/data";
 
 const Header = () => {
   const { currentChainName, setCurrentChain } = useWallet();

@@ -8,7 +8,6 @@ import { FiChevronLeft } from "react-icons/fi";
 import {
   useFabricateFee,
   useSimulateFee,
-  useTxBroadcast,
   useUploadContractTx,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -23,6 +22,7 @@ import {
   MAX_CODE_DESCRIPTION_LENGTH,
 } from "lib/data";
 import { useCodeStore, useUserKey } from "lib/hooks";
+import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { HumanAddr } from "lib/types";
 import { AccessType, MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
