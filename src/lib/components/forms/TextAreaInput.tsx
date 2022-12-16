@@ -43,7 +43,7 @@ export const TextAreaInput = ({
       {label && (
         <FormLabel
           bgColor={labelBgColor}
-          className={value.length !== 0 ? "floating" : ""}
+          className={value.length ? "floating" : ""}
         >
           {label}
         </FormLabel>

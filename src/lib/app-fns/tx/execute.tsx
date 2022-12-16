@@ -24,6 +24,7 @@ interface ExecuteTxParams {
   client: SigningCosmWasmClient;
   userKey: string;
   onTxSucceed?: (userKey: string, activity: Activity) => void;
+  onTxFailed?: () => void;
 }
 
 export const executeContractTx = ({
@@ -34,6 +35,7 @@ export const executeContractTx = ({
   client,
   userKey,
   onTxSucceed,
+  onTxFailed,
 }: ExecuteTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -76,5 +78,5 @@ export const executeContractTx = ({
         },
       } as TxResultRendering;
     }
-  )().pipe(catchTxError(fee));
+  )().pipe(catchTxError(onTxFailed));
 };

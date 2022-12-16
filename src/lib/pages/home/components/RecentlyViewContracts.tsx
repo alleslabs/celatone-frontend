@@ -1,6 +1,6 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 
-import { ContractList } from "lib/pages/contracts/components/ContractList";
+import { ContractListTable } from "lib/pages/contracts/components/ContractListTable";
 
 /* TODO: change data -> recently view contracts */
 const contracts = [
@@ -50,7 +50,7 @@ export const RecentlyViewContracts = () => {
         Recently Viewed Contracts
       </Heading>
       {contracts && contracts.length ? (
-        <ContractList contracts={contracts} />
+        <ContractListTable contracts={contracts} />
       ) : (
         <Flex
           px={12}

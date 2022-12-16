@@ -15,7 +15,7 @@ import {
   MAX_CONTRACT_DESCRIPTION_LENGTH,
   MAX_CONTRACT_NAME_LENGTH,
 } from "lib/data";
-import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
+import { useContractStore, useEndpoint } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryContractWithTime } from "lib/services/contract";
 import type { Option, RpcContractError } from "lib/types";
@@ -43,7 +43,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   const endpoint = useEndpoint();
 
-  const userKey = useUserKey();
   const { getContractInfo } = useContractStore();
 
   const reset = (resetContractAddress = true) => {
@@ -75,7 +74,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           state: "success",
           message: "Valid Contract Address",
         });
-        const contractInfo = getContractInfo(userKey, contractAddress);
+        const contractInfo = getContractInfo(contractAddress);
         if (contractInfo) {
           if (contractInfo.name) setName(contractInfo.name);
           if (contractInfo.description)
@@ -117,7 +116,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   }, [contractAddress, refetch]);
 
   const handleSave = useHandleContractSave({
-    title: `Saved ${name.trim().length > 0 ? name : label}`,
+    title: `Saved ${name.trim().length ? name : label}`,
     address: contractAddress,
     instantiator,
     label,
@@ -152,7 +151,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           label="Contract Address"
           labelBgColor="gray.800"
           helperText="ex. terra1ff1asdf7988aw49efa4vw9846789"
-          size="md"
           status={status}
         />
         <TextInput
@@ -161,7 +159,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           setInputState={setInstantiator}
           label="Instantiator"
           labelBgColor="gray.800"
-          size="md"
           isDisabled
         />
         <OffChainDetail

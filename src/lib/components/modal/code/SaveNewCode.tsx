@@ -86,7 +86,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
 
     saveNewCode(userKey, id);
 
-    if (description.trim().length !== 0) {
+    if (description.trim().length) {
       updateCodeInfo(userKey, id, {
         description,
         uploader,

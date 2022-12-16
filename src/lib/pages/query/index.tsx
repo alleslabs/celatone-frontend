@@ -5,9 +5,11 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
+import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract, queryData } from "lib/services/contract";
 import type { RpcQueryError } from "lib/types";
 import {
@@ -19,16 +21,11 @@ import {
 
 import { QueryArea } from "./components/QueryArea";
 
-const getAddrText = (addr: string) => {
-  if (addr.length === 0) return "Not Selected";
-  return addr;
-};
-
 const Query = () => {
   const router = useRouter();
   const { getContractInfo } = useContractStore();
-  const userKey = useUserKey();
   const endpoint = useEndpoint();
+  const isMobile = useMobile();
 
   const [addr, setAddr] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -44,7 +41,7 @@ const Query = () => {
 
   const onContractSelect = useCallback(
     (contract: string) => {
-      router.replace(
+      router.push(
         {
           pathname: "/query",
           query: { ...(contract && { contract }) },
@@ -57,7 +54,7 @@ const Query = () => {
   );
 
   // TODO: Abstract query and make query key
-  useQuery(
+  const { isFetching } = useQuery(
     ["query", "cmds", endpoint, addr, '{"": {}}'],
     async () => queryData(endpoint, addr, '{"": {}}'),
     {
@@ -66,38 +63,29 @@ const Query = () => {
       cacheTime: 0,
       refetchOnWindowFocus: false,
       onError: (e: AxiosError<RpcQueryError>) => {
-        const queryCmds =
-          e.response?.data.message
-            ?.match(
-              "(?: expected one of )(.*)(?=: query wasm contract failed: invalid request)"
-            )
-            ?.at(1)
-            ?.split(", ") || [];
-
-        setCmds(
-          queryCmds.map((v) => {
-            const cmd = v.slice(1, -1);
-            return [cmd, `{"${cmd}": {}}`];
-          })
-        );
+        const queryCmds: string[] = [];
+        Array.from(e.response?.data.message?.matchAll(/`(.*?)`/g) || [])
+          .slice(1)
+          .forEach((match) => queryCmds.push(match[1]));
+        setCmds(queryCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       },
     }
   );
 
   useEffect(() => {
     (async () => {
-      const contract = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(userKey, contract);
+      const contractAddr = getFirstQueryParam(router.query.contract);
+      const contractState = getContractInfo(contractAddr);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contract);
+        onContractSelect(contractAddr);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contract);
+          const onChainDetail = await queryContract(endpoint, contractAddr);
           setName(onChainDetail.result?.label);
         } catch {
           setName("Invalid Contract");
@@ -106,14 +94,17 @@ const Query = () => {
         setName(contractState.name ?? contractState.label);
       }
 
-      setAddr(contract);
+      setAddr(contractAddr);
       setInitialMsg(jsonMsg);
+      if (!contractAddr) setCmds([]);
     })();
-  }, [router, endpoint, userKey, getContractInfo, onContractSelect]);
+  }, [router, endpoint, getContractInfo, onContractSelect]);
 
   const notSelected = addr.length === 0;
+
   return (
     <PageContainer>
+      {isFetching && <LoadingOverlay />}
       <Button
         variant="ghost-primary"
         onClick={() => router.back()}
@@ -143,27 +134,33 @@ const Query = () => {
         justify="space-between"
         align="center"
       >
-        <Flex gap="24px">
-          <Box textColor="white">
+        <Flex gap="24px" width="80%">
+          <Flex direction="column" width="60%">
             Contract Address
-            <Text
-              mt={1}
-              color={notSelected ? "text.disabled" : "primary.main"}
-              variant="body2"
-            >
-              {getAddrText(addr)}
-            </Text>
-          </Box>
-          <Box textColor="white">
+            {!notSelected ? (
+              <ExplorerLink
+                value={addr}
+                type="contract_address"
+                canCopyWithHover
+                // TODO - Revisit not necessary if disable UI for mobile is implemented
+                textFormat={isMobile ? "truncate" : "normal"}
+                maxWidth="none"
+              />
+            ) : (
+              <Text textColor="text.disabled" variant="body2">
+                Not Selected
+              </Text>
+            )}
+          </Flex>
+          <Flex direction="column">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
-              mt={1}
               variant="body2"
             >
               {notSelected ? "Not Selected" : name}
             </Text>
-          </Box>
+          </Flex>
         </Flex>
         <SelectContract
           notSelected={notSelected}

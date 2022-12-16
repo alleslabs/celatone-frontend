@@ -65,14 +65,9 @@ export const ButtonSection = ({
         </>
       );
     case "rejected":
-      return (
-        <Button variant="outline-primary" onClick={onClose} w="120px">
-          Close
-        </Button>
-      );
     case "resend":
       return (
-        <Button variant="outline-primary" onClick={onClose}>
+        <Button variant="outline-primary" onClick={onClose} w="120px">
           Close
         </Button>
       );

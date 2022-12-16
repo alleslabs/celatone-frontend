@@ -6,19 +6,15 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import {
-  useContractStore,
-  useEndpoint,
-  useMobile,
-  useUserKey,
-} from "lib/hooks";
+import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import {
-  truncate,
   getFirstQueryParam,
   decode,
   jsonPrettify,
@@ -27,20 +23,12 @@ import {
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
-import { LoadingOverlay } from "./components/LoadingOverlay";
-
-const getAddrText = (contractAddress: string, isMobile: boolean) => {
-  if (contractAddress.length === 0) return "Not Selected";
-  if (isMobile) return truncate(contractAddress);
-  return contractAddress;
-};
 
 const Execute = () => {
   const router = useRouter();
   const isMobile = useMobile();
   const { getContractInfo } = useContractStore();
   const { address = "" } = useWallet();
-  const userKey = useUserKey();
   const endpoint = useEndpoint();
 
   const [contractAddress, setContractAddress] = useState<string>("");
@@ -56,7 +44,7 @@ const Execute = () => {
   };
   const onContractSelect = useCallback(
     (contract: string) => {
-      router.replace(
+      router.push(
         {
           pathname: "/execute",
           query: { ...(contract && { contract }) },
@@ -83,38 +71,29 @@ const Execute = () => {
         setContractAddress("");
         setCmds([]);
       } else {
-        const queryCmds =
-          e.message
-            ?.match(
-              "(?: expected one of )(.*)(?=: execute wasm contract failed: invalid request)"
-            )
-            ?.at(1)
-            ?.split(", ") || [];
-
-        setCmds(
-          queryCmds.map((v) => {
-            const cmd = v.slice(1, -1);
-            return [cmd, `{"${cmd}": {}}`];
-          })
-        );
+        const executeCmds: string[] = [];
+        Array.from(e.message?.matchAll(/`(.*?)`/g) || [])
+          .slice(1)
+          .forEach((match) => executeCmds.push(match[1]));
+        setCmds(executeCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       }
     },
   });
 
   useEffect(() => {
     (async () => {
-      const contract = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(userKey, contract);
+      const contractAddr = getFirstQueryParam(router.query.contract);
+      const contractState = getContractInfo(contractAddr);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contract);
+        onContractSelect(contractAddr);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contract);
+          const onChainDetail = await queryContract(endpoint, contractAddr);
           setContractName(onChainDetail.result?.label);
         } catch {
           setContractName("Invalid Contract");
@@ -123,10 +102,11 @@ const Execute = () => {
         setContractName(contractState.name ?? contractState.label);
       }
 
-      setContractAddress(contract);
+      setContractAddress(contractAddr);
       setInitialMsg(jsonMsg);
+      if (!contractAddr) setCmds([]);
     })();
-  }, [router, endpoint, userKey, getContractInfo, onContractSelect]);
+  }, [router, endpoint, getContractInfo, onContractSelect]);
 
   const notSelected = contractAddress.length === 0;
 
@@ -164,22 +144,28 @@ const Execute = () => {
         justify="space-between"
         align="center"
       >
-        <Flex gap="24px">
-          <Flex color="text.main" direction="column">
+        <Flex gap="24px" width="80%">
+          <Flex direction="column" width="60%">
             Contract Address
-            <Text
-              mt={1}
-              color={notSelected ? "gray.500" : "primary.main"}
-              variant="body2"
-            >
-              {getAddrText(contractAddress, isMobile)}
-            </Text>
+            {!notSelected ? (
+              <ExplorerLink
+                value={contractAddress}
+                type="contract_address"
+                canCopyWithHover
+                // TODO - Revisit not necessary if disable UI for mobile is implemented
+                textFormat={isMobile ? "truncate" : "normal"}
+                maxWidth="none"
+              />
+            ) : (
+              <Text textColor="text.disabled" variant="body2">
+                Not Selected
+              </Text>
+            )}
           </Flex>
-          <Flex color="text.main" direction="column">
+          <Flex direction="column">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
-              mt={1}
               variant="body2"
             >
               {notSelected ? "Not Selected" : contractName}

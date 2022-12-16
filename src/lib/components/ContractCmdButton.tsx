@@ -1,11 +1,11 @@
 import { Button } from "@chakra-ui/react";
 
-interface QueryCmdButtonProps {
+interface ContractCmdButtonProps {
   cmd: string;
   msg: string;
   setMsg: (msg: string) => void;
 }
-const QueryCmdButton = ({ cmd, msg, setMsg }: QueryCmdButtonProps) => {
+const ContractCmdButton = ({ cmd, msg, setMsg }: ContractCmdButtonProps) => {
   return (
     <Button
       variant="outline-gray"
@@ -25,4 +25,4 @@ const QueryCmdButton = ({ cmd, msg, setMsg }: QueryCmdButtonProps) => {
   );
 };
 
-export default QueryCmdButton;
+export default ContractCmdButton;

@@ -54,9 +54,10 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
   ) => {
     const userKey = useUserKey();
     const { getContractLists, isContractListExist } = useContractStore();
-    const options = getContractLists(userKey).map((item) => {
-      return { label: item.name, value: item.slug };
-    });
+    const options = getContractLists().map((item) => ({
+      label: item.name,
+      value: item.slug,
+    }));
 
     const [partialResult, setPartialResult] = useState<Option[]>([]);
     const [displayOptions, setDisplayOptions] = useState(false);
@@ -132,7 +133,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
             maxW="100%"
             overflowX="scroll"
           >
-            {result && result.length > 0 && (
+            {result.length > 0 && (
               <Flex alignItems="center" pl="2">
                 {[...result].map((option) => (
                   <Flex

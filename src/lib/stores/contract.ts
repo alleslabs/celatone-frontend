@@ -56,6 +56,8 @@ export interface Activity {
 }
 
 export class ContractStore {
+  private userKey: string;
+
   private defaultContractList: ContractList[] = [
     {
       name: SAVED_LIST_NAME,
@@ -83,6 +85,7 @@ export class ContractStore {
     this.contractInfo = {};
     this.allTags = {};
     this.recentActivities = {};
+    this.userKey = "";
 
     makeAutoObservable(this, {}, { autoBind: true });
 
@@ -103,6 +106,10 @@ export class ContractStore {
     return isHydrated(this);
   }
 
+  setContractUserKey(userKey: string) {
+    this.userKey = userKey;
+  }
+
   getAllTags(userKey: string): string[] {
     return Array.from(this.allTags[userKey]?.keys() ?? []);
   }
@@ -115,9 +122,9 @@ export class ContractStore {
     return this.defaultContractList;
   }
 
-  getContractLists(userKey: string): ContractListInfo[] {
-    const contractListByUserKey = this.getContractList(userKey);
-    const contractInfoByUserKey = this.contractInfo[userKey];
+  getContractLists(): ContractListInfo[] {
+    const contractListByUserKey = this.getContractList(this.userKey);
+    const contractInfoByUserKey = this.contractInfo[this.userKey];
 
     return contractListByUserKey.map((contractListInfo) => ({
       ...contractListInfo,
@@ -137,8 +144,8 @@ export class ContractStore {
     }));
   }
 
-  getContractInfo(userKey: string, address: string): ContractInfo | undefined {
-    return this.contractInfo[userKey]?.[address];
+  getContractInfo(address: string): ContractInfo | undefined {
+    return this.contractInfo[this.userKey]?.[address];
   }
 
   isContractListExist(userKey: string, name: string): boolean {
@@ -240,10 +247,11 @@ export class ContractStore {
     };
 
     if (name !== undefined)
-      contractInfo.name = name.trim().length > 0 ? name.trim() : undefined;
+      contractInfo.name = name.trim().length ? name.trim() : undefined;
     if (description !== undefined)
-      contractInfo.description =
-        description.trim().length > 0 ? description.trim() : undefined;
+      contractInfo.description = description.trim().length
+        ? description.trim()
+        : undefined;
     if (tags !== undefined) {
       this.updateContractInfoTags(
         userKey,

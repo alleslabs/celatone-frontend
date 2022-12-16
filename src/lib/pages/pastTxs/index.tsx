@@ -13,23 +13,17 @@ import {
   Tr,
   Th,
   Tbody,
-  Select,
   Box,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { ChangeEvent } from "react";
 import { useMemo, useState, useEffect, useCallback } from "react";
-import {
-  MdArrowDropDown,
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-  MdSearch,
-} from "react-icons/md";
+import { MdSearch } from "react-icons/md";
 
-import { usePaginator } from "lib/app-provider/hooks/usePaginator";
 import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
 import { Loading } from "lib/components/Loading";
-import { Next, Paginator, Previous } from "lib/components/pagination";
+import { Pagination } from "lib/components/pagination";
+import { usePaginator } from "lib/components/pagination/usePaginator";
 import type { Transaction } from "lib/types/tx/transaction";
 
 import { FalseState } from "./components/FalseState";
@@ -47,7 +41,7 @@ const PastTxs = () => {
   const [sendButton, setSendButton] = useState(false);
 
   const [data, setData] = useState<Transaction[]>();
-  const [totalData, setTotalData] = useState<number>();
+  const [totalData, setTotalData] = useState<number>(0);
 
   const {
     pagesQuantity,
@@ -149,7 +143,7 @@ const PastTxs = () => {
   };
 
   // Page change
-  const handlePageChange = useCallback(
+  const onPageChange = useCallback(
     (nextPage: number) => {
       setCurrentPage(nextPage);
     },
@@ -157,7 +151,7 @@ const PastTxs = () => {
   );
 
   // Page Sizing
-  const handlePageSizeChange = useCallback(
+  const onPageSizeChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
       const size = Number(e.target.value);
       setPageSize(size);
@@ -232,7 +226,7 @@ const PastTxs = () => {
               <Tr
                 color="text.dark"
                 sx={{
-                  "& th:first-child": { pl: "48px", pr: "0" },
+                  "& th:first-of-type": { pl: "48px", pr: "0" },
                   "& td:last-child": { pr: "48px" },
                 }}
               >
@@ -253,46 +247,15 @@ const PastTxs = () => {
             <Tbody>{displayRow}</Tbody>
           </Table>
         </TableContainer>
-        <Box my="15px">
-          <Paginator
-            onPageChange={handlePageChange}
-            currentPage={currentPage}
-            pagesQuantity={pagesQuantity}
-          >
-            <Flex align="center" justify="center" w="full" p={4}>
-              <Text variant="body3" color="text.dark">
-                Items per page:
-              </Text>
-              <Select
-                border="none"
-                w="70px"
-                fontSize="12px"
-                focusBorderColor="none"
-                icon={<MdArrowDropDown />}
-                onChange={handlePageSizeChange}
-                cursor="pointer"
-              >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </Select>
-              <Text variant="body3" mx="30px">
-                {offset + 1} -{" "}
-                {currentPage !== pagesQuantity && totalData
-                  ? pageSize * currentPage
-                  : totalData}{" "}
-                of {totalData}
-              </Text>
-              <Previous variant="unstyled" display="flex">
-                <Icon as={MdKeyboardArrowLeft} w={5} h={5} color="gray.600" />
-              </Previous>
-              <Next variant="unstyled" display="flex">
-                <Icon as={MdKeyboardArrowRight} w={5} h={5} color="gray.600" />
-              </Next>
-            </Flex>
-          </Paginator>
-        </Box>
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={totalData}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
       </>
     );
   }, [
@@ -301,8 +264,8 @@ const PastTxs = () => {
     data?.length,
     displayRow,
     executeButton,
-    handlePageChange,
-    handlePageSizeChange,
+    onPageChange,
+    onPageSizeChange,
     ibcButton,
     input,
     instantiateButton,

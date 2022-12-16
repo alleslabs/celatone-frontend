@@ -22,6 +22,7 @@ import {
   MdDelete,
 } from "react-icons/md";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
   EditContract,
@@ -32,7 +33,6 @@ import type { Option } from "lib/types";
 
 import { ContractName } from "./table/ContractNameCell";
 import { Tags } from "./table/TagsCell";
-import { TextLink } from "./table/TextLinkCell";
 
 const iconProps = {
   boxSize: "4",
@@ -40,14 +40,14 @@ const iconProps = {
   alignItems: "center",
 };
 
-interface ContractListProps {
+interface ContractListTableProps {
   contracts: ContractInfo[];
   isContractRemovable?: Option;
 }
-export const ContractList = ({
+export const ContractListTable = ({
   contracts = [],
   isContractRemovable,
-}: ContractListProps) => {
+}: ContractListTableProps) => {
   return (
     <TableContainer w="full">
       <Table variant="simple">
@@ -58,9 +58,9 @@ export const ContractList = ({
             }}
           >
             <Th width="15%">Contract Address</Th>
-            <Th width="30%">Contract Name</Th>
+            <Th width="25%">Contract Name</Th>
             <Th width="25%">Tags</Th>
-            <Th width="20%">Instantiator</Th>
+            <Th width="25%">Instantiator</Th>
             <Th width="10%" />
           </Tr>
         </Thead>
@@ -82,11 +82,10 @@ export const ContractList = ({
               }}
             >
               <Td>
-                <TextLink
+                <ExplorerLink
                   value={item.address}
-                  // TODO: dynamic explorer url
-                  url={`https://finder.terra.money/mainnet/address/${item.address}`}
-                  isTruncate
+                  type="contract_address"
+                  canCopyWithHover
                 />
               </Td>
               <Td>
@@ -96,13 +95,11 @@ export const ContractList = ({
                 <Tags contractInfo={item} />
               </Td>
               {/* Instantiator */}
-              {/* TODO: check if address match wallet address => show 'Me' instead */}
               <Td>
-                <TextLink
+                <ExplorerLink
                   value={item.instantiator}
-                  // TODO: dynamic explorer url
-                  url={`https://finder.terra.money/mainnet/address/${item.instantiator}`}
-                  isTruncate
+                  type="user_address"
+                  canCopyWithHover
                 />
               </Td>
               <Td>

@@ -2,7 +2,7 @@ import type { Token, U } from "lib/types";
 
 export const GAS_ADJUSTMENT = 1.6;
 
-export const FALLBACK_GAS_REGISTRY: Record<
+export const FALLBACK_GAS_PRICE: Record<
   string,
   { denom: string; gasPrice: string }
 > = {

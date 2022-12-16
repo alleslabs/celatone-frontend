@@ -58,7 +58,7 @@ export const ControllerInput = <T extends FieldValues>({
     >
       {label && (
         <FormLabel
-          className={field.value.length !== 0 ? "floating" : ""}
+          className={field.value.length ? "floating" : ""}
           bgColor={labelBgColor}
         >
           {label}

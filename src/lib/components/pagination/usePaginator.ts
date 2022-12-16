@@ -25,7 +25,6 @@ export const usePaginator = ({
   setIsDisabled: Dispatch<SetStateAction<boolean>>;
   setCurrentPage: Dispatch<SetStateAction<number>>;
 } => {
-  // states
   const [pageSize, setPageSize] = useState<number>(initialState.pageSize ?? 0);
   const [currentPage, setCurrentPage] = useState<number>(
     initialState.currentPage
@@ -34,7 +33,6 @@ export const usePaginator = ({
     initialState.isDisabled ?? false
   );
 
-  // memos
   const offset = useMemo(() => {
     if (!pageSize) {
       return 0;

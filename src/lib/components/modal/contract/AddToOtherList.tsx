@@ -1,15 +1,14 @@
 import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, Icon, Flex, Text, Box } from "@chakra-ui/react";
+import { MenuItem, Flex, Text, Box } from "@chakra-ui/react";
 import { useState } from "react";
-import { MdBookmark, MdOutlineLaunch } from "react-icons/md";
+import { MdBookmark } from "react-icons/md";
 
-import { Copier } from "lib/components/copier/index";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/forms/ListSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
 import type { Option } from "lib/types";
-import { truncate } from "lib/utils";
 
 interface AddToOtherListProps {
   contractInfo: ContractInfo;
@@ -52,15 +51,10 @@ export function AddToOtherList({
             <Text variant="body2" color="text.main">
               {contractInfo.name ?? contractInfo.label}
             </Text>
-            <Flex alignItems="center" gap="16px">
-              <Text variant="body2" color="primary.main">
-                {truncate(contractInfo.address)}
-              </Text>
-              <Flex gap="1">
-                <Copier value={contractInfo.address} ml="4" />
-                <Icon as={MdOutlineLaunch} color="gray.400" boxSize="4" />
-              </Flex>
-            </Flex>
+            <ExplorerLink
+              value={contractInfo.address}
+              type="contract_address"
+            />
           </Flex>
         </Flex>
       }

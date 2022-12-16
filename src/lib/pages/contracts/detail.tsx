@@ -28,17 +28,15 @@ import { SaveNewContract } from "lib/components/modal/contract";
 import { EditList, RemoveList } from "lib/components/modal/list";
 import { ListDetail } from "lib/components/modal/select-contract";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
-/* TODO: change data ->  contracts */
 const ContractList = observer(() => {
   const router = useRouter();
   const [searchKeyword, setSearchKeyword] = useState("");
   const listSlug = getFirstQueryParam(router.query.slug);
 
-  const userKey = useUserKey();
   const { getContractLists, isHydrated } = useContractStore();
   const instantiatedListInfo = useInstantiatedByMe(
     listSlug === formatSlugName(INSTANTIATED_LIST_NAME)
@@ -47,7 +45,7 @@ const ContractList = observer(() => {
   const contractListInfo =
     listSlug === formatSlugName(INSTANTIATED_LIST_NAME)
       ? instantiatedListInfo
-      : getContractLists(userKey).find((item) => item.slug === listSlug);
+      : getContractLists().find((item) => item.slug === listSlug);
 
   useEffect(() => {
     if (isHydrated && contractListInfo === undefined) {

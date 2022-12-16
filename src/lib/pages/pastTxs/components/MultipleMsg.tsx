@@ -1,7 +1,7 @@
 import { Flex, Tag } from "@chakra-ui/react";
 import { snakeCase } from "snake-case";
 
-interface MultipleMsgProps {
+export interface MultipleMsgProps {
   type: string;
   tags?: Array<string>;
   length: number;
@@ -24,7 +24,7 @@ export const MultipleMsg = ({ type, tags, length, text }: MultipleMsgProps) => {
         <Tag borderRadius="full">{length}</Tag>
       )}
       {/* For Execute */}
-      {tags && tags.length !== 0 && "on"} {text}
+      {!!tags?.length && "on"} {text}
     </Flex>
   );
 };

@@ -20,9 +20,9 @@ import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
 import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import type { CodeInfo } from "lib/types";
-import { truncate } from "lib/utils";
 
 import { CodeDescription } from "./CodeDescription";
 
@@ -110,7 +110,7 @@ const TableHead = () => {
         <Th width="10%" textAlign="center">
           Contracts
         </Th>
-        <Th width="15%">Uploaders</Th>
+        <Th width="15%">Uploader</Th>
         <Th width="20%" />
       </Tr>
     </Thead>
@@ -134,7 +134,7 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
       }}
     >
       <Td width="10%" color="primary.main">
-        {code.id}
+        <ExplorerLink value={code.id.toString()} canCopyWithHover />
       </Td>
       <Td width="45%">
         <CodeDescription codeId={code.id} description={code.description} />
@@ -143,7 +143,15 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
         {code.contracts}
       </Td>
       <Td width="15%">
-        {address && code.uploader === address ? "Me" : truncate(code.uploader)}
+        {address && code.uploader === address ? (
+          "Me"
+        ) : (
+          <ExplorerLink
+            value={code.uploader}
+            type="user_address"
+            canCopyWithHover
+          />
+        )}
       </Td>
       <Td width="20%">
         <HStack>
