@@ -1,8 +1,10 @@
 import { Flex, Icon, Select, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { TiArrowSortedDown } from "react-icons/ti";
+
+import { scrollTop } from "lib/utils/scrollTop";
 
 import { Next } from "./Next";
 import { Paginator } from "./Paginator";
@@ -26,6 +28,10 @@ export const Pagination = ({
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
+  useEffect(() => {
+    scrollTop();
+  }, [currentPage, pageSize]);
+
   const { offsetData, lastDataInPage } = useMemo(() => {
     return {
       offsetData: offset + 1,
