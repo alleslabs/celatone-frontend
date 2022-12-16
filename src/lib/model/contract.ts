@@ -1,7 +1,7 @@
 import { useWallet } from "@cosmos-kit/react";
 
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/hooks";
 import {
   useInstantiatedCountByUserQuery,
   useInstantiatedListByUserQuery,
@@ -15,13 +15,12 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
     enable ? address : undefined
   );
 
-  const userKey = useUserKey();
   const { getContractInfo } = useContractStore();
 
   return {
     contracts: contracts.map((contract) => ({
       ...contract,
-      ...getContractInfo(userKey, contract.address),
+      ...getContractInfo(contract.address),
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),

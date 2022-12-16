@@ -58,6 +58,7 @@ export const ExplorerLink = ({
     }
     return undefined;
   };
+
   return (
     <Box
       role="group"

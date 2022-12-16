@@ -40,15 +40,14 @@ const iconProps = {
   alignItems: "center",
 };
 
-interface ContractListProps {
+interface ContractListTableProps {
   contracts: ContractInfo[];
   isContractRemovable?: Option;
 }
-
-export const ContractList = ({
+export const ContractListTable = ({
   contracts = [],
   isContractRemovable,
-}: ContractListProps) => {
+}: ContractListTableProps) => {
   return (
     <TableContainer w="full">
       <Table variant="simple">
@@ -96,7 +95,6 @@ export const ContractList = ({
                 <TagsCell contractInfo={item} />
               </Td>
               {/* Instantiator */}
-              {/* TODO: check if address match wallet address => show 'Me' instead */}
               <Td>
                 <ExplorerLink
                   value={item.instantiator}

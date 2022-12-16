@@ -10,7 +10,7 @@ import {
   useTxBroadcast,
   useResendTx,
 } from "lib/app-provider";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
 import type {
   DetailExecute,
@@ -43,7 +43,6 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
   const [button, setButton] = useState<"redo" | "resend" | "">("");
   const [showButton, setShowButton] = useState(false);
   const { currentChainName } = useWallet();
-  const userKey = useUserKey();
   const { getContractInfo } = useContractStore();
 
   // TODO - Refactor to reduce complexity
@@ -53,7 +52,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
     // Type Execute
     if (type === "MsgExecuteContract") {
       const detailExecute = msg.detail as DetailExecute;
-      const contractInfo = getContractInfo(userKey, detailExecute.contract);
+      const contractInfo = getContractInfo(detailExecute.contract);
       // Able to redo even fail transaction
       setButton("redo");
       const singleMsgProps: SingleMsgProps = success
@@ -92,10 +91,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
     // Type Instantiate
     if (type === "MsgInstantiateContract") {
       const msgInstantiate = msg.detail as DetailInstantiate;
-      const contractInfo = getContractInfo(
-        userKey,
-        msgInstantiate.contractAddress
-      );
+      const contractInfo = getContractInfo(msgInstantiate.contractAddress);
       // Not able to redo if failure
       if (!success) {
         setButton("");
@@ -168,7 +164,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
       return <SingleMsg type="Message" tags={[type.substring(3)]} />;
     }
     return null;
-  }, [getContractInfo, msg.detail, msg.type, success, userKey]);
+  }, [getContractInfo, msg.detail, msg.type, success]);
 
   const fabricateFee = useFabricateFee();
   const { simulate } = useSimulateFee();

@@ -15,14 +15,14 @@ import { truncate } from "lib/utils";
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
 
-interface ContractListReadOnlyProps {
+interface ContractListReadOnlyTableProps {
   contracts: ContractInfo[];
   onContractSelect: (addr: string) => void;
 }
-export const ContractListReadOnly = ({
+export const ContractListReadOnlyTable = ({
   contracts = [],
   onContractSelect,
-}: ContractListReadOnlyProps) => {
+}: ContractListReadOnlyTableProps) => {
   return (
     <TableContainer w="full" my="16px">
       <Table variant="simple" sx={{ tableLayout: "auto" }}>

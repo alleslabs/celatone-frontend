@@ -10,7 +10,7 @@ import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { OffChainDetail } from "lib/components/OffChain/OffChainDetail";
 import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
-import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
+import { useContractStore, useEndpoint } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryContractWithTime } from "lib/services/contract";
 import type { Option, RpcContractError } from "lib/types";
@@ -38,7 +38,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   const endpoint = useEndpoint();
 
-  const userKey = useUserKey();
   const { getContractInfo } = useContractStore();
 
   const reset = (resetContractAddress = true) => {
@@ -70,7 +69,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           state: "success",
           message: "Valid Contract Address",
         });
-        const contractInfo = getContractInfo(userKey, contractAddress);
+        const contractInfo = getContractInfo(contractAddress);
         if (contractInfo) {
           if (contractInfo.name) setName(contractInfo.name);
           if (contractInfo.description)

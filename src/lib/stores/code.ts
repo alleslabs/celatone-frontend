@@ -18,6 +18,8 @@ interface SavedCodeInfo {
 const isBrowser = typeof window !== "undefined";
 
 export class CodeStore {
+  private userKey: string;
+
   savedCodeIDs: Dict<string, number[]>;
 
   codeInfo: Dict<string, Dict<number, CodeLocalInfo>>;
@@ -25,6 +27,7 @@ export class CodeStore {
   constructor() {
     this.savedCodeIDs = {};
     this.codeInfo = {};
+    this.userKey = "";
 
     makeAutoObservable(this, {}, { autoBind: true });
 
@@ -34,6 +37,10 @@ export class CodeStore {
       storage: isBrowser ? localforage : undefined,
       stringify: false,
     });
+  }
+
+  setCodeUserKey(userKey: string) {
+    this.userKey = userKey;
   }
 
   getCodeLocalInfo(userKey: string, id: number): CodeLocalInfo | undefined {

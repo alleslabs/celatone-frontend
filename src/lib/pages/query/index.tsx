@@ -9,12 +9,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import {
-  useContractStore,
-  useEndpoint,
-  useMobile,
-  useUserKey,
-} from "lib/hooks";
+import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract, queryData } from "lib/services/contract";
 import type { RpcQueryError } from "lib/types";
 import {
@@ -29,7 +24,6 @@ import { QueryArea } from "./components/QueryArea";
 const Query = () => {
   const router = useRouter();
   const { getContractInfo } = useContractStore();
-  const userKey = useUserKey();
   const endpoint = useEndpoint();
   const isMobile = useMobile();
 
@@ -81,7 +75,7 @@ const Query = () => {
   useEffect(() => {
     (async () => {
       const contractAddr = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(userKey, contractAddr);
+      const contractState = getContractInfo(contractAddr);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contractAddr);
@@ -104,9 +98,10 @@ const Query = () => {
       setInitialMsg(jsonMsg);
       if (!contractAddr) setCmds([]);
     })();
-  }, [router, endpoint, userKey, getContractInfo, onContractSelect]);
+  }, [router, endpoint, getContractInfo, onContractSelect]);
 
   const notSelected = addr.length === 0;
+
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
