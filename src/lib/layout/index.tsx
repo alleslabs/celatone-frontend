@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
+import { scrollTop } from "lib/utils/scrollTop";
+
 import Header from "./Header";
 import Navbar from "./Navbar";
 
@@ -14,7 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    document.getElementById("content")?.scroll(0, 0);
+    scrollTop();
   }, [router.asPath]);
 
   return (

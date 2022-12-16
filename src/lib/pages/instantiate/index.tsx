@@ -1,6 +1,8 @@
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import { useEffect, useState } from "react";
 
+import { scrollTop } from "lib/utils/scrollTop";
+
 import CompletedPage from "./completed";
 import InstantiatePage from "./instantiate";
 
@@ -22,7 +24,7 @@ const Index = () => {
   });
 
   useEffect(() => {
-    document.getElementById("content")?.scroll(0, 0);
+    scrollTop();
   }, [completed]);
 
   return completed && txInfo ? (
