@@ -4,14 +4,10 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useMemo, useState } from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 
-import {
-  useFabricateFee,
-  useSimulateFee,
-  useTxBroadcast,
-  useResendTx,
-} from "lib/app-provider";
+import { useFabricateFee, useSimulateFee, useResendTx } from "lib/app-provider";
 import { useContractStore } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
+import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type {
   DetailExecute,
   DetailInstantiate,

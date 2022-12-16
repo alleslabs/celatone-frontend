@@ -5,6 +5,7 @@ import type { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { MdBookmark } from "react-icons/md";
 
+import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms/TextInput";
 import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
@@ -21,6 +22,9 @@ interface SaveNewContractProps {
   buttonProps: ButtonProps;
 }
 export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
+  const {
+    contractAddress: { example: exampleContractAddress },
+  } = useCelatoneApp();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 
@@ -141,7 +145,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           setInputState={setContractAddress}
           label="Contract Address"
           labelBgColor="gray.800"
-          helperText="ex. terra1ff1asdf7988aw49efa4vw9846789"
+          helperText={`ex. ${exampleContractAddress}`}
           status={status}
         />
         <TextInput

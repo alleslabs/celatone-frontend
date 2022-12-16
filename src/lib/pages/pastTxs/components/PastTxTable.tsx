@@ -22,15 +22,12 @@ import {
   MdKeyboardArrowUp,
 } from "react-icons/md";
 
-import {
-  useFabricateFee,
-  useSimulateFee,
-  useTxBroadcast,
-} from "lib/app-provider";
+import { useFabricateFee, useSimulateFee } from "lib/app-provider";
 import { useResendTx } from "lib/app-provider/tx/resend";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useContractStore } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
+import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type {
   DetailExecute,
   DetailInstantiate,

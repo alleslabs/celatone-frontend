@@ -1,8 +1,8 @@
 import { MsgType } from "lib/types";
-import type { ChainGasPrice, Token, U } from "lib/types";
-import type { CelatoneConstants } from "types";
+import type { ContractAddr, ChainGasPrice, Token, U } from "lib/types";
+import type { CelatoneConstants, CelatoneContractAddress } from "types";
 
-export const FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
+export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
   osmosistestnet: {
     denom: "uosmo",
     gasPrice: "0.025" as U<Token>,
@@ -11,6 +11,32 @@ export const FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
     denom: "uluna",
     gasPrice: "0.15" as U<Token>,
   },
+};
+
+export const CELATONE_CONTRACT_ADDRESS = (
+  chainName: string
+): CelatoneContractAddress => {
+  switch (chainName) {
+    case "osmosis":
+      return {
+        example:
+          "osmo1yg8930mj8pk288lmkjex0qz85mj8wgtns5uzwyn2hs25pwdnw42sf745wc" as ContractAddr,
+      };
+    case "osmosistestnet":
+      return {
+        example:
+          "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
+      };
+    case "terra2testnet":
+      return {
+        example:
+          "terra1k5arpcpusfrtnucr5q8f5uh5twghh3q360hv4j6fe0hvzn7x8skqempu76" as ContractAddr,
+      };
+    default:
+      return {
+        example: "" as ContractAddr,
+      };
+  }
 };
 
 export const LCD_ENDPOINT: Record<string, string> = {

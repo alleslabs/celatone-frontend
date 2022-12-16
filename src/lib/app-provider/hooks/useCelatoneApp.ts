@@ -1,6 +1,6 @@
 import { useApp } from "../contexts";
-import type { CelatoneConstants } from "types";
+import type { CelatoneConstants, CelatoneContractAddress } from "types";
 
 export const useCelatoneApp = () => {
-  return useApp<CelatoneConstants>();
+  return useApp<CelatoneContractAddress, CelatoneConstants>();
 };

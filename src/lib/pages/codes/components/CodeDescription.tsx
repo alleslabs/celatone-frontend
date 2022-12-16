@@ -113,12 +113,9 @@ export const CodeDescription = ({
             onMouseOver={handleMouseEnterText}
             onMouseOut={handleMouseOutText}
           >
-            {/* TODO change to css */}
             <Text
               variant="body2"
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
+              className="ellipsis"
               maxW="150px"
               color={inputValue ? "text.main" : "text.dark"}
             >

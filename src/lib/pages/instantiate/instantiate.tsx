@@ -13,16 +13,13 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import {
-  useFabricateFee,
-  useSimulateFee,
-  useTxBroadcast,
-} from "lib/app-provider";
+import { useFabricateFee, useSimulateFee } from "lib/app-provider";
 import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
 import { ControllerInput, TextInput } from "lib/components/forms";
 import JsonInput from "lib/components/Json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { HumanAddr, Token, U } from "lib/types";
 import { MsgType } from "lib/types";
 import {

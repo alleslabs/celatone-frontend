@@ -18,13 +18,17 @@ import App from "next/app";
 import Head from "next/head";
 
 import defaultSEOConfig from "../../next-seo.config";
-import { CELATONE_CONSTANTS, FALLBACK_GAS_PRICE } from "env";
+import {
+  CELATONE_CONSTANTS,
+  CELATONE_CONTRACT_ADDRESS,
+  CELATONE_FALLBACK_GAS_PRICE,
+} from "env";
 import { AppProvider } from "lib/app-provider/contexts/app";
-import { TxBroadcastProvider } from "lib/app-provider/tx/tx-broadcast";
 import { Chakra } from "lib/components/Chakra";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
-import { StoreProvider } from "lib/providers/RootStore";
+import { StoreProvider } from "lib/providers/store";
+import { TxBroadcastProvider } from "lib/providers/tx-broadcast";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -72,7 +76,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         >
           <StoreProvider>
             <AppProvider
-              fallbackGasPrice={FALLBACK_GAS_PRICE}
+              fallbackGasPrice={CELATONE_FALLBACK_GAS_PRICE}
+              contractAddress={CELATONE_CONTRACT_ADDRESS}
               constants={CELATONE_CONSTANTS}
             >
               <TxBroadcastProvider>
