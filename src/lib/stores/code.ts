@@ -34,6 +34,10 @@ export class CodeStore {
     });
   }
 
+  isCodeUserKeyExist(): boolean {
+    return !!this.userKey;
+  }
+
   setCodeUserKey(userKey: string) {
     this.userKey = userKey;
   }

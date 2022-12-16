@@ -101,6 +101,10 @@ export class ContractStore {
     return isHydrated(this);
   }
 
+  isContractUserKeyExist(): boolean {
+    return !!this.userKey;
+  }
+
   setContractUserKey(userKey: string) {
     this.userKey = userKey;
   }
