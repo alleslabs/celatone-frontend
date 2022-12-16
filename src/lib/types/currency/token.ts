@@ -8,7 +8,7 @@ export type Gas<T = number> = T & NominalType<"gas">;
 // All currencies
 export type Token<T = string> = T & NominalType<string>;
 
-export interface ChainGas {
+export interface ChainGasPrice {
   denom: string;
-  gasPrice: Gas<number>;
+  gasPrice: U<Token>;
 }

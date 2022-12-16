@@ -14,12 +14,11 @@ import {
 
 import { CreateNewList } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/hooks";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
 const Navbar = observer(() => {
-  const userKey = useUserKey();
   const { getContractLists } = useContractStore();
 
   const navMenu = [
@@ -61,7 +60,7 @@ const Navbar = observer(() => {
           slug: `/contracts/${formatSlugName(SAVED_LIST_NAME)}`,
           icon: getListIcon(SAVED_LIST_NAME),
         },
-        ...getContractLists(userKey)
+        ...getContractLists()
           .filter((list) => list.slug !== formatSlugName(SAVED_LIST_NAME))
           .sort(cmpContractListInfo)
           .slice(0, 3)

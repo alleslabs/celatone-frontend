@@ -54,9 +54,10 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
   ) => {
     const userKey = useUserKey();
     const { getContractLists, isContractListExist } = useContractStore();
-    const options = getContractLists(userKey).map((item) => {
-      return { label: item.name, value: item.slug };
-    });
+    const options = getContractLists().map((item) => ({
+      label: item.name,
+      value: item.slug,
+    }));
 
     const [partialResult, setPartialResult] = useState<Option[]>([]);
     const [displayOptions, setDisplayOptions] = useState(false);

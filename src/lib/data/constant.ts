@@ -19,7 +19,7 @@ export const getListIcon = (listName: string) => {
 
 export const DEFAULT_ADDRESS = "default-address";
 
-export const MAX_FILE_SIZE = 3_000_000;
+export const MAX_FILE_SIZE = 800_000;
 
 export const MICRO = 1000000;
 
@@ -31,7 +31,7 @@ export const typeUrlDict = {
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
 // TODO
-export const ENDPOINT_REGISTRY: Record<string, string> = {
+export const LCD_ENDPOINT: Record<string, string> = {
   osmosis: "https://lcd.osmosis.zone",
   osmosistestnet: "https://lcd-test.osmosis.zone",
 };

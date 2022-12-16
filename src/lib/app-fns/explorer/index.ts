@@ -1,6 +1,3 @@
-/**
- * TODO: Overhaul this later
- */
 export const explorerMap: Record<string, string> = {
   osmosis: "https://www.mintscan.io/osmosis",
   terra2: "https://finder.terra.money/mainnet",
@@ -26,30 +23,14 @@ export const getExplorerTxUrl = (chainName: string) => {
 export const getExplorerContractAddressUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
+    // TODO: find osmosis and terra suffix for contract address
     case "osmosis":
     case "osmosistestnet":
       pathSuffix = "wasm/contract";
       break;
-    case "terra2":
-      pathSuffix = "address";
-      break;
-    default:
-      break;
-  }
-  return `${explorerMap[chainName]}/${pathSuffix}`;
-};
-
-// NOTE - Seperate the function for further implementation
-export const getExplorerUserAddressUrl = (chainName: string) => {
-  let pathSuffix = "";
-  switch (chainName) {
-    case "osmosis":
-    case "osmosistestnet":
-      pathSuffix = "account";
-      break;
-    case "terra2":
-      pathSuffix = "address";
-      break;
+    // case "terra2":
+    //   pathSuffix = "tx";
+    //   break;
     default:
       break;
   }

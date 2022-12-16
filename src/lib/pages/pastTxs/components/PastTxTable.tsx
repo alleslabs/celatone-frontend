@@ -29,7 +29,7 @@ import {
 } from "lib/app-provider";
 import { useResendTx } from "lib/app-provider/tx/resend";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
 import type {
   DetailExecute,
@@ -67,7 +67,6 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
   const [error, setError] = useState("");
   const { currentChainName } = useWallet();
 
-  const userKey = useUserKey();
   const { getContractInfo } = useContractStore();
 
   const extractMessage = useCallback((data: Transaction) => {
@@ -175,10 +174,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         );
       }
       setButton("redo");
-      const contractInfo = getContractInfo(
-        userKey,
-        instantiateMsgs[0].contractAddress
-      );
+      const contractInfo = getContractInfo(instantiateMsgs[0].contractAddress);
       // Only 1 Instantiate Msgs
       const singleMsgProps: SingleMsgProps = element.success
         ? {
@@ -195,7 +191,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
           };
       return <SingleMsg {...singleMsgProps} />;
     },
-    [element.success, getContractInfo, userKey]
+    [element.success, getContractInfo]
   );
 
   // TODO - Refactor
@@ -236,7 +232,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         setIsAccordion(false);
       }
 
-      const contractInfo = getContractInfo(userKey, executeMsgs[0].contract);
+      const contractInfo = getContractInfo(executeMsgs[0].contract);
 
       // Only 1 Execute Msg
       const singleMsgProps: SingleMsgProps = element.success
@@ -256,7 +252,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
           };
       return <SingleMsg {...singleMsgProps} />;
     },
-    [element.success, getContractInfo, userKey]
+    [element.success, getContractInfo]
   );
 
   // TODO - Refactor
@@ -465,7 +461,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
       <Tr
         key={element.hash}
         onClick={onToggle}
-        _hover={{ background: "rgba(255, 255, 255, 0.12)" }}
+        _hover={{ background: "divider.main" }}
         sx={{
           "& td:first-of-type": { pl: "48px" },
           "& td:last-child": { pr: "48px" },

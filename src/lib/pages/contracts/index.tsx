@@ -7,7 +7,7 @@ import { MdOutlineAdd } from "react-icons/md";
 import { CreateNewList } from "lib/components/modal/list";
 import { AllContractLists } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/hooks";
 import { useInstantiatedMockInfoByMe } from "lib/model/contract";
 
 const ContractList = observer(() => {
@@ -18,12 +18,8 @@ const ContractList = observer(() => {
     router.push({ pathname: `/contracts/${slug}` });
   };
 
-  const userKey = useUserKey();
   const { getContractLists } = useContractStore();
-  const contractLists = [
-    useInstantiatedMockInfoByMe(),
-    ...getContractLists(userKey),
-  ];
+  const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
 
   return (
     <PageContainer>

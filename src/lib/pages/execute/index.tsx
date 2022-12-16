@@ -10,12 +10,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import {
-  useContractStore,
-  useEndpoint,
-  useMobile,
-  useUserKey,
-} from "lib/hooks";
+import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
@@ -34,7 +29,6 @@ const Execute = () => {
   const isMobile = useMobile();
   const { getContractInfo } = useContractStore();
   const { address = "" } = useWallet();
-  const userKey = useUserKey();
   const endpoint = useEndpoint();
 
   const [contractAddress, setContractAddress] = useState<string>("");
@@ -89,7 +83,7 @@ const Execute = () => {
   useEffect(() => {
     (async () => {
       const contractAddr = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(userKey, contractAddr);
+      const contractState = getContractInfo(contractAddr);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contractAddr);
@@ -112,7 +106,7 @@ const Execute = () => {
       setInitialMsg(jsonMsg);
       if (!contractAddr) setCmds([]);
     })();
-  }, [router, endpoint, userKey, getContractInfo, onContractSelect]);
+  }, [router, endpoint, getContractInfo, onContractSelect]);
 
   const notSelected = contractAddress.length === 0;
 

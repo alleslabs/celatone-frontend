@@ -50,7 +50,7 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
         or drag WASM file here
       </Text>
       <Text variant="body2" color="text.dark">
-        .wasm (max. 3MB)
+        .wasm (max. 800KB)
       </Text>
     </Flex>
   );
