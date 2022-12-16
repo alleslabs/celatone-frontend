@@ -101,6 +101,7 @@ export const EditableCell = ({
               whiteSpace="nowrap"
               textOverflow="ellipsis"
               maxW="150px"
+              fontWeight={inputValue ? "600" : "400"}
               color={inputValue ? "text.main" : "text.dark"}
             >
               {inputValue ?? defaultValue}
