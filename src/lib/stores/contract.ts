@@ -1,12 +1,9 @@
-import localforage from "localforage";
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import type { Option, Dict } from "lib/types";
 import { formatSlugName } from "lib/utils";
-
-const isBrowser = typeof window !== "undefined";
 
 export interface ContractInfo {
   address: string;
@@ -97,8 +94,6 @@ export class ContractStore {
         "allTags",
         "recentActivities",
       ],
-      storage: isBrowser ? localforage : undefined,
-      stringify: false,
     });
   }
 
