@@ -55,6 +55,7 @@ const Upload = () => {
     estimatedFee
   );
 
+  // TODO: apply useForm
   useEffect(() => {
     const trimedDescription = codeDesc.trim();
     if (trimedDescription.length === 0) {

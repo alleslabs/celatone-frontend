@@ -22,6 +22,7 @@ export function EditList({ list, menuItemProps }: ModalProps) {
   const [listName, setListName] = useState<string>(list.label);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
 
+  // TODO: apply use-react-form later
   useEffect(() => {
     const trimedListName = listName.trim();
     if (trimedListName.length === 0) {

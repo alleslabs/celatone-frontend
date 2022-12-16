@@ -12,7 +12,7 @@ import {
   MAX_CODE_DESCRIPTION_LENGTH,
 } from "lib/data";
 import { useCodeStore, useEndpoint, useUserKey } from "lib/hooks";
-import { getCodeIDInfo } from "lib/services/contract";
+import { getCodeIdInfo } from "lib/services/contract";
 
 interface ModalProps {
   buttonProps: ButtonProps;
@@ -20,8 +20,8 @@ interface ModalProps {
 
 export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   /* STATE */
-  const [codeId, setCodeID] = useState("");
-  const [codeIdStatus, setCodeIDStatus] = useState<FormStatus>({
+  const [codeId, setCodeId] = useState("");
+  const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
     state: "init",
   });
   const [uploader, setUploader] = useState("No Description");
@@ -33,6 +33,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     state: "init",
   });
 
+  // TODO: apply use-react-form later
   useEffect(() => {
     const trimedDescription = description.trim();
     if (trimedDescription.length === 0) {
@@ -48,24 +49,24 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   /* DEPENDENCY */
   const toast = useToast();
   const userKey = useUserKey();
-  const { isCodeIDExist, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
+  const { isCodeIdExist, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
   const endpoint = useEndpoint();
 
   const { refetch, isFetching, isRefetching } = useQuery(
     ["query", endpoint, codeId],
-    async () => getCodeIDInfo(endpoint, Number(codeId)),
+    async () => getCodeIdInfo(endpoint, Number(codeId)),
     {
       enabled: false,
       retry: false,
       cacheTime: 0,
       onSuccess(data) {
-        setCodeIDStatus({ state: "success", message: "Valid Code ID" });
+        setCodeIdStatus({ state: "success", message: "Valid Code ID" });
         setUploader(data.code_info.creator);
         setUploaderStatus({ state: "success" });
       },
       onError() {
-        setCodeIDStatus({ state: "error", message: "Invalid Code ID" });
+        setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
         setUploader("Not Found");
         setUploaderStatus({ state: "error" });
       },
@@ -74,8 +75,8 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
 
   /* CALLBACK */
   const reset = () => {
-    setCodeID("");
-    setCodeIDStatus({ state: "init" });
+    setCodeId("");
+    setCodeIdStatus({ state: "init" });
     setUploader("");
     setUploaderStatus({ state: "init" });
     setDescription("");
@@ -130,12 +131,12 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   // update codeIdStatus
   useEffect(() => {
     if (codeId.trim().length === 0) {
-      setCodeIDStatus({ state: "init" });
+      setCodeIdStatus({ state: "init" });
     } else {
-      setCodeIDStatus({ state: "loading" });
+      setCodeIdStatus({ state: "loading" });
 
-      if (isCodeIDExist(userKey, Number(codeId))) {
-        setCodeIDStatus({
+      if (isCodeIdExist(userKey, Number(codeId))) {
+        setCodeIdStatus({
           state: "error",
           message: "You already added this Code ID",
         });
@@ -149,7 +150,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     }
 
     return () => {};
-  }, [userKey, isCodeIDExist, codeId, refetch]);
+  }, [userKey, isCodeIdExist, codeId, refetch]);
 
   // update code description
   useEffect(() => {
@@ -161,6 +162,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   }, [codeId, codeIdStatus.state, getCodeLocalInfo, setDescription, userKey]);
 
   /* LOGIC */
+  // TODO: apply use-react-form later
   const disableMain = useMemo(() => {
     // HACK: check uploader address
     return (
@@ -186,7 +188,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
         <NumberInput
           variant="floating"
           value={codeId}
-          onInputChange={setCodeID}
+          onInputChange={setCodeId}
           label="Code ID"
           labelBgColor="gray.800"
           status={codeIdStatus}

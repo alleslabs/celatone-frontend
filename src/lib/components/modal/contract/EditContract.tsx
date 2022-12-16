@@ -60,6 +60,7 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
       trigger={<MenuItem {...menuItemProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}
+      // TODO: apply use-react-form later
       disabledMain={
         name.trim().length > MAX_CONTRACT_NAME_LENGTH ||
         description.trim().length > MAX_CONTRACT_DESCRIPTION_LENGTH

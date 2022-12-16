@@ -37,6 +37,7 @@ export function CreateNewList({
     onClose?.();
   }, [onClose, inputValue]);
 
+  // TODO: apply useForm
   useEffect(() => {
     const trimedListName = listName.trim();
     if (trimedListName.length === 0) {

@@ -47,6 +47,7 @@ export const OffChainDetail = ({
     state: "init",
   });
 
+  // TODO: apply useForm
   useEffect(() => {
     const trimedName = name.trim();
     if (trimedName.length === 0) {

@@ -135,6 +135,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}
+      // TODO: apply use-react-form later
       disabledMain={
         status.state !== "success" ||
         name.trim().length > MAX_CONTRACT_NAME_LENGTH ||
