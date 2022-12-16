@@ -15,7 +15,7 @@ interface SavedCodeInfo {
 }
 
 export class CodeStore {
-  private userKey: string;
+  userKey: string;
 
   savedCodeIDs: Dict<string, number[]>;
 
@@ -34,7 +34,7 @@ export class CodeStore {
     });
   }
 
-  isCodeUserKeyExist(): boolean {
+  get isCodeUserKeyExist(): boolean {
     return !!this.userKey;
   }
 
