@@ -33,20 +33,21 @@ export const useHandleContractSave = ({
   const toast = useToast();
   const userKey = useUserKey();
   const { updateContractInfo } = useContractStore();
-  return () => {
+  // TODO: optimize to take name, description, tags, lists, actions only here
+  return (inputName?: string) => {
     updateContractInfo(
       userKey,
       address,
       instantiator,
       label,
       created,
-      name,
+      inputName ?? name,
       description,
       tags,
       lists
     );
 
-    if (actions) actions();
+    actions?.();
 
     toast({
       title,

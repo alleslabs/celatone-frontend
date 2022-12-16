@@ -14,9 +14,7 @@ interface ModalProps {
   menuItemProps: MenuItemProps;
 }
 export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
-  const [name, setName] = useState<string>(
-    contractInfo.name ?? contractInfo.label
-  );
+  const [name, setName] = useState<string>(contractInfo.name ?? "");
   const [description, setDescription] = useState<string>(
     contractInfo.description ?? ""
   );
@@ -24,7 +22,7 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
   const [lists, setLists] = useState<Option[]>(contractInfo.lists ?? []);
 
   const reset = () => {
-    setName(contractInfo.name ?? contractInfo.label);
+    setName(contractInfo.name ?? "");
     setDescription(contractInfo.description ?? "");
     setTags(contractInfo.tags ?? []);
     setLists(contractInfo.lists ?? []);
