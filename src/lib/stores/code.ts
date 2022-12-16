@@ -34,7 +34,7 @@ export class CodeStore {
     });
   }
 
-  get isCodeUserKeyExist(): boolean {
+  isCodeUserKeyExist(): boolean {
     return !!this.userKey;
   }
 

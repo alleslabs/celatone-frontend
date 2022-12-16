@@ -101,7 +101,7 @@ export class ContractStore {
     return isHydrated(this);
   }
 
-  get isContractUserKeyExist(): boolean {
+  isContractUserKeyExist(): boolean {
     return !!this.userKey;
   }
 
