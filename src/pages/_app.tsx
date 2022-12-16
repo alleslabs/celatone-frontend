@@ -9,6 +9,8 @@ import { assets, chains } from "chain-registry";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
+import localforage from "localforage";
+import { configurePersistable } from "mobx-persist-store";
 import { enableStaticRendering } from "mobx-react-lite";
 import { DefaultSeo } from "next-seo";
 import type { AppProps, AppContext } from "next/app";
@@ -27,6 +29,20 @@ import { StoreProvider } from "lib/providers/RootStore";
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 enableStaticRendering(typeof window === "undefined");
+
+localforage.config({
+  name: "celatone_web_app",
+  storeName: "key_value_pairs",
+  version: 1.0,
+  description: "CelaTone",
+});
+
+const isBrowser = typeof window !== "undefined";
+
+configurePersistable({
+  storage: isBrowser ? localforage : undefined,
+  stringify: false,
+});
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();

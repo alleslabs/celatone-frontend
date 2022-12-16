@@ -1,4 +1,3 @@
-import localforage from "localforage";
 import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 
@@ -14,8 +13,6 @@ interface SavedCodeInfo {
   description?: string;
   uploader?: string;
 }
-
-const isBrowser = typeof window !== "undefined";
 
 export class CodeStore {
   private userKey: string;
@@ -34,8 +31,6 @@ export class CodeStore {
     makePersistable(this, {
       name: "CodeStore",
       properties: ["savedCodeIDs", "codeInfo"],
-      storage: isBrowser ? localforage : undefined,
-      stringify: false,
     });
   }
 
