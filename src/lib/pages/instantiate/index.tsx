@@ -1,5 +1,5 @@
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CompletedPage from "./completed";
 import InstantiatePage from "./instantiate";
@@ -20,6 +20,10 @@ const Index = () => {
     gasUsed: 0,
     contractLabel: "",
   });
+
+  useEffect(() => {
+    document.getElementById("content")?.scroll(0, 0);
+  }, [completed]);
 
   return completed && txInfo ? (
     <CompletedPage txInfo={txInfo} />

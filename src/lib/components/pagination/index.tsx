@@ -1,6 +1,6 @@
 import { Flex, Icon, Select, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { TiArrowSortedDown } from "react-icons/ti";
 
@@ -26,6 +26,10 @@ export const Pagination = ({
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
+  useEffect(() => {
+    document.getElementById("content")?.scroll(0, 0);
+  }, [currentPage, pageSize]);
+
   const { offsetData, lastDataInPage } = useMemo(() => {
     return {
       offsetData: offset + 1,

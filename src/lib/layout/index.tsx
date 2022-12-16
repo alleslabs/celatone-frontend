@@ -1,5 +1,7 @@
 import { Grid, GridItem } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 
 import Header from "./Header";
 import Navbar from "./Navbar";
@@ -9,6 +11,12 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    document.getElementById("content")?.scroll(0, 0);
+  }, [router.asPath]);
+
   return (
     <Grid
       templateAreas={`"header header"
@@ -25,7 +33,7 @@ const Layout = ({ children }: LayoutProps) => {
       <GridItem bg="#212121" area="nav" mt="1">
         <Navbar />
       </GridItem>
-      <GridItem area="main" overflowY="auto">
+      <GridItem area="main" overflowY="auto" id="content">
         {children}
       </GridItem>
     </Grid>
