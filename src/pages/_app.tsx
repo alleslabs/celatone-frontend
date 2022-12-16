@@ -34,7 +34,7 @@ localforage.config({
   name: "celatone_web_app",
   storeName: "key_value_pairs",
   version: 1.0,
-  description: "CelaTone",
+  description: "Celatone",
 });
 
 const isBrowser = typeof window !== "undefined";
