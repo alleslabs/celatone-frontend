@@ -18,10 +18,6 @@ export const CELATONE_CONTRACT_ADDRESS = (
 ): CelatoneContractAddress => {
   switch (chainName) {
     case "osmosis":
-      return {
-        example:
-          "osmo1yg8930mj8pk288lmkjex0qz85mj8wgtns5uzwyn2hs25pwdnw42sf745wc" as ContractAddr,
-      };
     case "osmosistestnet":
       return {
         example:
