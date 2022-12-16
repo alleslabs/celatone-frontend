@@ -94,12 +94,9 @@ export const EditableCell = ({
             onMouseOver={handleMouseEnterText}
             onMouseOut={handleMouseOutText}
           >
-            {/* TODO change to css */}
             <Text
               variant="body2"
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
+              className="ellipsis"
               maxW="150px"
               fontWeight={inputValue ? "600" : "400"}
               color={inputValue ? "text.main" : "text.dark"}
