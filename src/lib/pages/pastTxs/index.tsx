@@ -238,7 +238,7 @@ const PastTxs = () => {
                   Messages
                 </Th>
                 <Th textTransform="none" w="25%">
-                  Time Stamp
+                  Timestamp
                 </Th>
                 <Th w="10%" />
                 <Th w="5%" />
