@@ -1,39 +1,16 @@
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 
 import type { CodeInfo } from "lib/types";
 import { truncate } from "lib/utils";
-
-const TableHeader = () => {
-  return (
-    <Grid
-      templateColumns="1fr 3fr 1fr 180px"
-      borderBottom="1px solid"
-      borderBottomColor="divider.main"
-      sx={{ "> div": { p: "16px" } }}
-    >
-      <GridItem>
-        <Text variant="body2" fontWeight={700} ml="48px">
-          Code ID
-        </Text>
-      </GridItem>
-      <GridItem>
-        <Text variant="body2" fontWeight={700}>
-          Description
-        </Text>
-      </GridItem>
-      <GridItem textAlign="center">
-        <Text variant="body2" fontWeight={700}>
-          Contracts
-        </Text>
-      </GridItem>
-      <GridItem>
-        <Text variant="body2" fontWeight={700}>
-          Uploaders
-        </Text>
-      </GridItem>
-    </Grid>
-  );
-};
 
 interface TableRowProps {
   onCodeSelect: (newVal: string) => void;
@@ -42,32 +19,30 @@ interface TableRowProps {
 
 const TableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
   return (
-    <Grid
-      templateColumns="1fr 3fr 1fr 180px"
-      borderBottom="1px solid"
-      borderBottomColor="divider.main"
+    <Tr
+      sx={{
+        "& td:first-of-type": { pl: "60px" },
+        "& td:last-child": { pr: "60px" },
+      }}
       cursor="pointer"
       _hover={{ bg: "gray.900", transition: "all .2s" }}
-      sx={{ "> div": { p: "16px" } }}
       onClick={() => onCodeSelect(codeDetail.id.toString())}
     >
-      <GridItem>
-        <Text variant="body2" ml="48px">
-          {codeDetail.id}
-        </Text>
-      </GridItem>
-      <GridItem>
-        <Text variant="body2">
+      <Td width="20%">
+        <Text variant="body2">{codeDetail.id}</Text>
+      </Td>
+      <Td width="40%">
+        <Text variant="body2" className="ellipsis">
           {codeDetail?.description ?? "No Description"}
         </Text>
-      </GridItem>
-      <GridItem textAlign="center">
+      </Td>
+      <Td width="15%" textAlign="center">
         <Text variant="body2">{codeDetail.contracts}</Text>
-      </GridItem>
-      <GridItem>
+      </Td>
+      <Td width="25%">
         <Text variant="body2">{truncate(codeDetail.uploader)}</Text>
-      </GridItem>
-    </Grid>
+      </Td>
+    </Tr>
   );
 };
 
@@ -78,11 +53,32 @@ interface CodeTableProps {
 
 export const CodeTable = ({ onCodeSelect, codes }: CodeTableProps) => {
   return (
-    <Box w="full">
-      <TableHeader />
-      {codes.map((code) => (
-        <TableRow key={code.id} codeDetail={code} onCodeSelect={onCodeSelect} />
-      ))}
-    </Box>
+    <TableContainer w="full" my="16px">
+      <Table variant="simple">
+        <Thead>
+          <Tr
+            sx={{
+              "& th:first-of-type": { pl: "60px" },
+              "& th:last-child": { pr: "60px" },
+              "& th": { textTransform: "none", border: "none", color: "white" },
+            }}
+          >
+            <Th width="20%">Code ID</Th>
+            <Th width="40%">Description</Th>
+            <Th width="15%">Contracts</Th>
+            <Th width="25%">Uploader</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {codes.map((code) => (
+            <TableRow
+              key={code.id}
+              codeDetail={code}
+              onCodeSelect={onCodeSelect}
+            />
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 };
