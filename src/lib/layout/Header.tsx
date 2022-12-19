@@ -55,20 +55,27 @@ const Header = () => {
                 whiteSpace="nowrap"
                 maxW="170px"
               >
-                {PROPER_CHAINID_MAP[currentChainName]}
+                {PROPER_CHAINID_MAP[currentChainName].chainID}
               </Text>
               <Icon as={FiChevronDown} />
             </Flex>
           </MenuButton>
           <MenuList>
-            {CHAIN_NAMES.map((chainName) => (
-              <MenuItem
-                key={chainName}
-                onClick={() => setCurrentChain(chainName)}
-              >
-                {PROPER_CHAINID_MAP[chainName]}
-              </MenuItem>
-            ))}
+            {CHAIN_NAMES.map((chainName) => {
+              return (
+                <MenuItem
+                  key={chainName}
+                  onClick={() => setCurrentChain(chainName)}
+                  flexDirection="column"
+                  alignItems="flex-start"
+                >
+                  <Text>{PROPER_CHAINID_MAP[chainName].name}</Text>
+                  <Text color="text.dark" fontSize="sm">
+                    {PROPER_CHAINID_MAP[chainName].chainID}
+                  </Text>
+                </MenuItem>
+              );
+            })}
           </MenuList>
         </Menu>
         <WalletSection />
