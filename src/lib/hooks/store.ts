@@ -1,11 +1,11 @@
-import { useRootStore } from "lib/providers/RootStore";
+import { useStore } from "lib/providers/store";
 
 export function useCodeStore() {
-  const { codeStore } = useRootStore();
+  const { codeStore } = useStore();
   return codeStore;
 }
 
 export function useContractStore() {
-  const { contractStore } = useRootStore();
+  const { contractStore } = useStore();
   return contractStore;
 }

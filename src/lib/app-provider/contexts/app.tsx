@@ -1,6 +1,7 @@
 import { useWallet } from "@cosmos-kit/react";
 import big from "big.js";
 import { GraphQLClient } from "graphql-request";
+import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import { useEffect, useContext, useMemo, createContext } from "react";
 
@@ -11,22 +12,31 @@ import {
   getExplorerTxUrl,
 } from "lib/app-fns/explorer";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { DEFAULT_ADDRESS, getExplorerUserAddressUrl } from "lib/data";
-import { DEFAULT_CHAIN } from "lib/env";
+import {
+  DEFAULT_ADDRESS,
+  DEFAULT_CHAIN,
+  getExplorerUserAddressUrl,
+} from "lib/data";
 import { useCodeStore, useContractStore } from "lib/hooks";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
 
-interface AppProviderProps<Constants extends AppConstants> {
+interface AppProviderProps<ContractAddress, Constants extends AppConstants> {
   children: ReactNode;
 
   fallbackGasPrice: Record<string, ChainGasPrice>;
 
+  contractAddress: (currentChainName: string) => ContractAddress;
+
   constants: Constants;
 }
 
-interface AppContextInterface<Constants extends AppConstants = AppConstants> {
+interface AppContextInterface<
+  ContractAddress,
+  Constants extends AppConstants = AppConstants
+> {
   chainGasPrice: ChainGasPrice;
+  contractAddress: ContractAddress;
   constants: Constants;
   explorerLink: {
     contractAddr: string;
@@ -37,9 +47,10 @@ interface AppContextInterface<Constants extends AppConstants = AppConstants> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const AppContext = createContext<AppContextInterface<any>>({
+const AppContext = createContext<AppContextInterface<any, any>>({
   chainGasPrice: { denom: "", gasPrice: "0" as U<Token> },
-  constants: {},
+  contractAddress: {},
+  constants: { gasAdjustment: 0 },
   explorerLink: {
     contractAddr: "",
     txs: "",
@@ -48,14 +59,15 @@ const AppContext = createContext<AppContextInterface<any>>({
   indexerGraphClient: new GraphQLClient(""),
 });
 
-export const AppProvider = <Constants extends AppConstants>({
+export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   children,
   fallbackGasPrice,
+  contractAddress,
   constants,
-}: AppProviderProps<Constants>) => {
+}: AppProviderProps<ContractAddress, Constants>) => {
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
-  const { setCodeUserKey } = useCodeStore();
-  const { setContractUserKey } = useContractStore();
+  const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
+  const { setContractUserKey, isContractUserKeyExist } = useContractStore();
 
   const chainGasPrice = useMemo(() => {
     if (
@@ -83,13 +95,22 @@ export const AppProvider = <Constants extends AppConstants>({
     };
   }, [currentChainName]);
 
-  const states = useMemo<AppContextInterface<Constants>>(() => {
+  const states = useMemo<
+    AppContextInterface<ContractAddress, Constants>
+  >(() => {
     return {
       chainGasPrice,
+      contractAddress: contractAddress(currentChainName),
       constants,
       ...chainBoundStates,
     };
-  }, [chainGasPrice, constants, chainBoundStates]);
+  }, [
+    chainGasPrice,
+    contractAddress,
+    currentChainName,
+    constants,
+    chainBoundStates,
+  ]);
 
   useEffect(() => {
     if (currentChainName) {
@@ -104,13 +125,20 @@ export const AppProvider = <Constants extends AppConstants>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!currentChainName) return <LoadingOverlay />;
+  const AppContent = observer(() => {
+    if (isCodeUserKeyExist() && isContractUserKeyExist())
+      return (
+        <AppContext.Provider value={states}>{children}</AppContext.Provider>
+      );
+    return <LoadingOverlay />;
+  });
 
-  return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
+  return <AppContent />;
 };
 
 export const useApp = <
+  ContractAddress,
   Constants extends AppConstants
->(): AppContextInterface<Constants> => {
+>(): AppContextInterface<ContractAddress, Constants> => {
   return useContext(AppContext);
 };

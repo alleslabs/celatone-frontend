@@ -6,6 +6,38 @@ export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
 export const SAVED_LIST_NAME = "Saved Contracts";
 
+export const getMaxLengthError = (
+  field: string,
+  currentLength: number,
+  maxLength: number
+) => {
+  return `${field} is too long. (${currentLength}/${maxLength})`;
+};
+
+export const MAX_LIST_NAME_LENGTH = 50;
+export const getMaxListNameLengthError = (currentLength: number) =>
+  getMaxLengthError("List name", currentLength, MAX_LIST_NAME_LENGTH);
+
+export const MAX_CONTRACT_NAME_LENGTH = 50;
+export const getMaxContractNameLengthError = (currentLength: number) =>
+  getMaxLengthError("Contract name", currentLength, MAX_CONTRACT_NAME_LENGTH);
+
+export const MAX_CONTRACT_DESCRIPTION_LENGTH = 250;
+export const getMaxContractDescriptionLengthError = (currentLength: number) =>
+  getMaxLengthError(
+    "Contract description",
+    currentLength,
+    MAX_CONTRACT_DESCRIPTION_LENGTH
+  );
+
+export const MAX_CODE_DESCRIPTION_LENGTH = 50;
+export const getMaxCodeDescriptionLengthError = (currentLength: number) =>
+  getMaxLengthError(
+    "Code description",
+    currentLength,
+    MAX_CODE_DESCRIPTION_LENGTH
+  );
+
 export const getListIcon = (listName: string) => {
   switch (listName) {
     case INSTANTIATED_LIST_NAME:

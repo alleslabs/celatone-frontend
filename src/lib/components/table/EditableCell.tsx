@@ -1,27 +1,23 @@
-import { Flex, Text, Icon, Input, Button, useToast } from "@chakra-ui/react";
+import { Flex, Text, Icon, Input, Button, Tooltip } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
-import { MdMode, MdCheckCircle, MdCheck, MdClose } from "react-icons/md";
+import { MdMode, MdInfo, MdCheck, MdClose } from "react-icons/md";
 
-import { useCodeStore, useUserKey } from "lib/hooks";
-
-/** This component is duplicated by ContractNameCell
- * So, we will abstract it later
- */
-interface CodeDescriptionProps {
-  codeId: number;
-  description?: string;
+interface EditableCellProps {
+  initialValue?: string;
+  defaultValue: string;
+  maxLength: number;
+  tooltip?: string;
+  onSave?: (value?: string) => void;
 }
-
-export const CodeDescription = ({
-  codeId,
-  description,
-}: CodeDescriptionProps) => {
-  const toast = useToast();
-  const { updateCodeInfo } = useCodeStore();
-  const userKey = useUserKey();
-
-  const [inputValue, setInputValue] = useState(description);
+export const EditableCell = ({
+  initialValue,
+  defaultValue,
+  maxLength,
+  tooltip,
+  onSave,
+}: EditableCellProps) => {
+  const [inputValue, setInputValue] = useState(initialValue);
   const [isHover, setIsHover] = useState(false);
   const [isHoverText, setIsHoverText] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -41,38 +37,21 @@ export const CodeDescription = ({
   const handleEdit = () => {
     setIsEdit(true);
   };
-  const handleCancel = () => {
-    setIsEdit(false);
-    setInputValue(description);
-  };
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newVal = event.target.value;
     setInputValue(newVal);
   };
-
-  const showName = isHoverText && (inputValue ?? "").length > 20;
-  const handleSave = () => {
-    updateCodeInfo(userKey, codeId, { description: inputValue });
-
+  const handleCancel = () => {
     setIsEdit(false);
-    toast({
-      title: "Changed description successfully!",
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
-    });
+    setInputValue(initialValue);
+  };
+  const handleSave = () => {
+    setIsEdit(false);
+    onSave?.(inputValue);
   };
 
+  // TODO: reconsider 20
+  const showName = isHoverText && (inputValue ?? "").length > 20;
   return (
     <Flex
       gap={1}
@@ -98,6 +77,12 @@ export const CodeDescription = ({
             onChange={handleChange}
             width="full"
             minWidth="300px"
+            maxLength={maxLength}
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSave();
+              else if (e.key === "Escape") handleCancel();
+            }}
           />
           <Button size="sm" onClick={handleSave} variant="ghost-gray">
             <Icon as={MdCheck} color="success.main" />
@@ -113,16 +98,14 @@ export const CodeDescription = ({
             onMouseOver={handleMouseEnterText}
             onMouseOut={handleMouseOutText}
           >
-            {/* TODO change to css */}
             <Text
               variant="body2"
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
+              className="ellipsis"
               maxW="150px"
+              fontWeight={inputValue ? "600" : "400"}
               color={inputValue ? "text.main" : "text.dark"}
             >
-              {inputValue ?? "No Description"}
+              {inputValue ?? defaultValue}
             </Text>
             {showName && (
               <Text
@@ -139,14 +122,27 @@ export const CodeDescription = ({
               </Text>
             )}
           </Flex>
-          <Icon
-            opacity={isHover ? 1 : 0}
-            as={MdMode}
-            color="gray.600"
-            boxSize="4"
-            cursor="pointer"
-            onClick={handleEdit}
-          />
+          {!!tooltip && (
+            <Tooltip hasArrow label={tooltip} bg="primary.dark" placement="top">
+              <Icon
+                as={MdInfo}
+                alignItems="center"
+                color="gray.600"
+                boxSize="4"
+                cursor="pointer"
+              />
+            </Tooltip>
+          )}
+          {!!onSave && (
+            <Icon
+              opacity={isHover ? 1 : 0}
+              as={MdMode}
+              color="gray.600"
+              boxSize="4"
+              cursor="pointer"
+              onClick={handleEdit}
+            />
+          )}
         </Flex>
       )}
     </Flex>

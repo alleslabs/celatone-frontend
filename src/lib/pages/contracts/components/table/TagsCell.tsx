@@ -4,12 +4,15 @@ import { useState } from "react";
 import { EditTags } from "lib/components/modal/EditTags";
 import type { ContractInfo } from "lib/stores/contract";
 
-interface TagProps {
+interface TagsCellProps {
   contractInfo: ContractInfo;
   isReadOnly?: boolean;
 }
 
-export const Tags = ({ contractInfo, isReadOnly = false }: TagProps) => {
+export const TagsCell = ({
+  contractInfo,
+  isReadOnly = false,
+}: TagsCellProps) => {
   const tags = contractInfo.tags ?? [];
   const [isHover, setIsHover] = useState(false);
   const handleMouseEnter = () => {

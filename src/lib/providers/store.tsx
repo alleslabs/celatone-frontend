@@ -6,10 +6,10 @@ import { RootStore } from "lib/stores/root";
 let store: RootStore;
 export const StoreContext = createContext<RootStore | undefined>(undefined);
 
-export function useRootStore() {
+export function useStore() {
   const context = useContext(StoreContext);
   if (context === undefined) {
-    throw new Error("useRootStore must be used within RootProvider");
+    throw new Error("useStore must be used within StoreProvider");
   }
 
   return context;

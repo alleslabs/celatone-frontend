@@ -4,9 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
-import type { FormStatus } from "lib/components/forms/TextInput";
+import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
+import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useContractStore, useUserKey } from "lib/hooks";
 import { shortenName } from "lib/utils";
 
@@ -36,14 +37,15 @@ export function CreateNewList({
     onClose?.();
   }, [onClose, inputValue]);
 
+  // TODO: apply useForm
   useEffect(() => {
     const trimedListName = listName.trim();
     if (trimedListName.length === 0) {
       setStatus({ state: "init" });
-    } else if (trimedListName.length > 50)
+    } else if (trimedListName.length > MAX_LIST_NAME_LENGTH)
       setStatus({
         state: "error",
-        message: `List name is too long. (${trimedListName.length}/50)`,
+        message: getMaxListNameLengthError(trimedListName.length),
       });
     else if (isContractListExist(userKey, trimedListName))
       setStatus({ state: "error", message: "Already existed" });

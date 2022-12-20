@@ -4,8 +4,14 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  Text,
 } from "@chakra-ui/react";
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
+import type {
+  Control,
+  FieldPath,
+  FieldValues,
+  UseControllerProps,
+} from "react-hook-form";
 import { useWatch, useController } from "react-hook-form";
 
 import type { TextInputProps } from "./TextInput";
@@ -14,6 +20,7 @@ interface ControllerInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
+  rules?: UseControllerProps["rules"];
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -26,18 +33,26 @@ export const ControllerInput = <T extends FieldValues>({
   placeholder = " ",
   size = "lg",
   type = "text",
+  rules = {},
   ...componentProps
 }: ControllerInputProps<T>) => {
-  const { field } = useController({ name, control });
   const watcher = useWatch({
     name,
     control,
   });
 
+  const { field } = useController({
+    name,
+    control,
+    rules,
+  });
+
+  const isError = !!error;
   return (
     <FormControl
       className={`${size}-form`}
       size={size}
+      isInvalid={isError}
       {...componentProps}
       {...field}
     >
@@ -56,9 +71,12 @@ export const ControllerInput = <T extends FieldValues>({
         value={watcher}
         onChange={field.onChange}
       />
-      <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      {!error && (
-        <FormHelperText className="helper-text">{helperText}</FormHelperText>
+      {isError ? (
+        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+      ) : (
+        <FormHelperText className="helper-text">
+          <Text color="text.dark">{helperText}</Text>
+        </FormHelperText>
       )}
     </FormControl>
   );
