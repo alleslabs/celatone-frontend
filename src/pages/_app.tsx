@@ -69,7 +69,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Chakra>
-      {width < 510 ? (
+      {width < 540 ? (
         <NoMobile />
       ) : (
         <QueryClientProvider client={queryClient}>
