@@ -9,7 +9,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { OffChainDetail } from "lib/components/OffChain/OffChainDetail";
+import { OffChainDetail } from "lib/components/offchain/OffChainDetail";
 import {
   DEFAULT_RPC_ERROR,
   INSTANTIATED_LIST_NAME,

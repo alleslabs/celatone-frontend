@@ -16,7 +16,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { useFabricateFee, useSimulateFee } from "lib/app-provider";
 import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
 import { ControllerInput, TextInput } from "lib/components/forms";
-import JsonInput from "lib/components/Json/JsonInput";
+import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
