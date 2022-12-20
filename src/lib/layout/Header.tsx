@@ -16,7 +16,7 @@ import { WalletSection } from "lib/components/Wallet";
 import { CHAIN_NAMES } from "lib/data";
 
 const Header = () => {
-  const { currentChainName, setCurrentChain, getChainRecord } = useWallet();
+  const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
 
   return (
     <Flex
@@ -55,7 +55,7 @@ const Header = () => {
                 whiteSpace="nowrap"
                 maxW="170px"
               >
-                {getChainRecord(currentChainName)?.chain.chain_id}
+                {currentChainRecord?.chain.chain_id}
               </Text>
               <Icon as={FiChevronDown} />
             </Flex>
