@@ -22,6 +22,8 @@ import { CELATONE_CONSTANTS, FALLBACK_GAS_PRICE } from "env";
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { TxBroadcastProvider } from "lib/app-provider/tx/tx-broadcast";
 import { Chakra } from "lib/components/Chakra";
+import { NoMobile } from "lib/components/modal";
+import { useWidth } from "lib/hooks";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import { StoreProvider } from "lib/providers/RootStore";
@@ -46,7 +48,7 @@ configurePersistable({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
-
+  const width = useWidth();
   const signerOptions: SignerOptions = {
     cosmwasm: (chain: Chain) => {
       if (
@@ -63,34 +65,38 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Chakra>
-      <QueryClientProvider client={queryClient}>
-        <WalletProvider
-          chains={chains}
-          assetLists={assets}
-          wallets={wallets}
-          signerOptions={signerOptions}
-        >
-          <StoreProvider>
-            <AppProvider
-              fallbackGasPrice={FALLBACK_GAS_PRICE}
-              constants={CELATONE_CONSTANTS}
-            >
-              <TxBroadcastProvider>
-                <Head>
-                  <meta
-                    name="viewport"
-                    content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
-                  />
-                </Head>
-                <DefaultSeo {...defaultSEOConfig} />
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              </TxBroadcastProvider>
-            </AppProvider>
-          </StoreProvider>
-        </WalletProvider>
-      </QueryClientProvider>
+      {width < 510 ? (
+        <NoMobile />
+      ) : (
+        <QueryClientProvider client={queryClient}>
+          <WalletProvider
+            chains={chains}
+            assetLists={assets}
+            wallets={wallets}
+            signerOptions={signerOptions}
+          >
+            <StoreProvider>
+              <AppProvider
+                fallbackGasPrice={FALLBACK_GAS_PRICE}
+                constants={CELATONE_CONSTANTS}
+              >
+                <TxBroadcastProvider>
+                  <Head>
+                    <meta
+                      name="viewport"
+                      content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
+                    />
+                  </Head>
+                  <DefaultSeo {...defaultSEOConfig} />
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </TxBroadcastProvider>
+              </AppProvider>
+            </StoreProvider>
+          </WalletProvider>
+        </QueryClientProvider>
+      )}
     </Chakra>
   );
 };
