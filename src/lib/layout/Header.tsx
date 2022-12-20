@@ -13,10 +13,10 @@ import Link from "next/link";
 import { FiChevronDown } from "react-icons/fi";
 
 import { WalletSection } from "lib/components/Wallet";
-import { CHAIN_NAMES, PROPER_CHAINID_MAP } from "lib/data";
+import { CHAIN_NAMES } from "lib/data";
 
 const Header = () => {
-  const { currentChainName, setCurrentChain } = useWallet();
+  const { currentChainName, setCurrentChain, getChainRecord } = useWallet();
 
   return (
     <Flex
@@ -55,7 +55,7 @@ const Header = () => {
                 whiteSpace="nowrap"
                 maxW="170px"
               >
-                {PROPER_CHAINID_MAP[currentChainName].chainID}
+                {getChainRecord(currentChainName)?.chain.chain_id}
               </Text>
               <Icon as={FiChevronDown} />
             </Flex>
@@ -69,9 +69,9 @@ const Header = () => {
                   flexDirection="column"
                   alignItems="flex-start"
                 >
-                  <Text>{PROPER_CHAINID_MAP[chainName].name}</Text>
+                  <Text>{getChainRecord(chainName)?.chain.pretty_name}</Text>
                   <Text color="text.dark" fontSize="sm">
-                    {PROPER_CHAINID_MAP[chainName].chainID}
+                    {getChainRecord(chainName)?.chain.chain_id}
                   </Text>
                 </MenuItem>
               );
