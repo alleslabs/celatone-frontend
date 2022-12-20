@@ -1,9 +1,9 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import { Box, Flex, Button, ButtonGroup, Icon, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
+import { MdInput } from "react-icons/md";
 
 import { useFabricateFee } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
@@ -168,7 +168,7 @@ export const ExecuteArea = ({
             p="6px 16px"
             onClick={proceed}
             isDisabled={!enableExecute || !fee || isFetching}
-            leftIcon={<SearchIcon />}
+            leftIcon={<MdInput />}
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >
