@@ -23,7 +23,7 @@ export function NoMobile() {
         >
           <Icon as={IoIosWarning} color="error.light" boxSize="50px" />
 
-          <Heading variant="h5" py="4">
+          <Heading as="h5" py="4">
             Sorry, we currently do not support mobile use.
           </Heading>
           <Text variant="body1">
