@@ -16,7 +16,7 @@ import { WalletSection } from "lib/components/Wallet";
 import { CHAIN_NAMES } from "lib/data";
 
 const Header = () => {
-  const { currentChainName, setCurrentChain } = useWallet();
+  const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
 
   return (
     <Flex
@@ -55,20 +55,27 @@ const Header = () => {
                 whiteSpace="nowrap"
                 maxW="170px"
               >
-                {currentChainName}
+                {currentChainRecord?.chain.chain_id}
               </Text>
               <Icon as={FiChevronDown} />
             </Flex>
           </MenuButton>
           <MenuList>
-            {CHAIN_NAMES.map((chainName) => (
-              <MenuItem
-                key={chainName}
-                onClick={() => setCurrentChain(chainName)}
-              >
-                {chainName}
-              </MenuItem>
-            ))}
+            {CHAIN_NAMES.map((chainName) => {
+              return (
+                <MenuItem
+                  key={chainName}
+                  onClick={() => setCurrentChain(chainName)}
+                  flexDirection="column"
+                  alignItems="flex-start"
+                >
+                  <Text>{getChainRecord(chainName)?.chain.pretty_name}</Text>
+                  <Text color="text.dark" fontSize="sm">
+                    {getChainRecord(chainName)?.chain.chain_id}
+                  </Text>
+                </MenuItem>
+              );
+            })}
           </MenuList>
         </Menu>
         <WalletSection />
