@@ -178,11 +178,11 @@ const PastTxs = () => {
           </Flex>
           <Flex direction="column" align="center">
             <Text variant="body1" color="text.dark">
-              Past transactions involving with Wasm module
+              Past transactions involving the Wasm module will display here
             </Text>
             <Text variant="body1" color="text.dark">
-              such as Instantiate, Execute, or Upload WASM file will display
-              here.
+              This includes MsgStoreCode, MsgInstantiateContract, and
+              MsgExecuteContract
             </Text>
           </Flex>
         </>
