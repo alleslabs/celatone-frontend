@@ -73,7 +73,7 @@ export const InstantiateOffChainDetail = observer(
           data.tags,
           data.contractLists
         );
-        router.push("/contracts/instantiated-by-me");
+        router.push("/contract-list/instantiated-by-me");
       })();
     };
 
@@ -146,7 +146,7 @@ export const InstantiateOffChainDetail = observer(
             <Button
               w="128px"
               variant="outline-gray"
-              onClick={() => router.push("/contracts/instantiated-by-me")}
+              onClick={() => router.push("/contract-list/instantiated-by-me")}
             >
               Skip
             </Button>
