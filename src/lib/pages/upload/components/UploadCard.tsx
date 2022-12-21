@@ -28,12 +28,12 @@ const getStatusDecorator = (
     case "Completed":
       return {
         icon: <Icon as={MdCheckCircle} boxSize="6" color="success.main" />,
-        statusText: <span style={{ color: "#66BB6A" }}>Valid WASM file</span>,
+        statusText: <span style={{ color: "#66BB6A" }}>Valid Wasm file</span>,
       };
     case "Failed":
       return {
         icon: <Icon as={IoIosWarning} boxSize="6" color="error.main" />,
-        statusText: <span style={{ color: "#EF5350" }}>Invalid WASM file</span>,
+        statusText: <span style={{ color: "#EF5350" }}>Invalid Wasm file</span>,
         helperText: error,
       };
     default:

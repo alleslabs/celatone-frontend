@@ -41,7 +41,7 @@ const Codes = observer(() => {
           <CustomTab codeCount={savedCodesCount}>My Saved Codes </CustomTab>
         </TabList>
         <InputWithIcon
-          placeholder="Search with Code ID or Code Description"
+          placeholder="Search with code ID or code description"
           value={keyword}
           onChange={handleFilterChange}
         />

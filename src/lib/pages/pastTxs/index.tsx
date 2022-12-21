@@ -181,7 +181,7 @@ const PastTxs = () => {
               Past transactions involving with Wasm module
             </Text>
             <Text variant="body1" color="text.dark">
-              such as Instantiate, Execute, or Upload WASM file will display
+              such as Instantiate, Execute, or Upload Wasm file will display
               here.
             </Text>
           </Flex>
@@ -212,7 +212,7 @@ const PastTxs = () => {
         <FalseState
           icon="on"
           text1="Past transactions involving with Wasm module"
-          text2="such as Instantiate, Execute, or Upload WASM file will display here."
+          text2="such as Instantiate, Execute, or Upload Wasm file will display here."
         />
       );
     }
@@ -342,7 +342,7 @@ const PastTxs = () => {
                 size="sm"
                 onClick={() => setIbcButton(!ibcButton)}
               >
-                IBC Layers
+                IBC
               </Button>
             </Flex>
           </Box>

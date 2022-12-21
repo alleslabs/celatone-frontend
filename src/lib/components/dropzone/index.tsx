@@ -47,7 +47,7 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
         <span style={{ color: "#f48fb1", textDecoration: "underline" }}>
           Click to upload
         </span>{" "}
-        or drag WASM file here
+        or drag Wasm file here
       </Text>
       <Text variant="body2" color="text.dark">
         .wasm (max. 800KB)
