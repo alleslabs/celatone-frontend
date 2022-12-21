@@ -1,5 +1,5 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
+import { useMemo, useState } from "react";
 
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -8,8 +8,6 @@ import type { ContractListInfo } from "lib/stores/contract";
 import { ListCard } from "./ListCard";
 
 interface AllContractListsProps {
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
   contractLists: ContractListInfo[];
   handleListSelect: (value: string) => void;
   isReadOnly: boolean;
@@ -17,23 +15,27 @@ interface AllContractListsProps {
 }
 
 export const AllContractLists = ({
-  search,
-  setSearch,
-  handleListSelect,
   contractLists,
   isReadOnly,
   formLabelBgColor,
+  handleListSelect,
 }: AllContractListsProps) => {
-  const filteredContractLists = contractLists.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const filteredContractLists = useMemo(
+    () =>
+      contractLists.filter((item) =>
+        item.name.toLowerCase().includes(searchKeyword.toLowerCase())
+      ),
+    [contractLists, searchKeyword]
   );
 
   return (
     <Box minH="xs" w="100%">
       <TextInput
         variant="floating"
-        value={search}
-        setInputState={setSearch}
+        value={searchKeyword}
+        setInputState={setSearchKeyword}
         label="Search for your lists"
         labelBgColor={formLabelBgColor}
         size="md"

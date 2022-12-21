@@ -1,7 +1,8 @@
+import { InfoIcon } from "@chakra-ui/icons";
 import { Flex, Text, Icon, Input, Button, Tooltip } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
-import { MdMode, MdInfo, MdCheck, MdClose } from "react-icons/md";
+import { MdMode, MdCheck, MdClose } from "react-icons/md";
 
 interface EditableCellProps {
   initialValue?: string;
@@ -124,13 +125,7 @@ export const EditableCell = ({
           </Flex>
           {!!tooltip && (
             <Tooltip hasArrow label={tooltip} bg="primary.dark" placement="top">
-              <Icon
-                as={MdInfo}
-                alignItems="center"
-                color="gray.600"
-                boxSize="4"
-                cursor="pointer"
-              />
+              <InfoIcon color="gray.600" boxSize="14px" cursor="pointer" />
             </Tooltip>
           )}
           {!!onSave && (

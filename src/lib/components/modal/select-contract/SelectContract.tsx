@@ -44,8 +44,6 @@ export const SelectContract = ({
   const [listSlug, setListSlug] = useState("");
 
   const [searchManual, setSearchManual] = useState("");
-  const [searchList, setSearchList] = useState("");
-  const [searchInList, setSearchInList] = useState("");
   const [invalid, setInvalid] = useState("");
 
   const { getContractLists } = useContractStore();
@@ -57,8 +55,6 @@ export const SelectContract = ({
   const resetOnClose = () => {
     setListSlug("");
     setSearchManual("");
-    setSearchList("");
-    setSearchInList("");
     setInvalid("");
     onClose();
   };
@@ -147,12 +143,10 @@ export const SelectContract = ({
                 <Divider borderColor="gray.500" />
               </Flex>
 
-              <Heading as="h6" variant="h6" mb="8px">
+              <Heading as="h6" variant="h6" mb={4}>
                 Select from your Contract List
               </Heading>
               <AllContractLists
-                search={searchList}
-                setSearch={setSearchList}
                 contractLists={contractLists}
                 handleListSelect={handleListSelect}
                 isReadOnly
@@ -177,8 +171,6 @@ export const SelectContract = ({
             <ModalCloseButton />
             <ModalBody>
               <ListDetail
-                search={searchInList}
-                setSearch={setSearchInList}
                 contractListInfo={contractList}
                 isReadOnly
                 isContractRemovable={

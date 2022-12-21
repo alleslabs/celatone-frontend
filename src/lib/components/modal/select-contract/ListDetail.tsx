@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 
 import { TagSelection, TextInput } from "lib/components/forms";
@@ -16,15 +15,6 @@ interface FilteredListDetailProps {
   search: string;
   tagFilter: string[];
   contracts: ContractInfo[];
-  isReadOnly: boolean;
-  isContractRemovable?: Option;
-  onContractSelect?: (addr: string) => void;
-}
-
-interface ListDetailProps {
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-  contractListInfo: ContractListInfo;
   isReadOnly: boolean;
   isContractRemovable?: Option;
   onContractSelect?: (addr: string) => void;
@@ -66,29 +56,37 @@ const FilteredListDetail = ({
   );
 };
 
+interface ListDetailProps {
+  contractListInfo: ContractListInfo;
+  isReadOnly: boolean;
+  isContractRemovable?: Option;
+  isInstantiatedByMe?: boolean;
+  onContractSelect?: (addr: string) => void;
+}
+
 export const ListDetail = ({
-  search,
-  setSearch,
   contractListInfo,
   isReadOnly,
   isContractRemovable,
+  isInstantiatedByMe = false,
   onContractSelect,
 }: ListDetailProps) => {
   const userKey = useUserKey();
   const { getAllTags } = useContractStore();
 
   const [tagFilter, setTagFilter] = useState<string[]>([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   return (
-    <Box minH="xs">
+    <Box minH="xs" pb="48px">
       <Box px={isReadOnly ? "0px" : "48px"}>
         <Flex gap={2} w="full" my={isReadOnly ? "24px" : "48px"}>
           <TextInput
             variant="floating"
-            value={search}
-            setInputState={setSearch}
+            value={searchKeyword}
+            setInputState={setSearchKeyword}
             placeholder="Search with contract address, name, or description"
-            size="lg"
+            size={!isReadOnly ? "lg" : "md"}
           />
           {!isReadOnly && (
             <TagSelection
@@ -108,10 +106,11 @@ export const ListDetail = ({
         <ZeroState
           list={{ label: contractListInfo.name, value: contractListInfo.slug }}
           isReadOnly={isReadOnly}
+          isInstantiatedByMe={isInstantiatedByMe}
         />
       ) : (
         <FilteredListDetail
-          search={search}
+          search={searchKeyword}
           tagFilter={tagFilter}
           contracts={contractListInfo.contracts}
           isReadOnly={isReadOnly}
