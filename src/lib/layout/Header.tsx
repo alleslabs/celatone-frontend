@@ -1,6 +1,5 @@
 import {
   Flex,
-  Heading,
   Menu,
   MenuButton,
   MenuList,
@@ -9,6 +8,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import Image from "next/image";
 import Link from "next/link";
 import { FiChevronDown } from "react-icons/fi";
 
@@ -28,9 +28,12 @@ const Header = () => {
       px={6}
     >
       <Link href="/">
-        <Heading as="h4" variant="h4">
-          Celatone
-        </Heading>
+        <Image
+          src="/celatone-logo.svg"
+          alt="celatone-logo"
+          width={120}
+          height={24}
+        />
       </Link>
       <Flex gap={2}>
         <Menu>

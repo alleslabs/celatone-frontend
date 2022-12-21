@@ -55,6 +55,7 @@ export const ContractListTable = ({
           <Tr
             sx={{
               "& th:first-of-type": { pl: "48px" },
+              "> th": { borderColor: "divider.main" },
             }}
           >
             <Th width="15%">Contract Address</Th>
@@ -79,6 +80,7 @@ export const ContractListTable = ({
               sx={{
                 "& td:first-of-type": { pl: "48px" },
                 "& td:last-of-type": { pr: "48px" },
+                "> td": { borderColor: "divider.main" },
               }}
             >
               <Td>

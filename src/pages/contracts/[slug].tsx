@@ -1,3 +1,3 @@
-import Contract from "lib/pages/contracts/detail";
+import ContractsByList from "lib/pages/contracts/slug";
 
-export default Contract;
+export default ContractsByList;

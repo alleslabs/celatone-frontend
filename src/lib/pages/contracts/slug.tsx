@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   MdOutlineAdd,
   MdMoreHoriz,
@@ -32,20 +32,19 @@ import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
-const ContractList = observer(() => {
+const ContractsByList = observer(() => {
   const router = useRouter();
-  const [searchKeyword, setSearchKeyword] = useState("");
   const listSlug = getFirstQueryParam(router.query.slug);
 
   const { getContractLists, isHydrated } = useContractStore();
-  const instantiatedListInfo = useInstantiatedByMe(
-    listSlug === formatSlugName(INSTANTIATED_LIST_NAME)
-  );
+  const isInstantiatedByMe =
+    listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
 
-  const contractListInfo =
-    listSlug === formatSlugName(INSTANTIATED_LIST_NAME)
-      ? instantiatedListInfo
-      : getContractLists().find((item) => item.slug === listSlug);
+  const instantiatedListInfo = useInstantiatedByMe(isInstantiatedByMe);
+
+  const contractListInfo = isInstantiatedByMe
+    ? instantiatedListInfo
+    : getContractLists().find((item) => item.slug === listSlug);
 
   useEffect(() => {
     if (isHydrated && contractListInfo === undefined) {
@@ -103,24 +102,27 @@ const ContractList = observer(() => {
             {contractListInfo.name}
           </Heading>
           <Flex gap={2}>
-            <Button
-              rightIcon={<MdOutlineAdd />}
-              onClick={() => router.push("/deploy")}
-            >
-              Deploy New Contract
-            </Button>
-            <SaveNewContract
-              key={listSlug}
-              list={{
-                label: contractListInfo.name,
-                value: contractListInfo.slug,
-              }}
-              buttonProps={{
-                variant: "outline-primary",
-                rightIcon: <MdBookmarkBorder />,
-                children: "Save Contract",
-              }}
-            />
+            {isInstantiatedByMe ? (
+              <Button
+                rightIcon={<MdOutlineAdd />}
+                onClick={() => router.push("/deploy")}
+              >
+                Deploy New Contract
+              </Button>
+            ) : (
+              <SaveNewContract
+                key={listSlug}
+                list={{
+                  label: contractListInfo.name,
+                  value: contractListInfo.slug,
+                }}
+                buttonProps={{
+                  variant: "outline-primary",
+                  rightIcon: <MdBookmarkBorder />,
+                  children: "Save Contract",
+                }}
+              />
+            )}
             {contractListInfo.isInfoEditable && (
               <Menu>
                 <MenuButton
@@ -172,8 +174,6 @@ const ContractList = observer(() => {
         </Flex>
       </Box>
       <ListDetail
-        search={searchKeyword}
-        setSearch={setSearchKeyword}
         contractListInfo={contractListInfo}
         isReadOnly={false}
         isContractRemovable={
@@ -181,9 +181,10 @@ const ContractList = observer(() => {
             ? { label: contractListInfo.name, value: contractListInfo.slug }
             : undefined
         }
+        isInstantiatedByMe={isInstantiatedByMe}
       />
     </>
   );
 });
 
-export default ContractList;
+export default ContractsByList;
