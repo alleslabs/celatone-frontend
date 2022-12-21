@@ -31,7 +31,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
           </Flex>
           <Flex alignItems="center" gap="2">
             <Text color="gray.500">
-              or save deployed contract to the list with
+              or save deployed contracts to lists with
             </Text>
             <SaveNewContract
               list={list}

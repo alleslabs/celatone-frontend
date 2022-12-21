@@ -1,5 +1,5 @@
 import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, Text } from "@chakra-ui/react";
+import { MenuItem, Text, Highlight } from "@chakra-ui/react";
 import { MdDeleteForever } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
@@ -43,8 +43,13 @@ export function RemoveContract({
       trigger={<MenuItem {...menuItemProps} />}
     >
       <Text>
-        {`This action will remove ${displayName} from ${list.label} and
-        contract off-chain detail will be permanently delete.`}
+        <Highlight
+          query={[displayName, list.label]}
+          styles={{ fontWeight: "bold", color: "inherit" }}
+        >
+          {`This action will remove ${displayName} from ${list.label}. 
+        The contract’s off-chain detail will be preserved in other lists or when you save this contract again.`}
+        </Highlight>
       </Text>
     </ActionModal>
   );
