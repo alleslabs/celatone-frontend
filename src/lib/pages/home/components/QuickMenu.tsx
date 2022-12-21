@@ -35,7 +35,7 @@ export const QuickMenu = () => {
       </Heading>
       <ConnectWalletAlert
         title="Connect wallet to start using Celatone"
-        subtitle="Specific use cases such as deploy new contract or send execute messages require a wallet connection."
+        subtitle="Actions such as deploying new contracts or sending execute messages require a wallet connection."
       />
       <Flex gap={4}>
         <Link href="/deploy" style={{ width: "100%" }}>
