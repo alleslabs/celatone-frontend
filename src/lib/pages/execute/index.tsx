@@ -94,7 +94,7 @@ const Execute = () => {
       if (!contractState) {
         try {
           const onChainDetail = await queryContract(endpoint, contractAddr);
-          setContractName(onChainDetail.result?.label);
+          setContractName(onChainDetail.contract_info.label);
         } catch {
           setContractName("Invalid Contract");
         }

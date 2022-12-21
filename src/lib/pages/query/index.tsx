@@ -86,7 +86,7 @@ const Query = () => {
       if (!contractState) {
         try {
           const onChainDetail = await queryContract(endpoint, contractAddr);
-          setName(onChainDetail.result?.label);
+          setName(onChainDetail.contract_info.label);
         } catch {
           setName("Invalid Contract");
         }

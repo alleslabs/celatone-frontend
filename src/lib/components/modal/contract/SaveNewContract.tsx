@@ -18,7 +18,7 @@ import {
 } from "lib/data";
 import { useContractStore, useEndpoint } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import { queryContractWithTime } from "lib/services/contract";
+import { queryInstantiateInfo } from "lib/services/contract";
 import type { Option, RpcContractError } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
@@ -62,8 +62,8 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "contractWithTime", contractAddress],
-    async () => queryContractWithTime(endpoint, contractAddress),
+    ["query", "instantiateInfo", contractAddress],
+    async () => queryInstantiateInfo(endpoint, contractAddress),
     {
       enabled: false,
       retry: false,
@@ -72,7 +72,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       onSuccess(data) {
         setInstantiator(data.instantiator);
         setLabel(data.label);
-        setCreated(data.created);
+        setCreated(data.createdTime);
         setName(data.label);
         setStatus({
           state: "success",

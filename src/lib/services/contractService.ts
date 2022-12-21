@@ -6,8 +6,14 @@ import { indexerGraphClient } from "lib/data/graphql";
 import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
+  getInstantiateDetailByContractQueryDocument,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
+
+interface InstantiateDetail {
+  initMsg: string;
+  initTxHash?: string;
+}
 
 export const useInstantiatedCountByUserQuery = (
   walletAddr: string | undefined
@@ -53,5 +59,27 @@ export const useInstantiatedListByUserQuery = (
   return useQuery(["instantiated_list_by_user", walletAddr], queryFn, {
     keepPreviousData: true,
     enabled: !!walletAddr,
+  });
+};
+
+export const useInstantiateDetailByContractQuery = (
+  contractAddr: string
+): UseQueryResult<InstantiateDetail> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getInstantiateDetailByContractQueryDocument, { contractAddr })
+      .then(({ contracts }) =>
+        contracts
+          .map<InstantiateDetail>((contract) => ({
+            // TODO: revisit undefined after backend remove nullable
+            initMsg: contract.init_msg ?? "{}",
+            initTxHash: (contract.transaction?.hash as string).substring(2),
+          }))
+          ?.at(0)
+      );
+  }, [contractAddr]);
+
+  return useQuery(["instantiate_detail_by_contract", contractAddr], queryFn, {
+    keepPreviousData: true,
   });
 };

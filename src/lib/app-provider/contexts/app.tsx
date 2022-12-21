@@ -35,6 +35,8 @@ interface AppContextInterface<
   ContractAddress,
   Constants extends AppConstants = AppConstants
 > {
+  chainName: string;
+  chainId: string;
   chainGasPrice: ChainGasPrice;
   contractAddress: ContractAddress;
   constants: Constants;
@@ -48,6 +50,8 @@ interface AppContextInterface<
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppContext = createContext<AppContextInterface<any, any>>({
+  chainName: "",
+  chainId: "",
   chainGasPrice: { denom: "", gasPrice: "0" as U<Token> },
   contractAddress: {},
   constants: { gasAdjustment: 0 },
@@ -68,6 +72,11 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
+
+  const chainId = useMemo(() => {
+    if (!currentChainRecord) return "";
+    return currentChainRecord.chain.chain_id;
+  }, [currentChainRecord]);
 
   const chainGasPrice = useMemo(() => {
     if (
@@ -99,12 +108,15 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
     AppContextInterface<ContractAddress, Constants>
   >(() => {
     return {
+      chainName: currentChainName,
+      chainId,
       chainGasPrice,
       contractAddress: contractAddress(currentChainName),
       constants,
       ...chainBoundStates,
     };
   }, [
+    chainId,
     chainGasPrice,
     contractAddress,
     currentChainName,

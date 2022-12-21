@@ -59,3 +59,14 @@ export const getInstantiatedListByUserQueryDocument = graphql(`
     }
   }
 `);
+
+export const getInstantiateDetailByContractQueryDocument = graphql(`
+  query getInstantiateDetailByContractQueryDocument($contractAddr: String!) {
+    contracts(where: { address: { _eq: $contractAddr } }) {
+      init_msg
+      transaction {
+        hash
+      }
+    }
+  }
+`);
