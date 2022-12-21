@@ -1,5 +1,11 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+/**
+ * @todos
+ * - Make an interface for TokenSection and TokenCard
+ * - Wireup with real data
+ * - Token icon
+ */
 const TokenCard = () => {
   return (
     <Flex gap={1} p={2} background="gray.900" borderRadius="8px" flex={0.25}>

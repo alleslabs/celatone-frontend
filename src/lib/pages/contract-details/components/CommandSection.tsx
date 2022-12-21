@@ -1,6 +1,11 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 export const CommandSection = () => {
+  /**
+   * @todos
+   * - Make an interface
+   * - Wireup with real query/execute commands data
+   */
   return (
     <Flex gap={6}>
       <Flex

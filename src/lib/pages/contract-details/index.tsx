@@ -16,6 +16,7 @@ import { MdBookmark, MdInput } from "react-icons/md";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
+import { getFirstQueryParam } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { InstantiateInfo } from "./components/InstantiateInfo";
@@ -24,6 +25,8 @@ import { TokenSection } from "./components/TokenSection";
 
 const ContractDetails = () => {
   const router = useRouter();
+  const contractAddress = getFirstQueryParam(router.query.contractAddress);
+
   return (
     <PageContainer>
       <Button
@@ -33,6 +36,8 @@ const ContractDetails = () => {
       >
         BACK
       </Button>
+      {/* Contract name/address/label Section */}
+      {/* TODO: Wireup data and buttons functionality */}
       <Flex justify="space-between" my={6}>
         <Flex direction="column" gap={1}>
           <Heading as="h5" variant="h5" color="text.main">
@@ -44,7 +49,7 @@ const ContractDetails = () => {
             </Text>
             <ExplorerLink
               type="contract_address"
-              value="osmo1xzq6l8jl2c3pcmpyswg7l8wckpc5xntnjn04w4y99ngha4h5mzlstnn3f2"
+              value={contractAddress}
               textFormat="normal"
               maxWidth="none"
             />
@@ -76,7 +81,10 @@ const ContractDetails = () => {
           </Button>
         </Flex>
       </Flex>
+      {/* Tokens Section */}
       <TokenSection />
+      {/* Contract Description Section */}
+      {/* TODO: Show real description, show View Full Description when the desc is too long */}
       <Flex
         direction="column"
         bg="gray.900"
@@ -92,14 +100,19 @@ const ContractDetails = () => {
           Save contract to lists to add your own contract description ...
         </Text>
       </Flex>
+      {/* Query/Execute commands section */}
       <CommandSection />
+      {/* Instantiate/Contract Info Section */}
       <Flex my={12} justify="space-between">
+        {/* Instantiate Info */}
         <InstantiateInfo />
+        {/* Contract Info (Expand) */}
         <Flex direction="column" flex={0.8} gap={6}>
           <JsonInfo header="Contract Info" />
           <JsonInfo header="Instantiate Messages" />
         </Flex>
       </Flex>
+      {/* History Table section */}
       <Heading as="h6" variant="h6" mb={6}>
         History
       </Heading>
@@ -110,6 +123,7 @@ const ContractDetails = () => {
           <CustomTab count={20}>Migration</CustomTab>
           <CustomTab count={12}>Related Proposals</CustomTab>
         </TabList>
+        {/* TODOs: Wireup with real table data, Make table component, and render each table with different data under each TabPanel */}
         <TabPanels>
           <TabPanel p={0}>
             <Heading as="h6" variant="h6" color="error.main">

@@ -5,6 +5,11 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "./LabelText";
 
 export const InstantiateInfo = () => {
+  /**
+   * @todos
+   * - Make an interface
+   * - All these are mockups, Wireup with real data and map render LabelText
+   */
   return (
     <Flex direction="column" gap={6} w="160px">
       <Heading as="h6" variant="h6">
