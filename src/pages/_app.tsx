@@ -88,11 +88,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                   />
                 </Head>
                 <DefaultSeo {...defaultSEOConfig} />
-                <MobileGuard>
-                  <Layout>
+                <Layout>
+                  <MobileGuard>
                     <Component {...pageProps} />
-                  </Layout>
-                </MobileGuard>
+                  </MobileGuard>
+                </Layout>
               </TxBroadcastProvider>
             </AppProvider>
           </StoreProvider>

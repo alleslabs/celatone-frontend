@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { IoIosWarning } from "react-icons/io";
 
-export function NoMobile() {
+export const NoMobile = () => {
   return (
     <Modal size="sm" isOpen isCentered onClose={() => {}}>
       <ModalOverlay />
@@ -23,7 +23,7 @@ export function NoMobile() {
         >
           <Icon as={IoIosWarning} color="error.light" boxSize="50px" />
 
-          <Heading as="h5" py="4">
+          <Heading as="h6" py="4">
             Sorry, we currently do not support mobile use.
           </Heading>
           <Text variant="body1">
@@ -34,4 +34,4 @@ export function NoMobile() {
       </ModalContent>
     </Modal>
   );
-}
+};
