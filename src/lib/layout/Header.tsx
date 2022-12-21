@@ -7,6 +7,7 @@ import {
   Text,
   MenuItem,
   Icon,
+  Image,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
@@ -29,7 +30,7 @@ const Header = () => {
     >
       <Link href="/">
         <Heading as="h4" variant="h4">
-          Celatone
+          <Image src="/celatone-logo.svg" alt="Celatone" width="160px" />
         </Heading>
       </Link>
       <Flex gap={2}>
