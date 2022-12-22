@@ -29,7 +29,7 @@ export const ExplorerLink = ({
   maxWidth = "150px",
   ...componentProps
 }: ExplorerLinkProps) => {
-  const { currentChainName } = useWallet();
+  const { address, currentChainName } = useWallet();
   let explorerLink = "";
   switch (type) {
     case "tx_hash":
@@ -59,6 +59,16 @@ export const ExplorerLink = ({
     return undefined;
   };
 
+  const renderValue = () => {
+    if (value === address) {
+      return "Me";
+    }
+    if (textFormat === "truncate") {
+      return truncate(value);
+    }
+    return value;
+  };
+
   return (
     <Box
       role="group"
@@ -78,7 +88,7 @@ export const ExplorerLink = ({
         className={textFormat === "ellipsis" ? "ellipsis" : undefined}
         maxW={maxWidth}
       >
-        {textFormat === "truncate" ? truncate(value) : value}
+        {renderValue()}
       </Link>
       <Box
         alignItems="center"

@@ -8,6 +8,7 @@ import {
   TableContainer,
   Text,
 } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 
 import type { ContractInfo } from "lib/stores/contract";
 import { truncate } from "lib/utils";
@@ -23,6 +24,8 @@ export const ContractListReadOnlyTable = ({
   contracts = [],
   onContractSelect,
 }: ContractListReadOnlyTableProps) => {
+  const { address } = useWallet();
+
   return (
     <TableContainer w="full" my="16px">
       <Table variant="simple" sx={{ tableLayout: "auto" }}>
@@ -54,10 +57,12 @@ export const ContractListReadOnlyTable = ({
               <Td width="30%">
                 <TagsCell contractInfo={item} isReadOnly />
               </Td>
-              {/* Instantiator */}
-              {/* TODO: make AddressRender later, check if address match wallet address => show 'Me' instead */}
               <Td width="10%">
-                <Text variant="body2">{truncate(item.instantiator)}</Text>
+                <Text variant="body2">
+                  {address === item.instantiator
+                    ? "Me"
+                    : truncate(item.instantiator)}
+                </Text>
               </Td>
             </Tr>
           ))}
