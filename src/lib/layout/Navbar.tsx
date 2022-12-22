@@ -52,12 +52,12 @@ const Navbar = observer(() => {
       submenu: [
         {
           name: INSTANTIATED_LIST_NAME,
-          slug: `/contracts/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
+          slug: `/contract-list/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
           icon: getListIcon(INSTANTIATED_LIST_NAME),
         },
         {
           name: SAVED_LIST_NAME,
-          slug: `/contracts/${formatSlugName(SAVED_LIST_NAME)}`,
+          slug: `/contract-list/${formatSlugName(SAVED_LIST_NAME)}`,
           icon: getListIcon(SAVED_LIST_NAME),
         },
         ...getContractLists()
@@ -67,11 +67,11 @@ const Navbar = observer(() => {
           .map((list) => {
             return {
               name: list.name,
-              slug: `/contracts/${list.slug}`,
+              slug: `/contract-list/${list.slug}`,
               icon: getListIcon(list.name),
             };
           }),
-        { name: "View All", slug: "/contracts", icon: MdMoreHoriz },
+        { name: "View All", slug: "/contract-list", icon: MdMoreHoriz },
       ],
     },
     // {
