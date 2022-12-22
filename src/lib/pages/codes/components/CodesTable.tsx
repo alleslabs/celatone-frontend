@@ -87,7 +87,7 @@ const Empty = ({ type }: OtherTBodyProps) => {
         </Text>
       ) : (
         <Text color="text.dark">
-          Your uploaded WASM files will display as My Stored Codes
+          Your uploaded Wasm files will display as My Stored Codes
         </Text>
       )}
     </StateContainer>

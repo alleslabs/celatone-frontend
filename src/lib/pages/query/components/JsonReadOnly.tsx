@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 import { jsonValidate } from "lib/utils";
 
-const JsonEditor = dynamic(() => import("lib/components/Json/JsonEditor"), {
+const JsonEditor = dynamic(() => import("lib/components/json/JsonEditor"), {
   ssr: false,
 });
 

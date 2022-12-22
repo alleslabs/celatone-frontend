@@ -3,10 +3,10 @@ import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
+import { CustomTab } from "lib/components/CustomTab";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import CodesTable from "lib/pages/codes/components/CodesTable";
-import CustomTab from "lib/pages/codes/components/CustomTab";
 
 import SaveCodeButton from "./components/SaveCodeButton";
 import UploadButton from "./components/UploadButton";
@@ -36,12 +36,12 @@ const Codes = observer(() => {
 
       <Tabs>
         <TabList border="none" mb="32px">
-          <CustomTab codeCount={allCodesCount}>All Codes</CustomTab>
-          <CustomTab codeCount={storedCodesCount}>My Stored Codes</CustomTab>
-          <CustomTab codeCount={savedCodesCount}>My Saved Codes </CustomTab>
+          <CustomTab count={allCodesCount}>All Codes</CustomTab>
+          <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
+          <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
         </TabList>
         <InputWithIcon
-          placeholder="Search with Code ID or Code Description"
+          placeholder="Search with code ID or code description"
           value={keyword}
           onChange={handleFilterChange}
         />

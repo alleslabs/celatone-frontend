@@ -54,7 +54,7 @@ const ContractsByList = observer(() => {
 
   useEffect(() => {
     if (isHydrated && contractListInfo === undefined) {
-      router.push("/contracts");
+      router.push("/contract-list");
     }
   }, [contractListInfo, router, isHydrated]);
 
@@ -69,7 +69,7 @@ const ContractsByList = observer(() => {
           separator={<MdChevronRight color="gray.600" />}
         >
           <BreadcrumbItem>
-            <BreadcrumbLink color="text.dark" href="/contracts">
+            <BreadcrumbLink color="text.dark" href="/contract-list">
               Contract Lists
             </BreadcrumbLink>
           </BreadcrumbItem>

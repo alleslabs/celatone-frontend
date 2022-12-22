@@ -15,7 +15,7 @@ const AllContractListsPage = observer(() => {
   const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
 
   const handleListSelect = (slug: string) => {
-    router.push({ pathname: `/contracts/${slug}` });
+    router.push({ pathname: `/contract-list/${slug}` });
   };
 
   return (

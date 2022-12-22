@@ -30,7 +30,7 @@ const Header = () => {
       <Link href="/">
         <Image
           src="/celatone-logo.svg"
-          alt="celatone-logo"
+          alt="Celatone"
           width={120}
           height={24}
         />

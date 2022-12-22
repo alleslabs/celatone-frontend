@@ -16,7 +16,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { useFabricateFee, useSimulateFee } from "lib/app-provider";
 import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
 import { ControllerInput, TextInput } from "lib/components/forms";
-import JsonInput from "lib/components/Json/JsonInput";
+import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -230,7 +230,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             name="adminAddress"
             control={control}
             label="Admin Address (optional)"
-            helperText="This address will be an admin for the deployed smart contract."
+            helperText="This address will be the admin for the deployed smart contract."
             variant="floating"
           />
           <Heading

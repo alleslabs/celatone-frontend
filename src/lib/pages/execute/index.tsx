@@ -131,7 +131,7 @@ const Execute = () => {
         </Box>
       </Flex>
       <ConnectWalletAlert
-        subtitle="You need to connect wallet to proceed this action"
+        subtitle="You need to connect your wallet to perform this action"
         mb={8}
       />
       <Flex

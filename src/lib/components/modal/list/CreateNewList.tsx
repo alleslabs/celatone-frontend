@@ -92,7 +92,7 @@ export function CreateNewList({
 
   return (
     <ActionModal
-      title="Create New Lists"
+      title="Create a New List"
       icon={MdAddCircleOutline}
       trigger={trigger || <Button {...buttonProps} />}
       mainBtnTitle="Create"
