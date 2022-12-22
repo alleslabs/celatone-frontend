@@ -25,6 +25,9 @@ import { TokenSection } from "./components/TokenSection";
 
 const ContractDetails = () => {
   const router = useRouter();
+  /**
+   * @todos add contract address validation function here
+   */
   const contractAddress = getFirstQueryParam(router.query.contractAddress);
 
   return (
