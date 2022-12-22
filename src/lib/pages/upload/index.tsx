@@ -115,7 +115,7 @@ const Upload = () => {
       </Text>
       <Stepper currentStep={1} />
       <Heading as="h4" variant="h4" my="48px">
-        Upload wasm file
+        Upload Wasm file
       </Heading>
       <ConnectWalletAlert
         subtitle="You need to connect your wallet first"
