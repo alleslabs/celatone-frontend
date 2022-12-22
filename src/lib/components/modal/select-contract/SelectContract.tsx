@@ -173,11 +173,6 @@ export const SelectContract = ({
               <ListDetail
                 contractListInfo={contractList}
                 isReadOnly
-                isContractRemovable={
-                  contractList.isContractRemovable
-                    ? { label: contractList.name, value: contractList.slug }
-                    : undefined
-                }
                 onContractSelect={onSelectThenClose}
               />
             </ModalBody>

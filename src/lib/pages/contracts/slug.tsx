@@ -32,6 +32,12 @@ import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
+const iconProps = {
+  boxSize: "4",
+  display: "flex",
+  alignItems: "center",
+};
+
 const ContractsByList = observer(() => {
   const router = useRouter();
   const listSlug = getFirstQueryParam(router.query.slug);
@@ -51,12 +57,6 @@ const ContractsByList = observer(() => {
       router.push("/contracts");
     }
   }, [contractListInfo, router, isHydrated]);
-
-  const iconProps = {
-    boxSize: "4",
-    display: "flex",
-    alignItems: "center",
-  };
 
   if (!contractListInfo) return null;
 
@@ -175,12 +175,6 @@ const ContractsByList = observer(() => {
       </Box>
       <ListDetail
         contractListInfo={contractListInfo}
-        isReadOnly={false}
-        isContractRemovable={
-          contractListInfo.isContractRemovable
-            ? { label: contractListInfo.name, value: contractListInfo.slug }
-            : undefined
-        }
         isInstantiatedByMe={isInstantiatedByMe}
       />
     </>

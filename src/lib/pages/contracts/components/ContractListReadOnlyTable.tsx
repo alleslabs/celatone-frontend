@@ -19,6 +19,7 @@ interface ContractListReadOnlyTableProps {
   contracts: ContractInfo[];
   onContractSelect: (addr: string) => void;
 }
+
 export const ContractListReadOnlyTable = ({
   contracts = [],
   onContractSelect,

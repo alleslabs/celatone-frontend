@@ -15,26 +15,29 @@ import dayjs from "dayjs";
 import { MdMoreHoriz, MdMode, MdDelete } from "react-icons/md";
 
 import { EditList, RemoveList } from "../list";
-import { getListIcon } from "lib/data";
+import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
+import { formatSlugName } from "lib/utils";
+
+const iconProps = {
+  boxSize: "4",
+  display: "flex",
+  alignItems: "center",
+};
 
 interface ListCardProps {
   item: ContractListInfo;
   handleListSelect: (value: string) => void;
   isReadOnly: boolean;
-  showLastUpdated: boolean;
 }
+
 export const ListCard = ({
   item,
   handleListSelect,
   isReadOnly,
-  showLastUpdated,
 }: ListCardProps) => {
-  const iconProps = {
-    boxSize: "4",
-    display: "flex",
-    alignItems: "center",
-  };
+  const showLastUpdated = item.slug !== formatSlugName(INSTANTIATED_LIST_NAME);
+
   return (
     <LinkBox cursor="pointer">
       <Flex

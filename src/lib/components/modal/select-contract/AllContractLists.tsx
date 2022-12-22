@@ -10,7 +10,7 @@ import { ListCard } from "./ListCard";
 interface AllContractListsProps {
   contractLists: ContractListInfo[];
   handleListSelect: (value: string) => void;
-  isReadOnly: boolean;
+  isReadOnly?: boolean;
   formLabelBgColor?: string;
 }
 
@@ -39,21 +39,21 @@ export const AllContractLists = ({
         label="Search for your lists"
         labelBgColor={formLabelBgColor}
         size="md"
+        mb={isReadOnly ? 4 : 12}
       />
-      <Box my="18px" />
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} w="full">
-        {filteredContractLists.map((item) => (
-          <ListCard
-            key={item.slug}
-            item={item}
-            handleListSelect={handleListSelect}
-            isReadOnly={isReadOnly || !item.isInfoEditable}
-            showLastUpdated={item.isContractRemovable}
-          />
-        ))}
-      </SimpleGrid>
-      {filteredContractLists.length === 0 && (
+      {filteredContractLists.length === 0 ? (
         <EmptyState message="None of your lists matches this search." />
+      ) : (
+        <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} w="full">
+          {filteredContractLists.map((item) => (
+            <ListCard
+              key={item.slug}
+              item={item}
+              handleListSelect={handleListSelect}
+              isReadOnly={isReadOnly || !item.isInfoEditable}
+            />
+          ))}
+        </SimpleGrid>
       )}
     </Box>
   );

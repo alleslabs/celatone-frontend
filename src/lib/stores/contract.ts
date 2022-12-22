@@ -25,13 +25,8 @@ interface ContractList {
   isContractRemovable: boolean;
 }
 
-export interface ContractListInfo {
+export interface ContractListInfo extends Omit<ContractList, "contracts"> {
   contracts: ContractInfo[];
-  name: string;
-  slug: string;
-  lastUpdated: Date;
-  isInfoEditable: boolean;
-  isContractRemovable: boolean;
 }
 
 export const cmpContractListInfo = (
@@ -62,7 +57,7 @@ export class ContractStore {
       contracts: [],
       lastUpdated: new Date(),
       isInfoEditable: false,
-      isContractRemovable: true,
+      isContractRemovable: false,
     },
   ];
 

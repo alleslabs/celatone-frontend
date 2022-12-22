@@ -35,7 +35,6 @@ const AllContractListsPage = observer(() => {
         </Flex>
         <AllContractLists
           contractLists={contractLists}
-          isReadOnly={false}
           handleListSelect={handleListSelect}
         />
       </Flex>

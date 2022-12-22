@@ -13,7 +13,7 @@ import type { Option } from "lib/types";
 
 interface ZeroStateProps {
   list: Option;
-  isReadOnly: boolean;
+  isReadOnly?: boolean;
   isInstantiatedByMe: boolean;
 }
 

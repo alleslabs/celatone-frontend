@@ -42,15 +42,16 @@ const iconProps = {
 
 interface ContractListTableProps {
   contracts: ContractInfo[];
-  isContractRemovable?: Option;
+  contractRemovalInfo?: Option;
 }
+
 export const ContractListTable = ({
   contracts = [],
-  isContractRemovable,
+  contractRemovalInfo,
 }: ContractListTableProps) => {
   return (
     <TableContainer w="full">
-      <Table variant="simple">
+      <Table variant="simple" sx={{ tableLayout: "auto" }}>
         <Thead>
           <Tr
             sx={{
@@ -157,12 +158,12 @@ export const ContractListTable = ({
                           children: "Add or remove from other lists",
                         }}
                       />
-                      {isContractRemovable && (
+                      {!!contractRemovalInfo && (
                         <>
                           <MenuDivider />
                           <RemoveContract
                             contractInfo={item}
-                            list={isContractRemovable}
+                            list={contractRemovalInfo}
                             menuItemProps={{
                               icon: (
                                 <Icon

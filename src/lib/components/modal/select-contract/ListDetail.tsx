@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { TagSelection, TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -12,54 +12,42 @@ import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
 import type { Option } from "lib/types";
 
 interface FilteredListDetailProps {
-  search: string;
-  tagFilter: string[];
   contracts: ContractInfo[];
-  isReadOnly: boolean;
-  isContractRemovable?: Option;
+  isReadOnly?: boolean;
+  contractRemovalInfo: Option | undefined;
   onContractSelect?: (addr: string) => void;
 }
 
 const FilteredListDetail = ({
-  search,
-  tagFilter,
   contracts,
   isReadOnly,
-  isContractRemovable,
+  contractRemovalInfo,
   onContractSelect = () => {},
 }: FilteredListDetailProps) => {
-  const filteredContracts = matchSorter(contracts, search, {
-    keys: ["name", "description", "label", "address"],
-    sorter: (sortedItem) => sortedItem,
-  }).filter((contract) =>
-    tagFilter.every((tag) => contract.tags?.includes(tag))
-  );
-  if (filteredContracts.length === 0)
+  if (contracts.length === 0)
     return (
       <EmptyState
         message="No contracts match found. 
         Make sure you are searching with contract address, name, or description."
       />
     );
-  if (!isReadOnly)
-    return (
-      <ContractListTable
-        contracts={filteredContracts}
-        isContractRemovable={isContractRemovable}
-      />
-    );
-  return (
+
+  return isReadOnly ? (
     <ContractListReadOnlyTable
-      contracts={filteredContracts}
+      contracts={contracts}
       onContractSelect={onContractSelect}
+    />
+  ) : (
+    <ContractListTable
+      contracts={contracts}
+      contractRemovalInfo={contractRemovalInfo}
     />
   );
 };
 
 interface ListDetailProps {
   contractListInfo: ContractListInfo;
-  isReadOnly: boolean;
-  isContractRemovable?: Option;
+  isReadOnly?: boolean;
   isInstantiatedByMe?: boolean;
   onContractSelect?: (addr: string) => void;
 }
@@ -67,15 +55,25 @@ interface ListDetailProps {
 export const ListDetail = ({
   contractListInfo,
   isReadOnly,
-  isContractRemovable,
   isInstantiatedByMe = false,
   onContractSelect,
 }: ListDetailProps) => {
   const userKey = useUserKey();
   const { getAllTags } = useContractStore();
 
-  const [tagFilter, setTagFilter] = useState<string[]>([]);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [tagFilter, setTagFilter] = useState<string[]>([]);
+
+  const filteredContracts = useMemo(
+    () =>
+      matchSorter(contractListInfo.contracts, searchKeyword, {
+        keys: ["name", "description", "label", "address"],
+        sorter: (sortedItem) => sortedItem,
+      }).filter((contract) =>
+        tagFilter.every((tag) => contract.tags?.includes(tag))
+      ),
+    [contractListInfo.contracts, searchKeyword, tagFilter]
+  );
 
   return (
     <Box minH="xs" pb="48px">
@@ -110,11 +108,13 @@ export const ListDetail = ({
         />
       ) : (
         <FilteredListDetail
-          search={searchKeyword}
-          tagFilter={tagFilter}
-          contracts={contractListInfo.contracts}
+          contracts={filteredContracts}
           isReadOnly={isReadOnly}
-          isContractRemovable={isContractRemovable}
+          contractRemovalInfo={
+            contractListInfo.isContractRemovable
+              ? { label: contractListInfo.name, value: contractListInfo.slug }
+              : undefined
+          }
           onContractSelect={onContractSelect}
         />
       )}
