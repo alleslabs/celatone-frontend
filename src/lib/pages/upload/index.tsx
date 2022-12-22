@@ -115,10 +115,10 @@ const Upload = () => {
       </Text>
       <Stepper currentStep={1} />
       <Heading as="h4" variant="h4" my="48px">
-        Upload wasm file
+        Upload Wasm file
       </Heading>
       <ConnectWalletAlert
-        subtitle="You need to connect wallet to proceed this action"
+        subtitle="You need to connect your wallet first"
         mb="48px"
       />
       {wasmFile ? (
@@ -139,7 +139,7 @@ const Upload = () => {
         value={codeDesc}
         setInputState={setCodeDesc}
         label="Code Description (Optional)"
-        helperText="Define what your code works on in one sentence. You can add this later."
+        helperText="Short description of your code. You can add or change this later."
         my="32px"
         status={descStatus}
       />
