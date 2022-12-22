@@ -15,7 +15,7 @@ import { IoList } from "react-icons/io5";
 
 import { useCodeListData } from "lib/pages/codes/data";
 
-import { CodeTable } from "./CodeTable";
+import { CodeTableReadOnly } from "./CodeTableReadOnly";
 
 interface CodeSelectModalButtonProps {
   onCodeSelect: (code: string) => void;
@@ -67,11 +67,14 @@ export const CodeSelectModalButton = ({
             <Text variant="body1" fontWeight={700} ml="24px" mb="24px">
               My Stored Codes
             </Text>
-            <CodeTable onCodeSelect={handleSelect} codes={storedCodes} />
+            <CodeTableReadOnly
+              onCodeSelect={handleSelect}
+              codes={storedCodes}
+            />
             <Text variant="body1" fontWeight={700} ml="24px" my="24px">
               Saved Codes
             </Text>
-            <CodeTable onCodeSelect={handleSelect} codes={savedCodes} />
+            <CodeTableReadOnly onCodeSelect={handleSelect} codes={savedCodes} />
           </ModalBody>
         </ModalContent>
       </Modal>

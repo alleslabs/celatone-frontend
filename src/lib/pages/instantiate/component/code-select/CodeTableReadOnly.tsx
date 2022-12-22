@@ -46,12 +46,15 @@ const TableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
   );
 };
 
-interface CodeTableProps {
+interface CodeTableReadOnlyProps {
   onCodeSelect: (code: string) => void;
   codes: CodeInfo[];
 }
 
-export const CodeTable = ({ onCodeSelect, codes }: CodeTableProps) => {
+export const CodeTableReadOnly = ({
+  onCodeSelect,
+  codes,
+}: CodeTableReadOnlyProps) => {
   return (
     <TableContainer w="full" my="16px">
       <Table variant="simple">
@@ -70,9 +73,9 @@ export const CodeTable = ({ onCodeSelect, codes }: CodeTableProps) => {
           </Tr>
         </Thead>
         <Tbody>
-          {codes.map((code) => (
+          {codes.map((code, index) => (
             <TableRow
-              key={code.id}
+              key={code.id + index.toString()}
               codeDetail={code}
               onCodeSelect={onCodeSelect}
             />
