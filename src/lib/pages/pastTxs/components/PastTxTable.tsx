@@ -118,12 +118,12 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
           ? {
               type: "Upload",
               length: uploadMsgs.length,
-              text: "WASM files",
+              text: "Wasm files",
             }
           : {
               type: "Failed to upload",
               length: uploadMsgs.length,
-              text: "WASM files",
+              text: "Wasm files",
             };
         return <MultipleMsg {...multipleMsgProps} />;
       }
@@ -132,12 +132,12 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
       const singleMsgProps: SingleMsgProps = element.success
         ? {
             type: "Upload",
-            text1: "WASM to Code ID",
+            text1: "Wasm to Code ID",
             text3: uploadMsgs[0].id.toString(),
           }
         : {
             type: "Failed",
-            text1: "to upload WASM file",
+            text1: "to upload Wasm file",
           };
       return <SingleMsg {...singleMsgProps} />;
     },
@@ -467,7 +467,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         <Td border={hideBorder}>
           <Flex role="group" w="fit-content">
             <ExplorerLink
-              value={element.hash.substring(2)}
+              value={element.hash.substring(2).toUpperCase()}
               type="tx_hash"
               canCopyWithHover
             />

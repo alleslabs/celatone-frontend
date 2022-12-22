@@ -75,12 +75,12 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
       const singleMsgProps: SingleMsgProps = success
         ? {
             type: "Upload",
-            text1: "WASM to Code ID",
+            text1: "Wasm to Code ID",
             text3: msgUpload.id?.toString(),
           }
         : {
             type: "Failed",
-            text1: "to upload WASM file",
+            text1: "to upload Wasm file",
           };
       return <SingleMsg {...singleMsgProps} />;
     }

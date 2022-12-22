@@ -52,7 +52,7 @@ export const QuickMenu = () => {
                 Deploy new contract
               </Text>
               <Text color="gray.900" variant="body2">
-                Deploy contract by upload new WASM file
+                Deploy contract by upload new Wasm file
               </Text>
             </Flex>
             <Icon as={MdChevronRight} color="gray.900" boxSize={9} />
