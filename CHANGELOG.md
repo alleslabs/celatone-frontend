@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#38](https://github.com/alleslabs/celatone-frontend/pull/38) Show execute msgs cmd when wallet is not connected
 - [#41](https://github.com/alleslabs/celatone-frontend/pull/41) Add Github action for tracking CHANGELOG.md for changes
 
 ### Improvements
