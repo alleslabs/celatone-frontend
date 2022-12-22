@@ -62,7 +62,7 @@ export const useCodeListData = (keyword?: string): CodeListData => {
       if (computedKeyword.length === 0) return true;
 
       return (
-        code.id.toString().includes(computedKeyword) ||
+        code.id.toString().startsWith(computedKeyword) ||
         code.description?.toLowerCase().includes(computedKeyword.toLowerCase())
       );
     };

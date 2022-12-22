@@ -16,7 +16,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
     <Flex alignItems="center" flexDir="column" gap="4">
       <Icon as={MdSearch} color="gray.600" boxSize="16" />
       <Text color="gray.500">
-        You don’t have any deploy or saved contracts.
+        You don’t have any deployed or saved contracts.
       </Text>
       {!isReadOnly && (
         <>
@@ -31,7 +31,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
           </Flex>
           <Flex alignItems="center" gap="2">
             <Text color="gray.500">
-              or save deployed contract to the list with
+              or save deployed contracts to lists with
             </Text>
             <SaveNewContract
               list={list}

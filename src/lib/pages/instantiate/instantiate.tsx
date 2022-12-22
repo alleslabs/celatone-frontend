@@ -230,7 +230,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             name="adminAddress"
             control={control}
             label="Admin Address (optional)"
-            helperText="This address will be an admin for the deployed smart contract."
+            helperText="This address will be the admin for the deployed smart contract."
             variant="floating"
           />
           <Heading
