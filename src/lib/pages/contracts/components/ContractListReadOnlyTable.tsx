@@ -6,12 +6,10 @@ import {
   Th,
   Td,
   TableContainer,
-  Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ContractInfo } from "lib/stores/contract";
-import { truncate } from "lib/utils";
 
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
@@ -24,8 +22,6 @@ export const ContractListReadOnlyTable = ({
   contracts = [],
   onContractSelect,
 }: ContractListReadOnlyTableProps) => {
-  const { address } = useWallet();
-
   return (
     <TableContainer w="full" my="16px">
       <Table variant="simple" sx={{ tableLayout: "auto" }}>
@@ -49,7 +45,11 @@ export const ContractListReadOnlyTable = ({
               cursor="pointer"
             >
               <Td width="10%">
-                <Text variant="body2">{truncate(item.address)}</Text>
+                <ExplorerLink
+                  value={item.address}
+                  type="contract_address"
+                  isReadOnly
+                />
               </Td>
               <Td width="40%">
                 <ContractNameCell contract={item} isReadOnly />
@@ -58,11 +58,11 @@ export const ContractListReadOnlyTable = ({
                 <TagsCell contractInfo={item} isReadOnly />
               </Td>
               <Td width="10%">
-                <Text variant="body2">
-                  {address === item.instantiator
-                    ? "Me"
-                    : truncate(item.instantiator)}
-                </Text>
+                <ExplorerLink
+                  value={item.instantiator}
+                  type="user_address"
+                  isReadOnly
+                />
               </Td>
             </Tr>
           ))}

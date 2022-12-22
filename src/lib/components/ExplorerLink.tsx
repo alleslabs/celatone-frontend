@@ -1,5 +1,5 @@
 import type { BoxProps } from "@chakra-ui/react";
-import { Box, Link } from "@chakra-ui/react";
+import { Box, Link, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import {
@@ -14,8 +14,9 @@ import { Copier } from "./Copier";
 interface ExplorerLinkProps extends BoxProps {
   value: string;
   type?: "tx_hash" | "contract_address" | "user_address";
-  canCopyWithHover?: boolean;
   copyValue?: string;
+  canCopyWithHover?: boolean;
+  isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
   maxWidth?: string;
 }
@@ -25,6 +26,7 @@ export const ExplorerLink = ({
   type,
   copyValue,
   canCopyWithHover = false,
+  isReadOnly = false,
   textFormat = "truncate",
   maxWidth = "150px",
   ...componentProps
@@ -76,27 +78,33 @@ export const ExplorerLink = ({
       alignItems="center"
       {...componentProps}
     >
-      <Link
-        fontWeight="400"
-        href={hrefLink()}
-        target="_blank"
-        rel="noopener noreferrer"
-        color="primary.main"
-        data-peer
-        onClick={(e) => e.stopPropagation()}
-        pointerEvents={!hrefLink() ? "none" : "auto"}
-        className={textFormat === "ellipsis" ? "ellipsis" : undefined}
-        maxW={maxWidth}
-      >
-        {renderValue()}
-      </Link>
-      <Box
-        alignItems="center"
-        display={canCopyWithHover ? "none" : undefined}
-        _groupHover={canCopyWithHover ? { display: "flex" } : undefined}
-      >
-        <Copier value={copyValue || value} ml="8px" />
-      </Box>
+      {isReadOnly ? (
+        <Text variant="body2">{renderValue()}</Text>
+      ) : (
+        <>
+          <Link
+            fontWeight="400"
+            href={hrefLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="primary.main"
+            data-peer
+            onClick={(e) => e.stopPropagation()}
+            pointerEvents={!hrefLink() ? "none" : "auto"}
+            className={textFormat === "ellipsis" ? "ellipsis" : undefined}
+            maxW={maxWidth}
+          >
+            {renderValue()}
+          </Link>
+          <Box
+            alignItems="center"
+            display={canCopyWithHover ? "none" : undefined}
+            _groupHover={canCopyWithHover ? { display: "flex" } : undefined}
+          >
+            <Copier value={copyValue || value} ml="8px" />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
