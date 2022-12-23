@@ -25,7 +25,7 @@ export function AddToOtherList({
 
   const handleSave = useHandleContractSave({
     title: "Action complete!",
-    contractAddress: contractInfo.address,
+    contractAddress: contractInfo.contractAddress,
     instantiator: contractInfo.instantiator,
     label: contractInfo.label,
     created: contractInfo.created,
@@ -52,7 +52,7 @@ export function AddToOtherList({
               {contractInfo.name ?? contractInfo.label}
             </Text>
             <ExplorerLink
-              value={contractInfo.address}
+              value={contractInfo.contractAddress}
               type="contract_address"
             />
           </Flex>

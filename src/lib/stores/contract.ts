@@ -6,7 +6,7 @@ import type { Option, Dict, ContractAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractInfo {
-  address: ContractAddr;
+  contractAddress: ContractAddr;
   instantiator: string;
   label: string;
   created: Date;
@@ -130,7 +130,7 @@ export class ContractStore {
       contracts: contractListInfo.contracts.map((contractAddress) => {
         if (!contractInfoByUserKey)
           return {
-            address: contractAddress,
+            contractAddress,
             instantiator: "TODO",
             label: "TODO",
             created: new Date(0),
@@ -239,7 +239,7 @@ export class ContractStore {
     lists?: Option[]
   ) {
     const contractInfo = this.contractInfo[userKey]?.[contractAddress] ?? {
-      address: contractAddress,
+      contractAddress,
       instantiator,
       label,
       created,

@@ -49,7 +49,7 @@ export const useInstantiatedListByUserQuery = (
       })
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
-          address: contract.address as ContractAddr,
+          contractAddress: contract.address as ContractAddr,
           instantiator: walletAddr,
           label: contract.label,
           created: new Date(`${contract.transaction?.block?.timestamp}Z`),
@@ -70,15 +70,11 @@ export const useInstantiateDetailByContractQuery = (
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
-      .then(({ contracts }) =>
-        contracts
-          .map<InstantiateDetail>((contract) => ({
-            // TODO: revisit undefined after backend remove nullable
-            initMsg: contract.init_msg ?? "{}",
-            initTxHash: parseTxHash(contract.transaction?.hash),
-          }))
-          ?.at(0)
-      );
+      .then(({ contracts_by_pk }) => ({
+        // TODO: revisit undefined after backend remove nullable
+        initMsg: contracts_by_pk?.init_msg ?? "{}",
+        initTxHash: parseTxHash(contracts_by_pk?.transaction?.hash),
+      }));
   }, [contractAddress]);
 
   return useQuery(

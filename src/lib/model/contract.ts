@@ -40,7 +40,7 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
   return {
     contracts: contracts.map((contract) => ({
       ...contract,
-      ...getContractInfo(contract.address),
+      ...getContractInfo(contract.contractAddress),
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
@@ -58,7 +58,7 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 
   return {
     contracts: Array.from({ length: count }, () => ({
-      address: "" as ContractAddr,
+      contractAddress: "" as ContractAddr,
       instantiator: "",
       label: "",
       created: new Date(0),

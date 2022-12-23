@@ -4728,11 +4728,11 @@ export type GetInstantiateDetailByContractQueryDocumentQueryVariables = Exact<{
 
 export type GetInstantiateDetailByContractQueryDocumentQuery = {
   __typename?: "query_root";
-  contracts: Array<{
+  contracts_by_pk?: {
     __typename?: "contracts";
     init_msg?: string | null;
     transaction?: { __typename?: "transactions"; hash: any } | null;
-  }>;
+  } | null;
 };
 
 export const GetCodeListByUserQueryDocument = {
@@ -5244,32 +5244,14 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "contracts" },
+            name: { kind: "Name", value: "contracts_by_pk" },
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "where" },
+                name: { kind: "Name", value: "address" },
                 value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "address" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "contractAddress" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
+                  kind: "Variable",
+                  name: { kind: "Name", value: "contractAddress" },
                 },
               },
             ],

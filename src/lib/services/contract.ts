@@ -1,22 +1,22 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, HumanAddr } from "lib/types";
 import { encode } from "lib/utils";
 
 interface ContractResponse {
   address: ContractAddr;
   contract_info: {
     code_id: string;
-    creator: string;
-    admin: string;
+    creator: HumanAddr | ContractAddr;
+    admin?: HumanAddr | ContractAddr;
     label: string;
     created?: {
       block_height: number;
       tx_index: number;
     };
     ibc_port_id: string;
-    extension: string;
+    extension?: string;
   };
 }
 
@@ -32,11 +32,18 @@ interface BalancesResponse {
   balances: Coin[];
 }
 
-export interface InstantiateInfo {
+interface PublicInfoResponse {
+  slug: string;
+  name: string;
   address: ContractAddr;
+  description: string;
+}
+
+export interface InstantiateInfo {
+  contractAddress: ContractAddr;
   codeId: string;
-  instantiator: string;
-  admin: string;
+  instantiator: HumanAddr | ContractAddr;
+  admin?: HumanAddr | ContractAddr;
   label: string;
   createdHeight: number;
   createdTime: Date;
@@ -47,7 +54,7 @@ export interface InstantiateInfo {
 export interface PublicInfo {
   slug: string;
   name: string;
-  address: ContractAddr;
+  contractAddress: ContractAddr;
   description: string;
 }
 
@@ -95,7 +102,7 @@ export const queryInstantiateInfo = async (
   }
 
   return {
-    address: res.address,
+    contractAddress: res.address,
     codeId: res.contract_info.code_id,
     instantiator: res.contract_info.creator,
     admin: res.contract_info.admin,
@@ -124,8 +131,13 @@ export const queryPublicInfo = async (
 ): Promise<PublicInfo | undefined> => {
   if (!chainName || !chainId) return undefined;
   return axios
-    .get<PublicInfo[]>(
+    .get<PublicInfoResponse[]>(
       `https://cosmos-registry.alleslabs.dev/data/${chainName}/${chainId}/contracts.json`
     )
-    .then(({ data }) => data.find((info) => info.address === contractAddress));
+    .then(({ data }) => {
+      const publicInfo = data.find((info) => info.address === contractAddress);
+      return publicInfo
+        ? { ...publicInfo, contractAddress: publicInfo.address }
+        : undefined;
+    });
 };

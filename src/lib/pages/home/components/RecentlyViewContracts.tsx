@@ -6,7 +6,8 @@ import type { ContractAddr } from "lib/types";
 /* TODO: change data -> recently view contracts */
 const contracts = [
   {
-    address: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
+    contractAddress:
+      "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
     name: "Deposit asset",
     tags: ["deposit", "lending"],
     instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
@@ -16,7 +17,8 @@ const contracts = [
     created: new Date(),
   },
   {
-    address: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
+    contractAddress:
+      "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
     name: "Borrow asset",
     tags: ["deposit", "lending", "borrow", "beeb", "margin"],
     instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
@@ -25,7 +27,8 @@ const contracts = [
     created: new Date(),
   },
   {
-    address: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
+    contractAddress:
+      "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
     name: "",
     tags: ["deposit", "lending", "borrow", "margin"],
     instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
@@ -34,7 +37,8 @@ const contracts = [
     created: new Date(),
   },
   {
-    address: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
+    contractAddress:
+      "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
     name: "Deposit asset to Lorem",
     tags: [],
     instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",

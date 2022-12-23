@@ -27,9 +27,9 @@ const Query = () => {
   const endpoint = useEndpoint();
   const isMobile = useMobile();
 
-  const [contractAddress, setContractAddress] = useState<string>("");
-  const [contractName, setContractName] = useState<string>("");
-  const [initialMsg, setInitialMsg] = useState<string>("");
+  const [contractAddress, setContractAddress] = useState("");
+  const [contractName, setContractName] = useState("");
+  const [initialMsg, setInitialMsg] = useState("");
   const [cmds, setCmds] = useState<[string, string][]>([]);
 
   const goToExecute = () => {
