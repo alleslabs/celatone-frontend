@@ -19,7 +19,7 @@ export function EditTags({ contractInfo }: EditTagsProps) {
   const [tagResult, setTagResult] = useState<string[]>(contractInfo.tags ?? []);
   const handleSave = useHandleContractSave({
     title: "Updated tags successfully!",
-    address: contractInfo.address,
+    contractAddress: contractInfo.address,
     instantiator: contractInfo.instantiator,
     label: contractInfo.label,
     created: contractInfo.created,

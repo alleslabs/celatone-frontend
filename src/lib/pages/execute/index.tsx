@@ -31,7 +31,7 @@ const Execute = () => {
   const { address = "" } = useWallet();
   const endpoint = useEndpoint();
 
-  const [contractAddr, setContractAddr] = useState<string>("");
+  const [contractAddress, setContractAddress] = useState<string>("");
   const [contractName, setContractName] = useState<string>("");
   const [initialMsg, setInitialMsg] = useState<string>("");
   const [cmds, setCmds] = useState<[string, string][]>([]);
@@ -39,7 +39,7 @@ const Execute = () => {
   const goToQuery = () => {
     router.push({
       pathname: "/query",
-      query: { ...(contractAddr && { contract: contractAddr }) },
+      query: { ...(contractAddress && { contract: contractAddress }) },
     });
   };
   const onContractSelect = useCallback(
@@ -57,18 +57,18 @@ const Execute = () => {
   );
 
   const { isFetching } = useSimulateFeeQuery({
-    enabled: !!contractAddr,
+    enabled: !!contractAddress,
     messages: [
       composeMsg(MsgType.EXECUTE, {
         sender: address as HumanAddr,
-        contract: contractAddr as ContractAddr,
+        contract: contractAddress as ContractAddr,
         msg: Buffer.from('{"": {}}'),
         funds: [],
       }),
     ],
     onError: (e) => {
       if (e.message.includes("contract: ")) {
-        setContractAddr("");
+        setContractAddress("");
         setCmds([]);
       } else {
         const executeCmds: string[] = [];
@@ -82,20 +82,23 @@ const Execute = () => {
 
   useEffect(() => {
     (async () => {
-      const contractAddress = getFirstQueryParam(
+      const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
-      const contractState = getContractInfo(contractAddress);
+      const contractState = getContractInfo(contractAddressParam);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddress);
+        onContractSelect(contractAddressParam);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contractAddress);
+          const onChainDetail = await queryContract(
+            endpoint,
+            contractAddressParam
+          );
           setContractName(onChainDetail.contract_info.label);
         } catch {
           setContractName("Invalid Contract");
@@ -104,13 +107,13 @@ const Execute = () => {
         setContractName(contractState.name ?? contractState.label);
       }
 
-      setContractAddr(contractAddress);
+      setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
-      if (!contractAddress) setCmds([]);
+      if (!contractAddressParam) setCmds([]);
     })();
   }, [router, endpoint, getContractInfo, onContractSelect]);
 
-  const notSelected = contractAddr.length === 0;
+  const notSelected = contractAddress.length === 0;
 
   return (
     <PageContainer>
@@ -151,7 +154,7 @@ const Execute = () => {
             Contract Address
             {!notSelected ? (
               <ExplorerLink
-                value={contractAddr}
+                value={contractAddress}
                 type="contract_address"
                 canCopyWithHover
                 // TODO - Revisit not necessary if disable UI for mobile is implemented
@@ -181,7 +184,7 @@ const Execute = () => {
       </Flex>
 
       <ExecuteArea
-        contractAddr={contractAddr as ContractAddr}
+        contractAddress={contractAddress as ContractAddr}
         initialMsg={initialMsg}
         cmds={cmds}
       />

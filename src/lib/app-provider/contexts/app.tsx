@@ -21,12 +21,12 @@ import { useCodeStore, useContractStore } from "lib/hooks";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
 
-interface AppProviderProps<ContractAddress, Constants extends AppConstants> {
+interface AppProviderProps<AppContractAddress, Constants extends AppConstants> {
   children: ReactNode;
 
   fallbackGasPrice: Record<string, ChainGasPrice>;
 
-  contractAddress: (currentChainName: string) => ContractAddress;
+  appContractAddressMap: (currentChainName: string) => AppContractAddress;
 
   constants: Constants;
 }
@@ -36,12 +36,12 @@ interface AppContextInterface<
   Constants extends AppConstants = AppConstants
 > {
   chainGasPrice: ChainGasPrice;
-  contractAddress: ContractAddress;
+  appContractAddress: ContractAddress;
   constants: Constants;
   explorerLink: {
-    contractAddr: string;
-    txs: string;
-    address: string;
+    contractUrl: string;
+    txUrl: string;
+    userUrl: string;
   };
   indexerGraphClient: GraphQLClient;
 }
@@ -49,12 +49,12 @@ interface AppContextInterface<
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppContext = createContext<AppContextInterface<any, any>>({
   chainGasPrice: { denom: "", gasPrice: "0" as U<Token> },
-  contractAddress: {},
+  appContractAddress: {},
   constants: { gasAdjustment: 0 },
   explorerLink: {
-    contractAddr: "",
-    txs: "",
-    address: "",
+    contractUrl: "",
+    txUrl: "",
+    userUrl: "",
   },
   indexerGraphClient: new GraphQLClient(""),
 });
@@ -62,7 +62,7 @@ const AppContext = createContext<AppContextInterface<any, any>>({
 export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   children,
   fallbackGasPrice,
-  contractAddress,
+  appContractAddressMap,
   constants,
 }: AppProviderProps<ContractAddress, Constants>) => {
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
@@ -87,9 +87,9 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   const chainBoundStates = useMemo(() => {
     return {
       explorerLink: {
-        contractAddr: getExplorerContractAddressUrl(currentChainName),
-        txs: getExplorerTxUrl(currentChainName),
-        address: getExplorerUserAddressUrl(currentChainName),
+        contractUrl: getExplorerContractAddressUrl(currentChainName),
+        txUrl: getExplorerTxUrl(currentChainName),
+        userUrl: getExplorerUserAddressUrl(currentChainName),
       },
       indexerGraphClient: getIndexerGraphClient(currentChainName),
     };
@@ -98,13 +98,13 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   const states = useMemo<AppContextInterface<ContractAddress, Constants>>(
     () => ({
       chainGasPrice,
-      contractAddress: contractAddress(currentChainName),
+      appContractAddress: appContractAddressMap(currentChainName),
       constants,
       ...chainBoundStates,
     }),
     [
       chainGasPrice,
-      contractAddress,
+      appContractAddressMap,
       currentChainName,
       constants,
       chainBoundStates,

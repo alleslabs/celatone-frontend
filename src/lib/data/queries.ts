@@ -61,8 +61,8 @@ export const getInstantiatedListByUserQueryDocument = graphql(`
 `);
 
 export const getInstantiateDetailByContractQueryDocument = graphql(`
-  query getInstantiateDetailByContractQueryDocument($contractAddr: String!) {
-    contracts(where: { address: { _eq: $contractAddr } }) {
+  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {
+    contracts(where: { address: { _eq: $contractAddress } }) {
       init_msg
       transaction {
         hash

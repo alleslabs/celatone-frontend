@@ -27,7 +27,7 @@ const Query = () => {
   const endpoint = useEndpoint();
   const isMobile = useMobile();
 
-  const [contractAddr, setContractAddr] = useState<string>("");
+  const [contractAddress, setContractAddress] = useState<string>("");
   const [contractName, setContractName] = useState<string>("");
   const [initialMsg, setInitialMsg] = useState<string>("");
   const [cmds, setCmds] = useState<[string, string][]>([]);
@@ -35,7 +35,7 @@ const Query = () => {
   const goToExecute = () => {
     router.push({
       pathname: "/execute",
-      query: { ...(contractAddr && { contract: contractAddr }) },
+      query: { ...(contractAddress && { contract: contractAddress }) },
     });
   };
 
@@ -55,10 +55,11 @@ const Query = () => {
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, contractAddr, '{"": {}}'],
-    async () => queryData(endpoint, contractAddr as ContractAddr, '{"": {}}'),
+    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
+    async () =>
+      queryData(endpoint, contractAddress as ContractAddr, '{"": {}}'),
     {
-      enabled: !!contractAddr,
+      enabled: !!contractAddress,
       retry: false,
       cacheTime: 0,
       refetchOnWindowFocus: false,
@@ -74,20 +75,23 @@ const Query = () => {
 
   useEffect(() => {
     (async () => {
-      const contractAddress = getFirstQueryParam(
+      const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
-      const contractState = getContractInfo(contractAddress);
+      const contractState = getContractInfo(contractAddressParam);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddress);
+        onContractSelect(contractAddressParam);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contractAddress);
+          const onChainDetail = await queryContract(
+            endpoint,
+            contractAddressParam
+          );
           setContractName(onChainDetail.contract_info.label);
         } catch {
           setContractName("Invalid Contract");
@@ -96,13 +100,13 @@ const Query = () => {
         setContractName(contractState.name ?? contractState.label);
       }
 
-      setContractAddr(contractAddress);
+      setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
-      if (!contractAddress) setCmds([]);
+      if (!contractAddressParam) setCmds([]);
     })();
   }, [router, endpoint, getContractInfo, onContractSelect]);
 
-  const notSelected = contractAddr.length === 0;
+  const notSelected = contractAddress.length === 0;
 
   return (
     <PageContainer>
@@ -141,7 +145,7 @@ const Query = () => {
             Contract Address
             {!notSelected ? (
               <ExplorerLink
-                value={contractAddr}
+                value={contractAddress}
                 type="contract_address"
                 canCopyWithHover
                 // TODO - Revisit not necessary if disable UI for mobile is implemented
@@ -171,7 +175,7 @@ const Query = () => {
       </Flex>
 
       <QueryArea
-        contractAddr={contractAddr as ContractAddr}
+        contractAddress={contractAddress as ContractAddr}
         initialMsg={initialMsg}
         cmds={cmds}
       />

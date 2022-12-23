@@ -28,7 +28,7 @@ interface SaveNewContractProps {
 }
 export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const {
-    contractAddress: { example: exampleContractAddress },
+    appContractAddress: { example: exampleContractAddress },
   } = useCelatoneApp();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
@@ -121,7 +121,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   const handleSave = useHandleContractSave({
     title: `Saved ${name.trim().length ? name : label}`,
-    address: contractAddress,
+    contractAddress: contractAddress as ContractAddr,
     instantiator,
     label,
     created,

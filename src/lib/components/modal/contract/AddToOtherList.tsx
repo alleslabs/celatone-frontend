@@ -25,7 +25,7 @@ export function AddToOtherList({
 
   const handleSave = useHandleContractSave({
     title: "Action complete!",
-    address: contractInfo.address,
+    contractAddress: contractInfo.address,
     instantiator: contractInfo.instantiator,
     label: contractInfo.label,
     created: contractInfo.created,

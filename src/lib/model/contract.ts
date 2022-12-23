@@ -58,7 +58,7 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 
   return {
     contracts: Array.from({ length: count }, () => ({
-      address: "",
+      address: "" as ContractAddr,
       instantiator: "",
       label: "",
       created: new Date(0),
@@ -72,39 +72,39 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 };
 
 export const useContractDetail = (
-  contractAddr: ContractAddr
+  contractAddress: ContractAddr
 ): ContractDetail | undefined => {
   const { currentChainRecord } = useWallet();
   const { getContractInfo } = useContractStore();
   const endpoint = useEndpoint();
 
   const { data: instantiateInfo } = useQuery(
-    ["query", "instantiateInfo", contractAddr],
-    async () => queryInstantiateInfo(endpoint, contractAddr),
+    ["query", "instantiateInfo", contractAddress],
+    async () => queryInstantiateInfo(endpoint, contractAddress),
     { enabled: !!currentChainRecord }
   );
   const { data: contractBalances = { balances: [] } } = useQuery(
-    ["query", "contractBalances", contractAddr],
-    async () => queryContractBalances(endpoint, contractAddr),
+    ["query", "contractBalances", contractAddress],
+    async () => queryContractBalances(endpoint, contractAddress),
     { enabled: !!currentChainRecord }
   );
   const { data: publicInfo } = useQuery(
-    ["query", "publicInfo", contractAddr],
+    ["query", "publicInfo", contractAddress],
     async () =>
       queryPublicInfo(
         currentChainRecord?.name,
         currentChainRecord?.chain.chain_id,
-        contractAddr
+        contractAddress
       ),
     { enabled: !!currentChainRecord }
   );
 
-  const contractInfo = getContractInfo(contractAddr);
+  const contractInfo = getContractInfo(contractAddress);
   const {
     data: instantiateDetail = {
       initMsg: "{}",
     },
-  } = useInstantiateDetailByContractQuery(contractAddr);
+  } = useInstantiateDetailByContractQuery(contractAddress);
   // TODO: contract proposal id
   const proposalId = undefined;
   // TODO: get all related transactions

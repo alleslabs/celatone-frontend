@@ -39,7 +39,9 @@ export const SelectContract = ({
   notSelected,
   onContractSelect,
 }: SelectContractProps) => {
-  const { contractAddress } = useCelatoneApp();
+  const {
+    appContractAddress: { example: exampleContractAddress },
+  } = useCelatoneApp();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
 
@@ -124,7 +126,7 @@ export const SelectContract = ({
                     const inputValue = e.target.value;
                     setSearchManual(inputValue);
                   }}
-                  placeholder={`ex. ${contractAddress.example}`}
+                  placeholder={`ex. ${exampleContractAddress}`}
                   size="md"
                 />
                 <Button

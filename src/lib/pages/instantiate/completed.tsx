@@ -8,6 +8,7 @@ import { InstantiateOffChainDetail } from "lib/components/InstantiateOffchainDet
 import { TxReceiptRender } from "lib/components/tx/receipt";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { getExplorerContractAddressUrl } from "lib/data";
+import type { ContractAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
 
 import type { InstantiateTxInfo } from ".";
@@ -106,7 +107,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
       <InstantiateOffChainDetail
         title="Contract Off-Chain Detail"
         subtitle="Filled information below will be saved on HoloDeck only and able to edit later."
-        contractAddress={txInfo.contractAddress}
+        contractAddress={txInfo.contractAddress as ContractAddr}
         contractLabel={txInfo.contractLabel}
       />
     </WasmPageContainer>

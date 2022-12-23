@@ -53,31 +53,31 @@ export interface PublicInfo {
 
 export const queryData = async (
   endpoint: string,
-  contractAddr: ContractAddr,
+  contractAddress: ContractAddr,
   msg: string
 ) => {
   const b64 = encode(msg);
   const { data } = await axios.get(
-    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddr}/smart/${b64}`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/smart/${b64}`
   );
   return data;
 };
 
 export const queryContract = async (
   endpoint: string,
-  contractAddr: ContractAddr
+  contractAddress: ContractAddr
 ) => {
   const { data } = await axios.get<ContractResponse>(
-    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddr}`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`
   );
   return data;
 };
 
 export const queryInstantiateInfo = async (
   endpoint: string,
-  contractAddr: ContractAddr
+  contractAddress: ContractAddr
 ): Promise<InstantiateInfo> => {
-  const res = await queryContract(endpoint, contractAddr);
+  const res = await queryContract(endpoint, contractAddress);
 
   // TODO: check `created` field for contracts created with proposals
   let createdHeight;
@@ -109,10 +109,10 @@ export const queryInstantiateInfo = async (
 
 export const queryContractBalances = async (
   endpoint: string,
-  contractAddr: ContractAddr
+  contractAddress: ContractAddr
 ) => {
   const { data } = await axios.get<BalancesResponse>(
-    `${endpoint}/cosmos/bank/v1beta1/balances/${contractAddr}?pagination.limit=0`
+    `${endpoint}/cosmos/bank/v1beta1/balances/${contractAddress}?pagination.limit=0`
   );
   return data;
 };
@@ -120,12 +120,12 @@ export const queryContractBalances = async (
 export const queryPublicInfo = async (
   chainName: string | undefined,
   chainId: string | undefined,
-  contractAddr: ContractAddr
+  contractAddress: ContractAddr
 ): Promise<PublicInfo | undefined> => {
   if (!chainName || !chainId) return undefined;
   return axios
     .get<PublicInfo[]>(
       `https://cosmos-registry.alleslabs.dev/data/${chainName}/${chainId}/contracts.json`
     )
-    .then(({ data }) => data.find((info) => info.address === contractAddr));
+    .then(({ data }) => data.find((info) => info.address === contractAddress));
 };

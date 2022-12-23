@@ -11,7 +11,7 @@ export interface ExecuteStreamParams {
   onTxSucceed?: (userKey: string, activity: Activity) => void;
   onTxFailed?: () => void;
   estimatedFee: StdFee | undefined;
-  contractAddr: ContractAddr;
+  contractAddress: ContractAddr;
   msg: object;
 }
 
@@ -24,7 +24,7 @@ export const useExecuteContractTx = () => {
       onTxSucceed,
       onTxFailed,
       estimatedFee,
-      contractAddr,
+      contractAddress,
       msg,
     }: ExecuteStreamParams) => {
       const client = await getCosmWasmClient();
@@ -34,7 +34,7 @@ export const useExecuteContractTx = () => {
 
       return executeContractTx({
         address,
-        contractAddr,
+        contractAddress,
         fee: estimatedFee,
         msg,
         client,

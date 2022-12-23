@@ -11,7 +11,7 @@ const documents = {
     types.GetInstantiatedCountByUserQueryDocumentDocument,
   "\n  query getInstantiatedListByUserQueryDocument($walletAddr: String!) {\n    contracts(\n      where: { transaction: { account: { address: { _eq: $walletAddr } } } }\n      limit: 500\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      label\n      address\n      transaction {\n        block {\n          timestamp\n        }\n      }\n    }\n  }\n":
     types.GetInstantiatedListByUserQueryDocumentDocument,
-  "\n  query getInstantiateDetailByContractQueryDocument($contractAddr: String!) {\n    contracts(where: { address: { _eq: $contractAddr } }) {\n      init_msg\n      transaction {\n        hash\n      }\n    }\n  }\n":
+  "\n  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {\n    contracts(where: { address: { _eq: $contractAddress } }) {\n      init_msg\n      transaction {\n        hash\n      }\n    }\n  }\n":
     types.GetInstantiateDetailByContractQueryDocumentDocument,
 };
 
@@ -28,8 +28,8 @@ export function graphql(
   source: "\n  query getInstantiatedListByUserQueryDocument($walletAddr: String!) {\n    contracts(\n      where: { transaction: { account: { address: { _eq: $walletAddr } } } }\n      limit: 500\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      label\n      address\n      transaction {\n        block {\n          timestamp\n        }\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getInstantiatedListByUserQueryDocument($walletAddr: String!) {\n    contracts(\n      where: { transaction: { account: { address: { _eq: $walletAddr } } } }\n      limit: 500\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      label\n      address\n      transaction {\n        block {\n          timestamp\n        }\n      }\n    }\n  }\n"];
 export function graphql(
-  source: "\n  query getInstantiateDetailByContractQueryDocument($contractAddr: String!) {\n    contracts(where: { address: { _eq: $contractAddr } }) {\n      init_msg\n      transaction {\n        hash\n      }\n    }\n  }\n"
-): typeof documents["\n  query getInstantiateDetailByContractQueryDocument($contractAddr: String!) {\n    contracts(where: { address: { _eq: $contractAddr } }) {\n      init_msg\n      transaction {\n        hash\n      }\n    }\n  }\n"];
+  source: "\n  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {\n    contracts(where: { address: { _eq: $contractAddress } }) {\n      init_msg\n      transaction {\n        hash\n      }\n    }\n  }\n"
+): typeof documents["\n  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {\n    contracts(where: { address: { _eq: $contractAddress } }) {\n      init_msg\n      transaction {\n        hash\n      }\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
 export function graphql(source: string) {

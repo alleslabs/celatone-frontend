@@ -17,13 +17,13 @@ import { encode, jsonPrettify, jsonValidate } from "lib/utils";
 import JsonReadOnly from "./JsonReadOnly";
 
 interface QueryAreaProps {
-  contractAddr: ContractAddr;
+  contractAddress: ContractAddr;
   initialMsg: string;
   cmds: [string, string][];
 }
 
 export const QueryArea = ({
-  contractAddr,
+  contractAddress,
   initialMsg,
   cmds,
 }: QueryAreaProps) => {
@@ -37,8 +37,8 @@ export const QueryArea = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", endpoint, contractAddr, msg],
-    async () => queryData(endpoint, contractAddr, msg),
+    ["query", endpoint, contractAddress, msg],
+    async () => queryData(endpoint, contractAddress, msg),
     {
       enabled: false,
       retry: false,
@@ -52,7 +52,7 @@ export const QueryArea = ({
           type: "query",
           action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
           sender: address,
-          contractAddr,
+          contractAddress,
           msg: encode(msg),
           timestamp: new Date(),
         });
@@ -103,7 +103,7 @@ export const QueryArea = ({
             ))}
           </ButtonGroup>
         ) : (
-          contractAddr && (
+          contractAddress && (
             <Text ml="16px" variant="body2" color="text.dark">
               No QueryMsgs suggestion available
             </Text>

@@ -34,7 +34,7 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
 
   const handleSave = useHandleContractSave({
     title: "Action Complete",
-    address: contractInfo.address,
+    contractAddress: contractInfo.address,
     instantiator: contractInfo.instantiator,
     label: contractInfo.label,
     created: contractInfo.created,

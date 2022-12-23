@@ -25,7 +25,7 @@ export function RemoveContract({
 
   const handleRemove = useHandleContractSave({
     title: `Removed ${displayName} from ${list.label}`,
-    address: contractInfo.address,
+    contractAddress: contractInfo.address,
     instantiator: contractInfo.instantiator,
     label: contractInfo.label,
     created: contractInfo.created,

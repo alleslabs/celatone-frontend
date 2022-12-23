@@ -49,7 +49,7 @@ export const useInstantiatedListByUserQuery = (
       })
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
-          address: contract.address,
+          address: contract.address as ContractAddr,
           instantiator: walletAddr,
           label: contract.label,
           created: new Date(`${contract.transaction?.block?.timestamp}Z`),
@@ -65,11 +65,11 @@ export const useInstantiatedListByUserQuery = (
 };
 
 export const useInstantiateDetailByContractQuery = (
-  contractAddr: ContractAddr
+  contractAddress: ContractAddr
 ): UseQueryResult<InstantiateDetail> => {
   const queryFn = useCallback(async () => {
     return indexerGraphClient
-      .request(getInstantiateDetailByContractQueryDocument, { contractAddr })
+      .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then(({ contracts }) =>
         contracts
           .map<InstantiateDetail>((contract) => ({
@@ -79,9 +79,13 @@ export const useInstantiateDetailByContractQuery = (
           }))
           ?.at(0)
       );
-  }, [contractAddr]);
+  }, [contractAddress]);
 
-  return useQuery(["instantiate_detail_by_contract", contractAddr], queryFn, {
-    keepPreviousData: true,
-  });
+  return useQuery(
+    ["instantiate_detail_by_contract", contractAddress],
+    queryFn,
+    {
+      keepPreviousData: true,
+    }
+  );
 };

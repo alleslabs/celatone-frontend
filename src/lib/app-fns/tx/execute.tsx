@@ -18,7 +18,7 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
   address: string;
-  contractAddr: ContractAddr;
+  contractAddress: ContractAddr;
   fee: StdFee;
   msg: object;
   client: SigningCosmWasmClient;
@@ -29,7 +29,7 @@ interface ExecuteTxParams {
 
 export const executeContractTx = ({
   address,
-  contractAddr,
+  contractAddress,
   fee,
   msg,
   client,
@@ -40,14 +40,14 @@ export const executeContractTx = ({
   return pipe(
     sendingTx(fee),
     postTx<ExecuteResult>({
-      postFn: () => client.execute(address, contractAddr, msg, fee),
+      postFn: () => client.execute(address, contractAddress, msg, fee),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(userKey, {
         type: "execute",
         action: Object.keys(msg)[0],
         sender: address,
-        contractAddr,
+        contractAddress,
         msg: encode(JSON.stringify(msg)), // base64
         timestamp: new Date(),
       });

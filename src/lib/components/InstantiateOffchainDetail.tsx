@@ -14,6 +14,7 @@ import {
 } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
+import type { ContractAddr } from "lib/types";
 
 import { ListSelection } from "./forms/ListSelection";
 import { TagSelection } from "./forms/TagSelection";
@@ -22,7 +23,7 @@ interface InstantiateOffChainFormProps {
   title?: string;
   subtitle?: string;
   cta?: boolean;
-  contractAddress: string;
+  contractAddress: ContractAddr;
   contractLabel: string;
 }
 

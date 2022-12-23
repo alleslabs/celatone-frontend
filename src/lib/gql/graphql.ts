@@ -4723,7 +4723,7 @@ export type GetInstantiatedListByUserQueryDocumentQuery = {
 };
 
 export type GetInstantiateDetailByContractQueryDocumentQueryVariables = Exact<{
-  contractAddr: Scalars["String"];
+  contractAddress: Scalars["String"];
 }>;
 
 export type GetInstantiateDetailByContractQueryDocumentQuery = {
@@ -5228,7 +5228,7 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "contractAddr" },
+            name: { kind: "Name", value: "contractAddress" },
           },
           type: {
             kind: "NonNullType",
@@ -5263,7 +5263,7 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
                             name: { kind: "Name", value: "_eq" },
                             value: {
                               kind: "Variable",
-                              name: { kind: "Name", value: "contractAddr" },
+                              name: { kind: "Name", value: "contractAddress" },
                             },
                           },
                         ],
