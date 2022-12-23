@@ -30,7 +30,6 @@ const Execute = () => {
   const [contractAddress, setContractAddress] = useState<string>("");
   const [contractName, setContractName] = useState<string>("");
   const [initialMsg, setInitialMsg] = useState<string>("");
-  const [cmds, setCmds] = useState<[string, string][]>([]);
 
   const { isFetching, isEmptyContractAddress, execCmds } = useExecuteCmds({
     contractAddress,
@@ -60,8 +59,7 @@ const Execute = () => {
     if (isEmptyContractAddress) {
       setContractAddress("");
     }
-    setCmds(execCmds);
-  }, [isEmptyContractAddress, execCmds]);
+  }, [isEmptyContractAddress]);
 
   useEffect(() => {
     (async () => {
@@ -87,7 +85,6 @@ const Execute = () => {
 
       setContractAddress(contractAddr);
       setInitialMsg(jsonMsg);
-      if (!contractAddr) setCmds([]);
     })();
   }, [router, endpoint, getContractInfo, onContractSelect]);
 
@@ -130,7 +127,11 @@ const Execute = () => {
         <Flex gap="24px" width="80%">
           <Flex direction="column" width="60%">
             Contract Address
-            {!notSelected ? (
+            {notSelected ? (
+              <Text textColor="text.disabled" variant="body2">
+                Not Selected
+              </Text>
+            ) : (
               <ExplorerLink
                 value={contractAddress}
                 type="contract_address"
@@ -139,10 +140,6 @@ const Execute = () => {
                 textFormat={isMobile ? "truncate" : "normal"}
                 maxWidth="none"
               />
-            ) : (
-              <Text textColor="text.disabled" variant="body2">
-                Not Selected
-              </Text>
             )}
           </Flex>
           <Flex direction="column">
@@ -164,7 +161,7 @@ const Execute = () => {
       <ExecuteArea
         contractAddress={contractAddress}
         initialMsg={initialMsg}
-        cmds={cmds}
+        cmds={execCmds}
       />
     </PageContainer>
   );

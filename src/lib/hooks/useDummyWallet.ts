@@ -12,9 +12,8 @@ export const useDummyWallet = () => {
     const getData = async () => {
       const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
         DUMMY_MNEMONIC || "",
-        {
-          prefix: currentChainRecord?.chain.bech32_prefix,
-        }
+        undefined,
+        currentChainRecord?.chain.bech32_prefix
       );
 
       setDummyWallet(wallet);

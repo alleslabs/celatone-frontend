@@ -22,6 +22,8 @@ export const useSimulateFeeQuery = ({
     useWallet();
   const { dummyWallet, dummyAddress } = useDummyWallet();
 
+  const userAddress = address || dummyAddress || "";
+
   const simulateFn = async (msgs: ComposedMsg[]) => {
     let client = await getCosmWasmClient();
     if (
@@ -40,19 +42,15 @@ export const useSimulateFeeQuery = ({
       );
     }
 
-    if (!client || !dummyAddress) {
+    if (!client) {
       return Promise.resolve(undefined);
     }
 
-    return (await client.simulate(
-      address || dummyAddress,
-      msgs,
-      undefined
-    )) as Gas;
+    return (await client.simulate(userAddress, msgs, undefined)) as Gas;
   };
 
   return useQuery({
-    queryKey: ["simulate", currentChainName, address, messages],
+    queryKey: ["simulate", currentChainName, userAddress, messages],
     queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
     enabled,
     keepPreviousData: true,
