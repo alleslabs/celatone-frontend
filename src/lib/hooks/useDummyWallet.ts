@@ -9,7 +9,7 @@ export const useDummyWallet = () => {
   const [dummyWallet, setDummyWallet] = useState<DirectSecp256k1HdWallet>();
   const [dummyAddress, setDummyAddress] = useState<string>();
   useEffect(() => {
-    const getData = async () => {
+    (async () => {
       if (DUMMY_MNEMONIC) {
         const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
           DUMMY_MNEMONIC,
@@ -23,9 +23,7 @@ export const useDummyWallet = () => {
         const { address } = (await wallet.getAccounts())[0];
         setDummyAddress(address);
       }
-    };
-
-    getData();
+    })();
   }, [currentChainRecord?.chain.bech32_prefix]);
 
   return { dummyWallet, dummyAddress };

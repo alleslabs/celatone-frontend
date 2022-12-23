@@ -26,12 +26,7 @@ export const useSimulateFeeQuery = ({
 
   const simulateFn = async (msgs: ComposedMsg[]) => {
     let client = await getCosmWasmClient();
-    if (
-      !currentChainRecord ||
-      !currentChainRecord.preferredEndpoints ||
-      !currentChainRecord.preferredEndpoints.rpc ||
-      !currentChainRecord.preferredEndpoints.rpc[0]
-    ) {
+    if (!currentChainRecord?.preferredEndpoints?.rpc?.[0]) {
       return Promise.resolve(undefined);
     }
 

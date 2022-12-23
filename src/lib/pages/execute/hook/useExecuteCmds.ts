@@ -1,12 +1,11 @@
 import { useWallet } from "@cosmos-kit/react";
-import router from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useSimulateFeeQuery } from "lib/app-provider";
 import { useDummyWallet } from "lib/hooks";
 import type { HumanAddr, ContractAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, getFirstQueryParam } from "lib/utils";
+import { composeMsg } from "lib/utils";
 
 interface UseExecuteCmdsProps {
   contractAddress: string;
@@ -17,11 +16,6 @@ export const useExecuteCmds = ({ contractAddress }: UseExecuteCmdsProps) => {
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);
   const { address } = useWallet();
   const { dummyAddress } = useDummyWallet();
-  const contractAddr = getFirstQueryParam(router.query.contract);
-
-  useEffect(() => {
-    if (!contractAddr) setExecCmds([]);
-  }, [contractAddr]);
 
   // TODO - Refactor - use useSimulateFee
   const { isFetching } = useSimulateFeeQuery({
