@@ -11,7 +11,7 @@ import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract, queryData } from "lib/services/contract";
-import type { RpcQueryError } from "lib/types";
+import type { ContractAddr, RpcQueryError } from "lib/types";
 import {
   jsonPrettify,
   getFirstQueryParam,
@@ -27,15 +27,15 @@ const Query = () => {
   const endpoint = useEndpoint();
   const isMobile = useMobile();
 
-  const [addr, setAddr] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [cmds, setCmds] = useState<[string, string][]>([]);
+  const [contractAddress, setContractAddress] = useState("");
+  const [contractName, setContractName] = useState("");
   const [initialMsg, setInitialMsg] = useState("");
+  const [cmds, setCmds] = useState<[string, string][]>([]);
 
   const goToExecute = () => {
     router.push({
       pathname: "/execute",
-      query: { ...(addr && { contract: addr }) },
+      query: { ...(contractAddress && { contract: contractAddress }) },
     });
   };
 
@@ -55,10 +55,11 @@ const Query = () => {
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, addr, '{"": {}}'],
-    async () => queryData(endpoint, addr, '{"": {}}'),
+    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
+    async () =>
+      queryData(endpoint, contractAddress as ContractAddr, '{"": {}}'),
     {
-      enabled: !!addr,
+      enabled: !!contractAddress,
       retry: false,
       cacheTime: 0,
       refetchOnWindowFocus: false,
@@ -74,33 +75,38 @@ const Query = () => {
 
   useEffect(() => {
     (async () => {
-      const contractAddr = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(contractAddr);
+      const contractAddressParam = getFirstQueryParam(
+        router.query.contract
+      ) as ContractAddr;
+      const contractState = getContractInfo(contractAddressParam);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddr);
+        onContractSelect(contractAddressParam);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contractAddr);
-          setName(onChainDetail.result?.label);
+          const onChainDetail = await queryContract(
+            endpoint,
+            contractAddressParam
+          );
+          setContractName(onChainDetail.contract_info.label);
         } catch {
-          setName("Invalid Contract");
+          setContractName("Invalid Contract");
         }
       } else {
-        setName(contractState.name ?? contractState.label);
+        setContractName(contractState.name ?? contractState.label);
       }
 
-      setAddr(contractAddr);
+      setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
-      if (!contractAddr) setCmds([]);
+      if (!contractAddressParam) setCmds([]);
     })();
   }, [router, endpoint, getContractInfo, onContractSelect]);
 
-  const notSelected = addr.length === 0;
+  const notSelected = contractAddress.length === 0;
 
   return (
     <PageContainer>
@@ -139,7 +145,7 @@ const Query = () => {
             Contract Address
             {!notSelected ? (
               <ExplorerLink
-                value={addr}
+                value={contractAddress}
                 type="contract_address"
                 canCopyWithHover
                 // TODO - Revisit not necessary if disable UI for mobile is implemented
@@ -158,7 +164,7 @@ const Query = () => {
               textColor={notSelected ? "text.disabled" : "text.dark"}
               variant="body2"
             >
-              {notSelected ? "Not Selected" : name}
+              {notSelected ? "Not Selected" : contractName}
             </Text>
           </Flex>
         </Flex>
@@ -168,7 +174,11 @@ const Query = () => {
         />
       </Flex>
 
-      <QueryArea contractAddress={addr} initialMsg={initialMsg} cmds={cmds} />
+      <QueryArea
+        contractAddress={contractAddress as ContractAddr}
+        initialMsg={initialMsg}
+        cmds={cmds}
+      />
     </PageContainer>
   );
 };

@@ -195,7 +195,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
   const renderExecute = useCallback(
     (executeMsgs: Array<DetailExecute>) => {
       const tags = [Object.keys(executeMsgs[0].msg)[0]];
-      const contractAddr = executeMsgs[0].contract;
+      const contractAddress = executeMsgs[0].contract;
       if (executeMsgs.length > 1) {
         tags.push(Object.keys(executeMsgs[1].msg)[0]);
       }
@@ -203,7 +203,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
       setIsAccordion(true);
       setButton("resend");
       // Multiple Execute msgs
-      if (executeMsgs.some((msg) => msg.contract !== contractAddr)) {
+      if (executeMsgs.some((msg) => msg.contract !== contractAddress)) {
         if (!element.success) {
           setButton("");
           return (
