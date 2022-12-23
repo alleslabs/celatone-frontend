@@ -106,7 +106,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
       {/* Off chain detail */}
       <InstantiateOffChainDetail
         title="Contract Off-Chain Detail"
-        subtitle="Filled information below will be saved on HoloDeck only and able to edit later."
+        subtitle="Filled information below will be saved on Celatone only and able to edit later."
         contractAddress={txInfo.contractAddress as ContractAddr}
         contractLabel={txInfo.contractLabel}
       />

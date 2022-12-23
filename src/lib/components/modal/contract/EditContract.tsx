@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { OffChainForm } from "lib/components/OffChain/OffChainForm";
+import { OffChainForm } from "lib/components/offchain/OffChainForm";
 import {
   MAX_CONTRACT_DESCRIPTION_LENGTH,
   MAX_CONTRACT_NAME_LENGTH,

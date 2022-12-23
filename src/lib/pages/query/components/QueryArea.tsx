@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import ContractCmdButton from "lib/components/ContractCmdButton";
 import CopyButton from "lib/components/CopyButton";
-import JsonInput from "lib/components/Json/JsonInput";
+import JsonInput from "lib/components/json/JsonInput";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";

@@ -15,7 +15,7 @@ const ContractList = observer(() => {
   const [searchKeyword, setSearchKeyword] = useState("");
 
   const handleListSelect = (slug: string) => {
-    router.push({ pathname: `/contracts/${slug}` });
+    router.push({ pathname: `/contract-list/${slug}` });
   };
 
   const { getContractLists } = useContractStore();

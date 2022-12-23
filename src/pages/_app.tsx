@@ -25,6 +25,7 @@ import {
 } from "env";
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
+import { MobileGuard } from "lib/components/MobileGuard";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import { StoreProvider } from "lib/providers/store";
@@ -50,7 +51,6 @@ configurePersistable({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
-
   const signerOptions: SignerOptions = {
     cosmwasm: (chain: Chain) => {
       if (
@@ -89,7 +89,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                 </Head>
                 <DefaultSeo {...defaultSEOConfig} />
                 <Layout>
-                  <Component {...pageProps} />
+                  <MobileGuard>
+                    <Component {...pageProps} />
+                  </MobileGuard>
                 </Layout>
               </TxBroadcastProvider>
             </AppProvider>
