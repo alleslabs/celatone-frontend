@@ -55,4 +55,4 @@ export const CELATONE_CONSTANTS: CelatoneConstants = {
   msgTypeUrl: MSG_TYPE_URL,
 };
 
-export const { DUMMY_MNEMONIC } = process.env;
+export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
