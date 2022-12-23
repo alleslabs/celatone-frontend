@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
-import type { Option, Dict } from "lib/types";
+import type { Option, Dict, ContractAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractInfo {
@@ -47,7 +47,7 @@ export interface Activity {
   type: "query" | "execute";
   action: string;
   sender: string | undefined;
-  contractAddress: string;
+  contractAddr: ContractAddr;
   msg: string; // base64
   timestamp: Date;
 }

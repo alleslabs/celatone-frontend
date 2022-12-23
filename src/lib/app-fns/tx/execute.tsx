@@ -10,7 +10,7 @@ import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Activity } from "lib/stores/contract";
-import type { TxResultRendering } from "lib/types";
+import type { ContractAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { encode, formatUFee } from "lib/utils";
 
@@ -18,7 +18,7 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
   address: string;
-  contractAddress: string;
+  contractAddr: ContractAddr;
   fee: StdFee;
   msg: object;
   client: SigningCosmWasmClient;
@@ -29,7 +29,7 @@ interface ExecuteTxParams {
 
 export const executeContractTx = ({
   address,
-  contractAddress,
+  contractAddr,
   fee,
   msg,
   client,
@@ -40,14 +40,14 @@ export const executeContractTx = ({
   return pipe(
     sendingTx(fee),
     postTx<ExecuteResult>({
-      postFn: () => client.execute(address, contractAddress, msg, fee),
+      postFn: () => client.execute(address, contractAddr, msg, fee),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(userKey, {
         type: "execute",
         action: Object.keys(msg)[0],
         sender: address,
-        contractAddress,
+        contractAddr,
         msg: encode(JSON.stringify(msg)), // base64
         timestamp: new Date(),
       });

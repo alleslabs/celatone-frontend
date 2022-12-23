@@ -11,19 +11,19 @@ import JsonInput from "lib/components/Json/JsonInput";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
-import type { RpcQueryError } from "lib/types";
+import type { ContractAddr, RpcQueryError } from "lib/types";
 import { encode, jsonPrettify, jsonValidate } from "lib/utils";
 
 import JsonReadOnly from "./JsonReadOnly";
 
 interface QueryAreaProps {
-  contractAddress: string;
+  contractAddr: ContractAddr;
   initialMsg: string;
   cmds: [string, string][];
 }
 
 export const QueryArea = ({
-  contractAddress,
+  contractAddr,
   initialMsg,
   cmds,
 }: QueryAreaProps) => {
@@ -37,8 +37,8 @@ export const QueryArea = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", endpoint, contractAddress, msg],
-    async () => queryData(endpoint, contractAddress, msg),
+    ["query", endpoint, contractAddr, msg],
+    async () => queryData(endpoint, contractAddr, msg),
     {
       enabled: false,
       retry: false,
@@ -52,7 +52,7 @@ export const QueryArea = ({
           type: "query",
           action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
           sender: address,
-          contractAddress,
+          contractAddr,
           msg: encode(msg),
           timestamp: new Date(),
         });
@@ -103,7 +103,7 @@ export const QueryArea = ({
             ))}
           </ButtonGroup>
         ) : (
-          contractAddress && (
+          contractAddr && (
             <Text ml="16px" variant="body2" color="text.dark">
               No QueryMsgs suggestion available
             </Text>

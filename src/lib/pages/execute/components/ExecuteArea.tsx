@@ -20,13 +20,13 @@ import { MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 interface ExecuteAreaProps {
-  contractAddress: string;
+  contractAddr: ContractAddr;
   initialMsg: string;
   cmds: [string, string][];
 }
 
 export const ExecuteArea = ({
-  contractAddress,
+  contractAddr,
   initialMsg,
   cmds,
 }: ExecuteAreaProps) => {
@@ -46,7 +46,7 @@ export const ExecuteArea = ({
     msg.trim().length &&
     jsonValidate(msg) === null &&
     address &&
-    contractAddress
+    contractAddr
   );
 
   const { isFetching } = useSimulateFeeQuery({
@@ -70,14 +70,14 @@ export const ExecuteArea = ({
       },
       onTxFailed: () => setProcessing(false),
       estimatedFee: fee,
-      contractAddress,
+      contractAddr,
       msg: JSON.parse(msg),
     });
     if (stream) {
       setProcessing(true);
       broadcast(stream);
     }
-  }, [contractAddress, fee, msg, addActivity, executeTx, broadcast]);
+  }, [contractAddr, fee, msg, addActivity, executeTx, broadcast]);
 
   useEffect(() => setMsg(initialMsg), [initialMsg]);
 
@@ -86,7 +86,7 @@ export const ExecuteArea = ({
       setError("");
       const composedMsg = composeMsg(MsgType.EXECUTE, {
         sender: address as HumanAddr,
-        contract: contractAddress as ContractAddr,
+        contract: contractAddr as ContractAddr,
         msg: Buffer.from(msg),
         funds: [],
       });
@@ -96,7 +96,7 @@ export const ExecuteArea = ({
       return () => clearTimeout(timeoutId);
     }
     return () => {};
-  }, [address, contractAddress, enableExecute, msg]);
+  }, [address, contractAddr, enableExecute, msg]);
 
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
@@ -135,7 +135,7 @@ export const ExecuteArea = ({
           ))}
         </ButtonGroup>
       ) : (
-        contractAddress && (
+        contractAddr && (
           <Text m="16px" variant="body2" color="text.dark">
             No ExecuteMsgs suggestion available
           </Text>

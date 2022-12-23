@@ -9,6 +9,7 @@ import {
   getInstantiateDetailByContractQueryDocument,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
+import type { ContractAddr, HumanAddr } from "lib/types";
 
 interface InstantiateDetail {
   initMsg: string;
@@ -16,7 +17,7 @@ interface InstantiateDetail {
 }
 
 export const useInstantiatedCountByUserQuery = (
-  walletAddr: string | undefined
+  walletAddr: HumanAddr | undefined
 ): UseQueryResult<number | undefined> => {
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
@@ -36,7 +37,7 @@ export const useInstantiatedCountByUserQuery = (
 };
 
 export const useInstantiatedListByUserQuery = (
-  walletAddr: string | undefined
+  walletAddr: HumanAddr | undefined
 ): UseQueryResult<ContractInfo[] | undefined> => {
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
@@ -63,7 +64,7 @@ export const useInstantiatedListByUserQuery = (
 };
 
 export const useInstantiateDetailByContractQuery = (
-  contractAddr: string
+  contractAddr: ContractAddr
 ): UseQueryResult<InstantiateDetail> => {
   const queryFn = useCallback(async () => {
     return indexerGraphClient

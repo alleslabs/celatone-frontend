@@ -19,7 +19,7 @@ import {
 import { useContractStore, useEndpoint } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { Option, RpcContractError } from "lib/types";
+import type { ContractAddr, Option, RpcContractError } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface SaveNewContractProps {
@@ -63,7 +63,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   // TODO: Abstract query
   const { refetch } = useQuery(
     ["query", "instantiateInfo", contractAddress],
-    async () => queryInstantiateInfo(endpoint, contractAddress),
+    async () => queryInstantiateInfo(endpoint, contractAddress as ContractAddr),
     {
       enabled: false,
       retry: false,

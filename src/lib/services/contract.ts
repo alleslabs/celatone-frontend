@@ -1,10 +1,11 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 
+import type { ContractAddr } from "lib/types";
 import { encode } from "lib/utils";
 
 interface ContractResponse {
-  address: string;
+  address: ContractAddr;
   contract_info: {
     code_id: string;
     creator: string;
@@ -32,7 +33,7 @@ interface BalancesResponse {
 }
 
 export interface InstantiateInfo {
-  address: string;
+  address: ContractAddr;
   codeId: string;
   instantiator: string;
   admin: string;
@@ -46,34 +47,37 @@ export interface InstantiateInfo {
 export interface PublicInfo {
   slug: string;
   name: string;
-  address: string;
+  address: ContractAddr;
   description: string;
 }
 
 export const queryData = async (
   endpoint: string,
-  contract: string,
+  contractAddr: ContractAddr,
   msg: string
 ) => {
   const b64 = encode(msg);
   const { data } = await axios.get(
-    `${endpoint}/cosmwasm/wasm/v1/contract/${contract}/smart/${b64}`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddr}/smart/${b64}`
   );
   return data;
 };
 
-export const queryContract = async (endpoint: string, contract: string) => {
+export const queryContract = async (
+  endpoint: string,
+  contractAddr: ContractAddr
+) => {
   const { data } = await axios.get<ContractResponse>(
-    `${endpoint}/cosmwasm/wasm/v1/contract/${contract}`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddr}`
   );
   return data;
 };
 
 export const queryInstantiateInfo = async (
   endpoint: string,
-  contract: string
+  contractAddr: ContractAddr
 ): Promise<InstantiateInfo> => {
-  const res = await queryContract(endpoint, contract);
+  const res = await queryContract(endpoint, contractAddr);
 
   // TODO: check `created` field for contracts created with proposals
   let createdHeight;
@@ -105,22 +109,23 @@ export const queryInstantiateInfo = async (
 
 export const queryContractBalances = async (
   endpoint: string,
-  contract: string
+  contractAddr: ContractAddr
 ) => {
   const { data } = await axios.get<BalancesResponse>(
-    `${endpoint}/cosmos/bank/v1beta1/balances/${contract}?pagination.limit=0`
+    `${endpoint}/cosmos/bank/v1beta1/balances/${contractAddr}?pagination.limit=0`
   );
   return data;
 };
 
 export const queryPublicInfo = async (
-  chainName: string,
-  chainId: string,
-  contract: string
+  chainName: string | undefined,
+  chainId: string | undefined,
+  contractAddr: ContractAddr
 ): Promise<PublicInfo | undefined> => {
+  if (!chainName || !chainId) return undefined;
   return axios
     .get<PublicInfo[]>(
       `https://cosmos-registry.alleslabs.dev/data/${chainName}/${chainId}/contracts.json`
     )
-    .then(({ data }) => data.find((info) => info.address === contract));
+    .then(({ data }) => data.find((info) => info.address === contractAddr));
 };
