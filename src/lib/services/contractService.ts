@@ -10,6 +10,7 @@ import {
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
+import { parseTxHash } from "lib/utils/parser";
 
 interface InstantiateDetail {
   initMsg: string;
@@ -74,7 +75,7 @@ export const useInstantiateDetailByContractQuery = (
           .map<InstantiateDetail>((contract) => ({
             // TODO: revisit undefined after backend remove nullable
             initMsg: contract.init_msg ?? "{}",
-            initTxHash: (contract.transaction?.hash as string).substring(2),
+            initTxHash: parseTxHash(contract.transaction?.hash),
           }))
           ?.at(0)
       );
