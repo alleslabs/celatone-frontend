@@ -9,7 +9,7 @@ import "ace-builds/src-noconflict/theme-monokai";
 
 interface JsonEditorProps {
   value: string;
-  setValue: (value: string) => void;
+  setValue?: (value: string) => void;
   readOnly?: boolean;
   isValid: boolean;
   height?: LayoutProps["height"];

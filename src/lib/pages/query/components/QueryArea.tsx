@@ -8,13 +8,12 @@ import { useEffect, useState } from "react";
 import ContractCmdButton from "lib/components/ContractCmdButton";
 import CopyButton from "lib/components/CopyButton";
 import JsonInput from "lib/components/json/JsonInput";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 import { encode, jsonPrettify, jsonValidate } from "lib/utils";
-
-import JsonReadOnly from "./JsonReadOnly";
 
 interface QueryAreaProps {
   contractAddress: ContractAddr;
@@ -139,12 +138,7 @@ export const QueryArea = ({
         </Box>
         <Spacer />
         <Box w="full">
-          <JsonReadOnly
-            topic="Return Output"
-            text={res}
-            setText={setRes}
-            height="240px"
-          />
+          <JsonReadOnly topic="Return Output" text={res} height="240px" />
           <CopyButton isDisable={res.length === 0} value={res} />
         </Box>
       </Flex>

@@ -16,6 +16,8 @@ import { MdBookmark, MdInput } from "react-icons/md";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
+import { useContractDetail } from "lib/model/contract";
+import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -24,11 +26,15 @@ import { JsonInfo } from "./components/JsonInfo";
 import { TokenSection } from "./components/TokenSection";
 
 const ContractDetails = () => {
-  const router = useRouter();
   /**
    * @todos add contract address validation function here
    */
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
+  const router = useRouter();
+  const contractAddressParam = getFirstQueryParam(
+    router.query.contractAddress
+  ) as ContractAddr;
+
+  const contractDetails = useContractDetail(contractAddressParam);
 
   return (
     <PageContainer>
@@ -52,7 +58,7 @@ const ContractDetails = () => {
             </Text>
             <ExplorerLink
               type="contract_address"
-              value={contractAddress}
+              value={contractAddressParam}
               textFormat="normal"
               maxWidth="none"
             />
@@ -111,8 +117,11 @@ const ContractDetails = () => {
         <InstantiateInfo />
         {/* Contract Info (Expand) */}
         <Flex direction="column" flex={0.8} gap={6}>
-          <JsonInfo header="Contract Info" />
-          <JsonInfo header="Instantiate Messages" />
+          <JsonInfo header="Contract Info" jsonString="" />
+          <JsonInfo
+            header="Instantiate Messages"
+            jsonString={contractDetails?.initMsg ?? ""}
+          />
         </Flex>
       </Flex>
       {/* History Table section */}
