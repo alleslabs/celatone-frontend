@@ -10,12 +10,6 @@ import { addressType, date, dateFromNow, getFirstQueryParam } from "lib/utils";
 import { LabelText } from "./LabelText";
 
 export const InstantiateInfo = () => {
-  /**
-   * @todos
-   * - Make an interface
-   * - All these are mockups, Wireup with real data and map render LabelText
-   */
-
   const contractAddress = getFirstQueryParam(router.query.contractAddress);
   const { currentChainName } = useWallet();
   const contractDetail = useContractDetail(contractAddress as ContractAddr);
