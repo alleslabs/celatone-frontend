@@ -39,14 +39,14 @@ export const ContractListReadOnlyTable = ({
             <Tr
               transition="all .25s ease-in-out"
               _hover={{ bg: "gray.900" }}
-              key={item.address}
+              key={item.contractAddress}
               onClick={() => {
-                onContractSelect(item.address);
+                onContractSelect(item.contractAddress);
               }}
               cursor="pointer"
             >
               <Td width="10%">
-                <Text variant="body2">{truncate(item.address)}</Text>
+                <Text variant="body2">{truncate(item.contractAddress)}</Text>
               </Td>
               <Td width="40%">
                 <ContractNameCell contract={item} isReadOnly />

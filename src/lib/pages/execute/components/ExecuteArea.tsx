@@ -20,7 +20,7 @@ import { MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 interface ExecuteAreaProps {
-  contractAddress: string;
+  contractAddress: ContractAddr;
   initialMsg: string;
   cmds: [string, string][];
 }

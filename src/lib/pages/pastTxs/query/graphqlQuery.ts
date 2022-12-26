@@ -135,14 +135,14 @@ export const queryWithActionsFromTxs = (
 // Handle the case where contract address is searched
 export const queryAddrFromContracts = (actionsFilter: string) => {
   return gql`
-      query QueryAddrFromContracts($userAddr: String!, $contractAddr: String!, $pageSize: Int!, $offset: Int!) {
+      query QueryAddrFromContracts($userAddr: String!, $contractAddress: String!, $pageSize: Int!, $offset: Int!) {
         contract_transactions(
           where: {
             transaction: { 
               account: { address: { _eq: $userAddr } },
               ${actionsFilter !== "" ? `${actionsFilter},` : ""}
             }
-            contract: { address: { _eq: $contractAddr } }
+            contract: { address: { _eq: $contractAddress } }
           }
           limit: $pageSize,
           offset: $offset,
@@ -168,7 +168,7 @@ export const queryAddrFromContracts = (actionsFilter: string) => {
               account: { address: { _eq: $userAddr } },
               ${actionsFilter !== "" ? `${actionsFilter},` : ""}
             }
-            contract: { address: { _eq: $contractAddr } }
+            contract: { address: { _eq: $contractAddress } }
           }
         ) {
           aggregate {

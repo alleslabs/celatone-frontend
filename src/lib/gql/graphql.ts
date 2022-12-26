@@ -4722,6 +4722,19 @@ export type GetInstantiatedListByUserQueryDocumentQuery = {
   }>;
 };
 
+export type GetInstantiateDetailByContractQueryDocumentQueryVariables = Exact<{
+  contractAddress: Scalars["String"];
+}>;
+
+export type GetInstantiateDetailByContractQueryDocumentQuery = {
+  __typename?: "query_root";
+  contracts_by_pk?: {
+    __typename?: "contracts";
+    init_msg?: string | null;
+    transaction?: { __typename?: "transactions"; hash: any } | null;
+  } | null;
+};
+
 export const GetCodeListByUserQueryDocument = {
   kind: "Document",
   definitions: [
@@ -5199,4 +5212,71 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
 } as unknown as DocumentNode<
   GetInstantiatedListByUserQueryDocumentQuery,
   GetInstantiatedListByUserQueryDocumentQueryVariables
+>;
+export const GetInstantiateDetailByContractQueryDocumentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: {
+        kind: "Name",
+        value: "getInstantiateDetailByContractQueryDocument",
+      },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "contractAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "contractAddress" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "init_msg" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetInstantiateDetailByContractQueryDocumentQuery,
+  GetInstantiateDetailByContractQueryDocumentQueryVariables
 >;

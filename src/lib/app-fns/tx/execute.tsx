@@ -10,7 +10,7 @@ import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Activity } from "lib/stores/contract";
-import type { TxResultRendering } from "lib/types";
+import type { ContractAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { encode, formatUFee } from "lib/utils";
 
@@ -18,7 +18,7 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
   address: string;
-  contractAddress: string;
+  contractAddress: ContractAddr;
   fee: StdFee;
   msg: object;
   client: SigningCosmWasmClient;

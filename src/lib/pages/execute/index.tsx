@@ -82,19 +82,24 @@ const Execute = () => {
 
   useEffect(() => {
     (async () => {
-      const contractAddr = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(contractAddr);
+      const contractAddressParam = getFirstQueryParam(
+        router.query.contract
+      ) as ContractAddr;
+      const contractState = getContractInfo(contractAddressParam);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddr);
+        onContractSelect(contractAddressParam);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contractAddr);
-          setContractName(onChainDetail.result?.label);
+          const onChainDetail = await queryContract(
+            endpoint,
+            contractAddressParam
+          );
+          setContractName(onChainDetail.contract_info.label);
         } catch {
           setContractName("Invalid Contract");
         }
@@ -102,9 +107,9 @@ const Execute = () => {
         setContractName(contractState.name ?? contractState.label);
       }
 
-      setContractAddress(contractAddr);
+      setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
-      if (!contractAddr) setCmds([]);
+      if (!contractAddressParam) setCmds([]);
     })();
   }, [router, endpoint, getContractInfo, onContractSelect]);
 
@@ -179,7 +184,7 @@ const Execute = () => {
       </Flex>
 
       <ExecuteArea
-        contractAddress={contractAddress}
+        contractAddress={contractAddress as ContractAddr}
         initialMsg={initialMsg}
         cmds={cmds}
       />

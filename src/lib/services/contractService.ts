@@ -6,11 +6,19 @@ import { indexerGraphClient } from "lib/data/graphql";
 import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
+  getInstantiateDetailByContractQueryDocument,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
+import type { ContractAddr, HumanAddr } from "lib/types";
+import { parseTxHash } from "lib/utils/parser";
+
+interface InstantiateDetail {
+  initMsg: string;
+  initTxHash?: string;
+}
 
 export const useInstantiatedCountByUserQuery = (
-  walletAddr: string | undefined
+  walletAddr: HumanAddr | undefined
 ): UseQueryResult<number | undefined> => {
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
@@ -30,7 +38,7 @@ export const useInstantiatedCountByUserQuery = (
 };
 
 export const useInstantiatedListByUserQuery = (
-  walletAddr: string | undefined
+  walletAddr: HumanAddr | undefined
 ): UseQueryResult<ContractInfo[] | undefined> => {
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
@@ -41,7 +49,7 @@ export const useInstantiatedListByUserQuery = (
       })
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
-          address: contract.address,
+          contractAddress: contract.address as ContractAddr,
           instantiator: walletAddr,
           label: contract.label,
           created: new Date(`${contract.transaction?.block?.timestamp}Z`),
@@ -54,4 +62,26 @@ export const useInstantiatedListByUserQuery = (
     keepPreviousData: true,
     enabled: !!walletAddr,
   });
+};
+
+export const useInstantiateDetailByContractQuery = (
+  contractAddress: ContractAddr
+): UseQueryResult<InstantiateDetail> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
+      .then(({ contracts_by_pk }) => ({
+        // TODO: revisit undefined after backend remove nullable
+        initMsg: contracts_by_pk?.init_msg ?? "{}",
+        initTxHash: parseTxHash(contracts_by_pk?.transaction?.hash),
+      }));
+  }, [contractAddress]);
+
+  return useQuery(
+    ["instantiate_detail_by_contract", contractAddress],
+    queryFn,
+    {
+      keepPreviousData: true,
+    }
+  );
 };
