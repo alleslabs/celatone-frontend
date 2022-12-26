@@ -21,11 +21,11 @@ export function RemoveContract({
 }: ModalProps) {
   const displayName = contractInfo.name
     ? contractInfo.name
-    : truncate(contractInfo.address);
+    : truncate(contractInfo.contractAddress);
 
   const handleRemove = useHandleContractSave({
     title: `Removed ${displayName} from ${list.label}`,
-    address: contractInfo.address,
+    contractAddress: contractInfo.contractAddress,
     instantiator: contractInfo.instantiator,
     label: contractInfo.label,
     created: contractInfo.created,

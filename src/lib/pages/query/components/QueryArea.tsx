@@ -11,13 +11,13 @@ import JsonInput from "lib/components/json/JsonInput";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
-import type { RpcQueryError } from "lib/types";
+import type { ContractAddr, RpcQueryError } from "lib/types";
 import { encode, jsonPrettify, jsonValidate } from "lib/utils";
 
 import JsonReadOnly from "./JsonReadOnly";
 
 interface QueryAreaProps {
-  contractAddress: string;
+  contractAddress: ContractAddr;
   initialMsg: string;
   cmds: [string, string][];
 }

@@ -20,7 +20,7 @@ import Head from "next/head";
 import defaultSEOConfig from "../../next-seo.config";
 import {
   CELATONE_CONSTANTS,
-  CELATONE_CONTRACT_ADDRESS,
+  CELATONE_APP_CONTRACT_ADDRESS,
   CELATONE_FALLBACK_GAS_PRICE,
 } from "env";
 import { AppProvider } from "lib/app-provider/contexts/app";
@@ -77,7 +77,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           <StoreProvider>
             <AppProvider
               fallbackGasPrice={CELATONE_FALLBACK_GAS_PRICE}
-              contractAddress={CELATONE_CONTRACT_ADDRESS}
+              appContractAddressMap={CELATONE_APP_CONTRACT_ADDRESS}
               constants={CELATONE_CONSTANTS}
             >
               <TxBroadcastProvider>

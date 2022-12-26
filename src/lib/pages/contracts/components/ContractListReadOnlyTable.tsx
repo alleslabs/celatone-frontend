@@ -38,9 +38,9 @@ export const ContractListReadOnlyTable = ({
             <Tr
               transition="all .25s ease-in-out"
               _hover={{ bg: "gray.900" }}
-              key={item.address}
+              key={item.contractAddress}
               onClick={() => {
-                onContractSelect(item.address);
+                onContractSelect(item.contractAddress);
               }}
               cursor="pointer"
             >
