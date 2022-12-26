@@ -15,7 +15,6 @@ export const useExecuteCmds = ({ contractAddress }: UseExecuteCmdsProps) => {
   const { address } = useWallet();
   const { dummyAddress } = useDummyWallet();
 
-  // TODO - Refactor - use useSimulateFee
   const { isFetching } = useSimulateFeeQuery({
     enabled: !!contractAddress,
     messages: [
