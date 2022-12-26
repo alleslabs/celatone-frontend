@@ -1,24 +1,24 @@
 import { ButtonGroup, Flex, Spinner, Text } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import router from "next/router";
-import { useState } from "react";
 
 import { useQueryCmds } from "lib/app-provider/queries/useQueryCmds";
 import ContractCmdButton from "lib/components/ContractCmdButton";
-import { getFirstQueryParam, jsonPrettify } from "lib/utils";
+import { encode, getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 export const CommandSection = () => {
   /**
    * @todos
    * - Make an interface
-   * - Wireup with real query/execute commands data
+   * - Wireup with real execute commands data
    */
   const contractAddress = getFirstQueryParam(router.query.contractAddress);
-
-  const [, setQueryMsg] = useState("");
 
   const { isFetching: isQueryCmdsFetching, queryCmds } = useQueryCmds({
     contractAddress,
   });
+
+  const { currentChainName } = useWallet();
 
   const renderQueryCmds = () => {
     if (isQueryCmdsFetching) {
@@ -41,8 +41,17 @@ export const CommandSection = () => {
             <ContractCmdButton
               key={`query-cmd-${cmd}`}
               cmd={cmd}
-              msg={jsonPrettify(queryMsg)}
-              setMsg={setQueryMsg}
+              onClickCmd={() => {
+                router.push({
+                  pathname: "/query",
+                  query: {
+                    chainName: currentChainName,
+                    contract: contractAddress,
+                    msg: encode(jsonPrettify(queryMsg)),
+                  },
+                });
+                router.push("/query");
+              }}
             />
           ))}
         </ButtonGroup>
@@ -66,7 +75,6 @@ export const CommandSection = () => {
         <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
           Query Shortcuts
         </Text>
-        {/* Query Contract Commands */}
         {renderQueryCmds()}
       </Flex>
       <Flex

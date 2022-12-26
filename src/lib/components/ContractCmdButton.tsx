@@ -2,10 +2,9 @@ import { Button } from "@chakra-ui/react";
 
 interface ContractCmdButtonProps {
   cmd: string;
-  msg: string;
-  setMsg: (msg: string) => void;
+  onClickCmd: () => void;
 }
-const ContractCmdButton = ({ cmd, msg, setMsg }: ContractCmdButtonProps) => {
+const ContractCmdButton = ({ cmd, onClickCmd }: ContractCmdButtonProps) => {
   return (
     <Button
       variant="outline-gray"
@@ -17,7 +16,7 @@ const ContractCmdButton = ({ cmd, msg, setMsg }: ContractCmdButtonProps) => {
       borderRadius="16px"
       fontWeight="400"
       onClick={() => {
-        setMsg(msg);
+        onClickCmd();
       }}
     >
       {cmd}

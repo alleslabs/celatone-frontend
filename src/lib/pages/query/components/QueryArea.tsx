@@ -97,8 +97,7 @@ export const QueryArea = ({
               <ContractCmdButton
                 key={`query-cmd-${cmd}`}
                 cmd={cmd}
-                msg={jsonPrettify(queryMsg)}
-                setMsg={setMsg}
+                onClickCmd={() => setMsg(jsonPrettify(queryMsg))}
               />
             ))}
           </ButtonGroup>
