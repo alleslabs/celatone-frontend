@@ -3,7 +3,12 @@ import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useContractStore, useEndpoint } from "lib/hooks";
+import {
+  useCodeStore,
+  useContractStore,
+  useEndpoint,
+  useUserKey,
+} from "lib/hooks";
 import type { InstantiateInfo, PublicInfo } from "lib/services/contract";
 import {
   queryPublicInfo,
@@ -15,17 +20,21 @@ import {
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
 } from "lib/services/contractService";
+import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface ContractDetail {
-  instantiateInfo: InstantiateInfo | undefined;
+  chainId: string;
+  codeInfo: CodeLocalInfo | undefined;
   contractInfo: ContractInfo | undefined;
+  instantiateInfo: InstantiateInfo | undefined;
   publicInfo: PublicInfo | undefined;
   balances: Coin[];
   initMsg: string;
   initTxHash?: string;
+  initProposalTitle?: string;
   initProposalId?: number;
 }
 
@@ -74,7 +83,9 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 export const useContractDetail = (
   contractAddress: ContractAddr
 ): ContractDetail | undefined => {
+  const userKey = useUserKey();
   const { currentChainRecord } = useWallet();
+  const { getCodeLocalInfo } = useCodeStore();
   const { getContractInfo } = useContractStore();
   const endpoint = useEndpoint();
 
@@ -99,25 +110,33 @@ export const useContractDetail = (
     { enabled: !!currentChainRecord }
   );
 
+  const codeInfo = instantiateInfo
+    ? getCodeLocalInfo(userKey, Number(instantiateInfo.codeId))
+    : undefined;
   const contractInfo = getContractInfo(contractAddress);
+
   const {
     data: instantiateDetail = {
       initMsg: "{}",
     },
   } = useInstantiateDetailByContractQuery(contractAddress);
-  // TODO: contract proposal id
-  const proposalId = undefined;
+  // TODO: contract proposal title and id
+  const initProposalTitle = undefined;
+  const initProposalId = undefined;
   // TODO: get all related transactions
 
   if (!currentChainRecord) return undefined;
 
   return {
-    instantiateInfo,
+    chainId: currentChainRecord.chain.chain_id,
+    codeInfo,
     contractInfo,
+    instantiateInfo,
     publicInfo,
     balances: contractBalances.balances,
     initMsg: instantiateDetail.initMsg,
     initTxHash: instantiateDetail.initTxHash,
-    initProposalId: proposalId,
+    initProposalTitle,
+    initProposalId,
   };
 };
