@@ -46,7 +46,7 @@ export const ContractListReadOnlyTable = ({
             >
               <Td width="10%">
                 <ExplorerLink
-                  value={item.address}
+                  value={item.contractAddress}
                   type="contract_address"
                   isReadOnly
                 />
