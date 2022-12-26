@@ -11,7 +11,7 @@ import { useExecuteContractTx } from "lib/app-provider/tx/execute";
 import ContractCmdButton from "lib/components/ContractCmdButton";
 import CopyButton from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import JsonInput from "lib/components/Json/JsonInput";
+import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { Activity } from "lib/stores/contract";
@@ -20,7 +20,7 @@ import { MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 interface ExecuteAreaProps {
-  contractAddress: string;
+  contractAddress: ContractAddr;
   initialMsg: string;
   cmds: [string, string][];
 }

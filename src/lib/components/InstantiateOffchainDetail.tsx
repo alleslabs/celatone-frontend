@@ -14,6 +14,7 @@ import {
 } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
+import type { ContractAddr } from "lib/types";
 
 import { ListSelection } from "./forms/ListSelection";
 import { TagSelection } from "./forms/TagSelection";
@@ -22,7 +23,7 @@ interface InstantiateOffChainFormProps {
   title?: string;
   subtitle?: string;
   cta?: boolean;
-  contractAddress: string;
+  contractAddress: ContractAddr;
   contractLabel: string;
 }
 
@@ -73,7 +74,7 @@ export const InstantiateOffChainDetail = observer(
           data.tags,
           data.contractLists
         );
-        router.push("/contracts/instantiated-by-me");
+        router.push("/contract-list/instantiated-by-me");
       })();
     };
 
@@ -146,7 +147,7 @@ export const InstantiateOffChainDetail = observer(
             <Button
               w="128px"
               variant="outline-gray"
-              onClick={() => router.push("/contracts/instantiated-by-me")}
+              onClick={() => router.push("/contract-list/instantiated-by-me")}
             >
               Skip
             </Button>

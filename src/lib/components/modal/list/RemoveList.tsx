@@ -21,8 +21,8 @@ export function RemoveList({ list, menuItemProps }: ModalProps) {
   const router = useRouter();
   const handleRemove = () => {
     removeList(userKey, list.value);
-    router.push("/contracts");
-    // TODO: show toast after removed and redirect to /contracts
+    router.push("/contract-list");
+    // TODO: show toast after removed and redirect to /contract-list
     setTimeout(() => {
       toast({
         title: `Removed ${shortenName(list.label)}`,

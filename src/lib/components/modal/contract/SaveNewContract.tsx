@@ -9,7 +9,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { OffChainDetail } from "lib/components/OffChain/OffChainDetail";
+import { OffChainDetail } from "lib/components/offchain/OffChainDetail";
 import {
   DEFAULT_RPC_ERROR,
   INSTANTIATED_LIST_NAME,
@@ -18,8 +18,8 @@ import {
 } from "lib/data";
 import { useContractStore, useEndpoint } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import { queryContractWithTime } from "lib/services/contract";
-import type { Option, RpcContractError } from "lib/types";
+import { queryInstantiateInfo } from "lib/services/contract";
+import type { ContractAddr, Option, RpcContractError } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface SaveNewContractProps {
@@ -28,7 +28,7 @@ interface SaveNewContractProps {
 }
 export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const {
-    contractAddress: { example: exampleContractAddress },
+    appContractAddress: { example: exampleContractAddress },
   } = useCelatoneApp();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
@@ -62,8 +62,8 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "contractWithTime", contractAddress],
-    async () => queryContractWithTime(endpoint, contractAddress),
+    ["query", "instantiateInfo", contractAddress],
+    async () => queryInstantiateInfo(endpoint, contractAddress as ContractAddr),
     {
       enabled: false,
       retry: false,
@@ -72,7 +72,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       onSuccess(data) {
         setInstantiator(data.instantiator);
         setLabel(data.label);
-        setCreated(data.created);
+        setCreated(data.createdTime);
         setName(data.label);
         setStatus({
           state: "success",
@@ -121,7 +121,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   const handleSave = useHandleContractSave({
     title: `Saved ${name.trim().length ? name : label}`,
-    address: contractAddress,
+    contractAddress: contractAddress as ContractAddr,
     instantiator,
     label,
     created,

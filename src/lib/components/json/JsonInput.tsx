@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 import { jsonPrettify, jsonValidate } from "lib/utils";
 
-const JsonEditor = dynamic(() => import("lib/components/Json/JsonEditor"), {
+const JsonEditor = dynamic(() => import("./JsonEditor"), {
   ssr: false,
 });
 

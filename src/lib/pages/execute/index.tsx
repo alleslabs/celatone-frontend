@@ -10,6 +10,7 @@ import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract } from "lib/services/contract";
+import type { ContractAddr } from "lib/types";
 import {
   getFirstQueryParam,
   decode,
@@ -57,19 +58,24 @@ const Execute = () => {
 
   useEffect(() => {
     (async () => {
-      const contractAddr = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(contractAddr);
+      const contractAddressParam = getFirstQueryParam(
+        router.query.contract
+      ) as ContractAddr;
+      const contractState = getContractInfo(contractAddressParam);
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddr);
+        onContractSelect(contractAddressParam);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
       if (!contractState) {
         try {
-          const onChainDetail = await queryContract(endpoint, contractAddr);
-          setContractName(onChainDetail.result?.label);
+          const onChainDetail = await queryContract(
+            endpoint,
+            contractAddressParam
+          );
+          setContractName(onChainDetail.contract_info.label);
         } catch {
           setContractName("Invalid Contract");
         }
@@ -77,7 +83,7 @@ const Execute = () => {
         setContractName(contractState.name ?? contractState.label);
       }
 
-      setContractAddress(contractAddr);
+      setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
     })();
   }, [router, endpoint, getContractInfo, onContractSelect]);
@@ -153,7 +159,7 @@ const Execute = () => {
       </Flex>
 
       <ExecuteArea
-        contractAddress={contractAddress}
+        contractAddress={contractAddress as ContractAddr}
         initialMsg={initialMsg}
         cmds={execCmds}
       />

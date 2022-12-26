@@ -12,7 +12,7 @@ import {
   MAX_CODE_DESCRIPTION_LENGTH,
 } from "lib/data";
 import { useCodeStore, useEndpoint, useUserKey } from "lib/hooks";
-import { getCodeIdInfo } from "lib/services/contract";
+import { getCodeIdInfo } from "lib/services/code";
 
 interface ModalProps {
   buttonProps: ButtonProps;

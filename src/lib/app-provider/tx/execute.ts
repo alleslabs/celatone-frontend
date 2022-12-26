@@ -5,12 +5,13 @@ import { useCallback } from "react";
 import { executeContractTx } from "lib/app-fns/tx/execute";
 import { useUserKey } from "lib/hooks/useUserKey";
 import type { Activity } from "lib/stores/contract";
+import type { ContractAddr } from "lib/types";
 
 export interface ExecuteStreamParams {
   onTxSucceed?: (userKey: string, activity: Activity) => void;
   onTxFailed?: () => void;
   estimatedFee: StdFee | undefined;
-  contractAddress: string;
+  contractAddress: ContractAddr;
   msg: object;
 }
 

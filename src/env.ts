@@ -13,7 +13,7 @@ export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
   },
 };
 
-export const CELATONE_CONTRACT_ADDRESS = (
+export const CELATONE_APP_CONTRACT_ADDRESS = (
   chainName: string
 ): CelatoneContractAddress => {
   switch (chainName) {

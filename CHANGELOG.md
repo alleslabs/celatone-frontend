@@ -40,8 +40,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#38](https://github.com/alleslabs/celatone-frontend/pull/38) Show execute msgs cmd when wallet is not connected
+- [#37](https://github.com/alleslabs/celatone-frontend/pull/37) Add contract details data loader
+- [#31](https://github.com/alleslabs/celatone-frontend/pull/31) Add contract details page ui skeleton
 - [#41](https://github.com/alleslabs/celatone-frontend/pull/41) Add Github action for tracking CHANGELOG.md for changes
 
 ### Improvements
 
 ### Bug fixes
+
+- [#45](https://github.com/alleslabs/celatone-frontend/pull/45) Add chain ID and code details to contract detail data loader

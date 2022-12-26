@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { OffChainForm } from "lib/components/OffChain/OffChainForm";
+import { OffChainForm } from "lib/components/offchain/OffChainForm";
 import {
   MAX_CONTRACT_DESCRIPTION_LENGTH,
   MAX_CONTRACT_NAME_LENGTH,
@@ -34,7 +34,7 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
 
   const handleSave = useHandleContractSave({
     title: "Action Complete",
-    address: contractInfo.address,
+    contractAddress: contractInfo.contractAddress,
     instantiator: contractInfo.instantiator,
     label: contractInfo.label,
     created: contractInfo.created,
@@ -54,7 +54,10 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
           <Text variant="body2" color="text.main" fontWeight="600">
             Contract Address
           </Text>
-          <ExplorerLink value={contractInfo.address} type="contract_address" />
+          <ExplorerLink
+            value={contractInfo.contractAddress}
+            type="contract_address"
+          />
         </Flex>
       }
       trigger={<MenuItem {...menuItemProps} />}
