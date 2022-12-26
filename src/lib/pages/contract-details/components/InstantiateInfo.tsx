@@ -40,8 +40,7 @@ export const InstantiateInfo = () => {
         Instantiate Info
       </Heading>
 
-      {/* TODO - Implement network */}
-      <LabelText label="Network">phoenix-1</LabelText>
+      <LabelText label="Network">{contractDetail.chainId}</LabelText>
 
       {contractDetail.instantiateInfo && (
         <LabelText
@@ -67,10 +66,9 @@ export const InstantiateInfo = () => {
         />
       </LabelText>
 
-      {/* TODO - Implement code description */}
       <LabelText
         label="From Code"
-        helperText={contractDetail.instantiateInfo?.label}
+        helperText={contractDetail.codeInfo?.description}
       >
         <ExplorerLink
           value={contractDetail.instantiateInfo?.codeId}
@@ -88,9 +86,11 @@ export const InstantiateInfo = () => {
         </LabelText>
       )}
 
-      {/* TODO - Implement proposal name */}
       {contractDetail.initProposalId && (
-        <LabelText label="Instantiate Proposal ID">
+        <LabelText
+          label="Instantiate Proposal ID"
+          helperText={contractDetail.initProposalTitle}
+        >
           <ExplorerLink
             value={`#${contractDetail.initProposalId.toString()}`}
             canCopyWithHover
