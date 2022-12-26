@@ -31,7 +31,7 @@ const Execute = () => {
   const [contractName, setContractName] = useState<string>("");
   const [initialMsg, setInitialMsg] = useState<string>("");
 
-  const { isFetching, isEmptyContractAddress, execCmds } = useExecuteCmds({
+  const { isFetching, execCmds } = useExecuteCmds({
     contractAddress,
   });
 
@@ -54,12 +54,6 @@ const Execute = () => {
     },
     [router]
   );
-
-  useEffect(() => {
-    if (isEmptyContractAddress) {
-      setContractAddress("");
-    }
-  }, [isEmptyContractAddress]);
 
   useEffect(() => {
     (async () => {

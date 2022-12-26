@@ -11,8 +11,6 @@ interface UseExecuteCmdsProps {
   contractAddress: string;
 }
 export const useExecuteCmds = ({ contractAddress }: UseExecuteCmdsProps) => {
-  const [isEmptyContractAddress, setIsEmptyContractAddress] =
-    useState<boolean>(false);
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);
   const { address } = useWallet();
   const { dummyAddress } = useDummyWallet();
@@ -30,7 +28,6 @@ export const useExecuteCmds = ({ contractAddress }: UseExecuteCmdsProps) => {
     ],
     onError: (e) => {
       if (e.message.includes("contract: ")) {
-        setIsEmptyContractAddress(true);
         setExecCmds([]);
       } else {
         const executeCmds: string[] = [];
@@ -41,5 +38,5 @@ export const useExecuteCmds = ({ contractAddress }: UseExecuteCmdsProps) => {
       }
     },
   });
-  return { isFetching, isEmptyContractAddress, execCmds };
+  return { isFetching, execCmds };
 };
