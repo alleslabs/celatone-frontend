@@ -1,5 +1,4 @@
 import { ButtonGroup, Flex, Spinner, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import router from "next/router";
 
 import { useQueryCmds } from "lib/app-provider/queries/useQueryCmds";
@@ -17,8 +16,6 @@ export const CommandSection = () => {
   const { isFetching: isQueryCmdsFetching, queryCmds } = useQueryCmds({
     contractAddress,
   });
-
-  const { currentChainName } = useWallet();
 
   const renderQueryCmds = () => {
     if (isQueryCmdsFetching) {
@@ -45,12 +42,10 @@ export const CommandSection = () => {
                 router.push({
                   pathname: "/query",
                   query: {
-                    chainName: currentChainName,
                     contract: contractAddress,
                     msg: encode(jsonPrettify(queryMsg)),
                   },
                 });
-                router.push("/query");
               }}
             />
           ))}
