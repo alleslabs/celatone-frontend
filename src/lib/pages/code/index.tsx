@@ -2,9 +2,10 @@ import { Badge, Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { BackButton } from "lib/components/button/BackButton";
-import { LabelText } from "lib/components/LabelText";
 import PageContainer from "lib/components/PageContainer";
 import { getFirstQueryParam } from "lib/utils";
+
+import { CodeInfoSection } from "./component/CodeInfoSection";
 
 const CodeDetails = () => {
   const router = useRouter();
@@ -36,12 +37,7 @@ const CodeDetails = () => {
       <Divider borderColor="divider.main" my={12} />
       {/* Code Information Section */}
       {/* TODO: Use real data to render LabelText */}
-      <Heading as="h6" variant="h6" mb={6}>
-        Code Information
-      </Heading>
-      <Flex justify="space-between" mb={12}>
-        <LabelText label="Network">phoenix-1</LabelText>
-      </Flex>
+      <CodeInfoSection />
       {/* TODO: Wireup badge count, Create table component and wireup with real data */}
       <Flex mb={6} align="center">
         <Heading as="h6" variant="h6">
