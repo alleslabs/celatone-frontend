@@ -40,7 +40,7 @@ export const InstantiateInfo = () => {
         Instantiate Info
       </Heading>
 
-      {/* TODO - network */}
+      {/* TODO - Implement network */}
       <LabelText label="Network">phoenix-1</LabelText>
 
       {contractDetail.instantiateInfo && (
@@ -67,6 +67,7 @@ export const InstantiateInfo = () => {
         />
       </LabelText>
 
+      {/* TODO - Implement code description */}
       <LabelText
         label="From Code"
         helperText={contractDetail.instantiateInfo?.label}
@@ -87,7 +88,7 @@ export const InstantiateInfo = () => {
         </LabelText>
       )}
 
-      {/* TODO - helper text */}
+      {/* TODO - Implement proposal name */}
       {contractDetail.initProposalId && (
         <LabelText label="Instantiate Proposal ID">
           <ExplorerLink
