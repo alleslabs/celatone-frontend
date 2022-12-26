@@ -18,7 +18,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { useContractDetail } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { InstantiateInfo } from "./components/InstantiateInfo";
@@ -120,7 +120,7 @@ const ContractDetails = () => {
           <JsonInfo header="Contract Info" jsonString="" />
           <JsonInfo
             header="Instantiate Messages"
-            jsonString={contractDetails?.initMsg ?? ""}
+            jsonString={jsonPrettify(contractDetails?.initMsg ?? "")}
           />
         </Flex>
       </Flex>

@@ -9,7 +9,7 @@ import { useFabricateFee } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { useExecuteContractTx } from "lib/app-provider/tx/execute";
 import ContractCmdButton from "lib/components/ContractCmdButton";
-import CopyButton from "lib/components/CopyButton";
+import { CopyButton } from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";

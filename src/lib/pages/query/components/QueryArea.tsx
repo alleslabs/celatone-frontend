@@ -6,7 +6,7 @@ import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
 import ContractCmdButton from "lib/components/ContractCmdButton";
-import CopyButton from "lib/components/CopyButton";
+import { CopyButton } from "lib/components/CopyButton";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";

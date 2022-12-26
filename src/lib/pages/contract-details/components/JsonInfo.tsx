@@ -11,13 +11,7 @@ interface JsonInfoProps {
 
 export const JsonInfo = ({ header, jsonString }: JsonInfoProps) => {
   const [expand, setExpand] = useState(false);
-  /**
-   * @todos
-   * - Configure interface
-   * - Make this component collapsible
-   * - Wireup with real data
-   * - Render the data in JSON Readonly Editor
-   */
+
   return (
     <Flex direction="column">
       <Flex
@@ -41,7 +35,12 @@ export const JsonInfo = ({ header, jsonString }: JsonInfoProps) => {
           transition="all .3s"
         />
       </Flex>
-      <JsonReadOnly text={jsonString} />
+      <JsonReadOnly
+        text={jsonString}
+        height={expand ? "320px" : 0}
+        canCopy
+        canViewFull={expand}
+      />
     </Flex>
   );
 };
