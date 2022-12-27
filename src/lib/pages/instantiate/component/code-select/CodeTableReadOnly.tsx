@@ -9,8 +9,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { CodeInfo } from "lib/types";
-import { truncate } from "lib/utils";
 
 interface TableRowProps {
   onCodeSelect: (newVal: string) => void;
@@ -40,7 +40,11 @@ const TableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
         <Text variant="body2">{codeDetail.contracts}</Text>
       </Td>
       <Td width="25%">
-        <Text variant="body2">{truncate(codeDetail.uploader)}</Text>
+        <ExplorerLink
+          value={codeDetail.uploader}
+          type="user_address"
+          isReadOnly
+        />
       </Td>
     </Tr>
   );
