@@ -4,7 +4,10 @@ interface ContractCmdButtonProps {
   cmd: string;
   onClickCmd: () => void;
 }
-const ContractCmdButton = ({ cmd, onClickCmd }: ContractCmdButtonProps) => {
+export const ContractCmdButton = ({
+  cmd,
+  onClickCmd,
+}: ContractCmdButtonProps) => {
   return (
     <Button
       variant="outline-gray"
@@ -21,5 +24,3 @@ const ContractCmdButton = ({ cmd, onClickCmd }: ContractCmdButtonProps) => {
     </Button>
   );
 };
-
-export default ContractCmdButton;
