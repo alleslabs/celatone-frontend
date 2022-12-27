@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
-
+- [#44](https://github.com/alleslabs/celatone-frontend/pull/44) Render query cmds shortcut in contract detail page
 - [#37](https://github.com/alleslabs/celatone-frontend/pull/37) Add contract details data loader
 - [#31](https://github.com/alleslabs/celatone-frontend/pull/31) Add contract details page ui skeleton
 - [#41](https://github.com/alleslabs/celatone-frontend/pull/41) Add Github action for tracking CHANGELOG.md for changes
