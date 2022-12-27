@@ -1,6 +1,8 @@
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
+import { useDummyWallet } from "lib/hooks";
 import type { ComposedMsg, Gas } from "lib/types";
 
 interface SimulateQueryParams {
@@ -16,21 +18,35 @@ export const useSimulateFeeQuery = ({
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
-  const { address, getCosmWasmClient, currentChainName } = useWallet();
+  const { address, getCosmWasmClient, currentChainName, currentChainRecord } =
+    useWallet();
+  const { dummyWallet, dummyAddress } = useDummyWallet();
+
+  const userAddress = address || dummyAddress;
+
   const simulateFn = async (msgs: ComposedMsg[]) => {
-    const client = await getCosmWasmClient();
-    if (!client || !address) {
-      return Promise.resolve(undefined);
+    let client = await getCosmWasmClient();
+    if (!currentChainRecord?.preferredEndpoints?.rpc?.[0] || !userAddress) {
+      return undefined;
     }
-    return (await client.simulate(address, msgs, undefined)) as Gas;
+
+    if (!client && !address && dummyWallet) {
+      client = await SigningCosmWasmClient.connectWithSigner(
+        currentChainRecord.preferredEndpoints.rpc[0],
+        dummyWallet
+      );
+    }
+
+    if (!client) {
+      return undefined;
+    }
+
+    return (await client.simulate(userAddress, msgs, undefined)) as Gas;
   };
 
-  // TODO: make this as query key constant
   return useQuery({
-    queryKey: ["simulate", currentChainName, address, messages],
-    queryFn: async ({ queryKey }) => {
-      return simulateFn(queryKey[3] as ComposedMsg[]);
-    },
+    queryKey: ["simulate", currentChainName, userAddress, messages],
+    queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
     enabled,
     keepPreviousData: true,
     retry: false,
