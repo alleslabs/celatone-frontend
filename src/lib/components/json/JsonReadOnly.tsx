@@ -39,7 +39,11 @@ const JsonReadOnly = ({
   return (
     <Box
       m={zeroHeight ? 0 : "8px 0 16px"}
-      p={zeroHeight ? 0 : "16px 12px"}
+      p={
+        zeroHeight
+          ? 0
+          : `16px 12px ${viewFull ? BUTTON_EXPAND_PADDING : "16px"}`
+      }
       borderWidth={zeroHeight ? "none" : "thin"}
       borderColor={!isJsonValid ? "error.main" : "divider.main"}
       borderRadius="4px"
@@ -49,7 +53,6 @@ const JsonReadOnly = ({
         borderColor: isJsonValid && "gray.600",
         "& .copy-button-box": { display: "block" },
       }}
-      paddingBottom={viewFull ? BUTTON_EXPAND_PADDING : "12px"}
     >
       <JsonEditor
         value={text}
