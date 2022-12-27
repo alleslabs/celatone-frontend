@@ -39,7 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#51](https://github.com/alleslabs/celatone-frontend/pull/51) Wireup contract info in contract details page
 - [#47](https://github.com/alleslabs/celatone-frontend/pull/47) Wireup init msg in contract details page
+- [#49](https://github.com/alleslabs/celatone-frontend/pull/49) Add `develop` branch to `main.yml`
+- [#39](https://github.com/alleslabs/celatone-frontend/pull/39) Render "Me" instead of user address
 - [#43](https://github.com/alleslabs/celatone-frontend/pull/43) Add code details page ui skeleton
 - [#37](https://github.com/alleslabs/celatone-frontend/pull/37) Add contract details data loader
 - [#31](https://github.com/alleslabs/celatone-frontend/pull/31) Add contract details page ui skeleton

@@ -21,7 +21,7 @@ export const JsonInfo = ({
   const [expand, setExpand] = useState(false);
 
   return (
-    <Flex direction="column">
+    <>
       <Flex
         justify="space-between"
         align="center"
@@ -49,6 +49,6 @@ export const JsonInfo = ({
         canCopy
         canViewFull={showViewFullButton && expand}
       />
-    </Flex>
+    </>
   );
 };

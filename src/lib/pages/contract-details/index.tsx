@@ -111,7 +111,7 @@ const ContractDetails = () => {
         {/* Instantiate Info */}
         <InstantiateInfo />
         {/* Contract Info (Expand) */}
-        <Flex direction="column" flex={0.8} gap={6}>
+        <Flex direction="column" flex={0.8} gap={4}>
           <JsonInfo
             header="Contract Info"
             jsonString={JSON.stringify(
