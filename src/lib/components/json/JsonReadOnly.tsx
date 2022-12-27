@@ -74,7 +74,7 @@ const JsonReadOnly = ({
           viewFull={viewFull}
         />
       )}
-      {canCopy && (
+      {canCopy && height !== 0 && (
         <Box
           position="absolute"
           top="10px"
