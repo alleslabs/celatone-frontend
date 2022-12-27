@@ -35,11 +35,12 @@ const JsonReadOnly = ({
     return jsonValidate(text) === null || text.length === 0;
   }, [text]);
 
+  const zeroHeight = height === 0;
   return (
     <Box
-      m={height === 0 ? 0 : "8px 0 16px"}
-      p={height === 0 ? 0 : "16px 12px"}
-      borderWidth={height === 0 ? "none" : "thin"}
+      m={zeroHeight ? 0 : "8px 0 16px"}
+      p={zeroHeight ? 0 : "16px 12px"}
+      borderWidth={zeroHeight ? "none" : "thin"}
       borderColor={!isJsonValid ? "error.main" : "divider.main"}
       borderRadius="4px"
       position="relative"
@@ -74,7 +75,7 @@ const JsonReadOnly = ({
           viewFull={viewFull}
         />
       )}
-      {canCopy && height !== 0 && (
+      {canCopy && !zeroHeight && (
         <Box
           position="absolute"
           top="10px"
