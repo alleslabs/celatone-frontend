@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#39](https://github.com/alleslabs/celatone-frontend/pull/39) Render "Me" instead of user address 
 - [#43](https://github.com/alleslabs/celatone-frontend/pull/43) Add code details page ui skeleton
 - [#37](https://github.com/alleslabs/celatone-frontend/pull/37) Add contract details data loader
 - [#31](https://github.com/alleslabs/celatone-frontend/pull/31) Add contract details page ui skeleton
