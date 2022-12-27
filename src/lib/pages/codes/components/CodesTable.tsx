@@ -119,7 +119,6 @@ const TableHead = () => {
 
 const TableRow = ({ code, isRemovable }: CodesRowProps) => {
   const router = useRouter();
-  const { address } = useWallet();
 
   const goToInstantiate = () => {
     router.push({ pathname: "/instantiate", query: { "code-id": code.id } });
@@ -143,15 +142,11 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
         {code.contracts}
       </Td>
       <Td width="15%">
-        {address && code.uploader === address ? (
-          "Me"
-        ) : (
-          <ExplorerLink
-            value={code.uploader}
-            type="user_address"
-            canCopyWithHover
-          />
-        )}
+        <ExplorerLink
+          value={code.uploader}
+          type="user_address"
+          canCopyWithHover
+        />
       </Td>
       <Td width="20%">
         <HStack>
