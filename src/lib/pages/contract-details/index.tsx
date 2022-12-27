@@ -1,4 +1,4 @@
-import { ArrowBackIcon, SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/router";
 import { MdBookmark, MdInput } from "react-icons/md";
 
+import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
@@ -38,13 +39,7 @@ const ContractDetails = () => {
 
   return (
     <PageContainer>
-      <Button
-        variant="ghost-primary"
-        onClick={() => router.back()}
-        leftIcon={<ArrowBackIcon boxSize={4} />}
-      >
-        BACK
-      </Button>
+      <BackButton />
       {/* Contract name/address/label Section */}
       {/* TODO: Wireup data and buttons functionality */}
       <Flex justify="space-between" my={6}>
