@@ -1,8 +1,7 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-
-import { LabelText } from "./LabelText";
+import { LabelText } from "lib/components/LabelText";
 
 export const InstantiateInfo = () => {
   /**
