@@ -1,10 +1,8 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -12,29 +10,31 @@ import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryContract } from "lib/services/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
-import { MsgType } from "lib/types";
+import type { ContractAddr } from "lib/types";
 import {
   getFirstQueryParam,
   decode,
   jsonPrettify,
   jsonValidate,
-  composeMsg,
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
+import { useExecuteCmds } from "./hook/useExecuteCmds";
 
 const Execute = () => {
   const router = useRouter();
   const isMobile = useMobile();
   const { getContractInfo } = useContractStore();
-  const { address = "" } = useWallet();
+
   const endpoint = useEndpoint();
 
   const [contractAddress, setContractAddress] = useState<string>("");
   const [contractName, setContractName] = useState<string>("");
   const [initialMsg, setInitialMsg] = useState<string>("");
-  const [cmds, setCmds] = useState<[string, string][]>([]);
+
+  const { isFetching, execCmds } = useExecuteCmds({
+    contractAddress,
+  });
 
   const goToQuery = () => {
     router.push({
@@ -55,30 +55,6 @@ const Execute = () => {
     },
     [router]
   );
-
-  const { isFetching } = useSimulateFeeQuery({
-    enabled: !!contractAddress,
-    messages: [
-      composeMsg(MsgType.EXECUTE, {
-        sender: address as HumanAddr,
-        contract: contractAddress as ContractAddr,
-        msg: Buffer.from('{"": {}}'),
-        funds: [],
-      }),
-    ],
-    onError: (e) => {
-      if (e.message.includes("contract: ")) {
-        setContractAddress("");
-        setCmds([]);
-      } else {
-        const executeCmds: string[] = [];
-        Array.from(e.message?.matchAll(/`(.*?)`/g) || [])
-          .slice(1)
-          .forEach((match) => executeCmds.push(match[1]));
-        setCmds(executeCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
-      }
-    },
-  });
 
   useEffect(() => {
     (async () => {
@@ -109,7 +85,6 @@ const Execute = () => {
 
       setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
-      if (!contractAddressParam) setCmds([]);
     })();
   }, [router, endpoint, getContractInfo, onContractSelect]);
 
@@ -152,7 +127,11 @@ const Execute = () => {
         <Flex gap="24px" width="80%">
           <Flex direction="column" width="60%">
             Contract Address
-            {!notSelected ? (
+            {notSelected ? (
+              <Text textColor="text.disabled" variant="body2">
+                Not Selected
+              </Text>
+            ) : (
               <ExplorerLink
                 value={contractAddress}
                 type="contract_address"
@@ -161,10 +140,6 @@ const Execute = () => {
                 textFormat={isMobile ? "truncate" : "normal"}
                 maxWidth="none"
               />
-            ) : (
-              <Text textColor="text.disabled" variant="body2">
-                Not Selected
-              </Text>
             )}
           </Flex>
           <Flex direction="column">
@@ -186,7 +161,7 @@ const Execute = () => {
       <ExecuteArea
         contractAddress={contractAddress as ContractAddr}
         initialMsg={initialMsg}
-        cmds={cmds}
+        cmds={execCmds}
       />
     </PageContainer>
   );
