@@ -3,11 +3,10 @@ import { useWallet } from "@cosmos-kit/react";
 import router from "next/router";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { LabelText } from "lib/components/LabelText";
 import { useContractDetail } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
 import { addressType, date, dateFromNow, getFirstQueryParam } from "lib/utils";
-
-import { LabelText } from "./LabelText";
 
 export const InstantiateInfo = () => {
   const contractAddress = getFirstQueryParam(router.query.contractAddress);
