@@ -10,13 +10,16 @@ import { composeMsg } from "lib/utils";
 interface UseExecuteCmdsProps {
   contractAddress: string;
 }
+
 export const useExecuteCmds = ({ contractAddress }: UseExecuteCmdsProps) => {
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);
   const { address } = useWallet();
   const { dummyAddress } = useDummyWallet();
 
+  const userAddress = address || dummyAddress;
+
   const { isFetching } = useSimulateFeeQuery({
-    enabled: !!contractAddress,
+    enabled: !!contractAddress && !!userAddress,
     messages: [
       composeMsg(MsgType.EXECUTE, {
         sender: (address || dummyAddress) as HumanAddr,

@@ -22,11 +22,11 @@ export const useSimulateFeeQuery = ({
     useWallet();
   const { dummyWallet, dummyAddress } = useDummyWallet();
 
-  const userAddress = address || dummyAddress || "";
+  const userAddress = address || dummyAddress;
 
   const simulateFn = async (msgs: ComposedMsg[]) => {
     let client = await getCosmWasmClient();
-    if (!currentChainRecord?.preferredEndpoints?.rpc?.[0]) {
+    if (!currentChainRecord?.preferredEndpoints?.rpc?.[0] || !userAddress) {
       return Promise.resolve(undefined);
     }
 
