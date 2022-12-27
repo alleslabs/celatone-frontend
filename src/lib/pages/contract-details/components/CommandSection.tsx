@@ -2,7 +2,7 @@ import { ButtonGroup, Flex, Spinner, Text } from "@chakra-ui/react";
 import router from "next/router";
 
 import { useQueryCmds } from "lib/app-provider";
-import ContractCmdButton from "lib/components/ContractCmdButton";
+import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { encode, getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 export const CommandSection = () => {
