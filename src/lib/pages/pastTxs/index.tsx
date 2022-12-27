@@ -20,10 +20,10 @@ import type { ChangeEvent } from "react";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { MdSearch } from "react-icons/md";
 
-import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { DisconnectedState } from "lib/components/state/DisconnectedState";
 import type { Transaction } from "lib/types/tx/transaction";
 
 import { FalseState } from "./components/FalseState";
@@ -169,23 +169,10 @@ const PastTxs = () => {
       ibcButton;
     if (!address) {
       return (
-        <>
-          <Flex mb="15px" alignItems="center">
-            <ConnectWalletBtn />
-            <Text variant="body1" color="text.dark" ml="10px">
-              to see your past transactions.
-            </Text>
-          </Flex>
-          <Flex direction="column" align="center">
-            <Text variant="body1" color="text.dark">
-              Past transactions involving the Wasm module will display here
-            </Text>
-            <Text variant="body1" color="text.dark">
-              such as Instantiate, Execute, or Upload Wasm file will display
-              here.
-            </Text>
-          </Flex>
-        </>
+        <DisconnectedState
+          text="to see your past transactions."
+          helperText="Past transactions involving the Wasm module such as Instantiate, Execute, or Upload Wasm file will display here."
+        />
       );
     }
     // Loading state

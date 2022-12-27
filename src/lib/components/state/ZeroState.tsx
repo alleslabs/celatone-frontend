@@ -1,15 +1,12 @@
 import { Flex, Button, Icon, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import {
-  MdOutlineAdd,
-  MdBookmarkBorder,
-  MdSearch,
-  MdLink,
-} from "react-icons/md";
+import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
 
 import { SaveNewContract } from "lib/components/modal/contract";
 import type { Option } from "lib/types";
+
+import { DisconnectedState } from "./DisconnectedState";
 
 interface ZeroStateProps {
   list: Option;
@@ -55,22 +52,10 @@ export const ZeroState = ({
   isInstantiatedByMe,
 }: ZeroStateProps) => {
   const router = useRouter();
-  const { isWalletConnected, connect } = useWallet();
+  const { isWalletConnected } = useWallet();
 
   if (!isWalletConnected && isInstantiatedByMe) {
-    return (
-      <Flex align="center" color="text.dark" justify="center">
-        <Button
-          variant="outline-primary"
-          rightIcon={<MdLink />}
-          mr={2}
-          onClick={connect}
-        >
-          Connect Wallet
-        </Button>
-        to deploy new contract
-      </Flex>
-    );
+    return <DisconnectedState text="to deploy new contracts." />;
   }
 
   return (

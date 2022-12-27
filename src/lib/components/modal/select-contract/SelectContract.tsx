@@ -21,11 +21,12 @@ import { IoList } from "react-icons/io5";
 import { MdChevronLeft } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
-import { DEFAULT_RPC_ERROR } from "lib/data";
+import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore, useEndpoint } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcContractError } from "lib/types";
+import { formatSlugName } from "lib/utils";
 
 import { AllContractLists } from "./AllContractLists";
 import { ListDetail } from "./ListDetail";
@@ -176,6 +177,9 @@ export const SelectContract = ({
                 contractListInfo={contractList}
                 isReadOnly
                 onContractSelect={onSelectThenClose}
+                isInstantiatedByMe={
+                  contractList.slug === formatSlugName(INSTANTIATED_LIST_NAME)
+                }
               />
             </ModalBody>
           </ModalContent>
