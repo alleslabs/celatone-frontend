@@ -15,9 +15,7 @@ const ContractCmdButton = ({ cmd, onClickCmd }: ContractCmdButtonProps) => {
       borderColor="rgba(255, 255, 255, 0.3)"
       borderRadius="16px"
       fontWeight="400"
-      onClick={() => {
-        onClickCmd();
-      }}
+      onClick={onClickCmd}
     >
       {cmd}
     </Button>
