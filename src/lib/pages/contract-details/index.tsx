@@ -112,10 +112,19 @@ const ContractDetails = () => {
         <InstantiateInfo />
         {/* Contract Info (Expand) */}
         <Flex direction="column" flex={0.8} gap={6}>
-          <JsonInfo header="Contract Info" jsonString="" />
+          <JsonInfo
+            header="Contract Info"
+            jsonString={JSON.stringify(
+              contractDetails?.instantiateInfo?.raw.contract_info ?? "",
+              null,
+              2
+            )}
+            jsonAreaHeight="180px"
+          />
           <JsonInfo
             header="Instantiate Messages"
             jsonString={jsonPrettify(contractDetails?.initMsg ?? "")}
+            showViewFullButton
           />
         </Flex>
       </Flex>
