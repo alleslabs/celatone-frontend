@@ -16,8 +16,8 @@ export const InstantiateInfo = () => {
 
   if (!contractDetail || !contractDetail.instantiateInfo) return null;
 
-  const renderAddressType = () => {
-    switch (addressType(contractAddress, currentChainName)) {
+  const renderAddressType = (address: string) => {
+    switch (addressType(address, currentChainName)) {
       case "contract_address":
         return "(Contract Address)";
       case "user_address":
@@ -52,7 +52,12 @@ export const InstantiateInfo = () => {
         </LabelText>
       )}
 
-      <LabelText label="Instantiated by" helperText={renderAddressType()}>
+      <LabelText
+        label="Instantiated by"
+        helperText={renderAddressType(
+          contractDetail.instantiateInfo.instantiator
+        )}
+      >
         <ExplorerLink
           type="user_address"
           value={contractDetail.instantiateInfo.instantiator}
