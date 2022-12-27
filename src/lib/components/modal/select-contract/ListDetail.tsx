@@ -97,7 +97,6 @@ export const ListDetail = ({
               setResult={setTagFilter}
               placeholder="No tag selected"
               label="Filter by tag"
-              labelBgColor="background.main"
               boxWidth="400px"
               creatable={false}
             />

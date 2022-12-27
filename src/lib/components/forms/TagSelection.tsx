@@ -59,7 +59,7 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
       placeholder,
       badgeBgColor = "info.dark",
       helperText,
-      labelBgColor = "gray.800",
+      labelBgColor = "background.main",
       label = "Tags",
       boxWidth = "full",
       creatable = true,

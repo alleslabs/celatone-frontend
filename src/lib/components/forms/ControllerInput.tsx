@@ -14,6 +14,8 @@ import type {
 } from "react-hook-form";
 import { useWatch, useController } from "react-hook-form";
 
+import type { FormStatus } from "./FormStatus";
+import { getResponseMsg } from "./FormStatus";
 import type { TextInputProps } from "./TextInput";
 
 interface ControllerInputProps<T extends FieldValues>
@@ -21,6 +23,7 @@ interface ControllerInputProps<T extends FieldValues>
   name: FieldPath<T>;
   control: Control<T>;
   rules?: UseControllerProps["rules"];
+  status?: FormStatus;
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -34,6 +37,7 @@ export const ControllerInput = <T extends FieldValues>({
   size = "lg",
   type = "text",
   rules = {},
+  status,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -75,7 +79,11 @@ export const ControllerInput = <T extends FieldValues>({
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
         <FormHelperText className="helper-text">
-          <Text color="text.dark">{helperText}</Text>
+          {status?.message ? (
+            getResponseMsg(status, helperText)
+          ) : (
+            <Text color="text.dark">{helperText}</Text>
+          )}
         </FormHelperText>
       )}
     </FormControl>

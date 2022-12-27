@@ -68,6 +68,7 @@ export function EditTags({ contractInfo }: EditTagsProps) {
             setResult={(selectedOptions: string[]) => {
               setTagResult(selectedOptions);
             }}
+            labelBgColor="gray.800"
           />
         </Box>
       </FormControl>
