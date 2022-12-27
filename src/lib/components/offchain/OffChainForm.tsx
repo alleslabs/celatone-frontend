@@ -31,6 +31,7 @@ interface OffChainFormProps<T extends OffchainDetail> {
   setTagsValue: (options: string[]) => void;
   setContractListsValue: (options: Option[]) => void;
   errors: Partial<FieldErrorsImpl<T>>;
+  labelBgColor?: string;
 }
 
 export const OffChainForm = <T extends OffchainDetail>({
@@ -41,6 +42,7 @@ export const OffChainForm = <T extends OffchainDetail>({
   setTagsValue,
   setContractListsValue,
   errors,
+  labelBgColor = "background.main",
 }: OffChainFormProps<T>) => {
   const userKey = useUserKey();
   const { getAllTags } = useContractStore();
@@ -57,6 +59,7 @@ export const OffChainForm = <T extends OffchainDetail>({
           maxLength: MAX_CONTRACT_NAME_LENGTH,
         }}
         error={errors.name && getMaxContractNameLengthError(state.name.length)}
+        labelBgColor={labelBgColor}
       />
       <ControllerTextarea
         name={descriptionField}
@@ -71,6 +74,7 @@ export const OffChainForm = <T extends OffchainDetail>({
           errors.description &&
           getMaxContractDescriptionLengthError(state.description.length)
         }
+        labelBgColor={labelBgColor}
       />
       <TagSelection
         options={getAllTags(userKey)}
@@ -78,6 +82,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         placeholder="Tags"
         helperText="Add tag to organize and manage your contracts"
         setResult={setTagsValue}
+        labelBgColor={labelBgColor}
       />
       <ListSelection
         result={state.lists}
@@ -85,6 +90,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         helperText="Grouping your contracts by adding to your existing list or create
               a new list"
         setResult={setContractListsValue}
+        labelBgColor={labelBgColor}
       />
     </VStack>
   );

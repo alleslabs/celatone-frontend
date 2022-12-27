@@ -91,6 +91,7 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
         setTagsValue={setTagsValue}
         setContractListsValue={setContractListsValue}
         errors={errors}
+        labelBgColor="gray.800"
       />
     </ActionModal>
   );

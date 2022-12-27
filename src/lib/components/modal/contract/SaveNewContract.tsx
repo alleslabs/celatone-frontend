@@ -102,14 +102,15 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       onSuccess(data) {
         const contractInfo = getContractInfo(contractAddressState);
         reset({
+          contractAddress: contractAddressState,
           instantiator: data.instantiator,
           label: data.label,
           created: data.createdTime,
           name: contractInfo?.name ?? data.label,
-          description: contractInfo?.description,
-          tags: contractInfo?.tags,
+          description: contractInfo?.description ?? "",
+          tags: contractInfo?.tags ?? [],
           lists: [
-            list,
+            ...initialList,
             ...(contractInfo?.lists ?? []).filter(
               (item) => item.value !== list.value
             ),
@@ -173,7 +174,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
         status.state !== "success" || !!errors.name || !!errors.description
       }
       otherBtnTitle="Cancel"
-      otherAction={reset}
+      otherAction={resetForm}
     >
       <VStack gap="16px">
         <ControllerInput
@@ -183,6 +184,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           variant="floating"
           helperText={`ex. ${exampleContractAddress}`}
           status={status}
+          labelBgColor="gray.800"
         />
         <ControllerInput
           name="instantiator"
@@ -190,6 +192,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           label="Instantiator"
           variant="floating"
           isDisabled
+          labelBgColor="gray.800"
         />
 
         <OffChainForm
@@ -200,6 +203,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           setTagsValue={setTagsValue}
           setContractListsValue={setContractListsValue}
           errors={errors}
+          labelBgColor="gray.800"
         />
       </VStack>
     </ActionModal>
