@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { CSSProperties, KeyboardEvent } from "react";
-import { useEffect, useState, useRef, forwardRef } from "react";
+import { useState, useRef, forwardRef } from "react";
 import { MdCheckCircle, MdClose } from "react-icons/md";
 
 import mergeRefs from "lib/utils/mergeRefs";
@@ -69,7 +69,7 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
     // TODO: refactor to reduce complexity
     // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
-    const [optionsCopy, setOptionsCopy] = useState<string[]>([]);
+    const [optionsCopy, setOptionsCopy] = useState<string[]>(options);
     const [partialResult, setPartialResult] = useState<string[]>([]);
     const [displayOptions, setDisplayOptions] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
@@ -128,10 +128,6 @@ export const TagSelection = forwardRef<HTMLInputElement, TagSelectionProps>(
       ref: boxRef,
       handler: () => setDisplayOptions(false),
     });
-
-    useEffect(() => {
-      setOptionsCopy(options);
-    }, [options]);
 
     return (
       <Box ref={boxRef} w={boxWidth}>
