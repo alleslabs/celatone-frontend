@@ -14,6 +14,7 @@ interface JsonEditorProps {
   isValid: boolean;
   height?: LayoutProps["height"];
   showFullMsg?: boolean;
+  disableResizing?: boolean;
 }
 
 const JsonEditor = ({
@@ -23,6 +24,7 @@ const JsonEditor = ({
   isValid,
   height = "sm",
   showFullMsg,
+  disableResizing,
 }: JsonEditorProps) => {
   const editorRef = useRef<AceEditor>(null);
   const [boxHeight, setBoxHeight] = useState(height);
@@ -56,7 +58,7 @@ const JsonEditor = ({
   return (
     <Box
       height={boxHeight}
-      resize="vertical"
+      resize={disableResizing ? "unset" : "vertical"}
       overflow="auto"
       transition="all .15s"
     >

@@ -125,6 +125,7 @@ const ContractDetails = () => {
             header="Instantiate Messages"
             jsonString={jsonPrettify(contractDetails?.initMsg ?? "")}
             showViewFullButton
+            defaultExpand
           />
         </Flex>
       </Flex>

@@ -10,6 +10,7 @@ interface JsonInfoProps {
   jsonString: string;
   showViewFullButton?: boolean;
   jsonAreaHeight?: CSSProperties["height"];
+  defaultExpand?: boolean;
 }
 
 export const JsonInfo = ({
@@ -17,8 +18,9 @@ export const JsonInfo = ({
   jsonString,
   showViewFullButton,
   jsonAreaHeight = "300px",
+  defaultExpand = false,
 }: JsonInfoProps) => {
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(defaultExpand);
 
   return (
     <>
@@ -48,6 +50,7 @@ export const JsonInfo = ({
         height={expand ? jsonAreaHeight : 0}
         canCopy
         canViewFull={showViewFullButton && expand}
+        disableResizing
       />
     </>
   );
