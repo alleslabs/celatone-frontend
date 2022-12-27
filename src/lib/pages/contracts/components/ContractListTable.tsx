@@ -73,7 +73,7 @@ export const ContractListTable = ({
               _hover={{ bg: "gray.900" }}
               key={
                 item.name +
-                item.address +
+                item.contractAddress +
                 item.description +
                 item.tags +
                 item.lists
@@ -86,7 +86,7 @@ export const ContractListTable = ({
             >
               <Td>
                 <ExplorerLink
-                  value={item.address}
+                  value={item.contractAddress}
                   type="contract_address"
                   canCopyWithHover
                 />
@@ -107,12 +107,12 @@ export const ContractListTable = ({
               </Td>
               <Td>
                 <Flex gap={3} justifyContent="flex-end">
-                  <Link href={`/execute?contract=${item.address}`}>
+                  <Link href={`/execute?contract=${item.contractAddress}`}>
                     <Button variant="outline-gray" size="sm">
                       Execute
                     </Button>
                   </Link>
-                  <Link href={`/query?contract=${item.address}`}>
+                  <Link href={`/query?contract=${item.contractAddress}`}>
                     <Button variant="outline-gray" size="sm">
                       Query
                     </Button>

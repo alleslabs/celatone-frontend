@@ -25,7 +25,7 @@ import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useEndpoint } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { queryContract } from "lib/services/contract";
-import type { RpcContractError } from "lib/types";
+import type { ContractAddr, RpcContractError } from "lib/types";
 
 import { AllContractLists } from "./AllContractLists";
 import { ListDetail } from "./ListDetail";
@@ -39,7 +39,9 @@ export const SelectContract = ({
   notSelected,
   onContractSelect,
 }: SelectContractProps) => {
-  const { contractAddress } = useCelatoneApp();
+  const {
+    appContractAddress: { example: exampleContractAddress },
+  } = useCelatoneApp();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
 
@@ -67,7 +69,7 @@ export const SelectContract = ({
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
     ["query", "contract", searchManual],
-    async () => queryContract(endpoint, searchManual),
+    async () => queryContract(endpoint, searchManual as ContractAddr),
     {
       enabled: false,
       retry: false,
@@ -120,7 +122,7 @@ export const SelectContract = ({
                     const inputValue = e.target.value;
                     setSearchManual(inputValue);
                   }}
-                  placeholder={`ex. ${contractAddress.example}`}
+                  placeholder={`ex. ${exampleContractAddress}`}
                   size="md"
                 />
                 <Button

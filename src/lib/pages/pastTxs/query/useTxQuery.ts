@@ -133,7 +133,7 @@ export const useTxQuery = (
         queryAddrFromContracts(actionsFilter()),
         {
           userAddr,
-          contractAddr: search,
+          contractAddress: search,
           pageSize,
           offset,
         }

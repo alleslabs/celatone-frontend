@@ -2,11 +2,11 @@ import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
-import type { Option, Dict } from "lib/types";
+import type { Option, Dict, ContractAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractInfo {
-  address: string;
+  contractAddress: ContractAddr;
   instantiator: string;
   label: string;
   created: Date;
@@ -19,7 +19,7 @@ export interface ContractInfo {
 interface ContractList {
   name: string;
   slug: string;
-  contracts: string[];
+  contracts: ContractAddr[];
   lastUpdated: Date;
   isInfoEditable: boolean;
   isContractRemovable: boolean;
@@ -42,7 +42,7 @@ export interface Activity {
   type: "query" | "execute";
   action: string;
   sender: string | undefined;
-  contractAddress: string;
+  contractAddress: ContractAddr;
   msg: string; // base64
   timestamp: Date;
 }
@@ -122,24 +122,24 @@ export class ContractStore {
 
     return contractListByUserKey.map((contractListInfo) => ({
       ...contractListInfo,
-      contracts: contractListInfo.contracts.map((contractAddr) => {
+      contracts: contractListInfo.contracts.map((contractAddress) => {
         if (!contractInfoByUserKey)
           return {
-            address: contractAddr,
+            contractAddress,
             instantiator: "TODO",
             label: "TODO",
             created: new Date(0),
           };
 
-        const contractInfo = contractInfoByUserKey[contractAddr];
+        const contractInfo = contractInfoByUserKey[contractAddress];
 
         return { ...contractInfo };
       }),
     }));
   }
 
-  getContractInfo(address: string): ContractInfo | undefined {
-    return this.contractInfo[this.userKey]?.[address];
+  getContractInfo(contractAddress: string): ContractInfo | undefined {
+    return this.contractInfo[this.userKey]?.[contractAddress];
   }
 
   isContractListExist(userKey: string, name: string): boolean {
@@ -224,7 +224,7 @@ export class ContractStore {
 
   updateContractInfo(
     userKey: string,
-    contractAddr: string,
+    contractAddress: ContractAddr,
     instantiator: string,
     label: string,
     created: Date,
@@ -233,8 +233,8 @@ export class ContractStore {
     tags?: string[],
     lists?: Option[]
   ) {
-    const contractInfo = this.contractInfo[userKey]?.[contractAddr] ?? {
-      address: contractAddr,
+    const contractInfo = this.contractInfo[userKey]?.[contractAddress] ?? {
+      contractAddress,
       instantiator,
       label,
       created,
@@ -247,13 +247,18 @@ export class ContractStore {
         ? description.trim()
         : undefined;
     if (tags !== undefined) {
-      this.updateAllTags(userKey, contractAddr, contractInfo.tags ?? [], tags);
+      this.updateAllTags(
+        userKey,
+        contractAddress,
+        contractInfo.tags ?? [],
+        tags
+      );
       contractInfo.tags = tags.length ? tags : undefined;
     }
     if (lists !== undefined) {
       this.updateContractInAllLists(
         userKey,
-        contractAddr,
+        contractAddress,
         contractInfo.lists ?? [],
         lists
       );
@@ -262,13 +267,13 @@ export class ContractStore {
 
     this.contractInfo[userKey] = {
       ...this.contractInfo[userKey],
-      [contractAddr]: contractInfo,
+      [contractAddress]: contractInfo,
     };
   }
 
   private updateAllTags(
     userKey: string,
-    contractAddr: string,
+    contractAddress: string,
     oldTags: string[],
     newTags: string[]
   ) {
@@ -278,7 +283,7 @@ export class ContractStore {
     removedTags.forEach((oldTag) => {
       const tagInfo = tags.get(oldTag);
       if (tagInfo) {
-        tagInfo.delete(contractAddr);
+        tagInfo.delete(contractAddress);
         if (tagInfo.size === 0) tags.delete(oldTag);
         else tags.set(oldTag, tagInfo);
       }
@@ -288,9 +293,9 @@ export class ContractStore {
     addedTags.forEach((newTag) => {
       const tagInfo = tags.get(newTag);
       if (!tagInfo) {
-        tags.set(newTag, new Set<string>([contractAddr]));
+        tags.set(newTag, new Set<string>([contractAddress]));
       } else {
-        tags.set(newTag, tagInfo.add(contractAddr));
+        tags.set(newTag, tagInfo.add(contractAddress));
       }
     });
 
@@ -299,7 +304,7 @@ export class ContractStore {
 
   private updateContractInAllLists(
     userKey: string,
-    contractAddr: string,
+    contractAddress: ContractAddr,
     oldLists: Option[],
     newLists: Option[]
   ) {
@@ -307,42 +312,42 @@ export class ContractStore {
       newLists.every((newList) => newList.value !== oldList.value)
     );
     removedLists.forEach((slug) => {
-      this.removeContractFromList(userKey, slug.value, contractAddr);
+      this.removeContractFromList(userKey, slug.value, contractAddress);
     });
 
     const addedLists = newLists.filter((newList) =>
       oldLists.every((oldList) => oldList.value !== newList.value)
     );
     addedLists.forEach((slug) => {
-      this.addContractToList(userKey, slug.value, contractAddr);
+      this.addContractToList(userKey, slug.value, contractAddress);
     });
   }
 
   private addContractToList(
     userKey: string,
     slug: string,
-    contractAddr: string
+    contractAddress: ContractAddr
   ) {
     const list = this.getContractList(userKey).find(
       (each) => each.slug === slug
     );
     if (!list) return;
 
-    list.contracts = Array.from(new Set(list.contracts).add(contractAddr));
+    list.contracts = Array.from(new Set(list.contracts).add(contractAddress));
     list.lastUpdated = new Date();
   }
 
   private removeContractFromList(
     userKey: string,
     slug: string,
-    contractAddr: string
+    contractAddress: string
   ) {
     const list = this.getContractList(userKey).find(
       (each) => each.slug === slug
     );
     if (!list) return;
 
-    list.contracts = list.contracts.filter((addr) => addr !== contractAddr);
+    list.contracts = list.contracts.filter((addr) => addr !== contractAddress);
     list.lastUpdated = new Date();
   }
 

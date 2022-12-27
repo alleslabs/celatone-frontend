@@ -3,7 +3,7 @@ import { makePersistable } from "mobx-persist-store";
 
 import type { Dict } from "lib/types";
 
-interface CodeLocalInfo {
+export interface CodeLocalInfo {
   description?: string;
   uploader?: string;
 }

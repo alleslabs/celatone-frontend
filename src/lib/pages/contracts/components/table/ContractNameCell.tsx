@@ -14,7 +14,7 @@ export const ContractNameCell = ({
 }: ContractNameCellProps) => {
   const onSave = useHandleContractSave({
     title: "Changed name successfully!",
-    address: contract.address,
+    contractAddress: contract.contractAddress,
     instantiator: contract.instantiator,
     label: contract.label,
     created: contract.created,

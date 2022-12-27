@@ -6,11 +6,10 @@ import {
   Th,
   Td,
   TableContainer,
-  Text,
 } from "@chakra-ui/react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ContractInfo } from "lib/stores/contract";
-import { truncate } from "lib/utils";
 
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
@@ -40,14 +39,18 @@ export const ContractListReadOnlyTable = ({
             <Tr
               transition="all .25s ease-in-out"
               _hover={{ bg: "gray.900" }}
-              key={item.address}
+              key={item.contractAddress}
               onClick={() => {
-                onContractSelect(item.address);
+                onContractSelect(item.contractAddress);
               }}
               cursor="pointer"
             >
               <Td width="10%">
-                <Text variant="body2">{truncate(item.address)}</Text>
+                <ExplorerLink
+                  value={item.contractAddress}
+                  type="contract_address"
+                  isReadOnly
+                />
               </Td>
               <Td width="40%">
                 <ContractNameCell contract={item} isReadOnly />
@@ -55,10 +58,12 @@ export const ContractListReadOnlyTable = ({
               <Td width="30%">
                 <TagsCell contractInfo={item} isReadOnly />
               </Td>
-              {/* Instantiator */}
-              {/* TODO: make AddressRender later, check if address match wallet address => show 'Me' instead */}
               <Td width="10%">
-                <Text variant="body2">{truncate(item.instantiator)}</Text>
+                <ExplorerLink
+                  value={item.instantiator}
+                  type="user_address"
+                  isReadOnly
+                />
               </Td>
             </Tr>
           ))}
