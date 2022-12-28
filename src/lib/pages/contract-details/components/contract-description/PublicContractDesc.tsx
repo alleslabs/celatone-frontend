@@ -1,21 +1,20 @@
 import { Flex, Icon, Text } from "@chakra-ui/react";
-import router from "next/router";
 import { useState } from "react";
 import { BiWorld } from "react-icons/bi";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { textLine } from "../../utils/textLine";
-import { useContractDetail } from "lib/model/contract";
-import type { ContractAddr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import type { ContractDetail } from "lib/model/contract";
 
 import { ShowMoreButton } from "./ShowMoreButton";
 
-export const PublicContractDesc = () => {
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
-  const contractDetail = useContractDetail(contractAddress as ContractAddr);
-
+interface PublicContractDescProps {
+  contractDetail: ContractDetail;
+}
+export const PublicContractDesc = ({
+  contractDetail,
+}: PublicContractDescProps) => {
   const [isPublicContractShowMore, setIsPublicContractShowMore] =
     useState(false);
 
@@ -27,10 +26,10 @@ export const PublicContractDesc = () => {
       key: publicContractKey,
     },
   ] = useClampText({
-    text: contractDetail?.publicInfo?.description || "",
+    text: contractDetail.publicInfo?.description || "",
     ellipsis: "...",
     lines: textLine(
-      contractDetail?.contractInfo?.description,
+      contractDetail.contractInfo?.description,
       isPublicContractShowMore
     ),
   });
@@ -58,7 +57,7 @@ export const PublicContractDesc = () => {
           key={publicContractKey}
         >
           {isPublicContractShowMore
-            ? contractDetail?.publicInfo?.description
+            ? contractDetail.publicInfo?.description
             : publicContractDesc}
         </Text>
       </Linkify>

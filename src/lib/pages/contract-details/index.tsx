@@ -17,6 +17,8 @@ import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
+import { useContractDetail } from "lib/model/contract";
+import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -31,6 +33,10 @@ const ContractDetails = () => {
    * @todos add contract address validation function here
    */
   const contractAddress = getFirstQueryParam(router.query.contractAddress);
+  const contractDetail = useContractDetail(contractAddress as ContractAddr);
+
+  // TODO - Wait for design
+  if (!contractDetail) return null;
 
   return (
     <PageContainer>
@@ -83,7 +89,7 @@ const ContractDetails = () => {
       {/* Tokens Section */}
       <TokenSection />
       {/* Contract Description Section */}
-      <ContractDesc />
+      <ContractDesc contractDetail={contractDetail} />
       {/* Query/Execute commands section */}
       <CommandSection />
       {/* Instantiate/Contract Info Section */}

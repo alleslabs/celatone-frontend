@@ -1,20 +1,18 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import router from "next/router";
 import { useState } from "react";
 import { RiPencilFill } from "react-icons/ri";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { textLine } from "../../utils/textLine";
-import { useContractDetail } from "lib/model/contract";
-import type { ContractAddr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import type { ContractDetail } from "lib/model/contract";
 
 import { ShowMoreButton } from "./ShowMoreButton";
 
-export const UserContractDesc = () => {
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
-  const contractDetail = useContractDetail(contractAddress as ContractAddr);
+interface UserContractDescProps {
+  contractDetail: ContractDetail;
+}
+export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
   const [isUserContractShowMore, setIsUserContractShowMore] = useState(false);
 
   const [
@@ -25,41 +23,26 @@ export const UserContractDesc = () => {
       key: userContractKey,
     },
   ] = useClampText({
-    text: contractDetail?.contractInfo
-      ? contractDetail?.contractInfo?.description || "No contract description"
-      : "Save contract to lists to add your own contract description ...",
+    text: contractDetail.contractInfo?.description || "No contract description",
     ellipsis: "...",
     lines: textLine(
-      contractDetail?.publicInfo?.description,
+      contractDetail.publicInfo?.description,
       isUserContractShowMore
     ),
   });
 
   // TODO - Wire up Edit button
-  const renderEditContractButton = () => {
-    if (contractDetail?.contractInfo?.description) {
-      return (
-        <Button
-          size="xs"
-          color="primary.main"
-          variant="none"
-          leftIcon={<RiPencilFill />}
-        >
-          Edit
-        </Button>
-      );
-    }
-    return (
-      <Button
-        size="xs"
-        color="primary.main"
-        variant="none"
-        leftIcon={<RiPencilFill />}
-      >
-        Add Description
-      </Button>
-    );
-  };
+  const renderEditContractButton = () => (
+    <Button
+      size="xs"
+      color="primary.main"
+      variant="none"
+      leftIcon={<RiPencilFill />}
+    >
+      {contractDetail.contractInfo?.description ? "Edit" : "Add Description"}
+    </Button>
+  );
+
   return (
     <Flex
       direction="column"
@@ -77,7 +60,7 @@ export const UserContractDesc = () => {
         <Box
           display="none"
           _groupHover={
-            contractDetail?.contractInfo ? { display: "flex" } : undefined
+            contractDetail.contractInfo ? { display: "flex" } : undefined
           }
         >
           {renderEditContractButton()}
@@ -90,7 +73,7 @@ export const UserContractDesc = () => {
       >
         <Linkify>
           {isUserContractShowMore
-            ? contractDetail?.contractInfo?.description
+            ? contractDetail.contractInfo?.description
             : userContractDesc}
         </Linkify>
       </Text>
