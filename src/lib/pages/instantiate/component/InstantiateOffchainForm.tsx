@@ -5,19 +5,11 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 import type { Option } from "lib/components/forms";
-import { ControllerInput, ControllerTextarea } from "lib/components/forms";
-import {
-  getMaxContractDescriptionLengthError,
-  getMaxContractNameLengthError,
-  MAX_CONTRACT_DESCRIPTION_LENGTH,
-  MAX_CONTRACT_NAME_LENGTH,
-} from "lib/data";
+import { OffChainForm } from "lib/components/OffChainForm";
+import type { OffchainDetail } from "lib/components/OffChainForm";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
 import type { ContractAddr } from "lib/types";
-
-import { ListSelection } from "./forms/ListSelection";
-import { TagSelection } from "./forms/TagSelection";
 
 interface InstantiateOffChainFormProps {
   title?: string;
@@ -27,7 +19,7 @@ interface InstantiateOffChainFormProps {
   contractLabel: string;
 }
 
-export const InstantiateOffChainDetail = observer(
+export const InstantiateOffChainForm = observer(
   ({
     title,
     subtitle,
@@ -37,7 +29,7 @@ export const InstantiateOffChainDetail = observer(
   }: InstantiateOffChainFormProps) => {
     const { address = "" } = useWallet();
     const router = useRouter();
-    const { updateContractInfo, getAllTags } = useContractStore();
+    const { updateContractInfo } = useContractStore();
     const userKey = useUserKey();
 
     const {
@@ -46,20 +38,28 @@ export const InstantiateOffChainDetail = observer(
       watch,
       handleSubmit,
       formState: { errors },
-    } = useForm({
+    } = useForm<OffchainDetail>({
       defaultValues: {
         name: "",
         description: "",
-        tags: [] as string[],
-        contractLists: [] as Option[],
+        tags: [],
+        lists: [],
       },
       mode: "all",
     });
 
-    const nameState = watch("name");
-    const descriptionState = watch("description");
-    const tagsState = watch("tags");
-    const contractListState = watch("contractLists");
+    const offchainState: OffchainDetail = {
+      name: watch("name"),
+      description: watch("description"),
+      tags: watch("tags"),
+      lists: watch("lists"),
+    };
+    const setTagsValue = (selectedTags: string[]) => {
+      setValue("tags", selectedTags);
+    };
+    const setContractListsValue = (selectedLists: Option[]) => {
+      setValue("lists", selectedLists);
+    };
 
     const saveContract = () => {
       handleSubmit((data) => {
@@ -72,7 +72,7 @@ export const InstantiateOffChainDetail = observer(
           data.name,
           data.description,
           data.tags,
-          data.contractLists
+          data.lists
         );
         router.push("/contract-list/instantiated-by-me");
       })();
@@ -90,50 +90,14 @@ export const InstantiateOffChainDetail = observer(
             </Text>
           </Flex>
         )}
-        <ControllerInput
-          name="name"
+        <OffChainForm<OffchainDetail>
+          nameField="name"
+          descriptionField="description"
+          state={offchainState}
           control={control}
-          label="Name"
-          helperText="Set name for your contract"
-          variant="floating"
-          rules={{
-            maxLength: MAX_CONTRACT_NAME_LENGTH,
-          }}
-          error={errors.name && getMaxContractNameLengthError(nameState.length)}
-        />
-        <ControllerTextarea
-          name="description"
-          control={control}
-          label="Description"
-          helperText="Help understanding what this contract do and how it works"
-          variant="floating"
-          rules={{
-            maxLength: MAX_CONTRACT_DESCRIPTION_LENGTH,
-          }}
-          error={
-            errors.description &&
-            getMaxContractDescriptionLengthError(descriptionState.length)
-          }
-        />
-        <TagSelection
-          options={getAllTags(userKey)}
-          result={tagsState}
-          placeholder="Tags"
-          helperText="Add tag to organize and manage your contracts"
-          setResult={(selectedOptions: string[]) => {
-            setValue("tags", selectedOptions);
-          }}
-          labelBgColor="background.main"
-        />
-        <ListSelection
-          result={contractListState}
-          placeholder="Add to contract lists"
-          helperText="Grouping your contracts by adding to your existing list or create
-              a new list"
-          setResult={(selectedOptions: Option[]) => {
-            setValue("contractLists", selectedOptions);
-          }}
-          labelBgColor="background.main"
+          setTagsValue={setTagsValue}
+          setContractListsValue={setContractListsValue}
+          errors={errors}
         />
         {cta && (
           <Flex gap={6} w="full" mt={4} justifyContent="center">
