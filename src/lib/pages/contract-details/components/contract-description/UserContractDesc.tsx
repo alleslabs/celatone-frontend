@@ -35,6 +35,7 @@ export const UserContractDesc = () => {
     ),
   });
 
+  // TODO - Wire up Edit button
   const renderEditContractButton = () => {
     if (contractDetail?.contractInfo?.description) {
       return (
