@@ -6,7 +6,6 @@ import { useState } from "react";
 import { TagSelection, TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { ZeroState } from "lib/components/state/ZeroState";
-import { useContractStore, useUserKey } from "lib/hooks";
 import { ContractListReadOnlyTable } from "lib/pages/contracts/components/ContractListReadOnlyTable";
 import { ContractListTable } from "lib/pages/contracts/components/ContractListTable";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
@@ -74,9 +73,6 @@ export const ListDetail = ({
   isContractRemovable,
   onContractSelect,
 }: ListDetailProps) => {
-  const userKey = useUserKey();
-  const { getAllTags } = useContractStore();
-
   const [tagFilter, setTagFilter] = useState<string[]>([]);
 
   return (
@@ -92,7 +88,6 @@ export const ListDetail = ({
           />
           {!isReadOnly && (
             <TagSelection
-              options={getAllTags(userKey)}
               result={tagFilter}
               setResult={setTagFilter}
               placeholder="No tag selected"

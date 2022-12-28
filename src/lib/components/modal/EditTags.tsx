@@ -5,7 +5,6 @@ import { MdMode } from "react-icons/md";
 import { ExplorerLink } from "../ExplorerLink";
 import { TagSelection } from "lib/components/forms/TagSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { useContractStore, useUserKey } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
 
@@ -14,8 +13,6 @@ interface EditTagsProps {
 }
 
 export function EditTags({ contractInfo }: EditTagsProps) {
-  const userKey = useUserKey();
-  const { getAllTags } = useContractStore();
   const [tagResult, setTagResult] = useState<string[]>(contractInfo.tags ?? []);
   const handleSave = useHandleContractSave({
     title: "Updated tags successfully!",
@@ -61,7 +58,6 @@ export function EditTags({ contractInfo }: EditTagsProps) {
       <FormControl>
         <Box my="24px">
           <TagSelection
-            options={getAllTags(userKey)}
             result={tagResult}
             placeholder="Tags"
             helperText="Add tag to organize and manage your contracts"

@@ -13,7 +13,6 @@ import {
   MAX_CONTRACT_DESCRIPTION_LENGTH,
   MAX_CONTRACT_NAME_LENGTH,
 } from "lib/data";
-import { useContractStore, useUserKey } from "lib/hooks";
 import type { Option } from "lib/types";
 
 export interface OffchainDetail {
@@ -44,9 +43,6 @@ export const OffChainForm = <T extends OffchainDetail>({
   errors,
   labelBgColor = "background.main",
 }: OffChainFormProps<T>) => {
-  const userKey = useUserKey();
-  const { getAllTags } = useContractStore();
-
   return (
     <VStack gap="16px" w="full">
       <ControllerInput
@@ -77,7 +73,6 @@ export const OffChainForm = <T extends OffchainDetail>({
         labelBgColor={labelBgColor}
       />
       <TagSelection
-        options={getAllTags(userKey)}
         result={state.tags}
         placeholder="Tags"
         helperText="Add tag to organize and manage your contracts"
