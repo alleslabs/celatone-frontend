@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#53](https://github.com/alleslabs/celatone-frontend/pull/53) Show contract description in contract detail page
 - [#38](https://github.com/alleslabs/celatone-frontend/pull/38) Show execute msg cmds when wallet is not connected
 - [#49](https://github.com/alleslabs/celatone-frontend/pull/49) Add `develop` branch to `main.yml`
 - [#39](https://github.com/alleslabs/celatone-frontend/pull/39) Render "Me" instead of user address
