@@ -1,4 +1,4 @@
-import { Icon, Text } from "@chakra-ui/react";
+import { Flex, Icon, Text } from "@chakra-ui/react";
 import { MdSearch, MdSearchOff } from "react-icons/md";
 
 interface FalseStateProps {
@@ -8,7 +8,7 @@ interface FalseStateProps {
 }
 export const FalseState = ({ icon, text1, text2 }: FalseStateProps) => {
   return (
-    <>
+    <Flex borderY="1px solid rgba(255,255,255,0.12)" width="full" py="48px">
       <Icon
         as={icon === "off" ? MdSearchOff : MdSearch}
         mb="26px"
@@ -23,6 +23,6 @@ export const FalseState = ({ icon, text1, text2 }: FalseStateProps) => {
       <Text variant="body1" color="text.dark">
         {text2}
       </Text>
-    </>
+    </Flex>
   );
 };

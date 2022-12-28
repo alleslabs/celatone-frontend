@@ -169,10 +169,17 @@ const PastTxs = () => {
       ibcButton;
     if (!address) {
       return (
-        <DisconnectedState
-          text="to see your past transactions."
-          helperText="Past transactions involving the Wasm module such as Instantiate, Execute, or Upload Wasm file will display here."
-        />
+        <Flex
+          direction="column"
+          borderY="1px solid rgba(255,255,255,0.12)"
+          width="full"
+          py="48px"
+        >
+          <DisconnectedState
+            text="to see your past transactions."
+            helperText="Past transactions involving the Wasm module such as Instantiate, Execute, or Upload Wasm file will display here."
+          />
+        </Flex>
       );
     }
     // Loading state

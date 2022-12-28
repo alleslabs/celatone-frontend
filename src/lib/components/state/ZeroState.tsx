@@ -54,24 +54,32 @@ export const ZeroState = ({
   const router = useRouter();
   const { isWalletConnected } = useWallet();
 
-  if (!isWalletConnected && isInstantiatedByMe) {
-    return <DisconnectedState text="to deploy new contracts." />;
-  }
-
   return (
-    <Flex alignItems="center" flexDir="column" gap="4">
-      <Icon as={MdSearch} color="gray.600" boxSize="16" />
-      <Text color="text.dark">
-        {isInstantiatedByMe
-          ? "Your deployed contract through this address will display here"
-          : "You don’t have any saved contracts."}
-      </Text>
-      {!isReadOnly && (
-        <ActionSection
-          isInstantiatedByMe={isInstantiatedByMe}
-          list={list}
-          handleAction={() => router.push("/deploy")}
-        />
+    <Flex
+      borderY="1px solid rgba(255,255,255,0.12)"
+      width="full"
+      py="48px"
+      direction="column"
+      alignContent="center"
+    >
+      {!isWalletConnected && isInstantiatedByMe ? (
+        <DisconnectedState text="to deploy new contracts." />
+      ) : (
+        <Flex alignItems="center" flexDir="column" gap="4">
+          <Icon as={MdSearch} color="gray.600" boxSize="16" />
+          <Text color="text.dark">
+            {isInstantiatedByMe
+              ? "Your deployed contract through this address will display here"
+              : "You don’t have any saved contracts."}
+          </Text>
+          {!isReadOnly && (
+            <ActionSection
+              isInstantiatedByMe={isInstantiatedByMe}
+              list={list}
+              handleAction={() => router.push("/deploy")}
+            />
+          )}
+        </Flex>
       )}
     </Flex>
   );
