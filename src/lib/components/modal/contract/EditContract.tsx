@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import type { OffchainDetail } from "lib/components/offchain/OffChainForm";
-import { OffChainForm } from "lib/components/offchain/OffChainForm";
+import type { OffchainDetail } from "lib/components/OffChainForm";
+import { OffChainForm } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
 import type { Option } from "lib/types";
