@@ -25,7 +25,7 @@ import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
-interface ContractDetail {
+export interface ContractDetail {
   chainId: string;
   codeInfo: CodeLocalInfo | undefined;
   contractInfo: ContractInfo | undefined;
