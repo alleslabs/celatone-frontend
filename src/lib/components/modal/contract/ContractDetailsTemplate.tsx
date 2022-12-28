@@ -45,11 +45,11 @@ export const ContractDetailsTemplate = ({
     tags: watch("tags"),
     lists: watch("lists"),
   };
-  const setTagsValue = (selectedOptions: string[]) => {
-    setValue("tags", selectedOptions);
+  const setTagsValue = (selectedTags: string[]) => {
+    setValue("tags", selectedTags);
   };
-  const setContractListsValue = (selectedOptions: Option[]) => {
-    setValue("lists", selectedOptions);
+  const setContractListsValue = (selectedLists: Option[]) => {
+    setValue("lists", selectedLists);
   };
 
   const handleSave = useHandleContractSave({

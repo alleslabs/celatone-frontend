@@ -72,11 +72,11 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
     tags: watch("tags"),
     lists: watch("lists"),
   };
-  const setTagsValue = (selectedOptions: string[]) => {
-    setValue("tags", selectedOptions);
+  const setTagsValue = (selecteTags: string[]) => {
+    setValue("tags", selecteTags);
   };
-  const setContractListsValue = (selectedOptions: Option[]) => {
-    setValue("lists", selectedOptions);
+  const setContractListsValue = (selectedLists: Option[]) => {
+    setValue("lists", selectedLists);
   };
 
   const resetForm = (resetContractAddress = true) => {
