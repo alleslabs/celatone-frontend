@@ -49,6 +49,11 @@ const ActionSection = ({
   );
 };
 
+/**
+ *
+ * @todo Will be refactored in the next PR
+ */
+
 export const ZeroState = ({
   list,
   isReadOnly,

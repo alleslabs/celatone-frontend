@@ -11,6 +11,7 @@ import {
   BreadcrumbLink,
   Box,
   Text,
+  chakra,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -26,17 +27,19 @@ import {
 
 import { SaveNewContract } from "lib/components/modal/contract";
 import { EditList, RemoveList } from "lib/components/modal/list";
-import { ListDetail } from "lib/components/modal/select-contract";
+import { ContractListDetail } from "lib/components/modal/select-contract";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
-const iconProps = {
-  boxSize: "4",
-  display: "flex",
-  alignItems: "center",
-};
+const StyledIcon = chakra(Icon, {
+  baseStyle: {
+    boxSize: "4",
+    display: "flex",
+    alignItems: "center",
+  },
+});
 
 const ContractsByList = observer(() => {
   const router = useRouter();
@@ -145,9 +148,7 @@ const ContractsByList = observer(() => {
                       value: contractListInfo.slug,
                     }}
                     menuItemProps={{
-                      icon: (
-                        <Icon as={MdMode} style={iconProps} color="gray.600" />
-                      ),
+                      icon: <StyledIcon as={MdMode} color="gray.600" />,
                       children: "Edit list name",
                     }}
                   />
@@ -157,13 +158,7 @@ const ContractsByList = observer(() => {
                       value: contractListInfo.slug,
                     }}
                     menuItemProps={{
-                      icon: (
-                        <Icon
-                          as={MdDelete}
-                          style={iconProps}
-                          color="error.light"
-                        />
-                      ),
+                      icon: <StyledIcon as={MdDelete} color="error.light" />,
                       children: "Remove list",
                     }}
                   />
@@ -173,7 +168,7 @@ const ContractsByList = observer(() => {
           </Flex>
         </Flex>
       </Box>
-      <ListDetail
+      <ContractListDetail
         contractListInfo={contractListInfo}
         isInstantiatedByMe={isInstantiatedByMe}
       />

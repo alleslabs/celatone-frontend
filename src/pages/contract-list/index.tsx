@@ -1,3 +1,3 @@
-import AllContractListsPage from "lib/pages/contracts";
+import AllContractListsPage from "lib/pages/contract-list";
 
 export default AllContractListsPage;

@@ -13,10 +13,11 @@ import {
   MenuList,
   MenuButton,
   MenuDivider,
+  chakra,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import {
-  MdMoreVert,
+  MdMoreHoriz,
   MdMode,
   MdOutlineBookmark,
   MdDelete,
@@ -34,11 +35,13 @@ import type { Option } from "lib/types";
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
 
-const iconProps = {
-  boxSize: "4",
-  display: "flex",
-  alignItems: "center",
-};
+const StyledIcon = chakra(Icon, {
+  baseStyle: {
+    boxSize: "4",
+    display: "flex",
+    alignItems: "center",
+  },
+});
 
 interface ContractListTableProps {
   contracts: ContractInfo[];
@@ -124,9 +127,8 @@ export const ContractListTable = ({
                       focusBorderColor="primary.main"
                       as={Button}
                     >
-                      <Icon
-                        as={MdMoreVert}
-                        style={iconProps}
+                      <StyledIcon
+                        as={MdMoreHoriz}
                         color="gray.600"
                         boxSize="6"
                       />
@@ -135,13 +137,7 @@ export const ContractListTable = ({
                       <EditContract
                         contractInfo={item}
                         menuItemProps={{
-                          icon: (
-                            <Icon
-                              as={MdMode}
-                              style={iconProps}
-                              color="gray.600"
-                            />
-                          ),
+                          icon: <StyledIcon as={MdMode} color="gray.600" />,
                           children: "Edit details",
                         }}
                       />
@@ -149,9 +145,8 @@ export const ContractListTable = ({
                         contractInfo={item}
                         menuItemProps={{
                           icon: (
-                            <Icon
+                            <StyledIcon
                               as={MdOutlineBookmark}
-                              style={iconProps}
                               color="gray.600"
                             />
                           ),
@@ -163,14 +158,10 @@ export const ContractListTable = ({
                           <MenuDivider />
                           <RemoveContract
                             contractInfo={item}
-                            list={contractRemovalInfo}
+                            contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
                               icon: (
-                                <Icon
-                                  as={MdDelete}
-                                  style={iconProps}
-                                  color="error.light"
-                                />
+                                <StyledIcon as={MdDelete} color="error.light" />
                               ),
                               children: "Remove from this list",
                             }}

@@ -57,7 +57,7 @@ export class ContractStore {
       contracts: [],
       lastUpdated: new Date(),
       isInfoEditable: false,
-      isContractRemovable: false,
+      isContractRemovable: true,
     },
   ];
 

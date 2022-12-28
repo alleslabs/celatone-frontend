@@ -10,6 +10,7 @@ import {
   MenuButton,
   MenuList,
   Spacer,
+  chakra,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { MdMoreHoriz, MdMode, MdDelete } from "react-icons/md";
@@ -19,23 +20,25 @@ import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
-const iconProps = {
-  boxSize: "4",
-  display: "flex",
-  alignItems: "center",
-};
+const StyledIcon = chakra(Icon, {
+  baseStyle: {
+    boxSize: "4",
+    display: "flex",
+    alignItems: "center",
+  },
+});
 
-interface ListCardProps {
+interface ContractListCardProps {
   item: ContractListInfo;
   handleListSelect: (value: string) => void;
   isReadOnly: boolean;
 }
 
-export const ListCard = ({
+export const ContractListCard = ({
   item,
   handleListSelect,
   isReadOnly,
-}: ListCardProps) => {
+}: ContractListCardProps) => {
   const showLastUpdated = item.slug !== formatSlugName(INSTANTIATED_LIST_NAME);
 
   return (
@@ -98,16 +101,14 @@ export const ListCard = ({
               <EditList
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
-                  icon: <Icon as={MdMode} style={iconProps} color="gray.600" />,
+                  icon: <StyledIcon as={MdMode} color="gray.600" />,
                   children: "Edit list name",
                 }}
               />
               <RemoveList
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
-                  icon: (
-                    <Icon as={MdDelete} style={iconProps} color="error.light" />
-                  ),
+                  icon: <StyledIcon as={MdDelete} color="error.light" />,
                   children: "Remove list",
                 }}
               />

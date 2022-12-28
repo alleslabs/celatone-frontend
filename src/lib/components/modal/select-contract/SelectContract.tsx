@@ -28,11 +28,11 @@ import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcContractError } from "lib/types";
 
 import { AllContractLists } from "./AllContractLists";
-import { ListDetail } from "./ListDetail";
+import { ContractListDetail } from "./ContractListDetail";
 
 interface SelectContractProps {
   notSelected: boolean;
-  onContractSelect: (addr: string) => void;
+  onContractSelect: (addr: ContractAddr) => void;
 }
 
 export const SelectContract = ({
@@ -45,7 +45,9 @@ export const SelectContract = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
 
-  const [searchManual, setSearchManual] = useState("");
+  const [searchContract, setSearchContract] = useState<ContractAddr>(
+    "" as ContractAddr
+  );
   const [invalid, setInvalid] = useState("");
 
   const { getContractLists } = useContractStore();
@@ -56,27 +58,27 @@ export const SelectContract = ({
 
   const resetOnClose = () => {
     setListSlug("");
-    setSearchManual("");
+    setSearchContract("" as ContractAddr);
     setInvalid("");
     onClose();
   };
 
-  const onSelectThenClose = (contract: string) => {
+  const onSelectThenClose = (contract: ContractAddr) => {
     onContractSelect(contract);
     resetOnClose();
   };
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", searchManual],
-    async () => queryContract(endpoint, searchManual as ContractAddr),
+    ["query", "contract", searchContract],
+    async () => queryContract(endpoint, searchContract as ContractAddr),
     {
       enabled: false,
       retry: false,
       cacheTime: 0,
       refetchOnReconnect: false,
       onSuccess() {
-        onSelectThenClose(searchManual);
+        onSelectThenClose(searchContract);
       },
       onError(err: AxiosError<RpcContractError>) {
         setInvalid(err.response?.data.error || DEFAULT_RPC_ERROR);
@@ -117,16 +119,16 @@ export const SelectContract = ({
               <Flex gap="8px" alignItems="center">
                 <Input
                   isInvalid={invalid !== ""}
-                  value={searchManual}
+                  value={searchContract}
                   onChange={(e) => {
                     const inputValue = e.target.value;
-                    setSearchManual(inputValue);
+                    setSearchContract(inputValue as ContractAddr);
                   }}
                   placeholder={`ex. ${exampleContractAddress}`}
                   size="md"
                 />
                 <Button
-                  isDisabled={searchManual.length === 0}
+                  isDisabled={searchContract.length === 0}
                   isLoading={isFetching || isRefetching}
                   onClick={() => {
                     refetch();
@@ -172,7 +174,7 @@ export const SelectContract = ({
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <ListDetail
+              <ContractListDetail
                 contractListInfo={contractList}
                 isReadOnly
                 onContractSelect={onSelectThenClose}

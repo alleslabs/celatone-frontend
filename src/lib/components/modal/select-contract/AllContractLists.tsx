@@ -5,7 +5,7 @@ import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
 import type { ContractListInfo } from "lib/stores/contract";
 
-import { ListCard } from "./ListCard";
+import { ContractListCard } from "./ContractListCard";
 
 interface AllContractListsProps {
   contractLists: ContractListInfo[];
@@ -46,7 +46,7 @@ export const AllContractLists = ({
       ) : (
         <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} w="full">
           {filteredContractLists.map((item) => (
-            <ListCard
+            <ContractListCard
               key={item.slug}
               item={item}
               handleListSelect={handleListSelect}

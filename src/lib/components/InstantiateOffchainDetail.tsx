@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
-import type { Option } from "lib/components/forms";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import {
   getMaxContractDescriptionLengthError,
@@ -14,7 +13,7 @@ import {
 } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import { ListSelection } from "./forms/ListSelection";
 import { TagSelection } from "./forms/TagSelection";
