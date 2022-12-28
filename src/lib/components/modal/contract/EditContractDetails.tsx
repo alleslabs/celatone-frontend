@@ -9,13 +9,11 @@ interface EditContractDetailsProps {
 export const EditContractDetails = ({
   contractInfo,
   triggerElement,
-}: EditContractDetailsProps) => {
-  return (
-    <ContractDetailsTemplate
-      title="Edit Contract Details"
-      subtitle="Filled information below will be saved on Celatone only and able to edit later."
-      contractInfo={contractInfo}
-      triggerElement={triggerElement}
-    />
-  );
-};
+}: EditContractDetailsProps) => (
+  <ContractDetailsTemplate
+    title="Edit Contract Details"
+    subtitle="Filled information below will be saved on Celatone only and able to edit later."
+    contractInfo={contractInfo}
+    triggerElement={triggerElement}
+  />
+);

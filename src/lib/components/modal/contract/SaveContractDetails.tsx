@@ -9,12 +9,10 @@ interface SaveContractDetailsProps {
 export const SaveContractDetails = ({
   contractInfo,
   triggerElement,
-}: SaveContractDetailsProps) => {
-  return (
-    <ContractDetailsTemplate
-      title="Save Contract Details"
-      contractInfo={contractInfo}
-      triggerElement={triggerElement}
-    />
-  );
-};
+}: SaveContractDetailsProps) => (
+  <ContractDetailsTemplate
+    title="Save Contract Details"
+    contractInfo={contractInfo}
+    triggerElement={triggerElement}
+  />
+);
