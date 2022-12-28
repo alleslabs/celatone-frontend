@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
+- [#54](https://github.com/alleslabs/celatone-frontend/pull/54) Render execute cmds shortcut in contract detail page
 - [#44](https://github.com/alleslabs/celatone-frontend/pull/44) Render query cmds shortcut in contract detail page
 - [#38](https://github.com/alleslabs/celatone-frontend/pull/38) Show execute msg cmds when wallet is not connected
 - [#49](https://github.com/alleslabs/celatone-frontend/pull/49) Add `develop` branch to `main.yml`
