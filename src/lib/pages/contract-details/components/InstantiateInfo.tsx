@@ -1,22 +1,21 @@
-import { Flex, Heading } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import router from "next/router";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import { useContractDetail } from "lib/model/contract";
-import type { ContractAddr } from "lib/types";
-import { addressType, date, dateFromNow, getFirstQueryParam } from "lib/utils";
+import { useAddressType } from "lib/hooks";
+import type { ContractDetail } from "lib/model/contract";
+import { date, dateFromNow, getFirstQueryParam } from "lib/utils";
 
-export const InstantiateInfo = () => {
+interface InstantiateInfoProps {
+  contractDetail: ContractDetail;
+}
+export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
   const contractAddress = getFirstQueryParam(router.query.contractAddress);
-  const { currentChainName } = useWallet();
-  const contractDetail = useContractDetail(contractAddress as ContractAddr);
+  const addressType = useAddressType(contractAddress);
 
-  if (!contractDetail || !contractDetail.instantiateInfo) return null;
-
-  const renderAddressType = (address: string) => {
-    switch (addressType(address, currentChainName)) {
+  const renderAddressType = () => {
+    switch (addressType()) {
       case "contract_address":
         return "(Contract Address)";
       case "user_address":
@@ -27,89 +26,94 @@ export const InstantiateInfo = () => {
     return "";
   };
 
+  const renderDataFound = () => {
+    if (contractDetail?.instantiateInfo) {
+      return (
+        <>
+          <LabelText label="Network">{contractDetail.chainId}</LabelText>
+
+          {contractDetail.instantiateInfo && (
+            <LabelText
+              label="Instantiated Block Height"
+              helperText={`${date(
+                contractDetail.instantiateInfo.createdTime.toString()
+              )} ${"\n"}  (${dateFromNow(
+                contractDetail.instantiateInfo.createdTime.toString()
+              )})`}
+            >
+              <ExplorerLink
+                value={contractDetail.instantiateInfo.createdHeight.toString()}
+                canCopyWithHover
+              />
+            </LabelText>
+          )}
+
+          <LabelText label="Instantiated by" helperText={renderAddressType()}>
+            <ExplorerLink
+              type="user_address"
+              value={contractDetail.instantiateInfo.instantiator}
+              canCopyWithHover
+            />
+          </LabelText>
+
+          <LabelText
+            label="From Code"
+            helperText={contractDetail.codeInfo?.description}
+          >
+            <ExplorerLink
+              value={contractDetail.instantiateInfo.codeId}
+              canCopyWithHover
+            />
+          </LabelText>
+
+          {contractDetail.initTxHash && !contractDetail.initProposalId && (
+            <LabelText label="Instantiate Transaction">
+              <ExplorerLink
+                type="tx_hash"
+                value={contractDetail.initTxHash.toUpperCase()}
+                canCopyWithHover
+              />
+            </LabelText>
+          )}
+
+          {contractDetail.initProposalId && !contractDetail.initTxHash && (
+            <LabelText
+              label="Instantiate Proposal ID"
+              helperText={contractDetail.initProposalTitle}
+            >
+              <ExplorerLink
+                value={`#${contractDetail.initProposalId.toString()}`}
+                canCopyWithHover
+              />
+            </LabelText>
+          )}
+
+          {contractDetail.instantiateInfo.admin && (
+            <LabelText label="Admin Address">
+              <ExplorerLink
+                type="user_address"
+                value={contractDetail.instantiateInfo.admin}
+              />
+            </LabelText>
+          )}
+
+          {contractDetail.instantiateInfo.ibcPortId && (
+            <LabelText label="IBC Port ID">
+              {contractDetail.instantiateInfo.ibcPortId}
+            </LabelText>
+          )}
+        </>
+      );
+    }
+    return <Text variant="body2">Error fetching data</Text>;
+  };
+
   return (
     <Flex direction="column" gap={6} w="180px">
       <Heading as="h6" variant="h6">
         Instantiate Info
       </Heading>
-
-      <LabelText label="Network">{contractDetail.chainId}</LabelText>
-
-      {contractDetail.instantiateInfo && (
-        <LabelText
-          label="Instantiated Block Height"
-          helperText={`${date(
-            contractDetail.instantiateInfo?.createdTime.toString()
-          )} ${"\n"}  (${dateFromNow(
-            contractDetail.instantiateInfo?.createdTime.toString()
-          )})`}
-        >
-          <ExplorerLink
-            value={contractDetail.instantiateInfo?.createdHeight.toString()}
-            canCopyWithHover
-          />
-        </LabelText>
-      )}
-
-      <LabelText
-        label="Instantiated by"
-        helperText={renderAddressType(
-          contractDetail.instantiateInfo.instantiator
-        )}
-      >
-        <ExplorerLink
-          type="user_address"
-          value={contractDetail.instantiateInfo.instantiator}
-          canCopyWithHover
-        />
-      </LabelText>
-
-      <LabelText
-        label="From Code"
-        helperText={contractDetail.codeInfo?.description}
-      >
-        <ExplorerLink
-          value={contractDetail.instantiateInfo?.codeId}
-          canCopyWithHover
-        />
-      </LabelText>
-
-      {contractDetail.initTxHash && (
-        <LabelText label="Instantiate Transaction">
-          <ExplorerLink
-            type="tx_hash"
-            value={contractDetail.initTxHash.toUpperCase()}
-            canCopyWithHover
-          />
-        </LabelText>
-      )}
-
-      {contractDetail.initProposalId && (
-        <LabelText
-          label="Instantiate Proposal ID"
-          helperText={contractDetail.initProposalTitle}
-        >
-          <ExplorerLink
-            value={`#${contractDetail.initProposalId.toString()}`}
-            canCopyWithHover
-          />
-        </LabelText>
-      )}
-
-      {contractDetail.instantiateInfo?.admin && (
-        <LabelText label="Admin Address">
-          <ExplorerLink
-            type="user_address"
-            value={contractDetail.instantiateInfo.admin}
-          />
-        </LabelText>
-      )}
-
-      {contractDetail.instantiateInfo?.ibcPortId && (
-        <LabelText label="IBC Port ID">
-          {contractDetail.instantiateInfo?.ibcPortId}
-        </LabelText>
-      )}
+      {renderDataFound()}
     </Flex>
   );
 };

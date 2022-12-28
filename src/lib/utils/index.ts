@@ -11,4 +11,3 @@ export * from "./extractMsgType";
 export * from "./redo";
 export * from "./scrollTop";
 export * from "./date";
-export * from "./addressType";
