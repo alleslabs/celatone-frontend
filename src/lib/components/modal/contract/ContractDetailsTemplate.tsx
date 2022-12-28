@@ -1,5 +1,4 @@
-import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -10,11 +9,18 @@ import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
 import type { Option } from "lib/types";
 
-interface ModalProps {
+interface ContractDetailsTemplateProps {
+  title: string;
+  subtitle?: string;
   contractInfo: ContractInfo;
-  menuItemProps: MenuItemProps;
+  triggerElement: JSX.Element;
 }
-export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
+export const ContractDetailsTemplate = ({
+  title,
+  subtitle,
+  contractInfo,
+  triggerElement,
+}: ContractDetailsTemplateProps) => {
   const defaultValues: OffchainDetail = {
     name: contractInfo.name ?? "",
     description: contractInfo.description ?? "",
@@ -62,9 +68,8 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
 
   return (
     <ActionModal
-      title="Edit Contract Details"
-      subtitle="Filled information below will be saved on Celatone only and able
-              to edit later."
+      title={title}
+      subtitle={subtitle}
       headerContent={
         <Flex gap={4} alignItems="center" pt="6">
           <Text variant="body2" color="text.main" fontWeight="600">
@@ -76,7 +81,7 @@ export const EditContract = ({ contractInfo, menuItemProps }: ModalProps) => {
           />
         </Flex>
       }
-      trigger={<MenuItem {...menuItemProps} />}
+      trigger={triggerElement}
       mainBtnTitle="Save"
       mainAction={handleSave}
       disabledMain={!!errors.name || !!errors.description}
