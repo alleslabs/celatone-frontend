@@ -3,6 +3,7 @@ import router from "next/router";
 
 import { useQueryCmds } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
+import type { ContractAddr } from "lib/types";
 import { encode, getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 export const CommandSection = () => {
@@ -11,7 +12,9 @@ export const CommandSection = () => {
    * - Make an interface
    * - Wireup with real execute commands data
    */
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
+  const contractAddress = getFirstQueryParam(
+    router.query.contractAddress
+  ) as ContractAddr;
 
   const { isFetching: isQueryCmdsFetching, queryCmds } = useQueryCmds({
     contractAddress,

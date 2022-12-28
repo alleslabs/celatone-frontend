@@ -7,7 +7,7 @@ import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
 interface UseQueryCmdsProps {
-  contractAddress: string;
+  contractAddress: ContractAddr;
 }
 export const useQueryCmds = ({ contractAddress }: UseQueryCmdsProps) => {
   const [queryCmds, setQueryCmds] = useState<[string, string][]>([]);
