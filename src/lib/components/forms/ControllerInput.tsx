@@ -75,6 +75,7 @@ export const ControllerInput = <T extends FieldValues>({
         value={watcher}
         onChange={field.onChange}
       />
+      {/* TODO: add status */}
       {isError ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (

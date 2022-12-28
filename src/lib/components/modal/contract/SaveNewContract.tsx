@@ -40,26 +40,23 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 
-  const defaultValues: SaveNewContractDetail = {
-    contractAddress: "",
-    instantiator: "",
-    label: "",
-    created: new Date(0),
-    name: "",
-    description: "",
-    tags: [],
-    lists: initialList,
-  };
-
   const {
     control,
     setValue,
     watch,
-    getValues,
     reset,
-    formState: { errors },
+    formState: { errors, defaultValues },
   } = useForm<SaveNewContractDetail>({
-    defaultValues,
+    defaultValues: {
+      contractAddress: "",
+      instantiator: "",
+      label: "",
+      created: new Date(0),
+      name: "",
+      description: "",
+      tags: [],
+      lists: initialList,
+    },
     mode: "all",
   });
 
@@ -85,7 +82,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const resetForm = (resetContractAddress = true) => {
     reset({
       ...defaultValues,
-      contractAddress: resetContractAddress ? "" : getValues().contractAddress,
+      contractAddress: resetContractAddress ? "" : contractAddressState,
     });
   };
 
@@ -195,7 +192,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           labelBgColor="gray.800"
         />
 
-        <OffChainForm
+        <OffChainForm<SaveNewContractDetail>
           nameField="name"
           descriptionField="description"
           state={offchainState}

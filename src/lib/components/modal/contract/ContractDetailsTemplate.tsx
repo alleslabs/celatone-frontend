@@ -21,21 +21,19 @@ export const ContractDetailsTemplate = ({
   contractInfo,
   triggerElement,
 }: ContractDetailsTemplateProps) => {
-  const defaultValues: OffchainDetail = {
-    name: contractInfo.name ?? "",
-    description: contractInfo.description ?? "",
-    tags: contractInfo.tags ?? [],
-    lists: contractInfo.lists ?? [],
-  };
-
   const {
     control,
     setValue,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, defaultValues },
   } = useForm<OffchainDetail>({
-    defaultValues,
+    defaultValues: {
+      name: contractInfo.name ?? "",
+      description: contractInfo.description ?? "",
+      tags: contractInfo.tags ?? [],
+      lists: contractInfo.lists ?? [],
+    },
     mode: "all",
   });
 
@@ -88,7 +86,7 @@ export const ContractDetailsTemplate = ({
       otherBtnTitle="Cancel"
       otherAction={resetForm}
     >
-      <OffChainForm
+      <OffChainForm<OffchainDetail>
         nameField="name"
         descriptionField="description"
         state={offchainState}

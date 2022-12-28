@@ -23,6 +23,7 @@ export interface OffchainDetail {
 }
 
 interface OffChainFormProps<T extends OffchainDetail> {
+  // TODO: find a way to remove nameField and descriptionField
   nameField: FieldPath<T>;
   descriptionField: FieldPath<T>;
   state: OffchainDetail;

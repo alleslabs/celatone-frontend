@@ -90,7 +90,7 @@ export const InstantiateOffChainForm = observer(
             </Text>
           </Flex>
         )}
-        <OffChainForm
+        <OffChainForm<OffchainDetail>
           nameField="name"
           descriptionField="description"
           state={offchainState}
