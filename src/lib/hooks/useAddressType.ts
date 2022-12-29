@@ -22,10 +22,8 @@ const addressLengthMap: {
 export const useGetAddressType = () => {
   const { currentChainName } = useWallet();
   return useCallback(
-    (address: string): AddressReturnType => {
-      const chainAddressMap = addressLengthMap[currentChainName];
-      return chainAddressMap[address.length] ?? "invalid_address";
-    },
+    (address: string): AddressReturnType =>
+      addressLengthMap[currentChainName]?.[address.length] ?? "invalid_address",
     [currentChainName]
   );
 };
