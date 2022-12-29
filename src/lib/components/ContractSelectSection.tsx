@@ -23,7 +23,6 @@ interface DisplayNameProps {
 
 interface ContractDetailsButtonProps {
   contractAddress: ContractAddr;
-  isValid: boolean;
   contractInfo: ContractInfo | undefined;
   instantiator: string;
   label: string;
@@ -59,14 +58,11 @@ const DisplayName = ({
 
 const ContractDetailsButton = ({
   contractAddress,
-  isValid,
   contractInfo,
   instantiator,
   label,
   created,
 }: ContractDetailsButtonProps) => {
-  if (!isValid) return null;
-
   const isExist = !!contractInfo?.lists;
   return isExist ? (
     <EditContractDetails
@@ -124,11 +120,6 @@ export const ContractSelectSection = observer(
       mode: "all",
     });
 
-    const isValid = watch("isValid");
-    const instantiator = watch("instantiator");
-    const label = watch("label");
-    const created = watch("created");
-
     const { refetch } = useQuery(
       ["query", "instantiateInfo", contractAddress],
       async () => queryInstantiateInfo(endpoint, contractAddress),
@@ -164,8 +155,8 @@ export const ContractSelectSection = observer(
       })();
     }, [contractAddress, contractInfo, endpoint, reset, refetch]);
 
+    const contractState = watch();
     const notSelected = contractAddress.length === 0;
-
     return (
       <Flex
         mb="32px"
@@ -199,22 +190,21 @@ export const ContractSelectSection = observer(
             Contract Name
             <DisplayName
               notSelected={notSelected}
-              isValid={isValid}
+              isValid={contractState.isValid}
               name={contractInfo?.name}
-              label={label}
+              label={contractState.label}
             />
           </Flex>
         </Flex>
 
         <Flex gap="8px">
-          {isValid && (
+          {contractState.isValid && (
             <ContractDetailsButton
               contractAddress={contractAddress}
-              isValid={isValid}
               contractInfo={contractInfo}
-              instantiator={instantiator}
-              label={label}
-              created={created}
+              instantiator={contractState.instantiator}
+              label={contractState.label}
+              created={contractState.created}
             />
           )}
           <SelectContract
