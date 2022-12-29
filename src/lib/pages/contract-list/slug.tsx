@@ -168,10 +168,7 @@ const ContractsByList = observer(() => {
           </Flex>
         </Flex>
       </Box>
-      <ContractListDetail
-        contractListInfo={contractListInfo}
-        isInstantiatedByMe={isInstantiatedByMe}
-      />
+      <ContractListDetail contractListInfo={contractListInfo} />
     </>
   );
 });

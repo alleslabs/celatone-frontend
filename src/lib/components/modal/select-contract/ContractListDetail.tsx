@@ -5,10 +5,12 @@ import { useMemo, useState } from "react";
 import { TagSelection, TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { ZeroState } from "lib/components/state/ZeroState";
+import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { ContractListReadOnlyTable } from "lib/pages/contract-list/components/ContractListReadOnlyTable";
 import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, Option } from "lib/types";
+import { formatSlugName } from "lib/utils";
 
 interface FilteredListDetailProps {
   contracts: ContractInfo[];
@@ -47,14 +49,12 @@ const FilteredListDetail = ({
 interface ContractListDetailProps {
   contractListInfo: ContractListInfo;
   isReadOnly?: boolean;
-  isInstantiatedByMe?: boolean;
   onContractSelect?: (addr: ContractAddr) => void;
 }
 
 export const ContractListDetail = ({
   contractListInfo,
   isReadOnly,
-  isInstantiatedByMe = false,
   onContractSelect,
 }: ContractListDetailProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -98,7 +98,9 @@ export const ContractListDetail = ({
         <ZeroState
           list={{ label: contractListInfo.name, value: contractListInfo.slug }}
           isReadOnly={isReadOnly}
-          isInstantiatedByMe={isInstantiatedByMe}
+          isInstantiatedByMe={
+            contractListInfo.slug === formatSlugName(INSTANTIATED_LIST_NAME)
+          }
         />
       ) : (
         <FilteredListDetail
