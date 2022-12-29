@@ -70,8 +70,6 @@ export const ContractListDetail = ({
       ),
     [contractListInfo.contracts, searchKeyword, tagFilter]
   );
-  const isInstantiatedByMe =
-    contractListInfo.slug === formatSlugName(INSTANTIATED_LIST_NAME);
 
   return (
     <Box minH="xs" pb="48px">
@@ -100,7 +98,9 @@ export const ContractListDetail = ({
         <ZeroState
           list={{ label: contractListInfo.name, value: contractListInfo.slug }}
           isReadOnly={isReadOnly}
-          isInstantiatedByMe={isInstantiatedByMe}
+          isInstantiatedByMe={
+            contractListInfo.slug === formatSlugName(INSTANTIATED_LIST_NAME)
+          }
         />
       ) : (
         <FilteredListDetail
