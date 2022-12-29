@@ -24,10 +24,7 @@ export const useGetAddressType = () => {
   return useCallback(
     (address: string): AddressReturnType => {
       const chainAddressMap = addressLengthMap[currentChainName];
-      if (address.length in chainAddressMap) {
-        return chainAddressMap[address.length];
-      }
-      return "invalid_address";
+      return chainAddressMap[address.length] ?? "invalid_address";
     },
     [currentChainName]
   );
