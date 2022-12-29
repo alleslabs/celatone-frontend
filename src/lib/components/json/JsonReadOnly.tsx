@@ -20,6 +20,7 @@ interface JsonReadOnlyProps {
   height?: LayoutProps["height"];
   canCopy?: boolean;
   canViewFull?: boolean;
+  disableResizing?: boolean;
 }
 
 const JsonReadOnly = ({
@@ -28,6 +29,7 @@ const JsonReadOnly = ({
   height,
   canCopy,
   canViewFull,
+  disableResizing,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
 
@@ -60,6 +62,7 @@ const JsonReadOnly = ({
         isValid={isJsonValid}
         height={height}
         showFullMsg={viewFull}
+        disableResizing={disableResizing}
       />
       {!!topic && (
         <Text

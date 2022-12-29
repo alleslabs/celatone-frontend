@@ -13,6 +13,8 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
   return (
     <Button
       __css={styles.tab}
+      display="flex"
+      alignItems="center"
       fontSize="14px"
       fontWeight="700"
       lineHeight="24px"

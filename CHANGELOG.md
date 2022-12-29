@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#51](https://github.com/alleslabs/celatone-frontend/pull/51) Wireup contract info in contract details page
 - [#47](https://github.com/alleslabs/celatone-frontend/pull/47) Wireup init msg in contract details page
 - [#46](https://github.com/alleslabs/celatone-frontend/pull/46) Wireup instantiate info
 - [#55](https://github.com/alleslabs/celatone-frontend/pull/55) Add "Add To List / Edit" button to edit offchain details on query and execute pages
