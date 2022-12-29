@@ -1,46 +1,49 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
-import router from "next/router";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import { useAddressType } from "lib/hooks";
+import type { AddressReturnType } from "lib/hooks";
+import { useGetAddressType } from "lib/hooks";
 import type { ContractDetail } from "lib/model/contract";
-import { date, dateFromNow, getFirstQueryParam } from "lib/utils";
+import { formatUTC, dateFromNow } from "lib/utils";
+
+const getAddressTypeText = (addressType: AddressReturnType) => {
+  switch (addressType) {
+    case "contract_address":
+      return "(Contract Address)";
+    case "user_address":
+      return "(Wallet Address)";
+    default:
+      return "(Invalid Address)";
+  }
+};
 
 interface InstantiateInfoProps {
   contractDetail: ContractDetail;
 }
-export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
-  const addressType = useAddressType(contractAddress);
 
-  const renderAddressType = () => {
-    switch (addressType) {
-      case "contract_address":
-        return "(Contract Address)";
-      case "user_address":
-        return "(Wallet Address)";
-      default:
-        break;
-    }
-    return "";
-  };
+export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
+  const getAddressType = useGetAddressType();
 
   const renderDataFound = () => {
     if (contractDetail?.instantiateInfo) {
+      const instantiatorType = getAddressType(
+        contractDetail.instantiateInfo.instantiator
+      );
       return (
         <>
           <LabelText label="Network">{contractDetail.chainId}</LabelText>
 
           {contractDetail.instantiateInfo &&
-            (contractDetail.instantiateInfo.createdHeight ? (
+            (contractDetail.instantiateInfo.createdHeight !== -1 ? (
               <LabelText
                 label="Instantiated Block Height"
-                helperText={`${date(
+                helperText1={formatUTC(
                   contractDetail.instantiateInfo.createdTime.toString()
-                )} ${"\n"}  (${dateFromNow(
+                )}
+                helperText2={dateFromNow(
                   contractDetail.instantiateInfo.createdTime.toString()
-                )})`}
+                )}
               >
                 <ExplorerLink
                   value={contractDetail.instantiateInfo.createdHeight.toString()}
@@ -51,7 +54,10 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
               <LabelText label="Instantiated Block Height">N/A</LabelText>
             ))}
 
-          <LabelText label="Instantiated by" helperText={renderAddressType()}>
+          <LabelText
+            label="Instantiated by"
+            helperText1={getAddressTypeText(instantiatorType)}
+          >
             <ExplorerLink
               type="user_address"
               value={contractDetail.instantiateInfo.instantiator}
@@ -61,7 +67,7 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
 
           <LabelText
             label="From Code"
-            helperText={contractDetail.codeInfo?.description}
+            helperText1={contractDetail.codeInfo?.description}
           >
             <ExplorerLink
               value={contractDetail.instantiateInfo.codeId}
@@ -72,7 +78,7 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
           {contractDetail.initProposalId ? (
             <LabelText
               label="Instantiate Proposal ID"
-              helperText={contractDetail.initProposalTitle}
+              helperText1={contractDetail.initProposalTitle}
             >
               <ExplorerLink
                 value={`#${contractDetail.initProposalId.toString()}`}
@@ -83,8 +89,9 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
             <LabelText label="Instantiate Transaction">
               <ExplorerLink
                 type="tx_hash"
-                value={contractDetail.initTxHash?.toUpperCase() ?? ""}
+                value={contractDetail.initTxHash?.toUpperCase() ?? "Genesis"}
                 canCopyWithHover
+                isReadOnly={!contractDetail.initTxHash}
               />
             </LabelText>
           )}
@@ -106,6 +113,7 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
         </>
       );
     }
+
     return (
       <Text variant="body2" color="text.dark">
         Error fetching data

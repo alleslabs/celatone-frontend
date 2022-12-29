@@ -1,22 +1,34 @@
 import { useWallet } from "@cosmos-kit/react";
-import { useMemo } from "react";
+import { useCallback } from "react";
 
-export const useAddressType = (address: string) => {
+export type AddressReturnType =
+  | "user_address"
+  | "contract_address"
+  | "invalid_address";
+
+const addressLengthMap: {
+  [key: string]: { [length: number]: AddressReturnType };
+} = {
+  osmosis: {
+    43: "user_address",
+    63: "contract_address",
+  },
+  osmosistestnet: {
+    43: "user_address",
+    63: "contract_address",
+  },
+};
+
+export const useGetAddressType = () => {
   const { currentChainName } = useWallet();
-  return useMemo(() => {
-    if (
-      currentChainName === "osmosis" ||
-      currentChainName === "osmosistestnet"
-    ) {
-      switch (address.length) {
-        case 43:
-          return "user_address";
-        case 63:
-          return "contract_address";
-        default:
-          break;
+  return useCallback(
+    (address: string): AddressReturnType => {
+      const chainAddressMap = addressLengthMap[currentChainName];
+      if (address.length in chainAddressMap) {
+        return chainAddressMap[address.length];
       }
-    }
-    return undefined;
-  }, [address.length, currentChainName]);
+      return "invalid_address";
+    },
+    [currentChainName]
+  );
 };
