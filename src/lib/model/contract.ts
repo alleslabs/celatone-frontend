@@ -25,7 +25,7 @@ import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
-interface ContractDetail {
+export interface ContractDetail {
   chainId: string;
   codeInfo: CodeLocalInfo | undefined;
   contractInfo: ContractInfo | undefined;
@@ -33,9 +33,9 @@ interface ContractDetail {
   publicInfo: PublicInfo | undefined;
   balances: Coin[];
   initMsg: string;
-  initTxHash?: string;
-  initProposalTitle?: string;
-  initProposalId?: number;
+  initTxHash: string | undefined;
+  initProposalTitle: string | undefined;
+  initProposalId: number | undefined;
 }
 
 export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {

@@ -3,10 +3,16 @@ import { Flex, Text } from "@chakra-ui/react";
 interface LabelTextProps {
   label: string;
   children: string | JSX.Element;
-  helperText?: string;
+  helperText1?: string;
+  helperText2?: string;
 }
 
-export const LabelText = ({ label, children, helperText }: LabelTextProps) => {
+export const LabelText = ({
+  label,
+  children,
+  helperText1,
+  helperText2,
+}: LabelTextProps) => {
   return (
     <Flex direction="column" gap={1}>
       <Text variant="body2" color="text.dark" fontWeight={500}>
@@ -17,9 +23,14 @@ export const LabelText = ({ label, children, helperText }: LabelTextProps) => {
       ) : (
         children
       )}
-      {helperText && (
+      {helperText1 && (
         <Text variant="body3" color="text.dark">
-          {helperText}
+          {helperText1}
+        </Text>
+      )}
+      {helperText2 && (
+        <Text variant="body3" color="text.dark">
+          {helperText2}
         </Text>
       )}
     </Flex>
