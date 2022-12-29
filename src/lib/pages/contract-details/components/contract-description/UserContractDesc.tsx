@@ -27,7 +27,7 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
     text: contractDetail.contractInfo?.description || "No contract description",
     ellipsis: "...",
     lines: textLine(
-      contractDetail.publicInfo?.description,
+      !contractDetail.publicInfo?.description,
       isUserContractShowMore
     ),
   });
@@ -83,7 +83,7 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
       </Flex>
       <Text
         variant="body2"
-        whiteSpace="break-spaces"
+        whiteSpace="pre-wrap"
         ref={userUserContractRef as React.MutableRefObject<HTMLInputElement>}
         key={userContractKey}
       >

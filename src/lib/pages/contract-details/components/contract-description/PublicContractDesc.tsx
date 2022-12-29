@@ -29,7 +29,7 @@ export const PublicContractDesc = ({
     text: contractDetail.publicInfo?.description || "",
     ellipsis: "...",
     lines: textLine(
-      contractDetail.contractInfo?.description,
+      !contractDetail.contractInfo?.description,
       isPublicContractShowMore
     ),
   });
