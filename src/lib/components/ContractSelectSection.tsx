@@ -149,7 +149,7 @@ export const ContractSelectSection = observer(
         align="center"
       >
         <Flex gap="24px" width="80%">
-          <Flex direction="column" width="50%">
+          <Flex direction="column" width="60%">
             Contract Address
             {!notSelected ? (
               <ExplorerLink
