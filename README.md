@@ -1,18 +1,50 @@
 # Celatone Frontend
 
-## Pre-requisites
+An explorer for a [CosmWasm](https://cosmwasm.com/)-powered [Cosmos](http://cosmos.network/) ecosystem.
 
-1. [Node.js](https://nodejs.org/en/) or nvm installed.
-2. `yarn` installed.
+## Development
 
-## Getting Started
+### Stack
 
-1. After cloning the project, run this command: `yarn` or `yarn install`
+The Celatone frontend uses the following technologies:
 
-2. Then, run the development server:
+- Language: [TypeScript](https://www.typescriptlang.org/)
+- Framework: [React](https://reactjs.org/) & [Next.js](https://nextjs.org/)
+- Components: [Chakra UI](https://chakra-ui.com/)
+- Deployment: [Vercel](https://vercel.com/)
+
+### Prerequisite
+
+1. [Node.js](https://nodejs.org/en/) (version >= 14) or nvm installed.
+2. [`yarn`](https://yarnpkg.com/) installed.
+
+### Develop
+
+1. Clone the project either using the standard Git CLI or the GitHub [gh](https://github.com/cli/cli) CLI
+
+```bash
+# Git CLI
+git clone https://github.com/alleslabs/celatone-frontend
+```
+
+```bash
+# gh CLI
+gh repo clone alleslabs/celatone-frontend
+```
+
+2. Install the dependencies
+
+```bash
+# Navigate to the cloned repository
+cd celatone-frontend
+# Install dependencies
+yarn
+```
+
+3. Finally, run the development server
 
 ```bash
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The website will then be live on [http://localhost:3000](http://localhost:3000)
