@@ -32,7 +32,7 @@ import { ContractListDetail } from "./ContractListDetail";
 
 interface SelectContractProps {
   notSelected: boolean;
-  onContractSelect: (addr: ContractAddr) => void;
+  onContractSelect: (contract: ContractAddr) => void;
 }
 
 export const SelectContract = ({

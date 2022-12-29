@@ -21,8 +21,8 @@ import { useExecuteCmds } from "./hook/useExecuteCmds";
 const Execute = () => {
   const router = useRouter();
 
-  const [contractAddress, setContractAddress] = useState<string>("");
-  const [initialMsg, setInitialMsg] = useState<string>("");
+  const [contractAddress, setContractAddress] = useState("" as ContractAddr);
+  const [initialMsg, setInitialMsg] = useState("");
 
   const { isFetching, execCmds } = useExecuteCmds({
     contractAddress,
@@ -35,7 +35,7 @@ const Execute = () => {
     });
   };
   const onContractSelect = useCallback(
-    (contract: string) => {
+    (contract: ContractAddr) => {
       router.push(
         {
           pathname: "/execute",
@@ -92,12 +92,12 @@ const Execute = () => {
       />
 
       <ContractSelectSection
-        contractAddress={contractAddress as ContractAddr}
+        contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />
 
       <ExecuteArea
-        contractAddress={contractAddress as ContractAddr}
+        contractAddress={contractAddress}
         initialMsg={initialMsg}
         cmds={execCmds}
       />

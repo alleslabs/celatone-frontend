@@ -24,7 +24,7 @@ const Query = () => {
   const router = useRouter();
   const endpoint = useEndpoint();
 
-  const [contractAddress, setContractAddress] = useState("");
+  const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");
   const [cmds, setCmds] = useState<[string, string][]>([]);
 
@@ -36,7 +36,7 @@ const Query = () => {
   };
 
   const onContractSelect = useCallback(
-    (contract: string) => {
+    (contract: ContractAddr) => {
       router.push(
         {
           pathname: "/query",
@@ -52,8 +52,7 @@ const Query = () => {
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
     ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
-    async () =>
-      queryData(endpoint, contractAddress as ContractAddr, '{"": {}}'),
+    async () => queryData(endpoint, contractAddress, '{"": {}}'),
     {
       enabled: !!contractAddress,
       retry: false,
@@ -111,12 +110,12 @@ const Query = () => {
       </Flex>
 
       <ContractSelectSection
-        contractAddress={contractAddress as ContractAddr}
+        contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />
 
       <QueryArea
-        contractAddress={contractAddress as ContractAddr}
+        contractAddress={contractAddress}
         initialMsg={initialMsg}
         cmds={cmds}
       />

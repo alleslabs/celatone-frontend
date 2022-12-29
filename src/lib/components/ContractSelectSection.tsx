@@ -1,7 +1,7 @@
 import { Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { MdMode, MdOutlineBookmarkBorder } from "react-icons/md";
 
@@ -14,28 +14,57 @@ import { ExplorerLink } from "./ExplorerLink";
 import { EditContractDetails, SaveContractDetails } from "./modal";
 import { SelectContract } from "./modal/select-contract";
 
-interface ContractSelectSectionProps {
-  contractAddress: ContractAddr;
-  onContractSelect: (contract: string) => void;
+interface DisplayNameProps {
+  notSelected: boolean;
+  isValid: boolean;
+  name?: string;
+  label: string;
 }
 
-const renderName = (
-  isValid: boolean,
-  name: string | undefined,
-  label: string
-) => {
-  if (!isValid) return "Invalid Contract";
-  return name ?? label;
+interface ContractDetailsButtonProps {
+  contractAddress: ContractAddr;
+  isValid: boolean;
+  contractInfo: ContractInfo | undefined;
+  instantiator: string;
+  label: string;
+  created: Date;
+}
+
+interface ContractSelectSectionProps {
+  contractAddress: ContractAddr;
+  onContractSelect: (contract: ContractAddr) => void;
+}
+
+const DisplayName = ({
+  notSelected,
+  isValid,
+  name,
+  label,
+}: DisplayNameProps) => {
+  const displayName = useMemo(() => {
+    if (notSelected) return "Not Selected";
+    if (!isValid) return "Invalid Contract";
+    return name ?? label;
+  }, [isValid, label, name, notSelected]);
+
+  return (
+    <Text
+      textColor={notSelected ? "text.disabled" : "text.dark"}
+      variant="body2"
+    >
+      {displayName}
+    </Text>
+  );
 };
 
-const renderContractDetailsButton = (
-  contractAddress: ContractAddr,
-  isValid: boolean,
-  contractInfo: ContractInfo | undefined,
-  instantiator: string,
-  label: string,
-  created: Date
-) => {
+const ContractDetailsButton = ({
+  contractAddress,
+  isValid,
+  contractInfo,
+  instantiator,
+  label,
+  created,
+}: ContractDetailsButtonProps) => {
   if (!isValid) return null;
 
   const isExist = !!contractInfo?.lists;
@@ -168,27 +197,26 @@ export const ContractSelectSection = observer(
           </Flex>
           <Flex direction="column" width="calc(30% - 24px)">
             Contract Name
-            <Text
-              textColor={notSelected ? "text.disabled" : "text.dark"}
-              variant="body2"
-            >
-              {notSelected
-                ? "Not Selected"
-                : renderName(isValid, contractInfo?.name, label)}
-            </Text>
+            <DisplayName
+              notSelected={notSelected}
+              isValid={isValid}
+              name={contractInfo?.name}
+              label={label}
+            />
           </Flex>
         </Flex>
 
         <Flex gap="8px">
-          {isValid &&
-            renderContractDetailsButton(
-              contractAddress,
-              isValid,
-              contractInfo,
-              instantiator,
-              label,
-              created
-            )}
+          {isValid && (
+            <ContractDetailsButton
+              contractAddress={contractAddress}
+              isValid={isValid}
+              contractInfo={contractInfo}
+              instantiator={instantiator}
+              label={label}
+              created={created}
+            />
+          )}
           <SelectContract
             notSelected={notSelected}
             onContractSelect={onContractSelect}
