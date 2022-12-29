@@ -46,7 +46,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       setResult,
       placeholder,
       helperText,
-      labelBgColor = "gray.800",
+      labelBgColor = "background.main",
       ...rest
     }: ListSelectionProps,
     ref
