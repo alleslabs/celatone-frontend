@@ -15,7 +15,7 @@ export const DisconnectedState = ({
     <>
       <Flex align="center" justify="center">
         <ConnectWalletBtn />
-        <Text variant="body1" color="text.dark" ml="10px">
+        <Text variant="body1" color="text.dark" ml="8px">
           {text}
         </Text>
       </Flex>
@@ -25,7 +25,8 @@ export const DisconnectedState = ({
           color="text.dark"
           textAlign="center"
           mt="16px"
-          mx="96px"
+          maxW="520px"
+          alignSelf="center"
         >
           {helperText}
         </Text>

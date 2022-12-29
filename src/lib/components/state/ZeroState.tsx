@@ -56,7 +56,8 @@ export const ZeroState = ({
 
   return (
     <Flex
-      borderY="1px solid rgba(255,255,255,0.12)"
+      borderY="1px solid"
+      borderColor="divider.main"
       width="full"
       py="48px"
       direction="column"
