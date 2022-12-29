@@ -15,7 +15,7 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
   const addressType = useAddressType(contractAddress);
 
   const renderAddressType = () => {
-    switch (addressType()) {
+    switch (addressType) {
       case "contract_address":
         return "(Contract Address)";
       case "user_address":
@@ -66,23 +66,21 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
             />
           </LabelText>
 
-          {contractDetail.initTxHash && !contractDetail.initProposalId && (
-            <LabelText label="Instantiate Transaction">
-              <ExplorerLink
-                type="tx_hash"
-                value={contractDetail.initTxHash.toUpperCase()}
-                canCopyWithHover
-              />
-            </LabelText>
-          )}
-
-          {contractDetail.initProposalId && !contractDetail.initTxHash && (
+          {contractDetail.initProposalId ? (
             <LabelText
               label="Instantiate Proposal ID"
               helperText={contractDetail.initProposalTitle}
             >
               <ExplorerLink
                 value={`#${contractDetail.initProposalId.toString()}`}
+                canCopyWithHover
+              />
+            </LabelText>
+          ) : (
+            <LabelText label="Instantiate Transaction">
+              <ExplorerLink
+                type="tx_hash"
+                value={contractDetail.initTxHash?.toUpperCase() ?? ""}
                 canCopyWithHover
               />
             </LabelText>
@@ -105,7 +103,11 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
         </>
       );
     }
-    return <Text variant="body2">Error fetching data</Text>;
+    return (
+      <Text variant="body2" color="text.dark">
+        Error fetching data
+      </Text>
+    );
   };
 
   return (

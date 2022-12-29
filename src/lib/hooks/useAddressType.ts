@@ -1,9 +1,9 @@
 import { useWallet } from "@cosmos-kit/react";
-import { useCallback } from "react";
+import { useMemo } from "react";
 
 export const useAddressType = (address: string) => {
   const { currentChainName } = useWallet();
-  return useCallback(() => {
+  return useMemo(() => {
     if (
       currentChainName === "osmosis" ||
       currentChainName === "osmosistestnet"
