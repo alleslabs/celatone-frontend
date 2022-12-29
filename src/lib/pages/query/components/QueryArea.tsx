@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
-import ContractCmdButton from "lib/components/ContractCmdButton";
+import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import CopyButton from "lib/components/CopyButton";
 import JsonInput from "lib/components/json/JsonInput";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -97,8 +97,7 @@ export const QueryArea = ({
               <ContractCmdButton
                 key={`query-cmd-${cmd}`}
                 cmd={cmd}
-                msg={jsonPrettify(queryMsg)}
-                setMsg={setMsg}
+                onClickCmd={() => setMsg(jsonPrettify(queryMsg))}
               />
             ))}
           </ButtonGroup>

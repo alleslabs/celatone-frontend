@@ -1,3 +1,4 @@
+// TODO - Should return undefined
 export const getFirstQueryParam = (param: string | string[] | undefined) => {
   if (typeof param === "string") {
     return param;

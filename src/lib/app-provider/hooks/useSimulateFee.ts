@@ -16,7 +16,7 @@ export const useSimulateFee = () => {
       const client = await getCosmWasmClient();
       if (!client || !address) {
         setLoading(false);
-        return Promise.resolve(undefined);
+        return undefined;
       }
       try {
         const fee = (await client.simulate(address, messages, memo)) as Gas;
