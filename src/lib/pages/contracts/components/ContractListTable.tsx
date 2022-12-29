@@ -13,6 +13,7 @@ import {
   MenuList,
   MenuButton,
   MenuDivider,
+  MenuItem,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import {
@@ -25,7 +26,7 @@ import {
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
-  EditContract,
+  EditContractDetails,
   RemoveContract,
 } from "lib/components/modal/contract";
 import type { ContractInfo } from "lib/stores/contract";
@@ -129,18 +130,21 @@ export const ContractListTable = ({
                       />
                     </MenuButton>
                     <MenuList>
-                      <EditContract
+                      <EditContractDetails
                         contractInfo={item}
-                        menuItemProps={{
-                          icon: (
-                            <Icon
-                              as={MdMode}
-                              style={iconProps}
-                              color="gray.600"
-                            />
-                          ),
-                          children: "Edit details",
-                        }}
+                        triggerElement={
+                          <MenuItem
+                            icon={
+                              <Icon
+                                as={MdMode}
+                                style={iconProps}
+                                color="gray.600"
+                              />
+                            }
+                          >
+                            Edit details
+                          </MenuItem>
+                        }
                       />
                       <AddToOtherList
                         contractInfo={item}
