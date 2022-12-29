@@ -66,6 +66,7 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
     <Flex
       direction="column"
       bg="gray.900"
+      maxW="100%"
       borderRadius="8px"
       p={4}
       my={6}
@@ -82,6 +83,7 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
       </Flex>
       <Text
         variant="body2"
+        whiteSpace="break-spaces"
         ref={userUserContractRef as React.MutableRefObject<HTMLInputElement>}
         key={userContractKey}
       >

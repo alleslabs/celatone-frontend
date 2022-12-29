@@ -38,6 +38,7 @@ export const PublicContractDesc = ({
     <Flex
       direction="column"
       bg="gray.900"
+      maxW="100%"
       borderRadius="8px"
       p={4}
       my={6}
@@ -52,7 +53,7 @@ export const PublicContractDesc = ({
       <Linkify>
         <Text
           variant="body2"
-          color="text.dark"
+          whiteSpace="break-spaces"
           ref={publicContractRef as React.MutableRefObject<HTMLInputElement>}
           key={publicContractKey}
         >
