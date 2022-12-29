@@ -1,15 +1,12 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Heading, Button, Box, Flex, Text } from "@chakra-ui/react";
+import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
-import { queryContract } from "lib/services/contract";
 import type { ContractAddr } from "lib/types";
 import {
   getFirstQueryParam,
@@ -23,13 +20,8 @@ import { useExecuteCmds } from "./hook/useExecuteCmds";
 
 const Execute = () => {
   const router = useRouter();
-  const isMobile = useMobile();
-  const { getContractInfo } = useContractStore();
-
-  const endpoint = useEndpoint();
 
   const [contractAddress, setContractAddress] = useState<string>("");
-  const [contractName, setContractName] = useState<string>("");
   const [initialMsg, setInitialMsg] = useState<string>("");
 
   const { isFetching, execCmds } = useExecuteCmds({
@@ -61,7 +53,7 @@ const Execute = () => {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
-      const contractState = getContractInfo(contractAddressParam);
+
       let decodeMsg = decode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contractAddressParam);
@@ -69,26 +61,10 @@ const Execute = () => {
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
-      if (!contractState) {
-        try {
-          const onChainDetail = await queryContract(
-            endpoint,
-            contractAddressParam
-          );
-          setContractName(onChainDetail.contract_info.label);
-        } catch {
-          setContractName("Invalid Contract");
-        }
-      } else {
-        setContractName(contractState.name ?? contractState.label);
-      }
-
       setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
     })();
-  }, [router, endpoint, getContractInfo, onContractSelect]);
-
-  const notSelected = contractAddress.length === 0;
+  }, [router, onContractSelect]);
 
   return (
     <PageContainer>
@@ -114,49 +90,11 @@ const Execute = () => {
         subtitle="You need to connect your wallet to perform this action"
         mb={8}
       />
-      <Flex
-        mb="32px"
-        borderWidth="thin"
-        borderColor="gray.800"
-        p="16px"
-        borderRadius="4px"
-        fontSize="12px"
-        justify="space-between"
-        align="center"
-      >
-        <Flex gap="24px" width="80%">
-          <Flex direction="column" width="60%">
-            Contract Address
-            {notSelected ? (
-              <Text textColor="text.disabled" variant="body2">
-                Not Selected
-              </Text>
-            ) : (
-              <ExplorerLink
-                value={contractAddress}
-                type="contract_address"
-                canCopyWithHover
-                // TODO - Revisit not necessary if disable UI for mobile is implemented
-                textFormat={isMobile ? "truncate" : "normal"}
-                maxWidth="none"
-              />
-            )}
-          </Flex>
-          <Flex direction="column">
-            Contract Name
-            <Text
-              textColor={notSelected ? "text.disabled" : "text.dark"}
-              variant="body2"
-            >
-              {notSelected ? "Not Selected" : contractName}
-            </Text>
-          </Flex>
-        </Flex>
-        <SelectContract
-          notSelected={notSelected}
-          onContractSelect={onContractSelect}
-        />
-      </Flex>
+
+      <ContractSelectSection
+        contractAddress={contractAddress as ContractAddr}
+        onContractSelect={onContractSelect}
+      />
 
       <ExecuteArea
         contractAddress={contractAddress as ContractAddr}
