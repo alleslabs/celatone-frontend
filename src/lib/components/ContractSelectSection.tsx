@@ -21,12 +21,11 @@ interface ContractSelectSectionProps {
 
 const renderName = (
   isValid: boolean,
-  contractInfo: ContractInfo | undefined,
+  name: string | undefined,
   label: string
 ) => {
   if (!isValid) return "Invalid Contract";
-  if (contractInfo) return contractInfo.name ?? contractInfo.label;
-  return label;
+  return name ?? label;
 };
 
 const renderContractDetailsButton = (
@@ -38,6 +37,7 @@ const renderContractDetailsButton = (
   created: Date
 ) => {
   if (!isValid) return null;
+
   const isExist = !!contractInfo?.lists;
   return isExist ? (
     <EditContractDetails
@@ -174,7 +174,7 @@ export const ContractSelectSection = observer(
             >
               {notSelected
                 ? "Not Selected"
-                : renderName(isValid, contractInfo, label)}
+                : renderName(isValid, contractInfo?.name, label)}
             </Text>
           </Flex>
         </Flex>
