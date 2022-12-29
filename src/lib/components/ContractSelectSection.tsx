@@ -166,7 +166,7 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex direction="column">
+          <Flex direction="column" maxW="40%">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
