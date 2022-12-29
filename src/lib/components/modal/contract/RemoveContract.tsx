@@ -10,13 +10,13 @@ import { truncate } from "lib/utils";
 
 interface ModalProps {
   contractInfo: ContractInfo;
-  list: Option;
+  contractRemovalInfo: Option;
   menuItemProps: MenuItemProps;
 }
 
 export function RemoveContract({
   contractInfo,
-  list,
+  contractRemovalInfo,
   menuItemProps,
 }: ModalProps) {
   const displayName = contractInfo.name
@@ -24,12 +24,14 @@ export function RemoveContract({
     : truncate(contractInfo.contractAddress);
 
   const handleRemove = useHandleContractSave({
-    title: `Removed ${displayName} from ${list.label}`,
+    title: `Removed ${displayName} from ${contractRemovalInfo.label}`,
     contractAddress: contractInfo.contractAddress,
     instantiator: contractInfo.instantiator,
     label: contractInfo.label,
     created: contractInfo.created,
-    lists: contractInfo.lists?.filter((item) => item.value !== list.value),
+    lists: contractInfo.lists?.filter(
+      (item) => item.value !== contractRemovalInfo.value
+    ),
   });
 
   return (
@@ -44,10 +46,10 @@ export function RemoveContract({
     >
       <Text>
         <Highlight
-          query={[displayName, list.label]}
+          query={[displayName, contractRemovalInfo.label]}
           styles={{ fontWeight: "bold", color: "inherit" }}
         >
-          {`This action will remove ${displayName} from ${list.label}. 
+          {`This action will remove ${displayName} from ${contractRemovalInfo.label}. 
         The contract’s off-chain detail will be preserved in other lists or when you save this contract again.`}
         </Highlight>
       </Text>

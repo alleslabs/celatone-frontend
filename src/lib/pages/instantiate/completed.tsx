@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { MdCheckCircle } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { InstantiateOffChainDetail } from "lib/components/InstantiateOffchainDetail";
 import { TxReceiptRender } from "lib/components/tx/receipt";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { getExplorerContractAddressUrl } from "lib/data";
+import { InstantiateOffChainForm } from "lib/pages/instantiate/component/InstantiateOffchainForm";
 import type { ContractAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
 
@@ -104,7 +104,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
         </Button>
       </Flex>
       {/* Off chain detail */}
-      <InstantiateOffChainDetail
+      <InstantiateOffChainForm
         title="Contract Off-Chain Detail"
         subtitle="Filled information below will be saved on Celatone only and able to edit later."
         contractAddress={txInfo.contractAddress as ContractAddr}

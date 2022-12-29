@@ -8,7 +8,7 @@ import { MdInput } from "react-icons/md";
 import { useFabricateFee } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { useExecuteContractTx } from "lib/app-provider/tx/execute";
-import ContractCmdButton from "lib/components/ContractCmdButton";
+import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import JsonInput from "lib/components/json/JsonInput";
@@ -129,8 +129,7 @@ export const ExecuteArea = ({
             <ContractCmdButton
               key={`query-cmd-${cmd}`}
               cmd={cmd}
-              msg={jsonPrettify(queryMsg)}
-              setMsg={setMsg}
+              onClickCmd={() => setMsg(jsonPrettify(queryMsg))}
             />
           ))}
         </ButtonGroup>
