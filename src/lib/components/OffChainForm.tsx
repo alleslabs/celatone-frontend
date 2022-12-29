@@ -23,9 +23,6 @@ export interface OffchainDetail {
 }
 
 interface OffChainFormProps<T extends OffchainDetail> {
-  // TODO: find a way to remove nameField and descriptionField
-  nameField: FieldPath<T>;
-  descriptionField: FieldPath<T>;
   state: OffchainDetail;
   control: Control<T>;
   setTagsValue: (options: string[]) => void;
@@ -35,8 +32,6 @@ interface OffChainFormProps<T extends OffchainDetail> {
 }
 
 export const OffChainForm = <T extends OffchainDetail>({
-  nameField,
-  descriptionField,
   state,
   control,
   setTagsValue,
@@ -47,7 +42,7 @@ export const OffChainForm = <T extends OffchainDetail>({
   return (
     <VStack gap="16px" w="full">
       <ControllerInput
-        name={nameField}
+        name={"name" as FieldPath<T>}
         control={control}
         label="Name"
         helperText="Set name for your contract"
@@ -59,7 +54,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         labelBgColor={labelBgColor}
       />
       <ControllerTextarea
-        name={descriptionField}
+        name={"description" as FieldPath<T>}
         control={control}
         label="Description"
         helperText="Help understanding what this contract do and how it works"

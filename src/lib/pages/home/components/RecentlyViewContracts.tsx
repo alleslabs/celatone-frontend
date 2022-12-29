@@ -1,6 +1,6 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 
-import { ContractListTable } from "lib/pages/contracts/components/ContractListTable";
+import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
 import type { ContractAddr } from "lib/types";
 
 /* TODO: change data -> recently view contracts */

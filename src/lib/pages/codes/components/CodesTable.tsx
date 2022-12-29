@@ -19,9 +19,9 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
-import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
+import { DisconnectedState } from "lib/components/state/DisconnectedState";
 import type { CodeInfo } from "lib/types";
 
 import { CodeDescriptionCell } from "./CodeDescriptionCell";
@@ -69,10 +69,7 @@ const NotMatched = () => {
 const Unconnected = () => {
   return (
     <StateContainer>
-      <Text color="text.dark">
-        Connect your wallet to upload and see your stored Codes.
-      </Text>
-      <ConnectWalletBtn />
+      <DisconnectedState text="to upload and see your stored Codes." />
     </StateContainer>
   );
 };

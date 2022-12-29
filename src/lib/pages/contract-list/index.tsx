@@ -1,7 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { MdOutlineAdd } from "react-icons/md";
 
 import { CreateNewList } from "lib/components/modal/list";
@@ -10,16 +9,14 @@ import PageContainer from "lib/components/PageContainer";
 import { useContractStore } from "lib/hooks";
 import { useInstantiatedMockInfoByMe } from "lib/model/contract";
 
-const ContractList = observer(() => {
+const AllContractListsPage = observer(() => {
   const router = useRouter();
-  const [searchKeyword, setSearchKeyword] = useState("");
+  const { getContractLists } = useContractStore();
+  const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
 
   const handleListSelect = (slug: string) => {
     router.push({ pathname: `/contract-list/${slug}` });
   };
-
-  const { getContractLists } = useContractStore();
-  const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
 
   return (
     <PageContainer>
@@ -37,15 +34,12 @@ const ContractList = observer(() => {
           />
         </Flex>
         <AllContractLists
-          search={searchKeyword}
-          setSearch={setSearchKeyword}
           contractLists={contractLists}
           handleListSelect={handleListSelect}
-          isReadOnly={false}
         />
       </Flex>
     </PageContainer>
   );
 });
 
-export default ContractList;
+export default AllContractListsPage;

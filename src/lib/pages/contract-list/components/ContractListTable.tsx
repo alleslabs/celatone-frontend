@@ -13,11 +13,12 @@ import {
   MenuList,
   MenuButton,
   MenuDivider,
+  chakra,
   MenuItem,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import {
-  MdMoreVert,
+  MdMoreHoriz,
   MdMode,
   MdOutlineBookmark,
   MdDelete,
@@ -35,27 +36,31 @@ import type { Option } from "lib/types";
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
 
-const iconProps = {
-  boxSize: "4",
-  display: "flex",
-  alignItems: "center",
-};
+const StyledIcon = chakra(Icon, {
+  baseStyle: {
+    boxSize: "4",
+    display: "flex",
+    alignItems: "center",
+  },
+});
 
 interface ContractListTableProps {
   contracts: ContractInfo[];
-  isContractRemovable?: Option;
+  contractRemovalInfo?: Option;
 }
+
 export const ContractListTable = ({
   contracts = [],
-  isContractRemovable,
+  contractRemovalInfo,
 }: ContractListTableProps) => {
   return (
     <TableContainer w="full">
-      <Table variant="simple">
+      <Table variant="simple" sx={{ tableLayout: "auto" }}>
         <Thead>
           <Tr
             sx={{
               "& th:first-of-type": { pl: "48px" },
+              "> th": { borderColor: "divider.main" },
             }}
           >
             <Th width="15%">Contract Address</Th>
@@ -80,6 +85,7 @@ export const ContractListTable = ({
               sx={{
                 "& td:first-of-type": { pl: "48px" },
                 "& td:last-of-type": { pr: "48px" },
+                "> td": { borderColor: "divider.main" },
               }}
             >
               <Td>
@@ -122,9 +128,8 @@ export const ContractListTable = ({
                       focusBorderColor="primary.main"
                       as={Button}
                     >
-                      <Icon
-                        as={MdMoreVert}
-                        style={iconProps}
+                      <StyledIcon
+                        as={MdMoreHoriz}
                         color="gray.600"
                         boxSize="6"
                       />
@@ -134,13 +139,7 @@ export const ContractListTable = ({
                         contractInfo={item}
                         triggerElement={
                           <MenuItem
-                            icon={
-                              <Icon
-                                as={MdMode}
-                                style={iconProps}
-                                color="gray.600"
-                              />
-                            }
+                            icon={<StyledIcon as={MdMode} color="gray.600" />}
                           >
                             Edit details
                           </MenuItem>
@@ -150,28 +149,23 @@ export const ContractListTable = ({
                         contractInfo={item}
                         menuItemProps={{
                           icon: (
-                            <Icon
+                            <StyledIcon
                               as={MdOutlineBookmark}
-                              style={iconProps}
                               color="gray.600"
                             />
                           ),
                           children: "Add or remove from other lists",
                         }}
                       />
-                      {isContractRemovable && (
+                      {!!contractRemovalInfo && (
                         <>
                           <MenuDivider />
                           <RemoveContract
                             contractInfo={item}
-                            list={isContractRemovable}
+                            contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
                               icon: (
-                                <Icon
-                                  as={MdDelete}
-                                  style={iconProps}
-                                  color="error.light"
-                                />
+                                <StyledIcon as={MdDelete} color="error.light" />
                               ),
                               children: "Remove from this list",
                             }}
