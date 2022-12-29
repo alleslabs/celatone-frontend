@@ -10,6 +10,7 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { MdBookmark, MdInput } from "react-icons/md";
 
@@ -27,7 +28,7 @@ import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
 import { TokenSection } from "./components/TokenSection";
 
-const ContractDetails = () => {
+const ContractDetails = observer(() => {
   const router = useRouter();
   /**
    * @todos add contract address validation function here
@@ -139,6 +140,6 @@ const ContractDetails = () => {
       </Tabs>
     </PageContainer>
   );
-};
+});
 
 export default ContractDetails;
