@@ -5,6 +5,7 @@ import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { textLine } from "../../utils/textLine";
+import { EditContractDetails } from "lib/components/modal";
 import type { ContractDetail } from "lib/model/contract";
 
 import { ShowMoreButton } from "./ShowMoreButton";
@@ -31,17 +32,26 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
     ),
   });
 
-  // TODO - Wire up Edit button
-  const renderEditContractButton = () => (
-    <Button
-      size="xs"
-      color="primary.main"
-      variant="none"
-      leftIcon={<RiPencilFill />}
-    >
-      {contractDetail.contractInfo?.description ? "Edit" : "Add Description"}
-    </Button>
-  );
+  const renderEditContractButton = () => {
+    if (!contractDetail.contractInfo) return null;
+    return (
+      <EditContractDetails
+        contractInfo={contractDetail.contractInfo}
+        triggerElement={
+          <Button
+            size="xs"
+            color="primary.main"
+            variant="none"
+            leftIcon={<RiPencilFill />}
+          >
+            {contractDetail.contractInfo?.description
+              ? "Edit"
+              : "Add Description"}
+          </Button>
+        }
+      />
+    );
+  };
 
   return (
     <Flex
@@ -57,12 +67,7 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
         <Text variant="body2" fontWeight={500} color="text.dark">
           Your Contract Description
         </Text>
-        <Box
-          display="none"
-          _groupHover={
-            contractDetail.contractInfo ? { display: "flex" } : undefined
-          }
-        >
+        <Box display="none" _groupHover={{ display: "flex" }}>
           {renderEditContractButton()}
         </Box>
       </Flex>
