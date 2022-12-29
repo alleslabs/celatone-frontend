@@ -1,15 +1,12 @@
 import { Flex, Button, Icon, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import {
-  MdOutlineAdd,
-  MdBookmarkBorder,
-  MdSearch,
-  MdLink,
-} from "react-icons/md";
+import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
 
 import { SaveNewContract } from "lib/components/modal/contract";
 import type { Option } from "lib/types";
+
+import { DisconnectedState } from "./DisconnectedState";
 
 interface ZeroStateProps {
   list: Option;
@@ -60,38 +57,35 @@ export const ZeroState = ({
   isInstantiatedByMe,
 }: ZeroStateProps) => {
   const router = useRouter();
-  const { isWalletConnected, connect } = useWallet();
-
-  if (!isWalletConnected && isInstantiatedByMe) {
-    return (
-      <Flex align="center" color="text.dark" justify="center">
-        <Button
-          variant="outline-primary"
-          rightIcon={<MdLink />}
-          mr={2}
-          onClick={connect}
-        >
-          Connect Wallet
-        </Button>
-        to deploy new contract
-      </Flex>
-    );
-  }
+  const { isWalletConnected } = useWallet();
 
   return (
-    <Flex alignItems="center" flexDir="column" gap="4">
-      <Icon as={MdSearch} color="gray.600" boxSize="16" />
-      <Text color="text.dark">
-        {isInstantiatedByMe
-          ? "Your deployed contract through this address will display here"
-          : "You don’t have any saved contracts."}
-      </Text>
-      {!isReadOnly && (
-        <ActionSection
-          isInstantiatedByMe={isInstantiatedByMe}
-          list={list}
-          handleAction={() => router.push("/deploy")}
-        />
+    <Flex
+      borderY="1px solid"
+      borderColor="divider.main"
+      width="full"
+      py="48px"
+      direction="column"
+      alignContent="center"
+    >
+      {!isWalletConnected && isInstantiatedByMe ? (
+        <DisconnectedState text="to deploy new contracts." />
+      ) : (
+        <Flex alignItems="center" flexDir="column" gap="4">
+          <Icon as={MdSearch} color="gray.600" boxSize="16" />
+          <Text color="text.dark">
+            {isInstantiatedByMe
+              ? "Your deployed contract through this address will display here"
+              : "You don’t have any saved contracts."}
+          </Text>
+          {!isReadOnly && (
+            <ActionSection
+              isInstantiatedByMe={isInstantiatedByMe}
+              list={list}
+              handleAction={() => router.push("/deploy")}
+            />
+          )}
+        </Flex>
       )}
     </Flex>
   );

@@ -37,6 +37,8 @@ const ContractDetails = () => {
 
   const contractDetails = useContractDetail(contractAddressParam);
 
+  if (!contractDetails) return null;
+
   return (
     <PageContainer>
       <BackButton />
@@ -109,7 +111,7 @@ const ContractDetails = () => {
       {/* Instantiate/Contract Info Section */}
       <Flex my={12} justify="space-between">
         {/* Instantiate Info */}
-        <InstantiateInfo />
+        <InstantiateInfo contractDetail={contractDetails} />
         {/* Contract Info (Expand) */}
         <Flex direction="column" flex={0.8} gap={4}>
           <JsonInfo header="Contract Info" jsonString="" />

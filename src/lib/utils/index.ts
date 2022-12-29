@@ -10,3 +10,4 @@ export * from "./isDecimalNumber";
 export * from "./extractMsgType";
 export * from "./redo";
 export * from "./scrollTop";
+export * from "./date";
