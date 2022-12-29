@@ -32,21 +32,24 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
         <>
           <LabelText label="Network">{contractDetail.chainId}</LabelText>
 
-          {contractDetail.instantiateInfo && (
-            <LabelText
-              label="Instantiated Block Height"
-              helperText={`${date(
-                contractDetail.instantiateInfo.createdTime.toString()
-              )} ${"\n"}  (${dateFromNow(
-                contractDetail.instantiateInfo.createdTime.toString()
-              )})`}
-            >
-              <ExplorerLink
-                value={contractDetail.instantiateInfo.createdHeight.toString()}
-                canCopyWithHover
-              />
-            </LabelText>
-          )}
+          {contractDetail.instantiateInfo &&
+            (contractDetail.instantiateInfo.createdHeight ? (
+              <LabelText
+                label="Instantiated Block Height"
+                helperText={`${date(
+                  contractDetail.instantiateInfo.createdTime.toString()
+                )} ${"\n"}  (${dateFromNow(
+                  contractDetail.instantiateInfo.createdTime.toString()
+                )})`}
+              >
+                <ExplorerLink
+                  value={contractDetail.instantiateInfo.createdHeight.toString()}
+                  canCopyWithHover
+                />
+              </LabelText>
+            ) : (
+              <LabelText label="Instantiated Block Height">N/A</LabelText>
+            ))}
 
           <LabelText label="Instantiated by" helperText={renderAddressType()}>
             <ExplorerLink
