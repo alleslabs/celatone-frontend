@@ -148,8 +148,8 @@ export const ContractSelectSection = observer(
         justify="space-between"
         align="center"
       >
-        <Flex gap="24px" width="80%">
-          <Flex direction="column" width="60%">
+        <Flex gap="24px" width="70%">
+          <Flex direction="column" width="70%">
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -166,7 +166,7 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex direction="column" maxW="40%">
+          <Flex direction="column" width="calc(30% - 24px)">
             Contract Name
             <Text
               textColor={notSelected ? "text.disabled" : "text.dark"}
