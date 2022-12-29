@@ -4,12 +4,11 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
-import type { Option } from "lib/components/forms";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 interface InstantiateOffChainFormProps {
   title?: string;
