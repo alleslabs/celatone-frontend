@@ -5,17 +5,16 @@ import { useMemo, useState } from "react";
 import { TagSelection, TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { ZeroState } from "lib/components/state/ZeroState";
-import { useContractStore, useUserKey } from "lib/hooks";
-import { ContractListReadOnlyTable } from "lib/pages/contracts/components/ContractListReadOnlyTable";
-import { ContractListTable } from "lib/pages/contracts/components/ContractListTable";
+import { ContractListReadOnlyTable } from "lib/pages/contract-list/components/ContractListReadOnlyTable";
+import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
-import type { Option } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 interface FilteredListDetailProps {
   contracts: ContractInfo[];
   isReadOnly?: boolean;
-  contractRemovalInfo: Option | undefined;
-  onContractSelect?: (addr: string) => void;
+  contractRemovalInfo?: Option;
+  onContractSelect?: (addr: ContractAddr) => void;
 }
 
 const FilteredListDetail = ({
@@ -45,22 +44,19 @@ const FilteredListDetail = ({
   );
 };
 
-interface ListDetailProps {
+interface ContractListDetailProps {
   contractListInfo: ContractListInfo;
   isReadOnly?: boolean;
   isInstantiatedByMe?: boolean;
-  onContractSelect?: (addr: string) => void;
+  onContractSelect?: (addr: ContractAddr) => void;
 }
 
-export const ListDetail = ({
+export const ContractListDetail = ({
   contractListInfo,
   isReadOnly,
   isInstantiatedByMe = false,
   onContractSelect,
-}: ListDetailProps) => {
-  const userKey = useUserKey();
-  const { getAllTags } = useContractStore();
-
+}: ContractListDetailProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [tagFilter, setTagFilter] = useState<string[]>([]);
 
@@ -88,12 +84,10 @@ export const ListDetail = ({
           />
           {!isReadOnly && (
             <TagSelection
-              options={getAllTags(userKey)}
               result={tagFilter}
               setResult={setTagFilter}
               placeholder="No tag selected"
               label="Filter by tag"
-              labelBgColor="background.main"
               boxWidth="400px"
               creatable={false}
             />

@@ -54,3 +54,5 @@ export const CELATONE_CONSTANTS: CelatoneConstants = {
   maxFileSize: MAX_FILE_SIZE,
   msgTypeUrl: MSG_TYPE_URL,
 };
+
+export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;

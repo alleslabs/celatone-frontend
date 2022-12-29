@@ -72,6 +72,7 @@ export function AddToOtherList({
           setResult={(selectedOptions: Option[]) => {
             setListResult(selectedOptions);
           }}
+          labelBgColor="gray.800"
         />
       </Box>
     </ActionModal>
