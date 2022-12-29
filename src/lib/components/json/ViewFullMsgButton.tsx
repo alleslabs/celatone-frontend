@@ -19,6 +19,7 @@ export const ViewFullMsgButton = ({
       borderTop="1px solid"
       borderTopColor="divider.main"
       bg="background.main"
+      borderRadius="0 0 4px 4px"
       transition="all .3s"
       position="absolute"
       bottom={0}
