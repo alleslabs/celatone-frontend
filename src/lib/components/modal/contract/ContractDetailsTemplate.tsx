@@ -87,8 +87,6 @@ export const ContractDetailsTemplate = ({
       otherAction={resetForm}
     >
       <OffChainForm<OffchainDetail>
-        nameField="name"
-        descriptionField="description"
         state={offchainState}
         control={control}
         setTagsValue={setTagsValue}

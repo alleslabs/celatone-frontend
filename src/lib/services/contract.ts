@@ -97,7 +97,7 @@ export const queryInstantiateInfo = async (
     createdTime = new Date(data.block.header.time);
   } else {
     // TODO: revisit default value
-    createdHeight = 0;
+    createdHeight = -1;
     createdTime = new Date(0);
   }
 

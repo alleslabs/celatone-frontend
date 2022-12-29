@@ -33,9 +33,9 @@ export interface ContractDetail {
   publicInfo: PublicInfo | undefined;
   balances: Coin[];
   initMsg: string;
-  initTxHash?: string;
-  initProposalTitle?: string;
-  initProposalId?: number;
+  initTxHash: string | undefined;
+  initProposalTitle: string | undefined;
+  initProposalId: number | undefined;
 }
 
 export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {

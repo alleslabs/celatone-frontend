@@ -1,4 +1,4 @@
 export * from "./AllContractLists";
-export * from "./ListCard";
-export * from "./ListDetail";
+export * from "./ContractListCard";
+export * from "./ContractListDetail";
 export * from "./SelectContract";

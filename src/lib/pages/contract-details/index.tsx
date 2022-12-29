@@ -62,7 +62,7 @@ const ContractDetails = () => {
       {/* Instantiate/Contract Info Section */}
       <Flex my={12} justify="space-between">
         {/* Instantiate Info */}
-        <InstantiateInfo />
+        <InstantiateInfo contractDetail={contractDetail} />
         {/* Contract Info (Expand) */}
         <Flex direction="column" flex={0.8} gap={6}>
           <JsonInfo header="Contract Info" />
