@@ -17,14 +17,22 @@ import {
 import { RiPencilFill } from "react-icons/ri";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import {
+  AddToOtherList,
+  EditContractDetails,
+  SaveContractDetails,
+} from "lib/components/modal";
 import type { ContractDetail } from "lib/model/contract";
+import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 interface ContractTopProps {
   contractDetail: ContractDetail;
 }
 export const ContractTop = ({ contractDetail }: ContractTopProps) => {
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
+  const contractAddress = getFirstQueryParam(
+    router.query.contractAddress
+  ) as ContractAddr;
 
   const { contractInfo } = contractDetail;
   const { instantiateInfo } = contractDetail;
@@ -44,6 +52,47 @@ export const ContractTop = ({ contractDetail }: ContractTopProps) => {
       pathname: "/execute",
       query: { ...(contractAddress && { contract: contractAddress }) },
     });
+  };
+
+  const renderSaveButton = () => {
+    if (contractInfo) {
+      return (
+        <AddToOtherList
+          contractInfo={contractInfo}
+          triggerElement={
+            <IconButton
+              fontSize="22px"
+              variant="none"
+              aria-label="save"
+              color={contractInfo.lists ? "primary.main" : "none"}
+              icon={contractInfo.lists ? <MdBookmark /> : <MdBookmarkBorder />}
+            />
+          }
+        />
+      );
+    }
+    if (instantiateInfo) {
+      return (
+        <SaveContractDetails
+          contractInfo={{
+            contractAddress,
+            instantiator: instantiateInfo.instantiator,
+            label: instantiateInfo.label,
+            created: instantiateInfo.createdTime,
+          }}
+          triggerElement={
+            <IconButton
+              fontSize="22px"
+              variant="none"
+              aria-label="save"
+              color="none"
+              icon={<MdBookmarkBorder />}
+            />
+          }
+        />
+      );
+    }
+    return null;
   };
 
   return (
@@ -110,22 +159,20 @@ export const ContractTop = ({ contractDetail }: ContractTopProps) => {
           Execute
         </Button>
         <Flex>
-          {(contractInfo || contractDetail.contractInfo?.lists) && (
-            <IconButton
-              fontSize="22px"
-              variant="none"
-              aria-label="edit"
-              icon={<RiPencilFill />}
+          {contractInfo && (
+            <EditContractDetails
+              contractInfo={contractInfo}
+              triggerElement={
+                <IconButton
+                  fontSize="22px"
+                  variant="none"
+                  aria-label="edit"
+                  icon={<RiPencilFill />}
+                />
+              }
             />
           )}
-          {/* TODO - fix */}
-          <IconButton
-            fontSize="22px"
-            variant="none"
-            aria-label="save"
-            color={contractInfo?.lists ? "primary.main" : "none"}
-            icon={contractInfo?.lists ? <MdBookmark /> : <MdBookmarkBorder />}
-          />
+          {renderSaveButton()}
         </Flex>
       </Flex>
     </Flex>
