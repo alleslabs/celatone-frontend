@@ -193,8 +193,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
         />
 
         <OffChainForm<SaveNewContractDetail>
-          nameField="name"
-          descriptionField="description"
           state={offchainState}
           control={control}
           setTagsValue={setTagsValue}

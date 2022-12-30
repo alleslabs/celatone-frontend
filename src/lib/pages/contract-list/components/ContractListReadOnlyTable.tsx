@@ -10,14 +10,16 @@ import {
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ContractInfo } from "lib/stores/contract";
+import type { ContractAddr } from "lib/types";
 
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
 
 interface ContractListReadOnlyTableProps {
   contracts: ContractInfo[];
-  onContractSelect: (addr: string) => void;
+  onContractSelect: (addr: ContractAddr) => void;
 }
+
 export const ContractListReadOnlyTable = ({
   contracts = [],
   onContractSelect,

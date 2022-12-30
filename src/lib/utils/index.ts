@@ -11,3 +11,4 @@ export * from "./extractMsgType";
 export * from "./redo";
 export * from "./scrollTop";
 export * from "./textLine";
+export * from "./date";
