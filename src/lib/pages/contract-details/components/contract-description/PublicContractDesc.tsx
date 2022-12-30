@@ -4,8 +4,8 @@ import { BiWorld } from "react-icons/bi";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
-import { textLine } from "../../utils/textLine";
 import type { ContractDetail } from "lib/model/contract";
+import { textLine } from "lib/utils";
 
 import { ShowMoreButton } from "./ShowMoreButton";
 
@@ -72,5 +72,4 @@ export const PublicContractDesc = ({
       )}
     </Flex>
   );
-  //   }
 };

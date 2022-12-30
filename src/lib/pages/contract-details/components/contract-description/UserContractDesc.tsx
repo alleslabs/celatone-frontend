@@ -4,9 +4,9 @@ import { RiPencilFill } from "react-icons/ri";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
-import { textLine } from "../../utils/textLine";
 import { EditContractDetails } from "lib/components/modal";
 import type { ContractDetail } from "lib/model/contract";
+import { textLine } from "lib/utils";
 
 import { ShowMoreButton } from "./ShowMoreButton";
 
