@@ -42,12 +42,12 @@ export class CodeStore {
     this.userKey = userKey;
   }
 
-  getCodeLocalInfo(userKey: string, id: number): CodeLocalInfo | undefined {
-    return this.codeInfo[userKey]?.[id];
+  getCodeLocalInfo(id: number): CodeLocalInfo | undefined {
+    return this.codeInfo[this.userKey]?.[id];
   }
 
-  isCodeIdExist(userKey: string, id: number): boolean {
-    return this.savedCodeIds[userKey]?.includes(id) ?? false;
+  isCodeIdExist(id: number): boolean {
+    return this.savedCodeIds[this.userKey]?.includes(id) ?? false;
   }
 
   lastSavedCodeIds(userKey: string): number[] {
@@ -68,26 +68,22 @@ export class CodeStore {
       .reverse();
   }
 
-  saveNewCode(userKey: string, id: number): void {
-    if (this.savedCodeIds[userKey]) {
-      this.savedCodeIds[userKey]?.push(id);
+  saveNewCode(id: number): void {
+    if (this.savedCodeIds[this.userKey]) {
+      this.savedCodeIds[this.userKey]?.push(id);
     } else {
-      this.savedCodeIds[userKey] = [id];
+      this.savedCodeIds[this.userKey] = [id];
     }
   }
 
-  removeSavedCode(userKey: string, id: number): void {
-    this.savedCodeIds[userKey] = this.savedCodeIds[userKey]?.filter(
+  removeSavedCode(id: number): void {
+    this.savedCodeIds[this.userKey] = this.savedCodeIds[this.userKey]?.filter(
       (each) => each !== id
     );
   }
 
-  updateCodeInfo(
-    userKey: string,
-    id: number,
-    newCodeInfo: CodeLocalInfo
-  ): void {
-    const codeInfo = this.codeInfo[userKey]?.[id] || {};
+  updateCodeInfo(id: number, newCodeInfo: CodeLocalInfo): void {
+    const codeInfo = this.codeInfo[this.userKey]?.[id] || {};
 
     if (newCodeInfo.description !== undefined) {
       codeInfo.description = newCodeInfo.description.trim().length
@@ -97,8 +93,8 @@ export class CodeStore {
     if (newCodeInfo.uploader !== undefined)
       codeInfo.uploader = newCodeInfo.uploader;
 
-    this.codeInfo[userKey] = {
-      ...this.codeInfo[userKey],
+    this.codeInfo[this.userKey] = {
+      ...this.codeInfo[this.userKey],
       [id]: codeInfo,
     };
   }

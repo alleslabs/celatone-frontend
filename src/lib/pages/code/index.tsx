@@ -1,15 +1,24 @@
-import { Badge, Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { Badge, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
 import { BackButton } from "lib/components/button/BackButton";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
+import { useCodeStore } from "lib/hooks";
 import { getFirstQueryParam } from "lib/utils";
 
 import { CodeInfoSection } from "./component/CodeInfoSection";
+import { CTASection } from "./component/CTASection";
 
-const CodeDetails = () => {
+const CodeDetails = observer(() => {
   const router = useRouter();
   const codeId = getFirstQueryParam(router.query.codeId);
+  /**
+   * @todos Maybe use data from data hook instead
+   */
+  const { getCodeLocalInfo } = useCodeStore();
+  const codeInfo = getCodeLocalInfo(Number(codeId));
 
   /**
    * @todos  Wireup page with data hook and component functionality/logic
@@ -22,17 +31,21 @@ const CodeDetails = () => {
       <Flex align="center" justify="space-between" mt={6}>
         <Flex direction="column" gap={1}>
           <Heading as="h5" variant="h5">
-            {codeId}
+            {codeInfo?.description ?? codeId}
           </Heading>
           <Flex gap={2}>
             <Text fontWeight={500} color="text.dark" variant="body2">
               Code ID
             </Text>
+            <ExplorerLink value={codeId} />
           </Flex>
         </Flex>
-        <Flex gap={4}>
-          <Button variant="outline-primary">Instantiate</Button>
-        </Flex>
+        {/* TODO: Check uploader with data hook */}
+        <CTASection
+          id={Number(codeId)}
+          uploader={codeInfo?.uploader ?? ""}
+          description={codeInfo?.description ?? ""}
+        />
       </Flex>
       <Divider borderColor="divider.main" my={12} />
       {/* Code Information Section */}
@@ -52,6 +65,6 @@ const CodeDetails = () => {
       </Heading>
     </PageContainer>
   );
-};
+});
 
 export default CodeDetails;

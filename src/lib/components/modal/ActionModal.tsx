@@ -18,7 +18,7 @@ import { useCallback } from "react";
 import type { IconType } from "react-icons/lib";
 import { MdMode } from "react-icons/md";
 
-interface ModalProps {
+export interface ActionModalProps {
   icon?: IconType;
   iconColor?: string;
   title: string;
@@ -31,6 +31,8 @@ interface ModalProps {
   disabledMain?: boolean;
   otherBtnTitle?: string;
   otherAction?: () => void;
+  noHeaderBorder?: boolean;
+  noCloseButton?: boolean;
 }
 export function ActionModal({
   icon = MdMode,
@@ -45,7 +47,9 @@ export function ActionModal({
   disabledMain = false,
   otherBtnTitle = "Cancel",
   otherAction,
-}: ModalProps) {
+  noHeaderBorder = false,
+  noCloseButton = false,
+}: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleOnMain = useCallback(() => {
@@ -65,8 +69,11 @@ export function ActionModal({
       <Modal isOpen={isOpen} onClose={handleOnOther} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader borderBottomWidth={1} borderColor="divider.main">
-            <Box>
+          <ModalHeader
+            borderBottomWidth={noHeaderBorder ? 0 : 1}
+            borderColor="divider.main"
+          >
+            <Box w="full">
               <Flex alignItems="center" gap="3">
                 <Icon as={icon} color={iconColor} boxSize="6" />
                 {title}
@@ -79,7 +86,7 @@ export function ActionModal({
               <Box>{headerContent}</Box>
             </Box>
           </ModalHeader>
-          <ModalCloseButton />
+          {!noCloseButton && <ModalCloseButton />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
             <Flex w="full" justifyContent="center" gap="2">

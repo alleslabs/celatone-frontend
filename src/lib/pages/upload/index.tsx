@@ -21,7 +21,7 @@ import {
   getMaxCodeDescriptionLengthError,
   MAX_CODE_DESCRIPTION_LENGTH,
 } from "lib/data";
-import { useCodeStore, useUserKey } from "lib/hooks";
+import { useCodeStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { HumanAddr } from "lib/types";
 import { AccessType, MsgType } from "lib/types";
@@ -32,7 +32,6 @@ import type { SimulateStatus } from "./types";
 
 const Upload = () => {
   const router = useRouter();
-  const userKey = useUserKey();
   const { simulate, loading } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { address = "" } = useWallet();
@@ -71,7 +70,7 @@ const Upload = () => {
   const proceed = useCallback(async () => {
     const stream = await postUploadTx({
       onTxSucceed: (codeId: number) => {
-        updateCodeInfo(userKey, codeId, {
+        updateCodeInfo(codeId, {
           description: codeDesc || `${wasmFile?.name}(${codeId})`,
         });
       },
@@ -79,7 +78,7 @@ const Upload = () => {
     });
 
     if (stream) broadcast(stream);
-  }, [postUploadTx, broadcast, codeDesc, updateCodeInfo, wasmFile, userKey]);
+  }, [postUploadTx, broadcast, codeDesc, updateCodeInfo, wasmFile]);
 
   useEffect(() => {
     (async () => {

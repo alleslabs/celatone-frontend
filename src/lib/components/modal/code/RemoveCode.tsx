@@ -1,24 +1,38 @@
 import { useToast, Icon, Text } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 import { useCallback } from "react";
-import { MdDeleteForever, MdCheckCircle, MdDelete } from "react-icons/md";
+import { MdCheckCircle, MdDelete } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { useCodeStore, useUserKey } from "lib/hooks";
+import { useCodeStore } from "lib/hooks";
 
 interface ModalProps {
   codeId: number;
+  description?: string;
+  trigger?: NonNullable<ReactNode>;
 }
 
-export function RemoveCode({ codeId }: ModalProps) {
-  const userKey = useUserKey();
+export function RemoveCode({
+  codeId,
+  description,
+  trigger = (
+    <Icon
+      as={MdDelete}
+      width="24px"
+      height="24px"
+      color="gray.600"
+      cursor="pointer"
+    />
+  ),
+}: ModalProps) {
   const { removeSavedCode } = useCodeStore();
   const toast = useToast();
 
   const handleRemove = useCallback(() => {
-    removeSavedCode(userKey, codeId);
+    removeSavedCode(codeId);
 
     toast({
-      title: `Removed '${codeId}' from Saved Codes`,
+      title: `Removed \u2018${description || codeId}\u2019 from Saved Codes`,
       status: "success",
       duration: 5000,
       isClosable: false,
@@ -33,27 +47,28 @@ export function RemoveCode({ codeId }: ModalProps) {
         />
       ),
     });
-  }, [codeId, userKey, removeSavedCode, toast]);
+  }, [codeId, description, removeSavedCode, toast]);
 
   return (
     <ActionModal
-      title={`Remove Code ID: ${codeId} ?`}
-      icon={MdDeleteForever}
+      title={
+        description
+          ? `Remove \u2018${description}\u2019?`
+          : `Remove Code ID: ${codeId} ?`
+      }
+      icon={MdDelete}
       iconColor="error.light"
       mainBtnTitle="Yes, Remove It"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
-      trigger={
-        <Icon
-          as={MdDelete}
-          width="24px"
-          height="24px"
-          color="gray.600"
-          cursor="pointer"
-        />
-      }
+      trigger={trigger}
+      noCloseButton
+      noHeaderBorder
     >
-      <Text>You can save this code again later</Text>
+      <Text>
+        You can save this code again later, but you will need to add its new
+        code description.
+      </Text>
     </ActionModal>
   );
 }

@@ -45,7 +45,7 @@ export const useCodeListData = (keyword?: string): CodeListData => {
   const savedCodesCount = savedCodes?.length ?? 0;
 
   const storedCodes = rawStoredCodes.map<CodeInfo>((code) => {
-    const localInfo = getCodeLocalInfo(userKey, code.id);
+    const localInfo = getCodeLocalInfo(code.id);
     return {
       ...code,
       description: localInfo?.description,
