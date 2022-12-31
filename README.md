@@ -13,10 +13,10 @@ The Celatone frontend uses the following technologies:
 - Components: [Chakra UI](https://chakra-ui.com/)
 - Deployment: [Vercel](https://vercel.com/)
 
-### Prerequisite
+### Prerequisites
 
 1. [Node.js](https://nodejs.org/en/) (version >= 14) or nvm installed.
-2. [`yarn`](https://yarnpkg.com/) installed.
+2. [`Yarn`](https://yarnpkg.com/) installed.
 
 ### Develop
 
