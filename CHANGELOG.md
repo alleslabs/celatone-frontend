@@ -60,4 +60,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Docs
 
-- [#57](https://github.com/alleslabs/celatone-frontend/pull/57) Rewrite README file with more information and strucutre
+- [#57](https://github.com/alleslabs/celatone-frontend/pull/57) Rewrite README file with more information and structure
