@@ -11,10 +11,11 @@ import {
   BreadcrumbLink,
   Box,
   Text,
+  chakra,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   MdOutlineAdd,
   MdMoreHoriz,
@@ -26,38 +27,39 @@ import {
 
 import { SaveNewContract } from "lib/components/modal/contract";
 import { EditList, RemoveList } from "lib/components/modal/list";
-import { ListDetail } from "lib/components/modal/select-contract";
+import { ContractListDetail } from "lib/components/modal/select-contract";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
-const ContractList = observer(() => {
+const StyledIcon = chakra(Icon, {
+  baseStyle: {
+    boxSize: "4",
+    display: "flex",
+    alignItems: "center",
+  },
+});
+
+const ContractsByList = observer(() => {
   const router = useRouter();
-  const [searchKeyword, setSearchKeyword] = useState("");
   const listSlug = getFirstQueryParam(router.query.slug);
 
   const { getContractLists, isHydrated } = useContractStore();
-  const instantiatedListInfo = useInstantiatedByMe(
-    listSlug === formatSlugName(INSTANTIATED_LIST_NAME)
-  );
+  const isInstantiatedByMe =
+    listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
 
-  const contractListInfo =
-    listSlug === formatSlugName(INSTANTIATED_LIST_NAME)
-      ? instantiatedListInfo
-      : getContractLists().find((item) => item.slug === listSlug);
+  const instantiatedListInfo = useInstantiatedByMe(isInstantiatedByMe);
+
+  const contractListInfo = isInstantiatedByMe
+    ? instantiatedListInfo
+    : getContractLists().find((item) => item.slug === listSlug);
 
   useEffect(() => {
     if (isHydrated && contractListInfo === undefined) {
       router.push("/contract-list");
     }
   }, [contractListInfo, router, isHydrated]);
-
-  const iconProps = {
-    boxSize: "4",
-    display: "flex",
-    alignItems: "center",
-  };
 
   if (!contractListInfo) return null;
 
@@ -103,24 +105,27 @@ const ContractList = observer(() => {
             {contractListInfo.name}
           </Heading>
           <Flex gap={2}>
-            <Button
-              rightIcon={<MdOutlineAdd />}
-              onClick={() => router.push("/deploy")}
-            >
-              Deploy New Contract
-            </Button>
-            <SaveNewContract
-              key={listSlug}
-              list={{
-                label: contractListInfo.name,
-                value: contractListInfo.slug,
-              }}
-              buttonProps={{
-                variant: "outline-primary",
-                rightIcon: <MdBookmarkBorder />,
-                children: "Save Contract",
-              }}
-            />
+            {isInstantiatedByMe ? (
+              <Button
+                rightIcon={<MdOutlineAdd />}
+                onClick={() => router.push("/deploy")}
+              >
+                Deploy New Contract
+              </Button>
+            ) : (
+              <SaveNewContract
+                key={listSlug}
+                list={{
+                  label: contractListInfo.name,
+                  value: contractListInfo.slug,
+                }}
+                buttonProps={{
+                  variant: "outline-primary",
+                  rightIcon: <MdBookmarkBorder />,
+                  children: "Save Contract",
+                }}
+              />
+            )}
             {contractListInfo.isInfoEditable && (
               <Menu>
                 <MenuButton
@@ -143,9 +148,7 @@ const ContractList = observer(() => {
                       value: contractListInfo.slug,
                     }}
                     menuItemProps={{
-                      icon: (
-                        <Icon as={MdMode} style={iconProps} color="gray.600" />
-                      ),
+                      icon: <StyledIcon as={MdMode} color="gray.600" />,
                       children: "Edit list name",
                     }}
                   />
@@ -155,13 +158,7 @@ const ContractList = observer(() => {
                       value: contractListInfo.slug,
                     }}
                     menuItemProps={{
-                      icon: (
-                        <Icon
-                          as={MdDelete}
-                          style={iconProps}
-                          color="error.light"
-                        />
-                      ),
+                      icon: <StyledIcon as={MdDelete} color="error.light" />,
                       children: "Remove list",
                     }}
                   />
@@ -171,19 +168,9 @@ const ContractList = observer(() => {
           </Flex>
         </Flex>
       </Box>
-      <ListDetail
-        search={searchKeyword}
-        setSearch={setSearchKeyword}
-        contractListInfo={contractListInfo}
-        isReadOnly={false}
-        isContractRemovable={
-          contractListInfo.isContractRemovable
-            ? { label: contractListInfo.name, value: contractListInfo.slug }
-            : undefined
-        }
-      />
+      <ContractListDetail contractListInfo={contractListInfo} />
     </>
   );
 });
 
-export default ContractList;
+export default ContractsByList;
