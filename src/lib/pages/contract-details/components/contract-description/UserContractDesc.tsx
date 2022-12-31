@@ -14,22 +14,12 @@ interface UserContractDescProps {
   contractDetail: ContractDetail;
 }
 export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
-  const [isUserContractShowMore, setIsUserContractShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
-  const [
-    userUserContractRef,
-    {
-      noClamp: noUserDescClamp,
-      clampedText: userContractDesc,
-      key: userContractKey,
-    },
-  ] = useClampText({
+  const [ref, { noClamp, clampedText, key }] = useClampText({
     text: contractDetail.contractInfo?.description || "No contract description",
     ellipsis: "...",
-    lines: textLine(
-      !contractDetail.publicInfo?.description,
-      isUserContractShowMore
-    ),
+    lines: textLine(!contractDetail.publicInfo?.description, showMore),
   });
 
   const renderEditContractButton = () => {
@@ -84,22 +74,18 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
       <Text
         variant="body2"
         whiteSpace="pre-wrap"
-        ref={userUserContractRef as React.MutableRefObject<HTMLInputElement>}
-        key={userContractKey}
+        ref={ref as React.MutableRefObject<HTMLParagraphElement>}
+        key={key}
       >
         <Linkify>
-          {isUserContractShowMore
-            ? contractDetail.contractInfo?.description
-            : userContractDesc}
+          {showMore ? contractDetail.contractInfo?.description : clampedText}
         </Linkify>
       </Text>
 
-      {!noUserDescClamp && (
+      {!noClamp && (
         <ShowMoreButton
-          toggleShowMore={isUserContractShowMore}
-          setToggleShowMore={() =>
-            setIsUserContractShowMore(!isUserContractShowMore)
-          }
+          toggleShowMore={showMore}
+          setToggleShowMore={() => setShowMore(!showMore)}
         />
       )}
     </Flex>

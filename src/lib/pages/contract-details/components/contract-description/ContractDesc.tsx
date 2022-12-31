@@ -11,9 +11,7 @@ interface ContractDescProps {
 export const ContractDesc = ({ contractDetail }: ContractDescProps) => {
   return (
     <Flex gap={6}>
-      {contractDetail?.publicInfo?.description && (
-        <PublicContractDesc contractDetail={contractDetail} />
-      )}
+      <PublicContractDesc contractDetail={contractDetail} />
       <UserContractDesc contractDetail={contractDetail} />
     </Flex>
   );

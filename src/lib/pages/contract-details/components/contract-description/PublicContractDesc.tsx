@@ -15,24 +15,15 @@ interface PublicContractDescProps {
 export const PublicContractDesc = ({
   contractDetail,
 }: PublicContractDescProps) => {
-  const [isPublicContractShowMore, setIsPublicContractShowMore] =
-    useState(false);
+  const [showMore, setShowMore] = useState(false);
 
-  const [
-    publicContractRef,
-    {
-      noClamp: noPublicDescClamp,
-      clampedText: publicContractDesc,
-      key: publicContractKey,
-    },
-  ] = useClampText({
+  const [ref, { noClamp, clampedText, key }] = useClampText({
     text: contractDetail.publicInfo?.description || "",
     ellipsis: "...",
-    lines: textLine(
-      !contractDetail.contractInfo?.description,
-      isPublicContractShowMore
-    ),
+    lines: textLine(!contractDetail.contractInfo?.description, showMore),
   });
+
+  if (!contractDetail.publicInfo?.description) return null;
 
   return (
     <Flex
@@ -54,20 +45,16 @@ export const PublicContractDesc = ({
         <Text
           variant="body2"
           whiteSpace="break-spaces"
-          ref={publicContractRef as React.MutableRefObject<HTMLInputElement>}
-          key={publicContractKey}
+          ref={ref as React.MutableRefObject<HTMLParagraphElement>}
+          key={key}
         >
-          {isPublicContractShowMore
-            ? contractDetail.publicInfo?.description
-            : publicContractDesc}
+          {showMore ? contractDetail.publicInfo?.description : clampedText}
         </Text>
       </Linkify>
-      {!noPublicDescClamp && (
+      {!noClamp && (
         <ShowMoreButton
-          toggleShowMore={isPublicContractShowMore}
-          setToggleShowMore={() =>
-            setIsPublicContractShowMore(!isPublicContractShowMore)
-          }
+          toggleShowMore={showMore}
+          setToggleShowMore={() => setShowMore(!showMore)}
         />
       )}
     </Flex>

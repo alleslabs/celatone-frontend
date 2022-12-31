@@ -15,7 +15,7 @@ export const ShowMoreButton = ({
     color="primary.main"
     variant="none"
     w="fit-content"
-    onClick={() => setToggleShowMore()}
+    onClick={setToggleShowMore}
   >
     <Text variant="body3" color="primary.main">
       {toggleShowMore ? "View Less" : "View Full Description"}
