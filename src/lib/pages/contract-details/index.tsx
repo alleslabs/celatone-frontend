@@ -36,8 +36,6 @@ const ContractDetails = observer(() => {
   return (
     <PageContainer>
       <BackButton />
-      {/* Contract name/address/label Section */}
-      {/* TODO: Wireup data and buttons functionality */}
       <ContractTop contractDetail={contractDetail} />
       {/* Tokens Section */}
       <TokenSection />

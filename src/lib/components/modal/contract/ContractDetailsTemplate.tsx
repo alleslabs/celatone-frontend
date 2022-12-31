@@ -54,7 +54,7 @@ export const ContractDetailsTemplate = ({
 
   useEffect(() => {
     resetForm();
-  }, [contractInfo, resetForm]);
+  }, [defaultValues, resetForm]);
 
   const offchainState = watch();
 

@@ -24,21 +24,19 @@ import {
 } from "lib/components/modal";
 import type { ContractDetail } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
 
 interface ContractTopProps {
   contractDetail: ContractDetail;
 }
 export const ContractTop = ({ contractDetail }: ContractTopProps) => {
-  const contractAddress = getFirstQueryParam(
-    router.query.contractAddress
-  ) as ContractAddr;
-
   const { contractInfo } = contractDetail;
   const { instantiateInfo } = contractDetail;
   const { publicInfo } = contractDetail;
 
-  const name = contractInfo?.name || publicInfo?.name || instantiateInfo?.label;
+  const contractAddress = instantiateInfo?.contractAddress as ContractAddr;
+
+  const displayName =
+    contractInfo?.name || publicInfo?.name || instantiateInfo?.label;
 
   const goToQuery = () => {
     router.push({
@@ -99,7 +97,7 @@ export const ContractTop = ({ contractDetail }: ContractTopProps) => {
     <Flex justify="space-between" my={6}>
       <Flex direction="column" gap={1} textOverflow="ellipsis" maxW="670px">
         <Heading as="h5" variant="h5" color="text.main" className="ellipsis">
-          {name}
+          {displayName}
         </Heading>
         <Flex gap={2}>
           <Text
@@ -125,7 +123,7 @@ export const ContractTop = ({ contractDetail }: ContractTopProps) => {
             {contractDetail.instantiateInfo?.label}
           </Text>
         </Flex>
-        {publicInfo?.name && !contractInfo?.lists && (
+        {publicInfo?.name && (
           <Flex gap={2}>
             <Text color="text.dark" variant="body2" fontWeight={500}>
               Public Contract Name:
