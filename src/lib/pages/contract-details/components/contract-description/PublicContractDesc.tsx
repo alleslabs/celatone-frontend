@@ -1,5 +1,5 @@
 import { Flex, Icon, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { BiWorld } from "react-icons/bi";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
@@ -17,13 +17,18 @@ export const PublicContractDesc = ({
 }: PublicContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
+  const description = useMemo(
+    () => contractDetail.publicInfo?.description,
+    [contractDetail.publicInfo?.description]
+  );
+
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: contractDetail.publicInfo?.description || "",
+    text: description || "",
     ellipsis: "...",
     lines: textLine(!contractDetail.contractInfo?.description, showMore),
   });
 
-  if (!contractDetail.publicInfo?.description) return null;
+  if (!description) return null;
 
   return (
     <Flex
@@ -48,7 +53,7 @@ export const PublicContractDesc = ({
           ref={ref as React.MutableRefObject<HTMLParagraphElement>}
           key={key}
         >
-          {showMore ? contractDetail.publicInfo?.description : clampedText}
+          {showMore ? description : clampedText}
         </Text>
       </Linkify>
       {!noClamp && (

@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RiPencilFill } from "react-icons/ri";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
@@ -16,8 +16,13 @@ interface UserContractDescProps {
 export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
+  const description = useMemo(
+    () => contractDetail.contractInfo?.description,
+    [contractDetail.contractInfo?.description]
+  );
+
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: contractDetail.contractInfo?.description || "No contract description",
+    text: description || "No contract description",
     ellipsis: "...",
     lines: textLine(!contractDetail.publicInfo?.description, showMore),
   });
@@ -32,7 +37,7 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
           label: contractDetail.instantiateInfo.label,
           created: contractDetail.instantiateInfo.createdTime,
           name: contractDetail.contractInfo?.name,
-          description: contractDetail.contractInfo?.description,
+          description,
           tags: contractDetail.contractInfo?.tags,
           lists: contractDetail.contractInfo?.lists,
         }}
@@ -43,9 +48,7 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
             variant="none"
             leftIcon={<RiPencilFill />}
           >
-            {contractDetail.contractInfo?.description
-              ? "Edit"
-              : "Add Description"}
+            {description ? "Edit" : "Add Description"}
           </Button>
         }
       />
@@ -77,9 +80,7 @@ export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
         ref={ref as React.MutableRefObject<HTMLParagraphElement>}
         key={key}
       >
-        <Linkify>
-          {showMore ? contractDetail.contractInfo?.description : clampedText}
-        </Linkify>
+        <Linkify>{showMore ? description : clampedText}</Linkify>
       </Text>
 
       {!noClamp && (
