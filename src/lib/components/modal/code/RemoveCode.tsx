@@ -1,15 +1,15 @@
 import { useToast, Icon, Text } from "@chakra-ui/react";
-import type { ReactNode } from "react";
 import { useCallback } from "react";
 import { MdCheckCircle, MdDelete } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useCodeStore } from "lib/hooks";
+import { shortenName } from "lib/utils";
 
-interface ModalProps {
+interface RemoveCodeModalProps {
   codeId: number;
   description?: string;
-  trigger?: NonNullable<ReactNode>;
+  trigger?: JSX.Element;
 }
 
 export function RemoveCode({
@@ -24,7 +24,7 @@ export function RemoveCode({
       cursor="pointer"
     />
   ),
-}: ModalProps) {
+}: RemoveCodeModalProps) {
   const { removeSavedCode } = useCodeStore();
   const toast = useToast();
 
@@ -32,7 +32,9 @@ export function RemoveCode({
     removeSavedCode(codeId);
 
     toast({
-      title: `Removed \u2018${description || codeId}\u2019 from Saved Codes`,
+      title: `Removed \u2018${
+        shortenName(description ?? "", 20) || codeId
+      }\u2019 from Saved Codes`,
       status: "success",
       duration: 5000,
       isClosable: false,
@@ -53,7 +55,7 @@ export function RemoveCode({
     <ActionModal
       title={
         description
-          ? `Remove \u2018${description}\u2019?`
+          ? `Remove \u2018${shortenName(description, 20)}\u2019?`
           : `Remove Code ID: ${codeId} ?`
       }
       icon={MdDelete}

@@ -86,7 +86,7 @@ export function ActionModal({
               <Box>{headerContent}</Box>
             </Box>
           </ModalHeader>
-          {!noCloseButton && <ModalCloseButton />}
+          {!noCloseButton && <ModalCloseButton color="gray.600" />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
             <Flex w="full" justifyContent="center" gap="2">
