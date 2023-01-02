@@ -1,7 +1,7 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useState } from "react";
 
-import { useSimulateFeeQuery } from "lib/app-provider";
+import { useSimulateFeeQuery } from "../queries";
 import { useDummyWallet } from "lib/hooks";
 import type { HumanAddr, ContractAddr } from "lib/types";
 import { MsgType } from "lib/types";
