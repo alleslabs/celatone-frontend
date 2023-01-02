@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -21,30 +22,42 @@ export const ContractDetailsTemplate = ({
   contractInfo,
   triggerElement,
 }: ContractDetailsTemplateProps) => {
+  const defaultValues = useMemo(() => {
+    return {
+      name: contractInfo.name ?? "",
+      description: contractInfo.description ?? "",
+      tags: contractInfo.tags ?? [],
+      lists: contractInfo.lists ?? [],
+    };
+  }, [
+    contractInfo.description,
+    contractInfo.lists,
+    contractInfo.name,
+    contractInfo.tags,
+  ]);
+
   const {
     control,
     setValue,
     watch,
     reset,
-    formState: { errors, defaultValues },
+    formState: { errors },
   } = useForm<OffchainDetail>({
-    defaultValues: {
-      name: contractInfo.name ?? "",
-      description: contractInfo.description ?? "",
-      tags: contractInfo.tags ?? [],
-      lists: contractInfo.lists ?? [],
-    },
+    defaultValues,
     mode: "all",
   });
 
-  const resetForm = () => reset(defaultValues);
+  const resetForm = useCallback(
+    () => reset(defaultValues),
+    [defaultValues, reset]
+  );
 
-  const offchainState: OffchainDetail = {
-    name: watch("name"),
-    description: watch("description"),
-    tags: watch("tags"),
-    lists: watch("lists"),
-  };
+  useEffect(() => {
+    resetForm();
+  }, [defaultValues, resetForm]);
+
+  const offchainState = watch();
+
   const setTagsValue = (selectedTags: string[]) => {
     setValue("tags", selectedTags);
   };

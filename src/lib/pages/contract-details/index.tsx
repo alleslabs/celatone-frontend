@@ -1,22 +1,16 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Button,
   Flex,
   Heading,
-  Icon,
-  Text,
   TabList,
   Tabs,
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { MdBookmark, MdInput } from "react-icons/md";
+import router from "next/router";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { useContractDetail } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
@@ -24,12 +18,12 @@ import { getFirstQueryParam } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description/ContractDesc";
+import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
 import { TokenSection } from "./components/TokenSection";
 
 const ContractDetails = observer(() => {
-  const router = useRouter();
   /**
    * @todos add contract address validation function here
    */
@@ -37,56 +31,12 @@ const ContractDetails = observer(() => {
   const contractDetail = useContractDetail(contractAddress as ContractAddr);
 
   // TODO - Wait for design
-  if (!contractDetail) return null;
+  if (!contractDetail || !contractDetail.instantiateInfo) return null;
 
   return (
     <PageContainer>
       <BackButton />
-      {/* Contract name/address/label Section */}
-      {/* TODO: Wireup data and buttons functionality */}
-      <Flex justify="space-between" my={6}>
-        <Flex direction="column" gap={1}>
-          <Heading as="h5" variant="h5" color="text.main">
-            Contract Name Section Goes Hereeeee
-          </Heading>
-          <Flex gap={2}>
-            <Text color="text.dark" variant="body2" fontWeight={500}>
-              Contract Address:
-            </Text>
-            <ExplorerLink
-              type="contract_address"
-              value={contractAddress}
-              textFormat="normal"
-              maxWidth="none"
-            />
-          </Flex>
-          <Flex gap={2}>
-            <Text color="text.dark" variant="body2" fontWeight={500}>
-              Label:
-            </Text>
-            <Text variant="body2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit ...
-            </Text>
-          </Flex>
-        </Flex>
-        <Flex gap={4}>
-          <Button
-            variant="outline-gray"
-            leftIcon={<Icon as={MdBookmark} boxSize="18px" />}
-          >
-            Add to list
-          </Button>
-          <Button variant="outline-primary" leftIcon={<SearchIcon />}>
-            Query
-          </Button>
-          <Button
-            variant="outline-primary"
-            leftIcon={<Icon as={MdInput} boxSize="18px" />}
-          >
-            Execute
-          </Button>
-        </Flex>
-      </Flex>
+      <ContractTop contractDetail={contractDetail} />
       {/* Tokens Section */}
       <TokenSection />
       {/* Contract Description Section */}
