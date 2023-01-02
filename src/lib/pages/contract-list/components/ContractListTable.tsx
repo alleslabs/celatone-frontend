@@ -147,15 +147,18 @@ export const ContractListTable = ({
                       />
                       <AddToOtherList
                         contractInfo={item}
-                        menuItemProps={{
-                          icon: (
-                            <StyledIcon
-                              as={MdOutlineBookmark}
-                              color="gray.600"
-                            />
-                          ),
-                          children: "Add or remove from other lists",
-                        }}
+                        triggerElement={
+                          <MenuItem
+                            icon={
+                              <StyledIcon
+                                as={MdOutlineBookmark}
+                                color="gray.600"
+                              />
+                            }
+                          >
+                            Add or remove from other lists
+                          </MenuItem>
+                        }
                       />
                       {!!contractRemovalInfo && (
                         <>
