@@ -38,10 +38,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
+- [#54](https://github.com/alleslabs/celatone-frontend/pull/54) Render execute cmds shortcut in contract details page
 
 - [#46](https://github.com/alleslabs/celatone-frontend/pull/46) Wireup instantiate info
 - [#55](https://github.com/alleslabs/celatone-frontend/pull/55) Add "Add To List / Edit" button to edit offchain details on query and execute pages
-- [#44](https://github.com/alleslabs/celatone-frontend/pull/44) Render query cmds shortcut in contract detail page
+- [#44](https://github.com/alleslabs/celatone-frontend/pull/44) Render query cmds shortcut in contract details page
 - [#38](https://github.com/alleslabs/celatone-frontend/pull/38) Show execute msg cmds when wallet is not connected
 - [#49](https://github.com/alleslabs/celatone-frontend/pull/49) Add `develop` branch to `main.yml`
 - [#39](https://github.com/alleslabs/celatone-frontend/pull/39) Render "Me" instead of user address
