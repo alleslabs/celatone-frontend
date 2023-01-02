@@ -1,7 +1,6 @@
 import {
   Flex,
   Heading,
-  Text,
   TabList,
   Tabs,
   TabPanels,
@@ -18,6 +17,7 @@ import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
+import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
@@ -40,22 +40,7 @@ const ContractDetails = observer(() => {
       {/* Tokens Section */}
       <TokenSection />
       {/* Contract Description Section */}
-      {/* TODO: Show real description, show View Full Description when the desc is too long */}
-      <Flex
-        direction="column"
-        bg="gray.900"
-        borderRadius="8px"
-        p={4}
-        gap={2}
-        my={6}
-      >
-        <Text variant="body2" fontWeight={500} color="text.dark">
-          Your Contract Description
-        </Text>
-        <Text variant="body2" color="text.dark">
-          Save contract to lists to add your own contract description ...
-        </Text>
-      </Flex>
+      <ContractDesc contractDetail={contractDetail} />
       {/* Query/Execute commands section */}
       <CommandSection />
       {/* Instantiate/Contract Info Section */}
