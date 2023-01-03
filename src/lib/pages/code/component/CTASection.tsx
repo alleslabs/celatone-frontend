@@ -1,7 +1,7 @@
 import { Flex, Button, chakra, Icon } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { MdDownload, MdCheck } from "react-icons/md";
+import { MdCheck } from "react-icons/md";
 
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import { SaveOrEditCodeModal } from "lib/components/modal/code/SaveOrEditCode";
@@ -23,13 +23,6 @@ export const CTASection = observer(
     return (
       <Flex gap={4}>
         {isSaved && <SaveOrEditCodeModal mode="edit" id={id} {...codeInfo} />}
-        {/* TODO: Download Wasm wireup */}
-        <Button
-          variant="outline-gray"
-          leftIcon={<StyledIcon as={MdDownload} />}
-        >
-          Download WASM
-        </Button>
         <Button
           variant="outline-primary"
           onClick={() =>
