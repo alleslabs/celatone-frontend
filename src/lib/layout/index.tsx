@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 import { scrollTop } from "lib/utils/scrollTop";
 
+import Footer from "./Footer";
 import Header from "./Header";
 import Navbar from "./Navbar";
 
@@ -22,7 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <Grid
       templateAreas={`"header header"
-    "nav main"`}
+    "nav main" "nav footer"`}
       gridTemplateRows="70px 1fr"
       gridTemplateColumns="224px 1fr"
       h="100vh"
@@ -37,6 +38,9 @@ const Layout = ({ children }: LayoutProps) => {
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">
         {children}
+      </GridItem>
+      <GridItem area="footer">
+        <Footer />
       </GridItem>
     </Grid>
   );
