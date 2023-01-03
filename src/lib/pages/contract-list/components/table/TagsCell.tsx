@@ -28,9 +28,13 @@ export const TagsCell = ({
       position="relative"
       onMouseOver={handleMouseEnter}
       onMouseOut={handleMouseOut}
-      onClick={(e) => e.stopPropagation()}
     >
-      <Flex gap={1} color="text.dark" opacity={isHover ? "0" : "1"}>
+      <Flex
+        gap={1}
+        color="text.dark"
+        opacity={isHover ? "0" : "1"}
+        onClick={(e) => e.stopPropagation()}
+      >
         {tags.length ? (
           tags.slice(0, 2).map((tag) => {
             return (
@@ -68,6 +72,7 @@ export const TagsCell = ({
           position="absolute"
           top="-16px"
           left="-16px"
+          onClick={(e) => e.stopPropagation()}
         >
           <Flex gap={1} px={4} alignItems="center">
             {tags.length ? (
