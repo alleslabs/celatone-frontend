@@ -17,8 +17,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
-import { IoList } from "react-icons/io5";
-import { MdChevronLeft } from "react-icons/md";
+import { MdChevronLeft, MdList, MdSwapHoriz } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -98,14 +97,15 @@ export const SelectContract = ({
         px="16px"
         onClick={onOpen}
       >
-        {notSelected ? "SELECT CONTRACT" : "CHANGE"}
+        {!notSelected && <Icon as={MdSwapHoriz} boxSize="5" mr={2} />}
+        {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
       <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl">
         <ModalOverlay />
         {listSlug.length === 0 || !contractList ? (
           <ModalContent>
             <ModalHeader>
-              <Icon as={IoList} color="text.dark" fontSize="24px" />
+              <Icon as={MdList} color="text.dark" fontSize="24px" />
               <Heading as="h5" variant="h5">
                 Select Contract
               </Heading>

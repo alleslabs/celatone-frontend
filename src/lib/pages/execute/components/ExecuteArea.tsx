@@ -11,6 +11,7 @@ import { useExecuteContractTx } from "lib/app-provider/tx/execute";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import CopyButton from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import { AssetInput, TextInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -112,12 +113,12 @@ export const ExecuteArea = ({
   });
 
   return (
-    <Box w="full">
+    <Box>
       {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
           rowGap="8px"
-          mb="16px"
+          mt={8}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
@@ -140,21 +141,44 @@ export const ExecuteArea = ({
           </Text>
         )
       )}
-      <JsonInput
-        topic="Execute Msg"
-        text={msg}
-        setText={setMsg}
-        height="240px"
-      />
-      {error && (
-        <Flex gap={2} mb={4}>
-          <Icon as={IoIosWarning} boxSize={4} color="error.main" />
-          <Text variant="body3" color="error.main">
-            {error}
+      <Flex gap="32px" mt={8} direction={{ sm: "column", xl: "row" }}>
+        <Box w={{ sm: "full", xl: "70%" }}>
+          <Text variant="body1" fontWeight="600" mb={4}>
+            Execute Messages
           </Text>
-        </Flex>
-      )}
-      <Flex alignItems="center" justify="space-between">
+          <JsonInput
+            topic="Execute Msg"
+            text={msg}
+            setText={setMsg}
+            height="240px"
+          />
+          {error && (
+            <Flex gap={2} mb={4}>
+              <Icon as={IoIosWarning} boxSize={4} color="error.main" />
+              <Text variant="body3" color="error.main">
+                {error}
+              </Text>
+            </Flex>
+          )}
+        </Box>
+        <Box w={{ sm: "full", xl: "50%" }}>
+          <Text variant="body1" fontWeight="600" mb={4}>
+            Send Assets
+          </Text>
+          <AssetInput
+            disableDelete={false}
+            initialSelected=""
+            onDelete={() => null}
+            setCurrencyValue={() => null}
+            assetOptions={[]}
+            amountInput={<TextInput value="" setInputState={() => null} />}
+          />
+          <Button variant="outline-primary" mt={4} mx="auto">
+            Add More Asset
+          </Button>
+        </Box>
+      </Flex>
+      <Flex alignItems="center" justify="space-between" mt={{ md: 8, xl: 0 }}>
         <CopyButton isDisable={msg.length === 0} value={msg} />
         <Flex direction="row" align="center" gap={2}>
           <Flex fontSize="14px" color="text.dark" alignItems="center">
