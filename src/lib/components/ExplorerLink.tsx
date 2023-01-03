@@ -2,11 +2,7 @@ import type { BoxProps } from "@chakra-ui/react";
 import { Box, Link, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import {
-  getExplorerContractAddressUrl,
-  getExplorerTxUrl,
-  getExplorerUserAddressUrl,
-} from "lib/data";
+import { getExplorerTxUrl, getExplorerUserAddressUrl } from "lib/data";
 import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
@@ -38,7 +34,7 @@ export const ExplorerLink = ({
       explorerLink = getExplorerTxUrl(currentChainName);
       break;
     case "contract_address":
-      explorerLink = getExplorerContractAddressUrl(currentChainName);
+      explorerLink = `/contract`;
       break;
     case "user_address":
       explorerLink = getExplorerUserAddressUrl(currentChainName);

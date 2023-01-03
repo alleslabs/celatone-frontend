@@ -59,6 +59,7 @@ export const EditableCell = ({
       onMouseOver={handleMouseEnter}
       onMouseOut={handleMouseOut}
       position="relative"
+      onClick={(e) => e.stopPropagation()}
     >
       {isEdit ? (
         <Flex

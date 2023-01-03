@@ -39,7 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#59](https://github.com/alleslabs/celatone-frontend/pull/58) Wireup code name,description, and cta section
+- [#60](https://github.com/alleslabs/celatone-frontend/pull/60) Add navigation to contract row
+- [#59](https://github.com/alleslabs/celatone-frontend/pull/59) Wireup code name,description, and cta section
 - [#53](https://github.com/alleslabs/celatone-frontend/pull/53) Show contract description in contract details page
 - [#58](https://github.com/alleslabs/celatone-frontend/pull/58) Wireup top section in contract details page
 - [#54](https://github.com/alleslabs/celatone-frontend/pull/54) Render execute cmds shortcut in contract details page

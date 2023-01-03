@@ -28,6 +28,7 @@ export const TagsCell = ({
       position="relative"
       onMouseOver={handleMouseEnter}
       onMouseOut={handleMouseOut}
+      onClick={(e) => e.stopPropagation()}
     >
       <Flex gap={1} color="text.dark" opacity={isHover ? "0" : "1"}>
         {tags.length ? (

@@ -70,9 +70,9 @@ export const OffChainForm = <T extends OffchainDetail>({
       />
       <TagSelection
         result={state.tags}
+        setResult={setTagsValue}
         placeholder="Tags"
         helperText="Add tag to organize and manage your contracts"
-        setResult={setTagsValue}
         labelBgColor={labelBgColor}
       />
       <ListSelection
