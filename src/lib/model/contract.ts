@@ -3,12 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import {
-  useCodeStore,
-  useContractStore,
-  useEndpoint,
-  useUserKey,
-} from "lib/hooks";
+import { useCodeStore, useContractStore, useEndpoint } from "lib/hooks";
 import type { InstantiateInfo, PublicInfo } from "lib/services/contract";
 import {
   queryPublicInfo,
@@ -83,7 +78,6 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 export const useContractDetail = (
   contractAddress: ContractAddr
 ): ContractDetail | undefined => {
-  const userKey = useUserKey();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractInfo } = useContractStore();
@@ -111,7 +105,7 @@ export const useContractDetail = (
   );
 
   const codeInfo = instantiateInfo
-    ? getCodeLocalInfo(userKey, Number(instantiateInfo.codeId))
+    ? getCodeLocalInfo(Number(instantiateInfo.codeId))
     : undefined;
   const contractInfo = getContractInfo(contractAddress);
 

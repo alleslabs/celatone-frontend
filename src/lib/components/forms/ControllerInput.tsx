@@ -24,6 +24,7 @@ interface ControllerInputProps<T extends FieldValues>
   control: Control<T>;
   rules?: UseControllerProps["rules"];
   status?: FormStatus;
+  maxLength?: number;
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -38,6 +39,7 @@ export const ControllerInput = <T extends FieldValues>({
   type = "text",
   rules = {},
   status,
+  maxLength,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -74,6 +76,7 @@ export const ControllerInput = <T extends FieldValues>({
         type={type}
         value={watcher}
         onChange={field.onChange}
+        maxLength={maxLength}
       />
       {/* TODO: add status */}
       {isError ? (

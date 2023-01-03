@@ -3,6 +3,7 @@ import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { useExecuteCmds } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -16,7 +17,6 @@ import {
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
-import { useExecuteCmds } from "./hook/useExecuteCmds";
 
 const Execute = () => {
   const router = useRouter();

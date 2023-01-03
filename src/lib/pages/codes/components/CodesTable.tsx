@@ -150,7 +150,9 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
           <Button variant="outline-gray" size="sm" onClick={goToInstantiate}>
             Instantiate
           </Button>
-          {isRemovable && <RemoveCode codeId={code.id} />}
+          {isRemovable && (
+            <RemoveCode codeId={code.id} description={code.description} />
+          )}
         </HStack>
       </Td>
     </Tr>

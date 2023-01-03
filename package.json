@@ -64,14 +64,17 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.39.7",
     "react-icons": "^4.6.0",
+    "react-linkify": "^1.0.0-alpha",
     "react-responsive": "^9.0.0",
     "rxjs": "^7.5.7",
-    "snake-case": "^3.0.4"
+    "snake-case": "^3.0.4",
+    "use-clamp-text": "^1.1.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.1.0",
     "@commitlint/cz-commitlint": "^17.1.2",
     "@types/react": "^18.0.21",
+    "@types/react-linkify": "^1.0.1",
     "commitizen": "^4.2.5",
     "commitlint": "^17.1.2",
     "cross-env": "^7.0.3",

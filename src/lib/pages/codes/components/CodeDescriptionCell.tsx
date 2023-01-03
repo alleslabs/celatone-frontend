@@ -3,7 +3,7 @@ import { MdCheckCircle } from "react-icons/md";
 
 import { EditableCell } from "lib/components/table";
 import { MAX_CODE_DESCRIPTION_LENGTH } from "lib/data";
-import { useCodeStore, useUserKey } from "lib/hooks";
+import { useCodeStore } from "lib/hooks";
 
 interface CodeDescriptionCellProps {
   codeId: number;
@@ -16,12 +16,11 @@ export const CodeDescriptionCell = ({
 }: CodeDescriptionCellProps) => {
   const toast = useToast();
   const { updateCodeInfo } = useCodeStore();
-  const userKey = useUserKey();
 
   const onSave = (inputValue?: string) => {
-    updateCodeInfo(userKey, codeId, { description: inputValue });
+    updateCodeInfo(codeId, { description: inputValue });
     toast({
-      title: "Changed description successfully!",
+      title: "New Code Description saved",
       status: "success",
       duration: 5000,
       isClosable: false,
