@@ -1,6 +1,6 @@
 import type { LayoutProps } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/ace";
@@ -9,10 +9,12 @@ import "ace-builds/src-noconflict/theme-monokai";
 
 interface JsonEditorProps {
   value: string;
-  setValue: (value: string) => void;
+  setValue?: (value: string) => void;
   readOnly?: boolean;
   isValid: boolean;
   height?: LayoutProps["height"];
+  showFullMsg?: boolean;
+  disableResizing?: boolean;
 }
 
 const JsonEditor = ({
@@ -21,8 +23,29 @@ const JsonEditor = ({
   readOnly = false,
   isValid,
   height = "sm",
+  showFullMsg,
+  disableResizing,
 }: JsonEditorProps) => {
   const editorRef = useRef<AceEditor>(null);
+  const [boxHeight, setBoxHeight] = useState(height);
+  /**
+   * @todos revisit later for improving height calculation method
+   */
+  useEffect(() => {
+    if (showFullMsg && height !== 0) {
+      const contentHeight =
+        editorRef.current?.editor.renderer.container.clientHeight;
+      const parsedHeight =
+        typeof height === "string" ? parseInt(height, 10) : height;
+      const targetHeight =
+        contentHeight !== undefined && contentHeight > parsedHeight
+          ? contentHeight
+          : height;
+      setBoxHeight(targetHeight);
+    } else {
+      setBoxHeight(height);
+    }
+  }, [height, showFullMsg]);
 
   useEffect(() => {
     const resize = () => {
@@ -35,7 +58,12 @@ const JsonEditor = ({
   });
 
   return (
-    <Box height={height} resize="vertical" overflow="auto">
+    <Box
+      height={boxHeight}
+      resize={disableResizing ? "unset" : "vertical"}
+      overflow="auto"
+      transition="all .15s"
+    >
       <AceEditor
         ref={editorRef}
         mode="json"
@@ -55,6 +83,7 @@ const JsonEditor = ({
           showGutter: false,
           wrap: readOnly && !isValid,
           printMargin: false,
+          maxLines: 9999,
         }}
         onChange={setValue}
         value={value}
