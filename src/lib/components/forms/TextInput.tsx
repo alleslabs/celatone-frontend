@@ -23,6 +23,7 @@ export interface TextInputProps extends FormControlProps {
   error?: string;
   type?: HTMLInputTypeAttribute;
   status?: FormStatus;
+  maxLength?: number;
 }
 
 export const TextInput = ({
@@ -36,6 +37,7 @@ export const TextInput = ({
   size = "lg",
   type = "text",
   status,
+  maxLength,
   ...componentProps
 }: TextInputProps) => {
   // Design system size: md = 40px, lg = 56px
@@ -63,6 +65,7 @@ export const TextInput = ({
           value={value}
           pr={status && "36px"}
           onChange={(e) => setInputState(e.target.value)}
+          maxLength={maxLength}
         />
         <InputRightElement h="full">
           {status && getStatusIcon(status.state)}

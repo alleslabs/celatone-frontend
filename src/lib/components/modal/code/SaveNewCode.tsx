@@ -11,7 +11,7 @@ import {
   getMaxCodeDescriptionLengthError,
   MAX_CODE_DESCRIPTION_LENGTH,
 } from "lib/data";
-import { useCodeStore, useEndpoint, useUserKey } from "lib/hooks";
+import { useCodeStore, useEndpoint } from "lib/hooks";
 import { getCodeIdInfo } from "lib/services/code";
 
 interface ModalProps {
@@ -48,7 +48,6 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
 
   /* DEPENDENCY */
   const toast = useToast();
-  const userKey = useUserKey();
   const { isCodeIdExist, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
   const endpoint = useEndpoint();
@@ -85,15 +84,15 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   const handleSave = () => {
     const id = Number(codeId);
 
-    saveNewCode(userKey, id);
+    saveNewCode(id);
 
     if (description.trim().length) {
-      updateCodeInfo(userKey, id, {
+      updateCodeInfo(id, {
         description,
         uploader,
       });
     } else {
-      updateCodeInfo(userKey, id, {
+      updateCodeInfo(id, {
         uploader,
       });
     }
@@ -135,7 +134,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     } else {
       setCodeIdStatus({ state: "loading" });
 
-      if (isCodeIdExist(userKey, Number(codeId))) {
+      if (isCodeIdExist(Number(codeId))) {
         setCodeIdStatus({
           state: "error",
           message: "You already added this Code ID",
@@ -150,16 +149,16 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     }
 
     return () => {};
-  }, [userKey, isCodeIdExist, codeId, refetch]);
+  }, [isCodeIdExist, codeId, refetch]);
 
   // update code description
   useEffect(() => {
     if (codeIdStatus.state === "success") {
       const localDescription =
-        getCodeLocalInfo(userKey, Number(codeId))?.description ?? "";
+        getCodeLocalInfo(Number(codeId))?.description ?? "";
       setDescription(localDescription);
     }
-  }, [codeId, codeIdStatus.state, getCodeLocalInfo, setDescription, userKey]);
+  }, [codeId, codeIdStatus.state, getCodeLocalInfo, setDescription]);
 
   /* LOGIC */
   // TODO: apply use-react-form later
