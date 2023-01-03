@@ -26,6 +26,7 @@ const Header = () => {
       align="center"
       justifyContent="space-between"
       px={6}
+      mb={1}
     >
       <Link href="/">
         <Image
