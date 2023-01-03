@@ -1,17 +1,12 @@
 import { ButtonGroup, Flex, Spinner, Text } from "@chakra-ui/react";
 import router from "next/router";
 
-import { useQueryCmds } from "lib/app-provider";
+import { useExecuteCmds, useQueryCmds } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import type { ContractAddr } from "lib/types";
 import { encode, getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 export const CommandSection = () => {
-  /**
-   * @todos
-   * - Make an interface
-   * - Wireup with real execute commands data
-   */
   const contractAddress = getFirstQueryParam(
     router.query.contractAddress
   ) as ContractAddr;
@@ -20,11 +15,19 @@ export const CommandSection = () => {
     contractAddress,
   });
 
-  const renderQueryCmds = () => {
-    if (isQueryCmdsFetching) {
+  const { isFetching: isExecuteCmdsFetching, execCmds } = useExecuteCmds({
+    contractAddress,
+  });
+
+  const renderCmds = (
+    isFetching: boolean,
+    cmds: [string, string][],
+    type: string
+  ) => {
+    if (isFetching) {
       return <Spinner color="gray.400" size="md" mx={1} />;
     }
-    if (queryCmds.length) {
+    if (cmds.length) {
       return (
         <ButtonGroup
           width="90%"
@@ -37,16 +40,16 @@ export const CommandSection = () => {
             },
           }}
         >
-          {queryCmds.map(([cmd, queryMsg]) => (
+          {cmds.map(([cmd, msg]) => (
             <ContractCmdButton
-              key={`query-cmd-${cmd}`}
+              key={`${type}-cmd-${cmd}`}
               cmd={cmd}
               onClickCmd={() => {
                 router.push({
-                  pathname: "/query",
+                  pathname: `/${type}`,
                   query: {
                     contract: contractAddress,
-                    msg: encode(jsonPrettify(queryMsg)),
+                    msg: encode(jsonPrettify(msg)),
                   },
                 });
               }}
@@ -61,6 +64,7 @@ export const CommandSection = () => {
       </Text>
     );
   };
+
   return (
     <Flex gap={6}>
       <Flex
@@ -73,7 +77,7 @@ export const CommandSection = () => {
         <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
           Query Shortcuts
         </Text>
-        {renderQueryCmds()}
+        {renderCmds(isQueryCmdsFetching, queryCmds, "query")}
       </Flex>
       <Flex
         direction="column"
@@ -85,7 +89,7 @@ export const CommandSection = () => {
         <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
           Execute Shortcuts
         </Text>
-        {/* Execute Contract Commands */}
+        {renderCmds(isExecuteCmdsFetching, execCmds, "execute")}
       </Flex>
     </Flex>
   );
