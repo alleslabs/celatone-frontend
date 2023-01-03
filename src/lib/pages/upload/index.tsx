@@ -141,6 +141,7 @@ const Upload = () => {
         helperText="Short description of your code. You can add or change this later."
         my="32px"
         status={descStatus}
+        maxLength={MAX_CODE_DESCRIPTION_LENGTH}
       />
       <Flex
         fontSize="14px"

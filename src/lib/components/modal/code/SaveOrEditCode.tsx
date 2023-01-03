@@ -12,6 +12,7 @@ import type { ActionModalProps } from "..";
 import { ActionModal } from "..";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
+import { MAX_CODE_DESCRIPTION_LENGTH } from "lib/data";
 import { useCodeStore, useGetAddressType } from "lib/hooks";
 import type { CodeInfo } from "lib/types";
 
@@ -160,6 +161,7 @@ export const SaveOrEditCodeModal = observer(
           helperText="Fill in code description to define its use as a reminder"
           label="Code Description"
           labelBgColor="gray.800"
+          maxLength={MAX_CODE_DESCRIPTION_LENGTH}
         />
       </ActionModal>
     );
