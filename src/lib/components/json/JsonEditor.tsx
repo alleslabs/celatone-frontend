@@ -28,7 +28,9 @@ const JsonEditor = ({
 }: JsonEditorProps) => {
   const editorRef = useRef<AceEditor>(null);
   const [boxHeight, setBoxHeight] = useState(height);
-
+  /**
+   * @todos revisit later for improving height calculation method
+   */
   useEffect(() => {
     if (showFullMsg && height !== 0) {
       const contentHeight =

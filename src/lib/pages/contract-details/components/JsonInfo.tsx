@@ -21,7 +21,9 @@ export const JsonInfo = ({
   defaultExpand = false,
 }: JsonInfoProps) => {
   const [expand, setExpand] = useState(defaultExpand);
-
+  /**
+   * @todos revist height and expand mechanism later
+   */
   return (
     <>
       <Flex
