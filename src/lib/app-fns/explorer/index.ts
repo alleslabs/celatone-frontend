@@ -19,3 +19,20 @@ export const getExplorerTxUrl = (chainName: string) => {
   }
   return `${explorerMap[chainName]}/${pathSuffix}`;
 };
+
+// NOTE - Seperate the function for further implementation
+export const getExplorerUserAddressUrl = (chainName: string) => {
+  let pathSuffix = "";
+  switch (chainName) {
+    case "osmosis":
+    case "osmosistestnet":
+      pathSuffix = "account";
+      break;
+    case "terra2":
+      pathSuffix = "address";
+      break;
+    default:
+      break;
+  }
+  return `${explorerMap[chainName]}/${pathSuffix}`;
+};

@@ -7,13 +7,12 @@ import { useEffect, useContext, useMemo, createContext } from "react";
 
 import { getIndexerGraphClient } from "../query-client";
 import type { AppConstants } from "../types";
-import { getExplorerTxUrl } from "lib/app-fns/explorer";
-import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import {
-  DEFAULT_ADDRESS,
-  DEFAULT_CHAIN,
+  getExplorerTxUrl,
   getExplorerUserAddressUrl,
-} from "lib/data";
+} from "lib/app-fns/explorer";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { DEFAULT_ADDRESS, DEFAULT_CHAIN } from "lib/data";
 import { useCodeStore, useContractStore } from "lib/hooks";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";

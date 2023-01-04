@@ -2,7 +2,10 @@ import type { BoxProps } from "@chakra-ui/react";
 import { Box, Link, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { getExplorerTxUrl, getExplorerUserAddressUrl } from "lib/data";
+import {
+  getExplorerTxUrl,
+  getExplorerUserAddressUrl,
+} from "lib/app-fns/explorer";
 import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
