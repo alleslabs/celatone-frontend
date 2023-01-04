@@ -20,7 +20,6 @@ export const getExplorerTxUrl = (chainName: string) => {
   return `${explorerMap[chainName]}/${pathSuffix}`;
 };
 
-// NOTE - Seperate the function for further implementation
 export const getExplorerUserAddressUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
