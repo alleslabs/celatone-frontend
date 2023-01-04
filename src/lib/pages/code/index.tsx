@@ -37,7 +37,7 @@ const CodeDetails = observer(() => {
             <Text fontWeight={500} color="text.dark" variant="body2">
               Code ID
             </Text>
-            <ExplorerLink value={codeId} />
+            <ExplorerLink type="code_id" value={codeId} />
           </Flex>
         </Flex>
         {/* TODO: Check uploader with data hook */}
