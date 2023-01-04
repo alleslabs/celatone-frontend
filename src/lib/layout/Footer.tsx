@@ -17,27 +17,27 @@ const Footer = () => {
     >
       <Flex direction="row" gap={1} align="center">
         <Link href="https://github.com/alleslabs" target="_blank">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="xs">
             <Icon as={BsGithub} width="16px" height="16px" color="gray.600" />
           </Button>
         </Link>
         <Link href="https://twitter.com/celatone_" target="_blank">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="xs">
             <Icon as={BsTwitter} width="16px" height="16px" color="gray.600" />
           </Button>
         </Link>
         <Link href="https://medium.com/alles-labs" target="_blank">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="xs">
             <Icon as={BsMedium} width="16px" height="16px" color="gray.600" />
           </Button>
         </Link>
         <Link href="https://t.me/celatone" target="_blank">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="xs">
             <Icon as={BsTelegram} width="16px" height="16px" color="gray.600" />
           </Button>
         </Link>
         <Link href="https://alleslabs.canny.io/celatone" target="_blank">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="xs">
             <Flex gap={1} align="center">
               <Icon
                 as={BiUserVoice}
@@ -56,7 +56,7 @@ const Footer = () => {
       <Flex direction="column" alignItems="end" minW="60px">
         <Button
           variant="ghost"
-          size="sm"
+          size="xs"
           sx={{ _hover: { "> div > svg": { opacity: "100" } } }}
         >
           <Link href="https://twitter.com/alleslabs">
