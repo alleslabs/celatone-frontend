@@ -1,68 +1,87 @@
-import { Flex, Text, Icon } from "@chakra-ui/react";
-import Image from "next/image";
+import { Flex, Text, Icon, Button } from "@chakra-ui/react";
+// import Image from "next/image";
 import Link from "next/link";
-import { IoLogoGithub, IoLogoTwitter } from "react-icons/io";
+import { BiUserVoice } from "react-icons/bi";
+import { BsMedium, BsGithub, BsTwitter, BsTelegram } from "react-icons/bs";
+import { IoSparklesSharp } from "react-icons/io5";
 
 const Footer = () => {
   return (
     <Flex
       as="footer"
-      maxHeight="160px"
-      align="end"
+      align="center"
       justifyContent="space-between"
-      p={12}
+      px={12}
+      py={4}
       mx={1}
-      backgroundColor="gray.900"
     >
-      <Flex direction="column" gap={2}>
-        <Link href="/">
-          <Image
-            src="/celatone-logo.svg"
-            alt="Celatone"
-            width={100}
-            height={4}
-          />
+      <Flex direction="row" gap={1} align="center">
+        <Link href="https://github.com/alleslabs" target="_blank">
+          <Button variant="ghost" size="sm">
+            <Icon as={BsGithub} width="16px" height="16px" color="gray.600" />
+          </Button>
         </Link>
-        <Text variant="body3" color="text.dark">
-          Deploy, explore, interact, and organize CosmWasm contracts with ease
-          using Celatone. <br />
-          Our tool makes it easy to interact with smart contracts on various
-          networks.
-        </Text>
+        <Link href="https://twitter.com/celatone_" target="_blank">
+          <Button variant="ghost" size="sm">
+            <Icon as={BsTwitter} width="16px" height="16px" color="gray.600" />
+          </Button>
+        </Link>
+        <Link href="https://medium.com/alles-labs" target="_blank">
+          <Button variant="ghost" size="sm">
+            <Icon as={BsMedium} width="16px" height="16px" color="gray.600" />
+          </Button>
+        </Link>
+        <Link href="https://t.me/celatone" target="_blank">
+          <Button variant="ghost" size="sm">
+            <Icon as={BsTelegram} width="16px" height="16px" color="gray.600" />
+          </Button>
+        </Link>
+        <Link href="https://alleslabs.canny.io/celatone" target="_blank">
+          <Button variant="ghost" size="sm">
+            <Flex gap={1} align="center">
+              <Icon
+                as={BiUserVoice}
+                width="18px"
+                height="18px"
+                color="gray.600"
+              />
+              <Text variant="body3" color="gray.600">
+                Feedback
+              </Text>
+            </Flex>
+          </Button>
+        </Link>
       </Flex>
-      <Flex direction="column" gap={2} alignItems="end">
-        <Flex gap={4}>
-          <Link href="https://github.com/alleslabs" target="_blank">
-            <Icon
-              as={IoLogoGithub}
-              width="24px"
-              height="24px"
-              color="gray.600"
-              transition="all .2s"
-              _hover={{ color: "gray.500" }}
-              cursor="pointer"
-            />
+      <Flex />
+      <Flex direction="column" alignItems="end" minW="60px">
+        <Button
+          variant="ghost"
+          size="sm"
+          sx={{ _hover: { "> div > svg": { opacity: "100" } } }}
+        >
+          <Link href="https://twitter.com/alleslabs">
+            <Flex
+              gap={1}
+              align="center"
+              sx={{ _hover: { "> svg": { opacity: "100" } } }}
+            >
+              <Icon
+                as={IoSparklesSharp}
+                width="16px"
+                height="16px"
+                color="gray.600"
+                opacity="0"
+                transition="all .25s ease-in-out"
+              />
+              <Text variant="body3" color="gray.600">
+                Made by
+              </Text>
+              <Text variant="body3" color="primary.main">
+                Alles Labs
+              </Text>
+            </Flex>
           </Link>
-          <Link href="https://twitter.com/celatone_" target="_blank">
-            <Icon
-              as={IoLogoTwitter}
-              width="24px"
-              height="24px"
-              color="gray.600"
-              transition="all .2s"
-              _hover={{ color: "gray.500" }}
-              cursor="pointer"
-            />
-          </Link>
-        </Flex>
-        <Flex gap={1}>
-          <Text variant="body3">Made by </Text>
-          <Link href="/">
-            <Text variant="body3" color="primary.main">
-              Alles Labs
-            </Text>
-          </Link>
-        </Flex>
+        </Button>
       </Flex>
     </Flex>
   );
