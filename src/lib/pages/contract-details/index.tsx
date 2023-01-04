@@ -7,14 +7,14 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import router from "next/router";
+import { useRouter } from "next/router";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { useContractDetail } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description/ContractDesc";
@@ -27,30 +27,47 @@ const ContractDetails = observer(() => {
   /**
    * @todos add contract address validation function here
    */
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
-  const contractDetail = useContractDetail(contractAddress as ContractAddr);
+  const router = useRouter();
+  const contractAddressParam = getFirstQueryParam(
+    router.query.contractAddress
+  ) as ContractAddr;
+
+  const contractDetails = useContractDetail(contractAddressParam);
 
   // TODO - Wait for design
-  if (!contractDetail) return null;
+  if (!contractDetails) return null;
 
   return (
     <PageContainer>
       <BackButton />
-      <ContractTop contractDetail={contractDetail} />
+      <ContractTop contractDetail={contractDetails} />
       {/* Tokens Section */}
       <TokenSection />
       {/* Contract Description Section */}
-      <ContractDesc contractDetail={contractDetail} />
+      <ContractDesc contractDetail={contractDetails} />
       {/* Query/Execute commands section */}
       <CommandSection />
       {/* Instantiate/Contract Info Section */}
       <Flex my={12} justify="space-between">
         {/* Instantiate Info */}
-        <InstantiateInfo contractDetail={contractDetail} />
+        <InstantiateInfo contractDetail={contractDetails} />
         {/* Contract Info (Expand) */}
-        <Flex direction="column" flex={0.8} gap={6}>
-          <JsonInfo header="Contract Info" />
-          <JsonInfo header="Instantiate Messages" />
+        <Flex direction="column" flex={0.8} gap={4}>
+          <JsonInfo
+            header="Contract Info"
+            jsonString={jsonPrettify(
+              JSON.stringify(
+                contractDetails?.instantiateInfo?.raw.contract_info ?? {}
+              )
+            )}
+            jsonAreaHeight="180px"
+          />
+          <JsonInfo
+            header="Instantiate Messages"
+            jsonString={jsonPrettify(contractDetails?.initMsg ?? "")}
+            showViewFullButton
+            defaultExpand
+          />
         </Flex>
       </Flex>
       {/* History Table section */}
