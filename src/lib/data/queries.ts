@@ -70,3 +70,51 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
     }
   }
 `);
+
+export const getExecuteTransactionsFromContractAddress = graphql(`
+  query getExecuteTransactionsFromContractAddress(
+    $contractAddress: String!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    contract_transactions(
+      where: {
+        contract: { address: { _eq: $contractAddress } }
+        transaction: { is_execute: { _eq: true } }
+      }
+      order_by: { transaction: { block_height: asc } }
+      limit: $pageSize
+      offset: $offset
+    ) {
+      transaction {
+        hash
+        messages
+        success
+        account {
+          address
+        }
+        block {
+          height
+          timestamp
+        }
+      }
+    }
+  }
+`);
+
+export const getExecuteTransactionsCountFromContractAddress = graphql(`
+  query getExecuteTransactionsCountFromContractAddress(
+    $contractAddress: String!
+  ) {
+    contract_transactions_aggregate(
+      where: {
+        contract: { address: { _eq: $contractAddress } }
+        transaction: { is_execute: { _eq: true } }
+      }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);

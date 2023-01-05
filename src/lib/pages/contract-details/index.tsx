@@ -21,6 +21,7 @@ import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
+import { ExecuteTable } from "./components/tables/Execute";
 import { TokenSection } from "./components/TokenSection";
 
 const ContractDetails = observer(() => {
@@ -35,7 +36,7 @@ const ContractDetails = observer(() => {
   const contractDetails = useContractDetail(contractAddressParam);
 
   // TODO - Wait for design
-  if (!contractDetails || !contractDetails.instantiateInfo) return null;
+  if (!contractDetails) return null;
 
   return (
     <PageContainer>
@@ -89,9 +90,7 @@ const ContractDetails = observer(() => {
             </Heading>
           </TabPanel>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              Executes Table
-            </Heading>
+            <ExecuteTable contractAddress={contractAddressParam} />
           </TabPanel>
           <TabPanel p={0}>
             <Heading as="h6" variant="h6" color="error.main">

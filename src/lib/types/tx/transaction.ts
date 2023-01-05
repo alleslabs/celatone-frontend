@@ -7,14 +7,18 @@ import type {
 
 export interface Transaction {
   hash: string;
-  isSend: boolean;
-  isExecute: boolean;
-  isInstantiate: boolean;
-  isStoreCode: boolean;
-  isIbc: boolean;
+  isSend?: boolean;
+  isExecute?: boolean;
+  isInstantiate?: boolean;
+  isStoreCode?: boolean;
+  isIbc?: boolean;
   messages: Message[];
   success: boolean;
+  account?: {
+    address: string;
+  };
   block: {
+    height?: number;
     timestamp: string;
   };
 }
@@ -34,4 +38,13 @@ interface Logs {
 export interface Msg {
   msg: object[];
   contract: string;
+}
+
+export interface ExecuteTransaction {
+  hash: string;
+  messages: Message[];
+  sender: string;
+  height: number;
+  created: Date;
+  success: boolean;
 }

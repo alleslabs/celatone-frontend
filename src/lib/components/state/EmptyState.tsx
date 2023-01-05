@@ -14,7 +14,7 @@ export const EmptyState = ({
   return (
     <Flex alignItems="center" flexDir="column" gap="4">
       <Icon as={icon} color="gray.600" boxSize="16" />
-      <Text color="gray.500" w="440px" textAlign="center">
+      <Text color="gray.500" w="500px" textAlign="center">
         {message}
       </Text>
     </Flex>

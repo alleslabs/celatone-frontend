@@ -7,9 +7,11 @@ import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
   getInstantiateDetailByContractQueryDocument,
+  getExecuteTransactionsFromContractAddress,
+  getExecuteTransactionsCountFromContractAddress,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { ContractAddr, ExecuteTransaction, HumanAddr } from "lib/types";
 import { parseTxHash } from "lib/utils/parser";
 
 interface InstantiateDetail {
@@ -82,6 +84,66 @@ export const useInstantiateDetailByContractQuery = (
     queryFn,
     {
       keepPreviousData: true,
+    }
+  );
+};
+
+export const useExecuteTransactionsFromContractAddress = (
+  contractAddress: ContractAddr,
+  offset: number,
+  pageSize: number
+): UseQueryResult<ExecuteTransaction[] | undefined> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getExecuteTransactionsFromContractAddress, {
+        contractAddress,
+        offset,
+        pageSize,
+      })
+      .then(({ contract_transactions }) =>
+        contract_transactions.map((transaction) => ({
+          hash: transaction.transaction.hash,
+          messages: transaction.transaction.messages,
+          sender: transaction.transaction.account.address,
+          height: transaction.transaction.block.height,
+          created: new Date(`${transaction.transaction?.block?.timestamp}Z`),
+          success: transaction.transaction.success,
+        }))
+      );
+  }, [contractAddress, offset, pageSize]);
+
+  return useQuery(
+    ["execute_transactions_from_contract_addr", contractAddress],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
+export const useExecuteTransactionsCountFromContractAddress = (
+  contractAddress: ContractAddr
+): UseQueryResult<number | undefined> => {
+  const queryFn = useCallback(async () => {
+    if (!contractAddress) return undefined;
+
+    return indexerGraphClient
+      .request(getExecuteTransactionsCountFromContractAddress, {
+        contractAddress,
+      })
+      .then(
+        ({ contract_transactions_aggregate }) =>
+          contract_transactions_aggregate?.aggregate?.count
+      );
+  }, [contractAddress]);
+
+  return useQuery(
+    ["execute_transactions_count_from_contract_addr", contractAddress],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
     }
   );
 };

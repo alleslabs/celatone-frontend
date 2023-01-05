@@ -11,6 +11,8 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
+  useExecuteTransactionsCountFromContractAddress,
+  useExecuteTransactionsFromContractAddress,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
@@ -132,5 +134,26 @@ export const useContractDetail = (
     initTxHash: instantiateDetail.initTxHash,
     initProposalTitle,
     initProposalId,
+  };
+};
+
+export const useExecuteTransactions = (
+  contractAddress: ContractAddr,
+  offset: number,
+  pageSize: number
+) => {
+  const { data: executeTransaction, refetch } =
+    useExecuteTransactionsFromContractAddress(
+      contractAddress,
+      offset,
+      pageSize
+    );
+  const { data: count = 0 } =
+    useExecuteTransactionsCountFromContractAddress(contractAddress);
+
+  return {
+    executeTransaction,
+    count,
+    refetch,
   };
 };
