@@ -5,41 +5,41 @@ import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { EditContractDetails } from "lib/components/modal";
-import type { ContractDetail } from "lib/model/contract";
+import type { ContractData } from "lib/model/contract";
 import { textLine } from "lib/utils";
 
 import { ShowMoreButton } from "./ShowMoreButton";
 
 interface UserContractDescProps {
-  contractDetail: ContractDetail;
+  contractData: ContractData;
 }
-export const UserContractDesc = ({ contractDetail }: UserContractDescProps) => {
+export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
   const description = useMemo(
-    () => contractDetail.contractInfo?.description,
-    [contractDetail.contractInfo?.description]
+    () => contractData.contractInfo?.description,
+    [contractData.contractInfo?.description]
   );
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "No contract description",
     ellipsis: "...",
-    lines: textLine(!contractDetail.publicInfo?.description, showMore),
+    lines: textLine(!contractData.publicInfo?.description, showMore),
   });
 
   const renderEditContractButton = () => {
-    if (!contractDetail.instantiateInfo) return null;
+    if (!contractData.instantiateInfo) return null;
     return (
       <EditContractDetails
         contractInfo={{
-          contractAddress: contractDetail.instantiateInfo.contractAddress,
-          instantiator: contractDetail.instantiateInfo.instantiator,
-          label: contractDetail.instantiateInfo.label,
-          created: contractDetail.instantiateInfo.createdTime,
-          name: contractDetail.contractInfo?.name,
+          contractAddress: contractData.instantiateInfo.contractAddress,
+          instantiator: contractData.instantiateInfo.instantiator,
+          label: contractData.instantiateInfo.label,
+          created: contractData.instantiateInfo.createdTime,
+          name: contractData.contractInfo?.name,
           description,
-          tags: contractDetail.contractInfo?.tags,
-          lists: contractDetail.contractInfo?.lists,
+          tags: contractData.contractInfo?.tags,
+          lists: contractData.contractInfo?.lists,
         }}
         triggerElement={
           <Button
