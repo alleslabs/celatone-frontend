@@ -33,6 +33,7 @@ const Codes = observer(() => {
       <Heading as="h1" size="lg" color="white" mb={4}>
         Code Lists
       </Heading>
+
       <Tabs>
         <TabList border="none" mb="32px">
           <CustomTab count={allCodesCount}>All Codes</CustomTab>

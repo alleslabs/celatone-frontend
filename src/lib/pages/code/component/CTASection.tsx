@@ -1,8 +1,8 @@
 import { Flex, Button, chakra, Icon } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
 import { MdCheck } from "react-icons/md";
 
-import { InstantiateButton } from "lib/components/button/InstantiateButton";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import { SaveOrEditCodeModal } from "lib/components/modal/code/SaveOrEditCode";
 import { useCodeStore } from "lib/hooks";
@@ -16,14 +16,21 @@ const StyledIcon = chakra(Icon, {
 
 export const CTASection = observer(
   ({ id, ...codeInfo }: Omit<CodeInfo, "contracts">) => {
+    const router = useRouter();
     const { isCodeIdExist } = useCodeStore();
     const isSaved = isCodeIdExist(id);
 
     return (
       <Flex gap={4}>
         {isSaved && <SaveOrEditCodeModal mode="edit" id={id} {...codeInfo} />}
-        {/* TODO: change permission */}
-        <InstantiateButton permission="any" codeId={id} />
+        <Button
+          variant="outline-primary"
+          onClick={() =>
+            router.push({ pathname: "/instantiate", query: { "code-id": id } })
+          }
+        >
+          Instantiate
+        </Button>
         {isSaved ? (
           <RemoveCode
             codeId={id}
