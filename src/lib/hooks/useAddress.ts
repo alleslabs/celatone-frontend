@@ -56,22 +56,19 @@ const validateAddress = (
   return null;
 };
 
-export const useValidateContractAddress = () => {
+export const useValidateAddress = () => {
   const { currentChainRecord } = useWallet();
 
-  return useCallback(
-    (address: string) =>
-      validateAddress(currentChainRecord, address, "contract_address"),
-    [currentChainRecord]
-  );
-};
-
-export const useValidateUserAddress = () => {
-  const { currentChainRecord } = useWallet();
-
-  return useCallback(
-    (address: string) =>
-      validateAddress(currentChainRecord, address, "user_address"),
-    [currentChainRecord]
-  );
+  return {
+    validateContractAddress: useCallback(
+      (address: string) =>
+        validateAddress(currentChainRecord, address, "contract_address"),
+      [currentChainRecord]
+    ),
+    validateUserAddress: useCallback(
+      (address: string) =>
+        validateAddress(currentChainRecord, address, "user_address"),
+      [currentChainRecord]
+    ),
+  };
 };
