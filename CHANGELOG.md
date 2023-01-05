@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#65](https://github.com/alleslabs/celatone-frontend/pull/60) Create instantiate button component
 - [#60](https://github.com/alleslabs/celatone-frontend/pull/60) Add navigation to contract row
 - [#47](https://github.com/alleslabs/celatone-frontend/pull/47) Wireup init msg in contract details page
 - [#51](https://github.com/alleslabs/celatone-frontend/pull/51) Wireup contract info in contract details page
