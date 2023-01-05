@@ -8,12 +8,6 @@ export type AddressReturnType =
   | "contract_address"
   | "invalid_address";
 
-export type AddressValidationError =
-  | null
-  | "Invalid Network"
-  | "Incorrect Prefix"
-  | "Invalid Address Length";
-
 const addressLengthMap: {
   [key: string]: { [length: number]: AddressReturnType };
 } = {
@@ -48,15 +42,16 @@ const validateAddress = (
   address: string,
   addressType: AddressReturnType
 ) => {
-  if (!currentChainRecord) return "Invalid Network";
+  if (!currentChainRecord) return "Invalid network";
   if (getAddressTypeByLength(currentChainRecord.name, address) !== addressType)
-    return "Invalid Address Length";
+    return "Invalid address length";
 
   try {
-    if (fromBech32(address).prefix !== currentChainRecord.chain.bech32_prefix)
-      return "Incorrect Prefix";
+    const { prefix } = fromBech32(address);
+    if (prefix !== currentChainRecord.chain.bech32_prefix)
+      return `Invalid prefix (${prefix})`;
   } catch (e) {
-    return e;
+    return (e as Error).message;
   }
   return null;
 };

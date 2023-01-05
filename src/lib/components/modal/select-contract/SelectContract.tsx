@@ -22,7 +22,11 @@ import { MdChevronLeft } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useContractStore, useEndpoint } from "lib/hooks";
+import {
+  useContractStore,
+  useEndpoint,
+  useValidateContractAddress,
+} from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcContractError } from "lib/types";
@@ -44,6 +48,7 @@ export const SelectContract = ({
   } = useCelatoneApp();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
+  const validateContractAddress = useValidateContractAddress();
 
   const [searchContract, setSearchContract] = useState<ContractAddr>(
     "" as ContractAddr
@@ -131,7 +136,9 @@ export const SelectContract = ({
                   isDisabled={searchContract.length === 0}
                   isLoading={isFetching || isRefetching}
                   onClick={() => {
-                    refetch();
+                    const err = validateContractAddress(searchContract);
+                    if (err !== null) setInvalid(err);
+                    else refetch();
                   }}
                 >
                   Submit
