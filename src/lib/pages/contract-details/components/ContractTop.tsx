@@ -62,7 +62,7 @@ export const ContractTop = ({ contractDetail }: ContractTopProps) => {
               fontSize="22px"
               variant="none"
               aria-label="save"
-              color={contractInfo.lists ? "primary.main" : "none"}
+              color={contractInfo.lists ? "primary.main" : "gray.600"}
               icon={contractInfo.lists ? <MdBookmark /> : <MdBookmarkBorder />}
             />
           }
@@ -138,7 +138,7 @@ export const ContractTop = ({ contractDetail }: ContractTopProps) => {
         {/* TODO - Revisit, implement admin button */}
         <Button
           variant="outline-gray"
-          leftIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
+          rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
         >
           Admin
         </Button>
@@ -165,6 +165,7 @@ export const ContractTop = ({ contractDetail }: ContractTopProps) => {
                   fontSize="22px"
                   variant="none"
                   aria-label="edit"
+                  color="gray.600"
                   icon={<RiPencilFill />}
                 />
               }

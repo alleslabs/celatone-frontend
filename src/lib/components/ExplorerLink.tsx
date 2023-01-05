@@ -4,10 +4,9 @@ import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
 
 import {
-  getExplorerContractAddressUrl,
   getExplorerTxUrl,
   getExplorerUserAddressUrl,
-} from "lib/data";
+} from "lib/app-fns/explorer";
 import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
@@ -33,7 +32,7 @@ const getNavigationUrl = (
       url = getExplorerTxUrl(currentChainName);
       break;
     case "contract_address":
-      url = getExplorerContractAddressUrl(currentChainName);
+      url = "/contract";
       break;
     case "user_address":
       url = getExplorerUserAddressUrl(currentChainName);

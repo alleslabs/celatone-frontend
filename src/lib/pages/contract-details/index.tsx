@@ -35,7 +35,7 @@ const ContractDetails = observer(() => {
   const contractDetails = useContractDetail(contractAddressParam);
 
   // TODO - Wait for design
-  if (!contractDetails || !contractDetails.instantiateInfo) return null;
+  if (!contractDetails) return null;
 
   return (
     <PageContainer>
