@@ -6,7 +6,6 @@ import {
   Tr,
   Th,
   Td,
-  Button,
   TableContainer,
   Heading,
   HStack,
@@ -15,10 +14,10 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
+import { InstantiateButton } from "lib/components/button/InstantiateButton";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
@@ -115,12 +114,6 @@ const TableHead = () => {
 };
 
 const TableRow = ({ code, isRemovable }: CodesRowProps) => {
-  const router = useRouter();
-
-  const goToInstantiate = () => {
-    router.push({ pathname: "/instantiate", query: { "code-id": code.id } });
-  };
-
   return (
     <Tr
       borderBottom="1px solid #2E2E2E"
@@ -147,9 +140,8 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
       </Td>
       <Td width="20%">
         <HStack>
-          <Button variant="outline-gray" size="sm" onClick={goToInstantiate}>
-            Instantiate
-          </Button>
+          {/* TODO: Change permission */}
+          <InstantiateButton permission="any" codeId={code.id} />
           {isRemovable && (
             <RemoveCode codeId={code.id} description={code.description} />
           )}
