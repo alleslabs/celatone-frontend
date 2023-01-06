@@ -1,4 +1,5 @@
 import { Flex, Box, Text, Icon, Button, Spacer } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import {
@@ -19,8 +20,18 @@ import { useContractStore } from "lib/hooks";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
+// TODO: move to proper place
+const PERMISSIONED_CHAINS = ["osmosis", "osmosistestnet"];
+
 const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
+  const { currentChainName } = useWallet();
+
+  const getPublicCodeShortCut = () => {
+    return PERMISSIONED_CHAINS.includes(currentChainName)
+      ? [{ name: "Public Codes", slug: "/public-codes", icon: MdPublic }]
+      : [];
+  };
 
   const navMenu = [
     {
@@ -53,7 +64,7 @@ const Navbar = observer(() => {
       category: "Codes",
       submenu: [
         { name: "My Codes", slug: "/codes", icon: MdCode },
-        { name: "Public Codes", slug: "/public-codes", icon: MdPublic },
+        ...getPublicCodeShortCut(),
       ],
     },
     {
