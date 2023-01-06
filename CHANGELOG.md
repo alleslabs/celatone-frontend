@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#68](https://github.com/alleslabs/celatone-frontend/pull/63) Refactor past txs link props and make sure navigation works
 - [#63](https://github.com/alleslabs/celatone-frontend/pull/63) Add code id explorer link and code table row navigation
 - [#60](https://github.com/alleslabs/celatone-frontend/pull/60) Add navigation to contract row
 - [#47](https://github.com/alleslabs/celatone-frontend/pull/47) Wireup init msg in contract details page
