@@ -17,7 +17,7 @@ const documents = {
     types.GetContractListFromCodeIdDocument,
   "\n  query getContractListCountFromCodeId($codeId: Int!) {\n    contracts_aggregate(where: { code_id: { _eq: $codeId } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetContractListCountFromCodeIdDocument,
-  "\n  query getCodeInfoFromCodeId($codeId: Int!) {\n    codes(where: { id: { _eq: $codeId } }) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n":
+  "\n  query getCodeInfoFromCodeId($codeId: Int!) {\n    codes(where: { id: { _eq: $codeId } }) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n":
     types.GetCodeInfoFromCodeIdDocument,
 };
 
@@ -43,8 +43,8 @@ export function graphql(
   source: "\n  query getContractListCountFromCodeId($codeId: Int!) {\n    contracts_aggregate(where: { code_id: { _eq: $codeId } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getContractListCountFromCodeId($codeId: Int!) {\n    contracts_aggregate(where: { code_id: { _eq: $codeId } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 export function graphql(
-  source: "\n  query getCodeInfoFromCodeId($codeId: Int!) {\n    codes(where: { id: { _eq: $codeId } }) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n"
-): typeof documents["\n  query getCodeInfoFromCodeId($codeId: Int!) {\n    codes(where: { id: { _eq: $codeId } }) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n"];
+  source: "\n  query getCodeInfoFromCodeId($codeId: Int!) {\n    codes(where: { id: { _eq: $codeId } }) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n"
+): typeof documents["\n  query getCodeInfoFromCodeId($codeId: Int!) {\n    codes(where: { id: { _eq: $codeId } }) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
 export function graphql(source: string) {

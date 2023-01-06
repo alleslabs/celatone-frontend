@@ -6375,6 +6375,7 @@ export type GetCodeInfoFromCodeIdQuery = {
     code_proposals: Array<{
       __typename?: "code_proposals";
       proposal_id: number;
+      block?: { __typename?: "blocks"; height: number; timestamp: any } | null;
     }>;
   }>;
 };
@@ -7284,6 +7285,23 @@ export const GetCodeInfoFromCodeIdDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "proposal_id" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },

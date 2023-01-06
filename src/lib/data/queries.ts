@@ -123,6 +123,10 @@ export const getCodeInfoFromCodeId = graphql(`
       }
       code_proposals {
         proposal_id
+        block {
+          height
+          timestamp
+        }
       }
       access_config_permission
       access_config_addresses

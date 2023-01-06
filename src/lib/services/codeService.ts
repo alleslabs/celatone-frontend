@@ -84,7 +84,15 @@ export const useCodeInfoByCodeId = (
             (code.transaction?.block &&
               new Date(`${code.transaction?.block?.timestamp}Z`)) ??
             undefined,
-          proposalId: code.code_proposals[0]?.proposal_id,
+          proporsal: code.code_proposals[0]
+            ? {
+                proposalId: code.code_proposals[0].proposal_id,
+                height: code.code_proposals[0].block?.height,
+                created: new Date(
+                  `${code.code_proposals[0].block?.timestamp}Z`
+                ),
+              }
+            : undefined,
           permissionAddress: code.access_config_addresses,
           instantiatePermission: code.access_config_permission,
         };
