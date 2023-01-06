@@ -9,6 +9,6 @@ export * from "./number";
 export * from "./isDecimalNumber";
 export * from "./extractMsgType";
 export * from "./redo";
-export * from "./scrollTop";
+export * from "./scrollTo";
 export * from "./textLine";
 export * from "./date";

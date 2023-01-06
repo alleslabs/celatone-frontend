@@ -35,6 +35,9 @@ const ContractDetails = observer(() => {
 
   const contractDetails = useContractDetail(contractAddressParam);
 
+  // TODO - might be a better way to scroll to table header
+  const tableHeaderId = "contractDetailTableHeader";
+
   // TODO - Wait for design
   if (!contractDetails) return null;
 
@@ -72,7 +75,7 @@ const ContractDetails = observer(() => {
         </Flex>
       </Flex>
       {/* History Table section */}
-      <Heading as="h6" variant="h6" mb={6}>
+      <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
         History
       </Heading>
       <Tabs>
@@ -90,7 +93,10 @@ const ContractDetails = observer(() => {
             </Heading>
           </TabPanel>
           <TabPanel p={0}>
-            <ExecuteTable contractAddress={contractAddressParam} />
+            <ExecuteTable
+              contractAddress={contractAddressParam}
+              tableHeader={tableHeaderId}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <Heading as="h6" variant="h6" color="error.main">

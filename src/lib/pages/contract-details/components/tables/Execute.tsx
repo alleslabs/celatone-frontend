@@ -20,9 +20,13 @@ import { ExecuteTableRow } from "./ExecuteTableRow";
 
 interface ExecuteTableProps {
   contractAddress: ContractAddr;
+  tableHeader: string;
 }
 
-export const ExecuteTable = ({ contractAddress }: ExecuteTableProps) => {
+export const ExecuteTable = ({
+  contractAddress,
+  tableHeader,
+}: ExecuteTableProps) => {
   const [totalData, setTotalData] = useState<number>(0);
 
   const {
@@ -128,6 +132,7 @@ export const ExecuteTable = ({ contractAddress }: ExecuteTableProps) => {
         pagesQuantity={pagesQuantity}
         offset={offset}
         totalData={count}
+        scrollTo={tableHeader}
         pageSize={pageSize}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
