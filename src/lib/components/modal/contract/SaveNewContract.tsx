@@ -16,7 +16,7 @@ import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore, useEndpoint, useValidateAddress } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractAddr, Option, RpcContractError } from "lib/types";
+import type { ContractAddr, Option, RpcQueryError } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface SaveNewContractDetail extends OffchainDetail {
@@ -119,11 +119,11 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           message: "Valid Contract Address",
         });
       },
-      onError(err: AxiosError<RpcContractError>) {
+      onError(err: AxiosError<RpcQueryError>) {
         resetForm(false);
         setStatus({
           state: "error",
-          message: err.response?.data.error || DEFAULT_RPC_ERROR,
+          message: err.response?.data.message || DEFAULT_RPC_ERROR,
         });
       },
     }

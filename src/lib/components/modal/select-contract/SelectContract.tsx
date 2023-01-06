@@ -25,7 +25,7 @@ import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useEndpoint, useValidateAddress } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { queryContract } from "lib/services/contract";
-import type { ContractAddr, RpcContractError } from "lib/types";
+import type { ContractAddr, RpcQueryError } from "lib/types";
 
 import { AllContractLists } from "./AllContractLists";
 import { ContractListDetail } from "./ContractListDetail";
@@ -81,8 +81,8 @@ export const SelectContract = ({
       onSuccess() {
         onSelectThenClose(searchContract);
       },
-      onError(err: AxiosError<RpcContractError>) {
-        setInvalid(err.response?.data.error || DEFAULT_RPC_ERROR);
+      onError(err: AxiosError<RpcQueryError>) {
+        setInvalid(err.response?.data.message || DEFAULT_RPC_ERROR);
       },
     }
   );

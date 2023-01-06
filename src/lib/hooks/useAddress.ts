@@ -43,13 +43,15 @@ const validateAddress = (
   addressType: AddressReturnType
 ) => {
   if (!currentChainRecord) return "Invalid network";
+
+  if (!address.startsWith(currentChainRecord.chain.bech32_prefix))
+    return `Invalid prefix (expected "${currentChainRecord.chain.bech32_prefix}")`;
+
   if (getAddressTypeByLength(currentChainRecord.name, address) !== addressType)
     return "Invalid address length";
 
   try {
-    const { prefix } = fromBech32(address);
-    if (prefix !== currentChainRecord.chain.bech32_prefix)
-      return `Invalid prefix (${prefix})`;
+    fromBech32(address);
   } catch (e) {
     return (e as Error).message;
   }
