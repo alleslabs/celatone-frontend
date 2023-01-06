@@ -54,10 +54,8 @@ const InvalidContract = () => (
 
 const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
   const contractData = useContractData(contractAddress);
-
-  return !contractData ? (
-    <InvalidContract />
-  ) : (
+  if (!contractData) return <InvalidContract />;
+  return (
     <>
       <ContractTop contractData={contractData} />
       {/* Tokens Section */}
