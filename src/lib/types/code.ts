@@ -14,10 +14,11 @@ interface CodeProposal {
 }
 
 enum InstantiatePermission {
-  Everybody = "Everybody",
-  AnyOfAddresses = "AnyOfAddresses",
-  Nobody = "Nobody",
+  EVERYBODY = "EVERYBODY",
+  ANY_OF_ADDRESSES = "ANY_OF_ADDRESSES",
+  NOBODY = "NOBODY",
 }
+
 export interface CodeDetails {
   chainId: string | undefined;
   codeId: number;
