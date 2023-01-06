@@ -82,7 +82,7 @@ export const getExecuteTransactionsFromContractAddress = graphql(`
         contract: { address: { _eq: $contractAddress } }
         transaction: { is_execute: { _eq: true } }
       }
-      order_by: { transaction: { block_height: asc } }
+      order_by: { transaction: { block: { timestamp: desc } } }
       limit: $pageSize
       offset: $offset
     ) {
