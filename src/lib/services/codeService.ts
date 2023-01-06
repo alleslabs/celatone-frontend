@@ -66,7 +66,7 @@ export const useCodeListByIDsQuery = (ids: number[] | undefined) => {
 
 export const useCodeInfoByCodeId = (
   codeId: number | undefined
-): UseQueryResult<CodeDetails | undefined> => {
+): UseQueryResult<Omit<CodeDetails, "chainId"> | undefined> => {
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 

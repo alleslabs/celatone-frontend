@@ -21,5 +21,5 @@ export interface CodeDetails {
   created: Date | undefined;
   proposal: CodeProposal | undefined;
   instantiatePermission: string;
-  access_config_addresses: string[];
+  permissionAddresses: string[];
 }
