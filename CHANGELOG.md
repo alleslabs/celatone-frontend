@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add contract not exist page
 - [#47](https://github.com/alleslabs/celatone-frontend/pull/47) Wireup init msg in contract details page
 - [#51](https://github.com/alleslabs/celatone-frontend/pull/51) Wireup contract info in contract details page
 - [#59](https://github.com/alleslabs/celatone-frontend/pull/58) Wireup code name,description, and cta section
