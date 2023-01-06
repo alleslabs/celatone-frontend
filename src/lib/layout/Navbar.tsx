@@ -27,11 +27,10 @@ const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
   const { currentChainName } = useWallet();
 
-  const getPublicCodeShortCut = () => {
-    return PERMISSIONED_CHAINS.includes(currentChainName)
+  const getPublicCodeShortCut = () =>
+    PERMISSIONED_CHAINS.includes(currentChainName)
       ? [{ name: "Public Codes", slug: "/public-codes", icon: MdPublic }]
       : [];
-  };
 
   const navMenu = [
     {
