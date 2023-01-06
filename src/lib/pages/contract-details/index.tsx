@@ -129,9 +129,6 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
 };
 
 const ContractDetails = observer(() => {
-  /**
-   * @todos add contract address validation function here
-   */
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
 
