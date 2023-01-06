@@ -70,3 +70,62 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
     }
   }
 `);
+
+export const getContractListFromCodeId = graphql(`
+  query getContractListFromCodeId(
+    $codeId: Int!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    contracts(
+      where: { code_id: { _eq: $codeId } }
+      order_by: { transaction: { block: { timestamp: desc } } }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      address
+      label
+      transaction {
+        block {
+          timestamp
+        }
+        account {
+          address
+        }
+      }
+    }
+  }
+`);
+
+export const getContractListCountFromCodeId = graphql(`
+  query getContractListCountFromCodeId($codeId: Int!) {
+    contracts_aggregate(where: { code_id: { _eq: $codeId } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
+export const getCodeInfoFromCodeId = graphql(`
+  query getCodeInfoFromCodeId($codeId: Int!) {
+    codes(where: { id: { _eq: $codeId } }) {
+      id
+      account {
+        address
+      }
+      transaction {
+        hash
+        block {
+          height
+          timestamp
+        }
+      }
+      code_proposals {
+        proposal_id
+      }
+      access_config_permission
+      access_config_addresses
+    }
+  }
+`);

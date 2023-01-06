@@ -11,13 +11,20 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
+  useContractListCountFromCodeId,
+  useContractListFromCodeId,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
 } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type {
+  ContractAddr,
+  ContractInstance,
+  ContractInstances,
+  HumanAddr,
+} from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractDetail {
@@ -132,5 +139,30 @@ export const useContractDetail = (
     initTxHash: instantiateDetail.initTxHash,
     initProposalTitle,
     initProposalId,
+  };
+};
+
+export const useContractInstances = (
+  codeId: number,
+  offset: number,
+  pageSize: number
+): ContractInstances | undefined => {
+  const { data: contractList } = useContractListFromCodeId(
+    codeId,
+    offset,
+    pageSize
+  );
+  const { data: count = 0 } = useContractListCountFromCodeId(codeId);
+  const { getContractInfo } = useContractStore();
+  const data = contractList?.map((contract) => {
+    const contractInfo = getContractInfo(contract.contractAddress);
+    return {
+      localContractInfo: contractInfo,
+      ...contract,
+    } as ContractInstance;
+  });
+  return {
+    contractList: data,
+    count,
   };
 };

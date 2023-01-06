@@ -4,10 +4,12 @@ import { useCallback } from "react";
 
 import { indexerGraphClient } from "lib/data/graphql";
 import {
+  getCodeInfoFromCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
 } from "lib/data/queries";
-import type { CodeInfo } from "lib/types";
+import type { CodeInfo, CodeInfoInCodeDetail } from "lib/types";
+import { parseTxHash } from "lib/utils";
 
 export const useCodeListByUserQuery = (
   walletAddr: string | undefined
@@ -56,5 +58,40 @@ export const useCodeListByIDsQuery = (ids: number[] | undefined) => {
   return useQuery(["codes_by_ids", ids], queryFn, {
     keepPreviousData: true,
     enabled: !!ids,
+  });
+};
+
+export const useCodeInfoByCodeId = (
+  codeId: number | undefined
+): UseQueryResult<CodeInfoInCodeDetail | undefined> => {
+  const queryFn = useCallback(async () => {
+    if (!codeId) return undefined;
+
+    return indexerGraphClient
+      .request(getCodeInfoFromCodeId, {
+        codeId,
+      })
+      .then(({ codes }) => {
+        const code = codes[0];
+        return {
+          codeId: code.id,
+          uploader: code.account.address,
+          hash:
+            (code.transaction && parseTxHash(code.transaction?.hash)) ??
+            undefined,
+          height: code.transaction?.block.height,
+          created:
+            (code.transaction?.block &&
+              new Date(`${code.transaction?.block?.timestamp}Z`)) ??
+            undefined,
+          proposalId: code.code_proposals[0]?.proposal_id,
+          permissionAddress: code.access_config_addresses,
+          instantiatePermission: code.access_config_permission,
+        };
+      });
+  }, [codeId]);
+  return useQuery(["code_info_by_id", codeId], queryFn, {
+    keepPreviousData: true,
+    enabled: !!codeId,
   });
 };

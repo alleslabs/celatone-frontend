@@ -5,3 +5,4 @@ export * from "./common";
 export * from "./option";
 export * from "./rpc";
 export * from "./wallet";
+export * from "./contract";
