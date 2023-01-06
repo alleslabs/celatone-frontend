@@ -71,12 +71,8 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
   }
 `);
 
-export const getContractListFromCodeId = graphql(`
-  query getContractListFromCodeId(
-    $codeId: Int!
-    $offset: Int!
-    $pageSize: Int!
-  ) {
+export const getContractListByCodeId = graphql(`
+  query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
       where: { code_id: { _eq: $codeId } }
       order_by: { transaction: { block: { timestamp: desc } } }
@@ -97,8 +93,8 @@ export const getContractListFromCodeId = graphql(`
   }
 `);
 
-export const getContractListCountFromCodeId = graphql(`
-  query getContractListCountFromCodeId($codeId: Int!) {
+export const getContractListCountByCodeId = graphql(`
+  query getContractListCountByCodeId($codeId: Int!) {
     contracts_aggregate(where: { code_id: { _eq: $codeId } }) {
       aggregate {
         count
@@ -107,8 +103,8 @@ export const getContractListCountFromCodeId = graphql(`
   }
 `);
 
-export const getCodeInfoFromCodeId = graphql(`
-  query getCodeInfoFromCodeId($codeId: Int!) {
+export const getCodeInfoByCodeId = graphql(`
+  query getCodeInfoByCodeId($codeId: Int!) {
     codes(where: { id: { _eq: $codeId } }) {
       id
       account {

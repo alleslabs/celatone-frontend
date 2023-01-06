@@ -9,7 +9,7 @@ export interface ContractInfo {
   contractAddress: ContractAddr;
   instantiator: string;
   label: string;
-  created: Date;
+  created: Date | undefined;
   name?: string;
   description?: string;
   tags?: string[];
@@ -227,7 +227,7 @@ export class ContractStore {
     contractAddress: ContractAddr,
     instantiator: string,
     label: string,
-    created: Date,
+    created: Date | undefined,
     name?: string,
     description?: string,
     tags?: string[],

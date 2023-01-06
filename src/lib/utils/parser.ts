@@ -1,2 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const parseTxHash = (txHash: any) => (txHash as string).substring(2);
+export const parseTxHash = (txHash: string) => txHash.substring(2);
+
+export const parseTxHashOpt = (
+  hashOpt: string | undefined
+): string | undefined => (hashOpt ? parseTxHash(hashOpt) : hashOpt);

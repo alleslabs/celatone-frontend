@@ -7,12 +7,10 @@ import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
   getInstantiateDetailByContractQueryDocument,
-  getContractListFromCodeId,
-  getContractListCountFromCodeId,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
-import { parseTxHash } from "lib/utils";
+import { parseDateOpt, parseTxHash } from "lib/utils";
 
 interface InstantiateDetail {
   initMsg: string;
@@ -54,7 +52,7 @@ export const useInstantiatedListByUserQuery = (
           contractAddress: contract.address as ContractAddr,
           instantiator: walletAddr,
           label: contract.label,
-          created: new Date(`${contract.transaction?.block?.timestamp}Z`),
+          created: parseDateOpt(contract.transaction?.block?.timestamp),
         }))
       );
   }, [walletAddr]);
@@ -86,49 +84,4 @@ export const useInstantiateDetailByContractQuery = (
       keepPreviousData: true,
     }
   );
-};
-
-export const useContractListFromCodeId = (
-  codeId: number | undefined,
-  offset: number,
-  pageSize: number
-): UseQueryResult<ContractInfo[] | undefined> => {
-  const queryFn = useCallback(async () => {
-    if (!codeId) return undefined;
-
-    return indexerGraphClient
-      .request(getContractListFromCodeId, { codeId, offset, pageSize })
-      .then(({ contracts }) =>
-        contracts.map<ContractInfo>((contract) => ({
-          contractAddress: contract.address as ContractAddr,
-          instantiator: contract.transaction?.account?.address ?? "",
-          label: contract.label,
-          created: new Date(`${contract.transaction?.block?.timestamp}Z`),
-        }))
-      );
-  }, [codeId, offset, pageSize]);
-
-  return useQuery(["contract_list_from_code_id", codeId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
-};
-
-export const useContractListCountFromCodeId = (
-  codeId: number | undefined
-): UseQueryResult<number | undefined> => {
-  const queryFn = useCallback(async () => {
-    if (!codeId) return undefined;
-
-    return indexerGraphClient
-      .request(getContractListCountFromCodeId, {
-        codeId,
-      })
-      .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
-  }, [codeId]);
-
-  return useQuery(["contract_list_count_from_user", codeId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
 };

@@ -1,20 +1,46 @@
 import { useWallet } from "@cosmos-kit/react";
 
-import { useCodeInfoByCodeId } from "lib/services/codeService";
-import type { CodeInfoInCodeDetail } from "lib/types";
+import { useContractStore } from "lib/hooks";
+import {
+  useCodeInfoByCodeId,
+  useContractListByCodeId,
+  useContractListCountByCodeId,
+} from "lib/services/codeService";
+import type { ContractInfo } from "lib/stores/contract";
+import type { CodeDetails, ContractInstances } from "lib/types";
 
-export interface CodeData {
-  chainId: string | undefined;
-  codeInfo: CodeInfoInCodeDetail | undefined;
-}
-
-export const useCodeData = (codeId: number): CodeData | undefined => {
+export const useCodeData = (codeId: number): CodeDetails | undefined => {
   const { currentChainRecord } = useWallet();
   const { data: codeInfo } = useCodeInfoByCodeId(codeId);
   if (!currentChainRecord) return undefined;
 
   return {
     chainId: currentChainRecord.chain.chain_id,
-    codeInfo,
+    ...codeInfo,
+  } as CodeDetails;
+};
+
+export const useCodeContractInstances = (
+  codeId: number,
+  offset: number,
+  pageSize: number
+): ContractInstances | undefined => {
+  const { data: contractList } = useContractListByCodeId(
+    codeId,
+    offset,
+    pageSize
+  );
+  const { data: count = 0 } = useContractListCountByCodeId(codeId);
+  const { getContractInfo } = useContractStore();
+  const data = contractList?.map((contract) => {
+    const localContractInfo = getContractInfo(contract.contractAddress);
+    return {
+      ...localContractInfo,
+      ...contract,
+    } as ContractInfo;
+  });
+  return {
+    contractList: data,
+    count,
   };
 };

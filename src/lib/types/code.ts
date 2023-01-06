@@ -7,18 +7,19 @@ export interface CodeInfo {
   uploader: string;
 }
 
-interface Proposal {
+interface CodeProposal {
   proposalId: number;
   height: number;
-  created: Date;
+  created: Date | undefined;
 }
-export interface CodeInfoInCodeDetail {
+export interface CodeDetails {
+  chainId: string | undefined;
   codeId: number;
   uploader: ContractAddr | HumanAddr;
   hash: string | undefined;
   height: number;
-  created: Date;
-  proposal: Proposal | undefined;
+  created: Date | undefined;
+  proposal: CodeProposal | undefined;
   instantiatePermission: string;
   access_config_addresses: string[];
 }

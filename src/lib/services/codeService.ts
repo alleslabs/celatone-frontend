@@ -4,12 +4,15 @@ import { useCallback } from "react";
 
 import { indexerGraphClient } from "lib/data/graphql";
 import {
-  getCodeInfoFromCodeId,
+  getCodeInfoByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
+  getContractListByCodeId,
+  getContractListCountByCodeId,
 } from "lib/data/queries";
-import type { CodeInfo, CodeInfoInCodeDetail } from "lib/types";
-import { parseTxHash } from "lib/utils";
+import type { ContractInfo } from "lib/stores/contract";
+import type { CodeInfo, CodeDetails, ContractAddr } from "lib/types";
+import { parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 export const useCodeListByUserQuery = (
   walletAddr: string | undefined
@@ -63,12 +66,12 @@ export const useCodeListByIDsQuery = (ids: number[] | undefined) => {
 
 export const useCodeInfoByCodeId = (
   codeId: number | undefined
-): UseQueryResult<CodeInfoInCodeDetail | undefined> => {
+): UseQueryResult<CodeDetails | undefined> => {
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 
     return indexerGraphClient
-      .request(getCodeInfoFromCodeId, {
+      .request(getCodeInfoByCodeId, {
         codeId,
       })
       .then(({ codes }) => {
@@ -76,29 +79,67 @@ export const useCodeInfoByCodeId = (
         return {
           codeId: code.id,
           uploader: code.account.address,
-          hash:
-            (code.transaction && parseTxHash(code.transaction?.hash)) ??
-            undefined,
+          hash: parseTxHashOpt(code.transaction?.hash),
           height: code.transaction?.block.height,
-          created:
-            (code.transaction?.block &&
-              new Date(`${code.transaction?.block?.timestamp}Z`)) ??
-            undefined,
-          proporsal: code.code_proposals[0]
+          created: parseDateOpt(code.transaction?.block?.timestamp),
+          proposal: code.code_proposals[0]
             ? {
                 proposalId: code.code_proposals[0].proposal_id,
                 height: code.code_proposals[0].block?.height,
-                created: new Date(
-                  `${code.code_proposals[0].block?.timestamp}Z`
-                ),
+                created: parseDateOpt(code.code_proposals[0].block?.timestamp),
               }
             : undefined,
-          permissionAddress: code.access_config_addresses,
+          permissionAddresses: code.access_config_addresses,
           instantiatePermission: code.access_config_permission,
         };
       });
   }, [codeId]);
   return useQuery(["code_info_by_id", codeId], queryFn, {
+    keepPreviousData: true,
+    enabled: !!codeId,
+  });
+};
+
+export const useContractListByCodeId = (
+  codeId: number | undefined,
+  offset: number,
+  pageSize: number
+): UseQueryResult<ContractInfo[] | undefined> => {
+  const queryFn = useCallback(async () => {
+    if (!codeId) return undefined;
+
+    return indexerGraphClient
+      .request(getContractListByCodeId, { codeId, offset, pageSize })
+      .then(({ contracts }) =>
+        contracts.map<ContractInfo>((contract) => ({
+          contractAddress: contract.address as ContractAddr,
+          instantiator: contract.transaction?.account?.address ?? "",
+          label: contract.label,
+          created: parseDateOpt(contract.transaction?.block?.timestamp),
+        }))
+      );
+  }, [codeId, offset, pageSize]);
+
+  return useQuery(["contract_list_by_code_id", codeId], queryFn, {
+    keepPreviousData: true,
+    enabled: !!codeId,
+  });
+};
+
+export const useContractListCountByCodeId = (
+  codeId: number | undefined
+): UseQueryResult<number | undefined> => {
+  const queryFn = useCallback(async () => {
+    if (!codeId) return undefined;
+
+    return indexerGraphClient
+      .request(getContractListCountByCodeId, {
+        codeId,
+      })
+      .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
+  }, [codeId]);
+
+  return useQuery(["contract_list_count_by_user", codeId], queryFn, {
     keepPreviousData: true,
     enabled: !!codeId,
   });

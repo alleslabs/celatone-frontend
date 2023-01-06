@@ -23,7 +23,7 @@ interface SaveNewContractDetail extends OffchainDetail {
   contractAddress: string;
   instantiator: string;
   label: string;
-  created: Date;
+  created: Date | undefined;
 }
 
 interface SaveNewContractProps {

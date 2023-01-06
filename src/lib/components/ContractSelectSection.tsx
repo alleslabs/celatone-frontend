@@ -26,7 +26,7 @@ interface ContractDetailsButtonProps {
   contractInfo: ContractInfo | undefined;
   instantiator: string;
   label: string;
-  created: Date;
+  created: Date | undefined;
 }
 
 interface ContractSelectSectionProps {

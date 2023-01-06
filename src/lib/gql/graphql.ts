@@ -6320,13 +6320,13 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
   } | null;
 };
 
-export type GetContractListFromCodeIdQueryVariables = Exact<{
+export type GetContractListByCodeIdQueryVariables = Exact<{
   codeId: Scalars["Int"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetContractListFromCodeIdQuery = {
+export type GetContractListByCodeIdQuery = {
   __typename?: "query_root";
   contracts: Array<{
     __typename?: "contracts";
@@ -6340,11 +6340,11 @@ export type GetContractListFromCodeIdQuery = {
   }>;
 };
 
-export type GetContractListCountFromCodeIdQueryVariables = Exact<{
+export type GetContractListCountByCodeIdQueryVariables = Exact<{
   codeId: Scalars["Int"];
 }>;
 
-export type GetContractListCountFromCodeIdQuery = {
+export type GetContractListCountByCodeIdQuery = {
   __typename?: "query_root";
   contracts_aggregate: {
     __typename?: "contracts_aggregate";
@@ -6355,11 +6355,11 @@ export type GetContractListCountFromCodeIdQuery = {
   };
 };
 
-export type GetCodeInfoFromCodeIdQueryVariables = Exact<{
+export type GetCodeInfoByCodeIdQueryVariables = Exact<{
   codeId: Scalars["Int"];
 }>;
 
-export type GetCodeInfoFromCodeIdQuery = {
+export type GetCodeInfoByCodeIdQuery = {
   __typename?: "query_root";
   codes: Array<{
     __typename?: "codes";
@@ -6925,13 +6925,13 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
   GetInstantiateDetailByContractQueryDocumentQuery,
   GetInstantiateDetailByContractQueryDocumentQueryVariables
 >;
-export const GetContractListFromCodeIdDocument = {
+export const GetContractListByCodeIdDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getContractListFromCodeId" },
+      name: { kind: "Name", value: "getContractListByCodeId" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -7097,16 +7097,16 @@ export const GetContractListFromCodeIdDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListFromCodeIdQuery,
-  GetContractListFromCodeIdQueryVariables
+  GetContractListByCodeIdQuery,
+  GetContractListByCodeIdQueryVariables
 >;
-export const GetContractListCountFromCodeIdDocument = {
+export const GetContractListCountByCodeIdDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getContractListCountFromCodeId" },
+      name: { kind: "Name", value: "getContractListCountByCodeId" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -7175,16 +7175,16 @@ export const GetContractListCountFromCodeIdDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListCountFromCodeIdQuery,
-  GetContractListCountFromCodeIdQueryVariables
+  GetContractListCountByCodeIdQuery,
+  GetContractListCountByCodeIdQueryVariables
 >;
-export const GetCodeInfoFromCodeIdDocument = {
+export const GetCodeInfoByCodeIdDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getCodeInfoFromCodeId" },
+      name: { kind: "Name", value: "getCodeInfoByCodeId" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -7322,6 +7322,6 @@ export const GetCodeInfoFromCodeIdDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetCodeInfoFromCodeIdQuery,
-  GetCodeInfoFromCodeIdQueryVariables
+  GetCodeInfoByCodeIdQuery,
+  GetCodeInfoByCodeIdQueryVariables
 >;
