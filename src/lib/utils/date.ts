@@ -13,4 +13,4 @@ export const dateFromNow = (timestamp: string) => {
 export const parseDate = (date: string) => new Date(`${date}Z`);
 
 export const parseDateOpt = (dateOpt: string | undefined): Date | undefined =>
-  dateOpt === undefined ? dateOpt : parseDate(dateOpt);
+  dateOpt ? parseDate(dateOpt) : undefined;

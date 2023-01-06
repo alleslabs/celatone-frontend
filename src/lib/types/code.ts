@@ -12,6 +12,12 @@ interface CodeProposal {
   height: number;
   created: Date | undefined;
 }
+
+enum InstantiatePermission {
+  Everybody = "Everybody",
+  AnyOfAddresses = "AnyOfAddresses",
+  Nobody = "Nobody",
+}
 export interface CodeDetails {
   chainId: string | undefined;
   codeId: number;
@@ -20,6 +26,6 @@ export interface CodeDetails {
   height: number;
   created: Date | undefined;
   proposal: CodeProposal | undefined;
-  instantiatePermission: string;
-  permissionAddresses: string[];
+  instantiatePermission: InstantiatePermission;
+  permissionAddresses: (HumanAddr | ContractAddr)[];
 }
