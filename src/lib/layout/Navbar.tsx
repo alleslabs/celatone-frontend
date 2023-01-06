@@ -10,6 +10,7 @@ import {
   MdInput,
   MdAdd,
   MdOutlineHistory,
+  MdPublic,
 } from "react-icons/md";
 
 import { CreateNewList } from "lib/components/modal";
@@ -31,6 +32,11 @@ const Navbar = observer(() => {
           slug: "/past-txs",
           icon: MdOutlineHistory,
         },
+      ],
+    },
+    {
+      category: "Quick Actions",
+      submenu: [
         {
           name: "Query",
           slug: "/query",
@@ -44,8 +50,11 @@ const Navbar = observer(() => {
       ],
     },
     {
-      category: "Code",
-      submenu: [{ name: "Code List", slug: "/codes", icon: MdCode }],
+      category: "Codes",
+      submenu: [
+        { name: "My Codes", slug: "/codes", icon: MdCode },
+        { name: "Public Codes", slug: "/public-codes", icon: MdPublic },
+      ],
     },
     {
       category: "Contracts",
