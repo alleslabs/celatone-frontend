@@ -102,7 +102,7 @@ export const useExecuteTransactionsFromContractAddress = (
       })
       .then(({ contract_transactions }) =>
         contract_transactions.map((transaction) => ({
-          hash: transaction.transaction.hash,
+          hash: parseTxHash(transaction.transaction.hash),
           messages: transaction.transaction.messages,
           sender: transaction.transaction.account.address,
           height: transaction.transaction.block.height,

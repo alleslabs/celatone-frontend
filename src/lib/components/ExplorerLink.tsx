@@ -3,6 +3,7 @@ import { Box, Link, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import {
+  getExplorerBlockUrl,
   getExplorerTxUrl,
   getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
@@ -12,7 +13,7 @@ import { Copier } from "./Copier";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
-  type?: "tx_hash" | "contract_address" | "user_address";
+  type?: "tx_hash" | "contract_address" | "user_address" | "block";
   copyValue?: string;
   canCopyWithHover?: boolean;
   isReadOnly?: boolean;
@@ -41,6 +42,9 @@ export const ExplorerLink = ({
       break;
     case "user_address":
       explorerLink = getExplorerUserAddressUrl(currentChainName);
+      break;
+    case "block":
+      explorerLink = getExplorerBlockUrl(currentChainName);
       break;
     default:
       break;

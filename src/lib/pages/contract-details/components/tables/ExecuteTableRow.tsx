@@ -15,7 +15,7 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
     <Tr>
       <Td w="12%">
         <ExplorerLink
-          value={transaction.hash.substring(2).toLocaleUpperCase()}
+          value={transaction.hash.toLocaleUpperCase()}
           type="tx_hash"
           canCopyWithHover
         />
@@ -46,10 +46,9 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
         />
       </Td>
       <Td w="10%">
-        {/* TODO - change type */}
         <ExplorerLink
           value={transaction.height.toString()}
-          type="user_address"
+          type="block"
           canCopyWithHover
         />
       </Td>
