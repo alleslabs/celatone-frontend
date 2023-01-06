@@ -1,7 +1,14 @@
 import { Tag, Text, Box, Flex } from "@chakra-ui/react";
 import { snakeCase } from "snake-case";
 
+import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+
+interface LinkElement {
+  type: LinkType;
+  value: string;
+  copyValue?: string;
+}
 
 export interface SingleMsgProps {
   type: string;
@@ -10,11 +17,9 @@ export interface SingleMsgProps {
   tags?: Array<string>;
   length?: number;
   text2?: string;
-  link1?: string;
-  // TODO - Change this
-  link1Copy?: string;
+  link1?: LinkElement;
   text3?: string;
-  link2?: string;
+  link2?: LinkElement;
 }
 
 export const SingleMsg = ({
@@ -25,22 +30,9 @@ export const SingleMsg = ({
   length,
   text2,
   link1,
-  link1Copy,
   text3,
   link2,
 }: SingleMsgProps) => {
-  const linkType = (text: string) => {
-    if (text.length === 63) {
-      return "contract_address";
-    }
-    if (text.length === 64) {
-      return "tx_hash";
-    }
-    if (text.length === 43) {
-      return "user_address";
-    }
-    return undefined;
-  };
   return (
     <Flex gap={1} alignItems="center">
       {type} {text1}
@@ -66,28 +58,32 @@ export const SingleMsg = ({
       )}
       {/* Length  */}
       {!tags && length && <Tag>{length}</Tag>}
-      {/* Link */}
+      {/* Text2 */}
       {text2}
+      {/* Link */}
       {link1 && (
         <ExplorerLink
-          value={link1}
-          copyValue={link1Copy}
-          type={linkType(link1Copy || link1)}
+          value={link1.value}
+          copyValue={link1.copyValue}
+          type={link1.type}
           canCopyWithHover
           // Should ellipse when it is not tx hash, contract addr, user addr
-          textFormat={linkType(link1) ? "truncate" : "ellipsis"}
+          textFormat={link1.type !== "code_id" ? "truncate" : "ellipsis"}
         />
       )}
-      {/* Text3 */} {text3} {/* Link with copy */}
+      {/* Text3 */}
+      {text3}
+      {/* Link2 */}
       {link2 && (
         <ExplorerLink
-          value={link2}
-          type={linkType(link2)}
+          value={link2.value}
+          copyValue={link2.copyValue}
+          type={link2.type}
           canCopyWithHover
           // Should ellipse when it is not tx hash, contract addr, user addr
-          textFormat={linkType(link2) ? "truncate" : "ellipsis"}
+          textFormat={link2.type !== "code_id" ? "truncate" : "ellipsis"}
         />
-      )}{" "}
+      )}
     </Flex>
   );
 };
