@@ -7,8 +7,8 @@ import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
   getInstantiateDetailByContractQueryDocument,
-  getExecuteTransactionsFromContractAddress,
-  getExecuteTransactionsCountFromContractAddress,
+  getExecuteTransactionsCountByContractAddress,
+  getExecuteTransactionsByContractAddress,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type { ContractAddr, ExecuteTransaction, HumanAddr } from "lib/types";
@@ -88,14 +88,14 @@ export const useInstantiateDetailByContractQuery = (
   );
 };
 
-export const useExecuteTransactionsFromContractAddress = (
+export const useExecuteTransactionsByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
 ): UseQueryResult<ExecuteTransaction[] | undefined> => {
   const queryFn = useCallback(async () => {
     return indexerGraphClient
-      .request(getExecuteTransactionsFromContractAddress, {
+      .request(getExecuteTransactionsByContractAddress, {
         contractAddress,
         offset,
         pageSize,
@@ -113,7 +113,7 @@ export const useExecuteTransactionsFromContractAddress = (
   }, [contractAddress, offset, pageSize]);
 
   return useQuery(
-    ["execute_transactions_from_contract_addr", contractAddress],
+    ["execute_transactions_by_contract_addr", contractAddress],
     queryFn,
     {
       keepPreviousData: true,
@@ -122,14 +122,14 @@ export const useExecuteTransactionsFromContractAddress = (
   );
 };
 
-export const useExecuteTransactionsCountFromContractAddress = (
+export const useExecuteTransactionsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<number | undefined> => {
   const queryFn = useCallback(async () => {
     if (!contractAddress) return undefined;
 
     return indexerGraphClient
-      .request(getExecuteTransactionsCountFromContractAddress, {
+      .request(getExecuteTransactionsCountByContractAddress, {
         contractAddress,
       })
       .then(
@@ -139,7 +139,7 @@ export const useExecuteTransactionsCountFromContractAddress = (
   }, [contractAddress]);
 
   return useQuery(
-    ["execute_transactions_count_from_contract_addr", contractAddress],
+    ["execute_transactions_count_by_contract_addr", contractAddress],
     queryFn,
     {
       keepPreviousData: true,

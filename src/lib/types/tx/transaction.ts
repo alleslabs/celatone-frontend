@@ -1,3 +1,5 @@
+import type { ContractAddr, HumanAddr } from "lib/types";
+
 import type {
   DetailExecute,
   DetailInstantiate,
@@ -43,7 +45,7 @@ export interface Msg {
 export interface ExecuteTransaction {
   hash: string;
   messages: Message[];
-  sender: string;
+  sender: ContractAddr | HumanAddr;
   height: number;
   created: Date;
   success: boolean;

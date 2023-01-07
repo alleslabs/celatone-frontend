@@ -6320,13 +6320,13 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
   } | null;
 };
 
-export type GetExecuteTransactionsFromContractAddressQueryVariables = Exact<{
+export type GetExecuteTransactionsByContractAddressQueryVariables = Exact<{
   contractAddress: Scalars["String"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetExecuteTransactionsFromContractAddressQuery = {
+export type GetExecuteTransactionsByContractAddressQuery = {
   __typename?: "query_root";
   contract_transactions: Array<{
     __typename?: "contract_transactions";
@@ -6341,12 +6341,11 @@ export type GetExecuteTransactionsFromContractAddressQuery = {
   }>;
 };
 
-export type GetExecuteTransactionsCountFromContractAddressQueryVariables =
-  Exact<{
-    contractAddress: Scalars["String"];
-  }>;
+export type GetExecuteTransactionsCountByContractAddressQueryVariables = Exact<{
+  contractAddress: Scalars["String"];
+}>;
 
-export type GetExecuteTransactionsCountFromContractAddressQuery = {
+export type GetExecuteTransactionsCountByContractAddressQuery = {
   __typename?: "query_root";
   contract_transactions_aggregate: {
     __typename?: "contract_transactions_aggregate";
@@ -6902,16 +6901,13 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
   GetInstantiateDetailByContractQueryDocumentQuery,
   GetInstantiateDetailByContractQueryDocumentQueryVariables
 >;
-export const GetExecuteTransactionsFromContractAddressDocument = {
+export const GetExecuteTransactionsByContractAddressDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: {
-        kind: "Name",
-        value: "getExecuteTransactionsFromContractAddress",
-      },
+      name: { kind: "Name", value: "getExecuteTransactionsByContractAddress" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -7126,10 +7122,10 @@ export const GetExecuteTransactionsFromContractAddressDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetExecuteTransactionsFromContractAddressQuery,
-  GetExecuteTransactionsFromContractAddressQueryVariables
+  GetExecuteTransactionsByContractAddressQuery,
+  GetExecuteTransactionsByContractAddressQueryVariables
 >;
-export const GetExecuteTransactionsCountFromContractAddressDocument = {
+export const GetExecuteTransactionsCountByContractAddressDocument = {
   kind: "Document",
   definitions: [
     {
@@ -7137,7 +7133,7 @@ export const GetExecuteTransactionsCountFromContractAddressDocument = {
       operation: "query",
       name: {
         kind: "Name",
-        value: "getExecuteTransactionsCountFromContractAddress",
+        value: "getExecuteTransactionsCountByContractAddress",
       },
       variableDefinitions: [
         {
@@ -7245,6 +7241,6 @@ export const GetExecuteTransactionsCountFromContractAddressDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetExecuteTransactionsCountFromContractAddressQuery,
-  GetExecuteTransactionsCountFromContractAddressQueryVariables
+  GetExecuteTransactionsCountByContractAddressQuery,
+  GetExecuteTransactionsCountByContractAddressQueryVariables
 >;

@@ -27,8 +27,8 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
           color={transaction.success ? "#66BB6A" : "#EF5350"}
         />
       </Td>
-      <Td w="35%">
-        <Flex gap={1}>
+      <Td w="31%">
+        <Flex gap={1} flexWrap="wrap">
           {renderTags(transaction.messages, 2).map(
             (tag: string, index: number) => (
               <Tag key={tag + index.toString()} borderRadius="full">
@@ -38,14 +38,14 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
           )}
         </Flex>
       </Td>
-      <Td w="10%">
+      <Td w="12%">
         <ExplorerLink
           value={transaction.sender}
           type="user_address"
           canCopyWithHover
         />
       </Td>
-      <Td w="10%">
+      <Td w="12%">
         <ExplorerLink
           value={transaction.height.toString()}
           type="block"

@@ -35,7 +35,7 @@ const ContractDetails = observer(() => {
 
   const contractDetails = useContractDetail(contractAddressParam);
 
-  // TODO - might be a better way to scroll to table header
+  // FIXME - might be a better way to scroll to table header
   const tableHeaderId = "contractDetailTableHeader";
 
   // TODO - Wait for design

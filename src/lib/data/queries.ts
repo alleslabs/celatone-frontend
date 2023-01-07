@@ -71,8 +71,8 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
   }
 `);
 
-export const getExecuteTransactionsFromContractAddress = graphql(`
-  query getExecuteTransactionsFromContractAddress(
+export const getExecuteTransactionsByContractAddress = graphql(`
+  query getExecuteTransactionsByContractAddress(
     $contractAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -102,8 +102,8 @@ export const getExecuteTransactionsFromContractAddress = graphql(`
   }
 `);
 
-export const getExecuteTransactionsCountFromContractAddress = graphql(`
-  query getExecuteTransactionsCountFromContractAddress(
+export const getExecuteTransactionsCountByContractAddress = graphql(`
+  query getExecuteTransactionsCountByContractAddress(
     $contractAddress: String!
   ) {
     contract_transactions_aggregate(
