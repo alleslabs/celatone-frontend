@@ -17,7 +17,11 @@ import {
   DEFAULT_CHAIN,
   getExplorerUserAddressUrl,
 } from "lib/data";
-import { useCodeStore, useContractStore } from "lib/hooks";
+import {
+  useCodeStore,
+  useContractStore,
+  usePublicProjectStore,
+} from "lib/hooks";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
 
@@ -68,6 +72,7 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
+  const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
 
   const chainGasPrice = useMemo(() => {
     if (
@@ -116,8 +121,9 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
       const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
       setCodeUserKey(userKey);
       setContractUserKey(userKey);
+      setProjectUserKey(userKey);
     }
-  }, [currentChainName, setCodeUserKey, setContractUserKey]);
+  }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
 
   useEffect(() => {
     setCurrentChain(DEFAULT_CHAIN);
@@ -125,7 +131,11 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   }, []);
 
   const AppContent = observer(() => {
-    if (isCodeUserKeyExist() && isContractUserKeyExist())
+    if (
+      isCodeUserKeyExist() &&
+      isContractUserKeyExist() &&
+      isProjectUserKeyExist()
+    )
       return (
         <AppContext.Provider value={states}>{children}</AppContext.Provider>
       );

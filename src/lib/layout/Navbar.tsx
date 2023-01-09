@@ -1,4 +1,4 @@
-import { Flex, Box, Text, Icon, Button, Spacer } from "@chakra-ui/react";
+import { Flex, Box, Text, Icon, Button, Spacer, Image } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import {
@@ -14,13 +14,13 @@ import {
 
 import { CreateNewList } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
-import { useContractStore } from "lib/hooks";
+import { useContractStore, usePublicProjectStore } from "lib/hooks";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
 const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
-
+  const { getPublicProjects } = usePublicProjectStore();
   const navMenu = [
     {
       category: "Overview",
@@ -30,22 +30,27 @@ const Navbar = observer(() => {
           name: "Past Transactions",
           slug: "/past-txs",
           icon: MdOutlineHistory,
+          logo: null,
         },
         {
           name: "Query",
           slug: "/query",
           icon: MdSearch,
+          logo: null,
         },
         {
           name: "Execute",
           slug: "/execute",
           icon: MdInput,
+          logo: null,
         },
       ],
     },
     {
       category: "Code",
-      submenu: [{ name: "Code List", slug: "/codes", icon: MdCode }],
+      submenu: [
+        { name: "Code List", slug: "/codes", icon: MdCode, logo: null },
+      ],
     },
     {
       category: "Contracts",
@@ -54,11 +59,13 @@ const Navbar = observer(() => {
           name: INSTANTIATED_LIST_NAME,
           slug: `/contract-list/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
           icon: getListIcon(INSTANTIATED_LIST_NAME),
+          logo: null,
         },
         {
           name: SAVED_LIST_NAME,
           slug: `/contract-list/${formatSlugName(SAVED_LIST_NAME)}`,
           icon: getListIcon(SAVED_LIST_NAME),
+          logo: null,
         },
         ...getContractLists()
           .filter((list) => list.slug !== formatSlugName(SAVED_LIST_NAME))
@@ -69,22 +76,36 @@ const Navbar = observer(() => {
               name: list.name,
               slug: `/contract-list/${list.slug}`,
               icon: getListIcon(list.name),
+              logo: null,
             };
           }),
-        { name: "View All", slug: "/contract-list", icon: MdMoreHoriz },
+        {
+          name: "View All",
+          slug: "/contract-list",
+          icon: MdMoreHoriz,
+          logo: null,
+        },
       ],
     },
-    // {
-    //   category: "Public Contracts",
-    //   submenu: [
-    //     {
-    //       name: "Astropost",
-    //       slug: "/public-contracts/astroport",
-    //       icon: MdLibraryBooks,
-    //     },
-    //     { name: "View All", slug: "/public-contracts", icon: MdMoreHoriz },
-    //   ],
-    // },
+    {
+      category: "Public Projects",
+      submenu: [
+        ...getPublicProjects().map((list) => {
+          return {
+            name: list.name,
+            slug: `/public-project/${list.slug}`,
+            logo: list.logo,
+            icon: null,
+          };
+        }),
+        {
+          name: "View All",
+          slug: "/public-project",
+          icon: MdMoreHoriz,
+          logo: null,
+        },
+      ],
+    },
   ];
 
   return (
@@ -128,7 +149,18 @@ const Navbar = observer(() => {
                   transition="all .25s ease-in-out"
                   alignItems="center"
                 >
-                  <Icon as={submenu.icon} color="gray.600" boxSize="4" />
+                  {submenu.icon && (
+                    <Icon as={submenu.icon} color="gray.600" boxSize="4" />
+                  )}
+                  {submenu.logo && (
+                    <Image
+                      src={submenu.logo}
+                      borderRadius="full"
+                      alt={submenu.slug}
+                      width={4}
+                      height={4}
+                    />
+                  )}
                   <Text variant="body2" className="ellipsis">
                     {submenu.name}
                   </Text>

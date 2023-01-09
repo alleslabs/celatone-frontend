@@ -12,9 +12,9 @@ export const EmptyState = ({
   message,
 }: EmptyStateProps) => {
   return (
-    <Flex alignItems="center" flexDir="column" gap="4">
+    <Flex alignItems="center" flexDir="column" gap="4" width="full">
       <Icon as={icon} color="gray.600" boxSize="16" />
-      <Text color="gray.500" w="440px" textAlign="center">
+      <Text color="gray.500" w="540px" textAlign="center">
         {message}
       </Text>
     </Flex>
