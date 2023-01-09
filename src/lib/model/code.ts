@@ -7,9 +7,9 @@ import {
   useContractListCountByCodeId,
 } from "lib/services/codeService";
 import type { ContractInfo } from "lib/stores/contract";
-import type { CodeDetails, ContractInstances } from "lib/types";
+import type { CodeDetails, ContractInstances, Option } from "lib/types";
 
-export const useCodeData = (codeId: number): CodeDetails | undefined => {
+export const useCodeData = (codeId: number): Option<CodeDetails> => {
   const { currentChainRecord } = useWallet();
   const { data: codeInfo } = useCodeInfoByCodeId(codeId);
   if (!currentChainRecord) return undefined;
@@ -24,7 +24,7 @@ export const useCodeContractInstances = (
   codeId: number,
   offset: number,
   pageSize: number
-): ContractInstances | undefined => {
+): Option<ContractInstances> => {
   const { data: contractList } = useContractListByCodeId(
     codeId,
     offset,

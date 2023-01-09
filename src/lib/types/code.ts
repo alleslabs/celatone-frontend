@@ -1,4 +1,4 @@
-import type { HumanAddr, ContractAddr } from "lib/types";
+import type { HumanAddr, ContractAddr, Option } from "lib/types";
 
 export interface CodeInfo {
   id: number;
@@ -10,7 +10,7 @@ export interface CodeInfo {
 interface CodeProposal {
   proposalId: number;
   height: number;
-  created: Date | undefined;
+  created: Date;
 }
 
 enum InstantiatePermission {
@@ -20,13 +20,13 @@ enum InstantiatePermission {
 }
 
 export interface CodeDetails {
-  chainId: string | undefined;
+  chainId: Option<string>;
   codeId: number;
   uploader: ContractAddr | HumanAddr;
-  hash: string | undefined;
+  hash: Option<string>;
   height: number;
-  created: Date | undefined;
-  proposal: CodeProposal | undefined;
+  created: Date;
+  proposal: Option<CodeProposal>;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: (HumanAddr | ContractAddr)[];
 }

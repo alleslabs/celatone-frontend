@@ -11,7 +11,7 @@ interface UseHandleContractSaveProps {
   contractAddress: ContractAddr;
   instantiator: string;
   label: string;
-  created: Date | undefined;
+  created: Date;
   name?: string;
   description?: string;
   tags?: string[];

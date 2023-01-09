@@ -11,12 +11,12 @@ import {
   getContractListCountByCodeId,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
-import type { CodeInfo, CodeDetails, ContractAddr } from "lib/types";
-import { parseDateOpt, parseTxHashOpt } from "lib/utils";
+import type { CodeInfo, CodeDetails, ContractAddr, Option } from "lib/types";
+import { parseDateDefualt, parseTxHashOpt } from "lib/utils";
 
 export const useCodeListByUserQuery = (
-  walletAddr: string | undefined
-): UseQueryResult<CodeInfo[] | undefined> => {
+  walletAddr: Option<string>
+): UseQueryResult<Option<CodeInfo[]>> => {
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -40,7 +40,7 @@ export const useCodeListByUserQuery = (
   });
 };
 
-export const useCodeListByIDsQuery = (ids: number[] | undefined) => {
+export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
   const queryFn = useCallback(async () => {
     if (!ids) return undefined;
 
@@ -65,8 +65,8 @@ export const useCodeListByIDsQuery = (ids: number[] | undefined) => {
 };
 
 export const useCodeInfoByCodeId = (
-  codeId: number | undefined
-): UseQueryResult<Omit<CodeDetails, "chainId"> | undefined> => {
+  codeId: Option<number>
+): UseQueryResult<Option<Omit<CodeDetails, "chainId">>> => {
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 
@@ -81,12 +81,14 @@ export const useCodeInfoByCodeId = (
           uploader: code.account.address,
           hash: parseTxHashOpt(code.transaction?.hash),
           height: code.transaction?.block.height,
-          created: parseDateOpt(code.transaction?.block?.timestamp),
+          created: parseDateDefualt(code.transaction?.block?.timestamp),
           proposal: code.code_proposals[0]
             ? {
                 proposalId: code.code_proposals[0].proposal_id,
                 height: code.code_proposals[0].block?.height,
-                created: parseDateOpt(code.code_proposals[0].block?.timestamp),
+                created: parseDateDefualt(
+                  code.code_proposals[0].block?.timestamp
+                ),
               }
             : undefined,
           permissionAddresses: code.access_config_addresses,
@@ -101,10 +103,10 @@ export const useCodeInfoByCodeId = (
 };
 
 export const useContractListByCodeId = (
-  codeId: number | undefined,
+  codeId: Option<number>,
   offset: number,
   pageSize: number
-): UseQueryResult<ContractInfo[] | undefined> => {
+): UseQueryResult<Option<ContractInfo[]>> => {
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 
@@ -115,7 +117,7 @@ export const useContractListByCodeId = (
           contractAddress: contract.address as ContractAddr,
           instantiator: contract.transaction?.account?.address ?? "",
           label: contract.label,
-          created: parseDateOpt(contract.transaction?.block?.timestamp),
+          created: parseDateDefualt(contract.transaction?.block?.timestamp),
         }))
       );
   }, [codeId, offset, pageSize]);
@@ -127,8 +129,8 @@ export const useContractListByCodeId = (
 };
 
 export const useContractListCountByCodeId = (
-  codeId: number | undefined
-): UseQueryResult<number | undefined> => {
+  codeId: Option<number>
+): UseQueryResult<Option<number>> => {
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 

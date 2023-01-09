@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 
+import type { Option } from "lib/types";
+
 export const formatUTC = (timestamp: string) => {
   const localDate = timestamp.concat("Z");
   return dayjs(localDate).utc().format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
@@ -12,5 +14,8 @@ export const dateFromNow = (timestamp: string) => {
 
 export const parseDate = (date: string) => new Date(`${date}Z`);
 
-export const parseDateOpt = (dateOpt: string | undefined): Date | undefined =>
+export const parseDateOpt = (dateOpt: Option<string>): Option<Date> =>
   dateOpt ? parseDate(dateOpt) : undefined;
+
+export const parseDateDefualt = (dateOpt: Option<string>): Date =>
+  dateOpt ? parseDate(dateOpt) : parseDate("0");
