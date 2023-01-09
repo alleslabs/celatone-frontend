@@ -153,3 +153,15 @@ export const useExecuteTransactions = (
     refetch,
   };
 };
+
+export const useContractDetailsTableCounts = (
+  contractAddress: ContractAddr
+) => {
+  // TODO - add other table count
+  const { data: executeCount = 0 } =
+    useExecuteTransactionsCountByContractAddress(contractAddress);
+
+  return {
+    executeCount,
+  };
+};

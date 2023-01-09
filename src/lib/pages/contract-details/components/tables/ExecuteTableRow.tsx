@@ -38,7 +38,7 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
           )}
         </Flex>
       </Td>
-      <Td w="12%">
+      <Td w="15%">
         <ExplorerLink
           value={transaction.sender}
           type="user_address"
@@ -52,7 +52,7 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
           canCopyWithHover
         />
       </Td>
-      <Td w="25%">
+      <Td w="22%">
         <Flex direction="column" gap={1}>
           <Text variant="body2">
             {formatUTC(transaction.created.toString())}

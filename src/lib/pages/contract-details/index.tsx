@@ -12,7 +12,10 @@ import { useRouter } from "next/router";
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
-import { useContractDetail } from "lib/model/contract";
+import {
+  useContractDetail,
+  useContractDetailsTableCounts,
+} from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
@@ -34,6 +37,7 @@ const ContractDetails = observer(() => {
   ) as ContractAddr;
 
   const contractDetails = useContractDetail(contractAddressParam);
+  const tableCounts = useContractDetailsTableCounts(contractAddressParam);
 
   // FIXME - might be a better way to scroll to table header
   const tableHeaderId = "contractDetailTableHeader";
@@ -81,7 +85,7 @@ const ContractDetails = observer(() => {
       <Tabs>
         <TabList border="none" mb="32px">
           <CustomTab count={100}>All</CustomTab>
-          <CustomTab count={50}>Executes</CustomTab>
+          <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
           <CustomTab count={20}>Migration</CustomTab>
           <CustomTab count={12}>Related Proposals</CustomTab>
         </TabList>

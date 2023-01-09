@@ -112,9 +112,9 @@ export const ExecuteTable = ({
               <Th w="12%">Transaction Hash</Th>
               <Th w="8%" />
               <Th w="31%">Execute Messages</Th>
-              <Th w="12%">Sender</Th>
+              <Th w="15%">Sender</Th>
               <Th w="12%">Block Height</Th>
-              <Th w="25%">Timestamp</Th>
+              <Th w="22%">Timestamp</Th>
             </Tr>
           </Thead>
           <Tbody>
