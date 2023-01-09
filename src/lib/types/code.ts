@@ -9,7 +9,7 @@ export interface CodeInfo {
 
 interface CodeProposal {
   proposalId: number;
-  height: number;
+  height: Option<number>;
   created: Date;
 }
 
@@ -24,7 +24,7 @@ export interface CodeDetails {
   codeId: number;
   uploader: ContractAddr | HumanAddr;
   hash: Option<string>;
-  height: number;
+  height: Option<number>;
   created: Date;
   proposal: Option<CodeProposal>;
   instantiatePermission: InstantiatePermission;
