@@ -35,8 +35,9 @@ const Header = () => {
         src="/celatone-logo.svg"
         alt="Celatone"
         width="115px"
-        onClick={() => router.push({ pathname: "/" })}
         mr="36px"
+        _hover={{ cursor: "pointer" }}
+        onClick={() => router.push({ pathname: "/" })}
       />
       <Searchbar />
       <Flex gap={2}>
