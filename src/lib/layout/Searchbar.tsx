@@ -26,7 +26,7 @@ type SearchResultType =
 const NOT_FOUND =
   "Matches not found. Please check your spelling or make sure you have selected the correct network.";
 const NOT_SUPPORTED =
-  "We currently only support searching by Contract Address and Code ID.";
+  "We currently only support searching by contract address and code ID.";
 
 const getRoute = (type: SearchResultType) => {
   switch (type) {
@@ -98,7 +98,7 @@ const Searchbar = () => {
           value={search}
           h="36px"
           onChange={handleSearchChange}
-          placeholder="Search by Contract Address or Code ID"
+          placeholder="Search by Contract Address / Code ID"
           focusBorderColor="primary.main"
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSelectResult(results.at(0));
