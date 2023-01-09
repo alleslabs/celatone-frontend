@@ -4,7 +4,7 @@ import { MdCheck } from "react-icons/md";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ExecuteTransaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
-import { renderTags } from "lib/utils/executeTags";
+import { getExecuteMsgTags } from "lib/utils/executeTags";
 
 interface TableRowProps {
   transaction: ExecuteTransaction;
@@ -13,23 +13,23 @@ interface TableRowProps {
 export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
   return (
     <Tr>
-      <Td w="12%">
+      <Td w="15%">
         <ExplorerLink
           value={transaction.hash.toLocaleUpperCase()}
           type="tx_hash"
           canCopyWithHover
         />
       </Td>
-      <Td w="8%" textAlign="center">
+      <Td w="5%" textAlign="center">
         <Icon
           as={MdCheck}
           fontSize="24px"
-          color={transaction.success ? "#66BB6A" : "#EF5350"}
+          color={transaction.success ? "success.main" : "error.main"}
         />
       </Td>
-      <Td w="31%">
+      <Td w="30%">
         <Flex gap={1} flexWrap="wrap">
-          {renderTags(transaction.messages, 2).map(
+          {getExecuteMsgTags(transaction.messages, 2).map(
             (tag: string, index: number) => (
               <Tag key={tag + index.toString()} borderRadius="full">
                 {tag}
@@ -45,14 +45,14 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
           canCopyWithHover
         />
       </Td>
-      <Td w="12%">
+      <Td w="15%">
         <ExplorerLink
           value={transaction.height.toString()}
           type="block"
           canCopyWithHover
         />
       </Td>
-      <Td w="22%">
+      <Td w="20%">
         <Flex direction="column" gap={1}>
           <Text variant="body2">
             {formatUTC(transaction.created.toString())}

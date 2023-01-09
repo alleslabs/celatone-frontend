@@ -20,12 +20,12 @@ import { ExecuteTableRow } from "./ExecuteTableRow";
 
 interface ExecuteTableProps {
   contractAddress: ContractAddr;
-  tableHeader: string;
+  scrollComponentId: string;
 }
 
 export const ExecuteTable = ({
   contractAddress,
-  tableHeader,
+  scrollComponentId,
 }: ExecuteTableProps) => {
   const [totalData, setTotalData] = useState<number>(0);
 
@@ -102,19 +102,24 @@ export const ExecuteTable = ({
   return (
     <>
       <TableContainer>
-        <Table variant="simple">
+        <Table variant="simple" sx={{ tableLayout: "auto" }}>
           <Thead>
             <Tr
               sx={{
-                "& th": { textTransform: "none", color: "text.dark" },
+                "& th": {
+                  textTransform: "none",
+                  color: "text.main",
+                  fontWeight: 700,
+                  py: 6,
+                },
               }}
             >
-              <Th w="12%">Transaction Hash</Th>
-              <Th w="8%" />
-              <Th w="31%">Execute Messages</Th>
+              <Th w="15%">Transaction Hash</Th>
+              <Th w="5%" />
+              <Th w="30%">Execute Messages</Th>
               <Th w="15%">Sender</Th>
-              <Th w="12%">Block Height</Th>
-              <Th w="22%">Timestamp</Th>
+              <Th w="15%">Block Height</Th>
+              <Th w="20%">Timestamp</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -132,7 +137,7 @@ export const ExecuteTable = ({
         pagesQuantity={pagesQuantity}
         offset={offset}
         totalData={totalData}
-        scrollTo={tableHeader}
+        scrollComponentId={scrollComponentId}
         pageSize={pageSize}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}

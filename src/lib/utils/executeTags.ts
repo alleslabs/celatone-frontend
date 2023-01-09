@@ -11,7 +11,10 @@ import type { Message } from "lib/types";
  * List of messages containing 4 execute message with amount eqaul to 2
  * Will return ["exec1", "exec2", "+2"]
  */
-export const renderTags = (messages: Message[], amount: number): string[] => {
+export const getExecuteMsgTags = (
+  messages: Message[],
+  amount: number
+): string[] => {
   const executeMessages = messages.filter(
     (message) => message.type === "/cosmwasm.wasm.v1.MsgExecuteContract"
   );

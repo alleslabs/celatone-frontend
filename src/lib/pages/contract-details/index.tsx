@@ -83,7 +83,7 @@ const ContractDetails = observer(() => {
         History
       </Heading>
       <Tabs>
-        <TabList border="none" mb="32px">
+        <TabList borderBottom="1px solid" borderColor="divider.main">
           <CustomTab count={100}>All</CustomTab>
           <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
           <CustomTab count={20}>Migration</CustomTab>
@@ -99,7 +99,7 @@ const ContractDetails = observer(() => {
           <TabPanel p={0}>
             <ExecuteTable
               contractAddress={contractAddressParam}
-              tableHeader={tableHeaderId}
+              scrollComponentId={tableHeaderId}
             />
           </TabPanel>
           <TabPanel p={0}>

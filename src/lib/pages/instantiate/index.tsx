@@ -1,7 +1,7 @@
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import { useEffect, useState } from "react";
 
-import { scrollTop } from "lib/utils/scrollTo";
+import { scrollTop } from "lib/utils";
 
 import CompletedPage from "./completed";
 import InstantiatePage from "./instantiate";

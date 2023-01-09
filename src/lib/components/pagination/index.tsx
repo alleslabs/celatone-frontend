@@ -16,7 +16,7 @@ interface PaginationProps {
   offset: number;
   totalData: number;
   pageSize: number;
-  scrollTo?: string;
+  scrollComponentId?: string;
   onPageChange: (pageNumber: number) => void;
   onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -26,17 +26,17 @@ export const Pagination = ({
   offset,
   totalData,
   pageSize,
-  scrollTo,
+  scrollComponentId,
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
   useEffect(() => {
-    if (!scrollTo) {
+    if (!scrollComponentId) {
       scrollTop();
     } else {
-      scrollToComponent(scrollTo);
+      scrollToComponent(scrollComponentId);
     }
-  }, [currentPage, pageSize, scrollTo]);
+  }, [currentPage, pageSize, scrollComponentId]);
 
   const { offsetData, lastDataInPage } = useMemo(() => {
     return {
