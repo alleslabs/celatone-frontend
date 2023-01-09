@@ -24,9 +24,8 @@ const addressLengthMap: {
 const getAddressTypeByLength = (
   chainName: string,
   address: string
-): AddressReturnType => {
-  return addressLengthMap[chainName]?.[address.length] ?? "invalid_address";
-};
+): AddressReturnType =>
+  addressLengthMap[chainName]?.[address.length] ?? "invalid_address";
 
 export const useGetAddressType = () => {
   const { currentChainName } = useWallet();
