@@ -6361,7 +6361,7 @@ export type GetCodeInfoByCodeIdQueryVariables = Exact<{
 
 export type GetCodeInfoByCodeIdQuery = {
   __typename?: "query_root";
-  codes: Array<{
+  codes_by_pk?: {
     __typename?: "codes";
     id: number;
     access_config_permission: string;
@@ -6377,7 +6377,7 @@ export type GetCodeInfoByCodeIdQuery = {
       proposal_id: number;
       block?: { __typename?: "blocks"; height: number; timestamp: any } | null;
     }>;
-  }>;
+  } | null;
 };
 
 export const GetCodeListByUserQueryDocument = {
@@ -7203,32 +7203,14 @@ export const GetCodeInfoByCodeIdDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "codes" },
+            name: { kind: "Name", value: "codes_by_pk" },
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "where" },
+                name: { kind: "Name", value: "id" },
                 value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "id" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "codeId" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
+                  kind: "Variable",
+                  name: { kind: "Name", value: "codeId" },
                 },
               },
             ],

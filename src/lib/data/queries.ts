@@ -105,7 +105,7 @@ export const getContractListCountByCodeId = graphql(`
 
 export const getCodeInfoByCodeId = graphql(`
   query getCodeInfoByCodeId($codeId: Int!) {
-    codes(where: { id: { _eq: $codeId } }) {
+    codes_by_pk(id: $codeId) {
       id
       account {
         address

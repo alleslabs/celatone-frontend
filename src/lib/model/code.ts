@@ -12,7 +12,7 @@ import type { CodeDetails, ContractInstances, Option } from "lib/types";
 export const useCodeData = (codeId: number): Option<CodeDetails> => {
   const { currentChainRecord } = useWallet();
   const { data: codeInfo } = useCodeInfoByCodeId(codeId);
-  if (!currentChainRecord) return undefined;
+  if (!currentChainRecord || !codeInfo) return undefined;
 
   return {
     chainId: currentChainRecord.chain.chain_id,

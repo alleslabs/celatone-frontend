@@ -74,25 +74,26 @@ export const useCodeInfoByCodeId = (
       .request(getCodeInfoByCodeId, {
         codeId,
       })
-      .then(({ codes }) => {
-        const code = codes[0];
+      .then(({ codes_by_pk }) => {
+        if (!codes_by_pk) return null;
+
         return {
-          codeId: code.id,
-          uploader: code.account.address,
-          hash: parseTxHashOpt(code.transaction?.hash),
-          height: code.transaction?.block.height,
-          created: parseDateDefualt(code.transaction?.block?.timestamp),
-          proposal: code.code_proposals[0]
+          codeId: codes_by_pk.id,
+          uploader: codes_by_pk.account.address,
+          hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
+          height: codes_by_pk.transaction?.block.height,
+          created: parseDateDefualt(codes_by_pk.transaction?.block?.timestamp),
+          proposal: codes_by_pk.code_proposals[0]
             ? {
-                proposalId: code.code_proposals[0].proposal_id,
-                height: code.code_proposals[0].block?.height,
+                proposalId: codes_by_pk.code_proposals[0].proposal_id,
+                height: codes_by_pk.code_proposals[0].block?.height,
                 created: parseDateDefualt(
-                  code.code_proposals[0].block?.timestamp
+                  codes_by_pk.code_proposals[0].block?.timestamp
                 ),
               }
             : undefined,
-          permissionAddresses: code.access_config_addresses,
-          instantiatePermission: code.access_config_permission,
+          permissionAddresses: codes_by_pk.access_config_addresses,
+          instantiatePermission: codes_by_pk.access_config_permission,
         };
       });
   }, [codeId]);
