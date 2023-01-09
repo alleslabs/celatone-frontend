@@ -79,6 +79,7 @@ const Header = () => {
   };
 
   const renderResultItem = (type?: SearchResultType) => {
+    // TODO: should be removed this once all types are supported
     // eslint-disable-next-line no-nested-ternary
     const text = type ? (getRoute(type) ? type : NOT_SUPPORTED) : NOT_FOUND;
     const route = type ? getRoute(type) : null;
