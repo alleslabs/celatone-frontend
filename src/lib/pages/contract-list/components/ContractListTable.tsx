@@ -31,7 +31,7 @@ import {
   RemoveContract,
 } from "lib/components/modal/contract";
 import type { ContractInfo } from "lib/stores/contract";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
@@ -46,7 +46,7 @@ const StyledIcon = chakra(Icon, {
 
 interface ContractListTableProps {
   contracts: ContractInfo[];
-  contractRemovalInfo?: Option;
+  contractRemovalInfo?: LVPair;
 }
 
 export const ContractListTable = ({

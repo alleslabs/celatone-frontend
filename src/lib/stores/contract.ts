@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
-import type { Option, Dict, ContractAddr } from "lib/types";
+import type { LVPair, Dict, ContractAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractInfo {
@@ -14,7 +14,7 @@ export interface ContractInfo {
   description?: string;
   tags?: string[];
   // TODO: replace with another type
-  lists?: Option[];
+  lists?: LVPair[];
 }
 interface ContractList {
   name: string;
@@ -231,7 +231,7 @@ export class ContractStore {
     name?: string,
     description?: string,
     tags?: string[],
-    lists?: Option[]
+    lists?: LVPair[]
   ) {
     const contractInfo = this.contractInfo[userKey]?.[contractAddress] ?? {
       contractAddress,
@@ -305,8 +305,8 @@ export class ContractStore {
   private updateContractInAllLists(
     userKey: string,
     contractAddress: ContractAddr,
-    oldLists: Option[],
-    newLists: Option[]
+    oldLists: LVPair[],
+    newLists: LVPair[]
   ) {
     const removedLists = oldLists.filter((oldList) =>
       newLists.every((newList) => newList.value !== oldList.value)

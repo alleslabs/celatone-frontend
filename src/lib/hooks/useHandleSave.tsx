@@ -1,7 +1,7 @@
 import { Icon, useToast } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 
-import type { ContractAddr, Option } from "lib/types";
+import type { ContractAddr, LVPair } from "lib/types";
 
 import { useContractStore } from "./store";
 import { useUserKey } from "./useUserKey";
@@ -15,7 +15,7 @@ interface UseHandleContractSaveProps {
   name?: string;
   description?: string;
   tags?: string[];
-  lists?: Option[];
+  lists?: LVPair[];
   actions?: () => void;
 }
 
