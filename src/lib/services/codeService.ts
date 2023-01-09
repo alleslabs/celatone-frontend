@@ -12,7 +12,7 @@ import {
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type { CodeInfo, CodeDetails, ContractAddr, Option } from "lib/types";
-import { parseDateDefualt, parseTxHashOpt, unwrap } from "lib/utils";
+import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 
 export const useCodeListByUserQuery = (
   walletAddr: Option<string>
@@ -82,12 +82,12 @@ export const useCodeInfoByCodeId = (
           uploader: codes_by_pk.account.address,
           hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
           height: codes_by_pk.transaction?.block.height,
-          created: parseDateDefualt(codes_by_pk.transaction?.block?.timestamp),
+          created: parseDateDefault(codes_by_pk.transaction?.block?.timestamp),
           proposal: codes_by_pk.code_proposals[0]
             ? {
                 proposalId: codes_by_pk.code_proposals[0].proposal_id,
                 height: codes_by_pk.code_proposals[0].block?.height,
-                created: parseDateDefualt(
+                created: parseDateDefault(
                   codes_by_pk.code_proposals[0].block?.timestamp
                 ),
               }
@@ -118,7 +118,7 @@ export const useContractListByCodeId = (
           contractAddress: contract.address as ContractAddr,
           instantiator: unwrap(contract.transaction?.account?.address),
           label: contract.label,
-          created: parseDateDefualt(contract.transaction?.block?.timestamp),
+          created: parseDateDefault(contract.transaction?.block?.timestamp),
         }))
       );
   }, [codeId, offset, pageSize]);

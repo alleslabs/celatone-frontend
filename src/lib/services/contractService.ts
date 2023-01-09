@@ -10,7 +10,7 @@ import {
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr, Option } from "lib/types";
-import { parseDateDefualt, parseTxHash } from "lib/utils";
+import { parseDateDefault, parseTxHash } from "lib/utils";
 
 interface InstantiateDetail {
   initMsg: string;
@@ -52,7 +52,7 @@ export const useInstantiatedListByUserQuery = (
           contractAddress: contract.address as ContractAddr,
           instantiator: walletAddr,
           label: contract.label,
-          created: parseDateDefualt(contract.transaction?.block?.timestamp),
+          created: parseDateDefault(contract.transaction?.block?.timestamp),
         }))
       );
   }, [walletAddr]);

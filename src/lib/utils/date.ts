@@ -17,5 +17,5 @@ export const parseDate = (date: string) => new Date(`${date}Z`);
 export const parseDateOpt = (dateOpt: Option<string>): Option<Date> =>
   dateOpt ? parseDate(dateOpt) : undefined;
 
-export const parseDateDefualt = (dateOpt: Option<string>): Date =>
+export const parseDateDefault = (dateOpt: Option<string>): Date =>
   dateOpt ? parseDate(dateOpt) : parseDate("0");
