@@ -21,6 +21,7 @@ import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
+import { MigrationTable } from "./components/tables/migration";
 import { TokenSection } from "./components/TokenSection";
 
 const ContractDetails = observer(() => {
@@ -75,7 +76,7 @@ const ContractDetails = observer(() => {
         History
       </Heading>
       <Tabs>
-        <TabList border="none" mb="32px">
+        <TabList border="none">
           <CustomTab count={100}>All</CustomTab>
           <CustomTab count={50}>Executes</CustomTab>
           <CustomTab count={20}>Migration</CustomTab>
@@ -95,7 +96,7 @@ const ContractDetails = observer(() => {
           </TabPanel>
           <TabPanel p={0}>
             <Heading as="h6" variant="h6" color="error.main">
-              Migration Table
+              <MigrationTable />
             </Heading>
           </TabPanel>
           <TabPanel p={0}>

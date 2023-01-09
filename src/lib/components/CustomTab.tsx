@@ -20,6 +20,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       lineHeight="24px"
       letterSpacing="0.4px"
       variant="ghost"
+      color="text.dark"
       sx={{
         "&[aria-selected=true]": {
           color: "primary.main",
@@ -32,7 +33,11 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
     >
       {tabProps.children}
 
-      <Badge variant={isSelected ? "primary" : "gray"} ml="6px">
+      <Badge
+        variant={isSelected ? "primary" : "gray"}
+        ml="6px"
+        color="text.main"
+      >
         {count}
       </Badge>
     </Button>
