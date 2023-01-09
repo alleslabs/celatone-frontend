@@ -1,13 +1,4 @@
-import {
-  Flex,
-  Table,
-  TableContainer,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  Text,
-} from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -17,6 +8,7 @@ import { useExecuteTransactions } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
 
 import { ExecuteTableRow } from "./ExecuteTableRow";
+import { NoTransactions } from "./NoTransactions";
 
 interface ExecuteTableProps {
   contractAddress: ContractAddr;
@@ -80,25 +72,11 @@ export const ExecuteTable = ({
     [setPageSize]
   );
 
-  if (executeTransaction?.length === 0) {
+  if (!executeTransaction?.length)
     return (
-      <Flex
-        justifyContent="center"
-        h="124px"
-        borderY="1px"
-        borderColor="divider.main"
-      >
-        <Text
-          variant="body2"
-          color="text.dark"
-          textAlign="center"
-          alignSelf="center"
-        >
-          This contract does not have any execute transactions yet.
-        </Text>
-      </Flex>
+      <NoTransactions displayText="This contract does not have any execute transactions yet." />
     );
-  }
+
   return (
     <>
       <TableContainer>
