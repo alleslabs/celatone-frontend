@@ -12,7 +12,7 @@ import {
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type { CodeInfo, CodeDetails, ContractAddr, Option } from "lib/types";
-import { parseDateDefualt, parseTxHashOpt } from "lib/utils";
+import { parseDateDefualt, parseTxHashOpt, unwrap } from "lib/utils";
 
 export const useCodeListByUserQuery = (
   walletAddr: Option<string>
@@ -115,7 +115,7 @@ export const useContractListByCodeId = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: contract.transaction?.account?.address ?? "",
+          instantiator: unwrap(contract.transaction?.account?.address),
           label: contract.label,
           created: parseDateDefualt(contract.transaction?.block?.timestamp),
         }))
