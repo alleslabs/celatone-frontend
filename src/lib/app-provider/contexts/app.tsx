@@ -8,15 +8,11 @@ import { useEffect, useContext, useMemo, createContext } from "react";
 import { getIndexerGraphClient } from "../query-client";
 import type { AppConstants } from "../types";
 import {
-  getExplorerContractAddressUrl,
   getExplorerTxUrl,
+  getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import {
-  DEFAULT_ADDRESS,
-  DEFAULT_CHAIN,
-  getExplorerUserAddressUrl,
-} from "lib/data";
+import { DEFAULT_ADDRESS, DEFAULT_CHAIN } from "lib/data";
 import { useCodeStore, useContractStore } from "lib/hooks";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
@@ -39,7 +35,6 @@ interface AppContextInterface<
   appContractAddress: ContractAddress;
   constants: Constants;
   explorerLink: {
-    contractUrl: string;
     txUrl: string;
     userUrl: string;
   };
@@ -52,7 +47,6 @@ const AppContext = createContext<AppContextInterface<any, any>>({
   appContractAddress: {},
   constants: { gasAdjustment: 0 },
   explorerLink: {
-    contractUrl: "",
     txUrl: "",
     userUrl: "",
   },
@@ -87,7 +81,6 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   const chainBoundStates = useMemo(() => {
     return {
       explorerLink: {
-        contractUrl: getExplorerContractAddressUrl(currentChainName),
         txUrl: getExplorerTxUrl(currentChainName),
         userUrl: getExplorerUserAddressUrl(currentChainName),
       },
