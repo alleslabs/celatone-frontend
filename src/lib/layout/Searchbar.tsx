@@ -7,10 +7,11 @@ import {
   FormControl,
   Text,
   Icon,
+  useOutsideClick,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { MdSearch } from "react-icons/md";
 
 import { useValidateAddress } from "lib/hooks";
@@ -44,7 +45,10 @@ const Searchbar = () => {
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
 
   const [search, setSearch] = useState("");
+  const [displayResults, setDisplayResults] = useState(false);
   const [results, setResults] = useState<SearchResultType[]>([]);
+
+  const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const res: SearchResultType[] = [];
@@ -59,12 +63,18 @@ const Searchbar = () => {
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setSearch(inputValue);
+    setDisplayResults(inputValue.length > 0);
   };
 
   const handleSelectResult = (type?: SearchResultType) => {
     const route = type ? getRoute(type) : null;
     if (route) router.push({ pathname: `${route}/${search}` });
   };
+
+  useOutsideClick({
+    ref: boxRef,
+    handler: () => setDisplayResults(false),
+  });
 
   const renderResultItem = (type?: SearchResultType) => {
     // TODO: should be removed once all types are supported
@@ -92,7 +102,7 @@ const Searchbar = () => {
   };
 
   return (
-    <FormControl>
+    <FormControl ref={boxRef}>
       <InputGroup>
         <Input
           value={search}
@@ -100,16 +110,17 @@ const Searchbar = () => {
           onChange={handleSearchChange}
           placeholder="Search by Contract Address / Code ID"
           focusBorderColor="primary.main"
+          _placeholder={{ color: "#A9A9A9" }}
+          onFocus={() => setDisplayResults(search.length > 0)}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSelectResult(results.at(0));
           }}
-          _placeholder={{ color: "#A9A9A9" }}
         />
         <InputRightElement pointerEvents="none" h="full">
           <Icon as={MdSearch} w={5} h={5} color="gray.600" />
         </InputRightElement>
       </InputGroup>
-      {search && (
+      {displayResults && (
         <List
           borderRadius="4px"
           bg="gray.900"
