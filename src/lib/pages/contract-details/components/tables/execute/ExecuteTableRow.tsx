@@ -2,7 +2,7 @@ import { Flex, Icon, Tag, Text, Grid } from "@chakra-ui/react";
 import { MdCheck } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TableRow } from "lib/components/table/tableComponents";
+import { TableRow } from "lib/components/table";
 import type { ExecuteTransaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";

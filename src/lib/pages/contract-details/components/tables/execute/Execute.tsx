@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { TableHeader } from "lib/components/table/tableComponents";
+import { TableHeader } from "lib/components/table";
 import { useExecuteTransactionsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
