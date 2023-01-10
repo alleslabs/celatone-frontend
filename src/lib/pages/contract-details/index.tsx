@@ -5,15 +5,19 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
+  Icon,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import { MdSearchOff } from "react-icons/md";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
+import { useValidateAddress } from "lib/hooks";
 import {
-  useContractDetail,
+  useContractData,
   useContractDetailsTableCounts,
 } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
@@ -27,53 +31,64 @@ import { JsonInfo } from "./components/JsonInfo";
 import { ExecuteTable } from "./components/tables/execute/Execute";
 import { TokenSection } from "./components/TokenSection";
 
-const ContractDetails = observer(() => {
-  /**
-   * @todos add contract address validation function here
-   */
-  const router = useRouter();
-  const contractAddressParam = getFirstQueryParam(
-    router.query.contractAddress
-  ) as ContractAddr;
+interface ContractDetailsBodyProps {
+  contractAddress: ContractAddr;
+}
 
-  const contractDetails = useContractDetail(contractAddressParam);
-  const { tableCounts, refetchExecute } =
-    useContractDetailsTableCounts(contractAddressParam);
+const InvalidContract = () => (
+  <Flex
+    direction="column"
+    alignItems="center"
+    borderY="1px solid"
+    borderColor="divider.main"
+    width="full"
+    my="24px"
+    py="24px"
+  >
+    <Icon as={MdSearchOff} color="gray.600" boxSize="128" />
+    <Heading as="h5" variant="h5" my="8px">
+      Contract does not exist
+    </Heading>
+    <Text variant="body2" fontWeight="500" color="gray.500" textAlign="center">
+      Please double-check your spelling and make sure you have selected the
+      correct network.
+    </Text>
+  </Flex>
+);
 
-  // FIXME - might be a better way to scroll to table header
+const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
+  const contractData = useContractData(contractAddress);
   const tableHeaderId = "contractDetailTableHeader";
-
-  // TODO - Wait for design
-  if (!contractDetails) return null;
-
+  const { tableCounts, refetchExecute } =
+    useContractDetailsTableCounts(contractAddress);
+  if (!contractData) return <InvalidContract />;
   return (
-    <PageContainer>
-      <BackButton />
-      <ContractTop contractDetail={contractDetails} />
+    <>
+      <ContractTop contractData={contractData} />
       {/* Tokens Section */}
       <TokenSection />
       {/* Contract Description Section */}
-      <ContractDesc contractDetail={contractDetails} />
+      <ContractDesc contractData={contractData} />
       {/* Query/Execute commands section */}
       <CommandSection />
       {/* Instantiate/Contract Info Section */}
       <Flex my={12} justify="space-between">
         {/* Instantiate Info */}
-        <InstantiateInfo contractDetail={contractDetails} />
+        <InstantiateInfo contractData={contractData} />
         {/* Contract Info (Expand) */}
         <Flex direction="column" flex={0.8} gap={4}>
           <JsonInfo
             header="Contract Info"
             jsonString={jsonPrettify(
               JSON.stringify(
-                contractDetails?.instantiateInfo?.raw.contract_info ?? {}
+                contractData.instantiateInfo?.raw.contract_info ?? {}
               )
             )}
             jsonAreaHeight="180px"
           />
           <JsonInfo
             header="Instantiate Messages"
-            jsonString={jsonPrettify(contractDetails?.initMsg ?? "")}
+            jsonString={jsonPrettify(contractData.initMsg ?? "")}
             showViewFullButton
             defaultExpand
           />
@@ -99,7 +114,7 @@ const ContractDetails = observer(() => {
           </TabPanel>
           <TabPanel p={0}>
             <ExecuteTable
-              contractAddress={contractAddressParam}
+              contractAddress={contractAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.executeCount}
               refetchCount={refetchExecute}
@@ -117,6 +132,26 @@ const ContractDetails = observer(() => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+    </>
+  );
+};
+
+const ContractDetails = observer(() => {
+  const router = useRouter();
+  const { validateContractAddress } = useValidateAddress();
+
+  const contractAddressParam = getFirstQueryParam(router.query.contractAddress);
+
+  return (
+    <PageContainer>
+      <BackButton />
+      {validateContractAddress(contractAddressParam) ? (
+        <InvalidContract />
+      ) : (
+        <ContractDetailsBody
+          contractAddress={contractAddressParam as ContractAddr}
+        />
+      )}
     </PageContainer>
   );
 });
