@@ -11,8 +11,13 @@ import {
   getExecuteTransactionsByContractAddress,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
-import type { ContractAddr, ExecuteTransaction, HumanAddr } from "lib/types";
-import { parseTxHash } from "lib/utils/parser";
+import type {
+  ContractAddr,
+  ExecuteTransaction,
+  HumanAddr,
+  Option,
+} from "lib/types";
+import { parseDateDefault, parseTxHash } from "lib/utils";
 
 interface InstantiateDetail {
   initMsg: string;
@@ -20,8 +25,8 @@ interface InstantiateDetail {
 }
 
 export const useInstantiatedCountByUserQuery = (
-  walletAddr: HumanAddr | undefined
-): UseQueryResult<number | undefined> => {
+  walletAddr: Option<HumanAddr>
+): UseQueryResult<Option<number>> => {
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -40,8 +45,8 @@ export const useInstantiatedCountByUserQuery = (
 };
 
 export const useInstantiatedListByUserQuery = (
-  walletAddr: HumanAddr | undefined
-): UseQueryResult<ContractInfo[] | undefined> => {
+  walletAddr: Option<HumanAddr>
+): UseQueryResult<Option<ContractInfo[]>> => {
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -54,7 +59,7 @@ export const useInstantiatedListByUserQuery = (
           contractAddress: contract.address as ContractAddr,
           instantiator: walletAddr,
           label: contract.label,
-          created: new Date(`${contract.transaction?.block?.timestamp}Z`),
+          created: parseDateDefault(contract.transaction?.block?.timestamp),
         }))
       );
   }, [walletAddr]);

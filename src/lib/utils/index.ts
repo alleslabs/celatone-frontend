@@ -12,3 +12,5 @@ export * from "./redo";
 export * from "./scroll";
 export * from "./textLine";
 export * from "./date";
+export * from "./parser";
+export * from "./option";
