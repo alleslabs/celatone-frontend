@@ -118,7 +118,12 @@ export const useExecuteTransactionsByContractAddress = (
   }, [contractAddress, offset, pageSize]);
 
   return useQuery(
-    ["execute_transactions_by_contract_addr", contractAddress],
+    [
+      "execute_transactions_by_contract_addr",
+      contractAddress,
+      offset,
+      pageSize,
+    ],
     queryFn,
     {
       keepPreviousData: true,

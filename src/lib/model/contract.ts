@@ -142,15 +142,17 @@ export const useExecuteTransactions = (
   offset: number,
   pageSize: number
 ) => {
-  const { data: executeTransaction, refetch } =
-    useExecuteTransactionsByContractAddress(contractAddress, offset, pageSize);
+  const { data: executeTransaction } = useExecuteTransactionsByContractAddress(
+    contractAddress,
+    offset,
+    pageSize
+  );
   const { data: count = 0 } =
     useExecuteTransactionsCountByContractAddress(contractAddress);
 
   return {
     executeTransaction,
     count,
-    refetch,
   };
 };
 

@@ -1,6 +1,6 @@
 import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -37,7 +37,7 @@ export const ExecuteTable = ({
     },
   });
 
-  const { executeTransaction, count, refetch } = useExecuteTransactions(
+  const { executeTransaction, count } = useExecuteTransactions(
     contractAddress,
     offset,
     pageSize
@@ -51,26 +51,14 @@ export const ExecuteTable = ({
     setTotalData(count);
   }, [count]);
 
-  useEffect(() => {
-    refetch();
-  }, [pageSize, offset, refetch]);
+  const onPageChange = (nextPage: number) => {
+    setCurrentPage(nextPage);
+  };
 
-  // Page change
-  const onPageChange = useCallback(
-    (nextPage: number) => {
-      setCurrentPage(nextPage);
-    },
-    [setCurrentPage]
-  );
-
-  // Page Sizing
-  const onPageSizeChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      const size = Number(e.target.value);
-      setPageSize(size);
-    },
-    [setPageSize]
-  );
+  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const size = Number(e.target.value);
+    setPageSize(size);
+  };
 
   if (!executeTransaction?.length)
     return (
