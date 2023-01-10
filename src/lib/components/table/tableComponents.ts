@@ -7,7 +7,7 @@ export const TableHeader = chakra(GridItem, {
     fontWeight: 700,
     py: 6,
     px: 4,
-    borderY: "1px solid",
+    borderBottom: "1px solid",
     borderColor: "divider.main",
   },
 });
