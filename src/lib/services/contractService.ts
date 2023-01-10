@@ -111,7 +111,7 @@ export const useExecuteTransactionsByContractAddress = (
           messages: transaction.transaction.messages,
           sender: transaction.transaction.account.address,
           height: transaction.transaction.block.height,
-          created: new Date(`${transaction.transaction?.block?.timestamp}Z`),
+          created: parseDateDefault(transaction.transaction?.block?.timestamp),
           success: transaction.transaction.success,
         }))
       );

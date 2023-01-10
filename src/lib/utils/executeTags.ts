@@ -19,14 +19,12 @@ export const getExecuteMsgTags = (
     (message) => message.type === "/cosmwasm.wasm.v1.MsgExecuteContract"
   );
   const tags = [];
-  executeMessages.forEach((message, index: number) => {
-    if (index < amount) {
-      tags.push(Object.keys(message.msg.msg)[0]);
-    }
-  });
-
-  if (tags.length < executeMessages.length) {
-    tags.push(`+${executeMessages.length - tags.length} `);
+  for (let i = 0; i < amount; i += 1) {
+    if (executeMessages[i])
+      tags.push(Object.keys(executeMessages[i].msg.msg)[0]);
   }
-  return tags;
+
+  return executeMessages.length > tags.length
+    ? tags.concat(`+${executeMessages.length - tags.length}`)
+    : tags;
 };
