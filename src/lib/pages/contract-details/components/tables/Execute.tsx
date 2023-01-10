@@ -1,10 +1,10 @@
 import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useExecuteTransactions } from "lib/model/contract";
+import { useExecuteTransactionsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
 import { ExecuteTableRow } from "./ExecuteTableRow";
@@ -13,14 +13,16 @@ import { NoTransactions } from "./NoTransactions";
 interface ExecuteTableProps {
   contractAddress: ContractAddr;
   scrollComponentId: string;
+  totalData: number;
+  refetchCount: () => void;
 }
 
 export const ExecuteTable = ({
   contractAddress,
   scrollComponentId,
+  totalData,
+  refetchCount,
 }: ExecuteTableProps) => {
-  const [totalData, setTotalData] = useState<number>(0);
-
   const {
     pagesQuantity,
     currentPage,
@@ -37,7 +39,7 @@ export const ExecuteTable = ({
     },
   });
 
-  const { executeTransaction, count } = useExecuteTransactions(
+  const { data: executeTransaction } = useExecuteTransactionsByContractAddress(
     contractAddress,
     offset,
     pageSize
@@ -47,11 +49,8 @@ export const ExecuteTable = ({
     setCurrentPage(1);
   }, [pageSize, setCurrentPage]);
 
-  useEffect(() => {
-    setTotalData(count);
-  }, [count]);
-
   const onPageChange = (nextPage: number) => {
+    refetchCount();
     setCurrentPage(nextPage);
   };
 

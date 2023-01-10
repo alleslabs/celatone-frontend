@@ -37,7 +37,8 @@ const ContractDetails = observer(() => {
   ) as ContractAddr;
 
   const contractDetails = useContractDetail(contractAddressParam);
-  const tableCounts = useContractDetailsTableCounts(contractAddressParam);
+  const { tableCounts, refetchExecute } =
+    useContractDetailsTableCounts(contractAddressParam);
 
   // FIXME - might be a better way to scroll to table header
   const tableHeaderId = "contractDetailTableHeader";
@@ -100,6 +101,8 @@ const ContractDetails = observer(() => {
             <ExecuteTable
               contractAddress={contractAddressParam}
               scrollComponentId={tableHeaderId}
+              totalData={tableCounts.executeCount}
+              refetchCount={refetchExecute}
             />
           </TabPanel>
           <TabPanel p={0}>
