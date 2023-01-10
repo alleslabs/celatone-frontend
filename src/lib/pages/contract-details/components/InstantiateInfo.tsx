@@ -70,6 +70,7 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
             helperText1={contractDetail.codeInfo?.description}
           >
             <ExplorerLink
+              type="code_id"
               value={contractDetail.instantiateInfo.codeId}
               canCopyWithHover
             />
