@@ -1,33 +1,38 @@
-import { Flex, Icon, Tag, Td, Tr, Text } from "@chakra-ui/react";
+import { Flex, Icon, Tag, Text, Grid } from "@chakra-ui/react";
 import { MdCheck } from "react-icons/md";
 
+import { StyledTableRow } from "../tableStyle";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ExecuteTransaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";
 
-interface TableRowProps {
+interface ExecuteTableRowProps {
   transaction: ExecuteTransaction;
+  templateColumnsStyle: string;
 }
 
-export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
+export const ExecuteTableRow = ({
+  transaction,
+  templateColumnsStyle,
+}: ExecuteTableRowProps) => {
   return (
-    <Tr>
-      <Td w="15%">
+    <Grid templateColumns={templateColumnsStyle}>
+      <StyledTableRow>
         <ExplorerLink
           value={transaction.hash.toLocaleUpperCase()}
           type="tx_hash"
           canCopyWithHover
         />
-      </Td>
-      <Td w="5%" textAlign="center">
+      </StyledTableRow>
+      <StyledTableRow>
         <Icon
           as={MdCheck}
           fontSize="24px"
           color={transaction.success ? "success.main" : "error.main"}
         />
-      </Td>
-      <Td w="30%">
+      </StyledTableRow>
+      <StyledTableRow>
         <Flex gap={1} flexWrap="wrap">
           {getExecuteMsgTags(transaction.messages, 2).map(
             (tag: string, index: number) => (
@@ -37,22 +42,23 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
             )
           )}
         </Flex>
-      </Td>
-      <Td w="15%">
+      </StyledTableRow>
+
+      <StyledTableRow>
         <ExplorerLink
           value={transaction.sender}
           type="user_address"
           canCopyWithHover
         />
-      </Td>
-      <Td w="15%">
+      </StyledTableRow>
+      <StyledTableRow>
         <ExplorerLink
           value={transaction.height.toString()}
           type="block"
           canCopyWithHover
         />
-      </Td>
-      <Td w="20%">
+      </StyledTableRow>
+      <StyledTableRow>
         <Flex direction="column" gap={1}>
           <Text variant="body2">
             {formatUTC(transaction.created.toString())}
@@ -61,7 +67,7 @@ export const ExecuteTableRow = ({ transaction }: TableRowProps) => {
             {`(${dateFromNow(transaction.created.toString())})`}
           </Text>
         </Flex>
-      </Td>
-    </Tr>
+      </StyledTableRow>
+    </Grid>
   );
 };

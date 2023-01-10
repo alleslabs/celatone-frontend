@@ -24,7 +24,7 @@ import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { ExecuteTable } from "./components/tables/Execute";
+import { ExecuteTable } from "./components/tables/execute/Execute";
 import { TokenSection } from "./components/TokenSection";
 
 const ContractDetails = observer(() => {

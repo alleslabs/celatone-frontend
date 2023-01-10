@@ -1,14 +1,15 @@
-import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import { Flex, Grid } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
+import { NoTransactions } from "../NoTransactions";
+import { StyledTableHeader } from "../tableStyle";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useExecuteTransactionsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
 import { ExecuteTableRow } from "./ExecuteTableRow";
-import { NoTransactions } from "./NoTransactions";
 
 interface ExecuteTableProps {
   contractAddress: ContractAddr;
@@ -64,39 +65,26 @@ export const ExecuteTable = ({
       <NoTransactions displayText="This contract does not have any execute transactions yet." />
     );
 
+  const templateColumnsStyle =
+    "170px 70px minmax(300px, 1fr) repeat(2, max(170px)) max(300px)";
+
   return (
-    <>
-      <TableContainer>
-        <Table variant="simple" sx={{ tableLayout: "auto" }}>
-          <Thead>
-            <Tr
-              sx={{
-                "& th": {
-                  textTransform: "none",
-                  color: "text.main",
-                  fontWeight: 700,
-                  py: 6,
-                },
-              }}
-            >
-              <Th w="15%">Transaction Hash</Th>
-              <Th w="5%" />
-              <Th w="30%">Execute Messages</Th>
-              <Th w="15%">Sender</Th>
-              <Th w="15%">Block Height</Th>
-              <Th w="20%">Timestamp</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {executeTransaction?.map((transaction) => (
-              <ExecuteTableRow
-                key={transaction.hash}
-                transaction={transaction}
-              />
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+    <Flex direction="column" overflowX="scroll">
+      <Grid templateColumns={templateColumnsStyle}>
+        <StyledTableHeader>Transaction Hash</StyledTableHeader>
+        <StyledTableHeader />
+        <StyledTableHeader>Execute Messages</StyledTableHeader>
+        <StyledTableHeader>Sender</StyledTableHeader>
+        <StyledTableHeader>Block Height</StyledTableHeader>
+        <StyledTableHeader>Timestamp</StyledTableHeader>
+      </Grid>
+      {executeTransaction?.map((transaction) => (
+        <ExecuteTableRow
+          key={transaction.hash}
+          transaction={transaction}
+          templateColumnsStyle={templateColumnsStyle}
+        />
+      ))}
       <Pagination
         currentPage={currentPage}
         pagesQuantity={pagesQuantity}
@@ -107,6 +95,6 @@ export const ExecuteTable = ({
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
       />
-    </>
+    </Flex>
   );
 };
