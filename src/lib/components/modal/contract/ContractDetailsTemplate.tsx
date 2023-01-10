@@ -8,7 +8,7 @@ import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 
 interface ContractDetailsTemplateProps {
   title: string;
@@ -61,7 +61,7 @@ export const ContractDetailsTemplate = ({
   const setTagsValue = (selectedTags: string[]) => {
     setValue("tags", selectedTags);
   };
-  const setContractListsValue = (selectedLists: Option[]) => {
+  const setContractListsValue = (selectedLists: LVPair[]) => {
     setValue("lists", selectedLists);
   };
 
