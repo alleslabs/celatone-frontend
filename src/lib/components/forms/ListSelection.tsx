@@ -20,14 +20,14 @@ import { MdCheck, MdClose, MdAdd } from "react-icons/md";
 
 import { CreateNewList } from "lib/components/modal/list";
 import { useContractStore, useUserKey } from "lib/hooks";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 import mergeRefs from "lib/utils/mergeRefs";
 
 export interface ListSelectionProps extends InputProps {
   placeholder?: string;
-  result: Option[];
-  setResult: (options: Option[]) => void;
+  result: LVPair[];
+  setResult: (options: LVPair[]) => void;
   helperText?: string;
   labelBgColor?: string;
 }
@@ -59,7 +59,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       value: item.slug,
     }));
 
-    const [partialResult, setPartialResult] = useState<Option[]>([]);
+    const [partialResult, setPartialResult] = useState<LVPair[]>([]);
     const [displayOptions, setDisplayOptions] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
     const [enableOutside, setEnableOutside] = useState(true);
@@ -76,10 +76,10 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       setInputValue(value);
     };
 
-    const isOptionSelected = (option: Option) =>
+    const isOptionSelected = (option: LVPair) =>
       result.some((selectedOption) => selectedOption.value === option.value);
 
-    const selectOption = (option: Option) => {
+    const selectOption = (option: LVPair) => {
       if (isOptionSelected(option)) {
         setResult(
           result.filter(
@@ -104,7 +104,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       }
     };
 
-    const selectOptionFromList = (option: Option) => {
+    const selectOptionFromList = (option: LVPair) => {
       selectOption(option);
       setDisplayOptions(false);
       setInputValue("");
