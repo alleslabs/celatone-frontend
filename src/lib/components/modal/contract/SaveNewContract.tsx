@@ -16,7 +16,7 @@ import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore, useEndpoint } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractAddr, Option, RpcContractError } from "lib/types";
+import type { ContractAddr, LVPair, RpcContractError } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface SaveNewContractDetail extends OffchainDetail {
@@ -27,7 +27,7 @@ interface SaveNewContractDetail extends OffchainDetail {
 }
 
 interface SaveNewContractProps {
-  list: Option;
+  list: LVPair;
   buttonProps: ButtonProps;
 }
 export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
@@ -75,7 +75,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const setTagsValue = (selecteTags: string[]) => {
     setValue("tags", selecteTags);
   };
-  const setContractListsValue = (selectedLists: Option[]) => {
+  const setContractListsValue = (selectedLists: LVPair[]) => {
     setValue("lists", selectedLists);
   };
 
