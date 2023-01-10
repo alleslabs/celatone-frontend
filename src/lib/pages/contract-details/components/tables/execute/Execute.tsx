@@ -3,9 +3,9 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
 import { NoTransactions } from "../NoTransactions";
-import { StyledTableHeader } from "../tableStyle";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { TableHeader } from "lib/components/table/tableComponents";
 import { useExecuteTransactionsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
@@ -71,12 +71,12 @@ export const ExecuteTable = ({
   return (
     <Flex direction="column" overflowX="scroll">
       <Grid templateColumns={templateColumnsStyle}>
-        <StyledTableHeader>Transaction Hash</StyledTableHeader>
-        <StyledTableHeader />
-        <StyledTableHeader>Execute Messages</StyledTableHeader>
-        <StyledTableHeader>Sender</StyledTableHeader>
-        <StyledTableHeader>Block Height</StyledTableHeader>
-        <StyledTableHeader>Timestamp</StyledTableHeader>
+        <TableHeader>Transaction Hash</TableHeader>
+        <TableHeader />
+        <TableHeader>Execute Messages</TableHeader>
+        <TableHeader>Sender</TableHeader>
+        <TableHeader>Block Height</TableHeader>
+        <TableHeader>Timestamp</TableHeader>
       </Grid>
       {executeTransaction?.map((transaction) => (
         <ExecuteTableRow

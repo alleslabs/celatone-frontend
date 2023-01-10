@@ -1,8 +1,8 @@
 import { Flex, Icon, Tag, Text, Grid } from "@chakra-ui/react";
 import { MdCheck } from "react-icons/md";
 
-import { StyledTableRow } from "../tableStyle";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { TableRow } from "lib/components/table/tableComponents";
 import type { ExecuteTransaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";
@@ -18,21 +18,21 @@ export const ExecuteTableRow = ({
 }: ExecuteTableRowProps) => {
   return (
     <Grid templateColumns={templateColumnsStyle}>
-      <StyledTableRow>
+      <TableRow>
         <ExplorerLink
           value={transaction.hash.toLocaleUpperCase()}
           type="tx_hash"
           canCopyWithHover
         />
-      </StyledTableRow>
-      <StyledTableRow>
+      </TableRow>
+      <TableRow>
         <Icon
           as={MdCheck}
           fontSize="24px"
           color={transaction.success ? "success.main" : "error.main"}
         />
-      </StyledTableRow>
-      <StyledTableRow>
+      </TableRow>
+      <TableRow>
         <Flex gap={1} flexWrap="wrap">
           {getExecuteMsgTags(transaction.messages, 2).map(
             (tag: string, index: number) => (
@@ -42,23 +42,23 @@ export const ExecuteTableRow = ({
             )
           )}
         </Flex>
-      </StyledTableRow>
+      </TableRow>
 
-      <StyledTableRow>
+      <TableRow>
         <ExplorerLink
           value={transaction.sender}
           type="user_address"
           canCopyWithHover
         />
-      </StyledTableRow>
-      <StyledTableRow>
+      </TableRow>
+      <TableRow>
         <ExplorerLink
           value={transaction.height.toString()}
           type="block"
           canCopyWithHover
         />
-      </StyledTableRow>
-      <StyledTableRow>
+      </TableRow>
+      <TableRow>
         <Flex direction="column" gap={1}>
           <Text variant="body2">
             {formatUTC(transaction.created.toString())}
@@ -67,7 +67,7 @@ export const ExecuteTableRow = ({
             {`(${dateFromNow(transaction.created.toString())})`}
           </Text>
         </Flex>
-      </StyledTableRow>
+      </TableRow>
     </Grid>
   );
 };
