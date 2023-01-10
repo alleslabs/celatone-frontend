@@ -17,6 +17,7 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   MdMoreHoriz,
   MdMode,
@@ -53,6 +54,7 @@ export const ContractListTable = ({
   contracts = [],
   contractRemovalInfo,
 }: ContractListTableProps) => {
+  const router = useRouter();
   return (
     <TableContainer w="full">
       <Table variant="simple" sx={{ tableLayout: "auto" }}>
@@ -75,6 +77,10 @@ export const ContractListTable = ({
             <Tr
               transition="all .25s ease-in-out"
               _hover={{ bg: "gray.900" }}
+              cursor="pointer"
+              onClick={() =>
+                router.push({ pathname: `/contract/${item.contractAddress}` })
+              }
               key={
                 item.name +
                 item.contractAddress +
@@ -110,7 +116,11 @@ export const ContractListTable = ({
                 />
               </Td>
               <Td>
-                <Flex gap={3} justifyContent="flex-end">
+                <Flex
+                  gap={3}
+                  justifyContent="flex-end"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <Link href={`/execute?contract=${item.contractAddress}`}>
                     <Button variant="outline-gray" size="sm">
                       Execute
