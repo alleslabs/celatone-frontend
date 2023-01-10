@@ -5,12 +5,12 @@ import { MdDeleteForever } from "react-icons/md";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 import { truncate } from "lib/utils";
 
 interface ModalProps {
   contractInfo: ContractInfo;
-  contractRemovalInfo: Option;
+  contractRemovalInfo: LVPair;
   menuItemProps: MenuItemProps;
 }
 
