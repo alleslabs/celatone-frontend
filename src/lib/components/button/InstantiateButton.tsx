@@ -1,11 +1,15 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, chakra, Icon, Tooltip } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { MdHowToVote, MdPerson } from "react-icons/md";
 
-// TODO: change permission type
+import type { ContractAddr, HumanAddr } from "lib/types";
+import { InstantiatePermission } from "lib/types";
+
 interface InstantiateButtonProps extends ButtonProps {
-  permission: "any" | "else";
+  instantiatePermission: InstantiatePermission;
+  permissionAddresses: (HumanAddr | ContractAddr)[];
   codeId: number;
 }
 
@@ -17,33 +21,66 @@ const StyledIcon = chakra(Icon, {
   },
 });
 
+const getInstantiateButtonProps = (
+  isAllowed: boolean,
+  isDisabled: boolean
+): {
+  tooltipLabel: string;
+  variant: string;
+  icon: JSX.Element | undefined;
+} => {
+  if (isAllowed) {
+    return {
+      tooltipLabel: isDisabled
+        ? "You need to connect wallet to instantiate"
+        : "You can instantiate without opening proposal",
+      variant: "outline-primary",
+      icon: <StyledIcon as={MdPerson} />,
+    };
+  }
+  return {
+    tooltipLabel: isDisabled ? "" : "Instantiate through proposal only",
+    variant: "outline-gray",
+    icon: isDisabled ? undefined : <StyledIcon as={MdHowToVote} />,
+  };
+};
+
 export const InstantiateButton = ({
-  permission = "any",
+  instantiatePermission = InstantiatePermission.UNKNOWN,
+  permissionAddresses = [],
   codeId,
   ...buttonProps
 }: InstantiateButtonProps) => {
   const router = useRouter();
+  const { address = "" } = useWallet();
   const goToInstantiate = () =>
     router.push({ pathname: "/instantiate", query: { "code-id": codeId } });
 
-  const isProposalOnly = permission !== "any";
+  const isAllowed =
+    permissionAddresses.includes(address as HumanAddr) ||
+    instantiatePermission === InstantiatePermission.EVERYBODY;
+  const isDisabled =
+    instantiatePermission === InstantiatePermission.UNKNOWN || !address;
+
+  const { tooltipLabel, variant, icon } = getInstantiateButtonProps(
+    isAllowed,
+    isDisabled
+  );
+
   return (
     <Tooltip
       hasArrow
-      label={
-        isProposalOnly
-          ? "Instantiate through proposal only"
-          : "You can instantiate without opening proposal"
-      }
+      label={tooltipLabel}
       placement="top"
       arrowSize={8}
       bg="primary.dark"
     >
       <Button
-        variant={isProposalOnly ? "outline-gray" : "outline-primary"}
-        leftIcon={<StyledIcon as={isProposalOnly ? MdHowToVote : MdPerson} />}
+        disabled={isDisabled}
+        variant={variant}
+        leftIcon={icon}
         size="sm"
-        onClick={isProposalOnly ? () => null : goToInstantiate}
+        onClick={isAllowed ? goToInstantiate : () => null}
         {...buttonProps}
       >
         Instantiate

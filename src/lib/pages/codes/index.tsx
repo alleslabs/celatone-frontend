@@ -44,6 +44,7 @@ const Codes = observer(() => {
           placeholder="Search with code ID or code description"
           value={keyword}
           onChange={handleFilterChange}
+          size="lg"
         />
         <TabPanels mt="48px">
           <TabPanel p="0px">

@@ -5,6 +5,8 @@ export interface CodeInfo {
   description?: string;
   contracts: number;
   uploader: string;
+  instantiatePermission: InstantiatePermission;
+  permissionAddresses: (HumanAddr | ContractAddr)[];
 }
 
 interface CodeProposal {
@@ -13,10 +15,12 @@ interface CodeProposal {
   created: Date;
 }
 
-enum InstantiatePermission {
-  EVERYBODY = "EVERYBODY",
-  ANY_OF_ADDRESSES = "ANY_OF_ADDRESSES",
-  NOBODY = "NOBODY",
+export enum InstantiatePermission {
+  EVERYBODY = "Everybody",
+  ANY_OF_ADDRESSES = "AnyOfAddresses",
+  NOBODY = "Nobody",
+  // Added for case handling
+  UNKNOWN = "Unknown",
 }
 
 export interface CodeDetails {

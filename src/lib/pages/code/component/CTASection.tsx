@@ -22,8 +22,12 @@ export const CTASection = observer(
     return (
       <Flex gap={4}>
         {isSaved && <SaveOrEditCodeModal mode="edit" id={id} {...codeInfo} />}
-        {/* TODO: change permission */}
-        <InstantiateButton permission="any" codeId={id} size="md" />
+        <InstantiateButton
+          instantiatePermission={codeInfo.instantiatePermission}
+          permissionAddresses={codeInfo.permissionAddresses}
+          codeId={id}
+          size="md"
+        />
         {isSaved ? (
           <RemoveCode
             codeId={id}

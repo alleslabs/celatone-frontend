@@ -162,8 +162,11 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
       </Td>
       <Td width="20%">
         <HStack onClick={(e) => e.stopPropagation()} w="fit-content">
-          {/* TODO: Change permission */}
-          <InstantiateButton permission="any" codeId={code.id} />
+          <InstantiateButton
+            instantiatePermission={code.instantiatePermission}
+            permissionAddresses={code.permissionAddresses}
+            codeId={code.id}
+          />
           {isRemovable && (
             <RemoveCode codeId={code.id} description={code.description} />
           )}

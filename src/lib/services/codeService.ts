@@ -11,7 +11,13 @@ import {
   getContractListCountByCodeId,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
-import type { CodeInfo, CodeDetails, ContractAddr, Option } from "lib/types";
+import type {
+  CodeInfo,
+  CodeDetails,
+  ContractAddr,
+  Option,
+  InstantiatePermission,
+} from "lib/types";
 import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 
 export const useCodeListByUserQuery = (
@@ -29,6 +35,9 @@ export const useCodeListByUserQuery = (
           id: code.id,
           contracts: code.instantiated,
           uploader: code.account.uploader,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses: code.access_config_addresses,
         }))
       );
   }, [walletAddr]);
@@ -53,6 +62,9 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
           id: code.id,
           uploader: code.account.uploader,
           contracts: code.instantiated,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses: code.access_config_addresses,
         }))
       );
   }, [ids]);
