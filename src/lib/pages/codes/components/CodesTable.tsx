@@ -14,6 +14,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
@@ -114,6 +115,12 @@ const TableHead = () => {
 };
 
 const TableRow = ({ code, isRemovable }: CodesRowProps) => {
+  const router = useRouter();
+
+  const goToCodeDetails = () => {
+    router.push({ pathname: `/code/${code.id}` });
+  };
+
   return (
     <Tr
       borderBottom="1px solid #2E2E2E"
@@ -121,15 +128,30 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
       _hover={{
         bg: "gray.900",
       }}
+      cursor="pointer"
+      onClick={goToCodeDetails}
     >
       <Td width="10%" color="primary.main">
-        <ExplorerLink value={code.id.toString()} canCopyWithHover />
+        <ExplorerLink
+          type="code_id"
+          value={code.id.toString()}
+          canCopyWithHover
+        />
       </Td>
       <Td width="45%">
         <CodeDescriptionCell codeId={code.id} description={code.description} />
       </Td>
       <Td width="10%" textAlign="center">
-        {code.contracts}
+        <Text
+          variant="body2"
+          onClick={(e) => e.stopPropagation()}
+          cursor="text"
+          w="fit-content"
+          m="auto"
+          px={2}
+        >
+          {code.contracts}
+        </Text>
       </Td>
       <Td width="15%">
         <ExplorerLink
@@ -139,7 +161,7 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
         />
       </Td>
       <Td width="20%">
-        <HStack>
+        <HStack onClick={(e) => e.stopPropagation()} w="fit-content">
           {/* TODO: Change permission */}
           <InstantiateButton permission="any" codeId={code.id} />
           {isRemovable && (
