@@ -22,16 +22,16 @@ import {
   EditContractDetails,
   SaveContractDetails,
 } from "lib/components/modal";
-import type { ContractDetail } from "lib/model/contract";
+import type { ContractData } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
 
 interface ContractTopProps {
-  contractDetail: ContractDetail;
+  contractData: ContractData;
 }
-export const ContractTop = ({ contractDetail }: ContractTopProps) => {
-  const { contractInfo } = contractDetail;
-  const { instantiateInfo } = contractDetail;
-  const { publicInfo } = contractDetail;
+export const ContractTop = ({ contractData }: ContractTopProps) => {
+  const { contractInfo } = contractData;
+  const { instantiateInfo } = contractData;
+  const { publicInfo } = contractData;
 
   const contractAddress = instantiateInfo?.contractAddress as ContractAddr;
 
@@ -120,7 +120,7 @@ export const ContractTop = ({ contractDetail }: ContractTopProps) => {
             Label:
           </Text>
           <Text variant="body2" className="ellipsis">
-            {contractDetail.instantiateInfo?.label}
+            {contractData.instantiateInfo?.label}
           </Text>
         </Flex>
         {publicInfo?.name && (

@@ -4,7 +4,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import type { AddressReturnType } from "lib/hooks";
 import { useGetAddressType } from "lib/hooks";
-import type { ContractDetail } from "lib/model/contract";
+import type { ContractData } from "lib/model/contract";
 import { formatUTC, dateFromNow } from "lib/utils";
 
 const getAddressTypeText = (addressType: AddressReturnType) => {
@@ -19,34 +19,34 @@ const getAddressTypeText = (addressType: AddressReturnType) => {
 };
 
 interface InstantiateInfoProps {
-  contractDetail: ContractDetail;
+  contractData: ContractData;
 }
 
-export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
+export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
   const getAddressType = useGetAddressType();
 
   const renderDataFound = () => {
-    if (contractDetail?.instantiateInfo) {
+    if (contractData.instantiateInfo) {
       const instantiatorType = getAddressType(
-        contractDetail.instantiateInfo.instantiator
+        contractData.instantiateInfo.instantiator
       );
       return (
         <>
-          <LabelText label="Network">{contractDetail.chainId}</LabelText>
+          <LabelText label="Network">{contractData.chainId}</LabelText>
 
-          {contractDetail.instantiateInfo &&
-            (contractDetail.instantiateInfo.createdHeight !== -1 ? (
+          {contractData.instantiateInfo &&
+            (contractData.instantiateInfo.createdHeight !== -1 ? (
               <LabelText
                 label="Instantiated Block Height"
                 helperText1={formatUTC(
-                  contractDetail.instantiateInfo.createdTime.toString()
+                  contractData.instantiateInfo.createdTime.toString()
                 )}
                 helperText2={dateFromNow(
-                  contractDetail.instantiateInfo.createdTime.toString()
+                  contractData.instantiateInfo.createdTime.toString()
                 )}
               >
                 <ExplorerLink
-                  value={contractDetail.instantiateInfo.createdHeight.toString()}
+                  value={contractData.instantiateInfo.createdHeight.toString()}
                   canCopyWithHover
                 />
               </LabelText>
@@ -60,29 +60,29 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
           >
             <ExplorerLink
               type="user_address"
-              value={contractDetail.instantiateInfo.instantiator}
+              value={contractData.instantiateInfo.instantiator}
               canCopyWithHover
             />
           </LabelText>
 
           <LabelText
             label="From Code"
-            helperText1={contractDetail.codeInfo?.description}
+            helperText1={contractData.codeInfo?.description}
           >
             <ExplorerLink
               type="code_id"
-              value={contractDetail.instantiateInfo.codeId}
+              value={contractData.instantiateInfo.codeId}
               canCopyWithHover
             />
           </LabelText>
 
-          {contractDetail.initProposalId ? (
+          {contractData.initProposalId ? (
             <LabelText
               label="Instantiate Proposal ID"
-              helperText1={contractDetail.initProposalTitle}
+              helperText1={contractData.initProposalTitle}
             >
               <ExplorerLink
-                value={`#${contractDetail.initProposalId.toString()}`}
+                value={`#${contractData.initProposalId.toString()}`}
                 canCopyWithHover
               />
             </LabelText>
@@ -90,25 +90,25 @@ export const InstantiateInfo = ({ contractDetail }: InstantiateInfoProps) => {
             <LabelText label="Instantiate Transaction">
               <ExplorerLink
                 type="tx_hash"
-                value={contractDetail.initTxHash?.toUpperCase() ?? "Genesis"}
+                value={contractData.initTxHash?.toUpperCase() ?? "Genesis"}
                 canCopyWithHover
-                isReadOnly={!contractDetail.initTxHash}
+                isReadOnly={!contractData.initTxHash}
               />
             </LabelText>
           )}
 
-          {contractDetail.instantiateInfo.admin && (
+          {contractData.instantiateInfo.admin && (
             <LabelText label="Admin Address">
               <ExplorerLink
                 type="user_address"
-                value={contractDetail.instantiateInfo.admin}
+                value={contractData.instantiateInfo.admin}
               />
             </LabelText>
           )}
 
-          {contractDetail.instantiateInfo.ibcPortId && (
+          {contractData.instantiateInfo.ibcPortId && (
             <LabelText label="IBC Port ID">
-              {contractDetail.instantiateInfo.ibcPortId}
+              {contractData.instantiateInfo.ibcPortId}
             </LabelText>
           )}
         </>
