@@ -4,12 +4,12 @@ import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { MdHowToVote, MdPerson } from "react-icons/md";
 
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 
 interface InstantiateButtonProps extends ButtonProps {
   instantiatePermission: InstantiatePermission;
-  permissionAddresses: (HumanAddr | ContractAddr)[];
+  permissionAddresses: PermissionAddresses;
   codeId: number;
 }
 
@@ -57,7 +57,9 @@ export const InstantiateButton = ({
     router.push({ pathname: "/instantiate", query: { "code-id": codeId } });
 
   const isAllowed =
-    permissionAddresses.includes(address as HumanAddr) ||
+    (typeof permissionAddresses === "string"
+      ? permissionAddresses === address
+      : permissionAddresses.includes(address as HumanAddr)) ||
     instantiatePermission === InstantiatePermission.EVERYBODY;
   const isDisabled =
     instantiatePermission === InstantiatePermission.UNKNOWN || !address;

@@ -12,6 +12,7 @@ import {
   VStack,
   Text,
   Box,
+  Flex,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
@@ -21,6 +22,7 @@ import { MdSearchOff } from "react-icons/md";
 import { InstantiateButton } from "lib/components/button/InstantiateButton";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
+import { PermissionChip } from "lib/components/PermissionChip";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
 import type { CodeInfo } from "lib/types";
 
@@ -103,12 +105,12 @@ const TableHead = () => {
         }}
       >
         <Th width="10%">Code ID</Th>
-        <Th width="45%">Code Description</Th>
+        <Th width="35%">Code Description</Th>
         <Th width="10%" textAlign="center">
           Contracts
         </Th>
         <Th width="15%">Uploader</Th>
-        <Th width="20%" />
+        <Th width="30%">Permission</Th>
       </Tr>
     </Thead>
   );
@@ -138,7 +140,7 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
           canCopyWithHover
         />
       </Td>
-      <Td width="45%">
+      <Td width="35%">
         <CodeDescriptionCell codeId={code.id} description={code.description} />
       </Td>
       <Td width="10%" textAlign="center">
@@ -160,17 +162,23 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
           canCopyWithHover
         />
       </Td>
-      <Td width="20%">
-        <HStack onClick={(e) => e.stopPropagation()} w="fit-content">
-          <InstantiateButton
+      <Td width="30%">
+        <Flex justify="space-between" align="center">
+          <PermissionChip
             instantiatePermission={code.instantiatePermission}
             permissionAddresses={code.permissionAddresses}
-            codeId={code.id}
           />
-          {isRemovable && (
-            <RemoveCode codeId={code.id} description={code.description} />
-          )}
-        </HStack>
+          <HStack onClick={(e) => e.stopPropagation()}>
+            <InstantiateButton
+              instantiatePermission={code.instantiatePermission}
+              permissionAddresses={code.permissionAddresses}
+              codeId={code.id}
+            />
+            {isRemovable && (
+              <RemoveCode codeId={code.id} description={code.description} />
+            )}
+          </HStack>
+        </Flex>
       </Td>
     </Tr>
   );
