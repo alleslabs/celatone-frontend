@@ -1,13 +1,19 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
 
 const DisconnectedState = () => (
-  <Flex align="center" justify="center">
-    No contract instances from this code. In order to instantiate contract from
-    this code, you need to
-    <ConnectWalletBtn />
+  <Flex direction="column" alignItems="center" gap="16px">
+    <Text variant="body1" color="text.dark">
+      No contract instances from this code.{" "}
+    </Text>
+    <Flex align="center" alignItems="center">
+      <Text variant="body1" color="text.dark" mr="8px">
+        In order to instantiate contract from this code, you need to
+      </Text>
+      <ConnectWalletBtn />
+    </Flex>
   </Flex>
 );
 
@@ -20,5 +26,9 @@ const EmptyState = () => (
 
 export const NoContracts = () => {
   const { isWalletConnected } = useWallet();
-  return !isWalletConnected ? <DisconnectedState /> : <EmptyState />;
+  return (
+    <Box py="48px" borderY="1px solid" borderColor="divider.main">
+      {!isWalletConnected ? <DisconnectedState /> : <EmptyState />}
+    </Box>
+  );
 };

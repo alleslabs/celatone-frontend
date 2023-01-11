@@ -66,8 +66,6 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
     setPageSize(size);
   };
 
-  if (!instantiatedContracts?.length) return <NoContracts />;
-
   // FIXME - might be a better way to scroll to table header
   const tableHeaderId = "contractTableHeader";
   const templateColumnsStyle =
@@ -75,49 +73,58 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
 
   return (
     <>
-      <Flex mb={6} align="center">
+      <Flex mb={6} alignItems="center">
         <Heading as="h6" variant="h6" id={tableHeaderId}>
           Contract Instances
         </Heading>
-        <Badge ml={2} variant="primary">
+        <Badge
+          ml={2}
+          variant="primary"
+          textAlign="center"
+          bg={!instantiatedContracts?.length ? "gray.800" : "primary.dark"}
+        >
           {totalData}
         </Badge>
       </Flex>
-      <Flex direction="column" overflowX="scroll">
-        <Grid templateColumns={templateColumnsStyle}>
-          <StyledTableHeader borderTopStyle="none">
-            Contract Address
-          </StyledTableHeader>
-          <StyledTableHeader>Contract Name</StyledTableHeader>
-          <StyledTableHeader>Tags</StyledTableHeader>
-          <StyledTableHeader>Instantiator</StyledTableHeader>
-          <StyledTableHeader>Timestamp</StyledTableHeader>
-          <StyledTableHeader />
-        </Grid>
-        {instantiatedContracts?.map((contractInfo) => (
-          <ContractTableRow
-            key={
-              contractInfo.name +
-              contractInfo.contractAddress +
-              contractInfo.description +
-              contractInfo.tags +
-              contractInfo.lists
-            }
-            contractInfo={contractInfo}
-            templateColumnsStyle={templateColumnsStyle}
+      {!instantiatedContracts?.length ? (
+        <NoContracts />
+      ) : (
+        <Flex direction="column" overflowX="scroll">
+          <Grid templateColumns={templateColumnsStyle}>
+            <StyledTableHeader borderTopStyle="none">
+              Contract Address
+            </StyledTableHeader>
+            <StyledTableHeader>Contract Name</StyledTableHeader>
+            <StyledTableHeader>Tags</StyledTableHeader>
+            <StyledTableHeader>Instantiator</StyledTableHeader>
+            <StyledTableHeader>Timestamp</StyledTableHeader>
+            <StyledTableHeader />
+          </Grid>
+          {instantiatedContracts?.map((contractInfo) => (
+            <ContractTableRow
+              key={
+                contractInfo.name +
+                contractInfo.contractAddress +
+                contractInfo.description +
+                contractInfo.tags +
+                contractInfo.lists
+              }
+              contractInfo={contractInfo}
+              templateColumnsStyle={templateColumnsStyle}
+            />
+          ))}
+          <Pagination
+            currentPage={currentPage}
+            pagesQuantity={pagesQuantity}
+            offset={offset}
+            totalData={totalData}
+            scrollComponentId={tableHeaderId}
+            pageSize={pageSize}
+            onPageChange={onPageChange}
+            onPageSizeChange={onPageSizeChange}
           />
-        ))}
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          offset={offset}
-          totalData={totalData}
-          scrollComponentId={tableHeaderId}
-          pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-        />
-      </Flex>
+        </Flex>
+      )}
     </>
   );
 });
