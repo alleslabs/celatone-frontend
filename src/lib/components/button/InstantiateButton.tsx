@@ -59,9 +59,7 @@ export const InstantiateButton = ({
     router.push({ pathname: "/instantiate", query: { "code-id": codeId } });
 
   const isAllowed =
-    (typeof permissionAddresses === "string"
-      ? permissionAddresses === address
-      : permissionAddresses.includes(address as HumanAddr)) ||
+    permissionAddresses.includes(address as HumanAddr) ||
     instantiatePermission === InstantiatePermission.EVERYBODY;
   const isDisabled =
     instantiatePermission === InstantiatePermission.UNKNOWN || !address;
