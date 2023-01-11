@@ -71,7 +71,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
   // FIXME - might be a better way to scroll to table header
   const tableHeaderId = "contractTableHeader";
   const templateColumnsStyle =
-    "minmax(160px, 200px) minmax(300px, 1fr) minmax(200px, 250px) minmax(160px, 200px) max(300px) 70px";
+    "150px minmax(250px, 1fr) 200px 150px minmax(250px, 300px) 70px";
 
   return (
     <>

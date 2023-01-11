@@ -1,4 +1,4 @@
-import { Flex, Text, Grid, IconButton, Box } from "@chakra-ui/react";
+import { Flex, Text, Grid, IconButton, Box, chakra } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
@@ -9,6 +9,15 @@ import { ContractNameCell } from "lib/pages/contract-list/components/table/Contr
 import { TagsCell } from "lib/pages/contract-list/components/table/TagsCell";
 import type { ContractInfo } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+
+const StyledIconButton = chakra(IconButton, {
+  baseStyle: {
+    display: "flex",
+    alignItems: "center",
+    fontSize: "22px",
+    borderRadius: "36px",
+  },
+});
 
 interface ContractTableRowProps {
   contractInfo: ContractInfo;
@@ -29,6 +38,8 @@ export const ContractTableRow = ({
           pathname: `/contract/${contractInfo.contractAddress}`,
         })
       }
+      _hover={{ bg: "gray.900" }}
+      cursor="pointer"
     >
       <StyledTableRow>
         <ExplorerLink
@@ -47,9 +58,9 @@ export const ContractTableRow = ({
       </StyledTableRow>
 
       <StyledTableRow>
-        <Flex direction="column">
+        <Flex direction="column" onClick={(e) => e.stopPropagation()}>
           {contractInfo.latestUpdated > contractInfo.instantiated && (
-            <Text variant="body3" textColor="text.dark">
+            <Text variant="body3" textColor="text.dark" cursor="text">
               Migrated by
             </Text>
           )}
@@ -62,7 +73,12 @@ export const ContractTableRow = ({
       </StyledTableRow>
 
       <StyledTableRow>
-        <Flex direction="column" gap={1} onClick={(e) => e.stopPropagation()}>
+        <Flex
+          direction="column"
+          gap={1}
+          onClick={(e) => e.stopPropagation()}
+          cursor="text"
+        >
           <Text variant="body2">
             {formatUTC(contractInfo.latestUpdated.toString())}
           </Text>
@@ -78,12 +94,10 @@ export const ContractTableRow = ({
             <AddToOtherList
               contractLocalInfo={contractInfo}
               triggerElement={
-                <IconButton
-                  fontSize="22px"
-                  variant="none"
-                  aria-label="save"
-                  color="primary.main"
+                <StyledIconButton
                   icon={<MdBookmark />}
+                  variant="ghost-gray"
+                  color="primary.main"
                 />
               }
             />
@@ -91,12 +105,10 @@ export const ContractTableRow = ({
             <SaveContractDetails
               contractLocalInfo={contractInfo}
               triggerElement={
-                <IconButton
-                  fontSize="22px"
-                  variant="none"
-                  aria-label="save"
-                  color="gray.600"
+                <StyledIconButton
                   icon={<MdBookmarkBorder />}
+                  variant="ghost-gray"
+                  color="gray.600"
                 />
               }
             />
