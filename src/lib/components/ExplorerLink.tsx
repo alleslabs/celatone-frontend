@@ -13,7 +13,12 @@ import { Copier } from "./Copier";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
-  type?: "tx_hash" | "user_address" | "contract_address" | "code_id";
+  type?:
+    | "tx_hash"
+    | "user_address"
+    | "contract_address"
+    | "code_id"
+    | "invalid_address";
   copyValue?: string;
   canCopyWithHover?: boolean;
   isReadOnly?: boolean;
