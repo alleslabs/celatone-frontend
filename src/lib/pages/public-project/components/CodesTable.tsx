@@ -15,6 +15,7 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
+import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { MdBookmarkBorder, MdHowToVote } from "react-icons/md";
 
@@ -38,7 +39,7 @@ export const CodesTable = ({
       keys: ["id", "description"],
     });
   }, [codes, searchKeyword]);
-
+  const router = useRouter();
   return (
     <Box>
       {hasSearchInput && (
@@ -93,6 +94,8 @@ export const CodesTable = ({
                   _hover={{
                     bg: "gray.900",
                   }}
+                  onClick={() => router.push({ pathname: `/code/${code.id}` })}
+                  cursor="pointer"
                 >
                   <Td width="10%" color="primary.main">
                     <ExplorerLink

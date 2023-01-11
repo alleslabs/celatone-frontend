@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -31,6 +32,7 @@ export const ContractsTable = ({
   contracts = [],
   hasSearchInput = true,
 }: ContractsTableProps) => {
+  const router = useRouter();
   const [searchKeyword, setSearchKeyword] = useState("");
   const filteredContracts = useMemo(() => {
     return matchSorter(contracts, searchKeyword, {
@@ -87,6 +89,12 @@ export const ContractsTable = ({
                     "& td:last-of-type": { pr: "48px" },
                     "> td": { borderColor: "divider.main" },
                   }}
+                  onClick={() =>
+                    router.push({
+                      pathname: `/contract/${item.contractAddress}`,
+                    })
+                  }
+                  cursor="pointer"
                 >
                   <Td>
                     <ExplorerLink
