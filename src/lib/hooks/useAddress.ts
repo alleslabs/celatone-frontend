@@ -19,6 +19,14 @@ const addressLengthMap: {
     43: "user_address",
     63: "contract_address",
   },
+  terra2: {
+    44: "user_address",
+    64: "contract_address",
+  },
+  terra2testnet: {
+    44: "user_address",
+    64: "contract_address",
+  },
 };
 
 const getAddressTypeByLength = (

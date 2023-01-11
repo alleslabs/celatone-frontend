@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { indexerGraphClient } from "lib/data/graphql";
+import { useCelatoneApp } from "lib/app-provider";
 import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
@@ -20,6 +20,7 @@ interface InstantiateDetail {
 export const useInstantiatedCountByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -28,7 +29,7 @@ export const useInstantiatedCountByUserQuery = (
         walletAddr,
       })
       .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
-  }, [walletAddr]);
+  }, [indexerGraphClient, walletAddr]);
 
   // TODO: add query key later
   return useQuery(["instantiated_count_by_user", walletAddr], queryFn, {
@@ -40,6 +41,7 @@ export const useInstantiatedCountByUserQuery = (
 export const useInstantiatedListByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<Option<ContractInfo[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -55,7 +57,7 @@ export const useInstantiatedListByUserQuery = (
           created: parseDateDefault(contract.transaction?.block?.timestamp),
         }))
       );
-  }, [walletAddr]);
+  }, [indexerGraphClient, walletAddr]);
 
   // TODO: add query key later
   return useQuery(["instantiated_list_by_user", walletAddr], queryFn, {
@@ -67,6 +69,7 @@ export const useInstantiatedListByUserQuery = (
 export const useInstantiateDetailByContractQuery = (
   contractAddress: ContractAddr
 ): UseQueryResult<InstantiateDetail> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
@@ -75,7 +78,7 @@ export const useInstantiateDetailByContractQuery = (
         initMsg: contracts_by_pk?.init_msg ?? "{}",
         initTxHash: parseTxHash(contracts_by_pk?.transaction?.hash),
       }));
-  }, [contractAddress]);
+  }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
     ["instantiate_detail_by_contract", contractAddress],

@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
-import { useEndpoint } from "lib/hooks";
+import { useLCDEndpoint } from "lib/hooks";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 import {
@@ -22,7 +22,7 @@ import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
   const router = useRouter();
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");

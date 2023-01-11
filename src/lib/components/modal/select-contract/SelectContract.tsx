@@ -22,7 +22,11 @@ import { MdChevronLeft } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useContractStore, useEndpoint, useValidateAddress } from "lib/hooks";
+import {
+  useContractStore,
+  useLCDEndpoint,
+  useValidateAddress,
+} from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
@@ -55,7 +59,7 @@ export const SelectContract = ({
   const contractLists = [useInstantiatedByMe(true), ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
 
   const resetOnClose = () => {
     setListSlug("");

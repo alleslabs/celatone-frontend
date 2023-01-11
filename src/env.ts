@@ -35,9 +35,11 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
   }
 };
 
-export const LCD_ENDPOINT: Record<string, string> = {
+export const FALLBACK_LCD_ENDPOINT: Record<string, string> = {
   osmosis: "https://lcd.osmosis.zone",
   osmosistestnet: "https://lcd-test.osmosis.zone",
+  terra2: "https://phoenix-lcd.terra.dev",
+  terra2testnet: "https://pisco-lcd.terra.dev",
 };
 
 export const MAX_FILE_SIZE = 800_000;
@@ -50,9 +52,10 @@ export const MSG_TYPE_URL = {
 
 export const CELATONE_CONSTANTS: CelatoneConstants = {
   gasAdjustment: 1.6,
-  lcdEndpoint: LCD_ENDPOINT,
   maxFileSize: MAX_FILE_SIZE,
   msgTypeUrl: MSG_TYPE_URL,
 };
 
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
+
+export const SUPPORTED_CHAIN = process.env.NEXT_PUBLIC_SUPPORTED_CHAIN;

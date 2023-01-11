@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { indexerGraphClient } from "lib/data/graphql";
+import { useCelatoneApp } from "lib/app-provider";
 import {
   getCodeInfoByCodeId,
   getCodeListByIDsQueryDocument,
@@ -17,6 +17,8 @@ import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 export const useCodeListByUserQuery = (
   walletAddr: Option<string>
 ): UseQueryResult<Option<CodeInfo[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -31,7 +33,7 @@ export const useCodeListByUserQuery = (
           uploader: code.account.uploader,
         }))
       );
-  }, [walletAddr]);
+  }, [indexerGraphClient, walletAddr]);
 
   // TODO: add query key later
   return useQuery(["codes_by_user", walletAddr], queryFn, {
@@ -41,6 +43,8 @@ export const useCodeListByUserQuery = (
 };
 
 export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
+  const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!ids) return undefined;
 
@@ -55,7 +59,7 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
           contracts: code.instantiated,
         }))
       );
-  }, [ids]);
+  }, [ids, indexerGraphClient]);
 
   // TODO: add query key later
   return useQuery(["codes_by_ids", ids], queryFn, {
@@ -67,6 +71,8 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
 export const useCodeInfoByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<Option<Omit<CodeDetails, "chainId">>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 
@@ -96,7 +102,7 @@ export const useCodeInfoByCodeId = (
           instantiatePermission: codes_by_pk.access_config_permission,
         };
       });
-  }, [codeId]);
+  }, [codeId, indexerGraphClient]);
   return useQuery(["code_info_by_id", codeId], queryFn, {
     keepPreviousData: true,
     enabled: !!codeId,
@@ -108,6 +114,7 @@ export const useContractListByCodeId = (
   offset: number,
   pageSize: number
 ): UseQueryResult<Option<ContractInfo[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 
@@ -121,7 +128,7 @@ export const useContractListByCodeId = (
           created: parseDateDefault(contract.transaction?.block?.timestamp),
         }))
       );
-  }, [codeId, offset, pageSize]);
+  }, [codeId, indexerGraphClient, offset, pageSize]);
 
   return useQuery(["contract_list_by_code_id", codeId], queryFn, {
     keepPreviousData: true,
@@ -132,6 +139,7 @@ export const useContractListByCodeId = (
 export const useContractListCountByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 
@@ -140,7 +148,7 @@ export const useContractListCountByCodeId = (
         codeId,
       })
       .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
-  }, [codeId]);
+  }, [codeId, indexerGraphClient]);
 
   return useQuery(["contract_list_count_by_user", codeId], queryFn, {
     keepPreviousData: true,

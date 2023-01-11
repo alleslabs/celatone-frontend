@@ -13,7 +13,7 @@ import Link from "next/link";
 import { FiChevronDown } from "react-icons/fi";
 
 import { WalletSection } from "lib/components/Wallet";
-import { CHAIN_NAMES } from "lib/data";
+import { getSupportedChainNames } from "lib/data";
 
 const Header = () => {
   const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
@@ -64,21 +64,20 @@ const Header = () => {
             </Flex>
           </MenuButton>
           <MenuList>
-            {CHAIN_NAMES.map((chainName) => {
-              return (
-                <MenuItem
-                  key={chainName}
-                  onClick={() => setCurrentChain(chainName)}
-                  flexDirection="column"
-                  alignItems="flex-start"
-                >
-                  <Text>{getChainRecord(chainName)?.chain.pretty_name}</Text>
-                  <Text color="text.dark" fontSize="sm">
-                    {getChainRecord(chainName)?.chain.chain_id}
-                  </Text>
-                </MenuItem>
-              );
-            })}
+            {getSupportedChainNames().map((chainName) => (
+              <MenuItem
+                key={chainName}
+                onClick={() => setCurrentChain(chainName)}
+                disabled={currentChainRecord?.chain.chain_id === chainName}
+                flexDirection="column"
+                alignItems="flex-start"
+              >
+                <Text>{getChainRecord(chainName)?.chain.pretty_name}</Text>
+                <Text color="text.dark" fontSize="sm">
+                  {getChainRecord(chainName)?.chain.chain_id}
+                </Text>
+              </MenuItem>
+            ))}
           </MenuList>
         </Menu>
         <WalletSection />

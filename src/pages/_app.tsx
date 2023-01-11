@@ -26,6 +26,7 @@ import {
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
+import { terra2testnet, terra2testnetAssets } from "lib/config/terra2testnet";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import { StoreProvider } from "lib/providers/store";
@@ -69,10 +70,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <Chakra>
       <QueryClientProvider client={queryClient}>
         <WalletProvider
-          chains={chains}
-          assetLists={assets}
+          chains={[...chains, terra2testnet]}
+          assetLists={[...assets, terra2testnetAssets]}
           wallets={wallets}
           signerOptions={signerOptions}
+          endpointOptions={{
+            terra2testnet: {
+              rest: ["https://pisco-lcd.terra.dev"],
+            },
+          }}
         >
           <StoreProvider>
             <AppProvider

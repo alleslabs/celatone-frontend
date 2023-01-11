@@ -5,7 +5,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { MdMode, MdOutlineBookmarkBorder } from "react-icons/md";
 
-import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
+import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractInfo } from "lib/stores/contract";
 import type { ContractAddr, Option } from "lib/types";
@@ -103,7 +103,7 @@ export const ContractSelectSection = observer(
   ({ contractAddress, onContractSelect }: ContractSelectSectionProps) => {
     const { getContractInfo } = useContractStore();
     const isMobile = useMobile();
-    const endpoint = useEndpoint();
+    const endpoint = useLCDEndpoint();
 
     const contractInfo = getContractInfo(contractAddress);
     const {

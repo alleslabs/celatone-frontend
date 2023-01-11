@@ -12,7 +12,7 @@ import {
   getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { DEFAULT_ADDRESS, DEFAULT_CHAIN } from "lib/data";
+import { DEFAULT_ADDRESS, getDefaultChainName } from "lib/data";
 import { useCodeStore, useContractStore } from "lib/hooks";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
@@ -113,7 +113,7 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   }, [currentChainName, setCodeUserKey, setContractUserKey]);
 
   useEffect(() => {
-    setCurrentChain(DEFAULT_CHAIN);
+    setCurrentChain(getDefaultChainName());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

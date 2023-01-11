@@ -30,7 +30,7 @@ export const ExecuteArea = ({
   initialMsg,
   cmds,
 }: ExecuteAreaProps) => {
-  const { address = "" } = useWallet();
+  const { address } = useWallet();
   const fabricateFee = useFabricateFee();
   const executeTx = useExecuteContractTx();
   const { broadcast } = useTxBroadcast();

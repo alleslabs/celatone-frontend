@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 
-import { useEndpoint } from "lib/hooks";
+import { useLCDEndpoint } from "lib/hooks";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
@@ -11,7 +11,7 @@ interface UseQueryCmdsProps {
 }
 export const useQueryCmds = ({ contractAddress }: UseQueryCmdsProps) => {
   const [queryCmds, setQueryCmds] = useState<[string, string][]>([]);
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
 
   const { isFetching } = useQuery(
     ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
