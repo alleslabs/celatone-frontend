@@ -39,7 +39,9 @@ const getInstantiateButtonProps = (
     };
   }
   return {
-    tooltipLabel: isDisabled ? "" : "Instantiate through proposal only",
+    tooltipLabel: isDisabled
+      ? ""
+      : "Instantiate through proposal only, Coming soon",
     variant: "outline-gray",
     icon: isDisabled ? undefined : <StyledIcon as={MdHowToVote} />,
   };
@@ -78,7 +80,9 @@ export const InstantiateButton = ({
       bg="primary.dark"
     >
       <Button
-        disabled={isDisabled}
+        // Change to isDisabled when create proposal flow is done
+        disabled={!isAllowed}
+        // disabled={isDisabled}
         variant={variant}
         leftIcon={icon}
         size="sm"
