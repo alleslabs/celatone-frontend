@@ -11,7 +11,14 @@ import {
   getContractListCountByCodeId,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
-import type { CodeInfo, CodeDetails, ContractAddr, Option } from "lib/types";
+import type {
+  CodeInfo,
+  CodeDetails,
+  ContractAddr,
+  Option,
+  InstantiatePermission,
+  PermissionAddresses,
+} from "lib/types";
 import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 
 export const useCodeListByUserQuery = (
@@ -29,6 +36,10 @@ export const useCodeListByUserQuery = (
           id: code.id,
           contracts: code.instantiated,
           uploader: code.account.uploader,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
         }))
       );
   }, [walletAddr]);
@@ -53,6 +64,10 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
           id: code.id,
           uploader: code.account.uploader,
           contracts: code.instantiated,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
         }))
       );
   }, [ids]);
@@ -92,7 +107,8 @@ export const useCodeInfoByCodeId = (
                 ),
               }
             : undefined,
-          permissionAddresses: codes_by_pk.access_config_addresses,
+          permissionAddresses:
+            codes_by_pk.access_config_addresses as PermissionAddresses,
           instantiatePermission: codes_by_pk.access_config_permission,
         };
       });
