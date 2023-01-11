@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import { MdManageSearch, MdExpandMore } from "react-icons/md";
+import { MdExpandMore } from "react-icons/md";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -90,7 +90,7 @@ const ProjectDetail = observer(() => {
                 borderColor="divider.main"
               >
                 <EmptyState
-                  icon={MdManageSearch}
+                  hasIcon={false}
                   message="There is currently no code in this project. Please check back soon for the updates."
                 />
               </Flex>
@@ -132,14 +132,13 @@ const ProjectDetail = observer(() => {
                 borderColor="divider.main"
               >
                 <EmptyState
-                  icon={MdManageSearch}
+                  hasIcon={false}
                   message="There is currently no contracts in this project. Please check back soon for the updates."
                 />
               </Flex>
             )}
           </TabPanel>
           <TabPanel p="0px">
-            {/* TODO: Search input with placeholder "Search with Code ID or Code Description" */}
             <CodesTable codes={publicCodes} />
           </TabPanel>
           <TabPanel p="0px">

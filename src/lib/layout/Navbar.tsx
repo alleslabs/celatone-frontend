@@ -32,7 +32,7 @@ const Navbar = observer(() => {
 
   const getPublicCodeShortCut = () =>
     PERMISSIONED_CHAINS.includes(currentChainName)
-      ? [{ name: "Public Codes", slug: "/public-codes", icon: MdPublic }]
+      ? [{ name: "All Stored Codes", slug: "/public-codes", icon: MdPublic }]
       : [];
 
   const navMenu = [

@@ -4,16 +4,18 @@ import { MdSearchOff } from "react-icons/md";
 
 interface EmptyStateProps {
   icon?: IconType;
+  hasIcon?: boolean;
   message: string;
 }
 
 export const EmptyState = ({
   icon = MdSearchOff,
   message,
+  hasIcon = true,
 }: EmptyStateProps) => {
   return (
     <Flex alignItems="center" flexDir="column" gap="4" width="full">
-      <Icon as={icon} color="gray.600" boxSize="16" />
+      {hasIcon && <Icon as={icon} color="gray.600" boxSize="16" />}
       <Text color="gray.500" w="540px" textAlign="center">
         {message}
       </Text>

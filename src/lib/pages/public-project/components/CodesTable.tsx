@@ -32,6 +32,7 @@ export const CodesTable = ({
   hasSearchInput = true,
 }: CodesTableProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
+
   const filteredCodes = useMemo(() => {
     return matchSorter(codes, searchKeyword, {
       keys: ["id", "description"],
@@ -80,6 +81,7 @@ export const CodesTable = ({
               </Tr>
             </Thead>
             <Tbody>
+              {/* TODO Link code id and row to code detail */}
               {filteredCodes?.map((code) => (
                 <Tr
                   key={code.id}
@@ -93,7 +95,11 @@ export const CodesTable = ({
                   }}
                 >
                   <Td width="10%" color="primary.main">
-                    <ExplorerLink value={code.id.toString()} canCopyWithHover />
+                    <ExplorerLink
+                      type="code_id"
+                      value={code.id.toString()}
+                      canCopyWithHover
+                    />
                   </Td>
                   <Td width="45%">
                     <Text variant="body2"> {code.description}</Text>
