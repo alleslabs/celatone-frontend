@@ -59,8 +59,12 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
     <>
       <ContractTop contractData={contractData} />
       {/* Tokens Section */}
-
-      <TokenSection balances={contractData.balances} />
+      <Flex direction="column">
+        <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
+          Assets
+        </Text>
+        <TokenSection balances={contractData.balances} />
+      </Flex>
       {/* Contract Description Section */}
       <ContractDesc contractData={contractData} />
       {/* Query/Execute commands section */}

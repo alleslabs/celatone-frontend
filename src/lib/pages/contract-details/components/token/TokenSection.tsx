@@ -1,4 +1,4 @@
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import { Grid, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { ShowMoreButton } from "lib/components/button";
@@ -16,7 +16,7 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
     [balances]
   );
 
-  if (!balances)
+  if (!balances?.length)
     return (
       <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
         This contract does not hold any assets
@@ -24,10 +24,7 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
     );
 
   return (
-    <Flex direction="column">
-      <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
-        Assets
-      </Text>
+    <>
       {/* TODO - Implement unsupported assets */}
       <Grid gridGap={4} gridTemplateColumns="repeat(4, 1fr)">
         {supportedAssets?.map((balance, index) => {
@@ -45,6 +42,6 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
           setToggleShowMore={() => setShowMore(!showMore)}
         />
       )}
-    </Flex>
+    </>
   );
 };
