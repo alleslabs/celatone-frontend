@@ -5,11 +5,11 @@ import { MdDeleteForever, MdCheckCircle } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useContractStore, useUserKey } from "lib/hooks";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 import { shortenName } from "lib/utils";
 
 interface ModalProps {
-  list: Option;
+  list: LVPair;
   menuItemProps: MenuItemProps;
 }
 

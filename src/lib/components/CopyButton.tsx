@@ -9,7 +9,11 @@ interface CopyButtonProps {
   size?: ButtonProps["size"];
 }
 
-const CopyButton = ({ isDisable, value, size = "sm" }: CopyButtonProps) => {
+export const CopyButton = ({
+  isDisable,
+  value,
+  size = "sm",
+}: CopyButtonProps) => {
   // TODO: revisit useClipboard later
   const { onCopy, setValue } = useClipboard(value);
 
@@ -28,5 +32,3 @@ const CopyButton = ({ isDisable, value, size = "sm" }: CopyButtonProps) => {
     </Button>
   );
 };
-
-export default CopyButton;

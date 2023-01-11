@@ -1,4 +1,4 @@
-export type Option = {
+export type LVPair = {
   label: string;
   value: string;
 };

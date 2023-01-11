@@ -9,13 +9,13 @@ import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { ContractListReadOnlyTable } from "lib/pages/contract-list/components/ContractListReadOnlyTable";
 import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, Option } from "lib/types";
+import type { ContractAddr, LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface FilteredListDetailProps {
   contracts: ContractInfo[];
   isReadOnly?: boolean;
-  contractRemovalInfo?: Option;
+  contractRemovalInfo?: LVPair;
   onContractSelect?: (addr: ContractAddr) => void;
 }
 

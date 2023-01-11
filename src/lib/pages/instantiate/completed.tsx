@@ -1,12 +1,10 @@
 import { Flex, Icon, Heading, Button } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { MdCheckCircle } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxReceiptRender } from "lib/components/tx/receipt";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { getExplorerContractAddressUrl } from "lib/data";
 import { InstantiateOffChainForm } from "lib/pages/instantiate/component/InstantiateOffchainForm";
 import type { ContractAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
@@ -19,7 +17,6 @@ interface CompletedProps {
 
 const Completed = ({ txInfo }: CompletedProps) => {
   const router = useRouter();
-  const { currentChainName } = useWallet();
 
   return (
     <WasmPageContainer>
@@ -67,13 +64,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
           w="full"
           variant="outline-gray"
           onClick={() =>
-            window.open(
-              `${getExplorerContractAddressUrl(currentChainName)}/${
-                txInfo.contractAddress
-              }`,
-              "_blank",
-              "noopener,noreferrer"
-            )
+            router.push({ pathname: `/contract/${txInfo.contractAddress}` })
           }
         >
           View Contract
