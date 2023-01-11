@@ -7,6 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { useCodeStore } from "lib/hooks";
 import { useCodeData } from "lib/model/code";
+import { InstantiatePermission } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import { CodeInfoSection } from "./component/CodeInfoSection";
@@ -14,11 +15,12 @@ import { CTASection } from "./component/CTASection";
 
 const CodeDetails = observer(() => {
   const router = useRouter();
+  /**
+   * @todos Handle incorrect codeIdParam and render not found or error page.
+   */
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const codeId = Number(codeIdParam);
-  /**
-   * @todos Maybe use data from data hook instead
-   */
+
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
   const codeDetails = useCodeData(codeId);
@@ -39,14 +41,18 @@ const CodeDetails = observer(() => {
             <Text fontWeight={500} color="text.dark" variant="body2">
               Code ID
             </Text>
-            <ExplorerLink type="code_id" value={codeIdParam} />
+            <ExplorerLink type="code_id" value={codeId.toString()} />
           </Flex>
         </Flex>
-        {/* TODO: Check uploader with data hook */}
+        {/* TODO: check default uploader case */}
         <CTASection
-          id={Number(codeId)}
-          uploader={localCodeInfo?.uploader ?? ""}
-          description={localCodeInfo?.description ?? ""}
+          id={codeId}
+          uploader={codeDetails?.uploader ?? localCodeInfo?.uploader ?? ""}
+          description={localCodeInfo?.description}
+          instantiatePermission={
+            codeDetails?.instantiatePermission ?? InstantiatePermission.UNKNOWN
+          }
+          permissionAddresses={codeDetails?.permissionAddresses ?? []}
         />
       </Flex>
       <Divider borderColor="divider.main" my={12} />
