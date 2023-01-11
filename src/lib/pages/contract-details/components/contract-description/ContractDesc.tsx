@@ -1,18 +1,18 @@
 import { Flex } from "@chakra-ui/react";
 
-import type { ContractDetail } from "lib/model/contract";
+import type { ContractData } from "lib/model/contract";
 
 import { PublicContractDesc } from "./PublicContractDesc";
 import { UserContractDesc } from "./UserContractDesc";
 
 interface ContractDescProps {
-  contractDetail: ContractDetail;
+  contractData: ContractData;
 }
-export const ContractDesc = ({ contractDetail }: ContractDescProps) => {
+export const ContractDesc = ({ contractData }: ContractDescProps) => {
   return (
     <Flex gap={6}>
-      <PublicContractDesc contractDetail={contractDetail} />
-      <UserContractDesc contractDetail={contractDetail} />
+      <PublicContractDesc contractData={contractData} />
+      <UserContractDesc contractData={contractData} />
     </Flex>
   );
 };

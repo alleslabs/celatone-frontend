@@ -20,7 +20,7 @@ import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
-export interface ContractDetail {
+export interface ContractData {
   chainId: string;
   codeInfo: CodeLocalInfo | undefined;
   contractInfo: ContractInfo | undefined;
@@ -75,9 +75,9 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   };
 };
 
-export const useContractDetail = (
+export const useContractData = (
   contractAddress: ContractAddr
-): ContractDetail | undefined => {
+): ContractData | undefined => {
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractInfo } = useContractStore();

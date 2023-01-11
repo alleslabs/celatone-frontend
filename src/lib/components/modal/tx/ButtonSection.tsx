@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { FiChevronRight } from "react-icons/fi";
 
-import { getExplorerTxUrl } from "lib/data";
+import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
 interface ButtonSectionProps {

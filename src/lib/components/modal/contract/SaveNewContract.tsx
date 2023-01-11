@@ -13,10 +13,10 @@ import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
-import { useContractStore, useEndpoint } from "lib/hooks";
+import { useContractStore, useEndpoint, useValidateAddress } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractAddr, Option, RpcContractError } from "lib/types";
+import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface SaveNewContractDetail extends OffchainDetail {
@@ -27,12 +27,13 @@ interface SaveNewContractDetail extends OffchainDetail {
 }
 
 interface SaveNewContractProps {
-  list: Option;
+  list: LVPair;
   buttonProps: ButtonProps;
 }
 export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const endpoint = useEndpoint();
   const { getContractInfo } = useContractStore();
+  const { validateContractAddress } = useValidateAddress();
 
   const {
     appContractAddress: { example: exampleContractAddress },
@@ -75,7 +76,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const setTagsValue = (selecteTags: string[]) => {
     setValue("tags", selecteTags);
   };
-  const setContractListsValue = (selectedLists: Option[]) => {
+  const setContractListsValue = (selectedLists: LVPair[]) => {
     setValue("lists", selectedLists);
   };
 
@@ -118,11 +119,11 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           message: "Valid Contract Address",
         });
       },
-      onError(err: AxiosError<RpcContractError>) {
+      onError(err: AxiosError<RpcQueryError>) {
         resetForm(false);
         setStatus({
           state: "error",
-          message: err.response?.data.error || DEFAULT_RPC_ERROR,
+          message: err.response?.data.message || DEFAULT_RPC_ERROR,
         });
       },
     }
@@ -138,12 +139,18 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
         state: "loading",
       });
       const timeoutId = setTimeout(() => {
-        refetch();
+        const err = validateContractAddress(contractAddressState);
+        if (err !== null)
+          setStatus({
+            state: "error",
+            message: err,
+          });
+        else refetch();
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
     return () => {};
-  }, [contractAddressState, refetch]);
+  }, [contractAddressState, refetch, validateContractAddress]);
 
   const handleSave = useHandleContractSave({
     title: `Saved ${

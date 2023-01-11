@@ -1,4 +1,5 @@
 import { Flex, Box, Text, Icon, Button, Spacer, Image } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import {
@@ -10,6 +11,7 @@ import {
   MdInput,
   MdAdd,
   MdOutlineHistory,
+  MdPublic,
 } from "react-icons/md";
 
 import { CreateNewList } from "lib/components/modal";
@@ -18,9 +20,21 @@ import { useContractStore, usePublicProjectStore } from "lib/hooks";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
+// TODO: move to proper place
+const PERMISSIONED_CHAINS = ["osmosis", "osmosistestnet"];
+
 const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
+
   const { getPublicProjects } = usePublicProjectStore();
+
+  const { currentChainName } = useWallet();
+
+  const getPublicCodeShortCut = () =>
+    PERMISSIONED_CHAINS.includes(currentChainName)
+      ? [{ name: "Public Codes", slug: "/public-codes", icon: MdPublic }]
+      : [];
+
   const navMenu = [
     {
       category: "Overview",
@@ -32,6 +46,11 @@ const Navbar = observer(() => {
           icon: MdOutlineHistory,
           logo: null,
         },
+      ],
+    },
+    {
+      category: "Quick Actions",
+      submenu: [
         {
           name: "Query",
           slug: "/query",
@@ -47,9 +66,10 @@ const Navbar = observer(() => {
       ],
     },
     {
-      category: "Code",
+      category: "Codes",
       submenu: [
-        { name: "Code List", slug: "/codes", icon: MdCode, logo: null },
+        { name: "My Codes", slug: "/codes", icon: MdCode },
+        ...getPublicCodeShortCut(),
       ],
     },
     {

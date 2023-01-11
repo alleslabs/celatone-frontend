@@ -71,6 +71,7 @@ export const EditableCell = ({
           p={3}
           borderRadius="md"
           zIndex="sticky"
+          onClick={(e) => e.stopPropagation()}
         >
           <Input
             size="sm"
@@ -93,7 +94,7 @@ export const EditableCell = ({
           </Button>
         </Flex>
       ) : (
-        <Flex alignItems="center" gap={2}>
+        <Flex alignItems="center" gap={2} onClick={(e) => e.stopPropagation()}>
           <Flex
             position="relative"
             onMouseOver={handleMouseEnterText}

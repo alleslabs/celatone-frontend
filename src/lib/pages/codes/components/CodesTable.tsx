@@ -120,6 +120,9 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
   const goToInstantiate = () => {
     router.push({ pathname: "/instantiate", query: { "code-id": code.id } });
   };
+  const goToCodeDetails = () => {
+    router.push({ pathname: `/code/${code.id}` });
+  };
 
   return (
     <Tr
@@ -128,15 +131,30 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
       _hover={{
         bg: "gray.900",
       }}
+      cursor="pointer"
+      onClick={goToCodeDetails}
     >
       <Td width="10%" color="primary.main">
-        <ExplorerLink value={code.id.toString()} canCopyWithHover />
+        <ExplorerLink
+          type="code_id"
+          value={code.id.toString()}
+          canCopyWithHover
+        />
       </Td>
       <Td width="45%">
         <CodeDescriptionCell codeId={code.id} description={code.description} />
       </Td>
       <Td width="10%" textAlign="center">
-        {code.contracts}
+        <Text
+          variant="body2"
+          onClick={(e) => e.stopPropagation()}
+          cursor="text"
+          w="fit-content"
+          m="auto"
+          px={2}
+        >
+          {code.contracts}
+        </Text>
       </Td>
       <Td width="15%">
         <ExplorerLink
@@ -146,7 +164,7 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
         />
       </Td>
       <Td width="20%">
-        <HStack>
+        <HStack onClick={(e) => e.stopPropagation()} w="fit-content">
           <Button variant="outline-gray" size="sm" onClick={goToInstantiate}>
             Instantiate
           </Button>

@@ -4,12 +4,12 @@ import { useRouter } from "next/router";
 import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
 
 import { SaveNewContract } from "lib/components/modal/contract";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 
 import { DisconnectedState } from "./DisconnectedState";
 
 interface ZeroStateProps {
-  list: Option;
+  list: LVPair;
   isReadOnly?: boolean;
   isInstantiatedByMe: boolean;
 }
@@ -21,7 +21,7 @@ const ActionSection = ({
 }: {
   isInstantiatedByMe: boolean;
   handleAction?: () => void;
-  list: Option;
+  list: LVPair;
 }) => {
   return isInstantiatedByMe ? (
     <Button rightIcon={<MdOutlineAdd />} onClick={handleAction}>
