@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
-
+- [#76](https://github.com/alleslabs/celatone-frontend/pull/76) Public Projects
 - [#59](https://github.com/alleslabs/celatone-frontend/pull/58) Wireup code name,description, and cta section
 - [#53](https://github.com/alleslabs/celatone-frontend/pull/53) Show contract description in contract details page
 - [#58](https://github.com/alleslabs/celatone-frontend/pull/58) Wireup top section in contract details page
