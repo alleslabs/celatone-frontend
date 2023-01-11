@@ -44,7 +44,7 @@ const CodeDetails = observer(() => {
             <ExplorerLink type="code_id" value={codeId.toString()} />
           </Flex>
         </Flex>
-        {/* TODO: Check uploader with data hook */}
+        {/* TODO: check default uploader case */}
         <CTASection
           id={codeId}
           uploader={codeDetails?.uploader ?? localCodeInfo?.uploader ?? ""}
