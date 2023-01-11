@@ -1,4 +1,4 @@
-import { Badge, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
@@ -8,12 +8,14 @@ import PageContainer from "lib/components/PageContainer";
 import { useCodeStore } from "lib/hooks";
 import { getFirstQueryParam } from "lib/utils";
 
-import { CodeInfoSection } from "./component/CodeInfoSection";
-import { CTASection } from "./component/CTASection";
+import { CodeInfoSection } from "./components/CodeInfoSection";
+import { CTASection } from "./components/CTASection";
+import { ContractTable } from "./components/table/contracts/ContractTable";
 
 const CodeDetails = observer(() => {
   const router = useRouter();
   const codeId = getFirstQueryParam(router.query.codeId);
+
   /**
    * @todos Maybe use data from data hook instead
    */
@@ -52,17 +54,7 @@ const CodeDetails = observer(() => {
       {/* TODO: Use real data to render LabelText */}
       <CodeInfoSection />
       {/* TODO: Wireup badge count, Create table component and wireup with real data */}
-      <Flex mb={6} align="center">
-        <Heading as="h6" variant="h6">
-          Contract Instances
-        </Heading>
-        <Badge ml={2} variant="primary">
-          19
-        </Badge>
-      </Flex>
-      <Heading color="error.main" as="h5" variant="h5">
-        Table Goes Hereeee
-      </Heading>
+      <ContractTable codeId={Number(codeId)} />
     </PageContainer>
   );
 });

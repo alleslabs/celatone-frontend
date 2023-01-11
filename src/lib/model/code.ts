@@ -6,7 +6,7 @@ import {
   useContractListByCodeId,
   useContractListCountByCodeId,
 } from "lib/services/codeService";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { CodeDetails, ContractInstances, Option } from "lib/types";
 
 export const useCodeData = (codeId: number): Option<CodeDetails> => {
@@ -31,13 +31,13 @@ export const useCodeContractInstances = (
     pageSize
   );
   const { data: count = 0 } = useContractListCountByCodeId(codeId);
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
   const data = contractList?.map((contract) => {
-    const localContractInfo = getContractInfo(contract.contractAddress);
+    const contractLocalInfo = getContractLocalInfo(contract.contractAddress);
     return {
-      ...localContractInfo,
+      ...contractLocalInfo,
       ...contract,
-    } as ContractInfo;
+    } as ContractLocalInfo;
   });
   return {
     contractList: data,

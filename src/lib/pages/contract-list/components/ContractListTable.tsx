@@ -31,7 +31,7 @@ import {
   EditContractDetails,
   RemoveContract,
 } from "lib/components/modal/contract";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
 import { ContractNameCell } from "./table/ContractNameCell";
@@ -46,7 +46,7 @@ const StyledIcon = chakra(Icon, {
 });
 
 interface ContractListTableProps {
-  contracts: ContractInfo[];
+  contracts: ContractLocalInfo[];
   contractRemovalInfo?: LVPair;
 }
 
@@ -102,10 +102,10 @@ export const ContractListTable = ({
                 />
               </Td>
               <Td>
-                <ContractNameCell contract={item} />
+                <ContractNameCell contractLocalInfo={item} />
               </Td>
               <Td>
-                <TagsCell contractInfo={item} />
+                <TagsCell contractLocalInfo={item} />
               </Td>
               {/* Instantiator */}
               <Td>
@@ -146,7 +146,7 @@ export const ContractListTable = ({
                     </MenuButton>
                     <MenuList>
                       <EditContractDetails
-                        contractInfo={item}
+                        contractLocalInfo={item}
                         triggerElement={
                           <MenuItem
                             icon={<StyledIcon as={MdMode} color="gray.600" />}
@@ -156,7 +156,7 @@ export const ContractListTable = ({
                         }
                       />
                       <AddToOtherList
-                        contractInfo={item}
+                        contractLocalInfo={item}
                         triggerElement={
                           <MenuItem
                             icon={
@@ -174,7 +174,7 @@ export const ContractListTable = ({
                         <>
                           <MenuDivider />
                           <RemoveContract
-                            contractInfo={item}
+                            contractLocalInfo={item}
                             contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
                               icon: (

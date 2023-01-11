@@ -10,8 +10,13 @@ import {
   getContractListByCodeId,
   getContractListCountByCodeId,
 } from "lib/data/queries";
-import type { ContractInfo } from "lib/stores/contract";
-import type { CodeInfo, CodeDetails, ContractAddr, Option } from "lib/types";
+import type {
+  CodeInfo,
+  CodeDetails,
+  ContractAddr,
+  Option,
+  ContractInfo,
+} from "lib/types";
 import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 
 export const useCodeListByUserQuery = (
@@ -27,7 +32,7 @@ export const useCodeListByUserQuery = (
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          contracts: code.instantiated,
+          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
           uploader: code.account.uploader,
         }))
       );
@@ -116,9 +121,16 @@ export const useContractListByCodeId = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: unwrap(contract.transaction?.account?.address),
+          instantiator: unwrap(contract.transaction?.account.address),
           label: contract.label,
-          created: parseDateDefault(contract.transaction?.block?.timestamp),
+          instantiated: parseDateDefault(contract.transaction?.block.timestamp),
+          latestUpdator: unwrap(
+            // TODO: handle Genesis case
+            contract.contract_histories.at(0)?.account.address
+          ),
+          latestUpdated: parseDateDefault(
+            contract.contract_histories.at(0)?.block.timestamp
+          ),
         }))
       );
   }, [codeId, offset, pageSize]);

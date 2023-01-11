@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 import {
   MdAddCircleOutline,
-  MdBookmark,
+  MdBookmarkBorder,
   MdCheckCircle,
   MdMode,
 } from "react-icons/md";
@@ -88,7 +88,7 @@ export const SaveOrEditCodeModal = observer(
           trigger: (
             <Button
               variant="outline-gray"
-              leftIcon={<StyledIcon as={MdBookmark} />}
+              leftIcon={<StyledIcon as={MdBookmarkBorder} />}
             >
               Save Code
             </Button>

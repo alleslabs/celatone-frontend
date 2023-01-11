@@ -2,18 +2,18 @@ import { Flex, Tag, TagLabel, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { EditTags } from "lib/components/modal/EditTags";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 
 interface TagsCellProps {
-  contractInfo: ContractInfo;
+  contractLocalInfo: ContractLocalInfo;
   isReadOnly?: boolean;
 }
 
 export const TagsCell = ({
-  contractInfo,
+  contractLocalInfo,
   isReadOnly = false,
 }: TagsCellProps) => {
-  const tags = contractInfo.tags ?? [];
+  const tags = contractLocalInfo.tags ?? [];
   const [isHover, setIsHover] = useState(false);
   const handleMouseEnter = () => {
     setIsHover(true);
@@ -96,7 +96,7 @@ export const TagsCell = ({
             )}
             {!isReadOnly && (
               <Flex display={isHover ? "flex" : "none"}>
-                <EditTags contractInfo={contractInfo} />
+                <EditTags contractLocalInfo={contractLocalInfo} />
               </Flex>
             )}
           </Flex>

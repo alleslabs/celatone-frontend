@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { TiArrowSortedDown } from "react-icons/ti";
 
-import { scrollTop } from "lib/utils/scrollTop";
+import { scrollToComponent, scrollTop } from "lib/utils/scroll";
 
 import { Next } from "./Next";
 import { Paginator } from "./Paginator";
@@ -16,6 +16,7 @@ interface PaginationProps {
   offset: number;
   totalData: number;
   pageSize: number;
+  scrollComponentId?: string;
   onPageChange: (pageNumber: number) => void;
   onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -25,12 +26,17 @@ export const Pagination = ({
   offset,
   totalData,
   pageSize,
+  scrollComponentId,
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
   useEffect(() => {
-    scrollTop();
-  }, [currentPage, pageSize]);
+    if (!scrollComponentId) {
+      scrollTop();
+    } else {
+      scrollToComponent(scrollComponentId);
+    }
+  }, [currentPage, pageSize, scrollComponentId]);
 
   const { offsetData, lastDataInPage } = useMemo(() => {
     return {

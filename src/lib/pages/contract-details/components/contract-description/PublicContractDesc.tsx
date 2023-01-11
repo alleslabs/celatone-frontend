@@ -25,7 +25,7 @@ export const PublicContractDesc = ({
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "",
     ellipsis: "...",
-    lines: textLine(!contractData.contractInfo?.description, showMore),
+    lines: textLine(!contractData.contractLocalInfo?.description, showMore),
   });
 
   if (!description) return null;

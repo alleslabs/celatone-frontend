@@ -7,7 +7,7 @@ import { MdMode, MdOutlineBookmarkBorder } from "react-icons/md";
 
 import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
@@ -23,10 +23,9 @@ interface DisplayNameProps {
 
 interface ContractDetailsButtonProps {
   contractAddress: ContractAddr;
-  contractInfo: Option<ContractInfo>;
+  contractLocalInfo: Option<ContractLocalInfo>;
   instantiator: string;
   label: string;
-  created: Date;
 }
 
 interface ContractSelectSectionProps {
@@ -58,15 +57,14 @@ const DisplayName = ({
 
 const ContractDetailsButton = ({
   contractAddress,
-  contractInfo,
+  contractLocalInfo,
   instantiator,
   label,
-  created,
 }: ContractDetailsButtonProps) => {
-  const isExist = !!contractInfo?.lists;
+  const isExist = !!contractLocalInfo?.lists;
   return isExist ? (
     <EditContractDetails
-      contractInfo={contractInfo}
+      contractLocalInfo={contractLocalInfo}
       triggerElement={
         <Button
           variant="ghost-gray"
@@ -79,12 +77,11 @@ const ContractDetailsButton = ({
     />
   ) : (
     <SaveContractDetails
-      contractInfo={{
+      contractLocalInfo={{
         contractAddress,
         instantiator,
         label,
-        created,
-        ...contractInfo,
+        ...contractLocalInfo,
       }}
       triggerElement={
         <Button
@@ -101,11 +98,11 @@ const ContractDetailsButton = ({
 
 export const ContractSelectSection = observer(
   ({ contractAddress, onContractSelect }: ContractSelectSectionProps) => {
-    const { getContractInfo } = useContractStore();
+    const { getContractLocalInfo } = useContractStore();
     const isMobile = useMobile();
     const endpoint = useEndpoint();
 
-    const contractInfo = getContractInfo(contractAddress);
+    const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
       watch,
       reset,
@@ -115,7 +112,6 @@ export const ContractSelectSection = observer(
         isValid: false,
         instantiator: "",
         label: "",
-        created: new Date(0),
       },
       mode: "all",
     });
@@ -131,7 +127,6 @@ export const ContractSelectSection = observer(
             isValid: true,
             instantiator: data.instantiator,
             label: data.label,
-            created: data.createdTime,
           });
         },
         onError() {
@@ -142,18 +137,17 @@ export const ContractSelectSection = observer(
 
     useEffect(() => {
       (async () => {
-        if (!contractInfo) {
+        if (!contractLocalInfo) {
           refetch();
         } else {
           reset({
             isValid: true,
-            instantiator: contractInfo.instantiator,
-            label: contractInfo.label,
-            created: contractInfo.created,
+            instantiator: contractLocalInfo.instantiator,
+            label: contractLocalInfo.label,
           });
         }
       })();
-    }, [contractAddress, contractInfo, endpoint, reset, refetch]);
+    }, [contractAddress, contractLocalInfo, endpoint, reset, refetch]);
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;
@@ -191,7 +185,7 @@ export const ContractSelectSection = observer(
             <DisplayName
               notSelected={notSelected}
               isValid={contractState.isValid}
-              name={contractInfo?.name}
+              name={contractLocalInfo?.name}
               label={contractState.label}
             />
           </Flex>
@@ -201,10 +195,9 @@ export const ContractSelectSection = observer(
           {contractState.isValid && (
             <ContractDetailsButton
               contractAddress={contractAddress}
-              contractInfo={contractInfo}
+              contractLocalInfo={contractLocalInfo}
               instantiator={contractState.instantiator}
               label={contractState.label}
-              created={contractState.created}
             />
           )}
           <SelectContract

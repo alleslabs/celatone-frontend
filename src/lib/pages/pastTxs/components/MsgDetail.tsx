@@ -39,7 +39,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
   const [button, setButton] = useState<"redo" | "resend" | "">("");
   const [showButton, setShowButton] = useState(false);
   const { currentChainName } = useWallet();
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
 
   // TODO - Refactor to reduce complexity
   // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -48,7 +48,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
     // Type Execute
     if (type === "MsgExecuteContract") {
       const detailExecute = msg.detail as DetailExecute;
-      const contractInfo = getContractInfo(detailExecute.contract);
+      const contractLocalInfo = getContractLocalInfo(detailExecute.contract);
       // Able to redo even fail transaction
       setButton("redo");
       const singleMsgProps: SingleMsgProps = success
@@ -56,13 +56,13 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
             type: "Execute",
             tags: [Object.keys(detailExecute.msg)[0]],
             text2: "on",
-            link1: contractInfo?.name || detailExecute.contract,
+            link1: contractLocalInfo?.name || detailExecute.contract,
             link1Copy: detailExecute.contract,
           }
         : {
             type: "Failed",
             text1: "to execute message from",
-            link1: contractInfo?.name || detailExecute.contract,
+            link1: contractLocalInfo?.name || detailExecute.contract,
             link1Copy: detailExecute.contract,
           };
       return <SingleMsg {...singleMsgProps} />;
@@ -87,7 +87,9 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
     // Type Instantiate
     if (type === "MsgInstantiateContract") {
       const msgInstantiate = msg.detail as DetailInstantiate;
-      const contractInfo = getContractInfo(msgInstantiate.contractAddress);
+      const contractLocalInfo = getContractLocalInfo(
+        msgInstantiate.contractAddress
+      );
       // Not able to redo if failure
       if (!success) {
         setButton("");
@@ -104,7 +106,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
         <SingleMsg
           type="Instantiate"
           text1="contract"
-          link1={contractInfo?.name || msgInstantiate.contractAddress}
+          link1={contractLocalInfo?.name || msgInstantiate.contractAddress}
           link1Copy={msgInstantiate.contractAddress}
           text3={`from Code ID ${msgInstantiate.codeId.toString()}`}
         />
@@ -160,7 +162,7 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
       return <SingleMsg type="Message" tags={[type.substring(3)]} />;
     }
     return null;
-  }, [getContractInfo, msg.detail, msg.type, success]);
+  }, [getContractLocalInfo, msg.detail, msg.type, success]);
 
   const fabricateFee = useFabricateFee();
   const { simulate } = useSimulateFee();

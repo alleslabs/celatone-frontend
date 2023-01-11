@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { scrollTop } from "lib/utils/scrollTop";
+import { scrollTop } from "lib/utils/scroll";
 
 import Header from "./Header";
 import Navbar from "./Navbar";

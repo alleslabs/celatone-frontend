@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Divider, Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
@@ -34,6 +34,29 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
         <>
           <LabelText label="Network">{contractData.chainId}</LabelText>
 
+          <LabelText
+            label="From Code"
+            helperText1={contractData.codeInfo?.description}
+          >
+            <ExplorerLink
+              type="code_id"
+              value={contractData.instantiateInfo.codeId}
+              canCopyWithHover
+            />
+          </LabelText>
+
+          {contractData.instantiateInfo.admin && (
+            <LabelText label="Admin Address">
+              <ExplorerLink
+                type="user_address"
+                value={contractData.instantiateInfo.admin}
+                canCopyWithHover
+              />
+            </LabelText>
+          )}
+
+          <Divider border="1px solid" borderColor="divider.main" />
+
           {contractData.instantiateInfo &&
             (contractData.instantiateInfo.createdHeight !== -1 ? (
               <LabelText
@@ -65,17 +88,6 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
             />
           </LabelText>
 
-          <LabelText
-            label="From Code"
-            helperText1={contractData.codeInfo?.description}
-          >
-            <ExplorerLink
-              type="code_id"
-              value={contractData.instantiateInfo.codeId}
-              canCopyWithHover
-            />
-          </LabelText>
-
           {contractData.initProposalId ? (
             <LabelText
               label="Instantiate Proposal ID"
@@ -97,15 +109,6 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
             </LabelText>
           )}
 
-          {contractData.instantiateInfo.admin && (
-            <LabelText label="Admin Address">
-              <ExplorerLink
-                type="user_address"
-                value={contractData.instantiateInfo.admin}
-              />
-            </LabelText>
-          )}
-
           {contractData.instantiateInfo.ibcPortId && (
             <LabelText label="IBC Port ID">
               {contractData.instantiateInfo.ibcPortId}
@@ -123,10 +126,7 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
   };
 
   return (
-    <Flex direction="column" gap={6} w="180px">
-      <Heading as="h6" variant="h6">
-        Instantiate Info
-      </Heading>
+    <Flex direction="column" gap={6} w="250px">
       {renderDataFound()}
     </Flex>
   );

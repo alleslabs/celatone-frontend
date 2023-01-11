@@ -8,12 +8,12 @@ import { ZeroState } from "lib/components/state/ZeroState";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { ContractListReadOnlyTable } from "lib/pages/contract-list/components/ContractListReadOnlyTable";
 import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
-import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
+import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface FilteredListDetailProps {
-  contracts: ContractInfo[];
+  contracts: ContractLocalInfo[];
   isReadOnly?: boolean;
   contractRemovalInfo?: LVPair;
   onContractSelect?: (addr: ContractAddr) => void;

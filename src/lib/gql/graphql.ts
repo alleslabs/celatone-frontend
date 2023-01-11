@@ -6256,7 +6256,13 @@ export type GetCodeListByUserQueryQuery = {
   codes: Array<{
     __typename?: "codes";
     id: number;
-    instantiated: number;
+    contracts_aggregate: {
+      __typename?: "contracts_aggregate";
+      aggregate?: {
+        __typename?: "contracts_aggregate_fields";
+        count: number;
+      } | null;
+    };
     account: { __typename?: "accounts"; uploader: string };
   }>;
 };
@@ -6300,10 +6306,6 @@ export type GetInstantiatedListByUserQueryDocumentQuery = {
     __typename?: "contracts";
     label: string;
     address: string;
-    transaction?: {
-      __typename?: "transactions";
-      block: { __typename?: "blocks"; timestamp: any };
-    } | null;
   }>;
 };
 
@@ -6337,6 +6339,11 @@ export type GetContractListByCodeIdQuery = {
       block: { __typename?: "blocks"; timestamp: any };
       account: { __typename?: "accounts"; address: string };
     } | null;
+    contract_histories: Array<{
+      __typename?: "contract_histories";
+      block: { __typename?: "blocks"; timestamp: any };
+      account: { __typename?: "accounts"; address: string };
+    }>;
   }>;
 };
 
@@ -6476,8 +6483,25 @@ export const GetCodeListByUserQueryDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "instantiated" },
-                  name: { kind: "Name", value: "contract_instantiated" },
+                  name: { kind: "Name", value: "contracts_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "count" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
                 },
                 {
                   kind: "Field",
@@ -6825,28 +6849,6 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "label" } },
                 { kind: "Field", name: { kind: "Name", value: "address" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "transaction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
               ],
             },
           },
@@ -7057,6 +7059,71 @@ export const GetContractListByCodeIdDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [

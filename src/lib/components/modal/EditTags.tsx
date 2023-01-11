@@ -6,20 +6,21 @@ import { ExplorerLink } from "../ExplorerLink";
 import { TagSelection } from "lib/components/forms/TagSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 
 interface EditTagsProps {
-  contractInfo: ContractInfo;
+  contractLocalInfo: ContractLocalInfo;
 }
 
-export function EditTags({ contractInfo }: EditTagsProps) {
-  const [tagResult, setTagResult] = useState<string[]>(contractInfo.tags ?? []);
+export function EditTags({ contractLocalInfo }: EditTagsProps) {
+  const [tagResult, setTagResult] = useState<string[]>(
+    contractLocalInfo.tags ?? []
+  );
   const handleSave = useHandleContractSave({
     title: "Updated tags successfully!",
-    contractAddress: contractInfo.contractAddress,
-    instantiator: contractInfo.instantiator,
-    label: contractInfo.label,
-    created: contractInfo.created,
+    contractAddress: contractLocalInfo.contractAddress,
+    instantiator: contractLocalInfo.instantiator,
+    label: contractLocalInfo.label,
     tags: tagResult,
   });
 
@@ -42,10 +43,10 @@ export function EditTags({ contractInfo }: EditTagsProps) {
 
           <Flex direction="column" gap="8px">
             <Text variant="body2" color="text.main">
-              {contractInfo.name ?? contractInfo.label}
+              {contractLocalInfo.name ?? contractLocalInfo.label}
             </Text>
             <ExplorerLink
-              value={contractInfo.contractAddress}
+              value={contractLocalInfo.contractAddress}
               type="contract_address"
             />
           </Flex>

@@ -16,14 +16,14 @@ import {
   useInstantiatedListByUserQuery,
 } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
+import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractData {
   chainId: string;
   codeInfo: CodeLocalInfo | undefined;
-  contractInfo: ContractInfo | undefined;
+  contractLocalInfo: ContractLocalInfo | undefined;
   instantiateInfo: InstantiateInfo | undefined;
   publicInfo: PublicInfo | undefined;
   balances: Coin[];
@@ -39,12 +39,12 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
     enable ? (address as HumanAddr) : undefined
   );
 
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
 
   return {
     contracts: contracts.map((contract) => ({
       ...contract,
-      ...getContractInfo(contract.contractAddress),
+      ...getContractLocalInfo(contract.contractAddress),
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
@@ -80,7 +80,7 @@ export const useContractData = (
 ): ContractData | undefined => {
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
   const endpoint = useEndpoint();
 
   const { data: instantiateInfo } = useQuery(
@@ -107,7 +107,7 @@ export const useContractData = (
   const codeInfo = instantiateInfo
     ? getCodeLocalInfo(Number(instantiateInfo.codeId))
     : undefined;
-  const contractInfo = getContractInfo(contractAddress);
+  const contractLocalInfo = getContractLocalInfo(contractAddress);
 
   const {
     data: instantiateDetail = {
@@ -124,7 +124,7 @@ export const useContractData = (
   return {
     chainId: currentChainRecord.chain.chain_id,
     codeInfo,
-    contractInfo,
+    contractLocalInfo,
     instantiateInfo,
     publicInfo,
     balances: contractBalances.balances,

@@ -9,7 +9,11 @@ export const getCodeListByUserQueryDocument = graphql(`
       order_by: { id: desc }
     ) {
       id
-      instantiated: contract_instantiated
+      contracts_aggregate {
+        aggregate {
+          count
+        }
+      }
       account {
         uploader: address
       }
@@ -51,11 +55,6 @@ export const getInstantiatedListByUserQueryDocument = graphql(`
     ) {
       label
       address
-      transaction {
-        block {
-          timestamp
-        }
-      }
     }
   }
 `);
@@ -82,6 +81,14 @@ export const getContractListByCodeId = graphql(`
       address
       label
       transaction {
+        block {
+          timestamp
+        }
+        account {
+          address
+        }
+      }
+      contract_histories(order_by: { block: { timestamp: desc } }, limit: 1) {
         block {
           timestamp
         }
