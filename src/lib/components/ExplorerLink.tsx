@@ -7,18 +7,14 @@ import {
   getExplorerTxUrl,
   getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
+import type { AddressReturnType } from "lib/hooks";
 import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
-  type?:
-    | "tx_hash"
-    | "user_address"
-    | "contract_address"
-    | "code_id"
-    | "invalid_address";
+  type?: "tx_hash" | "code_id" | AddressReturnType;
   copyValue?: string;
   canCopyWithHover?: boolean;
   isReadOnly?: boolean;

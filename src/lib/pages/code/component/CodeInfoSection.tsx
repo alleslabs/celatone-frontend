@@ -1,10 +1,13 @@
-import { Heading, Flex, Text, Box, Grid } from "@chakra-ui/react";
+import { Heading, Flex, Text, Box, Grid, Button, Icon } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useState } from "react";
+import { FiChevronDown } from "react-icons/fi";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
+import { PermissionChip } from "lib/components/PermissionChip";
 import { useGetAddressType } from "lib/hooks";
-import type { CodeDetails, Option } from "lib/types";
+import type { CodeDetails, Option, PermissionAddresses } from "lib/types";
 import { getAddressTypeText } from "lib/utils/address";
 
 interface CodeInfoSectionProps {
@@ -28,6 +31,7 @@ const getMethodSpecificRender = (
       storedBlockRender: (
         <>
           <ExplorerLink
+            // use type="height"
             value={(codeProposalInfo.height ?? "").toString()}
             canCopyWithHover
           />
@@ -56,7 +60,11 @@ const getMethodSpecificRender = (
       ),
       storedBlockRender: (
         <>
-          <ExplorerLink value={codeTxInfo.height.toString()} canCopyWithHover />
+          <ExplorerLink
+            // use type="height"
+            value={codeTxInfo.height.toString()}
+            canCopyWithHover
+          />
           <Text variant="body3" color="text.dark">
             ({dayjs(codeTxInfo.created).fromNow()})
           </Text>
@@ -75,6 +83,47 @@ const getMethodSpecificRender = (
   };
 };
 
+const ViewAddresses = ({
+  permissionAddresses,
+}: {
+  permissionAddresses: PermissionAddresses;
+}) => {
+  const [viewAll, setViewAll] = useState(false);
+  const getAddressType = useGetAddressType();
+  return (
+    <>
+      {(viewAll || permissionAddresses.length === 1) &&
+        permissionAddresses.map((addr) => {
+          return (
+            <ExplorerLink
+              type={getAddressType(addr)}
+              value={addr}
+              canCopyWithHover
+            />
+          );
+        })}
+      {permissionAddresses.length > 1 && (
+        <Button
+          variant="ghost-primary"
+          onClick={() => setViewAll((prev) => !prev)}
+          size="sm"
+          p="unset"
+          w="fit-content"
+          rightIcon={
+            <Icon
+              as={FiChevronDown}
+              boxSize={4}
+              sx={{ transform: viewAll ? "rotate(180deg)" : "rotate(0deg)" }}
+            />
+          }
+        >
+          {viewAll ? "See Less" : "View All Addresses"}
+        </Button>
+      )}
+    </>
+  );
+};
+
 export const CodeInfoSection = ({ codeDetails }: CodeInfoSectionProps) => {
   const getAddressType = useGetAddressType();
 
@@ -86,7 +135,15 @@ export const CodeInfoSection = ({ codeDetails }: CodeInfoSectionProps) => {
       <>
         {codeDetails ? (
           (() => {
-            const { hash, height, created, proposal, uploader } = codeDetails;
+            const {
+              hash,
+              height,
+              created,
+              proposal,
+              uploader,
+              instantiatePermission,
+              permissionAddresses,
+            } = codeDetails;
             const { methodRender, storedBlockRender } = getMethodSpecificRender(
               proposal,
               {
@@ -115,7 +172,13 @@ export const CodeInfoSection = ({ codeDetails }: CodeInfoSectionProps) => {
                 </LabelText>
                 {methodRender}
                 <LabelText label="Instantiate Permission">
-                  RENDER CHIP HERE
+                  <Flex direction="column" gap={1}>
+                    <PermissionChip
+                      instantiatePermission={instantiatePermission}
+                      permissionAddresses={permissionAddresses}
+                    />
+                    <ViewAddresses permissionAddresses={permissionAddresses} />
+                  </Flex>
                 </LabelText>
                 <LabelText label="Stored on block">
                   <Flex direction="column" gap={1}>
