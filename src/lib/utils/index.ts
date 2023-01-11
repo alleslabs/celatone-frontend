@@ -14,3 +14,4 @@ export * from "./textLine";
 export * from "./date";
 export * from "./parser";
 export * from "./option";
+export * from "./precision";

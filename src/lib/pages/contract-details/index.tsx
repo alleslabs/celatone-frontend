@@ -25,7 +25,7 @@ import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { TokenSection } from "./components/TokenSection";
+import { TokenSection } from "./components/token/TokenSection";
 
 interface ContractDetailsBodyProps {
   contractAddress: ContractAddr;
@@ -59,7 +59,8 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
     <>
       <ContractTop contractData={contractData} />
       {/* Tokens Section */}
-      <TokenSection />
+
+      <TokenSection balances={contractData.balances} />
       {/* Contract Description Section */}
       <ContractDesc contractData={contractData} />
       {/* Query/Execute commands section */}
