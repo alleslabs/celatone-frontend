@@ -15,11 +15,12 @@ import { CTASection } from "./component/CTASection";
 
 const CodeDetails = observer(() => {
   const router = useRouter();
+  /**
+   * @todos Handle incorrect codeIdParam and render not found or error page.
+   */
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const codeId = Number(codeIdParam);
-  /**
-   * @todos Maybe use data from data hook instead
-   */
+
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
   const codeDetails = useCodeData(codeId);
@@ -40,7 +41,7 @@ const CodeDetails = observer(() => {
             <Text fontWeight={500} color="text.dark" variant="body2">
               Code ID
             </Text>
-            <ExplorerLink type="code_id" value={codeIdParam} />
+            <ExplorerLink type="code_id" value={codeId.toString()} />
           </Flex>
         </Flex>
         {/* TODO: Check uploader with data hook */}

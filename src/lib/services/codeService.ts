@@ -17,6 +17,7 @@ import type {
   ContractAddr,
   Option,
   InstantiatePermission,
+  PermissionAddresses,
 } from "lib/types";
 import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 
@@ -37,7 +38,8 @@ export const useCodeListByUserQuery = (
           uploader: code.account.uploader,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
-          permissionAddresses: code.access_config_addresses,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
         }))
       );
   }, [walletAddr]);
@@ -64,7 +66,8 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
           contracts: code.instantiated,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
-          permissionAddresses: code.access_config_addresses,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
         }))
       );
   }, [ids]);
@@ -104,7 +107,8 @@ export const useCodeInfoByCodeId = (
                 ),
               }
             : undefined,
-          permissionAddresses: codes_by_pk.access_config_addresses,
+          permissionAddresses:
+            codes_by_pk.access_config_addresses as PermissionAddresses,
           instantiatePermission: codes_by_pk.access_config_permission,
         };
       });

@@ -23,7 +23,7 @@ export const PermissionChip = ({
   instantiatePermission,
   permissionAddresses,
 }: PermissionChipProps) => {
-  const { address = "" } = useWallet();
+  const { address } = useWallet();
 
   const isAllowed =
     permissionAddresses.includes(address as HumanAddr) ||

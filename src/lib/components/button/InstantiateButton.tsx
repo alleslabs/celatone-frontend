@@ -54,7 +54,7 @@ export const InstantiateButton = ({
   ...buttonProps
 }: InstantiateButtonProps) => {
   const router = useRouter();
-  const { address = "" } = useWallet();
+  const { address } = useWallet();
   const goToInstantiate = () =>
     router.push({ pathname: "/instantiate", query: { "code-id": codeId } });
 
