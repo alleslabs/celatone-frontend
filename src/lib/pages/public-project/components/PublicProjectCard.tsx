@@ -1,7 +1,8 @@
-import { Flex, Icon, Text, Image } from "@chakra-ui/react";
+import { Flex, Icon, Text, Image, useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 import {
   FaTwitter,
   FaGithub,
@@ -9,7 +10,12 @@ import {
   FaDiscord,
   FaInfo,
 } from "react-icons/fa";
-import { MdBookmark, MdBookmarkBorder, MdLanguage } from "react-icons/md";
+import {
+  MdBookmark,
+  MdBookmarkBorder,
+  MdLanguage,
+  MdCheckCircle,
+} from "react-icons/md";
 
 import { usePublicProjectStore } from "lib/hooks";
 import type { PublicProjectInfo } from "lib/services/publicProject";
@@ -35,13 +41,58 @@ export const renderSocial = (name: string) => {
 export const PublicProjectCard = observer(
   ({ item, slug }: PublicProjectCardProps) => {
     const router = useRouter();
+    const toast = useToast();
     const handleOnClick = () => {
       router.push({ pathname: `/public-project/${slug}` });
     };
 
     const { isPublicProjectSaved, savePublicProject, removePublicProject } =
       usePublicProjectStore();
+    // TODO combine to 1 component that share with bookmark button in slug
+    const handleSave = useCallback(() => {
+      savePublicProject({
+        name: item.name,
+        slug,
+        logo: item.logo,
+      });
 
+      toast({
+        title: `Bookmarked \u2018${item.name}\u2019 successfully`,
+        status: "success",
+        duration: 5000,
+        isClosable: false,
+        position: "bottom-right",
+        icon: (
+          <Icon
+            as={MdCheckCircle}
+            color="success.main"
+            boxSize="6"
+            display="flex"
+            alignItems="center"
+          />
+        ),
+      });
+    }, [slug, item, savePublicProject, toast]);
+    const handleRemove = useCallback(() => {
+      removePublicProject(slug);
+
+      toast({
+        title: `\u2018${item.name}\u2019 is removed from bookmark`,
+        status: "success",
+        duration: 5000,
+        isClosable: false,
+        position: "bottom-right",
+        icon: (
+          <Icon
+            as={MdCheckCircle}
+            color="success.main"
+            boxSize="6"
+            display="flex"
+            alignItems="center"
+          />
+        ),
+      });
+    }, [slug, item, removePublicProject, toast]);
     return (
       <Flex
         px="4"
@@ -91,7 +142,7 @@ export const PublicProjectCard = observer(
                 cursor="pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  removePublicProject(slug);
+                  handleRemove();
                 }}
               />
             ) : (
@@ -102,11 +153,7 @@ export const PublicProjectCard = observer(
                 cursor="pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  savePublicProject({
-                    name: item.name,
-                    slug,
-                    logo: item.logo,
-                  });
+                  handleSave();
                 }}
               />
             )}

@@ -10,8 +10,10 @@ import {
   Icon,
   Image,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 import {
   FaTwitter,
   FaGithub,
@@ -24,6 +26,7 @@ import {
   MdBookmark,
   MdBookmarkBorder,
   MdLanguage,
+  MdCheckCircle,
 } from "react-icons/md";
 
 import { usePublicProjectStore } from "lib/hooks";
@@ -49,7 +52,51 @@ interface DetailProps {
 export const DetailHeader = observer(({ details, slug }: DetailProps) => {
   const { isPublicProjectSaved, savePublicProject, removePublicProject } =
     usePublicProjectStore();
+  const toast = useToast();
+  const handleSave = useCallback(() => {
+    savePublicProject({
+      name: details?.name || "",
+      slug,
+      logo: details?.logo || "",
+    });
 
+    toast({
+      title: `Bookmarked \u2018${details?.name}\u2019 successfully`,
+      status: "success",
+      duration: 5000,
+      isClosable: false,
+      position: "bottom-right",
+      icon: (
+        <Icon
+          as={MdCheckCircle}
+          color="success.main"
+          boxSize="6"
+          display="flex"
+          alignItems="center"
+        />
+      ),
+    });
+  }, [slug, details, savePublicProject, toast]);
+  const handleRemove = useCallback(() => {
+    removePublicProject(slug);
+
+    toast({
+      title: `\u2018${details?.name}\u2019 is removed from bookmark`,
+      status: "success",
+      duration: 5000,
+      isClosable: false,
+      position: "bottom-right",
+      icon: (
+        <Icon
+          as={MdCheckCircle}
+          color="success.main"
+          boxSize="6"
+          display="flex"
+          alignItems="center"
+        />
+      ),
+    });
+  }, [slug, details, removePublicProject, toast]);
   return (
     <Box px="48px">
       <Breadcrumb
@@ -145,7 +192,7 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
             <Button
               variant="outline-primary"
               gap={2}
-              onClick={() => removePublicProject(slug)}
+              onClick={() => handleRemove()}
             >
               <Icon as={MdBookmark} boxSize="4" color="primary.main" />
               Bookmarked
@@ -156,11 +203,7 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
               gap={2}
               onClick={() => {
                 if (details) {
-                  savePublicProject({
-                    name: details.name,
-                    slug,
-                    logo: details.logo,
-                  });
+                  handleSave();
                 }
               }}
             >
