@@ -126,7 +126,7 @@ export const useContractListByCodeId = (
           instantiated: parseDateDefault(contract.transaction?.block.timestamp),
           // TODO: handle Genesis case
           latestUpdator:
-            contract.contract_histories.at(0)?.account.address ?? "N/A",
+            contract.contract_histories.at(0)?.account.address ?? "",
           latestUpdated: parseDateDefault(
             contract.contract_histories.at(0)?.block.timestamp
           ),

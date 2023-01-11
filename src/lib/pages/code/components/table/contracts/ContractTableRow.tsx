@@ -58,18 +58,24 @@ export const ContractTableRow = ({
       </StyledTableRow>
 
       <StyledTableRow>
-        <Flex direction="column" onClick={(e) => e.stopPropagation()}>
-          {contractInfo.latestUpdated > contractInfo.instantiated && (
-            <Text variant="body3" textColor="text.dark" cursor="text">
-              Migrated by
-            </Text>
-          )}
-          <ExplorerLink
-            value={contractInfo.latestUpdator}
-            type="user_address"
-            canCopyWithHover
-          />
-        </Flex>
+        {!contractInfo.latestUpdator.length ? (
+          <Text variant="body2" textColor="text.dark" cursor="text">
+            NaN
+          </Text>
+        ) : (
+          <Flex direction="column" onClick={(e) => e.stopPropagation()}>
+            {contractInfo.latestUpdated > contractInfo.instantiated && (
+              <Text variant="body3" textColor="text.dark" cursor="text">
+                Migrated by
+              </Text>
+            )}
+            <ExplorerLink
+              value={contractInfo.latestUpdator}
+              type="user_address"
+              canCopyWithHover
+            />
+          </Flex>
+        )}
       </StyledTableRow>
 
       <StyledTableRow>
