@@ -4,5 +4,7 @@ export const convertAmountWithprecision = (
 ) => {
   const divider = 10 ** precision;
   const amountToInt = parseInt(amount, 10);
-  return amountToInt / divider;
+  return (amountToInt / divider).toLocaleString(undefined, {
+    minimumFractionDigits: 6,
+  });
 };
