@@ -10,7 +10,7 @@ const TokenCard = () => {
   return (
     <Flex gap={1} p={2} background="gray.900" borderRadius="8px" flex={0.25}>
       <Text color="text.main">
-        <span style={{ fontWeight: 700 }}>1.00</span> LUNA
+        <span style={{ fontWeight: 700 }}>1.00</span> OSMO
       </Text>
     </Flex>
   );
