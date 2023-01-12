@@ -29,6 +29,7 @@ import type { CodeInfo } from "lib/types";
 
 import { CodeDescriptionCell } from "./CodeDescriptionCell";
 
+// Types of Table: All Codes / My Stored Codes / My Saved Codes
 type TableType = "all" | "stored" | "saved";
 
 interface CodesTableProps {
@@ -182,13 +183,11 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
               permissionAddresses={code.permissionAddresses}
               codeId={code.id}
             />
-            <Box mx="15px">
-              {isRemovable ? (
-                <RemoveCode codeId={code.id} description={code.description} />
-              ) : (
-                <SaveOrRemoveCode codeInfo={code} />
-              )}
-            </Box>
+            {isRemovable ? (
+              <RemoveCode codeId={code.id} description={code.description} />
+            ) : (
+              <SaveOrRemoveCode codeInfo={code} />
+            )}
           </HStack>
         </Flex>
       </Td>

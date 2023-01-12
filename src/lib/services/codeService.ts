@@ -20,6 +20,7 @@ import type {
   Option,
   InstantiatePermission,
   PermissionAddresses,
+  HumanAddr,
 } from "lib/types";
 import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 
@@ -30,8 +31,8 @@ export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
+          uploader: code.account.uploader as ContractAddr | HumanAddr,
           contracts: code.contracts_aggregate.aggregate?.count ?? 0,
-          uploader: code.account.uploader,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
@@ -59,8 +60,8 @@ export const useCodeListByUserQuery = (
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
+          uploader: code.account.uploader as ContractAddr | HumanAddr,
           contracts: code.contracts_aggregate.aggregate?.count ?? 0,
-          uploader: code.account.uploader,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
@@ -87,7 +88,7 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          uploader: code.account.uploader,
+          uploader: code.account.uploader as ContractAddr | HumanAddr,
           contracts: code.contracts_aggregate.aggregate?.count ?? 0,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
@@ -119,7 +120,7 @@ export const useCodeInfoByCodeId = (
 
         return {
           codeId: codes_by_pk.id,
-          uploader: codes_by_pk.account.address,
+          uploader: codes_by_pk.account.address as ContractAddr | HumanAddr,
           hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
           height: codes_by_pk.transaction?.block.height,
           created: parseDateDefault(codes_by_pk.transaction?.block?.timestamp),

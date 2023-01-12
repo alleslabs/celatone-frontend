@@ -13,6 +13,7 @@ export const EditCodeDetails = ({
   <CodeDetailsTemplate
     title="Edit Code Description"
     mainBtnTitle="Save"
+    isNewCode={false}
     codeLocalInfo={codeLocalInfo}
     triggerElement={triggerElement}
   />

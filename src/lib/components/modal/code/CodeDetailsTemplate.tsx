@@ -13,7 +13,7 @@ interface CodeDetailsTemplateProps {
   title: string;
   helperText?: string;
   mainBtnTitle: string;
-  isNewCode?: boolean;
+  isNewCode: boolean;
   codeLocalInfo: CodeLocalInfo;
   triggerElement: JSX.Element;
 }
@@ -22,7 +22,7 @@ export const CodeDetailsTemplate = ({
   title,
   helperText,
   mainBtnTitle,
-  isNewCode = true,
+  isNewCode,
   codeLocalInfo,
   triggerElement,
 }: CodeDetailsTemplateProps) => {
