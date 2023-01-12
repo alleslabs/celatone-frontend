@@ -10,10 +10,7 @@ export enum InstantiatePermission {
   UNKNOWN = "Unknown",
 }
 
-export type PermissionAddresses =
-  | HumanAddr
-  | ContractAddr
-  | (HumanAddr | ContractAddr)[];
+export type PermissionAddresses = (HumanAddr | ContractAddr)[];
 
 export interface CodeInfo extends CodeLocalInfo {
   contracts: number;
@@ -24,7 +21,7 @@ export interface CodeInfo extends CodeLocalInfo {
 
 interface CodeProposal {
   proposalId: number;
-  height: Option<number>;
+  height: number;
   created: Date;
 }
 

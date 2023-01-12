@@ -126,7 +126,7 @@ export const useCodeInfoByCodeId = (
           proposal: codes_by_pk.code_proposals[0]
             ? {
                 proposalId: codes_by_pk.code_proposals[0].proposal_id,
-                height: codes_by_pk.code_proposals[0].block?.height,
+                height: codes_by_pk.code_proposals[0].block?.height ?? 0,
                 created: parseDateDefault(
                   codes_by_pk.code_proposals[0].block?.timestamp
                 ),
