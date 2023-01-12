@@ -1,7 +1,7 @@
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import { useEffect, useState } from "react";
 
-import { scrollTop } from "lib/utils/scroll";
+import { scrollToTop } from "lib/utils";
 
 import CompletedPage from "./completed";
 import InstantiatePage from "./instantiate";
@@ -24,7 +24,7 @@ const Index = () => {
   });
 
   useEffect(() => {
-    scrollTop();
+    scrollToTop();
   }, [completed]);
 
   return completed && txInfo ? (

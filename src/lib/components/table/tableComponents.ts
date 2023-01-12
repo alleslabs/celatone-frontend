@@ -1,6 +1,6 @@
 import { chakra, GridItem } from "@chakra-ui/react";
 
-export const StyledTableHeader = chakra(GridItem, {
+export const TableHeader = chakra(GridItem, {
   baseStyle: {
     color: "text.main",
     fontSize: "12px",
@@ -12,7 +12,7 @@ export const StyledTableHeader = chakra(GridItem, {
   },
 });
 
-export const StyledTableRow = chakra(GridItem, {
+export const TableRow = chakra(GridItem, {
   baseStyle: {
     color: "text.main",
     fontSize: "14px",

@@ -35,7 +35,7 @@ interface MsgDetailProps {
   success: boolean;
 }
 
-const MsgDetail = ({ msg, success }: MsgDetailProps) => {
+export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
   const [button, setButton] = useState<"redo" | "resend" | "">("");
   const [showButton, setShowButton] = useState(false);
   const { currentChainName } = useWallet();
@@ -56,14 +56,20 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
             type: "Execute",
             tags: [Object.keys(detailExecute.msg)[0]],
             text2: "on",
-            link1: contractLocalInfo?.name || detailExecute.contract,
-            link1Copy: detailExecute.contract,
+            link1: {
+              type: "contract_address",
+              value: contractLocalInfo?.name || detailExecute.contract,
+              copyValue: detailExecute.contract,
+            },
           }
         : {
             type: "Failed",
             text1: "to execute message from",
-            link1: contractLocalInfo?.name || detailExecute.contract,
-            link1Copy: detailExecute.contract,
+            link1: {
+              type: "contract_address",
+              value: contractLocalInfo?.name || detailExecute.contract,
+              copyValue: detailExecute.contract,
+            },
           };
       return <SingleMsg {...singleMsgProps} />;
     }
@@ -76,7 +82,10 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
         ? {
             type: "Upload",
             text1: "Wasm to Code ID",
-            text3: msgUpload.id?.toString(),
+            link1: {
+              type: "code_id",
+              value: msgUpload.id?.toString(),
+            },
           }
         : {
             type: "Failed",
@@ -97,7 +106,10 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
           <SingleMsg
             type="Failed"
             text1="to instantiate contract from Code ID"
-            text2={msgInstantiate.codeId.toString()}
+            link1={{
+              type: "code_id",
+              value: msgInstantiate.codeId.toString(),
+            }}
           />
         );
       }
@@ -106,9 +118,16 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
         <SingleMsg
           type="Instantiate"
           text1="contract"
-          link1={contractLocalInfo?.name || msgInstantiate.contractAddress}
-          link1Copy={msgInstantiate.contractAddress}
-          text3={`from Code ID ${msgInstantiate.codeId.toString()}`}
+          link1={{
+            type: "contract_address",
+            value: contractLocalInfo?.name || msgInstantiate.contractAddress,
+            copyValue: msgInstantiate.contractAddress,
+          }}
+          text3="from Code ID"
+          link2={{
+            type: "code_id",
+            value: msgInstantiate.codeId.toString(),
+          }}
         />
       );
     }
@@ -132,7 +151,10 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
           <SingleMsg
             type="Failed"
             text1="to send assets to"
-            link2={msgSend.toAddress}
+            link2={{
+              type: "contract_address",
+              value: msgSend.toAddress,
+            }}
           />
         );
       }
@@ -141,7 +163,10 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
           type="Send"
           bolds={coins}
           text2="to"
-          link2={msgSend.toAddress}
+          link2={{
+            type: "contract_address",
+            value: msgSend.toAddress,
+          }}
         />
       );
     }
@@ -269,5 +294,3 @@ const MsgDetail = ({ msg, success }: MsgDetailProps) => {
     </Flex>
   );
 };
-
-export default MsgDetail;

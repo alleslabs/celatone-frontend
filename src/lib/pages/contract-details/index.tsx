@@ -16,7 +16,10 @@ import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { useValidateAddress } from "lib/hooks";
-import { useContractData } from "lib/model/contract";
+import {
+  useContractData,
+  useContractDetailsTableCounts,
+} from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
@@ -25,6 +28,7 @@ import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
+import { ExecuteTable } from "./components/tables/execute/Execute";
 import { TokenSection } from "./components/TokenSection";
 
 interface ContractDetailsBodyProps {
@@ -55,6 +59,9 @@ const InvalidContract = () => (
 const ContractDetailsBody = observer(
   ({ contractAddress }: ContractDetailsBodyProps) => {
     const contractData = useContractData(contractAddress);
+    const tableHeaderId = "contractDetailTableHeader";
+    const { tableCounts, refetchExecute } =
+      useContractDetailsTableCounts(contractAddress);
     if (!contractData) return <InvalidContract />;
     return (
       <>
@@ -89,13 +96,13 @@ const ContractDetailsBody = observer(
           </Flex>
         </Flex>
         {/* History Table section */}
-        <Heading as="h6" variant="h6" mb={6}>
+        <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
           History
         </Heading>
         <Tabs>
-          <TabList border="none" mb="32px">
+          <TabList borderBottom="1px solid" borderColor="divider.main">
             <CustomTab count={100}>All</CustomTab>
-            <CustomTab count={50}>Executes</CustomTab>
+            <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
             <CustomTab count={20}>Migration</CustomTab>
             <CustomTab count={12}>Related Proposals</CustomTab>
           </TabList>
@@ -107,9 +114,12 @@ const ContractDetailsBody = observer(
               </Heading>
             </TabPanel>
             <TabPanel p={0}>
-              <Heading as="h6" variant="h6" color="error.main">
-                Executes Table
-              </Heading>
+              <ExecuteTable
+                contractAddress={contractAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.executeCount}
+                refetchCount={refetchExecute}
+              />
             </TabPanel>
             <TabPanel p={0}>
               <Heading as="h6" variant="h6" color="error.main">

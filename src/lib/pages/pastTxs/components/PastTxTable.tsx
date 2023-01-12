@@ -46,7 +46,7 @@ import {
   onClickRedo,
 } from "lib/utils";
 
-import MsgDetail from "./MsgDetail";
+import { MsgDetail } from "./MsgDetail";
 import type { MultipleMsgProps } from "./MultipleMsg";
 import { MultipleMsg } from "./MultipleMsg";
 import type { SingleMsgProps } from "./SingleMsg";
@@ -133,7 +133,10 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         ? {
             type: "Upload",
             text1: "Wasm to Code ID",
-            text3: uploadMsgs[0].id.toString(),
+            link1: {
+              type: "code_id",
+              value: uploadMsgs[0].id.toString(),
+            },
           }
         : {
             type: "Failed",
@@ -179,15 +182,25 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         ? {
             type: "Instantiate",
             text1: "contract",
-            link1:
-              contractLocalInfo?.name || instantiateMsgs[0].contractAddress,
-            link1Copy: instantiateMsgs[0].contractAddress,
-            text3: `from Code ID ${instantiateMsgs[0].codeId.toString()}`,
+            link1: {
+              type: "contract_address",
+              value:
+                contractLocalInfo?.name || instantiateMsgs[0].contractAddress,
+              copyValue: instantiateMsgs[0].contractAddress,
+            },
+            text3: "from Code ID",
+            link2: {
+              type: "code_id",
+              value: instantiateMsgs[0].codeId.toString(),
+            },
           }
         : {
             type: "Failed",
             text1: "to instantiate contract from Code ID",
-            text3: instantiateMsgs[0].codeId.toString(),
+            link1: {
+              type: "code_id",
+              value: instantiateMsgs[0].codeId.toString(),
+            },
           };
       return <SingleMsg {...singleMsgProps} />;
     },
@@ -241,14 +254,20 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             tags,
             length: executeMsgs.length,
             text2: "on",
-            link1: contractLocalInfo?.name || executeMsgs[0].contract,
-            link1Copy: executeMsgs[0].contract,
+            link1: {
+              type: "contract_address",
+              value: contractLocalInfo?.name || executeMsgs[0].contract,
+              copyValue: executeMsgs[0].contract,
+            },
           }
         : {
             type: "Failed",
             text1: "to execute message from",
-            link1: contractLocalInfo?.name || executeMsgs[0].contract,
-            link1Copy: executeMsgs[0].contract,
+            link1: {
+              type: "contract_address",
+              value: contractLocalInfo?.name || executeMsgs[0].contract,
+              copyValue: executeMsgs[0].contract,
+            },
           };
       return <SingleMsg {...singleMsgProps} />;
     },
@@ -297,7 +316,10 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
           type="Send"
           bolds={coins}
           text2="to"
-          link1={sendMsgs[0].toAddress}
+          link1={{
+            type: "contract_address",
+            value: sendMsgs[0].toAddress,
+          }}
         />
       );
     },

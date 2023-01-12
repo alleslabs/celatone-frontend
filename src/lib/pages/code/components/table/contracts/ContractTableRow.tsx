@@ -2,7 +2,7 @@ import { Flex, Text, Grid, IconButton, Box, chakra } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
-import { StyledTableRow } from "../../../../../components/table/tableComponents";
+import { TableRow } from "../../../../../components/table/tableComponents";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { AddToOtherList, SaveContractDetails } from "lib/components/modal";
 import { ContractNameCell } from "lib/pages/contract-list/components/table/ContractNameCell";
@@ -41,23 +41,23 @@ export const ContractTableRow = ({
       _hover={{ bg: "gray.900" }}
       cursor="pointer"
     >
-      <StyledTableRow>
+      <TableRow>
         <ExplorerLink
           value={contractInfo.contractAddress}
           type="contract_address"
           canCopyWithHover
         />
-      </StyledTableRow>
+      </TableRow>
 
-      <StyledTableRow>
+      <TableRow>
         <ContractNameCell contractLocalInfo={contractInfo} />
-      </StyledTableRow>
+      </TableRow>
 
-      <StyledTableRow>
+      <TableRow>
         <TagsCell contractLocalInfo={contractInfo} />
-      </StyledTableRow>
+      </TableRow>
 
-      <StyledTableRow>
+      <TableRow>
         {!contractInfo.latestUpdator.length ? (
           <Text variant="body2" textColor="text.dark" cursor="text">
             NaN
@@ -76,9 +76,9 @@ export const ContractTableRow = ({
             />
           </Flex>
         )}
-      </StyledTableRow>
+      </TableRow>
 
-      <StyledTableRow>
+      <TableRow>
         <Flex
           direction="column"
           gap={1}
@@ -92,9 +92,9 @@ export const ContractTableRow = ({
             {`(${dateFromNow(contractInfo.latestUpdated.toString())})`}
           </Text>
         </Flex>
-      </StyledTableRow>
+      </TableRow>
 
-      <StyledTableRow>
+      <TableRow>
         <Box onClick={(e) => e.stopPropagation()}>
           {contractInfo.lists ? (
             <AddToOtherList
@@ -120,7 +120,7 @@ export const ContractTableRow = ({
             />
           )}
         </Box>
-      </StyledTableRow>
+      </TableRow>
     </Grid>
   );
 };

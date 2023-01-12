@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { NoContracts } from "../NoContracts";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { StyledTableHeader } from "lib/components/table";
+import { TableHeader } from "lib/components/table";
 import { useContractStore } from "lib/hooks";
 import {
   useContractListByCodeId,
@@ -91,14 +91,12 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
       ) : (
         <Flex direction="column" overflowX="scroll">
           <Grid templateColumns={templateColumnsStyle}>
-            <StyledTableHeader borderTopStyle="none">
-              Contract Address
-            </StyledTableHeader>
-            <StyledTableHeader>Contract Name</StyledTableHeader>
-            <StyledTableHeader>Tags</StyledTableHeader>
-            <StyledTableHeader>Instantiator</StyledTableHeader>
-            <StyledTableHeader>Timestamp</StyledTableHeader>
-            <StyledTableHeader />
+            <TableHeader borderTopStyle="none">Contract Address</TableHeader>
+            <TableHeader>Contract Name</TableHeader>
+            <TableHeader>Tags</TableHeader>
+            <TableHeader>Instantiator</TableHeader>
+            <TableHeader>Timestamp</TableHeader>
+            <TableHeader />
           </Grid>
           {instantiatedContracts?.map((contractInfo) => (
             <ContractTableRow

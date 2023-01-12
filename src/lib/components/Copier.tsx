@@ -18,14 +18,8 @@ export const Copier = ({ value, ml = "8px" }: CopierProps) => {
       isOpen={hasCopied}
       label="Copied!"
       placement="top"
-      bg="primary.dark"
-      color="text.main"
-      fontWeight={400}
-      fontSize="14px"
-      p="8px 16px"
-      borderRadius="8px"
       arrowSize={8}
-      mb="4px"
+      bg="primary.dark"
     >
       <CopyIcon
         display="flex"
