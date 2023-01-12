@@ -38,7 +38,12 @@ const Footer = () => {
     >
       <Flex direction="row" gap={1} align="center">
         {socialMenu.map((item) => (
-          <Link href={item.url} target="_blank" rel="noopener noreferrer">
+          <Link
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={`seocial-${item.slug}`}
+          >
             <Button variant="ghost" size="xs">
               <Icon
                 as={item.icon}
