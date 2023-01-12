@@ -7,17 +7,19 @@ import {
   getExplorerBlockUrl,
   getExplorerTxUrl,
   getExplorerUserAddressUrl,
+  getProposalUrl,
 } from "lib/app-fns/explorer";
+import type { AddressReturnType } from "lib/hooks";
 import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
 
 export type LinkType =
+  | AddressReturnType
   | "tx_hash"
-  | "user_address"
-  | "contract_address"
   | "code_id"
-  | "block";
+  | "block"
+  | "proposal";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
@@ -51,6 +53,11 @@ const getNavigationUrl = (
     case "block":
       url = getExplorerBlockUrl(currentChainName);
       break;
+    case "proposal":
+      url = getProposalUrl(currentChainName);
+      break;
+    case "invalid_address":
+      return "";
     default:
       break;
   }
@@ -128,20 +135,22 @@ export const ExplorerLink = ({
     getValueText(value === address, textFormat === "truncate", value),
   ];
 
+  const readOnly = isReadOnly || !hrefLink;
+
   return (
     <Box
       role="group"
       display="inline-flex"
       alignItems="center"
       _hover={{
-        ...(!isReadOnly && {
+        ...(!readOnly && {
           textDecoration: "underline",
           textDecorationColor: "primary.main",
         }),
       }}
       {...componentProps}
     >
-      {isReadOnly ? (
+      {readOnly ? (
         <Text variant="body2">{textValue}</Text>
       ) : (
         <>
