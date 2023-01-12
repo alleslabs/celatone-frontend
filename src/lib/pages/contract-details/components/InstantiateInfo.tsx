@@ -50,12 +50,20 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
             (contractData.instantiateInfo.createdHeight !== -1 ? (
               <LabelText
                 label="Instantiated Block Height"
-                helperText1={formatUTC(
-                  contractData.instantiateInfo.createdTime.toString()
-                )}
-                helperText2={dateFromNow(
-                  contractData.instantiateInfo.createdTime.toString()
-                )}
+                helperText1={
+                  contractData.instantiateInfo.createdTime
+                    ? formatUTC(
+                        contractData.instantiateInfo.createdTime.toString()
+                      )
+                    : undefined
+                }
+                helperText2={
+                  contractData.instantiateInfo.createdTime
+                    ? dateFromNow(
+                        contractData.instantiateInfo.createdTime.toString()
+                      )
+                    : undefined
+                }
               >
                 <ExplorerLink
                   value={contractData.instantiateInfo.createdHeight.toString()}

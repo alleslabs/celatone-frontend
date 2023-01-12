@@ -21,11 +21,18 @@ import type {
   MigrationRemark,
   Option,
 } from "lib/types";
-import { parseDate, parseDateDefault, parseTxHash } from "lib/utils";
+import {
+  parseDate,
+  parseDateDefault,
+  parseTxHash,
+  parseTxHashOpt,
+} from "lib/utils";
 
 interface InstantiateDetail {
   initMsg: string;
   initTxHash?: string;
+  initProposalId?: number;
+  initProposalTitle?: string;
 }
 
 export const useInstantiatedCountByUserQuery = (
@@ -81,9 +88,11 @@ export const useInstantiateDetailByContractQuery = (
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then(({ contracts_by_pk }) => ({
-        // TODO: revisit undefined after backend remove nullable
         initMsg: contracts_by_pk?.init_msg ?? "{}",
-        initTxHash: parseTxHash(contracts_by_pk?.transaction?.hash),
+        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
+        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
+        initProposalTitle:
+          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
       }));
   }, [contractAddress]);
 

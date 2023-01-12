@@ -31,8 +31,8 @@ export interface ContractData {
   balances: Coin[];
   initMsg: string;
   initTxHash: Option<string>;
-  initProposalTitle: Option<string>;
   initProposalId: Option<number>;
+  initProposalTitle: Option<string>;
 }
 
 export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
@@ -116,10 +116,6 @@ export const useContractData = (
       initMsg: "{}",
     },
   } = useInstantiateDetailByContractQuery(contractAddress);
-  // TODO: contract proposal title and id
-  const initProposalTitle = undefined;
-  const initProposalId = undefined;
-  // TODO: get all related transactions
 
   if (!currentChainRecord) return undefined;
 
@@ -132,8 +128,8 @@ export const useContractData = (
     balances: contractBalances.balances,
     initMsg: instantiateDetail.initMsg,
     initTxHash: instantiateDetail.initTxHash,
-    initProposalTitle,
-    initProposalId,
+    initProposalId: instantiateDetail.initProposalId,
+    initProposalTitle: instantiateDetail.initProposalTitle,
   };
 };
 

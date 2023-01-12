@@ -6247,6 +6247,15 @@ export type Transactions_Variance_Order_By = {
   sender?: InputMaybe<Order_By>;
 };
 
+export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
+  height: Scalars["Int"];
+}>;
+
+export type GetBlockTimestampByHeightQueryQuery = {
+  __typename?: "query_root";
+  blocks_by_pk?: { __typename?: "blocks"; timestamp: any } | null;
+};
+
 export type GetCodeListByUserQueryQueryVariables = Exact<{
   walletAddr: Scalars["String"];
 }>;
@@ -6323,6 +6332,10 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
     __typename?: "contracts";
     init_msg?: string | null;
     transaction?: { __typename?: "transactions"; hash: any } | null;
+    contract_proposals: Array<{
+      __typename?: "contract_proposals";
+      proposal: { __typename?: "proposals"; id: number; title: string };
+    }>;
   } | null;
 };
 
@@ -6459,6 +6472,57 @@ export type GetCodeInfoByCodeIdQuery = {
   } | null;
 };
 
+export const GetBlockTimestampByHeightQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTimestampByHeightQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "height" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "height" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "height" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockTimestampByHeightQueryQuery,
+  GetBlockTimestampByHeightQueryQueryVariables
+>;
 export const GetCodeListByUserQueryDocument = {
   kind: "Document",
   definitions: [
@@ -7001,6 +7065,85 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "hash" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_proposals" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "proposal" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "type" },
+                                  value: {
+                                    kind: "ObjectValue",
+                                    fields: [
+                                      {
+                                        kind: "ObjectField",
+                                        name: { kind: "Name", value: "_in" },
+                                        value: {
+                                          kind: "ListValue",
+                                          values: [
+                                            {
+                                              kind: "StringValue",
+                                              value: "InstantiateContract",
+                                              block: false,
+                                            },
+                                            {
+                                              kind: "StringValue",
+                                              value: "InstantiateContract2",
+                                              block: false,
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "proposal" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
