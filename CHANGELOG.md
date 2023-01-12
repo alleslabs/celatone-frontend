@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#68](https://github.com/alleslabs/celatone-frontend/pull/63) Refactor past txs link props and make sure navigation works
 - [#65](https://github.com/alleslabs/celatone-frontend/pull/60) Create instantiate button component
 - [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add contract not exist page
 - [#63](https://github.com/alleslabs/celatone-frontend/pull/63) Add code id explorer link and code table row navigation
