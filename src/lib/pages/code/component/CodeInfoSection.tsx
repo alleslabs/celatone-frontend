@@ -1,5 +1,4 @@
 import { Heading, Flex, Text, Box, Grid, Button, Icon } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
@@ -8,7 +7,7 @@ import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useGetAddressType } from "lib/hooks";
 import type { CodeDetails, Option, PermissionAddresses } from "lib/types";
-import { getAddressTypeText } from "lib/utils/address";
+import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
   codeDetails: Option<CodeDetails>;
@@ -36,16 +35,14 @@ const getMethodSpecificRender = (
         <>
           <ExplorerLink
             type="block"
-            value={(codeProposalInfo.height ?? "").toString()}
+            value={codeProposalInfo.height.toString()}
             canCopyWithHover
           />
           <Text variant="body3" color="text.dark">
-            ({dayjs(codeProposalInfo.created).fromNow()})
+            {dateFromNow(codeProposalInfo.created)}
           </Text>
           <Text variant="body3" color="text.dark">
-            {dayjs(codeProposalInfo.created)
-              .utc()
-              .format("MMM DD, YYYY, h:mm:ss A [UTC]")}
+            {formatUTC(codeProposalInfo.created)}
           </Text>
         </>
       ),
@@ -70,12 +67,10 @@ const getMethodSpecificRender = (
             canCopyWithHover
           />
           <Text variant="body3" color="text.dark">
-            ({dayjs(codeTxInfo.created).fromNow()})
+            {dateFromNow(codeTxInfo.created)}
           </Text>
           <Text variant="body3" color="text.dark">
-            {dayjs(codeTxInfo.created)
-              .utc()
-              .format("MMM DD, YYYY, h:mm:ss A ([UTC])")}
+            {formatUTC(codeTxInfo.created)}
           </Text>
         </>
       ),

@@ -22,7 +22,7 @@ export interface CodeInfo {
 
 interface CodeProposal {
   proposalId: number;
-  height: Option<number>;
+  height: number;
   created: Date;
 }
 

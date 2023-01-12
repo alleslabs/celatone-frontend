@@ -47,6 +47,8 @@ const getNavigationUrl = (
     case "block":
       url = getExplorerBlockUrl(currentChainName);
       break;
+    case "invalid_address":
+      return "";
     default:
       break;
   }
@@ -124,20 +126,22 @@ export const ExplorerLink = ({
     getValueText(value === address, textFormat === "truncate", value),
   ];
 
+  const readOnly = isReadOnly || !hrefLink;
+
   return (
     <Box
       role="group"
       display="inline-flex"
       alignItems="center"
       _hover={{
-        ...(!isReadOnly && {
+        ...(!readOnly && {
           textDecoration: "underline",
           textDecorationColor: "primary.main",
         }),
       }}
       {...componentProps}
     >
-      {isReadOnly ? (
+      {readOnly ? (
         <Text variant="body2">{textValue}</Text>
       ) : (
         <>
