@@ -6256,6 +6256,8 @@ export type GetCodeListByUserQueryQuery = {
   codes: Array<{
     __typename?: "codes";
     id: number;
+    access_config_permission: string;
+    access_config_addresses: any;
     instantiated: number;
     account: { __typename?: "accounts"; uploader: string };
   }>;
@@ -6270,6 +6272,8 @@ export type GetCodeListByIDsQueryQuery = {
   codes: Array<{
     __typename?: "codes";
     id: number;
+    access_config_permission: string;
+    access_config_addresses: any;
     instantiated: number;
     account: { __typename?: "accounts"; uploader: string };
   }>;
@@ -6529,6 +6533,14 @@ export const GetCodeListByUserQueryDocument = {
                     ],
                   },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_permission" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_addresses" },
+                },
               ],
             },
           },
@@ -6622,6 +6634,14 @@ export const GetCodeListByIDsQueryDocument = {
                       },
                     ],
                   },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_permission" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_addresses" },
                 },
               ],
             },

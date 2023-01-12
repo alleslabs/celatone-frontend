@@ -13,6 +13,8 @@ export const getCodeListByUserQueryDocument = graphql(`
       account {
         uploader: address
       }
+      access_config_permission
+      access_config_addresses
     }
   }
 `);
@@ -25,6 +27,8 @@ export const getCodeListByIDsQueryDocument = graphql(`
       account {
         uploader: address
       }
+      access_config_permission
+      access_config_addresses
     }
   }
 `);

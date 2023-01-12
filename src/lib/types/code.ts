@@ -1,22 +1,32 @@
 import type { HumanAddr, ContractAddr, Option } from "lib/types";
 
+export enum InstantiatePermission {
+  EVERYBODY = "Everybody",
+  ANY_OF_ADDRESSES = "AnyOfAddresses",
+  NOBODY = "Nobody",
+  ONLY_ADDRESS = "OnlyAddress",
+  // Added for case handling
+  UNKNOWN = "Unknown",
+}
+
+export type PermissionAddresses =
+  | HumanAddr
+  | ContractAddr
+  | (HumanAddr | ContractAddr)[];
+
 export interface CodeInfo {
   id: number;
   description?: string;
   contracts: number;
   uploader: string;
+  instantiatePermission: InstantiatePermission;
+  permissionAddresses: PermissionAddresses;
 }
 
 interface CodeProposal {
   proposalId: number;
   height: Option<number>;
   created: Date;
-}
-
-enum InstantiatePermission {
-  EVERYBODY = "EVERYBODY",
-  ANY_OF_ADDRESSES = "ANY_OF_ADDRESSES",
-  NOBODY = "NOBODY",
 }
 
 export interface CodeDetails {
@@ -28,5 +38,5 @@ export interface CodeDetails {
   created: Date;
   proposal: Option<CodeProposal>;
   instantiatePermission: InstantiatePermission;
-  permissionAddresses: (HumanAddr | ContractAddr)[];
+  permissionAddresses: PermissionAddresses;
 }
