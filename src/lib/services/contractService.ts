@@ -11,15 +11,20 @@ import {
   getExecuteTxsByContractAddress,
   getMigrationHistoriesCountByContractAddress,
   getMigrationHistoriesByContractAddress,
+  getRelatedProposalsCountByContractAddress,
+  getRelatedProposalsByContractAddress,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
   ContractMigrationHistory,
+  ContractRelatedProposals,
   ExecuteTransaction,
   HumanAddr,
   MigrationRemark,
   Option,
+  ProposalStatus,
+  ProposalType,
 } from "lib/types";
 import { parseDate, parseDateDefault, parseTxHash } from "lib/utils";
 
@@ -220,6 +225,64 @@ export const useMigrationHistoriesCountByContractAddress = (
   }, [contractAddress]);
 
   return useQuery(["migration_histories_count", contractAddress], queryFn, {
+    keepPreviousData: true,
+    enabled: !!contractAddress,
+  });
+};
+
+export const useRelatedProposalsByContractAddress = (
+  contractAddress: ContractAddr,
+  offset: number,
+  pageSize: number
+): UseQueryResult<Option<ContractRelatedProposals[]>> => {
+  const queryFn = useCallback(() => {
+    return indexerGraphClient
+      .request(getRelatedProposalsByContractAddress, {
+        contractAddress,
+        offset,
+        pageSize,
+      })
+      .then(({ contract_proposals }) =>
+        contract_proposals.map<ContractRelatedProposals>((proposal) => ({
+          proposalId: proposal.proposal_id,
+          title: proposal.proposal.title,
+          status: proposal.proposal.status as ProposalStatus,
+          votingEndTime: proposal.proposal.voting_end_time,
+          depositEndTime: proposal.proposal.deposit_end_time,
+          resolvedHeight: proposal.resolved_height,
+          type: proposal.proposal.type as ProposalType,
+          proposer:
+            (proposal.proposal.account?.address as HumanAddr | ContractAddr) ??
+            undefined,
+        }))
+      );
+  }, [contractAddress, offset, pageSize]);
+
+  return useQuery(
+    ["related_proposals", contractAddress, offset, pageSize],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
+export const useRelatedProposalsCountByContractAddress = (
+  contractAddress: ContractAddr
+): UseQueryResult<Option<number>> => {
+  const queryFn = useCallback(() => {
+    return indexerGraphClient
+      .request(getRelatedProposalsCountByContractAddress, {
+        contractAddress,
+      })
+      .then(
+        ({ contract_proposals_aggregate }) =>
+          contract_proposals_aggregate.aggregate?.count
+      );
+  }, [contractAddress]);
+
+  return useQuery(["related_proposals_count", contractAddress], queryFn, {
     keepPreviousData: true,
     enabled: !!contractAddress,
   });

@@ -30,6 +30,7 @@ import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
 import { ExecuteTable } from "./components/tables/execute/Execute";
 import { MigrationTable } from "./components/tables/migration";
+import { RelatedProposalsTable } from "./components/tables/related-proposals";
 import { TokenSection } from "./components/TokenSection";
 
 interface ContractDetailsBodyProps {
@@ -60,9 +61,15 @@ const InvalidContract = () => (
 const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
   const contractData = useContractData(contractAddress);
   const tableHeaderId = "contractDetailTableHeader";
-  const { tableCounts, refetchExecute, refetchMigration } =
-    useContractDetailsTableCounts(contractAddress);
+  const {
+    tableCounts,
+    refetchExecute,
+    refetchMigration,
+    refetchRelatedProposals,
+  } = useContractDetailsTableCounts(contractAddress);
+
   if (!contractData) return <InvalidContract />;
+
   return (
     <>
       <ContractTop contractData={contractData} />
@@ -104,7 +111,9 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
           <CustomTab count={100}>All</CustomTab>
           <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
           <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
-          <CustomTab count={12}>Related Proposals</CustomTab>
+          <CustomTab count={tableCounts.relatedProposalsCount}>
+            Related Proposals
+          </CustomTab>
         </TabList>
         {/* TODOs: Wireup with real table data, Make table component, and render each table with different data under each TabPanel */}
         <TabPanels>
@@ -130,9 +139,12 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              Related Proposals Table
-            </Heading>
+            <RelatedProposalsTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.relatedProposalsCount}
+              refetchCount={refetchRelatedProposals}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
