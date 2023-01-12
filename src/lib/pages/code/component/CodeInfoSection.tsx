@@ -128,76 +128,69 @@ const ViewAddresses = ({
   );
 };
 
-export const CodeInfoSection = ({ codeDetails }: CodeInfoSectionProps) => {
+const CodeDetailsRender = ({ codeDetails }: { codeDetails: CodeDetails }) => {
   const getAddressType = useGetAddressType();
+  const {
+    hash,
+    height,
+    created,
+    proposal,
+    uploader,
+    instantiatePermission,
+    permissionAddresses,
+  } = codeDetails;
+  const { methodRender, storedBlockRender } = getMethodSpecificRender(
+    proposal,
+    {
+      hash,
+      height,
+      created,
+    }
+  );
+  const uploaderType = getAddressType(uploader);
+  return (
+    <Grid templateColumns="repeat(5, 1fr)" columnGap={12}>
+      <LabelText label="Network">{codeDetails.chainId ?? "unknown"}</LabelText>
+      <LabelText label="Uploaded by">
+        <Flex direction="column" gap={1}>
+          <ExplorerLink type={uploaderType} value={uploader} canCopyWithHover />
+          <Text variant="body3" color="text.dark">
+            {getAddressTypeText(uploaderType)}
+          </Text>
+        </Flex>
+      </LabelText>
+      {methodRender}
+      <LabelText label="Instantiate Permission">
+        <Flex direction="column" gap={1}>
+          <PermissionChip
+            instantiatePermission={instantiatePermission}
+            permissionAddresses={permissionAddresses}
+          />
+          <ViewAddresses permissionAddresses={permissionAddresses} />
+        </Flex>
+      </LabelText>
+      <LabelText label="Stored on block">
+        <Flex direction="column" gap={1}>
+          {storedBlockRender}
+        </Flex>
+      </LabelText>
+    </Grid>
+  );
+};
 
+export const CodeInfoSection = ({ codeDetails }: CodeInfoSectionProps) => {
   return (
     <Box mb={12}>
       <Heading as="h6" variant="h6" mb={6}>
         Code Information
       </Heading>
-      <>
-        {codeDetails ? (
-          (() => {
-            const {
-              hash,
-              height,
-              created,
-              proposal,
-              uploader,
-              instantiatePermission,
-              permissionAddresses,
-            } = codeDetails;
-            const { methodRender, storedBlockRender } = getMethodSpecificRender(
-              proposal,
-              {
-                hash,
-                height,
-                created,
-              }
-            );
-            const uploaderType = getAddressType(uploader);
-            return (
-              <Grid templateColumns="repeat(5, 1fr)" columnGap={12}>
-                <LabelText label="Network">
-                  {codeDetails.chainId ?? "unknown"}
-                </LabelText>
-                <LabelText label="Uploaded by">
-                  <Flex direction="column" gap={1}>
-                    <ExplorerLink
-                      type={uploaderType}
-                      value={uploader}
-                      canCopyWithHover
-                    />
-                    <Text variant="body3" color="text.dark">
-                      {getAddressTypeText(uploaderType)}
-                    </Text>
-                  </Flex>
-                </LabelText>
-                {methodRender}
-                <LabelText label="Instantiate Permission">
-                  <Flex direction="column" gap={1}>
-                    <PermissionChip
-                      instantiatePermission={instantiatePermission}
-                      permissionAddresses={permissionAddresses}
-                    />
-                    <ViewAddresses permissionAddresses={permissionAddresses} />
-                  </Flex>
-                </LabelText>
-                <LabelText label="Stored on block">
-                  <Flex direction="column" gap={1}>
-                    {storedBlockRender}
-                  </Flex>
-                </LabelText>
-              </Grid>
-            );
-          })()
-        ) : (
-          <Text variant="body2" color="text.dark">
-            Error fetching data
-          </Text>
-        )}
-      </>
+      {codeDetails ? (
+        <CodeDetailsRender codeDetails={codeDetails} />
+      ) : (
+        <Text variant="body2" color="text.dark">
+          Error fetching data
+        </Text>
+      )}
     </Box>
   );
 };
