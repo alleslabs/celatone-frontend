@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
+- [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and json to attach fund
 - [#61](https://github.com/alleslabs/celatone-frontend/pull/61) Add UI for send asset in execute contract page
 - [#59](https://github.com/alleslabs/celatone-frontend/pull/58) Wireup code name,description, and cta section
 - [#53](https://github.com/alleslabs/celatone-frontend/pull/53) Show contract description in contract details page
