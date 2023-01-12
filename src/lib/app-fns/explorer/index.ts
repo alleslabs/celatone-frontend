@@ -63,6 +63,7 @@ export const getProposalUrl = (chainName: string) => {
       break;
     case "terra2":
     case "terra2testnet":
+      // Can't separate mainnet/testnet
       return `https://station.terra.money/proposal`;
     default:
       break;
