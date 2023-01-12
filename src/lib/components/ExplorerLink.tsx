@@ -7,13 +7,19 @@ import {
   getExplorerBlockUrl,
   getExplorerTxUrl,
   getExplorerUserAddressUrl,
+  getProposalUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/hooks";
 import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
 
-export type LinkType = AddressReturnType | "tx_hash" | "code_id" | "block";
+export type LinkType =
+  | AddressReturnType
+  | "tx_hash"
+  | "code_id"
+  | "block"
+  | "proposal";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
@@ -46,6 +52,9 @@ const getNavigationUrl = (
       break;
     case "block":
       url = getExplorerBlockUrl(currentChainName);
+      break;
+    case "proposal":
+      url = getProposalUrl(currentChainName);
       break;
     case "invalid_address":
       return "";

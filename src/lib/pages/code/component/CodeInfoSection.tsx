@@ -22,12 +22,9 @@ const getMethodSpecificRender = (
       methodRender: (
         <LabelText label="Proposal ID">
           <ExplorerLink
+            type="proposal"
             value={codeProposalInfo.proposalId.toString()}
             canCopyWithHover
-            /**
-             * @todos remove isReadOnly and add type proposal when proposal page is up
-             */
-            isReadOnly
           />
         </LabelText>
       ),
