@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#71](https://github.com/alleslabs/celatone-frontend/pull/71) add search bar at the top (currently support only contract address and code id)
+- [#71](https://github.com/alleslabs/celatone-frontend/pull/71) Add search bar at the top (currently support only contract address and code id)
 - [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add contract not exist page
 - [#60](https://github.com/alleslabs/celatone-frontend/pull/60) Add navigation to contract row
 - [#47](https://github.com/alleslabs/celatone-frontend/pull/47) Wireup init msg in contract details page
