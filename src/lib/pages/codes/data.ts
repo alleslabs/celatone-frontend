@@ -19,7 +19,8 @@ interface CodeListData {
 
 export const useCodeListData = (keyword?: string): CodeListData => {
   const { address } = useWallet();
-  const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds } = useCodeStore();
+  const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds, isCodeIdSaved } =
+    useCodeStore();
 
   const { data: rawStoredCodes = [] } = useCodeListByUserQuery(address);
 
@@ -41,6 +42,7 @@ export const useCodeListData = (keyword?: string): CodeListData => {
           querySavedCodeInfo?.instantiatePermission ??
           InstantiatePermission.UNKNOWN,
         permissionAddresses: querySavedCodeInfo?.permissionAddresses ?? [],
+        isSaved: true,
       };
     }
   );
@@ -48,10 +50,10 @@ export const useCodeListData = (keyword?: string): CodeListData => {
   const savedCodesCount = savedCodes?.length ?? 0;
 
   const storedCodes = rawStoredCodes.map<CodeInfo>((code) => {
-    const localInfo = getCodeLocalInfo(code.id);
     return {
       ...code,
-      description: localInfo?.description,
+      description: getCodeLocalInfo(code.id)?.description,
+      isSaved: isCodeIdSaved(code.id),
     };
   });
 
