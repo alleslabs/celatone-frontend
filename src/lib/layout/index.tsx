@@ -32,7 +32,7 @@ const Layout = ({ children }: LayoutProps) => {
       <GridItem bg="#212121" area="header" mb="1">
         <Header />
       </GridItem>
-      <GridItem bg="#212121" area="nav">
+      <GridItem bg="#212121" area="nav" overflowY="auto">
         <Navbar />
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">

@@ -107,8 +107,16 @@ const Navbar = observer(() => {
   ];
 
   return (
-    <Flex p={4} direction="column" h="full" overflow="hidden">
-      <Box>
+    <Flex
+      direction="column"
+      h="full"
+      overflow="hidden"
+      position="relative"
+
+      // bgColor="info.main"
+      // maxHeight="90%"
+    >
+      <Box p={4} overflowY="scroll" pb={12}>
         {navMenu.map((item) => (
           <Box
             pb="4"
@@ -158,12 +166,23 @@ const Navbar = observer(() => {
         ))}
       </Box>
       <Spacer />
-      <Link href="/deploy">
-        <Button w="full">
-          <Icon as={MdOutlineAdd} boxSize="4" />
-          Deploy new contract
-        </Button>
-      </Link>
+      <Flex
+        position="fixed"
+        bottom="0"
+        py={4}
+        bg="#212121"
+        display="flex"
+        width="full"
+        maxWidth="224px"
+        justifyContent="center"
+      >
+        <Link href="/deploy">
+          <Button>
+            <Icon as={MdOutlineAdd} boxSize="4" />
+            Deploy new contract
+          </Button>
+        </Link>
+      </Flex>
     </Flex>
   );
 });
