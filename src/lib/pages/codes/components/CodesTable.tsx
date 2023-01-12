@@ -83,9 +83,9 @@ const Empty = ({ type }: OtherTBodyProps) => {
   const renderEmptyText = () => {
     switch (type) {
       case "all":
-        return "All Code ID will display here";
+        return "All Code IDs will display here";
       case "saved":
-        return "Your saved Code ID will display here. Saved Codes are stored in your device.";
+        return "Your saved Code IDs will display here. Saved Codes are stored in your device.";
       case "stored":
         return "Your uploaded Wasm files will display as My Stored Codes";
       default:
