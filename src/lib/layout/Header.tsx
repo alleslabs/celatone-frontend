@@ -6,17 +6,20 @@ import {
   Text,
   MenuItem,
   Icon,
+  Image,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { FiChevronDown } from "react-icons/fi";
 
 import { WalletSection } from "lib/components/Wallet";
 import { CHAIN_NAMES } from "lib/data";
 
+import Searchbar from "./Searchbar";
+
 const Header = () => {
   const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
+  const router = useRouter();
 
   return (
     <Flex
@@ -27,15 +30,17 @@ const Header = () => {
       justifyContent="space-between"
       px={6}
       mb={1}
+      gap="48px"
     >
-      <Link href="/">
-        <Image
-          src="/celatone-logo.svg"
-          alt="Celatone"
-          width={120}
-          height={24}
-        />
-      </Link>
+      <Image
+        src="/celatone-logo.svg"
+        alt="Celatone"
+        width="115px"
+        mr="36px"
+        _hover={{ cursor: "pointer" }}
+        onClick={() => router.push({ pathname: "/" })}
+      />
+      <Searchbar />
       <Flex gap={2}>
         <Menu>
           <MenuButton
