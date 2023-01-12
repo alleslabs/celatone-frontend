@@ -75,6 +75,52 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
   }
 `);
 
+export const getExecuteTxsByContractAddress = graphql(`
+  query getExecuteTxsByContractAddress(
+    $contractAddress: String!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    contract_transactions(
+      where: {
+        contract: { address: { _eq: $contractAddress } }
+        transaction: { is_execute: { _eq: true } }
+      }
+      order_by: { transaction: { block: { timestamp: desc } } }
+      limit: $pageSize
+      offset: $offset
+    ) {
+      transaction {
+        hash
+        messages
+        success
+        account {
+          address
+        }
+        block {
+          height
+          timestamp
+        }
+      }
+    }
+  }
+`);
+
+export const getExecuteTxsCountByContractAddress = graphql(`
+  query getExecuteTxsCountByContractAddress($contractAddress: String!) {
+    contract_transactions_aggregate(
+      where: {
+        contract: { address: { _eq: $contractAddress } }
+        transaction: { is_execute: { _eq: true } }
+      }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
 export const getContractListByCodeId = graphql(`
   query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
