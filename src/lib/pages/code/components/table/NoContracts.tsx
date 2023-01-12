@@ -18,7 +18,6 @@ const DisconnectedState = () => (
 );
 
 const EmptyState = () => (
-  // TODO: add instantiate button
   <Flex align="center" justify="center">
     No contract instances from this code.
   </Flex>

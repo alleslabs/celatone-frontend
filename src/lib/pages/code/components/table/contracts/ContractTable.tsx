@@ -111,16 +111,18 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
               templateColumnsStyle={templateColumnsStyle}
             />
           ))}
-          <Pagination
-            currentPage={currentPage}
-            pagesQuantity={pagesQuantity}
-            offset={offset}
-            totalData={totalData}
-            scrollComponentId={tableHeaderId}
-            pageSize={pageSize}
-            onPageChange={onPageChange}
-            onPageSizeChange={onPageSizeChange}
-          />
+          {instantiatedContracts?.length > 10 && (
+            <Pagination
+              currentPage={currentPage}
+              pagesQuantity={pagesQuantity}
+              offset={offset}
+              totalData={totalData}
+              scrollComponentId={tableHeaderId}
+              pageSize={pageSize}
+              onPageChange={onPageChange}
+              onPageSizeChange={onPageSizeChange}
+            />
+          )}
         </Flex>
       )}
     </>
