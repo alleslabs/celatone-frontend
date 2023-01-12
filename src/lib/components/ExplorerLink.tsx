@@ -11,9 +11,15 @@ import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
 
+export type LinkType =
+  | "tx_hash"
+  | "user_address"
+  | "contract_address"
+  | "code_id";
+
 interface ExplorerLinkProps extends BoxProps {
   value: string;
-  type?: "tx_hash" | "user_address" | "contract_address" | "code_id";
+  type?: LinkType;
   copyValue?: string;
   canCopyWithHover?: boolean;
   isReadOnly?: boolean;
