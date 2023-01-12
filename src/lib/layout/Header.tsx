@@ -29,6 +29,7 @@ const Header = () => {
       align="center"
       justifyContent="space-between"
       px={6}
+      mb={1}
       gap="48px"
     >
       <Image

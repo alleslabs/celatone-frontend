@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#75](https://github.com/alleslabs/celatone-frontend/pull/75) Add code-related contracts table to the code detail page
+- [#70](https://github.com/alleslabs/celatone-frontend/pull/70) Change default token denom on contract detail
+- [#78](https://github.com/alleslabs/celatone-frontend/pull/78) Ignore building step when branch is not main
+- [#62](https://github.com/alleslabs/celatone-frontend/pull/62) Add footer
 - [#71](https://github.com/alleslabs/celatone-frontend/pull/71) Add search bar at the top (currently support only contract address and code id)
 - [#69](https://github.com/alleslabs/celatone-frontend/pull/69) Add execute table in contract details page
 - [#68](https://github.com/alleslabs/celatone-frontend/pull/63) Refactor past txs link props and make sure navigation works
