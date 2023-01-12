@@ -7,6 +7,7 @@ import {
   useCodeListByUserQuery,
 } from "lib/services/codeService";
 import type { CodeInfo } from "lib/types";
+import { InstantiatePermission } from "lib/types";
 
 interface CodeListData {
   savedCodes: CodeInfo[];
@@ -38,6 +39,10 @@ export const useCodeListData = (keyword?: string): CodeListData => {
         uploader:
           localSavedCode.uploader ?? querySavedCodeInfo?.uploader ?? "unknown",
         contracts: querySavedCodeInfo?.contracts ?? 0,
+        instantiatePermission:
+          querySavedCodeInfo?.instantiatePermission ??
+          InstantiatePermission.UNKNOWN,
+        permissionAddresses: querySavedCodeInfo?.permissionAddresses ?? [],
       };
     }
   );
