@@ -4,28 +4,28 @@ import { BiWorld } from "react-icons/bi";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
-import type { ContractDetail } from "lib/model/contract";
+import type { ContractData } from "lib/model/contract";
 import { textLine } from "lib/utils";
 
 import { ShowMoreButton } from "./ShowMoreButton";
 
 interface PublicContractDescProps {
-  contractDetail: ContractDetail;
+  contractData: ContractData;
 }
 export const PublicContractDesc = ({
-  contractDetail,
+  contractData,
 }: PublicContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
   const description = useMemo(
-    () => contractDetail.publicInfo?.description,
-    [contractDetail.publicInfo?.description]
+    () => contractData.publicInfo?.description,
+    [contractData.publicInfo?.description]
   );
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "",
     ellipsis: "...",
-    lines: textLine(!contractDetail.contractInfo?.description, showMore),
+    lines: textLine(!contractData.contractInfo?.description, showMore),
   });
 
   if (!description) return null;
