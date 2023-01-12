@@ -18,6 +18,7 @@ import type {
   ContractMigrationHistory,
   ExecuteTransaction,
   HumanAddr,
+  MigrationRemark,
   Option,
 } from "lib/types";
 import { parseDateDefault, parseTxHash } from "lib/utils";
@@ -184,11 +185,11 @@ export const useMigrationHistoriesByContractAddress = (
           codeId: history.code_id,
           sender: history.account.address as HumanAddr | ContractAddr,
           height: history.block.height,
-          timestamp: history.block.timestamp,
+          timestamp: parseDateDefault(history.block.timestamp),
           remark: {
-            operation: history.remark.operation,
-            type: history.remark.type,
-            value: history.remark.value,
+            operation: history.remark.operation as MigrationRemark["operation"],
+            type: history.remark.type as MigrationRemark["type"],
+            value: history.remark.value as MigrationRemark["value"],
           },
         }))
       );

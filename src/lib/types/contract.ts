@@ -14,11 +14,12 @@ export enum RemarkOperation {
 
 type RemarkType = "governance" | "transaction";
 
-interface MigrationRemark {
+export interface MigrationRemark {
   operation: RemarkOperation;
   type: RemarkType;
   value: string;
 }
+
 export interface ContractMigrationHistory {
   codeId: number;
   codeDescription?: string;

@@ -122,14 +122,12 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              <MigrationTable
-                contractAddress={contractAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.migrationCount}
-                refetchCount={refetchMigration}
-              />
-            </Heading>
+            <MigrationTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.migrationCount}
+              refetchCount={refetchMigration}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <Heading as="h6" variant="h6" color="error.main">

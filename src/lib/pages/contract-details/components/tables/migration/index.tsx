@@ -52,6 +52,7 @@ export const MigrationTable = ({
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const size = Number(e.target.value);
+    refetchCount();
     setPageSize(size);
     setCurrentPage(1);
   };
