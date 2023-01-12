@@ -74,16 +74,18 @@ export const MigrationTable = ({
           templateColumns={templateColumns}
         />
       ))}
-      <Pagination
-        currentPage={currentPage}
-        pagesQuantity={pagesQuantity}
-        offset={offset}
-        totalData={totalData}
-        scrollComponentId={scrollComponentId}
-        pageSize={pageSize}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-      />
+      {migrationHistories.length > 10 && (
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </Flex>
   );
 };
