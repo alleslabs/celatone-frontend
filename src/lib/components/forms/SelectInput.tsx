@@ -11,7 +11,7 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdArrowDropDown } from "react-icons/md";
 
 const ITEM_HEIGHT = 57;
@@ -55,17 +55,22 @@ export const SelectInput = ({
   initialSelected,
 }: SelectInputProps) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
+  const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
-
   const [selected, setSelected] = useState(
     () => options.find((asset) => asset.value === initialSelected)?.label ?? ""
   );
-
+  const [inputRefWidth, setInputRefWidth] = useState<number | undefined>();
   useOutsideClick({
     ref: optionRef,
     handler: () => isOpen && onClose(),
   });
 
+  useEffect(() => {
+    if (inputRef.current) {
+      setInputRefWidth(inputRef.current.clientWidth);
+    }
+  }, [inputRef]);
   return (
     <Popover placement="bottom-start" isOpen={isOpen}>
       <PopoverTrigger>
@@ -93,6 +98,7 @@ export const SelectInput = ({
         >
           <div className="form-label">{formLabel}</div>
           <Input
+            ref={inputRef}
             size="lg"
             textAlign="start"
             type="button"
@@ -109,7 +115,7 @@ export const SelectInput = ({
         ref={optionRef}
         border="unset"
         bg="gray.900"
-        w="200px"
+        w={inputRefWidth}
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
         borderRadius="4px"

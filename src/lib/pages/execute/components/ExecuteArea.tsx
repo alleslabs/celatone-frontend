@@ -1,6 +1,7 @@
 import { Box, Flex, Button, ButtonGroup, Icon, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import type { SetStateAction } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
 import { MdInput } from "react-icons/md";
@@ -11,7 +12,7 @@ import { useExecuteContractTx } from "lib/app-provider/tx/execute";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import CopyButton from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import { AssetInput, TextInput } from "lib/components/forms";
+import { AssetInput, TextInput, SelectInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -23,12 +24,14 @@ import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 interface ExecuteAreaProps {
   contractAddress: ContractAddr;
   initialMsg: string;
+  initialFundMsg?: string;
   cmds: [string, string][];
 }
 
 export const ExecuteArea = ({
   contractAddress,
   initialMsg,
+  initialFundMsg,
   cmds,
 }: ExecuteAreaProps) => {
   const { address = "" } = useWallet();
@@ -39,10 +42,27 @@ export const ExecuteArea = ({
 
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(initialMsg);
+  const [fundMsg, setFundMsg] = useState(initialFundMsg);
   const [error, setError] = useState("");
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
-
+  const [attachFundOption, setAttachFundOption] = useState("");
+  const attachFundOptions = [
+    { label: "Not sending funds", value: "null", disabled: false },
+    {
+      label: "Select asset and fill amount",
+      value: "fill",
+      disabled: false,
+    },
+    {
+      label: "Provide JSON Asset List",
+      value: "json",
+      disabled: false,
+    },
+  ];
+  const handleAttachFundOption = (e: SetStateAction<string>) => {
+    setAttachFundOption(e);
+  };
   const enableExecute = !!(
     msg.trim().length &&
     jsonValidate(msg) === null &&
@@ -81,7 +101,7 @@ export const ExecuteArea = ({
   }, [contractAddress, fee, msg, addActivity, executeTx, broadcast]);
 
   useEffect(() => setMsg(initialMsg), [initialMsg]);
-
+  useEffect(() => setFundMsg(initialFundMsg), [initialFundMsg]);
   useEffect(() => {
     if (enableExecute) {
       setError("");
@@ -141,8 +161,8 @@ export const ExecuteArea = ({
           </Text>
         )
       )}
-      <Flex gap="32px" mt={8} direction={{ sm: "column", xl: "row" }}>
-        <Box w={{ sm: "full", xl: "70%" }}>
+      <Flex gap="32px" mt={8} direction={{ sm: "column", lg: "row" }}>
+        <Box w={{ sm: "full", lg: "50%" }}>
           <Text variant="body1" fontWeight="600" mb={4}>
             Execute Messages
           </Text>
@@ -161,21 +181,41 @@ export const ExecuteArea = ({
             </Flex>
           )}
         </Box>
-        <Box w={{ sm: "full", xl: "50%" }}>
+        <Box w={{ sm: "full", lg: "50%" }}>
           <Text variant="body1" fontWeight="600" mb={4}>
             Send Assets
           </Text>
-          <AssetInput
-            disableDelete={false}
-            initialSelected=""
-            onDelete={() => null}
-            setCurrencyValue={() => null}
-            assetOptions={[]}
-            amountInput={<TextInput value="" setInputState={() => null} />}
-          />
-          <Button variant="outline-primary" mt={4} mx="auto">
-            Add More Asset
-          </Button>
+          <Flex mb={6}>
+            <SelectInput
+              formLabel="Attach Funds"
+              options={attachFundOptions}
+              onChange={handleAttachFundOption}
+              placeholder="Select"
+              initialSelected="null"
+            />
+          </Flex>
+          {/* TODO: Add asset (input) */}
+          {attachFundOption === "fill" && (
+            <Box>
+              <AssetInput
+                disableDelete={false}
+                initialSelected=""
+                onDelete={() => null}
+                setCurrencyValue={() => null}
+                assetOptions={[]}
+                amountInput={<TextInput value="" setInputState={() => null} />}
+              />
+              <Button variant="outline-primary" mt={4} mx="auto">
+                Add More Asset
+              </Button>
+            </Box>
+          )}
+          {/* TODO: Add asset (json) */}
+          {attachFundOption === "json" && (
+            <Box>
+              <JsonInput text={fundMsg} setText={setFundMsg} height="160px" />
+            </Box>
+          )}
         </Box>
       </Flex>
       <Flex alignItems="center" justify="space-between" mt={{ md: 8, xl: 0 }}>

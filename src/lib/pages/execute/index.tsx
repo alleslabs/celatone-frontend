@@ -90,12 +90,10 @@ const Execute = () => {
         subtitle="You need to connect your wallet to perform this action"
         mb={8}
       />
-
       <ContractSelectSection
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />
-
       <ExecuteArea
         contractAddress={contractAddress}
         initialMsg={initialMsg}
