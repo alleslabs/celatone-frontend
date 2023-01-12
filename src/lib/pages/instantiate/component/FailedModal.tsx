@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { IoIosWarning } from "react-icons/io";
 
-import CopyButton from "lib/components/CopyButton";
+import { CopyButton } from "lib/components/CopyButton";
 
 interface FailedModalProps {
   errorLog: string;

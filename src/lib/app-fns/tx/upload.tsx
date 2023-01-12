@@ -54,7 +54,7 @@ export const uploadContractTx = ({
             value: txInfo.codeId,
             html: (
               <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <ExplorerLink value={txInfo.codeId.toString()} />
+                <ExplorerLink type="code_id" value={txInfo.codeId.toString()} />
               </div>
             ),
           },

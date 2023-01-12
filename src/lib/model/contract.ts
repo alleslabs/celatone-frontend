@@ -11,6 +11,7 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
+  useExecuteTxsCountByContractAddress,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
@@ -20,7 +21,7 @@ import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
-export interface ContractDetail {
+export interface ContractData {
   chainId: string;
   codeInfo: CodeLocalInfo | undefined;
   contractInfo: ContractInfo | undefined;
@@ -75,9 +76,9 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   };
 };
 
-export const useContractDetail = (
+export const useContractData = (
   contractAddress: ContractAddr
-): ContractDetail | undefined => {
+): ContractData | undefined => {
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractInfo } = useContractStore();
@@ -132,5 +133,20 @@ export const useContractDetail = (
     initTxHash: instantiateDetail.initTxHash,
     initProposalTitle,
     initProposalId,
+  };
+};
+
+export const useContractDetailsTableCounts = (
+  contractAddress: ContractAddr
+) => {
+  // TODO - add other table count
+  const { data: executeCount = 0, refetch: refetchExecute } =
+    useExecuteTxsCountByContractAddress(contractAddress);
+
+  return {
+    tableCounts: {
+      executeCount,
+    },
+    refetchExecute,
   };
 };

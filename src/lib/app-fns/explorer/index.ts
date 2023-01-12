@@ -12,6 +12,7 @@ export const getExplorerTxUrl = (chainName: string) => {
       pathSuffix = "txs";
       break;
     case "terra2":
+    case "terra2testnet":
       pathSuffix = "tx";
       break;
     default:
@@ -20,17 +21,32 @@ export const getExplorerTxUrl = (chainName: string) => {
   return `${explorerMap[chainName]}/${pathSuffix}`;
 };
 
-export const getExplorerContractAddressUrl = (chainName: string) => {
+export const getExplorerUserAddressUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
-    // TODO: find osmosis and terra suffix for contract address
     case "osmosis":
     case "osmosistestnet":
-      pathSuffix = "wasm/contract";
+      pathSuffix = "account";
       break;
-    // case "terra2":
-    //   pathSuffix = "tx";
-    //   break;
+    case "terra2":
+    case "terra2testnet":
+      pathSuffix = "address";
+      break;
+    default:
+      break;
+  }
+  return `${explorerMap[chainName]}/${pathSuffix}`;
+};
+
+export const getExplorerBlockUrl = (chainName: string) => {
+  let pathSuffix = "";
+  switch (chainName) {
+    case "osmosis":
+    case "osmosistestnet":
+    case "terra2":
+    case "terra2testnet":
+      pathSuffix = "blocks";
+      break;
     default:
       break;
   }

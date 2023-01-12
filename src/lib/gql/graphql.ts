@@ -404,6 +404,10 @@ export type Accounts = {
   /** An aggregate relationship */
   codes_aggregate: Codes_Aggregate;
   /** An array relationship */
+  contract_histories: Array<Contract_Histories>;
+  /** An aggregate relationship */
+  contract_histories_aggregate: Contract_Histories_Aggregate;
+  /** An array relationship */
   contracts: Array<Contracts>;
   /** An array relationship */
   contractsByInitBy: Array<Contracts>;
@@ -456,6 +460,24 @@ export type AccountsCodes_AggregateArgs = {
   offset?: InputMaybe<Scalars["Int"]>;
   order_by?: InputMaybe<Array<Codes_Order_By>>;
   where?: InputMaybe<Codes_Bool_Exp>;
+};
+
+/** columns and relationships of "accounts" */
+export type AccountsContract_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "accounts" */
+export type AccountsContract_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
 };
 
 /** columns and relationships of "accounts" */
@@ -575,6 +597,8 @@ export type Accounts_Bool_Exp = {
   address?: InputMaybe<String_Comparison_Exp>;
   codes?: InputMaybe<Codes_Bool_Exp>;
   codes_aggregate?: InputMaybe<Codes_Aggregate_Bool_Exp>;
+  contract_histories?: InputMaybe<Contract_Histories_Bool_Exp>;
+  contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Bool_Exp>;
   contracts?: InputMaybe<Contracts_Bool_Exp>;
   contractsByInitBy?: InputMaybe<Contracts_Bool_Exp>;
   contractsByInitBy_aggregate?: InputMaybe<Contracts_Aggregate_Bool_Exp>;
@@ -604,6 +628,7 @@ export type Accounts_Insert_Input = {
   account_transactions?: InputMaybe<Account_Transactions_Arr_Rel_Insert_Input>;
   address?: InputMaybe<Scalars["String"]>;
   codes?: InputMaybe<Codes_Arr_Rel_Insert_Input>;
+  contract_histories?: InputMaybe<Contract_Histories_Arr_Rel_Insert_Input>;
   contracts?: InputMaybe<Contracts_Arr_Rel_Insert_Input>;
   contractsByInitBy?: InputMaybe<Contracts_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars["Int"]>;
@@ -653,6 +678,7 @@ export type Accounts_Order_By = {
   account_transactions_aggregate?: InputMaybe<Account_Transactions_Aggregate_Order_By>;
   address?: InputMaybe<Order_By>;
   codes_aggregate?: InputMaybe<Codes_Aggregate_Order_By>;
+  contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Order_By>;
   contractsByInitBy_aggregate?: InputMaybe<Contracts_Aggregate_Order_By>;
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
@@ -754,6 +780,18 @@ export type Accounts_Variance_Fields = {
 /** columns and relationships of "blocks" */
 export type Blocks = {
   __typename?: "blocks";
+  /** An array relationship */
+  code_proposals: Array<Code_Proposals>;
+  /** An aggregate relationship */
+  code_proposals_aggregate: Code_Proposals_Aggregate;
+  /** An array relationship */
+  contract_histories: Array<Contract_Histories>;
+  /** An aggregate relationship */
+  contract_histories_aggregate: Contract_Histories_Aggregate;
+  /** An array relationship */
+  contract_proposals: Array<Contract_Proposals>;
+  /** An aggregate relationship */
+  contract_proposals_aggregate: Contract_Proposals_Aggregate;
   hash: Scalars["bytea"];
   height: Scalars["Int"];
   timestamp: Scalars["timestamp"];
@@ -761,6 +799,60 @@ export type Blocks = {
   transactions: Array<Transactions>;
   /** An aggregate relationship */
   transactions_aggregate: Transactions_Aggregate;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksCode_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksCode_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksContract_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksContract_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksContract_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksContract_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
 };
 
 /** columns and relationships of "blocks" */
@@ -821,6 +913,12 @@ export type Blocks_Bool_Exp = {
   _and?: InputMaybe<Array<Blocks_Bool_Exp>>;
   _not?: InputMaybe<Blocks_Bool_Exp>;
   _or?: InputMaybe<Array<Blocks_Bool_Exp>>;
+  code_proposals?: InputMaybe<Code_Proposals_Bool_Exp>;
+  code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Bool_Exp>;
+  contract_histories?: InputMaybe<Contract_Histories_Bool_Exp>;
+  contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Bool_Exp>;
+  contract_proposals?: InputMaybe<Contract_Proposals_Bool_Exp>;
+  contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Bool_Exp>;
   hash?: InputMaybe<Bytea_Comparison_Exp>;
   height?: InputMaybe<Int_Comparison_Exp>;
   timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
@@ -841,6 +939,9 @@ export type Blocks_Inc_Input = {
 
 /** input type for inserting data into table "blocks" */
 export type Blocks_Insert_Input = {
+  code_proposals?: InputMaybe<Code_Proposals_Arr_Rel_Insert_Input>;
+  contract_histories?: InputMaybe<Contract_Histories_Arr_Rel_Insert_Input>;
+  contract_proposals?: InputMaybe<Contract_Proposals_Arr_Rel_Insert_Input>;
   hash?: InputMaybe<Scalars["bytea"]>;
   height?: InputMaybe<Scalars["Int"]>;
   timestamp?: InputMaybe<Scalars["timestamp"]>;
@@ -886,6 +987,9 @@ export type Blocks_On_Conflict = {
 
 /** Ordering options when selecting data from "blocks". */
 export type Blocks_Order_By = {
+  code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Order_By>;
+  contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Order_By>;
+  contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Order_By>;
   hash?: InputMaybe<Order_By>;
   height?: InputMaybe<Order_By>;
   timestamp?: InputMaybe<Order_By>;
@@ -1002,11 +1106,334 @@ export type Bytea_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars["bytea"]>>;
 };
 
+/** columns and relationships of "code_proposals" */
+export type Code_Proposals = {
+  __typename?: "code_proposals";
+  /** An object relationship */
+  block?: Maybe<Blocks>;
+  /** An object relationship */
+  code: Codes;
+  code_id: Scalars["Int"];
+  /** An object relationship */
+  proposal: Proposals;
+  proposal_id: Scalars["Int"];
+  resolved_height?: Maybe<Scalars["Int"]>;
+};
+
+/** aggregated selection of "code_proposals" */
+export type Code_Proposals_Aggregate = {
+  __typename?: "code_proposals_aggregate";
+  aggregate?: Maybe<Code_Proposals_Aggregate_Fields>;
+  nodes: Array<Code_Proposals>;
+};
+
+export type Code_Proposals_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Code_Proposals_Aggregate_Bool_Exp_Count>;
+};
+
+export type Code_Proposals_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Code_Proposals_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "code_proposals" */
+export type Code_Proposals_Aggregate_Fields = {
+  __typename?: "code_proposals_aggregate_fields";
+  avg?: Maybe<Code_Proposals_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Code_Proposals_Max_Fields>;
+  min?: Maybe<Code_Proposals_Min_Fields>;
+  stddev?: Maybe<Code_Proposals_Stddev_Fields>;
+  stddev_pop?: Maybe<Code_Proposals_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Code_Proposals_Stddev_Samp_Fields>;
+  sum?: Maybe<Code_Proposals_Sum_Fields>;
+  var_pop?: Maybe<Code_Proposals_Var_Pop_Fields>;
+  var_samp?: Maybe<Code_Proposals_Var_Samp_Fields>;
+  variance?: Maybe<Code_Proposals_Variance_Fields>;
+};
+
+/** aggregate fields of "code_proposals" */
+export type Code_Proposals_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "code_proposals" */
+export type Code_Proposals_Aggregate_Order_By = {
+  avg?: InputMaybe<Code_Proposals_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Code_Proposals_Max_Order_By>;
+  min?: InputMaybe<Code_Proposals_Min_Order_By>;
+  stddev?: InputMaybe<Code_Proposals_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Code_Proposals_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Code_Proposals_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Code_Proposals_Sum_Order_By>;
+  var_pop?: InputMaybe<Code_Proposals_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Code_Proposals_Var_Samp_Order_By>;
+  variance?: InputMaybe<Code_Proposals_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "code_proposals" */
+export type Code_Proposals_Arr_Rel_Insert_Input = {
+  data: Array<Code_Proposals_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Code_Proposals_Avg_Fields = {
+  __typename?: "code_proposals_avg_fields";
+  code_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "code_proposals" */
+export type Code_Proposals_Avg_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "code_proposals". All fields are combined with a logical 'AND'. */
+export type Code_Proposals_Bool_Exp = {
+  _and?: InputMaybe<Array<Code_Proposals_Bool_Exp>>;
+  _not?: InputMaybe<Code_Proposals_Bool_Exp>;
+  _or?: InputMaybe<Array<Code_Proposals_Bool_Exp>>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  code?: InputMaybe<Codes_Bool_Exp>;
+  code_id?: InputMaybe<Int_Comparison_Exp>;
+  proposal?: InputMaybe<Proposals_Bool_Exp>;
+  proposal_id?: InputMaybe<Int_Comparison_Exp>;
+  resolved_height?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "code_proposals" */
+export type Code_Proposals_Inc_Input = {
+  code_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "code_proposals" */
+export type Code_Proposals_Insert_Input = {
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  code?: InputMaybe<Codes_Obj_Rel_Insert_Input>;
+  code_id?: InputMaybe<Scalars["Int"]>;
+  proposal?: InputMaybe<Proposals_Obj_Rel_Insert_Input>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate max on columns */
+export type Code_Proposals_Max_Fields = {
+  __typename?: "code_proposals_max_fields";
+  code_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "code_proposals" */
+export type Code_Proposals_Max_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Code_Proposals_Min_Fields = {
+  __typename?: "code_proposals_min_fields";
+  code_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "code_proposals" */
+export type Code_Proposals_Min_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "code_proposals" */
+export type Code_Proposals_Mutation_Response = {
+  __typename?: "code_proposals_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Code_Proposals>;
+};
+
+/** Ordering options when selecting data from "code_proposals". */
+export type Code_Proposals_Order_By = {
+  block?: InputMaybe<Blocks_Order_By>;
+  code?: InputMaybe<Codes_Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  proposal?: InputMaybe<Proposals_Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "code_proposals" */
+export enum Code_Proposals_Select_Column {
+  /** column name */
+  CodeId = "code_id",
+  /** column name */
+  ProposalId = "proposal_id",
+  /** column name */
+  ResolvedHeight = "resolved_height",
+}
+
+/** input type for updating data in table "code_proposals" */
+export type Code_Proposals_Set_Input = {
+  code_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate stddev on columns */
+export type Code_Proposals_Stddev_Fields = {
+  __typename?: "code_proposals_stddev_fields";
+  code_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "code_proposals" */
+export type Code_Proposals_Stddev_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Code_Proposals_Stddev_Pop_Fields = {
+  __typename?: "code_proposals_stddev_pop_fields";
+  code_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "code_proposals" */
+export type Code_Proposals_Stddev_Pop_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Code_Proposals_Stddev_Samp_Fields = {
+  __typename?: "code_proposals_stddev_samp_fields";
+  code_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "code_proposals" */
+export type Code_Proposals_Stddev_Samp_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "code_proposals" */
+export type Code_Proposals_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Code_Proposals_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Code_Proposals_Stream_Cursor_Value_Input = {
+  code_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate sum on columns */
+export type Code_Proposals_Sum_Fields = {
+  __typename?: "code_proposals_sum_fields";
+  code_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "code_proposals" */
+export type Code_Proposals_Sum_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+export type Code_Proposals_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Code_Proposals_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Code_Proposals_Set_Input>;
+  where: Code_Proposals_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Code_Proposals_Var_Pop_Fields = {
+  __typename?: "code_proposals_var_pop_fields";
+  code_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "code_proposals" */
+export type Code_Proposals_Var_Pop_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Code_Proposals_Var_Samp_Fields = {
+  __typename?: "code_proposals_var_samp_fields";
+  code_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "code_proposals" */
+export type Code_Proposals_Var_Samp_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Code_Proposals_Variance_Fields = {
+  __typename?: "code_proposals_variance_fields";
+  code_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "code_proposals" */
+export type Code_Proposals_Variance_Order_By = {
+  code_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
 /** columns and relationships of "codes" */
 export type Codes = {
   __typename?: "codes";
+  access_config_addresses: Scalars["json"];
+  access_config_permission: Scalars["String"];
   /** An object relationship */
   account: Accounts;
+  /** An array relationship */
+  code_proposals: Array<Code_Proposals>;
+  /** An aggregate relationship */
+  code_proposals_aggregate: Code_Proposals_Aggregate;
+  /** An array relationship */
+  contract_histories: Array<Contract_Histories>;
+  /** An aggregate relationship */
+  contract_histories_aggregate: Contract_Histories_Aggregate;
   contract_instantiated: Scalars["Int"];
   /** An array relationship */
   contracts: Array<Contracts>;
@@ -1017,6 +1444,47 @@ export type Codes = {
   transaction?: Maybe<Transactions>;
   transaction_id?: Maybe<Scalars["Int"]>;
   uploader: Scalars["Int"];
+};
+
+/** columns and relationships of "codes" */
+export type CodesAccess_Config_AddressesArgs = {
+  path?: InputMaybe<Scalars["String"]>;
+};
+
+/** columns and relationships of "codes" */
+export type CodesCode_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "codes" */
+export type CodesCode_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "codes" */
+export type CodesContract_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "codes" */
+export type CodesContract_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
 };
 
 /** columns and relationships of "codes" */
@@ -1121,7 +1589,13 @@ export type Codes_Bool_Exp = {
   _and?: InputMaybe<Array<Codes_Bool_Exp>>;
   _not?: InputMaybe<Codes_Bool_Exp>;
   _or?: InputMaybe<Array<Codes_Bool_Exp>>;
+  access_config_addresses?: InputMaybe<Json_Comparison_Exp>;
+  access_config_permission?: InputMaybe<String_Comparison_Exp>;
   account?: InputMaybe<Accounts_Bool_Exp>;
+  code_proposals?: InputMaybe<Code_Proposals_Bool_Exp>;
+  code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Bool_Exp>;
+  contract_histories?: InputMaybe<Contract_Histories_Bool_Exp>;
+  contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Bool_Exp>;
   contract_instantiated?: InputMaybe<Int_Comparison_Exp>;
   contracts?: InputMaybe<Contracts_Bool_Exp>;
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Bool_Exp>;
@@ -1147,7 +1621,11 @@ export type Codes_Inc_Input = {
 
 /** input type for inserting data into table "codes" */
 export type Codes_Insert_Input = {
+  access_config_addresses?: InputMaybe<Scalars["json"]>;
+  access_config_permission?: InputMaybe<Scalars["String"]>;
   account?: InputMaybe<Accounts_Obj_Rel_Insert_Input>;
+  code_proposals?: InputMaybe<Code_Proposals_Arr_Rel_Insert_Input>;
+  contract_histories?: InputMaybe<Contract_Histories_Arr_Rel_Insert_Input>;
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
   contracts?: InputMaybe<Contracts_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars["Int"]>;
@@ -1159,6 +1637,7 @@ export type Codes_Insert_Input = {
 /** aggregate max on columns */
 export type Codes_Max_Fields = {
   __typename?: "codes_max_fields";
+  access_config_permission?: Maybe<Scalars["String"]>;
   contract_instantiated?: Maybe<Scalars["Int"]>;
   id?: Maybe<Scalars["Int"]>;
   transaction_id?: Maybe<Scalars["Int"]>;
@@ -1167,6 +1646,7 @@ export type Codes_Max_Fields = {
 
 /** order by max() on columns of table "codes" */
 export type Codes_Max_Order_By = {
+  access_config_permission?: InputMaybe<Order_By>;
   contract_instantiated?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   transaction_id?: InputMaybe<Order_By>;
@@ -1176,6 +1656,7 @@ export type Codes_Max_Order_By = {
 /** aggregate min on columns */
 export type Codes_Min_Fields = {
   __typename?: "codes_min_fields";
+  access_config_permission?: Maybe<Scalars["String"]>;
   contract_instantiated?: Maybe<Scalars["Int"]>;
   id?: Maybe<Scalars["Int"]>;
   transaction_id?: Maybe<Scalars["Int"]>;
@@ -1184,6 +1665,7 @@ export type Codes_Min_Fields = {
 
 /** order by min() on columns of table "codes" */
 export type Codes_Min_Order_By = {
+  access_config_permission?: InputMaybe<Order_By>;
   contract_instantiated?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   transaction_id?: InputMaybe<Order_By>;
@@ -1215,7 +1697,11 @@ export type Codes_On_Conflict = {
 
 /** Ordering options when selecting data from "codes". */
 export type Codes_Order_By = {
+  access_config_addresses?: InputMaybe<Order_By>;
+  access_config_permission?: InputMaybe<Order_By>;
   account?: InputMaybe<Accounts_Order_By>;
+  code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Order_By>;
+  contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Order_By>;
   contract_instantiated?: InputMaybe<Order_By>;
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
@@ -1232,6 +1718,10 @@ export type Codes_Pk_Columns_Input = {
 /** select columns of table "codes" */
 export enum Codes_Select_Column {
   /** column name */
+  AccessConfigAddresses = "access_config_addresses",
+  /** column name */
+  AccessConfigPermission = "access_config_permission",
+  /** column name */
   ContractInstantiated = "contract_instantiated",
   /** column name */
   Id = "id",
@@ -1243,6 +1733,8 @@ export enum Codes_Select_Column {
 
 /** input type for updating data in table "codes" */
 export type Codes_Set_Input = {
+  access_config_addresses?: InputMaybe<Scalars["json"]>;
+  access_config_permission?: InputMaybe<Scalars["String"]>;
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
@@ -1310,6 +1802,8 @@ export type Codes_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Codes_Stream_Cursor_Value_Input = {
+  access_config_addresses?: InputMaybe<Scalars["json"]>;
+  access_config_permission?: InputMaybe<Scalars["String"]>;
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
@@ -1335,6 +1829,10 @@ export type Codes_Sum_Order_By = {
 
 /** update columns of table "codes" */
 export enum Codes_Update_Column {
+  /** column name */
+  AccessConfigAddresses = "access_config_addresses",
+  /** column name */
+  AccessConfigPermission = "access_config_permission",
   /** column name */
   ContractInstantiated = "contract_instantiated",
   /** column name */
@@ -1402,6 +1900,679 @@ export type Codes_Variance_Order_By = {
   id?: InputMaybe<Order_By>;
   transaction_id?: InputMaybe<Order_By>;
   uploader?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "contract_histories" */
+export type Contract_Histories = {
+  __typename?: "contract_histories";
+  /** An object relationship */
+  account: Accounts;
+  /** An object relationship */
+  block: Blocks;
+  block_height: Scalars["Int"];
+  /** An object relationship */
+  code: Codes;
+  code_id: Scalars["Int"];
+  /** An object relationship */
+  contract: Contracts;
+  contract_id: Scalars["Int"];
+  remark: Scalars["json"];
+  sender: Scalars["Int"];
+};
+
+/** columns and relationships of "contract_histories" */
+export type Contract_HistoriesRemarkArgs = {
+  path?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregated selection of "contract_histories" */
+export type Contract_Histories_Aggregate = {
+  __typename?: "contract_histories_aggregate";
+  aggregate?: Maybe<Contract_Histories_Aggregate_Fields>;
+  nodes: Array<Contract_Histories>;
+};
+
+export type Contract_Histories_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Contract_Histories_Aggregate_Bool_Exp_Count>;
+};
+
+export type Contract_Histories_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Contract_Histories_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "contract_histories" */
+export type Contract_Histories_Aggregate_Fields = {
+  __typename?: "contract_histories_aggregate_fields";
+  avg?: Maybe<Contract_Histories_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Contract_Histories_Max_Fields>;
+  min?: Maybe<Contract_Histories_Min_Fields>;
+  stddev?: Maybe<Contract_Histories_Stddev_Fields>;
+  stddev_pop?: Maybe<Contract_Histories_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Contract_Histories_Stddev_Samp_Fields>;
+  sum?: Maybe<Contract_Histories_Sum_Fields>;
+  var_pop?: Maybe<Contract_Histories_Var_Pop_Fields>;
+  var_samp?: Maybe<Contract_Histories_Var_Samp_Fields>;
+  variance?: Maybe<Contract_Histories_Variance_Fields>;
+};
+
+/** aggregate fields of "contract_histories" */
+export type Contract_Histories_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "contract_histories" */
+export type Contract_Histories_Aggregate_Order_By = {
+  avg?: InputMaybe<Contract_Histories_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Contract_Histories_Max_Order_By>;
+  min?: InputMaybe<Contract_Histories_Min_Order_By>;
+  stddev?: InputMaybe<Contract_Histories_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Contract_Histories_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Contract_Histories_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Contract_Histories_Sum_Order_By>;
+  var_pop?: InputMaybe<Contract_Histories_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Contract_Histories_Var_Samp_Order_By>;
+  variance?: InputMaybe<Contract_Histories_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "contract_histories" */
+export type Contract_Histories_Arr_Rel_Insert_Input = {
+  data: Array<Contract_Histories_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Contract_Histories_Avg_Fields = {
+  __typename?: "contract_histories_avg_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  code_id?: Maybe<Scalars["Float"]>;
+  contract_id?: Maybe<Scalars["Float"]>;
+  sender?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "contract_histories" */
+export type Contract_Histories_Avg_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "contract_histories". All fields are combined with a logical 'AND'. */
+export type Contract_Histories_Bool_Exp = {
+  _and?: InputMaybe<Array<Contract_Histories_Bool_Exp>>;
+  _not?: InputMaybe<Contract_Histories_Bool_Exp>;
+  _or?: InputMaybe<Array<Contract_Histories_Bool_Exp>>;
+  account?: InputMaybe<Accounts_Bool_Exp>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  block_height?: InputMaybe<Int_Comparison_Exp>;
+  code?: InputMaybe<Codes_Bool_Exp>;
+  code_id?: InputMaybe<Int_Comparison_Exp>;
+  contract?: InputMaybe<Contracts_Bool_Exp>;
+  contract_id?: InputMaybe<Int_Comparison_Exp>;
+  remark?: InputMaybe<Json_Comparison_Exp>;
+  sender?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "contract_histories" */
+export type Contract_Histories_Inc_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  code_id?: InputMaybe<Scalars["Int"]>;
+  contract_id?: InputMaybe<Scalars["Int"]>;
+  sender?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "contract_histories" */
+export type Contract_Histories_Insert_Input = {
+  account?: InputMaybe<Accounts_Obj_Rel_Insert_Input>;
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  code?: InputMaybe<Codes_Obj_Rel_Insert_Input>;
+  code_id?: InputMaybe<Scalars["Int"]>;
+  contract?: InputMaybe<Contracts_Obj_Rel_Insert_Input>;
+  contract_id?: InputMaybe<Scalars["Int"]>;
+  remark?: InputMaybe<Scalars["json"]>;
+  sender?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate max on columns */
+export type Contract_Histories_Max_Fields = {
+  __typename?: "contract_histories_max_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  code_id?: Maybe<Scalars["Int"]>;
+  contract_id?: Maybe<Scalars["Int"]>;
+  sender?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "contract_histories" */
+export type Contract_Histories_Max_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Contract_Histories_Min_Fields = {
+  __typename?: "contract_histories_min_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  code_id?: Maybe<Scalars["Int"]>;
+  contract_id?: Maybe<Scalars["Int"]>;
+  sender?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "contract_histories" */
+export type Contract_Histories_Min_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "contract_histories" */
+export type Contract_Histories_Mutation_Response = {
+  __typename?: "contract_histories_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Contract_Histories>;
+};
+
+/** Ordering options when selecting data from "contract_histories". */
+export type Contract_Histories_Order_By = {
+  account?: InputMaybe<Accounts_Order_By>;
+  block?: InputMaybe<Blocks_Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  code?: InputMaybe<Codes_Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract?: InputMaybe<Contracts_Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  remark?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "contract_histories" */
+export enum Contract_Histories_Select_Column {
+  /** column name */
+  BlockHeight = "block_height",
+  /** column name */
+  CodeId = "code_id",
+  /** column name */
+  ContractId = "contract_id",
+  /** column name */
+  Remark = "remark",
+  /** column name */
+  Sender = "sender",
+}
+
+/** input type for updating data in table "contract_histories" */
+export type Contract_Histories_Set_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  code_id?: InputMaybe<Scalars["Int"]>;
+  contract_id?: InputMaybe<Scalars["Int"]>;
+  remark?: InputMaybe<Scalars["json"]>;
+  sender?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate stddev on columns */
+export type Contract_Histories_Stddev_Fields = {
+  __typename?: "contract_histories_stddev_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  code_id?: Maybe<Scalars["Float"]>;
+  contract_id?: Maybe<Scalars["Float"]>;
+  sender?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "contract_histories" */
+export type Contract_Histories_Stddev_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Contract_Histories_Stddev_Pop_Fields = {
+  __typename?: "contract_histories_stddev_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  code_id?: Maybe<Scalars["Float"]>;
+  contract_id?: Maybe<Scalars["Float"]>;
+  sender?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "contract_histories" */
+export type Contract_Histories_Stddev_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Contract_Histories_Stddev_Samp_Fields = {
+  __typename?: "contract_histories_stddev_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  code_id?: Maybe<Scalars["Float"]>;
+  contract_id?: Maybe<Scalars["Float"]>;
+  sender?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "contract_histories" */
+export type Contract_Histories_Stddev_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "contract_histories" */
+export type Contract_Histories_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Contract_Histories_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Contract_Histories_Stream_Cursor_Value_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  code_id?: InputMaybe<Scalars["Int"]>;
+  contract_id?: InputMaybe<Scalars["Int"]>;
+  remark?: InputMaybe<Scalars["json"]>;
+  sender?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate sum on columns */
+export type Contract_Histories_Sum_Fields = {
+  __typename?: "contract_histories_sum_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  code_id?: Maybe<Scalars["Int"]>;
+  contract_id?: Maybe<Scalars["Int"]>;
+  sender?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "contract_histories" */
+export type Contract_Histories_Sum_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+export type Contract_Histories_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Contract_Histories_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Contract_Histories_Set_Input>;
+  where: Contract_Histories_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Contract_Histories_Var_Pop_Fields = {
+  __typename?: "contract_histories_var_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  code_id?: Maybe<Scalars["Float"]>;
+  contract_id?: Maybe<Scalars["Float"]>;
+  sender?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "contract_histories" */
+export type Contract_Histories_Var_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Contract_Histories_Var_Samp_Fields = {
+  __typename?: "contract_histories_var_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  code_id?: Maybe<Scalars["Float"]>;
+  contract_id?: Maybe<Scalars["Float"]>;
+  sender?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "contract_histories" */
+export type Contract_Histories_Var_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Contract_Histories_Variance_Fields = {
+  __typename?: "contract_histories_variance_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  code_id?: Maybe<Scalars["Float"]>;
+  contract_id?: Maybe<Scalars["Float"]>;
+  sender?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "contract_histories" */
+export type Contract_Histories_Variance_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  code_id?: InputMaybe<Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "contract_proposals" */
+export type Contract_Proposals = {
+  __typename?: "contract_proposals";
+  /** An object relationship */
+  block?: Maybe<Blocks>;
+  /** An object relationship */
+  contract: Contracts;
+  contract_id: Scalars["Int"];
+  /** An object relationship */
+  proposal: Proposals;
+  proposal_id: Scalars["Int"];
+  resolved_height?: Maybe<Scalars["Int"]>;
+};
+
+/** aggregated selection of "contract_proposals" */
+export type Contract_Proposals_Aggregate = {
+  __typename?: "contract_proposals_aggregate";
+  aggregate?: Maybe<Contract_Proposals_Aggregate_Fields>;
+  nodes: Array<Contract_Proposals>;
+};
+
+export type Contract_Proposals_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Contract_Proposals_Aggregate_Bool_Exp_Count>;
+};
+
+export type Contract_Proposals_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Contract_Proposals_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "contract_proposals" */
+export type Contract_Proposals_Aggregate_Fields = {
+  __typename?: "contract_proposals_aggregate_fields";
+  avg?: Maybe<Contract_Proposals_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Contract_Proposals_Max_Fields>;
+  min?: Maybe<Contract_Proposals_Min_Fields>;
+  stddev?: Maybe<Contract_Proposals_Stddev_Fields>;
+  stddev_pop?: Maybe<Contract_Proposals_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Contract_Proposals_Stddev_Samp_Fields>;
+  sum?: Maybe<Contract_Proposals_Sum_Fields>;
+  var_pop?: Maybe<Contract_Proposals_Var_Pop_Fields>;
+  var_samp?: Maybe<Contract_Proposals_Var_Samp_Fields>;
+  variance?: Maybe<Contract_Proposals_Variance_Fields>;
+};
+
+/** aggregate fields of "contract_proposals" */
+export type Contract_Proposals_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "contract_proposals" */
+export type Contract_Proposals_Aggregate_Order_By = {
+  avg?: InputMaybe<Contract_Proposals_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Contract_Proposals_Max_Order_By>;
+  min?: InputMaybe<Contract_Proposals_Min_Order_By>;
+  stddev?: InputMaybe<Contract_Proposals_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Contract_Proposals_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Contract_Proposals_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Contract_Proposals_Sum_Order_By>;
+  var_pop?: InputMaybe<Contract_Proposals_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Contract_Proposals_Var_Samp_Order_By>;
+  variance?: InputMaybe<Contract_Proposals_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "contract_proposals" */
+export type Contract_Proposals_Arr_Rel_Insert_Input = {
+  data: Array<Contract_Proposals_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Contract_Proposals_Avg_Fields = {
+  __typename?: "contract_proposals_avg_fields";
+  contract_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "contract_proposals" */
+export type Contract_Proposals_Avg_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "contract_proposals". All fields are combined with a logical 'AND'. */
+export type Contract_Proposals_Bool_Exp = {
+  _and?: InputMaybe<Array<Contract_Proposals_Bool_Exp>>;
+  _not?: InputMaybe<Contract_Proposals_Bool_Exp>;
+  _or?: InputMaybe<Array<Contract_Proposals_Bool_Exp>>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  contract?: InputMaybe<Contracts_Bool_Exp>;
+  contract_id?: InputMaybe<Int_Comparison_Exp>;
+  proposal?: InputMaybe<Proposals_Bool_Exp>;
+  proposal_id?: InputMaybe<Int_Comparison_Exp>;
+  resolved_height?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "contract_proposals" */
+export type Contract_Proposals_Inc_Input = {
+  contract_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "contract_proposals" */
+export type Contract_Proposals_Insert_Input = {
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  contract?: InputMaybe<Contracts_Obj_Rel_Insert_Input>;
+  contract_id?: InputMaybe<Scalars["Int"]>;
+  proposal?: InputMaybe<Proposals_Obj_Rel_Insert_Input>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate max on columns */
+export type Contract_Proposals_Max_Fields = {
+  __typename?: "contract_proposals_max_fields";
+  contract_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "contract_proposals" */
+export type Contract_Proposals_Max_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Contract_Proposals_Min_Fields = {
+  __typename?: "contract_proposals_min_fields";
+  contract_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "contract_proposals" */
+export type Contract_Proposals_Min_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "contract_proposals" */
+export type Contract_Proposals_Mutation_Response = {
+  __typename?: "contract_proposals_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Contract_Proposals>;
+};
+
+/** Ordering options when selecting data from "contract_proposals". */
+export type Contract_Proposals_Order_By = {
+  block?: InputMaybe<Blocks_Order_By>;
+  contract?: InputMaybe<Contracts_Order_By>;
+  contract_id?: InputMaybe<Order_By>;
+  proposal?: InputMaybe<Proposals_Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "contract_proposals" */
+export enum Contract_Proposals_Select_Column {
+  /** column name */
+  ContractId = "contract_id",
+  /** column name */
+  ProposalId = "proposal_id",
+  /** column name */
+  ResolvedHeight = "resolved_height",
+}
+
+/** input type for updating data in table "contract_proposals" */
+export type Contract_Proposals_Set_Input = {
+  contract_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate stddev on columns */
+export type Contract_Proposals_Stddev_Fields = {
+  __typename?: "contract_proposals_stddev_fields";
+  contract_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "contract_proposals" */
+export type Contract_Proposals_Stddev_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Contract_Proposals_Stddev_Pop_Fields = {
+  __typename?: "contract_proposals_stddev_pop_fields";
+  contract_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "contract_proposals" */
+export type Contract_Proposals_Stddev_Pop_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Contract_Proposals_Stddev_Samp_Fields = {
+  __typename?: "contract_proposals_stddev_samp_fields";
+  contract_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "contract_proposals" */
+export type Contract_Proposals_Stddev_Samp_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "contract_proposals" */
+export type Contract_Proposals_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Contract_Proposals_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Contract_Proposals_Stream_Cursor_Value_Input = {
+  contract_id?: InputMaybe<Scalars["Int"]>;
+  proposal_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate sum on columns */
+export type Contract_Proposals_Sum_Fields = {
+  __typename?: "contract_proposals_sum_fields";
+  contract_id?: Maybe<Scalars["Int"]>;
+  proposal_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "contract_proposals" */
+export type Contract_Proposals_Sum_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+export type Contract_Proposals_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Contract_Proposals_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Contract_Proposals_Set_Input>;
+  where: Contract_Proposals_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Contract_Proposals_Var_Pop_Fields = {
+  __typename?: "contract_proposals_var_pop_fields";
+  contract_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "contract_proposals" */
+export type Contract_Proposals_Var_Pop_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Contract_Proposals_Var_Samp_Fields = {
+  __typename?: "contract_proposals_var_samp_fields";
+  contract_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "contract_proposals" */
+export type Contract_Proposals_Var_Samp_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Contract_Proposals_Variance_Fields = {
+  __typename?: "contract_proposals_variance_fields";
+  contract_id?: Maybe<Scalars["Float"]>;
+  proposal_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "contract_proposals" */
+export type Contract_Proposals_Variance_Order_By = {
+  contract_id?: InputMaybe<Order_By>;
+  proposal_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "contract_transactions" */
@@ -1697,6 +2868,14 @@ export type Contracts = {
   code_id: Scalars["Int"];
   contract_executed: Scalars["Int"];
   /** An array relationship */
+  contract_histories: Array<Contract_Histories>;
+  /** An aggregate relationship */
+  contract_histories_aggregate: Contract_Histories_Aggregate;
+  /** An array relationship */
+  contract_proposals: Array<Contract_Proposals>;
+  /** An aggregate relationship */
+  contract_proposals_aggregate: Contract_Proposals_Aggregate;
+  /** An array relationship */
   contract_transactions: Array<Contract_Transactions>;
   /** An aggregate relationship */
   contract_transactions_aggregate: Contract_Transactions_Aggregate;
@@ -1707,6 +2886,42 @@ export type Contracts = {
   label: Scalars["String"];
   /** An object relationship */
   transaction?: Maybe<Transactions>;
+};
+
+/** columns and relationships of "contracts" */
+export type ContractsContract_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "contracts" */
+export type ContractsContract_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+/** columns and relationships of "contracts" */
+export type ContractsContract_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "contracts" */
+export type ContractsContract_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
 };
 
 /** columns and relationships of "contracts" */
@@ -1822,6 +3037,10 @@ export type Contracts_Bool_Exp = {
   code?: InputMaybe<Codes_Bool_Exp>;
   code_id?: InputMaybe<Int_Comparison_Exp>;
   contract_executed?: InputMaybe<Int_Comparison_Exp>;
+  contract_histories?: InputMaybe<Contract_Histories_Bool_Exp>;
+  contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Bool_Exp>;
+  contract_proposals?: InputMaybe<Contract_Proposals_Bool_Exp>;
+  contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Bool_Exp>;
   contract_transactions?: InputMaybe<Contract_Transactions_Bool_Exp>;
   contract_transactions_aggregate?: InputMaybe<Contract_Transactions_Aggregate_Bool_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
@@ -1859,6 +3078,8 @@ export type Contracts_Insert_Input = {
   code?: InputMaybe<Codes_Obj_Rel_Insert_Input>;
   code_id?: InputMaybe<Scalars["Int"]>;
   contract_executed?: InputMaybe<Scalars["Int"]>;
+  contract_histories?: InputMaybe<Contract_Histories_Arr_Rel_Insert_Input>;
+  contract_proposals?: InputMaybe<Contract_Proposals_Arr_Rel_Insert_Input>;
   contract_transactions?: InputMaybe<Contract_Transactions_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars["Int"]>;
   init_by?: InputMaybe<Scalars["Int"]>;
@@ -1954,6 +3175,8 @@ export type Contracts_Order_By = {
   code?: InputMaybe<Codes_Order_By>;
   code_id?: InputMaybe<Order_By>;
   contract_executed?: InputMaybe<Order_By>;
+  contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Order_By>;
+  contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Order_By>;
   contract_transactions_aggregate?: InputMaybe<Contract_Transactions_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   init_by?: InputMaybe<Order_By>;
@@ -2237,10 +3460,16 @@ export type Mutation_Root = {
   delete_blocks?: Maybe<Blocks_Mutation_Response>;
   /** delete single row from the table: "blocks" */
   delete_blocks_by_pk?: Maybe<Blocks>;
+  /** delete data from the table: "code_proposals" */
+  delete_code_proposals?: Maybe<Code_Proposals_Mutation_Response>;
   /** delete data from the table: "codes" */
   delete_codes?: Maybe<Codes_Mutation_Response>;
   /** delete single row from the table: "codes" */
   delete_codes_by_pk?: Maybe<Codes>;
+  /** delete data from the table: "contract_histories" */
+  delete_contract_histories?: Maybe<Contract_Histories_Mutation_Response>;
+  /** delete data from the table: "contract_proposals" */
+  delete_contract_proposals?: Maybe<Contract_Proposals_Mutation_Response>;
   /** delete data from the table: "contract_transactions" */
   delete_contract_transactions?: Maybe<Contract_Transactions_Mutation_Response>;
   /** delete data from the table: "contracts" */
@@ -2271,10 +3500,22 @@ export type Mutation_Root = {
   insert_blocks?: Maybe<Blocks_Mutation_Response>;
   /** insert a single row into the table: "blocks" */
   insert_blocks_one?: Maybe<Blocks>;
+  /** insert data into the table: "code_proposals" */
+  insert_code_proposals?: Maybe<Code_Proposals_Mutation_Response>;
+  /** insert a single row into the table: "code_proposals" */
+  insert_code_proposals_one?: Maybe<Code_Proposals>;
   /** insert data into the table: "codes" */
   insert_codes?: Maybe<Codes_Mutation_Response>;
   /** insert a single row into the table: "codes" */
   insert_codes_one?: Maybe<Codes>;
+  /** insert data into the table: "contract_histories" */
+  insert_contract_histories?: Maybe<Contract_Histories_Mutation_Response>;
+  /** insert a single row into the table: "contract_histories" */
+  insert_contract_histories_one?: Maybe<Contract_Histories>;
+  /** insert data into the table: "contract_proposals" */
+  insert_contract_proposals?: Maybe<Contract_Proposals_Mutation_Response>;
+  /** insert a single row into the table: "contract_proposals" */
+  insert_contract_proposals_one?: Maybe<Contract_Proposals>;
   /** insert data into the table: "contract_transactions" */
   insert_contract_transactions?: Maybe<Contract_Transactions_Mutation_Response>;
   /** insert a single row into the table: "contract_transactions" */
@@ -2315,12 +3556,30 @@ export type Mutation_Root = {
   update_blocks_by_pk?: Maybe<Blocks>;
   /** update multiples rows of table: "blocks" */
   update_blocks_many?: Maybe<Array<Maybe<Blocks_Mutation_Response>>>;
+  /** update data of the table: "code_proposals" */
+  update_code_proposals?: Maybe<Code_Proposals_Mutation_Response>;
+  /** update multiples rows of table: "code_proposals" */
+  update_code_proposals_many?: Maybe<
+    Array<Maybe<Code_Proposals_Mutation_Response>>
+  >;
   /** update data of the table: "codes" */
   update_codes?: Maybe<Codes_Mutation_Response>;
   /** update single row of the table: "codes" */
   update_codes_by_pk?: Maybe<Codes>;
   /** update multiples rows of table: "codes" */
   update_codes_many?: Maybe<Array<Maybe<Codes_Mutation_Response>>>;
+  /** update data of the table: "contract_histories" */
+  update_contract_histories?: Maybe<Contract_Histories_Mutation_Response>;
+  /** update multiples rows of table: "contract_histories" */
+  update_contract_histories_many?: Maybe<
+    Array<Maybe<Contract_Histories_Mutation_Response>>
+  >;
+  /** update data of the table: "contract_proposals" */
+  update_contract_proposals?: Maybe<Contract_Proposals_Mutation_Response>;
+  /** update multiples rows of table: "contract_proposals" */
+  update_contract_proposals_many?: Maybe<
+    Array<Maybe<Contract_Proposals_Mutation_Response>>
+  >;
   /** update data of the table: "contract_transactions" */
   update_contract_transactions?: Maybe<Contract_Transactions_Mutation_Response>;
   /** update multiples rows of table: "contract_transactions" */
@@ -2387,6 +3646,11 @@ export type Mutation_RootDelete_Blocks_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootDelete_Code_ProposalsArgs = {
+  where: Code_Proposals_Bool_Exp;
+};
+
+/** mutation root */
 export type Mutation_RootDelete_CodesArgs = {
   where: Codes_Bool_Exp;
 };
@@ -2394,6 +3658,16 @@ export type Mutation_RootDelete_CodesArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Codes_By_PkArgs = {
   id: Scalars["Int"];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Contract_HistoriesArgs = {
+  where: Contract_Histories_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Contract_ProposalsArgs = {
+  where: Contract_Proposals_Bool_Exp;
 };
 
 /** mutation root */
@@ -2478,6 +3752,16 @@ export type Mutation_RootInsert_Blocks_OneArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootInsert_Code_ProposalsArgs = {
+  objects: Array<Code_Proposals_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Code_Proposals_OneArgs = {
+  object: Code_Proposals_Insert_Input;
+};
+
+/** mutation root */
 export type Mutation_RootInsert_CodesArgs = {
   objects: Array<Codes_Insert_Input>;
   on_conflict?: InputMaybe<Codes_On_Conflict>;
@@ -2487,6 +3771,26 @@ export type Mutation_RootInsert_CodesArgs = {
 export type Mutation_RootInsert_Codes_OneArgs = {
   object: Codes_Insert_Input;
   on_conflict?: InputMaybe<Codes_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Contract_HistoriesArgs = {
+  objects: Array<Contract_Histories_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Contract_Histories_OneArgs = {
+  object: Contract_Histories_Insert_Input;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Contract_ProposalsArgs = {
+  objects: Array<Contract_Proposals_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Contract_Proposals_OneArgs = {
+  object: Contract_Proposals_Insert_Input;
 };
 
 /** mutation root */
@@ -2605,6 +3909,18 @@ export type Mutation_RootUpdate_Blocks_ManyArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Code_ProposalsArgs = {
+  _inc?: InputMaybe<Code_Proposals_Inc_Input>;
+  _set?: InputMaybe<Code_Proposals_Set_Input>;
+  where: Code_Proposals_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Code_Proposals_ManyArgs = {
+  updates: Array<Code_Proposals_Updates>;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_CodesArgs = {
   _inc?: InputMaybe<Codes_Inc_Input>;
   _set?: InputMaybe<Codes_Set_Input>;
@@ -2621,6 +3937,30 @@ export type Mutation_RootUpdate_Codes_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Codes_ManyArgs = {
   updates: Array<Codes_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Contract_HistoriesArgs = {
+  _inc?: InputMaybe<Contract_Histories_Inc_Input>;
+  _set?: InputMaybe<Contract_Histories_Set_Input>;
+  where: Contract_Histories_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Contract_Histories_ManyArgs = {
+  updates: Array<Contract_Histories_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Contract_ProposalsArgs = {
+  _inc?: InputMaybe<Contract_Proposals_Inc_Input>;
+  _set?: InputMaybe<Contract_Proposals_Set_Input>;
+  where: Contract_Proposals_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Contract_Proposals_ManyArgs = {
+  updates: Array<Contract_Proposals_Updates>;
 };
 
 /** mutation root */
@@ -2732,7 +4072,15 @@ export type Proposals = {
   __typename?: "proposals";
   /** An object relationship */
   account?: Maybe<Accounts>;
+  /** An array relationship */
+  code_proposals: Array<Code_Proposals>;
+  /** An aggregate relationship */
+  code_proposals_aggregate: Code_Proposals_Aggregate;
   content?: Maybe<Scalars["json"]>;
+  /** An array relationship */
+  contract_proposals: Array<Contract_Proposals>;
+  /** An aggregate relationship */
+  contract_proposals_aggregate: Contract_Proposals_Aggregate;
   deposit_end_time: Scalars["timestamp"];
   description: Scalars["String"];
   id: Scalars["Int"];
@@ -2747,8 +4095,44 @@ export type Proposals = {
 };
 
 /** columns and relationships of "proposals" */
+export type ProposalsCode_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "proposals" */
+export type ProposalsCode_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "proposals" */
 export type ProposalsContentArgs = {
   path?: InputMaybe<Scalars["String"]>;
+};
+
+/** columns and relationships of "proposals" */
+export type ProposalsContract_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "proposals" */
+export type ProposalsContract_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
 };
 
 /** aggregated selection of "proposals" */
@@ -2832,7 +4216,11 @@ export type Proposals_Bool_Exp = {
   _not?: InputMaybe<Proposals_Bool_Exp>;
   _or?: InputMaybe<Array<Proposals_Bool_Exp>>;
   account?: InputMaybe<Accounts_Bool_Exp>;
+  code_proposals?: InputMaybe<Code_Proposals_Bool_Exp>;
+  code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Bool_Exp>;
   content?: InputMaybe<Json_Comparison_Exp>;
+  contract_proposals?: InputMaybe<Contract_Proposals_Bool_Exp>;
+  contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Bool_Exp>;
   deposit_end_time?: InputMaybe<Timestamp_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
@@ -2861,7 +4249,9 @@ export type Proposals_Inc_Input = {
 /** input type for inserting data into table "proposals" */
 export type Proposals_Insert_Input = {
   account?: InputMaybe<Accounts_Obj_Rel_Insert_Input>;
+  code_proposals?: InputMaybe<Code_Proposals_Arr_Rel_Insert_Input>;
   content?: InputMaybe<Scalars["json"]>;
+  contract_proposals?: InputMaybe<Contract_Proposals_Arr_Rel_Insert_Input>;
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
@@ -2946,6 +4336,13 @@ export type Proposals_Mutation_Response = {
   returning: Array<Proposals>;
 };
 
+/** input type for inserting object relation for remote table "proposals" */
+export type Proposals_Obj_Rel_Insert_Input = {
+  data: Proposals_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Proposals_On_Conflict>;
+};
+
 /** on_conflict condition type for table "proposals" */
 export type Proposals_On_Conflict = {
   constraint: Proposals_Constraint;
@@ -2956,7 +4353,9 @@ export type Proposals_On_Conflict = {
 /** Ordering options when selecting data from "proposals". */
 export type Proposals_Order_By = {
   account?: InputMaybe<Accounts_Order_By>;
+  code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Order_By>;
   content?: InputMaybe<Order_By>;
+  contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Order_By>;
   deposit_end_time?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -3204,11 +4603,23 @@ export type Query_Root = {
   /** fetch data from the table: "blocks" using primary key columns */
   blocks_by_pk?: Maybe<Blocks>;
   /** An array relationship */
+  code_proposals: Array<Code_Proposals>;
+  /** An aggregate relationship */
+  code_proposals_aggregate: Code_Proposals_Aggregate;
+  /** An array relationship */
   codes: Array<Codes>;
   /** An aggregate relationship */
   codes_aggregate: Codes_Aggregate;
   /** fetch data from the table: "codes" using primary key columns */
   codes_by_pk?: Maybe<Codes>;
+  /** An array relationship */
+  contract_histories: Array<Contract_Histories>;
+  /** An aggregate relationship */
+  contract_histories_aggregate: Contract_Histories_Aggregate;
+  /** An array relationship */
+  contract_proposals: Array<Contract_Proposals>;
+  /** An aggregate relationship */
+  contract_proposals_aggregate: Contract_Proposals_Aggregate;
   /** An array relationship */
   contract_transactions: Array<Contract_Transactions>;
   /** An aggregate relationship */
@@ -3300,6 +4711,22 @@ export type Query_RootBlocks_By_PkArgs = {
   height: Scalars["Int"];
 };
 
+export type Query_RootCode_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+export type Query_RootCode_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
 export type Query_RootCodesArgs = {
   distinct_on?: InputMaybe<Array<Codes_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -3318,6 +4745,38 @@ export type Query_RootCodes_AggregateArgs = {
 
 export type Query_RootCodes_By_PkArgs = {
   id: Scalars["Int"];
+};
+
+export type Query_RootContract_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+export type Query_RootContract_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+export type Query_RootContract_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
+};
+
+export type Query_RootContract_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
 };
 
 export type Query_RootContract_TransactionsArgs = {
@@ -3443,6 +4902,12 @@ export type Subscription_Root = {
   /** fetch data from the table in a streaming manner: "blocks" */
   blocks_stream: Array<Blocks>;
   /** An array relationship */
+  code_proposals: Array<Code_Proposals>;
+  /** An aggregate relationship */
+  code_proposals_aggregate: Code_Proposals_Aggregate;
+  /** fetch data from the table in a streaming manner: "code_proposals" */
+  code_proposals_stream: Array<Code_Proposals>;
+  /** An array relationship */
   codes: Array<Codes>;
   /** An aggregate relationship */
   codes_aggregate: Codes_Aggregate;
@@ -3450,6 +4915,18 @@ export type Subscription_Root = {
   codes_by_pk?: Maybe<Codes>;
   /** fetch data from the table in a streaming manner: "codes" */
   codes_stream: Array<Codes>;
+  /** An array relationship */
+  contract_histories: Array<Contract_Histories>;
+  /** An aggregate relationship */
+  contract_histories_aggregate: Contract_Histories_Aggregate;
+  /** fetch data from the table in a streaming manner: "contract_histories" */
+  contract_histories_stream: Array<Contract_Histories>;
+  /** An array relationship */
+  contract_proposals: Array<Contract_Proposals>;
+  /** An aggregate relationship */
+  contract_proposals_aggregate: Contract_Proposals_Aggregate;
+  /** fetch data from the table in a streaming manner: "contract_proposals" */
+  contract_proposals_stream: Array<Contract_Proposals>;
   /** An array relationship */
   contract_transactions: Array<Contract_Transactions>;
   /** An aggregate relationship */
@@ -3569,6 +5046,28 @@ export type Subscription_RootBlocks_StreamArgs = {
   where?: InputMaybe<Blocks_Bool_Exp>;
 };
 
+export type Subscription_RootCode_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+export type Subscription_RootCode_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Code_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Code_Proposals_Order_By>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
+export type Subscription_RootCode_Proposals_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Code_Proposals_Stream_Cursor_Input>>;
+  where?: InputMaybe<Code_Proposals_Bool_Exp>;
+};
+
 export type Subscription_RootCodesArgs = {
   distinct_on?: InputMaybe<Array<Codes_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -3593,6 +5092,50 @@ export type Subscription_RootCodes_StreamArgs = {
   batch_size: Scalars["Int"];
   cursor: Array<InputMaybe<Codes_Stream_Cursor_Input>>;
   where?: InputMaybe<Codes_Bool_Exp>;
+};
+
+export type Subscription_RootContract_HistoriesArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+export type Subscription_RootContract_Histories_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Histories_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Histories_Order_By>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+export type Subscription_RootContract_Histories_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Contract_Histories_Stream_Cursor_Input>>;
+  where?: InputMaybe<Contract_Histories_Bool_Exp>;
+};
+
+export type Subscription_RootContract_ProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
+};
+
+export type Subscription_RootContract_Proposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
+};
+
+export type Subscription_RootContract_Proposals_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Contract_Proposals_Stream_Cursor_Input>>;
+  where?: InputMaybe<Contract_Proposals_Bool_Exp>;
 };
 
 export type Subscription_RootContract_TransactionsArgs = {
@@ -4004,11 +5547,14 @@ export type Transactions = {
   gas_used: Scalars["Int"];
   hash: Scalars["bytea"];
   id: Scalars["Int"];
+  is_clear_admin: Scalars["Boolean"];
   is_execute: Scalars["Boolean"];
   is_ibc: Scalars["Boolean"];
   is_instantiate: Scalars["Boolean"];
+  is_migrate: Scalars["Boolean"];
   is_send: Scalars["Boolean"];
   is_store_code: Scalars["Boolean"];
+  is_update_admin: Scalars["Boolean"];
   memo: Scalars["String"];
   messages: Scalars["json"];
   sender: Scalars["Int"];
@@ -4211,11 +5757,14 @@ export type Transactions_Bool_Exp = {
   gas_used?: InputMaybe<Int_Comparison_Exp>;
   hash?: InputMaybe<Bytea_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
+  is_clear_admin?: InputMaybe<Boolean_Comparison_Exp>;
   is_execute?: InputMaybe<Boolean_Comparison_Exp>;
   is_ibc?: InputMaybe<Boolean_Comparison_Exp>;
   is_instantiate?: InputMaybe<Boolean_Comparison_Exp>;
+  is_migrate?: InputMaybe<Boolean_Comparison_Exp>;
   is_send?: InputMaybe<Boolean_Comparison_Exp>;
   is_store_code?: InputMaybe<Boolean_Comparison_Exp>;
+  is_update_admin?: InputMaybe<Boolean_Comparison_Exp>;
   memo?: InputMaybe<String_Comparison_Exp>;
   messages?: InputMaybe<Json_Comparison_Exp>;
   sender?: InputMaybe<Int_Comparison_Exp>;
@@ -4254,11 +5803,14 @@ export type Transactions_Insert_Input = {
   gas_used?: InputMaybe<Scalars["Int"]>;
   hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_clear_admin?: InputMaybe<Scalars["Boolean"]>;
   is_execute?: InputMaybe<Scalars["Boolean"]>;
   is_ibc?: InputMaybe<Scalars["Boolean"]>;
   is_instantiate?: InputMaybe<Scalars["Boolean"]>;
+  is_migrate?: InputMaybe<Scalars["Boolean"]>;
   is_send?: InputMaybe<Scalars["Boolean"]>;
   is_store_code?: InputMaybe<Scalars["Boolean"]>;
+  is_update_admin?: InputMaybe<Scalars["Boolean"]>;
   memo?: InputMaybe<Scalars["String"]>;
   messages?: InputMaybe<Scalars["json"]>;
   sender?: InputMaybe<Scalars["Int"]>;
@@ -4353,11 +5905,14 @@ export type Transactions_Order_By = {
   gas_used?: InputMaybe<Order_By>;
   hash?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  is_clear_admin?: InputMaybe<Order_By>;
   is_execute?: InputMaybe<Order_By>;
   is_ibc?: InputMaybe<Order_By>;
   is_instantiate?: InputMaybe<Order_By>;
+  is_migrate?: InputMaybe<Order_By>;
   is_send?: InputMaybe<Order_By>;
   is_store_code?: InputMaybe<Order_By>;
+  is_update_admin?: InputMaybe<Order_By>;
   memo?: InputMaybe<Order_By>;
   messages?: InputMaybe<Order_By>;
   sender?: InputMaybe<Order_By>;
@@ -4386,15 +5941,21 @@ export enum Transactions_Select_Column {
   /** column name */
   Id = "id",
   /** column name */
+  IsClearAdmin = "is_clear_admin",
+  /** column name */
   IsExecute = "is_execute",
   /** column name */
   IsIbc = "is_ibc",
   /** column name */
   IsInstantiate = "is_instantiate",
   /** column name */
+  IsMigrate = "is_migrate",
+  /** column name */
   IsSend = "is_send",
   /** column name */
   IsStoreCode = "is_store_code",
+  /** column name */
+  IsUpdateAdmin = "is_update_admin",
   /** column name */
   Memo = "memo",
   /** column name */
@@ -4408,15 +5969,21 @@ export enum Transactions_Select_Column {
 /** select "transactions_aggregate_bool_exp_bool_and_arguments_columns" columns of table "transactions" */
 export enum Transactions_Select_Column_Transactions_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
   /** column name */
+  IsClearAdmin = "is_clear_admin",
+  /** column name */
   IsExecute = "is_execute",
   /** column name */
   IsIbc = "is_ibc",
   /** column name */
   IsInstantiate = "is_instantiate",
   /** column name */
+  IsMigrate = "is_migrate",
+  /** column name */
   IsSend = "is_send",
   /** column name */
   IsStoreCode = "is_store_code",
+  /** column name */
+  IsUpdateAdmin = "is_update_admin",
   /** column name */
   Success = "success",
 }
@@ -4424,15 +5991,21 @@ export enum Transactions_Select_Column_Transactions_Aggregate_Bool_Exp_Bool_And_
 /** select "transactions_aggregate_bool_exp_bool_or_arguments_columns" columns of table "transactions" */
 export enum Transactions_Select_Column_Transactions_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
   /** column name */
+  IsClearAdmin = "is_clear_admin",
+  /** column name */
   IsExecute = "is_execute",
   /** column name */
   IsIbc = "is_ibc",
   /** column name */
   IsInstantiate = "is_instantiate",
   /** column name */
+  IsMigrate = "is_migrate",
+  /** column name */
   IsSend = "is_send",
   /** column name */
   IsStoreCode = "is_store_code",
+  /** column name */
+  IsUpdateAdmin = "is_update_admin",
   /** column name */
   Success = "success",
 }
@@ -4446,11 +6019,14 @@ export type Transactions_Set_Input = {
   gas_used?: InputMaybe<Scalars["Int"]>;
   hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_clear_admin?: InputMaybe<Scalars["Boolean"]>;
   is_execute?: InputMaybe<Scalars["Boolean"]>;
   is_ibc?: InputMaybe<Scalars["Boolean"]>;
   is_instantiate?: InputMaybe<Scalars["Boolean"]>;
+  is_migrate?: InputMaybe<Scalars["Boolean"]>;
   is_send?: InputMaybe<Scalars["Boolean"]>;
   is_store_code?: InputMaybe<Scalars["Boolean"]>;
+  is_update_admin?: InputMaybe<Scalars["Boolean"]>;
   memo?: InputMaybe<Scalars["String"]>;
   messages?: InputMaybe<Scalars["json"]>;
   sender?: InputMaybe<Scalars["Int"]>;
@@ -4531,11 +6107,14 @@ export type Transactions_Stream_Cursor_Value_Input = {
   gas_used?: InputMaybe<Scalars["Int"]>;
   hash?: InputMaybe<Scalars["bytea"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_clear_admin?: InputMaybe<Scalars["Boolean"]>;
   is_execute?: InputMaybe<Scalars["Boolean"]>;
   is_ibc?: InputMaybe<Scalars["Boolean"]>;
   is_instantiate?: InputMaybe<Scalars["Boolean"]>;
+  is_migrate?: InputMaybe<Scalars["Boolean"]>;
   is_send?: InputMaybe<Scalars["Boolean"]>;
   is_store_code?: InputMaybe<Scalars["Boolean"]>;
+  is_update_admin?: InputMaybe<Scalars["Boolean"]>;
   memo?: InputMaybe<Scalars["String"]>;
   messages?: InputMaybe<Scalars["json"]>;
   sender?: InputMaybe<Scalars["Int"]>;
@@ -4578,15 +6157,21 @@ export enum Transactions_Update_Column {
   /** column name */
   Id = "id",
   /** column name */
+  IsClearAdmin = "is_clear_admin",
+  /** column name */
   IsExecute = "is_execute",
   /** column name */
   IsIbc = "is_ibc",
   /** column name */
   IsInstantiate = "is_instantiate",
   /** column name */
+  IsMigrate = "is_migrate",
+  /** column name */
   IsSend = "is_send",
   /** column name */
   IsStoreCode = "is_store_code",
+  /** column name */
+  IsUpdateAdmin = "is_update_admin",
   /** column name */
   Memo = "memo",
   /** column name */
@@ -4671,6 +6256,8 @@ export type GetCodeListByUserQueryQuery = {
   codes: Array<{
     __typename?: "codes";
     id: number;
+    access_config_permission: string;
+    access_config_addresses: any;
     instantiated: number;
     account: { __typename?: "accounts"; uploader: string };
   }>;
@@ -4685,6 +6272,8 @@ export type GetCodeListByIDsQueryQuery = {
   codes: Array<{
     __typename?: "codes";
     id: number;
+    access_config_permission: string;
+    access_config_addresses: any;
     instantiated: number;
     account: { __typename?: "accounts"; uploader: string };
   }>;
@@ -4732,6 +6321,102 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
     __typename?: "contracts";
     init_msg?: string | null;
     transaction?: { __typename?: "transactions"; hash: any } | null;
+  } | null;
+};
+
+export type GetExecuteTxsByContractAddressQueryVariables = Exact<{
+  contractAddress: Scalars["String"];
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetExecuteTxsByContractAddressQuery = {
+  __typename?: "query_root";
+  contract_transactions: Array<{
+    __typename?: "contract_transactions";
+    transaction: {
+      __typename?: "transactions";
+      hash: any;
+      messages: any;
+      success: boolean;
+      account: { __typename?: "accounts"; address: string };
+      block: { __typename?: "blocks"; height: number; timestamp: any };
+    };
+  }>;
+};
+
+export type GetExecuteTxsCountByContractAddressQueryVariables = Exact<{
+  contractAddress: Scalars["String"];
+}>;
+
+export type GetExecuteTxsCountByContractAddressQuery = {
+  __typename?: "query_root";
+  contract_transactions_aggregate: {
+    __typename?: "contract_transactions_aggregate";
+    aggregate?: {
+      __typename?: "contract_transactions_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetContractListByCodeIdQueryVariables = Exact<{
+  codeId: Scalars["Int"];
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetContractListByCodeIdQuery = {
+  __typename?: "query_root";
+  contracts: Array<{
+    __typename?: "contracts";
+    address: string;
+    label: string;
+    transaction?: {
+      __typename?: "transactions";
+      block: { __typename?: "blocks"; timestamp: any };
+      account: { __typename?: "accounts"; address: string };
+    } | null;
+  }>;
+};
+
+export type GetContractListCountByCodeIdQueryVariables = Exact<{
+  codeId: Scalars["Int"];
+}>;
+
+export type GetContractListCountByCodeIdQuery = {
+  __typename?: "query_root";
+  contracts_aggregate: {
+    __typename?: "contracts_aggregate";
+    aggregate?: {
+      __typename?: "contracts_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetCodeInfoByCodeIdQueryVariables = Exact<{
+  codeId: Scalars["Int"];
+}>;
+
+export type GetCodeInfoByCodeIdQuery = {
+  __typename?: "query_root";
+  codes_by_pk?: {
+    __typename?: "codes";
+    id: number;
+    access_config_permission: string;
+    access_config_addresses: any;
+    account: { __typename?: "accounts"; address: string };
+    transaction?: {
+      __typename?: "transactions";
+      hash: any;
+      block: { __typename?: "blocks"; height: number; timestamp: any };
+    } | null;
+    code_proposals: Array<{
+      __typename?: "code_proposals";
+      proposal_id: number;
+      block?: { __typename?: "blocks"; height: number; timestamp: any } | null;
+    }>;
   } | null;
 };
 
@@ -4848,6 +6533,14 @@ export const GetCodeListByUserQueryDocument = {
                     ],
                   },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_permission" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_addresses" },
+                },
               ],
             },
           },
@@ -4941,6 +6634,14 @@ export const GetCodeListByIDsQueryDocument = {
                       },
                     ],
                   },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_permission" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_addresses" },
                 },
               ],
             },
@@ -5279,4 +6980,726 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
 } as unknown as DocumentNode<
   GetInstantiateDetailByContractQueryDocumentQuery,
   GetInstantiateDetailByContractQueryDocumentQueryVariables
+>;
+export const GetExecuteTxsByContractAddressDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getExecuteTxsByContractAddress" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "contractAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contract_transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "contract" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "contractAddress",
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "is_execute" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: { kind: "BooleanValue", value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "messages" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "success" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetExecuteTxsByContractAddressQuery,
+  GetExecuteTxsByContractAddressQueryVariables
+>;
+export const GetExecuteTxsCountByContractAddressDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getExecuteTxsCountByContractAddress" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "contractAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contract_transactions_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "contract" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "contractAddress",
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "is_execute" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: { kind: "BooleanValue", value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetExecuteTxsCountByContractAddressQuery,
+  GetExecuteTxsCountByContractAddressQueryVariables
+>;
+export const GetContractListByCodeIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getContractListByCodeId" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "codeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "code_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "codeId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractListByCodeIdQuery,
+  GetContractListByCodeIdQueryVariables
+>;
+export const GetContractListCountByCodeIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getContractListCountByCodeId" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "codeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "code_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "codeId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractListCountByCodeIdQuery,
+  GetContractListCountByCodeIdQueryVariables
+>;
+export const GetCodeInfoByCodeIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getCodeInfoByCodeId" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "codeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "codes_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "codeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "code_proposals" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "proposal_id" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_permission" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_addresses" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCodeInfoByCodeIdQuery,
+  GetCodeInfoByCodeIdQueryVariables
 >;

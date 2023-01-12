@@ -40,7 +40,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 - [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and json to attach fund
 - [#61](https://github.com/alleslabs/celatone-frontend/pull/61) Add UI for send asset in execute contract page
-- [#59](https://github.com/alleslabs/celatone-frontend/pull/58) Wireup code name,description, and cta section
+- [#70](https://github.com/alleslabs/celatone-frontend/pull/70) Change default token denom on contract detail
+- [#78](https://github.com/alleslabs/celatone-frontend/pull/78) Ignore building step when branch is not main
+- [#62](https://github.com/alleslabs/celatone-frontend/pull/62) Add footer
+- [#71](https://github.com/alleslabs/celatone-frontend/pull/71) Add search bar at the top (currently support only contract address and code id)
+- [#69](https://github.com/alleslabs/celatone-frontend/pull/69) Add execute table in contract details page
+- [#68](https://github.com/alleslabs/celatone-frontend/pull/63) Refactor past txs link props and make sure navigation works
+- [#65](https://github.com/alleslabs/celatone-frontend/pull/60) Create instantiate button component
+- [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add contract not exist page
+- [#63](https://github.com/alleslabs/celatone-frontend/pull/63) Add code id explorer link and code table row navigation
+- [#67](https://github.com/alleslabs/celatone-frontend/pull/67) Add Public Codes shortcut to sidebar and add Quick Actions section
+- [#66](https://github.com/alleslabs/celatone-frontend/pull/66) Add code details data loader including code info and contract instances
+- [#60](https://github.com/alleslabs/celatone-frontend/pull/60) Add navigation to contract row
+- [#47](https://github.com/alleslabs/celatone-frontend/pull/47) Wireup init msg in contract details page
+- [#51](https://github.com/alleslabs/celatone-frontend/pull/51) Wireup contract info in contract details page
+- [#59](https://github.com/alleslabs/celatone-frontend/pull/59) Wireup code name, description, and cta section
 - [#53](https://github.com/alleslabs/celatone-frontend/pull/53) Show contract description in contract details page
 - [#58](https://github.com/alleslabs/celatone-frontend/pull/58) Wireup top section in contract details page
 - [#54](https://github.com/alleslabs/celatone-frontend/pull/54) Render execute cmds shortcut in contract details page
@@ -57,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add address validation functions for contract and user addresses
 - [#52](https://github.com/alleslabs/celatone-frontend/pull/52) Create a component for disconnected State and apply to contract, code, past tx
 - [#56](https://github.com/alleslabs/celatone-frontend/pull/56) Refactor offchain form component by not receiving nameField and descriptionField
 - [#50](https://github.com/alleslabs/celatone-frontend/pull/50) Refactor offchain component to use react-form and remove redundant offchain components, and refactor edit contract details modal

@@ -5,62 +5,103 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
+  Icon,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import router from "next/router";
+import { useRouter } from "next/router";
+import { MdSearchOff } from "react-icons/md";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
-import { useContractDetail } from "lib/model/contract";
+import { useValidateAddress } from "lib/hooks";
+import {
+  useContractData,
+  useContractDetailsTableCounts,
+} from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
+import { ExecuteTable } from "./components/tables/execute/Execute";
 import { TokenSection } from "./components/TokenSection";
 
-const ContractDetails = observer(() => {
-  /**
-   * @todos add contract address validation function here
-   */
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
-  const contractDetail = useContractDetail(contractAddress as ContractAddr);
+interface ContractDetailsBodyProps {
+  contractAddress: ContractAddr;
+}
 
-  // TODO - Wait for design
-  if (!contractDetail || !contractDetail.instantiateInfo) return null;
+const InvalidContract = () => (
+  <Flex
+    direction="column"
+    alignItems="center"
+    borderY="1px solid"
+    borderColor="divider.main"
+    width="full"
+    my="24px"
+    py="24px"
+  >
+    <Icon as={MdSearchOff} color="gray.600" boxSize="128" />
+    <Heading as="h5" variant="h5" my="8px">
+      Contract does not exist
+    </Heading>
+    <Text variant="body2" fontWeight="500" color="gray.500" textAlign="center">
+      Please double-check your spelling and make sure you have selected the
+      correct network.
+    </Text>
+  </Flex>
+);
 
+const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
+  const contractData = useContractData(contractAddress);
+  const tableHeaderId = "contractDetailTableHeader";
+  const { tableCounts, refetchExecute } =
+    useContractDetailsTableCounts(contractAddress);
+  if (!contractData) return <InvalidContract />;
   return (
-    <PageContainer>
-      <BackButton />
-      <ContractTop contractDetail={contractDetail} />
+    <>
+      <ContractTop contractData={contractData} />
       {/* Tokens Section */}
       <TokenSection />
       {/* Contract Description Section */}
-      <ContractDesc contractDetail={contractDetail} />
+      <ContractDesc contractData={contractData} />
       {/* Query/Execute commands section */}
       <CommandSection />
       {/* Instantiate/Contract Info Section */}
       <Flex my={12} justify="space-between">
         {/* Instantiate Info */}
-        <InstantiateInfo contractDetail={contractDetail} />
+        <InstantiateInfo contractData={contractData} />
         {/* Contract Info (Expand) */}
-        <Flex direction="column" flex={0.8} gap={6}>
-          <JsonInfo header="Contract Info" />
-          <JsonInfo header="Instantiate Messages" />
+        <Flex direction="column" flex={0.8} gap={4}>
+          <JsonInfo
+            header="Contract Info"
+            jsonString={jsonPrettify(
+              JSON.stringify(
+                contractData.instantiateInfo?.raw.contract_info ?? {}
+              )
+            )}
+            jsonAreaHeight="180px"
+          />
+          <JsonInfo
+            header="Instantiate Messages"
+            jsonString={jsonPrettify(contractData.initMsg ?? "")}
+            showViewFullButton
+            defaultExpand
+          />
         </Flex>
       </Flex>
       {/* History Table section */}
-      <Heading as="h6" variant="h6" mb={6}>
+      <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
         History
       </Heading>
       <Tabs>
-        <TabList border="none" mb="32px">
+        <TabList borderBottom="1px solid" borderColor="divider.main">
           <CustomTab count={100}>All</CustomTab>
-          <CustomTab count={50}>Executes</CustomTab>
+          <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
           <CustomTab count={20}>Migration</CustomTab>
           <CustomTab count={12}>Related Proposals</CustomTab>
         </TabList>
@@ -72,9 +113,12 @@ const ContractDetails = observer(() => {
             </Heading>
           </TabPanel>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              Executes Table
-            </Heading>
+            <ExecuteTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.executeCount}
+              refetchCount={refetchExecute}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <Heading as="h6" variant="h6" color="error.main">
@@ -88,6 +132,26 @@ const ContractDetails = observer(() => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+    </>
+  );
+};
+
+const ContractDetails = observer(() => {
+  const router = useRouter();
+  const { validateContractAddress } = useValidateAddress();
+
+  const contractAddressParam = getFirstQueryParam(router.query.contractAddress);
+
+  return (
+    <PageContainer>
+      <BackButton />
+      {validateContractAddress(contractAddressParam) ? (
+        <InvalidContract />
+      ) : (
+        <ContractDetailsBody
+          contractAddress={contractAddressParam as ContractAddr}
+        />
+      )}
     </PageContainer>
   );
 });
