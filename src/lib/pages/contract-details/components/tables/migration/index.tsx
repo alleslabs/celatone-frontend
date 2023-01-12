@@ -56,7 +56,7 @@ export const MigrationTable = ({
     setCurrentPage(1);
   };
 
-  if (!migrationHistories)
+  if (!migrationHistories?.length)
     return (
       <NoTransactions displayText="This contract does not have any migration history yet." />
     );
