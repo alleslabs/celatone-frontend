@@ -35,3 +35,18 @@ export const getExplorerUserAddressUrl = (chainName: string) => {
   }
   return `${explorerMap[chainName]}/${pathSuffix}`;
 };
+
+export const getExplorerBlockUrl = (chainName: string) => {
+  let pathSuffix = "";
+  switch (chainName) {
+    case "osmosis":
+    case "osmosistestnet":
+    case "terra2":
+    case "terra2testnet":
+      pathSuffix = "blocks";
+      break;
+    default:
+      break;
+  }
+  return `${explorerMap[chainName]}/${pathSuffix}`;
+};

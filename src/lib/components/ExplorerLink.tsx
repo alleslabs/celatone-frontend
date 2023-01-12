@@ -4,6 +4,7 @@ import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
 
 import {
+  getExplorerBlockUrl,
   getExplorerTxUrl,
   getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
@@ -14,7 +15,7 @@ import { Copier } from "./Copier";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
-  type?: "tx_hash" | "code_id" | AddressReturnType;
+  type?: AddressReturnType | "tx_hash" | "code_id" | "block";
   copyValue?: string;
   canCopyWithHover?: boolean;
   isReadOnly?: boolean;
@@ -40,6 +41,9 @@ const getNavigationUrl = (
       break;
     case "code_id":
       url = "/code";
+      break;
+    case "block":
+      url = getExplorerBlockUrl(currentChainName);
       break;
     default:
       break;

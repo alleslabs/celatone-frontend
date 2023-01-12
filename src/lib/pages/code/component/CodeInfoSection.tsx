@@ -25,13 +25,17 @@ const getMethodSpecificRender = (
           <ExplorerLink
             value={codeProposalInfo.proposalId.toString()}
             canCopyWithHover
+            /**
+             * @todos remove isReadOnly and add type proposal when proposal page is up
+             */
+            isReadOnly
           />
         </LabelText>
       ),
       storedBlockRender: (
         <>
           <ExplorerLink
-            // use type="height"
+            type="block"
             value={(codeProposalInfo.height ?? "").toString()}
             canCopyWithHover
           />
@@ -61,7 +65,7 @@ const getMethodSpecificRender = (
       storedBlockRender: (
         <>
           <ExplorerLink
-            // use type="height"
+            type="block"
             value={codeTxInfo.height.toString()}
             canCopyWithHover
           />
