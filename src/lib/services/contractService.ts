@@ -7,8 +7,8 @@ import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
   getInstantiateDetailByContractQueryDocument,
-  getExecuteTransactionsCountByContractAddress,
-  getExecuteTransactionsByContractAddress,
+  getExecuteTxsCountByContractAddress,
+  getExecuteTxsByContractAddress,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type {
@@ -93,14 +93,14 @@ export const useInstantiateDetailByContractQuery = (
   );
 };
 
-export const useExecuteTransactionsByContractAddress = (
+export const useExecuteTxsByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<ExecuteTransaction[] | undefined> => {
+): UseQueryResult<Option<ExecuteTransaction[]>> => {
   const queryFn = useCallback(async () => {
     return indexerGraphClient
-      .request(getExecuteTransactionsByContractAddress, {
+      .request(getExecuteTxsByContractAddress, {
         contractAddress,
         offset,
         pageSize,
@@ -109,7 +109,9 @@ export const useExecuteTransactionsByContractAddress = (
         contract_transactions.map((transaction) => ({
           hash: parseTxHash(transaction.transaction.hash),
           messages: transaction.transaction.messages,
-          sender: transaction.transaction.account.address,
+          sender: transaction.transaction.account.address as
+            | ContractAddr
+            | HumanAddr,
           height: transaction.transaction.block.height,
           created: parseDateDefault(transaction.transaction?.block?.timestamp),
           success: transaction.transaction.success,
@@ -132,14 +134,14 @@ export const useExecuteTransactionsByContractAddress = (
   );
 };
 
-export const useExecuteTransactionsCountByContractAddress = (
+export const useExecuteTxsCountByContractAddress = (
   contractAddress: ContractAddr
-): UseQueryResult<number | undefined> => {
+): UseQueryResult<Option<number>> => {
   const queryFn = useCallback(async () => {
     if (!contractAddress) return undefined;
 
     return indexerGraphClient
-      .request(getExecuteTransactionsCountByContractAddress, {
+      .request(getExecuteTxsCountByContractAddress, {
         contractAddress,
       })
       .then(

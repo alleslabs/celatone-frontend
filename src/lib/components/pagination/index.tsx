@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { TiArrowSortedDown } from "react-icons/ti";
 
-import { scrollToComponent, scrollTop } from "lib/utils";
+import { scrollToComponent, scrollToTop } from "lib/utils";
 
 import { Next } from "./Next";
 import { Paginator } from "./Paginator";
@@ -32,7 +32,7 @@ export const Pagination = ({
 }: PaginationProps) => {
   useEffect(() => {
     if (!scrollComponentId) {
-      scrollTop();
+      scrollToTop();
     } else {
       scrollToComponent(scrollComponentId);
     }

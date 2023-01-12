@@ -1,4 +1,4 @@
-export const scrollTop = () => {
+export const scrollToTop = () => {
   document.getElementById("content")?.scroll(0, 0);
 };
 

@@ -1,5 +1,5 @@
 import { Flex, Icon, Tag, Text, Grid } from "@chakra-ui/react";
-import { MdCheck } from "react-icons/md";
+import { MdCheck, MdClose } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
@@ -27,7 +27,7 @@ export const ExecuteTableRow = ({
       </TableRow>
       <TableRow>
         <Icon
-          as={MdCheck}
+          as={transaction.success ? MdCheck : MdClose}
           fontSize="24px"
           color={transaction.success ? "success.main" : "error.main"}
         />

@@ -4,7 +4,7 @@ import type { Message } from "lib/types";
  * Returns execute tags to be displayed.
  *
  * @param messages - list of messages
- * @param isShowMore - number of execute tags to be shown
+ * @param max - number of execute tags to be shown
  * @returns array of execute tags.
  *
  * @example
@@ -13,13 +13,13 @@ import type { Message } from "lib/types";
  */
 export const getExecuteMsgTags = (
   messages: Message[],
-  amount: number
+  max: number
 ): string[] => {
   const executeMessages = messages.filter(
     (message) => message.type === "/cosmwasm.wasm.v1.MsgExecuteContract"
   );
   const tags = [];
-  for (let i = 0; i < amount; i += 1) {
+  for (let i = 0; i < max; i += 1) {
     if (executeMessages[i])
       tags.push(Object.keys(executeMessages[i].msg.msg)[0]);
   }

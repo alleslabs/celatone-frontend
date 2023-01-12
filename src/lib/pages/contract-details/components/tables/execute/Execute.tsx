@@ -6,7 +6,7 @@ import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableHeader } from "lib/components/table";
-import { useExecuteTransactionsByContractAddress } from "lib/services/contractService";
+import { useExecuteTxsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
 import { ExecuteTableRow } from "./ExecuteTableRow";
@@ -40,7 +40,7 @@ export const ExecuteTable = ({
     },
   });
 
-  const { data: executeTransaction } = useExecuteTransactionsByContractAddress(
+  const { data: executeTransaction } = useExecuteTxsByContractAddress(
     contractAddress,
     offset,
     pageSize
