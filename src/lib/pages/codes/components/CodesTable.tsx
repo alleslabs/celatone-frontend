@@ -228,20 +228,8 @@ function CodesTable({
 }: CodesTableProps) {
   const { address } = useWallet();
 
-  const renderBodyStored = () => {
-    if (!address && type !== "all") return <Unconnected />;
-    if (codes.length === 0 && isSearching) return <NotMatched />;
-    if (codes.length === 0) return <Empty type={type} />;
-    return (
-      <NormalRender
-        isRemovable={isRemovable}
-        codes={codes}
-        tableName={tableName}
-      />
-    );
-  };
-
-  const renderBodySaved = () => {
+  const renderBody = () => {
+    if (!address && type === "stored") return <Unconnected />;
     if (codes.length === 0 && isSearching) return <NotMatched />;
     if (codes.length === 0) return <Empty type={type} />;
     return (
@@ -268,7 +256,7 @@ function CodesTable({
         )}
         {action}
       </HStack>
-      {type === "saved" ? renderBodySaved() : renderBodyStored()}
+      {renderBody()}
     </Box>
   );
 }
