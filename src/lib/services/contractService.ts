@@ -182,7 +182,7 @@ export const useMigrationHistoriesByContractAddress = (
           Omit<ContractMigrationHistory, "codeDescription">
         >((history) => ({
           codeId: history.code_id,
-          migratedBy: history.account.address as HumanAddr | ContractAddr,
+          sender: history.account.address as HumanAddr | ContractAddr,
           height: history.block.height,
           timestamp: history.block.timestamp,
           remark: {

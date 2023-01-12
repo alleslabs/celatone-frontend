@@ -78,8 +78,8 @@ export const MigrationRow = ({
       </StyledGridItem>
       <StyledGridItem>
         <ExplorerLink
-          type={getAddressType(history.migratedBy)}
-          value={history.migratedBy}
+          type={getAddressType(history.sender)}
+          value={history.sender}
           textFormat="truncate"
           canCopyWithHover
         />

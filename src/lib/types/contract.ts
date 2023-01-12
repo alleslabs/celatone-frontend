@@ -22,7 +22,7 @@ interface MigrationRemark {
 export interface ContractMigrationHistory {
   codeId: number;
   codeDescription?: string;
-  migratedBy: HumanAddr | ContractAddr;
+  sender: HumanAddr | ContractAddr;
   height: number;
   timestamp: Date;
   remark: MigrationRemark;
