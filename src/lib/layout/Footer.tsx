@@ -42,7 +42,7 @@ const Footer = () => {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            key={`seocial-${item.slug}`}
+            key={`social-${item.slug}`}
           >
             <Button variant="ghost" size="xs">
               <Icon
