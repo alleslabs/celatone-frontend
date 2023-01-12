@@ -21,7 +21,7 @@ import type {
   MigrationRemark,
   Option,
 } from "lib/types";
-import { parseDateDefault, parseTxHash } from "lib/utils";
+import { parseDate, parseDateDefault, parseTxHash } from "lib/utils";
 
 interface InstantiateDetail {
   initMsg: string;
@@ -185,7 +185,7 @@ export const useMigrationHistoriesByContractAddress = (
           codeId: history.code_id,
           sender: history.account.address as HumanAddr | ContractAddr,
           height: history.block.height,
-          timestamp: parseDateDefault(history.block.timestamp),
+          timestamp: parseDate(history.block.timestamp),
           remark: {
             operation: history.remark.operation as MigrationRemark["operation"],
             type: history.remark.type as MigrationRemark["type"],
