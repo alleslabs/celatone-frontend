@@ -68,7 +68,7 @@ export const SingleMsg = ({
           type={link1.type}
           canCopyWithHover
           // Should ellipse when it is not tx hash, contract addr, user addr
-          textFormat={link1.type !== "code_id" ? "truncate" : "ellipsis"}
+          textFormat={link1.type !== "code_id" ? "truncate" : "normal"}
         />
       )}
       {/* Text3 */}
@@ -81,7 +81,7 @@ export const SingleMsg = ({
           type={link2.type}
           canCopyWithHover
           // Should ellipse when it is not tx hash, contract addr, user addr
-          textFormat={link2.type !== "code_id" ? "truncate" : "ellipsis"}
+          textFormat={link2.type !== "code_id" ? "truncate" : "normal"}
         />
       )}
     </Flex>
