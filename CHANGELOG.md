@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#75](https://github.com/alleslabs/celatone-frontend/pull/75) Add code-related contracts table to the code detail page
+- [#73](https://github.com/alleslabs/celatone-frontend/pull/73) Wireup migration table
+- [#77](https://github.com/alleslabs/celatone-frontend/pull/77) Wireup code info section in code details page
+- [#80](https://github.com/alleslabs/celatone-frontend/pull/80) Fix the misalignment of state in the PastTx page
 - [#70](https://github.com/alleslabs/celatone-frontend/pull/70) Change default token denom on contract detail
 - [#78](https://github.com/alleslabs/celatone-frontend/pull/78) Ignore building step when branch is not main
 - [#62](https://github.com/alleslabs/celatone-frontend/pull/62) Add footer

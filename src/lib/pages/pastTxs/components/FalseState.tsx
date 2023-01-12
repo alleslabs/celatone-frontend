@@ -8,12 +8,19 @@ interface FalseStateProps {
 }
 export const FalseState = ({ icon, text1, text2 }: FalseStateProps) => {
   return (
-    <Flex borderY="1px solid" borderColor="divider.main" width="full" py="48px">
+    <Flex
+      borderY="1px solid"
+      borderColor="divider.main"
+      width="full"
+      py={12}
+      flexDirection="column"
+      alignItems="center"
+    >
       <Icon
         as={icon === "off" ? MdSearchOff : MdSearch}
-        mb="26px"
-        w="70px"
-        h="70px"
+        mb={4}
+        w="64px"
+        h="64px"
         color="gray.600"
       />
       <Text variant="body1" color="text.dark">

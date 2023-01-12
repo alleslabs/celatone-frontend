@@ -29,6 +29,7 @@ import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
 import { ExecuteTable } from "./components/tables/execute/Execute";
+import { MigrationTable } from "./components/tables/migration";
 import { TokenSection } from "./components/TokenSection";
 
 interface ContractDetailsBodyProps {
@@ -60,7 +61,7 @@ const ContractDetailsBody = observer(
   ({ contractAddress }: ContractDetailsBodyProps) => {
     const contractData = useContractData(contractAddress);
     const tableHeaderId = "contractDetailTableHeader";
-    const { tableCounts, refetchExecute } =
+    const { tableCounts, refetchExecute, refetchMigration } =
       useContractDetailsTableCounts(contractAddress);
     if (!contractData) return <InvalidContract />;
     return (
@@ -103,7 +104,7 @@ const ContractDetailsBody = observer(
           <TabList borderBottom="1px solid" borderColor="divider.main">
             <CustomTab count={100}>All</CustomTab>
             <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
-            <CustomTab count={20}>Migration</CustomTab>
+            <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
             <CustomTab count={12}>Related Proposals</CustomTab>
           </TabList>
           {/* TODOs: Wireup with real table data, Make table component, and render each table with different data under each TabPanel */}
@@ -122,9 +123,12 @@ const ContractDetailsBody = observer(
               />
             </TabPanel>
             <TabPanel p={0}>
-              <Heading as="h6" variant="h6" color="error.main">
-                Migration Table
-              </Heading>
+              <MigrationTable
+                contractAddress={contractAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.migrationCount}
+                refetchCount={refetchMigration}
+              />
             </TabPanel>
             <TabPanel p={0}>
               <Heading as="h6" variant="h6" color="error.main">

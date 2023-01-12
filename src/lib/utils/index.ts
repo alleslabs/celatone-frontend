@@ -1,3 +1,4 @@
+export * from "./address";
 export * from "./formatter";
 export * from "./tx";
 export * from "./base64";

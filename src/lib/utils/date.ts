@@ -2,13 +2,15 @@ import dayjs from "dayjs";
 
 import type { Option } from "lib/types";
 
-export const formatUTC = (timestamp: string) => {
-  const localDate = timestamp.concat("Z");
+export const formatUTC = (timestamp: string | Date) => {
+  const localDate =
+    typeof timestamp === "string" ? timestamp.concat("Z") : timestamp;
   return dayjs(localDate).utc().format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
 };
 
-export const dateFromNow = (timestamp: string) => {
-  const localDate = timestamp.concat("Z");
+export const dateFromNow = (timestamp: string | Date) => {
+  const localDate =
+    typeof timestamp === "string" ? timestamp.concat("Z") : timestamp;
   return dayjs(localDate).fromNow();
 };
 
