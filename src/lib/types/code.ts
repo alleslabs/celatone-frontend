@@ -26,7 +26,7 @@ interface CodeProposal {
   created: Date;
 }
 
-export interface CodeDetails {
+export interface CodeData {
   chainId: Option<string>;
   codeId: number;
   uploader: ContractAddr | HumanAddr;
