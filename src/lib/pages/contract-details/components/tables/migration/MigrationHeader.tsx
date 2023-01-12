@@ -1,3 +1,4 @@
+import type { GridProps } from "@chakra-ui/react";
 import { chakra, Grid, GridItem } from "@chakra-ui/react";
 
 const StyledGridItem = chakra(GridItem, {
@@ -12,9 +13,13 @@ const StyledGridItem = chakra(GridItem, {
   },
 });
 
-export const MigrationHeader = () => {
+export const MigrationHeader = ({
+  templateColumns,
+}: {
+  templateColumns: GridProps["templateColumns"];
+}) => {
   return (
-    <Grid templateColumns="90px minmax(300px, 1fr) repeat(2, max(150px)) max(232px) max(180px)">
+    <Grid templateColumns={templateColumns}>
       <StyledGridItem>Code ID</StyledGridItem>
       <StyledGridItem>Code Description</StyledGridItem>
       <StyledGridItem>Sender</StyledGridItem>

@@ -1,6 +1,11 @@
-import { chakra, Flex, Grid, GridItem } from "@chakra-ui/react";
+import type { GridProps } from "@chakra-ui/react";
+import { chakra, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useGetAddressType } from "lib/hooks";
+import type { ContractMigrationHistory } from "lib/types";
+import { RemarkOperation } from "lib/types";
+import { dateFromNow, formatUTC } from "lib/utils";
 
 const StyledGridItem = chakra(GridItem, {
   baseStyle: {
@@ -15,26 +20,76 @@ const StyledGridItem = chakra(GridItem, {
   },
 });
 
-export const MigrationRow = () => {
+interface MigrationRowProps {
+  templateColumns: GridProps["templateColumns"];
+  history: ContractMigrationHistory;
+}
+
+const RemarkRender = ({
+  remark,
+}: {
+  remark: ContractMigrationHistory["remark"];
+}) => {
+  const { operation, type, value } = remark;
+  const isGovernance = type === "governance";
+  if (
+    operation === RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
+  )
+    return <Text variant="body2">Genesis</Text>;
   return (
-    <Grid templateColumns="90px minmax(300px, 1fr) repeat(2, max(150px)) max(232px) max(180px)">
+    <Flex
+      direction="column"
+      sx={{
+        "& > p:first-of-type": {
+          color: "text.dark",
+          fontSize: "12px",
+          mb: "2px",
+        },
+      }}
+    >
+      <p>{isGovernance ? "Through Proposal ID" : "Tx Hash"}</p>
+      <ExplorerLink
+        type={isGovernance ? "proposal_id" : "tx_hash"}
+        value={value}
+        canCopyWithHover
+      />
+    </Flex>
+  );
+};
+
+export const MigrationRow = ({
+  templateColumns,
+  history,
+}: MigrationRowProps) => {
+  const getAddressType = useGetAddressType();
+  return (
+    <Grid templateColumns={templateColumns}>
       <StyledGridItem>
-        {/* code id */}
-        <ExplorerLink value="55" canCopyWithHover />
-      </StyledGridItem>
-      <StyledGridItem>Deposit asset to Lorem</StyledGridItem>
-      <StyledGridItem>
-        {/* migrated by */}
         <ExplorerLink
-          type="user_address"
-          value="osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p"
+          type="code_id"
+          value={history.codeId.toString()}
+          canCopyWithHover
+        />
+      </StyledGridItem>
+      <StyledGridItem>
+        {history.codeDescription || (
+          <Text color="text.dark">No Description</Text>
+        )}
+      </StyledGridItem>
+      <StyledGridItem>
+        <ExplorerLink
+          type={getAddressType(history.migratedBy)}
+          value={history.migratedBy}
           textFormat="truncate"
           canCopyWithHover
         />
       </StyledGridItem>
       <StyledGridItem>
-        {/* block */}
-        <ExplorerLink value="12345678" canCopyWithHover />
+        <ExplorerLink
+          type="block_height"
+          value={history.height.toString()}
+          canCopyWithHover
+        />
       </StyledGridItem>
       <StyledGridItem>
         <Flex
@@ -42,24 +97,12 @@ export const MigrationRow = () => {
           fontSize="12px"
           sx={{ "& p + p": { color: "text.dark", mt: "2px" } }}
         >
-          <p>Oct 24, 2022, 7:58:34 PM (GMT+7)</p>
-          <p>(6 days ago)</p>
+          <p>{formatUTC(history.timestamp)}</p>
+          <p>({dateFromNow(history.timestamp)})</p>
         </Flex>
       </StyledGridItem>
       <StyledGridItem>
-        <Flex
-          direction="column"
-          sx={{
-            "& p:first-of-type": {
-              color: "text.dark",
-              fontSize: "12px",
-              mb: "2px",
-            },
-          }}
-        >
-          <p>Through Proposal ID</p>
-          <ExplorerLink value="7F8FD8...3A8204D0E" canCopyWithHover />
-        </Flex>
+        <RemarkRender remark={history.remark} />
       </StyledGridItem>
     </Grid>
   );

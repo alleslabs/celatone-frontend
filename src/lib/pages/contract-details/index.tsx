@@ -60,7 +60,7 @@ const InvalidContract = () => (
 const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
   const contractData = useContractData(contractAddress);
   const tableHeaderId = "contractDetailTableHeader";
-  const { tableCounts, refetchExecute } =
+  const { tableCounts, refetchExecute, refetchMigration } =
     useContractDetailsTableCounts(contractAddress);
   if (!contractData) return <InvalidContract />;
   return (
@@ -103,7 +103,7 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
         <TabList borderBottom="1px solid" borderColor="divider.main">
           <CustomTab count={100}>All</CustomTab>
           <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
-          <CustomTab count={20}>Migration</CustomTab>
+          <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
           <CustomTab count={12}>Related Proposals</CustomTab>
         </TabList>
         {/* TODOs: Wireup with real table data, Make table component, and render each table with different data under each TabPanel */}
@@ -123,7 +123,12 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
           </TabPanel>
           <TabPanel p={0}>
             <Heading as="h6" variant="h6" color="error.main">
-              <MigrationTable />
+              <MigrationTable
+                contractAddress={contractAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.migrationCount}
+                refetchCount={refetchMigration}
+              />
             </Heading>
           </TabPanel>
           <TabPanel p={0}>
