@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#71](https://github.com/alleslabs/celatone-frontend/pull/71) Add search bar at the top (currently support only contract address and code id)
 - [#69](https://github.com/alleslabs/celatone-frontend/pull/69) Add execute table in contract details page
 - [#68](https://github.com/alleslabs/celatone-frontend/pull/63) Refactor past txs link props and make sure navigation works
 - [#65](https://github.com/alleslabs/celatone-frontend/pull/60) Create instantiate button component
