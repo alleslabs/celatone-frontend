@@ -36,8 +36,6 @@ export const useCodeListData = (keyword?: string): CodeListData => {
       );
       return {
         ...localSavedCode,
-        uploader:
-          localSavedCode.uploader ?? querySavedCodeInfo?.uploader ?? "unknown",
         contracts: querySavedCodeInfo?.contracts ?? 0,
         instantiatePermission:
           querySavedCodeInfo?.instantiatePermission ??

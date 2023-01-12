@@ -22,13 +22,15 @@ import { MdSearchOff } from "react-icons/md";
 import { InstantiateButton } from "lib/components/button/InstantiateButton";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
+import { SaveOrRemoveCode } from "lib/components/modal/code/SaveOrRemoveCode";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
 import type { CodeInfo } from "lib/types";
 
 import { CodeDescriptionCell } from "./CodeDescriptionCell";
 
-type TableType = "stored" | "saved";
+type TableType = "all" | "stored" | "saved";
+
 interface CodesTableProps {
   type: TableType;
   tableName: string;
@@ -77,18 +79,21 @@ const Unconnected = () => {
 };
 
 const Empty = ({ type }: OtherTBodyProps) => {
+  const renderEmptyText = () => {
+    switch (type) {
+      case "all":
+        return "All Code ID will display here";
+      case "saved":
+        return "Your saved Code ID will display here. Saved Codes are stored in your device.";
+      case "stored":
+        return "Your uploaded Wasm files will display as My Stored Codes";
+      default:
+        return "";
+    }
+  };
   return (
     <StateContainer>
-      {type === "saved" ? (
-        <Text color="text.dark">
-          Your saved Code ID will display here. Saved Codes are stored in your
-          device.
-        </Text>
-      ) : (
-        <Text color="text.dark">
-          Your uploaded Wasm files will display as My Stored Codes
-        </Text>
-      )}
+      <Text color="text.dark">{renderEmptyText()}</Text>
     </StateContainer>
   );
 };
@@ -98,6 +103,7 @@ const TableHead = () => {
     <Thead borderBottom="1px solid #2E2E2E">
       <Tr
         sx={{
+          "& th:first-of-type": { pl: "48px" },
           "> th": {
             padding: "16px",
             textTransform: "capitalize",
@@ -126,10 +132,12 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
   return (
     <Tr
       borderBottom="1px solid #2E2E2E"
-      sx={{ "> td": { padding: "16px" } }}
-      _hover={{
-        bg: "gray.900",
+      sx={{
+        "& td:first-of-type": { pl: "48px" },
+        "& td:last-of-type": { pr: "48px" },
+        "> td": { padding: "16px" },
       }}
+      _hover={{ bg: "gray.900" }}
       cursor="pointer"
       onClick={goToCodeDetails}
     >
@@ -141,7 +149,7 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
         />
       </Td>
       <Td width="35%">
-        <CodeDescriptionCell codeId={code.id} description={code.description} />
+        <CodeDescriptionCell code={code} />
       </Td>
       <Td width="10%" textAlign="center">
         <Text
@@ -174,9 +182,13 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
               permissionAddresses={code.permissionAddresses}
               codeId={code.id}
             />
-            {isRemovable && (
-              <RemoveCode codeId={code.id} description={code.description} />
-            )}
+            <Box mx="15px">
+              {isRemovable ? (
+                <RemoveCode codeId={code.id} description={code.description} />
+              ) : (
+                <SaveOrRemoveCode codeInfo={code} />
+              )}
+            </Box>
           </HStack>
         </Flex>
       </Td>
@@ -218,7 +230,7 @@ function CodesTable({
   const { address } = useWallet();
 
   const renderBodyStored = () => {
-    if (!address) return <Unconnected />;
+    if (!address && type !== "all") return <Unconnected />;
     if (codes.length === 0 && isSearching) return <NotMatched />;
     if (codes.length === 0) return <Empty type={type} />;
     return (
@@ -244,10 +256,17 @@ function CodesTable({
 
   return (
     <Box mb={5}>
-      <HStack alignItems="center" justifyContent="space-between" mb="18px">
-        <Heading as="h2" size="md" color="white">
-          {tableName}
-        </Heading>
+      <HStack
+        alignItems="center"
+        justifyContent="space-between"
+        mb="18px"
+        px="48px"
+      >
+        {type !== "all" && (
+          <Heading as="h2" size="md" color="white">
+            {tableName}
+          </Heading>
+        )}
         {action}
       </HStack>
       {type === "saved" ? renderBodySaved() : renderBodyStored()}

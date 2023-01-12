@@ -1,5 +1,23 @@
 import { graphql } from "lib/gql";
 
+export const getCodeListQueryDocument = graphql(`
+  query getCodeListQuery {
+    codes(limit: 500, offset: 0, order_by: { id: desc }) {
+      id
+      contracts_aggregate {
+        aggregate {
+          count
+        }
+      }
+      account {
+        uploader: address
+      }
+      access_config_permission
+      access_config_addresses
+    }
+  }
+`);
+
 export const getCodeListByUserQueryDocument = graphql(`
   query getCodeListByUserQuery($walletAddr: String!) {
     codes(
@@ -9,7 +27,11 @@ export const getCodeListByUserQueryDocument = graphql(`
       order_by: { id: desc }
     ) {
       id
-      instantiated: contract_instantiated
+      contracts_aggregate {
+        aggregate {
+          count
+        }
+      }
       account {
         uploader: address
       }
@@ -23,7 +45,11 @@ export const getCodeListByIDsQueryDocument = graphql(`
   query getCodeListByIDsQuery($ids: [Int!]!) {
     codes(where: { id: { _in: $ids } }) {
       id
-      instantiated: contract_instantiated
+      contracts_aggregate {
+        aggregate {
+          count
+        }
+      }
       account {
         uploader: address
       }

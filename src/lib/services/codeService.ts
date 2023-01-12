@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-identical-functions */
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -7,6 +8,7 @@ import {
   getCodeInfoByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
+  getCodeListQueryDocument,
   getContractListByCodeId,
   getContractListCountByCodeId,
 } from "lib/data/queries";
@@ -21,6 +23,29 @@ import type {
 } from "lib/types";
 import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 
+export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getCodeListQueryDocument)
+      .then(({ codes }) =>
+        codes.map<CodeInfo>((code) => ({
+          id: code.id,
+          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
+          uploader: code.account.uploader,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
+        }))
+      );
+  }, []);
+
+  // TODO: add query key later
+  return useQuery(["all_codes"], queryFn, {
+    keepPreviousData: true,
+  });
+};
+
 export const useCodeListByUserQuery = (
   walletAddr: Option<string>
 ): UseQueryResult<Option<CodeInfo[]>> => {
@@ -34,7 +59,7 @@ export const useCodeListByUserQuery = (
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          contracts: code.instantiated,
+          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
           uploader: code.account.uploader,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
@@ -63,7 +88,7 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
         codes.map<CodeInfo>((code) => ({
           id: code.id,
           uploader: code.account.uploader,
-          contracts: code.instantiated,
+          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
