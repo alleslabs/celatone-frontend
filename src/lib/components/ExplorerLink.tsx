@@ -1,6 +1,7 @@
 import type { BoxProps } from "@chakra-ui/react";
-import { Box, Link, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import Link from "next/link";
 
 import {
   getExplorerTxUrl,
@@ -10,15 +11,99 @@ import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
 
+export type LinkType =
+  | "tx_hash"
+  | "user_address"
+  | "contract_address"
+  | "code_id";
+
 interface ExplorerLinkProps extends BoxProps {
   value: string;
-  type?: "tx_hash" | "contract_address" | "user_address";
+  type?: LinkType;
   copyValue?: string;
   canCopyWithHover?: boolean;
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
   maxWidth?: string;
 }
+
+const getNavigationUrl = (
+  type: ExplorerLinkProps["type"],
+  currentChainName: string,
+  value: string
+) => {
+  let url = "";
+  switch (type) {
+    case "tx_hash":
+      url = getExplorerTxUrl(currentChainName);
+      break;
+    case "contract_address":
+      url = "/contract";
+      break;
+    case "user_address":
+      url = getExplorerUserAddressUrl(currentChainName);
+      break;
+    case "code_id":
+      url = "/code";
+      break;
+    default:
+      break;
+  }
+  return `${url}/${value}`;
+};
+
+const getValueText = (
+  isOwnAddr: boolean,
+  isTruncate: boolean,
+  value: string
+) => {
+  if (isOwnAddr) {
+    return "Me";
+  }
+  return isTruncate ? truncate(value) : value;
+};
+
+const LinkRender = ({
+  isInternal,
+  hrefLink,
+  textValue,
+  isEllipsis,
+  maxWidth,
+}: {
+  isInternal: boolean;
+  hrefLink: string;
+  textValue: string;
+  isEllipsis: boolean;
+  maxWidth: ExplorerLinkProps["maxWidth"];
+}) => {
+  const textElement = (
+    <Text
+      variant="body2"
+      color="primary.main"
+      className={isEllipsis ? "ellipsis" : undefined}
+      maxW={maxWidth}
+      pointerEvents={hrefLink ? "auto" : "none"}
+    >
+      {textValue}
+    </Text>
+  );
+
+  return isInternal ? (
+    <Link href={hrefLink} passHref onClick={(e) => e.stopPropagation()}>
+      {textElement}
+    </Link>
+  ) : (
+    <a
+      href={hrefLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-peer
+      onClick={(e) => e.stopPropagation()}
+    >
+      {textElement}
+    </a>
+  );
+};
 
 export const ExplorerLink = ({
   value,
@@ -31,70 +116,37 @@ export const ExplorerLink = ({
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address, currentChainName } = useWallet();
-  let explorerLink = "";
-  switch (type) {
-    case "tx_hash":
-      explorerLink = getExplorerTxUrl(currentChainName);
-      break;
-    case "contract_address":
-      explorerLink = `/contract`;
-      break;
-    case "user_address":
-      explorerLink = getExplorerUserAddressUrl(currentChainName);
-      break;
-    default:
-      break;
-  }
+  const isInternal = type === "code_id" || type === "contract_address";
 
-  /**
-   * @remarks
-   * The `copyValue` is used in case where the value displayed is not the same as the copy value
-   */
-  const hrefLink = () => {
-    if (explorerLink) {
-      if (copyValue) {
-        return `${explorerLink}/${copyValue}`;
-      }
-      return `${explorerLink}/${value}`;
-    }
-    return undefined;
-  };
-
-  const renderValue = () => {
-    if (value === address) {
-      return "Me";
-    }
-    if (textFormat === "truncate") {
-      return truncate(value);
-    }
-    return value;
-  };
+  const [hrefLink, textValue] = [
+    getNavigationUrl(type, currentChainName, copyValue || value),
+    getValueText(value === address, textFormat === "truncate", value),
+  ];
 
   return (
     <Box
       role="group"
       display="inline-flex"
       alignItems="center"
+      _hover={{
+        ...(!isReadOnly && {
+          textDecoration: "underline",
+          textDecorationColor: "primary.main",
+        }),
+      }}
       {...componentProps}
     >
       {isReadOnly ? (
-        <Text variant="body2">{renderValue()}</Text>
+        <Text variant="body2">{textValue}</Text>
       ) : (
         <>
-          <Link
-            fontWeight="400"
-            href={hrefLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            color="primary.main"
-            data-peer
-            onClick={(e) => e.stopPropagation()}
-            pointerEvents={!hrefLink() ? "none" : "auto"}
-            className={textFormat === "ellipsis" ? "ellipsis" : undefined}
-            maxW={maxWidth}
-          >
-            {renderValue()}
-          </Link>
+          <LinkRender
+            isInternal={isInternal}
+            hrefLink={hrefLink}
+            textValue={textValue}
+            isEllipsis={textFormat === "ellipsis"}
+            maxWidth={maxWidth}
+          />
           <Box
             alignItems="center"
             display={canCopyWithHover ? "none" : undefined}

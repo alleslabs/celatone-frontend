@@ -8,7 +8,7 @@ import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
-import type { ContractAddr, Option } from "lib/types";
+import type { ContractAddr, LVPair } from "lib/types";
 
 interface InstantiateOffChainFormProps {
   title?: string;
@@ -56,7 +56,7 @@ export const InstantiateOffChainForm = observer(
     const setTagsValue = (selectedTags: string[]) => {
       setValue("tags", selectedTags);
     };
-    const setContractListsValue = (selectedLists: Option[]) => {
+    const setContractListsValue = (selectedLists: LVPair[]) => {
       setValue("lists", selectedLists);
     };
 

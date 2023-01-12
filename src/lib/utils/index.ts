@@ -13,3 +13,5 @@ export * from "./scrollTop";
 export * from "./textLine";
 export * from "./date";
 export * from "./validate";
+export * from "./parser";
+export * from "./option";
