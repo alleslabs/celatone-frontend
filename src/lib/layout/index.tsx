@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 import { scrollToTop } from "lib/utils";
 
+import Footer from "./Footer";
 import Header from "./Header";
 import Navbar from "./Navbar";
 
@@ -18,7 +19,6 @@ const Layout = ({ children }: LayoutProps) => {
   useEffect(() => {
     scrollToTop();
   }, [router.asPath]);
-
   return (
     <Grid
       templateAreas={`"header header"
@@ -29,14 +29,15 @@ const Layout = ({ children }: LayoutProps) => {
       overflowX="hidden"
       bg="background.main"
     >
-      <GridItem bg="#212121" area="header">
+      <GridItem bg="#212121" area="header" mb="1">
         <Header />
       </GridItem>
-      <GridItem bg="#212121" area="nav" mt="1">
+      <GridItem bg="#212121" area="nav">
         <Navbar />
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">
-        {children}
+        <div style={{ minHeight: `calc(100vh - 140px)` }}>{children}</div>
+        <Footer />
       </GridItem>
     </Grid>
   );
