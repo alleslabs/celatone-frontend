@@ -10,7 +10,7 @@ import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractInfo } from "lib/stores/contract";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 
 interface AddToOtherListProps {
   contractInfo: ContractInfo;
@@ -24,7 +24,7 @@ export const AddToOtherList = observer(
     });
 
     const setContractListsValue = useCallback(
-      (selectedLists: Option[]) => {
+      (selectedLists: LVPair[]) => {
         setValue("lists", selectedLists);
       },
       [setValue]

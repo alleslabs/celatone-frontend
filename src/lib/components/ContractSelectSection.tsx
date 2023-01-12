@@ -8,7 +8,7 @@ import { MdMode, MdOutlineBookmarkBorder } from "react-icons/md";
 import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractInfo } from "lib/stores/contract";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { EditContractDetails, SaveContractDetails } from "./modal";
@@ -23,7 +23,7 @@ interface DisplayNameProps {
 
 interface ContractDetailsButtonProps {
   contractAddress: ContractAddr;
-  contractInfo: ContractInfo | undefined;
+  contractInfo: Option<ContractInfo>;
   instantiator: string;
   label: string;
   created: Date;

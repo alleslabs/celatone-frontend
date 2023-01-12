@@ -18,7 +18,7 @@ const Deploy = () => {
         Select Deploy Option
       </Heading>
       <ButtonCard
-        title="Upload new Wasm File"
+        title="Upload new WASM File"
         description="Deploy contract by upload new Wasm file"
         onClick={() => router.push("/upload")}
         mb="16px"

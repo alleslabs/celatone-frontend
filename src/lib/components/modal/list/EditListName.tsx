@@ -8,11 +8,11 @@ import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useContractStore, useUserKey } from "lib/hooks";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 import { formatSlugName, shortenName } from "lib/utils";
 
 interface ModalProps {
-  list: Option;
+  list: LVPair;
   menuItemProps: MenuItemProps;
 }
 export function EditList({ list, menuItemProps }: ModalProps) {

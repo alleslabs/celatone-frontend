@@ -129,7 +129,7 @@ export const SaveOrEditCodeModal = observer(
               <Text variant="body2" fontWeight={700} w="20%">
                 Code ID
               </Text>
-              <ExplorerLink value={id.toString()} />
+              <ExplorerLink type="code_id" value={id.toString()} />
             </Flex>
             <Flex align="center">
               <Text variant="body2" fontWeight={700} w="20%">
