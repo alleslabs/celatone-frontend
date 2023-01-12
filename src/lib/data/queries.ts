@@ -13,6 +13,8 @@ export const getCodeListByUserQueryDocument = graphql(`
       account {
         uploader: address
       }
+      access_config_permission
+      access_config_addresses
     }
   }
 `);
@@ -25,6 +27,8 @@ export const getCodeListByIDsQueryDocument = graphql(`
       account {
         uploader: address
       }
+      access_config_permission
+      access_config_addresses
     }
   }
 `);
@@ -67,6 +71,111 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
       transaction {
         hash
       }
+    }
+  }
+`);
+
+export const getExecuteTxsByContractAddress = graphql(`
+  query getExecuteTxsByContractAddress(
+    $contractAddress: String!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    contract_transactions(
+      where: {
+        contract: { address: { _eq: $contractAddress } }
+        transaction: { is_execute: { _eq: true } }
+      }
+      order_by: { transaction: { block: { timestamp: desc } } }
+      limit: $pageSize
+      offset: $offset
+    ) {
+      transaction {
+        hash
+        messages
+        success
+        account {
+          address
+        }
+        block {
+          height
+          timestamp
+        }
+      }
+    }
+  }
+`);
+
+export const getExecuteTxsCountByContractAddress = graphql(`
+  query getExecuteTxsCountByContractAddress($contractAddress: String!) {
+    contract_transactions_aggregate(
+      where: {
+        contract: { address: { _eq: $contractAddress } }
+        transaction: { is_execute: { _eq: true } }
+      }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
+export const getContractListByCodeId = graphql(`
+  query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
+    contracts(
+      where: { code_id: { _eq: $codeId } }
+      order_by: { transaction: { block: { timestamp: desc } } }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      address
+      label
+      transaction {
+        block {
+          timestamp
+        }
+        account {
+          address
+        }
+      }
+    }
+  }
+`);
+
+export const getContractListCountByCodeId = graphql(`
+  query getContractListCountByCodeId($codeId: Int!) {
+    contracts_aggregate(where: { code_id: { _eq: $codeId } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
+export const getCodeInfoByCodeId = graphql(`
+  query getCodeInfoByCodeId($codeId: Int!) {
+    codes_by_pk(id: $codeId) {
+      id
+      account {
+        address
+      }
+      transaction {
+        hash
+        block {
+          height
+          timestamp
+        }
+      }
+      code_proposals {
+        proposal_id
+        block {
+          height
+          timestamp
+        }
+      }
+      access_config_permission
+      access_config_addresses
     }
   }
 `);

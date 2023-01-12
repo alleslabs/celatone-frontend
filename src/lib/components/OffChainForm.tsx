@@ -13,20 +13,20 @@ import {
   MAX_CONTRACT_DESCRIPTION_LENGTH,
   MAX_CONTRACT_NAME_LENGTH,
 } from "lib/data";
-import type { Option } from "lib/types";
+import type { LVPair } from "lib/types";
 
 export interface OffchainDetail {
   name: string;
   description: string;
   tags: string[];
-  lists: Option[];
+  lists: LVPair[];
 }
 
 interface OffChainFormProps<T extends OffchainDetail> {
   state: OffchainDetail;
   control: Control<T>;
   setTagsValue: (options: string[]) => void;
-  setContractListsValue: (options: Option[]) => void;
+  setContractListsValue: (options: LVPair[]) => void;
   errors: Partial<FieldErrorsImpl<T>>;
   labelBgColor?: string;
 }

@@ -125,7 +125,13 @@ export const EditableCell = ({
             )}
           </Flex>
           {!!tooltip && (
-            <Tooltip hasArrow label={tooltip} bg="primary.dark" placement="top">
+            <Tooltip
+              hasArrow
+              label={tooltip}
+              placement="top"
+              bg="primary.dark"
+              arrowSize={8}
+            >
               <InfoIcon color="gray.600" boxSize="14px" cursor="pointer" />
             </Tooltip>
           )}
