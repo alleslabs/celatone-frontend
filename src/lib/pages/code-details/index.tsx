@@ -27,8 +27,6 @@ const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
   if (!codeData) return <InvalidCode />;
   return (
     <>
-      {/* Code ID and CTAs Section */}
-      {/* TODO: Wireup CTAs logic and render ExplorerLink for Code ID */}
       <Flex align="center" justify="space-between" mt={6}>
         <Flex direction="column" gap={1}>
           <Heading as="h5" variant="h5">
@@ -41,10 +39,9 @@ const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
             <ExplorerLink type="code_id" value={codeId.toString()} />
           </Flex>
         </Flex>
-        {/* TODO: check default uploader case */}
         <CTASection
           id={codeId}
-          uploader={codeData?.uploader ?? localCodeInfo?.uploader ?? ""}
+          uploader={localCodeInfo?.uploader ?? codeData.uploader}
           description={localCodeInfo?.description}
           instantiatePermission={
             codeData?.instantiatePermission ?? InstantiatePermission.UNKNOWN
