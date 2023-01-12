@@ -1,14 +1,24 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Spacer,
+  Button,
+  ButtonGroup,
+  Text,
+  Icon,
+} from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import { MdCode } from "react-icons/md";
 
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { CodeSnippet } from "lib/components/modal/CodeSnippet";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
@@ -138,7 +148,18 @@ export const QueryArea = ({
         <Spacer />
         <Box w="full">
           <JsonReadOnly topic="Return Output" text={res} height="240px" />
-          <CopyButton isDisable={res.length === 0} value={res} />
+          <Flex justifyContent="flex-end" gap={2}>
+            <CodeSnippet
+              buttonProps={{
+                variant: "outline-info",
+                leftIcon: <Icon as={MdCode} boxSize="5" />,
+                children: "Get Code Snippet ",
+                size: "sm",
+                isDisabled: res.length === 0,
+              }}
+            />
+            <CopyButton isDisable={res.length === 0} value={res} />
+          </Flex>
         </Box>
       </Flex>
     </Flex>

@@ -169,12 +169,13 @@ const Navbar = observer(() => {
       <Flex
         position="fixed"
         bottom="0"
-        py={4}
+        py={3}
         bg="#212121"
         display="flex"
         width="full"
         maxWidth="224px"
         justifyContent="center"
+        borderTop="4px solid #121212"
       >
         <Link href="/deploy">
           <Button>
