@@ -18,20 +18,20 @@ import {
 } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { ContractAddr, HumanAddr, Option } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractData {
   chainId: string;
-  codeInfo: CodeLocalInfo | undefined;
-  contractLocalInfo: ContractLocalInfo | undefined;
-  instantiateInfo: InstantiateInfo | undefined;
-  publicInfo: PublicInfo | undefined;
+  codeInfo: Option<CodeLocalInfo>;
+  contractLocalInfo: Option<ContractLocalInfo>;
+  instantiateInfo: Option<InstantiateInfo>;
+  publicInfo: Option<PublicInfo>;
   balances: Coin[];
   initMsg: string;
-  initTxHash: string | undefined;
-  initProposalTitle: string | undefined;
-  initProposalId: number | undefined;
+  initTxHash: Option<string>;
+  initProposalTitle: Option<string>;
+  initProposalId: Option<number>;
 }
 
 export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {

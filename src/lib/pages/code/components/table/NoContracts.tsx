@@ -6,7 +6,7 @@ import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
 const DisconnectedState = () => (
   <Flex direction="column" alignItems="center" gap="16px">
     <Text variant="body1" color="text.dark">
-      No contract instances from this code.{" "}
+      No contract instances from this code.
     </Text>
     <Flex align="center" alignItems="center">
       <Text variant="body1" color="text.dark" mr="8px">

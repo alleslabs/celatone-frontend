@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { EditTags } from "lib/components/modal/EditTags";
 import type { ContractLocalInfo } from "lib/stores/contract";
+import { getTagsDefault } from "lib/utils";
 
 interface TagsCellProps {
   contractLocalInfo: ContractLocalInfo;
@@ -13,7 +14,7 @@ export const TagsCell = ({
   contractLocalInfo,
   isReadOnly = false,
 }: TagsCellProps) => {
-  const tags = contractLocalInfo.tags ?? [];
+  const tags = getTagsDefault(contractLocalInfo.tags);
   const [isHover, setIsHover] = useState(false);
   const handleMouseEnter = () => {
     setIsHover(true);

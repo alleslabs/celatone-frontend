@@ -3,7 +3,7 @@ import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import type { LVPair, Dict, ContractAddr } from "lib/types";
-import { formatSlugName } from "lib/utils";
+import { formatSlugName, getTagsDefault } from "lib/utils";
 
 export interface ContractLocalInfo {
   contractAddress: ContractAddr;
@@ -127,7 +127,6 @@ export class ContractStore {
             contractAddress,
             instantiator: "TODO",
             label: "TODO",
-            created: new Date(0),
           };
 
         const contractLocalInfo = contractLocalInfoByUserKey[contractAddress];
@@ -249,7 +248,7 @@ export class ContractStore {
       this.updateAllTags(
         userKey,
         contractAddress,
-        contractLocalInfo.tags ?? [],
+        getTagsDefault(contractLocalInfo.tags),
         tags
       );
       contractLocalInfo.tags = tags.length ? tags : undefined;

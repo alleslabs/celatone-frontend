@@ -18,4 +18,4 @@ export const parseDateOpt = (dateOpt: Option<string>): Option<Date> =>
   dateOpt ? parseDate(dateOpt) : undefined;
 
 export const parseDateDefault = (dateOpt: Option<string>): Date =>
-  dateOpt ? parseDate(dateOpt) : parseDate("0");
+  dateOpt ? parseDate(dateOpt) : new Date(0);

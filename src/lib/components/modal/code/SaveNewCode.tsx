@@ -13,6 +13,7 @@ import {
 } from "lib/data";
 import { useCodeStore, useEndpoint } from "lib/hooks";
 import { getCodeIdInfo } from "lib/services/code";
+import { getDescriptionDefault } from "lib/utils";
 
 interface ModalProps {
   buttonProps: ButtonProps;
@@ -154,8 +155,9 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   // update code description
   useEffect(() => {
     if (codeIdStatus.state === "success") {
-      const localDescription =
-        getCodeLocalInfo(Number(codeId))?.description ?? "";
+      const localDescription = getDescriptionDefault(
+        getCodeLocalInfo(Number(codeId))?.description
+      );
       setDescription(localDescription);
     }
   }, [codeId, codeIdStatus.state, getCodeLocalInfo, setDescription]);

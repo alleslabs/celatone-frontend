@@ -2,9 +2,9 @@ import { Flex, Text, Grid, IconButton, Box, chakra } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
-import { TableRow } from "../../../../../components/table/tableComponents";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { AddToOtherList, SaveContractDetails } from "lib/components/modal";
+import { TableRow } from "lib/components/table/tableComponents";
 import { ContractNameCell } from "lib/pages/contract-list/components/table/ContractNameCell";
 import { TagsCell } from "lib/pages/contract-list/components/table/TagsCell";
 import type { ContractInfo } from "lib/types";

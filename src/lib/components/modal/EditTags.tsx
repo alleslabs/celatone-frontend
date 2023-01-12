@@ -7,6 +7,7 @@ import { TagSelection } from "lib/components/forms/TagSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
+import { getTagsDefault } from "lib/utils";
 
 interface EditTagsProps {
   contractLocalInfo: ContractLocalInfo;
@@ -14,7 +15,7 @@ interface EditTagsProps {
 
 export function EditTags({ contractLocalInfo }: EditTagsProps) {
   const [tagResult, setTagResult] = useState<string[]>(
-    contractLocalInfo.tags ?? []
+    getTagsDefault(contractLocalInfo.tags)
   );
   const handleSave = useHandleContractSave({
     title: "Updated tags successfully!",

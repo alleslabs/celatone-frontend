@@ -17,7 +17,11 @@ import { useContractStore, useEndpoint, useValidateAddress } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
-import { formatSlugName } from "lib/utils";
+import {
+  formatSlugName,
+  getDescriptionDefault,
+  getTagsDefault,
+} from "lib/utils";
 
 interface SaveNewContractDetail extends OffchainDetail {
   contractAddress: string;
@@ -101,8 +105,8 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           instantiator: data.instantiator,
           label: data.label,
           name: contractLocalInfo?.name ?? data.label,
-          description: contractLocalInfo?.description ?? "",
-          tags: contractLocalInfo?.tags ?? [],
+          description: getDescriptionDefault(contractLocalInfo?.description),
+          tags: getTagsDefault(contractLocalInfo?.tags),
           lists: [
             ...initialList,
             ...(contractLocalInfo?.lists ?? []).filter(
