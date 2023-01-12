@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { scrollTop } from "lib/utils/scrollTop";
+import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
 import Header from "./Header";
@@ -17,7 +17,7 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    scrollTop();
+    scrollToTop();
   }, [router.asPath]);
   return (
     <Grid

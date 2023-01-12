@@ -11,6 +11,7 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
+  useExecuteTxsCountByContractAddress,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
@@ -132,5 +133,20 @@ export const useContractData = (
     initTxHash: instantiateDetail.initTxHash,
     initProposalTitle,
     initProposalId,
+  };
+};
+
+export const useContractDetailsTableCounts = (
+  contractAddress: ContractAddr
+) => {
+  // TODO - add other table count
+  const { data: executeCount = 0, refetch: refetchExecute } =
+    useExecuteTxsCountByContractAddress(contractAddress);
+
+  return {
+    tableCounts: {
+      executeCount,
+    },
+    refetchExecute,
   };
 };
