@@ -15,6 +15,7 @@ import {
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
+  useMigrationHistoriesCountByContractAddress,
 } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
@@ -142,11 +143,14 @@ export const useContractDetailsTableCounts = (
   // TODO - add other table count
   const { data: executeCount = 0, refetch: refetchExecute } =
     useExecuteTxsCountByContractAddress(contractAddress);
-
+  const { data: migrationCount = 0, refetch: refetchMigration } =
+    useMigrationHistoriesCountByContractAddress(contractAddress);
   return {
     tableCounts: {
       executeCount,
+      migrationCount,
     },
     refetchExecute,
+    refetchMigration,
   };
 };

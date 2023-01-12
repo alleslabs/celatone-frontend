@@ -18,8 +18,8 @@ export type LinkType =
   | AddressReturnType
   | "tx_hash"
   | "code_id"
-  | "block"
-  | "proposal";
+  | "block_height"
+  | "proposal_id";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
@@ -50,10 +50,10 @@ const getNavigationUrl = (
     case "code_id":
       url = "/code";
       break;
-    case "block":
+    case "block_height":
       url = getExplorerBlockUrl(currentChainName);
       break;
-    case "proposal":
+    case "proposal_id":
       url = getProposalUrl(currentChainName);
       break;
     case "invalid_address":
