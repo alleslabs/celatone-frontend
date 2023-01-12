@@ -22,7 +22,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <Grid
       templateAreas={`"header header"
-    "nav main" `}
+    "nav main"`}
       gridTemplateRows="70px 1fr"
       gridTemplateColumns="224px 1fr"
       h="100vh"
