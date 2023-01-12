@@ -41,7 +41,7 @@ const getInstantiateButtonProps = (
   return {
     tooltipLabel: isDisabled
       ? ""
-      : "Instantiate through proposal only, Coming soon",
+      : "Instantiate through proposal only (Coming Soon)",
     variant: "outline-gray",
     icon: isDisabled ? undefined : <StyledIcon as={MdHowToVote} />,
   };
