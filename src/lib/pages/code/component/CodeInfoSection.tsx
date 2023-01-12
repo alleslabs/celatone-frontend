@@ -20,7 +20,7 @@ const getMethodSpecificRender = (
   if (codeProposalInfo) {
     return {
       methodRender: (
-        <LabelText label="Proposal ID ">
+        <LabelText label="Proposal ID">
           <ExplorerLink
             value={codeProposalInfo.proposalId.toString()}
             canCopyWithHover
