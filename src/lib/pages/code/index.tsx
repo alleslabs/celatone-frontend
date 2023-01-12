@@ -56,9 +56,7 @@ const CodeDetails = observer(() => {
         />
       </Flex>
       <Divider borderColor="divider.main" my={12} />
-      {/* Code Information Section */}
-      {/* TODO: Use real data to render LabelText */}
-      <CodeInfoSection />
+      <CodeInfoSection codeDetails={codeDetails} />
       {/* TODO: Wireup badge count, Create table component and wireup with real data */}
       <Flex mb={6} align="center">
         <Heading as="h6" variant="h6">
