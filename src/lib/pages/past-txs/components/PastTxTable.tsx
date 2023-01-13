@@ -15,15 +15,12 @@ import dayjs from "dayjs";
 import { useCallback, useMemo, useState } from "react";
 import type { MouseEvent } from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
-import {
-  MdCheck,
-  MdClose,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-} from "react-icons/md";
+import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
 import { useFabricateFee, useSimulateFee } from "lib/app-provider";
 import { useResendTx } from "lib/app-provider/tx/resend";
+import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
+import { SingleMsg } from "lib/components/action-msg/SingleMsg";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useContractStore } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
@@ -49,8 +46,6 @@ import {
 import { MsgDetail } from "./MsgDetail";
 import type { MultipleMsgProps } from "./MultipleMsg";
 import { MultipleMsg } from "./MultipleMsg";
-import type { SingleMsgProps } from "./SingleMsg";
-import { SingleMsg } from "./SingleMsg";
 
 interface PastTxTableProps {
   element: Transaction;
@@ -547,8 +542,13 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
           </Flex>
         </Td>
         <Td border={hideBorder} color="text.dark">
-          {isAccordion && !isOpen && <MdKeyboardArrowDown />}
-          {isAccordion && isOpen && <MdKeyboardArrowUp />}
+          {isAccordion && (
+            <Icon
+              as={MdKeyboardArrowDown}
+              transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
+              boxSize="18px"
+            />
+          )}
         </Td>
       </Tr>
       {isAccordion && (

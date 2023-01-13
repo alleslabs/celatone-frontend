@@ -63,7 +63,7 @@ export const TransactionsTable = ({
     );
 
   const templateColumnsStyle =
-    "170px 70px minmax(350px, 1fr) repeat(2, max(170px)) max(300px) max(50px)";
+    "170px 70px minmax(360px, 1fr) repeat(2, max(170px)) max(300px) max(50px)";
 
   return (
     <Flex direction="column" overflowX="scroll">

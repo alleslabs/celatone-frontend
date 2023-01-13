@@ -23,8 +23,7 @@ export const extractMsgType = (typePath: string): string =>
  */
 export const getActionMsgType = (msgTypesSupportList: boolean[]) => {
   const existLength = msgTypesSupportList.filter((type) => type).length;
-  if (existLength === 0) return ActionMsgType.OTHERACTIONMSG;
-  if (existLength === 1) return ActionMsgType.SINGLEACTIONMSG;
-  if (existLength > 1) return ActionMsgType.MULTIPLEACTIONMSG;
-  return null;
+  if (existLength === 0) return ActionMsgType.OTHER_ACTION_MSG;
+  if (existLength === 1) return ActionMsgType.SINGLE_ACTION_MSG;
+  return ActionMsgType.MULTIPLE_ACTION_MSG;
 };

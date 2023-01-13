@@ -3,12 +3,10 @@ import { Flex, Tag } from "@chakra-ui/react";
 import type { Message } from "lib/types";
 import { countMessages } from "lib/utils";
 
-interface MultipleActionMsgTypeProps {
+interface MultipleActionsMsgProps {
   messages: Message[];
 }
-export const MultipleActionMsgType = ({
-  messages,
-}: MultipleActionMsgTypeProps) => {
+export const MultipleActionsMsg = ({ messages }: MultipleActionsMsgProps) => {
   const displayMessagesCount = countMessages(messages).filter(
     (msg) => msg.count !== 0
   );

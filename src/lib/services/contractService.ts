@@ -297,7 +297,7 @@ export const useTxsCountByContractAddress = (
       })
       .then(
         ({ contract_transactions_aggregate }) =>
-          contract_transactions_aggregate?.aggregate?.count
+          contract_transactions_aggregate.aggregate?.count
       );
   }, [contractAddress]);
 

@@ -1,15 +1,15 @@
-import { SingleActionMsgType } from "../actionMsg/SingleActionMsgType";
+import { SingleActionMsg } from "../action-msg/SingleActionMsg";
 import { AccordionStepperItem } from "lib/components/AccordionStepperItem";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
 import { TableRow } from "./tableComponents";
 
-interface AccordionProps {
+interface MsgDetailProps {
   message: Message;
 }
 
-export const MsgDetail = ({ message }: AccordionProps) => (
+export const MsgDetail = ({ message }: MsgDetailProps) => (
   <TableRow
     h="40px"
     borderBottom="none"
@@ -23,7 +23,7 @@ export const MsgDetail = ({ message }: AccordionProps) => (
     }}
   >
     <AccordionStepperItem />
-    <SingleActionMsgType
+    <SingleActionMsg
       messages={[message]}
       type={extractMsgType(message.type)}
       success

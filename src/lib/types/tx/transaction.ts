@@ -63,9 +63,9 @@ export interface ExecuteTransaction {
 }
 
 export enum ActionMsgType {
-  SINGLEACTIONMSG = "SINGLEACTIONMSG",
-  MULTIPLEACTIONMSG = "MULTIPLEACTIONMSG",
-  OTHERACTIONMSG = "OTHERACTIONMSG",
+  SINGLE_ACTION_MSG = "SINGLEACTIONMSG",
+  MULTIPLE_ACTION_MSG = "MULTIPLEACTIONMSG",
+  OTHER_ACTION_MSG = "OTHERACTIONMSG",
 }
 export interface AllTransaction extends ExecuteTransaction {
   actionMsgType: ActionMsgType;

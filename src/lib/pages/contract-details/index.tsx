@@ -26,10 +26,10 @@ import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { ExecuteTable } from "./components/tables/execute/Execute";
+import { ExecuteTable } from "./components/tables/execute";
 import { MigrationTable } from "./components/tables/migration";
 import { RelatedProposalsTable } from "./components/tables/related-proposals";
-import { TransactionsTable } from "./components/tables/transactions/Transactions";
+import { TransactionsTable } from "./components/tables/transactions";
 import { TokenSection } from "./components/TokenSection";
 
 interface ContractDetailsBodyProps {
@@ -98,7 +98,6 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
             Related Proposals
           </CustomTab>
         </TabList>
-        {/* TODOs: Wireup with real table data, Make table component, and render each table with different data under each TabPanel */}
         <TabPanels>
           <TabPanel p={0}>
             <TransactionsTable

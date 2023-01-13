@@ -12,7 +12,7 @@ const supportedMessage = [
   "MsgUpdateAdmin",
 ];
 
-const countUnsupportedMessage = (messages: Message[]) =>
+const getUnSupportedMessageCount = (messages: Message[]) =>
   messages.reduce(
     (count, current) =>
       !supportedMessage.includes(extractMsgType(current.type))
@@ -21,7 +21,7 @@ const countUnsupportedMessage = (messages: Message[]) =>
     0
   );
 
-const countMessage = (messages: Message[], type: string) =>
+const getMessageCount = (messages: Message[], type: string) =>
   messages.reduce(
     (count, current) =>
       extractMsgType(current.type) === type ? count + 1 : count,
@@ -31,34 +31,34 @@ const countMessage = (messages: Message[], type: string) =>
 export const countMessages = (messages: Message[]) => [
   {
     type: "Execute",
-    count: countMessage(messages, "MsgExecuteContract"),
+    count: getMessageCount(messages, "MsgExecuteContract"),
   },
   {
     type: "Instantiate",
-    count: countMessage(messages, "MsgInstantiateContract"),
+    count: getMessageCount(messages, "MsgInstantiateContract"),
   },
   {
     type: "Upload",
-    count: countMessage(messages, "MsgStoreCode"),
+    count: getMessageCount(messages, "MsgStoreCode"),
   },
   {
     type: "Send",
-    count: countMessage(messages, "MsgSend"),
+    count: getMessageCount(messages, "MsgSend"),
   },
   {
     type: "Migrate",
-    count: countMessage(messages, "MsgMigrateContract"),
+    count: getMessageCount(messages, "MsgMigrateContract"),
   },
   {
     type: "Clear Admin",
-    count: countMessage(messages, "MsgClearAdmin"),
+    count: getMessageCount(messages, "MsgClearAdmin"),
   },
   {
     type: "Update Admin",
-    count: countMessage(messages, "MsgUpdateAdmin"),
+    count: getMessageCount(messages, "MsgUpdateAdmin"),
   },
   {
     type: "Message",
-    count: countUnsupportedMessage(messages),
+    count: getUnSupportedMessageCount(messages),
   },
 ];

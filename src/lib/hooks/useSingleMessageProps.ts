@@ -1,5 +1,6 @@
 import { useWallet } from "@cosmos-kit/react";
 
+import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { getAddressTypeByLength, useContractStore } from "lib/hooks";
 import type { ContractInfo } from "lib/stores/contract";
@@ -14,7 +15,7 @@ import type {
   DetailMigrate,
   DetailClearAdmin,
 } from "lib/types";
-import { coinToString } from "lib/utils";
+import { formatBalanceWithDenom } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";
 
 /**
@@ -186,7 +187,7 @@ const sendSingleMsgProps = (
   return isSuccess
     ? {
         type: "Send",
-        bolds: coinToString(detail.amount),
+        bolds: formatBalanceWithDenom(detail.amount),
         text2: "to",
         link1: {
           type: getAddressTypeByLength(chainName, detail.toAddress) as LinkType,
@@ -471,12 +472,12 @@ const otherMessageSingleMsgProps = (
       };
 };
 
-export const useSingleActionMsgTemplate = (
+export const useSingleActionMsgProps = (
   type: string,
   isSuccess: boolean,
   messages: Message[],
   singleMsg: Option<boolean>
-) => {
+): SingleMsgProps => {
   const { currentChainName } = useWallet();
   const { getContractInfo } = useContractStore();
 

@@ -142,7 +142,6 @@ export const useContractData = (
 export const useContractDetailsTableCounts = (
   contractAddress: ContractAddr
 ) => {
-  // TODO - add other table count
   const { data: executeCount = 0, refetch: refetchExecute } =
     useExecuteTxsCountByContractAddress(contractAddress);
   const { data: migrationCount = 0, refetch: refetchMigration } =

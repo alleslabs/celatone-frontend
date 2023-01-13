@@ -1,18 +1,21 @@
-import { Flex, Icon, Text, Grid, useDisclosure, Tag } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import {
-  MdCheck,
-  MdClose,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-} from "react-icons/md";
+  Flex,
+  Icon,
+  Text,
+  Grid,
+  useDisclosure,
+  Tag,
+  Box,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
-import { MultipleActionMsgType } from "lib/components/actionMsg/MultipleActionMsgType";
-import { SingleActionMsgType } from "lib/components/actionMsg/SingleActionMsgType";
+import { MultipleActionsMsg } from "lib/components/action-msg/MultipleActionsMsg";
+import { SingleActionMsg } from "lib/components/action-msg/SingleActionMsg";
+import { SingleMsg } from "lib/components/action-msg/SingleMsg";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { MsgDetail } from "lib/components/table/MsgDetail";
-import { SingleMsg } from "lib/pages/past-txs/components/SingleMsg";
 import type { AllTransaction } from "lib/types";
 import { ActionMsgType } from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
@@ -21,6 +24,31 @@ interface TxsTableRowProps {
   transaction: AllTransaction;
   templateColumnsStyle: string;
 }
+
+const renderActionsMessages = (transaction: AllTransaction) => {
+  if (transaction.actionMsgType === ActionMsgType.SINGLE_ACTION_MSG) {
+    return (
+      <SingleActionMsg
+        messages={transaction.messages}
+        type={extractMsgType(transaction.messages[0].type)}
+        success={transaction.success}
+      />
+    );
+  }
+  if (transaction.actionMsgType === ActionMsgType.MULTIPLE_ACTION_MSG) {
+    return <MultipleActionsMsg messages={transaction.messages} />;
+  }
+  return (
+    <SingleMsg
+      type="Message"
+      tags={
+        transaction.messages.length === 1
+          ? [extractMsgType(transaction.messages[0].type)?.substring(3)]
+          : [transaction.messages.length.toString()]
+      }
+    />
+  );
+};
 
 export const TxsTableRow = ({
   transaction,
@@ -33,37 +61,13 @@ export const TxsTableRow = ({
     if (transaction.messages.length > 1) setIsAccordion(true);
   }, [transaction.messages]);
 
-  const renderActionsMessages = () => {
-    if (transaction.actionMsgType === ActionMsgType.SINGLEACTIONMSG) {
-      return (
-        <SingleActionMsgType
-          messages={transaction.messages}
-          type={extractMsgType(transaction.messages[0].type)}
-          success={transaction.success}
-        />
-      );
-    }
-    if (transaction.actionMsgType === ActionMsgType.MULTIPLEACTIONMSG) {
-      return <MultipleActionMsgType messages={transaction.messages} />;
-    }
-    return (
-      <SingleMsg
-        type="Message"
-        tags={
-          transaction.messages.length === 1
-            ? [extractMsgType(transaction.messages[0].type)?.substring(3)]
-            : [transaction.messages.length.toString()]
-        }
-      />
-    );
-  };
-
   return (
-    <>
+    <Box w="full" minW="min-content">
       <Grid
         templateColumns={templateColumnsStyle}
-        onClick={onToggle}
+        onClick={isAccordion ? onToggle : undefined}
         _hover={{ background: "divider.main" }}
+        cursor={isAccordion ? "pointer" : "none"}
       >
         <TableRow>
           <ExplorerLink
@@ -81,7 +85,7 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            {renderActionsMessages()}
+            {renderActionsMessages(transaction)}
             {transaction.isIbc && (
               <Tag borderRadius="full" bg="rgba(164, 133, 231, 0.6)">
                 IBC
@@ -113,8 +117,13 @@ export const TxsTableRow = ({
           </Flex>
         </TableRow>
         <TableRow>
-          {isAccordion && !isOpen && <MdKeyboardArrowDown />}
-          {isAccordion && isOpen && <MdKeyboardArrowUp />}
+          {isAccordion && (
+            <Icon
+              as={MdKeyboardArrowDown}
+              transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
+              boxSize="18px"
+            />
+          )}
         </TableRow>
       </Grid>
       {isAccordion && (
@@ -124,6 +133,6 @@ export const TxsTableRow = ({
           ))}
         </Grid>
       )}
-    </>
+    </Box>
   );
 };
