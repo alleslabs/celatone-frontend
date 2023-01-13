@@ -22,7 +22,7 @@ const getMethodSpecificRender = (
       methodRender: (
         <LabelText label="Proposal ID">
           <ExplorerLink
-            type="proposal"
+            type="proposal_id"
             value={codeProposalInfo.proposalId.toString()}
             canCopyWithHover
           />
@@ -31,7 +31,7 @@ const getMethodSpecificRender = (
       storedBlockRender: (
         <>
           <ExplorerLink
-            type="block"
+            type="block_height"
             value={codeProposalInfo.height.toString()}
             canCopyWithHover
           />
@@ -59,7 +59,7 @@ const getMethodSpecificRender = (
       storedBlockRender: (
         <>
           <ExplorerLink
-            type="block"
+            type="block_height"
             value={codeTxInfo.height.toString()}
             canCopyWithHover
           />

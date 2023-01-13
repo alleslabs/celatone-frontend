@@ -54,7 +54,7 @@ export const ExecuteTableRow = ({
       <TableRow>
         <ExplorerLink
           value={transaction.height.toString()}
-          type="block"
+          type="block_height"
           canCopyWithHover
         />
       </TableRow>
