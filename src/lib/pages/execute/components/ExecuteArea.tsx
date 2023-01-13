@@ -118,7 +118,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds: [],
+        funds: assets,
       });
       const timeoutId = setTimeout(() => {
         setComposedTxMsg([composedMsg]);
@@ -126,7 +126,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
       return () => clearTimeout(timeoutId);
     }
     return () => {};
-  }, [address, contractAddress, enableExecute, msg]);
+  }, [address, contractAddress, enableExecute, msg, assets]);
 
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
