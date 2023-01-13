@@ -11,6 +11,7 @@ const StyledTag = chakra(Tag, {
     fontSize: "12px",
     fontWeight: 400,
     color: "text.main",
+    w: "fit-content",
   },
 });
 

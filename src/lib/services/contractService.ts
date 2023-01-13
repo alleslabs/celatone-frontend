@@ -9,15 +9,19 @@ import {
   getInstantiateDetailByContractQueryDocument,
   getExecuteTxsCountByContractAddress,
   getExecuteTxsByContractAddress,
+  getMigrationHistoriesCountByContractAddress,
+  getMigrationHistoriesByContractAddress,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
+  ContractMigrationHistory,
   ExecuteTransaction,
   HumanAddr,
+  MigrationRemark,
   Option,
 } from "lib/types";
-import { parseDateDefault, parseTxHash } from "lib/utils";
+import { parseDate, parseDateDefault, parseTxHash } from "lib/utils";
 
 interface InstantiateDetail {
   initMsg: string;
@@ -158,4 +162,65 @@ export const useExecuteTxsCountByContractAddress = (
       enabled: !!contractAddress,
     }
   );
+};
+
+export const useMigrationHistoriesByContractAddress = (
+  contractAddress: ContractAddr,
+  offset: number,
+  pageSize: number
+): UseQueryResult<
+  Option<Omit<ContractMigrationHistory, "codeDescription">[]>
+> => {
+  const queryFn = useCallback(() => {
+    return indexerGraphClient
+      .request(getMigrationHistoriesByContractAddress, {
+        contractAddress,
+        offset,
+        pageSize,
+      })
+      .then(({ contract_histories }) =>
+        contract_histories.map<
+          Omit<ContractMigrationHistory, "codeDescription">
+        >((history) => ({
+          codeId: history.code_id,
+          sender: history.account.address as HumanAddr | ContractAddr,
+          height: history.block.height,
+          timestamp: parseDate(history.block.timestamp),
+          remark: {
+            operation: history.remark.operation as MigrationRemark["operation"],
+            type: history.remark.type as MigrationRemark["type"],
+            value: history.remark.value as MigrationRemark["value"],
+          },
+        }))
+      );
+  }, [contractAddress, offset, pageSize]);
+
+  return useQuery(
+    ["migration_histories", contractAddress, offset, pageSize],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
+export const useMigrationHistoriesCountByContractAddress = (
+  contractAddress: ContractAddr
+): UseQueryResult<Option<number>> => {
+  const queryFn = useCallback(() => {
+    return indexerGraphClient
+      .request(getMigrationHistoriesCountByContractAddress, {
+        contractAddress,
+      })
+      .then(
+        ({ contract_histories_aggregate }) =>
+          contract_histories_aggregate.aggregate?.count
+      );
+  }, [contractAddress]);
+
+  return useQuery(["migration_histories_count", contractAddress], queryFn, {
+    keepPreviousData: true,
+    enabled: !!contractAddress,
+  });
 };
