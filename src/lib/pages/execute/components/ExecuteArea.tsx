@@ -62,7 +62,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
         label: asset.symbol,
         value: asset.base,
         disabled: selectedAssets.includes(asset.base),
-      })) ?? [],
+      })),
     [nativeTokensInfo, selectedAssets]
   );
 

@@ -95,7 +95,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         label: asset.symbol,
         value: asset.base,
         disabled: selectedAssets.includes(asset.base),
-      })) ?? [],
+      })),
     [nativeTokensInfo, selectedAssets]
   );
 
