@@ -16,12 +16,17 @@ const StyledIcon = chakra(Icon, {
 
 export const CTASection = observer(
   ({ id, ...codeInfo }: Omit<CodeInfo, "contracts">) => {
-    const { isCodeIdExist } = useCodeStore();
-    const isSaved = isCodeIdExist(id);
+    const { isCodeIdSaved } = useCodeStore();
+    const isSaved = isCodeIdSaved(id);
 
     return (
       <Flex gap={4}>
-        {isSaved && <SaveOrEditCodeModal mode="edit" id={id} {...codeInfo} />}
+        {isSaved && (
+          <SaveOrEditCodeModal
+            mode="edit"
+            codeLocalInfo={{ id, ...codeInfo }}
+          />
+        )}
         <InstantiateButton
           instantiatePermission={codeInfo.instantiatePermission}
           permissionAddresses={codeInfo.permissionAddresses}
@@ -42,7 +47,10 @@ export const CTASection = observer(
             }
           />
         ) : (
-          <SaveOrEditCodeModal mode="save" id={id} {...codeInfo} />
+          <SaveOrEditCodeModal
+            mode="save"
+            codeLocalInfo={{ id, ...codeInfo }}
+          />
         )}
       </Flex>
     );

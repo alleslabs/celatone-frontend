@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#75](https://github.com/alleslabs/celatone-frontend/pull/75) Add code-related contracts table to the code detail page
+- [#82](https://github.com/alleslabs/celatone-frontend/pull/82) Add all codes page
 - [#83](https://github.com/alleslabs/celatone-frontend/pull/83) Add invalid code state
 - [#73](https://github.com/alleslabs/celatone-frontend/pull/73) Wireup migration table
 - [#77](https://github.com/alleslabs/celatone-frontend/pull/77) Wireup code info section in code details page

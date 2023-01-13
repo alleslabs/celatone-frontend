@@ -1,3 +1,3 @@
-import PastTxs from "lib/pages/pastTxs";
+import PastTxs from "lib/pages/past-txs";
 
 export default PastTxs;
