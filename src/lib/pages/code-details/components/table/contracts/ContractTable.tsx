@@ -111,7 +111,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
               templateColumnsStyle={templateColumnsStyle}
             />
           ))}
-          {instantiatedContracts?.length > 10 && (
+          {totalData > 10 && (
             <Pagination
               currentPage={currentPage}
               pagesQuantity={pagesQuantity}
