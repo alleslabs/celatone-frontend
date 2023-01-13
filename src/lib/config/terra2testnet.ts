@@ -16,9 +16,9 @@ export const terra2testnet: Chain = {
       {
         denom: "uluna",
         fixed_min_gas_price: 0,
-        low_gas_price: 0.015,
-        average_gas_price: 0.015,
-        high_gas_price: 0.015,
+        low_gas_price: 0.15,
+        average_gas_price: 0.15,
+        high_gas_price: 0.15,
       },
     ],
   },

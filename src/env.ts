@@ -9,6 +9,10 @@ export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
   },
   terra2: {
     denom: "uluna",
+    gasPrice: "0.015" as U<Token>,
+  },
+  terra2testnet: {
+    denom: "uluna",
     gasPrice: "0.15" as U<Token>,
   },
 };

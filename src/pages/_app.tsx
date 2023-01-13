@@ -1,7 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import type { Chain } from "@chain-registry/types";
-import { GasPrice } from "@cosmjs/stargate";
-import type { SignerOptions } from "@cosmos-kit/core";
 import { wallets } from "@cosmos-kit/keplr";
 import { WalletProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -52,19 +49,6 @@ configurePersistable({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
-  const signerOptions: SignerOptions = {
-    cosmwasm: (chain: Chain) => {
-      if (
-        chain.chain_name === "osmosis" ||
-        chain.chain_name === "osmosistestnet"
-      )
-        return {
-          gasPrice: GasPrice.fromString("0.0025uosmo"),
-        };
-
-      return undefined;
-    },
-  };
 
   return (
     <Chakra>
@@ -73,7 +57,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           chains={[...chains, terra2testnet]}
           assetLists={[...assets, terra2testnetAssets]}
           wallets={wallets}
-          signerOptions={signerOptions}
           endpointOptions={{
             terra2testnet: {
               rest: ["https://pisco-lcd.terra.dev"],
