@@ -75,7 +75,7 @@ export const MigrationTable = ({
           templateColumns={templateColumns}
         />
       ))}
-      {migrationHistories.length > 10 && (
+      {totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

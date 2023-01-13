@@ -82,7 +82,7 @@ export const ExecuteTable = ({
           templateColumnsStyle={templateColumnsStyle}
         />
       ))}
-      {executeTransaction.length > 10 && (
+      {totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
