@@ -4,14 +4,9 @@ import { makePersistable } from "mobx-persist-store";
 import type { Dict } from "lib/types";
 
 export interface CodeLocalInfo {
-  description?: string;
-  uploader?: string;
-}
-
-interface SavedCodeInfo {
   id: number;
+  uploader: string;
   description?: string;
-  uploader?: string;
 }
 
 export class CodeStore {
@@ -19,7 +14,7 @@ export class CodeStore {
 
   savedCodeIds: Dict<string, number[]>;
 
-  codeInfo: Dict<string, Dict<number, CodeLocalInfo>>;
+  codeInfo: Dict<string, Record<number, CodeLocalInfo>>;
 
   constructor() {
     this.savedCodeIds = {};
@@ -46,7 +41,7 @@ export class CodeStore {
     return this.codeInfo[this.userKey]?.[id];
   }
 
-  isCodeIdExist(id: number): boolean {
+  isCodeIdSaved(id: number): boolean {
     return this.savedCodeIds[this.userKey]?.includes(id) ?? false;
   }
 
@@ -54,7 +49,7 @@ export class CodeStore {
     return this.savedCodeIds[userKey]?.slice().reverse() ?? [];
   }
 
-  lastSavedCodes(userKey: string): SavedCodeInfo[] {
+  lastSavedCodes(userKey: string): CodeLocalInfo[] {
     const savedCodeIdsByUserKey = this.savedCodeIds[userKey];
 
     if (!savedCodeIdsByUserKey) return [];
@@ -62,8 +57,8 @@ export class CodeStore {
     return savedCodeIdsByUserKey
       .map((codeId) => ({
         id: codeId,
+        uploader: this.codeInfo[userKey]?.[codeId]?.uploader ?? "TODO",
         description: this.codeInfo[userKey]?.[codeId]?.description,
-        uploader: this.codeInfo[userKey]?.[codeId]?.uploader,
       }))
       .reverse();
   }
@@ -82,16 +77,14 @@ export class CodeStore {
     );
   }
 
-  updateCodeInfo(id: number, newCodeInfo: CodeLocalInfo): void {
-    const codeInfo = this.codeInfo[this.userKey]?.[id] || {};
+  updateCodeInfo(id: number, uploader: string, description?: string): void {
+    const codeInfo = this.codeInfo[this.userKey]?.[id] || { id, uploader };
 
-    if (newCodeInfo.description !== undefined) {
-      codeInfo.description = newCodeInfo.description.trim().length
-        ? newCodeInfo.description.trim()
+    if (description !== undefined) {
+      codeInfo.description = description.trim().length
+        ? description.trim()
         : undefined;
     }
-    if (newCodeInfo.uploader !== undefined)
-      codeInfo.uploader = newCodeInfo.uploader;
 
     this.codeInfo[this.userKey] = {
       ...this.codeInfo[this.userKey],

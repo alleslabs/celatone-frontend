@@ -24,7 +24,7 @@ const InputWithIcon = ({
         onChange={onChange}
         size={size}
       />
-      <InputRightElement>
+      <InputRightElement h="full">
         <SearchIcon color="input.main" />
       </InputRightElement>
     </InputGroup>

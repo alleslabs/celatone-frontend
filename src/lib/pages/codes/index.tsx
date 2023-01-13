@@ -1,11 +1,17 @@
-import { Heading, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
+import {
+  Heading,
+  Tabs,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Box,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 
 import { CustomTab } from "lib/components/CustomTab";
 import InputWithIcon from "lib/components/InputWithIcon";
-import PageContainer from "lib/components/PageContainer";
 import CodesTable from "lib/pages/codes/components/CodesTable";
 
 import SaveCodeButton from "./components/SaveCodeButton";
@@ -29,23 +35,26 @@ const Codes = observer(() => {
   };
 
   return (
-    <PageContainer>
-      <Heading as="h1" size="lg" color="white" mb={4}>
-        Code Lists
-      </Heading>
-
+    <Box>
+      <Box pt="48px" px="48px">
+        <Heading as="h1" size="lg" color="white" mb={4}>
+          Code Lists
+        </Heading>
+      </Box>
       <Tabs>
-        <TabList border="none" mb="32px">
-          <CustomTab count={allCodesCount}>All Codes</CustomTab>
-          <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
-          <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
-        </TabList>
-        <InputWithIcon
-          placeholder="Search with code ID or code description"
-          value={keyword}
-          onChange={handleFilterChange}
-          size="lg"
-        />
+        <Box px="48px">
+          <TabList border="none" mb="32px">
+            <CustomTab count={allCodesCount}>All Codes</CustomTab>
+            <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
+            <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
+          </TabList>
+          <InputWithIcon
+            placeholder="Search with code ID or code description"
+            value={keyword}
+            onChange={handleFilterChange}
+            size="lg"
+          />
+        </Box>
         <TabPanels mt="48px">
           <TabPanel p="0px">
             <CodesTable
@@ -85,7 +94,7 @@ const Codes = observer(() => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </PageContainer>
+    </Box>
   );
 });
 
