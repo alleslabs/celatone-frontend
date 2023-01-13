@@ -70,6 +70,7 @@ export const RelatedProposalsTable = ({
       <RelatedProposalsHeader templateColumns={templateColumns} />
       {relatedProposals.map((proposal) => (
         <RelatedProposalsRow
+          key={proposal.proposalId}
           proposal={proposal}
           templateColumns={templateColumns}
         />
