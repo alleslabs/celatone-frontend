@@ -23,10 +23,11 @@ import type { ExecutePageState } from "./types";
 const Execute = () => {
   const router = useRouter();
   const { control, setValue, watch } = useForm<ExecutePageState>({
+    mode: "all",
     defaultValues: {
       contractAddress: "",
       initialMsg: "",
-      assets: [],
+      assets: [{ denom: "", amount: "" }],
     },
   });
   const watchContractAddress = watch("contractAddress");

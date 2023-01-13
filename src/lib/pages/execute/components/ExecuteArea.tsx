@@ -2,7 +2,7 @@ import { Box, Flex, Button, ButtonGroup, Icon, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFieldArray, useWatch } from "react-hook-form";
+import { useFieldArray, useFormState, useWatch } from "react-hook-form";
 import type { Control, UseFormSetValue } from "react-hook-form";
 import { IoIosWarning } from "react-icons/io";
 import { MdInput } from "react-icons/md";
@@ -52,6 +52,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
     control,
     name: "assets",
   });
+  const { errors } = useFormState({ control });
 
   const selectedAssets = assets.map((asset) => asset.denom);
 
@@ -71,12 +72,13 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
 
-  const enableExecute = !!(
-    msg.trim().length &&
-    jsonValidate(msg) === null &&
-    address &&
-    contractAddress
-  );
+  const enableExecute =
+    !!(
+      msg.trim().length &&
+      jsonValidate(msg) === null &&
+      address &&
+      contractAddress
+    ) && !errors.assets;
 
   const { isFetching } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
@@ -120,7 +122,8 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
         .map((asset) => ({
           ...asset,
           amount: microfy(asset.amount as Token).toFixed(0),
-        }));
+        }))
+        .filter((asset) => asset.amount !== "0");
 
       const composedMsg = composeMsg(MsgType.EXECUTE, {
         sender: address as HumanAddr,
@@ -219,6 +222,14 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
                   label="Amount"
                   variant="floating"
                   type="number"
+                  rules={{
+                    pattern: {
+                      // Move to constant
+                      value: /^[0-9]+([.][0-9]{0,6})?$/i,
+                      message: 'Invalid amount. e.g. "100.00"',
+                    },
+                  }}
+                  error={errors?.assets?.[idx]?.amount?.message}
                 />
               }
             />
