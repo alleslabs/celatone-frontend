@@ -11,10 +11,11 @@ interface TokenSectionProps {
 }
 export const TokenSection = ({ balances }: TokenSectionProps) => {
   const [showMore, setShowMore] = useState(false);
-  const supportedAssets = useMemo(
-    () => balances?.filter((balance) => balance?.assetInfo),
-    [balances]
-  );
+  const supportedAssets =
+    useMemo(
+      () => balances?.filter((balance) => balance.assetInfo),
+      [balances]
+    ) ?? [];
 
   if (!balances?.length)
     return (
@@ -27,14 +28,14 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
     <>
       {/* TODO - Implement unsupported assets */}
       <Grid gridGap={4} gridTemplateColumns="repeat(4, 1fr)">
-        {supportedAssets?.map((balance, index) => {
+        {supportedAssets.map((balance, index) => {
           if (!showMore && index >= 4) {
             return null;
           }
           return <TokenCard key={balance.balance.id} userBalance={balance} />;
         })}
       </Grid>
-      {supportedAssets && supportedAssets?.length > 4 && (
+      {supportedAssets.length > 4 && (
         <ShowMoreButton
           showMoreText="View All Assets"
           showLessText="View Less Assets"

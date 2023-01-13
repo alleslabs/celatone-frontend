@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { CELATONE_API_ENDPOINT, getChain } from "lib/data";
+import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import type { Balance, ContractAddr, HumanAddr, Option } from "lib/types";
 import { encode } from "lib/utils";
 
@@ -114,10 +114,10 @@ export const queryContractBalances = async (
   chainName: Option<string>,
   chainId: Option<string>,
   contractAddress: ContractAddr
-) => {
+): Promise<Option<Balance[]>> => {
   if (!chainName || !chainId) return undefined;
   const { data } = await axios.get<Balance[]>(
-    `${CELATONE_API_ENDPOINT}/balances/${getChain(
+    `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
       chainName
     )}/${chainId}/${contractAddress}`
   );

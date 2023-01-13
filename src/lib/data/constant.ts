@@ -67,15 +67,3 @@ export const LCD_ENDPOINT: Record<string, string> = {
   osmosis: "https://lcd.osmosis.zone",
   osmosistestnet: "https://lcd-test.osmosis.zone",
 };
-
-export const CELATONE_API_ENDPOINT = "https://celatone-api.alleslabs.dev";
-
-export const getChain = (chainName: string) => {
-  switch (chainName) {
-    case "osmosistestnet":
-    case "osmosis":
-      return "osmosis";
-    default:
-      return undefined;
-  }
-};

@@ -2,12 +2,8 @@ import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import {
-  useAssetInfos,
-  useCodeStore,
-  useContractStore,
-  useEndpoint,
-} from "lib/hooks";
+import { useCodeStore, useContractStore, useEndpoint } from "lib/hooks";
+import { useAssetInfos } from "lib/services/assetService";
 import type { InstantiateInfo, PublicInfo } from "lib/services/contract";
 import {
   queryPublicInfo,
@@ -111,20 +107,19 @@ export const useContractData = (
     { enabled: !!currentChainRecord }
   );
 
-  const contractBalancesWithAssetInfos = () =>
-    contractBalances
-      ?.map(
-        (balance): BalanceWithAssetInfo => ({
-          balance,
-          assetInfo: assetInfos?.[balance.id],
-        })
-      )
-      .sort((a, b) => {
-        if (a.balance.symbol && b.balance.symbol) {
-          return a.balance.symbol.localeCompare(b.balance.symbol);
-        }
-        return -1;
-      });
+  const contractBalancesWithAssetInfos = contractBalances
+    ?.map(
+      (balance): BalanceWithAssetInfo => ({
+        balance,
+        assetInfo: assetInfos?.[balance.id],
+      })
+    )
+    .sort((a, b) => {
+      if (a.balance.symbol && b.balance.symbol) {
+        return a.balance.symbol.localeCompare(b.balance.symbol);
+      }
+      return -1;
+    });
 
   const { data: publicInfo } = useQuery(
     ["query", "publicInfo", contractAddress],
@@ -160,7 +155,7 @@ export const useContractData = (
     contractInfo,
     instantiateInfo,
     publicInfo,
-    balances: contractBalancesWithAssetInfos(),
+    balances: contractBalancesWithAssetInfos,
     initMsg: instantiateDetail.initMsg,
     initTxHash: instantiateDetail.initTxHash,
     initProposalTitle,

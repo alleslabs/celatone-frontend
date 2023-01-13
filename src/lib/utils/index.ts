@@ -16,4 +16,3 @@ export * from "./date";
 export * from "./validate";
 export * from "./parser";
 export * from "./option";
-export * from "./precision";

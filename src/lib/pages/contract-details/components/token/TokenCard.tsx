@@ -1,7 +1,7 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 
 import type { BalanceWithAssetInfo } from "lib/types";
-import { convertAmountWithprecision } from "lib/utils";
+import { formatToken } from "lib/utils/formatter/token";
 
 interface TokenCardProps {
   userBalance: BalanceWithAssetInfo;
@@ -21,10 +21,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => (
       alt={userBalance.balance.symbol}
     />
     <Text color="text.main" fontWeight="700">
-      {convertAmountWithprecision(
-        userBalance.balance.amount,
-        userBalance.balance.precision
-      )}
+      {formatToken(userBalance.balance.amount, userBalance.balance.precision)}
     </Text>
     <Text color="text.main">{userBalance.balance.symbol}</Text>
   </Flex>
