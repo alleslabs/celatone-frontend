@@ -27,6 +27,10 @@ const documents = {
     types.GetContractListCountByCodeIdDocument,
   "\n  query getCodeInfoByCodeId($codeId: Int!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n":
     types.GetCodeInfoByCodeIdDocument,
+  "\n  query getTxsByContractAddress(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_transactions(\n      where: { contract: { address: { _eq: $contractAddress } } }\n      order_by: { transaction: { block: { timestamp: desc } } }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      transaction {\n        hash\n        success\n        messages\n        account {\n          address\n        }\n        block {\n          height\n          timestamp\n        }\n        is_execute\n        is_ibc\n        is_instantiate\n        is_send\n        is_store_code\n        is_migrate\n        is_update_admin\n        is_clear_admin\n      }\n    }\n  }\n":
+    types.GetTxsByContractAddressDocument,
+  "\n  query getTxsCountByContractAddress($contractAddress: String!) {\n    contract_transactions_aggregate(\n      where: { contract: { address: { _eq: $contractAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
+    types.GetTxsCountByContractAddressDocument,
 };
 
 export function graphql(
@@ -65,6 +69,12 @@ export function graphql(
 export function graphql(
   source: "\n  query getCodeInfoByCodeId($codeId: Int!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n"
 ): typeof documents["\n  query getCodeInfoByCodeId($codeId: Int!) {\n    codes_by_pk(id: $codeId) {\n      id\n      account {\n        address\n      }\n      transaction {\n        hash\n        block {\n          height\n          timestamp\n        }\n      }\n      code_proposals {\n        proposal_id\n        block {\n          height\n          timestamp\n        }\n      }\n      access_config_permission\n      access_config_addresses\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getTxsByContractAddress(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_transactions(\n      where: { contract: { address: { _eq: $contractAddress } } }\n      order_by: { transaction: { block: { timestamp: desc } } }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      transaction {\n        hash\n        success\n        messages\n        account {\n          address\n        }\n        block {\n          height\n          timestamp\n        }\n        is_execute\n        is_ibc\n        is_instantiate\n        is_send\n        is_store_code\n        is_migrate\n        is_update_admin\n        is_clear_admin\n      }\n    }\n  }\n"
+): typeof documents["\n  query getTxsByContractAddress(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_transactions(\n      where: { contract: { address: { _eq: $contractAddress } } }\n      order_by: { transaction: { block: { timestamp: desc } } }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      transaction {\n        hash\n        success\n        messages\n        account {\n          address\n        }\n        block {\n          height\n          timestamp\n        }\n        is_execute\n        is_ibc\n        is_instantiate\n        is_send\n        is_store_code\n        is_migrate\n        is_update_admin\n        is_clear_admin\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getTxsCountByContractAddress($contractAddress: String!) {\n    contract_transactions_aggregate(\n      where: { contract: { address: { _eq: $contractAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
+): typeof documents["\n  query getTxsCountByContractAddress($contractAddress: String!) {\n    contract_transactions_aggregate(\n      where: { contract: { address: { _eq: $contractAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
 export function graphql(source: string) {

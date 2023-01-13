@@ -11,7 +11,7 @@ interface LinkElement {
 }
 
 export interface SingleMsgProps {
-  type: string;
+  type?: string;
   text1?: string;
   bolds?: Array<string>;
   tags?: Array<string>;
@@ -34,7 +34,7 @@ export const SingleMsg = ({
   link2,
 }: SingleMsgProps) => {
   return (
-    <Flex gap={1} alignItems="center">
+    <Flex gap={1} alignItems="center" flexWrap="wrap">
       {type} {text1}
       {bolds && (
         <Box display="inline-flex">

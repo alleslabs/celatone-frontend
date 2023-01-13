@@ -11,17 +11,26 @@ import {
   getExecuteTxsByContractAddress,
   getMigrationHistoriesCountByContractAddress,
   getMigrationHistoriesByContractAddress,
+  getTxsCountByContractAddress,
+  getTxsByContractAddress,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
   ContractMigrationHistory,
   ExecuteTransaction,
+  AllTransaction,
   HumanAddr,
   MigrationRemark,
   Option,
 } from "lib/types";
-import { parseDate, parseDateDefault, parseTxHash } from "lib/utils";
+import {
+  parseDate,
+  getActionMsgType,
+  parseDateDefault,
+  parseTxHash,
+  snakeToCamel,
+} from "lib/utils";
 
 interface InstantiateDetail {
   initMsg: string;
@@ -223,4 +232,76 @@ export const useMigrationHistoriesCountByContractAddress = (
     keepPreviousData: true,
     enabled: !!contractAddress,
   });
+};
+
+export const useTxsByContractAddress = (
+  contractAddress: ContractAddr,
+  offset: number,
+  pageSize: number
+): UseQueryResult<AllTransaction[]> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getTxsByContractAddress, {
+        contractAddress,
+        offset,
+        pageSize,
+      })
+      .then(({ contract_transactions }) =>
+        contract_transactions.map((contractTx) => ({
+          hash: parseTxHash(contractTx.transaction.hash),
+          messages: snakeToCamel(contractTx.transaction.messages),
+          sender: contractTx.transaction.account.address as
+            | ContractAddr
+            | HumanAddr,
+          height: contractTx.transaction.block.height,
+          created: parseDateDefault(contractTx.transaction.block?.timestamp),
+          success: contractTx.transaction.success,
+          actionMsgType: getActionMsgType([
+            contractTx.transaction.is_execute,
+            contractTx.transaction.is_instantiate,
+            contractTx.transaction.is_send,
+            contractTx.transaction.is_store_code,
+            contractTx.transaction.is_migrate,
+            contractTx.transaction.is_update_admin,
+            contractTx.transaction.is_clear_admin,
+          ]),
+          isIbc: contractTx.transaction.is_ibc,
+        }))
+      );
+  }, [contractAddress, offset, pageSize]);
+
+  return useQuery(
+    ["transactions_by_contract_addr", contractAddress, offset, pageSize],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
+export const useTxsCountByContractAddress = (
+  contractAddress: ContractAddr
+): UseQueryResult<Option<number>> => {
+  const queryFn = useCallback(async () => {
+    if (!contractAddress) return undefined;
+
+    return indexerGraphClient
+      .request(getTxsCountByContractAddress, {
+        contractAddress,
+      })
+      .then(
+        ({ contract_transactions_aggregate }) =>
+          contract_transactions_aggregate?.aggregate?.count
+      );
+  }, [contractAddress]);
+
+  return useQuery(
+    ["transactions_count_by_contract_addr", contractAddress],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
 };

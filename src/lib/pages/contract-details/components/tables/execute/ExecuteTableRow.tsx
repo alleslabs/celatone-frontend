@@ -60,11 +60,9 @@ export const ExecuteTableRow = ({
       </TableRow>
       <TableRow>
         <Flex direction="column" gap={1}>
-          <Text variant="body2">
-            {formatUTC(transaction.created.toString())}
-          </Text>
+          <Text variant="body2">{formatUTC(transaction.created)}</Text>
           <Text variant="body2" color="text.dark">
-            {`(${dateFromNow(transaction.created.toString())})`}
+            {`(${dateFromNow(transaction.created)})`}
           </Text>
         </Flex>
       </TableRow>

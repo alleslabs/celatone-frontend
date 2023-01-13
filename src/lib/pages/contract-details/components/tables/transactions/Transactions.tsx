@@ -5,24 +5,24 @@ import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableHeader } from "lib/components/table";
-import { useExecuteTxsByContractAddress } from "lib/services/contractService";
+import { useTxsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
-import { ExecuteTableRow } from "./ExecuteTableRow";
+import { TxsTableRow } from "./TxsTableRow";
 
-interface ExecuteTableProps {
+interface TransactionsTableProps {
   contractAddress: ContractAddr;
   scrollComponentId: string;
   totalData: number;
   refetchCount: () => void;
 }
 
-export const ExecuteTable = ({
+export const TransactionsTable = ({
   contractAddress,
   scrollComponentId,
   totalData,
   refetchCount,
-}: ExecuteTableProps) => {
+}: TransactionsTableProps) => {
   const {
     pagesQuantity,
     currentPage,
@@ -39,7 +39,7 @@ export const ExecuteTable = ({
     },
   });
 
-  const { data: executeTransaction } = useExecuteTxsByContractAddress(
+  const { data: transactions } = useTxsByContractAddress(
     contractAddress,
     offset,
     pageSize
@@ -57,32 +57,33 @@ export const ExecuteTable = ({
     setCurrentPage(1);
   };
 
-  if (!executeTransaction?.length)
+  if (!transactions?.length)
     return (
-      <NoTransactions displayText="This contract does not have any execute transactions yet." />
+      <NoTransactions displayText="This contract does not have any transactions yet." />
     );
 
   const templateColumnsStyle =
-    "170px 70px minmax(300px, 1fr) repeat(2, max(170px)) max(300px)";
+    "170px 70px minmax(350px, 1fr) repeat(2, max(170px)) max(300px) max(50px)";
 
   return (
     <Flex direction="column" overflowX="scroll">
       <Grid templateColumns={templateColumnsStyle}>
         <TableHeader>Transaction Hash</TableHeader>
         <TableHeader />
-        <TableHeader>Execute Messages</TableHeader>
+        <TableHeader>Actions</TableHeader>
         <TableHeader>Sender</TableHeader>
         <TableHeader>Block Height</TableHeader>
         <TableHeader>Timestamp</TableHeader>
+        <TableHeader />
       </Grid>
-      {executeTransaction?.map((transaction) => (
-        <ExecuteTableRow
+      {transactions?.map((transaction) => (
+        <TxsTableRow
           key={transaction.hash}
           transaction={transaction}
           templateColumnsStyle={templateColumnsStyle}
         />
       ))}
-      {executeTransaction.length > 10 && (
+      {transactions.length > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
