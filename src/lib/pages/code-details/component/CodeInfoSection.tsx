@@ -6,23 +6,23 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useGetAddressType } from "lib/hooks";
-import type { CodeDetails, Option, PermissionAddresses } from "lib/types";
+import type { CodeData, Option, PermissionAddresses } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
-  codeDetails: Option<CodeDetails>;
+  codeData: Option<CodeData>;
 }
 
 const getMethodSpecificRender = (
-  codeProposalInfo: CodeDetails["proposal"],
-  codeTxInfo: Pick<CodeDetails, "hash" | "height" | "created">
+  codeProposalInfo: CodeData["proposal"],
+  codeTxInfo: Pick<CodeData, "hash" | "height" | "created">
 ): { methodRender: JSX.Element; storedBlockRender: JSX.Element } => {
   if (codeProposalInfo) {
     return {
       methodRender: (
         <LabelText label="Proposal ID">
           <ExplorerLink
-            type="proposal"
+            type="proposal_id"
             value={codeProposalInfo.proposalId.toString()}
             canCopyWithHover
           />
@@ -31,7 +31,7 @@ const getMethodSpecificRender = (
       storedBlockRender: (
         <>
           <ExplorerLink
-            type="block"
+            type="block_height"
             value={codeProposalInfo.height.toString()}
             canCopyWithHover
           />
@@ -59,7 +59,7 @@ const getMethodSpecificRender = (
       storedBlockRender: (
         <>
           <ExplorerLink
-            type="block"
+            type="block_height"
             value={codeTxInfo.height.toString()}
             canCopyWithHover
           />
@@ -120,7 +120,7 @@ const ViewAddresses = ({
   );
 };
 
-const CodeDetailsRender = ({ codeDetails }: { codeDetails: CodeDetails }) => {
+const CodeDetailsRender = ({ codeData }: { codeData: CodeData }) => {
   const getAddressType = useGetAddressType();
   const {
     hash,
@@ -130,7 +130,7 @@ const CodeDetailsRender = ({ codeDetails }: { codeDetails: CodeDetails }) => {
     uploader,
     instantiatePermission,
     permissionAddresses,
-  } = codeDetails;
+  } = codeData;
   const { methodRender, storedBlockRender } = getMethodSpecificRender(
     proposal,
     {
@@ -142,7 +142,7 @@ const CodeDetailsRender = ({ codeDetails }: { codeDetails: CodeDetails }) => {
   const uploaderType = getAddressType(uploader);
   return (
     <Grid templateColumns="repeat(5, 1fr)" columnGap={12}>
-      <LabelText label="Network">{codeDetails.chainId ?? "unknown"}</LabelText>
+      <LabelText label="Network">{codeData.chainId ?? "unknown"}</LabelText>
       <LabelText label="Uploaded by">
         <Flex direction="column" gap={1}>
           <ExplorerLink type={uploaderType} value={uploader} canCopyWithHover />
@@ -170,14 +170,14 @@ const CodeDetailsRender = ({ codeDetails }: { codeDetails: CodeDetails }) => {
   );
 };
 
-export const CodeInfoSection = ({ codeDetails }: CodeInfoSectionProps) => {
+export const CodeInfoSection = ({ codeData }: CodeInfoSectionProps) => {
   return (
     <Box mb={12}>
       <Heading as="h6" variant="h6" mb={6}>
         Code Information
       </Heading>
-      {codeDetails ? (
-        <CodeDetailsRender codeDetails={codeDetails} />
+      {codeData ? (
+        <CodeDetailsRender codeData={codeData} />
       ) : (
         <Text variant="body2" color="text.dark">
           Error fetching data

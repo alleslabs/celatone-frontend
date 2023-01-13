@@ -15,7 +15,7 @@ import {
 import type { ContractInfo } from "lib/stores/contract";
 import type {
   CodeInfo,
-  CodeDetails,
+  CodeData,
   ContractAddr,
   Option,
   InstantiatePermission,
@@ -107,7 +107,7 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
 
 export const useCodeInfoByCodeId = (
   codeId: Option<number>
-): UseQueryResult<Option<Omit<CodeDetails, "chainId">>> => {
+): UseQueryResult<Option<Omit<CodeData, "chainId">>> => {
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 

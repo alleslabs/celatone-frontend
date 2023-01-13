@@ -147,6 +147,43 @@ export const getExecuteTxsCountByContractAddress = graphql(`
   }
 `);
 
+export const getMigrationHistoriesByContractAddress = graphql(`
+  query getMigrationHistoriesByContractAddress(
+    $contractAddress: String!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    contract_histories(
+      where: { contract: { address: { _eq: $contractAddress } } }
+      order_by: { block: { timestamp: desc } }
+      limit: $pageSize
+      offset: $offset
+    ) {
+      code_id
+      account {
+        address
+      }
+      block {
+        height
+        timestamp
+      }
+      remark
+    }
+  }
+`);
+
+export const getMigrationHistoriesCountByContractAddress = graphql(`
+  query getMigrationHistoriesCountByContractAddress($contractAddress: String!) {
+    contract_histories_aggregate(
+      where: { contract: { address: { _eq: $contractAddress } } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
 export const getContractListByCodeId = graphql(`
   query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
