@@ -1,3 +1,4 @@
+export * from "./address";
 export * from "./formatter";
 export * from "./tx";
 export * from "./base64";
@@ -9,9 +10,10 @@ export * from "./number";
 export * from "./isDecimalNumber";
 export * from "./extractMsgType";
 export * from "./redo";
-export * from "./scrollTop";
+export * from "./scroll";
 export * from "./textLine";
 export * from "./date";
+export * from "./validate";
 export * from "./parser";
 export * from "./option";
 export * from "./precision";

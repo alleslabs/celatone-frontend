@@ -4,16 +4,26 @@ import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
 
 import {
+  getExplorerBlockUrl,
   getExplorerTxUrl,
   getExplorerUserAddressUrl,
+  getProposalUrl,
 } from "lib/app-fns/explorer";
+import type { AddressReturnType } from "lib/hooks";
 import { truncate } from "lib/utils";
 
 import { Copier } from "./Copier";
 
+export type LinkType =
+  | AddressReturnType
+  | "tx_hash"
+  | "code_id"
+  | "block_height"
+  | "proposal_id";
+
 interface ExplorerLinkProps extends BoxProps {
   value: string;
-  type?: "tx_hash" | "user_address" | "contract_address" | "code_id";
+  type?: LinkType;
   copyValue?: string;
   canCopyWithHover?: boolean;
   isReadOnly?: boolean;
@@ -40,6 +50,14 @@ const getNavigationUrl = (
     case "code_id":
       url = "/code";
       break;
+    case "block_height":
+      url = getExplorerBlockUrl(currentChainName);
+      break;
+    case "proposal_id":
+      url = getProposalUrl(currentChainName);
+      break;
+    case "invalid_address":
+      return "";
     default:
       break;
   }
@@ -117,20 +135,22 @@ export const ExplorerLink = ({
     getValueText(value === address, textFormat === "truncate", value),
   ];
 
+  const readOnly = isReadOnly || !hrefLink;
+
   return (
     <Box
       role="group"
       display="inline-flex"
       alignItems="center"
       _hover={{
-        ...(!isReadOnly && {
+        ...(!readOnly && {
           textDecoration: "underline",
           textDecorationColor: "primary.main",
         }),
       }}
       {...componentProps}
     >
-      {isReadOnly ? (
+      {readOnly ? (
         <Text variant="body2">{textValue}</Text>
       ) : (
         <>
