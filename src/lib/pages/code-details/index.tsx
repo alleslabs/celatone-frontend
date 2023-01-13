@@ -5,34 +5,29 @@ import { useRouter } from "next/router";
 import { BackButton } from "lib/components/button/BackButton";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
+import { InvalidState } from "lib/components/state/InvalidState";
 import { useCodeStore } from "lib/hooks";
 import { useCodeData } from "lib/model/code";
 import { InstantiatePermission } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, isCodeId } from "lib/utils";
 
 import { CodeInfoSection } from "./components/CodeInfoSection";
 import { CTASection } from "./components/CTASection";
 import { ContractTable } from "./components/table/contracts/ContractTable";
 
-const CodeDetails = observer(() => {
-  const router = useRouter();
-  /**
-   * @todos Handle incorrect codeIdParam and render not found or error page.
-   */
-  const codeIdParam = getFirstQueryParam(router.query.codeId);
-  const codeId = Number(codeIdParam);
+interface CodeDetailsBodyProps {
+  codeId: number;
+}
 
+const InvalidCode = () => <InvalidState title="Code does not exist" />;
+
+const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
-  const codeDetails = useCodeData(codeId);
-  /**
-   * @todos  Wireup page with data hook and component functionality/logic
-   */
+  const codeData = useCodeData(codeId);
+  if (!codeData) return <InvalidCode />;
   return (
-    <PageContainer>
-      <BackButton />
-      {/* Code ID and CTAs Section */}
-      {/* TODO: Wireup CTAs logic and render ExplorerLink for Code ID */}
+    <>
       <Flex align="center" justify="space-between" mt={6}>
         <Flex direction="column" gap={1}>
           <Heading as="h5" variant="h5">
@@ -45,20 +40,35 @@ const CodeDetails = observer(() => {
             <ExplorerLink type="code_id" value={codeId.toString()} />
           </Flex>
         </Flex>
-        {/* TODO: check default uploader case */}
         <CTASection
           id={codeId}
-          uploader={codeDetails?.uploader ?? localCodeInfo?.uploader ?? ""}
+          uploader={localCodeInfo?.uploader ?? codeData.uploader}
           description={localCodeInfo?.description}
           instantiatePermission={
-            codeDetails?.instantiatePermission ?? InstantiatePermission.UNKNOWN
+            codeData?.instantiatePermission ?? InstantiatePermission.UNKNOWN
           }
-          permissionAddresses={codeDetails?.permissionAddresses ?? []}
+          permissionAddresses={codeData?.permissionAddresses ?? []}
         />
       </Flex>
       <Divider borderColor="divider.main" my={12} />
-      <CodeInfoSection codeDetails={codeDetails} />
+      <CodeInfoSection codeData={codeData} />
       <ContractTable codeId={codeId} />
+    </>
+  );
+};
+
+const CodeDetails = observer(() => {
+  const router = useRouter();
+  const codeIdParam = getFirstQueryParam(router.query.codeId);
+
+  return (
+    <PageContainer>
+      <BackButton />
+      {!isCodeId(codeIdParam) ? (
+        <InvalidCode />
+      ) : (
+        <CodeDetailsBody codeId={Number(codeIdParam)} />
+      )}
     </PageContainer>
   );
 });
