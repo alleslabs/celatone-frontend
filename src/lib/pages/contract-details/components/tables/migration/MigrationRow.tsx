@@ -1,24 +1,12 @@
 import type { GridProps } from "@chakra-ui/react";
-import { chakra, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Flex, Grid, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { TableRow } from "lib/components/table";
 import { useGetAddressType } from "lib/hooks";
 import type { ContractMigrationHistory } from "lib/types";
 import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
-
-const StyledGridItem = chakra(GridItem, {
-  baseStyle: {
-    color: "text.main",
-    fontSize: "14px",
-    fontWeight: 400,
-    p: 4,
-    display: "flex",
-    alignItems: "center",
-    borderBottom: "1px solid",
-    borderColor: "divider.main",
-  },
-});
 
 interface MigrationRowProps {
   templateColumns: GridProps["templateColumns"];
@@ -36,6 +24,12 @@ const RemarkRender = ({
     operation === RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
   )
     return <Text variant="body2">Genesis</Text>;
+
+  const prefix =
+    operation === RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
+      ? "Instantiate"
+      : "Migrate";
+
   return (
     <Flex
       direction="column"
@@ -47,7 +41,7 @@ const RemarkRender = ({
         },
       }}
     >
-      <p>{isGovernance ? "Through Proposal ID" : "Tx Hash"}</p>
+      <p>{isGovernance ? `${prefix} Proposal ID` : `${prefix} Tx`}</p>
       <ExplorerLink
         type={isGovernance ? "proposal_id" : "tx_hash"}
         value={value}
@@ -64,34 +58,34 @@ export const MigrationRow = ({
   const getAddressType = useGetAddressType();
   return (
     <Grid templateColumns={templateColumns}>
-      <StyledGridItem>
+      <TableRow>
         <ExplorerLink
           type="code_id"
           value={history.codeId.toString()}
           canCopyWithHover
         />
-      </StyledGridItem>
-      <StyledGridItem>
+      </TableRow>
+      <TableRow>
         {history.codeDescription || (
           <Text color="text.dark">No Description</Text>
         )}
-      </StyledGridItem>
-      <StyledGridItem>
+      </TableRow>
+      <TableRow>
         <ExplorerLink
           type={getAddressType(history.sender)}
           value={history.sender}
           textFormat="truncate"
           canCopyWithHover
         />
-      </StyledGridItem>
-      <StyledGridItem>
+      </TableRow>
+      <TableRow>
         <ExplorerLink
           type="block_height"
           value={history.height.toString()}
           canCopyWithHover
         />
-      </StyledGridItem>
-      <StyledGridItem>
+      </TableRow>
+      <TableRow>
         <Flex
           direction="column"
           fontSize="12px"
@@ -100,10 +94,10 @@ export const MigrationRow = ({
           <p>{formatUTC(history.timestamp)}</p>
           <p>({dateFromNow(history.timestamp)})</p>
         </Flex>
-      </StyledGridItem>
-      <StyledGridItem>
+      </TableRow>
+      <TableRow>
         <RemarkRender remark={history.remark} />
-      </StyledGridItem>
+      </TableRow>
     </Grid>
   );
 };

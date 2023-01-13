@@ -12,7 +12,7 @@ import { SingleActionMsgType } from "lib/components/actionMsg/SingleActionMsgTyp
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { MsgDetail } from "lib/components/table/MsgDetail";
-import { SingleMsg } from "lib/pages/pastTxs/components/SingleMsg";
+import { SingleMsg } from "lib/pages/past-txs/components/SingleMsg";
 import type { AllTransaction } from "lib/types";
 import { ActionMsgType } from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";

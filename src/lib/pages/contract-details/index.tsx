@@ -5,16 +5,14 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
-  Icon,
-  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { MdSearchOff } from "react-icons/md";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
+import { InvalidState } from "lib/components/state/InvalidState";
 import { useValidateAddress } from "lib/hooks";
 import {
   useContractData,
@@ -30,6 +28,7 @@ import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
 import { ExecuteTable } from "./components/tables/execute/Execute";
 import { MigrationTable } from "./components/tables/migration";
+import { RelatedProposalsTable } from "./components/tables/related-proposals";
 import { TransactionsTable } from "./components/tables/transactions/Transactions";
 import { TokenSection } from "./components/TokenSection";
 
@@ -37,33 +36,21 @@ interface ContractDetailsBodyProps {
   contractAddress: ContractAddr;
 }
 
-const InvalidContract = () => (
-  <Flex
-    direction="column"
-    alignItems="center"
-    borderY="1px solid"
-    borderColor="divider.main"
-    width="full"
-    my="24px"
-    py="24px"
-  >
-    <Icon as={MdSearchOff} color="gray.600" boxSize="128" />
-    <Heading as="h5" variant="h5" my="8px">
-      Contract does not exist
-    </Heading>
-    <Text variant="body2" fontWeight="500" color="gray.500" textAlign="center">
-      Please double-check your spelling and make sure you have selected the
-      correct network.
-    </Text>
-  </Flex>
-);
+const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
   const contractData = useContractData(contractAddress);
   const tableHeaderId = "contractDetailTableHeader";
-  const { tableCounts, refetchExecute, refetchMigration, refetchTransactions } =
-    useContractDetailsTableCounts(contractAddress);
+  const {
+    tableCounts,
+    refetchExecute,
+    refetchMigration,
+    refetchTransactions,
+    refetchRelatedProposals,
+  } = useContractDetailsTableCounts(contractAddress);
+
   if (!contractData) return <InvalidContract />;
+
   return (
     <>
       <ContractTop contractData={contractData} />
@@ -107,7 +94,9 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
           </CustomTab>
           <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
           <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
-          <CustomTab count={12}>Related Proposals</CustomTab>
+          <CustomTab count={tableCounts.relatedProposalsCount}>
+            Related Proposals
+          </CustomTab>
         </TabList>
         {/* TODOs: Wireup with real table data, Make table component, and render each table with different data under each TabPanel */}
         <TabPanels>
@@ -136,9 +125,12 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              Related Proposals Table
-            </Heading>
+            <RelatedProposalsTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.relatedProposalsCount}
+              refetchCount={refetchRelatedProposals}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

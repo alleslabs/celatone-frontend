@@ -1,5 +1,5 @@
 import { useSingleActionMsgTemplate } from "lib/hooks/useSingleMessageTemplate";
-import { SingleMsg } from "lib/pages/pastTxs/components/SingleMsg";
+import { SingleMsg } from "lib/pages/past-txs/components/SingleMsg";
 import type { Message } from "lib/types";
 
 interface SingleActionMsgTypeProps {

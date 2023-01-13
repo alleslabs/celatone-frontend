@@ -11,13 +11,11 @@ export const CommandSection = () => {
     router.query.contractAddress
   ) as ContractAddr;
 
-  const { isFetching: isQueryCmdsFetching, queryCmds } = useQueryCmds({
-    contractAddress,
-  });
+  const { isFetching: isQueryCmdsFetching, queryCmds } =
+    useQueryCmds(contractAddress);
 
-  const { isFetching: isExecuteCmdsFetching, execCmds } = useExecuteCmds({
-    contractAddress,
-  });
+  const { isFetching: isExecuteCmdsFetching, execCmds } =
+    useExecuteCmds(contractAddress);
 
   const renderCmds = (
     isFetching: boolean,

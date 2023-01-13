@@ -79,7 +79,7 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Flex width="full" mb="16px" alignItems="center">
+      <Flex width="full" my="16px" alignItems="center">
         {cmds.length ? (
           <ButtonGroup
             width="90%"
