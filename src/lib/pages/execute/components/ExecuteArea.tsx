@@ -36,18 +36,12 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
   const nativeTokensInfo = useNativeTokensInfo();
-  const contractAddress = useWatch({
+
+  const [contractAddress, initialMsg, assets] = useWatch({
     control,
-    name: "contractAddress",
+    name: ["contractAddress", "initialMsg", "assets"],
   });
-  const initialMsg = useWatch({
-    control,
-    name: "initialMsg",
-  });
-  const assets = useWatch({
-    control,
-    name: "assets",
-  });
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "assets",
@@ -229,7 +223,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
                       message: 'Invalid amount. e.g. "100.00"',
                     },
                   }}
-                  error={errors?.assets?.[idx]?.amount?.message}
+                  error={errors.assets?.[idx]?.amount?.message}
                 />
               }
             />
