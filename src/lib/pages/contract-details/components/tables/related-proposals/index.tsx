@@ -4,25 +4,25 @@ import type { ChangeEvent } from "react";
 import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useMigrationHistories } from "lib/pages/contract-details/model/data";
+import { useRelatedProposalsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
-import { MigrationHeader } from "./MigrationHeader";
-import { MigrationRow } from "./MigrationRow";
+import { RelatedProposalsHeader } from "./RelatedProposalsHeader";
+import { RelatedProposalsRow } from "./RelatedProposalsRow";
 
-interface MigrationTableProps {
+interface RelatedProposalsTableProps {
   contractAddress: ContractAddr;
   scrollComponentId: string;
   totalData: number;
   refetchCount: () => void;
 }
 
-export const MigrationTable = ({
+export const RelatedProposalsTable = ({
   contractAddress,
   scrollComponentId,
   totalData,
   refetchCount,
-}: MigrationTableProps) => {
+}: RelatedProposalsTableProps) => {
   const {
     pagesQuantity,
     currentPage,
@@ -39,7 +39,7 @@ export const MigrationTable = ({
     },
   });
 
-  const migrationHistories = useMigrationHistories(
+  const { data: relatedProposals } = useRelatedProposalsByContractAddress(
     contractAddress,
     offset,
     pageSize
@@ -57,21 +57,21 @@ export const MigrationTable = ({
     setCurrentPage(1);
   };
 
-  if (!migrationHistories?.length)
-    return (
-      <NoTransactions displayText="This contract does not have any migration history yet." />
-    );
-
   const templateColumns =
-    "90px minmax(300px, 1fr) repeat(2, max(150px)) max(232px) max(180px)";
+    "100px minmax(300px, 1fr) 150px 330px 180px 140px 160px";
+
+  if (!relatedProposals?.length)
+    return (
+      <NoTransactions displayText="This contract does not have related proposals yet." />
+    );
 
   return (
     <Flex direction="column" overflowX="scroll">
-      <MigrationHeader templateColumns={templateColumns} />
-      {migrationHistories.map((history) => (
-        <MigrationRow
-          key={history.codeId}
-          history={history}
+      <RelatedProposalsHeader templateColumns={templateColumns} />
+      {relatedProposals.map((proposal) => (
+        <RelatedProposalsRow
+          key={proposal.proposalId}
+          proposal={proposal}
           templateColumns={templateColumns}
         />
       ))}

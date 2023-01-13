@@ -1,17 +1,7 @@
 import type { GridProps } from "@chakra-ui/react";
-import { chakra, Grid, GridItem } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 
-const StyledGridItem = chakra(GridItem, {
-  baseStyle: {
-    color: "text.main",
-    fontSize: "12px",
-    fontWeight: 700,
-    py: 6,
-    px: 4,
-    borderY: "1px solid",
-    borderColor: "divider.main",
-  },
-});
+import { TableHeader } from "lib/components/table";
 
 export const MigrationHeader = ({
   templateColumns,
@@ -20,12 +10,12 @@ export const MigrationHeader = ({
 }) => {
   return (
     <Grid templateColumns={templateColumns}>
-      <StyledGridItem>Code ID</StyledGridItem>
-      <StyledGridItem>Code Description</StyledGridItem>
-      <StyledGridItem>Sender</StyledGridItem>
-      <StyledGridItem>Block Height</StyledGridItem>
-      <StyledGridItem>Timestamp</StyledGridItem>
-      <StyledGridItem>Remark</StyledGridItem>
+      <TableHeader>Code ID</TableHeader>
+      <TableHeader>Code Description</TableHeader>
+      <TableHeader>Sender</TableHeader>
+      <TableHeader>Block Height</TableHeader>
+      <TableHeader>Timestamp</TableHeader>
+      <TableHeader>Remark</TableHeader>
     </Grid>
   );
 };
