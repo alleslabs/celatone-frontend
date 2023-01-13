@@ -75,7 +75,7 @@ export const RelatedProposalsTable = ({
           templateColumns={templateColumns}
         />
       ))}
-      {relatedProposals.length > 10 && (
+      {totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
