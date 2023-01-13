@@ -19,9 +19,9 @@ import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { Activity } from "lib/stores/contract";
-import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
+import type { ComposedMsg, ContractAddr, HumanAddr, Token } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
+import { composeMsg, jsonPrettify, jsonValidate, microfy } from "lib/utils";
 
 interface ExecuteAreaProps {
   control: Control<ExecutePageState>;
@@ -114,11 +114,19 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
   useEffect(() => {
     if (enableExecute) {
       setError("");
+
+      const funds = assets
+        .filter((asset) => asset.amount && asset.denom)
+        .map((asset) => ({
+          ...asset,
+          amount: microfy(asset.amount as Token).toFixed(0),
+        }));
+
       const composedMsg = composeMsg(MsgType.EXECUTE, {
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds: assets,
+        funds,
       });
       const timeoutId = setTimeout(() => {
         setComposedTxMsg([composedMsg]);
