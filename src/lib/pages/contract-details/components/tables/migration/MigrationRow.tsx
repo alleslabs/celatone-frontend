@@ -24,6 +24,12 @@ const RemarkRender = ({
     operation === RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS
   )
     return <Text variant="body2">Genesis</Text>;
+
+  const prefix =
+    operation === RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT
+      ? "Instantiate"
+      : "Migrate";
+
   return (
     <Flex
       direction="column"
@@ -35,7 +41,7 @@ const RemarkRender = ({
         },
       }}
     >
-      <p>{isGovernance ? "Through Proposal ID" : "Tx Hash"}</p>
+      <p>{isGovernance ? `${prefix} Proposal ID` : `${prefix} Tx`}</p>
       <ExplorerLink
         type={isGovernance ? "proposal_id" : "tx_hash"}
         value={value}
