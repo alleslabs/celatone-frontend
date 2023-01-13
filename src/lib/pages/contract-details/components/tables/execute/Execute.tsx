@@ -85,16 +85,18 @@ export const ExecuteTable = ({
           templateColumnsStyle={templateColumnsStyle}
         />
       ))}
-      <Pagination
-        currentPage={currentPage}
-        pagesQuantity={pagesQuantity}
-        offset={offset}
-        totalData={totalData}
-        scrollComponentId={scrollComponentId}
-        pageSize={pageSize}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-      />
+      {totalData > 10 && (
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </Flex>
   );
 };
