@@ -1,16 +1,20 @@
 import { Box, Flex, Button, ButtonGroup, Icon, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useFieldArray, useWatch } from "react-hook-form";
+import type { Control, UseFormSetValue } from "react-hook-form";
 import { IoIosWarning } from "react-icons/io";
 import { MdInput } from "react-icons/md";
 
-import { useFabricateFee } from "lib/app-provider";
+import type { ExecutePageState } from "../types";
+import { useFabricateFee, useNativeTokensInfo } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { useExecuteContractTx } from "lib/app-provider/tx/execute";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import { AssetInput, ControllerInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -20,21 +24,46 @@ import { MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 interface ExecuteAreaProps {
-  contractAddress: ContractAddr;
-  initialMsg: string;
+  control: Control<ExecutePageState>;
+  setValue: UseFormSetValue<ExecutePageState>;
   cmds: [string, string][];
 }
 
-export const ExecuteArea = ({
-  contractAddress,
-  initialMsg,
-  cmds,
-}: ExecuteAreaProps) => {
-  const { address = "" } = useWallet();
+export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
+  const { address } = useWallet();
   const fabricateFee = useFabricateFee();
   const executeTx = useExecuteContractTx();
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
+  const nativeTokensInfo = useNativeTokensInfo();
+  const contractAddress = useWatch({
+    control,
+    name: "contractAddress",
+  });
+  const initialMsg = useWatch({
+    control,
+    name: "initialMsg",
+  });
+  const assets = useWatch({
+    control,
+    name: "assets",
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "assets",
+  });
+
+  const selectedAssets = assets.map((asset) => asset.denom);
+
+  const assetOptions = useMemo(
+    () =>
+      nativeTokensInfo.map((asset) => ({
+        label: asset.symbol,
+        value: asset.base,
+        disabled: selectedAssets.includes(asset.base),
+      })) ?? [],
+    [nativeTokensInfo, selectedAssets]
+  );
 
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(initialMsg);
@@ -72,12 +101,13 @@ export const ExecuteArea = ({
       estimatedFee: fee,
       contractAddress,
       msg: JSON.parse(msg),
+      funds: assets,
     });
     if (stream) {
       setProcessing(true);
       broadcast(stream);
     }
-  }, [contractAddress, fee, msg, addActivity, executeTx, broadcast]);
+  }, [contractAddress, fee, msg, assets, addActivity, executeTx, broadcast]);
 
   useEffect(() => setMsg(initialMsg), [initialMsg]);
 
@@ -112,12 +142,12 @@ export const ExecuteArea = ({
   });
 
   return (
-    <Box w="full">
+    <Box>
       {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
           rowGap="8px"
-          mb="16px"
+          mt={8}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
@@ -140,21 +170,63 @@ export const ExecuteArea = ({
           </Text>
         )
       )}
-      <JsonInput
-        topic="Execute Msg"
-        text={msg}
-        setText={setMsg}
-        height="240px"
-      />
-      {error && (
-        <Flex gap={2} mb={4}>
-          <Icon as={IoIosWarning} boxSize={4} color="error.main" />
-          <Text variant="body3" color="error.main">
-            {error}
+      <Flex gap="32px" mt={8} direction={{ sm: "column", xl: "row" }}>
+        <Box w={{ sm: "full", xl: "70%" }}>
+          <Text variant="body1" fontWeight="600" mb={4}>
+            Execute Messages
           </Text>
-        </Flex>
-      )}
-      <Flex alignItems="center" justify="space-between">
+          <JsonInput
+            topic="Execute Msg"
+            text={msg}
+            setText={setMsg}
+            height="240px"
+          />
+          {error && (
+            <Flex gap={2} mb={4}>
+              <Icon as={IoIosWarning} boxSize={4} color="error.main" />
+              <Text variant="body3" color="error.main">
+                {error}
+              </Text>
+            </Flex>
+          )}
+        </Box>
+        <Box w={{ sm: "full", xl: "50%" }}>
+          <Text variant="body1" fontWeight="600" mb={4}>
+            Send Assets
+          </Text>
+          {fields.map((field, idx) => (
+            <AssetInput
+              key={field.id}
+              disableDelete={fields.length <= 1}
+              onDelete={() => remove(idx)}
+              setCurrencyValue={(newVal: string) =>
+                setValue(`assets.${idx}.denom`, newVal)
+              }
+              assetOptions={assetOptions}
+              initialSelected={field.denom}
+              amountInput={
+                <ControllerInput
+                  name={`assets.${idx}.amount`}
+                  control={control}
+                  label="Amount"
+                  variant="floating"
+                  type="number"
+                />
+              }
+            />
+          ))}
+          <Button
+            variant="outline-primary"
+            mt="32px"
+            mx="auto"
+            onClick={() => append({ denom: "", amount: "" })}
+            disabled={assetOptions.length === selectedAssets.length}
+          >
+            Add More Asset
+          </Button>
+        </Box>
+      </Flex>
+      <Flex alignItems="center" justify="space-between" mt={{ md: 8, xl: 0 }}>
         <CopyButton isDisable={msg.length === 0} value={msg} />
         <Flex direction="row" align="center" gap={2}>
           <Flex fontSize="14px" color="text.dark" alignItems="center">

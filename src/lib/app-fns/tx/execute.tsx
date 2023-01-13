@@ -3,7 +3,7 @@ import type {
   ExecuteResult,
   SigningCosmWasmClient,
 } from "@cosmjs/cosmwasm-stargate";
-import type { StdFee } from "@cosmjs/stargate";
+import type { Coin, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
@@ -21,6 +21,7 @@ interface ExecuteTxParams {
   contractAddress: ContractAddr;
   fee: StdFee;
   msg: object;
+  funds: Coin[];
   client: SigningCosmWasmClient;
   userKey: string;
   onTxSucceed?: (userKey: string, activity: Activity) => void;
@@ -32,6 +33,7 @@ export const executeContractTx = ({
   contractAddress,
   fee,
   msg,
+  funds,
   client,
   userKey,
   onTxSucceed,
@@ -40,7 +42,8 @@ export const executeContractTx = ({
   return pipe(
     sendingTx(fee),
     postTx<ExecuteResult>({
-      postFn: () => client.execute(address, contractAddress, msg, fee),
+      postFn: () =>
+        client.execute(address, contractAddress, msg, fee, undefined, funds),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(userKey, {
