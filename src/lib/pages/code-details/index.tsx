@@ -24,35 +24,41 @@ const InvalidCode = () => <InvalidState title="Code does not exist" />;
 const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
-  const codeData = useCodeData(codeId);
-  if (!codeData) return <InvalidCode />;
+  const data = useCodeData(codeId);
+  if (!data) return <InvalidCode />;
+
+  const { isLoading, codeData } = data;
   return (
     <>
-      <Flex align="center" justify="space-between" mt={6}>
-        <Flex direction="column" gap={1}>
-          <Heading as="h5" variant="h5">
-            {localCodeInfo?.description ?? codeId}
-          </Heading>
-          <Flex gap={2}>
-            <Text fontWeight={500} color="text.dark" variant="body2">
-              Code ID
-            </Text>
-            <ExplorerLink type="code_id" value={codeId.toString()} />
+      {!isLoading && (
+        <>
+          <Flex align="center" justify="space-between" mt={6}>
+            <Flex direction="column" gap={1}>
+              <Heading as="h5" variant="h5">
+                {localCodeInfo?.description ?? codeId}
+              </Heading>
+              <Flex gap={2}>
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  Code ID
+                </Text>
+                <ExplorerLink type="code_id" value={codeId.toString()} />
+              </Flex>
+            </Flex>
+            <CTASection
+              id={codeId}
+              uploader={localCodeInfo?.uploader ?? codeData.uploader}
+              description={localCodeInfo?.description}
+              instantiatePermission={
+                codeData?.instantiatePermission ?? InstantiatePermission.UNKNOWN
+              }
+              permissionAddresses={codeData?.permissionAddresses ?? []}
+            />
           </Flex>
-        </Flex>
-        <CTASection
-          id={codeId}
-          uploader={localCodeInfo?.uploader ?? codeData.uploader}
-          description={localCodeInfo?.description}
-          instantiatePermission={
-            codeData?.instantiatePermission ?? InstantiatePermission.UNKNOWN
-          }
-          permissionAddresses={codeData?.permissionAddresses ?? []}
-        />
-      </Flex>
-      <Divider borderColor="divider.main" my={12} />
-      <CodeInfoSection codeData={codeData} />
-      <ContractTable codeId={codeId} />
+          <Divider borderColor="divider.main" my={12} />
+          <CodeInfoSection codeData={codeData} />
+          <ContractTable codeId={codeId} />
+        </>
+      )}
     </>
   );
 };

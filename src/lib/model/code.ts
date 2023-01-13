@@ -9,15 +9,23 @@ import {
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { CodeData, ContractInstances, Option } from "lib/types";
 
-export const useCodeData = (codeId: number): Option<CodeData> => {
+interface CodeDataWithLoading {
+  isLoading: boolean;
+  codeData: CodeData;
+}
+
+export const useCodeData = (codeId: number): Option<CodeDataWithLoading> => {
   const { currentChainRecord } = useWallet();
-  const { data: codeInfo } = useCodeInfoByCodeId(codeId);
-  if (!currentChainRecord || !codeInfo) return undefined;
+  const { data: codeInfo, isLoading } = useCodeInfoByCodeId(codeId);
+  if (!currentChainRecord || (!codeInfo && !isLoading)) return undefined;
 
   return {
-    chainId: currentChainRecord.chain.chain_id,
-    ...codeInfo,
-  } as CodeData;
+    isLoading,
+    codeData: {
+      chainId: currentChainRecord.chain.chain_id,
+      ...codeInfo,
+    } as CodeData,
+  };
 };
 
 export const useCodeContractInstances = (
