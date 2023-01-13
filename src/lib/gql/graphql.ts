@@ -6247,6 +6247,26 @@ export type Transactions_Variance_Order_By = {
   sender?: InputMaybe<Order_By>;
 };
 
+export type GetCodeListQueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCodeListQueryQuery = {
+  __typename?: "query_root";
+  codes: Array<{
+    __typename?: "codes";
+    id: number;
+    access_config_permission: string;
+    access_config_addresses: any;
+    contracts_aggregate: {
+      __typename?: "contracts_aggregate";
+      aggregate?: {
+        __typename?: "contracts_aggregate_fields";
+        count: number;
+      } | null;
+    };
+    account: { __typename?: "accounts"; uploader: string };
+  }>;
+};
+
 export type GetCodeListByUserQueryQueryVariables = Exact<{
   walletAddr: Scalars["String"];
 }>;
@@ -6258,7 +6278,13 @@ export type GetCodeListByUserQueryQuery = {
     id: number;
     access_config_permission: string;
     access_config_addresses: any;
-    instantiated: number;
+    contracts_aggregate: {
+      __typename?: "contracts_aggregate";
+      aggregate?: {
+        __typename?: "contracts_aggregate_fields";
+        count: number;
+      } | null;
+    };
     account: { __typename?: "accounts"; uploader: string };
   }>;
 };
@@ -6274,7 +6300,13 @@ export type GetCodeListByIDsQueryQuery = {
     id: number;
     access_config_permission: string;
     access_config_addresses: any;
-    instantiated: number;
+    contracts_aggregate: {
+      __typename?: "contracts_aggregate";
+      aggregate?: {
+        __typename?: "contracts_aggregate_fields";
+        count: number;
+      } | null;
+    };
     account: { __typename?: "accounts"; uploader: string };
   }>;
 };
@@ -6452,6 +6484,104 @@ export type GetCodeInfoByCodeIdQuery = {
   } | null;
 };
 
+export const GetCodeListQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getCodeListQuery" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "codes" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "500" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: { kind: "IntValue", value: "0" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contracts_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "count" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "uploader" },
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_permission" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_addresses" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCodeListQueryQuery,
+  GetCodeListQueryQueryVariables
+>;
 export const GetCodeListByUserQueryDocument = {
   kind: "Document",
   definitions: [
@@ -6548,8 +6678,25 @@ export const GetCodeListByUserQueryDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "instantiated" },
-                  name: { kind: "Name", value: "contract_instantiated" },
+                  name: { kind: "Name", value: "contracts_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "count" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
                 },
                 {
                   kind: "Field",
@@ -6650,8 +6797,25 @@ export const GetCodeListByIDsQueryDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "instantiated" },
-                  name: { kind: "Name", value: "contract_instantiated" },
+                  name: { kind: "Name", value: "contracts_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "count" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
                 },
                 {
                   kind: "Field",
