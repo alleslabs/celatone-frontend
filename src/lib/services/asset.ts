@@ -1,20 +1,7 @@
 import axios from "axios";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
-import type { Option } from "lib/types";
-
-interface AssetInfo {
-  coingecko: string;
-  coinmarketcap: string;
-  description: string;
-  id: string;
-  logo: string;
-  name: string;
-  precision: number;
-  slugs: string[];
-  symbol: string;
-  type: string;
-}
+import type { AssetInfo, Option } from "lib/types";
 
 export const getAssetInfo = async (
   chainName: Option<string>,

@@ -1,5 +1,5 @@
 import type { BigSource } from "big.js";
-import big, { Big } from "big.js";
+import big from "big.js";
 import numeral from "numeral";
 
 export const formatDemimal =
@@ -32,8 +32,6 @@ export const formatDemimal =
 
 const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 
-export const formatToken = (amount: string, precision: number): string => {
-  const divider = Big(10).pow(precision);
-  const amountToInt = new Big(amount);
-  return d6Formatter(amountToInt.div(divider), "0");
+export const formatToken = (amount: BigSource, precision: number): string => {
+  return d6Formatter(big(amount).div(big(10).pow(precision)), "0");
 };

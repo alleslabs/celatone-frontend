@@ -22,6 +22,5 @@ export const useAssetInfos = (): Option<{ [key: string]: AssetInfo }> => {
     { enabled: !!currentChainRecord }
   );
 
-  if (!assets) return undefined;
-  return assets.reduce((acc, asset) => ({ ...acc, [asset.id]: asset }), {});
+  return assets?.reduce((acc, asset) => ({ ...acc, [asset.id]: asset }), {});
 };
