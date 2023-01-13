@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#61](https://github.com/alleslabs/celatone-frontend/pull/61) Add UI for send asset in execute contract page
+- [#61](https://github.com/alleslabs/celatone-frontend/pull/61) Add sending asset in execute contract page
 - [#70](https://github.com/alleslabs/celatone-frontend/pull/70) Change default token denom on contract detail
 - [#78](https://github.com/alleslabs/celatone-frontend/pull/78) Ignore building step when branch is not main
 - [#62](https://github.com/alleslabs/celatone-frontend/pull/62) Add footer
