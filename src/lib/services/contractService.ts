@@ -176,7 +176,7 @@ export const useMigrationHistoriesByContractAddress = (
 ): UseQueryResult<
   Option<Omit<ContractMigrationHistory, "codeDescription">[]>
 > => {
-  const queryFn = useCallback(() => {
+  const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getMigrationHistoriesByContractAddress, {
         contractAddress,
@@ -213,7 +213,7 @@ export const useMigrationHistoriesByContractAddress = (
 export const useMigrationHistoriesCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
-  const queryFn = useCallback(() => {
+  const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getMigrationHistoriesCountByContractAddress, {
         contractAddress,
@@ -235,7 +235,7 @@ export const useRelatedProposalsByContractAddress = (
   offset: number,
   pageSize: number
 ): UseQueryResult<Option<ContractRelatedProposals[]>> => {
-  const queryFn = useCallback(() => {
+  const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getRelatedProposalsByContractAddress, {
         contractAddress,
@@ -247,13 +247,13 @@ export const useRelatedProposalsByContractAddress = (
           proposalId: proposal.proposal_id,
           title: proposal.proposal.title,
           status: proposal.proposal.status as ProposalStatus,
-          votingEndTime: proposal.proposal.voting_end_time,
-          depositEndTime: proposal.proposal.deposit_end_time,
+          votingEndTime: parseDate(proposal.proposal.voting_end_time),
+          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.resolved_height,
           type: proposal.proposal.type as ProposalType,
-          proposer:
-            (proposal.proposal.account?.address as HumanAddr | ContractAddr) ??
-            undefined,
+          proposer: proposal.proposal.account?.address as
+            | HumanAddr
+            | ContractAddr,
         }))
       );
   }, [contractAddress, offset, pageSize]);
@@ -271,7 +271,7 @@ export const useRelatedProposalsByContractAddress = (
 export const useRelatedProposalsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
-  const queryFn = useCallback(() => {
+  const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getRelatedProposalsCountByContractAddress, {
         contractAddress,
