@@ -69,7 +69,7 @@ export const ZeroState = ({
       alignContent="center"
     >
       {!isWalletConnected && isInstantiatedByMe ? (
-        <DisconnectedState text="to deploy new contracts." />
+        <DisconnectedState text="to see contracts you've previously instantiated." />
       ) : (
         <Flex alignItems="center" flexDir="column" gap="4">
           <Icon as={MdSearch} color="gray.600" boxSize="16" />
