@@ -41,7 +41,7 @@ const ActionSection = ({
           }}
         />
       </Flex>
-      Created contract list and saved contracts are stored in your device only.
+      Contract lists and saved contracts are stored locally on your device.
     </Flex>
   );
 };
