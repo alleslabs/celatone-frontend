@@ -11,7 +11,7 @@ interface LinkElement {
 }
 
 export interface SingleMsgProps {
-  type?: string;
+  type: string;
   text1?: string;
   bolds?: Array<string>;
   tags?: Array<string>;
@@ -33,6 +33,7 @@ export const SingleMsg = ({
   text3,
   link2,
 }: SingleMsgProps) => {
+  if (!type) return <Text>Message Unavailable</Text>;
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
       {type} {text1}

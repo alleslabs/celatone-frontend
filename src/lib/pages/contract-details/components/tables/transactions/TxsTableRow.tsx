@@ -20,12 +20,11 @@ import type { AllTransaction } from "lib/types";
 import { ActionMsgType } from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 
-interface TxsTableRowProps {
+const RenderActionsMessages = ({
+  transaction,
+}: {
   transaction: AllTransaction;
-  templateColumnsStyle: string;
-}
-
-const renderActionsMessages = (transaction: AllTransaction) => {
+}) => {
   if (transaction.actionMsgType === ActionMsgType.SINGLE_ACTION_MSG) {
     return (
       <SingleActionMsg
@@ -49,6 +48,11 @@ const renderActionsMessages = (transaction: AllTransaction) => {
     />
   );
 };
+
+interface TxsTableRowProps {
+  transaction: AllTransaction;
+  templateColumnsStyle: string;
+}
 
 export const TxsTableRow = ({
   transaction,
@@ -85,12 +89,14 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            {renderActionsMessages(transaction)}
-            {transaction.isIbc && (
-              <Tag borderRadius="full" bg="rgba(164, 133, 231, 0.6)">
-                IBC
-              </Tag>
-            )}
+            <>
+              <RenderActionsMessages transaction={transaction} />
+              {transaction.isIbc && (
+                <Tag borderRadius="full" bg="rgba(164, 133, 231, 0.6)">
+                  IBC
+                </Tag>
+              )}
+            </>
           </Flex>
         </TableRow>
 
@@ -110,8 +116,8 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex direction="column" gap={1}>
-            <Text variant="body2">{formatUTC(transaction.created)}</Text>
-            <Text variant="body2" color="text.dark">
+            <Text variant="body3">{formatUTC(transaction.created)}</Text>
+            <Text variant="body3" color="text.dark">
               {`(${dateFromNow(transaction.created)})`}
             </Text>
           </Flex>
