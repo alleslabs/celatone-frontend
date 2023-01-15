@@ -11,11 +11,10 @@ interface TokenSectionProps {
 }
 export const TokenSection = ({ balances }: TokenSectionProps) => {
   const [showMore, setShowMore] = useState(false);
-  const supportedAssets =
-    useMemo(
-      () => balances?.filter((balance) => balance.assetInfo),
-      [balances]
-    ) ?? [];
+  const supportedAssets = useMemo(
+    () => balances?.filter((balance) => balance.assetInfo) ?? [],
+    [balances]
+  );
 
   if (!balances?.length)
     return (
