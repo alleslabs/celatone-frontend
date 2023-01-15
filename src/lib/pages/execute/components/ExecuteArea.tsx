@@ -12,6 +12,7 @@ import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import JsonInput from "lib/components/json/JsonInput";
+import { CodeSnippet } from "lib/components/modal/CodeSnippet";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { Activity } from "lib/stores/contract";
@@ -155,7 +156,15 @@ export const ExecuteArea = ({
         </Flex>
       )}
       <Flex alignItems="center" justify="space-between">
-        <CopyButton isDisable={msg.length === 0} value={msg} />
+        <Flex gap={2}>
+          <CopyButton isDisable={msg.length === 0} value={msg} />
+          <CodeSnippet
+            type="execute"
+            contractAddress={contractAddress}
+            message={msg}
+            isDisable={!contractAddress || msg.length === 0}
+          />
+        </Flex>
         <Flex direction="row" align="center" gap={2}>
           <Flex fontSize="14px" color="text.dark" alignItems="center">
             Transaction Fee:{" "}

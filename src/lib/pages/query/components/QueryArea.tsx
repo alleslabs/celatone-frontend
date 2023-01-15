@@ -9,6 +9,7 @@ import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { CodeSnippet } from "lib/components/modal/CodeSnippet";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
@@ -119,7 +120,15 @@ export const QueryArea = ({
             height="240px"
           />
           <Flex align="center" justify="space-between">
-            <CopyButton isDisable={msg.length === 0} value={msg} />
+            <Flex gap={2}>
+              <CopyButton isDisable={msg.length === 0} value={msg} />
+              <CodeSnippet
+                type="query"
+                contractAddress={contractAddress}
+                message={msg}
+                isDisable={!contractAddress || msg.length === 0}
+              />
+            </Flex>
             <Button
               variant="primary"
               fontSize="14px"
