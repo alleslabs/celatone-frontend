@@ -59,8 +59,8 @@ const Navbar = observer(() => {
           icon: MdInput,
         },
         {
-          name: "Execute",
-          slug: "/execute",
+          name: "Migrate",
+          slug: "/migrate",
           icon: MdReadMore,
         },
       ],
