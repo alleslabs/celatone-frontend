@@ -59,7 +59,7 @@ const CodeSnippet = ({
           mode: "sh",
           string: `export CHAIN_ID=${chainId}\n
 export CONTRACT_ADDRESS=${contractAddress}\n
-export QUERY_MSG='${message}'\n
+export QUERY_MSG='\`${message}\`'\n
 export RPC_URL=${rpcUrl}\n
 ${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG 
     --chain-id $CHAIN_ID 
@@ -69,14 +69,14 @@ ${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG
           name: "Python",
           mode: "python",
           string: `import base64
-import requests
+import requests\n
 CONTRACT_ADDRESS = "${contractAddress}"
 LCD_URL = "${endpoint}"
-QUERY_MSG = b'${message}'
+QUERY_MSG = b'''${message}'''\n
 query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
 res = requests.get(
-"{lcd_url}/cosmwasm/wasm/v1/contract/{contract_address}/smart/{{query_b64encoded}}"
-).json()
+f"{LCD_URL}/cosmwasm/wasm/v1/contract/{CONTRACT_ADDRESS}/smart/{query_b64encoded}"
+).json()\n
 print(res)`,
         },
         {
@@ -86,30 +86,30 @@ print(res)`,
 const rpcURL = "${rpcUrl}";
 const contractAddress =
   "${contractAddress}";
-const queryMsg = ${message};
+const queryMsg = \`${message}\`;\n
 const queryContract = async (rpcURL, contractAddress, queryMsg) => {{
   const client = await SigningCosmWasmClient.connect(rpcURL);
   const queryResult = await client.queryContractSmart(
     contractAddress,
-    JSON.parse('${message}')
+    JSON.parse(queryMsg)
   );
   console.log(queryResult);
-}};
+}};\n
 queryContract(rpcURL, contractAddress, queryMsg);
       `,
         },
         {
           name: "Axios",
           mode: "javascript",
-          string: `const axios = require('axios');
+          string: `const axios = require('axios');\n
 const lcdURL = '${endpoint}';
 const contractAddress =
   "${contractAddress}";
-const queryMsg = ${message};
+const queryMsg = \`${message}\`;\n
 const queryContract = async () => {{
   const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
   console.log(res.data);
-}};
+}};\n
 queryContract();`,
         },
       ],
@@ -124,7 +124,7 @@ queryContract();`,
 export CHAIN_ID=${chainId}\n
 export RPC_URL=${rpcUrl}\n
 export CONTRACT_ADDRESS=${contractAddress}\n
-export QUERY_MSG='${message}'\n
+export QUERY_MSG='\`${message}\`'\n
 ${client} tx wasm execute $CONTRACT_ADDRESS $QUERY_MSG \\
     --from celatone \\
     --chain-id $CHAIN_ID \\
@@ -139,23 +139,23 @@ const { Dec, IntPretty } = require('@keplr-wallet/unit');
 const { coins } = require('@cosmjs/amino');
 const { toUtf8 } = require('@cosmjs/encoding');
 const { chains } = require('chain-registry');
-const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
+const { executeContract } = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;\n
 const chain = chains.find(({{ chain_name }}) => chain_name === 'osmosis');
 const mnemonic = '<Mnemonic>';
-const contractAddress = ${contractAddress}
+const contractAddress = ${contractAddress}\n
 const execute = async () => {{
   const signer = await getOfflineSignerAmino({{ mnemonic, chain }});
   const rpcEndpoint = '${rpcUrl}';
   const client = await SigningCosmWasmClient.connectWithSigner(rpcEndpoint, signer);
-  const [sender] = await signer.getAccounts();
+  const [sender] = await signer.getAccounts();\n
   const msg = executeContract({{
     sender: sender.address,
     contract: contractAddress,
-    msg: toUtf8(JSON.stringify(JSON.parse(
-      '${message}'
-    ))),
+    msg: toUtf8(JSON.stringify(JSON.parse(\`
+${message}
+    \`))),
     funds: [],
-  }});
+  }});\n
   const gasEstimated = await client.simulate(sender.address, [msg]);
   const fee = {{
     amount: coins(0, 'uosmo'),
@@ -163,10 +163,10 @@ const execute = async () => {{
       .maxDecimals(0)
       .locale(false)
       .toString(),
-  }};
-  const tx = await client.signAndBroadcast(sender.address, [msg], fee);    
+  }};\n
+  const tx = await client.signAndBroadcast(sender.address, [msg], fee);   
   console.log(tx);
-}};
+}};\n
 execute();`,
         },
       ],
