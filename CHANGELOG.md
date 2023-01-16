@@ -39,9 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#75](https://github.com/alleslabs/celatone-frontend/pull/75) Add code-related contracts table to the code detail page
 - [#81](https://github.com/alleslabs/celatone-frontend/pull/81) Can scroll on side bar with fix deploy new contract button
 - [#86](https://github.com/alleslabs/celatone-frontend/pull/86) Add transactions table in contract details page
-- [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page 
+- [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page
 - [#87](https://github.com/alleslabs/celatone-frontend/pull/87) Fix funds didn't microfy before sending tx
 - [#85](https://github.com/alleslabs/celatone-frontend/pull/85) Add sending asset in execute contract page
 - [#84](https://github.com/alleslabs/celatone-frontend/pull/84) Contract proposals table ui and wireup

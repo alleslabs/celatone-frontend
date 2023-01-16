@@ -28,7 +28,7 @@ export const InstantiateOffChainForm = observer(
   }: InstantiateOffChainFormProps) => {
     const { address = "" } = useWallet();
     const router = useRouter();
-    const { updateContractInfo } = useContractStore();
+    const { updateContractLocalInfo } = useContractStore();
     const userKey = useUserKey();
 
     const {
@@ -62,12 +62,11 @@ export const InstantiateOffChainForm = observer(
 
     const saveContract = () => {
       handleSubmit((data) => {
-        updateContractInfo(
+        updateContractLocalInfo(
           userKey,
           contractAddress,
           address,
           contractLabel,
-          new Date(),
           data.name,
           data.description,
           data.tags,
