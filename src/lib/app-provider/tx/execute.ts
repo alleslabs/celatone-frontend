@@ -1,4 +1,4 @@
-import type { StdFee } from "@cosmjs/stargate";
+import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
@@ -13,6 +13,7 @@ export interface ExecuteStreamParams {
   estimatedFee: StdFee | undefined;
   contractAddress: ContractAddr;
   msg: object;
+  funds: Coin[];
 }
 
 export const useExecuteContractTx = () => {
@@ -26,6 +27,7 @@ export const useExecuteContractTx = () => {
       estimatedFee,
       contractAddress,
       msg,
+      funds,
     }: ExecuteStreamParams) => {
       const client = await getCosmWasmClient();
       if (!address || !client)
@@ -37,6 +39,7 @@ export const useExecuteContractTx = () => {
         contractAddress,
         fee: estimatedFee,
         msg,
+        funds,
         client,
         userKey,
         onTxSucceed,

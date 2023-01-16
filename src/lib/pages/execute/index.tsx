@@ -1,7 +1,8 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 import { useExecuteCmds } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -17,23 +18,31 @@ import {
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
+import type { ExecutePageState } from "./types";
 
 const Execute = () => {
   const router = useRouter();
-
-  const [contractAddress, setContractAddress] = useState("" as ContractAddr);
-  const [initialMsg, setInitialMsg] = useState("");
-
-  const { isFetching, execCmds } = useExecuteCmds({
-    contractAddress,
+  const { control, setValue, watch } = useForm<ExecutePageState>({
+    mode: "all",
+    defaultValues: {
+      contractAddress: "",
+      initialMsg: "",
+      assets: [{ denom: "", amount: "" }],
+    },
   });
+  const watchContractAddress = watch("contractAddress");
+
+  const { isFetching, execCmds } = useExecuteCmds(watchContractAddress);
 
   const goToQuery = () => {
     router.push({
       pathname: "/query",
-      query: { ...(contractAddress && { contract: contractAddress }) },
+      query: {
+        ...(watchContractAddress && { contract: watchContractAddress }),
+      },
     });
   };
+
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
       router.push(
@@ -61,10 +70,10 @@ const Execute = () => {
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
-      setContractAddress(contractAddressParam);
-      setInitialMsg(jsonMsg);
+      setValue("contractAddress", contractAddressParam);
+      setValue("initialMsg", jsonMsg);
     })();
-  }, [router, onContractSelect]);
+  }, [router, onContractSelect, setValue]);
 
   return (
     <PageContainer>
@@ -91,14 +100,11 @@ const Execute = () => {
         mb={8}
       />
       <ContractSelectSection
-        contractAddress={contractAddress}
+        contractAddress={watchContractAddress}
         onContractSelect={onContractSelect}
       />
-      <ExecuteArea
-        contractAddress={contractAddress}
-        initialMsg={initialMsg}
-        cmds={execCmds}
-      />
+
+      <ExecuteArea control={control} cmds={execCmds} setValue={setValue} />
     </PageContainer>
   );
 };

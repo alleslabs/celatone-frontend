@@ -1,9 +1,9 @@
-import type { Coin } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore, useEndpoint } from "lib/hooks";
+import { useAssetInfos } from "lib/services/assetService";
 import type { InstantiateInfo, PublicInfo } from "lib/services/contract";
 import {
   queryPublicInfo,
@@ -15,23 +15,30 @@ import {
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
+  useMigrationHistoriesCountByContractAddress,
+  useRelatedProposalsCountByContractAddress,
 } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type {
+  BalanceWithAssetInfo,
+  ContractAddr,
+  HumanAddr,
+  Option,
+} from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractData {
   chainId: string;
-  codeInfo: CodeLocalInfo | undefined;
-  contractInfo: ContractInfo | undefined;
-  instantiateInfo: InstantiateInfo | undefined;
-  publicInfo: PublicInfo | undefined;
-  balances: Coin[];
+  codeInfo: Option<CodeLocalInfo>;
+  contractInfo: Option<ContractInfo>;
+  instantiateInfo: Option<InstantiateInfo>;
+  publicInfo: Option<PublicInfo>;
+  balances: Option<BalanceWithAssetInfo[]>;
   initMsg: string;
-  initTxHash: string | undefined;
-  initProposalTitle: string | undefined;
-  initProposalId: number | undefined;
+  initTxHash: Option<string>;
+  initProposalTitle: Option<string>;
+  initProposalId: Option<number>;
 }
 
 export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
@@ -83,17 +90,38 @@ export const useContractData = (
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractInfo } = useContractStore();
   const endpoint = useEndpoint();
+  const assetInfos = useAssetInfos();
 
   const { data: instantiateInfo } = useQuery(
     ["query", "instantiateInfo", contractAddress],
     async () => queryInstantiateInfo(endpoint, contractAddress),
     { enabled: !!currentChainRecord }
   );
-  const { data: contractBalances = { balances: [] } } = useQuery(
+  const { data: contractBalances } = useQuery(
     ["query", "contractBalances", contractAddress],
-    async () => queryContractBalances(endpoint, contractAddress),
+    async () =>
+      queryContractBalances(
+        currentChainRecord?.name,
+        currentChainRecord?.chain.chain_id,
+        contractAddress
+      ),
     { enabled: !!currentChainRecord }
   );
+
+  const contractBalancesWithAssetInfos = contractBalances
+    ?.map(
+      (balance): BalanceWithAssetInfo => ({
+        balance,
+        assetInfo: assetInfos?.[balance.id],
+      })
+    )
+    .sort((a, b) => {
+      if (a.balance.symbol && b.balance.symbol) {
+        return a.balance.symbol.localeCompare(b.balance.symbol);
+      }
+      return -1;
+    });
+
   const { data: publicInfo } = useQuery(
     ["query", "publicInfo", contractAddress],
     async () =>
@@ -128,7 +156,7 @@ export const useContractData = (
     contractInfo,
     instantiateInfo,
     publicInfo,
-    balances: contractBalances.balances,
+    balances: contractBalancesWithAssetInfos,
     initMsg: instantiateDetail.initMsg,
     initTxHash: instantiateDetail.initTxHash,
     initProposalTitle,
@@ -142,11 +170,18 @@ export const useContractDetailsTableCounts = (
   // TODO - add other table count
   const { data: executeCount = 0, refetch: refetchExecute } =
     useExecuteTxsCountByContractAddress(contractAddress);
-
+  const { data: migrationCount = 0, refetch: refetchMigration } =
+    useMigrationHistoriesCountByContractAddress(contractAddress);
+  const { data: relatedProposalsCount = 0, refetch: refetchRelatedProposals } =
+    useRelatedProposalsCountByContractAddress(contractAddress);
   return {
     tableCounts: {
       executeCount,
+      migrationCount,
+      relatedProposalsCount,
     },
     refetchExecute,
+    refetchMigration,
+    refetchRelatedProposals,
   };
 };

@@ -97,8 +97,10 @@ export const SelectContract = ({
         py="6px"
         px="16px"
         onClick={onOpen}
+        leftIcon={
+          !notSelected ? <Icon as={MdSwapHoriz} boxSize="5" /> : undefined
+        }
       >
-        {!notSelected && <Icon as={MdSwapHoriz} boxSize="5" mr={2} />}
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
       <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl">

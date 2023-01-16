@@ -56,3 +56,15 @@ export const CELATONE_CONSTANTS: CelatoneConstants = {
 };
 
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
+
+export const CELATONE_API_ENDPOINT = "https://celatone-api.alleslabs.dev";
+
+export const getChainApiPath = (chainName: string) => {
+  switch (chainName) {
+    case "osmosistestnet":
+    case "osmosis":
+      return "osmosis";
+    default:
+      return undefined;
+  }
+};

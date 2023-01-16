@@ -13,7 +13,11 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import { useFabricateFee, useSimulateFee } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useNativeTokensInfo,
+  useSimulateFee,
+} from "lib/app-provider";
 import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
 import { ControllerInput, TextInput } from "lib/components/forms";
 import { AssetInput } from "lib/components/forms/AssetInput";
@@ -45,11 +49,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const router = useRouter();
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
-  const { address = "", currentChainRecord } = useWallet();
+  const { address = "" } = useWallet();
   const postInstantiateTx = useInstantiateTx();
   const { simulate } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
+  const nativeTokensInfo = useNativeTokensInfo();
+
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
@@ -83,17 +89,14 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     return !codeId || !address || !!jsonValidate(watchInitMsg);
   }, [codeId, address, watchInitMsg]);
 
-  // TODO: create this as hook later
   const assetOptions = useMemo(
     () =>
-      currentChainRecord?.assetList.assets
-        .filter((asset) => !asset.base.includes("cw20"))
-        .map((asset) => ({
-          label: asset.symbol,
-          value: asset.base,
-          disabled: selectedAssets.includes(asset.base),
-        })) ?? [],
-    [currentChainRecord, selectedAssets]
+      nativeTokensInfo.map((asset) => ({
+        label: asset.symbol,
+        value: asset.base,
+        disabled: selectedAssets.includes(asset.base),
+      })),
+    [nativeTokensInfo, selectedAssets]
   );
 
   // ------------------------------------------//
