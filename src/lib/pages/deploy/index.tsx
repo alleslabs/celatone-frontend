@@ -19,7 +19,7 @@ const Deploy = () => {
       </Heading>
       <ButtonCard
         title="Upload new WASM File"
-        description="Store a new WASM file file on-chain"
+        description="Store a new Wasm file on-chain"
         onClick={() => router.push("/upload")}
         mb="16px"
       />

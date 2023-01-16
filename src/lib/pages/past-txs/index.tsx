@@ -178,7 +178,7 @@ const PastTxs = () => {
         >
           <DisconnectedState
             text="to see your past transactions."
-            helperText="Past transactions involving the wasm module (storing wasm codes, contract interactions, etc.) will display here."
+            helperText="Past transactions involving the Wasm module (storing wasm codes, contract interactions, etc.) will display here."
           />
         </Flex>
       );
