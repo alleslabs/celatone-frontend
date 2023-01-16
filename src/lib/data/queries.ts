@@ -282,3 +282,51 @@ export const getCodeInfoByCodeId = graphql(`
     }
   }
 `);
+
+export const getTxsByContractAddress = graphql(`
+  query getTxsByContractAddress(
+    $contractAddress: String!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    contract_transactions(
+      where: { contract: { address: { _eq: $contractAddress } } }
+      order_by: { transaction: { block: { timestamp: desc } } }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      transaction {
+        hash
+        success
+        messages
+        account {
+          address
+        }
+        block {
+          height
+          timestamp
+        }
+        is_execute
+        is_ibc
+        is_instantiate
+        is_send
+        is_store_code
+        is_migrate
+        is_update_admin
+        is_clear_admin
+      }
+    }
+  }
+`);
+
+export const getTxsCountByContractAddress = graphql(`
+  query getTxsCountByContractAddress($contractAddress: String!) {
+    contract_transactions_aggregate(
+      where: { contract: { address: { _eq: $contractAddress } } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);

@@ -67,6 +67,24 @@ export interface DetailSend {
   toAddress: ContractAddr;
 }
 export interface DetailUpload {
-  id: Long;
+  id: number;
   sender: ContractAddr;
+}
+
+export interface DetailClearAdmin {
+  contract: ContractAddr;
+  sender: HumanAddr;
+}
+
+export interface DetailUpdateAdmin {
+  contract: ContractAddr;
+  newAdmin: HumanAddr;
+  sender: HumanAddr;
+}
+
+export interface DetailMigrate {
+  codeId: number;
+  contract: ContractAddr;
+  msg: object;
+  sender: HumanAddr;
 }

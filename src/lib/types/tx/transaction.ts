@@ -1,9 +1,12 @@
 import type { ContractAddr, HumanAddr } from "lib/types";
 
 import type {
+  DetailClearAdmin,
   DetailExecute,
   DetailInstantiate,
+  DetailMigrate,
   DetailSend,
+  DetailUpdateAdmin,
   DetailUpload,
 } from "./msg";
 
@@ -26,8 +29,15 @@ export interface Transaction {
 }
 
 export interface Message {
-  // TODO - Fix message type
-  detail: DetailExecute | DetailInstantiate | DetailUpload | DetailSend;
+  detail:
+    | DetailExecute
+    | DetailInstantiate
+    | DetailUpload
+    | DetailSend
+    | DetailUpdateAdmin
+    | DetailClearAdmin
+    | DetailMigrate;
+
   logs: Logs;
   msg: Msg;
   type: string;
@@ -49,4 +59,14 @@ export interface ExecuteTransaction {
   height: number;
   created: Date;
   success: boolean;
+}
+
+export enum ActionMsgType {
+  SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
+  MULTIPLE_ACTION_MSG = "MULTIPLE_ACTION_MSG",
+  OTHER_ACTION_MSG = "OTHER_ACTION_MSG",
+}
+export interface AllTransaction extends ExecuteTransaction {
+  actionMsgType: ActionMsgType;
+  isIbc: boolean;
 }

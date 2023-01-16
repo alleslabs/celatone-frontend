@@ -33,8 +33,9 @@ export const SingleMsg = ({
   text3,
   link2,
 }: SingleMsgProps) => {
+  if (!type) return <Text>Message Unavailable</Text>;
   return (
-    <Flex gap={1} alignItems="center">
+    <Flex gap={1} alignItems="center" flexWrap="wrap">
       {type} {text1}
       {bolds && (
         <Box display="inline-flex">
