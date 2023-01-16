@@ -27,9 +27,9 @@ const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
   const { currentChainName } = useWallet();
 
-  const getPublicCodeShortCut = () =>
+  const getAllCodesShortCut = () =>
     PERMISSIONED_CHAINS.includes(currentChainName)
-      ? [{ name: "Public Codes", slug: "/public-codes", icon: MdPublic }]
+      ? [{ name: "All Codes", slug: "/all-codes", icon: MdPublic }]
       : [];
 
   const navMenu = [
@@ -63,7 +63,7 @@ const Navbar = observer(() => {
       category: "Codes",
       submenu: [
         { name: "My Codes", slug: "/codes", icon: MdCode },
-        ...getPublicCodeShortCut(),
+        ...getAllCodesShortCut(),
       ],
     },
     {

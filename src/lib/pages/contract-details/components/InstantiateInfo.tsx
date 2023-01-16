@@ -2,21 +2,10 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { AddressReturnType } from "lib/hooks";
 import { useGetAddressType } from "lib/hooks";
 import type { ContractData } from "lib/model/contract";
 import { formatUTC, dateFromNow } from "lib/utils";
-
-const getAddressTypeText = (addressType: AddressReturnType) => {
-  switch (addressType) {
-    case "contract_address":
-      return "(Contract Address)";
-    case "user_address":
-      return "(Wallet Address)";
-    default:
-      return "(Invalid Address)";
-  }
-};
+import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {
   contractData: ContractData;
@@ -39,10 +28,10 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
               <LabelText
                 label="Instantiated Block Height"
                 helperText1={formatUTC(
-                  contractData.instantiateInfo.createdTime.toString()
+                  contractData.instantiateInfo.createdTime
                 )}
                 helperText2={dateFromNow(
-                  contractData.instantiateInfo.createdTime.toString()
+                  contractData.instantiateInfo.createdTime
                 )}
               >
                 <ExplorerLink

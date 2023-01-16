@@ -54,17 +54,15 @@ export const ExecuteTableRow = ({
       <TableRow>
         <ExplorerLink
           value={transaction.height.toString()}
-          type="block"
+          type="block_height"
           canCopyWithHover
         />
       </TableRow>
       <TableRow>
         <Flex direction="column" gap={1}>
-          <Text variant="body2">
-            {formatUTC(transaction.created.toString())}
-          </Text>
-          <Text variant="body2" color="text.dark">
-            {`(${dateFromNow(transaction.created.toString())})`}
+          <Text variant="body3">{formatUTC(transaction.created)}</Text>
+          <Text variant="body3" color="text.dark">
+            {`(${dateFromNow(transaction.created)})`}
           </Text>
         </Flex>
       </TableRow>
