@@ -1,43 +1,19 @@
 import { Flex, Icon, Text, Image, useToast, Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import {
-  FaTwitter,
-  FaGithub,
-  FaTelegram,
-  FaDiscord,
-  FaInfo,
-} from "react-icons/fa";
-import {
-  MdBookmark,
-  MdBookmarkBorder,
-  MdLanguage,
-  MdCheckCircle,
-} from "react-icons/md";
+import { MdBookmark, MdBookmarkBorder, MdCheckCircle } from "react-icons/md";
 import { useClampText } from "use-clamp-text";
 
 import { usePublicProjectStore } from "lib/hooks";
 import type { PublicProjectInfo } from "lib/services/publicProject";
 
+import { SocialMedia } from "./SocialMedia";
+
 interface PublicProjectCardProps {
   item: PublicProjectInfo["details"];
   slug: string;
 }
-
-export const renderSocial = (name: string) => {
-  switch (name) {
-    case "twitter":
-      return FaTwitter;
-    case "telegram":
-      return FaTelegram;
-    case "discord":
-      return FaDiscord;
-    default:
-      return FaInfo;
-  }
-};
 
 export const PublicProjectCard = observer(
   ({ item, slug }: PublicProjectCardProps) => {
@@ -174,52 +150,7 @@ export const PublicProjectCard = observer(
               {clampedText}
             </Text>
           </Box>
-          <Flex
-            alignItems="center"
-            gap="2"
-            mt="2"
-            zIndex={1}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {item?.website && (
-              <Link href={item?.website} target="_blank">
-                <Icon
-                  as={MdLanguage}
-                  color="gray.600"
-                  _hover={{ color: "gray.500" }}
-                  transition="all 0.2s"
-                  boxSize="6"
-                />
-              </Link>
-            )}
-            {item?.github && (
-              <Link href={item?.github} target="_blank">
-                <Icon
-                  as={FaGithub}
-                  color="gray.600"
-                  _hover={{ color: "gray.500" }}
-                  transition="all 0.2s"
-                  boxSize="5"
-                />
-              </Link>
-            )}
-            {item?.socials.length &&
-              item.socials.map((social) => (
-                <Flex key={social.name}>
-                  {social.url !== "" && (
-                    <Link href={social.url} target="_blank">
-                      <Icon
-                        as={renderSocial(social.name)}
-                        color="gray.600"
-                        _hover={{ color: "gray.500" }}
-                        transition="all 0.2s"
-                        boxSize="5"
-                      />
-                    </Link>
-                  )}
-                </Flex>
-              ))}
-          </Flex>
+          <SocialMedia details={item} />
         </Flex>
       </Flex>
     );

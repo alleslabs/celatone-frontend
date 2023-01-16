@@ -48,13 +48,13 @@ export const CodesTable = ({
             variant="floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
-            label="Search with Code ID or Code Description"
+            label="Search with code ID or code description"
             size="md"
             mb={6}
           />
         </Flex>
       )}
-      {filteredCodes.length === 0 ? (
+      {!filteredCodes.length ? (
         <Flex my={8}>
           <EmptyState message="No matched code found." />
         </Flex>

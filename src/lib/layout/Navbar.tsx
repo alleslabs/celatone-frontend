@@ -177,8 +177,7 @@ const Navbar = observer(() => {
                       src={submenu.logo}
                       borderRadius="full"
                       alt={submenu.slug}
-                      width={4}
-                      height={4}
+                      boxSize={4}
                     />
                   )}
                   <Text variant="body2" className="ellipsis">

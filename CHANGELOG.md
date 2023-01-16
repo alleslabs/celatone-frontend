@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
-- [#76](https://github.com/alleslabs/celatone-frontend/pull/76) Public Projects
+- [#76](https://github.com/alleslabs/celatone-frontend/pull/76) Add Public projects page
 - [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add contract not exist page
 - [#63](https://github.com/alleslabs/celatone-frontend/pull/63) Add code id explorer link and code table row navigation
 - [#67](https://github.com/alleslabs/celatone-frontend/pull/67) Add Public Codes shortcut to sidebar and add Quick Actions section

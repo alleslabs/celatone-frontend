@@ -63,7 +63,7 @@ export const AllProject = () => {
         size="md"
         mb={12}
       />
-      {filteredPublicProjects.length === 0 ? (
+      {!filteredPublicProjects.length ? (
         <EmptyState message="None of your lists matches this search." />
       ) : (
         <SimpleGrid columns={{ sm: 1, md: 3, xl: 4 }} spacing={4} w="full">

@@ -6,7 +6,6 @@ import {
   Text,
   Flex,
   Heading,
-  Link,
   Icon,
   Image,
   Button,
@@ -15,38 +14,20 @@ import {
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 import {
-  FaTwitter,
-  FaGithub,
-  FaTelegram,
-  FaDiscord,
-  FaInfo,
-} from "react-icons/fa";
-import {
   MdChevronRight,
   MdBookmark,
   MdBookmarkBorder,
-  MdLanguage,
   MdCheckCircle,
 } from "react-icons/md";
 
 import { usePublicProjectStore } from "lib/hooks";
 import type { Detail } from "lib/services/publicProject";
+import type { Option } from "lib/types";
 
-export const renderSocial = (name: string) => {
-  switch (name) {
-    case "twitter":
-      return FaTwitter;
-    case "telegram":
-      return FaTelegram;
-    case "discord":
-      return FaDiscord;
-    default:
-      return FaInfo;
-  }
-};
+import { SocialMedia } from "./SocialMedia";
 
 interface DetailProps {
-  details: Detail | undefined;
+  details: Option<Detail>;
   slug: string;
 }
 export const DetailHeader = observer(({ details, slug }: DetailProps) => {
@@ -155,46 +136,7 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
           </Text>
         </Box>
         <Flex alignItems="center" gap={4}>
-          <Flex alignItems="center" gap="2" mt={2}>
-            {details?.website && (
-              <Link href={details?.website} target="_blank">
-                <Icon
-                  as={MdLanguage}
-                  color="gray.600"
-                  _hover={{ color: "gray.500" }}
-                  transition="all 0.2s"
-                  boxSize="6"
-                />
-              </Link>
-            )}
-            {details?.github && (
-              <Link href={details?.github} target="_blank">
-                <Icon
-                  as={FaGithub}
-                  color="gray.600"
-                  _hover={{ color: "gray.500" }}
-                  transition="all 0.2s"
-                  boxSize="6"
-                />
-              </Link>
-            )}
-            {details?.socials.length &&
-              details?.socials.map((social) => (
-                <Flex>
-                  {social.url !== "" && (
-                    <Link href={social.url} target="_blank">
-                      <Icon
-                        as={renderSocial(social.name)}
-                        color="gray.600"
-                        _hover={{ color: "gray.500" }}
-                        transition="all 0.2s"
-                        boxSize="6"
-                      />
-                    </Link>
-                  )}
-                </Flex>
-              ))}
-          </Flex>
+          <SocialMedia details={details} />
           {/* TODO: add/remove from bookmark */}
           {isPublicProjectSaved(slug) ? (
             <Button
