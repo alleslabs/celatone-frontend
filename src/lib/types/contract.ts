@@ -3,7 +3,7 @@ import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 export interface ContractInfo extends ContractLocalInfo {
   instantiated: Date;
-  latestUpdator: string;
+  latestUpdator?: string;
   latestUpdated: Date;
 }
 

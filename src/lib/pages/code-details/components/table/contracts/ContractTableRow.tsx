@@ -58,8 +58,9 @@ export const ContractTableRow = ({
       </TableRow>
 
       <TableRow>
-        {!contractInfo.latestUpdator.length ? (
+        {!contractInfo.latestUpdator ? (
           <Text variant="body2" textColor="text.dark" cursor="text">
+            {/* TODO: Or make it genesis */}
             NaN
           </Text>
         ) : (
