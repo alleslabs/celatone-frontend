@@ -29,7 +29,6 @@ export interface Transaction {
 }
 
 export interface Message {
-  // TODO - Fix message type
   detail:
     | DetailExecute
     | DetailInstantiate
@@ -63,9 +62,9 @@ export interface ExecuteTransaction {
 }
 
 export enum ActionMsgType {
-  SINGLE_ACTION_MSG = "SINGLEACTIONMSG",
-  MULTIPLE_ACTION_MSG = "MULTIPLEACTIONMSG",
-  OTHER_ACTION_MSG = "OTHERACTIONMSG",
+  SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
+  MULTIPLE_ACTION_MSG = "MULTIPLE_ACTION_MSG",
+  OTHER_ACTION_MSG = "OTHER_ACTION_MSG",
 }
 export interface AllTransaction extends ExecuteTransaction {
   actionMsgType: ActionMsgType;

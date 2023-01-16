@@ -7,15 +7,15 @@ export const extractMsgType = (typePath: string): string =>
  * Returns what action type to be render.
  *
  * @remarks
- * OTHERACTIONMSG = message that celatone does not support, happen when msgTypesSupportList contains all false
- * SINGLEACTIONMSG = message that celatone support, but contain only 1 message action type, happen when msgTypesSupportList contains only 1 true
- * MULTIPLEACTIONMSG = message that celatone support, but contain multiple message action types. happen when msgTypesSupportList contains multiple true
+ * OTHER_ACTION_MSG = message that celatone does not support, happen when msgTypesSupportList contains all false
+ * SINGLE_ACTION_MSG = message that celatone support, but contain only 1 message action type, happen when msgTypesSupportList contains only 1 true
+ * MULTIPLE_ACTION_MSG = message that celatone support, but contain multiple message action types. happen when msgTypesSupportList contains multiple true
  *
  * @example
  * Given 3 supported action type [execute, instantiate, upload]
- * return OTHERACTIONMSG -> [false, false, false]
- * return SINGLEACTIONMSG -> [true, false, false]
- * return MULTIPLEACTIONMSG -> [true, true, false]
+ * return OTHER_ACTION_MSG -> [false, false, false]
+ * return SINGLE_ACTION_MSG -> [true, false, false]
+ * return MULTIPLE_ACTION_MSG -> [true, true, false]
  *
  * @param msgTypesSupportList - list of boolean of message type that celatone supported
  * @returns Returns action type

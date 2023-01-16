@@ -89,14 +89,12 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            <>
-              <RenderActionsMessages transaction={transaction} />
-              {transaction.isIbc && (
-                <Tag borderRadius="full" bg="rgba(164, 133, 231, 0.6)">
-                  IBC
-                </Tag>
-              )}
-            </>
+            <RenderActionsMessages transaction={transaction} />
+            {transaction.isIbc && (
+              <Tag borderRadius="full" bg="rgba(164, 133, 231, 0.6)">
+                IBC
+              </Tag>
+            )}
           </Flex>
         </TableRow>
 
