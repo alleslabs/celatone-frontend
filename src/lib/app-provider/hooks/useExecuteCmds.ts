@@ -7,11 +7,7 @@ import type { HumanAddr, ContractAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
 
-interface UseExecuteCmdsProps {
-  contractAddress: string;
-}
-
-export const useExecuteCmds = ({ contractAddress }: UseExecuteCmdsProps) => {
+export const useExecuteCmds = (contractAddress: ContractAddr) => {
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);
   const { address } = useWallet();
   const { dummyAddress } = useDummyWallet();

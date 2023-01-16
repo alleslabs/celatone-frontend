@@ -1,6 +1,5 @@
 import { Flex, Grid } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useEffect } from "react";
 
 import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
@@ -46,10 +45,6 @@ export const ExecuteTable = ({
     pageSize
   );
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [pageSize, setCurrentPage]);
-
   const onPageChange = (nextPage: number) => {
     refetchCount();
     setCurrentPage(nextPage);
@@ -57,7 +52,9 @@ export const ExecuteTable = ({
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const size = Number(e.target.value);
+    refetchCount();
     setPageSize(size);
+    setCurrentPage(1);
   };
 
   if (!executeTransaction?.length)
@@ -85,16 +82,18 @@ export const ExecuteTable = ({
           templateColumnsStyle={templateColumnsStyle}
         />
       ))}
-      <Pagination
-        currentPage={currentPage}
-        pagesQuantity={pagesQuantity}
-        offset={offset}
-        totalData={totalData}
-        scrollComponentId={scrollComponentId}
-        pageSize={pageSize}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-      />
+      {totalData > 10 && (
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </Flex>
   );
 };

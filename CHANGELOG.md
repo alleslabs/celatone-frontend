@@ -38,7 +38,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
+
 - [#88](https://github.com/alleslabs/celatone-frontend/pull/88) Code snippet for query and execute
+- [#86](https://github.com/alleslabs/celatone-frontend/pull/86) Add transactions table in contract details page
+- [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page 
+- [#87](https://github.com/alleslabs/celatone-frontend/pull/87) Fix funds didn't microfy before sending tx
+- [#85](https://github.com/alleslabs/celatone-frontend/pull/85) Add sending asset in execute contract page
+- [#84](https://github.com/alleslabs/celatone-frontend/pull/84) Contract proposals table ui and wireup
+- [#82](https://github.com/alleslabs/celatone-frontend/pull/82) Add all codes page
+- [#83](https://github.com/alleslabs/celatone-frontend/pull/83) Add invalid code state
+- [#73](https://github.com/alleslabs/celatone-frontend/pull/73) Wireup migration table
+- [#77](https://github.com/alleslabs/celatone-frontend/pull/77) Wireup code info section in code details page
 - [#80](https://github.com/alleslabs/celatone-frontend/pull/80) Fix the misalignment of state in the PastTx page
 - [#70](https://github.com/alleslabs/celatone-frontend/pull/70) Change default token denom on contract detail
 - [#78](https://github.com/alleslabs/celatone-frontend/pull/78) Ignore building step when branch is not main

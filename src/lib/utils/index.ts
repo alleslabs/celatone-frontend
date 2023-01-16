@@ -1,3 +1,4 @@
+export * from "./address";
 export * from "./formatter";
 export * from "./tx";
 export * from "./base64";
@@ -15,3 +16,4 @@ export * from "./date";
 export * from "./validate";
 export * from "./parser";
 export * from "./option";
+export * from "./countMessages";

@@ -7,3 +7,4 @@ export * from "./SelectInput";
 export * from "./TextAreaInput";
 export * from "./ControllerInput";
 export * from "./ControllerTextarea";
+export * from "./AssetInput";
