@@ -5,6 +5,7 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -29,7 +30,7 @@ import { JsonInfo } from "./components/JsonInfo";
 import { ExecuteTable } from "./components/tables/execute/Execute";
 import { MigrationTable } from "./components/tables/migration";
 import { RelatedProposalsTable } from "./components/tables/related-proposals";
-import { TokenSection } from "./components/TokenSection";
+import { TokenSection } from "./components/token/TokenSection";
 
 interface ContractDetailsBodyProps {
   contractAddress: ContractAddr;
@@ -53,7 +54,12 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
     <>
       <ContractTop contractData={contractData} />
       {/* Tokens Section */}
-      <TokenSection />
+      <Flex direction="column">
+        <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
+          Assets
+        </Text>
+        <TokenSection balances={contractData.balances} />
+      </Flex>
       {/* Contract Description Section */}
       <ContractDesc contractData={contractData} />
       {/* Query/Execute commands section */}
