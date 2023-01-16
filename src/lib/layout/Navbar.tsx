@@ -107,15 +107,7 @@ const Navbar = observer(() => {
   ];
 
   return (
-    <Flex
-      direction="column"
-      h="full"
-      overflow="hidden"
-      position="relative"
-
-      // bgColor="info.main"
-      // maxHeight="90%"
-    >
+    <Flex direction="column" h="full" overflow="hidden" position="relative">
       <Box p={4} overflowY="scroll" pb={12}>
         {navMenu.map((item) => (
           <Box
