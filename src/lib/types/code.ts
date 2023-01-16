@@ -1,3 +1,4 @@
+import type { CodeLocalInfo } from "lib/stores/code";
 import type { HumanAddr, ContractAddr, Option } from "lib/types";
 
 export enum InstantiatePermission {
@@ -9,27 +10,22 @@ export enum InstantiatePermission {
   UNKNOWN = "Unknown",
 }
 
-export type PermissionAddresses =
-  | HumanAddr
-  | ContractAddr
-  | (HumanAddr | ContractAddr)[];
+export type PermissionAddresses = (HumanAddr | ContractAddr)[];
 
-export interface CodeInfo {
-  id: number;
-  description?: string;
+export interface CodeInfo extends CodeLocalInfo {
   contracts: number;
-  uploader: string;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
+  isSaved?: boolean;
 }
 
 interface CodeProposal {
   proposalId: number;
-  height: Option<number>;
+  height: number;
   created: Date;
 }
 
-export interface CodeDetails {
+export interface CodeData {
   chainId: Option<string>;
   codeId: number;
   uploader: ContractAddr | HumanAddr;

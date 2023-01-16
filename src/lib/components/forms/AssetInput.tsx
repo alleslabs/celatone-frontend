@@ -1,7 +1,7 @@
 import { Button, Grid, Icon } from "@chakra-ui/react";
 import { MdDelete } from "react-icons/md";
 
-import { SelectInput } from "lib/components/forms";
+import { SelectInput } from "./SelectInput";
 
 interface AssetOptions {
   label: string;

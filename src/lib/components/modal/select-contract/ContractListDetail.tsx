@@ -63,7 +63,7 @@ export const ContractListDetail = ({
   const filteredContracts = useMemo(
     () =>
       matchSorter(contractListInfo.contracts, searchKeyword, {
-        keys: ["name", "description", "label", "address"],
+        keys: ["name", "description", "label", "contractAddress"],
         sorter: (sortedItem) => sortedItem,
       }).filter((contract) =>
         tagFilter.every((tag) => contract.tags?.includes(tag))
