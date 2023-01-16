@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#87](https://github.com/alleslabs/celatone-frontend/pull/87) Fix funds didn't microfy before sending tx
 - [#85](https://github.com/alleslabs/celatone-frontend/pull/85) Add sending asset in execute contract page
 - [#84](https://github.com/alleslabs/celatone-frontend/pull/84) Contract proposals table ui and wireup
 - [#82](https://github.com/alleslabs/celatone-frontend/pull/82) Add all codes page
