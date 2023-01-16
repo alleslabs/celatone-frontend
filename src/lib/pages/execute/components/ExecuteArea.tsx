@@ -88,6 +88,13 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
   });
 
   const proceed = useCallback(async () => {
+    const funds = assets
+      .filter((asset) => asset.amount && asset.denom)
+      .map((asset) => ({
+        ...asset,
+        amount: microfy(asset.amount as Token).toFixed(0),
+      }));
+
     const stream = await executeTx({
       onTxSucceed: (userKey: string, activity: Activity) => {
         addActivity(userKey, activity);
@@ -97,7 +104,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
       estimatedFee: fee,
       contractAddress,
       msg: JSON.parse(msg),
-      funds: assets,
+      funds,
     });
     if (stream) {
       setProcessing(true);
