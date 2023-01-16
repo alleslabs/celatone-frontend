@@ -105,13 +105,16 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
         separator={<MdChevronRight color="gray.600" />}
       >
         <BreadcrumbItem>
-          <BreadcrumbLink color="text.dark" href="/public-project">
-            Public Projects
+          <BreadcrumbLink href="/public-project">
+            <Text variant="body2" color="text.dark">
+              Public Projects
+            </Text>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink href="#">
             <Text
+              variant="body2"
               className="ellipsis"
               width="250px"
               fontWeight="600"
@@ -124,28 +127,33 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
       </Breadcrumb>
       <Flex
         justifyContent="space-between"
-        alignItems="center"
+        alignItems="flex-start"
         w="full"
         mt={2}
         gap={5}
       >
-        <Flex gap={2} align="center">
-          <Image
-            src={details?.logo}
-            borderRadius="full"
-            alt="Celatone"
-            width={8}
-            height={8}
-          />
-          <Heading
-            as="h5"
-            variant="h5"
-            color="primary.400"
-            className="ellipsis"
-          >
-            {details?.name}
-          </Heading>
-        </Flex>
+        <Box>
+          <Flex gap={2} align="center">
+            <Image
+              src={details?.logo}
+              borderRadius="full"
+              alt="Celatone"
+              width={8}
+              height={8}
+            />
+            <Heading
+              as="h5"
+              variant="h5"
+              color="primary.400"
+              className="ellipsis"
+            >
+              {details?.name}
+            </Heading>
+          </Flex>
+          <Text variant="body2" color="text.dark" mt={2}>
+            {details?.description}
+          </Text>
+        </Box>
         <Flex alignItems="center" gap={4}>
           <Flex alignItems="center" gap="2" mt={2}>
             {details?.website && (
@@ -213,9 +221,6 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
           )}
         </Flex>
       </Flex>
-      <Text variant="body3" color="text.dark" mt={2}>
-        {details?.description}
-      </Text>
     </Box>
   );
 });

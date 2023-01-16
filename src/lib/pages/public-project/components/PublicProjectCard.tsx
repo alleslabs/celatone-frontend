@@ -1,4 +1,4 @@
-import { Flex, Icon, Text, Image, useToast } from "@chakra-ui/react";
+import { Flex, Icon, Text, Image, useToast, Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -16,6 +16,7 @@ import {
   MdLanguage,
   MdCheckCircle,
 } from "react-icons/md";
+import { useClampText } from "use-clamp-text";
 
 import { usePublicProjectStore } from "lib/hooks";
 import type { PublicProjectInfo } from "lib/services/publicProject";
@@ -48,6 +49,11 @@ export const PublicProjectCard = observer(
 
     const { isPublicProjectSaved, savePublicProject, removePublicProject } =
       usePublicProjectStore();
+    const [ref, { clampedText }] = useClampText({
+      text: item?.description || "",
+      ellipsis: "...",
+      lines: 3,
+    });
     // TODO combine to 1 component that share with bookmark button in slug
     const handleSave = useCallback(() => {
       savePublicProject({
@@ -115,54 +121,59 @@ export const PublicProjectCard = observer(
           height="full"
           justifyContent="space-between"
         >
-          <Flex justifyContent="space-between" w="full">
-            <Flex gap={2}>
-              <Image
-                src={item.logo}
-                borderRadius="full"
-                alt="Celatone"
-                width={7}
-                height={7}
-              />
-              <Text
-                variant="body1"
-                fontWeight="600"
-                textOverflow="ellipsis"
-                overflow="hidden"
-                mt="3px"
-              >
-                {item.name}
-              </Text>
+          <Box>
+            <Flex justifyContent="space-between" w="full">
+              <Flex gap={2}>
+                <Image
+                  src={item.logo}
+                  borderRadius="full"
+                  alt="Celatone"
+                  width={7}
+                  height={7}
+                />
+                <Text
+                  variant="body1"
+                  fontWeight="600"
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                  mt="3px"
+                >
+                  {item.name}
+                </Text>
+              </Flex>
+              {isPublicProjectSaved(slug) ? (
+                <Icon
+                  as={MdBookmark}
+                  color="primary.main"
+                  boxSize="6"
+                  cursor="pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemove();
+                  }}
+                />
+              ) : (
+                <Icon
+                  as={MdBookmarkBorder}
+                  color="gray.600"
+                  boxSize="6"
+                  cursor="pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSave();
+                  }}
+                />
+              )}
             </Flex>
-            {isPublicProjectSaved(slug) ? (
-              <Icon
-                as={MdBookmark}
-                color="primary.main"
-                boxSize="6"
-                cursor="pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleRemove();
-                }}
-              />
-            ) : (
-              <Icon
-                as={MdBookmarkBorder}
-                color="gray.600"
-                boxSize="6"
-                cursor="pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSave();
-                }}
-              />
-            )}
-            {/* TODO: if save -> change to this icon */}
-            {/* <Icon as={MdBookmark} color="primary.main" boxSize="6" /> */}
-          </Flex>
-          <Text variant="body3" color="text.dark">
-            {item?.description}
-          </Text>
+            <Text
+              ref={ref as React.MutableRefObject<HTMLParagraphElement>}
+              variant="body3"
+              color="text.primary"
+              pt={3}
+            >
+              {clampedText}
+            </Text>
+          </Box>
           <Flex
             alignItems="center"
             gap="2"

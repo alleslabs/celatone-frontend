@@ -72,13 +72,16 @@ const ContractsByList = observer(() => {
           separator={<MdChevronRight color="gray.600" />}
         >
           <BreadcrumbItem>
-            <BreadcrumbLink color="text.dark" href="/contract-list">
-              Contract Lists
+            <BreadcrumbLink href="/contract-list">
+              <Text variant="body2" color="text.dark">
+                Contract Lists
+              </Text>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
             <BreadcrumbLink href="#">
               <Text
+                variant="body2"
                 className="ellipsis"
                 width="250px"
                 fontWeight="600"
