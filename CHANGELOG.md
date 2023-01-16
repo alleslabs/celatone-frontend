@@ -39,8 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+
 - [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and json to attach fund
 - [#61](https://github.com/alleslabs/celatone-frontend/pull/61) Add UI for send asset in execute contract page
+- [#86](https://github.com/alleslabs/celatone-frontend/pull/86) Add transactions table in contract details page
 - [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page 
 - [#87](https://github.com/alleslabs/celatone-frontend/pull/87) Fix funds didn't microfy before sending tx
 - [#85](https://github.com/alleslabs/celatone-frontend/pull/85) Add sending asset in execute contract page
