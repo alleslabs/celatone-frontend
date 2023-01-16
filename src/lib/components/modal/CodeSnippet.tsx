@@ -124,8 +124,8 @@ queryContract();`,
 export CHAIN_ID=${chainId}\n
 export RPC_URL=${rpcUrl}\n
 export CONTRACT_ADDRESS=${contractAddress}\n
-export QUERY_MSG='\`${message}\`'\n
-${client} tx wasm execute $CONTRACT_ADDRESS $QUERY_MSG \\
+export EXECUTE_MSG='\`${message}\`'\n
+${client} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
     --from celatone \\
     --chain-id $CHAIN_ID \\
     --node $RPC_URL"`,
