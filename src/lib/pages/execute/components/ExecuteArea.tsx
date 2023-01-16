@@ -48,14 +48,14 @@ export const ExecuteArea = ({
   const [processing, setProcessing] = useState(false);
   const [attachFundOption, setAttachFundOption] = useState("");
   const attachFundOptions = [
-    { label: "Not sending funds", value: "null", disabled: false },
+    { label: "No funds attached", value: "null", disabled: false },
     {
-      label: "Select asset and fill amount",
+      label: "Select from default assets",
       value: "fill",
       disabled: false,
     },
     {
-      label: "Provide JSON Asset List",
+      label: "Provide asset list as JSON",
       value: "json",
       disabled: false,
     },
