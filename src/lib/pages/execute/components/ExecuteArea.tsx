@@ -1,6 +1,7 @@
 import { Box, Flex, Button, ButtonGroup, Icon, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
 import { MdInput } from "react-icons/md";
@@ -12,13 +13,16 @@ import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import JsonInput from "lib/components/json/JsonInput";
-import { CodeSnippet } from "lib/components/modal/CodeSnippet";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
+
+const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
+  ssr: false,
+});
 
 interface ExecuteAreaProps {
   contractAddress: ContractAddr;
