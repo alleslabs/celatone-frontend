@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
-- [#81](https://github.com/alleslabs/celatone-frontend/pull/81) Can scroll on side bar with fix deploy contract
+- [#81](https://github.com/alleslabs/celatone-frontend/pull/81) Can scroll on side bar with fix deploy new contract button
 - [#70](https://github.com/alleslabs/celatone-frontend/pull/70) Change default token denom on contract detail
 - [#78](https://github.com/alleslabs/celatone-frontend/pull/78) Ignore building step when branch is not main
 - [#62](https://github.com/alleslabs/celatone-frontend/pull/62) Add footer

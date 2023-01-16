@@ -170,12 +170,12 @@ const Navbar = observer(() => {
         position="fixed"
         bottom="0"
         py={3}
-        bg="#212121"
-        display="flex"
+        bg="gray.900"
         width="full"
         maxWidth="224px"
         justifyContent="center"
-        borderTop="4px solid #121212"
+        borderTop="4px solid"
+        borderTopColor="background.main"
       >
         <Link href="/deploy">
           <Button>
