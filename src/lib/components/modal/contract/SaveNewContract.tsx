@@ -193,7 +193,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
         <ControllerInput
           name="instantiator"
           control={control}
-          label="Instantiator"
+          label="Instantiated by"
           variant="floating"
           isDisabled
           labelBgColor="gray.800"

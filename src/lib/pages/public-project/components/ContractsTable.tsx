@@ -74,7 +74,7 @@ export const ContractsTable = ({
                 <Th width="25%">Contract Address</Th>
                 <Th width="30%">Contract Name</Th>
 
-                <Th width="25%">Instantiator</Th>
+                <Th width="25%">Instantiated by</Th>
                 <Th width="20%" />
               </Tr>
             </Thead>
