@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
-export const StepperItem = () => (
+export const AccordionStepperItem = () => (
   <Flex position="relative">
     <Flex
       id="before-stepper"

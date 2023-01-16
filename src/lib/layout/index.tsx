@@ -29,10 +29,10 @@ const Layout = ({ children }: LayoutProps) => {
       overflowX="hidden"
       bg="background.main"
     >
-      <GridItem bg="#212121" area="header" mb="1">
+      <GridItem bg="gray.900" area="header" mb="1">
         <Header />
       </GridItem>
-      <GridItem bg="#212121" area="nav">
+      <GridItem bg="gray.900" area="nav" overflowY="auto">
         <Navbar />
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">

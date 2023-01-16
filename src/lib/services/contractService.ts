@@ -11,21 +11,31 @@ import {
   getExecuteTxsByContractAddress,
   getMigrationHistoriesCountByContractAddress,
   getMigrationHistoriesByContractAddress,
+  getTxsCountByContractAddress,
+  getTxsByContractAddress,
+  getRelatedProposalsCountByContractAddress,
+  getRelatedProposalsByContractAddress,
 } from "lib/data/queries";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
   ContractMigrationHistory,
+  ContractRelatedProposals,
   ExecuteTransaction,
+  AllTransaction,
   HumanAddr,
   MigrationRemark,
   Option,
+  ProposalStatus,
+  ProposalType,
 } from "lib/types";
 import {
   parseDate,
+  getActionMsgType,
   parseDateDefault,
   parseTxHash,
   parseTxHashOpt,
+  snakeToCamel,
 } from "lib/utils";
 
 interface InstantiateDetail {
@@ -179,7 +189,7 @@ export const useMigrationHistoriesByContractAddress = (
 ): UseQueryResult<
   Option<Omit<ContractMigrationHistory, "codeDescription">[]>
 > => {
-  const queryFn = useCallback(() => {
+  const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getMigrationHistoriesByContractAddress, {
         contractAddress,
@@ -216,7 +226,7 @@ export const useMigrationHistoriesByContractAddress = (
 export const useMigrationHistoriesCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
-  const queryFn = useCallback(() => {
+  const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getMigrationHistoriesCountByContractAddress, {
         contractAddress,
@@ -228,6 +238,136 @@ export const useMigrationHistoriesCountByContractAddress = (
   }, [contractAddress]);
 
   return useQuery(["migration_histories_count", contractAddress], queryFn, {
+    keepPreviousData: true,
+    enabled: !!contractAddress,
+  });
+};
+
+export const useTxsByContractAddress = (
+  contractAddress: ContractAddr,
+  offset: number,
+  pageSize: number
+): UseQueryResult<AllTransaction[]> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getTxsByContractAddress, {
+        contractAddress,
+        offset,
+        pageSize,
+      })
+      .then(({ contract_transactions }) =>
+        contract_transactions.map((contractTx) => ({
+          hash: parseTxHash(contractTx.transaction.hash),
+          messages: snakeToCamel(contractTx.transaction.messages),
+          sender: contractTx.transaction.account.address as
+            | ContractAddr
+            | HumanAddr,
+          height: contractTx.transaction.block.height,
+          created: parseDateDefault(contractTx.transaction.block?.timestamp),
+          success: contractTx.transaction.success,
+          actionMsgType: getActionMsgType([
+            contractTx.transaction.is_execute,
+            contractTx.transaction.is_instantiate,
+            contractTx.transaction.is_send,
+            contractTx.transaction.is_store_code,
+            contractTx.transaction.is_migrate,
+            contractTx.transaction.is_update_admin,
+            contractTx.transaction.is_clear_admin,
+          ]),
+          isIbc: contractTx.transaction.is_ibc,
+        }))
+      );
+  }, [contractAddress, offset, pageSize]);
+
+  return useQuery(
+    ["transactions_by_contract_addr", contractAddress, offset, pageSize],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
+export const useTxsCountByContractAddress = (
+  contractAddress: ContractAddr
+): UseQueryResult<Option<number>> => {
+  const queryFn = useCallback(async () => {
+    if (!contractAddress) return undefined;
+
+    return indexerGraphClient
+      .request(getTxsCountByContractAddress, {
+        contractAddress,
+      })
+      .then(
+        ({ contract_transactions_aggregate }) =>
+          contract_transactions_aggregate.aggregate?.count
+      );
+  }, [contractAddress]);
+
+  return useQuery(
+    ["transactions_count_by_contract_addr", contractAddress],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
+export const useRelatedProposalsByContractAddress = (
+  contractAddress: ContractAddr,
+  offset: number,
+  pageSize: number
+): UseQueryResult<Option<ContractRelatedProposals[]>> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getRelatedProposalsByContractAddress, {
+        contractAddress,
+        offset,
+        pageSize,
+      })
+      .then(({ contract_proposals }) =>
+        contract_proposals.map<ContractRelatedProposals>((proposal) => ({
+          proposalId: proposal.proposal_id,
+          title: proposal.proposal.title,
+          status: proposal.proposal.status as ProposalStatus,
+          votingEndTime: parseDate(proposal.proposal.voting_end_time),
+          depositEndTime: parseDate(proposal.proposal.deposit_end_time),
+          resolvedHeight: proposal.resolved_height,
+          type: proposal.proposal.type as ProposalType,
+          proposer: proposal.proposal.account?.address as
+            | HumanAddr
+            | ContractAddr,
+        }))
+      );
+  }, [contractAddress, offset, pageSize]);
+
+  return useQuery(
+    ["related_proposals", contractAddress, offset, pageSize],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
+export const useRelatedProposalsCountByContractAddress = (
+  contractAddress: ContractAddr
+): UseQueryResult<Option<number>> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getRelatedProposalsCountByContractAddress, {
+        contractAddress,
+      })
+      .then(
+        ({ contract_proposals_aggregate }) =>
+          contract_proposals_aggregate.aggregate?.count
+      );
+  }, [contractAddress]);
+
+  return useQuery(["related_proposals_count", contractAddress], queryFn, {
     keepPreviousData: true,
     enabled: !!contractAddress,
   });

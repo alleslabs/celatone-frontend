@@ -5,6 +5,9 @@ import { useCallback, useMemo, useState } from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 
 import { useFabricateFee, useSimulateFee, useResendTx } from "lib/app-provider";
+import { AccordionStepperItem } from "lib/components/AccordionStepperItem";
+import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
+import { SingleMsg } from "lib/components/action-msg/SingleMsg";
 import { useContractStore } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -25,10 +28,6 @@ import {
   extractMsgType,
   onClickRedo,
 } from "lib/utils";
-
-import type { SingleMsgProps } from "./SingleMsg";
-import { SingleMsg } from "./SingleMsg";
-import { StepperItem } from "./StepperItem";
 
 interface MsgDetailProps {
   msg: Message;
@@ -254,7 +253,7 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
       }}
     >
       <Flex pl="20%" h="40px" alignItems="center">
-        <StepperItem />
+        <AccordionStepperItem />
         <Flex mx="24px">
           <Text variant="body2">{displayMsg}</Text>
         </Flex>

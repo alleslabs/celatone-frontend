@@ -200,6 +200,46 @@ export const getMigrationHistoriesCountByContractAddress = graphql(`
   }
 `);
 
+export const getRelatedProposalsByContractAddress = graphql(`
+  query getRelatedProposalsByContractAddress(
+    $contractAddress: String!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    contract_proposals(
+      where: { contract: { address: { _eq: $contractAddress } } }
+      order_by: { proposal_id: desc }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      proposal {
+        title
+        status
+        voting_end_time
+        deposit_end_time
+        type
+        account {
+          address
+        }
+      }
+      proposal_id
+      resolved_height
+    }
+  }
+`);
+
+export const getRelatedProposalsCountByContractAddress = graphql(`
+  query getRelatedProposalsCountByContractAddress($contractAddress: String!) {
+    contract_proposals_aggregate(
+      where: { contract: { address: { _eq: $contractAddress } } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
 export const getContractListByCodeId = graphql(`
   query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
@@ -263,6 +303,54 @@ export const getCodeInfoByCodeId = graphql(`
       }
       access_config_permission
       access_config_addresses
+    }
+  }
+`);
+
+export const getTxsByContractAddress = graphql(`
+  query getTxsByContractAddress(
+    $contractAddress: String!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    contract_transactions(
+      where: { contract: { address: { _eq: $contractAddress } } }
+      order_by: { transaction: { block: { timestamp: desc } } }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      transaction {
+        hash
+        success
+        messages
+        account {
+          address
+        }
+        block {
+          height
+          timestamp
+        }
+        is_execute
+        is_ibc
+        is_instantiate
+        is_send
+        is_store_code
+        is_migrate
+        is_update_admin
+        is_clear_admin
+      }
+    }
+  }
+`);
+
+export const getTxsCountByContractAddress = graphql(`
+  query getTxsCountByContractAddress($contractAddress: String!) {
+    contract_transactions_aggregate(
+      where: { contract: { address: { _eq: $contractAddress } } }
+    ) {
+      aggregate {
+        count
+      }
     }
   }
 `);

@@ -52,16 +52,12 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
                 label="Instantiated Block Height"
                 helperText1={
                   contractData.instantiateInfo.createdTime
-                    ? formatUTC(
-                        contractData.instantiateInfo.createdTime.toString()
-                      )
+                    ? formatUTC(contractData.instantiateInfo.createdTime)
                     : undefined
                 }
                 helperText2={
                   contractData.instantiateInfo.createdTime
-                    ? dateFromNow(
-                        contractData.instantiateInfo.createdTime.toString()
-                      )
+                    ? dateFromNow(contractData.instantiateInfo.createdTime)
                     : undefined
                 }
               >

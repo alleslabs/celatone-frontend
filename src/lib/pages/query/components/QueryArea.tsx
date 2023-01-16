@@ -79,7 +79,7 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Flex width="full" mb="16px" alignItems="center">
+      <Flex width="full" my="16px" alignItems="center">
         {cmds.length ? (
           <ButtonGroup
             width="90%"
@@ -138,7 +138,9 @@ export const QueryArea = ({
         <Spacer />
         <Box w="full">
           <JsonReadOnly topic="Return Output" text={res} height="240px" />
-          <CopyButton isDisable={res.length === 0} value={res} />
+          <Flex justifyContent="flex-end" gap={2}>
+            <CopyButton isDisable={res.length === 0} value={res} />
+          </Flex>
         </Box>
       </Flex>
     </Flex>

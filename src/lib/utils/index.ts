@@ -18,3 +18,4 @@ export * from "./txHash";
 export * from "./option";
 export * from "./description";
 export * from "./tags";
+export * from "./countMessages";

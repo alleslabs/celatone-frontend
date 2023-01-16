@@ -4,11 +4,10 @@ import { RiPencilFill } from "react-icons/ri";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
+import { ShowMoreButton } from "lib/components/button";
 import { EditContractDetails } from "lib/components/modal";
 import type { ContractData } from "lib/model/contract";
 import { textLine } from "lib/utils";
-
-import { ShowMoreButton } from "./ShowMoreButton";
 
 interface UserContractDescProps {
   contractData: ContractData;
@@ -84,6 +83,8 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
 
       {!noClamp && (
         <ShowMoreButton
+          showMoreText="View Full Description"
+          showLessText="View Less Description"
           toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
         />

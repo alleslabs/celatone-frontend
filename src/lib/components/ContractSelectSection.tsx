@@ -153,7 +153,6 @@ export const ContractSelectSection = observer(
     const notSelected = contractAddress.length === 0;
     return (
       <Flex
-        mb="32px"
         borderWidth="thin"
         borderColor="gray.800"
         p="16px"
