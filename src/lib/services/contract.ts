@@ -1,7 +1,7 @@
-import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 
-import type { ContractAddr, HumanAddr } from "lib/types";
+import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
+import type { Balance, ContractAddr, HumanAddr, Option } from "lib/types";
 import { encode } from "lib/utils";
 
 interface ContractResponse {
@@ -26,10 +26,6 @@ interface BlockResponse {
       time: string;
     };
   };
-}
-
-interface BalancesResponse {
-  balances: Coin[];
 }
 
 interface PublicInfoResponse {
@@ -115,11 +111,15 @@ export const queryInstantiateInfo = async (
 };
 
 export const queryContractBalances = async (
-  endpoint: string,
+  chainName: Option<string>,
+  chainId: Option<string>,
   contractAddress: ContractAddr
-) => {
-  const { data } = await axios.get<BalancesResponse>(
-    `${endpoint}/cosmos/bank/v1beta1/balances/${contractAddress}?pagination.limit=0`
+): Promise<Option<Balance[]>> => {
+  if (!chainName || !chainId) return undefined;
+  const { data } = await axios.get<Balance[]>(
+    `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
+      chainName
+    )}/${chainId}/${contractAddress}`
   );
   return data;
 };
