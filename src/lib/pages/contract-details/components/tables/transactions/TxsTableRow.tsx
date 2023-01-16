@@ -71,7 +71,7 @@ export const TxsTableRow = ({
         templateColumns={templateColumnsStyle}
         onClick={isAccordion ? onToggle : undefined}
         _hover={{ background: "divider.main" }}
-        cursor={isAccordion ? "pointer" : "none"}
+        cursor={isAccordion ? "pointer" : "default"}
       >
         <TableRow>
           <ExplorerLink
@@ -113,21 +113,21 @@ export const TxsTableRow = ({
           />
         </TableRow>
         <TableRow>
-          <Flex direction="column" gap={1}>
-            <Text variant="body3">{formatUTC(transaction.created)}</Text>
-            <Text variant="body3" color="text.dark">
-              {`(${dateFromNow(transaction.created)})`}
-            </Text>
+          <Flex direction="row" justify="space-between" align="center" w="full">
+            <Flex direction="column" gap={1}>
+              <Text variant="body3">{formatUTC(transaction.created)}</Text>
+              <Text variant="body3" color="text.dark">
+                {`(${dateFromNow(transaction.created)})`}
+              </Text>
+            </Flex>
+            {isAccordion && (
+              <Icon
+                as={MdKeyboardArrowDown}
+                transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
+                boxSize="18px"
+              />
+            )}
           </Flex>
-        </TableRow>
-        <TableRow>
-          {isAccordion && (
-            <Icon
-              as={MdKeyboardArrowDown}
-              transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
-              boxSize="18px"
-            />
-          )}
         </TableRow>
       </Grid>
       {isAccordion && (
