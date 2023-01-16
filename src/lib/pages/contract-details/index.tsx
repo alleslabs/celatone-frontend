@@ -27,9 +27,10 @@ import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { ExecuteTable } from "./components/tables/execute/Execute";
+import { ExecuteTable } from "./components/tables/execute";
 import { MigrationTable } from "./components/tables/migration";
 import { RelatedProposalsTable } from "./components/tables/related-proposals";
+import { TransactionsTable } from "./components/tables/transactions";
 import { TokenSection } from "./components/token/TokenSection";
 
 interface ContractDetailsBodyProps {
@@ -45,6 +46,7 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
     tableCounts,
     refetchExecute,
     refetchMigration,
+    refetchTransactions,
     refetchRelatedProposals,
   } = useContractDetailsTableCounts(contractAddress);
 
@@ -93,19 +95,23 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
       </Heading>
       <Tabs>
         <TabList borderBottom="1px solid" borderColor="divider.main">
-          <CustomTab count={100}>All</CustomTab>
+          <CustomTab count={tableCounts.transactionsCount}>
+            Transactions
+          </CustomTab>
           <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
           <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
           <CustomTab count={tableCounts.relatedProposalsCount}>
             Related Proposals
           </CustomTab>
         </TabList>
-        {/* TODOs: Wireup with real table data, Make table component, and render each table with different data under each TabPanel */}
         <TabPanels>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              All Table
-            </Heading>
+            <TransactionsTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.transactionsCount}
+              refetchCount={refetchTransactions}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <ExecuteTable

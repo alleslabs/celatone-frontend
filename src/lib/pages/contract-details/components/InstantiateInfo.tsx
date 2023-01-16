@@ -28,10 +28,10 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
               <LabelText
                 label="Instantiated Block Height"
                 helperText1={formatUTC(
-                  contractData.instantiateInfo.createdTime.toString()
+                  contractData.instantiateInfo.createdTime
                 )}
                 helperText2={dateFromNow(
-                  contractData.instantiateInfo.createdTime.toString()
+                  contractData.instantiateInfo.createdTime
                 )}
               >
                 <ExplorerLink
