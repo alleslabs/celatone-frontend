@@ -6,27 +6,32 @@ import {
   Tr,
   Th,
   Td,
-  Button,
   TableContainer,
   Heading,
   HStack,
   VStack,
   Text,
   Box,
+  Flex,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
+import { InstantiateButton } from "lib/components/button/InstantiateButton";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
+import { SaveOrRemoveCode } from "lib/components/modal/code/SaveOrRemoveCode";
+import { PermissionChip } from "lib/components/PermissionChip";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
 import type { CodeInfo } from "lib/types";
 
 import { CodeDescriptionCell } from "./CodeDescriptionCell";
 
-type TableType = "stored" | "saved";
+// Types of Table: All Codes / My Stored Codes / My Saved Codes
+type TableType = "all" | "stored" | "saved";
+
 interface CodesTableProps {
   type: TableType;
   tableName: string;
@@ -75,18 +80,21 @@ const Unconnected = () => {
 };
 
 const Empty = ({ type }: OtherTBodyProps) => {
+  const renderEmptyText = () => {
+    switch (type) {
+      case "all":
+        return "All Code IDs will display here";
+      case "saved":
+        return "Your saved Code IDs will display here. Saved Codes are stored in your device.";
+      case "stored":
+        return "Your uploaded Wasm files will display as My Stored Codes";
+      default:
+        return "";
+    }
+  };
   return (
     <StateContainer>
-      {type === "saved" ? (
-        <Text color="text.dark">
-          Your saved Code ID will display here. Saved Codes are stored in your
-          device.
-        </Text>
-      ) : (
-        <Text color="text.dark">
-          Your uploaded Wasm files will display as My Stored Codes
-        </Text>
-      )}
+      <Text color="text.dark">{renderEmptyText()}</Text>
     </StateContainer>
   );
 };
@@ -96,6 +104,7 @@ const TableHead = () => {
     <Thead borderBottom="1px solid #2E2E2E">
       <Tr
         sx={{
+          "& th:first-of-type": { pl: "48px" },
           "> th": {
             padding: "16px",
             textTransform: "capitalize",
@@ -103,12 +112,12 @@ const TableHead = () => {
         }}
       >
         <Th width="10%">Code ID</Th>
-        <Th width="45%">Code Description</Th>
+        <Th width="35%">Code Description</Th>
         <Th width="10%" textAlign="center">
           Contracts
         </Th>
         <Th width="15%">Uploader</Th>
-        <Th width="20%" />
+        <Th width="30%">Permission</Th>
       </Tr>
     </Thead>
   );
@@ -117,9 +126,6 @@ const TableHead = () => {
 const TableRow = ({ code, isRemovable }: CodesRowProps) => {
   const router = useRouter();
 
-  const goToInstantiate = () => {
-    router.push({ pathname: "/instantiate", query: { "code-id": code.id } });
-  };
   const goToCodeDetails = () => {
     router.push({ pathname: `/code/${code.id}` });
   };
@@ -127,10 +133,12 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
   return (
     <Tr
       borderBottom="1px solid #2E2E2E"
-      sx={{ "> td": { padding: "16px" } }}
-      _hover={{
-        bg: "gray.900",
+      sx={{
+        "& td:first-of-type": { pl: "48px" },
+        "& td:last-of-type": { pr: "48px" },
+        "> td": { padding: "16px" },
       }}
+      _hover={{ bg: "gray.900" }}
       cursor="pointer"
       onClick={goToCodeDetails}
     >
@@ -141,8 +149,8 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
           canCopyWithHover
         />
       </Td>
-      <Td width="45%">
-        <CodeDescriptionCell codeId={code.id} description={code.description} />
+      <Td width="35%">
+        <CodeDescriptionCell code={code} />
       </Td>
       <Td width="10%" textAlign="center">
         <Text
@@ -163,15 +171,25 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
           canCopyWithHover
         />
       </Td>
-      <Td width="20%">
-        <HStack onClick={(e) => e.stopPropagation()} w="fit-content">
-          <Button variant="outline-gray" size="sm" onClick={goToInstantiate}>
-            Instantiate
-          </Button>
-          {isRemovable && (
-            <RemoveCode codeId={code.id} description={code.description} />
-          )}
-        </HStack>
+      <Td width="30%">
+        <Flex justify="space-between" align="center">
+          <PermissionChip
+            instantiatePermission={code.instantiatePermission}
+            permissionAddresses={code.permissionAddresses}
+          />
+          <HStack onClick={(e) => e.stopPropagation()}>
+            <InstantiateButton
+              instantiatePermission={code.instantiatePermission}
+              permissionAddresses={code.permissionAddresses}
+              codeId={code.id}
+            />
+            {isRemovable ? (
+              <RemoveCode codeId={code.id} description={code.description} />
+            ) : (
+              <SaveOrRemoveCode codeInfo={code} />
+            )}
+          </HStack>
+        </Flex>
       </Td>
     </Tr>
   );
@@ -210,20 +228,8 @@ function CodesTable({
 }: CodesTableProps) {
   const { address } = useWallet();
 
-  const renderBodyStored = () => {
-    if (!address) return <Unconnected />;
-    if (codes.length === 0 && isSearching) return <NotMatched />;
-    if (codes.length === 0) return <Empty type={type} />;
-    return (
-      <NormalRender
-        isRemovable={isRemovable}
-        codes={codes}
-        tableName={tableName}
-      />
-    );
-  };
-
-  const renderBodySaved = () => {
+  const renderBody = () => {
+    if (!address && type === "stored") return <Unconnected />;
     if (codes.length === 0 && isSearching) return <NotMatched />;
     if (codes.length === 0) return <Empty type={type} />;
     return (
@@ -237,13 +243,20 @@ function CodesTable({
 
   return (
     <Box mb={5}>
-      <HStack alignItems="center" justifyContent="space-between" mb="18px">
-        <Heading as="h2" size="md" color="white">
-          {tableName}
-        </Heading>
+      <HStack
+        alignItems="center"
+        justifyContent="space-between"
+        mb="18px"
+        px="48px"
+      >
+        {type !== "all" && (
+          <Heading as="h2" size="md" color="white">
+            {tableName}
+          </Heading>
+        )}
         {action}
       </HStack>
-      {type === "saved" ? renderBodySaved() : renderBodyStored()}
+      {renderBody()}
     </Box>
   );
 }

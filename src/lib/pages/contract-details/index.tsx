@@ -5,18 +5,20 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
-  Icon,
   Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { MdSearchOff } from "react-icons/md";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
+import { InvalidState } from "lib/components/state/InvalidState";
 import { useValidateAddress } from "lib/hooks";
-import { useContractData } from "lib/model/contract";
+import {
+  useContractData,
+  useContractDetailsTableCounts,
+} from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
@@ -25,41 +27,41 @@ import { ContractDesc } from "./components/contract-description/ContractDesc";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { TokenSection } from "./components/TokenSection";
+import { ExecuteTable } from "./components/tables/execute";
+import { MigrationTable } from "./components/tables/migration";
+import { RelatedProposalsTable } from "./components/tables/related-proposals";
+import { TransactionsTable } from "./components/tables/transactions";
+import { TokenSection } from "./components/token/TokenSection";
 
 interface ContractDetailsBodyProps {
   contractAddress: ContractAddr;
 }
 
-const InvalidContract = () => (
-  <Flex
-    direction="column"
-    alignItems="center"
-    borderY="1px solid"
-    borderColor="divider.main"
-    width="full"
-    my="24px"
-    py="24px"
-  >
-    <Icon as={MdSearchOff} color="gray.600" boxSize="128" />
-    <Heading as="h5" variant="h5" my="8px">
-      Contract does not exist
-    </Heading>
-    <Text variant="body2" fontWeight="500" color="gray.500" textAlign="center">
-      Please double-check your spelling and make sure you have selected the
-      correct network.
-    </Text>
-  </Flex>
-);
+const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
   const contractData = useContractData(contractAddress);
+  const tableHeaderId = "contractDetailTableHeader";
+  const {
+    tableCounts,
+    refetchExecute,
+    refetchMigration,
+    refetchTransactions,
+    refetchRelatedProposals,
+  } = useContractDetailsTableCounts(contractAddress);
+
   if (!contractData) return <InvalidContract />;
+
   return (
     <>
       <ContractTop contractData={contractData} />
       {/* Tokens Section */}
-      <TokenSection />
+      <Flex direction="column">
+        <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
+          Assets
+        </Text>
+        <TokenSection balances={contractData.balances} />
+      </Flex>
       {/* Contract Description Section */}
       <ContractDesc contractData={contractData} />
       {/* Query/Execute commands section */}
@@ -88,37 +90,52 @@ const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
         </Flex>
       </Flex>
       {/* History Table section */}
-      <Heading as="h6" variant="h6" mb={6}>
+      <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
         History
       </Heading>
       <Tabs>
-        <TabList border="none" mb="32px">
-          <CustomTab count={100}>All</CustomTab>
-          <CustomTab count={50}>Executes</CustomTab>
-          <CustomTab count={20}>Migration</CustomTab>
-          <CustomTab count={12}>Related Proposals</CustomTab>
+        <TabList borderBottom="1px solid" borderColor="divider.main">
+          <CustomTab count={tableCounts.transactionsCount}>
+            Transactions
+          </CustomTab>
+          <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
+          <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
+          <CustomTab count={tableCounts.relatedProposalsCount}>
+            Related Proposals
+          </CustomTab>
         </TabList>
-        {/* TODOs: Wireup with real table data, Make table component, and render each table with different data under each TabPanel */}
         <TabPanels>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              All Table
-            </Heading>
+            <TransactionsTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.transactionsCount}
+              refetchCount={refetchTransactions}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              Executes Table
-            </Heading>
+            <ExecuteTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.executeCount}
+              refetchCount={refetchExecute}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              Migration Table
-            </Heading>
+            <MigrationTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.migrationCount}
+              refetchCount={refetchMigration}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" color="error.main">
-              Related Proposals Table
-            </Heading>
+            <RelatedProposalsTable
+              contractAddress={contractAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.relatedProposalsCount}
+              refetchCount={refetchRelatedProposals}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

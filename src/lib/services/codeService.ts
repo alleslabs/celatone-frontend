@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-identical-functions */
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -7,12 +8,44 @@ import {
   getCodeInfoByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
+  getCodeListQueryDocument,
   getContractListByCodeId,
   getContractListCountByCodeId,
 } from "lib/data/queries";
 import type { ContractInfo } from "lib/stores/contract";
-import type { CodeInfo, CodeDetails, ContractAddr, Option } from "lib/types";
+import type {
+  CodeInfo,
+  CodeData,
+  ContractAddr,
+  Option,
+  InstantiatePermission,
+  PermissionAddresses,
+  HumanAddr,
+} from "lib/types";
 import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
+
+export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getCodeListQueryDocument)
+      .then(({ codes }) =>
+        codes.map<CodeInfo>((code) => ({
+          id: code.id,
+          uploader: code.account.uploader as ContractAddr | HumanAddr,
+          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
+        }))
+      );
+  }, []);
+
+  // TODO: add query key later
+  return useQuery(["all_codes"], queryFn, {
+    keepPreviousData: true,
+  });
+};
 
 export const useCodeListByUserQuery = (
   walletAddr: Option<string>
@@ -27,8 +60,12 @@ export const useCodeListByUserQuery = (
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          contracts: code.instantiated,
-          uploader: code.account.uploader,
+          uploader: code.account.uploader as ContractAddr | HumanAddr,
+          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
         }))
       );
   }, [walletAddr]);
@@ -51,8 +88,12 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          uploader: code.account.uploader,
-          contracts: code.instantiated,
+          uploader: code.account.uploader as ContractAddr | HumanAddr,
+          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
         }))
       );
   }, [ids]);
@@ -66,7 +107,7 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
 
 export const useCodeInfoByCodeId = (
   codeId: Option<number>
-): UseQueryResult<Option<Omit<CodeDetails, "chainId">>> => {
+): UseQueryResult<Option<Omit<CodeData, "chainId">>> => {
   const queryFn = useCallback(async () => {
     if (!codeId) return undefined;
 
@@ -79,20 +120,21 @@ export const useCodeInfoByCodeId = (
 
         return {
           codeId: codes_by_pk.id,
-          uploader: codes_by_pk.account.address,
+          uploader: codes_by_pk.account.address as ContractAddr | HumanAddr,
           hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
           height: codes_by_pk.transaction?.block.height,
           created: parseDateDefault(codes_by_pk.transaction?.block?.timestamp),
           proposal: codes_by_pk.code_proposals[0]
             ? {
                 proposalId: codes_by_pk.code_proposals[0].proposal_id,
-                height: codes_by_pk.code_proposals[0].block?.height,
+                height: codes_by_pk.code_proposals[0].block?.height ?? 0,
                 created: parseDateDefault(
                   codes_by_pk.code_proposals[0].block?.timestamp
                 ),
               }
             : undefined,
-          permissionAddresses: codes_by_pk.access_config_addresses,
+          permissionAddresses:
+            codes_by_pk.access_config_addresses as PermissionAddresses,
           instantiatePermission: codes_by_pk.access_config_permission,
         };
       });

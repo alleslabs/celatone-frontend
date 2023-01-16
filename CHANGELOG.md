@@ -38,7 +38,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
+
 - [#76](https://github.com/alleslabs/celatone-frontend/pull/76) Add Public projects page
+- [#81](https://github.com/alleslabs/celatone-frontend/pull/81) Can scroll on side bar with fix deploy new contract button
+- [#86](https://github.com/alleslabs/celatone-frontend/pull/86) Add transactions table in contract details page
+- [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page 
+- [#87](https://github.com/alleslabs/celatone-frontend/pull/87) Fix funds didn't microfy before sending tx
+- [#85](https://github.com/alleslabs/celatone-frontend/pull/85) Add sending asset in execute contract page
+- [#84](https://github.com/alleslabs/celatone-frontend/pull/84) Contract proposals table ui and wireup
+- [#82](https://github.com/alleslabs/celatone-frontend/pull/82) Add all codes page
+- [#83](https://github.com/alleslabs/celatone-frontend/pull/83) Add invalid code state
+- [#73](https://github.com/alleslabs/celatone-frontend/pull/73) Wireup migration table
+- [#77](https://github.com/alleslabs/celatone-frontend/pull/77) Wireup code info section in code details page
+- [#80](https://github.com/alleslabs/celatone-frontend/pull/80) Fix the misalignment of state in the PastTx page
+- [#70](https://github.com/alleslabs/celatone-frontend/pull/70) Change default token denom on contract detail
+- [#78](https://github.com/alleslabs/celatone-frontend/pull/78) Ignore building step when branch is not main
+- [#62](https://github.com/alleslabs/celatone-frontend/pull/62) Add footer
+- [#71](https://github.com/alleslabs/celatone-frontend/pull/71) Add search bar at the top (currently support only contract address and code id)
+- [#69](https://github.com/alleslabs/celatone-frontend/pull/69) Add execute table in contract details page
+- [#68](https://github.com/alleslabs/celatone-frontend/pull/63) Refactor past txs link props and make sure navigation works
+- [#65](https://github.com/alleslabs/celatone-frontend/pull/60) Create instantiate button component
 - [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add contract not exist page
 - [#63](https://github.com/alleslabs/celatone-frontend/pull/63) Add code id explorer link and code table row navigation
 - [#67](https://github.com/alleslabs/celatone-frontend/pull/67) Add Public Codes shortcut to sidebar and add Quick Actions section
