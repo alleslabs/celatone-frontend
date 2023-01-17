@@ -39,111 +39,113 @@ interface ContractDetailsBodyProps {
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
-const ContractDetailsBody = ({ contractAddress }: ContractDetailsBodyProps) => {
-  const contractData = useContractData(contractAddress);
-  const tableHeaderId = "contractDetailTableHeader";
-  const {
-    tableCounts,
-    refetchExecute,
-    refetchMigration,
-    refetchTransactions,
-    refetchRelatedProposals,
-  } = useContractDetailsTableCounts(contractAddress);
+const ContractDetailsBody = observer(
+  ({ contractAddress }: ContractDetailsBodyProps) => {
+    const contractData = useContractData(contractAddress);
+    const tableHeaderId = "contractDetailTableHeader";
+    const {
+      tableCounts,
+      refetchExecute,
+      refetchMigration,
+      refetchTransactions,
+      refetchRelatedProposals,
+    } = useContractDetailsTableCounts(contractAddress);
 
-  if (!contractData) return <InvalidContract />;
+    if (!contractData) return <InvalidContract />;
 
-  return (
-    <>
-      <ContractTop contractData={contractData} />
-      {/* Tokens Section */}
-      <Flex direction="column">
-        <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
-          Assets
-        </Text>
-        <TokenSection balances={contractData.balances} />
-      </Flex>
-      {/* Contract Description Section */}
-      <ContractDesc contractData={contractData} />
-      {/* Query/Execute commands section */}
-      <CommandSection />
-      {/* Instantiate/Contract Info Section */}
-      <Flex my={12} justify="space-between">
-        {/* Instantiate Info */}
-        <InstantiateInfo contractData={contractData} />
-        {/* Contract Info (Expand) */}
-        <Flex direction="column" flex={0.8} gap={4}>
-          <JsonInfo
-            header="Contract Info"
-            jsonString={jsonPrettify(
-              JSON.stringify(
-                contractData.instantiateInfo?.raw.contract_info ?? {}
-              )
-            )}
-            jsonAreaHeight="180px"
-          />
-          <JsonInfo
-            header="Instantiate Messages"
-            jsonString={jsonPrettify(contractData.initMsg ?? "")}
-            showViewFullButton
-            defaultExpand
-          />
+    return (
+      <>
+        <ContractTop contractData={contractData} />
+        {/* Tokens Section */}
+        <Flex direction="column">
+          <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
+            Assets
+          </Text>
+          <TokenSection balances={contractData.balances} />
         </Flex>
-      </Flex>
-      {/* History Table section */}
-      <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
-        History
-      </Heading>
-      <Tabs>
-        <TabList borderBottom="1px solid" borderColor="divider.main">
-          <CustomTab count={tableCounts.transactionsCount}>
-            Transactions
-          </CustomTab>
-          <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
-          <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
-          <CustomTab count={tableCounts.relatedProposalsCount}>
-            Related Proposals
-          </CustomTab>
-        </TabList>
-        <TabPanels>
-          <TabPanel p={0}>
-            <TransactionsTable
-              contractAddress={contractAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.transactionsCount}
-              refetchCount={refetchTransactions}
+        {/* Contract Description Section */}
+        <ContractDesc contractData={contractData} />
+        {/* Query/Execute commands section */}
+        <CommandSection />
+        {/* Instantiate/Contract Info Section */}
+        <Flex my={12} justify="space-between">
+          {/* Instantiate Info */}
+          <InstantiateInfo contractData={contractData} />
+          {/* Contract Info (Expand) */}
+          <Flex direction="column" flex={0.8} gap={4}>
+            <JsonInfo
+              header="Contract Info"
+              jsonString={jsonPrettify(
+                JSON.stringify(
+                  contractData.instantiateInfo?.raw.contract_info ?? {}
+                )
+              )}
+              jsonAreaHeight="180px"
             />
-          </TabPanel>
-          <TabPanel p={0}>
-            <ExecuteTable
-              contractAddress={contractAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.executeCount}
-              refetchCount={refetchExecute}
+            <JsonInfo
+              header="Instantiate Messages"
+              jsonString={jsonPrettify(contractData.initMsg ?? "")}
+              showViewFullButton
+              defaultExpand
             />
-          </TabPanel>
-          <TabPanel p={0}>
-            <MigrationTable
-              contractAddress={contractAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.migrationCount}
-              refetchCount={refetchMigration}
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <RelatedProposalsTable
-              contractAddress={contractAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.relatedProposalsCount}
-              refetchCount={refetchRelatedProposals}
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </>
-  );
-};
+          </Flex>
+        </Flex>
+        {/* History Table section */}
+        <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+          History
+        </Heading>
+        <Tabs>
+          <TabList borderBottom="1px solid" borderColor="divider.main">
+            <CustomTab count={tableCounts.transactionsCount}>
+              Transactions
+            </CustomTab>
+            <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
+            <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
+            <CustomTab count={tableCounts.relatedProposalsCount}>
+              Related Proposals
+            </CustomTab>
+          </TabList>
+          <TabPanels>
+            <TabPanel p={0}>
+              <TransactionsTable
+                contractAddress={contractAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.transactionsCount}
+                refetchCount={refetchTransactions}
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <ExecuteTable
+                contractAddress={contractAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.executeCount}
+                refetchCount={refetchExecute}
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <MigrationTable
+                contractAddress={contractAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.migrationCount}
+                refetchCount={refetchMigration}
+              />
+            </TabPanel>
+            <TabPanel p={0}>
+              <RelatedProposalsTable
+                contractAddress={contractAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.relatedProposalsCount}
+                refetchCount={refetchRelatedProposals}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </>
+    );
+  }
+);
 
-const ContractDetails = observer(() => {
+const ContractDetails = () => {
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
 
@@ -161,6 +163,6 @@ const ContractDetails = observer(() => {
       )}
     </PageContainer>
   );
-});
+};
 
 export default ContractDetails;

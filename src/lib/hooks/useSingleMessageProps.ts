@@ -3,7 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { getAddressTypeByLength, useContractStore } from "lib/hooks";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   DetailExecute,
   DetailInstantiate,
@@ -36,10 +36,10 @@ import { getExecuteMsgTags } from "lib/utils/executeTags";
 const instantiateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractInfo: (contractAddress: string) => Option<ContractInfo>
+  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailInstantiate;
-  const contractInfo = getContractInfo(detail.contractAddress);
+  const contractLocalInfo = getContractLocalInfo(detail.contractAddress);
 
   if (messages.length > 1) {
     return isSuccess
@@ -62,7 +62,7 @@ const instantiateSingleMsgProps = (
         text1: "contract",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractInfo?.name || detail.contractAddress,
+          value: contractLocalInfo?.name || detail.contractAddress,
           copyValue: detail.contractAddress,
         },
         text3: "from Code ID",
@@ -101,10 +101,10 @@ const executeSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   singleMsg: Option<boolean>,
-  getContractInfo: (contractAddress: string) => Option<ContractInfo>
+  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailExecute;
-  const contractInfo = getContractInfo(detail.contract);
+  const contractLocalInfo = getContractLocalInfo(detail.contract);
 
   if (
     messages.some((msg) => {
@@ -133,7 +133,7 @@ const executeSingleMsgProps = (
         text2: "on",
         link2: {
           type: "contract_address" as LinkType,
-          value: contractInfo?.name || detail.contract,
+          value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
       }
@@ -142,7 +142,7 @@ const executeSingleMsgProps = (
         text1: "to execute message from",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractInfo?.name || detail.contract,
+          value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
       };
@@ -222,10 +222,10 @@ const sendSingleMsgProps = (
 const migrateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractInfo: (contractAddress: string) => Option<ContractInfo>
+  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailMigrate;
-  const contractInfo = getContractInfo(detail.contract);
+  const contractLocalInfo = getContractLocalInfo(detail.contract);
 
   if (messages.length > 1) {
     return isSuccess
@@ -246,7 +246,7 @@ const migrateSingleMsgProps = (
         type: "Migrate",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractInfo?.name || detail.contract,
+          value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
         text3: "to Code ID",
@@ -284,10 +284,10 @@ const migrateSingleMsgProps = (
 const updateAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractInfo: (contractAddress: string) => Option<ContractInfo>
+  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailUpdateAdmin;
-  const contractInfo = getContractInfo(detail.contract);
+  const contractLocalInfo = getContractLocalInfo(detail.contract);
 
   if (messages.length > 1) {
     return isSuccess
@@ -309,7 +309,7 @@ const updateAdminSingleMsgProps = (
         text1: "on",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractInfo?.name || detail.contract,
+          value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
         text3: "to",
@@ -323,7 +323,7 @@ const updateAdminSingleMsgProps = (
         text1: "to update admin on",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractInfo?.name || detail.contract,
+          value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
         text3: "to",
@@ -352,10 +352,10 @@ const updateAdminSingleMsgProps = (
 const clearAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractInfo: (contractAddress: string) => Option<ContractInfo>
+  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailClearAdmin;
-  const contractInfo = getContractInfo(detail.contract);
+  const contractLocalInfo = getContractLocalInfo(detail.contract);
 
   if (messages.length > 1) {
     return isSuccess
@@ -378,7 +378,7 @@ const clearAdminSingleMsgProps = (
         text1: "on",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractInfo?.name || detail.contract,
+          value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
       }
@@ -387,7 +387,7 @@ const clearAdminSingleMsgProps = (
         text1: "to clear admin on",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractInfo?.name || detail.contract,
+          value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
       };
@@ -479,7 +479,7 @@ export const useSingleActionMsgProps = (
   singleMsg: Option<boolean>
 ): SingleMsgProps => {
   const { currentChainName } = useWallet();
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
 
   switch (type) {
     case "MsgExecuteContract":
@@ -487,18 +487,30 @@ export const useSingleActionMsgProps = (
         isSuccess,
         messages,
         singleMsg,
-        getContractInfo
+        getContractLocalInfo
       );
     case "MsgSend":
       return sendSingleMsgProps(isSuccess, messages, currentChainName);
     case "MsgMigrateContract":
-      return migrateSingleMsgProps(isSuccess, messages, getContractInfo);
+      return migrateSingleMsgProps(isSuccess, messages, getContractLocalInfo);
     case "MsgInstantiateContract":
-      return instantiateSingleMsgProps(isSuccess, messages, getContractInfo);
+      return instantiateSingleMsgProps(
+        isSuccess,
+        messages,
+        getContractLocalInfo
+      );
     case "MsgUpdateAdmin":
-      return updateAdminSingleMsgProps(isSuccess, messages, getContractInfo);
+      return updateAdminSingleMsgProps(
+        isSuccess,
+        messages,
+        getContractLocalInfo
+      );
     case "MsgClearAdmin":
-      return clearAdminSingleMsgProps(isSuccess, messages, getContractInfo);
+      return clearAdminSingleMsgProps(
+        isSuccess,
+        messages,
+        getContractLocalInfo
+      );
     case "MsgStoreCode":
       return storeCodeSingleMsgProps(isSuccess, messages);
     default:

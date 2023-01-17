@@ -12,12 +12,12 @@ import {
   getContractListByCodeId,
   getContractListCountByCodeId,
 } from "lib/data/queries";
-import type { ContractInfo } from "lib/stores/contract";
 import type {
   CodeInfo,
   CodeData,
   ContractAddr,
   Option,
+  ContractInfo,
   InstantiatePermission,
   PermissionAddresses,
   HumanAddr,
@@ -158,9 +158,14 @@ export const useContractListByCodeId = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: unwrap(contract.transaction?.account?.address),
+          instantiator: unwrap(contract.transaction?.account.address),
           label: contract.label,
-          created: parseDateDefault(contract.transaction?.block?.timestamp),
+          instantiated: parseDateDefault(contract.transaction?.block.timestamp),
+          // TODO: handle Genesis case
+          latestUpdator: contract.contract_histories.at(0)?.account.address,
+          latestUpdated: parseDateDefault(
+            contract.contract_histories.at(0)?.block.timestamp
+          ),
         }))
       );
   }, [codeId, offset, pageSize]);
