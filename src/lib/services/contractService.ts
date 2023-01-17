@@ -16,7 +16,7 @@ import {
   getRelatedProposalsCountByContractAddress,
   getRelatedProposalsByContractAddress,
 } from "lib/data/queries";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
   ContractMigrationHistory,
@@ -34,12 +34,15 @@ import {
   getActionMsgType,
   parseDateDefault,
   parseTxHash,
+  parseTxHashOpt,
   snakeToCamel,
 } from "lib/utils";
 
 interface InstantiateDetail {
   initMsg: string;
   initTxHash?: string;
+  initProposalId?: number;
+  initProposalTitle?: string;
 }
 
 export const useInstantiatedCountByUserQuery = (
@@ -64,7 +67,7 @@ export const useInstantiatedCountByUserQuery = (
 
 export const useInstantiatedListByUserQuery = (
   walletAddr: Option<HumanAddr>
-): UseQueryResult<Option<ContractInfo[]>> => {
+): UseQueryResult<Option<ContractLocalInfo[]>> => {
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -73,11 +76,10 @@ export const useInstantiatedListByUserQuery = (
         walletAddr,
       })
       .then(({ contracts }) =>
-        contracts.map<ContractInfo>((contract) => ({
+        contracts.map<ContractLocalInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
           instantiator: walletAddr,
           label: contract.label,
-          created: parseDateDefault(contract.transaction?.block?.timestamp),
         }))
       );
   }, [walletAddr]);
@@ -96,9 +98,11 @@ export const useInstantiateDetailByContractQuery = (
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then(({ contracts_by_pk }) => ({
-        // TODO: revisit undefined after backend remove nullable
         initMsg: contracts_by_pk?.init_msg ?? "{}",
-        initTxHash: parseTxHash(contracts_by_pk?.transaction?.hash),
+        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
+        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
+        initProposalTitle:
+          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
       }));
   }, [contractAddress]);
 

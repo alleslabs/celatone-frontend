@@ -11,7 +11,6 @@ interface UseHandleContractSaveProps {
   contractAddress: ContractAddr;
   instantiator: string;
   label: string;
-  created: Date;
   name?: string;
   description?: string;
   tags?: string[];
@@ -24,7 +23,6 @@ export const useHandleContractSave = ({
   contractAddress,
   instantiator,
   label,
-  created,
   name,
   description,
   tags,
@@ -33,15 +31,14 @@ export const useHandleContractSave = ({
 }: UseHandleContractSaveProps) => {
   const toast = useToast();
   const userKey = useUserKey();
-  const { updateContractInfo } = useContractStore();
+  const { updateContractLocalInfo } = useContractStore();
   // TODO: optimize to take name, description, tags, lists, actions only here
   return (inputName?: string) => {
-    updateContractInfo(
+    updateContractLocalInfo(
       userKey,
       contractAddress,
       instantiator,
       label,
-      created,
       inputName ?? name,
       description,
       tags,
