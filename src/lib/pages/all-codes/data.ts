@@ -1,15 +1,19 @@
+import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 import { useCodeStore } from "lib/hooks";
 import { useCodeListQuery } from "lib/services/codeService";
-import type { CodeInfo } from "lib/types";
+import type { CodeInfo, HumanAddr } from "lib/types";
 
 interface AllCodesData {
   allCodes: CodeInfo[];
   isLoading: boolean;
 }
 
-export const useAllCodesData = (keyword?: string): AllCodesData => {
+export const useAllCodesData = (
+  keyword: string,
+  permissionValue: string
+): AllCodesData => {
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
   const { data: rawAllCodes = [], isLoading } = useCodeListQuery();
 
@@ -18,11 +22,27 @@ export const useAllCodesData = (keyword?: string): AllCodesData => {
     description: getCodeLocalInfo(code.id)?.description,
     isSaved: isCodeIdSaved(code.id),
   }));
+  // console.log("permissionValue", permissionValue);
+  const { address } = useWallet();
 
   return useMemo(() => {
-    const filterFn = (code: CodeInfo) => {
-      if (keyword === undefined) return true;
+    const permissionFilter = (code: CodeInfo) => {
+      const isEveryBody = code.instantiatePermission === "Everybody";
+      const isNobody = code.instantiatePermission === "Nobody";
+      const isInclude = code.permissionAddresses.includes(address as HumanAddr);
 
+      switch (permissionValue) {
+        case "with-proposal":
+          return (!isEveryBody && !isInclude) || isNobody;
+        case "without-proposal":
+          return isInclude || isEveryBody;
+        case "all":
+        default:
+          return true;
+      }
+    };
+
+    const searchFilter = (code: CodeInfo) => {
       const computedKeyword = keyword.trim();
       if (computedKeyword.length === 0) return true;
 
@@ -32,6 +52,9 @@ export const useAllCodesData = (keyword?: string): AllCodesData => {
       );
     };
 
-    return { allCodes: allCodes.filter(filterFn), isLoading };
-  }, [keyword, allCodes, isLoading]);
+    return {
+      allCodes: allCodes.filter(permissionFilter).filter(searchFilter),
+      isLoading,
+    };
+  }, [keyword, allCodes, isLoading, permissionValue, address]);
 };
