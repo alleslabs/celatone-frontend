@@ -12,6 +12,7 @@ import {
   MdAdd,
   MdOutlineHistory,
   MdPublic,
+  MdReadMore,
 } from "react-icons/md";
 
 import { CreateNewList } from "lib/components/modal";
@@ -56,6 +57,11 @@ const Navbar = observer(() => {
           name: "Execute",
           slug: "/execute",
           icon: MdInput,
+        },
+        {
+          name: "Migrate",
+          slug: "/migrate",
+          icon: MdReadMore,
         },
       ],
     },
