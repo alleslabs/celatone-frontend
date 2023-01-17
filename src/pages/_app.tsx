@@ -59,7 +59,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           wallets={wallets}
           endpointOptions={{
             terra2: {
-              rpc: ["https://terra-rpc.polkachu.com"],
+              rpc: ["https://terra-rpc.lavenderfive.com/"],
             },
             terra2testnet: {
               rest: ["https://pisco-lcd.terra.dev"],
