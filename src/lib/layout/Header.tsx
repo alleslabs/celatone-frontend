@@ -10,16 +10,35 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { WalletSection } from "lib/components/Wallet";
 import { CHAIN_NAMES } from "lib/data";
 
 import Searchbar from "./Searchbar";
 
 const Header = () => {
-  const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
   const router = useRouter();
+  const navigate = useInternalNavigate();
+  const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
+
+  const handleChainSelect = useCallback(
+    (chainName: string) => {
+      setCurrentChain(chainName);
+      navigate({
+        pathname: router.asPath.replace(`/${router.query.network}`, ""),
+        query: {
+          /**
+           * @remarks Condition checking varies by chain
+           */
+          network: chainName === "osmosistestnet" ? "testnet" : "mainnet",
+        },
+      });
+    },
+    [setCurrentChain, navigate, router]
+  );
 
   return (
     <Flex
@@ -38,7 +57,7 @@ const Header = () => {
         width="115px"
         mr="36px"
         _hover={{ cursor: "pointer" }}
-        onClick={() => router.push({ pathname: "/" })}
+        onClick={() => navigate({ pathname: "/" })}
       />
       <Searchbar />
       <Flex gap={2}>
@@ -74,7 +93,9 @@ const Header = () => {
               return (
                 <MenuItem
                   key={chainName}
-                  onClick={() => setCurrentChain(chainName)}
+                  onClick={() => {
+                    handleChainSelect(chainName);
+                  }}
                   flexDirection="column"
                   alignItems="flex-start"
                 >

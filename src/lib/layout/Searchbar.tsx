@@ -9,11 +9,11 @@ import {
   Icon,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import type { ChangeEvent, KeyboardEvent } from "react";
 import { useRef, useEffect, useState } from "react";
 import { MdSearch } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { useValidateAddress } from "lib/hooks";
 import { isCodeId, isTxHash } from "lib/utils";
 
@@ -72,7 +72,7 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
 };
 
 const Searchbar = () => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
 
   const [keyword, setKeyword] = useState("");
@@ -99,7 +99,7 @@ const Searchbar = () => {
 
   const handleSelectResult = (type?: SearchResultType) => {
     const route = type ? getRoute(type) : null;
-    if (route) router.push({ pathname: `${route}/${keyword}` });
+    if (route) navigate({ pathname: `${route}/${keyword}` });
   };
 
   const handleOnKeyEnter = (e: KeyboardEvent<HTMLInputElement>) => {

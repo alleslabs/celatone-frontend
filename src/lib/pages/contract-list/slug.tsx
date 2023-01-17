@@ -8,7 +8,6 @@ import {
   MenuList,
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   Box,
   Text,
   chakra,
@@ -25,6 +24,8 @@ import {
   MdChevronRight,
 } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { SaveNewContract } from "lib/components/modal/contract";
 import { EditList, RemoveList } from "lib/components/modal/list";
 import { ContractListDetail } from "lib/components/modal/select-contract";
@@ -43,6 +44,7 @@ const StyledIcon = chakra(Icon, {
 
 const ContractsByList = observer(() => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const listSlug = getFirstQueryParam(router.query.slug);
 
   const { getContractLists, isHydrated } = useContractStore();
@@ -57,9 +59,9 @@ const ContractsByList = observer(() => {
 
   useEffect(() => {
     if (isHydrated && contractListInfo === undefined) {
-      router.push("/contract-list");
+      navigate({ pathname: "/contract-list" });
     }
-  }, [contractListInfo, router, isHydrated]);
+  }, [contractListInfo, isHydrated, navigate]);
 
   if (!contractListInfo) return null;
 
@@ -72,12 +74,12 @@ const ContractsByList = observer(() => {
           separator={<MdChevronRight color="gray.600" />}
         >
           <BreadcrumbItem>
-            <BreadcrumbLink color="text.dark" href="/contract-list">
+            <AppLink color="text.dark" href="/contract-list">
               Contract Lists
-            </BreadcrumbLink>
+            </AppLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href="#">
+            <AppLink href="#">
               <Text
                 className="ellipsis"
                 width="250px"
@@ -86,7 +88,7 @@ const ContractsByList = observer(() => {
               >
                 {contractListInfo.name}
               </Text>
-            </BreadcrumbLink>
+            </AppLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex
@@ -108,7 +110,7 @@ const ContractsByList = observer(() => {
             {isInstantiatedByMe ? (
               <Button
                 rightIcon={<MdOutlineAdd />}
-                onClick={() => router.push("/deploy")}
+                onClick={() => navigate({ pathname: "/deploy" })}
               >
                 Deploy New Contract
               </Button>

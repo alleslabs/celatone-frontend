@@ -2,6 +2,7 @@ import { useWallet } from "@cosmos-kit/react";
 import big from "big.js";
 import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect, useContext, useMemo, createContext } from "react";
 
@@ -12,7 +13,7 @@ import {
   getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { DEFAULT_ADDRESS, DEFAULT_CHAIN } from "lib/data";
+import { DEFAULT_ADDRESS } from "lib/data";
 import { useCodeStore, useContractStore } from "lib/hooks";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
@@ -59,6 +60,7 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   appContractAddressMap,
   constants,
 }: AppProviderProps<ContractAddress, Constants>) => {
+  const router = useRouter();
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
@@ -113,9 +115,15 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   }, [currentChainName, setCodeUserKey, setContractUserKey]);
 
   useEffect(() => {
-    setCurrentChain(DEFAULT_CHAIN);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    /**
+     * @remarks Condition checking varies by chain
+     */
+    if (router.query.network === "testnet") {
+      setCurrentChain("osmosistestnet");
+    } else {
+      setCurrentChain("osmosis");
+    }
+  }, [router.query.network, setCurrentChain]);
 
   const AppContent = observer(() => {
     if (isCodeUserKeyExist() && isContractUserKeyExist())
