@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#89](https://github.com/alleslabs/celatone-frontend/pull/89) Update feedback link
 - [#81](https://github.com/alleslabs/celatone-frontend/pull/81) Can scroll on side bar with fix deploy new contract button
 - [#86](https://github.com/alleslabs/celatone-frontend/pull/86) Add transactions table in contract details page
 - [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page 
