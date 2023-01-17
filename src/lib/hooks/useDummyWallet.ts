@@ -26,6 +26,5 @@ export const useDummyWallet = () => {
       }
     })();
   }, [currentChainRecord?.chain.bech32_prefix]);
-
   return { dummyWallet, dummyAddress };
 };
