@@ -4,32 +4,31 @@ import { MdDeleteForever } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 import { truncate } from "lib/utils";
 
 interface ModalProps {
-  contractInfo: ContractInfo;
+  contractLocalInfo: ContractLocalInfo;
   contractRemovalInfo: LVPair;
   menuItemProps: MenuItemProps;
 }
 
 export function RemoveContract({
-  contractInfo,
+  contractLocalInfo,
   contractRemovalInfo,
   menuItemProps,
 }: ModalProps) {
-  const displayName = contractInfo.name
-    ? contractInfo.name
-    : truncate(contractInfo.contractAddress);
+  const displayName = contractLocalInfo.name
+    ? contractLocalInfo.name
+    : truncate(contractLocalInfo.contractAddress);
 
   const handleRemove = useHandleContractSave({
     title: `Removed ${displayName} from ${contractRemovalInfo.label}`,
-    contractAddress: contractInfo.contractAddress,
-    instantiator: contractInfo.instantiator,
-    label: contractInfo.label,
-    created: contractInfo.created,
-    lists: contractInfo.lists?.filter(
+    contractAddress: contractLocalInfo.contractAddress,
+    instantiator: contractLocalInfo.instantiator,
+    label: contractLocalInfo.label,
+    lists: contractLocalInfo.lists?.filter(
       (item) => item.value !== contractRemovalInfo.value
     ),
   });

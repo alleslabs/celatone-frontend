@@ -59,7 +59,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
   const [error, setError] = useState("");
   const { currentChainName } = useWallet();
 
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
 
   const extractMessage = useCallback((data: Transaction) => {
     const uploadMsgs: DetailUpload[] = [];
@@ -169,7 +169,9 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         );
       }
       setButton("redo");
-      const contractInfo = getContractInfo(instantiateMsgs[0].contractAddress);
+      const contractLocalInfo = getContractLocalInfo(
+        instantiateMsgs[0].contractAddress
+      );
       // Only 1 Instantiate Msgs
       const singleMsgProps: SingleMsgProps = element.success
         ? {
@@ -177,7 +179,8 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             text1: "contract",
             link1: {
               type: "contract_address",
-              value: contractInfo?.name || instantiateMsgs[0].contractAddress,
+              value:
+                contractLocalInfo?.name || instantiateMsgs[0].contractAddress,
               copyValue: instantiateMsgs[0].contractAddress,
             },
             text3: "from Code ID",
@@ -196,7 +199,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
           };
       return <SingleMsg {...singleMsgProps} />;
     },
-    [element.success, getContractInfo]
+    [element.success, getContractLocalInfo]
   );
 
   // TODO - Refactor
@@ -237,7 +240,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         setIsAccordion(false);
       }
 
-      const contractInfo = getContractInfo(executeMsgs[0].contract);
+      const contractLocalInfo = getContractLocalInfo(executeMsgs[0].contract);
 
       // Only 1 Execute Msg
       const singleMsgProps: SingleMsgProps = element.success
@@ -248,7 +251,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             text2: "on",
             link1: {
               type: "contract_address",
-              value: contractInfo?.name || executeMsgs[0].contract,
+              value: contractLocalInfo?.name || executeMsgs[0].contract,
               copyValue: executeMsgs[0].contract,
             },
           }
@@ -257,13 +260,13 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
             text1: "to execute message from",
             link1: {
               type: "contract_address",
-              value: contractInfo?.name || executeMsgs[0].contract,
+              value: contractLocalInfo?.name || executeMsgs[0].contract,
               copyValue: executeMsgs[0].contract,
             },
           };
       return <SingleMsg {...singleMsgProps} />;
     },
-    [element.success, getContractInfo]
+    [element.success, getContractLocalInfo]
   );
 
   // TODO - Refactor

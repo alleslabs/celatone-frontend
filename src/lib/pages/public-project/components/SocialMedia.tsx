@@ -58,10 +58,10 @@ export const SocialMedia = ({ details }: SocialProps) => {
         </Link>
       )}
       {details?.socials.length &&
-        details?.socials.map((social) => (
-          <Flex>
-            {social.url !== "" && (
-              <Link href={social.url} target="_blank">
+        details?.socials.map(
+          (social) =>
+            social.url !== "" && (
+              <Link href={social.url} target="_blank" key={social.name}>
                 <Icon
                   as={renderSocial(social.name)}
                   color="gray.600"
@@ -70,9 +70,8 @@ export const SocialMedia = ({ details }: SocialProps) => {
                   boxSize="5"
                 />
               </Link>
-            )}
-          </Flex>
-        ))}
+            )
+        )}
     </Flex>
   );
 };

@@ -79,10 +79,10 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
     });
   }, [slug, details, removePublicProject, toast]);
   return (
-    <Box px="48px">
+    <Box px={12}>
       <Breadcrumb
         w="full"
-        spacing="4px"
+        spacing={1}
         separator={<MdChevronRight color="gray.600" />}
       >
         <BreadcrumbItem>
@@ -137,14 +137,13 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
         </Box>
         <Flex alignItems="center" gap={4}>
           <SocialMedia details={details} />
-          {/* TODO: add/remove from bookmark */}
           {isPublicProjectSaved(slug) ? (
             <Button
               variant="outline-primary"
               gap={2}
               onClick={() => handleRemove()}
             >
-              <Icon as={MdBookmark} boxSize="4" color="primary.main" />
+              <Icon as={MdBookmark} boxSize={4} color="primary.main" />
               Bookmarked
             </Button>
           ) : (
@@ -157,7 +156,7 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
                 }
               }}
             >
-              <Icon as={MdBookmarkBorder} boxSize="4" color="gray.600" />
+              <Icon as={MdBookmarkBorder} boxSize={4} color="gray.600" />
               Bookmark Project
             </Button>
           )}

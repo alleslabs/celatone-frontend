@@ -3,17 +3,16 @@ import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import type { LVPair, Dict, ContractAddr } from "lib/types";
-import { formatSlugName } from "lib/utils";
+import { formatSlugName, getTagsDefault } from "lib/utils";
 
-export interface ContractInfo {
+export interface ContractLocalInfo {
   contractAddress: ContractAddr;
+  // TODO: handle Genesis case
   instantiator: string;
   label: string;
-  created: Date;
   name?: string;
   description?: string;
   tags?: string[];
-  // TODO: replace with another type
   lists?: LVPair[];
 }
 interface ContractList {
@@ -26,7 +25,7 @@ interface ContractList {
 }
 
 export interface ContractListInfo extends Omit<ContractList, "contracts"> {
-  contracts: ContractInfo[];
+  contracts: ContractLocalInfo[];
 }
 
 export const cmpContractListInfo = (
@@ -63,9 +62,9 @@ export class ContractStore {
 
   contractList: Dict<string, ContractList[]>; // user key
 
-  contractInfo: Dict<
+  contractLocalInfo: Dict<
     string, // user key
-    Record<string, ContractInfo> // contract address
+    Record<string, ContractLocalInfo> // contract address
   >;
 
   allTags: Dict<string, Map<string, Set<string>>>;
@@ -74,7 +73,7 @@ export class ContractStore {
 
   constructor() {
     this.contractList = {};
-    this.contractInfo = {};
+    this.contractLocalInfo = {};
     this.allTags = {};
     this.recentActivities = {};
     this.userKey = "";
@@ -85,7 +84,7 @@ export class ContractStore {
       name: "ContractStore",
       properties: [
         "contractList",
-        "contractInfo",
+        "contractLocalInfo",
         "allTags",
         "recentActivities",
       ],
@@ -118,28 +117,27 @@ export class ContractStore {
 
   getContractLists(): ContractListInfo[] {
     const contractListByUserKey = this.getContractList(this.userKey);
-    const contractInfoByUserKey = this.contractInfo[this.userKey];
+    const contractLocalInfoByUserKey = this.contractLocalInfo[this.userKey];
 
     return contractListByUserKey.map((contractListInfo) => ({
       ...contractListInfo,
       contracts: contractListInfo.contracts.map((contractAddress) => {
-        if (!contractInfoByUserKey)
+        if (!contractLocalInfoByUserKey)
           return {
             contractAddress,
             instantiator: "TODO",
             label: "TODO",
-            created: new Date(0),
           };
 
-        const contractInfo = contractInfoByUserKey[contractAddress];
+        const contractLocalInfo = contractLocalInfoByUserKey[contractAddress];
 
-        return { ...contractInfo };
+        return { ...contractLocalInfo };
       }),
     }));
   }
 
-  getContractInfo(contractAddress: string): ContractInfo | undefined {
-    return this.contractInfo[this.userKey]?.[contractAddress];
+  getContractLocalInfo(contractAddress: string): ContractLocalInfo | undefined {
+    return this.contractLocalInfo[this.userKey]?.[contractAddress];
   }
 
   isContractListExist(userKey: string, name: string): boolean {
@@ -177,7 +175,7 @@ export class ContractStore {
       );
       if (!list) return;
 
-      const contracts = this.contractInfo[userKey];
+      const contracts = this.contractLocalInfo[userKey];
 
       if (contracts) {
         list.contracts.forEach((addr) => {
@@ -204,7 +202,7 @@ export class ContractStore {
     );
     if (!list) return;
 
-    const contracts = this.contractInfo[userKey];
+    const contracts = this.contractLocalInfo[userKey];
 
     if (contracts) {
       list.contracts.forEach((addr) => {
@@ -222,52 +220,52 @@ export class ContractStore {
     );
   }
 
-  updateContractInfo(
+  updateContractLocalInfo(
     userKey: string,
     contractAddress: ContractAddr,
     instantiator: string,
     label: string,
-    created: Date,
     name?: string,
     description?: string,
     tags?: string[],
     lists?: LVPair[]
   ) {
-    const contractInfo = this.contractInfo[userKey]?.[contractAddress] ?? {
+    const contractLocalInfo = this.contractLocalInfo[userKey]?.[
+      contractAddress
+    ] ?? {
       contractAddress,
       instantiator,
       label,
-      created,
     };
 
     if (name !== undefined)
-      contractInfo.name = name.trim().length ? name.trim() : undefined;
+      contractLocalInfo.name = name.trim().length ? name.trim() : undefined;
     if (description !== undefined)
-      contractInfo.description = description.trim().length
+      contractLocalInfo.description = description.trim().length
         ? description.trim()
         : undefined;
     if (tags !== undefined) {
       this.updateAllTags(
         userKey,
         contractAddress,
-        contractInfo.tags ?? [],
+        getTagsDefault(contractLocalInfo.tags),
         tags
       );
-      contractInfo.tags = tags.length ? tags : undefined;
+      contractLocalInfo.tags = tags.length ? tags : undefined;
     }
     if (lists !== undefined) {
       this.updateContractInAllLists(
         userKey,
         contractAddress,
-        contractInfo.lists ?? [],
+        contractLocalInfo.lists ?? [],
         lists
       );
-      contractInfo.lists = lists.length ? lists : undefined;
+      contractLocalInfo.lists = lists.length ? lists : undefined;
     }
 
-    this.contractInfo[userKey] = {
-      ...this.contractInfo[userKey],
-      [contractAddress]: contractInfo,
+    this.contractLocalInfo[userKey] = {
+      ...this.contractLocalInfo[userKey],
+      [contractAddress]: contractLocalInfo,
     };
   }
 

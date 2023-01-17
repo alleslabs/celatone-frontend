@@ -21,14 +21,14 @@ import { ContractsTable } from "./components/ContractsTable";
 import { DetailHeader } from "./components/DetailHeader";
 import { usePublicData } from "./data";
 
-const ProjectDetail = observer(() => {
+export const ProjectDetail = observer(() => {
   const [tabIndex, setTabIndex] = useState(0);
   const { publicCodes, publicContracts, projectDetail, slug } = usePublicData();
   return (
-    <Box py="48px" pb="0">
+    <Box py={12} pb={0}>
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs index={tabIndex}>
-        <TabList my="32px" borderBottom="1px" px="48px" borderColor="gray.800">
+        <TabList my={8} borderBottom="1px" px={12} borderColor="gray.800">
           <CustomTab
             count={publicCodes.length + publicContracts.length}
             onClick={() => setTabIndex(0)}
@@ -51,9 +51,9 @@ const ProjectDetail = observer(() => {
           </CustomTab>
         </TabList>
 
-        <TabPanels my="32px">
-          <TabPanel p="0px">
-            <Heading as="h6" variant="h6" mb={6} px="48px">
+        <TabPanels my={8}>
+          <TabPanel p={0}>
+            <Heading as="h6" variant="h6" mb={6} px={12}>
               Codes
             </Heading>
             {publicCodes.length ? (
@@ -67,7 +67,7 @@ const ProjectDetail = observer(() => {
                     w="full"
                     justifyContent="center"
                     textAlign="center"
-                    py="4"
+                    py={4}
                   >
                     <Button
                       size="sm"
@@ -75,7 +75,7 @@ const ProjectDetail = observer(() => {
                       color="gray.500"
                       onClick={() => setTabIndex(1)}
                     >
-                      View More <Icon as={MdExpandMore} boxSize={4} ml="1" />
+                      View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
                     </Button>
                   </Flex>
                 )}
@@ -109,7 +109,7 @@ const ProjectDetail = observer(() => {
                     w="full"
                     justifyContent="center"
                     textAlign="center"
-                    py="4"
+                    py={4}
                   >
                     <Button
                       size="sm"
@@ -117,7 +117,7 @@ const ProjectDetail = observer(() => {
                       color="gray.500"
                       onClick={() => setTabIndex(2)}
                     >
-                      View More <Icon as={MdExpandMore} boxSize={4} ml="1" />
+                      View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
                     </Button>
                   </Flex>
                 )}
@@ -138,10 +138,10 @@ const ProjectDetail = observer(() => {
               </Flex>
             )}
           </TabPanel>
-          <TabPanel p="0px">
+          <TabPanel p={0}>
             <CodesTable codes={publicCodes} />
           </TabPanel>
-          <TabPanel p="0px">
+          <TabPanel p={0}>
             <ContractsTable contracts={publicContracts} />
           </TabPanel>
         </TabPanels>
@@ -149,5 +149,3 @@ const ProjectDetail = observer(() => {
     </Box>
   );
 });
-
-export default ProjectDetail;

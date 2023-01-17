@@ -1,5 +1,6 @@
 import { CopyIcon } from "@chakra-ui/icons";
 import { Tooltip, useClipboard } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 interface CopierProps {
   value: string;
@@ -7,7 +8,9 @@ interface CopierProps {
 }
 
 export const Copier = ({ value, ml = "8px" }: CopierProps) => {
-  const { onCopy, hasCopied } = useClipboard(value);
+  const { onCopy, hasCopied, setValue } = useClipboard(value);
+
+  useEffect(() => setValue(value), [value, setValue]);
 
   return (
     <Tooltip
