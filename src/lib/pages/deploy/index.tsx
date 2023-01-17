@@ -1,7 +1,7 @@
 import { Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { ButtonCard } from "../../components/ButtonCard";
+import { ButtonCard } from "lib/components/ButtonCard";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 

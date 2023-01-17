@@ -1,17 +1,22 @@
 import { Heading, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import type { ContractAddr } from "lib/types";
+import { useValidateAddress } from "lib/hooks";
+import { getFirstQueryParam } from "lib/utils";
 
-interface UpdateAdminProps {
-  contractAddr?: ContractAddr;
-}
+const UpdateAdmin = () => {
+  const router = useRouter();
+  const { validateContractAddress } = useValidateAddress();
 
-const UpdateAdmin = ({
-  contractAddr = "" as ContractAddr,
-}: UpdateAdminProps) => {
-  const [contractAddress] = useState(contractAddr);
+  const contractAddressParam = getFirstQueryParam(router.query.contract);
+
+  const [contractAddress] = useState(
+    !validateContractAddress(contractAddressParam)
+      ? contractAddressParam
+      : undefined
+  );
 
   return (
     <WasmPageContainer>
