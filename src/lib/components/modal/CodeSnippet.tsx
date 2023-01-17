@@ -34,7 +34,7 @@ interface CodeSnippetProps {
   isDisable?: boolean;
   contractAddress: HumanAddr | ContractAddr;
   message: string;
-  type: string;
+  type: "query" | "execute";
 }
 
 const CodeSnippet = ({
@@ -51,13 +51,13 @@ const CodeSnippet = ({
   const chainId = currentChainRecord?.chain.chain_id;
   const codeSnippets: Record<
     string,
-    { name: string; mode: string; string: string }[]
+    { name: string; mode: string; snippet: string }[]
   > = {
     query: [
       {
         name: "CLI",
         mode: "sh",
-        string: `export CHAIN_ID=${chainId}\n
+        snippet: `export CHAIN_ID=${chainId}\n
 export CONTRACT_ADDRESS=${contractAddress}\n
 export QUERY_MSG='\`${message}\`'\n
 export RPC_URL=${rpcUrl}\n
@@ -68,7 +68,7 @@ ${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG
       {
         name: "Python",
         mode: "python",
-        string: `import base64
+        snippet: `import base64
 import requests\n
 CONTRACT_ADDRESS = "${contractAddress}"
 LCD_URL = "${endpoint}"
@@ -82,34 +82,34 @@ print(res)`,
       {
         name: "CosmJS",
         mode: "javascript",
-        string: `const {{ SigningCosmWasmClient }} = require("@cosmjs/cosmwasm-stargate");
+        snippet: `const {{ SigningCosmWasmClient }} = require("@cosmjs/cosmwasm-stargate");
 const rpcURL = "${rpcUrl}";
 const contractAddress =
 "${contractAddress}";
 const queryMsg = \`${message}\`;\n
-const queryContract = async (rpcURL, contractAddress, queryMsg) => {{
+const queryContract = async (rpcURL, contractAddress, queryMsg) => {
 const client = await SigningCosmWasmClient.connect(rpcURL);
 const queryResult = await client.queryContractSmart(
   contractAddress,
   JSON.parse(queryMsg)
 );
 console.log(queryResult);
-}};\n
+};\n
 queryContract(rpcURL, contractAddress, queryMsg);
     `,
       },
       {
         name: "Axios",
         mode: "javascript",
-        string: `const axios = require('axios');\n
+        snippet: `const axios = require('axios');\n
 const lcdURL = '${endpoint}';
 const contractAddress =
 "${contractAddress}";
 const queryMsg = \`${message}\`;\n
-const queryContract = async () => {{
+const queryContract = async () => {
 const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
 console.log(res.data);
-}};\n
+};\n
 queryContract();`,
       },
     ],
@@ -117,7 +117,7 @@ queryContract();`,
       {
         name: "CLI",
         mode: "sh",
-        string: `${client} keys add --recover celatone\n
+        snippet: `${client} keys add --recover celatone\n
 export CHAIN_ID=${chainId}\n
 export RPC_URL=${rpcUrl}\n
 export CONTRACT_ADDRESS=${contractAddress}\n
@@ -130,7 +130,7 @@ ${client} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
       {
         name: "CosmJs",
         mode: "javascript",
-        string: `const { getOfflineSignerAmino, cosmwasm } = require('osmojs');
+        snippet: `const { getOfflineSignerAmino, cosmwasm } = require('osmojs');
 const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 const { Dec, IntPretty } = require('@keplr-wallet/unit');
 const { coins } = require('@cosmjs/amino');
@@ -217,7 +217,7 @@ execute();`,
                           width: "100%",
                           background: "transparent",
                         }}
-                        value={item.string}
+                        value={item.snippet}
                         setOptions={{
                           showGutter: false,
                           useWorker: false,
@@ -226,7 +226,7 @@ execute();`,
                         }}
                       />
                       <Box position="absolute" top={4} right={4}>
-                        <CopyButton value={item.string} />
+                        <CopyButton value={item.snippet} />
                       </Box>
                     </Box>
                   </TabPanel>

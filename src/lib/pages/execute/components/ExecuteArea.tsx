@@ -253,12 +253,12 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
       </Flex>
       <Flex alignItems="center" justify="space-between">
         <Flex gap={2}>
-          <CopyButton isDisable={msg.length === 0} value={msg} />
+          <CopyButton isDisable={!msg.length} value={msg} />
           <CodeSnippet
             type="execute"
             contractAddress={contractAddress}
             message={msg}
-            isDisable={!contractAddress || msg.length === 0}
+            isDisable={!contractAddress || !msg.length}
           />
         </Flex>
         <Flex direction="row" align="center" gap={2}>

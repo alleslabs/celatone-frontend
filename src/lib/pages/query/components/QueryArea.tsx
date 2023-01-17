@@ -125,12 +125,12 @@ export const QueryArea = ({
           />
           <Flex align="center" justify="space-between">
             <Flex gap={2}>
-              <CopyButton isDisable={msg.length === 0} value={msg} />
+              <CopyButton isDisable={!msg.length} value={msg} />
               <CodeSnippet
                 type="query"
                 contractAddress={contractAddress}
                 message={msg}
-                isDisable={!contractAddress || msg.length === 0}
+                isDisable={!contractAddress || !msg.length}
               />
             </Flex>
             <Button
