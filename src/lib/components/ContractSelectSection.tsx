@@ -169,7 +169,7 @@ export const ContractSelectSection = observer(
         <Flex gap="24px" width={mode === "instantiator" ? "70%" : "60%"}>
           <Flex
             direction="column"
-            width={mode === "instantiator" ? "70%" : "35%"}
+            width={mode === "instantiator" ? "70%" : "40%"}
           >
             Contract Address
             {!notSelected ? (
@@ -192,7 +192,7 @@ export const ContractSelectSection = observer(
           <Flex
             direction="column"
             width={
-              mode === "instantiator" ? "calc(30% - 24px)" : "calc(65% - 24px)"
+              mode === "instantiator" ? "calc(30% - 24px)" : "calc(60% - 24px)"
             }
           >
             Contract Name

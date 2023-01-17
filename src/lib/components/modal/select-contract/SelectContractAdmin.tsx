@@ -30,7 +30,9 @@ export const SelectContractAdmin = ({
   notSelected,
   onContractSelect,
 }: SelectContractAdminProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    defaultIsOpen: notSelected,
+  });
   const { address } = useWallet();
   const { getContractLocalInfo } = useContractStore();
 
@@ -70,7 +72,12 @@ export const SelectContractAdmin = ({
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
 
-      <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl">
+      <Modal
+        isOpen={isOpen}
+        onClose={resetOnClose}
+        closeOnOverlayClick={false}
+        size="4xl"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>

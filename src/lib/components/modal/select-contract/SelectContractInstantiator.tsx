@@ -103,7 +103,12 @@ export const SelectContractInstantiator = ({
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
-      <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl">
+      <Modal
+        isOpen={isOpen}
+        onClose={resetOnClose}
+        closeOnOverlayClick={false}
+        size="4xl"
+      >
         <ModalOverlay />
         {listSlug.length === 0 || !contractList ? (
           <ModalContent>
