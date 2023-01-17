@@ -16,6 +16,7 @@ import {
   getRelatedProposalsCountByContractAddress,
   getRelatedProposalsByContractAddress,
 } from "lib/data/queries";
+import { GetContractListByAdminDocument } from "lib/gql/graphql";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
@@ -88,6 +89,31 @@ export const useInstantiatedListByUserQuery = (
   return useQuery(["instantiated_list_by_user", walletAddr], queryFn, {
     keepPreviousData: true,
     enabled: !!walletAddr,
+  });
+};
+
+export const useContractListByAdmin = (
+  adminAddress: Option<ContractAddr | HumanAddr>
+): UseQueryResult<Option<ContractLocalInfo[]>> => {
+  const queryFn = useCallback(async () => {
+    if (!adminAddress) return undefined;
+
+    return indexerGraphClient
+      .request(GetContractListByAdminDocument, {
+        address: adminAddress,
+      })
+      .then(({ contracts }) =>
+        contracts.map<ContractLocalInfo>((contract) => ({
+          contractAddress: contract.address as ContractAddr,
+          instantiator: contract.accountByInitBy?.address ?? "",
+          label: contract.label,
+        }))
+      );
+  }, [adminAddress]);
+
+  return useQuery(["contract_list_by_admin", adminAddress], queryFn, {
+    keepPreviousData: true,
+    enabled: !!adminAddress,
   });
 };
 

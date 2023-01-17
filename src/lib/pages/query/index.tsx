@@ -109,6 +109,7 @@ const Query = () => {
       </Flex>
 
       <ContractSelectSection
+        mode="instantiator"
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />

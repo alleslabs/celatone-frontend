@@ -30,7 +30,7 @@ export const ButtonCard = ({
       _hover={{ bgColor: "rgba(255, 255, 255, 0.15)" }}
       _disabled={{
         bgColor: "rgba(255, 255, 255, 0.12)",
-        pointerEvents: "none",
+        cursor: "not-allowed",
       }}
       {...componentProps}
     >

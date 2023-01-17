@@ -101,6 +101,7 @@ const Execute = () => {
       />
 
       <ContractSelectSection
+        mode="instantiator"
         contractAddress={watchContractAddress}
         onContractSelect={onContractSelect}
       />
