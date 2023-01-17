@@ -11,6 +11,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import { useEffect } from "react";
 import { MdList, MdSwapHoriz } from "react-icons/md";
 
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
@@ -30,9 +31,7 @@ export const SelectContractAdmin = ({
   notSelected,
   onContractSelect,
 }: SelectContractAdminProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure({
-    defaultIsOpen: notSelected,
-  });
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useWallet();
   const { getContractLocalInfo } = useContractStore();
 
@@ -57,6 +56,14 @@ export const SelectContractAdmin = ({
     onContractSelect(contract);
     resetOnClose();
   };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (notSelected) onOpen();
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [notSelected, onOpen]);
 
   return (
     <>
