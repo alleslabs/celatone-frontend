@@ -22,7 +22,6 @@ export const useAllCodesData = (
     description: getCodeLocalInfo(code.id)?.description,
     isSaved: isCodeIdSaved(code.id),
   }));
-  // console.log("permissionValue", permissionValue);
   const { address } = useWallet();
 
   return useMemo(() => {
