@@ -1,4 +1,4 @@
-import { Badge, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
@@ -11,8 +11,9 @@ import { useCodeData } from "lib/model/code";
 import { InstantiatePermission } from "lib/types";
 import { getFirstQueryParam, isCodeId } from "lib/utils";
 
-import { CodeInfoSection } from "./component/CodeInfoSection";
-import { CTASection } from "./component/CTASection";
+import { CodeInfoSection } from "./components/CodeInfoSection";
+import { CTASection } from "./components/CTASection";
+import { ContractTable } from "./components/table/contracts/ContractTable";
 
 interface CodeDetailsBodyProps {
   codeId: number;
@@ -23,46 +24,41 @@ const InvalidCode = () => <InvalidState title="Code does not exist" />;
 const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
-  const codeData = useCodeData(codeId);
-  if (!codeData) return <InvalidCode />;
+  const data = useCodeData(codeId);
+  if (!data) return <InvalidCode />;
+
+  const { isLoading, codeData } = data;
   return (
     <>
-      <Flex align="center" justify="space-between" mt={6}>
-        <Flex direction="column" gap={1}>
-          <Heading as="h5" variant="h5">
-            {localCodeInfo?.description ?? codeId}
-          </Heading>
-          <Flex gap={2}>
-            <Text fontWeight={500} color="text.dark" variant="body2">
-              Code ID
-            </Text>
-            <ExplorerLink type="code_id" value={codeId.toString()} />
+      {!isLoading && (
+        <>
+          <Flex align="center" justify="space-between" mt={6}>
+            <Flex direction="column" gap={1}>
+              <Heading as="h5" variant="h5">
+                {localCodeInfo?.description ?? codeId}
+              </Heading>
+              <Flex gap={2}>
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  Code ID
+                </Text>
+                <ExplorerLink type="code_id" value={codeId.toString()} />
+              </Flex>
+            </Flex>
+            <CTASection
+              id={codeId}
+              uploader={localCodeInfo?.uploader ?? codeData.uploader}
+              description={localCodeInfo?.description}
+              instantiatePermission={
+                codeData?.instantiatePermission ?? InstantiatePermission.UNKNOWN
+              }
+              permissionAddresses={codeData?.permissionAddresses ?? []}
+            />
           </Flex>
-        </Flex>
-        <CTASection
-          id={codeId}
-          uploader={localCodeInfo?.uploader ?? codeData.uploader}
-          description={localCodeInfo?.description}
-          instantiatePermission={
-            codeData?.instantiatePermission ?? InstantiatePermission.UNKNOWN
-          }
-          permissionAddresses={codeData?.permissionAddresses ?? []}
-        />
-      </Flex>
-      <Divider borderColor="divider.main" my={12} />
-      <CodeInfoSection codeData={codeData} />
-      {/* TODO: Wireup badge count, Create table component and wireup with real data */}
-      <Flex mb={6} align="center">
-        <Heading as="h6" variant="h6">
-          Contract Instances
-        </Heading>
-        <Badge ml={2} variant="primary">
-          19
-        </Badge>
-      </Flex>
-      <Heading color="error.main" as="h5" variant="h5">
-        Table Goes Hereeee
-      </Heading>
+          <Divider borderColor="divider.main" my={12} />
+          <CodeInfoSection codeData={codeData} />
+          <ContractTable codeId={codeId} />
+        </>
+      )}
     </>
   );
 };

@@ -20,7 +20,7 @@ import {
   useRelatedProposalsCountByContractAddress,
 } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
+import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type {
   BalanceWithAssetInfo,
   ContractAddr,
@@ -32,14 +32,14 @@ import { formatSlugName } from "lib/utils";
 export interface ContractData {
   chainId: string;
   codeInfo: Option<CodeLocalInfo>;
-  contractInfo: Option<ContractInfo>;
+  contractLocalInfo: Option<ContractLocalInfo>;
   instantiateInfo: Option<InstantiateInfo>;
   publicInfo: Option<PublicInfo>;
   balances: Option<BalanceWithAssetInfo[]>;
   initMsg: string;
   initTxHash: Option<string>;
-  initProposalTitle: Option<string>;
   initProposalId: Option<number>;
+  initProposalTitle: Option<string>;
 }
 
 export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
@@ -48,12 +48,12 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
     enable ? (address as HumanAddr) : undefined
   );
 
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
 
   return {
     contracts: contracts.map((contract) => ({
       ...contract,
-      ...getContractInfo(contract.contractAddress),
+      ...getContractLocalInfo(contract.contractAddress),
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
@@ -89,7 +89,7 @@ export const useContractData = (
 ): ContractData | undefined => {
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
   const endpoint = useEndpoint();
   const assetInfos = useAssetInfos();
 
@@ -137,31 +137,27 @@ export const useContractData = (
   const codeInfo = instantiateInfo
     ? getCodeLocalInfo(Number(instantiateInfo.codeId))
     : undefined;
-  const contractInfo = getContractInfo(contractAddress);
+  const contractLocalInfo = getContractLocalInfo(contractAddress);
 
   const {
     data: instantiateDetail = {
       initMsg: "{}",
     },
   } = useInstantiateDetailByContractQuery(contractAddress);
-  // TODO: contract proposal title and id
-  const initProposalTitle = undefined;
-  const initProposalId = undefined;
-  // TODO: get all related transactions
 
   if (!currentChainRecord) return undefined;
 
   return {
     chainId: currentChainRecord.chain.chain_id,
     codeInfo,
-    contractInfo,
+    contractLocalInfo,
     instantiateInfo,
     publicInfo,
     balances: contractBalancesWithAssetInfos,
     initMsg: instantiateDetail.initMsg,
     initTxHash: instantiateDetail.initTxHash,
-    initProposalTitle,
-    initProposalId,
+    initProposalId: instantiateDetail.initProposalId,
+    initProposalTitle: instantiateDetail.initProposalTitle,
   };
 };
 

@@ -1,18 +1,18 @@
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 
 import { ContractDetailsTemplate } from "./ContractDetailsTemplate";
 
 interface SaveContractDetailsProps {
-  contractInfo: ContractInfo;
+  contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
 }
 export const SaveContractDetails = ({
-  contractInfo,
+  contractLocalInfo,
   triggerElement,
 }: SaveContractDetailsProps) => (
   <ContractDetailsTemplate
     title="Save Contract Details"
-    contractInfo={contractInfo}
+    contractLocalInfo={contractLocalInfo}
     triggerElement={triggerElement}
   />
 );

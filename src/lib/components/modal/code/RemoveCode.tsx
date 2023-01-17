@@ -4,7 +4,7 @@ import { MdCheckCircle, MdDelete } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useCodeStore } from "lib/hooks";
-import { shortenName } from "lib/utils";
+import { getDescriptionDefault, shortenName } from "lib/utils";
 
 interface RemoveCodeModalProps {
   codeId: number;
@@ -33,7 +33,7 @@ export function RemoveCode({
 
     toast({
       title: `Removed \u2018${
-        shortenName(description ?? "", 20) || codeId
+        shortenName(getDescriptionDefault(description), 20) || codeId
       }\u2019 from Saved Codes`,
       status: "success",
       duration: 5000,

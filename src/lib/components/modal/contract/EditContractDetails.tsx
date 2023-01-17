@@ -1,19 +1,19 @@
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 
 import { ContractDetailsTemplate } from "./ContractDetailsTemplate";
 
 interface EditContractDetailsProps {
-  contractInfo: ContractInfo;
+  contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
 }
 export const EditContractDetails = ({
-  contractInfo,
+  contractLocalInfo,
   triggerElement,
 }: EditContractDetailsProps) => (
   <ContractDetailsTemplate
     title="Edit Contract Details"
     subtitle="Filled information below will be saved on Celatone only and able to edit later."
-    contractInfo={contractInfo}
+    contractLocalInfo={contractLocalInfo}
     triggerElement={triggerElement}
   />
 );

@@ -9,16 +9,16 @@ import { ListSelection } from "lib/components/forms/ListSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
 interface AddToOtherListProps {
-  contractInfo: ContractInfo;
+  contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
 }
 
 export const AddToOtherList = observer(
-  ({ contractInfo, triggerElement }: AddToOtherListProps) => {
+  ({ contractLocalInfo, triggerElement }: AddToOtherListProps) => {
     const { setValue, watch } = useForm<OffchainDetail>({
       mode: "all",
     });
@@ -31,17 +31,16 @@ export const AddToOtherList = observer(
     );
 
     useEffect(() => {
-      setContractListsValue(contractInfo.lists ?? []);
-    }, [contractInfo.lists, setContractListsValue]);
+      setContractListsValue(contractLocalInfo.lists ?? []);
+    }, [contractLocalInfo.lists, setContractListsValue]);
 
     const offchainState = watch();
 
     const handleSave = useHandleContractSave({
-      title: "Action complete!",
-      contractAddress: contractInfo.contractAddress,
-      instantiator: contractInfo.instantiator,
-      label: contractInfo.label,
-      created: contractInfo.created,
+      title: "Action Complete!",
+      contractAddress: contractLocalInfo.contractAddress,
+      instantiator: contractLocalInfo.instantiator,
+      label: contractLocalInfo.label,
       lists: offchainState.lists,
     });
 
@@ -62,10 +61,10 @@ export const AddToOtherList = observer(
 
             <Flex direction="column" gap="8px">
               <Text variant="body2" color="text.main">
-                {contractInfo.name ?? contractInfo.label}
+                {contractLocalInfo.name ?? contractLocalInfo.label}
               </Text>
               <ExplorerLink
-                value={contractInfo.contractAddress}
+                value={contractLocalInfo.contractAddress}
                 type="contract_address"
               />
             </Flex>

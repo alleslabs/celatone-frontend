@@ -9,14 +9,14 @@ import {
 } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr } from "lib/types";
 
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
 
 interface ContractListReadOnlyTableProps {
-  contracts: ContractInfo[];
+  contracts: ContractLocalInfo[];
   onContractSelect: (addr: ContractAddr) => void;
 }
 
@@ -54,10 +54,10 @@ export const ContractListReadOnlyTable = ({
                 />
               </Td>
               <Td width="40%">
-                <ContractNameCell contract={item} isReadOnly />
+                <ContractNameCell contractLocalInfo={item} isReadOnly />
               </Td>
               <Td width="30%">
-                <TagsCell contractInfo={item} isReadOnly />
+                <TagsCell contractLocalInfo={item} isReadOnly />
               </Td>
               <Td width="10%">
                 <ExplorerLink
