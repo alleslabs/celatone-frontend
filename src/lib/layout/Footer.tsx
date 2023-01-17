@@ -33,7 +33,7 @@ const Footer = () => {
       align="center"
       justifyContent="space-between"
       px={12}
-      py={4}
+      py={7}
       mx={1}
     >
       <Flex direction="row" gap={1} align="center">
