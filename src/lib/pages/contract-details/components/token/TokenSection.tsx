@@ -22,12 +22,35 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
     [balances]
   );
 
-  if (!balances?.length)
+  const renderContext = () => {
+    if (!balances?.length) {
+      return (
+        <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
+          This contract does not hold any assets
+        </Text>
+      );
+    }
     return (
-      <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
-        This contract does not hold any assets
-      </Text>
+      <>
+        <Grid gridGap={4} gridTemplateColumns="repeat(4, 1fr)">
+          {supportedAssets.map((balance, index) => {
+            if (!showMore && index >= 4) {
+              return null;
+            }
+            return <TokenCard key={balance.balance.id} userBalance={balance} />;
+          })}
+        </Grid>
+        {supportedAssets.length > 4 && (
+          <ShowMoreButton
+            showMoreText="View All Assets"
+            showLessText="View Less Assets"
+            toggleShowMore={showMore}
+            setToggleShowMore={() => setShowMore(!showMore)}
+          />
+        )}
+      </>
     );
+  };
 
   return (
     <>
@@ -39,22 +62,7 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
           <UnsupportedTokensModal unsupportedAssets={unsupportedAssets} />
         )}
       </Flex>
-      <Grid gridGap={4} gridTemplateColumns="repeat(4, 1fr)">
-        {supportedAssets.map((balance, index) => {
-          if (!showMore && index >= 4) {
-            return null;
-          }
-          return <TokenCard key={balance.balance.id} userBalance={balance} />;
-        })}
-      </Grid>
-      {supportedAssets.length > 4 && (
-        <ShowMoreButton
-          showMoreText="View All Assets"
-          showLessText="View Less Assets"
-          toggleShowMore={showMore}
-          setToggleShowMore={() => setShowMore(!showMore)}
-        />
-      )}
+      {renderContext()}
     </>
   );
 };

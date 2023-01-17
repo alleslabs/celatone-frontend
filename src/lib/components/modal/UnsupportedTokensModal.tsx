@@ -44,7 +44,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   return (
     <Flex borderRadius="8px" bg="gray.900" justify="space-between" p={4}>
       <Flex direction="column" maxW="70%">
-        <Flex direction="row" role="group">
+        <Flex direction="row" role="group" alignItems="center">
           <Text variant="body2" className="ellipsis">
             {label()}
           </Text>
