@@ -1,4 +1,4 @@
-export const tokenType = (type: string) => {
+export const getTokenType = (type: string) => {
   switch (type.toLowerCase()) {
     case "ibc":
     case "cw20":

@@ -14,13 +14,13 @@ import {
   Box,
 } from "@chakra-ui/react";
 import router from "next/router";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { FaDollarSign } from "react-icons/fa";
 
 import { Copier } from "../Copier";
 import { ExplorerLink } from "../ExplorerLink";
 import type { BalanceWithAssetInfo, Balance } from "lib/types";
-import { getFirstQueryParam, tokenType, truncate } from "lib/utils";
+import { getFirstQueryParam, getTokenType, truncate } from "lib/utils";
 import { formatToken } from "lib/utils/formatter/token";
 
 interface UnsupportedTokensModalProps {
@@ -32,14 +32,17 @@ interface UnsupportedTokenProps {
 }
 
 const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
-  const splitId = balance.id.split("/");
-  const type = !balance.id.includes("/")
-    ? tokenType(balance.type)
-    : tokenType(splitId[0]);
-  if (splitId[1]) {
-    splitId[1] = truncate(splitId[1]);
-  }
-  const label = () => (splitId.length === 1 ? balance.id : splitId.join("/"));
+  const [tokenLabel, tokenType] = useMemo(() => {
+    const splitId = balance.id.split("/");
+    const type = !balance.id.includes("/")
+      ? getTokenType(balance.type)
+      : getTokenType(splitId[0]);
+    if (splitId[1]) {
+      splitId[1] = truncate(splitId[1]);
+    }
+    const label = splitId.length === 1 ? balance.id : splitId.join("/");
+    return [label, type];
+  }, [balance]);
 
   return (
     <Flex
@@ -52,14 +55,14 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
       <Flex direction="column" maxW="70%">
         <Flex direction="row" alignItems="center">
           <Text variant="body2" className="ellipsis">
-            {label()}
+            {tokenLabel}
           </Text>
           <Box _groupHover={{ display: "flex" }} display="none">
             <Copier value={balance.id} />
           </Box>
         </Flex>
         <Text variant="body3" color="text.dark">
-          {`${type} Token`}
+          {`${tokenType} Token`}
         </Text>
       </Flex>
       <Text variant="body2" fontWeight="900">
@@ -117,7 +120,10 @@ export const UnsupportedTokensModal = ({
               </Flex>
               <Flex gap={2} direction="column">
                 {unsupportedAssets.map((asset) => (
-                  <UnsupportedToken balance={asset.balance} />
+                  <UnsupportedToken
+                    balance={asset.balance}
+                    key={asset.balance.id}
+                  />
                 ))}
               </Flex>
             </Flex>
