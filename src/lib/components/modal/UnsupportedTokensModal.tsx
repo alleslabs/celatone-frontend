@@ -42,9 +42,15 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   const label = () => (splitId.length === 1 ? balance.id : splitId.join("/"));
 
   return (
-    <Flex borderRadius="8px" bg="gray.900" justify="space-between" p={4}>
+    <Flex
+      borderRadius="8px"
+      bg="gray.900"
+      justify="space-between"
+      p={4}
+      role="group"
+    >
       <Flex direction="column" maxW="70%">
-        <Flex direction="row" role="group" alignItems="center">
+        <Flex direction="row" alignItems="center">
           <Text variant="body2" className="ellipsis">
             {label()}
           </Text>
@@ -79,7 +85,7 @@ export const UnsupportedTokensModal = ({
       <Flex onClick={onOpen}>
         <Button variant="ghost" color="text.dark" mb={1} fontWeight={500}>
           {`View ${unsupportedAssets.length} Unsupported Assets`}
-        </Button>{" "}
+        </Button>
       </Flex>
       <Modal isOpen={isOpen} onClose={handleOnOther} isCentered>
         <ModalOverlay />
