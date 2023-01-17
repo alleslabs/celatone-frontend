@@ -1,7 +1,8 @@
-import { Grid, Text } from "@chakra-ui/react";
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { ShowMoreButton } from "lib/components/button";
+import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
 import type { BalanceWithAssetInfo, Option } from "lib/types";
 
 import { TokenCard } from "./TokenCard";
@@ -11,6 +12,11 @@ interface TokenSectionProps {
 }
 export const TokenSection = ({ balances }: TokenSectionProps) => {
   const [showMore, setShowMore] = useState(false);
+  const unsupportedAssets = useMemo(
+    () => balances?.filter((balance) => !balance.assetInfo) ?? [],
+    [balances]
+  );
+
   const supportedAssets = useMemo(
     () => balances?.filter((balance) => balance.assetInfo) ?? [],
     [balances]
@@ -25,7 +31,14 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
 
   return (
     <>
-      {/* TODO - Implement unsupported assets */}
+      <Flex justify="space-between">
+        <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
+          Assets
+        </Text>
+        {unsupportedAssets.length !== 0 && (
+          <UnsupportedTokensModal unsupportedAssets={unsupportedAssets} />
+        )}
+      </Flex>
       <Grid gridGap={4} gridTemplateColumns="repeat(4, 1fr)">
         {supportedAssets.map((balance, index) => {
           if (!showMore && index >= 4) {
