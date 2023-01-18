@@ -117,6 +117,7 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   useEffect(() => {
     /**
      * @remarks Condition checking varies by chain
+     * @todos Change default to mainnet later (currently is testnet)
      */
     if (router.query.network === "mainnet") {
       setCurrentChain("osmosis");

@@ -1,19 +1,12 @@
 import { useRouter } from "next/router";
+import type { Router } from "next/router";
+import type { ParsedUrlQueryInput } from "node:querystring";
 import { useCallback } from "react";
-
-import type { Dict } from "lib/types";
-
-interface TransitionOptions {
-  shallow?: boolean;
-  locale?: string | false;
-  scroll?: boolean;
-  unstable_skipClientCache?: boolean;
-}
 
 interface NavigationArgs {
   pathname: string;
-  query?: Dict<string, string | number>;
-  options?: TransitionOptions;
+  query?: ParsedUrlQueryInput;
+  options?: Parameters<Pick<Router, "push">["push"]>[2];
 }
 
 export const useInternalNavigate = () => {
@@ -24,6 +17,9 @@ export const useInternalNavigate = () => {
       router.push(
         {
           pathname: `/[network]${pathname}`,
+          /**
+           * @todos Change default to mainnet later (right now is testnet)
+           */
           query: {
             network: router.query.network === "mainnet" ? "mainnet" : "testnet",
             ...query,
