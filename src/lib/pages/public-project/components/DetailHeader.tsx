@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { MdChevronRight } from "react-icons/md";
 
+import { AppLink } from "lib/components/AppLink";
 import type { Detail } from "lib/services/publicProject";
 import type { Option } from "lib/types";
 
@@ -29,11 +30,9 @@ export const DetailHeader = ({ details, slug }: DetailProps) => {
         separator={<MdChevronRight color="gray.600" />}
       >
         <BreadcrumbItem>
-          <BreadcrumbLink href="/public-project">
-            <Text variant="body2" color="text.dark">
-              Public Projects
-            </Text>
-          </BreadcrumbLink>
+          <AppLink color="text.dark" href="/public-project">
+            Public Projects
+          </AppLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink href="#">

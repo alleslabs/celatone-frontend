@@ -1,8 +1,8 @@
 import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, useToast, Icon, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { MdDeleteForever, MdCheckCircle } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useContractStore, useUserKey } from "lib/hooks";
 import type { LVPair } from "lib/types";
@@ -18,10 +18,10 @@ export function RemoveList({ list, menuItemProps }: ModalProps) {
   const { removeList } = useContractStore();
 
   const toast = useToast();
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   const handleRemove = () => {
     removeList(userKey, list.value);
-    router.push("/contract-list");
+    navigate({ pathname: "/contract-list" });
     // TODO: show toast after removed and redirect to /contract-list
     setTimeout(() => {
       toast({

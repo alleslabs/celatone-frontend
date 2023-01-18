@@ -1,8 +1,8 @@
 import { Flex, Text, Image, Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
 import { useClampText } from "use-clamp-text";
 
+import { useInternalNavigate } from "lib/app-provider";
 import type { PublicProjectInfo } from "lib/services/publicProject";
 
 import { BookmarkButton } from "./BookmarkButton";
@@ -15,9 +15,9 @@ interface PublicProjectCardProps {
 
 export const PublicProjectCard = observer(
   ({ item, slug }: PublicProjectCardProps) => {
-    const router = useRouter();
+    const navigate = useInternalNavigate();
     const handleOnClick = () => {
-      router.push({ pathname: `/public-project/${slug}` });
+      navigate({ pathname: `/public-project/${slug}` });
     };
 
     const [ref, { clampedText }] = useClampText({

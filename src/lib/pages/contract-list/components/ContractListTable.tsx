@@ -16,8 +16,6 @@ import {
   chakra,
   MenuItem,
 } from "@chakra-ui/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import {
   MdMoreHoriz,
   MdMode,
@@ -25,6 +23,8 @@ import {
   MdDelete,
 } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
@@ -54,7 +54,7 @@ export const ContractListTable = ({
   contracts = [],
   contractRemovalInfo,
 }: ContractListTableProps) => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   return (
     <TableContainer w="full">
       <Table variant="simple" sx={{ tableLayout: "auto" }}>
@@ -79,7 +79,7 @@ export const ContractListTable = ({
               _hover={{ bg: "gray.900" }}
               cursor="pointer"
               onClick={() =>
-                router.push({ pathname: `/contract/${item.contractAddress}` })
+                navigate({ pathname: `/contract/${item.contractAddress}` })
               }
               key={
                 item.name +
@@ -121,16 +121,16 @@ export const ContractListTable = ({
                   justifyContent="flex-end"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <Link href={`/execute?contract=${item.contractAddress}`}>
+                  <AppLink href={`/execute?contract=${item.contractAddress}`}>
                     <Button variant="outline-gray" size="sm">
                       Execute
                     </Button>
-                  </Link>
-                  <Link href={`/query?contract=${item.contractAddress}`}>
+                  </AppLink>
+                  <AppLink href={`/query?contract=${item.contractAddress}`}>
                     <Button variant="outline-gray" size="sm">
                       Query
                     </Button>
-                  </Link>
+                  </AppLink>
                   <Menu>
                     <MenuButton
                       size="sm"
