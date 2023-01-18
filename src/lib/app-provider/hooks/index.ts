@@ -5,3 +5,4 @@ export * from "./useCelatoneApp";
 export * from "./useQueryCmds";
 export * from "./useExecuteCmds";
 export * from "./useTokensInfo";
+export * from "./useInternalNavigate";
