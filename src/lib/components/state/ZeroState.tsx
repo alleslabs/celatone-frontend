@@ -1,8 +1,8 @@
 import { Flex, Button, Icon, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
 import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { SaveNewContract } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { LVPair } from "lib/types";
@@ -49,7 +49,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
  */
 
 export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   const { isWalletConnected } = useWallet();
 
   const isInstantiatedByMe =
@@ -84,7 +84,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
           {!isReadOnly && (
             <ActionSection
               list={list}
-              handleAction={() => router.push("/deploy")}
+              handleAction={() => navigate({ pathname: "/deploy" })}
             />
           )}
         </Flex>

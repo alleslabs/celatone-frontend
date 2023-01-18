@@ -1,7 +1,7 @@
 import { Flex, Text, Grid, IconButton, Box, chakra } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { AddToOtherList, SaveContractDetails } from "lib/components/modal";
 import { TableRow } from "lib/components/table/tableComponents";
@@ -28,13 +28,13 @@ export const ContractTableRow = ({
   contractInfo,
   templateColumnsStyle,
 }: ContractTableRowProps) => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
 
   return (
     <Grid
       templateColumns={templateColumnsStyle}
       onClick={() =>
-        router.push({
+        navigate({
           pathname: `/contract/${contractInfo.contractAddress}`,
         })
       }
