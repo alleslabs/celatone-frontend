@@ -1,12 +1,15 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { MdAdd } from "react-icons/md";
 
-export default () => {
-  const router = useRouter();
+import { useInternalNavigate } from "lib/app-provider";
 
+export default () => {
+  const navigate = useInternalNavigate();
   return (
-    <Button onClick={() => router.push("/upload")} rightIcon={<MdAdd />}>
+    <Button
+      onClick={() => navigate({ pathname: "/upload" })}
+      rightIcon={<MdAdd />}
+    >
       Upload New Code
     </Button>
   );

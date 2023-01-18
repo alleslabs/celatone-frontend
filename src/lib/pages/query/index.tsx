@@ -5,6 +5,7 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
@@ -22,6 +23,7 @@ import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const endpoint = useEndpoint();
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
@@ -29,7 +31,7 @@ const Query = () => {
   const [cmds, setCmds] = useState<[string, string][]>([]);
 
   const goToExecute = () => {
-    router.push({
+    navigate({
       pathname: "/execute",
       query: { ...(contractAddress && { contract: contractAddress }) },
     });
@@ -37,16 +39,13 @@ const Query = () => {
 
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
-      router.push(
-        {
-          pathname: "/query",
-          query: { ...(contract && { contract }) },
-        },
-        undefined,
-        { shallow: true }
-      );
+      navigate({
+        pathname: "/query",
+        query: { ...(contract && { contract }) },
+        options: { shallow: true },
+      });
     },
-    [router]
+    [navigate]
   );
 
   // TODO: Abstract query and make query key

@@ -7,7 +7,6 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
-import router from "next/router";
 import {
   MdBookmark,
   MdBookmarkBorder,
@@ -16,6 +15,7 @@ import {
 } from "react-icons/md";
 import { RiPencilFill } from "react-icons/ri";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
@@ -29,9 +29,8 @@ interface ContractTopProps {
   contractData: ContractData;
 }
 export const ContractTop = ({ contractData }: ContractTopProps) => {
-  const { contractLocalInfo } = contractData;
-  const { instantiateInfo } = contractData;
-  const { publicInfo } = contractData;
+  const navigate = useInternalNavigate();
+  const { contractLocalInfo, instantiateInfo, publicInfo } = contractData;
 
   const contractAddress = instantiateInfo?.contractAddress as ContractAddr;
 
@@ -39,14 +38,14 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     contractLocalInfo?.name || publicInfo?.name || instantiateInfo?.label;
 
   const goToQuery = () => {
-    router.push({
+    navigate({
       pathname: "/query",
       query: { ...(contractAddress && { contract: contractAddress }) },
     });
   };
 
   const goToExecute = () => {
-    router.push({
+    navigate({
       pathname: "/execute",
       query: { ...(contractAddress && { contract: contractAddress }) },
     });

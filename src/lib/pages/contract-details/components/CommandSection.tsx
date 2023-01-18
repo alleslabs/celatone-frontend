@@ -1,12 +1,18 @@
 import { ButtonGroup, Flex, Spinner, Text } from "@chakra-ui/react";
-import router from "next/router";
+import { useRouter } from "next/router";
 
-import { useExecuteCmds, useQueryCmds } from "lib/app-provider";
+import {
+  useExecuteCmds,
+  useInternalNavigate,
+  useQueryCmds,
+} from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import type { ContractAddr } from "lib/types";
 import { encode, getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 export const CommandSection = () => {
+  const router = useRouter();
+  const navigate = useInternalNavigate();
   const contractAddress = getFirstQueryParam(
     router.query.contractAddress
   ) as ContractAddr;
@@ -43,7 +49,7 @@ export const CommandSection = () => {
               key={`${type}-cmd-${cmd}`}
               cmd={cmd}
               onClickCmd={() => {
-                router.push({
+                navigate({
                   pathname: `/${type}`,
                   query: {
                     contract: contractAddress,
