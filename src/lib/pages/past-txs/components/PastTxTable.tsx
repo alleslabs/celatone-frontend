@@ -17,6 +17,7 @@ import type { MouseEvent } from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
+import { useRedo } from "../hooks/useRedo";
 import { useFabricateFee, useSimulateFee } from "lib/app-provider";
 import { useResendTx } from "lib/app-provider/tx/resend";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
@@ -40,7 +41,6 @@ import {
   formatUDenom,
   formatUToken,
   extractMsgType,
-  onClickRedo,
 } from "lib/utils";
 
 import { MsgDetail } from "./MsgDetail";
@@ -52,6 +52,7 @@ interface PastTxTableProps {
 }
 
 const PastTxTable = ({ element }: PastTxTableProps) => {
+  const onClickRedo = useRedo();
   const { isOpen, onToggle } = useDisclosure();
   const [isAccordion, setIsAccordion] = useState(false);
   const [button, setButton] = useState<"redo" | "resend" | "">("");
