@@ -44,7 +44,7 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
             ))}
 
           <LabelText
-            label="Instantiator"
+            label="Instantiated by"
             helperText1={getAddressTypeText(instantiatorType)}
           >
             <ExplorerLink
