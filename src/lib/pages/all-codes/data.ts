@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useCodeStore } from "lib/hooks";
 import { useCodeListQuery } from "lib/services/codeService";
 import type { CodeInfo, HumanAddr } from "lib/types";
+import { InstantiatePermission } from "lib/types";
 
 interface AllCodesData {
   allCodes: CodeInfo[];
@@ -26,8 +27,10 @@ export const useAllCodesData = (
 
   return useMemo(() => {
     const permissionFilter = (code: CodeInfo) => {
-      const isEveryBody = code.instantiatePermission === "Everybody";
-      const isNobody = code.instantiatePermission === "Nobody";
+      const isEveryBody =
+        code.instantiatePermission === InstantiatePermission.EVERYBODY;
+      const isNobody =
+        code.instantiatePermission === InstantiatePermission.NOBODY;
       const isInclude = code.permissionAddresses.includes(address as HumanAddr);
 
       switch (permissionValue) {

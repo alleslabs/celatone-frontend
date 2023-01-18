@@ -35,16 +35,12 @@ export const TextAreaInput = ({
 }: TextAreaProps) => {
   return (
     <FormControl
-      className="textarea-form"
       isInvalid={!!error || status?.state === "error"}
       size="md"
       {...componentProps}
     >
       {label && (
-        <FormLabel
-          bgColor={labelBgColor}
-          className={value.length ? "floating" : ""}
-        >
+        <FormLabel className="textarea-label" bgColor={labelBgColor}>
           {label}
         </FormLabel>
       )}

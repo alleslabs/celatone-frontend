@@ -1,10 +1,10 @@
 import { Button, Icon } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { FiChevronRight } from "react-icons/fi";
 
 import { getExplorerTxUrl } from "lib/app-fns/explorer";
+import { useInternalNavigate } from "lib/app-provider";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
 interface ButtonSectionProps {
@@ -18,7 +18,7 @@ export const ButtonSection = ({
   onClose,
   receipts,
 }: ButtonSectionProps) => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
 
   const openExplorer = useCallback(() => {
@@ -40,7 +40,7 @@ export const ButtonSection = ({
           <Button
             variant="ghost-primary"
             onClick={() => {
-              router.push("/codes");
+              navigate({ pathname: "/codes" });
               onClose?.();
             }}
           >
@@ -53,7 +53,7 @@ export const ButtonSection = ({
             }
             onClick={() => {
               const codeId = receipts.find((r) => r.title === "Code ID")?.value;
-              router.push({
+              navigate({
                 pathname: "/instantiate",
                 query: { "code-id": codeId },
               });

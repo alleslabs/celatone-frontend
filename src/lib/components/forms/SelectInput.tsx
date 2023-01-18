@@ -16,6 +16,8 @@ import { useEffect, useRef, useState } from "react";
 import type { IconType } from "react-icons/lib";
 import { MdArrowDropDown } from "react-icons/md";
 
+import type { Option } from "lib/types";
+
 const ITEM_HEIGHT = 56;
 
 interface SelectInputProps {
@@ -42,7 +44,8 @@ interface SelectItemProps {
 const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => {
   return (
     <Flex
-      p={4}
+      px={4}
+      py={2}
       onClick={onSelect}
       color="text.main"
       transition="all .2s"
@@ -71,7 +74,7 @@ export const SelectInput = ({
   const [selected, setSelected] = useState(
     () => options.find((asset) => asset.value === initialSelected)?.label ?? ""
   );
-  const [inputRefWidth, setInputRefWidth] = useState<number | undefined>();
+  const [inputRefWidth, setInputRefWidth] = useState<Option<number>>();
   useOutsideClick({
     ref: optionRef,
     handler: () => isOpen && onClose(),
@@ -113,8 +116,8 @@ export const SelectInput = ({
           {selectedOption?.icon && (
             <InputLeftElement pointerEvents="none" h="full">
               <Icon
-                as={selectedOption?.icon}
-                color={selectedOption?.iconColor}
+                as={selectedOption.icon}
+                color={selectedOption.iconColor}
                 fontSize="20px"
               />
             </InputLeftElement>

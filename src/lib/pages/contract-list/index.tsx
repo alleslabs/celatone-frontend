@@ -1,8 +1,8 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
 import { MdOutlineAdd } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { CreateNewList } from "lib/components/modal/list";
 import { AllContractLists } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
@@ -10,12 +10,12 @@ import { useContractStore } from "lib/hooks";
 import { useInstantiatedMockInfoByMe } from "lib/model/contract";
 
 const AllContractListsPage = observer(() => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   const { getContractLists } = useContractStore();
   const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
 
   const handleListSelect = (slug: string) => {
-    router.push({ pathname: `/contract-list/${slug}` });
+    navigate({ pathname: `/contract-list/${slug}` });
   };
 
   return (
