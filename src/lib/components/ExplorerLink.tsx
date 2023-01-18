@@ -1,7 +1,6 @@
 import type { BoxProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import Link from "next/link";
 
 import {
   getExplorerBlockUrl,
@@ -12,6 +11,7 @@ import {
 import type { AddressReturnType } from "lib/hooks";
 import { truncate } from "lib/utils";
 
+import { AppLink } from "./AppLink";
 import { Copier } from "./Copier";
 
 export type LinkType =
@@ -101,9 +101,9 @@ const LinkRender = ({
   );
 
   return isInternal ? (
-    <Link href={hrefLink} passHref onClick={(e) => e.stopPropagation()}>
+    <AppLink href={hrefLink} passHref onClick={(e) => e.stopPropagation()}>
       {textElement}
-    </Link>
+    </AppLink>
   ) : (
     <a
       href={hrefLink}
