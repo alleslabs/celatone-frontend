@@ -11,8 +11,8 @@ import {
 import { MdChevronRight } from "react-icons/md";
 
 import { AppLink } from "lib/components/AppLink";
-import type { Detail } from "lib/services/publicProject";
 import type { Option } from "lib/types";
+import type { Detail } from "lib/types/projects";
 
 import { BookmarkButton } from "./BookmarkButton";
 import { SocialMedia } from "./SocialMedia";

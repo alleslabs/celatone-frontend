@@ -22,7 +22,7 @@ import { MdBookmarkBorder, MdHowToVote } from "react-icons/md";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
-import type { Code } from "lib/services/publicProject";
+import type { Code } from "lib/types/projects";
 
 interface CodesTableProps {
   codes: Code[];

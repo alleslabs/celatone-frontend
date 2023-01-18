@@ -1,74 +1,17 @@
+import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useCallback } from "react";
 
-/**
- * Response interface
- */
-
-interface Account {
-  address: string;
-  description: string;
-  name: string;
-  slug: string;
-}
-
-interface AssetSlug {
-  slug: string;
-}
-
-interface Asset {
-  coingecko: string;
-  coinmarketcap: string;
-  description: string;
-  id: string;
-  logo: string;
-  name: string;
-  precision: number;
-  slugs: AssetSlug[];
-  symbol: string;
-  type: string;
-}
-
-export interface Code {
-  description: string;
-  id: number;
-  name: string;
-  slug: string;
-}
-
-interface RawContract {
-  address: string;
-  description: string;
-  name: string;
-  slug: string;
-}
-
-interface Social {
-  name: string;
-  url: string;
-}
-export interface Detail {
-  github: string;
-  logo: string;
-  name: string;
-  socials: Social[];
-  website: string;
-  description: string;
-}
-
-interface RawPublicProjectInfo {
-  accounts: Account[];
-  assets: Asset[];
-  codes: Code[];
-  contracts: RawContract[];
-  details: Detail;
-  slug: string;
-}
-
-/**
- * Return interface
- */
+import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
+import type { AssetInfo, Option } from "lib/types";
+import type {
+  Account,
+  Code,
+  Detail,
+  RawContract,
+  RawPublicProjectInfo,
+} from "lib/types/projects";
 
 export interface Contract extends Omit<RawContract, "address"> {
   contractAddress: string;
@@ -76,7 +19,7 @@ export interface Contract extends Omit<RawContract, "address"> {
 
 export interface PublicProjectInfo {
   accounts: Account[];
-  assets: Asset[];
+  assets: AssetInfo;
   codes: Code[];
   contracts: Contract[];
   details: Detail;
@@ -91,16 +34,16 @@ const parseContract = (raw: RawContract): Contract => ({
 });
 
 export const usePublicProjectsQuery = () => {
-  // const { currentChainName, currentChainRecord } = useWallet();
+  const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
-    /**
-     * todos
-     * remove hardcode
-     */
+    if (!currentChainRecord) return undefined;
+
     return axios
       .get<RawPublicProjectInfo[]>(
-        "https://celatone-api.alleslabs.dev/projects/osmosis/osmosis-1"
+        `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
+          currentChainRecord.chain.chain_name
+        )}/${currentChainRecord.chain.chain_id}`
       )
       .then(({ data: projects }) =>
         projects.map<PublicProjectInfo>((project) => ({
@@ -108,33 +51,31 @@ export const usePublicProjectsQuery = () => {
           contracts: project.contracts.map(parseContract),
         }))
       );
-  }, []);
+  }, [currentChainRecord]);
 
-  return useQuery(["public_project"], queryFn, {
+  return useQuery(["public_project_by_slug"], queryFn, {
     keepPreviousData: true,
   });
 };
 
-export const usePublicProjectBySlugQuery = (slug: string | undefined) => {
-  const queryFn = useCallback(async (): Promise<
-    PublicProjectInfo | undefined
-  > => {
+export const usePublicProjectBySlugQuery = (slug: Option<string>) => {
+  const { currentChainRecord } = useWallet();
+  const queryFn = useCallback(async (): Promise<Option<PublicProjectInfo>> => {
     if (!slug) return undefined;
-    /**
-     * todos
-     * remove hardcode
-     */
+    if (!currentChainRecord) return undefined;
     return axios
       .get<RawPublicProjectInfo>(
-        `https://celatone-api.alleslabs.dev/projects/osmosis/osmosis-1/${slug}`
+        `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
+          currentChainRecord.chain.chain_name
+        )}/${currentChainRecord.chain.chain_id}/{slug}`
       )
       .then(({ data: project }) => ({
         ...project,
         contracts: project.contracts.map(parseContract),
       }));
-  }, [slug]);
+  }, [currentChainRecord, slug]);
 
-  return useQuery(["public_project"], queryFn, {
+  return useQuery(["public_project_by_slug"], queryFn, {
     keepPreviousData: true,
     enabled: !!slug,
   });

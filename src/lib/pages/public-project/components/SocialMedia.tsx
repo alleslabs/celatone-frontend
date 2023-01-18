@@ -8,8 +8,8 @@ import {
 } from "react-icons/fa";
 import { MdLanguage } from "react-icons/md";
 
-import type { Detail } from "lib/services/publicProject";
 import type { Option } from "lib/types";
+import type { Detail } from "lib/types/projects";
 
 export const renderSocial = (name: string) => {
   switch (name) {
