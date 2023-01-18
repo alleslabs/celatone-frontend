@@ -6,78 +6,21 @@ import {
   Text,
   Flex,
   Heading,
-  Icon,
   Image,
-  Button,
-  useToast,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useCallback } from "react";
-import {
-  MdChevronRight,
-  MdBookmark,
-  MdBookmarkBorder,
-  MdCheckCircle,
-} from "react-icons/md";
+import { MdChevronRight } from "react-icons/md";
 
-import { usePublicProjectStore } from "lib/hooks";
 import type { Detail } from "lib/services/publicProject";
 import type { Option } from "lib/types";
 
+import { BookmarkButton } from "./BookmarkButton";
 import { SocialMedia } from "./SocialMedia";
 
 interface DetailProps {
   details: Option<Detail>;
   slug: string;
 }
-export const DetailHeader = observer(({ details, slug }: DetailProps) => {
-  const { isPublicProjectSaved, savePublicProject, removePublicProject } =
-    usePublicProjectStore();
-  const toast = useToast();
-  const handleSave = useCallback(() => {
-    savePublicProject({
-      name: details?.name || "",
-      slug,
-      logo: details?.logo || "",
-    });
-
-    toast({
-      title: `Bookmarked \u2018${details?.name}\u2019 successfully`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
-    });
-  }, [slug, details, savePublicProject, toast]);
-  const handleRemove = useCallback(() => {
-    removePublicProject(slug);
-
-    toast({
-      title: `\u2018${details?.name}\u2019 is removed from bookmark`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
-    });
-  }, [slug, details, removePublicProject, toast]);
+export const DetailHeader = ({ details, slug }: DetailProps) => {
   return (
     <Box px={12}>
       <Breadcrumb
@@ -137,31 +80,9 @@ export const DetailHeader = observer(({ details, slug }: DetailProps) => {
         </Box>
         <Flex alignItems="center" gap={4}>
           <SocialMedia details={details} />
-          {isPublicProjectSaved(slug) ? (
-            <Button
-              variant="outline-primary"
-              gap={2}
-              onClick={() => handleRemove()}
-            >
-              <Icon as={MdBookmark} boxSize={4} color="primary.main" />
-              Bookmarked
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              gap={2}
-              onClick={() => {
-                if (details) {
-                  handleSave();
-                }
-              }}
-            >
-              <Icon as={MdBookmarkBorder} boxSize={4} color="gray.600" />
-              Bookmark Project
-            </Button>
-          )}
+          <BookmarkButton details={details} slug={slug} />
         </Flex>
       </Flex>
     </Box>
   );
-});
+};
