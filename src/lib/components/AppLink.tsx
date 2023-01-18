@@ -1,15 +1,11 @@
 import { Text } from "@chakra-ui/react";
-import type { LinkProps } from "next/link";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 export const AppLink = ({
   children,
   ...linkProps
-}: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> &
-  LinkProps & {
-    children?: React.ReactNode;
-  } & React.RefAttributes<HTMLAnchorElement>) => {
+}: React.ComponentProps<typeof Link>) => {
   const router = useRouter();
   const componentHref = linkProps.href.toString();
   return (

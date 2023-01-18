@@ -79,16 +79,14 @@ const ContractsByList = observer(() => {
             </AppLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
-            <AppLink href="#">
-              <Text
-                className="ellipsis"
-                width="250px"
-                fontWeight="600"
-                color="text.dark"
-              >
-                {contractListInfo.name}
-              </Text>
-            </AppLink>
+            <Text
+              className="ellipsis"
+              width="250px"
+              fontWeight="600"
+              color="text.dark"
+            >
+              {contractListInfo.name}
+            </Text>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex
