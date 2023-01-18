@@ -25,7 +25,7 @@ export const useInternalNavigate = () => {
         {
           pathname: `/[network]${pathname}`,
           query: {
-            network: router.query.network === "testnet" ? "testnet" : "mainnet",
+            network: router.query.network === "mainnet" ? "mainnet" : "testnet",
             ...query,
           },
         },

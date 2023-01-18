@@ -118,10 +118,10 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
     /**
      * @remarks Condition checking varies by chain
      */
-    if (router.query.network === "testnet") {
-      setCurrentChain("osmosistestnet");
-    } else {
+    if (router.query.network === "mainnet") {
       setCurrentChain("osmosis");
+    } else {
+      setCurrentChain("osmosistestnet");
     }
   }, [router.query.network, setCurrentChain]);
 

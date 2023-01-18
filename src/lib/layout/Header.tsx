@@ -33,7 +33,7 @@ const Header = () => {
           /**
            * @remarks Condition checking varies by chain
            */
-          network: chainName === "osmosistestnet" ? "testnet" : "mainnet",
+          network: chainName === "osmosis" ? "mainnet" : "testnet",
         },
       });
     },
