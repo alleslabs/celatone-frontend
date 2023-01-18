@@ -44,18 +44,9 @@ export const ControllerTextarea = <T extends FieldValues>({
   const isError = !!error;
 
   return (
-    <FormControl
-      className="textarea-form"
-      size="md"
-      isInvalid={isError}
-      {...componentProps}
-      {...field}
-    >
+    <FormControl size="md" isInvalid={isError} {...componentProps} {...field}>
       {label && (
-        <FormLabel
-          bgColor={labelBgColor}
-          className={field.value.length ? "floating" : ""}
-        >
+        <FormLabel className="textarea-label" bgColor={labelBgColor}>
           {label}
         </FormLabel>
       )}
