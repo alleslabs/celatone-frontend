@@ -160,6 +160,7 @@ export const useContractListByCodeId = (
           contractAddress: contract.address as ContractAddr,
           instantiator: unwrap(contract.transaction?.account.address),
           label: contract.label,
+          admin: contract.account?.address,
           instantiated: parseDateDefault(contract.transaction?.block.timestamp),
           // TODO: handle Genesis case
           latestUpdator: contract.contract_histories.at(0)?.account.address,

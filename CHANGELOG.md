@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#98](https://github.com/alleslabs/celatone-frontend/pull/98) Add clear admin menu in all contract list
 - [#89](https://github.com/alleslabs/celatone-frontend/pull/89) Update feedback link
 - [#90](https://github.com/alleslabs/celatone-frontend/pull/90) Add update admin (`/admin`) and migrate (`/migrate`) page routes
 - [#91](https://github.com/alleslabs/celatone-frontend/pull/91) Add migrate shortcut to the sidebar

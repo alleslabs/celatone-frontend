@@ -16,6 +16,7 @@ import {
   chakra,
   MenuItem,
 } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -23,6 +24,7 @@ import {
   MdMode,
   MdOutlineBookmark,
   MdDelete,
+  MdPersonRemove,
 } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -31,6 +33,8 @@ import {
   EditContractDetails,
   RemoveContract,
 } from "lib/components/modal/contract";
+import { ClearAdminContract } from "lib/components/modal/contract/ClearAdminContract";
+import { useAdminByContractAddresses } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
@@ -55,6 +59,11 @@ export const ContractListTable = ({
   contractRemovalInfo,
 }: ContractListTableProps) => {
   const router = useRouter();
+  const { address } = useWallet();
+  const { data: admins = {} } = useAdminByContractAddresses(
+    contracts.map((contract) => contract.contractAddress)
+  );
+
   return (
     <TableContainer w="full">
       <Table variant="simple" sx={{ tableLayout: "auto" }}>
@@ -167,6 +176,25 @@ export const ContractListTable = ({
                             }
                           >
                             Add or remove from other lists
+                          </MenuItem>
+                        }
+                      />
+                      <ClearAdminContract
+                        contractAddress={item.contractAddress}
+                        triggerElement={
+                          <MenuItem
+                            icon={
+                              <StyledIcon
+                                as={MdPersonRemove}
+                                color="gray.600"
+                              />
+                            }
+                            isDisabled={
+                              !address ||
+                              address !== admins[item.contractAddress]
+                            }
+                          >
+                            Clear Admin
                           </MenuItem>
                         }
                       />

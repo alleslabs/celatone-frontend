@@ -2,6 +2,7 @@ import type { ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 export interface ContractInfo extends ContractLocalInfo {
+  admin: Option<string>;
   instantiated: Date;
   latestUpdator?: string;
   latestUpdated: Date;
