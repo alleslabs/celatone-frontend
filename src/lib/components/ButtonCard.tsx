@@ -1,6 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading, Icon, Stack, Text } from "@chakra-ui/react";
-import { FiChevronRight } from "react-icons/fi";
+import { MdChevronRight } from "react-icons/md";
 
 interface ButtonCardInterface extends FlexProps {
   title: string;
@@ -45,6 +45,6 @@ export const ButtonCard = ({
         {description}
       </Text>
     </Stack>
-    <Icon as={FiChevronRight} color="gray.600" fontSize="28px" />
+    <Icon as={MdChevronRight} color="gray.600" fontSize="28px" />
   </Flex>
 );
