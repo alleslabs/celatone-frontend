@@ -22,14 +22,14 @@ export const ButtonCard = ({
       p="24px"
       align="center"
       justify="space-between"
-      onClick={onClick}
+      onClick={!disabled ? onClick : undefined}
       bgColor="gray.900"
       borderRadius="4px 4px 0 0"
       w="100%"
       cursor="pointer"
       _hover={{ bgColor: "rgba(255, 255, 255, 0.15)" }}
       _disabled={{
-        bgColor: "rgba(255, 255, 255, 0.12)",
+        bgColor: "divider.main",
         cursor: "not-allowed",
       }}
       {...componentProps}

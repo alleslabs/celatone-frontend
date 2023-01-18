@@ -43,6 +43,17 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
     </Flex>
   );
 
+const renderText = (listSlug: string) => {
+  switch (listSlug) {
+    case formatSlugName(INSTANTIATED_LIST_NAME):
+      return "Your deployed contract through this address will display here.";
+    case ADMIN_SPECIAL_SLUG:
+      return "You don’t have any admin access to any contracts.";
+    default:
+      return "You don’t have any saved contracts.";
+  }
+};
+
 /**
  *
  * @todo Will be refactored in the next PR
@@ -54,17 +65,6 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
 
   const isInstantiatedByMe =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME);
-
-  const renderText = () => {
-    switch (list.value) {
-      case formatSlugName(INSTANTIATED_LIST_NAME):
-        return "Your deployed contract through this address will display here.";
-      case ADMIN_SPECIAL_SLUG:
-        return "You don’t have any admin access to any contracts.";
-      default:
-        return "You don’t have any saved contracts.";
-    }
-  };
 
   return (
     <Flex
@@ -80,7 +80,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
       ) : (
         <Flex alignItems="center" flexDir="column" gap="4">
           <Icon as={MdSearch} color="gray.600" boxSize="16" />
-          <Text color="text.dark">{renderText()}</Text>
+          <Text color="text.dark">{renderText(list.value)}</Text>
           {!isReadOnly && (
             <ActionSection
               list={list}

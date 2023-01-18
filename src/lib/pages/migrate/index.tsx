@@ -16,17 +16,18 @@ import { getFirstQueryParam } from "lib/utils";
 
 import type { MigratePageState } from "./types";
 
+const defaultValues: MigratePageState = {
+  isValid: false,
+  contractAddress: "" as ContractAddr,
+  admin: undefined,
+  codeId: undefined,
+};
+
 const Migrate = () => {
   const router = useRouter();
   const endpoint = useEndpoint();
   const { address } = useWallet();
 
-  const defaultValues: MigratePageState = {
-    isValid: false,
-    contractAddress: "" as ContractAddr,
-    admin: undefined,
-    codeId: undefined,
-  };
   const { setValue, watch } = useForm<MigratePageState>({
     mode: "all",
     defaultValues,
@@ -56,6 +57,7 @@ const Migrate = () => {
     ["query", "instantiateInfo", contractAddress],
     async () => queryInstantiateInfo(endpoint, contractAddress),
     {
+      enabled: !!contractAddress,
       retry: 0,
       onSuccess(data) {
         const codeIdParam = Number(getFirstQueryParam(router.query.codeId));
@@ -72,7 +74,7 @@ const Migrate = () => {
   );
 
   useEffect(() => {
-    (async () => {
+    (() => {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
