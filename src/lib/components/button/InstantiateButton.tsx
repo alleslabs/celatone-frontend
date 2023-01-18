@@ -1,9 +1,9 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, chakra, Icon, Tooltip } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
 import { MdHowToVote, MdPerson } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 
@@ -53,10 +53,10 @@ export const InstantiateButton = ({
   codeId,
   ...buttonProps
 }: InstantiateButtonProps) => {
-  const router = useRouter();
   const { address } = useWallet();
+  const navigate = useInternalNavigate();
   const goToInstantiate = () =>
-    router.push({ pathname: "/instantiate", query: { "code-id": codeId } });
+    navigate({ pathname: "/instantiate", query: { "code-id": codeId } });
 
   const isAllowed =
     permissionAddresses.includes(address as HumanAddr) ||

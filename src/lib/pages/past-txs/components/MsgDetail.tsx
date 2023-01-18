@@ -4,6 +4,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useMemo, useState } from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 
+import { useRedo } from "../hooks/useRedo";
 import { useFabricateFee, useSimulateFee, useResendTx } from "lib/app-provider";
 import { AccordionStepperItem } from "lib/components/AccordionStepperItem";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
@@ -26,7 +27,6 @@ import {
   formatUDenom,
   formatUToken,
   extractMsgType,
-  onClickRedo,
 } from "lib/utils";
 
 interface MsgDetailProps {
@@ -35,6 +35,8 @@ interface MsgDetailProps {
 }
 
 export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
+  const onClickRedo = useRedo();
+
   const [button, setButton] = useState<"redo" | "resend" | "">("");
   const [showButton, setShowButton] = useState(false);
   const { currentChainName } = useWallet();

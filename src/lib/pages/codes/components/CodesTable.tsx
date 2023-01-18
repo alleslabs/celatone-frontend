@@ -15,10 +15,10 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button/InstantiateButton";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
@@ -124,10 +124,9 @@ const TableHead = () => {
 };
 
 const TableRow = ({ code, isRemovable }: CodesRowProps) => {
-  const router = useRouter();
-
+  const navigate = useInternalNavigate();
   const goToCodeDetails = () => {
-    router.push({ pathname: `/code/${code.id}` });
+    navigate({ pathname: `/code/${code.id}` });
   };
 
   return (

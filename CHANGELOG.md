@@ -40,6 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#88](https://github.com/alleslabs/celatone-frontend/pull/88) Add code snippet for query and execute
+- [#97](https://github.com/alleslabs/celatone-frontend/pull/97) Change label style to always afloat
+- [#96](https://github.com/alleslabs/celatone-frontend/pull/96) Fix incorrect instantiated block height explorer link
+- [#95](https://github.com/alleslabs/celatone-frontend/pull/95) Add network to url path
+- [#89](https://github.com/alleslabs/celatone-frontend/pull/89) Update feedback link
 - [#90](https://github.com/alleslabs/celatone-frontend/pull/90) Add update admin (`/admin`) and migrate (`/migrate`) page routes
 - [#91](https://github.com/alleslabs/celatone-frontend/pull/91) Add migrate shortcut to the sidebar
 - [#75](https://github.com/alleslabs/celatone-frontend/pull/75) Add code-related contracts table to the code detail page
