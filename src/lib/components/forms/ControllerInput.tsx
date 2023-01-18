@@ -54,6 +54,7 @@ export const ControllerInput = <T extends FieldValues>({
   });
 
   const isError = !!error;
+  const isRequired = "required" in rules;
   return (
     <FormControl
       className={`${size}-form`}
@@ -67,7 +68,7 @@ export const ControllerInput = <T extends FieldValues>({
           className={field.value.length ? "floating" : ""}
           bgColor={labelBgColor}
         >
-          {label}
+          {label} {isRequired && <span style={{ color: "#EF5350" }}>*</span>}
         </FormLabel>
       )}
       <Input

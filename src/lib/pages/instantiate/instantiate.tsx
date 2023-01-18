@@ -63,13 +63,21 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     "select-existing"
   );
   const [codeId, setCodeId] = useState("");
-  const [error, setError] = useState("");
+  const [simulateError, setSimulateError] = useState("");
   const [simulating, setSimulating] = useState(false);
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
-  const { control, setValue, watch, handleSubmit, reset } = useForm({
+  const {
+    control,
+    formState: { errors: formErrors },
+    setValue,
+    watch,
+    handleSubmit,
+    reset,
+  } = useForm({
+    mode: "onBlur",
     defaultValues: {
       label: "",
       adminAddress: "",
@@ -86,8 +94,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const selectedAssets = watchAssets.map((asset) => asset.denom);
 
   const disableInstantiate = useMemo(() => {
-    return !codeId || !address || !!jsonValidate(watchInitMsg);
-  }, [codeId, address, watchInitMsg]);
+    return (
+      !codeId || !address || !!jsonValidate(watchInitMsg) || !!formErrors.label
+    );
+  }, [codeId, address, watchInitMsg, formErrors.label]);
 
   const assetOptions = useMemo(
     () =>
@@ -134,7 +144,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         if (stream) broadcast(stream);
         setSimulating(false);
       } catch (e) {
-        setError((e as Error).message);
+        setSimulateError((e as Error).message);
         setSimulating(false);
       }
     })();
@@ -221,14 +231,16 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             setInputState={setCodeId}
           />
         )}
-        <form>
+        <form style={{ width: "100%" }}>
           <ControllerInput
             name="label"
             control={control}
+            error={formErrors.label?.message}
             label="Label"
             helperText="Label will help remind you or other contract viewer to understand what this contract do and how it works"
             variant="floating"
             mb="32px"
+            rules={{ required: "Label is required" }}
           />
           <ControllerInput
             name="adminAddress"
@@ -297,7 +309,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         disabled={disableInstantiate}
         loading={simulating}
       />
-      {error && <FailedModal errorLog={error} onClose={() => setError("")} />}
+      {simulateError && (
+        <FailedModal
+          errorLog={simulateError}
+          onClose={() => setSimulateError("")}
+        />
+      )}
     </>
   );
 };
