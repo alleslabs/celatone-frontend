@@ -2,7 +2,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading, Icon, Stack, Text } from "@chakra-ui/react";
 import { MdChevronRight } from "react-icons/md";
 
-interface ButtonCardInterface extends FlexProps {
+interface ButtonCardProps extends FlexProps {
   title: string;
   description: string;
   onClick: () => void;
@@ -15,7 +15,7 @@ export const ButtonCard = ({
   onClick,
   disabled,
   ...componentProps
-}: ButtonCardInterface) => (
+}: ButtonCardProps) => (
   <Flex
     aria-disabled={disabled}
     p="24px"

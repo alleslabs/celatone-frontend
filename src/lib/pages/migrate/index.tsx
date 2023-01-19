@@ -32,12 +32,7 @@ const Migrate = () => {
     mode: "all",
     defaultValues,
   });
-  const [isValid, contractAddress, admin] = watch([
-    "isValid",
-    "contractAddress",
-    "admin",
-    "codeId",
-  ]);
+  const { isValid, contractAddress, admin } = watch();
 
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
