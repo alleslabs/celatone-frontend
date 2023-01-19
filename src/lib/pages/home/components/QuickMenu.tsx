@@ -10,12 +10,12 @@ import {
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 
-// TODO remove link text-decoration underline
 const cardProps = {
   width: "100%",
   padding: "16px",
   borderRadius: "4px",
   justifyContent: "space-between",
+  height: "100%",
 };
 
 const secondaryMenu = [
