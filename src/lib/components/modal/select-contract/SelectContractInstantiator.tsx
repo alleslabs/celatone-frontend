@@ -29,15 +29,15 @@ import type { ContractAddr, RpcQueryError } from "lib/types";
 import { AllContractLists } from "./AllContractLists";
 import { ContractListDetail } from "./ContractListDetail";
 
-interface SelectContractProps {
+interface SelectContractInstantiatorProps {
   notSelected: boolean;
   onContractSelect: (contract: ContractAddr) => void;
 }
 
-export const SelectContract = ({
+export const SelectContractInstantiator = ({
   notSelected,
   onContractSelect,
-}: SelectContractProps) => {
+}: SelectContractInstantiatorProps) => {
   const {
     appContractAddress: { example: exampleContractAddress },
   } = useCelatoneApp();
@@ -103,7 +103,12 @@ export const SelectContract = ({
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
-      <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl">
+      <Modal
+        isOpen={isOpen}
+        onClose={resetOnClose}
+        closeOnOverlayClick={false}
+        size="4xl"
+      >
         <ModalOverlay />
         {listSlug.length === 0 || !contractList ? (
           <ModalContent>
