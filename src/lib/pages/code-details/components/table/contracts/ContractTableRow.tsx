@@ -86,11 +86,9 @@ export const ContractTableRow = ({
           onClick={(e) => e.stopPropagation()}
           cursor="text"
         >
-          <Text variant="body2">
-            {formatUTC(contractInfo.latestUpdated.toString())}
-          </Text>
+          <Text variant="body2">{formatUTC(contractInfo.latestUpdated)}</Text>
           <Text variant="body2" color="text.dark">
-            {`(${dateFromNow(contractInfo.latestUpdated.toString())})`}
+            {`(${dateFromNow(contractInfo.latestUpdated)})`}
           </Text>
         </Flex>
       </TableRow>

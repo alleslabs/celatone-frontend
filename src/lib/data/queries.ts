@@ -253,6 +253,21 @@ export const getRelatedProposalsCountByContractAddress = graphql(`
   }
 `);
 
+export const getContractListByAdmin = graphql(`
+  query getContractListByAdmin($address: String!) {
+    contracts(
+      where: { account: { address: { _eq: $address } } }
+      order_by: { id: desc }
+    ) {
+      address
+      label
+      accountByInitBy {
+        address
+      }
+    }
+  }
+`);
+
 export const getContractListByCodeId = graphql(`
   query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
