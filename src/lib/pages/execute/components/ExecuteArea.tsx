@@ -258,7 +258,6 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
             type="execute"
             contractAddress={contractAddress}
             message={msg}
-            isDisable={!contractAddress || !msg.length}
           />
         </Flex>
         <Flex direction="row" align="center" gap={2}>

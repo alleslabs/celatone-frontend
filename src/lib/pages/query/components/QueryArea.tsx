@@ -130,7 +130,6 @@ export const QueryArea = ({
                 type="query"
                 contractAddress={contractAddress}
                 message={msg}
-                isDisable={!contractAddress || !msg.length}
               />
             </Flex>
             <Button
