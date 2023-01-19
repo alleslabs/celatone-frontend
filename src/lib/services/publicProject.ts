@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useCallback } from "react";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
+import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
 import type { AssetInfo, Option } from "lib/types";
 import type {
   Account,
@@ -43,7 +43,7 @@ export const usePublicProjectsQuery = () => {
       .get<RawPublicProjectInfo[]>(
         `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
           currentChainRecord.chain.chain_name
-        )}/${currentChainRecord.chain.chain_id}`
+        )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}`
       )
       .then(({ data: projects }) =>
         projects.map<PublicProjectInfo>((project) => ({
@@ -67,7 +67,7 @@ export const usePublicProjectBySlugQuery = (slug: Option<string>) => {
       .get<RawPublicProjectInfo>(
         `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
           currentChainRecord.chain.chain_name
-        )}/${currentChainRecord.chain.chain_id}/{slug}`
+        )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
       )
       .then(({ data: project }) => ({
         ...project,
