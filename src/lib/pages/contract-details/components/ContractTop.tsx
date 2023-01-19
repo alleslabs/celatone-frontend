@@ -165,7 +165,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         <Menu>
           <Tooltip
             hasArrow
-            label="You don’t have admin access to this contract."
+            label="You don't have admin access to this contract."
             placement="top"
             bg="primary.dark"
             arrowSize={8}
