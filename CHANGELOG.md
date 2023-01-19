@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#99](https://github.com/alleslabs/celatone-frontend/pull/89) Validate label field in instantiate page
+- [#99](https://github.com/alleslabs/celatone-frontend/pull/99) Validate label and codeId field in instantiate page
 - [#97](https://github.com/alleslabs/celatone-frontend/pull/97) Change label style to always afloat
 - [#96](https://github.com/alleslabs/celatone-frontend/pull/96) Fix incorrect instantiated block height explorer link
 - [#95](https://github.com/alleslabs/celatone-frontend/pull/95) Add network to url path

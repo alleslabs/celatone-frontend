@@ -62,7 +62,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
     "select-existing"
   );
-  const [simulateError, setSimulateError] = useState("");
   const [simulating, setSimulating] = useState(false);
 
   // ------------------------------------------//
@@ -83,28 +82,27 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       adminAddress: "",
       initMsg: "",
       assets: [{ denom: "", amount: "" }],
+      simulateError: "",
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
     name: "assets",
   });
-  const [watchAssets, watchInitMsg, watchCodeId] = watch([
-    "assets",
-    "initMsg",
-    "codeId",
-  ]);
+  const {
+    codeId,
+    assets: watchAssets,
+    initMsg: watchInitMsg,
+    simulateError,
+  } = watch();
 
   const selectedAssets = watchAssets.map((asset) => asset.denom);
 
   const disableInstantiate = useMemo(() => {
     return (
-      !watchCodeId ||
-      !address ||
-      !!jsonValidate(watchInitMsg) ||
-      !!formErrors.label
+      !codeId || !address || !!jsonValidate(watchInitMsg) || !!formErrors.label
     );
-  }, [watchCodeId, address, watchInitMsg, formErrors.label]);
+  }, [codeId, address, watchInitMsg, formErrors.label]);
 
   const assetOptions = useMemo(
     () =>
@@ -131,7 +129,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       const msg = composeMsg(MsgType.INSTANTIATE, {
         sender: address as HumanAddr,
         admin: adminAddress as HumanAddr,
-        codeId: Long.fromString(watchCodeId),
+        codeId: Long.fromString(codeId),
         label,
         msg: Buffer.from(initMsg),
         funds,
@@ -140,7 +138,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         const estimatedFee = await simulate([msg]);
         const stream = await postInstantiateTx({
           estimatedFee: estimatedFee ? fabricateFee(estimatedFee) : undefined,
-          codeId: Number(watchCodeId),
+          codeId: Number(codeId),
           initMsg: JSON.parse(initMsg),
           label,
           admin: adminAddress,
@@ -151,19 +149,20 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         if (stream) broadcast(stream);
         setSimulating(false);
       } catch (e) {
-        setSimulateError((e as Error).message);
+        setValue("simulateError", (e as Error).message);
         setSimulating(false);
       }
     })();
   }, [
     address,
-    watchCodeId,
+    codeId,
     handleSubmit,
     fabricateFee,
     postInstantiateTx,
     simulate,
     broadcast,
     onComplete,
+    setValue,
   ]);
 
   // ------------------------------------------//
@@ -227,13 +226,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               mt="16px"
               mb="32px"
               onCodeSelect={(code: string) => setValue("codeId", code)}
-              codeId={watchCodeId}
+              codeId={codeId}
             />
           ) : (
             <ControllerInput
               name="codeId"
               control={control}
-              error={!watchCodeId ? formErrors.codeId?.message : undefined}
+              error={!codeId ? formErrors.codeId?.message : undefined}
               label="Code ID"
               helperText="Input existing Code ID manually"
               variant="floating"
@@ -321,7 +320,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       {simulateError && (
         <FailedModal
           errorLog={simulateError}
-          onClose={() => setSimulateError("")}
+          onClose={() => setValue("simulateError", "")}
         />
       )}
     </>

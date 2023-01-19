@@ -56,10 +56,16 @@ export const ControllerInput = <T extends FieldValues>({
   const isError = !!error;
   const isRequired = "required" in rules;
   return (
-    <FormControl size={size} isInvalid={isError} {...componentProps} {...field}>
+    <FormControl
+      size={size}
+      isInvalid={isError}
+      isRequired={isRequired}
+      {...componentProps}
+      {...field}
+    >
       {label && (
         <FormLabel className={`${size}-label`} bgColor={labelBgColor}>
-          {label} {isRequired && <span style={{ color: "#EF5350" }}>*</span>}
+          {label}
         </FormLabel>
       )}
       <Input
