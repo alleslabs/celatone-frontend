@@ -30,6 +30,7 @@ const RemarkRender = ({
       ? "Instantiate"
       : "Migrate";
 
+  const textFormat = isGovernance ? "normal" : "truncate";
   return (
     <Flex
       direction="column"
@@ -46,6 +47,7 @@ const RemarkRender = ({
         type={isGovernance ? "proposal_id" : "tx_hash"}
         value={value}
         canCopyWithHover
+        textFormat={textFormat}
       />
     </Flex>
   );
