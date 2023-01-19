@@ -27,7 +27,7 @@ const secondaryMenu = [
   },
   {
     title: "Execute",
-    subtitle: "Send messages / transactions",
+    subtitle: "Send transactions to contracts",
     slug: "execute",
     icon: MdInput,
   },
