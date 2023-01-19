@@ -1,5 +1,11 @@
-import { Flex, Heading, Box, Text, Icon } from "@chakra-ui/react";
-import { MdChevronRight, MdSearch, MdInput } from "react-icons/md";
+import { Flex, Heading, Box, Text, Icon, SimpleGrid } from "@chakra-ui/react";
+import {
+  MdChevronRight,
+  MdSearch,
+  MdInput,
+  MdReadMore,
+  MdPerson,
+} from "react-icons/md";
 
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -15,15 +21,27 @@ const cardProps = {
 const secondaryMenu = [
   {
     title: "Query",
-    subtitle: "Query and get response from smart contract",
+    subtitle: "Query and get state data",
     slug: "query",
     icon: MdSearch,
   },
   {
     title: "Execute",
-    subtitle: "Send execute messages to smart contract",
+    subtitle: "Send messages / transactions",
     slug: "execute",
     icon: MdInput,
+  },
+  {
+    title: "Migrate",
+    subtitle: "Migrate to other Code ID",
+    slug: "migrate",
+    icon: MdReadMore,
+  },
+  {
+    title: "Update Admin",
+    subtitle: "Change contract admin",
+    slug: "admin",
+    icon: MdPerson,
   },
 ];
 
@@ -38,7 +56,7 @@ export const QuickMenu = () => {
         subtitle="Actions such as deploying new contracts or sending execute messages require a wallet connection."
       />
       <Flex gap={4}>
-        <AppLink href="/deploy" style={{ width: "100%" }}>
+        <AppLink href="/deploy" style={{ width: "55%" }}>
           <Flex
             bg="primary.main"
             _hover={{ bg: "primary.light" }}
@@ -58,7 +76,8 @@ export const QuickMenu = () => {
             <Icon as={MdChevronRight} color="gray.900" boxSize={9} />
           </Flex>
         </AppLink>
-        <Flex direction="column" gap={4} w="full">
+
+        <SimpleGrid columns={2} spacing={3} w="full">
           {secondaryMenu.map((item) => (
             <AppLink href={`/${item.slug}`} key={item.slug}>
               <Flex
@@ -87,7 +106,9 @@ export const QuickMenu = () => {
               </Flex>
             </AppLink>
           ))}
-        </Flex>
+        </SimpleGrid>
+        {/* <Flex direction="column" gap={4} w="full">
+        </Flex> */}
       </Flex>
     </Flex>
   );
