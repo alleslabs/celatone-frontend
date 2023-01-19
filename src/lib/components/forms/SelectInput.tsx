@@ -79,8 +79,7 @@ export const SelectInput = ({
     ref: optionRef,
     handler: () => isOpen && onClose(),
   });
-  const selectedOption =
-    options.find((item) => item.label === selected) || undefined;
+  const selectedOption = options.find((item) => item.label === selected);
 
   useEffect(() => {
     if (inputRef.current) {

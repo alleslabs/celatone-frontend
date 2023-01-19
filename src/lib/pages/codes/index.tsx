@@ -31,14 +31,14 @@ const Codes = observer(() => {
       keyword: "",
     },
   });
-  const states = watch();
+  const { keyword, permissionValue } = watch();
   const {
     storedCodesCount,
     storedCodes: stored,
     savedCodesCount,
     savedCodes: saved,
     allCodesCount,
-  } = useCodeListData(states.keyword, states.permissionValue);
+  } = useCodeListData(keyword, permissionValue);
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setValue("keyword", inputValue);
@@ -61,7 +61,7 @@ const Codes = observer(() => {
           <Flex gap={2}>
             <InputWithIcon
               placeholder="Search with code ID or code description"
-              value={states.keyword}
+              value={keyword}
               onChange={handleFilterChange}
               size="lg"
             />
@@ -80,7 +80,7 @@ const Codes = observer(() => {
               tableName="My Stored Codes"
               codes={stored}
               action={<UploadButton />}
-              isSearching={!!states.keyword}
+              isSearching={!!keyword}
             />
             <CodesTable
               type="saved"
@@ -88,7 +88,7 @@ const Codes = observer(() => {
               codes={saved}
               action={<SaveCodeButton />}
               isRemovable
-              isSearching={!!states.keyword}
+              isSearching={!!keyword}
             />
           </TabPanel>
           <TabPanel p="0px">
@@ -97,7 +97,7 @@ const Codes = observer(() => {
               tableName="My Stored Codes"
               codes={stored}
               action={<UploadButton />}
-              isSearching={!!states.keyword}
+              isSearching={!!keyword}
             />
           </TabPanel>
           <TabPanel p="0px">
@@ -106,7 +106,7 @@ const Codes = observer(() => {
               tableName="My Saved Codes"
               codes={saved}
               action={<SaveCodeButton />}
-              isSearching={!!states.keyword}
+              isSearching={!!keyword}
               isRemovable
             />
           </TabPanel>

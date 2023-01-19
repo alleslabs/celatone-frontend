@@ -22,11 +22,8 @@ const AllCodes = observer(() => {
       keyword: "",
     },
   });
-  const states = watch();
-  const { allCodes, isLoading } = useAllCodesData(
-    states.keyword,
-    states.permissionValue
-  );
+  const { keyword, permissionValue } = watch();
+  const { allCodes, isLoading } = useAllCodesData(keyword, permissionValue);
 
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -42,7 +39,7 @@ const AllCodes = observer(() => {
         <Flex gap={2}>
           <InputWithIcon
             placeholder="Search with code ID or code description"
-            value={states.keyword}
+            value={keyword}
             onChange={handleFilterChange}
             size="lg"
           />
@@ -61,7 +58,7 @@ const AllCodes = observer(() => {
           type="all"
           tableName="All Codes"
           codes={allCodes}
-          isSearching={!!states.keyword}
+          isSearching={!!keyword}
         />
       )}
     </Box>
