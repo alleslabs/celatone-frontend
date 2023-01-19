@@ -99,6 +99,7 @@ const Execute = () => {
       />
 
       <ContractSelectSection
+        mode="all-lists"
         contractAddress={watchContractAddress}
         onContractSelect={onContractSelect}
       />
