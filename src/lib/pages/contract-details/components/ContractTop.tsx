@@ -6,12 +6,21 @@ import {
   Button,
   Icon,
   IconButton,
+  MenuItem,
+  chakra,
+  MenuButton,
+  Menu,
+  MenuList,
 } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import {
   MdBookmark,
   MdBookmarkBorder,
   MdInput,
   MdKeyboardArrowDown,
+  MdPerson,
+  MdPersonRemove,
+  MdReadMore,
 } from "react-icons/md";
 import { RiPencilFill } from "react-icons/ri";
 
@@ -22,17 +31,34 @@ import {
   EditContractDetails,
   SaveContractDetails,
 } from "lib/components/modal";
+import { ClearAdminContract } from "lib/components/modal/contract/ClearAdminContract";
 import type { ContractData } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
+
+const StyledMenuItem = chakra(MenuItem, {
+  baseStyle: {
+    fontSize: "14px",
+  },
+});
+
+const StyledIcon = chakra(Icon, {
+  baseStyle: {
+    boxSize: "4",
+    display: "flex",
+    alignItems: "center",
+  },
+});
 
 interface ContractTopProps {
   contractData: ContractData;
 }
 export const ContractTop = ({ contractData }: ContractTopProps) => {
   const navigate = useInternalNavigate();
+  const { address } = useWallet();
   const { contractLocalInfo, instantiateInfo, publicInfo } = contractData;
 
   const contractAddress = instantiateInfo?.contractAddress as ContractAddr;
+  const admin = instantiateInfo?.admin;
 
   const displayName =
     contractLocalInfo?.name || publicInfo?.name || instantiateInfo?.label;
@@ -134,14 +160,51 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           </Flex>
         )}
       </Flex>
-      <Flex gap={4} w="fit-content">
-        {/* TODO - Revisit, implement admin button */}
-        <Button
-          variant="outline-gray"
-          rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
-        >
-          Admin
-        </Button>
+      <Flex gap={4}>
+        <Menu>
+          <MenuButton
+            variant="outline-gray"
+            as={Button}
+            isDisabled={!address || address !== admin}
+            rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
+          >
+            Admin
+          </MenuButton>
+          <MenuList>
+            <StyledMenuItem
+              icon={<StyledIcon as={MdReadMore} color="gray.600" />}
+              onClick={() => {
+                navigate({
+                  pathname: "/migrate",
+                  query: { contract: contractAddress },
+                });
+              }}
+            >
+              Migrate
+            </StyledMenuItem>
+            <StyledMenuItem
+              icon={<StyledIcon as={MdPerson} color="gray.600" />}
+              onClick={() => {
+                navigate({
+                  pathname: "/admin",
+                  query: { contract: contractAddress },
+                });
+              }}
+            >
+              Update Admin
+            </StyledMenuItem>
+            <ClearAdminContract
+              contractAddress={contractAddress}
+              triggerElement={
+                <StyledMenuItem
+                  icon={<StyledIcon as={MdPersonRemove} color="gray.600" />}
+                >
+                  Clear Admin
+                </StyledMenuItem>
+              }
+            />
+          </MenuList>
+        </Menu>
         <Button
           variant="outline-primary"
           leftIcon={<SearchIcon />}

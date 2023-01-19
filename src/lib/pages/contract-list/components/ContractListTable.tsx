@@ -23,6 +23,7 @@ import {
   MdOutlineBookmark,
   MdDelete,
   MdPersonRemove,
+  MdPerson,
 } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
@@ -40,6 +41,12 @@ import type { LVPair } from "lib/types";
 
 import { ContractNameCell } from "./table/ContractNameCell";
 import { TagsCell } from "./table/TagsCell";
+
+const StyledMenuItem = chakra(MenuItem, {
+  baseStyle: {
+    fontSize: "14px",
+  },
+});
 
 const StyledIcon = chakra(Icon, {
   baseStyle: {
@@ -140,6 +147,17 @@ export const ContractListTable = ({
                       Query
                     </Button>
                   </AppLink>
+                  <AppLink href={`/migrate?contract=${item.contractAddress}`}>
+                    <Button
+                      variant="outline-gray"
+                      size="sm"
+                      isDisabled={
+                        !address || address !== admins[item.contractAddress]
+                      }
+                    >
+                      Migrate
+                    </Button>
+                  </AppLink>
                   <Menu>
                     <MenuButton
                       size="sm"
@@ -157,17 +175,17 @@ export const ContractListTable = ({
                       <EditContractDetails
                         contractLocalInfo={item}
                         triggerElement={
-                          <MenuItem
+                          <StyledMenuItem
                             icon={<StyledIcon as={MdMode} color="gray.600" />}
                           >
                             Edit details
-                          </MenuItem>
+                          </StyledMenuItem>
                         }
                       />
                       <AddToOtherList
                         contractLocalInfo={item}
                         triggerElement={
-                          <MenuItem
+                          <StyledMenuItem
                             icon={
                               <StyledIcon
                                 as={MdOutlineBookmark}
@@ -176,13 +194,27 @@ export const ContractListTable = ({
                             }
                           >
                             Add or remove from other lists
-                          </MenuItem>
+                          </StyledMenuItem>
                         }
                       />
+                      <StyledMenuItem
+                        icon={<StyledIcon as={MdPerson} color="gray.600" />}
+                        onClick={() => {
+                          navigate({
+                            pathname: "/admin",
+                            query: { contract: item.contractAddress },
+                          });
+                        }}
+                        isDisabled={
+                          !address || address !== admins[item.contractAddress]
+                        }
+                      >
+                        Update Admin
+                      </StyledMenuItem>
                       <ClearAdminContract
                         contractAddress={item.contractAddress}
                         triggerElement={
-                          <MenuItem
+                          <StyledMenuItem
                             icon={
                               <StyledIcon
                                 as={MdPersonRemove}
@@ -195,7 +227,7 @@ export const ContractListTable = ({
                             }
                           >
                             Clear Admin
-                          </MenuItem>
+                          </StyledMenuItem>
                         }
                       />
                       {!!contractRemovalInfo && (
@@ -205,6 +237,7 @@ export const ContractListTable = ({
                             contractLocalInfo={item}
                             contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
+                              fontSize: "14px",
                               icon: (
                                 <StyledIcon as={MdDelete} color="error.light" />
                               ),
