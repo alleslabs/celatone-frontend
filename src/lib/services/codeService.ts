@@ -22,7 +22,7 @@ import type {
   PermissionAddresses,
   HumanAddr,
 } from "lib/types";
-import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
+import { parseDateDefault, parseTxHashOpt, unwrapOrDefault } from "lib/utils";
 
 export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
   const queryFn = useCallback(async () => {
@@ -158,7 +158,10 @@ export const useContractListByCodeId = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: unwrap(contract.transaction?.account.address),
+          instantiator: unwrapOrDefault(
+            contract.transaction?.account.address,
+            "" as HumanAddr
+          ),
           label: contract.label,
           instantiated: parseDateDefault(contract.transaction?.block.timestamp),
           // TODO: handle Genesis case
