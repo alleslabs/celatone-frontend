@@ -6506,7 +6506,6 @@ export type GetContractListByCodeIdQuery = {
     }>;
     contract_histories: Array<{
       __typename?: "contract_histories";
-      remark: any;
       block: { __typename?: "blocks"; timestamp: any };
       account: { __typename?: "accounts"; address: string };
     }>;
@@ -8515,26 +8514,8 @@ export const GetContractListByCodeIdDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "desc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
                     },
                   ],
                 },
@@ -8688,10 +8669,6 @@ export const GetContractListByCodeIdDocument = {
                             },
                           ],
                         },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "remark" },
                       },
                     ],
                   },

@@ -269,7 +269,7 @@ export const getContractListByCodeId = graphql(`
   query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
       where: { code_id: { _eq: $codeId } }
-      order_by: { transaction: { block: { timestamp: desc } } }
+      order_by: { id: desc }
       offset: $offset
       limit: $pageSize
     ) {
@@ -293,7 +293,6 @@ export const getContractListByCodeId = graphql(`
         account {
           address
         }
-        remark
       }
     }
   }
