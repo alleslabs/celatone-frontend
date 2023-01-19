@@ -6,11 +6,11 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useGetAddressType } from "lib/hooks";
-import type { CodeData, Option, PermissionAddresses } from "lib/types";
+import type { CodeData, PermissionAddresses } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
-  codeData: Option<CodeData>;
+  codeData: CodeData;
 }
 
 const getMethodSpecificRender = (
@@ -176,13 +176,7 @@ export const CodeInfoSection = ({ codeData }: CodeInfoSectionProps) => {
       <Heading as="h6" variant="h6" mb={6}>
         Code Information
       </Heading>
-      {codeData ? (
-        <CodeDetailsRender codeData={codeData} />
-      ) : (
-        <Text variant="body2" color="text.dark">
-          Error fetching data
-        </Text>
-      )}
+      <CodeDetailsRender codeData={codeData} />
     </Box>
   );
 };

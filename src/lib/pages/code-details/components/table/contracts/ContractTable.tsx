@@ -98,7 +98,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
             <TableHeader>Timestamp</TableHeader>
             <TableHeader />
           </Grid>
-          {codeContracts?.map((contractInfo) => (
+          {codeContracts.map((contractInfo) => (
             <ContractTableRow
               key={
                 contractInfo.name +
