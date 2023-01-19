@@ -19,7 +19,7 @@ import {
   useSimulateFee,
 } from "lib/app-provider";
 import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
-import { ControllerInput, TextInput } from "lib/components/forms";
+import { ControllerInput } from "lib/components/forms";
 import { AssetInput } from "lib/components/forms/AssetInput";
 import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
@@ -62,7 +62,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
     "select-existing"
   );
-  const [codeId, setCodeId] = useState("");
   const [simulateError, setSimulateError] = useState("");
   const [simulating, setSimulating] = useState(false);
 
@@ -77,8 +76,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     handleSubmit,
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "all",
     defaultValues: {
+      codeId: "",
       label: "",
       adminAddress: "",
       initMsg: "",
@@ -89,15 +89,22 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     control,
     name: "assets",
   });
-  const watchAssets = watch("assets");
-  const watchInitMsg = watch("initMsg");
+  const [watchAssets, watchInitMsg, watchCodeId] = watch([
+    "assets",
+    "initMsg",
+    "codeId",
+  ]);
+
   const selectedAssets = watchAssets.map((asset) => asset.denom);
 
   const disableInstantiate = useMemo(() => {
     return (
-      !codeId || !address || !!jsonValidate(watchInitMsg) || !!formErrors.label
+      !watchCodeId ||
+      !address ||
+      !!jsonValidate(watchInitMsg) ||
+      !!formErrors.label
     );
-  }, [codeId, address, watchInitMsg, formErrors.label]);
+  }, [watchCodeId, address, watchInitMsg, formErrors.label]);
 
   const assetOptions = useMemo(
     () =>
@@ -124,7 +131,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       const msg = composeMsg(MsgType.INSTANTIATE, {
         sender: address as HumanAddr,
         admin: adminAddress as HumanAddr,
-        codeId: Long.fromString(codeId),
+        codeId: Long.fromString(watchCodeId),
         label,
         msg: Buffer.from(initMsg),
         funds,
@@ -133,7 +140,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         const estimatedFee = await simulate([msg]);
         const stream = await postInstantiateTx({
           estimatedFee: estimatedFee ? fabricateFee(estimatedFee) : undefined,
-          codeId: Number(codeId),
+          codeId: Number(watchCodeId),
           initMsg: JSON.parse(initMsg),
           label,
           admin: adminAddress,
@@ -150,7 +157,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     })();
   }, [
     address,
-    codeId,
+    watchCodeId,
     handleSubmit,
     fabricateFee,
     postInstantiateTx,
@@ -163,13 +170,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // --------------SIDE EFFECTS----------------//
   // ------------------------------------------//
   useEffect(() => {
-    if (codeIdQuery) setCodeId(codeIdQuery);
+    if (codeIdQuery) setValue("codeId", codeIdQuery);
     if (msgQuery) {
       const decodedMsg = decode(msgQuery);
       try {
         const msgObject = JSON.parse(decodedMsg) as InstantiateRedoMsg;
 
-        setCodeId(String(msgObject.code_id));
+        setValue("codeId", String(msgObject.code_id));
         reset({
           label: msgObject.label,
           adminAddress: msgObject.admin,
@@ -186,7 +193,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         // comment just to avoid eslint no-empty
       }
     }
-  }, [codeIdQuery, msgQuery, reset]);
+  }, [codeIdQuery, msgQuery, reset, setValue]);
 
   return (
     <>
@@ -214,24 +221,26 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             </Radio>
           </Flex>
         </RadioGroup>
-        {method === "select-existing" ? (
-          <CodeSelect
-            mt="16px"
-            mb="32px"
-            onCodeSelect={(code: string) => setCodeId(code)}
-            codeId={codeId}
-          />
-        ) : (
-          <TextInput
-            variant="floating"
-            label="Code ID"
-            helperText="Input existing Code ID manually"
-            my="32px"
-            value={codeId}
-            setInputState={setCodeId}
-          />
-        )}
         <form style={{ width: "100%" }}>
+          {method === "select-existing" ? (
+            <CodeSelect
+              mt="16px"
+              mb="32px"
+              onCodeSelect={(code: string) => setValue("codeId", code)}
+              codeId={watchCodeId}
+            />
+          ) : (
+            <ControllerInput
+              name="codeId"
+              control={control}
+              error={!watchCodeId ? formErrors.codeId?.message : undefined}
+              label="Code ID"
+              helperText="Input existing Code ID manually"
+              variant="floating"
+              my="32px"
+              rules={{ required: "Code ID is required" }}
+            />
+          )}
           <ControllerInput
             name="label"
             control={control}
