@@ -241,8 +241,7 @@ export const ExecuteArea = ({
               initialSelected="null"
             />
           </Flex>
-          {/* TODO: Add asset (input) */}
-          {attachFundOption === "fill" && (
+          {attachFundOption === "fill" ? (
             <Box>
               {fields.map((field, idx) => (
                 <AssetInput
@@ -283,9 +282,7 @@ export const ExecuteArea = ({
                 Add More Asset
               </Button>
             </Box>
-          )}
-          {/* TODO: Add asset (json) */}
-          {attachFundOption === "json" && (
+          ) : (
             <Box>
               <JsonInput text={fundMsg} setText={setFundMsg} height="160px" />
             </Box>

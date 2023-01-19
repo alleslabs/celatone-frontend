@@ -14,6 +14,8 @@ import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { MdArrowDropDown } from "react-icons/md";
 
+import type { Option } from "lib/types";
+
 const ITEM_HEIGHT = 57;
 
 interface SelectInputProps {
@@ -60,7 +62,7 @@ export const SelectInput = ({
   const [selected, setSelected] = useState(
     () => options.find((asset) => asset.value === initialSelected)?.label ?? ""
   );
-  const [inputRefWidth, setInputRefWidth] = useState<number | undefined>();
+  const [inputRefWidth, setInputRefWidth] = useState<Option<number>>();
   useOutsideClick({
     ref: optionRef,
     handler: () => isOpen && onClose(),
