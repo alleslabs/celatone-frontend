@@ -15,8 +15,8 @@ import {
   getTxsByContractAddress,
   getRelatedProposalsCountByContractAddress,
   getRelatedProposalsByContractAddress,
+  getContractListByAdmin,
 } from "lib/data/queries";
-import { GetContractListByAdminDocument } from "lib/gql/graphql";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
@@ -99,7 +99,7 @@ export const useContractListByAdmin = (
     if (!adminAddress) return undefined;
 
     return indexerGraphClient
-      .request(GetContractListByAdminDocument, {
+      .request(getContractListByAdmin, {
         address: adminAddress,
       })
       .then(({ contracts }) =>
