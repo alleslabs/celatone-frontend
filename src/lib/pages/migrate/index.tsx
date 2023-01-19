@@ -1,10 +1,11 @@
 import { Heading, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
+import router from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Stepper } from "lib/components/stepper";
@@ -24,7 +25,7 @@ const defaultValues: MigratePageState = {
 };
 
 const Migrate = () => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   const endpoint = useEndpoint();
   const { address } = useWallet();
 
@@ -36,16 +37,13 @@ const Migrate = () => {
 
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
-      router.push(
-        {
-          pathname: "/migrate",
-          query: { ...(contract && { contract }) },
-        },
-        undefined,
-        { shallow: true }
-      );
+      navigate({
+        pathname: "/migrate",
+        query: { ...(contract && { contract }) },
+        options: { shallow: true },
+      });
     },
-    [router]
+    [navigate]
   );
 
   useQuery(
@@ -74,7 +72,7 @@ const Migrate = () => {
     ) as ContractAddr;
 
     setValue("contractAddress", contractAddressParam);
-  }, [router, setValue]);
+  }, [setValue]);
 
   const disabled = !isValid || admin !== address;
 
