@@ -40,9 +40,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#72](https://github.com/alleslabs/celatone-frontend/pull/72) Fix general wording and grammar
+- [#101](https://github.com/alleslabs/celatone-frontend/pull/101) Fix incorrect truncating of proposal id in contract detail's migration table
+- [#100](https://github.com/alleslabs/celatone-frontend/pull/100) Fix contract instantiated time parsing
+- [#97](https://github.com/alleslabs/celatone-frontend/pull/97) Change label style to always afloat
+- [#96](https://github.com/alleslabs/celatone-frontend/pull/96) Fix incorrect instantiated block height explorer link
+- [#95](https://github.com/alleslabs/celatone-frontend/pull/95) Add network to url path
+- [#89](https://github.com/alleslabs/celatone-frontend/pull/89) Update feedback link
+- [#90](https://github.com/alleslabs/celatone-frontend/pull/90) Add update admin (`/admin`) and migrate (`/migrate`) page routes
+- [#91](https://github.com/alleslabs/celatone-frontend/pull/91) Add migrate shortcut to the sidebar
+- [#75](https://github.com/alleslabs/celatone-frontend/pull/75) Add code-related contracts table to the code detail page
 - [#81](https://github.com/alleslabs/celatone-frontend/pull/81) Can scroll on side bar with fix deploy new contract button
 - [#86](https://github.com/alleslabs/celatone-frontend/pull/86) Add transactions table in contract details page
-- [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page 
+- [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page
 - [#87](https://github.com/alleslabs/celatone-frontend/pull/87) Fix funds didn't microfy before sending tx
 - [#85](https://github.com/alleslabs/celatone-frontend/pull/85) Add sending asset in execute contract page
 - [#84](https://github.com/alleslabs/celatone-frontend/pull/84) Contract proposals table ui and wireup

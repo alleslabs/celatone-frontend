@@ -4,6 +4,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useMemo, useState } from "react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 
+import { useRedo } from "../hooks/useRedo";
 import { useFabricateFee, useSimulateFee, useResendTx } from "lib/app-provider";
 import { AccordionStepperItem } from "lib/components/AccordionStepperItem";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
@@ -26,7 +27,6 @@ import {
   formatUDenom,
   formatUToken,
   extractMsgType,
-  onClickRedo,
 } from "lib/utils";
 
 interface MsgDetailProps {
@@ -35,10 +35,12 @@ interface MsgDetailProps {
 }
 
 export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
+  const onClickRedo = useRedo();
+
   const [button, setButton] = useState<"redo" | "resend" | "">("");
   const [showButton, setShowButton] = useState(false);
   const { currentChainName } = useWallet();
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
 
   // TODO - Refactor to reduce complexity
   // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -47,7 +49,7 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
     // Type Execute
     if (type === "MsgExecuteContract") {
       const detailExecute = msg.detail as DetailExecute;
-      const contractInfo = getContractInfo(detailExecute.contract);
+      const contractLocalInfo = getContractLocalInfo(detailExecute.contract);
       // Able to redo even fail transaction
       setButton("redo");
       const singleMsgProps: SingleMsgProps = success
@@ -57,7 +59,7 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
             text2: "on",
             link1: {
               type: "contract_address",
-              value: contractInfo?.name || detailExecute.contract,
+              value: contractLocalInfo?.name || detailExecute.contract,
               copyValue: detailExecute.contract,
             },
           }
@@ -66,7 +68,7 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
             text1: "to execute message from",
             link1: {
               type: "contract_address",
-              value: contractInfo?.name || detailExecute.contract,
+              value: contractLocalInfo?.name || detailExecute.contract,
               copyValue: detailExecute.contract,
             },
           };
@@ -95,7 +97,9 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
     // Type Instantiate
     if (type === "MsgInstantiateContract") {
       const msgInstantiate = msg.detail as DetailInstantiate;
-      const contractInfo = getContractInfo(msgInstantiate.contractAddress);
+      const contractLocalInfo = getContractLocalInfo(
+        msgInstantiate.contractAddress
+      );
       // Not able to redo if failure
       if (!success) {
         setButton("");
@@ -117,7 +121,7 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
           text1="contract"
           link1={{
             type: "contract_address",
-            value: contractInfo?.name || msgInstantiate.contractAddress,
+            value: contractLocalInfo?.name || msgInstantiate.contractAddress,
             copyValue: msgInstantiate.contractAddress,
           }}
           text3="from Code ID"
@@ -184,7 +188,7 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
       return <SingleMsg type="Message" tags={[type.substring(3)]} />;
     }
     return null;
-  }, [getContractInfo, msg.detail, msg.type, success]);
+  }, [getContractLocalInfo, msg.detail, msg.type, success]);
 
   const fabricateFee = useFabricateFee();
   const { simulate } = useSimulateFee();

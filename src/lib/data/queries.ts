@@ -1,5 +1,13 @@
 import { graphql } from "lib/gql";
 
+export const getBlockTimestampByHeightQueryDocument = graphql(`
+  query getBlockTimestampByHeightQuery($height: Int!) {
+    blocks_by_pk(height: $height) {
+      timestamp
+    }
+  }
+`);
+
 export const getCodeListQueryDocument = graphql(`
   query getCodeListQuery {
     codes(limit: 500, offset: 0, order_by: { id: desc }) {
@@ -81,11 +89,6 @@ export const getInstantiatedListByUserQueryDocument = graphql(`
     ) {
       label
       address
-      transaction {
-        block {
-          timestamp
-        }
-      }
     }
   }
 `);
@@ -96,6 +99,19 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
       init_msg
       transaction {
         hash
+      }
+      contract_proposals(
+        where: {
+          proposal: {
+            type: { _in: ["InstantiateContract", "InstantiateContract2"] }
+          }
+        }
+        limit: 1
+      ) {
+        proposal {
+          id
+          title
+        }
       }
     }
   }
@@ -235,6 +251,14 @@ export const getContractListByCodeId = graphql(`
       address
       label
       transaction {
+        block {
+          timestamp
+        }
+        account {
+          address
+        }
+      }
+      contract_histories(order_by: { block: { timestamp: desc } }, limit: 1) {
         block {
           timestamp
         }

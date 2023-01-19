@@ -16,8 +16,6 @@ import {
   chakra,
   MenuItem,
 } from "@chakra-ui/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import {
   MdMoreHoriz,
   MdMode,
@@ -25,13 +23,15 @@ import {
   MdDelete,
 } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
   EditContractDetails,
   RemoveContract,
 } from "lib/components/modal/contract";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
 import { ContractNameCell } from "./table/ContractNameCell";
@@ -46,7 +46,7 @@ const StyledIcon = chakra(Icon, {
 });
 
 interface ContractListTableProps {
-  contracts: ContractInfo[];
+  contracts: ContractLocalInfo[];
   contractRemovalInfo?: LVPair;
 }
 
@@ -54,7 +54,7 @@ export const ContractListTable = ({
   contracts = [],
   contractRemovalInfo,
 }: ContractListTableProps) => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   return (
     <TableContainer w="full">
       <Table variant="simple" sx={{ tableLayout: "auto" }}>
@@ -79,7 +79,7 @@ export const ContractListTable = ({
               _hover={{ bg: "gray.900" }}
               cursor="pointer"
               onClick={() =>
-                router.push({ pathname: `/contract/${item.contractAddress}` })
+                navigate({ pathname: `/contract/${item.contractAddress}` })
               }
               key={
                 item.name +
@@ -102,10 +102,10 @@ export const ContractListTable = ({
                 />
               </Td>
               <Td>
-                <ContractNameCell contract={item} />
+                <ContractNameCell contractLocalInfo={item} />
               </Td>
               <Td>
-                <TagsCell contractInfo={item} />
+                <TagsCell contractLocalInfo={item} />
               </Td>
               {/* Instantiator */}
               <Td>
@@ -121,16 +121,16 @@ export const ContractListTable = ({
                   justifyContent="flex-end"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <Link href={`/execute?contract=${item.contractAddress}`}>
+                  <AppLink href={`/execute?contract=${item.contractAddress}`}>
                     <Button variant="outline-gray" size="sm">
                       Execute
                     </Button>
-                  </Link>
-                  <Link href={`/query?contract=${item.contractAddress}`}>
+                  </AppLink>
+                  <AppLink href={`/query?contract=${item.contractAddress}`}>
                     <Button variant="outline-gray" size="sm">
                       Query
                     </Button>
-                  </Link>
+                  </AppLink>
                   <Menu>
                     <MenuButton
                       size="sm"
@@ -146,7 +146,7 @@ export const ContractListTable = ({
                     </MenuButton>
                     <MenuList>
                       <EditContractDetails
-                        contractInfo={item}
+                        contractLocalInfo={item}
                         triggerElement={
                           <MenuItem
                             icon={<StyledIcon as={MdMode} color="gray.600" />}
@@ -156,7 +156,7 @@ export const ContractListTable = ({
                         }
                       />
                       <AddToOtherList
-                        contractInfo={item}
+                        contractLocalInfo={item}
                         triggerElement={
                           <MenuItem
                             icon={
@@ -174,7 +174,7 @@ export const ContractListTable = ({
                         <>
                           <MenuDivider />
                           <RemoveContract
-                            contractInfo={item}
+                            contractLocalInfo={item}
                             contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
                               icon: (

@@ -1,7 +1,7 @@
 import { Flex, Heading, Box, Text, Icon } from "@chakra-ui/react";
-import Link from "next/link";
 import { MdChevronRight, MdSearch, MdInput } from "react-icons/md";
 
+import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 
 // TODO remove link text-decoration underline
@@ -38,7 +38,7 @@ export const QuickMenu = () => {
         subtitle="Actions such as deploying new contracts or sending transactions require a wallet connection"
       />
       <Flex gap={4}>
-        <Link href="/deploy" style={{ width: "100%" }}>
+        <AppLink href="/deploy" style={{ width: "100%" }}>
           <Flex
             bg="primary.main"
             _hover={{ bg: "primary.light" }}
@@ -57,10 +57,10 @@ export const QuickMenu = () => {
             </Flex>
             <Icon as={MdChevronRight} color="gray.900" boxSize={9} />
           </Flex>
-        </Link>
+        </AppLink>
         <Flex direction="column" gap={4} w="full">
           {secondaryMenu.map((item) => (
-            <Link href={`/${item.slug}`} key={item.slug}>
+            <AppLink href={`/${item.slug}`} key={item.slug}>
               <Flex
                 style={cardProps}
                 _hover={{ bg: "hover.main" }}
@@ -85,7 +85,7 @@ export const QuickMenu = () => {
                 </Flex>
                 <Icon as={MdChevronRight} color="gray.600" boxSize={9} />
               </Flex>
-            </Link>
+            </AppLink>
           ))}
         </Flex>
       </Flex>

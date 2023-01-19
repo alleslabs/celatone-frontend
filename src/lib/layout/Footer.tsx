@@ -55,7 +55,7 @@ const Footer = () => {
           </Link>
         ))}
         <Link
-          href="https://alleslabs.canny.io/celatone"
+          href="https://feedback.alleslabs.com"
           target="_blank"
           rel="noopener noreferrer"
         >

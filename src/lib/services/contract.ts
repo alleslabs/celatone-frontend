@@ -1,8 +1,10 @@
 import axios from "axios";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
+import { indexerGraphClient } from "lib/data/graphql";
+import { getBlockTimestampByHeightQueryDocument } from "lib/data/queries";
 import type { Balance, ContractAddr, HumanAddr, Option } from "lib/types";
-import { encode } from "lib/utils";
+import { encode, parseDateDefault } from "lib/utils";
 
 interface ContractResponse {
   address: ContractAddr;
@@ -20,14 +22,6 @@ interface ContractResponse {
   };
 }
 
-interface BlockResponse {
-  block: {
-    header: {
-      time: string;
-    };
-  };
-}
-
 interface PublicInfoResponse {
   slug: string;
   name: string;
@@ -42,7 +36,7 @@ export interface InstantiateInfo {
   admin?: HumanAddr | ContractAddr;
   label: string;
   createdHeight: number;
-  createdTime: Date;
+  createdTime: Option<Date>;
   ibcPortId: string;
   raw: ContractResponse;
 }
@@ -83,18 +77,20 @@ export const queryInstantiateInfo = async (
   const res = await queryContract(endpoint, contractAddress);
 
   // TODO: check `created` field for contracts created with proposals
-  let createdHeight;
+  let createdHeight = -1;
   let createdTime;
   if (res.contract_info.created) {
-    const { data } = await axios.get<BlockResponse>(
-      `${endpoint}/cosmos/base/tendermint/v1beta1/blocks/${res.contract_info.created.block_height}`
-    );
     createdHeight = res.contract_info.created.block_height;
-    createdTime = new Date(data.block.header.time);
-  } else {
-    // TODO: revisit default value
-    createdHeight = -1;
-    createdTime = new Date(0);
+    await indexerGraphClient
+      .request(getBlockTimestampByHeightQueryDocument, {
+        height: createdHeight,
+      })
+      .then(({ blocks_by_pk }) => {
+        createdTime = blocks_by_pk
+          ? parseDateDefault(blocks_by_pk?.timestamp)
+          : undefined;
+      })
+      .catch(() => {});
   }
 
   return {

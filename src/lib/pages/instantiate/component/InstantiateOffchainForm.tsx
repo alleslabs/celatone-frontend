@@ -1,9 +1,9 @@
 import { Text, Flex, Heading, Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { useContractStore } from "lib/hooks";
@@ -27,8 +27,8 @@ export const InstantiateOffChainForm = observer(
     contractLabel,
   }: InstantiateOffChainFormProps) => {
     const { address = "" } = useWallet();
-    const router = useRouter();
-    const { updateContractInfo } = useContractStore();
+    const navigate = useInternalNavigate();
+    const { updateContractLocalInfo } = useContractStore();
     const userKey = useUserKey();
 
     const {
@@ -62,18 +62,17 @@ export const InstantiateOffChainForm = observer(
 
     const saveContract = () => {
       handleSubmit((data) => {
-        updateContractInfo(
+        updateContractLocalInfo(
           userKey,
           contractAddress,
           address,
           contractLabel,
-          new Date(),
           data.name,
           data.description,
           data.tags,
           data.lists
         );
-        router.push("/contract-list/instantiated-by-me");
+        navigate({ pathname: "/contract-list/instantiated-by-me" });
       })();
     };
 
@@ -108,7 +107,9 @@ export const InstantiateOffChainForm = observer(
             <Button
               w="128px"
               variant="outline-gray"
-              onClick={() => router.push("/contract-list/instantiated-by-me")}
+              onClick={() =>
+                navigate({ pathname: "/contract-list/instantiated-by-me" })
+              }
             >
               Skip
             </Button>

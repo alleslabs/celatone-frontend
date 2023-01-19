@@ -1,7 +1,6 @@
 import { Flex, Box, Text, Icon, Button, Spacer } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
-import Link from "next/link";
 import {
   MdHome,
   MdCode,
@@ -12,8 +11,10 @@ import {
   MdAdd,
   MdOutlineHistory,
   MdPublic,
+  MdReadMore,
 } from "react-icons/md";
 
+import { AppLink } from "lib/components/AppLink";
 import { CreateNewList } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
@@ -56,6 +57,11 @@ const Navbar = observer(() => {
           name: "Execute",
           slug: "/execute",
           icon: MdInput,
+        },
+        {
+          name: "Migrate",
+          slug: "/migrate",
+          icon: MdReadMore,
         },
       ],
     },
@@ -138,7 +144,7 @@ const Navbar = observer(() => {
               )}
             </Flex>
             {item.submenu.map((submenu) => (
-              <Link href={submenu.slug} key={submenu.slug}>
+              <AppLink href={submenu.slug} key={submenu.slug}>
                 <Flex
                   gap="3"
                   p={2}
@@ -152,7 +158,7 @@ const Navbar = observer(() => {
                     {submenu.name}
                   </Text>
                 </Flex>
-              </Link>
+              </AppLink>
             ))}
           </Box>
         ))}
@@ -169,12 +175,12 @@ const Navbar = observer(() => {
         borderTop="4px solid"
         borderTopColor="background.main"
       >
-        <Link href="/deploy">
+        <AppLink href="/deploy">
           <Button>
             <Icon as={MdOutlineAdd} boxSize="4" />
             Deploy new contract
           </Button>
-        </Link>
+        </AppLink>
       </Flex>
     </Flex>
   );

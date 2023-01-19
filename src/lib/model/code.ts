@@ -6,18 +6,26 @@ import {
   useContractListByCodeId,
   useContractListCountByCodeId,
 } from "lib/services/codeService";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { CodeData, ContractInstances, Option } from "lib/types";
 
-export const useCodeData = (codeId: number): Option<CodeData> => {
+interface CodeDataState {
+  isLoading: boolean;
+  codeData: CodeData;
+}
+
+export const useCodeData = (codeId: number): Option<CodeDataState> => {
   const { currentChainRecord } = useWallet();
-  const { data: codeInfo } = useCodeInfoByCodeId(codeId);
-  if (!currentChainRecord || !codeInfo) return undefined;
+  const { data: codeInfo, isLoading } = useCodeInfoByCodeId(codeId);
+  if (!currentChainRecord || (!codeInfo && !isLoading)) return undefined;
 
   return {
-    chainId: currentChainRecord.chain.chain_id,
-    ...codeInfo,
-  } as CodeData;
+    isLoading,
+    codeData: {
+      chainId: currentChainRecord.chain.chain_id,
+      ...codeInfo,
+    } as CodeData,
+  };
 };
 
 export const useCodeContractInstances = (
@@ -31,13 +39,13 @@ export const useCodeContractInstances = (
     pageSize
   );
   const { data: count = 0 } = useContractListCountByCodeId(codeId);
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
   const data = contractList?.map((contract) => {
-    const localContractInfo = getContractInfo(contract.contractAddress);
+    const contractLocalInfo = getContractLocalInfo(contract.contractAddress);
     return {
-      ...localContractInfo,
+      ...contractLocalInfo,
       ...contract,
-    } as ContractInfo;
+    } as ContractLocalInfo;
   });
   return {
     contractList: data,
