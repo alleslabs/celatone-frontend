@@ -119,17 +119,18 @@ const Navbar = observer(() => {
   ];
   const router = useRouter();
   const isCurrentPage = (slug: string) => {
-    if (slug === "/") {
-      return router.asPath === `/${router.query.network}`;
+    const { network } = router.query;
+    const pathName = router.asPath;
+    if (network) {
+      return slug === "/"
+        ? pathName === `/${network}`
+        : pathName === `/${network}${slug}`;
     }
-    if (slug) {
-      return router.asPath === `/${router.query.network}${slug}`;
-    }
-    return undefined;
+    return pathName === `${slug}`;
   };
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">
-      <Box p={4} overflowY="scroll" pb={12}>
+      <Box p={3} overflowY="scroll">
         {navMenu.map((item) => (
           <Box
             pb="4"
@@ -161,7 +162,7 @@ const Navbar = observer(() => {
             {item.submenu.map((submenu) => (
               <AppLink href={submenu.slug} key={submenu.slug}>
                 <Flex
-                  gap="3"
+                  gap="2"
                   p={2}
                   cursor="pointer"
                   _hover={{ bg: "gray.800", borderRadius: "4px" }}

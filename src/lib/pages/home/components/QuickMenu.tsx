@@ -107,8 +107,6 @@ export const QuickMenu = () => {
             </AppLink>
           ))}
         </SimpleGrid>
-        {/* <Flex direction="column" gap={4} w="full">
-        </Flex> */}
       </Flex>
     </Flex>
   );
