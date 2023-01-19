@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#104](https://github.com/alleslabs/celatone-frontend/pull/104) Fix incorrect unwrapping of empty transaction detail
 - [#92](https://github.com/alleslabs/celatone-frontend/pull/92) Create select contract component for admin and migrate pages
 - [#101](https://github.com/alleslabs/celatone-frontend/pull/101) Fix incorrect truncating of proposal id in contract detail's migration table
 - [#100](https://github.com/alleslabs/celatone-frontend/pull/100) Fix contract instantiated time parsing
