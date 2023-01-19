@@ -23,7 +23,12 @@ import Searchbar from "./Searchbar";
 const Header = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
+  const {
+    currentChainRecord,
+    currentChainName,
+    setCurrentChain,
+    getChainRecord,
+  } = useWallet();
 
   const handleChainSelect = useCallback(
     (chainName: string) => {
@@ -112,7 +117,9 @@ const Header = () => {
                         {getChainRecord(chainName)?.chain.chain_id}
                       </Text>
                     </Flex>
-                    <Icon as={MdCheck} boxSize={4} color="gray.600" />
+                    {chainName === currentChainName && (
+                      <Icon as={MdCheck} boxSize={4} color="gray.600" />
+                    )}
                   </Flex>
                 </MenuItem>
               );
