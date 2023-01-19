@@ -74,13 +74,11 @@ const Migrate = () => {
   );
 
   useEffect(() => {
-    (() => {
-      const contractAddressParam = getFirstQueryParam(
-        router.query.contract
-      ) as ContractAddr;
+    const contractAddressParam = getFirstQueryParam(
+      router.query.contract
+    ) as ContractAddr;
 
-      setValue("contractAddress", contractAddressParam);
-    })();
+    setValue("contractAddress", contractAddressParam);
   }, [router, setValue]);
 
   const disabled = !isValid || admin !== address;
@@ -96,7 +94,7 @@ const Migrate = () => {
       </Heading>
       {/* Select Migrate Contract modal */}
       <ContractSelectSection
-        mode="admin"
+        mode="only-admin"
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />

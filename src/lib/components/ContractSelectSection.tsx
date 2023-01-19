@@ -32,7 +32,7 @@ interface ContractDetailsButtonProps {
 }
 
 interface ContractSelectSectionProps {
-  mode: "instantiator" | "admin";
+  mode: "all-lists" | "only-admin";
   contractAddress: ContractAddr;
   onContractSelect: (contract: ContractAddr) => void;
 }
@@ -166,11 +166,8 @@ export const ContractSelectSection = observer(
         align="center"
         width="full"
       >
-        <Flex gap="24px" width={mode === "instantiator" ? "70%" : "60%"}>
-          <Flex
-            direction="column"
-            width={mode === "instantiator" ? "70%" : "40%"}
-          >
+        <Flex gap="24px" width={mode === "all-lists" ? "70%" : "60%"}>
+          <Flex direction="column" width={mode === "all-lists" ? "70%" : "40%"}>
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -179,7 +176,7 @@ export const ContractSelectSection = observer(
                 canCopyWithHover
                 // TODO - Revisit not necessary if disable UI for mobile is implemented
                 textFormat={
-                  isMobile || mode === "admin" ? "truncate" : "normal"
+                  isMobile || mode === "only-admin" ? "truncate" : "normal"
                 }
                 maxWidth="none"
               />
@@ -192,7 +189,7 @@ export const ContractSelectSection = observer(
           <Flex
             direction="column"
             width={
-              mode === "instantiator" ? "calc(30% - 24px)" : "calc(60% - 24px)"
+              mode === "all-lists" ? "calc(30% - 24px)" : "calc(60% - 24px)"
             }
           >
             Contract Name
@@ -206,7 +203,7 @@ export const ContractSelectSection = observer(
         </Flex>
 
         <Flex gap="8px">
-          {mode === "instantiator" && contractState.isValid && (
+          {mode === "all-lists" && contractState.isValid && (
             <ContractDetailsButton
               contractAddress={contractAddress}
               contractLocalInfo={contractLocalInfo}
@@ -214,7 +211,7 @@ export const ContractSelectSection = observer(
               label={contractState.label}
             />
           )}
-          {mode === "instantiator" ? (
+          {mode === "all-lists" ? (
             <SelectContractInstantiator
               notSelected={notSelected}
               onContractSelect={onContractSelect}
