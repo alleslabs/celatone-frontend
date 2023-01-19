@@ -36,6 +36,20 @@ interface CodeSnippetProps {
   type: "query" | "execute";
 }
 
+const getFullRpcUrl = (
+  rpcUrl: string | undefined,
+  chainId: string | undefined
+) => {
+  const baseUrl = rpcUrl?.slice(0, rpcUrl.length - 1);
+  switch (chainId) {
+    case "osmosis-1":
+    case "osmo-test-4":
+      return `${baseUrl}:443`;
+    default:
+      return `${baseUrl}:26657`;
+  }
+};
+
 const CodeSnippet = ({
   contractAddress,
   message,
@@ -58,12 +72,12 @@ const CodeSnippet = ({
       {
         name: "CLI",
         mode: "sh",
-        snippet: `export CHAIN_ID=${chainId}\n
-export CONTRACT_ADDRESS=${contractAddress}\n
-export QUERY_MSG='\`${message}\`'\n
-export RPC_URL=${rpcUrl}\n
-${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG 
-  --chain-id $CHAIN_ID 
+        snippet: `export CHAIN_ID='${chainId}'\n
+export CONTRACT_ADDRESS='${contractAddress}'\n
+export QUERY_MSG='${message}'\n
+export RPC_URL='${getFullRpcUrl(rpcUrl, chainId)}'\n
+${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
+  --chain-id $CHAIN_ID \\
   --node $RPC_URL`,
       },
       {
@@ -118,14 +132,14 @@ queryContract();`,
         name: "CLI",
         mode: "sh",
         snippet: `${client} keys add --recover celatone\n
-export CHAIN_ID=${chainId}\n
-export RPC_URL=${rpcUrl}\n
-export CONTRACT_ADDRESS=${contractAddress}\n
-export EXECUTE_MSG='\`${message}\`'\n
+export CHAIN_ID='${chainId}'\n
+export RPC_URL='${getFullRpcUrl(rpcUrl, chainId)}'\n
+export CONTRACT_ADDRESS='${contractAddress}'\n
+export EXECUTE_MSG='${message}'\n
 ${client} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --from celatone \\
   --chain-id $CHAIN_ID \\
-  --node $RPC_URL"`,
+  --node $RPC_URL`,
       },
       {
         name: "CosmJs",
