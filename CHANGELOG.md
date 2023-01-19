@@ -41,6 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and json to attach fund
 - [#61](https://github.com/alleslabs/celatone-frontend/pull/61) Add UI for send asset in execute contract page
+- [#101](https://github.com/alleslabs/celatone-frontend/pull/101) Fix incorrect truncating of proposal id in contract detail's migration table
+- [#100](https://github.com/alleslabs/celatone-frontend/pull/100) Fix contract instantiated time parsing
+- [#97](https://github.com/alleslabs/celatone-frontend/pull/97) Change label style to always afloat
 - [#96](https://github.com/alleslabs/celatone-frontend/pull/96) Fix incorrect instantiated block height explorer link
 - [#95](https://github.com/alleslabs/celatone-frontend/pull/95) Add network to url path
 - [#89](https://github.com/alleslabs/celatone-frontend/pull/89) Update feedback link
