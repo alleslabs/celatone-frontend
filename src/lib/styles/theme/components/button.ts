@@ -98,7 +98,7 @@ export const Button: ComponentStyleConfig = {
     }),
     "outline-info": generateStyle({
       basic: {
-        border: "1px solid rgba(2, 136, 209, 0.5)",
+        border: "1px solid rgba(2, 136, 209, 1)",
         color: "info.main",
       },
       disabled: {

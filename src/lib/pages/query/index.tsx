@@ -108,6 +108,7 @@ const Query = () => {
       </Flex>
 
       <ContractSelectSection
+        mode="all-lists"
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />

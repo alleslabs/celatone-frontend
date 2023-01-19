@@ -98,6 +98,7 @@ const Execute = () => {
         mb={8}
       />
       <ContractSelectSection
+        mode="all-lists"
         contractAddress={watchContractAddress}
         onContractSelect={onContractSelect}
       />
