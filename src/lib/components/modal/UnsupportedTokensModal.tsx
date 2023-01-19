@@ -14,8 +14,8 @@ import {
   Box,
 } from "@chakra-ui/react";
 import router from "next/router";
-import { useCallback, useMemo } from "react";
-import { FaDollarSign } from "react-icons/fa";
+import { useMemo } from "react";
+import { MdAttachMoney } from "react-icons/md";
 
 import { Copier } from "../Copier";
 import { ExplorerLink } from "../ExplorerLink";
@@ -79,10 +79,6 @@ export const UnsupportedTokensModal = ({
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleOnOther = useCallback(() => {
-    onClose();
-  }, [onClose]);
-
   return (
     <>
       <Flex onClick={onOpen}>
@@ -90,7 +86,7 @@ export const UnsupportedTokensModal = ({
           {`View ${unsupportedAssets.length} Unsupported Assets`}
         </Button>
       </Flex>
-      <Modal isOpen={isOpen} onClose={handleOnOther} isCentered>
+      <Modal isOpen={isOpen} onClose={() => onClose()} isCentered>
         <ModalOverlay />
         <ModalContent w="560px">
           <ModalHeader>
@@ -102,7 +98,7 @@ export const UnsupportedTokensModal = ({
               pl={2}
               pt={1}
             >
-              <Icon as={FaDollarSign} boxSize={5} color="gray.600" />
+              <Icon as={MdAttachMoney} boxSize={5} color="gray.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>
