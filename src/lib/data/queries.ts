@@ -89,6 +89,9 @@ export const getInstantiatedListByUserQueryDocument = graphql(`
     ) {
       label
       address
+      accountByInitBy {
+        address
+      }
     }
   }
 `);
@@ -103,9 +106,16 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
       contract_proposals(
         where: {
           proposal: {
-            type: { _in: ["InstantiateContract", "InstantiateContract2"] }
+            type: {
+              _in: [
+                "InstantiateContract"
+                "InstantiateContract2"
+                "SoftwareUpgrade"
+              ]
+            }
           }
         }
+        order_by: { proposal: { id: asc } }
         limit: 1
       ) {
         proposal {
@@ -265,7 +275,10 @@ export const getContractListByCodeId = graphql(`
     ) {
       address
       label
-      transaction {
+      init_by: contract_histories(
+        order_by: { block: { timestamp: asc } }
+        limit: 1
+      ) {
         block {
           timestamp
         }
@@ -280,6 +293,7 @@ export const getContractListByCodeId = graphql(`
         account {
           address
         }
+        remark
       }
     }
   }
