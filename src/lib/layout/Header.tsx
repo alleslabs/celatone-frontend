@@ -12,6 +12,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { MdCheck } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { WalletSection } from "lib/components/Wallet";
@@ -98,11 +99,21 @@ const Header = () => {
                   }}
                   flexDirection="column"
                   alignItems="flex-start"
+                  _hover={{
+                    backgroundColor: "hover.dark",
+                  }}
                 >
-                  <Text>{getChainRecord(chainName)?.chain.pretty_name}</Text>
-                  <Text color="text.dark" fontSize="sm">
-                    {getChainRecord(chainName)?.chain.chain_id}
-                  </Text>
+                  <Flex justify="space-between" align="center" w="full">
+                    <Flex direction="column">
+                      <Text variant="body2">
+                        {getChainRecord(chainName)?.chain.pretty_name}
+                      </Text>
+                      <Text color="text.dark" variant="body3">
+                        {getChainRecord(chainName)?.chain.chain_id}
+                      </Text>
+                    </Flex>
+                    <Icon as={MdCheck} boxSize={4} color="gray.600" />
+                  </Flex>
                 </MenuItem>
               );
             })}
