@@ -12,7 +12,7 @@ const Deploy = () => {
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
         DEPLOY NEW CONTRACT
       </Text>
-      <Stepper currentStep={1} />
+      <Stepper mode="deploy" currentStep={1} />
       <Heading as="h4" variant="h4" my="48px">
         Select Deploy Option
       </Heading>

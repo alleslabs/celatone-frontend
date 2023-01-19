@@ -1,7 +1,8 @@
 import { Flex, Icon, Text } from "@chakra-ui/react";
 import { MdCheck } from "react-icons/md";
 
-import type { Step } from "./types";
+import type { Mode, Step } from "./types";
+import { StepperText } from "./types";
 
 const StepLabel = ({
   step,
@@ -33,9 +34,11 @@ const StepLabel = ({
 };
 
 export const StepperItem = ({
+  mode,
   step,
   currentStep,
 }: {
+  mode: Mode;
   step: Step;
   currentStep: Step;
 }) => {
@@ -61,7 +64,7 @@ export const StepperItem = ({
         fontWeight={disabled ? 400 : 700}
         color={disabled ? "text.disabled" : "text.main"}
       >
-        {step === 1 ? "Upload or Select Code ID" : "Instantiate Code"}
+        {StepperText[mode][step - 1]}
       </Text>
     </Flex>
   );

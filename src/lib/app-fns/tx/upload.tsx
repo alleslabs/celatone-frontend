@@ -26,6 +26,7 @@ interface UploadTxParams {
   memo?: string;
   client: SigningCosmWasmClient;
   onTxSucceed?: (codeId: number) => void;
+  onMigrate: boolean;
 }
 
 export const uploadContractTx = ({
@@ -37,6 +38,7 @@ export const uploadContractTx = ({
   memo,
   client,
   onTxSucceed,
+  onMigrate,
 }: UploadTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -88,7 +90,7 @@ export const uploadContractTx = ({
             <Icon as={MdCloudUpload} fontSize="24px" color="text.dark" />
           ),
         },
-        actionVariant: "upload",
+        actionVariant: onMigrate ? "upload-migrate" : "upload",
       } as TxResultRendering;
     }
   )().pipe(catchTxError());

@@ -12,7 +12,8 @@ export interface UploadStreamParams {
 export const useUploadContractTx = (
   wasmFileName: string | undefined,
   wasmCode: Promise<ArrayBuffer> | undefined,
-  estimatedFee: StdFee | undefined
+  estimatedFee: StdFee | undefined,
+  onMigrate: boolean
 ) => {
   const { address, getCosmWasmClient } = useWallet();
 
@@ -31,8 +32,16 @@ export const useUploadContractTx = (
         fee: estimatedFee,
         client,
         onTxSucceed,
+        onMigrate,
       });
     },
-    [address, getCosmWasmClient, estimatedFee, wasmCode, wasmFileName]
+    [
+      address,
+      getCosmWasmClient,
+      estimatedFee,
+      wasmCode,
+      wasmFileName,
+      onMigrate,
+    ]
   );
 };

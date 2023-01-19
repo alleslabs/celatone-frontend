@@ -1,5 +1,6 @@
 import { Button, Icon } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { FiChevronRight } from "react-icons/fi";
 
@@ -18,6 +19,7 @@ export const ButtonSection = ({
   onClose,
   receipts,
 }: ButtonSectionProps) => {
+  const router = useRouter();
   const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
 
@@ -63,6 +65,26 @@ export const ButtonSection = ({
             Proceed to instantiate
           </Button>
         </>
+      );
+    case "upload-migrate":
+      return (
+        <Button
+          variant="primary"
+          rightIcon={
+            <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+          }
+          onClick={() => {
+            const codeId = receipts.find((r) => r.title === "Code ID")?.value;
+
+            navigate({
+              pathname: "/migrate",
+              query: { contract: router.query.contract, "code-id": codeId },
+            });
+            onClose?.();
+          }}
+        >
+          Proceed to Migrate
+        </Button>
       );
     case "rejected":
     case "resend":
