@@ -1,4 +1,4 @@
-import { Code, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { MdDeleteForever } from "react-icons/md";
 
@@ -37,9 +37,8 @@ export const ClearAdminContract = ({
       otherVariant="ghost-primary"
     >
       <Text>
-        &lsquo;Clear Admin&rsquo; will set the admin of the contract to{" "}
-        <Code>nil</Code> , while will disable further migrations/updates on this
-        contract.
+        Clearing the admin is a permanent action. You&apos;ll not be able to
+        reassign an admin and migrations will no longer be possible.
       </Text>
     </ActionModal>
   );

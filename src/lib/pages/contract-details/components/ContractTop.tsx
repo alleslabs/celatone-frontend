@@ -11,6 +11,7 @@ import {
   MenuButton,
   Menu,
   MenuList,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import {
@@ -162,14 +163,23 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
       </Flex>
       <Flex gap={4}>
         <Menu>
-          <MenuButton
-            variant="outline-gray"
-            as={Button}
-            isDisabled={!address || address !== admin}
-            rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
+          <Tooltip
+            hasArrow
+            label="You don’t have admin access to this contract."
+            placement="top"
+            bg="primary.dark"
+            arrowSize={8}
+            isDisabled={!!address && address === admin}
           >
-            Admin
-          </MenuButton>
+            <MenuButton
+              variant="outline-gray"
+              as={Button}
+              isDisabled={!address || address !== admin}
+              rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
+            >
+              Admin
+            </MenuButton>
+          </Tooltip>
           <MenuList>
             <StyledMenuItem
               icon={<StyledIcon as={MdReadMore} color="gray.600" />}
