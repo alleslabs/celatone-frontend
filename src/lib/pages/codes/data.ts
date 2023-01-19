@@ -6,7 +6,7 @@ import {
   useCodeListByIDsQuery,
   useCodeListByUserQuery,
 } from "lib/services/codeService";
-import type { CodeInfo } from "lib/types";
+import type { CodeInfo, HumanAddr } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 
 interface CodeListData {
@@ -17,7 +17,10 @@ interface CodeListData {
   allCodesCount: number;
 }
 
-export const useCodeListData = (keyword?: string): CodeListData => {
+export const useCodeListData = (
+  keyword?: string,
+  permissionValue?: string
+): CodeListData => {
   const { address } = useWallet();
   const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds, isCodeIdSaved } =
     useCodeStore();
@@ -60,7 +63,24 @@ export const useCodeListData = (keyword?: string): CodeListData => {
   const storedCodesCount = storedCodes.length;
 
   const [filteredSavedCodes, filteredStoredCodes] = useMemo(() => {
-    const filterFn = (code: CodeInfo) => {
+    const permissionFilter = (code: CodeInfo) => {
+      const isEveryBody =
+        code.instantiatePermission === InstantiatePermission.EVERYBODY;
+      const isNobody =
+        code.instantiatePermission === InstantiatePermission.NOBODY;
+      const isInclude = code.permissionAddresses.includes(address as HumanAddr);
+
+      switch (permissionValue) {
+        case "with-proposal":
+          return (!isEveryBody && !isInclude) || isNobody;
+        case "without-proposal":
+          return isInclude || isEveryBody;
+        case "all":
+        default:
+          return true;
+      }
+    };
+    const searchFilter = (code: CodeInfo) => {
       if (keyword === undefined) return true;
 
       const computedKeyword = keyword.trim();
@@ -72,8 +92,11 @@ export const useCodeListData = (keyword?: string): CodeListData => {
       );
     };
 
-    return [savedCodes.filter(filterFn), storedCodes.filter(filterFn)];
-  }, [keyword, savedCodes, storedCodes]);
+    return [
+      savedCodes.filter(permissionFilter).filter(searchFilter),
+      storedCodes.filter(permissionFilter).filter(searchFilter),
+    ];
+  }, [savedCodes, storedCodes, address, permissionValue, keyword]);
 
   return {
     savedCodes: filteredSavedCodes,
