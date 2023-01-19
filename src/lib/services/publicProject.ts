@@ -53,7 +53,7 @@ export const usePublicProjectsQuery = () => {
       );
   }, [currentChainRecord]);
 
-  return useQuery(["public_project_by_slug"], queryFn, {
+  return useQuery(["public_project"], queryFn, {
     keepPreviousData: true,
   });
 };

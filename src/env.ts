@@ -68,7 +68,7 @@ export const getChainApiPath = (chainName: string) => {
       return undefined;
   }
 };
-
+// TODO to handle testnet separately later
 export const getMainnetApiPath = (chainId: string) => {
   switch (chainId) {
     case "osmo-test-4":

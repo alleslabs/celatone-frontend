@@ -28,6 +28,7 @@ interface SocialProps {
   details: Option<Detail>;
 }
 export const SocialMedia = ({ details }: SocialProps) => {
+  if (!details) return null;
   return (
     <Flex
       alignItems="center"
@@ -35,8 +36,8 @@ export const SocialMedia = ({ details }: SocialProps) => {
       mt={2}
       onClick={(e) => e.stopPropagation()}
     >
-      {details?.website && (
-        <Link href={details?.website} target="_blank">
+      {details.website && (
+        <Link href={details.website} target="_blank">
           <Icon
             as={MdLanguage}
             color="gray.600"
@@ -46,8 +47,8 @@ export const SocialMedia = ({ details }: SocialProps) => {
           />
         </Link>
       )}
-      {details?.github && (
-        <Link href={details?.github} target="_blank">
+      {details.github && (
+        <Link href={details.github} target="_blank">
           <Icon
             as={FaGithub}
             color="gray.600"
@@ -57,8 +58,8 @@ export const SocialMedia = ({ details }: SocialProps) => {
           />
         </Link>
       )}
-      {details?.socials.length &&
-        details?.socials.map(
+      {details.socials.length &&
+        details.socials.map(
           (social) =>
             social.url !== "" && (
               <Link href={social.url} target="_blank" key={social.name}>
