@@ -12,7 +12,10 @@ import type { ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { EditContractDetails, SaveContractDetails } from "./modal";
-import { SelectContract } from "./modal/select-contract";
+import {
+  SelectContractAdmin,
+  SelectContractInstantiator,
+} from "./modal/select-contract";
 
 interface DisplayNameProps {
   notSelected: boolean;
@@ -29,6 +32,7 @@ interface ContractDetailsButtonProps {
 }
 
 interface ContractSelectSectionProps {
+  mode: "all-lists" | "only-admin";
   contractAddress: ContractAddr;
   onContractSelect: (contract: ContractAddr) => void;
 }
@@ -97,7 +101,7 @@ const ContractDetailsButton = ({
 };
 
 export const ContractSelectSection = observer(
-  ({ contractAddress, onContractSelect }: ContractSelectSectionProps) => {
+  ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
     const isMobile = useMobile();
     const endpoint = useEndpoint();
@@ -160,9 +164,10 @@ export const ContractSelectSection = observer(
         fontSize="12px"
         justify="space-between"
         align="center"
+        width="full"
       >
-        <Flex gap="24px" width="70%">
-          <Flex direction="column" width="70%">
+        <Flex gap="24px" width={mode === "all-lists" ? "70%" : "60%"}>
+          <Flex direction="column" width={mode === "all-lists" ? "70%" : "40%"}>
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -170,7 +175,9 @@ export const ContractSelectSection = observer(
                 type="contract_address"
                 canCopyWithHover
                 // TODO - Revisit not necessary if disable UI for mobile is implemented
-                textFormat={isMobile ? "truncate" : "normal"}
+                textFormat={
+                  isMobile || mode === "only-admin" ? "truncate" : "normal"
+                }
                 maxWidth="none"
               />
             ) : (
@@ -179,7 +186,12 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex direction="column" width="calc(30% - 24px)">
+          <Flex
+            direction="column"
+            width={
+              mode === "all-lists" ? "calc(30% - 24px)" : "calc(60% - 24px)"
+            }
+          >
             Contract Name
             <DisplayName
               notSelected={notSelected}
@@ -191,7 +203,7 @@ export const ContractSelectSection = observer(
         </Flex>
 
         <Flex gap="8px">
-          {contractState.isValid && (
+          {mode === "all-lists" && contractState.isValid && (
             <ContractDetailsButton
               contractAddress={contractAddress}
               contractLocalInfo={contractLocalInfo}
@@ -199,10 +211,17 @@ export const ContractSelectSection = observer(
               label={contractState.label}
             />
           )}
-          <SelectContract
-            notSelected={notSelected}
-            onContractSelect={onContractSelect}
-          />
+          {mode === "all-lists" ? (
+            <SelectContractInstantiator
+              notSelected={notSelected}
+              onContractSelect={onContractSelect}
+            />
+          ) : (
+            <SelectContractAdmin
+              notSelected={notSelected}
+              onContractSelect={onContractSelect}
+            />
+          )}
         </Flex>
       </Flex>
     );
