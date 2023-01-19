@@ -1,6 +1,7 @@
-import { Flex, Box, Text, Icon, Button, Spacer } from "@chakra-ui/react";
+import { Flex, Box, Text, Icon } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
 import {
   MdHome,
   MdCode,
@@ -48,6 +49,11 @@ const Navbar = observer(() => {
     {
       category: "Quick Actions",
       submenu: [
+        {
+          name: "Deploy contract",
+          slug: "/deploy",
+          icon: MdOutlineAdd,
+        },
         {
           name: "Query",
           slug: "/query",
@@ -111,7 +117,16 @@ const Navbar = observer(() => {
     //   ],
     // },
   ];
-
+  const router = useRouter();
+  const isCurrentPage = (slug: string) => {
+    if (slug === "/") {
+      return router.asPath === `/${router.query.network}`;
+    }
+    if (slug) {
+      return router.asPath === `/${router.query.network}${slug}`;
+    }
+    return undefined;
+  };
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">
       <Box p={4} overflowY="scroll" pb={12}>
@@ -152,6 +167,10 @@ const Navbar = observer(() => {
                   _hover={{ bg: "gray.800", borderRadius: "4px" }}
                   transition="all .25s ease-in-out"
                   alignItems="center"
+                  bgColor={
+                    isCurrentPage(submenu.slug) ? "gray.800" : "transparent"
+                  }
+                  borderRadius={isCurrentPage(submenu.slug) ? "4px" : "0px"}
                 >
                   <Icon as={submenu.icon} color="gray.600" boxSize="4" />
                   <Text variant="body2" className="ellipsis">
@@ -163,8 +182,8 @@ const Navbar = observer(() => {
           </Box>
         ))}
       </Box>
-      <Spacer />
-      <Flex
+      {/* Hide deploy new contract button for now */}
+      {/* <Flex
         position="fixed"
         bottom="0"
         py={3}
@@ -181,7 +200,7 @@ const Navbar = observer(() => {
             Deploy new contract
           </Button>
         </AppLink>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 });
