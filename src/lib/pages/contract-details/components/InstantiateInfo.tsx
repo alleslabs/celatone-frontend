@@ -62,6 +62,7 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
                 }
               >
                 <ExplorerLink
+                  type="block_height"
                   value={contractData.instantiateInfo.createdHeight.toString()}
                   canCopyWithHover
                 />

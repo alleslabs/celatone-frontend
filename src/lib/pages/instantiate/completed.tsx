@@ -1,7 +1,7 @@
 import { Flex, Icon, Heading, Button } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { MdCheckCircle } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxReceiptRender } from "lib/components/tx/receipt";
 import WasmPageContainer from "lib/components/WasmPageContainer";
@@ -16,7 +16,7 @@ interface CompletedProps {
 }
 
 const Completed = ({ txInfo }: CompletedProps) => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
 
   return (
     <WasmPageContainer>
@@ -64,7 +64,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
           w="full"
           variant="outline-gray"
           onClick={() =>
-            router.push({ pathname: `/contract/${txInfo.contractAddress}` })
+            navigate({ pathname: `/contract/${txInfo.contractAddress}` })
           }
         >
           View Contract
@@ -73,7 +73,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
           w="full"
           variant="outline-gray"
           onClick={() =>
-            router.push({
+            navigate({
               pathname: "/execute",
               query: { contract: txInfo.contractAddress },
             })
@@ -85,7 +85,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
           w="full"
           variant="outline-gray"
           onClick={() =>
-            router.push({
+            navigate({
               pathname: "/query",
               query: { contract: txInfo.contractAddress },
             })

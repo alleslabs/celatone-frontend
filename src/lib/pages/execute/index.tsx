@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useExecuteCmds } from "lib/app-provider";
+import { useExecuteCmds, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -22,6 +22,7 @@ import type { ExecutePageState } from "./types";
 
 const Execute = () => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const { control, setValue, watch } = useForm<ExecutePageState>({
     mode: "all",
     defaultValues: {
@@ -35,7 +36,7 @@ const Execute = () => {
   const { isFetching, execCmds } = useExecuteCmds(watchContractAddress);
 
   const goToQuery = () => {
-    router.push({
+    navigate({
       pathname: "/query",
       query: {
         ...(watchContractAddress && { contract: watchContractAddress }),
@@ -45,16 +46,13 @@ const Execute = () => {
 
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
-      router.push(
-        {
-          pathname: "/execute",
-          query: { ...(contract && { contract }) },
-        },
-        undefined,
-        { shallow: true }
-      );
+      navigate({
+        pathname: "/execute",
+        query: { ...(contract && { contract }) },
+        options: { shallow: true },
+      });
     },
-    [router]
+    [navigate]
   );
 
   useEffect(() => {
@@ -101,6 +99,7 @@ const Execute = () => {
       />
 
       <ContractSelectSection
+        mode="all-lists"
         contractAddress={watchContractAddress}
         onContractSelect={onContractSelect}
       />

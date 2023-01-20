@@ -6,6 +6,9 @@ export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
 export const SAVED_LIST_NAME = "Saved Contracts";
 
+// special slug with all cap letters to avoid conflict with any list
+export const ADMIN_SPECIAL_SLUG = "ADMIN";
+
 export const getMaxLengthError = (
   field: string,
   currentLength: number,

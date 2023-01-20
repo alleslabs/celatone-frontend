@@ -36,7 +36,7 @@ const Layout = ({ children }: LayoutProps) => {
         <Navbar />
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">
-        <div style={{ minHeight: `calc(100vh - 140px)` }}>{children}</div>
+        <div style={{ minHeight: `calc(100vh - 129px)` }}>{children}</div>
         <Footer />
       </GridItem>
     </Grid>

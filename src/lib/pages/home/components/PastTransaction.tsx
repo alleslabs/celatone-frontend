@@ -1,5 +1,6 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
-import Link from "next/link";
+
+import { AppLink } from "lib/components/AppLink";
 
 /* TODO: Delete after past tx page is done */
 export const PastTransaction = () => {
@@ -20,9 +21,9 @@ export const PastTransaction = () => {
         <Text color="text.dark" variant="body1">
           Your past transactions will display here. You also able can view all
         </Text>
-        <Link href="/past-txs">
+        <AppLink href="/past-txs">
           <Text color="primary.main">Past Transactions</Text>
-        </Link>
+        </AppLink>
       </Flex>
     </Box>
   );
