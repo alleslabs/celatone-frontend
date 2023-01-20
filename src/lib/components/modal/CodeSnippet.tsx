@@ -22,7 +22,7 @@ import { MdCode } from "react-icons/md";
 import { CopyButton } from "../CopyButton";
 import { CustomTab } from "lib/components/CustomTab";
 import { useEndpoint } from "lib/hooks";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-sh";
@@ -36,10 +36,11 @@ interface CodeSnippetProps {
   type: "query" | "execute";
 }
 
-const getFullRpcUrl = (
-  rpcUrl: string | undefined,
-  chainId: string | undefined
-) => {
+/**
+ *
+ * @todo: This is a temporary solution to get the full RPC URL for Osmosis.
+ */
+const getFullRpcUrl = (rpcUrl: Option<string>, chainId: Option<string>) => {
   const baseUrl = rpcUrl?.slice(0, rpcUrl.length - 1);
   switch (chainId) {
     case "osmosis-1":
