@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import type { Msg, Option } from "lib/types";
-import { encode, camelToSnake } from "lib/utils";
+import { libEncode, camelToSnake } from "lib/utils";
 
 export const useRedo = () => {
   const navigate = useInternalNavigate();
@@ -17,7 +17,7 @@ export const useRedo = () => {
       e.stopPropagation();
       if (!type || !msg) return null;
       if (type === "MsgExecuteContract") {
-        const encodeMsg = encode(JSON.stringify(camelToSnake(msg.msg)));
+        const encodeMsg = libEncode(JSON.stringify(camelToSnake(msg.msg)));
         navigate({
           pathname: "/execute",
           query: { chainName, contract: msg.contract, msg: encodeMsg },
@@ -26,7 +26,7 @@ export const useRedo = () => {
         type === "MsgInstantiateContract" ||
         type === "MsgInstantiateContract2"
       ) {
-        const encodeMsg = encode(JSON.stringify(camelToSnake(msg)));
+        const encodeMsg = libEncode(JSON.stringify(camelToSnake(msg)));
         navigate({
           pathname: "/instantiate",
           query: { chainName, msg: encodeMsg },

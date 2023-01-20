@@ -34,7 +34,7 @@ export const PastTxsContent = ({
       <Flex my="20" direction="column">
         <DisconnectedState
           text="to see your past transactions."
-          helperText="Past transactions involving the Wasm module such as Instantiate, Execute, or Upload Wasm file will display here."
+          helperText="Past transactions involving the Wasm module (storing wasm codes, contract interactions, etc.) will display here."
         />
       </Flex>
     );
