@@ -36,15 +36,19 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
             />
           </LabelText>
 
-          {contractData.instantiateInfo.admin && (
-            <LabelText label="Admin Address">
+          <LabelText label="Admin Address">
+            {contractData.instantiateInfo.admin ? (
               <ExplorerLink
-                type="user_address"
+                type={getAddressType(contractData.instantiateInfo.admin)}
                 value={contractData.instantiateInfo.admin}
                 canCopyWithHover
               />
-            </LabelText>
-          )}
+            ) : (
+              <Text variant="body2" color="text.dark">
+                No Admin
+              </Text>
+            )}
+          </LabelText>
 
           <Divider border="1px solid" borderColor="divider.main" />
 
@@ -78,7 +82,7 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
             helperText1={getAddressTypeText(instantiatorType)}
           >
             <ExplorerLink
-              type="user_address"
+              type={instantiatorType}
               value={contractData.instantiateInfo.instantiator}
               canCopyWithHover
             />
