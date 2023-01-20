@@ -14,11 +14,11 @@ import { PublicProjectCard } from "./PublicProjectCard";
 export const AllProject = () => {
   const { data: publicProjectInfo } = usePublicProjectsQuery();
   const [searchKeyword, setSearchKeyword] = useState("");
-  const { getPublicProjects } = usePublicProjectStore();
+  const { getSavedPublicProjects } = usePublicProjectStore();
 
   const filteredPublicProjects = useMemo(() => {
     if (publicProjectInfo) {
-      const savedProjects = getPublicProjects();
+      const savedProjects = getSavedPublicProjects();
       // HACKED
       // TODO Sort saved project
       const orderedProjects = publicProjectInfo.map((project) => {
@@ -37,7 +37,7 @@ export const AllProject = () => {
       });
     }
     return [];
-  }, [getPublicProjects, publicProjectInfo, searchKeyword]);
+  }, [getSavedPublicProjects, publicProjectInfo, searchKeyword]);
 
   if (!publicProjectInfo)
     return (

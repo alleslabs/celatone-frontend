@@ -14,15 +14,10 @@ export const usePublicData = () => {
   const projectSlug = getFirstQueryParam(router.query.slug);
   const { data: projectInfo } = usePublicProjectBySlugQuery(projectSlug);
 
-  const codes = projectInfo?.codes || [];
-  const contracts = projectInfo?.contracts || [];
-  const projectDetail = projectInfo?.details;
-  const slug = projectSlug;
-
   return {
-    publicCodes: codes,
-    publicContracts: contracts,
-    projectDetail,
-    slug,
+    publicCodes: projectInfo?.codes || [],
+    publicContracts: projectInfo?.contracts || [],
+    projectDetail: projectInfo?.details,
+    slug: projectSlug,
   };
 };

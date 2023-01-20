@@ -14,10 +14,10 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -32,7 +32,7 @@ export const ContractsTable = ({
   contracts = [],
   hasSearchInput = true,
 }: ContractsTableProps) => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   const [searchKeyword, setSearchKeyword] = useState("");
   const filteredContracts = useMemo(() => {
     return matchSorter(contracts, searchKeyword, {
@@ -90,9 +90,7 @@ export const ContractsTable = ({
                     "> td": { borderColor: "divider.main" },
                   }}
                   onClick={() =>
-                    router.push({
-                      pathname: `/contract/${item.contractAddress}`,
-                    })
+                    navigate({ pathname: `/contract/${item.contractAddress}` })
                   }
                   cursor="pointer"
                 >
@@ -132,16 +130,18 @@ export const ContractsTable = ({
                   </Td>
                   <Td>
                     <Flex gap={3} justifyContent="flex-end" alignItems="center">
-                      <Link href={`/execute?contract=${item.contractAddress}`}>
+                      <AppLink
+                        href={`/execute?contract=${item.contractAddress}`}
+                      >
                         <Button variant="outline-gray" size="sm">
                           Execute
                         </Button>
-                      </Link>
-                      <Link href={`/query?contract=${item.contractAddress}`}>
+                      </AppLink>
+                      <AppLink href={`/query?contract=${item.contractAddress}`}>
                         <Button variant="outline-gray" size="sm">
                           Query
                         </Button>
-                      </Link>
+                      </AppLink>
                       {/* TODO save contract */}
                       {/* <AddToOtherList
                         contractInfo={item}

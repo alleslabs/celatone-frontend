@@ -38,20 +38,20 @@ export class PublicProjectStore {
     this.userKey = userKey;
   }
 
-  getPublicProjects(): PublicProject[] {
+  getSavedPublicProjects(): PublicProject[] {
     return this.publicProjects[this.userKey] ?? [];
   }
 
   isPublicProjectSaved(slug: string): boolean {
-    const publicProjectByUserKey = this.getPublicProjects();
+    const publicProjectByUserKey = this.getSavedPublicProjects();
 
-    return !!publicProjectByUserKey.find((x) => x.slug === slug);
+    return publicProjectByUserKey.findIndex((x) => x.slug === slug) > -1;
   }
 
   savePublicProject(newProject: PublicProject): void {
     if (!this.isPublicProjectSaved(newProject.slug)) {
       this.publicProjects[this.userKey] = [
-        ...this.getPublicProjects(),
+        ...this.getSavedPublicProjects(),
         newProject,
       ];
     }

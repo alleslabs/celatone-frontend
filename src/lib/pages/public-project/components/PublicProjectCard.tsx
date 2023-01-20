@@ -28,14 +28,14 @@ export const PublicProjectCard = observer(
 
     return (
       <Flex
-        px="4"
-        pt="4"
-        pb="2"
+        px={4}
+        pt={4}
+        pb={2}
         alignItems="center"
         bg="gray.900"
         _hover={{ bg: "gray.800" }}
         transition="all 0.2s"
-        borderRadius="4"
+        borderRadius={4}
         gap={4}
         height="full"
         onClick={handleOnClick}

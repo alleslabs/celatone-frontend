@@ -27,7 +27,7 @@ const PERMISSIONED_CHAINS = ["osmosis", "osmosistestnet"];
 const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
 
-  const { getPublicProjects } = usePublicProjectStore();
+  const { getSavedPublicProjects } = usePublicProjectStore();
 
   const { currentChainName } = useWallet();
 
@@ -116,7 +116,7 @@ const Navbar = observer(() => {
     {
       category: "Public Projects",
       submenu: [
-        ...getPublicProjects().map((list) => {
+        ...getSavedPublicProjects().map((list) => {
           return {
             name: list.name,
             slug: `/public-project/${list.slug}`,

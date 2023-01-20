@@ -24,10 +24,10 @@ export const renderSocial = (name: string) => {
   }
 };
 
-interface SocialProps {
+interface SocialMediaProps {
   details: Option<Detail>;
 }
-export const SocialMedia = ({ details }: SocialProps) => {
+export const SocialMedia = ({ details }: SocialMediaProps) => {
   if (!details) return null;
   return (
     <Flex

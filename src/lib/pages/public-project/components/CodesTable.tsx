@@ -15,10 +15,10 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { MdBookmarkBorder, MdHowToVote } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -32,14 +32,13 @@ export const CodesTable = ({
   codes = [],
   hasSearchInput = true,
 }: CodesTableProps) => {
+  const navigate = useInternalNavigate();
   const [searchKeyword, setSearchKeyword] = useState("");
-
   const filteredCodes = useMemo(() => {
     return matchSorter(codes, searchKeyword, {
       keys: ["id", "description"],
     });
   }, [codes, searchKeyword]);
-  const router = useRouter();
   return (
     <Box>
       {hasSearchInput && (
@@ -83,7 +82,7 @@ export const CodesTable = ({
             </Thead>
             <Tbody>
               {/* TODO Link code id and row to code detail */}
-              {filteredCodes?.map((code) => (
+              {filteredCodes.map((code) => (
                 <Tr
                   key={code.id}
                   sx={{
@@ -94,7 +93,7 @@ export const CodesTable = ({
                   _hover={{
                     bg: "gray.900",
                   }}
-                  onClick={() => router.push({ pathname: `/code/${code.id}` })}
+                  onClick={() => navigate({ pathname: `/code/${code.id}` })}
                   cursor="pointer"
                 >
                   <Td width="10%" color="primary.main">
@@ -130,11 +129,7 @@ export const CodesTable = ({
                   </Td>
                   <Td width="20%">
                     <Flex gap={3} justifyContent="flex-end" alignItems="center">
-                      <Button
-                        variant="outline-gray"
-                        size="sm"
-                        onClick={() => {}}
-                      >
+                      <Button variant="outline-gray" size="sm">
                         <Icon as={MdHowToVote} boxSize={4} mr={1} />
                         Instantiate
                       </Button>
