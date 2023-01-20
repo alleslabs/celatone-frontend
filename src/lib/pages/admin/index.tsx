@@ -10,6 +10,7 @@ import {
   useSimulateFeeQuery,
   useUpdateAdminTx,
 } from "lib/app-provider";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -47,7 +48,7 @@ const UpdateAdmin = () => {
   const onContractPathChange = useCallback(
     (contract?: ContractAddr) => {
       navigate({
-        pathname: "/update-admin",
+        pathname: "/admin",
         query: { ...(contract && { contract }) },
         options: { shallow: true },
       });
@@ -134,6 +135,10 @@ const UpdateAdmin = () => {
       <Heading as="h4" variant="h4" mb="24px">
         Update Admin
       </Heading>
+      <ConnectWalletAlert
+        mb="24px"
+        subtitle="You need to connect your wallet to perform this action"
+      />
       <ContractSelectSection
         mode="only-admin"
         contractAddress={contractAddressParam}
