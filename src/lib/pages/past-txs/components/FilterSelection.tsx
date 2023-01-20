@@ -141,6 +141,7 @@ export const FilterSelection = observer(
               )}
 
               <Input
+                autoComplete="off"
                 w="100%"
                 minW="200px"
                 size="lg"

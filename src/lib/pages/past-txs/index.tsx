@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { ChangeEvent } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { MdSearch } from "react-icons/md";
 
@@ -75,6 +75,7 @@ const PastTxs = () => {
     pageSize,
     offset
   );
+
   const setFilter = (filter: string, bool: boolean) => {
     setValue("filters", { ...pastTxsState.filters, [filter]: bool });
   };
@@ -98,6 +99,10 @@ const PastTxs = () => {
     });
     return filters;
   }, [pastTxsState]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [pastTxsState.filters, pastTxsState.input, setCurrentPage]);
 
   return (
     <Box>
