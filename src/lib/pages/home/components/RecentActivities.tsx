@@ -101,7 +101,7 @@ export const RecentActivities = observer(() => {
           minH="128px"
         >
           <Text color="text.dark" variant="body1">
-            Your recent queries will display here.
+            Your recent interactions will display here.
           </Text>
         </Flex>
       )}
