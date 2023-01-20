@@ -14,6 +14,8 @@ interface InstantiateInfoProps {
 export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
   const getAddressType = useGetAddressType();
 
+  // TODO: fix eslint
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const renderDataFound = () => {
     if (contractData.instantiateInfo) {
       const instantiatorType = getAddressType(
@@ -96,7 +98,11 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
               helperText1={contractData.initProposalTitle}
             >
               <ExplorerLink
-                value={`#${contractData.initProposalId ?? "Genesis"}`}
+                value={
+                  contractData.initProposalId
+                    ? `#${contractData.initProposalId}`
+                    : "Genesis"
+                }
                 canCopyWithHover
                 isReadOnly={!contractData.initProposalId}
               />
