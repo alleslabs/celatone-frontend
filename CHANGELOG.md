@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#110](https://github.com/alleslabs/celatone-frontend/pull/110) Fix proposal detail rendering
 - [#109](https://github.com/alleslabs/celatone-frontend/pull/109) Fix incorrect rendering of zero value badges
 - [#106](https://github.com/alleslabs/celatone-frontend/pull/106) Add sort alphabetically to query and execute shortcuts
 - [#88](https://github.com/alleslabs/celatone-frontend/pull/88) Add code snippet for query and execute
