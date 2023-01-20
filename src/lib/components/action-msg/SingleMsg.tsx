@@ -58,7 +58,7 @@ export const SingleMsg = ({
         <Tag borderRadius="full">+{length - tags.length} </Tag>
       )}
       {/* Length  */}
-      {!tags && length && <Tag>{length}</Tag>}
+      {!tags && length && <Tag borderRadius="full">{length}</Tag>}
       {/* Text2 */}
       {text2}
       {/* Link */}

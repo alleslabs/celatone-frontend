@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import type { Msg } from "lib/types";
+import type { Msg, Option } from "lib/types";
 import { encode, camelToSnake } from "lib/utils";
 
 export const useRedo = () => {
@@ -10,7 +10,7 @@ export const useRedo = () => {
   return useCallback(
     (
       e: React.MouseEvent<Element, MouseEvent>,
-      type: string | undefined,
+      type: Option<string>,
       msg: Msg,
       chainName: string
     ) => {
@@ -22,7 +22,10 @@ export const useRedo = () => {
           pathname: "/execute",
           query: { chainName, contract: msg.contract, msg: encodeMsg },
         });
-      } else if (type === "MsgInstantiateContract") {
+      } else if (
+        type === "MsgInstantiateContract" ||
+        type === "MsgInstantiateContract2"
+      ) {
         const encodeMsg = encode(JSON.stringify(camelToSnake(msg)));
         navigate({
           pathname: "/instantiate",

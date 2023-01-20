@@ -1,11 +1,11 @@
 import {
-  Flex,
-  Icon,
-  Text,
-  Grid,
-  useDisclosure,
-  Tag,
   Box,
+  Flex,
+  Grid,
+  Icon,
+  Tag,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
@@ -14,18 +14,20 @@ import { RenderActionsMessages } from "lib/components/action-msg/ActionMessages"
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { MsgDetail } from "lib/components/table/MsgDetail";
-import type { AllTransaction } from "lib/types";
+import type { PastTransaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-interface TxsTableRowProps {
-  transaction: AllTransaction;
+import { FurtherActionButton } from "./FurtherActionButton";
+
+interface PastTxRowProps {
+  transaction: PastTransaction;
   templateColumnsStyle: string;
 }
 
-export const TxsTableRow = ({
+export const PastTxRow = ({
   transaction,
   templateColumnsStyle,
-}: TxsTableRowProps) => {
+}: PastTxRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const [isAccordion, setIsAccordion] = useState(false);
 
@@ -41,7 +43,7 @@ export const TxsTableRow = ({
         _hover={{ background: "divider.main" }}
         cursor={isAccordion ? "pointer" : "default"}
       >
-        <TableRow>
+        <TableRow pl="48px">
           <ExplorerLink
             value={transaction.hash.toLocaleUpperCase()}
             type="tx_hash"
@@ -65,21 +67,6 @@ export const TxsTableRow = ({
             )}
           </Flex>
         </TableRow>
-
-        <TableRow>
-          <ExplorerLink
-            value={transaction.sender}
-            type="user_address"
-            canCopyWithHover
-          />
-        </TableRow>
-        <TableRow>
-          <ExplorerLink
-            value={transaction.height.toString()}
-            type="block_height"
-            canCopyWithHover
-          />
-        </TableRow>
         <TableRow>
           <Flex direction="row" justify="space-between" align="center" w="full">
             <Flex direction="column" gap={1}>
@@ -88,14 +75,19 @@ export const TxsTableRow = ({
                 {`(${dateFromNow(transaction.created)})`}
               </Text>
             </Flex>
-            {isAccordion && (
-              <Icon
-                as={MdKeyboardArrowDown}
-                transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
-                boxSize="18px"
-              />
-            )}
           </Flex>
+        </TableRow>
+        <TableRow>
+          <FurtherActionButton transaction={transaction} />
+        </TableRow>
+        <TableRow>
+          {isAccordion && (
+            <Icon
+              as={MdKeyboardArrowDown}
+              transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
+              boxSize="18px"
+            />
+          )}
         </TableRow>
       </Grid>
       {isAccordion && (
@@ -103,8 +95,8 @@ export const TxsTableRow = ({
           {transaction.messages.map((msg, index) => (
             <MsgDetail
               key={index.toString() + msg.type}
+              allowFurtherAction
               message={msg}
-              allowFurtherAction={false}
             />
           ))}
         </Grid>
