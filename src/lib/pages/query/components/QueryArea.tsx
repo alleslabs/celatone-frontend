@@ -97,7 +97,7 @@ export const QueryArea = ({
               },
             }}
           >
-            {cmds.map(([cmd, queryMsg]) => (
+            {cmds.sort().map(([cmd, queryMsg]) => (
               <ContractCmdButton
                 key={`query-cmd-${cmd}`}
                 cmd={cmd}

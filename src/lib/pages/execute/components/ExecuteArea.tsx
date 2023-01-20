@@ -172,7 +172,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
             },
           }}
         >
-          {cmds.map(([cmd, queryMsg]) => (
+          {cmds.sort().map(([cmd, queryMsg]) => (
             <ContractCmdButton
               key={`query-cmd-${cmd}`}
               cmd={cmd}
