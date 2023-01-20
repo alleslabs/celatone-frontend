@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#112](https://github.com/alleslabs/celatone-frontend/pull/112) Refactor past transactions page, support new messages including  Migration, Instantiate2, Update Admin, Clear Admin, and change filter actions to dropdown selection
 - [#72](https://github.com/alleslabs/celatone-frontend/pull/72) Fix general wording and grammar
 - [#110](https://github.com/alleslabs/celatone-frontend/pull/110) Fix proposal detail rendering
 - [#109](https://github.com/alleslabs/celatone-frontend/pull/109) Fix incorrect rendering of zero value badges
