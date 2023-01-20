@@ -158,9 +158,11 @@ export const useContractListByCodeId = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: unwrap(contract.transaction?.account.address),
+          instantiator: unwrap(contract.init_by.at(0)?.account.address),
           label: contract.label,
-          instantiated: parseDateDefault(contract.transaction?.block.timestamp),
+          instantiated: parseDateDefault(
+            contract.init_by.at(0)?.block.timestamp
+          ),
           // TODO: handle Genesis case
           latestUpdator: contract.contract_histories.at(0)?.account.address,
           latestUpdated: parseDateDefault(
