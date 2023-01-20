@@ -44,7 +44,7 @@ export const CommandSection = () => {
             },
           }}
         >
-          {cmds.map(([cmd, msg]) => (
+          {cmds.sort().map(([cmd, msg]) => (
             <ContractCmdButton
               key={`${type}-cmd-${cmd}`}
               cmd={cmd}

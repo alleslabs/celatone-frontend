@@ -15,6 +15,7 @@ import {
   getTxsByContractAddress,
   getRelatedProposalsCountByContractAddress,
   getRelatedProposalsByContractAddress,
+  getContractListByAdmin,
 } from "lib/data/queries";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
@@ -36,6 +37,7 @@ import {
   parseTxHash,
   parseTxHashOpt,
   snakeToCamel,
+  unwrap,
 } from "lib/utils";
 
 interface InstantiateDetail {
@@ -78,7 +80,7 @@ export const useInstantiatedListByUserQuery = (
       .then(({ contracts }) =>
         contracts.map<ContractLocalInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: walletAddr,
+          instantiator: unwrap(contract.accountByInitBy?.address),
           label: contract.label,
         }))
       );
@@ -88,6 +90,31 @@ export const useInstantiatedListByUserQuery = (
   return useQuery(["instantiated_list_by_user", walletAddr], queryFn, {
     keepPreviousData: true,
     enabled: !!walletAddr,
+  });
+};
+
+export const useContractListByAdmin = (
+  adminAddress: Option<ContractAddr | HumanAddr>
+): UseQueryResult<Option<ContractLocalInfo[]>> => {
+  const queryFn = useCallback(async () => {
+    if (!adminAddress) return undefined;
+
+    return indexerGraphClient
+      .request(getContractListByAdmin, {
+        address: adminAddress,
+      })
+      .then(({ contracts }) =>
+        contracts.map<ContractLocalInfo>((contract) => ({
+          contractAddress: contract.address as ContractAddr,
+          instantiator: contract.accountByInitBy?.address ?? "",
+          label: contract.label,
+        }))
+      );
+  }, [adminAddress]);
+
+  return useQuery(["contract_list_by_admin", adminAddress], queryFn, {
+    keepPreviousData: true,
+    enabled: !!adminAddress,
   });
 };
 
