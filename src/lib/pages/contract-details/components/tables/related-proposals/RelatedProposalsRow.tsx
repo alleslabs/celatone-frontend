@@ -43,7 +43,7 @@ const VotingEndTimeRender = ({
       <p>
         (
         {isDepositPeriod
-          ? `Deposit Period ends in ${dateFromNow(depositEndTime)}`
+          ? `Deposit Period ends ${dateFromNow(depositEndTime)}`
           : dateFromNow(votingEndTime)}
         )
       </p>
