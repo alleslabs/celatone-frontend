@@ -1,4 +1,3 @@
-import { MsgType } from "lib/types";
 import type { ContractAddr, ChainGasPrice, Token, U } from "lib/types";
 import type { CelatoneConstants, CelatoneContractAddress } from "types";
 
@@ -42,18 +41,10 @@ export const LCD_ENDPOINT: Record<string, string> = {
 
 export const MAX_FILE_SIZE = 800_000;
 
-export const MSG_TYPE_URL = {
-  [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
-  [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
-  [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
-  [MsgType.UPDATE_ADMIN]: "/cosmwasm.wasm.v1.MsgUpdateAdmin",
-};
-
 export const CELATONE_CONSTANTS: CelatoneConstants = {
   gasAdjustment: 1.6,
   lcdEndpoint: LCD_ENDPOINT,
   maxFileSize: MAX_FILE_SIZE,
-  msgTypeUrl: MSG_TYPE_URL,
 };
 
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
