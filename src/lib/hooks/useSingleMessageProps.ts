@@ -341,9 +341,9 @@ const migrateSingleMsgProps = (
  *
  * @remarks
  * More than 1 msg: Update [length] admins
- * Only 1 msg: Update admin on [name || contract address] to [user address]
+ * Only 1 msg: Update admin on [name || contract address] to [user address || contract address]
  * Fail with more than 1 msg: Failed to update [length] admins
- * Fail with 1 msg: Failed to update admin on [name || contract address] to [user address]
+ * Fail with 1 msg: Failed to update admin on [name || contract address] to [user address || contract address]
 
  *
  * @param isSuccess - boolean of whether tx is succeed or not
@@ -355,10 +355,12 @@ const migrateSingleMsgProps = (
 const updateAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
+  chainName: string,
   getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailUpdateAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
+  const adminLocalInfo = getContractLocalInfo(detail.newAdmin);
 
   if (messages.length > 1) {
     return isSuccess
@@ -385,8 +387,8 @@ const updateAdminSingleMsgProps = (
         },
         text3: "to",
         link2: {
-          type: "user_address" as LinkType,
-          value: detail.newAdmin,
+          type: getAddressTypeByLength(chainName, detail.newAdmin) as LinkType,
+          value: adminLocalInfo?.name || detail.newAdmin,
         },
       }
     : {
@@ -399,8 +401,8 @@ const updateAdminSingleMsgProps = (
         },
         text3: "to",
         link2: {
-          type: "user_address" as LinkType,
-          value: detail.newAdmin,
+          type: getAddressTypeByLength(chainName, detail.newAdmin) as LinkType,
+          value: adminLocalInfo?.name || detail.newAdmin,
         },
       };
 };
@@ -587,6 +589,7 @@ export const useSingleActionMsgProps = (
       return updateAdminSingleMsgProps(
         isSuccess,
         messages,
+        currentChainName,
         getContractLocalInfo
       );
     case "MsgClearAdmin":
