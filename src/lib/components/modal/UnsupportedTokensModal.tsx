@@ -20,8 +20,12 @@ import { MdAttachMoney } from "react-icons/md";
 import { Copier } from "../Copier";
 import { ExplorerLink } from "../ExplorerLink";
 import type { BalanceWithAssetInfo, Balance } from "lib/types";
-import { getFirstQueryParam, getTokenType, truncate } from "lib/utils";
-import { formatToken } from "lib/utils/formatter/token";
+import {
+  getFirstQueryParam,
+  getTokenType,
+  truncate,
+  formatToken,
+} from "lib/utils";
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: BalanceWithAssetInfo[];
@@ -32,6 +36,7 @@ interface UnsupportedTokenProps {
 }
 
 const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
+  // TODO - Move this to utils
   const [tokenLabel, tokenType] = useMemo(() => {
     const splitId = balance.id.split("/");
     const type = !balance.id.includes("/")
@@ -79,6 +84,8 @@ export const UnsupportedTokensModal = ({
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  if (unsupportedAssets.length === 0) return null;
+
   return (
     <>
       <Flex onClick={onOpen}>
@@ -86,7 +93,7 @@ export const UnsupportedTokensModal = ({
           {`View ${unsupportedAssets.length} Unsupported Assets`}
         </Button>
       </Flex>
-      <Modal isOpen={isOpen} onClose={() => onClose()} isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent w="700px">
           <ModalHeader>

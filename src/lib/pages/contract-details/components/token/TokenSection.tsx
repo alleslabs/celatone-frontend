@@ -58,9 +58,7 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
         <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
           Assets
         </Text>
-        {unsupportedAssets.length !== 0 && (
-          <UnsupportedTokensModal unsupportedAssets={unsupportedAssets} />
-        )}
+        <UnsupportedTokensModal unsupportedAssets={unsupportedAssets} />
       </Flex>
       {renderContext()}
     </>
