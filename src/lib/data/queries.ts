@@ -82,7 +82,10 @@ export const getInstantiatedCountByUserQueryDocument = graphql(`
 export const getInstantiatedListByUserQueryDocument = graphql(`
   query getInstantiatedListByUserQueryDocument($walletAddr: String!) {
     contracts(
-      where: { transaction: { account: { address: { _eq: $walletAddr } } } }
+      where: {
+        accountByInitBy: { address: { _eq: $walletAddr } }
+        _or: { transaction: { account: { address: { _eq: $walletAddr } } } }
+      }
       limit: 500
       offset: 0
       order_by: { transaction: { block: { timestamp: desc } } }

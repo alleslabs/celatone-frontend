@@ -7153,31 +7153,72 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
+                      name: { kind: "Name", value: "accountByInitBy" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "account" },
+                            name: { kind: "Name", value: "address" },
                             value: {
                               kind: "ObjectValue",
                               fields: [
                                 {
                                   kind: "ObjectField",
-                                  name: { kind: "Name", value: "address" },
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "walletAddr" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_or" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "transaction" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "account" },
                                   value: {
                                     kind: "ObjectValue",
                                     fields: [
                                       {
                                         kind: "ObjectField",
-                                        name: { kind: "Name", value: "_eq" },
+                                        name: {
+                                          kind: "Name",
+                                          value: "address",
+                                        },
                                         value: {
-                                          kind: "Variable",
-                                          name: {
-                                            kind: "Name",
-                                            value: "walletAddr",
-                                          },
+                                          kind: "ObjectValue",
+                                          fields: [
+                                            {
+                                              kind: "ObjectField",
+                                              name: {
+                                                kind: "Name",
+                                                value: "_eq",
+                                              },
+                                              value: {
+                                                kind: "Variable",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "walletAddr",
+                                                },
+                                              },
+                                            },
+                                          ],
                                         },
                                       },
                                     ],

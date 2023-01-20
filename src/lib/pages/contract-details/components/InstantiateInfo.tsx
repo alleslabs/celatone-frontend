@@ -82,21 +82,21 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
             />
           </LabelText>
 
-          {contractData.initProposalId ? (
+          {contractData.initTxHash ? (
+            <LabelText label="Instantiate Transaction">
+              <ExplorerLink
+                type="tx_hash"
+                value={contractData.initTxHash.toUpperCase()}
+                canCopyWithHover
+              />
+            </LabelText>
+          ) : (
             <LabelText
               label="Instantiate Proposal ID"
               helperText1={contractData.initProposalTitle}
             >
               <ExplorerLink
-                value={`#${contractData.initProposalId.toString()}`}
-                canCopyWithHover
-              />
-            </LabelText>
-          ) : (
-            <LabelText label="Instantiate Transaction">
-              <ExplorerLink
-                type="tx_hash"
-                value={contractData.initTxHash?.toUpperCase() ?? "Genesis"}
+                value={`#${contractData.initProposalId ?? "Genesis"}`}
                 canCopyWithHover
                 isReadOnly={!contractData.initTxHash}
               />
