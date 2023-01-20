@@ -39,7 +39,8 @@ export const RecentActivities = observer(() => {
               key={item.type + item.contractAddress + item.timestamp}
               onClick={() =>
                 navigate({
-                  pathname: `/${item.type}?contract=${item.contractAddress}&msg=${item.msg}`,
+                  pathname: `/${item.type}`,
+                  query: { contract: item.contractAddress, msg: item.msg },
                 })
               }
             >
