@@ -23,27 +23,35 @@ const StyledIcon = chakra(Icon, {
 
 const getInstantiateButtonProps = (
   isAllowed: boolean,
-  isDisabled: boolean
+  isUnknown: boolean,
+  isWalletConnected: boolean
 ): {
   tooltipLabel: string;
   variant: string;
   icon: JSX.Element | undefined;
 } => {
+  if (isUnknown) {
+    return {
+      tooltipLabel: "",
+      variant: "outline-gray",
+      icon: undefined,
+    };
+  }
   if (isAllowed) {
     return {
-      tooltipLabel: isDisabled
-        ? "You need to connect wallet to instantiate"
-        : "You can instantiate without opening proposal",
+      tooltipLabel: isWalletConnected
+        ? "You can instantiate without opening proposal"
+        : "You need to connect wallet to instantiate contract",
       variant: "outline-primary",
       icon: <StyledIcon as={MdPerson} />,
     };
   }
   return {
-    tooltipLabel: isDisabled
-      ? ""
-      : "Instantiate through proposal only (Coming Soon)",
+    tooltipLabel: isWalletConnected
+      ? "Instantiate through proposal only (Coming Soon)"
+      : "You need to connect wallet to open instantiate proposal",
     variant: "outline-gray",
-    icon: isDisabled ? undefined : <StyledIcon as={MdHowToVote} />,
+    icon: <StyledIcon as={MdHowToVote} />,
   };
 };
 
@@ -53,7 +61,7 @@ export const InstantiateButton = ({
   codeId,
   ...buttonProps
 }: InstantiateButtonProps) => {
-  const { address } = useWallet();
+  const { address, isWalletConnected } = useWallet();
   const navigate = useInternalNavigate();
   const goToInstantiate = () =>
     navigate({ pathname: "/instantiate", query: { "code-id": codeId } });
@@ -61,12 +69,14 @@ export const InstantiateButton = ({
   const isAllowed =
     permissionAddresses.includes(address as HumanAddr) ||
     instantiatePermission === InstantiatePermission.EVERYBODY;
-  const isDisabled =
-    instantiatePermission === InstantiatePermission.UNKNOWN || !address;
+  // const isDisabled =
+  //   instantiatePermission === InstantiatePermission.UNKNOWN ||
+  //   !isWalletConnected;
 
   const { tooltipLabel, variant, icon } = getInstantiateButtonProps(
     isAllowed,
-    isDisabled
+    instantiatePermission === InstantiatePermission.UNKNOWN,
+    isWalletConnected
   );
 
   return (
@@ -79,7 +89,7 @@ export const InstantiateButton = ({
     >
       <Button
         // Change to isDisabled when create proposal flow is done
-        disabled={!isAllowed}
+        disabled={!isAllowed || !isWalletConnected}
         // disabled={isDisabled}
         variant={variant}
         leftIcon={icon}
