@@ -88,16 +88,9 @@ export const UnsupportedTokensModal = ({
       </Flex>
       <Modal isOpen={isOpen} onClose={() => onClose()} isCentered>
         <ModalOverlay />
-        <ModalContent w="560px">
+        <ModalContent w="700px">
           <ModalHeader>
-            <Flex
-              w="full"
-              direction="row"
-              alignItems="center"
-              gap={2}
-              pl={2}
-              pt={1}
-            >
+            <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
               <Icon as={MdAttachMoney} boxSize={5} color="gray.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
