@@ -6345,6 +6345,7 @@ export type GetInstantiatedListByUserQueryDocumentQuery = {
     __typename?: "contracts";
     label: string;
     address: string;
+    accountByInitBy?: { __typename?: "accounts"; address: string } | null;
   }>;
 };
 
@@ -6498,11 +6499,11 @@ export type GetContractListByCodeIdQuery = {
     __typename?: "contracts";
     address: string;
     label: string;
-    transaction?: {
-      __typename?: "transactions";
+    init_by: Array<{
+      __typename?: "contract_histories";
       block: { __typename?: "blocks"; timestamp: any };
       account: { __typename?: "accounts"; address: string };
-    } | null;
+    }>;
     contract_histories: Array<{
       __typename?: "contract_histories";
       block: { __typename?: "blocks"; timestamp: any };
@@ -7152,31 +7153,72 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
+                      name: { kind: "Name", value: "accountByInitBy" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "account" },
+                            name: { kind: "Name", value: "address" },
                             value: {
                               kind: "ObjectValue",
                               fields: [
                                 {
                                   kind: "ObjectField",
-                                  name: { kind: "Name", value: "address" },
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "walletAddr" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_or" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "transaction" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "account" },
                                   value: {
                                     kind: "ObjectValue",
                                     fields: [
                                       {
                                         kind: "ObjectField",
-                                        name: { kind: "Name", value: "_eq" },
+                                        name: {
+                                          kind: "Name",
+                                          value: "address",
+                                        },
                                         value: {
-                                          kind: "Variable",
-                                          name: {
-                                            kind: "Name",
-                                            value: "walletAddr",
-                                          },
+                                          kind: "ObjectValue",
+                                          fields: [
+                                            {
+                                              kind: "ObjectField",
+                                              name: {
+                                                kind: "Name",
+                                                value: "_eq",
+                                              },
+                                              value: {
+                                                kind: "Variable",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "walletAddr",
+                                                },
+                                              },
+                                            },
+                                          ],
                                         },
                                       },
                                     ],
@@ -7239,6 +7281,19 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "label" } },
                 { kind: "Field", name: { kind: "Name", value: "address" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "accountByInitBy" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -7344,11 +7399,39 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
                                               value: "InstantiateContract2",
                                               block: false,
                                             },
+                                            {
+                                              kind: "StringValue",
+                                              value: "SoftwareUpgrade",
+                                              block: false,
+                                            },
                                           ],
                                         },
                                       },
                                     ],
                                   },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "proposal" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "id" },
+                                  value: { kind: "EnumValue", value: "asc" },
                                 },
                               ],
                             },
@@ -8472,26 +8555,8 @@ export const GetContractListByCodeIdDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "desc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
                     },
                   ],
                 },
@@ -8520,7 +8585,38 @@ export const GetContractListByCodeIdDocument = {
                 { kind: "Field", name: { kind: "Name", value: "label" } },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "transaction" },
+                  alias: { kind: "Name", value: "init_by" },
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [

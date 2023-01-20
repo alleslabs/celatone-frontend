@@ -49,9 +49,9 @@ const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
               uploader={localCodeInfo?.uploader ?? codeData.uploader}
               description={localCodeInfo?.description}
               instantiatePermission={
-                codeData?.instantiatePermission ?? InstantiatePermission.UNKNOWN
+                codeData.instantiatePermission ?? InstantiatePermission.UNKNOWN
               }
-              permissionAddresses={codeData?.permissionAddresses ?? []}
+              permissionAddresses={codeData.permissionAddresses ?? []}
             />
           </Flex>
           <Divider borderColor="divider.main" my={12} />
