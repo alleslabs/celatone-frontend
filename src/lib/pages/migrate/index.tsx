@@ -45,11 +45,14 @@ const Migrate = () => {
     (contract: ContractAddr) => {
       navigate({
         pathname: "/migrate",
-        query: { ...router.query, contract },
+        query: {
+          ...(!firstStep && { "code-id": router.query["code-id"] }),
+          contract,
+        },
         options: { shallow: true },
       });
     },
-    [navigate]
+    [firstStep, navigate]
   );
 
   useQuery(
@@ -59,10 +62,16 @@ const Migrate = () => {
       enabled: !!contractAddress,
       retry: 0,
       onSuccess(data) {
-        setValue("admin", data.admin);
+        if (data.admin === address) {
+          setValue("admin", data.admin);
+        } else {
+          setValue("admin", defaultValues.admin);
+          setValue("contractAddress", defaultValues.contractAddress);
+        }
       },
       onError() {
         setValue("admin", defaultValues.admin);
+        setValue("contractAddress", defaultValues.contractAddress);
       },
     }
   );
