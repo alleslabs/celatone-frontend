@@ -98,7 +98,7 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
               <ExplorerLink
                 value={`#${contractData.initProposalId ?? "Genesis"}`}
                 canCopyWithHover
-                isReadOnly={!contractData.initTxHash}
+                isReadOnly={!contractData.initProposalId}
               />
             </LabelText>
           )}
