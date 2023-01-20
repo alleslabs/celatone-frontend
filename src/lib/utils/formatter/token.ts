@@ -1,6 +1,5 @@
 import type { BigSource } from "big.js";
 import big from "big.js";
-import numeral from "numeral";
 
 export const formatDemimal =
   ({
@@ -23,8 +22,9 @@ export const formatDemimal =
     if (num === "NaN") return fallbackValue;
 
     const [i, d] = num.split(".");
+    const thousands = /\B(?=(\d{3})+(?!\d))/g;
 
-    const ii = delimiter ? numeral(i).format("0,0") : i;
+    const ii = delimiter ? i.replace(thousands, ",") : i;
     const dd = d ? `.${d}` : "";
 
     return (ii === "0" && num[0] === "-" ? "-" : "") + ii + dd;

@@ -23,9 +23,9 @@ const getBgColor = (
       return "#BA863A";
     case ProposalStatus.FAILED:
     case ProposalStatus.REJECTED:
-      return "#F2605B";
+      return "rgba(242, 96, 91, 0.6)";
     case ProposalStatus.PASSED:
-      return "#A1E58F";
+      return "rgba(161, 229, 143, 0.5)";
     case ProposalStatus.VOTING_PERIOD:
       return "#0288D1";
     case ProposalStatus.INACTIVE:

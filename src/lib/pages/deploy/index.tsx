@@ -18,13 +18,13 @@ const Deploy = () => {
       </Heading>
       <ButtonCard
         title="Upload new WASM File"
-        description="Deploy contract by upload new Wasm file"
+        description="Store a new Wasm file on-chain"
         onClick={() => navigate({ pathname: "/upload" })}
         mb="16px"
       />
       <ButtonCard
         title="Use existing Code IDs"
-        description="Input code ID or select from stored codes or your saved codes"
+        description="Input code ID or select from previously stored codes or your saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
       />
     </WasmPageContainer>
