@@ -50,6 +50,7 @@
     "framer-motion": "^7.6.12",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0",
+    "js-base64": "^3.7.4",
     "localforage": "^1.10.0",
     "long": "^5.2.1",
     "map-obj": "^5.0.2",
