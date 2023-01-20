@@ -33,7 +33,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
     >
       {tabProps.children}
 
-      {count && (
+      {count !== undefined && (
         <Badge
           variant={isSelected ? "primary" : "gray"}
           ml="6px"
