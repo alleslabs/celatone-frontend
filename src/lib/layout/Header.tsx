@@ -40,7 +40,7 @@ const Header = () => {
           /**
            * @remarks Condition checking varies by chain
            */
-          network: getNetworkByChainName(chainName) ? "mainnet" : "testnet",
+          network: getNetworkByChainName(chainName),
         },
       });
     },

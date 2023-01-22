@@ -62,7 +62,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               rpc: ["https://terra-rpc.lavenderfive.com/"],
             },
             terra2testnet: {
-              rest: ["https://pisco-lcd.terra.dev"],
+              rpc: ["https://terra-testnet-rpc.polkachu.com/"],
+              rest: ["https://pisco-lcd.terra.dev/"],
             },
           }}
         >
