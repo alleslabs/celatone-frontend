@@ -1,7 +1,7 @@
 import { Button, Flex, Icon } from "@chakra-ui/react";
-import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { FiChevronLeft } from "react-icons/fi";
 
 import {
@@ -11,8 +11,7 @@ import {
 } from "lib/app-provider";
 import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import type { FormStatus } from "lib/components/forms";
-import { TextInput } from "lib/components/forms";
+import { ControllerInput } from "lib/components/forms";
 import {
   getMaxCodeDescriptionLengthError,
   MAX_CODE_DESCRIPTION_LENGTH,
@@ -24,7 +23,7 @@ import { AccessType, MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
 
 import { UploadCard } from "./components/UploadCard";
-import type { SimulateStatus } from "./types";
+import type { UploadSectionState } from "./types";
 
 interface UploadSectionProps {
   handleBack: () => void;
@@ -41,15 +40,23 @@ export const UploadSection = ({
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();
 
-  const [wasmFile, setFile] = useState<File>();
-  const [codeDesc, setCodeDesc] = useState("");
-  const [descStatus, setDescStatus] = useState<FormStatus>({
-    state: "init",
+  const {
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<UploadSectionState>({
+    defaultValues: {
+      wasmFile: undefined,
+      codeDesc: "",
+      estimatedFee: undefined,
+      simulateStatus: "Pending",
+      simulateError: "",
+    },
+    mode: "all",
   });
-  const [estimatedFee, setEstimatedFee] = useState<StdFee>();
-  const [simulateStatus, setSimulateStatus] =
-    useState<SimulateStatus>("Pending");
-  const [simulateError, setSimulateError] = useState<string>("");
+  const { wasmFile, codeDesc, estimatedFee, simulateStatus, simulateError } =
+    watch();
 
   const postUploadTx = useUploadContractTx(
     wasmFile?.name,
@@ -57,19 +64,6 @@ export const UploadSection = ({
     estimatedFee,
     onMigrate
   );
-
-  // TODO: apply useForm
-  useEffect(() => {
-    const trimedDescription = codeDesc.trim();
-    if (trimedDescription.length === 0) {
-      setDescStatus({ state: "init" });
-    } else if (trimedDescription.length > MAX_CODE_DESCRIPTION_LENGTH)
-      setDescStatus({
-        state: "error",
-        message: getMaxCodeDescriptionLengthError(trimedDescription.length),
-      });
-    else setDescStatus({ state: "success" });
-  }, [codeDesc]);
 
   const proceed = useCallback(async () => {
     const stream = await postUploadTx({
@@ -96,8 +90,8 @@ export const UploadSection = ({
   useEffect(() => {
     (async () => {
       if (wasmFile) {
-        setSimulateStatus("Pending");
-        setSimulateError("");
+        setValue("simulateStatus", "Pending");
+        setValue("simulateError", "");
         const msg = composeMsg(MsgType.STORE_CODE, {
           sender: address as HumanAddr,
           wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
@@ -109,16 +103,16 @@ export const UploadSection = ({
         try {
           const estimatedGasUsed = await simulate([msg]);
           if (estimatedGasUsed) {
-            setEstimatedFee(fabricateFee(estimatedGasUsed));
-            setSimulateStatus("Completed");
+            setValue("estimatedFee", fabricateFee(estimatedGasUsed));
+            setValue("simulateStatus", "Completed");
           }
         } catch (err) {
-          setSimulateStatus("Failed");
-          setSimulateError((err as Error).message);
+          setValue("simulateStatus", "Failed");
+          setValue("simulateError", (err as Error).message);
         }
       }
     })();
-  }, [wasmFile, address, simulate, fabricateFee]);
+  }, [wasmFile, address, simulate, fabricateFee, setValue]);
 
   return (
     <>
@@ -126,24 +120,28 @@ export const UploadSection = ({
         <UploadCard
           file={wasmFile}
           deleteFile={() => {
-            setFile(undefined);
-            setEstimatedFee(undefined);
+            setValue("wasmFile", undefined);
+            setValue("estimatedFee", undefined);
           }}
           simulateStatus={simulateStatus}
           simulateError={simulateError}
         />
       ) : (
-        <DropZone setFile={(file) => setFile(file)} />
+        <DropZone setFile={(file) => setValue("wasmFile", file)} />
       )}
-      <TextInput
-        variant="floating"
-        value={codeDesc}
-        setInputState={setCodeDesc}
+      <ControllerInput
+        name="codeDesc"
+        control={control}
         label="Code Description (Optional)"
         helperText="Short description of your code. You can add or change this later."
+        rules={{
+          maxLength: MAX_CODE_DESCRIPTION_LENGTH,
+        }}
+        error={
+          errors.codeDesc && getMaxCodeDescriptionLengthError(codeDesc.length)
+        }
+        variant="floating"
         my="32px"
-        status={descStatus}
-        maxLength={MAX_CODE_DESCRIPTION_LENGTH}
       />
       <Flex
         fontSize="14px"
@@ -172,7 +170,7 @@ export const UploadSection = ({
           size="md"
           variant="primary"
           w="128px"
-          disabled={!estimatedFee || !wasmFile || descStatus.state === "error"}
+          disabled={!estimatedFee || !wasmFile || !!errors.codeDesc}
           onClick={proceed}
         >
           Upload
