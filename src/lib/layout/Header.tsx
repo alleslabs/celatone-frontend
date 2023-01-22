@@ -6,17 +6,46 @@ import {
   Text,
   MenuItem,
   Icon,
+  Image,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { useCallback } from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { MdCheck } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { WalletSection } from "lib/components/Wallet";
 import { getSupportedChainNames } from "lib/data";
 
+import Searchbar from "./Searchbar";
+
 const Header = () => {
-  const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
+  const router = useRouter();
+  const navigate = useInternalNavigate();
+  const {
+    currentChainRecord,
+    currentChainName,
+    setCurrentChain,
+    getChainRecord,
+  } = useWallet();
+
+  const handleChainSelect = useCallback(
+    (chainName: string) => {
+      if (chainName === currentChainName) return;
+      setCurrentChain(chainName);
+      navigate({
+        pathname: router.asPath.replace(`/${router.query.network}`, ""),
+        query: {
+          /**
+           * @remarks Condition checking varies by chain
+           */
+          network: chainName === "osmosis" ? "mainnet" : "testnet",
+        },
+      });
+    },
+    [currentChainName, setCurrentChain, navigate, router]
+  );
 
   return (
     <Flex
@@ -26,15 +55,18 @@ const Header = () => {
       align="center"
       justifyContent="space-between"
       px={6}
+      mb={1}
+      gap="48px"
     >
-      <Link href="/">
-        <Image
-          src="/celatone-logo.svg"
-          alt="Celatone"
-          width={120}
-          height={24}
-        />
-      </Link>
+      <Image
+        src="/celatone-logo.svg"
+        alt="Celatone"
+        width="115px"
+        mr="36px"
+        _hover={{ cursor: "pointer" }}
+        onClick={() => navigate({ pathname: "/" })}
+      />
+      <Searchbar />
       <Flex gap={2}>
         <Menu>
           <MenuButton
@@ -67,15 +99,28 @@ const Header = () => {
             {getSupportedChainNames().map((chainName) => (
               <MenuItem
                 key={chainName}
-                onClick={() => setCurrentChain(chainName)}
-                disabled={currentChainRecord?.chain.chain_id === chainName}
+                onClick={() => {
+                  handleChainSelect(chainName);
+                }}
                 flexDirection="column"
                 alignItems="flex-start"
+                _hover={{
+                  backgroundColor: "hover.dark",
+                }}
               >
-                <Text>{getChainRecord(chainName)?.chain.pretty_name}</Text>
-                <Text color="text.dark" fontSize="sm">
-                  {getChainRecord(chainName)?.chain.chain_id}
-                </Text>
+                <Flex justify="space-between" align="center" w="full">
+                  <Flex direction="column">
+                    <Text variant="body2">
+                      {getChainRecord(chainName)?.chain.pretty_name}
+                    </Text>
+                    <Text color="text.dark" variant="body3">
+                      {getChainRecord(chainName)?.chain.chain_id}
+                    </Text>
+                  </Flex>
+                  {chainName === currentChainName && (
+                    <Icon as={MdCheck} boxSize={4} color="gray.600" />
+                  )}
+                </Flex>
               </MenuItem>
             ))}
           </MenuList>

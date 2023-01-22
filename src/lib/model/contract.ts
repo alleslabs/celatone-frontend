@@ -1,9 +1,10 @@
-import type { Coin } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
+import { useCelatoneApp } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
+import { useAssetInfos } from "lib/services/assetService";
 import type { InstantiateInfo, PublicInfo } from "lib/services/contract";
 import {
   queryPublicInfo,
@@ -11,26 +12,35 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
+  useExecuteTxsCountByContractAddress,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
+  useMigrationHistoriesCountByContractAddress,
+  useTxsCountByContractAddress,
+  useRelatedProposalsCountByContractAddress,
 } from "lib/services/contractService";
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { ContractInfo, ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
+import type {
+  BalanceWithAssetInfo,
+  ContractAddr,
+  HumanAddr,
+  Option,
+} from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 export interface ContractData {
   chainId: string;
-  codeInfo: CodeLocalInfo | undefined;
-  contractInfo: ContractInfo | undefined;
-  instantiateInfo: InstantiateInfo | undefined;
-  publicInfo: PublicInfo | undefined;
-  balances: Coin[];
+  codeInfo: Option<CodeLocalInfo>;
+  contractLocalInfo: Option<ContractLocalInfo>;
+  instantiateInfo: Option<InstantiateInfo>;
+  publicInfo: Option<PublicInfo>;
+  balances: Option<BalanceWithAssetInfo[]>;
   initMsg: string;
-  initTxHash: string | undefined;
-  initProposalTitle: string | undefined;
-  initProposalId: number | undefined;
+  initTxHash: Option<string>;
+  initProposalId: Option<number>;
+  initProposalTitle: Option<string>;
 }
 
 export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
@@ -39,12 +49,12 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
     enable ? (address as HumanAddr) : undefined
   );
 
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
 
   return {
     contracts: contracts.map((contract) => ({
       ...contract,
-      ...getContractInfo(contract.contractAddress),
+      ...getContractLocalInfo(contract.contractAddress),
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
@@ -78,21 +88,44 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 export const useContractData = (
   contractAddress: ContractAddr
 ): ContractData | undefined => {
+  const { indexerGraphClient } = useCelatoneApp();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
-  const { getContractInfo } = useContractStore();
+  const { getContractLocalInfo } = useContractStore();
   const endpoint = useLCDEndpoint();
+  const assetInfos = useAssetInfos();
 
   const { data: instantiateInfo } = useQuery(
     ["query", "instantiateInfo", contractAddress],
-    async () => queryInstantiateInfo(endpoint, contractAddress),
+    async () =>
+      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
     { enabled: !!currentChainRecord }
   );
-  const { data: contractBalances = { balances: [] } } = useQuery(
+  const { data: contractBalances } = useQuery(
     ["query", "contractBalances", contractAddress],
-    async () => queryContractBalances(endpoint, contractAddress),
+    async () =>
+      queryContractBalances(
+        currentChainRecord?.name,
+        currentChainRecord?.chain.chain_id,
+        contractAddress
+      ),
     { enabled: !!currentChainRecord }
   );
+
+  const contractBalancesWithAssetInfos = contractBalances
+    ?.map(
+      (balance): BalanceWithAssetInfo => ({
+        balance,
+        assetInfo: assetInfos?.[balance.id],
+      })
+    )
+    .sort((a, b) => {
+      if (a.balance.symbol && b.balance.symbol) {
+        return a.balance.symbol.localeCompare(b.balance.symbol);
+      }
+      return -1;
+    });
+
   const { data: publicInfo } = useQuery(
     ["query", "publicInfo", contractAddress],
     async () =>
@@ -107,30 +140,52 @@ export const useContractData = (
   const codeInfo = instantiateInfo
     ? getCodeLocalInfo(Number(instantiateInfo.codeId))
     : undefined;
-  const contractInfo = getContractInfo(contractAddress);
+  const contractLocalInfo = getContractLocalInfo(contractAddress);
 
   const {
     data: instantiateDetail = {
       initMsg: "{}",
     },
   } = useInstantiateDetailByContractQuery(contractAddress);
-  // TODO: contract proposal title and id
-  const initProposalTitle = undefined;
-  const initProposalId = undefined;
-  // TODO: get all related transactions
 
   if (!currentChainRecord) return undefined;
 
   return {
     chainId: currentChainRecord.chain.chain_id,
     codeInfo,
-    contractInfo,
+    contractLocalInfo,
     instantiateInfo,
     publicInfo,
-    balances: contractBalances.balances,
+    balances: contractBalancesWithAssetInfos,
     initMsg: instantiateDetail.initMsg,
     initTxHash: instantiateDetail.initTxHash,
-    initProposalTitle,
-    initProposalId,
+    initProposalId: instantiateDetail.initProposalId,
+    initProposalTitle: instantiateDetail.initProposalTitle,
+  };
+};
+
+export const useContractDetailsTableCounts = (
+  contractAddress: ContractAddr
+) => {
+  const { data: executeCount = 0, refetch: refetchExecute } =
+    useExecuteTxsCountByContractAddress(contractAddress);
+  const { data: migrationCount = 0, refetch: refetchMigration } =
+    useMigrationHistoriesCountByContractAddress(contractAddress);
+  const { data: transactionsCount = 0, refetch: refetchTransactions } =
+    useTxsCountByContractAddress(contractAddress);
+
+  const { data: relatedProposalsCount = 0, refetch: refetchRelatedProposals } =
+    useRelatedProposalsCountByContractAddress(contractAddress);
+  return {
+    tableCounts: {
+      executeCount,
+      migrationCount,
+      transactionsCount,
+      relatedProposalsCount,
+    },
+    refetchExecute,
+    refetchMigration,
+    refetchTransactions,
+    refetchRelatedProposals,
   };
 };

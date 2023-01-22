@@ -1,10 +1,11 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Heading, Button, Box, Flex, Spacer } from "@chakra-ui/react";
+import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
@@ -22,6 +23,7 @@ import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const endpoint = useLCDEndpoint();
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
@@ -29,7 +31,7 @@ const Query = () => {
   const [cmds, setCmds] = useState<[string, string][]>([]);
 
   const goToExecute = () => {
-    router.push({
+    navigate({
       pathname: "/execute",
       query: { ...(contractAddress && { contract: contractAddress }) },
     });
@@ -37,16 +39,13 @@ const Query = () => {
 
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
-      router.push(
-        {
-          pathname: "/query",
-          query: { ...(contract && { contract }) },
-        },
-        undefined,
-        { shallow: true }
-      );
+      navigate({
+        pathname: "/query",
+        query: { ...(contract && { contract }) },
+        options: { shallow: true },
+      });
     },
-    [router]
+    [navigate]
   );
 
   // TODO: Abstract query and make query key
@@ -97,11 +96,10 @@ const Query = () => {
       >
         BACK
       </Button>
-      <Flex my="10px">
-        <Heading as="h1" size="lg" textColor="white" mb={4}>
-          Query
+      <Flex mt={1} mb={8} justify="space-between">
+        <Heading as="h5" variant="h5" color="text.main">
+          Query Contract
         </Heading>
-        <Spacer />
         <Box>
           <Button variant="ghost-primary" size="sm" onClick={goToExecute}>
             Go To Execute
@@ -110,6 +108,7 @@ const Query = () => {
       </Flex>
 
       <ContractSelectSection
+        mode="all-lists"
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />

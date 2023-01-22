@@ -1,17 +1,17 @@
 import { Flex, Heading, Box, Text, Icon } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { MdSearch, MdInput } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useContractStore, useUserKey } from "lib/hooks";
 
 export const RecentActivities = observer(() => {
   const userKey = useUserKey();
   const { getRecentActivities, isHydrated } = useContractStore();
-  const router = useRouter();
+  const navigate = useInternalNavigate();
 
   const activities = useMemo(() => {
     return getRecentActivities(userKey);
@@ -38,9 +38,10 @@ export const RecentActivities = observer(() => {
               transition="all .25s ease-in-out"
               key={item.type + item.contractAddress + item.timestamp}
               onClick={() =>
-                router.push(
-                  `/${item.type}?contract=${item.contractAddress}&msg=${item.msg}`
-                )
+                navigate({
+                  pathname: `/${item.type}`,
+                  query: { contract: item.contractAddress, msg: item.msg },
+                })
               }
             >
               <Flex alignItems="center" gap={1}>
@@ -101,7 +102,7 @@ export const RecentActivities = observer(() => {
           minH="128px"
         >
           <Text color="text.dark" variant="body1">
-            Your recent queries will display here.
+            Your recent interactions will display here.
           </Text>
         </Flex>
       )}

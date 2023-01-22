@@ -29,7 +29,7 @@ const addressLengthMap: {
   },
 };
 
-const getAddressTypeByLength = (
+export const getAddressTypeByLength = (
   chainName: string,
   address: string
 ): AddressReturnType =>

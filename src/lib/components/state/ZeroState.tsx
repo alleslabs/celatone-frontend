@@ -1,29 +1,27 @@
 import { Flex, Button, Icon, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
 import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { SaveNewContract } from "lib/components/modal/contract";
+import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { LVPair } from "lib/types";
+import { formatSlugName } from "lib/utils";
 
 import { DisconnectedState } from "./DisconnectedState";
 
 interface ZeroStateProps {
   list: LVPair;
   isReadOnly?: boolean;
-  isInstantiatedByMe: boolean;
 }
 
-const ActionSection = ({
-  isInstantiatedByMe,
-  handleAction,
-  list,
-}: {
-  isInstantiatedByMe: boolean;
-  handleAction?: () => void;
+interface ActionSectionProps {
   list: LVPair;
-}) => {
-  return isInstantiatedByMe ? (
+  handleAction?: () => void;
+}
+
+const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
+  list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? (
     <Button rightIcon={<MdOutlineAdd />} onClick={handleAction}>
       Deploy New Contract
     </Button>
@@ -41,9 +39,19 @@ const ActionSection = ({
           }}
         />
       </Flex>
-      Created contract list and saved contracts are stored in your device only.
+      Contract lists and saved contracts are stored locally on your device.
     </Flex>
   );
+
+const renderText = (listSlug: string) => {
+  switch (listSlug) {
+    case formatSlugName(INSTANTIATED_LIST_NAME):
+      return "Your deployed contract through this address will display here.";
+    case ADMIN_SPECIAL_SLUG:
+      return "You don’t have any admin access to any contracts.";
+    default:
+      return "You don’t have any saved contracts.";
+  }
 };
 
 /**
@@ -51,13 +59,12 @@ const ActionSection = ({
  * @todo Will be refactored in the next PR
  */
 
-export const ZeroState = ({
-  list,
-  isReadOnly,
-  isInstantiatedByMe,
-}: ZeroStateProps) => {
-  const router = useRouter();
+export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
+  const navigate = useInternalNavigate();
   const { isWalletConnected } = useWallet();
+
+  const isInstantiatedByMe =
+    list.value === formatSlugName(INSTANTIATED_LIST_NAME);
 
   return (
     <Flex
@@ -69,20 +76,15 @@ export const ZeroState = ({
       alignContent="center"
     >
       {!isWalletConnected && isInstantiatedByMe ? (
-        <DisconnectedState text="to deploy new contracts." />
+        <DisconnectedState text="to see contracts you've previously instantiated." />
       ) : (
         <Flex alignItems="center" flexDir="column" gap="4">
           <Icon as={MdSearch} color="gray.600" boxSize="16" />
-          <Text color="text.dark">
-            {isInstantiatedByMe
-              ? "Your deployed contract through this address will display here"
-              : "You don’t have any saved contracts."}
-          </Text>
+          <Text color="text.dark">{renderText(list.value)}</Text>
           {!isReadOnly && (
             <ActionSection
-              isInstantiatedByMe={isInstantiatedByMe}
               list={list}
-              handleAction={() => router.push("/deploy")}
+              handleAction={() => navigate({ pathname: "/deploy" })}
             />
           )}
         </Flex>

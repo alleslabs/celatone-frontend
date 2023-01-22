@@ -4,10 +4,9 @@ import { BiWorld } from "react-icons/bi";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
+import { ShowMoreButton } from "lib/components/button";
 import type { ContractData } from "lib/model/contract";
 import { textLine } from "lib/utils";
-
-import { ShowMoreButton } from "./ShowMoreButton";
 
 interface PublicContractDescProps {
   contractData: ContractData;
@@ -25,7 +24,7 @@ export const PublicContractDesc = ({
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "",
     ellipsis: "...",
-    lines: textLine(!contractData.contractInfo?.description, showMore),
+    lines: textLine(!contractData.contractLocalInfo?.description, showMore),
   });
 
   if (!description) return null;
@@ -58,6 +57,8 @@ export const PublicContractDesc = ({
       </Linkify>
       {!noClamp && (
         <ShowMoreButton
+          showMoreText="View Full Description"
+          showLessText="View Less Description"
           toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
         />

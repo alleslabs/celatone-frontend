@@ -27,6 +27,7 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
         example:
           "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
       };
+    case "terra2":
     case "terra2testnet":
       return {
         example:
@@ -63,3 +64,18 @@ export const CELATONE_CONSTANTS: CelatoneConstants = {
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
 
 export const SUPPORTED_CHAIN = process.env.NEXT_PUBLIC_SUPPORTED_CHAIN;
+
+export const CELATONE_API_ENDPOINT = "https://celatone-api.alleslabs.dev";
+
+export const getChainApiPath = (chainName: string) => {
+  switch (chainName) {
+    case "osmosistestnet":
+    case "osmosis":
+      return "osmosis";
+    case "terra2":
+    case "terra2testnet":
+      return "terra";
+    default:
+      return undefined;
+  }
+};

@@ -5,14 +5,18 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { MdMode, MdOutlineBookmarkBorder } from "react-icons/md";
 
+import { useCelatoneApp } from "lib/app-provider";
 import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractInfo } from "lib/stores/contract";
+import type { ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { EditContractDetails, SaveContractDetails } from "./modal";
-import { SelectContract } from "./modal/select-contract";
+import {
+  SelectContractAdmin,
+  SelectContractInstantiator,
+} from "./modal/select-contract";
 
 interface DisplayNameProps {
   notSelected: boolean;
@@ -23,13 +27,13 @@ interface DisplayNameProps {
 
 interface ContractDetailsButtonProps {
   contractAddress: ContractAddr;
-  contractInfo: Option<ContractInfo>;
+  contractLocalInfo: Option<ContractLocalInfo>;
   instantiator: string;
   label: string;
-  created: Date;
 }
 
 interface ContractSelectSectionProps {
+  mode: "all-lists" | "only-admin";
   contractAddress: ContractAddr;
   onContractSelect: (contract: ContractAddr) => void;
 }
@@ -58,15 +62,14 @@ const DisplayName = ({
 
 const ContractDetailsButton = ({
   contractAddress,
-  contractInfo,
+  contractLocalInfo,
   instantiator,
   label,
-  created,
 }: ContractDetailsButtonProps) => {
-  const isExist = !!contractInfo?.lists;
+  const isExist = !!contractLocalInfo?.lists;
   return isExist ? (
     <EditContractDetails
-      contractInfo={contractInfo}
+      contractLocalInfo={contractLocalInfo}
       triggerElement={
         <Button
           variant="ghost-gray"
@@ -79,12 +82,11 @@ const ContractDetailsButton = ({
     />
   ) : (
     <SaveContractDetails
-      contractInfo={{
+      contractLocalInfo={{
         contractAddress,
         instantiator,
         label,
-        created,
-        ...contractInfo,
+        ...contractLocalInfo,
       }}
       triggerElement={
         <Button
@@ -100,12 +102,13 @@ const ContractDetailsButton = ({
 };
 
 export const ContractSelectSection = observer(
-  ({ contractAddress, onContractSelect }: ContractSelectSectionProps) => {
-    const { getContractInfo } = useContractStore();
+  ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
+    const { getContractLocalInfo } = useContractStore();
+    const { indexerGraphClient } = useCelatoneApp();
     const isMobile = useMobile();
     const endpoint = useLCDEndpoint();
 
-    const contractInfo = getContractInfo(contractAddress);
+    const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
       watch,
       reset,
@@ -115,14 +118,14 @@ export const ContractSelectSection = observer(
         isValid: false,
         instantiator: "",
         label: "",
-        created: new Date(0),
       },
       mode: "all",
     });
 
     const { refetch } = useQuery(
       ["query", "instantiateInfo", contractAddress],
-      async () => queryInstantiateInfo(endpoint, contractAddress),
+      async () =>
+        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
       {
         enabled: false,
         retry: 0,
@@ -131,7 +134,6 @@ export const ContractSelectSection = observer(
             isValid: true,
             instantiator: data.instantiator,
             label: data.label,
-            created: data.createdTime,
           });
         },
         onError() {
@@ -142,24 +144,22 @@ export const ContractSelectSection = observer(
 
     useEffect(() => {
       (async () => {
-        if (!contractInfo) {
+        if (!contractLocalInfo) {
           refetch();
         } else {
           reset({
             isValid: true,
-            instantiator: contractInfo.instantiator,
-            label: contractInfo.label,
-            created: contractInfo.created,
+            instantiator: contractLocalInfo.instantiator,
+            label: contractLocalInfo.label,
           });
         }
       })();
-    }, [contractAddress, contractInfo, endpoint, reset, refetch]);
+    }, [contractAddress, contractLocalInfo, endpoint, reset, refetch]);
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;
     return (
       <Flex
-        mb="32px"
         borderWidth="thin"
         borderColor="gray.800"
         p="16px"
@@ -167,9 +167,10 @@ export const ContractSelectSection = observer(
         fontSize="12px"
         justify="space-between"
         align="center"
+        width="full"
       >
-        <Flex gap="24px" width="70%">
-          <Flex direction="column" width="70%">
+        <Flex gap="24px" width={mode === "all-lists" ? "70%" : "60%"}>
+          <Flex direction="column" width={mode === "all-lists" ? "70%" : "40%"}>
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -177,7 +178,9 @@ export const ContractSelectSection = observer(
                 type="contract_address"
                 canCopyWithHover
                 // TODO - Revisit not necessary if disable UI for mobile is implemented
-                textFormat={isMobile ? "truncate" : "normal"}
+                textFormat={
+                  isMobile || mode === "only-admin" ? "truncate" : "normal"
+                }
                 maxWidth="none"
               />
             ) : (
@@ -186,31 +189,42 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex direction="column" width="calc(30% - 24px)">
+          <Flex
+            direction="column"
+            width={
+              mode === "all-lists" ? "calc(30% - 24px)" : "calc(60% - 24px)"
+            }
+          >
             Contract Name
             <DisplayName
               notSelected={notSelected}
               isValid={contractState.isValid}
-              name={contractInfo?.name}
+              name={contractLocalInfo?.name}
               label={contractState.label}
             />
           </Flex>
         </Flex>
 
         <Flex gap="8px">
-          {contractState.isValid && (
+          {mode === "all-lists" && contractState.isValid && (
             <ContractDetailsButton
               contractAddress={contractAddress}
-              contractInfo={contractInfo}
+              contractLocalInfo={contractLocalInfo}
               instantiator={contractState.instantiator}
               label={contractState.label}
-              created={contractState.created}
             />
           )}
-          <SelectContract
-            notSelected={notSelected}
-            onContractSelect={onContractSelect}
-          />
+          {mode === "all-lists" ? (
+            <SelectContractInstantiator
+              notSelected={notSelected}
+              onContractSelect={onContractSelect}
+            />
+          ) : (
+            <SelectContractAdmin
+              notSelected={notSelected}
+              onContractSelect={onContractSelect}
+            />
+          )}
         </Flex>
       </Flex>
     );

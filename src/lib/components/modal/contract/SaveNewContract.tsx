@@ -21,13 +21,16 @@ import {
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
-import { formatSlugName } from "lib/utils";
+import {
+  formatSlugName,
+  getDescriptionDefault,
+  getTagsDefault,
+} from "lib/utils";
 
 interface SaveNewContractDetail extends OffchainDetail {
   contractAddress: string;
   instantiator: string;
   label: string;
-  created: Date;
 }
 
 interface SaveNewContractProps {
@@ -36,7 +39,8 @@ interface SaveNewContractProps {
 }
 export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const endpoint = useLCDEndpoint();
-  const { getContractInfo } = useContractStore();
+  const { indexerGraphClient } = useCelatoneApp();
+  const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 
   const {
@@ -56,7 +60,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       contractAddress: "",
       instantiator: "",
       label: "",
-      created: new Date(0),
       name: "",
       description: "",
       tags: [],
@@ -70,7 +73,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const contractAddressState = watch("contractAddress");
   const instantiatorState = watch("instantiator");
   const labelState = watch("label");
-  const createdState = watch("created");
   const offchainState: OffchainDetail = {
     name: watch("name"),
     description: watch("description"),
@@ -95,25 +97,28 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const { refetch } = useQuery(
     ["query", "instantiateInfo", contractAddressState],
     async () =>
-      queryInstantiateInfo(endpoint, contractAddressState as ContractAddr),
+      queryInstantiateInfo(
+        endpoint,
+        indexerGraphClient,
+        contractAddressState as ContractAddr
+      ),
     {
       enabled: false,
       retry: false,
       cacheTime: 0,
       refetchOnReconnect: false,
       onSuccess(data) {
-        const contractInfo = getContractInfo(contractAddressState);
+        const contractLocalInfo = getContractLocalInfo(contractAddressState);
         reset({
           contractAddress: contractAddressState,
           instantiator: data.instantiator,
           label: data.label,
-          created: data.createdTime,
-          name: contractInfo?.name ?? data.label,
-          description: contractInfo?.description ?? "",
-          tags: contractInfo?.tags ?? [],
+          name: contractLocalInfo?.name ?? data.label,
+          description: getDescriptionDefault(contractLocalInfo?.description),
+          tags: getTagsDefault(contractLocalInfo?.tags),
           lists: [
             ...initialList,
-            ...(contractInfo?.lists ?? []).filter(
+            ...(contractLocalInfo?.lists ?? []).filter(
               (item) => item.value !== list.value
             ),
           ],
@@ -163,7 +168,6 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
     contractAddress: contractAddressState as ContractAddr,
     instantiator: instantiatorState,
     label: labelState,
-    created: createdState,
     name: offchainState.name,
     description: offchainState.description,
     tags: offchainState.tags,

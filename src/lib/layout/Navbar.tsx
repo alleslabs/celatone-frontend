@@ -1,7 +1,6 @@
 import { Flex, Box, Text, Icon, Button, Spacer } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
-import Link from "next/link";
 import {
   MdHome,
   MdCode,
@@ -12,8 +11,10 @@ import {
   MdAdd,
   MdOutlineHistory,
   MdPublic,
+  MdReadMore,
 } from "react-icons/md";
 
+import { AppLink } from "lib/components/AppLink";
 import { CreateNewList } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
@@ -27,9 +28,9 @@ const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
   const { currentChainName } = useWallet();
 
-  const getPublicCodeShortCut = () =>
+  const getAllCodesShortCut = () =>
     PERMISSIONED_CHAINS.includes(currentChainName)
-      ? [{ name: "Public Codes", slug: "/public-codes", icon: MdPublic }]
+      ? [{ name: "All Codes", slug: "/all-codes", icon: MdPublic }]
       : [];
 
   const navMenu = [
@@ -57,13 +58,18 @@ const Navbar = observer(() => {
           slug: "/execute",
           icon: MdInput,
         },
+        {
+          name: "Migrate",
+          slug: "/migrate",
+          icon: MdReadMore,
+        },
       ],
     },
     {
       category: "Codes",
       submenu: [
         { name: "My Codes", slug: "/codes", icon: MdCode },
-        ...getPublicCodeShortCut(),
+        ...getAllCodesShortCut(),
       ],
     },
     {
@@ -107,8 +113,8 @@ const Navbar = observer(() => {
   ];
 
   return (
-    <Flex p={4} direction="column" h="full" overflow="hidden">
-      <Box>
+    <Flex direction="column" h="full" overflow="hidden" position="relative">
+      <Box p={4} overflowY="scroll" pb={12}>
         {navMenu.map((item) => (
           <Box
             pb="4"
@@ -138,7 +144,7 @@ const Navbar = observer(() => {
               )}
             </Flex>
             {item.submenu.map((submenu) => (
-              <Link href={submenu.slug} key={submenu.slug}>
+              <AppLink href={submenu.slug} key={submenu.slug}>
                 <Flex
                   gap="3"
                   p={2}
@@ -152,18 +158,30 @@ const Navbar = observer(() => {
                     {submenu.name}
                   </Text>
                 </Flex>
-              </Link>
+              </AppLink>
             ))}
           </Box>
         ))}
       </Box>
       <Spacer />
-      <Link href="/deploy">
-        <Button w="full">
-          <Icon as={MdOutlineAdd} boxSize="4" />
-          Deploy new contract
-        </Button>
-      </Link>
+      <Flex
+        position="fixed"
+        bottom="0"
+        py={3}
+        bg="gray.900"
+        width="full"
+        maxWidth="224px"
+        justifyContent="center"
+        borderTop="4px solid"
+        borderTopColor="background.main"
+      >
+        <AppLink href="/deploy">
+          <Button>
+            <Icon as={MdOutlineAdd} boxSize="4" />
+            Deploy new contract
+          </Button>
+        </AppLink>
+      </Flex>
     </Flex>
   );
 });

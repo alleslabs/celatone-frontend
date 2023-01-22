@@ -16,8 +16,3 @@ export const getSupportedChainNames = () => {
       throw new Error(`Unsupported chain: ${SUPPORTED_CHAIN}`);
   }
 };
-
-export const getDefaultChainName = () => {
-  const supportedChainNames = getSupportedChainNames();
-  return supportedChainNames[0];
-};

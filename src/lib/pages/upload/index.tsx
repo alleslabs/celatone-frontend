@@ -70,15 +70,24 @@ const Upload = () => {
   const proceed = useCallback(async () => {
     const stream = await postUploadTx({
       onTxSucceed: (codeId: number) => {
-        updateCodeInfo(codeId, {
-          description: codeDesc || `${wasmFile?.name}(${codeId})`,
-        });
+        updateCodeInfo(
+          codeId,
+          address,
+          codeDesc || `${wasmFile?.name}(${codeId})`
+        );
       },
       codeDesc,
     });
 
     if (stream) broadcast(stream);
-  }, [postUploadTx, broadcast, codeDesc, updateCodeInfo, wasmFile]);
+  }, [
+    postUploadTx,
+    codeDesc,
+    broadcast,
+    updateCodeInfo,
+    address,
+    wasmFile?.name,
+  ]);
 
   useEffect(() => {
     (async () => {

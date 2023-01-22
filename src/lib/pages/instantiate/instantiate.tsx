@@ -13,9 +13,14 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import { useFabricateFee, useSimulateFee } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useNativeTokensInfo,
+  useSimulateFee,
+} from "lib/app-provider";
 import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
-import { ControllerInput, TextInput } from "lib/components/forms";
+import { ControllerInput } from "lib/components/forms";
+import { AssetInput } from "lib/components/forms/AssetInput";
 import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
@@ -24,13 +29,13 @@ import type { HumanAddr, Token, U } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
-  decode,
   demicrofy,
   jsonValidate,
+  libDecode,
   microfy,
 } from "lib/utils";
 
-import { AssetInput, CodeSelect, FailedModal, Footer } from "./component";
+import { CodeSelect, FailedModal, Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageProps {
@@ -44,55 +49,69 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const router = useRouter();
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
-  const { address = "", currentChainRecord } = useWallet();
+  const { address = "" } = useWallet();
   const postInstantiateTx = useInstantiateTx();
   const { simulate } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
+  const nativeTokensInfo = useNativeTokensInfo();
+
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
     "select-existing"
   );
-  const [codeId, setCodeId] = useState("");
-  const [error, setError] = useState("");
   const [simulating, setSimulating] = useState(false);
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
-  const { control, setValue, watch, handleSubmit, reset } = useForm({
+  const {
+    control,
+    formState: { errors: formErrors },
+    setValue,
+    watch,
+    handleSubmit,
+    reset,
+  } = useForm({
+    mode: "all",
     defaultValues: {
+      codeId: "",
       label: "",
       adminAddress: "",
       initMsg: "",
       assets: [{ denom: "", amount: "" }],
+      simulateError: "",
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
     name: "assets",
   });
-  const watchAssets = watch("assets");
-  const watchInitMsg = watch("initMsg");
+  const {
+    codeId,
+    assets: watchAssets,
+    initMsg: watchInitMsg,
+    simulateError,
+  } = watch();
+
   const selectedAssets = watchAssets.map((asset) => asset.denom);
 
   const disableInstantiate = useMemo(() => {
-    return !codeId || !address || !!jsonValidate(watchInitMsg);
-  }, [codeId, address, watchInitMsg]);
+    return (
+      !codeId || !address || !!jsonValidate(watchInitMsg) || !!formErrors.label
+    );
+  }, [codeId, address, watchInitMsg, formErrors.label]);
 
-  // TODO: create this as hook later
   const assetOptions = useMemo(
     () =>
-      currentChainRecord?.assetList.assets
-        .filter((asset) => !asset.base.includes("cw20"))
-        .map((asset) => ({
-          label: asset.symbol,
-          value: asset.base,
-          disabled: selectedAssets.includes(asset.base),
-        })) ?? [],
-    [currentChainRecord, selectedAssets]
+      nativeTokensInfo.map((asset) => ({
+        label: asset.symbol,
+        value: asset.base,
+        disabled: selectedAssets.includes(asset.base),
+      })),
+    [nativeTokensInfo, selectedAssets]
   );
 
   // ------------------------------------------//
@@ -130,7 +149,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         if (stream) broadcast(stream);
         setSimulating(false);
       } catch (e) {
-        setError((e as Error).message);
+        setValue("simulateError", (e as Error).message);
         setSimulating(false);
       }
     })();
@@ -143,20 +162,21 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     simulate,
     broadcast,
     onComplete,
+    setValue,
   ]);
 
   // ------------------------------------------//
   // --------------SIDE EFFECTS----------------//
   // ------------------------------------------//
   useEffect(() => {
-    if (codeIdQuery) setCodeId(codeIdQuery);
+    if (codeIdQuery) setValue("codeId", codeIdQuery);
     if (msgQuery) {
-      const decodedMsg = decode(msgQuery);
+      const decodedMsg = libDecode(msgQuery);
       try {
         const msgObject = JSON.parse(decodedMsg) as InstantiateRedoMsg;
 
-        setCodeId(String(msgObject.code_id));
         reset({
+          codeId: msgObject.code_id.toString(),
           label: msgObject.label,
           adminAddress: msgObject.admin,
           initMsg: JSON.stringify(msgObject.msg, null, 2),
@@ -172,7 +192,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         // comment just to avoid eslint no-empty
       }
     }
-  }, [codeIdQuery, msgQuery, reset]);
+  }, [codeIdQuery, msgQuery, reset, setValue]);
 
   return (
     <>
@@ -200,31 +220,35 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             </Radio>
           </Flex>
         </RadioGroup>
-        {method === "select-existing" ? (
-          <CodeSelect
-            mt="16px"
-            mb="32px"
-            onCodeSelect={(code: string) => setCodeId(code)}
-            codeId={codeId}
-          />
-        ) : (
-          <TextInput
-            variant="floating"
-            label="Code ID"
-            helperText="Input existing Code ID manually"
-            my="32px"
-            value={codeId}
-            setInputState={setCodeId}
-          />
-        )}
-        <form>
+        <form style={{ width: "100%" }}>
+          {method === "select-existing" ? (
+            <CodeSelect
+              mt="16px"
+              mb="32px"
+              onCodeSelect={(code: string) => setValue("codeId", code)}
+              codeId={codeId}
+            />
+          ) : (
+            <ControllerInput
+              name="codeId"
+              control={control}
+              error={!codeId ? formErrors.codeId?.message : undefined}
+              label="Code ID"
+              helperText="Input existing Code ID manually"
+              variant="floating"
+              my="32px"
+              rules={{ required: "Code ID is required" }}
+            />
+          )}
           <ControllerInput
             name="label"
             control={control}
+            error={formErrors.label?.message}
             label="Label"
             helperText="Label will help remind you or other contract viewer to understand what this contract do and how it works"
             variant="floating"
             mb="32px"
+            rules={{ required: "Label is required" }}
           />
           <ControllerInput
             name="adminAddress"
@@ -293,7 +317,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         disabled={disableInstantiate}
         loading={simulating}
       />
-      {error && <FailedModal errorLog={error} onClose={() => setError("")} />}
+      {simulateError && (
+        <FailedModal
+          errorLog={simulateError}
+          onClose={() => setValue("simulateError", "")}
+        />
+      )}
     </>
   );
 };

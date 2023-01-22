@@ -3,6 +3,7 @@ import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
@@ -14,6 +15,10 @@ import { useContractStore, useLCDEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 import { encode, jsonPrettify, jsonValidate } from "lib/utils";
+
+const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
+  ssr: false,
+});
 
 interface QueryAreaProps {
   contractAddress: ContractAddr;
@@ -79,7 +84,7 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Flex width="full" mb="16px" alignItems="center">
+      <Flex width="full" my="16px" alignItems="center">
         {cmds.length ? (
           <ButtonGroup
             width="90%"
@@ -92,7 +97,7 @@ export const QueryArea = ({
               },
             }}
           >
-            {cmds.map(([cmd, queryMsg]) => (
+            {cmds.sort().map(([cmd, queryMsg]) => (
               <ContractCmdButton
                 key={`query-cmd-${cmd}`}
                 cmd={cmd}
@@ -119,7 +124,14 @@ export const QueryArea = ({
             height="240px"
           />
           <Flex align="center" justify="space-between">
-            <CopyButton isDisable={msg.length === 0} value={msg} />
+            <Flex gap={2}>
+              <CopyButton isDisable={!msg.length} value={msg} />
+              <CodeSnippet
+                type="query"
+                contractAddress={contractAddress}
+                message={msg}
+              />
+            </Flex>
             <Button
               variant="primary"
               fontSize="14px"
@@ -138,7 +150,9 @@ export const QueryArea = ({
         <Spacer />
         <Box w="full">
           <JsonReadOnly topic="Return Output" text={res} height="240px" />
-          <CopyButton isDisable={res.length === 0} value={res} />
+          <Flex justifyContent="flex-end" gap={2}>
+            <CopyButton isDisable={res.length === 0} value={res} />
+          </Flex>
         </Box>
       </Flex>
     </Flex>

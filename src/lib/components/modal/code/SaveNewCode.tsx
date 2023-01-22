@@ -13,6 +13,7 @@ import {
 } from "lib/data";
 import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { getCodeIdInfo } from "lib/services/code";
+import { getDescriptionDefault } from "lib/utils";
 
 interface ModalProps {
   buttonProps: ButtonProps;
@@ -48,7 +49,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
 
   /* DEPENDENCY */
   const toast = useToast();
-  const { isCodeIdExist, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
+  const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
   const endpoint = useLCDEndpoint();
 
@@ -85,17 +86,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     const id = Number(codeId);
 
     saveNewCode(id);
-
-    if (description.trim().length) {
-      updateCodeInfo(id, {
-        description,
-        uploader,
-      });
-    } else {
-      updateCodeInfo(id, {
-        uploader,
-      });
-    }
+    updateCodeInfo(id, uploader, description);
 
     // TODO: abstract toast to template later
     toast({
@@ -134,7 +125,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     } else {
       setCodeIdStatus({ state: "loading" });
 
-      if (isCodeIdExist(Number(codeId))) {
+      if (isCodeIdSaved(Number(codeId))) {
         setCodeIdStatus({
           state: "error",
           message: "You already added this Code ID",
@@ -149,13 +140,14 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     }
 
     return () => {};
-  }, [isCodeIdExist, codeId, refetch]);
+  }, [isCodeIdSaved, codeId, refetch]);
 
   // update code description
   useEffect(() => {
     if (codeIdStatus.state === "success") {
-      const localDescription =
-        getCodeLocalInfo(Number(codeId))?.description ?? "";
+      const localDescription = getDescriptionDefault(
+        getCodeLocalInfo(Number(codeId))?.description
+      );
       setDescription(localDescription);
     }
   }, [codeId, codeIdStatus.state, getCodeLocalInfo, setDescription]);

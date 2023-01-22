@@ -1,8 +1,10 @@
-import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
+import type { GraphQLClient } from "graphql-request";
 
-import type { ContractAddr, HumanAddr } from "lib/types";
-import { encode } from "lib/utils";
+import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
+import { getBlockTimestampByHeightQueryDocument } from "lib/data/queries";
+import type { Balance, ContractAddr, HumanAddr, Option } from "lib/types";
+import { encode, parseDateDefault } from "lib/utils";
 
 interface ContractResponse {
   address: ContractAddr;
@@ -20,18 +22,6 @@ interface ContractResponse {
   };
 }
 
-interface BlockResponse {
-  block: {
-    header: {
-      time: string;
-    };
-  };
-}
-
-interface BalancesResponse {
-  balances: Coin[];
-}
-
 interface PublicInfoResponse {
   slug: string;
   name: string;
@@ -46,7 +36,7 @@ export interface InstantiateInfo {
   admin?: HumanAddr | ContractAddr;
   label: string;
   createdHeight: number;
-  createdTime: Date;
+  createdTime: Option<Date>;
   ibcPortId: string;
   raw: ContractResponse;
 }
@@ -82,23 +72,26 @@ export const queryContract = async (
 
 export const queryInstantiateInfo = async (
   endpoint: string,
+  indexerGraphClient: GraphQLClient,
   contractAddress: ContractAddr
 ): Promise<InstantiateInfo> => {
   const res = await queryContract(endpoint, contractAddress);
 
   // TODO: check `created` field for contracts created with proposals
-  let createdHeight;
+  let createdHeight = -1;
   let createdTime;
   if (res.contract_info.created) {
-    const { data } = await axios.get<BlockResponse>(
-      `${endpoint}/cosmos/base/tendermint/v1beta1/blocks/${res.contract_info.created.block_height}`
-    );
     createdHeight = res.contract_info.created.block_height;
-    createdTime = new Date(data.block.header.time);
-  } else {
-    // TODO: revisit default value
-    createdHeight = -1;
-    createdTime = new Date(0);
+    await indexerGraphClient
+      .request(getBlockTimestampByHeightQueryDocument, {
+        height: createdHeight,
+      })
+      .then(({ blocks_by_pk }) => {
+        createdTime = blocks_by_pk
+          ? parseDateDefault(blocks_by_pk?.timestamp)
+          : undefined;
+      })
+      .catch(() => {});
   }
 
   return {
@@ -115,11 +108,15 @@ export const queryInstantiateInfo = async (
 };
 
 export const queryContractBalances = async (
-  endpoint: string,
+  chainName: Option<string>,
+  chainId: Option<string>,
   contractAddress: ContractAddr
-) => {
-  const { data } = await axios.get<BalancesResponse>(
-    `${endpoint}/cosmos/bank/v1beta1/balances/${contractAddress}?pagination.limit=0`
+): Promise<Option<Balance[]>> => {
+  if (!chainName || !chainId) return undefined;
+  const { data } = await axios.get<Balance[]>(
+    `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
+      chainName
+    )}/${chainId}/${contractAddress}`
   );
   return data;
 };

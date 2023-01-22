@@ -4,11 +4,10 @@ import { RiPencilFill } from "react-icons/ri";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
+import { ShowMoreButton } from "lib/components/button";
 import { EditContractDetails } from "lib/components/modal";
 import type { ContractData } from "lib/model/contract";
 import { textLine } from "lib/utils";
-
-import { ShowMoreButton } from "./ShowMoreButton";
 
 interface UserContractDescProps {
   contractData: ContractData;
@@ -17,8 +16,8 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
   const description = useMemo(
-    () => contractData.contractInfo?.description,
-    [contractData.contractInfo?.description]
+    () => contractData.contractLocalInfo?.description,
+    [contractData.contractLocalInfo?.description]
   );
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
@@ -31,15 +30,14 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
     if (!contractData.instantiateInfo) return null;
     return (
       <EditContractDetails
-        contractInfo={{
+        contractLocalInfo={{
           contractAddress: contractData.instantiateInfo.contractAddress,
           instantiator: contractData.instantiateInfo.instantiator,
           label: contractData.instantiateInfo.label,
-          created: contractData.instantiateInfo.createdTime,
-          name: contractData.contractInfo?.name,
+          name: contractData.contractLocalInfo?.name,
           description,
-          tags: contractData.contractInfo?.tags,
-          lists: contractData.contractInfo?.lists,
+          tags: contractData.contractLocalInfo?.tags,
+          lists: contractData.contractLocalInfo?.lists,
         }}
         triggerElement={
           <Button
@@ -85,6 +83,8 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
 
       {!noClamp && (
         <ShowMoreButton
+          showMoreText="View Full Description"
+          showLessText="View Less Description"
           toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
         />

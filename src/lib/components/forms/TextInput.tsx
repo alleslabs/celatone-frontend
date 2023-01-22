@@ -43,16 +43,12 @@ export const TextInput = ({
   // Design system size: md = 40px, lg = 56px
   return (
     <FormControl
-      className={`${size}-form`}
       isInvalid={!!error || status?.state === "error"}
       size={size}
       {...componentProps}
     >
       {label && (
-        <FormLabel
-          className={value.length ? "floating" : ""}
-          backgroundColor={labelBgColor}
-        >
+        <FormLabel className={`${size}-label`} backgroundColor={labelBgColor}>
           {label}
         </FormLabel>
       )}

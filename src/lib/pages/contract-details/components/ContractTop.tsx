@@ -7,7 +7,6 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
-import router from "next/router";
 import {
   MdBookmark,
   MdBookmarkBorder,
@@ -16,6 +15,7 @@ import {
 } from "react-icons/md";
 import { RiPencilFill } from "react-icons/ri";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
@@ -29,41 +29,42 @@ interface ContractTopProps {
   contractData: ContractData;
 }
 export const ContractTop = ({ contractData }: ContractTopProps) => {
-  const { contractInfo } = contractData;
-  const { instantiateInfo } = contractData;
-  const { publicInfo } = contractData;
+  const navigate = useInternalNavigate();
+  const { contractLocalInfo, instantiateInfo, publicInfo } = contractData;
 
   const contractAddress = instantiateInfo?.contractAddress as ContractAddr;
 
   const displayName =
-    contractInfo?.name || publicInfo?.name || instantiateInfo?.label;
+    contractLocalInfo?.name || publicInfo?.name || instantiateInfo?.label;
 
   const goToQuery = () => {
-    router.push({
+    navigate({
       pathname: "/query",
       query: { ...(contractAddress && { contract: contractAddress }) },
     });
   };
 
   const goToExecute = () => {
-    router.push({
+    navigate({
       pathname: "/execute",
       query: { ...(contractAddress && { contract: contractAddress }) },
     });
   };
 
   const renderSaveButton = () => {
-    if (contractInfo) {
+    if (contractLocalInfo) {
       return (
         <AddToOtherList
-          contractInfo={contractInfo}
+          contractLocalInfo={contractLocalInfo}
           triggerElement={
             <IconButton
               fontSize="22px"
               variant="none"
               aria-label="save"
-              color={contractInfo.lists ? "primary.main" : "gray.600"}
-              icon={contractInfo.lists ? <MdBookmark /> : <MdBookmarkBorder />}
+              color={contractLocalInfo.lists ? "primary.main" : "gray.600"}
+              icon={
+                contractLocalInfo.lists ? <MdBookmark /> : <MdBookmarkBorder />
+              }
             />
           }
         />
@@ -72,11 +73,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     if (instantiateInfo) {
       return (
         <SaveContractDetails
-          contractInfo={{
+          contractLocalInfo={{
             contractAddress,
             instantiator: instantiateInfo.instantiator,
             label: instantiateInfo.label,
-            created: instantiateInfo.createdTime,
           }}
           triggerElement={
             <IconButton
@@ -157,9 +157,9 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           Execute
         </Button>
         <Flex>
-          {contractInfo && (
+          {contractLocalInfo && (
             <EditContractDetails
-              contractInfo={contractInfo}
+              contractLocalInfo={contractLocalInfo}
               triggerElement={
                 <IconButton
                   fontSize="22px"

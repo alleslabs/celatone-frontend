@@ -1,9 +1,10 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
 
-import { useExecuteCmds } from "lib/app-provider";
+import { useExecuteCmds, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -17,35 +18,41 @@ import {
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
+import type { ExecutePageState } from "./types";
 
 const Execute = () => {
   const router = useRouter();
-
-  const [contractAddress, setContractAddress] = useState("" as ContractAddr);
-  const [initialMsg, setInitialMsg] = useState("");
-
-  const { isFetching, execCmds } = useExecuteCmds({
-    contractAddress,
+  const navigate = useInternalNavigate();
+  const { control, setValue, watch } = useForm<ExecutePageState>({
+    mode: "all",
+    defaultValues: {
+      contractAddress: "",
+      initialMsg: "",
+      assets: [{ denom: "", amount: "" }],
+    },
   });
+  const watchContractAddress = watch("contractAddress");
+
+  const { isFetching, execCmds } = useExecuteCmds(watchContractAddress);
 
   const goToQuery = () => {
-    router.push({
+    navigate({
       pathname: "/query",
-      query: { ...(contractAddress && { contract: contractAddress }) },
+      query: {
+        ...(watchContractAddress && { contract: watchContractAddress }),
+      },
     });
   };
+
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
-      router.push(
-        {
-          pathname: "/execute",
-          query: { ...(contract && { contract }) },
-        },
-        undefined,
-        { shallow: true }
-      );
+      navigate({
+        pathname: "/execute",
+        query: { ...(contract && { contract }) },
+        options: { shallow: true },
+      });
     },
-    [router]
+    [navigate]
   );
 
   useEffect(() => {
@@ -61,10 +68,10 @@ const Execute = () => {
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
-      setContractAddress(contractAddressParam);
-      setInitialMsg(jsonMsg);
+      setValue("contractAddress", contractAddressParam);
+      setValue("initialMsg", jsonMsg);
     })();
-  }, [router, onContractSelect]);
+  }, [router, onContractSelect, setValue]);
 
   return (
     <PageContainer>
@@ -76,7 +83,7 @@ const Execute = () => {
       >
         BACK
       </Button>
-      <Flex mt={2} mb={8} justify="space-between">
+      <Flex mt={1} mb={8} justify="space-between">
         <Heading as="h5" variant="h5" color="text.main">
           Execute Contract
         </Heading>
@@ -92,15 +99,12 @@ const Execute = () => {
       />
 
       <ContractSelectSection
-        contractAddress={contractAddress}
+        mode="all-lists"
+        contractAddress={watchContractAddress}
         onContractSelect={onContractSelect}
       />
 
-      <ExecuteArea
-        contractAddress={contractAddress}
-        initialMsg={initialMsg}
-        cmds={execCmds}
-      />
+      <ExecuteArea control={control} cmds={execCmds} setValue={setValue} />
     </PageContainer>
   );
 };
