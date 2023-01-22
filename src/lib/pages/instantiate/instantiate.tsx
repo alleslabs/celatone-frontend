@@ -29,9 +29,9 @@ import type { HumanAddr, Token, U } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
-  decode,
   demicrofy,
   jsonValidate,
+  libDecode,
   microfy,
 } from "lib/utils";
 
@@ -171,12 +171,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   useEffect(() => {
     if (codeIdQuery) setValue("codeId", codeIdQuery);
     if (msgQuery) {
-      const decodedMsg = decode(msgQuery);
+      const decodedMsg = libDecode(msgQuery);
       try {
         const msgObject = JSON.parse(decodedMsg) as InstantiateRedoMsg;
 
-        setValue("codeId", String(msgObject.code_id));
         reset({
+          codeId: msgObject.code_id.toString(),
           label: msgObject.label,
           adminAddress: msgObject.admin,
           initMsg: JSON.stringify(msgObject.msg, null, 2),
