@@ -69,6 +69,10 @@ export const InstantiateButton = ({
   const isAllowed =
     permissionAddresses.includes(address as HumanAddr) ||
     instantiatePermission === InstantiatePermission.EVERYBODY;
+
+  /**
+   * @todos use isDisabled when proposal flow is done
+   */
   // const isDisabled =
   //   instantiatePermission === InstantiatePermission.UNKNOWN ||
   //   !isWalletConnected;
