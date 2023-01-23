@@ -47,8 +47,8 @@ export const usePublicProjectsQuery = () => {
 export const usePublicProjectBySlugQuery = (slug: Option<string>) => {
   const { currentChainRecord } = useWallet();
   const queryFn = useCallback(async (): Promise<Option<PublicProjectInfo>> => {
-    if (!slug) return undefined;
-    if (!currentChainRecord) return undefined;
+    if (!slug) throw new Error("No project selected");
+    if (!currentChainRecord) throw new Error("No chain selected");
     return axios
       .get<RawPublicProjectInfo>(
         `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(

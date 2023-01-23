@@ -6,8 +6,7 @@ import type { IconType } from "react-icons";
 import { MdBookmark, MdBookmarkBorder, MdCheckCircle } from "react-icons/md";
 
 import { usePublicProjectStore } from "lib/hooks";
-import type { Option } from "lib/types";
-import type { Detail } from "lib/types/projects";
+import type { Option, Detail } from "lib/types";
 
 interface DetailProps {
   details: Option<Detail>;

@@ -2,7 +2,6 @@ import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   Text,
   Flex,
   Heading,
@@ -11,8 +10,7 @@ import {
 import { MdChevronRight } from "react-icons/md";
 
 import { AppLink } from "lib/components/AppLink";
-import type { Option } from "lib/types";
-import type { Detail } from "lib/types/projects";
+import type { Option, Detail } from "lib/types";
 
 import { BookmarkButton } from "./BookmarkButton";
 import { SocialMedia } from "./SocialMedia";
@@ -35,17 +33,15 @@ export const DetailHeader = ({ details, slug }: DetailProps) => {
           </AppLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href="#">
-            <Text
-              variant="body2"
-              className="ellipsis"
-              width="250px"
-              fontWeight="600"
-              color="text.dark"
-            >
-              {details?.name}
-            </Text>
-          </BreadcrumbLink>
+          <Text
+            variant="body2"
+            className="ellipsis"
+            width="250px"
+            fontWeight="600"
+            color="text.dark"
+          >
+            {details?.name}
+          </Text>
         </BreadcrumbItem>
       </Breadcrumb>
       <Flex

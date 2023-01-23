@@ -8,8 +8,7 @@ import {
 } from "react-icons/fa";
 import { MdLanguage } from "react-icons/md";
 
-import type { Option } from "lib/types";
-import type { Detail } from "lib/types/projects";
+import type { Option, Detail } from "lib/types";
 
 export const renderSocial = (name: string) => {
   switch (name) {
@@ -37,7 +36,8 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
       onClick={(e) => e.stopPropagation()}
     >
       {details.website && (
-        <Link href={details.website} target="_blank">
+        // todos: create ExternalLink component later
+        <Link href={details.website} target="_blank" rel="noopener noreferrer">
           <Icon
             as={MdLanguage}
             color="gray.600"
@@ -48,7 +48,8 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
         </Link>
       )}
       {details.github && (
-        <Link href={details.github} target="_blank">
+        // todos: create ExternalLink component later
+        <Link href={details.github} target="_blank" rel="noopener noreferrer">
           <Icon
             as={FaGithub}
             color="gray.600"
@@ -62,7 +63,13 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
         details.socials.map(
           (social) =>
             social.url !== "" && (
-              <Link href={social.url} target="_blank" key={social.name}>
+              // todos: create ExternalLink component later
+              <Link
+                href={social.url}
+                target="_blank"
+                key={social.name}
+                rel="noopener noreferrer"
+              >
                 <Icon
                   as={renderSocial(social.name)}
                   color="gray.600"
