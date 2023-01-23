@@ -6,6 +6,7 @@ export enum MsgType {
   STORE_CODE = "STORE_CODE",
   INSTANTIATE = "INSTANTIATE",
   EXECUTE = "EXECUTE",
+  MIGRATE = "MIGRATE",
 }
 
 export enum AccessType {
@@ -43,10 +44,18 @@ export interface MsgExecuteContract {
   funds: Coin[];
 }
 
+export interface MsgMigrateContract {
+  sender: HumanAddr;
+  contract: ContractAddr;
+  codeId: Long;
+  msg: Uint8Array;
+}
+
 export type TxMessage =
   | MsgStoreCode
   | MsgInstantiateContract
-  | MsgExecuteContract;
+  | MsgExecuteContract
+  | MsgMigrateContract;
 
 export interface ComposedMsg {
   typeUrl: string;

@@ -62,6 +62,7 @@ export const typeUrlDict = {
   [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
   [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
   [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
+  [MsgType.MIGRATE]: "/cosmwasm.wasm.v1.MsgMigrateContract",
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";

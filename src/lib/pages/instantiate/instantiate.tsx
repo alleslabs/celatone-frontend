@@ -1,11 +1,4 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Radio,
-  RadioGroup,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import { useWallet } from "@cosmos-kit/react";
 import Long from "long";
@@ -19,6 +12,7 @@ import {
   useSimulateFee,
 } from "lib/app-provider";
 import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
+import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { ControllerInput } from "lib/components/forms";
 import { AssetInput } from "lib/components/forms/AssetInput";
 import JsonInput from "lib/components/json/JsonInput";
@@ -35,7 +29,7 @@ import {
   microfy,
 } from "lib/utils";
 
-import { CodeSelect, FailedModal, Footer } from "./component";
+import { FailedModal, Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageProps {
@@ -59,9 +53,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
-  const [method, setMethod] = useState<"select-existing" | "fill-manually">(
-    "select-existing"
-  );
   const [simulating, setSimulating] = useState(false);
 
   // ------------------------------------------//
@@ -204,42 +195,15 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         <Heading as="h4" variant="h4" my="48px">
           Instantiate new contract
         </Heading>
-        <RadioGroup
-          onChange={(nextVal: "select-existing" | "fill-manually") =>
-            setMethod(nextVal)
-          }
-          value={method}
-          w="100%"
-        >
-          <Flex justify="space-around">
-            <Radio value="select-existing" size="lg">
-              Select from your code
-            </Radio>
-            <Radio value="fill-manually" size="lg">
-              Fill Code ID manually
-            </Radio>
-          </Flex>
-        </RadioGroup>
+
+        <CodeSelectSection
+          name="codeId"
+          control={control}
+          error={formErrors.codeId?.message}
+          onCodeSelect={(code: string) => setValue("codeId", code)}
+          codeId={codeId}
+        />
         <form style={{ width: "100%" }}>
-          {method === "select-existing" ? (
-            <CodeSelect
-              mt="16px"
-              mb="32px"
-              onCodeSelect={(code: string) => setValue("codeId", code)}
-              codeId={codeId}
-            />
-          ) : (
-            <ControllerInput
-              name="codeId"
-              control={control}
-              error={!codeId ? formErrors.codeId?.message : undefined}
-              label="Code ID"
-              helperText="Input existing Code ID manually"
-              variant="floating"
-              my="32px"
-              rules={{ required: "Code ID is required" }}
-            />
-          )}
           <ControllerInput
             name="label"
             control={control}
