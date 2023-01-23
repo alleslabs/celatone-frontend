@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#117](https://github.com/alleslabs/celatone-frontend/pull/117) Fix native token label formatting
 - [#94](https://github.com/alleslabs/celatone-frontend/pull/94) Add unsupported assets in contract details page
 - [#72](https://github.com/alleslabs/celatone-frontend/pull/72) Fix general wording and grammar
 - [#110](https://github.com/alleslabs/celatone-frontend/pull/110) Fix proposal detail rendering
