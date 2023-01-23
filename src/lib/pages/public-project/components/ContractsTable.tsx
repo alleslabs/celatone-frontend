@@ -55,7 +55,7 @@ export const ContractsTable = ({
           />
         </Flex>
       )}
-      {filteredContracts.length === 0 ? (
+      {filteredContracts.length ? (
         <Flex my={8}>
           <EmptyState message="No matched contract found." icon={MdSearchOff} />
         </Flex>
