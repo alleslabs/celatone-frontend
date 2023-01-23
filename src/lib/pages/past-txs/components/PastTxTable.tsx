@@ -38,9 +38,9 @@ import type {
 import {
   camelToSnake,
   encode,
-  formatUDenom,
   formatUToken,
   extractMsgType,
+  getTokenLabel,
 } from "lib/utils";
 
 import { MsgDetail } from "./MsgDetail";
@@ -303,7 +303,7 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
       }
       const coins = sendMsgs[0].amount.map(
         (amount) =>
-          `${formatUToken(amount.amount as U<Token>)} ${formatUDenom(
+          `${formatUToken(amount.amount as U<Token>)} ${getTokenLabel(
             amount.denom
           )}`
       );

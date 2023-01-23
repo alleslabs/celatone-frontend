@@ -2,7 +2,7 @@ import { Spinner } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 
 import type { Token, U } from "lib/types";
-import { formatUDenom, formatUToken } from "lib/utils";
+import { formatUToken, getTokenLabel } from "lib/utils";
 
 export const EstimatedFeeRender = ({
   estimatedFee,
@@ -24,7 +24,7 @@ export const EstimatedFeeRender = ({
   return (
     <>
       {formatUToken(amount?.[0].amount as U<Token>)}{" "}
-      {formatUDenom(amount?.[0].denom)}
+      {getTokenLabel(amount?.[0].denom)}
     </>
   );
 };

@@ -23,8 +23,8 @@ import type { BalanceWithAssetInfo, Balance } from "lib/types";
 import {
   getFirstQueryParam,
   getTokenType,
-  truncate,
   formatToken,
+  getTokenLabel,
 } from "lib/utils";
 
 interface UnsupportedTokensModalProps {
@@ -38,14 +38,10 @@ interface UnsupportedTokenProps {
 const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   // TODO - Move this to utils
   const [tokenLabel, tokenType] = useMemo(() => {
-    const splitId = balance.id.split("/");
+    const label = getTokenLabel(balance.id);
     const type = !balance.id.includes("/")
       ? getTokenType(balance.type)
-      : getTokenType(splitId[0]);
-    if (splitId[1]) {
-      splitId[1] = truncate(splitId[1]);
-    }
-    const label = splitId.length === 1 ? balance.id : splitId.join("/");
+      : getTokenType(balance.id.split("/")[0]);
     return [label, type];
   }, [balance]);
 

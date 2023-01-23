@@ -24,9 +24,9 @@ import type {
 import {
   camelToSnake,
   encode,
-  formatUDenom,
   formatUToken,
   extractMsgType,
+  getTokenLabel,
 } from "lib/utils";
 
 interface MsgDetailProps {
@@ -139,7 +139,7 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
 
       const coins = msgSend.amount.map(
         (amount) =>
-          `${formatUToken(amount.amount as U<Token>)} ${formatUDenom(
+          `${formatUToken(amount.amount as U<Token>)} ${getTokenLabel(
             amount.denom
           )} `
       );
