@@ -1,8 +1,6 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
-import { request } from "graphql-request";
 
-import { OSMOSIS_TESTNET_GQL_ENDPOINT } from "lib/env";
+import { useCelatoneApp } from "lib/app-provider";
 import type { Transaction } from "lib/types/tx/transaction";
 import { snakeToCamel } from "lib/utils/formatter";
 
@@ -44,7 +42,7 @@ export const useTxQuery = (
   pageSize: number,
   offset: number
 ) => {
-  const { currentChainName } = useWallet();
+  const { indexerGraphClient } = useCelatoneApp();
   // Filter when action buttons are pressed
   const actionsFilter = () => {
     const actionsObj = {
@@ -89,11 +87,7 @@ export const useTxQuery = (
 
   const queryFn = async (): Promise<Response> => {
     // Determine endpoint
-    let endpoint = "";
-    if (currentChainName === "osmosistestnet") {
-      endpoint = OSMOSIS_TESTNET_GQL_ENDPOINT;
-    }
-    if (endpoint === "" || userAddr === "") {
+    if (userAddr === "") {
       return { transactions: [], count: 0 } as Response;
     }
 
@@ -103,15 +97,17 @@ export const useTxQuery = (
       // Show all 4 main action types
       let response;
       if (isShowAll) {
-        response = await request(endpoint, queryShowallFromTxs(search), {
-          userAddr,
-          pageSize,
-          offset,
-        });
+        response = await indexerGraphClient.request(
+          queryShowallFromTxs(search),
+          {
+            userAddr,
+            pageSize,
+            offset,
+          }
+        );
         // When buttons are pressed
       } else {
-        response = await request(
-          endpoint,
+        response = indexerGraphClient.request(
           queryWithActionsFromTxs(search, actionsFilter()),
           {
             userAddr,
@@ -128,8 +124,7 @@ export const useTxQuery = (
       // Contract address -> query from contracts table
     }
     if (search.length === 63) {
-      const response = await request(
-        endpoint,
+      const response = await indexerGraphClient.request(
         queryAddrFromContracts(actionsFilter()),
         {
           userAddr,

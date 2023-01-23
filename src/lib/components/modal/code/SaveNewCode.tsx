@@ -11,7 +11,7 @@ import {
   getMaxCodeDescriptionLengthError,
   MAX_CODE_DESCRIPTION_LENGTH,
 } from "lib/data";
-import { useCodeStore, useEndpoint } from "lib/hooks";
+import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { getCodeIdInfo } from "lib/services/code";
 import { getDescriptionDefault } from "lib/utils";
 
@@ -51,7 +51,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   const toast = useToast();
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
 
   const { refetch, isFetching, isRefetching } = useQuery(
     ["query", endpoint, codeId],
