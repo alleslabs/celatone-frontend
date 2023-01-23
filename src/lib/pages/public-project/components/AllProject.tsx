@@ -1,5 +1,6 @@
 import { Box, SimpleGrid, Flex, Button, Icon } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
+import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 import { BsGithub } from "react-icons/bs";
 import { MdOutlineManageSearch, MdSearchOff } from "react-icons/md";
@@ -8,36 +9,43 @@ import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { usePublicProjectStore } from "lib/hooks";
 import { usePublicProjectsQuery } from "lib/services/publicProject";
+import type { PublicProjectInfo } from "lib/types";
 
 import { PublicProjectCard } from "./PublicProjectCard";
 
-export const AllProject = () => {
+const orderProjectAlphabetically = (projects: PublicProjectInfo[]) =>
+  projects.sort((a, b) => {
+    if (a.details.name && b.details.name) {
+      return a.details.name.localeCompare(b.details.name);
+    }
+    return -1;
+  });
+
+export const AllProject = observer(() => {
   const { data: publicProjectInfo } = usePublicProjectsQuery();
   const [searchKeyword, setSearchKeyword] = useState("");
   const { getSavedPublicProjects } = usePublicProjectStore();
+  const savedProjects = getSavedPublicProjects();
 
   const filteredPublicProjects = useMemo(() => {
     if (publicProjectInfo) {
-      const savedProjects = getSavedPublicProjects();
-      // HACKED
-      // TODO Sort saved project
-      const orderedProjects = publicProjectInfo.map((project) => {
-        const foundIndex = savedProjects.findIndex(
-          (each) => each.slug === project.slug
-        );
+      const orderProjects = orderProjectAlphabetically(publicProjectInfo);
+      const orderSavedProjects = orderProjectAlphabetically(
+        publicProjectInfo.filter((project) =>
+          savedProjects.some((save) => save.name === project.details.name)
+        )
+      );
 
-        return {
-          ...project,
-          order: foundIndex === -1 ? 9999 : foundIndex,
-        };
-      });
+      const order = new Set([...orderSavedProjects, ...orderProjects]);
 
-      return matchSorter(orderedProjects, searchKeyword, {
+      return matchSorter([...Array.from(order)], searchKeyword, {
         keys: ["details.name"],
+        sorter: (rankedItems) => rankedItems,
+        threshold: matchSorter.rankings.CONTAINS,
       });
     }
     return [];
-  }, [getSavedPublicProjects, publicProjectInfo, searchKeyword]);
+  }, [publicProjectInfo, savedProjects, searchKeyword]);
 
   if (!publicProjectInfo)
     return (
@@ -81,4 +89,4 @@ export const AllProject = () => {
       )}
     </Box>
   );
-};
+});
