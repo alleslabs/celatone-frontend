@@ -13,7 +13,7 @@ import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 import { RenderActionsMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import { MsgDetail } from "lib/components/table/MsgDetail";
+import { AccordionTx } from "lib/components/table/AccordionTx";
 import type { AllTransaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -101,7 +101,7 @@ export const TxsTableRow = ({
       {isAccordion && (
         <Grid w="full" py={4} hidden={!isOpen}>
           {transaction.messages.map((msg, index) => (
-            <MsgDetail
+            <AccordionTx
               key={index.toString() + msg.type}
               message={msg}
               allowFurtherAction={false}

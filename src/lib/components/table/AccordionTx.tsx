@@ -10,7 +10,7 @@ import { extractMsgType } from "lib/utils";
 
 import { TableRow } from "./tableComponents";
 
-interface MsgDetailProps {
+interface AccordionTxProps {
   message: Message;
   allowFurtherAction: boolean;
 }
@@ -32,7 +32,10 @@ const RenderButton = ({ message }: RenderButtonProps) => {
   return null;
 };
 
-export const MsgDetail = ({ message, allowFurtherAction }: MsgDetailProps) => {
+export const AccordionTx = ({
+  message,
+  allowFurtherAction,
+}: AccordionTxProps) => {
   const [showButton, setShowButton] = useState(false);
   return (
     <TableRow

@@ -52,7 +52,7 @@ export const useTxQuery = (
 
   // Filter when action buttons are pressed
   const queryFn = useCallback(async () => {
-    if (!userAddress) return undefined;
+    if (!userAddress) throw new Error("User address not found");
 
     // Search with contract address -> query from contract transaction table
     if (getAddressType(search) === "contract_address") {
@@ -174,7 +174,7 @@ export const useTxQueryCount = (
   const getAddressType = useGetAddressType();
 
   const queryFn = useCallback(async () => {
-    if (!userAddress) return undefined;
+    if (!userAddress) throw new Error("User address not found");
 
     if (getAddressType(search) === "contract_address") {
       return indexerGraphClient
