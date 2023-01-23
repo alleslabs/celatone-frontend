@@ -62,9 +62,9 @@ export const getProposalUrl = (chainName: string) => {
       pathSuffix = "proposals";
       break;
     case "terra2":
+      return `https://station.terra.money/proposal/phoenix-1`;
     case "terra2testnet":
-      // Can't separate mainnet/testnet
-      return `https://station.terra.money/proposal`;
+      return `https://station.terra.money/proposal/pisco-1`;
     default:
       break;
   }

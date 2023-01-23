@@ -16,7 +16,7 @@ import { MdCheck } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { WalletSection } from "lib/components/Wallet";
-import { CHAIN_NAMES } from "lib/data";
+import { getNetworkByChainName, getSupportedChainNames } from "lib/data";
 
 import Searchbar from "./Searchbar";
 
@@ -40,7 +40,7 @@ const Header = () => {
           /**
            * @remarks Condition checking varies by chain
            */
-          network: chainName === "osmosis" ? "mainnet" : "testnet",
+          network: getNetworkByChainName(chainName),
         },
       });
     },
@@ -96,7 +96,7 @@ const Header = () => {
             </Flex>
           </MenuButton>
           <MenuList>
-            {CHAIN_NAMES.map((chainName) => (
+            {getSupportedChainNames().map((chainName) => (
               <MenuItem
                 key={chainName}
                 onClick={() => {

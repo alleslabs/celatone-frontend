@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { indexerGraphClient } from "lib/data/graphql";
+import { useCelatoneApp } from "lib/app-provider";
 import {
   getInstantiatedListByUserQueryDocument,
   getInstantiatedCountByUserQueryDocument,
@@ -50,6 +50,7 @@ interface InstantiateDetail {
 export const useInstantiatedCountByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -58,7 +59,7 @@ export const useInstantiatedCountByUserQuery = (
         walletAddr,
       })
       .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
-  }, [walletAddr]);
+  }, [indexerGraphClient, walletAddr]);
 
   // TODO: add query key later
   return useQuery(["instantiated_count_by_user", walletAddr], queryFn, {
@@ -70,6 +71,7 @@ export const useInstantiatedCountByUserQuery = (
 export const useInstantiatedListByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<Option<ContractLocalInfo[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!walletAddr) return undefined;
 
@@ -84,7 +86,7 @@ export const useInstantiatedListByUserQuery = (
           label: contract.label,
         }))
       );
-  }, [walletAddr]);
+  }, [indexerGraphClient, walletAddr]);
 
   // TODO: add query key later
   return useQuery(["instantiated_list_by_user", walletAddr], queryFn, {
@@ -96,6 +98,7 @@ export const useInstantiatedListByUserQuery = (
 export const useContractListByAdmin = (
   adminAddress: Option<ContractAddr | HumanAddr>
 ): UseQueryResult<Option<ContractLocalInfo[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!adminAddress) return undefined;
 
@@ -110,7 +113,7 @@ export const useContractListByAdmin = (
           label: contract.label,
         }))
       );
-  }, [adminAddress]);
+  }, [adminAddress, indexerGraphClient]);
 
   return useQuery(["contract_list_by_admin", adminAddress], queryFn, {
     keepPreviousData: true,
@@ -121,6 +124,7 @@ export const useContractListByAdmin = (
 export const useInstantiateDetailByContractQuery = (
   contractAddress: ContractAddr
 ): UseQueryResult<InstantiateDetail> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
@@ -131,7 +135,7 @@ export const useInstantiateDetailByContractQuery = (
         initProposalTitle:
           contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
       }));
-  }, [contractAddress]);
+  }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
     ["instantiate_detail_by_contract", contractAddress],
@@ -147,6 +151,7 @@ export const useExecuteTxsByContractAddress = (
   offset: number,
   pageSize: number
 ): UseQueryResult<Option<ExecuteTransaction[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getExecuteTxsByContractAddress, {
@@ -166,7 +171,7 @@ export const useExecuteTxsByContractAddress = (
           success: transaction.transaction.success,
         }))
       );
-  }, [contractAddress, offset, pageSize]);
+  }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
     [
@@ -186,6 +191,7 @@ export const useExecuteTxsByContractAddress = (
 export const useExecuteTxsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!contractAddress) return undefined;
 
@@ -197,7 +203,7 @@ export const useExecuteTxsCountByContractAddress = (
         ({ contract_transactions_aggregate }) =>
           contract_transactions_aggregate?.aggregate?.count
       );
-  }, [contractAddress]);
+  }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
     ["execute_transactions_count_by_contract_addr", contractAddress],
@@ -216,6 +222,7 @@ export const useMigrationHistoriesByContractAddress = (
 ): UseQueryResult<
   Option<Omit<ContractMigrationHistory, "codeDescription">[]>
 > => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getMigrationHistoriesByContractAddress, {
@@ -238,7 +245,7 @@ export const useMigrationHistoriesByContractAddress = (
           },
         }))
       );
-  }, [contractAddress, offset, pageSize]);
+  }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
     ["migration_histories", contractAddress, offset, pageSize],
@@ -253,6 +260,7 @@ export const useMigrationHistoriesByContractAddress = (
 export const useMigrationHistoriesCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getMigrationHistoriesCountByContractAddress, {
@@ -262,7 +270,7 @@ export const useMigrationHistoriesCountByContractAddress = (
         ({ contract_histories_aggregate }) =>
           contract_histories_aggregate.aggregate?.count
       );
-  }, [contractAddress]);
+  }, [contractAddress, indexerGraphClient]);
 
   return useQuery(["migration_histories_count", contractAddress], queryFn, {
     keepPreviousData: true,
@@ -275,6 +283,7 @@ export const useTxsByContractAddress = (
   offset: number,
   pageSize: number
 ): UseQueryResult<AllTransaction[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getTxsByContractAddress, {
@@ -304,7 +313,7 @@ export const useTxsByContractAddress = (
           isIbc: contractTx.transaction.is_ibc,
         }))
       );
-  }, [contractAddress, offset, pageSize]);
+  }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
     ["transactions_by_contract_addr", contractAddress, offset, pageSize],
@@ -319,6 +328,7 @@ export const useTxsByContractAddress = (
 export const useTxsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!contractAddress) return undefined;
 
@@ -330,7 +340,7 @@ export const useTxsCountByContractAddress = (
         ({ contract_transactions_aggregate }) =>
           contract_transactions_aggregate.aggregate?.count
       );
-  }, [contractAddress]);
+  }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
     ["transactions_count_by_contract_addr", contractAddress],
@@ -347,6 +357,7 @@ export const useRelatedProposalsByContractAddress = (
   offset: number,
   pageSize: number
 ): UseQueryResult<Option<ContractRelatedProposals[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getRelatedProposalsByContractAddress, {
@@ -368,7 +379,7 @@ export const useRelatedProposalsByContractAddress = (
             | ContractAddr,
         }))
       );
-  }, [contractAddress, offset, pageSize]);
+  }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
     ["related_proposals", contractAddress, offset, pageSize],
@@ -383,6 +394,7 @@ export const useRelatedProposalsByContractAddress = (
 export const useRelatedProposalsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getRelatedProposalsCountByContractAddress, {
@@ -392,7 +404,7 @@ export const useRelatedProposalsCountByContractAddress = (
         ({ contract_proposals_aggregate }) =>
           contract_proposals_aggregate.aggregate?.count
       );
-  }, [contractAddress]);
+  }, [contractAddress, indexerGraphClient]);
 
   return useQuery(["related_proposals_count", contractAddress], queryFn, {
     keepPreviousData: true,
