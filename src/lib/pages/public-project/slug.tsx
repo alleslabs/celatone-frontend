@@ -89,10 +89,7 @@ export const ProjectDetail = observer(() => {
                 borderTop="1px solid"
                 borderColor="divider.main"
               >
-                <EmptyState
-                  hasIcon={false}
-                  message="There is currently no code in this project. Please check back soon for the updates."
-                />
+                <EmptyState message="There is currently no code in this project. Please check back soon for the updates." />
               </Flex>
             )}
             <Heading as="h6" variant="h6" mb={6} mt={12} px="48px">
@@ -131,10 +128,7 @@ export const ProjectDetail = observer(() => {
                 borderTop="1px solid"
                 borderColor="divider.main"
               >
-                <EmptyState
-                  hasIcon={false}
-                  message="There is currently no contracts in this project. Please check back soon for the updates."
-                />
+                <EmptyState message="There is currently no contracts in this project. Please check back soon for the updates." />
               </Flex>
             )}
           </TabPanel>

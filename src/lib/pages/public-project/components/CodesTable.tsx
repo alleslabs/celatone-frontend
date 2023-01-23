@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
-import { MdBookmarkBorder, MdHowToVote } from "react-icons/md";
+import { MdBookmarkBorder, MdHowToVote, MdSearchOff } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -55,7 +55,7 @@ export const CodesTable = ({
       )}
       {!filteredCodes.length ? (
         <Flex my={8}>
-          <EmptyState message="No matched code found." />
+          <EmptyState message="No matched code found." icon={MdSearchOff} />
         </Flex>
       ) : (
         <TableContainer w="full">

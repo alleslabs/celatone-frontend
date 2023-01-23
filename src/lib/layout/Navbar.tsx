@@ -1,6 +1,7 @@
 import { Flex, Box, Text, Icon, Button, Spacer, Image } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
+import type { IconType } from "react-icons";
 import {
   MdHome,
   MdCode,
@@ -21,6 +22,18 @@ import { useContractStore, usePublicProjectStore } from "lib/hooks";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
+interface SubmenuInfo {
+  name: string;
+  slug: string;
+  icon?: IconType;
+  logo?: string;
+}
+
+interface MenuInfo {
+  category: string;
+  submenu: SubmenuInfo[];
+}
+
 // TODO: move to proper place
 const PERMISSIONED_CHAINS = ["osmosis", "osmosistestnet"];
 
@@ -36,7 +49,7 @@ const Navbar = observer(() => {
       ? [{ name: "All Stored Codes", slug: "/all-codes", icon: MdPublic }]
       : [];
 
-  const navMenu = [
+  const navMenu: MenuInfo[] = [
     {
       category: "Overview",
       submenu: [
@@ -45,7 +58,6 @@ const Navbar = observer(() => {
           name: "Past Transactions",
           slug: "/past-txs",
           icon: MdOutlineHistory,
-          logo: null,
         },
       ],
     },
@@ -56,13 +68,11 @@ const Navbar = observer(() => {
           name: "Query",
           slug: "/query",
           icon: MdSearch,
-          logo: null,
         },
         {
           name: "Execute",
           slug: "/execute",
           icon: MdInput,
-          logo: null,
         },
         {
           name: "Migrate",
@@ -85,50 +95,40 @@ const Navbar = observer(() => {
           name: INSTANTIATED_LIST_NAME,
           slug: `/contract-list/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
           icon: getListIcon(INSTANTIATED_LIST_NAME),
-          logo: null,
         },
         {
           name: SAVED_LIST_NAME,
           slug: `/contract-list/${formatSlugName(SAVED_LIST_NAME)}`,
           icon: getListIcon(SAVED_LIST_NAME),
-          logo: null,
         },
         ...getContractLists()
           .filter((list) => list.slug !== formatSlugName(SAVED_LIST_NAME))
           .sort(cmpContractListInfo)
           .slice(0, 3)
-          .map((list) => {
-            return {
-              name: list.name,
-              slug: `/contract-list/${list.slug}`,
-              icon: getListIcon(list.name),
-              logo: null,
-            };
-          }),
+          .map((list) => ({
+            name: list.name,
+            slug: `/contract-list/${list.slug}`,
+            icon: getListIcon(list.name),
+          })),
         {
           name: "View All",
           slug: "/contract-list",
           icon: MdMoreHoriz,
-          logo: null,
         },
       ],
     },
     {
       category: "Public Projects",
       submenu: [
-        ...getSavedPublicProjects().map((list) => {
-          return {
-            name: list.name,
-            slug: `/public-project/${list.slug}`,
-            logo: list.logo,
-            icon: null,
-          };
-        }),
+        ...getSavedPublicProjects().map((list) => ({
+          name: list.name,
+          slug: `/public-project/${list.slug}`,
+          logo: list.logo,
+        })),
         {
           name: "View All",
           slug: "/public-project",
           icon: MdMoreHoriz,
-          logo: null,
         },
       ],
     },

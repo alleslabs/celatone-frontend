@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useClampText } from "use-clamp-text";
 
 import { useInternalNavigate } from "lib/app-provider";
-import type { PublicProjectInfo } from "lib/services/publicProject";
+import type { PublicProjectInfo } from "lib/types";
 
 import { BookmarkButton } from "./BookmarkButton";
 import { SocialMedia } from "./SocialMedia";

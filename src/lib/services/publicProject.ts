@@ -4,27 +4,13 @@ import axios from "axios";
 import { useCallback } from "react";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
-import type { AssetInfo, Option } from "lib/types";
 import type {
-  Account,
-  Code,
-  Detail,
+  Option,
   RawContract,
   RawPublicProjectInfo,
-} from "lib/types/projects";
-
-export interface Contract extends Omit<RawContract, "address"> {
-  contractAddress: string;
-}
-
-export interface PublicProjectInfo {
-  accounts: Account[];
-  assets: AssetInfo;
-  codes: Code[];
-  contracts: Contract[];
-  details: Detail;
-  slug: string;
-}
+  PublicProjectInfo,
+  Contract,
+} from "lib/types";
 
 const parseContract = (raw: RawContract): Contract => ({
   contractAddress: raw.address,
@@ -37,7 +23,7 @@ export const usePublicProjectsQuery = () => {
   const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
-    if (!currentChainRecord) return undefined;
+    if (!currentChainRecord) throw new Error("No chain selected");
 
     return axios
       .get<RawPublicProjectInfo[]>(

@@ -15,13 +15,14 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
+import { MdSearchOff } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
-import type { Contract } from "lib/services/publicProject";
+import type { Contract } from "lib/types";
 
 interface ContractsTableProps {
   contracts: Contract[];
@@ -56,7 +57,7 @@ export const ContractsTable = ({
       )}
       {filteredContracts.length === 0 ? (
         <Flex my={8}>
-          <EmptyState message="No matched contract found." />
+          <EmptyState message="No matched contract found." icon={MdSearchOff} />
         </Flex>
       ) : (
         <TableContainer w="full">

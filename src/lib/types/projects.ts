@@ -34,11 +34,25 @@ export interface Detail {
   website: string;
   description: string;
 }
+
 export interface RawPublicProjectInfo {
   accounts: Account[];
   assets: AssetInfo;
   codes: Code[];
   contracts: RawContract[];
+  details: Detail;
+  slug: string;
+}
+
+export interface Contract extends Omit<RawContract, "address"> {
+  contractAddress: string;
+}
+
+export interface PublicProjectInfo {
+  accounts: Account[];
+  assets: AssetInfo;
+  codes: Code[];
+  contracts: Contract[];
   details: Detail;
   slug: string;
 }

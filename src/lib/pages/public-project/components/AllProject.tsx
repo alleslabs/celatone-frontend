@@ -2,7 +2,7 @@ import { Box, SimpleGrid, Flex, Button, Icon } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 import { BsGithub } from "react-icons/bs";
-import { MdOutlineManageSearch } from "react-icons/md";
+import { MdOutlineManageSearch, MdSearchOff } from "react-icons/md";
 
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -64,7 +64,10 @@ export const AllProject = () => {
         mb={12}
       />
       {!filteredPublicProjects.length ? (
-        <EmptyState message="None of your lists matches this search." />
+        <EmptyState
+          message="None of your lists matches this search."
+          icon={MdSearchOff}
+        />
       ) : (
         <SimpleGrid columns={{ sm: 1, md: 3, xl: 4 }} spacing={4} w="full">
           {filteredPublicProjects.map((item) => (
