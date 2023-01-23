@@ -1,4 +1,4 @@
-import { SUPPORTED_CHAIN } from "env";
+import { SELECTED_CHAIN } from "env";
 import type { Option } from "lib/types";
 
 interface Chain {
@@ -18,13 +18,13 @@ export const OSMOSIS_CHAINS: Chain = {
 };
 
 export const getSupportedChainNames = (): string[] => {
-  switch (SUPPORTED_CHAIN) {
+  switch (SELECTED_CHAIN) {
     case "terra":
       return Object.values(TERRA_CHAINS);
     case "osmosis":
       return Object.values(OSMOSIS_CHAINS);
     default:
-      throw new Error(`Unsupported chain: ${SUPPORTED_CHAIN}`);
+      throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
   }
 };
 
@@ -42,7 +42,7 @@ export const getChainNameByNetwork = (network: string): string => {
 
   let chainName: Option<string>;
 
-  switch (SUPPORTED_CHAIN) {
+  switch (SELECTED_CHAIN) {
     case "terra":
       chainName = TERRA_CHAINS[network];
       break;
@@ -50,12 +50,12 @@ export const getChainNameByNetwork = (network: string): string => {
       chainName = OSMOSIS_CHAINS[network];
       break;
     default:
-      throw new Error(`Unsupported chain: ${SUPPORTED_CHAIN}`);
+      throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
   }
 
   if (!chainName)
     throw new Error(
-      `Can't find chain name for network: ${network} and chain: ${SUPPORTED_CHAIN}`
+      `Can't find chain name for network: ${network} and chain: ${SELECTED_CHAIN}`
     );
 
   return chainName;
@@ -64,7 +64,7 @@ export const getChainNameByNetwork = (network: string): string => {
 export const getNetworkByChainName = (chainName: string): string => {
   let network: Option<string>;
 
-  switch (SUPPORTED_CHAIN) {
+  switch (SELECTED_CHAIN) {
     case "terra":
       network = Object.keys(TERRA_CHAINS).find(
         (each) => TERRA_CHAINS[each as keyof Chain] === chainName
@@ -76,12 +76,12 @@ export const getNetworkByChainName = (chainName: string): string => {
       );
       break;
     default:
-      throw new Error(`Unsupported chain: ${SUPPORTED_CHAIN}`);
+      throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
   }
 
   if (!network)
     throw new Error(
-      `Can't find network for chain name: ${chainName} and chain: ${SUPPORTED_CHAIN}`
+      `Can't find network for chain name: ${chainName} and chain: ${SELECTED_CHAIN}`
     );
 
   return network;

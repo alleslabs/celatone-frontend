@@ -58,8 +58,17 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           assetLists={[...assets, terra2testnetAssets]}
           wallets={wallets}
           endpointOptions={{
+            osmosis: {
+              rpc: ["https://rpc-osmosis.keplr.app/"],
+              rest: ["https://lcd-osmosis.keplr.app/"],
+            },
+            osmosistestnet: {
+              rpc: ["https://rpc-test.osmosis.zone/"],
+              rest: ["https://lcd-test.osmosis.zone/"],
+            },
             terra2: {
               rpc: ["https://terra-rpc.lavenderfive.com/"],
+              rest: ["https://phoenix-lcd.terra.dev/"],
             },
             terra2testnet: {
               rpc: ["https://terra-testnet-rpc.polkachu.com/"],
