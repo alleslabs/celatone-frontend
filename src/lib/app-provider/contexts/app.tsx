@@ -13,7 +13,7 @@ import {
   getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { DEFAULT_ADDRESS } from "lib/data";
+import { DEFAULT_ADDRESS, getChainNameByNetwork } from "lib/data";
 import {
   useCodeStore,
   useContractStore,
@@ -124,11 +124,12 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
     /**
      * @remarks Condition checking varies by chain
      * @todos Change default to mainnet later (currently is testnet)
+     * @todos Support localnet case later
      */
     if (router.query.network === "mainnet") {
-      setCurrentChain("osmosis");
+      setCurrentChain(getChainNameByNetwork("mainnet"));
     } else {
-      setCurrentChain("osmosistestnet");
+      setCurrentChain(getChainNameByNetwork("testnet"));
     }
   }, [router.query.network, setCurrentChain]);
 

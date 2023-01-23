@@ -21,7 +21,7 @@ import { MdCode } from "react-icons/md";
 
 import { CopyButton } from "../CopyButton";
 import { CustomTab } from "lib/components/CustomTab";
-import { useEndpoint } from "lib/hooks";
+import { useLCDEndpoint } from "lib/hooks";
 import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 import "ace-builds/src-noconflict/ace";
@@ -60,7 +60,7 @@ const CodeSnippet = ({
   const { currentChainRecord, currentChainName } = useWallet();
   const isDisabled = !contractAddress || !message.length;
 
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
   const client = currentChainRecord?.chain.daemon_name;
   const rpcUrl = currentChainRecord?.preferredEndpoints?.rpc?.[0];
   const chainId = currentChainRecord?.chain.chain_id;

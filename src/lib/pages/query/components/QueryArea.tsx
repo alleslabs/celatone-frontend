@@ -11,7 +11,7 @@ import { CopyButton } from "lib/components/CopyButton";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
+import { useContractStore, useLCDEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 import { encode, jsonPrettify, jsonValidate } from "lib/utils";
@@ -31,7 +31,7 @@ export const QueryArea = ({
   initialMsg,
   cmds,
 }: QueryAreaProps) => {
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
   const userKey = useUserKey();
   const { addActivity } = useContractStore();
   const { address } = useWallet();

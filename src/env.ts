@@ -9,6 +9,10 @@ export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
   },
   terra2: {
     denom: "uluna",
+    gasPrice: "0.015" as U<Token>,
+  },
+  terra2testnet: {
+    denom: "uluna",
     gasPrice: "0.15" as U<Token>,
   },
 };
@@ -23,6 +27,7 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
         example:
           "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
       };
+    case "terra2":
     case "terra2testnet":
       return {
         example:
@@ -35,9 +40,11 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
   }
 };
 
-export const LCD_ENDPOINT: Record<string, string> = {
+export const FALLBACK_LCD_ENDPOINT: Record<string, string> = {
   osmosis: "https://lcd.osmosis.zone",
   osmosistestnet: "https://lcd-test.osmosis.zone",
+  terra2: "https://phoenix-lcd.terra.dev",
+  terra2testnet: "https://pisco-lcd.terra.dev",
 };
 
 export const MAX_FILE_SIZE = 800_000;
@@ -50,12 +57,13 @@ export const MSG_TYPE_URL = {
 
 export const CELATONE_CONSTANTS: CelatoneConstants = {
   gasAdjustment: 1.6,
-  lcdEndpoint: LCD_ENDPOINT,
   maxFileSize: MAX_FILE_SIZE,
   msgTypeUrl: MSG_TYPE_URL,
 };
 
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
+
+export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN;
 
 export const CELATONE_API_ENDPOINT = "https://celatone-api.alleslabs.dev";
 
@@ -64,6 +72,9 @@ export const getChainApiPath = (chainName: string) => {
     case "osmosistestnet":
     case "osmosis":
       return "osmosis";
+    case "terra2":
+    case "terra2testnet":
+      return "terra";
     default:
       return undefined;
   }
