@@ -41,7 +41,11 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
 
           <LabelText
             label="Admin Address"
-            helperText1={getAddressTypeText(adminType)}
+            helperText1={
+              contractData.instantiateInfo.admin
+                ? getAddressTypeText(adminType)
+                : undefined
+            }
           >
             {contractData.instantiateInfo.admin ? (
               <ExplorerLink
