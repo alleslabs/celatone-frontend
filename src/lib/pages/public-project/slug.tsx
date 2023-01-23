@@ -62,7 +62,7 @@ export const ProjectDetail = observer(() => {
                   hasSearchInput={false}
                   codes={publicCodes.slice(0, 6)}
                 />
-                {publicCodes?.length > 5 ?? (
+                {publicCodes.length > 5 ?? (
                   <Flex
                     w="full"
                     justifyContent="center"
@@ -104,7 +104,7 @@ export const ProjectDetail = observer(() => {
                   hasSearchInput={false}
                   contracts={publicContracts.slice(0, 6)}
                 />
-                {publicContracts?.length > 5 ?? (
+                {publicContracts.length > 5 ?? (
                   <Flex
                     w="full"
                     justifyContent="center"
