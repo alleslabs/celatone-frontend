@@ -3,12 +3,12 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 export interface UpdateAdminStreamParams {
   contractAddress: ContractAddr;
   newAdmin: HumanAddr | ContractAddr;
-  estimatedFee: StdFee | undefined;
+  estimatedFee: Option<StdFee>;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
