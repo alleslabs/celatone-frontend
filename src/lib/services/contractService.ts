@@ -37,6 +37,7 @@ import {
   parseTxHash,
   parseTxHashOpt,
   snakeToCamel,
+  unwrap,
 } from "lib/utils";
 
 interface InstantiateDetail {
@@ -79,7 +80,7 @@ export const useInstantiatedListByUserQuery = (
       .then(({ contracts }) =>
         contracts.map<ContractLocalInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: walletAddr,
+          instantiator: unwrap(contract.accountByInitBy?.address),
           label: contract.label,
         }))
       );

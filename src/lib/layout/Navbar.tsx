@@ -130,7 +130,7 @@ const Navbar = observer(() => {
   };
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">
-      <Box p={3} overflowY="scroll">
+      <Box px={4} py={2} overflowY="scroll">
         {navMenu.map((item) => (
           <Box
             pb="4"
@@ -141,6 +141,8 @@ const Navbar = observer(() => {
             sx={{
               "&:last-of-type": {
                 borderBottom: "none",
+                paddingBottom: "0px",
+                marginBottom: "0px",
               },
             }}
           >

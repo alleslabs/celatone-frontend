@@ -39,7 +39,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
           }}
         />
       </Flex>
-      Created contract list and saved contracts are stored in your device only.
+      Contract lists and saved contracts are stored locally on your device.
     </Flex>
   );
 
@@ -76,7 +76,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
       alignContent="center"
     >
       {!isWalletConnected && isInstantiatedByMe ? (
-        <DisconnectedState text="to deploy new contracts." />
+        <DisconnectedState text="to see contracts you've previously instantiated." />
       ) : (
         <Flex alignItems="center" flexDir="column" gap="4">
           <Icon as={MdSearch} color="gray.600" boxSize="16" />

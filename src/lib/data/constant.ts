@@ -2,7 +2,7 @@ import { MdBookmark, MdInbox, MdLibraryBooks } from "react-icons/md";
 
 import { MsgType } from "lib/types";
 
-export const INSTANTIATED_LIST_NAME = "Instantiated Contracts";
+export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
 export const SAVED_LIST_NAME = "Saved Contracts";
 

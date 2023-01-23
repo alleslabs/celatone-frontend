@@ -5,7 +5,6 @@ import {
   Tabs,
   TabPanels,
   TabPanel,
-  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -58,9 +57,6 @@ const ContractDetailsBody = observer(
         <ContractTop contractData={contractData} />
         {/* Tokens Section */}
         <Flex direction="column">
-          <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
-            Assets
-          </Text>
           <TokenSection balances={contractData.balances} />
         </Flex>
         {/* Contract Description Section */}

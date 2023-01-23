@@ -53,7 +53,7 @@ export const QuickMenu = () => {
       </Heading>
       <ConnectWalletAlert
         title="Connect wallet to start using Celatone"
-        subtitle="Actions such as deploying new contracts or sending execute messages require a wallet connection."
+        subtitle="Actions such as deploying new contracts or sending transactions require a wallet connection"
       />
       <Flex gap={4}>
         <AppLink href="/deploy" style={{ width: "55%" }}>
@@ -67,10 +67,10 @@ export const QuickMenu = () => {
           >
             <Flex direction="column" justifyItems="center">
               <Text variant="body1" color="gray.900" fontWeight="800">
-                Deploy new contract
+                Deploy a new contract
               </Text>
               <Text color="gray.900" variant="body2">
-                Deploy contract by upload new Wasm file
+                Upload a new wasm code or instantiate a new contract
               </Text>
             </Flex>
             <Icon as={MdChevronRight} color="gray.900" boxSize={9} />
