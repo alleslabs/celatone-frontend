@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#102](https://github.com/alleslabs/celatone-frontend/pull/102) Add quick menu in overview and add highlighted in left sidebar
+- [#116](https://github.com/alleslabs/celatone-frontend/pull/116) Support Terra2.0 mainnet and testnet
 - [#94](https://github.com/alleslabs/celatone-frontend/pull/94) Add unsupported assets in contract details page
 - [#72](https://github.com/alleslabs/celatone-frontend/pull/72) Fix general wording and grammar
 - [#110](https://github.com/alleslabs/celatone-frontend/pull/110) Fix proposal detail rendering
