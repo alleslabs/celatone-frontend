@@ -21,6 +21,9 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
       const instantiatorType = getAddressType(
         contractData.instantiateInfo.instantiator
       );
+      const adminType = getAddressType(
+        contractData.instantiateInfo.admin ?? ""
+      );
       return (
         <>
           <LabelText label="Network">{contractData.chainId}</LabelText>
@@ -36,10 +39,13 @@ export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
             />
           </LabelText>
 
-          <LabelText label="Admin Address">
+          <LabelText
+            label="Admin Address"
+            helperText1={getAddressTypeText(adminType)}
+          >
             {contractData.instantiateInfo.admin ? (
               <ExplorerLink
-                type={getAddressType(contractData.instantiateInfo.admin)}
+                type={adminType}
                 value={contractData.instantiateInfo.admin}
                 canCopyWithHover
               />
