@@ -1,6 +1,7 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -17,8 +18,9 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useGetAddressType, useValidateAddress } from "lib/hooks";
+import { useEndpoint, useGetAddressType, useValidateAddress } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
@@ -32,6 +34,7 @@ const UpdateAdmin = () => {
   const fabricateFee = useFabricateFee();
   const updateAdminTx = useUpdateAdminTx();
   const { broadcast } = useTxBroadcast();
+  const endpoint = useEndpoint();
 
   const [adminAddress, setAdminAddress] = useState("");
   const [adminFormStatus, setAdminFormStatus] = useState<FormStatus>({
@@ -96,12 +99,32 @@ const UpdateAdmin = () => {
     estimatedFee,
   ]);
 
+  /**
+   * @remarks Contract admin validation
+   */
+  useQuery(
+    ["query", "instantiateInfo", endpoint, contractAddressParam],
+    async () => queryInstantiateInfo(endpoint, contractAddressParam),
+    {
+      enabled: !!contractAddressParam && !!address,
+      refetchOnWindowFocus: false,
+      retry: 0,
+      onSuccess: (contractInfo) => {
+        if (contractInfo.admin !== address) onContractPathChange();
+      },
+      onError: () => onContractPathChange(),
+    }
+  );
+
   useEffect(() => {
     if (contractAddressParam && validateContractAddress(contractAddressParam)) {
       onContractPathChange();
     }
   }, [contractAddressParam, onContractPathChange, validateContractAddress]);
 
+  /**
+   * @remarks Admin address input validation
+   */
   useEffect(() => {
     if (!adminAddress) setAdminFormStatus({ state: "init" });
     else {
