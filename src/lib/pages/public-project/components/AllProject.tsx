@@ -27,7 +27,7 @@ export const AllProject = observer(() => {
       const orderedProjects = sortByAtoZ(publicProjectInfo);
       const orderSavedProjects = sortByAtoZ(
         publicProjectInfo.filter((project) =>
-          savedProjects.some((save) => save.name === project.details.name)
+          savedProjects.some((save) => save.slug === project.slug)
         )
       );
 
