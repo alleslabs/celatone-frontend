@@ -17,8 +17,8 @@ export const PublicContractDesc = ({
   const [showMore, setShowMore] = useState(false);
 
   const description = useMemo(
-    () => contractData.publicInfo?.description,
-    [contractData.publicInfo?.description]
+    () => contractData.publicProject.publicInfo?.description,
+    [contractData.publicProject.publicInfo?.description]
   );
 
   const [ref, { noClamp, clampedText, key }] = useClampText({

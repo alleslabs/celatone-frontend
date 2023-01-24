@@ -7,7 +7,6 @@ import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
 import type { InstantiateInfo, PublicInfo } from "lib/services/contract";
 import {
-  queryPublicInfo,
   queryContractBalances,
   queryInstantiateInfo,
 } from "lib/services/contract";
@@ -19,12 +18,15 @@ import {
   useMigrationHistoriesCountByContractAddress,
   useTxsCountByContractAddress,
   useRelatedProposalsCountByContractAddress,
+  usePublicProjectByContractAddress,
 } from "lib/services/contractService";
+import { usePublicProjectBySlugQuery } from "lib/services/publicProject";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type {
   BalanceWithAssetInfo,
   ContractAddr,
+  Detail,
   HumanAddr,
   Option,
 } from "lib/types";
@@ -35,7 +37,10 @@ export interface ContractData {
   codeInfo: Option<CodeLocalInfo>;
   contractLocalInfo: Option<ContractLocalInfo>;
   instantiateInfo: Option<InstantiateInfo>;
-  publicInfo: Option<PublicInfo>;
+  publicProject: {
+    publicInfo: Option<PublicInfo>;
+    publicDetail: Option<Detail>;
+  };
   balances: Option<BalanceWithAssetInfo[]>;
   initMsg: string;
   initTxHash: Option<string>;
@@ -87,13 +92,18 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 
 export const useContractData = (
   contractAddress: ContractAddr
-): ContractData | undefined => {
+): Option<ContractData> => {
   const { indexerGraphClient } = useCelatoneApp();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
   const endpoint = useLCDEndpoint();
   const assetInfos = useAssetInfos();
+  const { data: publicInfo } =
+    usePublicProjectByContractAddress(contractAddress);
+  const { data: publicInfoBySlug } = usePublicProjectBySlugQuery(
+    publicInfo?.slug
+  );
 
   const { data: instantiateInfo } = useQuery(
     ["query", "instantiateInfo", contractAddress],
@@ -126,17 +136,6 @@ export const useContractData = (
       return -1;
     });
 
-  const { data: publicInfo } = useQuery(
-    ["query", "publicInfo", contractAddress],
-    async () =>
-      queryPublicInfo(
-        currentChainRecord?.name,
-        currentChainRecord?.chain.chain_id,
-        contractAddress
-      ),
-    { enabled: !!currentChainRecord }
-  );
-
   const codeInfo = instantiateInfo
     ? getCodeLocalInfo(Number(instantiateInfo.codeId))
     : undefined;
@@ -155,7 +154,10 @@ export const useContractData = (
     codeInfo,
     contractLocalInfo,
     instantiateInfo,
-    publicInfo,
+    publicProject: {
+      publicInfo,
+      publicDetail: publicInfoBySlug?.details,
+    },
     balances: contractBalancesWithAssetInfos,
     initMsg: instantiateDetail.initMsg,
     initTxHash: instantiateDetail.initTxHash,

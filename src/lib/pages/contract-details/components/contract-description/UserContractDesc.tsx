@@ -23,7 +23,10 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "No contract description",
     ellipsis: "...",
-    lines: textLine(!contractData.publicInfo?.description, showMore),
+    lines: textLine(
+      !contractData.publicProject.publicInfo?.description,
+      showMore
+    ),
   });
 
   const renderEditContractButton = () => {

@@ -6,7 +6,9 @@ import {
   Button,
   Icon,
   IconButton,
+  Image,
 } from "@chakra-ui/react";
+import router from "next/router";
 import {
   MdBookmark,
   MdBookmarkBorder,
@@ -24,18 +26,20 @@ import {
 } from "lib/components/modal";
 import type { ContractData } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
+import { getFirstQueryParam } from "lib/utils";
 
 interface ContractTopProps {
   contractData: ContractData;
 }
 export const ContractTop = ({ contractData }: ContractTopProps) => {
   const navigate = useInternalNavigate();
-  const { contractLocalInfo, instantiateInfo, publicInfo } = contractData;
-
-  const contractAddress = instantiateInfo?.contractAddress as ContractAddr;
+  const { contractLocalInfo, instantiateInfo, publicProject } = contractData;
+  const contractAddress = getFirstQueryParam(router.query.contractAddress);
 
   const displayName =
-    contractLocalInfo?.name || publicInfo?.name || instantiateInfo?.label;
+    contractLocalInfo?.name ||
+    publicProject.publicInfo?.name ||
+    instantiateInfo?.label;
 
   const goToQuery = () => {
     navigate({
@@ -74,7 +78,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
       return (
         <SaveContractDetails
           contractLocalInfo={{
-            contractAddress,
+            contractAddress: contractAddress as ContractAddr,
             instantiator: instantiateInfo.instantiator,
             label: instantiateInfo.label,
           }}
@@ -96,9 +100,20 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
   return (
     <Flex justify="space-between" my={6}>
       <Flex direction="column" gap={1} textOverflow="ellipsis" maxW="670px">
-        <Heading as="h5" variant="h5" color="text.main" className="ellipsis">
-          {displayName}
-        </Heading>
+        <Flex gap={1}>
+          {publicProject.publicDetail && (
+            <Image
+              src={publicProject.publicDetail.logo}
+              borderRadius="full"
+              alt={publicProject.publicDetail.name}
+              width={7}
+              height={7}
+            />
+          )}
+          <Heading as="h5" variant="h5" color="text.main" className="ellipsis">
+            {displayName}
+          </Heading>
+        </Flex>
         <Flex gap={2}>
           <Text
             color="text.dark"
@@ -123,13 +138,13 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
             {contractData.instantiateInfo?.label}
           </Text>
         </Flex>
-        {publicInfo?.name && (
+        {publicProject.publicInfo?.name && (
           <Flex gap={2}>
             <Text color="text.dark" variant="body2" fontWeight={500}>
               Public Contract Name:
             </Text>
             <Text variant="body2" className="ellipsis">
-              {publicInfo?.name}
+              {publicProject.publicInfo?.name}
             </Text>
           </Flex>
         )}
