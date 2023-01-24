@@ -3,6 +3,7 @@ import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
@@ -10,10 +11,14 @@ import { CopyButton } from "lib/components/CopyButton";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useContractStore, useEndpoint, useUserKey } from "lib/hooks";
+import { useContractStore, useLCDEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 import { encode, jsonPrettify, jsonValidate } from "lib/utils";
+
+const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
+  ssr: false,
+});
 
 interface QueryAreaProps {
   contractAddress: ContractAddr;
@@ -26,7 +31,7 @@ export const QueryArea = ({
   initialMsg,
   cmds,
 }: QueryAreaProps) => {
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
   const userKey = useUserKey();
   const { addActivity } = useContractStore();
   const { address } = useWallet();
@@ -92,7 +97,7 @@ export const QueryArea = ({
               },
             }}
           >
-            {cmds.map(([cmd, queryMsg]) => (
+            {cmds.sort().map(([cmd, queryMsg]) => (
               <ContractCmdButton
                 key={`query-cmd-${cmd}`}
                 cmd={cmd}
@@ -119,7 +124,14 @@ export const QueryArea = ({
             height="240px"
           />
           <Flex align="center" justify="space-between">
-            <CopyButton isDisable={msg.length === 0} value={msg} />
+            <Flex gap={2}>
+              <CopyButton isDisable={!msg.length} value={msg} />
+              <CodeSnippet
+                type="query"
+                contractAddress={contractAddress}
+                message={msg}
+              />
+            </Flex>
             <Button
               variant="primary"
               fontSize="14px"
