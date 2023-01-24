@@ -106,7 +106,7 @@ const UpdateAdmin = () => {
     ["query", "instantiateInfo", endpoint, contractAddressParam],
     async () => queryInstantiateInfo(endpoint, contractAddressParam),
     {
-      enabled: !!contractAddressParam && !!address,
+      enabled: !!contractAddressParam,
       refetchOnWindowFocus: false,
       retry: 0,
       onSuccess: (contractInfo) => {
