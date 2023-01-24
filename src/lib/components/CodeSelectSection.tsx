@@ -5,6 +5,7 @@ import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { CodeSelect } from "lib/pages/instantiate/component";
 import type { Option } from "lib/types";
 
+import type { FormStatus } from "./forms";
 import { ControllerInput } from "./forms";
 
 interface CodeSelectSectionProps<T extends FieldValues> {
@@ -13,6 +14,7 @@ interface CodeSelectSectionProps<T extends FieldValues> {
   control: Control<T>;
   error: Option<string>;
   onCodeSelect: (codeId: string) => void;
+  status: FormStatus;
 }
 
 export const CodeSelectSection = <T extends FieldValues>({
@@ -21,6 +23,7 @@ export const CodeSelectSection = <T extends FieldValues>({
   control,
   error,
   onCodeSelect,
+  status,
 }: CodeSelectSectionProps<T>) => {
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
     "select-existing"
@@ -51,12 +54,15 @@ export const CodeSelectSection = <T extends FieldValues>({
             mb="32px"
             onCodeSelect={onCodeSelect}
             codeId={codeId}
+            status={status}
           />
         ) : (
           <ControllerInput
             name={name}
             control={control}
-            error={!codeId ? error : undefined}
+            type="number"
+            status={status}
+            error={error}
             label="Code ID"
             helperText="Input existing Code ID manually"
             variant="floating"

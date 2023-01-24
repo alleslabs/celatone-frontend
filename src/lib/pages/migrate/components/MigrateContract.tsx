@@ -1,6 +1,7 @@
 import { Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,8 +12,11 @@ import { useFabricateFee, useSimulateFeeQuery } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import type { FormStatus } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
+import { useEndpoint } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { getCodeIdInfo } from "lib/services/code";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, jsonValidate } from "lib/utils";
@@ -30,6 +34,7 @@ export const MigrateContract = ({
 }: MigrateContractProps) => {
   const { address } = useWallet();
   const { broadcast } = useTxBroadcast();
+  const endpoint = useEndpoint();
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
 
@@ -43,19 +48,21 @@ export const MigrateContract = ({
     mode: "all",
   });
   const { codeId, migrateMsg } = watch();
+  const [status, setStatus] = useState<FormStatus>({ state: "init" });
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
 
   const enableMigrate = !!(
+    address &&
     codeId.length &&
     migrateMsg.trim().length &&
     jsonValidate(migrateMsg) === null &&
-    address
+    status.state === "success"
   );
 
-  const { isFetching } = useSimulateFeeQuery({
+  const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
     onSuccess: (gasRes) => {
@@ -67,6 +74,37 @@ export const MigrateContract = ({
       setEstimatedFee(undefined);
     },
   });
+
+  const { refetch } = useQuery(
+    ["query", endpoint, codeId],
+    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    {
+      enabled: !!address && !!codeId.length,
+      retry: false,
+      cacheTime: 0,
+      onSuccess(data) {
+        const permission = data.code_info.instantiate_permission;
+        if (
+          address &&
+          (permission.permission === "Everybody" ||
+            permission.addresses.includes(address) ||
+            permission.address === address)
+        )
+          setStatus({ state: "success" });
+        else {
+          setStatus({
+            state: "error",
+            message: "You can migrate to this code through proposal only",
+          });
+          setSimulateError("");
+        }
+      },
+      onError() {
+        setStatus({ state: "error", message: "This code ID does not exist" });
+        setSimulateError("");
+      },
+    }
+  );
 
   const proceed = useCallback(async () => {
     const stream = await migrateTx({
@@ -81,6 +119,19 @@ export const MigrateContract = ({
       broadcast(stream);
     }
   }, [migrateTx, contractAddress, codeId, migrateMsg, estimatedFee, broadcast]);
+
+  useEffect(() => {
+    if (codeId.length) {
+      setStatus({ state: "loading" });
+      const timer = setTimeout(() => {
+        refetch();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    setStatus({ state: "init" });
+
+    return () => {};
+  }, [address, codeId, refetch]);
 
   useEffect(() => {
     if (enableMigrate) {
@@ -107,10 +158,14 @@ export const MigrateContract = ({
       <CodeSelectSection
         name="codeId"
         control={control}
+        status={status}
         error={errors.codeId?.message}
         onCodeSelect={(code: string) => setValue("codeId", code)}
         codeId={codeId}
       />
+      <Heading as="h6" variant="h6" mt={12} mb={6}>
+        Migrate Message
+      </Heading>
       <JsonInput
         text={migrateMsg}
         setText={(msg: string) => setValue("migrateMsg", msg)}
@@ -133,7 +188,10 @@ export const MigrateContract = ({
         gap="4px"
       >
         Transaction Fee:{" "}
-        <EstimatedFeeRender estimatedFee={estimatedFee} loading={isFetching} />
+        <EstimatedFeeRender
+          estimatedFee={estimatedFee}
+          loading={isSimulating}
+        />
       </Flex>
       <Flex justify="space-between" w="100%" mt="32px">
         <Button
@@ -151,7 +209,7 @@ export const MigrateContract = ({
           size="md"
           variant="primary"
           w="128px"
-          disabled={!enableMigrate || !estimatedFee || isFetching}
+          disabled={!enableMigrate || !estimatedFee || isSimulating}
           onClick={proceed}
           isLoading={processing}
           sx={{ pointerEvents: processing && "none" }}

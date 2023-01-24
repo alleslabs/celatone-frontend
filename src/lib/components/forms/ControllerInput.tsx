@@ -4,6 +4,8 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
 } from "@chakra-ui/react";
 import type {
@@ -15,7 +17,7 @@ import type {
 import { useWatch, useController } from "react-hook-form";
 
 import type { FormStatus } from "./FormStatus";
-import { getResponseMsg } from "./FormStatus";
+import { getStatusIcon, getResponseMsg } from "./FormStatus";
 import type { TextInputProps } from "./TextInput";
 
 interface ControllerInputProps<T extends FieldValues>
@@ -58,7 +60,7 @@ export const ControllerInput = <T extends FieldValues>({
   return (
     <FormControl
       size={size}
-      isInvalid={isError}
+      isInvalid={!!error || status?.state === "error"}
       isRequired={isRequired}
       {...componentProps}
       {...field}
@@ -68,15 +70,19 @@ export const ControllerInput = <T extends FieldValues>({
           {label}
         </FormLabel>
       )}
-      <Input
-        size={size}
-        placeholder={placeholder}
-        type={type}
-        value={watcher}
-        onChange={field.onChange}
-        maxLength={maxLength}
-      />
-      {/* TODO: add status */}
+      <InputGroup>
+        <Input
+          size={size}
+          placeholder={placeholder}
+          type={type}
+          value={watcher}
+          onChange={field.onChange}
+          maxLength={maxLength}
+        />
+        <InputRightElement h="full">
+          {status && getStatusIcon(status.state)}
+        </InputRightElement>
+      </InputGroup>
       {isError ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
