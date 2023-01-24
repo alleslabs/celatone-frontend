@@ -32,6 +32,9 @@ export const formatDemimal =
 
 const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 
-export const formatToken = (amount: BigSource, precision: number): string => {
+export const formatTokenPrecision = (
+  amount: BigSource,
+  precision: number
+): string => {
   return d6Formatter(big(amount).div(big(10).pow(precision)), "0");
 };

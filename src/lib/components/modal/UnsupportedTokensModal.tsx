@@ -20,12 +20,8 @@ import { MdAttachMoney } from "react-icons/md";
 import { Copier } from "../Copier";
 import { ExplorerLink } from "../ExplorerLink";
 import type { BalanceWithAssetInfo, Balance } from "lib/types";
-import {
-  getFirstQueryParam,
-  getTokenType,
-  formatToken,
-  getTokenLabel,
-} from "lib/utils";
+import { getFirstQueryParam, getTokenType, getTokenLabel } from "lib/utils";
+import { formatTokenPrecision } from "lib/utils/formatter/token";
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: BalanceWithAssetInfo[];
@@ -67,7 +63,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
         </Text>
       </Flex>
       <Text variant="body2" fontWeight="900">
-        {formatToken(balance.amount, balance.precision)}
+        {formatTokenPrecision(balance.amount, balance.precision)}
       </Text>
     </Flex>
   );

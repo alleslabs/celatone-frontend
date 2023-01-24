@@ -4,6 +4,12 @@ import type { Token, U } from "lib/types";
 
 import { demicrofy } from "./currency";
 
-export function formatUToken(n: U<Token<BigSource>>): string {
-  return demicrofy(n).toFixed(6);
+export function formatToken(
+  amount: U<Token<BigSource>>,
+  denom: string
+): string {
+  if (denom[0] === "u") {
+    return demicrofy(amount).toFixed(6);
+  }
+  return amount.toString();
 }

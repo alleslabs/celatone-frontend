@@ -24,9 +24,9 @@ import type {
 import {
   camelToSnake,
   encode,
-  formatUToken,
   extractMsgType,
   getTokenLabel,
+  formatToken,
 } from "lib/utils";
 
 interface MsgDetailProps {
@@ -139,9 +139,10 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
 
       const coins = msgSend.amount.map(
         (amount) =>
-          `${formatUToken(amount.amount as U<Token>)} ${getTokenLabel(
+          `${formatToken(
+            amount.amount as U<Token>,
             amount.denom
-          )} `
+          )} ${getTokenLabel(amount.denom)} `
       );
 
       // Not able to resend if failure
