@@ -1,4 +1,12 @@
-import { chakra, GridItem } from "@chakra-ui/react";
+import { chakra, Flex, GridItem } from "@chakra-ui/react";
+
+export const TableContainer = chakra(Flex, {
+  baseStyle: {
+    overflowX: "scroll",
+    flexDir: "column",
+    w: "full",
+  },
+});
 
 export const TableHeader = chakra(GridItem, {
   baseStyle: {

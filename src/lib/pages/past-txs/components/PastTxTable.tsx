@@ -1,6 +1,5 @@
+import type { GridProps } from "@chakra-ui/react";
 import {
-  Td,
-  Tr,
   Flex,
   Tag,
   Text,
@@ -8,6 +7,7 @@ import {
   Collapse,
   Button,
   Icon,
+  Grid,
 } from "@chakra-ui/react";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import { useWallet } from "@cosmos-kit/react";
@@ -23,6 +23,7 @@ import { useResendTx } from "lib/app-provider/tx/resend";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import { SingleMsg } from "lib/components/action-msg/SingleMsg";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { TableRow } from "lib/components/table";
 import { useContractStore } from "lib/hooks";
 import { FailedModal } from "lib/pages/instantiate/component";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -49,9 +50,10 @@ import { MultipleMsg } from "./MultipleMsg";
 
 interface PastTxTableProps {
   element: Transaction;
+  templateColumns: GridProps["templateColumns"];
 }
 
-const PastTxTable = ({ element }: PastTxTableProps) => {
+const PastTxTable = ({ element, templateColumns }: PastTxTableProps) => {
   const onClickRedo = useRedo();
   const { isOpen, onToggle } = useDisclosure();
   const [isAccordion, setIsAccordion] = useState(false);
@@ -405,8 +407,6 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
     renderUpload,
   ]);
 
-  const hideBorder = isAccordion && isOpen ? "none" : "";
-
   const fabricateFee = useFabricateFee();
   const { simulate } = useSimulateFee();
   const resendTx = useResendTx();
@@ -476,16 +476,14 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
 
   return (
     <>
-      <Tr
+      <Grid
         key={element.hash}
         onClick={onToggle}
         _hover={{ background: "divider.main" }}
-        sx={{
-          "& td:first-of-type": { pl: "48px" },
-          "& td:last-child": { pr: "48px" },
-        }}
+        templateColumns={templateColumns}
       >
-        <Td border={hideBorder}>
+        <TableRow />
+        <TableRow>
           <Flex role="group" w="fit-content">
             <ExplorerLink
               value={element.hash.substring(2).toUpperCase()}
@@ -493,15 +491,15 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
               canCopyWithHover
             />
           </Flex>
-        </Td>
-        <Td border={hideBorder}>
+        </TableRow>
+        <TableRow>
           {element.success ? (
             <Icon as={MdCheck} fontSize="24px" color="#66BB6A" />
           ) : (
             <Icon as={MdClose} fontSize="24px" color="#EF5350" />
           )}
-        </Td>
-        <Td border={hideBorder}>
+        </TableRow>
+        <TableRow>
           <Flex gap={1} fontSize="14px">
             {displayInfo}
             {element.isIbc && (
@@ -510,67 +508,68 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
               </Tag>
             )}
           </Flex>
-        </Td>
-        <Td border={hideBorder}>{renderTimestamp()}</Td>
-        <Td border={hideBorder} color="text.dark">
-          <Flex justify="end">
-            {button === "redo" && (
-              <Button
-                leftIcon={<BsArrowCounterclockwise />}
-                variant="outline"
-                iconSpacing="2"
-                size="sm"
-                onClick={(e) =>
-                  onClickRedo(
-                    e,
-                    extractMsgType(element?.messages[0]?.type),
-                    element.messages[0].msg,
-                    currentChainName
-                  )
-                }
-              >
-                Redo
-              </Button>
-            )}
-            {button === "resend" && (
-              <Button
-                variant="outline"
-                iconSpacing="0"
-                size="sm"
-                onClick={(e) => onClickResend(e)}
-                isDisabled={isButtonLoading}
-              >
-                Resend
-              </Button>
-            )}
-          </Flex>
-        </Td>
-        <Td border={hideBorder} color="text.dark">
-          {isAccordion && (
-            <Icon
-              as={MdKeyboardArrowDown}
-              transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
-              boxSize="18px"
-            />
-          )}
-        </Td>
-      </Tr>
-      {isAccordion && (
-        <Tr hidden={!isOpen}>
-          <Td colSpan={6} p="0" border="none">
-            <Collapse in={isOpen} animateOpacity>
-              <Flex py="12px" bg="gray.900" direction="column">
-                {element.messages.map((item, index) => (
-                  <MsgDetail
-                    key={index.toString() + item.type}
-                    msg={item}
-                    success={element.success}
+        </TableRow>
+        <TableRow>
+          <Flex justify="space-between" w="full">
+            {renderTimestamp()}
+            <Flex align="center" gap={3}>
+              {button === "redo" && (
+                <Button
+                  leftIcon={<BsArrowCounterclockwise />}
+                  variant="outline"
+                  iconSpacing="2"
+                  size="sm"
+                  onClick={(e) =>
+                    onClickRedo(
+                      e,
+                      extractMsgType(element?.messages[0]?.type),
+                      element.messages[0].msg,
+                      currentChainName
+                    )
+                  }
+                >
+                  Redo
+                </Button>
+              )}
+              {button === "resend" && (
+                <Button
+                  variant="outline"
+                  iconSpacing="0"
+                  size="sm"
+                  onClick={(e) => onClickResend(e)}
+                  isDisabled={isButtonLoading}
+                >
+                  Resend
+                </Button>
+              )}
+              <Flex w="30px" justify="center">
+                {isAccordion && (
+                  <Icon
+                    as={MdKeyboardArrowDown}
+                    transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
+                    boxSize="18px"
+                    color="text.dark"
                   />
-                ))}
+                )}
               </Flex>
-            </Collapse>
-          </Td>
-        </Tr>
+            </Flex>
+          </Flex>
+        </TableRow>
+        <TableRow />
+      </Grid>
+
+      {isAccordion && (
+        <Collapse in={isOpen} animateOpacity style={{ width: "100%" }}>
+          <Flex py="12px" bg="gray.900" direction="column">
+            {element.messages.map((item, index) => (
+              <MsgDetail
+                key={index.toString() + item.type}
+                msg={item}
+                success={element.success}
+              />
+            ))}
+          </Flex>
+        </Collapse>
       )}
       {error && <FailedModal errorLog={error} onClose={() => setError("")} />}
     </>

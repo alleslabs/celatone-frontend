@@ -64,14 +64,20 @@ export const CodeSelectModalButton = ({
           </ModalHeader>
           <ModalCloseButton color="text.dark" />
           <ModalBody px={0} maxH="640px" overflow="scroll">
-            <Text variant="body1" fontWeight={700} ml="24px" mb="24px">
+            <Text variant="body1" fontWeight={700} ml="24px" mb="16px">
               My Stored Codes
             </Text>
             <CodeTableReadOnly
               onCodeSelect={handleSelect}
               codes={storedCodes}
             />
-            <Text variant="body1" fontWeight={700} ml="24px" my="24px">
+            <Text
+              variant="body1"
+              fontWeight={700}
+              ml="24px"
+              mt="24px"
+              mb="16px"
+            >
               Saved Codes
             </Text>
             <CodeTableReadOnly onCodeSelect={handleSelect} codes={savedCodes} />

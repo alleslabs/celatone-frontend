@@ -7,13 +7,8 @@ import {
   InputGroup,
   InputRightElement,
   Icon,
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
   Box,
+  Grid,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { ChangeEvent } from "react";
@@ -24,11 +19,14 @@ import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
+import { TableContainer, TableHeader } from "lib/components/table";
 import type { Transaction } from "lib/types/tx/transaction";
 
 import { FalseState } from "./components/FalseState";
 import PastTxTable from "./components/PastTxTable";
 import { useTxQuery } from "./query/useTxQuery";
+
+const TEMPLATE_COLUMNS = "48px 140px 56px 1fr 0.75fr 48px";
 
 const PastTxs = () => {
   const [input, setInput] = useState("");
@@ -130,7 +128,11 @@ const PastTxs = () => {
     if (data) {
       data.forEach((element) => {
         displayComponents.push(
-          <PastTxTable key={element.hash} element={element} />
+          <PastTxTable
+            key={element.hash}
+            element={element}
+            templateColumns={TEMPLATE_COLUMNS}
+          />
         );
       });
     }
@@ -215,32 +217,16 @@ const PastTxs = () => {
     // Data found, display table
     return (
       <>
-        <TableContainer w="full">
-          <Table px="48px">
-            <Thead>
-              <Tr
-                color="text.dark"
-                sx={{
-                  "& th:first-of-type": { pl: "48px", pr: "0" },
-                  "& td:last-child": { pr: "48px" },
-                }}
-              >
-                <Th textTransform="none" w="15%">
-                  Tx Hash
-                </Th>
-                <Th w="5%" />
-                <Th textTransform="none" w="50%">
-                  Messages
-                </Th>
-                <Th textTransform="none" w="25%">
-                  Timestamp
-                </Th>
-                <Th w="10%" />
-                <Th w="5%" />
-              </Tr>
-            </Thead>
-            <Tbody>{displayRow}</Tbody>
-          </Table>
+        <TableContainer>
+          <Grid templateColumns={TEMPLATE_COLUMNS}>
+            <TableHeader />
+            <TableHeader>Tx Hash</TableHeader>
+            <TableHeader />
+            <TableHeader>Messages</TableHeader>
+            <TableHeader>Timestamp</TableHeader>
+            <TableHeader />
+          </Grid>
+          {displayRow}
         </TableContainer>
         <Pagination
           currentPage={currentPage}

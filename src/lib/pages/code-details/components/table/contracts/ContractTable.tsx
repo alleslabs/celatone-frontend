@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { NoContracts } from "../NoContracts";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { TableHeader } from "lib/components/table";
+import { TableContainer, TableHeader } from "lib/components/table";
 import { useContractStore } from "lib/hooks";
 import {
   useContractListByCodeId,
@@ -89,7 +89,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
       {!codeContracts?.length ? (
         <NoContracts />
       ) : (
-        <Flex direction="column" overflowX="scroll">
+        <TableContainer>
           <Grid templateColumns={templateColumnsStyle}>
             <TableHeader borderTopStyle="none">Contract Address</TableHeader>
             <TableHeader>Contract Name</TableHeader>
@@ -123,7 +123,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
               onPageSizeChange={onPageSizeChange}
             />
           )}
-        </Flex>
+        </TableContainer>
       )}
     </>
   );
