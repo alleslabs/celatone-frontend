@@ -26,7 +26,7 @@ import { FalseState } from "./components/FalseState";
 import PastTxTable from "./components/PastTxTable";
 import { useTxQuery } from "./query/useTxQuery";
 
-const TEMPLATE_COLUMNS = "48px 140px 56px 1fr 0.75fr 48px";
+const TEMPLATE_COLUMNS = "48px 140px 56px minmax(0, 1fr) 0.75fr 48px";
 
 const PastTxs = () => {
   const [input, setInput] = useState("");
