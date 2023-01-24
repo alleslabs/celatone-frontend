@@ -13,7 +13,7 @@ interface InstantiateInfoProps {
 
 const Container = chakra(Flex, {
   baseStyle: {
-    direction: "column",
+    flexDir: "column",
     gap: 6,
     w: "250px",
   },
@@ -45,7 +45,6 @@ export const InstantiateInfo = ({
   const adminTypeOpt = instantiateInfo.admin
     ? getAddressType(instantiateInfo.admin)
     : undefined;
-
   return (
     <Container>
       <LabelText label="Network">{chainId}</LabelText>
