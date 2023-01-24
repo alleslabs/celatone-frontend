@@ -101,7 +101,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     <Flex justify="space-between" my={6}>
       <Flex direction="column" gap={1} textOverflow="ellipsis" maxW="670px">
         <Flex gap={1}>
-          {publicProject.publicDetail && (
+          {publicProject.publicDetail?.logo && (
             <Image
               src={publicProject.publicDetail.logo}
               borderRadius="full"
