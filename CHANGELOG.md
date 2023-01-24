@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [122](https://github.com/alleslabs/celatone-frontend/pull/122) Fix unknown code upload block height
+- [#122](https://github.com/alleslabs/celatone-frontend/pull/122) Fix unknown code upload block height
 - [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
 - [#76](https://github.com/alleslabs/celatone-frontend/pull/76) Add Public projects page
 - [#116](https://github.com/alleslabs/celatone-frontend/pull/116) Support Terra2.0 mainnet and testnet
