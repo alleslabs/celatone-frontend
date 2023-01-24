@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
-import { RenderActionsMessages } from "lib/components/action-msg/ActionMessages";
+import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { AccordionTx } from "lib/components/table/AccordionTx";
@@ -57,7 +57,7 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            <RenderActionsMessages transaction={transaction} />
+            <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
               <Tag borderRadius="full" bg="rgba(164, 133, 231, 0.6)">
                 IBC

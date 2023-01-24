@@ -6,11 +6,13 @@ import { MultipleActionsMsg } from "./MultipleActionsMsg";
 import { SingleActionMsg } from "./SingleActionMsg";
 import { SingleMsg } from "./SingleMsg";
 
-export const RenderActionsMessages = ({
-  transaction,
-}: {
+interface RenderActionMessagesProps {
   transaction: AllTransaction | PastTransaction;
-}) => {
+}
+
+export const RenderActionMessages = ({
+  transaction,
+}: RenderActionMessagesProps) => {
   if (transaction.actionMsgType === ActionMsgType.SINGLE_ACTION_MSG) {
     return (
       <SingleActionMsg
