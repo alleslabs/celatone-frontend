@@ -22,12 +22,10 @@ export const PublicContractDesc = ({
   );
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description || "",
+    text: description || "No public contract description",
     ellipsis: "...",
     lines: textLine(!contractData.contractLocalInfo?.description, showMore),
   });
-
-  if (!description) return null;
 
   return (
     <Flex
@@ -45,16 +43,14 @@ export const PublicContractDesc = ({
           Public Contract Description
         </Text>
       </Flex>
-      <Linkify>
-        <Text
-          variant="body2"
-          whiteSpace="break-spaces"
-          ref={ref as React.MutableRefObject<HTMLParagraphElement>}
-          key={key}
-        >
-          {showMore ? description : clampedText}
-        </Text>
-      </Linkify>
+      <Text
+        variant="body2"
+        whiteSpace="pre-wrap"
+        ref={ref as React.MutableRefObject<HTMLParagraphElement>}
+        key={key}
+      >
+        <Linkify>{showMore ? description : clampedText}</Linkify>
+      </Text>
       {!noClamp && (
         <ShowMoreButton
           showMoreText="View Full Description"
