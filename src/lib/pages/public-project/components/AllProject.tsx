@@ -13,13 +13,8 @@ import type { PublicProjectInfo } from "lib/types";
 
 import { PublicProjectCard } from "./PublicProjectCard";
 
-const orderProjectAlphabetically = (projects: PublicProjectInfo[]) =>
-  projects.sort((a, b) => {
-    if (a.details.name && b.details.name) {
-      return a.details.name.localeCompare(b.details.name);
-    }
-    return -1;
-  });
+const sortByAtoZ = (projects: PublicProjectInfo[]) =>
+  projects.sort((a, b) => a.details.name.localeCompare(b.details.name));
 
 export const AllProject = observer(() => {
   const { data: publicProjectInfo } = usePublicProjectsQuery();
@@ -29,14 +24,14 @@ export const AllProject = observer(() => {
 
   const filteredPublicProjects = useMemo(() => {
     if (publicProjectInfo) {
-      const orderProjects = orderProjectAlphabetically(publicProjectInfo);
-      const orderSavedProjects = orderProjectAlphabetically(
+      const orderedProjects = sortByAtoZ(publicProjectInfo);
+      const orderSavedProjects = sortByAtoZ(
         publicProjectInfo.filter((project) =>
           savedProjects.some((save) => save.name === project.details.name)
         )
       );
 
-      const order = new Set([...orderSavedProjects, ...orderProjects]);
+      const order = new Set([...orderSavedProjects, ...orderedProjects]);
 
       return matchSorter([...Array.from(order)], searchKeyword, {
         keys: ["details.name"],
