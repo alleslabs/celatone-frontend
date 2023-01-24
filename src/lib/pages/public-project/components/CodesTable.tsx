@@ -55,7 +55,7 @@ export const CodesTable = ({
       )}
       {!filteredCodes.length ? (
         <Flex my={8}>
-          <EmptyState message="No matched code found." icon={MdSearchOff} />
+          <EmptyState message="No code found." icon={MdSearchOff} />
         </Flex>
       ) : (
         <TableContainer w="full">

@@ -1,5 +1,6 @@
-import { chakra, Divider, Flex, Text } from "@chakra-ui/react";
+import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
+import { Copier } from "lib/components/Copier";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useGetAddressType } from "lib/hooks";
@@ -18,6 +19,32 @@ const Container = chakra(Flex, {
     w: "250px",
   },
 });
+
+const RenderPortId = ({ portId }: { portId: string }) => {
+  const charArray = portId.match(/.{1,28}/g);
+
+  return (
+    <Box
+      fontSize="14px"
+      _hover={{
+        "& .ibc-port-copy": {
+          display: "flex",
+        },
+      }}
+    >
+      {charArray?.map((line, idx) =>
+        idx === charArray.length - 1 ? (
+          <Flex align="center">
+            {line}
+            <Copier value={portId} className="ibc-port-copy" display="none" />
+          </Flex>
+        ) : (
+          line
+        )
+      )}
+    </Box>
+  );
+};
 
 export const InstantiateInfo = ({
   contractData: {
@@ -136,7 +163,9 @@ export const InstantiateInfo = ({
       )}
 
       {instantiateInfo.ibcPortId && (
-        <LabelText label="IBC Port ID">{instantiateInfo.ibcPortId}</LabelText>
+        <LabelText label="IBC Port ID">
+          <RenderPortId portId={instantiateInfo.ibcPortId} />
+        </LabelText>
       )}
     </Container>
   );
