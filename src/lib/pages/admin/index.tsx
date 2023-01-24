@@ -112,7 +112,7 @@ const UpdateAdmin = () => {
       onSuccess: (contractInfo) => {
         if (contractInfo.admin !== address) onContractPathChange();
       },
-      onError: () => onContractPathChange(),
+      onError: onContractPathChange,
     }
   );
 
