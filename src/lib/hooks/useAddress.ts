@@ -19,6 +19,9 @@ const addressLengthMap: {
     43: "user_address",
     63: "contract_address",
   },
+  /**
+   * @todos Add terra cases
+   */
 };
 
 export const getAddressTypeByLength = (
