@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
+import { MdSearchOff } from "react-icons/md";
 
 import { TagSelection, TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -26,6 +27,7 @@ const FilteredListDetail = ({
   if (contracts.length === 0)
     return (
       <EmptyState
+        icon={MdSearchOff}
         message="No contracts match found. 
         Make sure you are searching with contract address, name, or description."
       />
