@@ -19,7 +19,7 @@ import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { InstantiateButton } from "lib/components/button/InstantiateButton";
+import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import { SaveOrRemoveCode } from "lib/components/modal/code/SaveOrRemoveCode";

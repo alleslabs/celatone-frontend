@@ -66,7 +66,6 @@ export const clearAdminTx = ({
             <Icon as={MdCheckCircle} color="success.main" boxSize={6} />
           ),
         },
-        actionVariant: "clear_admin",
       } as TxResultRendering;
     }
   )().pipe(catchTxError());

@@ -2,7 +2,7 @@ import { Flex, Button, chakra, Icon } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { MdCheck } from "react-icons/md";
 
-import { InstantiateButton } from "lib/components/button/InstantiateButton";
+import { InstantiateButton } from "lib/components/button";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import { SaveOrEditCodeModal } from "lib/components/modal/code/SaveOrEditCode";
 import { useCodeStore } from "lib/hooks";

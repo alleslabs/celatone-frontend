@@ -4,13 +4,13 @@ import { useCallback } from "react";
 import { useFabricateFee } from "../hooks";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
 import { CLEAR_ADMIN_GAS } from "lib/data";
-import type { ContractAddr, Option } from "lib/types";
+import type { ContractAddr } from "lib/types";
 
 export interface ClearAdminStreamParams {
   onTxSucceed?: (txHash: string) => void;
 }
 
-export const useClearAdminTx = (contractAddress: Option<ContractAddr>) => {
+export const useClearAdminTx = (contractAddress: ContractAddr) => {
   const { address, getCosmWasmClient } = useWallet();
   const fabricateFee = useFabricateFee();
   const clearAdminFee = fabricateFee(CLEAR_ADMIN_GAS);
