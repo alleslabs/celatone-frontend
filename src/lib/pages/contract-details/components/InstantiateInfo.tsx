@@ -1,4 +1,4 @@
-import { Divider, Flex, Text } from "@chakra-ui/react";
+import { chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
@@ -11,137 +11,134 @@ interface InstantiateInfoProps {
   contractData: ContractData;
 }
 
-export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
+const Container = chakra(Flex, {
+  baseStyle: {
+    direction: "column",
+    gap: 6,
+    w: "250px",
+  },
+});
+
+export const InstantiateInfo = ({
+  contractData: {
+    instantiateInfo,
+    chainId,
+    codeInfo,
+    initTxHash,
+    initProposalId,
+    initProposalTitle,
+  },
+}: InstantiateInfoProps) => {
   const getAddressType = useGetAddressType();
 
-  // TODO: fix eslint
-  // eslint-disable-next-line sonarjs/cognitive-complexity
-  const renderDataFound = () => {
-    if (contractData.instantiateInfo) {
-      const instantiatorType = getAddressType(
-        contractData.instantiateInfo.instantiator
-      );
-      const adminType = getAddressType(
-        contractData.instantiateInfo.admin ?? ""
-      );
-      return (
-        <>
-          <LabelText label="Network">{contractData.chainId}</LabelText>
+  if (!instantiateInfo) {
+    return (
+      <Container>
+        <Text variant="body2" color="text.dark">
+          Error fetching data
+        </Text>
+      </Container>
+    );
+  }
 
-          <LabelText
-            label="From Code"
-            helperText1={contractData.codeInfo?.description}
-          >
-            <ExplorerLink
-              type="code_id"
-              value={contractData.instantiateInfo.codeId}
-              canCopyWithHover
-            />
-          </LabelText>
+  const instantiatorType = getAddressType(instantiateInfo.instantiator);
+  const adminTypeOpt = instantiateInfo.admin
+    ? getAddressType(instantiateInfo.admin)
+    : undefined;
 
+  return (
+    <Container>
+      <LabelText label="Network">{chainId}</LabelText>
+
+      <LabelText label="From Code" helperText1={codeInfo?.description}>
+        <ExplorerLink
+          type="code_id"
+          value={instantiateInfo.codeId}
+          canCopyWithHover
+        />
+      </LabelText>
+
+      <LabelText
+        label="Admin Address"
+        helperText1={
+          adminTypeOpt ? getAddressTypeText(adminTypeOpt) : undefined
+        }
+      >
+        {instantiateInfo.admin ? (
+          <ExplorerLink
+            type={adminTypeOpt}
+            value={instantiateInfo.admin}
+            canCopyWithHover
+          />
+        ) : (
+          <Text variant="body2" color="text.dark">
+            No Admin
+          </Text>
+        )}
+      </LabelText>
+
+      <Divider border="1px solid" borderColor="divider.main" />
+
+      {instantiateInfo &&
+        (instantiateInfo.createdHeight !== -1 ? (
           <LabelText
-            label="Admin Address"
+            label="Instantiated Block Height"
             helperText1={
-              contractData.instantiateInfo.admin
-                ? getAddressTypeText(adminType)
+              instantiateInfo.createdTime
+                ? formatUTC(instantiateInfo.createdTime)
+                : undefined
+            }
+            helperText2={
+              instantiateInfo.createdTime
+                ? dateFromNow(instantiateInfo.createdTime)
                 : undefined
             }
           >
-            {contractData.instantiateInfo.admin ? (
-              <ExplorerLink
-                type={adminType}
-                value={contractData.instantiateInfo.admin}
-                canCopyWithHover
-              />
-            ) : (
-              <Text variant="body2" color="text.dark">
-                No Admin
-              </Text>
-            )}
-          </LabelText>
-
-          <Divider border="1px solid" borderColor="divider.main" />
-
-          {contractData.instantiateInfo &&
-            (contractData.instantiateInfo.createdHeight !== -1 ? (
-              <LabelText
-                label="Instantiated Block Height"
-                helperText1={
-                  contractData.instantiateInfo.createdTime
-                    ? formatUTC(contractData.instantiateInfo.createdTime)
-                    : undefined
-                }
-                helperText2={
-                  contractData.instantiateInfo.createdTime
-                    ? dateFromNow(contractData.instantiateInfo.createdTime)
-                    : undefined
-                }
-              >
-                <ExplorerLink
-                  type="block_height"
-                  value={contractData.instantiateInfo.createdHeight.toString()}
-                  canCopyWithHover
-                />
-              </LabelText>
-            ) : (
-              <LabelText label="Instantiated Block Height">N/A</LabelText>
-            ))}
-
-          <LabelText
-            label="Instantiated by"
-            helperText1={getAddressTypeText(instantiatorType)}
-          >
             <ExplorerLink
-              type={instantiatorType}
-              value={contractData.instantiateInfo.instantiator}
+              type="block_height"
+              value={instantiateInfo.createdHeight.toString()}
               canCopyWithHover
             />
           </LabelText>
+        ) : (
+          <LabelText label="Instantiated Block Height">N/A</LabelText>
+        ))}
 
-          {contractData.initTxHash ? (
-            <LabelText label="Instantiate Transaction">
-              <ExplorerLink
-                type="tx_hash"
-                value={contractData.initTxHash.toUpperCase()}
-                canCopyWithHover
-              />
-            </LabelText>
-          ) : (
-            <LabelText
-              label="Instantiate Proposal ID"
-              helperText1={contractData.initProposalTitle}
-            >
-              <ExplorerLink
-                value={
-                  contractData.initProposalId
-                    ? `#${contractData.initProposalId}`
-                    : "Genesis"
-                }
-                canCopyWithHover
-                isReadOnly={!contractData.initProposalId}
-              />
-            </LabelText>
-          )}
+      <LabelText
+        label="Instantiated by"
+        helperText1={getAddressTypeText(instantiatorType)}
+      >
+        <ExplorerLink
+          type={instantiatorType}
+          value={instantiateInfo.instantiator}
+          canCopyWithHover
+        />
+      </LabelText>
 
-          {contractData.instantiateInfo.ibcPortId && (
-            <LabelText label="IBC Port ID">
-              {contractData.instantiateInfo.ibcPortId}
-            </LabelText>
-          )}
-        </>
-      );
-    }
+      {initTxHash ? (
+        <LabelText label="Instantiate Transaction">
+          <ExplorerLink
+            type="tx_hash"
+            value={initTxHash.toUpperCase()}
+            canCopyWithHover
+          />
+        </LabelText>
+      ) : (
+        <LabelText
+          label="Instantiate Proposal ID"
+          helperText1={initProposalTitle}
+        >
+          <ExplorerLink
+            value={initProposalId ? `#${initProposalId}` : "Genesis"}
+            canCopyWithHover
+            isReadOnly={!initProposalId}
+          />
+        </LabelText>
+      )}
 
-    return (
-      <Text variant="body2" color="text.dark">
-        Error fetching data
-      </Text>
-    );
-  };
-
-  return (
-    <Flex direction="column" gap={6} w="250px">
-      {renderDataFound()}
-    </Flex>
+      {instantiateInfo.ibcPortId && (
+        <LabelText label="IBC Port ID">{instantiateInfo.ibcPortId}</LabelText>
+      )}
+    </Container>
   );
 };
