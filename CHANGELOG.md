@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+<<<<<<< HEAD
+
 - [#122](https://github.com/alleslabs/celatone-frontend/pull/122) Fix unknown code upload block height
 - [#125](https://github.com/alleslabs/celatone-frontend/pull/125) Add connect wallet alert in instantiate page
 - [#126](https://github.com/alleslabs/celatone-frontend/pull/126) Add port id copier for IBC port id
@@ -48,17 +50,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#94](https://github.com/alleslabs/celatone-frontend/pull/94) Add unsupported assets in contract details page
 - [#72](https://github.com/alleslabs/celatone-frontend/pull/72) Fix general wording and grammar
 - [#110](https://github.com/alleslabs/celatone-frontend/pull/110) Fix proposal detail rendering
-- [#109](https://github.com/alleslabs/celatone-frontend/pull/109) Fix incorrect rendering of zero value badges
+- # [#109](https://github.com/alleslabs/celatone-frontend/pull/109) Fix incorrect rendering of zero value badges
+  > > > > > > > f709498 (fix: update changelog)
 - [#106](https://github.com/alleslabs/celatone-frontend/pull/106) Add sort alphabetically to query and execute shortcuts
 - [#88](https://github.com/alleslabs/celatone-frontend/pull/88) Add code snippet for query and execute
 - [#107](https://github.com/alleslabs/celatone-frontend/pull/107) Remove osmosis mainnet from chain list
 - [#99](https://github.com/alleslabs/celatone-frontend/pull/99) Validate label and codeId field in instantiate page
 - [#103](https://github.com/alleslabs/celatone-frontend/pull/103) Add check mark to selected network
 - [#92](https://github.com/alleslabs/celatone-frontend/pull/92) Create select contract component for admin and migrate pages
-- [#101](https://github.com/alleslabs/celatone-frontend/pull/101) Fix incorrect truncating of proposal id in contract detail's migration table
-- [#100](https://github.com/alleslabs/celatone-frontend/pull/100) Fix contract instantiated time parsing
 - [#97](https://github.com/alleslabs/celatone-frontend/pull/97) Change label style to always afloat
-- [#96](https://github.com/alleslabs/celatone-frontend/pull/96) Fix incorrect instantiated block height explorer link
 - [#95](https://github.com/alleslabs/celatone-frontend/pull/95) Add network to url path
 - [#89](https://github.com/alleslabs/celatone-frontend/pull/89) Update feedback link
 - [#90](https://github.com/alleslabs/celatone-frontend/pull/90) Add update admin (`/admin`) and migrate (`/migrate`) page routes
@@ -67,20 +67,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#81](https://github.com/alleslabs/celatone-frontend/pull/81) Can scroll on side bar with fix deploy new contract button
 - [#86](https://github.com/alleslabs/celatone-frontend/pull/86) Add transactions table in contract details page
 - [#74](https://github.com/alleslabs/celatone-frontend/pull/74) Add tokens rendering for contract details page
-- [#87](https://github.com/alleslabs/celatone-frontend/pull/87) Fix funds didn't microfy before sending tx
 - [#85](https://github.com/alleslabs/celatone-frontend/pull/85) Add sending asset in execute contract page
 - [#84](https://github.com/alleslabs/celatone-frontend/pull/84) Contract proposals table ui and wireup
 - [#82](https://github.com/alleslabs/celatone-frontend/pull/82) Add all codes page
 - [#83](https://github.com/alleslabs/celatone-frontend/pull/83) Add invalid code state
 - [#73](https://github.com/alleslabs/celatone-frontend/pull/73) Wireup migration table
 - [#77](https://github.com/alleslabs/celatone-frontend/pull/77) Wireup code info section in code details page
-- [#80](https://github.com/alleslabs/celatone-frontend/pull/80) Fix the misalignment of state in the PastTx page
 - [#70](https://github.com/alleslabs/celatone-frontend/pull/70) Change default token denom on contract detail
 - [#78](https://github.com/alleslabs/celatone-frontend/pull/78) Ignore building step when branch is not main
 - [#62](https://github.com/alleslabs/celatone-frontend/pull/62) Add footer
 - [#71](https://github.com/alleslabs/celatone-frontend/pull/71) Add search bar at the top (currently support only contract address and code id)
 - [#69](https://github.com/alleslabs/celatone-frontend/pull/69) Add execute table in contract details page
-- [#68](https://github.com/alleslabs/celatone-frontend/pull/63) Refactor past txs link props and make sure navigation works
 - [#65](https://github.com/alleslabs/celatone-frontend/pull/60) Create instantiate button component
 - [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add contract not exist page
 - [#63](https://github.com/alleslabs/celatone-frontend/pull/63) Add code id explorer link and code table row navigation
@@ -108,6 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#114](https://github.com/alleslabs/celatone-frontend/pull/114) Handle wallet connection cases in instantiate button
 - [#115](https://github.com/alleslabs/celatone-frontend/pull/115) (Contract Details Page) Show no admin and correctly handle explorer link by address type
+- [#68](https://github.com/alleslabs/celatone-frontend/pull/68) Refactor past txs link props and make sure navigation works
 - [#64](https://github.com/alleslabs/celatone-frontend/pull/64) Add address validation functions for contract and user addresses
 - [#52](https://github.com/alleslabs/celatone-frontend/pull/52) Create a component for disconnected State and apply to contract, code, past tx
 - [#56](https://github.com/alleslabs/celatone-frontend/pull/56) Refactor offchain form component by not receiving nameField and descriptionField
@@ -119,6 +117,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#118](https://github.com/alleslabs/celatone-frontend/pull/118) Fix floating tooltip when scrolling out of copy button
 - [#111](https://github.com/alleslabs/celatone-frontend/pull/111) Fix recent activities navigation and instantiate encode/decode
 - [#105](https://github.com/alleslabs/celatone-frontend/pull/105) Propoerly show instantiator of code contracts and contract in the instantiated list
+- [#72](https://github.com/alleslabs/celatone-frontend/pull/72) Fix general wording and grammar
+- [#110](https://github.com/alleslabs/celatone-frontend/pull/110) Fix proposal detail rendering
+- [#109](https://github.com/alleslabs/celatone-frontend/pull/109) Fix incorrect rendering of zero value badges
+- [#101](https://github.com/alleslabs/celatone-frontend/pull/101) Fix incorrect truncating of proposal id in contract detail's migration table
+- [#100](https://github.com/alleslabs/celatone-frontend/pull/100) Fix contract instantiated time parsing
+- [#96](https://github.com/alleslabs/celatone-frontend/pull/96) Fix incorrect instantiated block height explorer link
+- [#87](https://github.com/alleslabs/celatone-frontend/pull/87) Fix funds didn't microfy before sending tx
+- [#80](https://github.com/alleslabs/celatone-frontend/pull/80) Fix the misalignment of state in the PastTx page
 - [#42](https://github.com/alleslabs/celatone-frontend/pull/42) Properly show CTAs on contract-list page and edit zero/disconnected state
 - [#45](https://github.com/alleslabs/celatone-frontend/pull/45) Add chain ID and code details to contract detail data loader
 
