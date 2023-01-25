@@ -135,7 +135,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         else {
           setStatus({
             state: "error",
-            message: "You can migrate to this code through proposal only",
+            message: "You can instantiate to this code through proposal only",
           });
         }
       },
