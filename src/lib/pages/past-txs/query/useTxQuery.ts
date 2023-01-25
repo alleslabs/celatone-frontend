@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { indexerGraphClient } from "lib/data/graphql";
+import { useCelatoneApp } from "lib/app-provider";
 import { useGetAddressType } from "lib/hooks";
 import type { Filters, Message, Option } from "lib/types";
 import {
@@ -49,6 +49,7 @@ export const useTxQuery = (
   offset: number
 ) => {
   const getAddressType = useGetAddressType();
+  const { indexerGraphClient } = useCelatoneApp();
 
   // Filter when action buttons are pressed
   const queryFn = useCallback(async () => {
@@ -151,7 +152,15 @@ export const useTxQuery = (
           };
         });
       });
-  }, [filters, getAddressType, offset, pageSize, search, userAddress]);
+  }, [
+    filters,
+    getAddressType,
+    indexerGraphClient,
+    offset,
+    pageSize,
+    search,
+    userAddress,
+  ]);
 
   return useQuery({
     queryKey: [
@@ -172,6 +181,7 @@ export const useTxQueryCount = (
   filters: Filters
 ) => {
   const getAddressType = useGetAddressType();
+  const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
     if (!userAddress) throw new Error("User address not found");
@@ -198,7 +208,7 @@ export const useTxQueryCount = (
       .then(
         ({ transactions_aggregate }) => transactions_aggregate.aggregate.count
       );
-  }, [filters, getAddressType, search, userAddress]);
+  }, [filters, getAddressType, indexerGraphClient, search, userAddress]);
 
   return useQuery({
     queryKey: ["past-transaction-count", userAddress, search, filters],

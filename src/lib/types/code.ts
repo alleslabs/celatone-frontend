@@ -21,7 +21,7 @@ export interface CodeInfo extends CodeLocalInfo {
 
 interface CodeProposal {
   proposalId: number;
-  height: number;
+  height: Option<number>;
   created: Date;
 }
 

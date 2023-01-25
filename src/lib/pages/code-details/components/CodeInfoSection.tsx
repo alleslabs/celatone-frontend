@@ -28,7 +28,7 @@ const getMethodSpecificRender = (
           />
         </LabelText>
       ),
-      storedBlockRender: (
+      storedBlockRender: codeProposalInfo.height ? (
         <>
           <ExplorerLink
             type="block_height"
@@ -42,6 +42,8 @@ const getMethodSpecificRender = (
             {formatUTC(codeProposalInfo.created)}
           </Text>
         </>
+      ) : (
+        <Text variant="body2">N/A</Text>
       ),
     };
   }

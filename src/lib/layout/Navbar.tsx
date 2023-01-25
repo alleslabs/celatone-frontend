@@ -1,6 +1,7 @@
-import { Flex, Box, Text, Icon, Button, Spacer } from "@chakra-ui/react";
+import { Flex, Box, Text, Icon, Button, Spacer, Image } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
+import type { IconType } from "react-icons";
 import {
   MdHome,
   MdCode,
@@ -17,23 +18,38 @@ import {
 import { AppLink } from "lib/components/AppLink";
 import { CreateNewList } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
-import { useContractStore } from "lib/hooks";
+import { useContractStore, usePublicProjectStore } from "lib/hooks";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
+
+interface SubmenuInfo {
+  name: string;
+  slug: string;
+  icon?: IconType;
+  logo?: string;
+}
+
+interface MenuInfo {
+  category: string;
+  submenu: SubmenuInfo[];
+}
 
 // TODO: move to proper place
 const PERMISSIONED_CHAINS = ["osmosis", "osmosistestnet"];
 
 const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
+
+  const { getSavedPublicProjects } = usePublicProjectStore();
+
   const { currentChainName } = useWallet();
 
   const getAllCodesShortCut = () =>
     PERMISSIONED_CHAINS.includes(currentChainName)
-      ? [{ name: "All Codes", slug: "/all-codes", icon: MdPublic }]
+      ? [{ name: "All Stored Codes", slug: "/all-codes", icon: MdPublic }]
       : [];
 
-  const navMenu = [
+  const navMenu: MenuInfo[] = [
     {
       category: "Overview",
       submenu: [
@@ -89,27 +105,33 @@ const Navbar = observer(() => {
           .filter((list) => list.slug !== formatSlugName(SAVED_LIST_NAME))
           .sort(cmpContractListInfo)
           .slice(0, 3)
-          .map((list) => {
-            return {
-              name: list.name,
-              slug: `/contract-list/${list.slug}`,
-              icon: getListIcon(list.name),
-            };
-          }),
-        { name: "View All", slug: "/contract-list", icon: MdMoreHoriz },
+          .map((list) => ({
+            name: list.name,
+            slug: `/contract-list/${list.slug}`,
+            icon: getListIcon(list.name),
+          })),
+        {
+          name: "View All",
+          slug: "/contract-list",
+          icon: MdMoreHoriz,
+        },
       ],
     },
-    // {
-    //   category: "Public Contracts",
-    //   submenu: [
-    //     {
-    //       name: "Astropost",
-    //       slug: "/public-contracts/astroport",
-    //       icon: MdLibraryBooks,
-    //     },
-    //     { name: "View All", slug: "/public-contracts", icon: MdMoreHoriz },
-    //   ],
-    // },
+    {
+      category: "Public Projects",
+      submenu: [
+        ...getSavedPublicProjects().map((list) => ({
+          name: list.name,
+          slug: `/public-project/${list.slug}`,
+          logo: list.logo,
+        })),
+        {
+          name: "View All",
+          slug: "/public-project",
+          icon: MdMoreHoriz,
+        },
+      ],
+    },
   ];
 
   return (
@@ -153,7 +175,17 @@ const Navbar = observer(() => {
                   transition="all .25s ease-in-out"
                   alignItems="center"
                 >
-                  <Icon as={submenu.icon} color="gray.600" boxSize="4" />
+                  {submenu.icon && (
+                    <Icon as={submenu.icon} color="gray.600" boxSize="4" />
+                  )}
+                  {submenu.logo && (
+                    <Image
+                      src={submenu.logo}
+                      borderRadius="full"
+                      alt={submenu.slug}
+                      boxSize={4}
+                    />
+                  )}
                   <Text variant="body2" className="ellipsis">
                     {submenu.name}
                   </Text>
