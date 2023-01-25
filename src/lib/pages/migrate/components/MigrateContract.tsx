@@ -14,7 +14,7 @@ import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
-import { useEndpoint } from "lib/hooks";
+import { useLCDEndpoint } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { getCodeIdInfo } from "lib/services/code";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
@@ -34,7 +34,7 @@ export const MigrateContract = ({
 }: MigrateContractProps) => {
   const { address } = useWallet();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
 

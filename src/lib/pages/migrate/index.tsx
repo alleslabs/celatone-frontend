@@ -6,11 +6,11 @@ import router from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useEndpoint } from "lib/hooks";
+import { useLCDEndpoint } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
@@ -28,8 +28,9 @@ const defaultValues: MigratePageState = {
 };
 
 const Migrate = () => {
+  const { indexerGraphClient } = useCelatoneApp();
   const navigate = useInternalNavigate();
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
   const { address = "" } = useWallet();
 
   const { setValue, watch } = useForm<MigratePageState>({
@@ -57,7 +58,8 @@ const Migrate = () => {
 
   useQuery(
     ["query", "instantiateInfo", contractAddress],
-    async () => queryInstantiateInfo(endpoint, contractAddress),
+    async () =>
+      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
     {
       enabled: !!contractAddress,
       retry: 0,

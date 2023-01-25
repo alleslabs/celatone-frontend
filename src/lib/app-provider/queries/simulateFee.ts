@@ -26,8 +26,9 @@ export const useSimulateFeeQuery = ({
 
   const simulateFn = async (msgs: ComposedMsg[]) => {
     let client = await getCosmWasmClient();
+    // TODO: revisit this logic
     if (!currentChainRecord?.preferredEndpoints?.rpc?.[0] || !userAddress) {
-      return undefined;
+      throw new Error("No RPC endpoint or user address");
     }
 
     if (!client && !address && dummyWallet) {
@@ -38,7 +39,7 @@ export const useSimulateFeeQuery = ({
     }
 
     if (!client) {
-      return undefined;
+      throw new Error("No client");
     }
 
     return (await client.simulate(userAddress, msgs, undefined)) as Gas;

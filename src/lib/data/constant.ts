@@ -66,8 +66,3 @@ export const typeUrlDict = {
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
-// TODO
-export const LCD_ENDPOINT: Record<string, string> = {
-  osmosis: "https://lcd.osmosis.zone",
-  osmosistestnet: "https://lcd-test.osmosis.zone",
-};

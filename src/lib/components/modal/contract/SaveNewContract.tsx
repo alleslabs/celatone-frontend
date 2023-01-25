@@ -13,7 +13,11 @@ import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
-import { useContractStore, useEndpoint, useValidateAddress } from "lib/hooks";
+import {
+  useContractStore,
+  useLCDEndpoint,
+  useValidateAddress,
+} from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
@@ -34,7 +38,8 @@ interface SaveNewContractProps {
   buttonProps: ButtonProps;
 }
 export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
+  const { indexerGraphClient } = useCelatoneApp();
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 
@@ -92,7 +97,11 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
   const { refetch } = useQuery(
     ["query", "instantiateInfo", contractAddressState],
     async () =>
-      queryInstantiateInfo(endpoint, contractAddressState as ContractAddr),
+      queryInstantiateInfo(
+        endpoint,
+        indexerGraphClient,
+        contractAddressState as ContractAddr
+      ),
     {
       enabled: false,
       retry: false,
@@ -192,7 +201,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
         <ControllerInput
           name="instantiator"
           control={control}
-          label="Instantiator"
+          label="Instantiated by"
           variant="floating"
           isDisabled
           labelBgColor="gray.800"

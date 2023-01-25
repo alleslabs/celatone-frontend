@@ -14,13 +14,14 @@ import {
 } from "lib/app-provider";
 import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
 import { CodeSelectSection } from "lib/components/CodeSelectSection";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import { AssetInput } from "lib/components/forms/AssetInput";
 import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useEndpoint } from "lib/hooks";
+import { useLCDEndpoint } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr, Token, U } from "lib/types";
@@ -48,7 +49,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
   const { address = "" } = useWallet();
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
   const postInstantiateTx = useInstantiateTx();
   const { simulate } = useSimulateFee();
   const fabricateFee = useFabricateFee();
@@ -247,7 +248,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         <Heading as="h4" variant="h4" my="48px">
           Instantiate new contract
         </Heading>
-
+        <ConnectWalletAlert
+          subtitle="You need to connect your wallet to perform this action"
+          mb={6}
+        />
         <CodeSelectSection
           name="codeId"
           control={control}

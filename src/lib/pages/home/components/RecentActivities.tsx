@@ -21,7 +21,7 @@ export const RecentActivities = observer(() => {
   return (
     <Box py={8}>
       <Heading px={12} as="h6" variant="h6" mb={4}>
-        Recent Activities on this device
+        Recent Queries and Executes on this device
       </Heading>
       {activities.length ? (
         <Flex px={12} gap={4} overflowX="scroll" w="100%">
