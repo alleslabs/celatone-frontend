@@ -39,8 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-<<<<<<< HEAD
-
 - [#125](https://github.com/alleslabs/celatone-frontend/pull/125) Add connect wallet alert in instantiate page
 - [#126](https://github.com/alleslabs/celatone-frontend/pull/126) Add port id copier for IBC port id
 - [#76](https://github.com/alleslabs/celatone-frontend/pull/76) Add Public projects page
