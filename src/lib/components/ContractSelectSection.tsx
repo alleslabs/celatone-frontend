@@ -121,7 +121,7 @@ export const ContractSelectSection = observer(
     });
 
     const { refetch } = useQuery(
-      ["query", "instantiateInfo", contractAddress],
+      ["query", "instantiateInfo", endpoint, contractAddress],
       async () => queryInstantiateInfo(endpoint, contractAddress),
       {
         enabled: false,

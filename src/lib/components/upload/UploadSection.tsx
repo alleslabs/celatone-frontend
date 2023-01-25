@@ -27,12 +27,12 @@ import type { UploadSectionState } from "./types";
 
 interface UploadSectionProps {
   handleBack: () => void;
-  onMigrate?: boolean;
+  isMigrate?: boolean;
 }
 
 export const UploadSection = ({
   handleBack,
-  onMigrate = false,
+  isMigrate = false,
 }: UploadSectionProps) => {
   const { simulate, loading } = useSimulateFee();
   const fabricateFee = useFabricateFee();
@@ -50,7 +50,7 @@ export const UploadSection = ({
       wasmFile: undefined,
       codeDesc: "",
       estimatedFee: undefined,
-      simulateStatus: "Pending",
+      simulateStatus: "pending",
       simulateError: "",
     },
     mode: "all",
@@ -58,15 +58,14 @@ export const UploadSection = ({
   const { wasmFile, codeDesc, estimatedFee, simulateStatus, simulateError } =
     watch();
 
-  const postUploadTx = useUploadContractTx(
-    wasmFile?.name,
-    wasmFile?.arrayBuffer(),
-    estimatedFee,
-    onMigrate
-  );
+  const postUploadTx = useUploadContractTx(isMigrate);
 
   const proceed = useCallback(async () => {
     const stream = await postUploadTx({
+      wasmFileName: wasmFile?.name,
+      wasmCode: wasmFile?.arrayBuffer(),
+      codeDesc,
+      estimatedFee,
       onTxSucceed: (codeId: number) => {
         updateCodeInfo(
           codeId,
@@ -74,23 +73,23 @@ export const UploadSection = ({
           codeDesc || `${wasmFile?.name}(${codeId})`
         );
       },
-      codeDesc,
     });
 
     if (stream) broadcast(stream);
   }, [
     postUploadTx,
+    wasmFile,
     codeDesc,
+    estimatedFee,
     broadcast,
     updateCodeInfo,
     address,
-    wasmFile?.name,
   ]);
 
   useEffect(() => {
     (async () => {
       if (wasmFile) {
-        setValue("simulateStatus", "Pending");
+        setValue("simulateStatus", "pending");
         setValue("simulateError", "");
         const msg = composeMsg(MsgType.STORE_CODE, {
           sender: address as HumanAddr,
@@ -104,10 +103,10 @@ export const UploadSection = ({
           const estimatedGasUsed = await simulate([msg]);
           if (estimatedGasUsed) {
             setValue("estimatedFee", fabricateFee(estimatedGasUsed));
-            setValue("simulateStatus", "Completed");
+            setValue("simulateStatus", "completed");
           }
         } catch (err) {
-          setValue("simulateStatus", "Failed");
+          setValue("simulateStatus", "failed");
           setValue("simulateError", (err as Error).message);
         }
       }
@@ -151,7 +150,7 @@ export const UploadSection = ({
         display="flex"
         gap="4px"
       >
-        Transaction Fee:{" "}
+        <p>Transaction Fee:</p>
         <EstimatedFeeRender estimatedFee={estimatedFee} loading={loading} />
       </Flex>
       <Flex justify="space-between" w="100%" mt="32px">

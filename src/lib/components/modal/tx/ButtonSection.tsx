@@ -8,6 +8,7 @@ import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
+// TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
   actionVariant?: ActionVariant;
   onClose?: () => void;

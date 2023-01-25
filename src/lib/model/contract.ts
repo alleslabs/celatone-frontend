@@ -94,7 +94,7 @@ export const useContractData = (
   const assetInfos = useAssetInfos();
 
   const { data: instantiateInfo } = useQuery(
-    ["query", "instantiateInfo", contractAddress],
+    ["query", "instantiateInfo", endpoint, contractAddress],
     async () => queryInstantiateInfo(endpoint, contractAddress),
     { enabled: !!currentChainRecord }
   );

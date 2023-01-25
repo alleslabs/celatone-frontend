@@ -1,6 +1,6 @@
 import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
-type MigrateStep = 1.1 | 1.2 | 2;
+type MigrateStep = "migrate_options" | "upload_new_code" | "migrate_contract";
 
 export interface MigratePageState {
   migrateStep: MigrateStep;

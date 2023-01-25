@@ -21,7 +21,7 @@ export const MigrateOptions = ({
       <ButtonCard
         disabled={!isAdmin}
         title="Upload new WASM File"
-        description="Deploy contract by upload new Wasm file"
+        description="Deploy contract by uploading new Wasm file"
         onClick={uploadHandler}
         mb="16px"
       />

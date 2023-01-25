@@ -21,7 +21,7 @@ import { UploadNewCode } from "./components/UploadNewCode";
 import type { MigratePageState } from "./types";
 
 const defaultValues: MigratePageState = {
-  migrateStep: 1.1,
+  migrateStep: "migrate_options",
   contractAddress: "" as ContractAddr,
   admin: undefined,
   codeId: undefined,
@@ -38,8 +38,13 @@ const Migrate = () => {
   });
   const { migrateStep, contractAddress, admin, codeId } = watch();
 
-  const firstStep = migrateStep !== 2;
-  const handleBack = () => setValue("migrateStep", 1.1);
+  const firstStep = migrateStep !== "migrate_contract";
+  const handleBack = () => setValue("migrateStep", "migrate_options");
+
+  const contractAddressParam = getFirstQueryParam(
+    router.query.contract
+  ) as ContractAddr;
+  const codeIdParam = Number(getFirstQueryParam(router.query["code-id"]));
 
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
@@ -56,7 +61,7 @@ const Migrate = () => {
   );
 
   useQuery(
-    ["query", "instantiateInfo", contractAddress],
+    ["query", "instantiateInfo", endpoint, contractAddress],
     async () => queryInstantiateInfo(endpoint, contractAddress),
     {
       enabled: !!contractAddress,
@@ -77,19 +82,15 @@ const Migrate = () => {
   );
 
   useEffect(() => {
-    const contractAddressParam = getFirstQueryParam(
-      router.query.contract
-    ) as ContractAddr;
-    const codeIdParam = Number(getFirstQueryParam(router.query["code-id"]));
-
     setValue("contractAddress", contractAddressParam);
     setValue("codeId", codeIdParam);
-    if (contractAddressParam && codeIdParam) setValue("migrateStep", 2);
-  }, [setValue]);
+    if (contractAddressParam && codeIdParam)
+      setValue("migrateStep", "migrate_contract");
+  }, [codeIdParam, contractAddressParam, setValue]);
 
   const renderBody = () => {
     switch (migrateStep) {
-      case 2:
+      case "migrate_contract":
         return (
           <MigrateContract
             isAdmin={admin === address}
@@ -98,18 +99,18 @@ const Migrate = () => {
             handleBack={handleBack}
           />
         );
-      case 1.2:
+      case "upload_new_code":
         return <UploadNewCode handleBack={handleBack} />;
-      case 1.1:
+      case "migrate_options":
       default:
         return (
           <MigrateOptions
             isAdmin={admin === address}
             uploadHandler={() => {
-              setValue("migrateStep", 1.2);
+              setValue("migrateStep", "upload_new_code");
             }}
             existHandler={() => {
-              setValue("migrateStep", 2);
+              setValue("migrateStep", "migrate_contract");
             }}
           />
         );
