@@ -11,6 +11,7 @@ export interface MigrateStreamParams {
   migrateMsg: object;
   estimatedFee: Option<StdFee>;
   onTxSucceed?: (txHash: string) => void;
+  onTxFailed?: () => void;
 }
 
 export const useMigrateTx = () => {
@@ -23,6 +24,7 @@ export const useMigrateTx = () => {
       migrateMsg,
       estimatedFee,
       onTxSucceed,
+      onTxFailed,
     }: MigrateStreamParams) => {
       const client = await getCosmWasmClient();
       if (!address || !client)
@@ -37,6 +39,7 @@ export const useMigrateTx = () => {
         fee: estimatedFee,
         client,
         onTxSucceed,
+        onTxFailed,
       });
     },
     [address, getCosmWasmClient]

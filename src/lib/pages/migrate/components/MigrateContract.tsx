@@ -112,6 +112,8 @@ export const MigrateContract = ({
       codeId: Number(codeId),
       migrateMsg: JSON.parse(migrateMsg),
       estimatedFee,
+      onTxSucceed: () => setProcessing(false),
+      onTxFailed: () => setProcessing(false),
     });
 
     if (stream) {

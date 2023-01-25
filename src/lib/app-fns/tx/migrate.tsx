@@ -25,6 +25,7 @@ interface MigrateTxParams {
   fee: StdFee;
   client: SigningCosmWasmClient;
   onTxSucceed?: (txHash: string) => void;
+  onTxFailed?: () => void;
 }
 
 export const migrateContractTx = ({
@@ -35,6 +36,7 @@ export const migrateContractTx = ({
   fee,
   client,
   onTxSucceed,
+  onTxFailed,
 }: MigrateTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -79,5 +81,5 @@ export const migrateContractTx = ({
         actionVariant: "migrate",
       } as TxResultRendering;
     }
-  )().pipe(catchTxError());
+  )().pipe(catchTxError(onTxFailed));
 };
