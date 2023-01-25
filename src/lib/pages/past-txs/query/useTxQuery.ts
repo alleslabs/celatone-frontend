@@ -104,6 +104,7 @@ export const useTxQuery = (
                 }
               ),
               isIbc: contractTx.transaction.isIbc,
+              isInstantiate: contractTx.transaction.isInstantiate,
             })
           );
         });
@@ -149,6 +150,7 @@ export const useTxQuery = (
               isIbc: transaction.isIbc,
             }),
             isIbc: transaction.isIbc,
+            isInstantiate: transaction.isInstantiate,
           };
         });
       });

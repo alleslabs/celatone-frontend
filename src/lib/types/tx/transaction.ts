@@ -30,6 +30,7 @@ export interface PastTransaction {
   actionMsgType: ActionMsgType;
   furtherAction: MsgFurtherAction;
   isIbc: boolean;
+  isInstantiate: boolean;
 }
 
 export interface Message {

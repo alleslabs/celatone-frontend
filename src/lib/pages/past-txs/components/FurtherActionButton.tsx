@@ -1,7 +1,9 @@
 import { RedoButton } from "lib/components/button/RedoButton";
 import { ResendButton } from "lib/components/button/ResendButton";
+import { RedoModal } from "lib/components/modal/RedoModal";
 import type { PastTransaction } from "lib/types";
 import { MsgFurtherAction } from "lib/types";
+import { extractMsgType } from "lib/utils";
 
 interface FurtherActionButtonProps {
   transaction: PastTransaction;
@@ -12,13 +14,28 @@ interface FurtherActionButtonProps {
  *
  * @remarks
  * Redo occurs for transaction that has only 1 message
+ * Resend should not occurs for instantiate2
+ * Redo modal if the message is instantiate2
  *
  */
 export const FurtherActionButton = ({
   transaction,
 }: FurtherActionButtonProps) => {
-  if (transaction.furtherAction === MsgFurtherAction.RESEND) {
+  const isInstantiate2 =
+    transaction.isInstantiate &&
+    transaction.messages.some(
+      (msg) => extractMsgType(msg.type) === "MsgInstantiateContract2"
+    );
+
+  if (
+    transaction.furtherAction === MsgFurtherAction.RESEND &&
+    !isInstantiate2
+  ) {
     return <ResendButton messages={transaction.messages} />;
+  }
+
+  if (transaction.furtherAction === MsgFurtherAction.REDO && isInstantiate2) {
+    return <RedoModal message={transaction.messages[0]} />;
   }
 
   if (transaction.furtherAction === MsgFurtherAction.REDO) {
