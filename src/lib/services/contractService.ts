@@ -419,7 +419,7 @@ export const useRelatedProposalsCountByContractAddress = (
 
 export const usePublicProjectByContractAddress = (
   contractAddress: Option<string>
-) => {
+): UseQueryResult<PublicInfo> => {
   const { currentChainRecord } = useWallet();
   const queryFn = useCallback(async (): Promise<Option<PublicInfo>> => {
     if (!contractAddress) throw new Error("Contract address not found");
