@@ -50,7 +50,7 @@ export const SingleMsg = ({
       {tags &&
         tags.map((tag: string, index: number) => (
           <Tag key={index.toString() + tag} borderRadius="full">
-            {snakeCase(tag)}
+            {snakeCase(tag) || tag}
           </Tag>
         ))}
       {/* Tag left over */}
