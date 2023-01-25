@@ -219,10 +219,7 @@ export const ContractListTable = ({
                                   color="gray.600"
                                 />
                               }
-                              isDisabled={
-                                !address ||
-                                address !== admins[item.contractAddress]
-                              }
+                              isDisabled={!isAdmin}
                             >
                               Clear Admin
                             </StyledMenuItem>

@@ -11,7 +11,7 @@ import { MdBookmark, MdBookmarkBorder, MdInput } from "react-icons/md";
 import { RiPencilFill } from "react-icons/ri";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { AdminButton } from "lib/components/button/AdminButton";
+import { AdminButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,

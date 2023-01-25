@@ -20,7 +20,6 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
       const client = await getCosmWasmClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
-      if (!contractAddress) return null;
 
       return clearAdminTx({
         address,
