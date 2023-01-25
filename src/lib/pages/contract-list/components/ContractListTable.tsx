@@ -68,7 +68,7 @@ export const ContractListTable = ({
             <Th width="15%">Contract Address</Th>
             <Th width="25%">Contract Name</Th>
             <Th width="25%">Tags</Th>
-            <Th width="25%">Instantiator</Th>
+            <Th width="25%">Instantiated by</Th>
             <Th width="10%" />
           </Tr>
         </Thead>
@@ -107,7 +107,7 @@ export const ContractListTable = ({
               <Td>
                 <TagsCell contractLocalInfo={item} />
               </Td>
-              {/* Instantiator */}
+              {/* Instantiated by */}
               <Td>
                 <ExplorerLink
                   value={item.instantiator}

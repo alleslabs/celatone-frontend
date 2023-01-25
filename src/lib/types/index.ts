@@ -6,3 +6,4 @@ export * from "./LVPair";
 export * from "./rpc";
 export * from "./wallet";
 export * from "./contract";
+export * from "./projects";
