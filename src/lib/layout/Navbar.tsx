@@ -2,6 +2,7 @@ import { Flex, Box, Text, Icon } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 import {
   MdHome,
   MdCode,
@@ -117,17 +118,23 @@ const Navbar = observer(() => {
     //   ],
     // },
   ];
+
   const router = useRouter();
-  const isCurrentPage = (slug: string) => {
-    const { network } = router.query;
-    const pathName = router.asPath;
-    if (network) {
-      return slug === "/"
-        ? pathName === `/${network}`
-        : pathName === `/${network}${slug}`;
-    }
-    return pathName === `${slug}`;
-  };
+  const { network } = router.query;
+  const pathName = router.asPath;
+
+  const isCurrentPage = useCallback(
+    (slug: string) => {
+      if (network) {
+        return slug === "/"
+          ? pathName === `/${network}`
+          : pathName === `/${network}${slug}`;
+      }
+      return pathName === `${slug}`;
+    },
+    [network, pathName]
+  );
+
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">
       <Box px={4} py={2} overflowY="scroll">
@@ -185,25 +192,6 @@ const Navbar = observer(() => {
           </Box>
         ))}
       </Box>
-      {/* Hide deploy new contract button for now */}
-      {/* <Flex
-        position="fixed"
-        bottom="0"
-        py={3}
-        bg="gray.900"
-        width="full"
-        maxWidth="224px"
-        justifyContent="center"
-        borderTop="4px solid"
-        borderTopColor="background.main"
-      >
-        <AppLink href="/deploy">
-          <Button>
-            <Icon as={MdOutlineAdd} boxSize="4" />
-            Deploy new contract
-          </Button>
-        </AppLink>
-      </Flex> */}
     </Flex>
   );
 });
