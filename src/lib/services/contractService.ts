@@ -152,7 +152,7 @@ export const useAdminByContractAddresses = (
 ): UseQueryResult<Option<Record<ContractAddr, string>>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!contractAddresses) return undefined;
+    if (!contractAddresses) throw new Error("No contract selected");
 
     return indexerGraphClient
       .request(getAdminByContractAddressesQueryDocument, {
@@ -162,7 +162,7 @@ export const useAdminByContractAddresses = (
         contracts.reduce(
           (prev, contract) => ({
             ...prev,
-            [contract.address as ContractAddr]: contract.account?.address,
+            [contract.address as ContractAddr]: contract.admin?.address,
           }),
           {}
         )

@@ -11,7 +11,7 @@ import type { Observable } from "rxjs";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxStreamPhase } from "lib/types";
 import type { TxResultRendering, ContractAddr } from "lib/types";
-import { formatUFee } from "lib/utils/formatter/denom";
+import { formatUFee } from "lib/utils";
 
 import { catchTxError } from "./common/catchTxError";
 import { postTx } from "./common/post";

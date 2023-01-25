@@ -136,7 +136,7 @@ export const getAdminByContractAddressesQueryDocument = graphql(`
   ) {
     contracts(where: { address: { _in: $contractAddresses } }) {
       address
-      account {
+      admin: account {
         address
       }
     }

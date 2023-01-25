@@ -6375,7 +6375,7 @@ export type GetAdminByContractAddressesQueryDocumentQuery = {
   contracts: Array<{
     __typename?: "contracts";
     address: string;
-    account?: { __typename?: "accounts"; address: string } | null;
+    admin?: { __typename?: "accounts"; address: string } | null;
   }>;
 };
 
@@ -7562,6 +7562,7 @@ export const GetAdminByContractAddressesQueryDocumentDocument = {
                 { kind: "Field", name: { kind: "Name", value: "address" } },
                 {
                   kind: "Field",
+                  alias: { kind: "Name", value: "admin" },
                   name: { kind: "Name", value: "account" },
                   selectionSet: {
                     kind: "SelectionSet",
