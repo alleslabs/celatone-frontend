@@ -1,6 +1,8 @@
 import type { BigSource } from "big.js";
 import big from "big.js";
 
+import type { Token } from "lib/types";
+
 export const formatDemimal =
   ({
     decimalPoints,
@@ -32,8 +34,8 @@ export const formatDemimal =
 
 const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 
-export const formatTokenPrecision = (
-  amount: BigSource,
+export const formatTokenWithPrecision = (
+  amount: Token<BigSource>,
   precision: number
 ): string => {
   return d6Formatter(big(amount).div(big(10).pow(precision)), "0");

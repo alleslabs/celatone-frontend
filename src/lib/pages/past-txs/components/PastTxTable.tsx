@@ -31,16 +31,13 @@ import type {
   DetailInstantiate,
   DetailSend,
   DetailUpload,
-  Token,
   Transaction,
-  U,
 } from "lib/types";
 import {
   camelToSnake,
   encode,
-  formatToken,
   extractMsgType,
-  getTokenLabel,
+  formatBalanceWithDenomList,
 } from "lib/utils";
 
 import { MsgDetail } from "./MsgDetail";
@@ -301,17 +298,10 @@ const PastTxTable = ({ element }: PastTxTableProps) => {
         setButton("");
         return <SingleMsg type="Failed" text1="to send assets" />;
       }
-      const coins = sendMsgs[0].amount.map(
-        (amount) =>
-          `${formatToken(
-            amount.amount as U<Token>,
-            amount.denom
-          )} ${getTokenLabel(amount.denom)}`
-      );
       return (
         <SingleMsg
           type="Send"
-          bolds={coins}
+          bolds={formatBalanceWithDenomList(sendMsgs[0].amount)}
           text2="to"
           link1={{
             type: "contract_address",
