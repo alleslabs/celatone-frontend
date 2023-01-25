@@ -1,8 +1,9 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
+import { useCelatoneApp } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useCodeStore, useContractStore, useEndpoint } from "lib/hooks";
+import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
 import type { InstantiateInfo, PublicInfo } from "lib/services/contract";
 import {
@@ -87,15 +88,17 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 export const useContractData = (
   contractAddress: ContractAddr
 ): ContractData | undefined => {
+  const { indexerGraphClient } = useCelatoneApp();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
   const assetInfos = useAssetInfos();
 
   const { data: instantiateInfo } = useQuery(
     ["query", "instantiateInfo", contractAddress],
-    async () => queryInstantiateInfo(endpoint, contractAddress),
+    async () =>
+      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
     { enabled: !!currentChainRecord }
   );
   const { data: contractBalances } = useQuery(

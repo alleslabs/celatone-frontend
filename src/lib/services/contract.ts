@@ -1,7 +1,7 @@
 import axios from "axios";
+import type { GraphQLClient } from "graphql-request";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
-import { indexerGraphClient } from "lib/data/graphql";
 import { getBlockTimestampByHeightQueryDocument } from "lib/data/queries";
 import type { Balance, ContractAddr, HumanAddr, Option } from "lib/types";
 import { encode, parseDateDefault } from "lib/utils";
@@ -72,6 +72,7 @@ export const queryContract = async (
 
 export const queryInstantiateInfo = async (
   endpoint: string,
+  indexerGraphClient: GraphQLClient,
   contractAddress: ContractAddr
 ): Promise<InstantiateInfo> => {
   const res = await queryContract(endpoint, contractAddress);

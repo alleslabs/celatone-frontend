@@ -21,7 +21,7 @@ import { MdCode } from "react-icons/md";
 
 import { CopyButton } from "../CopyButton";
 import { CustomTab } from "lib/components/CustomTab";
-import { useEndpoint } from "lib/hooks";
+import { useLCDEndpoint } from "lib/hooks";
 import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 import "ace-builds/src-noconflict/ace";
@@ -60,7 +60,7 @@ const CodeSnippet = ({
   const { currentChainRecord, currentChainName } = useWallet();
   const isDisabled = !contractAddress || !message.length;
 
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
   const client = currentChainRecord?.chain.daemon_name;
   const rpcUrl = currentChainRecord?.preferredEndpoints?.rpc?.[0];
   const chainId = currentChainRecord?.chain.chain_id;
@@ -120,9 +120,10 @@ queryContract(rpcURL, contractAddress, queryMsg);`,
 const lcdURL = '${endpoint}';
 const contractAddress =
 "${contractAddress}";
-const queryMsg = \`${message}\`;\n
+const queryMsg = ${message};\n
 const queryContract = async () => {
   const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
+  const res = await axios.get(\`$\{lcdURL}/cosmwasm/wasm/v1/contract/$\{contractAddress}/smart/$\{queryB64Encoded}\`);
   console.log(res.data);
 };\n
 queryContract();`,
