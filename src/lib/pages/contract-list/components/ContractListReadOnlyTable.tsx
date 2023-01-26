@@ -33,7 +33,6 @@ export const ContractListReadOnlyTable = ({
       {contracts.map((item) => (
         <Grid
           templateColumns={TEMPLATE_COLUMNS}
-          transition="all .25s ease-in-out"
           _hover={{ bg: "gray.900" }}
           key={item.contractAddress}
           onClick={() => {

@@ -19,7 +19,11 @@ import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import { SaveOrRemoveCode } from "lib/components/modal/code/SaveOrRemoveCode";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
-import { TableContainer, TableHeader, TableRow } from "lib/components/table";
+import {
+  TableContainer,
+  TableHeaderNoBorder,
+  TableRowNoBorder,
+} from "lib/components/table";
 import type { CodeInfo } from "lib/types";
 
 import { CodeDescriptionCell } from "./CodeDescriptionCell";
@@ -103,12 +107,14 @@ const CodeTableHead = () => {
       templateColumns={TEMPLATE_COLUMNS}
       px="48px"
       sx={{ "& div": { color: "text.dark" } }}
+      borderBottom="1px solid"
+      borderColor="divider.main"
     >
-      <TableHeader>Code ID</TableHeader>
-      <TableHeader>Code Description</TableHeader>
-      <TableHeader textAlign="center">Contracts</TableHeader>
-      <TableHeader>Uploader</TableHeader>
-      <TableHeader>Permission</TableHeader>
+      <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Code Description</TableHeaderNoBorder>
+      <TableHeaderNoBorder textAlign="center">Contracts</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Uploader</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Permission</TableHeaderNoBorder>
     </Grid>
   );
 };
@@ -125,19 +131,22 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
       px="48px"
       _hover={{ bg: "gray.900" }}
       cursor="pointer"
+      minW="min-content"
       onClick={goToCodeDetails}
+      borderBottom="1px solid"
+      borderColor="divider.main"
     >
-      <TableRow>
+      <TableRowNoBorder>
         <ExplorerLink
           type="code_id"
           value={code.id.toString()}
           canCopyWithHover
         />
-      </TableRow>
-      <TableRow>
+      </TableRowNoBorder>
+      <TableRowNoBorder>
         <CodeDescriptionCell code={code} />
-      </TableRow>
-      <TableRow>
+      </TableRowNoBorder>
+      <TableRowNoBorder>
         <Text
           variant="body2"
           onClick={(e) => e.stopPropagation()}
@@ -148,15 +157,15 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
         >
           {code.contracts}
         </Text>
-      </TableRow>
-      <TableRow>
+      </TableRowNoBorder>
+      <TableRowNoBorder>
         <ExplorerLink
           value={code.uploader}
           type="user_address"
           canCopyWithHover
         />
-      </TableRow>
-      <TableRow>
+      </TableRowNoBorder>
+      <TableRowNoBorder>
         <Flex justify="space-between" align="center" w="full">
           <PermissionChip
             instantiatePermission={code.instantiatePermission}
@@ -175,7 +184,7 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
             )}
           </HStack>
         </Flex>
-      </TableRow>
+      </TableRowNoBorder>
     </Grid>
   );
 };

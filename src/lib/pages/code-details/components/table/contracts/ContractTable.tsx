@@ -90,7 +90,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
         <NoContracts />
       ) : (
         <TableContainer>
-          <Grid templateColumns={templateColumnsStyle}>
+          <Grid templateColumns={templateColumnsStyle} minW="min-content">
             <TableHeader borderTopStyle="none">Contract Address</TableHeader>
             <TableHeader>Contract Name</TableHeader>
             <TableHeader>Tags</TableHeader>

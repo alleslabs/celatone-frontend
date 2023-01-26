@@ -25,7 +25,11 @@ import {
   EditContractDetails,
   RemoveContract,
 } from "lib/components/modal/contract";
-import { TableContainer, TableHeader, TableRow } from "lib/components/table";
+import {
+  TableContainer,
+  TableHeaderNoBorder,
+  TableRowNoBorder,
+} from "lib/components/table";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
@@ -53,15 +57,19 @@ export const ContractListTable = ({
   const navigate = useInternalNavigate();
   return (
     <TableContainer>
-      <Grid templateColumns={TEMPLATE_COLUMNS} px="48px">
-        <TableHeader>Contract Address</TableHeader>
-        <TableHeader>Contract Name</TableHeader>
-        <TableHeader>Tags</TableHeader>
-        <TableHeader>Instantiator</TableHeader>
+      <Grid
+        templateColumns={TEMPLATE_COLUMNS}
+        px="48px"
+        borderBottom="1px solid"
+        borderColor="divider.main"
+      >
+        <TableHeaderNoBorder>Contract Address</TableHeaderNoBorder>
+        <TableHeaderNoBorder>Contract Name</TableHeaderNoBorder>
+        <TableHeaderNoBorder>Tags</TableHeaderNoBorder>
+        <TableHeaderNoBorder>Instantiator</TableHeaderNoBorder>
       </Grid>
       {contracts.map((item) => (
         <Grid
-          transition="all .25s ease-in-out"
           _hover={{ bg: "gray.900" }}
           cursor="pointer"
           onClick={() =>
@@ -75,22 +83,25 @@ export const ContractListTable = ({
             item.lists
           }
           px="48px"
+          minW="min-content"
           templateColumns={TEMPLATE_COLUMNS}
+          borderBottom="1px solid"
+          borderColor="divider.main"
         >
-          <TableRow>
+          <TableRowNoBorder>
             <ExplorerLink
               value={item.contractAddress}
               type="contract_address"
               canCopyWithHover
             />
-          </TableRow>
-          <TableRow>
+          </TableRowNoBorder>
+          <TableRowNoBorder>
             <ContractNameCell contractLocalInfo={item} />
-          </TableRow>
-          <TableRow>
+          </TableRowNoBorder>
+          <TableRowNoBorder>
             <TagsCell contractLocalInfo={item} />
-          </TableRow>
-          <TableRow>
+          </TableRowNoBorder>
+          <TableRowNoBorder>
             <Flex justify="space-between" w="full">
               <ExplorerLink
                 value={item.instantiator}
@@ -166,7 +177,7 @@ export const ContractListTable = ({
                 </Menu>
               </Flex>
             </Flex>
-          </TableRow>
+          </TableRowNoBorder>
         </Grid>
       ))}
     </TableContainer>

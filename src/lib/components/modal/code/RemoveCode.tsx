@@ -1,10 +1,19 @@
-import { useToast, Icon, Text } from "@chakra-ui/react";
+import { useToast, Icon, Text, chakra, IconButton } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { MdCheckCircle, MdDelete } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useCodeStore } from "lib/hooks";
 import { getDescriptionDefault, shortenName } from "lib/utils";
+
+const StyledIconButton = chakra(IconButton, {
+  baseStyle: {
+    display: "flex",
+    alignItems: "center",
+    fontSize: "22px",
+    borderRadius: "36px",
+  },
+});
 
 interface RemoveCodeModalProps {
   codeId: number;
@@ -16,12 +25,10 @@ export function RemoveCode({
   codeId,
   description,
   trigger = (
-    <Icon
-      as={MdDelete}
-      width="24px"
-      height="24px"
+    <StyledIconButton
+      icon={<MdDelete />}
+      variant="ghost-gray"
       color="gray.600"
-      cursor="pointer"
     />
   ),
 }: RemoveCodeModalProps) {
