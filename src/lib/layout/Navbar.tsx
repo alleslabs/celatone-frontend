@@ -1,6 +1,8 @@
-import { Flex, Box, Text, Icon, Button, Spacer, Image } from "@chakra-ui/react";
+import { Flex, Box, Text, Icon, Image } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useCallback } from "react";
 import type { IconType } from "react-icons";
 import {
   MdHome,
@@ -64,6 +66,11 @@ const Navbar = observer(() => {
     {
       category: "Quick Actions",
       submenu: [
+        {
+          name: "Deploy contract",
+          slug: "/deploy",
+          icon: MdOutlineAdd,
+        },
         {
           name: "Query",
           slug: "/query",
@@ -134,9 +141,25 @@ const Navbar = observer(() => {
     },
   ];
 
+  const router = useRouter();
+  const { network } = router.query;
+  const pathName = router.asPath;
+
+  const isCurrentPage = useCallback(
+    (slug: string) => {
+      if (network) {
+        return slug === "/"
+          ? pathName === `/${network}`
+          : pathName === `/${network}${slug}`;
+      }
+      return pathName === `${slug}`;
+    },
+    [network, pathName]
+  );
+
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">
-      <Box p={4} overflowY="scroll" pb={12}>
+      <Box px={4} py={2} overflowY="scroll">
         {navMenu.map((item) => (
           <Box
             pb="4"
@@ -147,6 +170,8 @@ const Navbar = observer(() => {
             sx={{
               "&:last-of-type": {
                 borderBottom: "none",
+                paddingBottom: "0px",
+                marginBottom: "0px",
               },
             }}
           >
@@ -168,12 +193,16 @@ const Navbar = observer(() => {
             {item.submenu.map((submenu) => (
               <AppLink href={submenu.slug} key={submenu.slug}>
                 <Flex
-                  gap="3"
+                  gap="2"
                   p={2}
                   cursor="pointer"
                   _hover={{ bg: "gray.800", borderRadius: "4px" }}
                   transition="all .25s ease-in-out"
                   alignItems="center"
+                  bgColor={
+                    isCurrentPage(submenu.slug) ? "gray.800" : "transparent"
+                  }
+                  borderRadius={isCurrentPage(submenu.slug) ? "4px" : "0px"}
                 >
                   {submenu.icon && (
                     <Icon as={submenu.icon} color="gray.600" boxSize="4" />
@@ -195,25 +224,6 @@ const Navbar = observer(() => {
           </Box>
         ))}
       </Box>
-      <Spacer />
-      <Flex
-        position="fixed"
-        bottom="0"
-        py={3}
-        bg="gray.900"
-        width="full"
-        maxWidth="224px"
-        justifyContent="center"
-        borderTop="4px solid"
-        borderTopColor="background.main"
-      >
-        <AppLink href="/deploy">
-          <Button>
-            <Icon as={MdOutlineAdd} boxSize="4" />
-            Deploy new contract
-          </Button>
-        </AppLink>
-      </Flex>
     </Flex>
   );
 });
