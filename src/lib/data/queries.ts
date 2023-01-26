@@ -130,6 +130,19 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
   }
 `);
 
+export const getAdminByContractAddressesQueryDocument = graphql(`
+  query getAdminByContractAddressesQueryDocument(
+    $contractAddresses: [String!]!
+  ) {
+    contracts(where: { address: { _in: $contractAddresses } }) {
+      address
+      admin: account {
+        address
+      }
+    }
+  }
+`);
+
 export const getExecuteTxsByContractAddress = graphql(`
   query getExecuteTxsByContractAddress(
     $contractAddress: String!
@@ -278,6 +291,9 @@ export const getContractListByCodeId = graphql(`
     ) {
       address
       label
+      admin: account {
+        address
+      }
       init_by: contract_histories(
         order_by: { block: { timestamp: asc } }
         limit: 1
