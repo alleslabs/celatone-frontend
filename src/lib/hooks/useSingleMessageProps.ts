@@ -1,4 +1,5 @@
 import { useWallet } from "@cosmos-kit/react";
+import router from "next/router";
 
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
@@ -15,12 +16,14 @@ import type {
   DetailMigrate,
   DetailClearAdmin,
 } from "lib/types";
+import { getFirstQueryParam } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";
 
 /**
- * Returns messages variations for MsgInstantiateContract.
+ * Returns messages variations for MsgInstantiateContract and MsgInstantiateContract2.
  *
  * @remarks
+ * Will render Instantiate2 instead of Instantiate if MsgInstantiateContract2
  * More than 1 msg: Instantiate [length] contracts
  * Only 1 msg: Instantiate contract [name || contract address] from Code ID [code ID]
  * Fail with more than 1 msg: Failed to instantiate [length] contracts
@@ -39,7 +42,10 @@ const instantiateSingleMsgProps = (
   isInstantiate2: boolean
 ) => {
   const detail = messages[0].detail as DetailInstantiate;
-  const contractLocalInfo = getContractLocalInfo(detail.contractAddress);
+  const contractAddress =
+    detail.contractAddress || getFirstQueryParam(router.query.contractAddress);
+
+  const contractLocalInfo = getContractLocalInfo(contractAddress);
   const type = isInstantiate2 ? "Instantiate2" : "Instantiate";
 
   if (messages.length > 1) {
@@ -63,8 +69,8 @@ const instantiateSingleMsgProps = (
         text1: "contract",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractLocalInfo?.name || detail.contractAddress,
-          copyValue: detail.contractAddress,
+          value: contractLocalInfo?.name || contractAddress,
+          copyValue: contractAddress,
         },
         text3: "from Code ID",
         link2: {
