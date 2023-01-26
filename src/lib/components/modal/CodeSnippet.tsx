@@ -165,7 +165,7 @@ const execute = async () => {
   const msg = executeContract({
     sender: sender.address,
     contract: contractAddress,
-    msg: toUtf8(JSON.stringify(JSON.parse(\`${message}\`))),
+    msg: toUtf8(\`${message}\`),
     funds: [],
   });\n
   const gasEstimated = await client.simulate(sender.address, [msg]);
