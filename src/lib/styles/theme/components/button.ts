@@ -71,6 +71,15 @@ export const Button: ComponentStyleConfig = {
       hoverBg: "primary.dark",
       activeBg: "primary.light",
     }),
+    error: generateStyle({
+      basic: { background: "error.main", color: "black" },
+      disabled: {
+        background: white12,
+        color: white50,
+      },
+      hoverBg: "error.dark",
+      activeBg: "error.light",
+    }),
     "outline-primary": generateStyle({
       basic: {
         border: "1px solid",

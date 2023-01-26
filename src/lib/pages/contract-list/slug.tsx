@@ -80,6 +80,7 @@ const ContractsByList = observer(() => {
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
             <Text
+              variant="body2"
               className="ellipsis"
               width="250px"
               fontWeight="600"

@@ -32,7 +32,7 @@ export const ContractListReadOnlyTable = ({
             <Th width="10%">Contract Address</Th>
             <Th width="50%">Contract Name</Th>
             <Th width="30%">Tags</Th>
-            <Th width="10%">Instantiator</Th>
+            <Th width="10%">Instantiated by</Th>
           </Tr>
         </Thead>
         <Tbody>
