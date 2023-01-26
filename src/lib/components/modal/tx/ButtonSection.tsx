@@ -86,6 +86,22 @@ export const ButtonSection = ({
           Proceed to Migrate
         </Button>
       );
+    case "migrate":
+      return (
+        <>
+          <Button
+            variant="outline-primary"
+            onClick={() =>
+              navigate({ pathname: `/contract/${router.query.contract}` })
+            }
+          >
+            Close
+          </Button>
+          <Button variant="primary" onClick={openExplorer}>
+            See Transaction
+          </Button>
+        </>
+      );
     case "rejected":
     case "resend":
       return (
