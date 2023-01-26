@@ -17,8 +17,9 @@ import {
   useFabricateFee,
   useNativeTokensInfo,
   useSimulateFee,
+  useInstantiateTx,
 } from "lib/app-provider";
-import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ControllerInput } from "lib/components/forms";
 import { AssetInput } from "lib/components/forms/AssetInput";
 import JsonInput from "lib/components/json/JsonInput";
@@ -204,6 +205,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         <Heading as="h4" variant="h4" my="48px">
           Instantiate new contract
         </Heading>
+        <ConnectWalletAlert
+          subtitle="You need to connect your wallet to perform this action"
+          mb={6}
+        />
         <RadioGroup
           onChange={(nextVal: "select-existing" | "fill-manually") =>
             setMethod(nextVal)
@@ -223,7 +228,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         <form style={{ width: "100%" }}>
           {method === "select-existing" ? (
             <CodeSelect
-              mt="16px"
+              mt="24px"
               mb="32px"
               onCodeSelect={(code: string) => setValue("codeId", code)}
               codeId={codeId}

@@ -120,9 +120,10 @@ queryContract(rpcURL, contractAddress, queryMsg);`,
 const lcdURL = '${endpoint}';
 const contractAddress =
 "${contractAddress}";
-const queryMsg = \`${message}\`;\n
+const queryMsg = ${message};\n
 const queryContract = async () => {
   const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
+  const res = await axios.get(\`$\{lcdURL}/cosmwasm/wasm/v1/contract/$\{contractAddress}/smart/$\{queryB64Encoded}\`);
   console.log(res.data);
 };\n
 queryContract();`,
