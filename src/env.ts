@@ -83,7 +83,7 @@ export const getChainApiPath = (chainName: string) => {
 export const getMainnetApiPath = (chainId: string) => {
   switch (chainId) {
     case "osmo-test-4":
-    case "osmosis":
+    case "osmosis-1":
       return "osmosis-1";
     default:
       return undefined;

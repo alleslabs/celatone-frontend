@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import { usePublicProjectBySlugQuery } from "lib/services/publicProject";
+import { usePublicProjectBySlug } from "lib/services/publicProjectService";
 import { getFirstQueryParam } from "lib/utils";
 
 // TODO:
@@ -12,7 +12,7 @@ import { getFirstQueryParam } from "lib/utils";
 export const usePublicData = () => {
   const router = useRouter();
   const projectSlug = getFirstQueryParam(router.query.slug);
-  const { data: projectInfo } = usePublicProjectBySlugQuery(projectSlug);
+  const { data: projectInfo } = usePublicProjectBySlug(projectSlug);
 
   return {
     publicCodes: projectInfo?.codes || [],

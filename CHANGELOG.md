@@ -108,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#124](https://github.com/alleslabs/celatone-frontend/pull/124) Fix public project query, display project image in contract details page
 - [#125](https://github.com/alleslabs/celatone-frontend/pull/125) Fix incorrect CosmJS execute snippet
 - [#117](https://github.com/alleslabs/celatone-frontend/pull/117) Fix native token label formatting
 - [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios

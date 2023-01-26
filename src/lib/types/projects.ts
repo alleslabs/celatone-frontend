@@ -56,3 +56,10 @@ export interface PublicProjectInfo {
   details: Detail;
   slug: string;
 }
+
+export interface PublicInfo {
+  slug: string;
+  name: string;
+  contractAddress: ContractAddr;
+  description: string;
+}
