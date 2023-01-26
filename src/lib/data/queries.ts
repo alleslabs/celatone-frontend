@@ -132,7 +132,7 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
 
 export const getAdminByContractAddressesQueryDocument = graphql(`
   query getAdminByContractAddressesQueryDocument(
-    $contractAddresses: [String!]
+    $contractAddresses: [String!]!
   ) {
     contracts(where: { address: { _in: $contractAddresses } }) {
       address
@@ -291,7 +291,7 @@ export const getContractListByCodeId = graphql(`
     ) {
       address
       label
-      account {
+      admin: account {
         address
       }
       init_by: contract_histories(

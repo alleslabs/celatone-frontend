@@ -6367,7 +6367,7 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
 };
 
 export type GetAdminByContractAddressesQueryDocumentQueryVariables = Exact<{
-  contractAddresses?: InputMaybe<Array<Scalars["String"]> | Scalars["String"]>;
+  contractAddresses: Array<Scalars["String"]> | Scalars["String"];
 }>;
 
 export type GetAdminByContractAddressesQueryDocumentQuery = {
@@ -6512,7 +6512,7 @@ export type GetContractListByCodeIdQuery = {
     __typename?: "contracts";
     address: string;
     label: string;
-    account?: { __typename?: "accounts"; address: string } | null;
+    admin?: { __typename?: "accounts"; address: string } | null;
     init_by: Array<{
       __typename?: "contract_histories";
       block: { __typename?: "blocks"; timestamp: any };
@@ -7508,12 +7508,15 @@ export const GetAdminByContractAddressesQueryDocumentDocument = {
             name: { kind: "Name", value: "contractAddresses" },
           },
           type: {
-            kind: "ListType",
+            kind: "NonNullType",
             type: {
-              kind: "NonNullType",
+              kind: "ListType",
               type: {
-                kind: "NamedType",
-                name: { kind: "Name", value: "String" },
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "String" },
+                },
               },
             },
           },
@@ -8691,6 +8694,7 @@ export const GetContractListByCodeIdDocument = {
                 { kind: "Field", name: { kind: "Name", value: "label" } },
                 {
                   kind: "Field",
+                  alias: { kind: "Name", value: "admin" },
                   name: { kind: "Name", value: "account" },
                   selectionSet: {
                     kind: "SelectionSet",

@@ -43,6 +43,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
   const { address } = useWallet();
   const navigate = useInternalNavigate();
 
+  const isAdmin = !!address && address === admin;
   return (
     <Menu>
       <Tooltip
@@ -51,12 +52,12 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         placement="top"
         bg="primary.dark"
         arrowSize={8}
-        isDisabled={!!address && address === admin}
+        isDisabled={isAdmin}
       >
         <MenuButton
           variant="outline-gray"
           as={Button}
-          isDisabled={!address || address !== admin}
+          isDisabled={!isAdmin}
           rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
         >
           Admin

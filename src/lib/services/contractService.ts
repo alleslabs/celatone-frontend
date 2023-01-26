@@ -30,6 +30,7 @@ import type {
   Option,
   ProposalStatus,
   ProposalType,
+  Dict,
 } from "lib/types";
 import {
   parseDate,
@@ -149,7 +150,7 @@ export const useInstantiateDetailByContractQuery = (
 
 export const useAdminByContractAddresses = (
   contractAddresses: Option<ContractAddr[]>
-): UseQueryResult<Option<Record<ContractAddr, string>>> => {
+): UseQueryResult<Option<Dict<ContractAddr, string>>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!contractAddresses) throw new Error("No contract selected");

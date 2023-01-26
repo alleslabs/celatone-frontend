@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { MdDeleteForever } from "react-icons/md";
 
 import { ActionModal } from "../ActionModal";
-import { useClearAdminTx } from "lib/app-provider/tx/clearAdmin";
+import { useClearAdminTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { ContractAddr } from "lib/types";
 
