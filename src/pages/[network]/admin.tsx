@@ -1,3 +1,3 @@
-import UpdateAdmin from "lib/pages/update-admin";
+import UpdateAdmin from "lib/pages/admin";
 
 export default UpdateAdmin;
