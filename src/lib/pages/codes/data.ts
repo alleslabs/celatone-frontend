@@ -1,12 +1,13 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
+import { usePermissionFilter, useSearchFilter } from "lib/app-fns/filter";
 import { useUserKey, useCodeStore } from "lib/hooks";
 import {
   useCodeListByIDsQuery,
   useCodeListByUserQuery,
 } from "lib/services/codeService";
-import type { CodeInfo, HumanAddr } from "lib/types";
+import type { CodeInfo } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 
 interface CodeListData {
@@ -62,41 +63,14 @@ export const useCodeListData = (
 
   const storedCodesCount = storedCodes.length;
 
+  const permissionFilter = usePermissionFilter(permissionValue);
+  const searchFilter = useSearchFilter(keyword);
   const [filteredSavedCodes, filteredStoredCodes] = useMemo(() => {
-    const permissionFilter = (code: CodeInfo) => {
-      const isEveryBody =
-        code.instantiatePermission === InstantiatePermission.EVERYBODY;
-      const isNobody =
-        code.instantiatePermission === InstantiatePermission.NOBODY;
-      const isInclude = code.permissionAddresses.includes(address as HumanAddr);
-
-      switch (permissionValue) {
-        case "with-proposal":
-          return (!isEveryBody && !isInclude) || isNobody;
-        case "without-proposal":
-          return isInclude || isEveryBody;
-        case "all":
-        default:
-          return true;
-      }
-    };
-    const searchFilter = (code: CodeInfo) => {
-      if (keyword === undefined) return true;
-
-      const computedKeyword = keyword.trim();
-      if (computedKeyword.length === 0) return true;
-
-      return (
-        code.id.toString().startsWith(computedKeyword) ||
-        code.description?.toLowerCase().includes(computedKeyword.toLowerCase())
-      );
-    };
-
     return [
       savedCodes.filter(permissionFilter).filter(searchFilter),
       storedCodes.filter(permissionFilter).filter(searchFilter),
     ];
-  }, [savedCodes, storedCodes, address, permissionValue, keyword]);
+  }, [savedCodes, permissionFilter, searchFilter, storedCodes]);
 
   return {
     savedCodes: filteredSavedCodes,
