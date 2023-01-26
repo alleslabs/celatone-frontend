@@ -19,8 +19,10 @@ import {
   useTxsCountByContractAddress,
   useRelatedProposalsCountByContractAddress,
 } from "lib/services/contractService";
-import { usePublicProjectBySlugQuery } from "lib/services/publicProject";
-import { usePublicProjectByContractAddress } from "lib/services/publicProjectService";
+import {
+  usePublicProjectByContractAddress,
+  usePublicProjectBySlug,
+} from "lib/services/publicProjectService";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type {
@@ -102,9 +104,7 @@ export const useContractData = (
   const assetInfos = useAssetInfos();
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
-  const { data: publicInfoBySlug } = usePublicProjectBySlugQuery(
-    publicInfo?.slug
-  );
+  const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
 
   const { data: instantiateInfo } = useQuery(
     ["query", "instantiateInfo", contractAddress],

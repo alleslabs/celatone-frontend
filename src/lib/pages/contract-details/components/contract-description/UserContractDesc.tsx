@@ -16,12 +16,13 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
   const description = useMemo(
-    () => contractData.contractLocalInfo?.description,
+    () =>
+      contractData.contractLocalInfo?.description || "No contract description",
     [contractData.contractLocalInfo?.description]
   );
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description || "No contract description",
+    text: description,
     ellipsis: "...",
     lines: textLine(
       !contractData.publicProject.publicInfo?.description,

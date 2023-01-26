@@ -8,7 +8,7 @@ import { MdOutlineManageSearch, MdSearchOff } from "react-icons/md";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { usePublicProjectStore } from "lib/hooks";
-import { usePublicProjectsQuery } from "lib/services/publicProject";
+import { usePublicProjects } from "lib/services/publicProjectService";
 import type { PublicProjectInfo } from "lib/types";
 
 import { PublicProjectCard } from "./PublicProjectCard";
@@ -17,7 +17,7 @@ const sortByAtoZ = (projects: PublicProjectInfo[]) =>
   projects.sort((a, b) => a.details.name.localeCompare(b.details.name));
 
 export const AllProject = observer(() => {
-  const { data: publicProjectInfo } = usePublicProjectsQuery();
+  const { data: publicProjectInfo } = usePublicProjects();
   const [searchKeyword, setSearchKeyword] = useState("");
   const { getSavedPublicProjects } = usePublicProjectStore();
   const savedProjects = getSavedPublicProjects();

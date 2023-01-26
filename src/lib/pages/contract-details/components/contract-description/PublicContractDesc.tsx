@@ -17,12 +17,14 @@ export const PublicContractDesc = ({
   const [showMore, setShowMore] = useState(false);
 
   const description = useMemo(
-    () => contractData.publicProject.publicInfo?.description,
+    () =>
+      contractData.publicProject.publicInfo?.description ||
+      "No public contract description",
     [contractData.publicProject.publicInfo?.description]
   );
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description || "No public contract description",
+    text: description,
     ellipsis: "...",
     lines: textLine(!contractData.contractLocalInfo?.description, showMore),
   });
