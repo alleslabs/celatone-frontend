@@ -144,11 +144,12 @@ ${client} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --node $RPC_URL`,
       },
       {
-        name: "CosmJs",
+        name: "JS",
         mode: "javascript",
-        snippet: `const { getOfflineSignerAmino, cosmwasm } = require('osmojs');
+        snippet: `const { cosmwasm } = require('osmojs');
 const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 const { Dec, IntPretty } = require('@keplr-wallet/unit');
+const { getOfflineSignerAmino } = require('@cosmjs-utils');
 const { coins } = require('@cosmjs/amino');
 const { toUtf8 } = require('@cosmjs/encoding');
 const { chains } = require('chain-registry');
@@ -176,7 +177,7 @@ const execute = async () => {
       .toString(),
   };\n
   const tx = await client.signAndBroadcast(sender.address, [msg], fee);   
-  console.log(tx);
+  console.log(tx.transactionHash);
 };\n
 execute();`,
       },
