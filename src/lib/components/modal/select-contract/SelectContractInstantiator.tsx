@@ -112,6 +112,7 @@ export const SelectContractInstantiator = ({
         onClose={resetOnClose}
         closeOnOverlayClick={false}
         size="4xl"
+        isCentered
       >
         <ModalOverlay />
         {listSlug.length === 0 || !contractList ? (

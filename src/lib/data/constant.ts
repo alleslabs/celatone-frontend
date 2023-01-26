@@ -1,6 +1,8 @@
 import { MdBookmark, MdInbox, MdLibraryBooks } from "react-icons/md";
 
+import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
+import { formatSlugName } from "lib/utils/format";
 
 export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
@@ -51,6 +53,13 @@ export const getListIcon = (listName: string) => {
       return MdLibraryBooks;
   }
 };
+
+export const DEFAULT_LIST: LVPair[] = [
+  {
+    label: SAVED_LIST_NAME,
+    value: formatSlugName(SAVED_LIST_NAME),
+  },
+];
 
 export const DEFAULT_ADDRESS = "default-address";
 

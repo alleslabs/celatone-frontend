@@ -75,6 +75,7 @@ export const SelectContractAdmin = ({
         onClose={resetOnClose}
         closeOnOverlayClick={false}
         size="4xl"
+        isCentered
       >
         <ModalOverlay />
         <ModalContent>
