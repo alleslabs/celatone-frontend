@@ -18,15 +18,12 @@ import type {
   DetailSend,
   DetailUpload,
   Message,
-  Token,
-  U,
 } from "lib/types";
 import {
   camelToSnake,
   encode,
-  formatUDenom,
-  formatUToken,
   extractMsgType,
+  formatBalanceWithDenomList,
 } from "lib/utils";
 
 interface MsgDetailProps {
@@ -137,13 +134,6 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
       const msgSend = msg.detail as DetailSend;
       setButton("resend");
 
-      const coins = msgSend.amount.map(
-        (amount) =>
-          `${formatUToken(amount.amount as U<Token>)} ${formatUDenom(
-            amount.denom
-          )} `
-      );
-
       // Not able to resend if failure
       if (!success) {
         // Not able to resend if failed
@@ -162,7 +152,7 @@ export const MsgDetail = ({ msg, success }: MsgDetailProps) => {
       return (
         <SingleMsg
           type="Send"
-          bolds={coins}
+          bolds={formatBalanceWithDenomList(msgSend.amount)}
           text2="to"
           link2={{
             type: "contract_address",

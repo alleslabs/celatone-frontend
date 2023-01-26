@@ -1,5 +1,6 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
+import { MdSearchOff } from "react-icons/md";
 
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -42,7 +43,10 @@ export const AllContractLists = ({
         mb={isReadOnly ? 4 : 12}
       />
       {filteredContractLists.length === 0 ? (
-        <EmptyState message="None of your lists matches this search." />
+        <EmptyState
+          message="None of your lists matches this search."
+          icon={MdSearchOff}
+        />
       ) : (
         <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} w="full">
           {filteredContractLists.map((item) => (

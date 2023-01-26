@@ -5,7 +5,8 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { MdMode, MdOutlineBookmarkBorder } from "react-icons/md";
 
-import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
+import { useCelatoneApp } from "lib/app-provider";
+import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, Option } from "lib/types";
@@ -103,8 +104,9 @@ const ContractDetailsButton = ({
 export const ContractSelectSection = observer(
   ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
+    const { indexerGraphClient } = useCelatoneApp();
     const isMobile = useMobile();
-    const endpoint = useEndpoint();
+    const endpoint = useLCDEndpoint();
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
@@ -122,7 +124,8 @@ export const ContractSelectSection = observer(
 
     const { refetch } = useQuery(
       ["query", "instantiateInfo", endpoint, contractAddress],
-      async () => queryInstantiateInfo(endpoint, contractAddress),
+      async () =>
+        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
       {
         enabled: false,
         retry: 0,

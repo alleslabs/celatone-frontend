@@ -9,9 +9,12 @@ import { IoIosWarning } from "react-icons/io";
 import { MdInput } from "react-icons/md";
 
 import type { ExecutePageState } from "../types";
-import { useFabricateFee, useNativeTokensInfo } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useNativeTokensInfo,
+  useExecuteContractTx,
+} from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
-import { useExecuteContractTx } from "lib/app-provider/tx/execute";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
