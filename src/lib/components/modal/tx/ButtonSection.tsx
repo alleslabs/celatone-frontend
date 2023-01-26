@@ -66,7 +66,7 @@ export const ButtonSection = ({
           </Button>
         </>
       );
-    case "admin":
+    case "update-admin":
       return (
         <>
           <Button variant="ghost-primary" onClick={openExplorer}>

@@ -67,7 +67,7 @@ export const updateAdminTx = ({
             <Icon as={MdCheckCircle} color="success.main" boxSize={6} />
           ),
         },
-        actionVariant: "admin",
+        actionVariant: "update-admin",
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));
