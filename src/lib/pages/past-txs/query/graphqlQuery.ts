@@ -4,10 +4,10 @@ export const queryTransactionsFromTxs = (where: string) => {
   return gql`
     query QueryTransactionsFromTxs($pageSize: Int!, $offset: Int!) {
       transactions(
-          where: ${where}
-          limit: $pageSize
-          offset: $offset
-          order_by: {block: {timestamp: desc}}
+        where: ${where}
+        limit: $pageSize
+        offset: $offset
+        order_by: {block: {timestamp: desc}}
       ) {
           hash
           is_send
@@ -35,7 +35,7 @@ export const queryTransactionsCountFromTxs = (where: string) => {
         where: ${where}
       ) {
         aggregate {
-        count
+          count
         }
       }
     }`;

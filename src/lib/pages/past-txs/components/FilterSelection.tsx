@@ -19,8 +19,7 @@ import type { CSSProperties } from "react";
 import { useState, useRef, forwardRef } from "react";
 import { MdCheck, MdClose } from "react-icons/md";
 
-import { displayActionValue } from "lib/utils/extractActionValue";
-import mergeRefs from "lib/utils/mergeRefs";
+import { displayActionValue, mergeRefs } from "lib/utils";
 
 export interface FilterSelectionProps extends InputProps {
   placeholder?: string;

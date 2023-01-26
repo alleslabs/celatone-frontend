@@ -11,7 +11,6 @@ interface ResendButtonProps {
 export const ResendButton = ({ messages }: ResendButtonProps) => {
   const onClickResend = useResend();
   const [error, setError] = useState("");
-
   const [isButtonLoading, setIsButtonLoading] = useState(false);
 
   return (

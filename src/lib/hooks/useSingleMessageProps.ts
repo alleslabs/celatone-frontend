@@ -42,6 +42,7 @@ const instantiateSingleMsgProps = (
   isInstantiate2: boolean
 ) => {
   const detail = messages[0].detail as DetailInstantiate;
+  // TODO - revisit, instantiate detail response when query from contract transaction table doesn't contain contract addr
   const contractAddress =
     detail.contractAddress || getFirstQueryParam(router.query.contractAddress);
 

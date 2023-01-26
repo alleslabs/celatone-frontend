@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import type * as React from "react";
 
-export default function mergeRefs<T = unknown>(
+export const mergeRefs = <T = unknown>(
   refs: Array<React.MutableRefObject<T> | React.LegacyRef<T>>
-): React.RefCallback<T> {
+): React.RefCallback<T> => {
   return (value) => {
     refs.forEach((ref) => {
       if (typeof ref === "function") {
@@ -13,4 +13,4 @@ export default function mergeRefs<T = unknown>(
       }
     });
   };
-}
+};
