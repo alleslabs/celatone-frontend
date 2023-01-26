@@ -9,15 +9,11 @@ import {
   Image,
 } from "@chakra-ui/react";
 import router from "next/router";
-import {
-  MdBookmark,
-  MdBookmarkBorder,
-  MdInput,
-  MdKeyboardArrowDown,
-} from "react-icons/md";
+import { MdBookmark, MdBookmarkBorder, MdInput } from "react-icons/md";
 import { RiPencilFill } from "react-icons/ri";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { AdminButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
@@ -149,14 +145,11 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           </Flex>
         )}
       </Flex>
-      <Flex gap={4} w="fit-content">
-        {/* TODO - Revisit, implement admin button */}
-        <Button
-          variant="outline-gray"
-          rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
-        >
-          Admin
-        </Button>
+      <Flex gap={4}>
+        <AdminButton
+          contractAddress={contractAddress as ContractAddr}
+          admin={instantiateInfo?.admin}
+        />
         <Button
           variant="outline-primary"
           leftIcon={<SearchIcon />}

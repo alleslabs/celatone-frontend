@@ -15,7 +15,7 @@ import type {
   DetailMigrate,
   DetailClearAdmin,
 } from "lib/types";
-import { formatBalanceWithDenom } from "lib/utils";
+import { formatBalanceWithDenomList } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";
 
 /**
@@ -187,7 +187,7 @@ const sendSingleMsgProps = (
   return isSuccess
     ? {
         type: "Send",
-        bolds: formatBalanceWithDenom(detail.amount),
+        bolds: formatBalanceWithDenomList(detail.amount),
         text2: "to",
         link1: {
           type: getAddressTypeByLength(chainName, detail.toAddress) as LinkType,

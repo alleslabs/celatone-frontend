@@ -133,7 +133,7 @@ export const useCodeInfoByCodeId = (
           proposal: codes_by_pk.code_proposals[0]
             ? {
                 proposalId: codes_by_pk.code_proposals[0].proposal_id,
-                height: codes_by_pk.code_proposals[0].block?.height ?? 0,
+                height: codes_by_pk.code_proposals[0].block?.height,
                 created: parseDateDefault(
                   codes_by_pk.code_proposals[0].block?.timestamp
                 ),
@@ -167,6 +167,7 @@ export const useContractListByCodeId = (
           contractAddress: contract.address as ContractAddr,
           instantiator: unwrap(contract.init_by.at(0)?.account.address),
           label: contract.label,
+          admin: contract.admin?.address,
           instantiated: parseDateDefault(
             contract.init_by.at(0)?.block.timestamp
           ),

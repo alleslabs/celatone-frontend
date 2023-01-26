@@ -1,7 +1,7 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 
-import type { BalanceWithAssetInfo } from "lib/types";
-import { formatToken } from "lib/utils/formatter/token";
+import type { BalanceWithAssetInfo, Token } from "lib/types";
+import { formatTokenWithPrecision } from "lib/utils";
 
 interface TokenCardProps {
   userBalance: BalanceWithAssetInfo;
@@ -21,7 +21,10 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => (
       alt={userBalance.balance.symbol}
     />
     <Text color="text.main" fontWeight="700">
-      {formatToken(userBalance.balance.amount, userBalance.balance.precision)}
+      {formatTokenWithPrecision(
+        userBalance.balance.amount as Token,
+        userBalance.balance.precision
+      )}
     </Text>
     <Text color="text.main">{userBalance.balance.symbol}</Text>
   </Flex>

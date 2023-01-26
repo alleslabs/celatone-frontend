@@ -1,5 +1,6 @@
-import { Divider, Flex, Text } from "@chakra-ui/react";
+import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
+import { Copier } from "lib/components/Copier";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useGetAddressType } from "lib/hooks";
@@ -11,123 +12,161 @@ interface InstantiateInfoProps {
   contractData: ContractData;
 }
 
-export const InstantiateInfo = ({ contractData }: InstantiateInfoProps) => {
-  const getAddressType = useGetAddressType();
+const Container = chakra(Flex, {
+  baseStyle: {
+    flexDir: "column",
+    gap: 6,
+    w: "250px",
+  },
+});
 
-  // TODO: fix eslint
-  // eslint-disable-next-line sonarjs/cognitive-complexity
-  const renderDataFound = () => {
-    if (contractData.instantiateInfo) {
-      const instantiatorType = getAddressType(
-        contractData.instantiateInfo.instantiator
-      );
-      return (
-        <>
-          <LabelText label="Network">{contractData.chainId}</LabelText>
-
-          <LabelText
-            label="From Code"
-            helperText1={contractData.codeInfo?.description}
-          >
-            <ExplorerLink
-              type="code_id"
-              value={contractData.instantiateInfo.codeId}
-              canCopyWithHover
-            />
-          </LabelText>
-
-          {contractData.instantiateInfo.admin && (
-            <LabelText label="Admin Address">
-              <ExplorerLink
-                type="user_address"
-                value={contractData.instantiateInfo.admin}
-                canCopyWithHover
-              />
-            </LabelText>
-          )}
-
-          <Divider border="1px solid" borderColor="divider.main" />
-
-          {contractData.instantiateInfo &&
-            (contractData.instantiateInfo.createdHeight !== -1 ? (
-              <LabelText
-                label="Instantiated Block Height"
-                helperText1={
-                  contractData.instantiateInfo.createdTime
-                    ? formatUTC(contractData.instantiateInfo.createdTime)
-                    : undefined
-                }
-                helperText2={
-                  contractData.instantiateInfo.createdTime
-                    ? dateFromNow(contractData.instantiateInfo.createdTime)
-                    : undefined
-                }
-              >
-                <ExplorerLink
-                  type="block_height"
-                  value={contractData.instantiateInfo.createdHeight.toString()}
-                  canCopyWithHover
-                />
-              </LabelText>
-            ) : (
-              <LabelText label="Instantiated Block Height">N/A</LabelText>
-            ))}
-
-          <LabelText
-            label="Instantiated by"
-            helperText1={getAddressTypeText(instantiatorType)}
-          >
-            <ExplorerLink
-              type="user_address"
-              value={contractData.instantiateInfo.instantiator}
-              canCopyWithHover
-            />
-          </LabelText>
-
-          {contractData.initTxHash ? (
-            <LabelText label="Instantiate Transaction">
-              <ExplorerLink
-                type="tx_hash"
-                value={contractData.initTxHash.toUpperCase()}
-                canCopyWithHover
-              />
-            </LabelText>
-          ) : (
-            <LabelText
-              label="Instantiate Proposal ID"
-              helperText1={contractData.initProposalTitle}
-            >
-              <ExplorerLink
-                value={
-                  contractData.initProposalId
-                    ? `#${contractData.initProposalId}`
-                    : "Genesis"
-                }
-                canCopyWithHover
-                isReadOnly={!contractData.initProposalId}
-              />
-            </LabelText>
-          )}
-
-          {contractData.instantiateInfo.ibcPortId && (
-            <LabelText label="IBC Port ID">
-              {contractData.instantiateInfo.ibcPortId}
-            </LabelText>
-          )}
-        </>
-      );
-    }
-
-    return (
-      <Text variant="body2" color="text.dark">
-        Error fetching data
-      </Text>
-    );
-  };
+const RenderPortId = ({ portId }: { portId: string }) => {
+  const charArray = portId.match(/.{1,28}/g);
 
   return (
-    <Flex direction="column" gap={6} w="250px">
-      {renderDataFound()}
-    </Flex>
+    <Box
+      fontSize="14px"
+      _hover={{
+        "& .ibc-port-copy": {
+          display: "flex",
+        },
+      }}
+    >
+      {charArray?.map((line, idx) =>
+        idx === charArray.length - 1 ? (
+          <Flex align="center">
+            {line}
+            <Copier value={portId} className="ibc-port-copy" display="none" />
+          </Flex>
+        ) : (
+          line
+        )
+      )}
+    </Box>
+  );
+};
+
+export const InstantiateInfo = ({
+  contractData: {
+    instantiateInfo,
+    chainId,
+    codeInfo,
+    initTxHash,
+    initProposalId,
+    initProposalTitle,
+  },
+}: InstantiateInfoProps) => {
+  const getAddressType = useGetAddressType();
+
+  if (!instantiateInfo) {
+    return (
+      <Container>
+        <Text variant="body2" color="text.dark">
+          Error fetching data
+        </Text>
+      </Container>
+    );
+  }
+
+  const instantiatorType = getAddressType(instantiateInfo.instantiator);
+  const adminTypeOpt = instantiateInfo.admin
+    ? getAddressType(instantiateInfo.admin)
+    : undefined;
+  return (
+    <Container>
+      <LabelText label="Network">{chainId}</LabelText>
+
+      <LabelText label="From Code" helperText1={codeInfo?.description}>
+        <ExplorerLink
+          type="code_id"
+          value={instantiateInfo.codeId}
+          canCopyWithHover
+        />
+      </LabelText>
+
+      <LabelText
+        label="Admin Address"
+        helperText1={
+          adminTypeOpt ? getAddressTypeText(adminTypeOpt) : undefined
+        }
+      >
+        {instantiateInfo.admin ? (
+          <ExplorerLink
+            type={adminTypeOpt}
+            value={instantiateInfo.admin}
+            canCopyWithHover
+          />
+        ) : (
+          <Text variant="body2" color="text.dark">
+            No Admin
+          </Text>
+        )}
+      </LabelText>
+
+      <Divider border="1px solid" borderColor="divider.main" />
+
+      {instantiateInfo &&
+        (instantiateInfo.createdHeight !== -1 ? (
+          <LabelText
+            label="Instantiated Block Height"
+            helperText1={
+              instantiateInfo.createdTime
+                ? formatUTC(instantiateInfo.createdTime)
+                : undefined
+            }
+            helperText2={
+              instantiateInfo.createdTime
+                ? dateFromNow(instantiateInfo.createdTime)
+                : undefined
+            }
+          >
+            <ExplorerLink
+              type="block_height"
+              value={instantiateInfo.createdHeight.toString()}
+              canCopyWithHover
+            />
+          </LabelText>
+        ) : (
+          <LabelText label="Instantiated Block Height">N/A</LabelText>
+        ))}
+
+      <LabelText
+        label="Instantiated by"
+        helperText1={getAddressTypeText(instantiatorType)}
+      >
+        <ExplorerLink
+          type={instantiatorType}
+          value={instantiateInfo.instantiator}
+          canCopyWithHover
+        />
+      </LabelText>
+
+      {initTxHash ? (
+        <LabelText label="Instantiate Transaction">
+          <ExplorerLink
+            type="tx_hash"
+            value={initTxHash.toUpperCase()}
+            canCopyWithHover
+          />
+        </LabelText>
+      ) : (
+        <LabelText
+          label="Instantiate Proposal ID"
+          helperText1={initProposalTitle}
+        >
+          <ExplorerLink
+            value={initProposalId ? `#${initProposalId}` : "Genesis"}
+            canCopyWithHover
+            isReadOnly={!initProposalId}
+          />
+        </LabelText>
+      )}
+
+      {instantiateInfo.ibcPortId && (
+        <LabelText label="IBC Port ID">
+          <RenderPortId portId={instantiateInfo.ibcPortId} />
+        </LabelText>
+      )}
+    </Container>
   );
 };
