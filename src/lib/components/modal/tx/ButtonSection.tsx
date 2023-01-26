@@ -1,5 +1,6 @@
 import { Button, Icon } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { FiChevronRight } from "react-icons/fi";
 
@@ -20,6 +21,7 @@ export const ButtonSection = ({
 }: ButtonSectionProps) => {
   const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
+  const router = useRouter();
 
   const openExplorer = useCallback(() => {
     const txHash = receipts.find((r) => r.title === "Tx Hash")?.value;
@@ -61,6 +63,25 @@ export const ButtonSection = ({
             }}
           >
             Proceed to instantiate
+          </Button>
+        </>
+      );
+    case "admin":
+      return (
+        <>
+          <Button variant="ghost-primary" onClick={openExplorer}>
+            See Transaction
+          </Button>
+          <Button
+            variant="primary"
+            rightIcon={
+              <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+            }
+            onClick={() =>
+              navigate({ pathname: `/contract/${router.query.contract}` })
+            }
+          >
+            View Contract Details
           </Button>
         </>
       );

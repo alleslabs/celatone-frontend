@@ -62,11 +62,12 @@ export const updateAdminTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Complete",
+          header: "Update Admin Complete",
           headerIcon: (
             <Icon as={MdCheckCircle} color="success.main" boxSize={6} />
           ),
         },
+        actionVariant: "admin",
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));
