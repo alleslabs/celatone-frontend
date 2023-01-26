@@ -1,9 +1,10 @@
+import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { useGetAddressType } from "lib/hooks";
-import type { Filters, Message, Option } from "lib/types";
+import type { Filters, Message, Option, PastTransaction } from "lib/types";
 import {
   getActionMsgType,
   parseDateDefault,
@@ -72,7 +73,9 @@ export const useTxQuery = (
             contract_transactions
           ) as { transaction: GraphqlTransactionsResponse }[];
           return contractTransactionsToCamel.map(
-            (contractTx: { transaction: GraphqlTransactionsResponse }) => ({
+            (contractTx: {
+              transaction: GraphqlTransactionsResponse;
+            }): PastTransaction => ({
               hash: parseTxHash(contractTx.transaction.hash),
               messages: snakeToCamel(
                 contractTx.transaction.messages
@@ -124,7 +127,7 @@ export const useTxQuery = (
         const transactionsToCamel = snakeToCamel(
           transactions
         ) as GraphqlTransactionsResponse[];
-        return transactionsToCamel.map((transaction) => {
+        return transactionsToCamel.map((transaction): PastTransaction => {
           return {
             hash: parseTxHash(transaction.hash),
             messages: snakeToCamel(transaction.messages) as Message[],
@@ -181,7 +184,7 @@ export const useTxQueryCount = (
   userAddress: Option<string>,
   search: string,
   filters: Filters
-) => {
+): UseQueryResult<number> => {
   const getAddressType = useGetAddressType();
   const { indexerGraphClient } = useCelatoneApp();
 

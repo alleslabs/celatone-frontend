@@ -91,13 +91,15 @@ const PastTxs = () => {
   };
 
   const filterSelected = useMemo(() => {
-    const filters: string[] = [];
-    Object.keys(pastTxsState.filters).forEach((key) => {
-      if (pastTxsState.filters[key as keyof typeof pastTxsState.filters]) {
-        filters.push(key);
-      }
-    });
-    return filters;
+    return Object.keys(pastTxsState.filters).reduce(
+      (acc: string[], key: string) => {
+        if (pastTxsState.filters[key as keyof typeof pastTxsState.filters]) {
+          acc.push(key);
+        }
+        return acc;
+      },
+      []
+    );
   }, [pastTxsState]);
 
   useEffect(() => {

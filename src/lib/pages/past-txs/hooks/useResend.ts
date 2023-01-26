@@ -15,34 +15,38 @@ export const useResend = () => {
   return useCallback(
     (
       e: React.MouseEvent<Element, MouseEvent>,
-      messagesList: Message[],
+      messages: Message[],
       setIsButtonLoading: (isButtonLoading: boolean) => void,
       setError: (err: string) => void
     ) => {
       (async () => {
         e.stopPropagation();
         setIsButtonLoading(true);
-        const messages = [] as EncodeObject[];
-        messagesList.forEach((msg) => {
-          if (msg.msg.msg) {
-            messages.push({
-              typeUrl: msg.type,
-              value: {
-                ...msg.msg,
-                msg: encode(JSON.stringify(camelToSnake(msg.msg.msg))),
-              },
-            });
-          } else {
-            messages.push({
-              typeUrl: msg.type,
-              value: {
-                ...msg.msg,
-              },
-            });
-          }
-        });
+        const formatedMsgs = messages.reduce(
+          (acc: EncodeObject[], msg: Message) => {
+            if (msg.msg.msg) {
+              acc.push({
+                typeUrl: msg.type,
+                value: {
+                  ...msg.msg,
+                  msg: encode(JSON.stringify(camelToSnake(msg.msg.msg))),
+                },
+              });
+            } else {
+              acc.push({
+                typeUrl: msg.type,
+                value: {
+                  ...msg.msg,
+                },
+              });
+            }
+            return acc;
+          },
+          []
+        );
+
         try {
-          const estimatedGasUsed = await simulate(messages);
+          const estimatedGasUsed = await simulate(formatedMsgs);
           let fee;
           if (estimatedGasUsed) {
             fee = fabricateFee(estimatedGasUsed);
@@ -50,7 +54,7 @@ export const useResend = () => {
           const stream = await resendTx({
             onTxSucceed: () => {},
             estimatedFee: fee,
-            messages,
+            messages: formatedMsgs,
           });
           if (stream) broadcast(stream);
           setIsButtonLoading(false);

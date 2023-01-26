@@ -41,33 +41,31 @@ export const SingleMsg = ({
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
       {type} {text1}
-      {tokens &&
-        tokens.map((token: Coin, index: number) => (
-          <Flex role="group" align="center" gap={1}>
-            <Text key={index.toString() + token} fontWeight="medium">
-              {formatBalanceWithDenom(token)}
-            </Text>
-            <Tooltip
-              hasArrow
-              label={token.denom}
-              placement="top"
-              bg="primary.dark"
-              maxW="500px"
-            >
-              <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
-            </Tooltip>
-            <Box display="none" _groupHover={{ display: "flex" }}>
-              <Copier value={token.denom} />
-            </Box>
-          </Flex>
-        ))}
+      {tokens?.map((token: Coin, index: number) => (
+        <Flex role="group" align="center" gap={1}>
+          <Text key={index.toString() + token} fontWeight="medium">
+            {formatBalanceWithDenom(token)}
+          </Text>
+          <Tooltip
+            hasArrow
+            label={token.denom}
+            placement="top"
+            bg="primary.dark"
+            maxW="500px"
+          >
+            <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
+          </Tooltip>
+          <Box display="none" _groupHover={{ display: "flex" }}>
+            <Copier value={token.denom} />
+          </Box>
+        </Flex>
+      ))}
       {/* Tags  */}
-      {tags &&
-        tags.map((tag: string, index: number) => (
-          <Tag key={index.toString() + tag} borderRadius="full">
-            {snakeCase(tag) || tag}
-          </Tag>
-        ))}
+      {tags?.map((tag: string, index: number) => (
+        <Tag key={index.toString() + tag} borderRadius="full">
+          {snakeCase(tag) || tag}
+        </Tag>
+      ))}
       {/* Tag left over */}
       {tags && length && length - tags.length > 0 && (
         <Tag borderRadius="full">+{length - tags.length} </Tag>

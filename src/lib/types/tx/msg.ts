@@ -58,7 +58,7 @@ export interface DetailExecute extends MsgExecuteContract {
 }
 
 export interface DetailInstantiate extends MsgInstantiateContract {
-  contractAddress?: ContractAddr;
+  contractAddress: ContractAddr;
 }
 
 export interface DetailSend {

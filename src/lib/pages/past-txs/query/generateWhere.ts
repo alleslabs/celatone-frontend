@@ -19,14 +19,12 @@ export const actionsFilter = (filters: Filters) => {
     isClearAdmin: "is_clear_admin",
   };
 
-  let filter = "";
-  Object.keys(filters).forEach((key) => {
+  return Object.keys(filters).reduce((acc: string, key: string) => {
     if (filters[key as keyof typeof filters]) {
-      filter += `${actions[key as keyof Filters]}: {_eq: true },`;
+      return `${acc} ${actions[key as keyof Filters]}: {_eq: true },`;
     }
-  });
-
-  return filter;
+    return acc;
+  }, "");
 };
 
 interface GenerateWhereForContractTx {
