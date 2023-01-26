@@ -149,7 +149,7 @@ ${client} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
         snippet: `const { cosmwasm } = require('osmojs');
 const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 const { Dec, IntPretty } = require('@keplr-wallet/unit');
-const { getOfflineSignerAmino } = require('@cosmjs-utils');
+const { getOfflineSignerAmino } = require('cosmjs-utils');
 const { coins } = require('@cosmjs/amino');
 const { toUtf8 } = require('@cosmjs/encoding');
 const { chains } = require('chain-registry');
