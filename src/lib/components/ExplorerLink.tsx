@@ -139,7 +139,6 @@ export const ExplorerLink = ({
 
   return (
     <Box
-      role="group"
       display="inline-flex"
       alignItems="center"
       _hover={{
@@ -147,6 +146,9 @@ export const ExplorerLink = ({
           textDecoration: "underline",
           textDecorationColor: "primary.main",
         }),
+        "& .copy-button": {
+          display: "flex",
+        },
       }}
       {...componentProps}
     >
@@ -161,13 +163,12 @@ export const ExplorerLink = ({
             isEllipsis={textFormat === "ellipsis"}
             maxWidth={maxWidth}
           />
-          <Box
-            alignItems="center"
-            display={canCopyWithHover ? "none" : undefined}
-            _groupHover={canCopyWithHover ? { display: "flex" } : undefined}
-          >
-            <Copier value={copyValue || value} ml="8px" />
-          </Box>
+          <Copier
+            value={copyValue || value}
+            ml="8px"
+            className="copy-button"
+            display={canCopyWithHover ? "none" : "flex"}
+          />
         </>
       )}
     </Box>
