@@ -167,6 +167,7 @@ export const useContractListByCodeId = (
           contractAddress: contract.address as ContractAddr,
           instantiator: unwrap(contract.init_by.at(0)?.account.address),
           label: contract.label,
+          admin: contract.admin?.address,
           instantiated: parseDateDefault(
             contract.init_by.at(0)?.block.timestamp
           ),

@@ -6366,6 +6366,19 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
   } | null;
 };
 
+export type GetAdminByContractAddressesQueryDocumentQueryVariables = Exact<{
+  contractAddresses: Array<Scalars["String"]> | Scalars["String"];
+}>;
+
+export type GetAdminByContractAddressesQueryDocumentQuery = {
+  __typename?: "query_root";
+  contracts: Array<{
+    __typename?: "contracts";
+    address: string;
+    admin?: { __typename?: "accounts"; address: string } | null;
+  }>;
+};
+
 export type GetExecuteTxsByContractAddressQueryVariables = Exact<{
   contractAddress: Scalars["String"];
   offset: Scalars["Int"];
@@ -6499,6 +6512,7 @@ export type GetContractListByCodeIdQuery = {
     __typename?: "contracts";
     address: string;
     label: string;
+    admin?: { __typename?: "accounts"; address: string } | null;
     init_by: Array<{
       __typename?: "contract_histories";
       block: { __typename?: "blocks"; timestamp: any };
@@ -7478,6 +7492,101 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
 } as unknown as DocumentNode<
   GetInstantiateDetailByContractQueryDocumentQuery,
   GetInstantiateDetailByContractQueryDocumentQueryVariables
+>;
+export const GetAdminByContractAddressesQueryDocumentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getAdminByContractAddressesQueryDocument" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "contractAddresses" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "String" },
+                },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "address" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_in" },
+                            value: {
+                              kind: "Variable",
+                              name: {
+                                kind: "Name",
+                                value: "contractAddresses",
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "admin" },
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetAdminByContractAddressesQueryDocumentQuery,
+  GetAdminByContractAddressesQueryDocumentQueryVariables
 >;
 export const GetExecuteTxsByContractAddressDocument = {
   kind: "Document",
@@ -8583,6 +8692,20 @@ export const GetContractListByCodeIdDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "address" } },
                 { kind: "Field", name: { kind: "Name", value: "label" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "admin" },
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "init_by" },

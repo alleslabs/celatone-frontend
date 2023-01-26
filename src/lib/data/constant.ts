@@ -56,7 +56,9 @@ export const DEFAULT_ADDRESS = "default-address";
 
 export const MAX_FILE_SIZE = 800_000;
 
-export const MICRO = 1000000;
+export const CLEAR_ADMIN_GAS = 50_000;
+
+export const MICRO = 1_000_000;
 
 export const typeUrlDict = {
   [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",

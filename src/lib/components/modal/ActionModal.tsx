@@ -28,9 +28,11 @@ export interface ActionModalProps {
   children?: ReactNode;
   mainBtnTitle?: string;
   mainAction: () => void;
+  mainVariant?: string;
   disabledMain?: boolean;
   otherBtnTitle?: string;
   otherAction?: () => void;
+  otherVariant?: string;
   noHeaderBorder?: boolean;
   noCloseButton?: boolean;
 }
@@ -44,9 +46,11 @@ export function ActionModal({
   children,
   mainBtnTitle = "Proceed",
   mainAction,
+  mainVariant = "primary",
   disabledMain = false,
   otherBtnTitle = "Cancel",
   otherAction,
+  otherVariant = "outline-primary",
   noHeaderBorder = false,
   noCloseButton = false,
 }: ActionModalProps) {
@@ -93,15 +97,12 @@ export function ActionModal({
               <Button
                 w="200px"
                 onClick={handleOnMain}
+                variant={mainVariant}
                 isDisabled={disabledMain}
               >
                 {mainBtnTitle}
               </Button>
-              <Button
-                w="200px"
-                variant="outline-primary"
-                onClick={handleOnOther}
-              >
+              <Button w="200px" variant={otherVariant} onClick={handleOnOther}>
                 {otherBtnTitle}
               </Button>
             </Flex>
