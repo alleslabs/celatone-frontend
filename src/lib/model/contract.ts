@@ -5,7 +5,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
-import type { InstantiateInfo, PublicInfo } from "lib/services/contract";
+import type { InstantiateInfo } from "lib/services/contract";
 import {
   queryContractBalances,
   queryInstantiateInfo,
@@ -18,9 +18,9 @@ import {
   useMigrationHistoriesCountByContractAddress,
   useTxsCountByContractAddress,
   useRelatedProposalsCountByContractAddress,
-  usePublicProjectByContractAddress,
 } from "lib/services/contractService";
 import { usePublicProjectBySlugQuery } from "lib/services/publicProject";
+import { usePublicProjectByContractAddress } from "lib/services/publicProjectService";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type {
@@ -29,6 +29,7 @@ import type {
   Detail,
   HumanAddr,
   Option,
+  PublicInfo,
 } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
