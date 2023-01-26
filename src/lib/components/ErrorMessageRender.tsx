@@ -3,7 +3,7 @@ import { Flex, Icon, Text } from "@chakra-ui/react";
 import { IoIosWarning } from "react-icons/io";
 
 interface ErrorMessageRenderProps extends FlexProps {
-  error: Error["message"];
+  error: string;
 }
 
 export const ErrorMessageRender = ({

@@ -62,7 +62,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
 
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(initialMsg);
-  const [error, setError] = useState<Error["message"]>();
+  const [error, setError] = useState<string>();
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
 

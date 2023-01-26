@@ -11,14 +11,12 @@ import {
 import type { FormControlProps } from "@chakra-ui/react";
 import type { HTMLInputTypeAttribute, Dispatch, SetStateAction } from "react";
 
-import type { ContractAddr, HumanAddr } from "lib/types";
-
 import type { FormStatus } from "./FormStatus";
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 export interface TextInputProps extends FormControlProps {
   value: string;
-  setInputState: Dispatch<SetStateAction<string | HumanAddr | ContractAddr>>;
+  setInputState: Dispatch<SetStateAction<string>>;
   label?: string;
   labelBgColor?: string;
   helperText?: string;

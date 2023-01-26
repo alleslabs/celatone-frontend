@@ -42,7 +42,7 @@ const UpdateAdmin = () => {
     message: "",
   });
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
-  const [simulateError, setSimulateError] = useState<Error["message"]>();
+  const [simulateError, setSimulateError] = useState<string>();
 
   const contractAddressParam = getFirstQueryParam(
     router.query.contract
