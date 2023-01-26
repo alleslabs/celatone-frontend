@@ -4,7 +4,7 @@ import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
-import { useEffect, useContext, useMemo, createContext } from "react";
+import { useRef, useEffect, useContext, useMemo, createContext } from "react";
 
 import { getIndexerGraphClient } from "../query-client";
 import type { AppConstants } from "../types";
@@ -13,7 +13,11 @@ import {
   getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { DEFAULT_ADDRESS, getChainNameByNetwork } from "lib/data";
+import {
+  DEFAULT_ADDRESS,
+  getChainNameByNetwork,
+  getNetworkByChainName,
+} from "lib/data";
 import {
   useCodeStore,
   useContractStore,
@@ -64,6 +68,7 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   appContractAddressMap,
   constants,
 }: AppProviderProps<ContractAddress, Constants>) => {
+  const networkRef = useRef<string>();
   const router = useRouter();
   const { currentChainName, currentChainRecord, setCurrentChain } = useWallet();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
@@ -121,17 +126,25 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
 
   useEffect(() => {
+    if (!networkRef.current && currentChainName)
+      networkRef.current = getNetworkByChainName(currentChainName);
     /**
      * @remarks Condition checking varies by chain
      * @todos Change default to mainnet later (currently is testnet)
      * @todos Support localnet case later
      */
-    if (router.query.network === "mainnet") {
-      setCurrentChain(getChainNameByNetwork("mainnet"));
-    } else {
-      setCurrentChain(getChainNameByNetwork("testnet"));
+    const { network } = router.query;
+    if (network !== networkRef.current) {
+      if (network === "mainnet") {
+        if (currentChainName !== getChainNameByNetwork("mainnet")) {
+          setCurrentChain(getChainNameByNetwork("mainnet"));
+        }
+      } else if (currentChainName !== getChainNameByNetwork("testnet"))
+        setCurrentChain(getChainNameByNetwork("testnet"));
+
+      networkRef.current = network as string;
     }
-  }, [router.query.network, setCurrentChain]);
+  }, [router.query, currentChainName, setCurrentChain]);
 
   const AppContent = observer(() => {
     if (
