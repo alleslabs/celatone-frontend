@@ -8,7 +8,11 @@ import { useForm } from "react-hook-form";
 import { FiChevronLeft } from "react-icons/fi";
 import { IoIosWarning } from "react-icons/io";
 
-import { useFabricateFee, useSimulateFeeQuery } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useInternalNavigate,
+  useSimulateFeeQuery,
+} from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -35,6 +39,7 @@ export const MigrateContract = ({
   const { address } = useWallet();
   const { broadcast } = useTxBroadcast();
   const endpoint = useLCDEndpoint();
+  const navigate = useInternalNavigate();
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
 
@@ -112,7 +117,10 @@ export const MigrateContract = ({
       codeId: Number(codeId),
       migrateMsg: JSON.parse(migrateMsg),
       estimatedFee,
-      onTxSucceed: () => setProcessing(false),
+      onTxSucceed: () => {
+        setProcessing(false);
+        navigate({ pathname: `/contract/${contractAddress}` });
+      },
       onTxFailed: () => setProcessing(false),
     });
 
@@ -120,7 +128,15 @@ export const MigrateContract = ({
       setProcessing(true);
       broadcast(stream);
     }
-  }, [migrateTx, contractAddress, codeId, migrateMsg, estimatedFee, broadcast]);
+  }, [
+    migrateTx,
+    contractAddress,
+    codeId,
+    migrateMsg,
+    estimatedFee,
+    navigate,
+    broadcast,
+  ]);
 
   useEffect(() => {
     if (codeId.length) {
