@@ -13,11 +13,7 @@ import {
   getExplorerUserAddressUrl,
 } from "lib/app-fns/explorer";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import {
-  DEFAULT_ADDRESS,
-  getChainNameByNetwork,
-  getNetworkByChainName,
-} from "lib/data";
+import { DEFAULT_ADDRESS, getChainNameByNetwork } from "lib/data";
 import {
   useCodeStore,
   useContractStore,
@@ -126,8 +122,6 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
   }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
 
   useEffect(() => {
-    if (!networkRef.current && currentChainName)
-      networkRef.current = getNetworkByChainName(currentChainName);
     /**
      * @remarks Condition checking varies by chain
      * @todos Change default to mainnet later (currently is testnet)
