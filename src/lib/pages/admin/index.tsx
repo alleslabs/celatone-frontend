@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import {
+  useCelatoneApp,
   useFabricateFee,
   useInternalNavigate,
   useSimulateFeeQuery,
@@ -18,7 +19,11 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useEndpoint, useGetAddressType, useValidateAddress } from "lib/hooks";
+import {
+  useLCDEndpoint,
+  useGetAddressType,
+  useValidateAddress,
+} from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
@@ -34,7 +39,8 @@ const UpdateAdmin = () => {
   const fabricateFee = useFabricateFee();
   const updateAdminTx = useUpdateAdminTx();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useEndpoint();
+  const endpoint = useLCDEndpoint();
+  const { indexerGraphClient } = useCelatoneApp();
 
   const [adminAddress, setAdminAddress] = useState("");
   const [adminFormStatus, setAdminFormStatus] = useState<FormStatus>({
@@ -104,7 +110,8 @@ const UpdateAdmin = () => {
    */
   useQuery(
     ["query", "instantiateInfo", endpoint, contractAddressParam],
-    async () => queryInstantiateInfo(endpoint, contractAddressParam),
+    async () =>
+      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddressParam),
     {
       enabled: !!contractAddressParam,
       refetchOnWindowFocus: false,

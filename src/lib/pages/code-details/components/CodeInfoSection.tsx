@@ -6,11 +6,11 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useGetAddressType } from "lib/hooks";
-import type { CodeData, Option, PermissionAddresses } from "lib/types";
+import type { CodeData, PermissionAddresses } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
-  codeData: Option<CodeData>;
+  codeData: CodeData;
 }
 
 const getMethodSpecificRender = (
@@ -28,7 +28,7 @@ const getMethodSpecificRender = (
           />
         </LabelText>
       ),
-      storedBlockRender: (
+      storedBlockRender: codeProposalInfo.height ? (
         <>
           <ExplorerLink
             type="block_height"
@@ -42,6 +42,8 @@ const getMethodSpecificRender = (
             {formatUTC(codeProposalInfo.created)}
           </Text>
         </>
+      ) : (
+        <Text variant="body2">N/A</Text>
       ),
     };
   }
@@ -120,7 +122,7 @@ const ViewAddresses = ({
   );
 };
 
-const CodeDetailsRender = ({ codeData }: { codeData: CodeData }) => {
+export const CodeInfoSection = ({ codeData }: CodeInfoSectionProps) => {
   const getAddressType = useGetAddressType();
   const {
     hash,
@@ -140,49 +142,42 @@ const CodeDetailsRender = ({ codeData }: { codeData: CodeData }) => {
     }
   );
   const uploaderType = getAddressType(uploader);
-  return (
-    <Grid templateColumns="repeat(5, 1fr)" columnGap={12}>
-      <LabelText label="Network">{codeData.chainId ?? "unknown"}</LabelText>
-      <LabelText label="Uploaded by">
-        <Flex direction="column" gap={1}>
-          <ExplorerLink type={uploaderType} value={uploader} canCopyWithHover />
-          <Text variant="body3" color="text.dark">
-            {getAddressTypeText(uploaderType)}
-          </Text>
-        </Flex>
-      </LabelText>
-      {methodRender}
-      <LabelText label="Instantiate Permission">
-        <Flex direction="column" gap={1}>
-          <PermissionChip
-            instantiatePermission={instantiatePermission}
-            permissionAddresses={permissionAddresses}
-          />
-          <ViewAddresses permissionAddresses={permissionAddresses} />
-        </Flex>
-      </LabelText>
-      <LabelText label="Stored on block">
-        <Flex direction="column" gap={1}>
-          {storedBlockRender}
-        </Flex>
-      </LabelText>
-    </Grid>
-  );
-};
 
-export const CodeInfoSection = ({ codeData }: CodeInfoSectionProps) => {
   return (
     <Box mb={12}>
       <Heading as="h6" variant="h6" mb={6}>
         Code Information
       </Heading>
-      {codeData ? (
-        <CodeDetailsRender codeData={codeData} />
-      ) : (
-        <Text variant="body2" color="text.dark">
-          Error fetching data
-        </Text>
-      )}
+      <Grid templateColumns="repeat(5, 1fr)" columnGap={12}>
+        <LabelText label="Network">{codeData.chainId ?? "unknown"}</LabelText>
+        <LabelText label="Uploaded by">
+          <Flex direction="column" gap={1}>
+            <ExplorerLink
+              type={uploaderType}
+              value={uploader}
+              canCopyWithHover
+            />
+            <Text variant="body3" color="text.dark">
+              {getAddressTypeText(uploaderType)}
+            </Text>
+          </Flex>
+        </LabelText>
+        {methodRender}
+        <LabelText label="Instantiate Permission">
+          <Flex direction="column" gap={1}>
+            <PermissionChip
+              instantiatePermission={instantiatePermission}
+              permissionAddresses={permissionAddresses}
+            />
+            <ViewAddresses permissionAddresses={permissionAddresses} />
+          </Flex>
+        </LabelText>
+        <LabelText label="Stored on block">
+          <Flex direction="column" gap={1}>
+            {storedBlockRender}
+          </Flex>
+        </LabelText>
+      </Grid>
     </Box>
   );
 };

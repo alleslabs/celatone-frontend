@@ -12,20 +12,27 @@ import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { MdCheck } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { WalletSection } from "lib/components/Wallet";
-import { CHAIN_NAMES } from "lib/data";
+import { getNetworkByChainName, getSupportedChainNames } from "lib/data";
 
 import Searchbar from "./Searchbar";
 
 const Header = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
+  const {
+    currentChainRecord,
+    currentChainName,
+    setCurrentChain,
+    getChainRecord,
+  } = useWallet();
 
   const handleChainSelect = useCallback(
     (chainName: string) => {
+      if (chainName === currentChainName) return;
       setCurrentChain(chainName);
       navigate({
         pathname: router.asPath.replace(`/${router.query.network}`, ""),
@@ -33,11 +40,11 @@ const Header = () => {
           /**
            * @remarks Condition checking varies by chain
            */
-          network: chainName === "osmosis" ? "mainnet" : "testnet",
+          network: getNetworkByChainName(chainName),
         },
       });
     },
-    [setCurrentChain, navigate, router]
+    [currentChainName, setCurrentChain, navigate, router]
   );
 
   return (
@@ -89,23 +96,33 @@ const Header = () => {
             </Flex>
           </MenuButton>
           <MenuList>
-            {CHAIN_NAMES.map((chainName) => {
-              return (
-                <MenuItem
-                  key={chainName}
-                  onClick={() => {
-                    handleChainSelect(chainName);
-                  }}
-                  flexDirection="column"
-                  alignItems="flex-start"
-                >
-                  <Text>{getChainRecord(chainName)?.chain.pretty_name}</Text>
-                  <Text color="text.dark" fontSize="sm">
-                    {getChainRecord(chainName)?.chain.chain_id}
-                  </Text>
-                </MenuItem>
-              );
-            })}
+            {getSupportedChainNames().map((chainName) => (
+              <MenuItem
+                key={chainName}
+                onClick={() => {
+                  handleChainSelect(chainName);
+                }}
+                flexDirection="column"
+                alignItems="flex-start"
+                _hover={{
+                  backgroundColor: "hover.dark",
+                }}
+              >
+                <Flex justify="space-between" align="center" w="full">
+                  <Flex direction="column">
+                    <Text variant="body2">
+                      {getChainRecord(chainName)?.chain.pretty_name}
+                    </Text>
+                    <Text color="text.dark" variant="body3">
+                      {getChainRecord(chainName)?.chain.chain_id}
+                    </Text>
+                  </Flex>
+                  {chainName === currentChainName && (
+                    <Icon as={MdCheck} boxSize={4} color="gray.600" />
+                  )}
+                </Flex>
+              </MenuItem>
+            ))}
           </MenuList>
         </Menu>
         <WalletSection />

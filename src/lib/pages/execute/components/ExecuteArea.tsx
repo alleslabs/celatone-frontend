@@ -1,15 +1,19 @@
 import { Box, Flex, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useFormState, useWatch } from "react-hook-form";
 import type { Control, UseFormSetValue } from "react-hook-form";
 import { MdInput } from "react-icons/md";
 
 import type { ExecutePageState } from "../types";
-import { useFabricateFee, useNativeTokensInfo } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useNativeTokensInfo,
+  useExecuteContractTx,
+} from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
-import { useExecuteContractTx } from "lib/app-provider/tx/execute";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
@@ -22,6 +26,10 @@ import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr, Token } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate, microfy } from "lib/utils";
+
+const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
+  ssr: false,
+});
 
 interface ExecuteAreaProps {
   control: Control<ExecutePageState>;
@@ -167,7 +175,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
             },
           }}
         >
-          {cmds.map(([cmd, queryMsg]) => (
+          {cmds.sort().map(([cmd, queryMsg]) => (
             <ContractCmdButton
               key={`query-cmd-${cmd}`}
               cmd={cmd}
@@ -239,8 +247,15 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
           </Button>
         </Box>
       </Flex>
-      <Flex alignItems="center" justify="space-between" mt={{ md: 8, xl: 0 }}>
-        <CopyButton isDisable={msg.length === 0} value={msg} />
+      <Flex alignItems="center" justify="space-between">
+        <Flex gap={2}>
+          <CopyButton isDisable={!msg.length} value={msg} />
+          <CodeSnippet
+            type="execute"
+            contractAddress={contractAddress}
+            message={msg}
+          />
+        </Flex>
         <Flex direction="row" align="center" gap={2}>
           <Flex fontSize="14px" color="text.dark" alignItems="center">
             Transaction Fee:{" "}

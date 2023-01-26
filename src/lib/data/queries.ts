@@ -82,13 +82,19 @@ export const getInstantiatedCountByUserQueryDocument = graphql(`
 export const getInstantiatedListByUserQueryDocument = graphql(`
   query getInstantiatedListByUserQueryDocument($walletAddr: String!) {
     contracts(
-      where: { transaction: { account: { address: { _eq: $walletAddr } } } }
+      where: {
+        accountByInitBy: { address: { _eq: $walletAddr } }
+        _or: { transaction: { account: { address: { _eq: $walletAddr } } } }
+      }
       limit: 500
       offset: 0
       order_by: { transaction: { block: { timestamp: desc } } }
     ) {
       label
       address
+      accountByInitBy {
+        address
+      }
     }
   }
 `);
@@ -103,15 +109,35 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
       contract_proposals(
         where: {
           proposal: {
-            type: { _in: ["InstantiateContract", "InstantiateContract2"] }
+            type: {
+              _in: [
+                "InstantiateContract"
+                "InstantiateContract2"
+                "SoftwareUpgrade"
+              ]
+            }
           }
         }
+        order_by: { proposal: { id: asc } }
         limit: 1
       ) {
         proposal {
           id
           title
         }
+      }
+    }
+  }
+`);
+
+export const getAdminByContractAddressesQueryDocument = graphql(`
+  query getAdminByContractAddressesQueryDocument(
+    $contractAddresses: [String!]!
+  ) {
+    contracts(where: { address: { _in: $contractAddresses } }) {
+      address
+      admin: account {
+        address
       }
     }
   }
@@ -259,13 +285,19 @@ export const getContractListByCodeId = graphql(`
   query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
       where: { code_id: { _eq: $codeId } }
-      order_by: { transaction: { block: { timestamp: desc } } }
+      order_by: { id: desc }
       offset: $offset
       limit: $pageSize
     ) {
       address
       label
-      transaction {
+      admin: account {
+        address
+      }
+      init_by: contract_histories(
+        order_by: { block: { timestamp: asc } }
+        limit: 1
+      ) {
         block {
           timestamp
         }

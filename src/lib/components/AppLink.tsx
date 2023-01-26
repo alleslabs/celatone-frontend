@@ -18,7 +18,9 @@ export const AppLink = ({
       }
     >
       {typeof children === "string" ? (
-        <Text color={linkProps.color}>{children}</Text>
+        <Text variant="body2" color={linkProps.color}>
+          {children}
+        </Text>
       ) : (
         children
       )}

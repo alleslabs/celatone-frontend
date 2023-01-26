@@ -19,7 +19,7 @@ import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { InstantiateButton } from "lib/components/button/InstantiateButton";
+import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import { SaveOrRemoveCode } from "lib/components/modal/code/SaveOrRemoveCode";
@@ -74,7 +74,7 @@ const NotMatched = () => {
 const Unconnected = () => {
   return (
     <StateContainer>
-      <DisconnectedState text="to upload and see your stored Codes." />
+      <DisconnectedState text="to see your previously uploaded and stored codes." />
     </StateContainer>
   );
 };
@@ -85,7 +85,7 @@ const Empty = ({ type }: OtherTBodyProps) => {
       case "all":
         return "All Code IDs will display here";
       case "saved":
-        return "Your saved Code IDs will display here. Saved Codes are stored in your device.";
+        return "Your saved code IDs will display here. Saved codes are stored locally on your device.";
       case "stored":
         return "Your uploaded Wasm files will display as My Stored Codes";
       default:

@@ -21,7 +21,7 @@ export const RecentActivities = observer(() => {
   return (
     <Box py={8}>
       <Heading px={12} as="h6" variant="h6" mb={4}>
-        Recent Activities on this device
+        Recent Queries and Executes on this device
       </Heading>
       {activities.length ? (
         <Flex px={12} gap={4} overflowX="scroll" w="100%">
@@ -39,7 +39,8 @@ export const RecentActivities = observer(() => {
               key={item.type + item.contractAddress + item.timestamp}
               onClick={() =>
                 navigate({
-                  pathname: `/${item.type}?contract=${item.contractAddress}&msg=${item.msg}`,
+                  pathname: `/${item.type}`,
+                  query: { contract: item.contractAddress, msg: item.msg },
                 })
               }
             >
@@ -101,7 +102,7 @@ export const RecentActivities = observer(() => {
           minH="128px"
         >
           <Text color="text.dark" variant="body1">
-            Your recent queries will display here.
+            Your recent interactions will display here.
           </Text>
         </Flex>
       )}

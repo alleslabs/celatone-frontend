@@ -40,13 +40,13 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
     },
   });
 
-  const { data: rawInstantiatedContracts } = useContractListByCodeId(
+  const { data: rawCodeContracts } = useContractListByCodeId(
     codeId,
     offset,
     pageSize
   );
-  const instantiatedContracts: Option<ContractInfo[]> =
-    rawInstantiatedContracts?.map<ContractInfo>((contract) => ({
+  const codeContracts: Option<ContractInfo[]> =
+    rawCodeContracts?.map<ContractInfo>((contract) => ({
       ...contract,
       ...getContractLocalInfo(contract.contractAddress),
     }));
@@ -81,12 +81,12 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
           ml={2}
           variant="primary"
           textAlign="center"
-          bg={!instantiatedContracts?.length ? "gray.800" : "primary.dark"}
+          bg={!codeContracts?.length ? "gray.800" : "primary.dark"}
         >
           {totalData}
         </Badge>
       </Flex>
-      {!instantiatedContracts?.length ? (
+      {!codeContracts?.length ? (
         <NoContracts />
       ) : (
         <Flex direction="column" overflowX="scroll">
@@ -98,7 +98,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
             <TableHeader>Timestamp</TableHeader>
             <TableHeader />
           </Grid>
-          {instantiatedContracts?.map((contractInfo) => (
+          {codeContracts.map((contractInfo) => (
             <ContractTableRow
               key={
                 contractInfo.name +

@@ -5,6 +5,5 @@ export interface CelatoneContractAddress {
   example: ContractAddr;
 }
 export interface CelatoneConstants extends AppConstants {
-  lcdEndpoint: Record<string, string>;
   maxFileSize: number;
 }

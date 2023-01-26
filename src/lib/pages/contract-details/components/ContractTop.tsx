@@ -7,15 +7,11 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
-import {
-  MdBookmark,
-  MdBookmarkBorder,
-  MdInput,
-  MdKeyboardArrowDown,
-} from "react-icons/md";
+import { MdBookmark, MdBookmarkBorder, MdInput } from "react-icons/md";
 import { RiPencilFill } from "react-icons/ri";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { AdminButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherList,
@@ -30,10 +26,10 @@ interface ContractTopProps {
 }
 export const ContractTop = ({ contractData }: ContractTopProps) => {
   const navigate = useInternalNavigate();
+
   const { contractLocalInfo, instantiateInfo, publicInfo } = contractData;
 
   const contractAddress = instantiateInfo?.contractAddress as ContractAddr;
-
   const displayName =
     contractLocalInfo?.name || publicInfo?.name || instantiateInfo?.label;
 
@@ -134,14 +130,11 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           </Flex>
         )}
       </Flex>
-      <Flex gap={4} w="fit-content">
-        {/* TODO - Revisit, implement admin button */}
-        <Button
-          variant="outline-gray"
-          rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
-        >
-          Admin
-        </Button>
+      <Flex gap={4}>
+        <AdminButton
+          contractAddress={contractAddress}
+          admin={instantiateInfo?.admin}
+        />
         <Button
           variant="outline-primary"
           leftIcon={<SearchIcon />}

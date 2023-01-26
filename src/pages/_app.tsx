@@ -1,7 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import type { Chain } from "@chain-registry/types";
-import { GasPrice } from "@cosmjs/stargate";
-import type { SignerOptions } from "@cosmos-kit/core";
 import { wallets } from "@cosmos-kit/keplr";
 import { WalletProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -26,6 +23,7 @@ import {
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
+import { terra2testnet, terra2testnetAssets } from "lib/config/terra2testnet";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import { StoreProvider } from "lib/providers/store";
@@ -51,28 +49,32 @@ configurePersistable({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
-  const signerOptions: SignerOptions = {
-    cosmwasm: (chain: Chain) => {
-      if (
-        chain.chain_name === "osmosis" ||
-        chain.chain_name === "osmosistestnet"
-      )
-        return {
-          gasPrice: GasPrice.fromString("0.0025uosmo"),
-        };
-
-      return undefined;
-    },
-  };
 
   return (
     <Chakra>
       <QueryClientProvider client={queryClient}>
         <WalletProvider
-          chains={chains}
-          assetLists={assets}
+          chains={[...chains, terra2testnet]}
+          assetLists={[...assets, terra2testnetAssets]}
           wallets={wallets}
-          signerOptions={signerOptions}
+          endpointOptions={{
+            osmosis: {
+              rpc: ["https://rpc-osmosis.keplr.app/"],
+              rest: ["https://lcd-osmosis.keplr.app/"],
+            },
+            osmosistestnet: {
+              rpc: ["https://rpc-test.osmosis.zone/"],
+              rest: ["https://lcd-test.osmosis.zone/"],
+            },
+            terra2: {
+              rpc: ["https://terra-rpc.lavenderfive.com/"],
+              rest: ["https://phoenix-lcd.terra.dev/"],
+            },
+            terra2testnet: {
+              rpc: ["https://terra-testnet-rpc.polkachu.com/"],
+              rest: ["https://pisco-lcd.terra.dev/"],
+            },
+          }}
         >
           <StoreProvider>
             <AppProvider
