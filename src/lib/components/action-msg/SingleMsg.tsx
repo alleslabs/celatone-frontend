@@ -1,8 +1,12 @@
-import { Tag, Text, Box, Flex } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
+import { Tag, Text, Box, Flex, Tooltip } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
+import { Copier } from "../Copier";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { formatBalanceWithDenom } from "lib/utils";
 
 interface LinkElement {
   type: LinkType;
@@ -13,8 +17,8 @@ interface LinkElement {
 export interface SingleMsgProps {
   type: string;
   text1?: string;
-  bolds?: Array<string>;
-  tags?: Array<string>;
+  tokens?: Coin[];
+  tags?: string[];
   length?: number;
   text2?: string;
   link1?: LinkElement;
@@ -25,7 +29,7 @@ export interface SingleMsgProps {
 export const SingleMsg = ({
   type,
   text1,
-  bolds,
+  tokens,
   tags,
   length,
   text2,
@@ -37,15 +41,26 @@ export const SingleMsg = ({
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
       {type} {text1}
-      {bolds && (
-        <Box display="inline-flex">
-          {bolds.map((bold: string, index: number) => (
-            <Text key={index.toString() + bold} fontWeight="medium">
-              {bold}
+      {tokens &&
+        tokens.map((token: Coin, index: number) => (
+          <Flex role="group" align="center" gap={1}>
+            <Text key={index.toString() + token} fontWeight="medium">
+              {formatBalanceWithDenom(token)}
             </Text>
-          ))}
-        </Box>
-      )}
+            <Tooltip
+              hasArrow
+              label={token.denom}
+              placement="top"
+              bg="primary.dark"
+              maxW="500px"
+            >
+              <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
+            </Tooltip>
+            <Box display="none" _groupHover={{ display: "flex" }}>
+              <Copier value={token.denom} />
+            </Box>
+          </Flex>
+        ))}
       {/* Tags  */}
       {tags &&
         tags.map((tag: string, index: number) => (

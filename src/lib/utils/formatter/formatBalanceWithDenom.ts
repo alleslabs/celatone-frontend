@@ -10,6 +10,3 @@ export const formatBalanceWithDenom = (coin: Coin) => {
     coin.denom
   )}`;
 };
-
-export const formatBalanceWithDenomList = (coins: Coin[]) =>
-  coins.map(formatBalanceWithDenom);
