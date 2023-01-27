@@ -87,6 +87,25 @@ export const ButtonSection = ({
           Proceed to Migrate
         </Button>
       );
+    case "update-admin":
+      return (
+        <>
+          <Button variant="ghost-primary" onClick={openExplorer}>
+            See Transaction
+          </Button>
+          <Button
+            variant="primary"
+            rightIcon={
+              <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+            }
+            onClick={() =>
+              navigate({ pathname: `/contract/${router.query.contract}` })
+            }
+          >
+            View Contract Details
+          </Button>
+        </>
+      );
     case "rejected":
     case "resend":
       return (
