@@ -2,6 +2,9 @@ import { MdBookmark, MdInbox, MdLibraryBooks } from "react-icons/md";
 
 import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
+/**
+ * @todos Revisit utils import later
+ */
 import { formatSlugName } from "lib/utils/format";
 
 export const INSTANTIATED_LIST_NAME = "Instantiated by me";
