@@ -70,7 +70,7 @@ export const SingleMsg = ({
             label={`Token ID: ${token.id}`}
             placement="top"
             bg="primary.dark"
-            maxW="600px"
+            maxW="240px"
           >
             <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
           </Tooltip>
