@@ -4,7 +4,14 @@ import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { useGetAddressType } from "lib/hooks";
-import type { Filters, Message, Option, PastTransaction } from "lib/types";
+import type {
+  Filters,
+  Message,
+  Option,
+  PastTransaction,
+  HumanAddr,
+  ContractAddr,
+} from "lib/types";
 import {
   getActionMsgType,
   parseDateDefault,
@@ -43,7 +50,7 @@ interface GraphqlTransactionsResponse {
 }
 
 export const useTxQuery = (
-  userAddress: Option<string>,
+  userAddress: Option<HumanAddr>,
   search: string,
   filters: Filters,
   pageSize: number,
@@ -60,7 +67,7 @@ export const useTxQuery = (
     if (getAddressType(search) === "contract_address") {
       const where = generateWhereForContractTx({
         userAddress,
-        contractAddress: search,
+        contractAddress: search as ContractAddr,
         filters,
       });
       return indexerGraphClient
@@ -80,6 +87,7 @@ export const useTxQuery = (
               messages: snakeToCamel(
                 contractTx.transaction.messages
               ) as Message[],
+              // TODO - Remove default case
               created: parseDateDefault(
                 contractTx.transaction.block?.timestamp
               ),
@@ -131,6 +139,7 @@ export const useTxQuery = (
           return {
             hash: parseTxHash(transaction.hash),
             messages: snakeToCamel(transaction.messages) as Message[],
+            // TODO - Remove default case
             created: parseDateDefault(transaction.block?.timestamp),
             success: transaction.success,
             actionMsgType: getActionMsgType([
@@ -204,7 +213,7 @@ export const useTxQueryCount = (
     }
 
     const where = generateWhereForTx({
-      userAddress,
+      userAddress: userAddress as HumanAddr,
       txHash: search,
       filters,
     });

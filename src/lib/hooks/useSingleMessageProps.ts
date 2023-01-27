@@ -15,6 +15,7 @@ import type {
   Option,
   DetailMigrate,
   DetailClearAdmin,
+  ContractAddr,
 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";
@@ -38,13 +39,16 @@ import { getExecuteMsgTags } from "lib/utils/executeTags";
 const instantiateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>,
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>,
   isInstantiate2: boolean
 ) => {
   const detail = messages[0].detail as DetailInstantiate;
   // TODO - revisit, instantiate detail response when query from contract transaction table doesn't contain contract addr
   const contractAddress =
-    detail.contractAddress || getFirstQueryParam(router.query.contractAddress);
+    detail.contractAddress ||
+    (getFirstQueryParam(router.query.contractAddress) as ContractAddr);
 
   const contractLocalInfo = getContractLocalInfo(contractAddress);
   const type = isInstantiate2 ? "Instantiate2" : "Instantiate";
@@ -113,7 +117,9 @@ const executeSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   singleMsg: Option<boolean>,
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailExecute;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
@@ -208,7 +214,9 @@ const sendSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   chainName: string,
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailSend;
   const contractLocalInfo = getContractLocalInfo(detail.toAddress);
@@ -299,7 +307,9 @@ const sendSingleMsgProps = (
 const migrateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailMigrate;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
@@ -362,11 +372,13 @@ const updateAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   chainName: string,
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailUpdateAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
-  const adminLocalInfo = getContractLocalInfo(detail.newAdmin);
+  const adminLocalInfo = getContractLocalInfo(detail.newAdmin as ContractAddr);
 
   if (messages.length > 1) {
     return isSuccess
@@ -431,7 +443,9 @@ const updateAdminSingleMsgProps = (
 const clearAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailClearAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);

@@ -1,4 +1,4 @@
-import type { Filters } from "lib/types";
+import type { Filters, HumanAddr, ContractAddr } from "lib/types";
 
 /**
  * Generate action filter for where clause used in graphql. Only return action that is true
@@ -28,8 +28,8 @@ export const actionsFilter = (filters: Filters) => {
 };
 
 interface GenerateWhereForContractTx {
-  userAddress: string;
-  contractAddress: string;
+  userAddress: HumanAddr;
+  contractAddress: ContractAddr;
   filters: Filters;
 }
 
@@ -56,7 +56,7 @@ export const generateWhereForContractTx = ({
 };
 
 interface GenerateWhereForTx {
-  userAddress: string;
+  userAddress: HumanAddr;
   txHash?: string;
   filters: Filters;
 }

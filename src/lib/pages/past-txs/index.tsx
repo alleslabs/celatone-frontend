@@ -15,6 +15,7 @@ import { MdSearch } from "react-icons/md";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import type { HumanAddr } from "lib/types";
 
 import { FilterSelection } from "./components/FilterSelection";
 import { PastTxsContent } from "./components/PastTxsContent";
@@ -25,7 +26,7 @@ const PastTxs = () => {
 
   const { watch, setValue } = useForm({
     defaultValues: {
-      input: "",
+      search: "",
       filters: {
         isExecute: false,
         isInstantiate: false,
@@ -44,7 +45,7 @@ const PastTxs = () => {
 
   const { data: countTxs = 0 } = useTxQueryCount(
     address,
-    pastTxsState.input,
+    pastTxsState.search,
     pastTxsState.filters
   );
 
@@ -69,8 +70,8 @@ const PastTxs = () => {
     error: txDataError,
     isLoading,
   } = useTxQuery(
-    address,
-    pastTxsState.input,
+    address as HumanAddr,
+    pastTxsState.search,
     pastTxsState.filters,
     pageSize,
     offset
@@ -104,7 +105,7 @@ const PastTxs = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [pastTxsState.filters, pastTxsState.input, setCurrentPage]);
+  }, [pastTxsState.filters, pastTxsState.search, setCurrentPage]);
 
   return (
     <Box>
@@ -117,8 +118,8 @@ const PastTxs = () => {
           <Flex grow="2" gap="4">
             <InputGroup>
               <Input
-                value={pastTxsState.input}
-                onChange={(e) => setValue("input", e.target.value)}
+                value={pastTxsState.search}
+                onChange={(e) => setValue("search", e.target.value)}
                 placeholder="Search with transaction hash or contract address"
                 focusBorderColor="primary.main"
                 h="full"
@@ -139,7 +140,7 @@ const PastTxs = () => {
       <PastTxsContent
         isLoading={isLoading}
         txDataError={txDataError}
-        input={pastTxsState.input}
+        input={pastTxsState.search}
         filterSelected={filterSelected}
         txData={txData}
       />
