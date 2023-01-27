@@ -6,6 +6,7 @@ export enum MsgType {
   STORE_CODE = "STORE_CODE",
   INSTANTIATE = "INSTANTIATE",
   EXECUTE = "EXECUTE",
+  UPDATE_ADMIN = "UPDATE_ADMIN",
 }
 
 export enum AccessType {
@@ -43,10 +44,17 @@ export interface MsgExecuteContract {
   funds: Coin[];
 }
 
+export interface MsgUpdateAdmin {
+  sender: HumanAddr;
+  newAdmin: HumanAddr | ContractAddr;
+  contract: ContractAddr;
+}
+
 export type TxMessage =
   | MsgStoreCode
   | MsgInstantiateContract
-  | MsgExecuteContract;
+  | MsgExecuteContract
+  | MsgUpdateAdmin;
 
 export interface ComposedMsg {
   typeUrl: string;

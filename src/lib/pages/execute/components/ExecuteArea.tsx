@@ -1,4 +1,4 @@
-import { Box, Flex, Button, ButtonGroup, Icon, Text } from "@chakra-ui/react";
+import { Box, Flex, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import dynamic from "next/dynamic";
@@ -6,7 +6,6 @@ import type { SetStateAction } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useFormState, useWatch } from "react-hook-form";
 import type { Control, UseFormSetValue } from "react-hook-form";
-import { IoIosWarning } from "react-icons/io";
 import { MdInput } from "react-icons/md";
 
 import type { ExecutePageState } from "../types";
@@ -18,6 +17,7 @@ import {
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
+import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { AssetInput, ControllerInput, SelectInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
@@ -78,7 +78,7 @@ export const ExecuteArea = ({
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(initialMsg);
   const [fundMsg, setFundMsg] = useState(initialFundMsg);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>();
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
   const [attachFundOption, setAttachFundOption] = useState("");
@@ -149,7 +149,7 @@ export const ExecuteArea = ({
   useEffect(() => setFundMsg(initialFundMsg), [initialFundMsg]);
   useEffect(() => {
     if (enableExecute) {
-      setError("");
+      setError(undefined);
 
       const funds = assets
         .filter((asset) => asset.amount && asset.denom)
@@ -227,14 +227,7 @@ export const ExecuteArea = ({
             setText={setMsg}
             height="240px"
           />
-          {error && (
-            <Flex gap={2} mb={4}>
-              <Icon as={IoIosWarning} boxSize={4} color="error.main" />
-              <Text variant="body3" color="error.main">
-                {error}
-              </Text>
-            </Flex>
-          )}
+          {error && <ErrorMessageRender error={error} mb={4} />}
         </Box>
         <Box w={{ sm: "full", lg: "50%" }}>
           <Text variant="body1" fontWeight="600" mb={4}>

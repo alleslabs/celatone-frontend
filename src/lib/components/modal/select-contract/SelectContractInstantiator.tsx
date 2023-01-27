@@ -113,90 +113,93 @@ export const SelectContractInstantiator = ({
         onClose={resetOnClose}
         closeOnOverlayClick={false}
         size="4xl"
+        isCentered
       >
         <ModalOverlay />
-        {listSlug.length === 0 || !contractList ? (
-          <ModalContent>
-            <ModalHeader>
-              <Icon as={MdList} color="text.dark" fontSize="24px" />
-              <Heading as="h5" variant="h5">
-                Select Contract
-              </Heading>
-            </ModalHeader>
-            <ModalCloseButton />
+        <ModalContent h="80%">
+          {listSlug.length === 0 || !contractList ? (
+            <>
+              <ModalHeader>
+                <Icon as={MdList} color="text.dark" fontSize="24px" />
+                <Heading as="h5" variant="h5">
+                  Select Contract
+                </Heading>
+              </ModalHeader>
+              <ModalCloseButton />
 
-            <ModalBody p="24px">
-              <Heading as="h6" variant="h6" mb="8px">
-                Fill contract address manually
-              </Heading>
-              <Flex gap="8px" alignItems="center">
-                <Input
-                  isInvalid={invalid !== ""}
-                  value={searchContract}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    setSearchContract(inputValue as ContractAddr);
-                  }}
-                  placeholder={`ex. ${exampleContractAddress}`}
-                  size="md"
+              <ModalBody p="24px" maxH="full" overflowY="scroll">
+                <Heading as="h6" variant="h6" mb="8px">
+                  Fill contract address manually
+                </Heading>
+                <Flex gap="8px" alignItems="center">
+                  <Input
+                    isInvalid={invalid !== ""}
+                    value={searchContract}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      setSearchContract(inputValue as ContractAddr);
+                    }}
+                    placeholder={`ex. ${exampleContractAddress}`}
+                    size="md"
+                  />
+                  <Button
+                    isDisabled={searchContract.length === 0}
+                    isLoading={isFetching || isRefetching}
+                    onClick={() => {
+                      const err = validateContractAddress(searchContract);
+                      if (err !== null) setInvalid(err);
+                      else refetch();
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Flex>
+                <Text variant="body3" color="error.main" mt={1} ml={3}>
+                  {invalid}
+                </Text>
+
+                <Flex my="24px" gap="8px" alignItems="center">
+                  <Divider borderColor="gray.500" />
+                  <Text variant="body1">OR</Text>
+                  <Divider borderColor="gray.500" />
+                </Flex>
+
+                <Heading as="h6" variant="h6" mb={4}>
+                  Select from your Contract List
+                </Heading>
+                <AllContractLists
+                  contractLists={contractLists}
+                  handleListSelect={handleListSelect}
+                  isReadOnly
+                  formLabelBgColor="gray.800"
                 />
-                <Button
-                  isDisabled={searchContract.length === 0}
-                  isLoading={isFetching || isRefetching}
-                  onClick={() => {
-                    const err = validateContractAddress(searchContract);
-                    if (err !== null) setInvalid(err);
-                    else refetch();
-                  }}
-                >
-                  Submit
-                </Button>
-              </Flex>
-              <Text variant="body3" color="error.main" mt={1} ml={3}>
-                {invalid}
-              </Text>
-
-              <Flex my="24px" gap="8px" alignItems="center">
-                <Divider borderColor="gray.500" />
-                <Text variant="body1">OR</Text>
-                <Divider borderColor="gray.500" />
-              </Flex>
-
-              <Heading as="h6" variant="h6" mb={4}>
-                Select from your Contract List
-              </Heading>
-              <AllContractLists
-                contractLists={contractLists}
-                handleListSelect={handleListSelect}
-                isReadOnly
-                formLabelBgColor="gray.800"
-              />
-            </ModalBody>
-          </ModalContent>
-        ) : (
-          <ModalContent>
-            <ModalHeader>
-              <Icon
-                as={MdChevronLeft}
-                color="text.dark"
-                fontSize="24px"
-                onClick={() => setListSlug("")}
-                cursor="pointer"
-              />
-              <Heading as="h5" variant="h5">
-                {contractList.name}
-              </Heading>
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <ContractListDetail
-                contractListInfo={contractList}
-                isReadOnly
-                onContractSelect={onSelectThenClose}
-              />
-            </ModalBody>
-          </ModalContent>
-        )}
+              </ModalBody>
+            </>
+          ) : (
+            <>
+              <ModalHeader>
+                <Icon
+                  as={MdChevronLeft}
+                  color="text.dark"
+                  fontSize="24px"
+                  onClick={() => setListSlug("")}
+                  cursor="pointer"
+                />
+                <Heading as="h5" variant="h5">
+                  {contractList.name}
+                </Heading>
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody maxH="full" overflowY="scroll">
+                <ContractListDetail
+                  contractListInfo={contractList}
+                  isReadOnly
+                  onContractSelect={onSelectThenClose}
+                />
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
       </Modal>
     </>
   );

@@ -76,9 +76,10 @@ export const SelectContractAdmin = ({
         onClose={resetOnClose}
         closeOnOverlayClick={false}
         size="4xl"
+        isCentered
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent h="80%">
           <ModalHeader>
             <Icon as={MdList} color="text.dark" fontSize="24px" />
             <Heading as="h5" variant="h5">
@@ -86,7 +87,7 @@ export const SelectContractAdmin = ({
             </Heading>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody maxH="full" overflowY="scroll">
             <ContractListDetail
               contractListInfo={contractList}
               isReadOnly
