@@ -44,7 +44,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent w="450px">
+        <ModalContent w="640px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
               <Icon as={MdReplay} boxSize={6} color="gray.600" />
@@ -60,10 +60,10 @@ export const RedoModal = ({ message }: RedoModalProps) => {
                 <Text variant="body1">
                   This contract was instantiated through{" "}
                   <span style={{ fontWeight: 700 }}>
-                    &#x2018;Instantiate2&#x2019;
+                    &#x2018;MsgInstantiateContract2&#x2019;
                   </span>
-                  , which our app does not currently support. You can instead
-                  instantiate the contract using{" "}
+                  , which our app does not currently support. <br /> <br /> You
+                  can instead instantiate the contract using{" "}
                   <span style={{ fontWeight: 700 }}>
                     &#x2018;MsgInstantiateContract&#x2019;
                   </span>{" "}
@@ -77,9 +77,17 @@ export const RedoModal = ({ message }: RedoModalProps) => {
               w="full"
               direction="row"
               align="center"
-              justifyContent="center"
+              justifyContent="end"
               gap="4"
             >
+              <Button
+                cursor="pointer"
+                variant="ghost"
+                onClick={onClose}
+                color="primary.main"
+              >
+                Cancel
+              </Button>
               <Button
                 onClick={(e) =>
                   onClickRedo(
@@ -90,15 +98,6 @@ export const RedoModal = ({ message }: RedoModalProps) => {
                   )
                 }
               >{`Redo with \u2018MsgInstantiateContract\u2019`}</Button>
-              <Text
-                cursor="pointer"
-                onClick={onClose}
-                color="primary.main"
-                variant="body2"
-                fontWeight="700"
-              >
-                Cancel
-              </Text>
             </Flex>
           </ModalFooter>
         </ModalContent>
