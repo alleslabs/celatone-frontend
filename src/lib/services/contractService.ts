@@ -15,6 +15,7 @@ import {
   getTxsByContractAddress,
   getRelatedProposalsCountByContractAddress,
   getRelatedProposalsByContractAddress,
+  getAdminByContractAddressesQueryDocument,
   getContractListByAdmin,
 } from "lib/data/queries";
 import type { ContractLocalInfo } from "lib/stores/contract";
@@ -29,6 +30,7 @@ import type {
   Option,
   ProposalStatus,
   ProposalType,
+  Dict,
 } from "lib/types";
 import {
   parseDate,
@@ -144,6 +146,34 @@ export const useInstantiateDetailByContractQuery = (
       keepPreviousData: true,
     }
   );
+};
+
+export const useAdminByContractAddresses = (
+  contractAddresses: Option<ContractAddr[]>
+): UseQueryResult<Option<Dict<ContractAddr, string>>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(async () => {
+    if (!contractAddresses) throw new Error("No contract selected");
+
+    return indexerGraphClient
+      .request(getAdminByContractAddressesQueryDocument, {
+        contractAddresses,
+      })
+      .then(({ contracts }) =>
+        contracts.reduce(
+          (prev, contract) => ({
+            ...prev,
+            [contract.address as ContractAddr]: contract.admin?.address,
+          }),
+          {}
+        )
+      );
+  }, [contractAddresses, indexerGraphClient]);
+
+  return useQuery(["admin_by_contracts", contractAddresses], queryFn, {
+    keepPreviousData: true,
+    enabled: !!contractAddresses,
+  });
 };
 
 export const useExecuteTxsByContractAddress = (

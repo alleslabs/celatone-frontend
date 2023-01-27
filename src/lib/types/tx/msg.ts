@@ -7,6 +7,7 @@ export enum MsgType {
   INSTANTIATE = "INSTANTIATE",
   EXECUTE = "EXECUTE",
   MIGRATE = "MIGRATE",
+  UPDATE_ADMIN = "UPDATE_ADMIN",
 }
 
 export enum AccessType {
@@ -50,12 +51,18 @@ export interface MsgMigrateContract {
   codeId: Long;
   msg: Uint8Array;
 }
+export interface MsgUpdateAdmin {
+  sender: HumanAddr;
+  newAdmin: HumanAddr | ContractAddr;
+  contract: ContractAddr;
+}
 
 export type TxMessage =
   | MsgStoreCode
   | MsgInstantiateContract
   | MsgExecuteContract
-  | MsgMigrateContract;
+  | MsgMigrateContract
+  | MsgUpdateAdmin;
 
 export interface ComposedMsg {
   typeUrl: string;

@@ -41,6 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#120](https://github.com/alleslabs/celatone-frontend/pull/120) Add simulate migrate fee and the final migration step
 - [#108](https://github.com/alleslabs/celatone-frontend/pull/108) Add migrate options on migrate page and upload new code for migration
+- [#113](https://github.com/alleslabs/celatone-frontend/pull/113) Update admin page ui and wireup
+- [#98](https://github.com/alleslabs/celatone-frontend/pull/98) Add migrate, update admin, clear admin menu on contract list and detail
+- [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
 - [#102](https://github.com/alleslabs/celatone-frontend/pull/102) Add quick menu in overview and add highlighted in left sidebar
 - [#125](https://github.com/alleslabs/celatone-frontend/pull/125) Add connect wallet alert in instantiate page
 - [#126](https://github.com/alleslabs/celatone-frontend/pull/126) Add port id copier for IBC port id
@@ -108,6 +111,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#124](https://github.com/alleslabs/celatone-frontend/pull/124) Fix public project query, display project image in contract details page
+- [#125](https://github.com/alleslabs/celatone-frontend/pull/125) Fix incorrect CosmJS execute snippet
+- [#117](https://github.com/alleslabs/celatone-frontend/pull/117) Fix native token label formatting
+- [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
 - [#122](https://github.com/alleslabs/celatone-frontend/pull/122) Fix unknown code upload block height
 - [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
 - [#119](https://github.com/alleslabs/celatone-frontend/pull/119) Fix searching and project ordering in public projects page

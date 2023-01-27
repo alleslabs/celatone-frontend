@@ -11,8 +11,8 @@ import {
   useFabricateFee,
   useNativeTokensInfo,
   useSimulateFee,
+  useInstantiateTx,
 } from "lib/app-provider";
-import { useInstantiateTx } from "lib/app-provider/tx/instantiate";
 import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";

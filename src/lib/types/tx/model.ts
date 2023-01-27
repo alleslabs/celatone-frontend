@@ -29,7 +29,8 @@ export type ActionVariant =
   | "upload-migrate"
   | "migrate"
   | "rejected"
-  | "resend";
+  | "resend"
+  | "update-admin";
 
 export interface TxResultRendering<T = unknown> {
   /**

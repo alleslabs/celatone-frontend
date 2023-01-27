@@ -25,12 +25,12 @@ const getStatusDecorator = (
   error: string
 ): StatusDecorator => {
   switch (status) {
-    case "Completed":
+    case "completed":
       return {
         icon: <Icon as={MdCheckCircle} boxSize="6" color="success.main" />,
         statusText: <span style={{ color: "#66BB6A" }}>Valid Wasm file</span>,
       };
-    case "Failed":
+    case "failed":
       return {
         icon: <Icon as={IoIosWarning} boxSize="6" color="error.main" />,
         statusText: <span style={{ color: "#EF5350" }}>Invalid Wasm file</span>,
@@ -49,7 +49,7 @@ export const UploadCard = ({
   simulateStatus,
   simulateError,
 }: UploadCardProps) => {
-  const isError = simulateStatus === "Failed";
+  const isError = simulateStatus === "failed";
   const {
     icon: StatusIcon,
     statusText,

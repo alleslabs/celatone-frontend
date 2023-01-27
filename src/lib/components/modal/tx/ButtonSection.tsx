@@ -8,6 +8,7 @@ import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
+// TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
   actionVariant?: ActionVariant;
   onClose?: () => void;
@@ -87,18 +88,22 @@ export const ButtonSection = ({
         </Button>
       );
     case "migrate":
+    case "update-admin":
       return (
         <>
+          <Button variant="ghost-primary" onClick={openExplorer}>
+            See Transaction
+          </Button>
           <Button
-            variant="outline-primary"
+            variant="primary"
+            rightIcon={
+              <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+            }
             onClick={() =>
               navigate({ pathname: `/contract/${router.query.contract}` })
             }
           >
-            Close
-          </Button>
-          <Button variant="primary" onClick={openExplorer}>
-            See Transaction
+            View Contract Details
           </Button>
         </>
       );
