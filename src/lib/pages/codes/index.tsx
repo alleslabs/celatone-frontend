@@ -39,10 +39,6 @@ const Codes = observer(() => {
     savedCodes: saved,
     allCodesCount,
   } = useCodeListData(keyword, permissionValue);
-  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setValue("keyword", inputValue);
-  };
 
   return (
     <Box>
@@ -62,7 +58,9 @@ const Codes = observer(() => {
             <InputWithIcon
               placeholder="Search with code ID or code description"
               value={keyword}
-              onChange={handleFilterChange}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setValue("keyword", e.target.value)
+              }
               size="lg"
             />
             <FilterByPermission
