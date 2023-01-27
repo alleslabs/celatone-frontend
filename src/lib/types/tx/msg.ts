@@ -86,7 +86,7 @@ export interface DetailClearAdmin {
 
 export interface DetailUpdateAdmin {
   contract: ContractAddr;
-  newAdmin: HumanAddr;
+  newAdmin: HumanAddr | ContractAddr;
   sender: HumanAddr;
 }
 

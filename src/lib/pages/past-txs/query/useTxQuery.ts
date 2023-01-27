@@ -1,150 +1,231 @@
+import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
-import type { Transaction } from "lib/types/tx/transaction";
-import { snakeToCamel } from "lib/utils/formatter";
+import { useGetAddressType } from "lib/hooks";
+import type {
+  Filters,
+  Message,
+  Option,
+  PastTransaction,
+  HumanAddr,
+  ContractAddr,
+} from "lib/types";
+import {
+  getActionMsgType,
+  parseDateDefault,
+  parseTxHash,
+  snakeToCamel,
+  getMsgFurtherAction,
+} from "lib/utils";
 
 import {
-  queryAddrFromContracts,
-  queryShowallFromTxs,
-  queryWithActionsFromTxs,
+  actionsFilter,
+  generateWhereForContractTx,
+  generateWhereForTx,
+} from "./generateWhere";
+import {
+  queryTransactionCountFromContractTxs,
+  queryTransactionFromContractTxs,
+  queryTransactionsCountFromTxs,
+  queryTransactionsFromTxs,
 } from "./graphqlQuery";
 
-interface Action {
-  execute: boolean;
-  instantiate: boolean;
-  upload: boolean;
-  ibc: boolean;
-  send: boolean;
+interface GraphqlTransactionsResponse {
+  hash: string;
+  isSend: boolean;
+  isExecute: boolean;
+  isIbc: boolean;
+  isInstantiate: boolean;
+  isStoreCode: boolean;
+  isClearAdmin: boolean;
+  isMigrate: boolean;
+  isUpdateAdmin: boolean;
+  messages: Message[];
+  success: boolean;
+  block: {
+    timestamp: string;
+  };
 }
-
-interface Response {
-  transactions: Array<Transaction>;
-  count: number;
-}
-
-const actions = {
-  execute: "is_execute",
-  instantiate: "is_instantiate",
-  upload: "is_store_code",
-  ibc: "is_ibc",
-  send: "is_send",
-};
 
 export const useTxQuery = (
-  userAddr: string | undefined,
-  execute: boolean,
-  instantiate: boolean,
-  upload: boolean,
-  ibc: boolean,
-  send: boolean,
+  userAddress: Option<HumanAddr>,
   search: string,
+  filters: Filters,
   pageSize: number,
   offset: number
 ) => {
+  const getAddressType = useGetAddressType();
   const { indexerGraphClient } = useCelatoneApp();
+
   // Filter when action buttons are pressed
-  const actionsFilter = () => {
-    const actionsObj = {
-      execute,
-      instantiate,
-      upload,
-      send,
-      ibc,
-    };
+  const queryFn = useCallback(async () => {
+    if (!userAddress) throw new Error("User address not found");
 
-    let filter = "";
-    Object.keys(actionsObj).forEach((key) => {
-      if (actionsObj[key as keyof typeof actionsObj]) {
-        // Remove message that contain only ibc
-        if (key === "ibc") {
-          filter += `
-          
-            _and: [
-              { is_ibc: { _eq: true} }
-              {
-                _or: [
-                  { is_execute: { _neq: false } }
-                  { is_instantiate: { _neq: false } }
-                  { is_store_code: { _neq: false } }
-                  { is_send: { _neq: false } }
-                ]
-              }
-            ]
-          
-          `;
-        } else {
-          filter += `${actions[key as keyof Action]}: {_eq: true}`;
-          filter += `,`;
-        }
-      }
-    });
-
-    // Remove last ,
-    filter = filter.substring(0, filter.length - 1);
-    return filter;
-  };
-
-  const queryFn = async (): Promise<Response> => {
-    // Determine endpoint
-    if (userAddr === "") {
-      return { transactions: [], count: 0 } as Response;
-    }
-
-    // Tx hash and no search -> query from transactions table
-    if (search.length === 64 || search.length === 0) {
-      const isShowAll = !execute && !instantiate && !upload && !ibc && !send;
-      // Show all 4 main action types
-      let response;
-      if (isShowAll) {
-        response = await indexerGraphClient.request(
-          queryShowallFromTxs(search),
-          {
-            userAddr,
-            pageSize,
-            offset,
-          }
-        );
-        // When buttons are pressed
-      } else {
-        response = indexerGraphClient.request(
-          queryWithActionsFromTxs(search, actionsFilter()),
-          {
-            userAddr,
-            pageSize,
-            offset,
-          }
-        );
-      }
-      return snakeToCamel({
-        transactions: response.transactions,
-        count: response.transactions_aggregate?.aggregate?.count,
-      }) as Response;
-
-      // Contract address -> query from contracts table
-    }
-    if (search.length === 63) {
-      const response = await indexerGraphClient.request(
-        queryAddrFromContracts(actionsFilter()),
-        {
-          userAddr,
-          contractAddress: search,
+    // Search with contract address -> query from contract transaction table
+    if (getAddressType(search) === "contract_address") {
+      const where = generateWhereForContractTx({
+        userAddress,
+        contractAddress: search as ContractAddr,
+        filters,
+      });
+      return indexerGraphClient
+        .request(queryTransactionFromContractTxs(where), {
           pageSize,
           offset,
-        }
-      );
-      return snakeToCamel({
-        transactions: response.contract_transactions.map(
-          (tx: { transaction: Transaction }) => tx.transaction
-        ),
-        count: response.contract_transactions_aggregate?.aggregate?.count,
-      }) as Response;
+        })
+        .then(({ contract_transactions }) => {
+          const contractTransactionsToCamel = snakeToCamel(
+            contract_transactions
+          ) as { transaction: GraphqlTransactionsResponse }[];
+          return contractTransactionsToCamel.map(
+            (contractTx: {
+              transaction: GraphqlTransactionsResponse;
+            }): PastTransaction => ({
+              hash: parseTxHash(contractTx.transaction.hash),
+              messages: snakeToCamel(
+                contractTx.transaction.messages
+              ) as Message[],
+              // TODO - Remove default case
+              created: parseDateDefault(
+                contractTx.transaction.block?.timestamp
+              ),
+              success: contractTx.transaction.success,
+              actionMsgType: getActionMsgType([
+                contractTx.transaction.isExecute,
+                contractTx.transaction.isInstantiate,
+                contractTx.transaction.isSend,
+                contractTx.transaction.isStoreCode,
+                contractTx.transaction.isMigrate,
+                contractTx.transaction.isUpdateAdmin,
+                contractTx.transaction.isClearAdmin,
+              ]),
+              furtherAction: getMsgFurtherAction(
+                contractTx.transaction.messages.length,
+                {
+                  isExecute: contractTx.transaction.isExecute,
+                  isInstantiate: contractTx.transaction.isInstantiate,
+                  isSend: contractTx.transaction.isSend,
+                  isUpload: contractTx.transaction.isStoreCode,
+                  isMigrate: contractTx.transaction.isMigrate,
+                  isUpdateAdmin: contractTx.transaction.isUpdateAdmin,
+                  isClearAdmin: contractTx.transaction.isClearAdmin,
+                  isIbc: contractTx.transaction.isIbc,
+                }
+              ),
+              isIbc: contractTx.transaction.isIbc,
+              isInstantiate: contractTx.transaction.isInstantiate,
+            })
+          );
+        });
     }
-    return { transactions: [], count: 0 } as Response;
-  };
+
+    const where = generateWhereForTx({
+      userAddress,
+      txHash: search,
+      filters,
+    });
+    return indexerGraphClient
+      .request(queryTransactionsFromTxs(where), {
+        pageSize,
+        offset,
+      })
+      .then(({ transactions }) => {
+        const transactionsToCamel = snakeToCamel(
+          transactions
+        ) as GraphqlTransactionsResponse[];
+        return transactionsToCamel.map((transaction): PastTransaction => {
+          return {
+            hash: parseTxHash(transaction.hash),
+            messages: snakeToCamel(transaction.messages) as Message[],
+            // TODO - Remove default case
+            created: parseDateDefault(transaction.block?.timestamp),
+            success: transaction.success,
+            actionMsgType: getActionMsgType([
+              transaction.isExecute,
+              transaction.isInstantiate,
+              transaction.isSend,
+              transaction.isStoreCode,
+              transaction.isMigrate,
+              transaction.isUpdateAdmin,
+              transaction.isClearAdmin,
+            ]),
+            furtherAction: getMsgFurtherAction(transaction.messages.length, {
+              isExecute: transaction.isExecute,
+              isInstantiate: transaction.isInstantiate,
+              isSend: transaction.isSend,
+              isUpload: transaction.isStoreCode,
+              isMigrate: transaction.isMigrate,
+              isUpdateAdmin: transaction.isUpdateAdmin,
+              isClearAdmin: transaction.isClearAdmin,
+              isIbc: transaction.isIbc,
+            }),
+            isIbc: transaction.isIbc,
+            isInstantiate: transaction.isInstantiate,
+          };
+        });
+      });
+  }, [
+    filters,
+    getAddressType,
+    indexerGraphClient,
+    offset,
+    pageSize,
+    search,
+    userAddress,
+  ]);
+
   return useQuery({
-    queryKey: ["transaction", userAddr, search],
+    queryKey: [
+      "past-transaction",
+      userAddress,
+      search,
+      filters,
+      offset,
+      pageSize,
+    ],
     queryFn,
-    refetchInterval: 2000,
+  });
+};
+
+export const useTxQueryCount = (
+  userAddress: Option<string>,
+  search: string,
+  filters: Filters
+): UseQueryResult<number> => {
+  const getAddressType = useGetAddressType();
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    if (!userAddress) throw new Error("User address not found");
+
+    if (getAddressType(search) === "contract_address") {
+      return indexerGraphClient
+        .request(queryTransactionCountFromContractTxs(actionsFilter(filters)), {
+          userAddress,
+          contractAddress: search,
+        })
+        .then(
+          ({ contract_transactions_aggregate }) =>
+            contract_transactions_aggregate.aggregate.count
+        );
+    }
+
+    const where = generateWhereForTx({
+      userAddress: userAddress as HumanAddr,
+      txHash: search,
+      filters,
+    });
+    return indexerGraphClient
+      .request(queryTransactionsCountFromTxs(where))
+      .then(
+        ({ transactions_aggregate }) => transactions_aggregate.aggregate.count
+      );
+  }, [filters, getAddressType, indexerGraphClient, search, userAddress]);
+
+  return useQuery({
+    queryKey: ["past-transaction-count", userAddress, search, filters],
+    queryFn,
   });
 };

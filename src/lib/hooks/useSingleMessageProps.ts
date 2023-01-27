@@ -1,8 +1,10 @@
 import { useWallet } from "@cosmos-kit/react";
+import router from "next/router";
 
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { getAddressTypeByLength, useContractStore } from "lib/hooks";
+import { useAssetInfos } from "lib/services/assetService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   DetailExecute,
@@ -14,14 +16,17 @@ import type {
   Option,
   DetailMigrate,
   DetailClearAdmin,
+  ContractAddr,
+  AssetInfo,
 } from "lib/types";
-import { formatBalanceWithDenomList } from "lib/utils";
+import { getFirstQueryParam } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";
 
 /**
- * Returns messages variations for MsgInstantiateContract.
+ * Returns messages variations for MsgInstantiateContract and MsgInstantiateContract2.
  *
  * @remarks
+ * Will render Instantiate2 instead of Instantiate if MsgInstantiateContract2
  * More than 1 msg: Instantiate [length] contracts
  * Only 1 msg: Instantiate contract [name || contract address] from Code ID [code ID]
  * Fail with more than 1 msg: Failed to instantiate [length] contracts
@@ -36,21 +41,30 @@ import { getExecuteMsgTags } from "lib/utils/executeTags";
 const instantiateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>,
+  isInstantiate2: boolean
 ) => {
   const detail = messages[0].detail as DetailInstantiate;
-  const contractLocalInfo = getContractLocalInfo(detail.contractAddress);
+  // TODO - revisit, instantiate detail response when query from contract transaction table doesn't contain contract addr
+  const contractAddress =
+    detail.contractAddress ||
+    (getFirstQueryParam(router.query.contractAddress) as ContractAddr);
+
+  const contractLocalInfo = getContractLocalInfo(contractAddress);
+  const type = isInstantiate2 ? "Instantiate2" : "Instantiate";
 
   if (messages.length > 1) {
     return isSuccess
       ? {
-          type: "Instantiate",
+          type,
           length: messages.length,
           text2: "contracts",
         }
       : {
           type: "Failed",
-          text1: "to instantiate",
+          text1: `to ${type}`,
           length: messages.length,
           text2: "contracts",
         };
@@ -58,12 +72,12 @@ const instantiateSingleMsgProps = (
 
   return isSuccess
     ? {
-        type: "Instantiate",
+        type,
         text1: "contract",
         link1: {
           type: "contract_address" as LinkType,
-          value: contractLocalInfo?.name || detail.contractAddress,
-          copyValue: detail.contractAddress,
+          value: contractLocalInfo?.name || contractAddress,
+          copyValue: contractAddress,
         },
         text3: "from Code ID",
         link2: {
@@ -73,7 +87,7 @@ const instantiateSingleMsgProps = (
       }
     : {
         type: "Failed",
-        text1: "to instantiate contract from Code ID",
+        text1: `to ${type} contract from Code ID`,
         link1: {
           type: "code_id" as LinkType,
           value: detail.codeId.toString(),
@@ -85,9 +99,13 @@ const instantiateSingleMsgProps = (
  * Returns messages variations for MsgExecuteContract.
  *
  * @remarks
- * More than 1 address: Execute [length] messages
+ * - More than 1 msg:
+ *  With same contract addr: Execute [length] messages  on [name \\ contract address]
+ *  With different contract addr: Execute [length] messages
  * Only 1 address: Execute [msg1] [msg2] [+number] on [name || contract address]
- * Fail with more than 1 msg: Failed to execute [length] messages
+ * Fail with more than 1 msg:
+ *  With same contract addr: Failed to execute [length] messages  on [name \\ contract address]
+ *  With diff contract addr: Failed to execute [length] messages
  * Fail with 1 msg: Failed to execute message from [name || contract address]
  *
  * @param isSuccess - boolean of whether tx is succeed or not
@@ -101,28 +119,55 @@ const executeSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   singleMsg: Option<boolean>,
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailExecute;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
 
-  if (
-    messages.some((msg) => {
-      const msgDetail = msg.detail as DetailExecute;
-      return msgDetail.contract !== detail.contract;
-    })
-  ) {
+  if (messages.length > 1) {
+    if (
+      messages.some((msg) => {
+        const msgDetail = msg.detail as DetailExecute;
+        return msgDetail.contract !== detail.contract;
+      })
+    ) {
+      return isSuccess
+        ? {
+            type: "Execute",
+            length: messages.length,
+            text2: "messages",
+          }
+        : {
+            type: "Failed",
+            // eslint-disable-next-line sonarjs/no-duplicate-string
+            text1: "to execute",
+            length: messages.length,
+            text2: "messages",
+          };
+    }
     return isSuccess
       ? {
           type: "Execute",
           length: messages.length,
-          text2: "messages",
+          text2: "messages on",
+          link2: {
+            type: "contract_address" as LinkType,
+            value: contractLocalInfo?.name || detail.contract,
+            copyValue: detail.contract,
+          },
         }
       : {
           type: "Failed",
           text1: "to execute",
           length: messages.length,
-          text2: "messages",
+          text2: "messages on",
+          link2: {
+            type: "contract_address" as LinkType,
+            value: contractLocalInfo?.name || detail.contract,
+            copyValue: detail.contract,
+          },
         };
   }
 
@@ -152,9 +197,13 @@ const executeSingleMsgProps = (
  * Returns messages variations for MsgSend.
  *
  * @remarks
- * More than 1 msg: Send assets to [length] addresses
+ * More than 1 msg:
+ *  With same address: Send assets to [name \\ contract address/ user address]
+ *  With different address: Send assets to [length] addresses
  * Only 1 msg: Send [amount] [denom] to [contract address / user address]
- * Fail with more than 1 msg: Failed to send assets to [length] addresses
+ * Fail with more than 1 msg:
+ *  With same address: Failed to send assets to  [name \\ contract address/ user address]
+ *  With diff address: Failed to send assets to [length] addresses
  * Fail with 1 msg: Failed to send assets to [contract address / user address]
  *
  * @param isSuccess - boolean of whether tx is succeed or not
@@ -166,28 +215,74 @@ const executeSingleMsgProps = (
 const sendSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string
+  chainName: string,
+  assetInfos: Option<Record<string, AssetInfo>>,
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailSend;
+  const contractLocalInfo = getContractLocalInfo(detail.toAddress);
+
+  const tokens = detail.amount.map((coin) => ({
+    symbol: assetInfos?.[coin.denom]?.symbol,
+    amount: coin.amount,
+    id: coin.denom,
+    precision: assetInfos?.[coin.denom]?.precision,
+  }));
 
   if (messages.length > 1) {
+    if (
+      messages.some((msg) => {
+        const msgDetail = msg.detail as DetailExecute;
+        return msgDetail.contract !== detail.toAddress;
+      })
+    ) {
+      return isSuccess
+        ? {
+            type: "Send ",
+            text1: "assets to",
+            length: messages.length,
+            text2: "addresses",
+          }
+        : {
+            type: "Failed",
+            // eslint-disable-next-line sonarjs/no-duplicate-string
+            text1: "to send assets to",
+            length: messages.length,
+            text2: "addresses",
+          };
+    }
     return isSuccess
       ? {
-          type: "Send assets to",
-          length: messages.length,
-          text: "addresses",
+          type: "Send",
+          text1: "assets to",
+          link2: {
+            type: getAddressTypeByLength(
+              chainName,
+              detail.toAddress
+            ) as LinkType,
+            value: contractLocalInfo?.name || detail.toAddress,
+            copyValue: detail.toAddress,
+          },
         }
       : {
           type: "Failed",
           text1: "to send assets to",
-          length: messages.length,
-          text2: "addresses",
+          link2: {
+            type: "contract_address" as LinkType,
+            value: getAddressTypeByLength(
+              chainName,
+              detail.toAddress
+            ) as LinkType,
+            copyValue: detail.toAddress,
+          },
         };
   }
   return isSuccess
     ? {
         type: "Send",
-        bolds: formatBalanceWithDenomList(detail.amount),
+        tokens,
         text2: "to",
         link1: {
           type: getAddressTypeByLength(chainName, detail.toAddress) as LinkType,
@@ -222,7 +317,9 @@ const sendSingleMsgProps = (
 const migrateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailMigrate;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
@@ -270,9 +367,9 @@ const migrateSingleMsgProps = (
  *
  * @remarks
  * More than 1 msg: Update [length] admins
- * Only 1 msg: Update admin on [name || contract address] to [user address]
+ * Only 1 msg: Update admin on [name || contract address] to [user address || contract address]
  * Fail with more than 1 msg: Failed to update [length] admins
- * Fail with 1 msg: Failed to update admin on [name || contract address] to [user address]
+ * Fail with 1 msg: Failed to update admin on [name || contract address] to [user address || contract address]
 
  *
  * @param isSuccess - boolean of whether tx is succeed or not
@@ -284,10 +381,14 @@ const migrateSingleMsgProps = (
 const updateAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  chainName: string,
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailUpdateAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
+  const adminLocalInfo = getContractLocalInfo(detail.newAdmin as ContractAddr);
 
   if (messages.length > 1) {
     return isSuccess
@@ -314,8 +415,8 @@ const updateAdminSingleMsgProps = (
         },
         text3: "to",
         link2: {
-          type: "user_address" as LinkType,
-          value: detail.newAdmin,
+          type: getAddressTypeByLength(chainName, detail.newAdmin) as LinkType,
+          value: adminLocalInfo?.name || detail.newAdmin,
         },
       }
     : {
@@ -328,8 +429,8 @@ const updateAdminSingleMsgProps = (
         },
         text3: "to",
         link2: {
-          type: "user_address" as LinkType,
-          value: detail.newAdmin,
+          type: getAddressTypeByLength(chainName, detail.newAdmin) as LinkType,
+          value: adminLocalInfo?.name || detail.newAdmin,
         },
       };
 };
@@ -352,7 +453,9 @@ const updateAdminSingleMsgProps = (
 const clearAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  getContractLocalInfo: (contractAddress: string) => Option<ContractLocalInfo>
+  getContractLocalInfo: (
+    contractAddress: ContractAddr
+  ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailClearAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
@@ -480,6 +583,7 @@ export const useSingleActionMsgProps = (
 ): SingleMsgProps => {
   const { currentChainName } = useWallet();
   const { getContractLocalInfo } = useContractStore();
+  const assetInfos = useAssetInfos();
 
   switch (type) {
     case "MsgExecuteContract":
@@ -490,19 +594,34 @@ export const useSingleActionMsgProps = (
         getContractLocalInfo
       );
     case "MsgSend":
-      return sendSingleMsgProps(isSuccess, messages, currentChainName);
+      return sendSingleMsgProps(
+        isSuccess,
+        messages,
+        currentChainName,
+        assetInfos,
+        getContractLocalInfo
+      );
     case "MsgMigrateContract":
       return migrateSingleMsgProps(isSuccess, messages, getContractLocalInfo);
     case "MsgInstantiateContract":
       return instantiateSingleMsgProps(
         isSuccess,
         messages,
-        getContractLocalInfo
+        getContractLocalInfo,
+        false
+      );
+    case "MsgInstantiateContract2":
+      return instantiateSingleMsgProps(
+        isSuccess,
+        messages,
+        getContractLocalInfo,
+        true
       );
     case "MsgUpdateAdmin":
       return updateAdminSingleMsgProps(
         isSuccess,
         messages,
+        currentChainName,
         getContractLocalInfo
       );
     case "MsgClearAdmin":

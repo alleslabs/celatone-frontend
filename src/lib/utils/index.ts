@@ -18,3 +18,6 @@ export * from "./option";
 export * from "./description";
 export * from "./tags";
 export * from "./countMessages";
+export * from "./msgFurtherAction";
+export * from "./extractActionValue";
+export * from "./mergeRefs";
