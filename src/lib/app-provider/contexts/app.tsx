@@ -128,7 +128,9 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
      * @todos Support localnet case later
      */
     const networkRoute = router.query.network;
-    if (networkRoute !== networkRef.current) {
+    if (!networkRoute && !networkRef.current) {
+      setCurrentChain(getChainNameByNetwork("testnet"));
+    } else if (networkRoute !== networkRef.current) {
       if (networkRoute === "mainnet") {
         if (currentChainName !== getChainNameByNetwork("mainnet")) {
           setCurrentChain(getChainNameByNetwork("mainnet"));
