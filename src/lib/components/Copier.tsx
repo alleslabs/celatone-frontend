@@ -8,6 +8,7 @@ interface CopierProps {
   ml?: string;
   className?: string;
   display?: LayoutProps["display"];
+  copyLabel?: string;
 }
 
 export const Copier = ({
@@ -15,6 +16,7 @@ export const Copier = ({
   ml = "8px",
   className,
   display = "flex",
+  copyLabel = "Copied!",
 }: CopierProps) => {
   const { onCopy, hasCopied, setValue } = useClipboard(value);
 
@@ -24,7 +26,7 @@ export const Copier = ({
     <Tooltip
       hasArrow
       isOpen={hasCopied}
-      label="Copied!"
+      label={copyLabel}
       placement="top"
       arrowSize={8}
       bg="primary.dark"

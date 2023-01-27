@@ -4,6 +4,7 @@ import router from "next/router";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { getAddressTypeByLength, useContractStore } from "lib/hooks";
+import { useAssetInfos } from "lib/services/assetService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   DetailExecute,
@@ -16,6 +17,7 @@ import type {
   DetailMigrate,
   DetailClearAdmin,
   ContractAddr,
+  AssetInfo,
 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 import { getExecuteMsgTags } from "lib/utils/executeTags";
@@ -214,12 +216,19 @@ const sendSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   chainName: string,
+  assetInfos: Option<{ [key: string]: AssetInfo }>,
   getContractLocalInfo: (
     contractAddress: ContractAddr
   ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailSend;
   const contractLocalInfo = getContractLocalInfo(detail.toAddress);
+
+  const tokens = detail.amount.map((coin) => ({
+    symbol: assetInfos?.[coin.denom]?.symbol,
+    amount: coin.amount,
+    id: coin.denom,
+  }));
 
   if (messages.length > 1) {
     if (
@@ -272,7 +281,7 @@ const sendSingleMsgProps = (
   return isSuccess
     ? {
         type: "Send",
-        tokens: detail.amount,
+        tokens,
         text2: "to",
         link1: {
           type: getAddressTypeByLength(chainName, detail.toAddress) as LinkType,
@@ -573,6 +582,7 @@ export const useSingleActionMsgProps = (
 ): SingleMsgProps => {
   const { currentChainName } = useWallet();
   const { getContractLocalInfo } = useContractStore();
+  const assetInfos = useAssetInfos();
 
   switch (type) {
     case "MsgExecuteContract":
@@ -587,6 +597,7 @@ export const useSingleActionMsgProps = (
         isSuccess,
         messages,
         currentChainName,
+        assetInfos,
         getContractLocalInfo
       );
     case "MsgMigrateContract":

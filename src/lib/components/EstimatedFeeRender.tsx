@@ -21,5 +21,5 @@ export const EstimatedFeeRender = ({
 
   if (!coin) return <>--</>;
 
-  return <>{formatBalanceWithDenom(coin)}</>;
+  return <>{formatBalanceWithDenom({ coin })}</>;
 };

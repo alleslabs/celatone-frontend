@@ -6,6 +6,7 @@ import { snakeCase } from "snake-case";
 import { Copier } from "../Copier";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import type { Option } from "lib/types";
 import { formatBalanceWithDenom } from "lib/utils";
 
 interface LinkElement {
@@ -14,10 +15,15 @@ interface LinkElement {
   copyValue?: string;
 }
 
+interface Token {
+  symbol: Option<string>;
+  id: string;
+  amount: string;
+}
 export interface SingleMsgProps {
   type: string;
   text1?: string;
-  tokens?: Coin[];
+  tokens?: Token[];
   tags?: string[];
   length?: number;
   text2?: string;
@@ -41,22 +47,28 @@ export const SingleMsg = ({
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
       {type} {text1}
-      {tokens?.map((token: Coin, index: number) => (
+      {tokens?.map((token: Token, index: number) => (
         <Flex role="group" align="center" gap={1}>
           <Text key={index.toString() + token} fontWeight="medium">
-            {formatBalanceWithDenom(token)}
+            {formatBalanceWithDenom({
+              coin: {
+                denom: token.id,
+                amount: token.amount,
+              } as Coin,
+              symbol: token.symbol,
+            })}
           </Text>
           <Tooltip
             hasArrow
-            label={token.denom}
+            label={`Token ID: ${token.id}`}
             placement="top"
             bg="primary.dark"
-            maxW="500px"
+            maxW="600px"
           >
             <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
           </Tooltip>
           <Box display="none" _groupHover={{ display: "flex" }}>
-            <Copier value={token.denom} />
+            <Copier ml="4px" value={token.id} copyLabel="Token ID Copied!" />
           </Box>
         </Flex>
       ))}
