@@ -126,7 +126,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
           <Flex
             alignItems="center"
             color="text.main"
-            border="1px solid rgba(255,255,255,0.12)"
+            border="1px solid"
+            borderColor="divider.main"
             background="none"
             borderRadius="4px"
             maxW="100%"

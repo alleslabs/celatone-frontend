@@ -22,7 +22,7 @@ import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
-import { ContractDesc } from "./components/contract-description/ContractDesc";
+import { ContractDesc } from "./components/contract-description";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";

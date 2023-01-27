@@ -1,6 +1,11 @@
 import { MdBookmark, MdInbox, MdLibraryBooks } from "react-icons/md";
 
+import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
+/**
+ * @todos Revisit utils import later
+ */
+import { formatSlugName } from "lib/utils/format";
 
 export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
@@ -52,16 +57,26 @@ export const getListIcon = (listName: string) => {
   }
 };
 
+export const DEFAULT_LIST: LVPair[] = [
+  {
+    label: SAVED_LIST_NAME,
+    value: formatSlugName(SAVED_LIST_NAME),
+  },
+];
+
 export const DEFAULT_ADDRESS = "default-address";
 
 export const MAX_FILE_SIZE = 800_000;
 
-export const MICRO = 1000000;
+export const CLEAR_ADMIN_GAS = 50_000;
+
+export const MICRO = 1_000_000;
 
 export const typeUrlDict = {
   [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
   [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
   [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
+  [MsgType.UPDATE_ADMIN]: "/cosmwasm.wasm.v1.MsgUpdateAdmin",
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
