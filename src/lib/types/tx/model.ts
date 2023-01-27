@@ -27,6 +27,7 @@ export type ActionVariant =
   | "sending"
   | "upload"
   | "upload-migrate"
+  | "migrate"
   | "rejected"
   | "resend"
   | "update-admin";

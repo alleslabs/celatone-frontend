@@ -6,5 +6,5 @@ export interface MigratePageState {
   migrateStep: MigrateStep;
   contractAddress: ContractAddr;
   admin: Option<ContractAddr | HumanAddr>;
-  codeId: Option<number>;
+  codeId: string;
 }

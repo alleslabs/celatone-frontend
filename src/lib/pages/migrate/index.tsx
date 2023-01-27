@@ -24,7 +24,7 @@ const defaultValues: MigratePageState = {
   migrateStep: "migrate_options",
   contractAddress: "" as ContractAddr,
   admin: undefined,
-  codeId: undefined,
+  codeId: "",
 };
 
 const Migrate = () => {
@@ -45,7 +45,7 @@ const Migrate = () => {
   const contractAddressParam = getFirstQueryParam(
     router.query.contract
   ) as ContractAddr;
-  const codeIdParam = Number(getFirstQueryParam(router.query["code-id"]));
+  const codeIdParam = getFirstQueryParam(router.query["code-id"]);
 
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
@@ -95,9 +95,8 @@ const Migrate = () => {
       case "migrate_contract":
         return (
           <MigrateContract
-            isAdmin={admin === address}
             contractAddress={contractAddress}
-            codeId={codeId}
+            codeIdParam={codeId}
             handleBack={handleBack}
           />
         );

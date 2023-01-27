@@ -87,6 +87,7 @@ export const ButtonSection = ({
           Proceed to Migrate
         </Button>
       );
+    case "migrate":
     case "update-admin":
       return (
         <>
