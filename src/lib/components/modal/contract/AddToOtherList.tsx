@@ -1,13 +1,12 @@
 import { Flex, Text, Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { MdBookmark } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/forms/ListSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import type { OffchainDetail } from "lib/components/OffChainForm";
+import { DEFAULT_LIST } from "lib/data";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
@@ -19,30 +18,21 @@ interface AddToOtherListProps {
 
 export const AddToOtherList = observer(
   ({ contractLocalInfo, triggerElement }: AddToOtherListProps) => {
-    const { setValue, watch } = useForm<OffchainDetail>({
-      mode: "all",
-    });
-
-    const setContractListsValue = useCallback(
-      (selectedLists: LVPair[]) => {
-        setValue("lists", selectedLists);
-      },
-      [setValue]
-    );
-
-    useEffect(() => {
-      setContractListsValue(contractLocalInfo.lists ?? []);
-    }, [contractLocalInfo.lists, setContractListsValue]);
-
-    const offchainState = watch();
+    const [contractLists, setContractLists] = useState<LVPair[]>(DEFAULT_LIST);
 
     const handleSave = useHandleContractSave({
       title: "Action Complete!",
       contractAddress: contractLocalInfo.contractAddress,
       instantiator: contractLocalInfo.instantiator,
       label: contractLocalInfo.label,
-      lists: offchainState.lists,
+      lists: contractLists,
     });
+
+    useEffect(() => {
+      setContractLists(
+        contractLocalInfo.lists?.length ? contractLocalInfo.lists : DEFAULT_LIST
+      );
+    }, [contractLocalInfo.lists]);
 
     return (
       <ActionModal
@@ -77,11 +67,11 @@ export const AddToOtherList = observer(
       >
         <Box my="16px">
           <ListSelection
-            result={offchainState.lists}
+            result={contractLists}
             placeholder="Add to contract lists"
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
-            setResult={setContractListsValue}
+            setResult={setContractLists}
             labelBgColor="gray.800"
           />
         </Box>
