@@ -127,18 +127,18 @@ export const AppProvider = <ContractAddress, Constants extends AppConstants>({
      * @todos Change default to mainnet later (currently is testnet)
      * @todos Support localnet case later
      */
-    const { network } = router.query;
-    if (network !== networkRef.current) {
-      if (network === "mainnet") {
+    const networkRoute = router.query.network;
+    if (networkRoute !== networkRef.current) {
+      if (networkRoute === "mainnet") {
         if (currentChainName !== getChainNameByNetwork("mainnet")) {
           setCurrentChain(getChainNameByNetwork("mainnet"));
         }
       } else if (currentChainName !== getChainNameByNetwork("testnet"))
         setCurrentChain(getChainNameByNetwork("testnet"));
 
-      networkRef.current = network as string;
+      networkRef.current = networkRoute as string;
     }
-  }, [router.query, currentChainName, setCurrentChain]);
+  }, [router.query.network, currentChainName, setCurrentChain]);
 
   const AppContent = observer(() => {
     if (
