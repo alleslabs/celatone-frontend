@@ -28,14 +28,11 @@ export const AddToOtherList = observer(
       lists: contractLists,
     });
 
-    const setContractListsValue = (selectedLists: LVPair[]) =>
-      setContractLists(selectedLists);
-
     useEffect(() => {
       if (contractLocalInfo.lists?.length) {
-        setContractListsValue(contractLocalInfo.lists);
+        setContractLists(contractLocalInfo.lists);
       } else {
-        setContractListsValue(DEFAULT_LIST);
+        setContractLists(DEFAULT_LIST);
       }
     }, [contractLocalInfo.lists]);
 
@@ -76,7 +73,7 @@ export const AddToOtherList = observer(
             placeholder="Add to contract lists"
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
-            setResult={setContractListsValue}
+            setResult={(selectedList) => setContractLists(selectedList)}
             labelBgColor="gray.800"
           />
         </Box>
