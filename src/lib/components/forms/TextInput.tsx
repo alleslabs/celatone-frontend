@@ -64,7 +64,7 @@ export const TextInput = ({
           maxLength={maxLength}
         />
         <InputRightElement h="full">
-          {status && getStatusIcon(status.state)}
+          {status && getStatusIcon(status.state, "20px")}
         </InputRightElement>
       </InputGroup>
 
