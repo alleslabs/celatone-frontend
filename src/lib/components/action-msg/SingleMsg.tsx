@@ -16,9 +16,10 @@ interface LinkElement {
 }
 
 interface Token {
-  symbol: Option<string>;
   id: string;
   amount: string;
+  symbol: Option<string>;
+  precision: Option<number>;
 }
 export interface SingleMsgProps {
   type: string;
@@ -48,14 +49,20 @@ export const SingleMsg = ({
     <Flex gap={1} alignItems="center" flexWrap="wrap">
       {type} {text1}
       {tokens?.map((token: Token, index: number) => (
-        <Flex role="group" align="center" gap={1}>
-          <Text key={index.toString() + token} fontWeight="medium">
+        <Flex
+          key={index.toString() + token}
+          role="group"
+          align="center"
+          gap={1}
+        >
+          <Text fontWeight="medium">
             {formatBalanceWithDenom({
               coin: {
                 denom: token.id,
                 amount: token.amount,
               } as Coin,
               symbol: token.symbol,
+              precision: token.precision,
             })}
           </Text>
           <Tooltip

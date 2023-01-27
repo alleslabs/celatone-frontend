@@ -216,7 +216,7 @@ const sendSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
   chainName: string,
-  assetInfos: Option<{ [key: string]: AssetInfo }>,
+  assetInfos: Option<Record<string, AssetInfo>>,
   getContractLocalInfo: (
     contractAddress: ContractAddr
   ) => Option<ContractLocalInfo>
@@ -228,6 +228,7 @@ const sendSingleMsgProps = (
     symbol: assetInfos?.[coin.denom]?.symbol,
     amount: coin.amount,
     id: coin.denom,
+    precision: assetInfos?.[coin.denom]?.precision,
   }));
 
   if (messages.length > 1) {
