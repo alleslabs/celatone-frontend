@@ -97,7 +97,7 @@ export const UploadSection = ({
           sender: address as HumanAddr,
           wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
           instantiatePermission: {
-            permission: AccessType.ACCESS_TYPE_ONLY_ADDRESS,
+            permission: AccessType.ACCESS_TYPE_EVERYBODY,
             address: address as HumanAddr,
           },
         });
