@@ -15,23 +15,21 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
-import type { CSSProperties, KeyboardEvent } from "react";
-import { useEffect, useState, useRef, forwardRef } from "react";
-import { MdCheckCircle, MdClose } from "react-icons/md";
+import type { CSSProperties } from "react";
+import { useState, useRef, forwardRef } from "react";
+import { MdCheck, MdClose } from "react-icons/md";
 
-import { useContractStore, useUserKey } from "lib/hooks";
-import { mergeRefs } from "lib/utils";
+import { displayActionValue, mergeRefs } from "lib/utils";
 
-export interface TagSelectionProps extends InputProps {
+export interface FilterSelectionProps extends InputProps {
   placeholder?: string;
   result: string[];
-  setResult: (options: string[]) => void;
-  badgeBgColor?: string;
+  setResult: (option: string, bool: boolean) => void;
   helperText?: string;
   labelBgColor?: string;
   label?: string;
   boxWidth?: LayoutProps["width"];
-  creatable?: boolean;
+  boxHeight?: LayoutProps["height"];
 }
 
 const listItemProps: CSSProperties = {
@@ -40,6 +38,7 @@ const listItemProps: CSSProperties = {
   padding: "8px",
   cursor: "pointer",
 };
+
 const tagItemProps: CSSProperties = {
   borderRadius: "24px",
   cursor: "pointer",
@@ -51,45 +50,42 @@ const tagItemProps: CSSProperties = {
   marginRight: "8px",
 };
 
-export const TagSelection = observer(
-  forwardRef<HTMLInputElement, TagSelectionProps>(
+// TODO - Refactor this along with TagSelection
+export const FilterSelection = observer(
+  forwardRef<HTMLInputElement, FilterSelectionProps>(
     (
       {
         result,
         setResult,
         placeholder,
-        badgeBgColor = "info.dark",
         helperText,
         labelBgColor = "background.main",
-        label = "Tags",
+        label = "Filter by Actions",
         boxWidth = "full",
-        creatable = true,
+        boxHeight = "56px",
         ...rest
-      }: TagSelectionProps,
+      }: FilterSelectionProps,
       ref
-      // TODO: refactor to reduce complexity
-      // eslint-disable-next-line sonarjs/cognitive-complexity
     ) => {
-      const userKey = useUserKey();
-      const { getAllTags } = useContractStore();
-      const options = getAllTags(userKey);
+      const options = [
+        "isUpload",
+        "isInstantiate",
+        "isExecute",
+        "isSend",
+        "isIbc",
+        "isMigrate",
+        "isClearAdmin",
+        "isUpdateAdmin",
+      ];
 
-      const [optionsCopy, setOptionsCopy] = useState<string[]>(options);
       const [partialResult, setPartialResult] = useState<string[]>([]);
       const [displayOptions, setDisplayOptions] = useState(false);
-      const [inputValue, setInputValue] = useState<string>("");
       const inputRef = useRef<HTMLInputElement>(null);
       const boxRef = useRef<HTMLDivElement>(null);
 
-      useEffect(() => {
-        if (!creatable) setOptionsCopy(options);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [creatable, JSON.stringify(options)]);
-
       const filterOptions = (value: string) => {
         setDisplayOptions(true);
-        setPartialResult(value ? matchSorter(optionsCopy, value) : optionsCopy);
-        setInputValue(value);
+        setPartialResult(value ? matchSorter(options, value) : options);
       };
 
       const isOptionSelected = (option: string) =>
@@ -97,42 +93,9 @@ export const TagSelection = observer(
 
       const selectOption = (option: string) => {
         if (isOptionSelected(option)) {
-          setResult(
-            result.filter((existingOption) => existingOption !== option)
-          );
+          setResult(option, false);
         } else {
-          setResult([option, ...result]);
-        }
-      };
-
-      const createOption = () => {
-        if (inputValue) {
-          setOptionsCopy((prev) => [...prev, inputValue]);
-          selectOption(inputValue);
-          setDisplayOptions(false);
-          if (inputRef && inputRef.current !== null) {
-            inputRef.current.value = "";
-          }
-        }
-      };
-
-      const selectOptionFromList = (option: string) => {
-        selectOption(option);
-        setDisplayOptions(false);
-        if (inputRef && inputRef.current !== null) {
-          inputRef.current.value = "";
-        }
-      };
-
-      const canCreateOption =
-        !optionsCopy.find((each) => each === inputValue?.toLowerCase()) &&
-        creatable;
-
-      const noResultAndUncreatable = !partialResult.length && !creatable;
-
-      const handleKeydown = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter" && canCreateOption) {
-          createOption();
+          setResult(option, true);
         }
       };
 
@@ -142,8 +105,8 @@ export const TagSelection = observer(
       });
 
       return (
-        <Box ref={boxRef} w={boxWidth}>
-          <FormControl w={boxWidth}>
+        <Box ref={boxRef} w={boxWidth} h={boxHeight}>
+          <FormControl w={boxWidth} h={boxHeight}>
             <Flex
               alignItems="center"
               color="text.main"
@@ -165,10 +128,11 @@ export const TagSelection = observer(
                       <Tag
                         style={tagItemProps}
                         size="md"
-                        bgColor={badgeBgColor}
+                        bgColor="primary.main"
+                        color="background.main"
                       >
-                        {option}
-                        <Icon as={MdClose} boxSize="4" color="text.dark" />
+                        {displayActionValue(option)}
+                        <Icon as={MdClose} boxSize="4" />
                       </Tag>
                     </Flex>
                   ))}
@@ -176,14 +140,14 @@ export const TagSelection = observer(
               )}
 
               <Input
+                autoComplete="off"
                 w="100%"
                 minW="200px"
                 size="lg"
                 placeholder={result.length ? "" : placeholder}
                 onChange={(e) => filterOptions(e.currentTarget.value)}
-                onKeyDown={handleKeydown}
                 onFocus={() => {
-                  setPartialResult(optionsCopy);
+                  setPartialResult(options);
                   setDisplayOptions(true);
                 }}
                 ref={mergeRefs([inputRef, ref])}
@@ -222,45 +186,22 @@ export const TagSelection = observer(
                 zIndex="2"
                 w="full"
                 top="60px"
-                maxH="195px"
-                overflow="scroll"
               >
-                {/* header */}
-                <ListItem
-                  p={2}
-                  borderBottomColor="divider.main"
-                  borderBottomWidth={noResultAndUncreatable ? "0" : "1px"}
-                >
-                  {noResultAndUncreatable ? (
-                    <Text variant="body3" color="text.dark">
-                      No tags found
-                    </Text>
-                  ) : (
-                    <Text variant="body3">
-                      Select tag {creatable && "or create a new one"}
-                    </Text>
-                  )}
-                </ListItem>
                 {/* option selection section */}
                 {partialResult.map((option) => (
                   <ListItem
                     key={option}
                     style={listItemProps}
                     _hover={{ bg: "gray.800" }}
-                    onClick={() => selectOptionFromList(option)}
+                    onClick={() => selectOption(option)}
                   >
                     <Flex alignItems="center" justifyContent="space-between">
-                      <Tag
-                        style={tagItemProps}
-                        size="sm"
-                        bgColor={badgeBgColor}
-                      >
-                        {option}
-                      </Tag>
+                      <Text>{displayActionValue(option)}</Text>
+
                       {isOptionSelected(option) && (
                         <Icon
-                          as={MdCheckCircle}
-                          color="success.main"
+                          as={MdCheck}
+                          color="text.dark"
                           data-label={option}
                           mr={2}
                         />
@@ -268,26 +209,6 @@ export const TagSelection = observer(
                     </Flex>
                   </ListItem>
                 ))}
-                {/* creation section */}
-                {canCreateOption && inputValue && (
-                  <ListItem
-                    style={listItemProps}
-                    _hover={{ bg: "gray.800" }}
-                    data-testid="create-option"
-                    onClick={() => createOption()}
-                  >
-                    <Flex alignItems="center" gap={2}>
-                      <Text variant="body2">Create </Text>
-                      <Tag
-                        style={tagItemProps}
-                        size="sm"
-                        bgColor={badgeBgColor}
-                      >
-                        {inputValue}
-                      </Tag>
-                    </Flex>
-                  </ListItem>
-                )}
               </List>
             )}
           </FormControl>

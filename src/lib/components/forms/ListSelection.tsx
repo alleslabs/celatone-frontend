@@ -21,8 +21,7 @@ import { MdCheck, MdClose, MdAdd } from "react-icons/md";
 import { CreateNewList } from "lib/components/modal/list";
 import { useContractStore, useUserKey } from "lib/hooks";
 import type { LVPair } from "lib/types";
-import { formatSlugName } from "lib/utils";
-import mergeRefs from "lib/utils/mergeRefs";
+import { formatSlugName, mergeRefs } from "lib/utils";
 
 export interface ListSelectionProps extends InputProps {
   placeholder?: string;
@@ -127,7 +126,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
           <Flex
             alignItems="center"
             color="text.main"
-            border="1px solid rgba(255,255,255,0.12)"
+            border="1px solid"
+            borderColor="divider.main"
             background="none"
             borderRadius="4px"
             maxW="100%"

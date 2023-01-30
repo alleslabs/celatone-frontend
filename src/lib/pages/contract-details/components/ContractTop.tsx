@@ -83,7 +83,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               fontSize="22px"
               variant="none"
               aria-label="save"
-              color="none"
+              color="gray.600"
               icon={<MdBookmarkBorder />}
             />
           }
