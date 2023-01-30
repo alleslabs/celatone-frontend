@@ -6,12 +6,12 @@ import { QuickMenu } from "./components/QuickMenu";
 import { RecentActivities } from "./components/RecentActivities";
 
 const Home = () => (
-  <Box mx="1">
+  <Box m="1">
     <NextSeo
       title="Home"
       description="Explore, deploy, interact, and organize CosmWasm contracts with ease using Celatone. Our tool makes it easy to interact with smart contracts on various networks."
       openGraph={{
-        url: "https://www.url.ie/a",
+        // url: "https://www.url.ie/a",
         title: "Home",
         description:
           "Explore, deploy, interact, and organize CosmWasm contracts with ease using Celatone. Our tool makes it easy to interact with smart contracts on various networks.",
