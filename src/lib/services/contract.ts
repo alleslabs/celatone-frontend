@@ -3,7 +3,13 @@ import type { GraphQLClient } from "graphql-request";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import { getBlockTimestampByHeightQueryDocument } from "lib/data/queries";
-import type { Balance, ContractAddr, HumanAddr, Option } from "lib/types";
+import type {
+  Balance,
+  ContractAddr,
+  HumanAddr,
+  Option,
+  PublicInfo,
+} from "lib/types";
 import { encode, parseDateDefault } from "lib/utils";
 
 interface ContractResponse {
@@ -39,13 +45,6 @@ export interface InstantiateInfo {
   createdTime: Option<Date>;
   ibcPortId: string;
   raw: ContractResponse;
-}
-
-export interface PublicInfo {
-  slug: string;
-  name: string;
-  contractAddress: ContractAddr;
-  description: string;
 }
 
 export const queryData = async (

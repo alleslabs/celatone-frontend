@@ -39,8 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#112](https://github.com/alleslabs/celatone-frontend/pull/112) Refactor past transactions page, support new messages including Migration, Instantiate2, Update Admin, Clear Admin, and change filter actions to dropdown selection. Add redo modal for instantiate2 and create component for tokens used in past tx page.
+- [#113](https://github.com/alleslabs/celatone-frontend/pull/113) Update admin page ui and wireup
 - [#98](https://github.com/alleslabs/celatone-frontend/pull/98) Add migrate, update admin, clear admin menu on contract list and detail
-- [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
 - [#102](https://github.com/alleslabs/celatone-frontend/pull/102) Add quick menu in overview and add highlighted in left sidebar
 - [#125](https://github.com/alleslabs/celatone-frontend/pull/125) Add connect wallet alert in instantiate page
 - [#126](https://github.com/alleslabs/celatone-frontend/pull/126) Add port id copier for IBC port id
@@ -99,6 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#123](https://github.com/alleslabs/celatone-frontend/pull/123) Refactor tables to use custom components
+- [#128](https://github.com/alleslabs/celatone-frontend/pull/128) Rewrite add to other list state and add default list to save to
 - [#114](https://github.com/alleslabs/celatone-frontend/pull/114) Handle wallet connection cases in instantiate button
 - [#115](https://github.com/alleslabs/celatone-frontend/pull/115) (Contract Details Page) Show no admin and correctly handle explorer link by address type
 - [#68](https://github.com/alleslabs/celatone-frontend/pull/68) Refactor past txs link props and make sure navigation works
@@ -109,6 +111,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
+- [#129](https://github.com/alleslabs/celatone-frontend/pull/129) Fix wallet disconnection on network query change
+- [#124](https://github.com/alleslabs/celatone-frontend/pull/124) Fix public project query, display project image in contract details page
+- [#125](https://github.com/alleslabs/celatone-frontend/pull/125) Fix incorrect CosmJS execute snippet
 - [#117](https://github.com/alleslabs/celatone-frontend/pull/117) Fix native token label formatting
 - [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
 - [#122](https://github.com/alleslabs/celatone-frontend/pull/122) Fix unknown code upload block height

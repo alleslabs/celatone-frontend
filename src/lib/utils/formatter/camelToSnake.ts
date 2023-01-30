@@ -23,7 +23,7 @@ export const camelToSnake = (obj: unknown): unknown => {
 
   if (typeof obj === "object") {
     return mapObject(obj, (key, value) => {
-      const newKey = snakeCase(key);
+      const newKey = snakeCase(key) || key;
       if (key !== newKey && newKey in obj) {
         throw new Error(
           `Snake case key ${newKey} would overwrite existing key of the given JSON object`

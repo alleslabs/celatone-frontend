@@ -1,8 +1,13 @@
-import { Tag, Text, Box, Flex } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
+import { Tag, Text, Box, Flex, Tooltip } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
+import { Copier } from "../Copier";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import type { Option } from "lib/types";
+import { formatBalanceWithDenom } from "lib/utils";
 
 interface LinkElement {
   type: LinkType;
@@ -10,11 +15,17 @@ interface LinkElement {
   copyValue?: string;
 }
 
+interface Token {
+  id: string;
+  amount: string;
+  symbol: Option<string>;
+  precision: Option<number>;
+}
 export interface SingleMsgProps {
   type: string;
   text1?: string;
-  bolds?: Array<string>;
-  tags?: Array<string>;
+  tokens?: Token[];
+  tags?: string[];
   length?: number;
   text2?: string;
   link1?: LinkElement;
@@ -25,7 +36,7 @@ export interface SingleMsgProps {
 export const SingleMsg = ({
   type,
   text1,
-  bolds,
+  tokens,
   tags,
   length,
   text2,
@@ -37,28 +48,49 @@ export const SingleMsg = ({
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
       {type} {text1}
-      {bolds && (
-        <Box display="inline-flex">
-          {bolds.map((bold: string, index: number) => (
-            <Text key={index.toString() + bold} fontWeight="medium">
-              {bold}
-            </Text>
-          ))}
-        </Box>
-      )}
+      {tokens?.map((token: Token, index: number) => (
+        <Flex
+          key={index.toString() + token}
+          role="group"
+          align="center"
+          gap={1}
+        >
+          <Text fontWeight="medium">
+            {formatBalanceWithDenom({
+              coin: {
+                denom: token.id,
+                amount: token.amount,
+              } as Coin,
+              symbol: token.symbol,
+              precision: token.precision,
+            })}
+          </Text>
+          <Tooltip
+            hasArrow
+            label={`Token ID: ${token.id}`}
+            placement="top"
+            bg="primary.dark"
+            maxW="240px"
+          >
+            <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
+          </Tooltip>
+          <Box display="none" _groupHover={{ display: "flex" }}>
+            <Copier ml="4px" value={token.id} copyLabel="Token ID Copied!" />
+          </Box>
+        </Flex>
+      ))}
       {/* Tags  */}
-      {tags &&
-        tags.map((tag: string, index: number) => (
-          <Tag key={index.toString() + tag} borderRadius="full">
-            {snakeCase(tag)}
-          </Tag>
-        ))}
+      {tags?.map((tag: string, index: number) => (
+        <Tag key={index.toString() + tag} borderRadius="full">
+          {snakeCase(tag) || tag}
+        </Tag>
+      ))}
       {/* Tag left over */}
       {tags && length && length - tags.length > 0 && (
         <Tag borderRadius="full">+{length - tags.length} </Tag>
       )}
       {/* Length  */}
-      {!tags && length && <Tag>{length}</Tag>}
+      {!tags && length && <Tag borderRadius="full">{length}</Tag>}
       {/* Text2 */}
       {text2}
       {/* Link */}
