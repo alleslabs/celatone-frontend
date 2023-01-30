@@ -79,7 +79,7 @@ const ContractDetailsBody = observer(
               jsonAreaHeight="180px"
             />
             <JsonInfo
-              header="Instantiate Messages"
+              header="Instantiate Message"
               jsonString={jsonPrettify(contractData.initMsg ?? "")}
               showViewFullButton
               defaultExpand
