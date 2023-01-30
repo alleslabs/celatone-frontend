@@ -60,7 +60,7 @@ export const ControllerInput = <T extends FieldValues>({
   return (
     <FormControl
       size={size}
-      isInvalid={!!error || status?.state === "error"}
+      isInvalid={isError || status?.state === "error"}
       isRequired={isRequired}
       {...componentProps}
       {...field}

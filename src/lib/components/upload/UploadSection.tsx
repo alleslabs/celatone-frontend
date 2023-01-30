@@ -36,7 +36,7 @@ export const UploadSection = ({
 }: UploadSectionProps) => {
   const { simulate, loading } = useSimulateFee();
   const fabricateFee = useFabricateFee();
-  const { address = "" } = useWallet();
+  const { address } = useWallet();
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();
 
@@ -61,21 +61,23 @@ export const UploadSection = ({
   const postUploadTx = useUploadContractTx(isMigrate);
 
   const proceed = useCallback(async () => {
-    const stream = await postUploadTx({
-      wasmFileName: wasmFile?.name,
-      wasmCode: wasmFile?.arrayBuffer(),
-      codeDesc,
-      estimatedFee,
-      onTxSucceed: (codeId: number) => {
-        updateCodeInfo(
-          codeId,
-          address,
-          codeDesc || `${wasmFile?.name}(${codeId})`
-        );
-      },
-    });
+    if (address) {
+      const stream = await postUploadTx({
+        wasmFileName: wasmFile?.name,
+        wasmCode: wasmFile?.arrayBuffer(),
+        codeDesc,
+        estimatedFee,
+        onTxSucceed: (codeId: number) => {
+          updateCodeInfo(
+            codeId,
+            address,
+            codeDesc || `${wasmFile?.name}(${codeId})`
+          );
+        },
+      });
 
-    if (stream) broadcast(stream);
+      if (stream) broadcast(stream);
+    }
   }, [
     postUploadTx,
     wasmFile,
@@ -113,6 +115,8 @@ export const UploadSection = ({
     })();
   }, [wasmFile, address, simulate, fabricateFee, setValue]);
 
+  const isDisabled =
+    !estimatedFee || !wasmFile || !!errors.codeDesc || !address;
   return (
     <>
       {wasmFile ? (
@@ -169,7 +173,7 @@ export const UploadSection = ({
           size="md"
           variant="primary"
           w="128px"
-          disabled={!estimatedFee || !wasmFile || !!errors.codeDesc}
+          disabled={isDisabled}
           onClick={proceed}
         >
           Upload
