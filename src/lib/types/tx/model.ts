@@ -26,6 +26,8 @@ export interface ReceiptInfo {
 export type ActionVariant =
   | "sending"
   | "upload"
+  | "upload-migrate"
+  | "migrate"
   | "rejected"
   | "resend"
   | "update-admin";

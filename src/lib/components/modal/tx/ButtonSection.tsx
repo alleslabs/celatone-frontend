@@ -8,6 +8,7 @@ import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
+// TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
   actionVariant?: ActionVariant;
   onClose?: () => void;
@@ -19,9 +20,9 @@ export const ButtonSection = ({
   onClose,
   receipts,
 }: ButtonSectionProps) => {
+  const router = useRouter();
   const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
-  const router = useRouter();
 
   const openExplorer = useCallback(() => {
     const txHash = receipts.find((r) => r.title === "Tx Hash")?.value;
@@ -66,6 +67,27 @@ export const ButtonSection = ({
           </Button>
         </>
       );
+    case "upload-migrate":
+      return (
+        <Button
+          variant="primary"
+          rightIcon={
+            <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+          }
+          onClick={() => {
+            const codeId = receipts.find((r) => r.title === "Code ID")?.value;
+
+            navigate({
+              pathname: "/migrate",
+              query: { contract: router.query.contract, "code-id": codeId },
+            });
+            onClose?.();
+          }}
+        >
+          Proceed to Migrate
+        </Button>
+      );
+    case "migrate":
     case "update-admin":
       return (
         <>
