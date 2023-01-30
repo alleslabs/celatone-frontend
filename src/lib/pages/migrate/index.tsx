@@ -52,13 +52,13 @@ const Migrate = () => {
       navigate({
         pathname: "/migrate",
         query: {
-          ...(!firstStep && { "code-id": router.query["code-id"] }),
+          ...(!firstStep && { "code-id": codeIdParam }),
           contract,
         },
         options: { shallow: true },
       });
     },
-    [firstStep, navigate]
+    [codeIdParam, firstStep, navigate]
   );
 
   useQuery(
