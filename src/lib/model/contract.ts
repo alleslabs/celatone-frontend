@@ -107,7 +107,7 @@ export const useContractData = (
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
 
   const { data: instantiateInfo } = useQuery(
-    ["query", "instantiateInfo", contractAddress],
+    ["query", "instantiateInfo", endpoint, contractAddress],
     async () =>
       queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
     { enabled: !!currentChainRecord }

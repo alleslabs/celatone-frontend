@@ -1,13 +1,7 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Radio,
-  RadioGroup,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import { useWallet } from "@cosmos-kit/react";
+import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -19,13 +13,17 @@ import {
   useSimulateFee,
   useInstantiateTx,
 } from "lib/app-provider";
+import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import { AssetInput } from "lib/components/forms/AssetInput";
 import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useLCDEndpoint } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr, Token, U } from "lib/types";
 import { MsgType } from "lib/types";
 import {
@@ -36,7 +34,7 @@ import {
   microfy,
 } from "lib/utils";
 
-import { CodeSelect, FailedModal, Footer } from "./component";
+import { FailedModal, Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageProps {
@@ -51,6 +49,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
   const { address = "" } = useWallet();
+  const endpoint = useLCDEndpoint();
   const postInstantiateTx = useInstantiateTx();
   const { simulate } = useSimulateFee();
   const fabricateFee = useFabricateFee();
@@ -60,9 +59,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
-  const [method, setMethod] = useState<"select-existing" | "fill-manually">(
-    "select-existing"
-  );
   const [simulating, setSimulating] = useState(false);
 
   // ------------------------------------------//
@@ -96,14 +92,19 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     initMsg: watchInitMsg,
     simulateError,
   } = watch();
+  const [status, setStatus] = useState<FormStatus>({ state: "init" });
 
   const selectedAssets = watchAssets.map((asset) => asset.denom);
 
   const disableInstantiate = useMemo(() => {
     return (
-      !codeId || !address || !!jsonValidate(watchInitMsg) || !!formErrors.label
+      !codeId ||
+      !address ||
+      !!jsonValidate(watchInitMsg) ||
+      !!formErrors.label ||
+      status.state !== "success"
     );
-  }, [codeId, address, watchInitMsg, formErrors.label]);
+  }, [codeId, address, watchInitMsg, formErrors.label, status.state]);
 
   const assetOptions = useMemo(
     () =>
@@ -113,6 +114,35 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         disabled: selectedAssets.includes(asset.base),
       })),
     [nativeTokensInfo, selectedAssets]
+  );
+
+  const { refetch } = useQuery(
+    ["query", endpoint, codeId],
+    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    {
+      enabled: !!address && !!codeId.length,
+      retry: false,
+      cacheTime: 0,
+      onSuccess(data) {
+        const permission = data.code_info.instantiate_permission;
+        if (
+          address &&
+          (permission.permission === "Everybody" ||
+            permission.addresses.includes(address) ||
+            permission.address === address)
+        )
+          setStatus({ state: "success" });
+        else {
+          setStatus({
+            state: "error",
+            message: "You can instantiate to this code through proposal only",
+          });
+        }
+      },
+      onError() {
+        setStatus({ state: "error", message: "This code ID does not exist" });
+      },
+    }
   );
 
   // ------------------------------------------//
@@ -170,6 +200,19 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // --------------SIDE EFFECTS----------------//
   // ------------------------------------------//
   useEffect(() => {
+    if (codeId.length) {
+      setStatus({ state: "loading" });
+      const timer = setTimeout(() => {
+        refetch();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    setStatus({ state: "init" });
+
+    return () => {};
+  }, [address, codeId, refetch]);
+
+  useEffect(() => {
     if (codeIdQuery) setValue("codeId", codeIdQuery);
     if (msgQuery) {
       const decodedMsg = libDecode(msgQuery);
@@ -201,7 +244,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
-        <Stepper currentStep={2} />
+        <Stepper mode="deploy" currentStep={2} />
         <Heading as="h4" variant="h4" my="48px">
           Instantiate new contract
         </Heading>
@@ -209,42 +252,15 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           subtitle="You need to connect your wallet to perform this action"
           mb={6}
         />
-        <RadioGroup
-          onChange={(nextVal: "select-existing" | "fill-manually") =>
-            setMethod(nextVal)
-          }
-          value={method}
-          w="100%"
-        >
-          <Flex justify="space-around">
-            <Radio value="select-existing" size="lg">
-              Select from your code
-            </Radio>
-            <Radio value="fill-manually" size="lg">
-              Fill Code ID manually
-            </Radio>
-          </Flex>
-        </RadioGroup>
+        <CodeSelectSection
+          name="codeId"
+          control={control}
+          status={status}
+          error={formErrors.codeId?.message}
+          onCodeSelect={(code: string) => setValue("codeId", code)}
+          codeId={codeId}
+        />
         <form style={{ width: "100%" }}>
-          {method === "select-existing" ? (
-            <CodeSelect
-              mt="24px"
-              mb="32px"
-              onCodeSelect={(code: string) => setValue("codeId", code)}
-              codeId={codeId}
-            />
-          ) : (
-            <ControllerInput
-              name="codeId"
-              control={control}
-              error={!codeId ? formErrors.codeId?.message : undefined}
-              label="Code ID"
-              helperText="Input existing Code ID manually"
-              variant="floating"
-              my="32px"
-              rules={{ required: "Code ID is required" }}
-            />
-          )}
           <ControllerInput
             name="label"
             control={control}

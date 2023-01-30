@@ -26,6 +26,7 @@ interface UploadTxParams {
   memo?: string;
   client: SigningCosmWasmClient;
   onTxSucceed?: (codeId: number) => void;
+  isMigrate: boolean;
 }
 
 export const uploadContractTx = ({
@@ -37,6 +38,7 @@ export const uploadContractTx = ({
   memo,
   client,
   onTxSucceed,
+  isMigrate,
 }: UploadTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -80,15 +82,15 @@ export const uploadContractTx = ({
               <span style={{ fontWeight: 700 }}>
                 ‘{codeDesc || `${wasmFileName}(${txInfo.codeId})`}’
               </span>{" "}
-              is available on your stored code. Would you like to instantiate
-              your code now?
+              is available on your stored code. Would you like to{" "}
+              {isMigrate ? "migrate" : "instantiate"} your code now?
             </>
           ),
           headerIcon: (
             <Icon as={MdCloudUpload} fontSize="24px" color="text.dark" />
           ),
         },
-        actionVariant: "upload",
+        actionVariant: isMigrate ? "upload-migrate" : "upload",
       } as TxResultRendering;
     }
   )().pipe(catchTxError());
