@@ -1,18 +1,12 @@
 import {
   Icon,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
   Heading,
   HStack,
   VStack,
   Text,
   Box,
   Flex,
+  Grid,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { ReactNode } from "react";
@@ -25,6 +19,11 @@ import { RemoveCode } from "lib/components/modal/code/RemoveCode";
 import { SaveOrRemoveCode } from "lib/components/modal/code/SaveOrRemoveCode";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
+import {
+  TableContainer,
+  TableHeaderNoBorder,
+  TableRowNoBorder,
+} from "lib/components/table";
 import type { CodeInfo } from "lib/types";
 
 import { CodeDescriptionCell } from "./CodeDescriptionCell";
@@ -49,6 +48,9 @@ interface CodesRowProps {
 interface OtherTBodyProps {
   type: TableType;
 }
+
+const TEMPLATE_COLUMNS =
+  "max(80px) minmax(320px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
 
 const StateContainer = ({ children }: { children: ReactNode }) => (
   <VStack
@@ -99,59 +101,52 @@ const Empty = ({ type }: OtherTBodyProps) => {
   );
 };
 
-const TableHead = () => {
+const CodeTableHead = () => {
   return (
-    <Thead borderBottom="1px solid #2E2E2E">
-      <Tr
-        sx={{
-          "& th:first-of-type": { pl: "48px" },
-          "> th": {
-            padding: "16px",
-            textTransform: "capitalize",
-          },
-        }}
-      >
-        <Th width="10%">Code ID</Th>
-        <Th width="35%">Code Description</Th>
-        <Th width="10%" textAlign="center">
-          Contracts
-        </Th>
-        <Th width="15%">Uploader</Th>
-        <Th width="30%">Permission</Th>
-      </Tr>
-    </Thead>
+    <Grid
+      templateColumns={TEMPLATE_COLUMNS}
+      px="48px"
+      sx={{ "& div": { color: "text.dark" } }}
+      borderBottom="1px solid"
+      borderColor="divider.main"
+    >
+      <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Code Description</TableHeaderNoBorder>
+      <TableHeaderNoBorder textAlign="center">Contracts</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Uploader</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Permission</TableHeaderNoBorder>
+    </Grid>
   );
 };
 
-const TableRow = ({ code, isRemovable }: CodesRowProps) => {
+const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
   const navigate = useInternalNavigate();
   const goToCodeDetails = () => {
     navigate({ pathname: `/code/${code.id}` });
   };
 
   return (
-    <Tr
-      borderBottom="1px solid #2E2E2E"
-      sx={{
-        "& td:first-of-type": { pl: "48px" },
-        "& td:last-of-type": { pr: "48px" },
-        "> td": { padding: "16px" },
-      }}
+    <Grid
+      templateColumns={TEMPLATE_COLUMNS}
+      px="48px"
       _hover={{ bg: "gray.900" }}
       cursor="pointer"
+      minW="min-content"
       onClick={goToCodeDetails}
+      borderBottom="1px solid"
+      borderColor="divider.main"
     >
-      <Td width="10%" color="primary.main">
+      <TableRowNoBorder>
         <ExplorerLink
           type="code_id"
           value={code.id.toString()}
           canCopyWithHover
         />
-      </Td>
-      <Td width="35%">
+      </TableRowNoBorder>
+      <TableRowNoBorder>
         <CodeDescriptionCell code={code} />
-      </Td>
-      <Td width="10%" textAlign="center">
+      </TableRowNoBorder>
+      <TableRowNoBorder>
         <Text
           variant="body2"
           onClick={(e) => e.stopPropagation()}
@@ -162,16 +157,16 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
         >
           {code.contracts}
         </Text>
-      </Td>
-      <Td width="15%">
+      </TableRowNoBorder>
+      <TableRowNoBorder>
         <ExplorerLink
           value={code.uploader}
           type="user_address"
           canCopyWithHover
         />
-      </Td>
-      <Td width="30%">
-        <Flex justify="space-between" align="center">
+      </TableRowNoBorder>
+      <TableRowNoBorder>
+        <Flex justify="space-between" align="center" w="full">
           <PermissionChip
             instantiatePermission={code.instantiatePermission}
             permissionAddresses={code.permissionAddresses}
@@ -189,8 +184,8 @@ const TableRow = ({ code, isRemovable }: CodesRowProps) => {
             )}
           </HStack>
         </Flex>
-      </Td>
-    </Tr>
+      </TableRowNoBorder>
+    </Grid>
   );
 };
 
@@ -200,19 +195,15 @@ const NormalRender = ({
   isRemovable = false,
 }: Pick<CodesTableProps, "codes" | "tableName" | "isRemovable">) => {
   return (
-    <TableContainer width="100%" mb="20">
-      <Table variant="unstyled">
-        <TableHead />
-        <Tbody>
-          {codes.map((code) => (
-            <TableRow
-              key={`row-${tableName}-${code.id}-${code.description}-${code.uploader}`}
-              code={code}
-              isRemovable={isRemovable}
-            />
-          ))}
-        </Tbody>
-      </Table>
+    <TableContainer mb={20}>
+      <CodeTableHead />
+      {codes.map((code) => (
+        <CodeTableRow
+          key={`row-${tableName}-${code.id}-${code.description}-${code.uploader}`}
+          code={code}
+          isRemovable={isRemovable}
+        />
+      ))}
     </TableContainer>
   );
 };

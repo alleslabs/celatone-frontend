@@ -40,6 +40,7 @@ export const ContractTableRow = ({
       }
       _hover={{ bg: "gray.900" }}
       cursor="pointer"
+      minW="min-content"
     >
       <TableRow>
         <ExplorerLink
