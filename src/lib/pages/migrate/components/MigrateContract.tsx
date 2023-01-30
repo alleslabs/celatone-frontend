@@ -189,7 +189,7 @@ export const MigrateContract = ({
         display="flex"
         gap="4px"
       >
-        Transaction Fee:
+        <p>Transaction Fee:</p>
         <EstimatedFeeRender
           estimatedFee={estimatedFee}
           loading={isSimulating}
