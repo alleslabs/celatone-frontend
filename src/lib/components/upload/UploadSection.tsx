@@ -19,7 +19,7 @@ import {
 import { useCodeStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { HumanAddr } from "lib/types";
-import { AccessType, MsgType } from "lib/types";
+import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
 
 import { UploadCard } from "./components/UploadCard";
@@ -96,10 +96,6 @@ export const UploadSection = ({
         const msg = composeMsg(MsgType.STORE_CODE, {
           sender: address as HumanAddr,
           wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
-          instantiatePermission: {
-            permission: AccessType.ACCESS_TYPE_EVERYBODY,
-            address: address as HumanAddr,
-          },
         });
         try {
           const estimatedGasUsed = await simulate([msg]);
