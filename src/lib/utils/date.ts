@@ -1,23 +1,18 @@
+import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 
 import type { Option } from "lib/types";
 
-export const formatUTC = (timestamp: string | Date) => {
-  const localDate =
-    typeof timestamp === "string" ? timestamp.concat("Z") : timestamp;
-  return dayjs(localDate).utc().format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
-};
+export const formatUTC = (timestamp: string | Dayjs) =>
+  dayjs(timestamp).utc(true).format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
 
-export const dateFromNow = (timestamp: string | Date) => {
-  const localDate =
-    typeof timestamp === "string" ? timestamp.concat("Z") : timestamp;
-  return dayjs(localDate).fromNow();
-};
+export const dateFromNow = (timestamp: string | Dayjs) =>
+  dayjs(timestamp).utc(true).fromNow();
 
-export const parseDate = (date: string) => new Date(`${date}Z`);
+export const parseDate = (date: string) => dayjs(date).utc(true);
 
-export const parseDateOpt = (dateOpt: Option<string>): Option<Date> =>
+export const parseDateOpt = (dateOpt: Option<string>): Option<Dayjs> =>
   dateOpt ? parseDate(dateOpt) : undefined;
 
-export const parseDateDefault = (dateOpt: Option<string>): Date =>
-  dateOpt ? parseDate(dateOpt) : new Date(0);
+export const parseDateDefault = (dateOpt: Option<string>): Dayjs =>
+  dateOpt ? parseDate(dateOpt) : dayjs(0);

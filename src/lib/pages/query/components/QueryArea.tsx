@@ -3,6 +3,7 @@ import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import dayjs from "dayjs";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -58,7 +59,7 @@ export const QueryArea = ({
           sender: address,
           contractAddress,
           msg: encode(msg),
-          timestamp: new Date(),
+          timestamp: dayjs(),
         });
       },
       onError(err: AxiosError<RpcQueryError>) {

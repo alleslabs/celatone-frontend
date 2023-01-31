@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { Dayjs } from "dayjs";
 import type { GraphQLClient } from "graphql-request";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
@@ -42,7 +43,7 @@ export interface InstantiateInfo {
   admin?: HumanAddr | ContractAddr;
   label: string;
   createdHeight: number;
-  createdTime: Option<Date>;
+  createdTime: Option<Dayjs>;
   ibcPortId: string;
   raw: ContractResponse;
 }

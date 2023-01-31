@@ -1,4 +1,5 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
+import dayjs from "dayjs";
 
 import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
 import type { ContractAddr } from "lib/types";
@@ -14,7 +15,7 @@ const contracts = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed facilisis facilisis risus. Ut volutpat accumsan massa eget consequat, id egestas nulla.",
     label: "label1",
-    created: new Date(),
+    created: dayjs(),
   },
   {
     contractAddress:
@@ -24,7 +25,7 @@ const contracts = [
     instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
     description: "Lorem ipsum dolor id egestas nulla.",
     label: "label2",
-    created: new Date(),
+    created: dayjs(),
   },
   {
     contractAddress:
@@ -34,7 +35,7 @@ const contracts = [
     instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
     description: "",
     label: "label3",
-    created: new Date(),
+    created: dayjs(),
   },
   {
     contractAddress:
@@ -45,7 +46,7 @@ const contracts = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. id egestas nulla.",
     label: "label4",
-    created: new Date(),
+    created: dayjs(),
   },
 ];
 export const RecentlyViewContracts = () => {

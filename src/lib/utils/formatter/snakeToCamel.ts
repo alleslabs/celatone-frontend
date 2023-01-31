@@ -1,4 +1,5 @@
 import camelCase from "camelcase";
+import { Dayjs } from "dayjs";
 import mapObject from "map-obj";
 
 // Convert snake case to camel case of an object
@@ -9,8 +10,8 @@ export const snakeToCamel = (obj: unknown): unknown => {
     return obj;
   }
 
-  // Ignore Date, whose typeof is `object` too.
-  if (obj instanceof Date) {
+  // Ignore Dayjs, whose typeof is `object` too.
+  if (obj instanceof Dayjs) {
     return obj;
   }
   // Array of object
