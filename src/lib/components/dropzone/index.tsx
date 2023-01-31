@@ -31,7 +31,7 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
   return (
     <Flex
       border="1px dashed"
-      borderColor="divider.main"
+      borderColor="pebble.700"
       w="full"
       p="24px 16px"
       borderRadius="4px"
@@ -44,7 +44,7 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
       <input {...getInputProps()} />
       <UploadIcon />
       <Text variant="body1" my="8px">
-        <span style={{ color: "#f48fb1", textDecoration: "underline" }}>
+        <span style={{ color: "#D8BEFC", textDecoration: "underline" }}>
           Click to upload
         </span>{" "}
         or drag Wasm file here

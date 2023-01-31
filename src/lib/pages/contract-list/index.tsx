@@ -22,7 +22,7 @@ const AllContractListsPage = observer(() => {
     <PageContainer>
       <Flex direction="column" alignItems="center" gap={12}>
         <Flex justifyContent="space-between" w="full" alignItems="center">
-          <Heading as="h5" variant="h5" color="primary.400">
+          <Heading as="h5" variant="h5" color="text.main">
             Contract lists
           </Heading>
           <CreateNewList

@@ -5,12 +5,7 @@ interface NoTransactionsProps {
 }
 
 export const NoTransactions = ({ displayText }: NoTransactionsProps) => (
-  <Flex
-    justifyContent="center"
-    py={12}
-    borderY="1px"
-    borderColor="divider.main"
-  >
+  <Flex justifyContent="center" py={12} borderY="1px" borderColor="pebble.700">
     <Text
       variant="body2"
       color="text.dark"

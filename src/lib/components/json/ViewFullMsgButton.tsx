@@ -17,7 +17,7 @@ export const ViewFullMsgButton = ({
       w="full"
       p={3}
       borderTop="1px solid"
-      borderTopColor="divider.main"
+      borderTopColor="pebble.700"
       bg="background.main"
       borderRadius="0 0 4px 4px"
       transition="all .3s"
@@ -25,7 +25,7 @@ export const ViewFullMsgButton = ({
       bottom={0}
       left={0}
       cursor="pointer"
-      _hover={{ bg: "gray.800" }}
+      _hover={{ bg: "pebble.900" }}
       onClick={onClick}
       zIndex="docked"
     >

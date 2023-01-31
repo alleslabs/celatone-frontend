@@ -63,7 +63,7 @@ export const DetailHeader = ({ details, slug }: DetailProps) => {
             <Heading
               as="h5"
               variant="h5"
-              color="primary.400"
+              color="text.main"
               className="ellipsis"
             >
               {details?.name}

@@ -1,5 +1,6 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
 
+const honeydewMain = "honeydew.main";
 export const Alert: ComponentStyleConfig = {
   baseStyle: {
     title: {
@@ -10,19 +11,20 @@ export const Alert: ComponentStyleConfig = {
     },
   },
   variants: {
-    info: {
+    honeydew: {
       title: {
-        color: "info.main",
+        color: honeydewMain,
         fontSize: "16px",
+        fontcolor: honeydewMain,
         fontWeight: 600,
         letterSpacing: "0.4px",
       },
       container: {
-        bg: "rgba(41,182,246,0.2)",
+        bg: "rgba(#C6E141,0.2)",
         border: "1px solid",
-        borderColor: "info.main",
+        borderColor: honeydewMain,
         borderRadius: "4px",
-        color: "info.main",
+        color: honeydewMain,
       },
       description: {
         fontSize: "12px",

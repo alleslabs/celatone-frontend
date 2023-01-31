@@ -47,7 +47,7 @@ const secondaryMenu = [
 
 export const QuickMenu = () => {
   return (
-    <Flex direction="column" gap={4} bg="gray.900" p="48px">
+    <Flex direction="column" gap={4} bg="pebble.900" p="48px">
       <Heading as="h6" variant="h6" color="text.main">
         Start using Celatone
       </Heading>
@@ -58,22 +58,22 @@ export const QuickMenu = () => {
       <Flex gap={4}>
         <AppLink href="/deploy" style={{ width: "55%" }}>
           <Flex
-            bg="primary.main"
-            _hover={{ bg: "primary.light" }}
+            bgGradient="linear(to-tr, violet.main, violet.light)"
+            _hover={{ opacity: "85%" }}
             style={cardProps}
             transition="all .25s ease-in-out"
             alignItems="flex-end"
             h="full"
           >
             <Flex direction="column" justifyItems="center">
-              <Text variant="body1" color="gray.900" fontWeight="800">
+              <Text variant="body1" color="text.main" fontWeight="800">
                 Deploy a new contract
               </Text>
-              <Text color="gray.900" variant="body2">
+              <Text color="text.main" variant="body2">
                 Upload a new wasm code or instantiate a new contract
               </Text>
             </Flex>
-            <Icon as={MdChevronRight} color="gray.900" boxSize={9} />
+            <Icon as={MdChevronRight} color="text.main" boxSize={9} />
           </Flex>
         </AppLink>
 
@@ -82,13 +82,13 @@ export const QuickMenu = () => {
             <AppLink href={`/${item.slug}`} key={item.slug}>
               <Flex
                 style={cardProps}
-                _hover={{ bg: "hover.main" }}
+                _hover={{ bg: "pebble.700" }}
                 transition="all .25s ease-in-out"
-                bg="gray.800"
+                bg="pebble.800"
                 alignItems="center"
               >
                 <Flex alignItems="center" gap={3}>
-                  <Icon as={item.icon} color="gray.600" boxSize={9} />
+                  <Icon as={item.icon} color="pebble.600" boxSize={9} />
                   <Box>
                     <Text color="text.main" variant="body1" fontWeight="800">
                       {item.title}
@@ -102,7 +102,7 @@ export const QuickMenu = () => {
                     </Text>
                   </Box>
                 </Flex>
-                <Icon as={MdChevronRight} color="gray.600" boxSize={9} />
+                <Icon as={MdChevronRight} color="pebble.600" boxSize={9} />
               </Flex>
             </AppLink>
           ))}

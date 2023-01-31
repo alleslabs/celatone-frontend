@@ -53,15 +53,16 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
   const route = type ? getRoute(type) : null;
 
   return (
-    <ListItem p={2} borderBottomColor="divider.main">
-      <Text variant="body2" fontWeight="500" color="gray.500" p="6px">
+    <ListItem p={2} borderBottomColor="pebble.700" bg="pebble.900">
+      <Text variant="body2" fontWeight="500" color="text.dark" p="8px">
         {text}
       </Text>
       {route && (
         <Text
           variant="body2"
-          p="6px"
-          _hover={{ bg: "gray.800", cursor: "pointer" }}
+          p="8px"
+          borderRadius="4px"
+          _hover={{ bg: "pebble.800", cursor: "pointer" }}
           onClick={() => handleSelectResult(type)}
         >
           {value}
@@ -119,7 +120,7 @@ const Searchbar = () => {
           h="36px"
           onChange={handleSearchChange}
           placeholder="Search by Contract Address / Code ID"
-          focusBorderColor="primary.main"
+          focusBorderColor="lilac.main"
           _placeholder={{ color: "#A9A9A9" }}
           onFocus={() => setDisplayResults(keyword.length > 0)}
           onKeyDown={handleOnKeyEnter}

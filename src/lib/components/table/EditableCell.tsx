@@ -129,7 +129,7 @@ export const EditableCell = ({
               hasArrow
               label={tooltip}
               placement="top"
-              bg="primary.dark"
+              bg="honeydew.darker"
               arrowSize={8}
             >
               <InfoIcon color="gray.600" boxSize="14px" cursor="pointer" />

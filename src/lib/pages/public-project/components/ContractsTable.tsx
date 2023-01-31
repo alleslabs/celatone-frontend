@@ -67,7 +67,7 @@ export const ContractsTable = ({
                 sx={{
                   "& th:first-of-type": { pl: "48px" },
                   "> th": {
-                    borderColor: "divider.main",
+                    borderColor: "pebble.700",
                     textTransform: "capitalize",
                   },
                 }}
@@ -88,7 +88,7 @@ export const ContractsTable = ({
                   sx={{
                     "& td:first-of-type": { pl: "48px" },
                     "& td:last-of-type": { pr: "48px" },
-                    "> td": { borderColor: "divider.main" },
+                    "> td": { borderColor: "pebble.700" },
                   }}
                   onClick={() =>
                     navigate({ pathname: `/contract/${item.contractAddress}` })
@@ -112,7 +112,7 @@ export const ContractsTable = ({
                           <Tooltip
                             hasArrow
                             label={item.description}
-                            bg="primary.dark"
+                            bg="honeydew.darker"
                             placement="top"
                           >
                             <InfoIcon

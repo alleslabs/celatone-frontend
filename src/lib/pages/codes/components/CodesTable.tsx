@@ -67,7 +67,7 @@ const StateContainer = ({ children }: { children: ReactNode }) => (
 const NotMatched = () => {
   return (
     <StateContainer>
-      <Icon as={MdSearchOff} width="64px" height="64px" color="gray.600" />
+      <Icon as={MdSearchOff} width="64px" height="64px" color="pebble.600" />
       <Text color="text.dark">No matched codes found.</Text>
     </StateContainer>
   );
@@ -108,7 +108,7 @@ const CodeTableHead = () => {
       px="48px"
       sx={{ "& div": { color: "text.dark" } }}
       borderBottom="1px solid"
-      borderColor="divider.main"
+      borderColor="pebble.700"
     >
       <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
       <TableHeaderNoBorder>Code Description</TableHeaderNoBorder>
@@ -129,12 +129,12 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
     <Grid
       templateColumns={TEMPLATE_COLUMNS}
       px="48px"
-      _hover={{ bg: "gray.900" }}
+      _hover={{ bg: "pebble.900" }}
       cursor="pointer"
       minW="min-content"
       onClick={goToCodeDetails}
       borderBottom="1px solid"
-      borderColor="divider.main"
+      borderColor="pebble.700"
     >
       <TableRowNoBorder>
         <ExplorerLink

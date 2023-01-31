@@ -6,18 +6,28 @@ type BasicColor = Record<
     main: string;
     light: string;
     dark: string;
+    lighter: string;
+    darker: string;
     disabled: string;
     button: string;
+    background: string;
+    100: string;
+    400: string;
+    500: string;
+    600: string;
+    700: string;
+    800: string;
+    900: string;
   }>
 >;
 
 /** extend additional color here */
 const extendedColors: BasicColor = {
-  primary: {
-    main: "#f48fb1",
-    light: "#f6a5c0",
-    dark: "#aa647b",
-  },
+  // primary: {
+  //   main: "#f48fb1",
+  //   light: "#f6a5c0",
+  //   dark: "#aa647b",
+  // },
   error: {
     main: "#f44336",
     light: "#e57373",
@@ -39,12 +49,12 @@ const extendedColors: BasicColor = {
     dark: "#388e3c",
   },
   background: {
-    main: "#121212",
+    main: "#111117",
   },
   text: {
-    main: "#fff",
-    dark: "rgba(255,255,255,0.7)",
-    disabled: "rgba(255,255,255,0.5)",
+    main: "#F7F2FE",
+    dark: "#ADADC2",
+    disabled: "#8A8AA5",
   },
   divider: {
     main: "rgba(255,255,255,0.12)",
@@ -55,6 +65,37 @@ const extendedColors: BasicColor = {
   hover: {
     main: "rgba(255,255,255,0.20)",
     dark: "rgba(255,255,255,0.10)",
+  },
+  violet: {
+    main: "#5942F3",
+    light: "#9793F3",
+    lighter: "#DCDBFB",
+    dark: "#3E38B0",
+    darker: "#292676",
+    background: "rgba(41, 38, 118,0.7)",
+  },
+  honeydew: {
+    main: "#C6E141",
+    light: "#DDED8D",
+    lighter: "#E8F3B3",
+    dark: "#95A931",
+    darker: "#637121",
+    background: "rgba(198, 225, 65, 0.2)",
+  },
+  lilac: {
+    main: "#D8BEFC",
+    dark: "#A28FBD",
+    darker: "#6C5F7E",
+    background: "#36303F",
+  },
+  pebble: {
+    100: "#F7F2FE",
+    400: "#ADADC2",
+    500: "#8A8AA5",
+    600: "#68688A",
+    700: "#343445",
+    800: "#272734",
+    900: "#1A1A22",
   },
 };
 

@@ -21,15 +21,15 @@ const StepLabel = ({
     <Flex
       justify="center"
       align="center"
-      backgroundColor={disabled ? "text.disabled" : "primary.main"}
+      backgroundColor={disabled ? "text.disabled" : "violet.main"}
       width="24px"
       height="24px"
       borderRadius="50%"
     >
       {currentStep > step ? (
-        <Icon as={MdCheck} fontSize="20px" color="background.main" />
+        <Icon as={MdCheck} fontSize="20px" color="text.main" />
       ) : (
-        <Text variant="body3" color="background.main">
+        <Text variant="body3" color="text.main">
           {step}
         </Text>
       )}

@@ -8,7 +8,7 @@ export const AllPublicProjectsPage = () => (
   <PageContainer>
     <Flex direction="column" alignItems="center" gap={8}>
       <Flex justifyContent="space-between" w="full" alignItems="center">
-        <Heading as="h5" variant="h5" color="primary.400">
+        <Heading as="h5" variant="h5" color="text.main">
           Public Projects
         </Heading>
       </Flex>

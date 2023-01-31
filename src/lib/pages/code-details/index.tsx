@@ -54,7 +54,7 @@ const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
               permissionAddresses={codeData.permissionAddresses ?? []}
             />
           </Flex>
-          <Divider borderColor="divider.main" my={12} />
+          <Divider borderColor="pebble.700" my={12} />
           <CodeInfoSection codeData={codeData} />
           <ContractTable codeId={codeId} />
         </>

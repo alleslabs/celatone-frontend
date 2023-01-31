@@ -38,7 +38,7 @@ const getStatusDecorator = (
       };
     default:
       return {
-        icon: <Spinner color="primary.main" w="40px" h="40px" />,
+        icon: <Spinner color="violet.light" w="40px" h="40px" />,
         statusText: "Loading",
       };
   }
@@ -62,10 +62,10 @@ export const UploadCard = ({
         p="16px"
         gap="16px"
         w="full"
-        bgColor="gray.900"
+        bgColor="pebble.900"
         borderRadius="4px"
         border="1px solid"
-        borderColor={isError ? "error.main" : "gray.900"}
+        borderColor={isError ? "error.main" : "pebble.900"}
       >
         <UploadIcon />
         <Flex direction="column">

@@ -46,12 +46,14 @@ export const ContractListCard = ({
       <Flex
         p="4"
         alignItems="center"
-        bg="gray.900"
+        bg="pebble.900"
+        _hover={{ bg: "pebble.800" }}
         borderRadius="4"
+        transition="all .25s ease-in-out"
         gap="4"
         h="75px"
       >
-        <Icon as={getListIcon(item.name)} color="gray.600" boxSize="6" />
+        <Icon as={getListIcon(item.name)} color="pebble.600" boxSize="6" />
         <Flex flexDirection="column">
           <Flex alignItems="center" gap="2">
             <LinkOverlay
@@ -72,15 +74,16 @@ export const ContractListCard = ({
               variant="solid"
               size="sm"
               minW="min-content"
-              backgroundColor="gray.800"
+              backgroundColor="pebble.700"
               borderRadius="10"
-              textColor="gray.50"
+              paddingTop="1px"
+              textColor="text.dark"
             >
               {item.contracts.length}
             </Tag>
           </Flex>
           {showLastUpdated && (
-            <Text variant="body3" color="gray.400">
+            <Text variant="body3" color="text.dark">
               Updated {dayjs(item.lastUpdated).toNow(true)} ago
             </Text>
           )}
@@ -88,20 +91,14 @@ export const ContractListCard = ({
         <Spacer />
         {!isReadOnly && (
           <Menu>
-            <MenuButton
-              m="0"
-              h="full"
-              variant="ghost-gray"
-              focusBorderColor="primary.main"
-              as={Button}
-            >
+            <MenuButton m="0" h="full" variant="ghost-gray" as={Button}>
               <MdMoreHoriz />
             </MenuButton>
             <MenuList>
               <EditList
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
-                  icon: <StyledIcon as={MdMode} color="gray.600" />,
+                  icon: <StyledIcon as={MdMode} color="pebble.600" />,
                   children: "Edit list name",
                 }}
               />

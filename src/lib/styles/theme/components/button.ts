@@ -2,10 +2,24 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 type Dict = Record<string, string>;
 
-const primaryMain = "primary.main";
+const pebble400 = "pebble.400";
+const pebble600 = "pebble.600";
+const pebble700 = "pebble.700";
+
+const violetLight = "violet.light";
+const violetMain = "violet.main";
+const violetDark = "violet.dark";
+
+const honeydewMain = "honeydew.main";
+const honeydewDarker = "honeydew.darker";
+const honeydewBg = "honeydew.background";
+
+const lilacMain = "lilac.main";
+const lilacBg = "lilac.background";
+
+const textMain = "text.main";
 const white12 = "rgba(255, 255, 255, 0.12)";
-const white50 = "rgba(255, 255, 255, 0.50)";
-const borderWhite12 = "1px solid rgba(255, 255, 255, 0.12)";
+const borderDefualt = "1px solid";
 
 const generateStyle = ({
   basic,
@@ -63,84 +77,98 @@ export const Button: ComponentStyleConfig = {
   },
   variants: {
     primary: generateStyle({
-      basic: { background: primaryMain, color: "rgba(0, 0, 0, 0.87)" },
+      basic: { background: violetMain, color: textMain },
       disabled: {
-        background: white12,
-        color: white50,
+        background: "rgba(41, 38, 118, 0.7)",
+        color: pebble600,
       },
-      hoverBg: "primary.dark",
-      activeBg: "primary.light",
+      hoverBg: violetDark,
+      activeBg: violetLight,
     }),
     error: generateStyle({
       basic: { background: "error.main", color: "black" },
       disabled: {
-        background: white12,
-        color: white50,
+        background: "error.dark",
+        color: "black",
       },
       hoverBg: "error.dark",
       activeBg: "error.light",
     }),
     "outline-primary": generateStyle({
       basic: {
-        border: "1px solid",
-        borderColor: primaryMain,
-        color: primaryMain,
+        border: borderDefualt,
+        borderColor: violetLight,
+        color: violetLight,
       },
       disabled: {
-        border: borderWhite12,
-        color: white50,
+        border: borderDefualt,
+        borderColor: pebble700,
+        color: pebble600,
       },
-      hoverBg: "rgba(244, 143, 177, 0.08)",
+      hoverBg: lilacBg,
       activeBg: "transparent",
     }),
     "outline-gray": generateStyle({
       basic: {
-        border: "1px solid rgba(255, 255, 255, 0.7)",
-        color: "rgba(255, 255, 255, 0.7)",
+        border: borderDefualt,
+        borderColor: pebble400,
+        color: pebble400,
       },
       disabled: {
-        border: borderWhite12,
-        color: white50,
+        border: borderDefualt,
+        borderColor: pebble700,
+        color: pebble600,
       },
       hoverBg: white12,
       activeBg: "transparent",
     }),
     "outline-info": generateStyle({
       basic: {
-        border: "1px solid rgba(2, 136, 209, 0.5)",
-        color: "info.main",
+        border: borderDefualt,
+        borderColor: honeydewBg,
+        color: honeydewMain,
       },
       disabled: {
-        border: borderWhite12,
-        color: white50,
+        border: honeydewDarker,
+        color: honeydewDarker,
       },
-      hoverBg: "rgba(41, 182, 246, 0.12)",
+      hoverBg: honeydewBg,
       activeBg: "transparent",
     }),
     "ghost-primary": generateStyle({
       basic: {
-        color: primaryMain,
+        color: lilacMain,
       },
       disabled: {
-        color: white50,
+        color: lilacBg,
       },
-      hoverBg: "rgba(87, 56, 66, 0.3)",
+      hoverBg: lilacBg,
+      activeBg: "transparent",
+    }),
+    "ghost-info": generateStyle({
+      basic: {
+        color: honeydewMain,
+      },
+      disabled: {
+        color: honeydewBg,
+      },
+      hoverBg: honeydewBg,
       activeBg: "transparent",
     }),
     "ghost-gray": generateStyle({
       basic: {
-        color: "rgba(255, 255, 255, 0.7)",
+        color: pebble400,
       },
       disabled: {
-        color: white50,
+        color: "pebble.500",
       },
-      hoverBg: white12,
+      hoverBg: pebble700,
       activeBg: "transparent",
     }),
     unstyled: {
       boxShadow: "none",
       bgColor: "inherit",
-      border: "0px solid #aa647b",
+      border: "0px solid transparent",
       ".chakra-stack": {
         p: "0",
       },

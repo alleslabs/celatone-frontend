@@ -50,7 +50,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         hasArrow
         label="You don't have admin access to this contract."
         placement="top"
-        bg="primary.dark"
+        bg="honeydew.darker"
         arrowSize={8}
         isDisabled={isAdmin}
       >

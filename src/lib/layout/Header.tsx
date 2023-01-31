@@ -61,7 +61,7 @@ const Header = () => {
       <Image
         src="/celatone-logo.svg"
         alt="Celatone"
-        width="115px"
+        width="152px"
         mr="36px"
         _hover={{ cursor: "pointer" }}
         onClick={() => navigate({ pathname: "/" })}

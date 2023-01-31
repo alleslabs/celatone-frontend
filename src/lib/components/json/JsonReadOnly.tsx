@@ -47,12 +47,12 @@ const JsonReadOnly = ({
           : `16px 12px ${viewFull ? BUTTON_EXPAND_PADDING : "16px"}`
       }
       borderWidth={zeroHeight ? "none" : "thin"}
-      borderColor={!isJsonValid ? "error.main" : "divider.main"}
+      borderColor={!isJsonValid ? "error.main" : "pebble.700"}
       borderRadius="4px"
       position="relative"
       transition="all .2s"
       _hover={{
-        borderColor: isJsonValid && "gray.600",
+        borderColor: isJsonValid && "pebble.600",
         "& .copy-button-box": { display: "block" },
       }}
     >
@@ -68,7 +68,7 @@ const JsonReadOnly = ({
         <Text
           top="-10px"
           background="background.main"
-          textColor={!isJsonValid ? "error.main" : "gray.500"}
+          textColor={!isJsonValid ? "error.main" : "text.dark"}
           fontSize="12px"
           position="absolute"
         >

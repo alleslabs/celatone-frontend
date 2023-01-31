@@ -69,7 +69,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
   return (
     <Flex
       borderY="1px solid"
-      borderColor="divider.main"
+      borderColor="pebble.700"
       width="full"
       py="48px"
       direction="column"
@@ -79,7 +79,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
         <DisconnectedState text="to see contracts you've previously instantiated." />
       ) : (
         <Flex alignItems="center" flexDir="column" gap="4">
-          <Icon as={MdSearch} color="gray.600" boxSize="16" />
+          <Icon as={MdSearch} color="pebble.600" boxSize="16" />
           <Text color="text.dark">{renderText(list.value)}</Text>
           {!isReadOnly && (
             <ActionSection

@@ -111,7 +111,7 @@ export const FilterSelection = observer(
               alignItems="center"
               color="text.main"
               border="1px solid"
-              borderColor="divider.main"
+              borderColor="pebble.700"
               background="none"
               borderRadius="4px"
               maxW="100%"
@@ -128,8 +128,8 @@ export const FilterSelection = observer(
                       <Tag
                         style={tagItemProps}
                         size="md"
-                        bgColor="primary.main"
-                        color="background.main"
+                        bgColor="violet.light"
+                        color="pebble.900"
                       >
                         {displayActionValue(option)}
                         <Icon as={MdClose} boxSize="4" />
@@ -178,7 +178,7 @@ export const FilterSelection = observer(
             {displayOptions && (
               <List
                 borderRadius="4px"
-                bg="gray.900"
+                bg="pebble.900"
                 px="2"
                 py="1"
                 mt={0}
@@ -192,7 +192,8 @@ export const FilterSelection = observer(
                   <ListItem
                     key={option}
                     style={listItemProps}
-                    _hover={{ bg: "gray.800" }}
+                    _hover={{ bg: "pebble.800" }}
+                    transition="all .25s ease-in-out"
                     onClick={() => selectOption(option)}
                   >
                     <Flex alignItems="center" justifyContent="space-between">

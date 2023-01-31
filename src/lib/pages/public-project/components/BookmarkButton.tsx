@@ -56,7 +56,7 @@ const StyledButton = ({
   iconColor,
 }: StyledButtonProps) => (
   <Button
-    variant={hasText ? variant : "ghost"}
+    variant={hasText ? variant : "ghost-primary"}
     style={hasText ? buttonTextProps : buttonIconProps}
     gap={2}
     onClick={action}
@@ -103,7 +103,7 @@ export const BookmarkButton = observer(
             variant="outline-primary"
             hasText={hasText}
             icon={MdBookmark}
-            iconColor="primary.main"
+            iconColor="violet.light"
             actionText="Bookmarked"
             action={(e) => {
               e.stopPropagation();
@@ -115,7 +115,7 @@ export const BookmarkButton = observer(
             variant="outline"
             hasText={hasText}
             icon={MdBookmarkBorder}
-            iconColor="gray.600"
+            iconColor="pebble.600"
             actionText="Bookmark Project"
             action={(e) => {
               if (details) {

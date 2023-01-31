@@ -32,8 +32,8 @@ export const PublicProjectCard = observer(
         pt={4}
         pb={2}
         alignItems="center"
-        bg="gray.900"
-        _hover={{ bg: "gray.800" }}
+        bg="pebble.900"
+        _hover={{ bg: "pebble.800" }}
         transition="all 0.2s"
         borderRadius={4}
         gap={4}
@@ -67,7 +67,7 @@ export const PublicProjectCard = observer(
                   fontWeight="600"
                   textOverflow="ellipsis"
                   overflow="hidden"
-                  mt="3px"
+                  mt="4px"
                 >
                   {item.name}
                 </Text>
@@ -77,7 +77,7 @@ export const PublicProjectCard = observer(
             <Text
               ref={ref as React.MutableRefObject<HTMLParagraphElement>}
               variant="body3"
-              color="text.primary"
+              color="text.dark"
               pt={3}
             >
               {clampedText}

@@ -10,6 +10,8 @@ import { MdLanguage } from "react-icons/md";
 
 import type { Option, Detail } from "lib/types";
 
+const iconHover = "pebble.500";
+
 export const renderSocial = (name: string) => {
   switch (name) {
     case "twitter":
@@ -40,8 +42,8 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
         <Link href={details.website} target="_blank" rel="noopener noreferrer">
           <Icon
             as={MdLanguage}
-            color="gray.600"
-            _hover={{ color: "gray.500" }}
+            color="pebble.600"
+            _hover={{ color: iconHover }}
             transition="all 0.2s"
             boxSize="6"
           />
@@ -52,8 +54,8 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
         <Link href={details.github} target="_blank" rel="noopener noreferrer">
           <Icon
             as={FaGithub}
-            color="gray.600"
-            _hover={{ color: "gray.500" }}
+            color="pebble.600"
+            _hover={{ color: iconHover }}
             transition="all 0.2s"
             boxSize="5"
           />
@@ -72,8 +74,8 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
               >
                 <Icon
                   as={renderSocial(social.name)}
-                  color="gray.600"
-                  _hover={{ color: "gray.500" }}
+                  color="pebble.600"
+                  _hover={{ color: iconHover }}
                   transition="all 0.2s"
                   boxSize="5"
                 />

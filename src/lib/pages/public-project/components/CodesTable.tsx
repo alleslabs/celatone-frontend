@@ -66,7 +66,7 @@ export const CodesTable = ({
                   "& th:first-of-type": { pl: "48px" },
                   "> th": {
                     textTransform: "capitalize",
-                    borderColor: "divider.main",
+                    borderColor: "pebble.700",
                   },
                 }}
               >
@@ -88,7 +88,7 @@ export const CodesTable = ({
                   sx={{
                     "& td:first-of-type": { pl: "48px" },
                     "& td:last-of-type": { pr: "48px" },
-                    "> td": { borderColor: "divider.main" },
+                    "> td": { borderColor: "pebble.700" },
                   }}
                   _hover={{
                     bg: "gray.900",
@@ -96,7 +96,7 @@ export const CodesTable = ({
                   onClick={() => navigate({ pathname: `/code/${code.id}` })}
                   cursor="pointer"
                 >
-                  <Td width="10%" color="primary.main">
+                  <Td width="10%">
                     <ExplorerLink
                       type="code_id"
                       value={code.id.toString()}

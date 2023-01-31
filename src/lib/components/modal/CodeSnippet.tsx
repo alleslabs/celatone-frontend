@@ -212,7 +212,7 @@ execute();
           <ModalCloseButton color="text.dark" />
           <ModalBody px={4} maxH="640px" overflow="scroll">
             <Tabs>
-              <TabList borderBottom="1px solid" borderColor="divider.main">
+              <TabList borderBottom="1px solid" borderColor="pebble.700">
                 {codeSnippets[type].map((item) => (
                   <CustomTab key={`menu-${item.name}`}>{item.name}</CustomTab>
                 ))}
@@ -221,7 +221,7 @@ execute();
                 {codeSnippets[type].map((item) => (
                   <TabPanel key={item.name} px={2} py={4}>
                     <Box
-                      bgColor="gray.900"
+                      bgColor="background.main"
                       p={4}
                       borderRadius={4}
                       position="relative"

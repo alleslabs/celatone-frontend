@@ -13,11 +13,11 @@ export const Textarea: ComponentStyleConfig = {
         borderColor: "gray.600",
       },
       _focusWithin: {
-        borderColor: "primary.main",
+        borderColor: "lilac.main",
         borderWidth: "2px",
       },
       _active: {
-        borderColor: "primary.main",
+        borderColor: "lilac.main",
         borderWidth: "2px",
       },
       _disabled: {

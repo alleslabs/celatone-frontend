@@ -103,7 +103,7 @@ export const ContractTableRow = ({
                 <StyledIconButton
                   icon={<MdBookmark />}
                   variant="ghost-gray"
-                  color="primary.main"
+                  color="violet.light"
                 />
               }
             />
@@ -114,7 +114,7 @@ export const ContractTableRow = ({
                 <StyledIconButton
                   icon={<MdBookmarkBorder />}
                   variant="ghost-gray"
-                  color="gray.600"
+                  color="pebble.600"
                 />
               }
             />

@@ -87,7 +87,7 @@ export const ProjectDetail = observer(() => {
                 width="full"
                 borderBottom="1px solid"
                 borderTop="1px solid"
-                borderColor="divider.main"
+                borderColor="pebble.700"
               >
                 <EmptyState message="There is currently no code in this project. Please check back soon for the updates." />
               </Flex>
@@ -126,7 +126,7 @@ export const ProjectDetail = observer(() => {
                 width="full"
                 borderBottom="1px solid"
                 borderTop="1px solid"
-                borderColor="divider.main"
+                borderColor="pebble.700"
               >
                 <EmptyState message="There is currently no contracts in this project. Please check back soon for the updates." />
               </Flex>

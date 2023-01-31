@@ -166,7 +166,7 @@ const Navbar = observer(() => {
             mb="4"
             key={item.category}
             borderBottom="1px solid"
-            borderColor="gray.800"
+            borderColor="pebble.700"
             sx={{
               "&:last-of-type": {
                 borderBottom: "none",
@@ -182,7 +182,7 @@ const Navbar = observer(() => {
               {item.category === "Contracts" && (
                 <CreateNewList
                   buttonProps={{
-                    variant: "ghost-primary",
+                    variant: "ghost-info",
                     size: "xs",
                     leftIcon: <MdAdd />,
                     children: "NEW LIST",
@@ -196,16 +196,16 @@ const Navbar = observer(() => {
                   gap="2"
                   p={2}
                   cursor="pointer"
-                  _hover={{ bg: "gray.800", borderRadius: "4px" }}
+                  _hover={{ bg: "pebble.800", borderRadius: "4px" }}
                   transition="all .25s ease-in-out"
                   alignItems="center"
                   bgColor={
-                    isCurrentPage(submenu.slug) ? "gray.800" : "transparent"
+                    isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
                   }
                   borderRadius={isCurrentPage(submenu.slug) ? "4px" : "0px"}
                 >
                   {submenu.icon && (
-                    <Icon as={submenu.icon} color="gray.600" boxSize="4" />
+                    <Icon as={submenu.icon} color="pebble.600" boxSize="4" />
                   )}
                   {submenu.logo && (
                     <Image

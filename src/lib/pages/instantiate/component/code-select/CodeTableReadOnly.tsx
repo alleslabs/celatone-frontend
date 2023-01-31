@@ -22,12 +22,22 @@ const CodeTableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
       <TableHeader />
       <TableRow>{codeDetail.id}</TableRow>
       <TableRow>
-        <Text variant="body2" className="ellipsis" maxW="300px">
+        <Text
+          variant="body2"
+          className="ellipsis"
+          maxW="300px"
+          color="text.dark"
+        >
           {codeDetail?.description ?? "No Description"}
         </Text>
       </TableRow>
       <TableRow justifyContent="center">
-        <Text variant="body2">{codeDetail.contracts}</Text>
+        <Text
+          variant="body2"
+          color={codeDetail.contracts > 0 ? "text.main" : "text.disabled"}
+        >
+          {codeDetail.contracts}
+        </Text>
       </TableRow>
       <TableRow>
         <ExplorerLink

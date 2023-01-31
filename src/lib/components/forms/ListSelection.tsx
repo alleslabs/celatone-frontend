@@ -127,7 +127,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
             alignItems="center"
             color="text.main"
             border="1px solid"
-            borderColor="divider.main"
+            borderColor="pebble.700"
             background="none"
             borderRadius="4px"
             maxW="100%"
@@ -145,8 +145,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       cursor="pointer"
                       whiteSpace="nowrap"
                       size="md"
-                      bgColor="primary.main"
-                      color="gray.900"
+                      bgColor="violet.light"
+                      color="pebble.900"
                       alignItems="center"
                       display="flex"
                       textTransform="none"
@@ -155,7 +155,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       borderRadius="full"
                     >
                       {option.label}
-                      <Icon as={MdClose} boxSize="4" color="gray.900" />
+                      <Icon as={MdClose} boxSize="4" color="pebble.900" />
                     </Tag>
                   </Flex>
                 ))}

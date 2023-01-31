@@ -77,7 +77,7 @@ export const ContractListTable = ({
         templateColumns={TEMPLATE_COLUMNS}
         px="48px"
         borderBottom="1px solid"
-        borderColor="divider.main"
+        borderColor="pebble.700"
       >
         <TableHeaderNoBorder>Contract Address</TableHeaderNoBorder>
         <TableHeaderNoBorder>Contract Name</TableHeaderNoBorder>
@@ -88,7 +88,8 @@ export const ContractListTable = ({
         const isAdmin = address && address === admins[item.contractAddress];
         return (
           <Grid
-            _hover={{ bg: "gray.900" }}
+            _hover={{ bg: "pebble.900" }}
+            transition="all .25s ease-in-out"
             cursor="pointer"
             onClick={() =>
               navigate({ pathname: `/contract/${item.contractAddress}` })
@@ -104,7 +105,7 @@ export const ContractListTable = ({
             minW="min-content"
             templateColumns={TEMPLATE_COLUMNS}
             borderBottom="1px solid"
-            borderColor="divider.main"
+            borderColor="pebble.700"
           >
             <TableRowNoBorder>
               <ExplorerLink
@@ -151,15 +152,10 @@ export const ContractListTable = ({
                     </Button>
                   </AppLink>
                   <Menu>
-                    <MenuButton
-                      size="sm"
-                      variant="ghost-gray"
-                      focusBorderColor="primary.main"
-                      as={Button}
-                    >
+                    <MenuButton size="sm" variant="ghost-gray" as={Button}>
                       <StyledIcon
                         as={MdMoreHoriz}
-                        color="gray.600"
+                        color="pebble.600"
                         boxSize="6"
                       />
                     </MenuButton>
@@ -168,7 +164,7 @@ export const ContractListTable = ({
                         contractLocalInfo={item}
                         triggerElement={
                           <StyledMenuItem
-                            icon={<StyledIcon as={MdMode} color="gray.600" />}
+                            icon={<StyledIcon as={MdMode} color="pebble.600" />}
                           >
                             Edit details
                           </StyledMenuItem>
@@ -181,7 +177,7 @@ export const ContractListTable = ({
                             icon={
                               <StyledIcon
                                 as={MdOutlineBookmark}
-                                color="gray.600"
+                                color="pebble.600"
                               />
                             }
                           >
@@ -190,7 +186,7 @@ export const ContractListTable = ({
                         }
                       />
                       <StyledMenuItem
-                        icon={<StyledIcon as={MdPerson} color="gray.600" />}
+                        icon={<StyledIcon as={MdPerson} color="pebble.600" />}
                         onClick={() => {
                           navigate({
                             pathname: "/admin",
@@ -208,7 +204,7 @@ export const ContractListTable = ({
                             icon={
                               <StyledIcon
                                 as={MdPersonRemove}
-                                color="gray.600"
+                                color="pebble.600"
                               />
                             }
                             isDisabled={!isAdmin}
@@ -224,7 +220,7 @@ export const ContractListTable = ({
                             contractLocalInfo={item}
                             contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
-                              fontSize: "14px",
+                              fontSize: "16px",
                               icon: (
                                 <StyledIcon as={MdDelete} color="error.light" />
                               ),

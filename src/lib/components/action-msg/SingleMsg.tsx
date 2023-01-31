@@ -69,7 +69,7 @@ export const SingleMsg = ({
             hasArrow
             label={`Token ID: ${token.id}`}
             placement="top"
-            bg="primary.dark"
+            bg="honeydew.darker"
             maxW="240px"
           >
             <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />

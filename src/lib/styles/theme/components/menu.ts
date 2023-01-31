@@ -9,19 +9,19 @@ const baseStyle = definePartsStyle({
     py: "2",
     borderRadius: "base",
     border: "none",
-    bg: "gray.900",
+    bg: "pebble.900",
   },
   item: {
-    color: "gray.200",
+    color: "text.main",
     _hover: {
-      bg: "gray.800",
+      bg: "pebble.800",
     },
     _focus: {
-      bg: "gray.800",
+      bg: "pebble.800",
     },
   },
   divider: {
-    borderColor: "rgba(255,255,255,0.12)",
+    borderColor: "pebble.700",
   },
 });
 

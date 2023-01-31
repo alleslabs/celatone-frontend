@@ -26,7 +26,7 @@ const EmptyState = () => (
 export const NoContracts = () => {
   const { isWalletConnected } = useWallet();
   return (
-    <Box py="48px" borderY="1px solid" borderColor="divider.main">
+    <Box py="48px" borderY="1px solid" borderColor="pebble.700">
       {!isWalletConnected ? <DisconnectedState /> : <EmptyState />}
     </Box>
   );

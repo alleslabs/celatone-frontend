@@ -38,7 +38,8 @@ export const TxsTableRow = ({
       <Grid
         templateColumns={templateColumnsStyle}
         onClick={isAccordion ? onToggle : undefined}
-        _hover={{ background: "divider.main" }}
+        _hover={{ background: "pebble.900" }}
+        transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
         <TableRow>

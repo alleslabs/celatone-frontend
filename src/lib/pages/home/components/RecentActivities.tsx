@@ -32,9 +32,9 @@ export const RecentActivities = observer(() => {
               minW="360px"
               cursor="pointer"
               p={6}
-              bg="gray.900"
+              bg="pebble.900"
               borderRadius="8px"
-              _hover={{ bg: "hover.main" }}
+              _hover={{ bg: "pebble.800" }}
               transition="all .25s ease-in-out"
               key={item.type + item.contractAddress + item.timestamp}
               onClick={() =>
@@ -47,7 +47,7 @@ export const RecentActivities = observer(() => {
               <Flex alignItems="center" gap={1}>
                 <Icon
                   as={item.type === "query" ? MdSearch : MdInput}
-                  color="gray.600"
+                  color="pebble.600"
                   boxSize={4}
                 />
                 <Text variant="body2" color="text.dark">
@@ -59,7 +59,7 @@ export const RecentActivities = observer(() => {
                   variant="body3"
                   color="text.main"
                   padding="4px 8px"
-                  backgroundColor="hover.main"
+                  backgroundColor="pebble.700"
                   borderRadius="16px"
                 >
                   {item.action}

@@ -34,7 +34,7 @@ export const ConnectWalletAlert = ({
   return !address ? (
     <Alert
       {...alertProps}
-      variant="info"
+      variant="honeydew"
       alignItems="center"
       justifyContent="space-between"
       py="12px"
@@ -43,12 +43,12 @@ export const ConnectWalletAlert = ({
         <AlertIcon />
         <Box>
           <AlertTitle>
-            <Text variant="body1" fontWeight="600" color="info.main">
+            <Text variant="body1" fontWeight="600" color="info.mai">
               {title}
             </Text>
           </AlertTitle>
           <AlertDescription>
-            <Text variant="body2" color="info.main">
+            <Text variant="body2" color="info.mai">
               {subtitle}
             </Text>
           </AlertDescription>

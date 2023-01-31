@@ -40,7 +40,8 @@ export const PastTxRow = ({
       <Grid
         templateColumns={templateColumnsStyle}
         onClick={isAccordion ? onToggle : undefined}
-        _hover={{ background: "divider.main" }}
+        _hover={{ background: "pebble.900" }}
+        transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
         <TableRow pl="48px">
@@ -85,13 +86,14 @@ export const PastTxRow = ({
             <Icon
               as={MdKeyboardArrowDown}
               transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
-              boxSize="18px"
+              boxSize="24px"
+              color="pebble.600"
             />
           )}
         </TableRow>
       </Grid>
       {isAccordion && (
-        <Grid w="full" py={4} hidden={!isOpen}>
+        <Grid w="full" py={2} bg="pebble.900" hidden={!isOpen}>
           {transaction.messages.map((msg, index) => (
             <AccordionTx
               key={index.toString() + msg.type}

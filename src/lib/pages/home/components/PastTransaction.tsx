@@ -22,7 +22,7 @@ export const PastTransaction = () => {
           Your past transactions will display here. You also able can view all
         </Text>
         <AppLink href="/past-txs">
-          <Text color="primary.main">Past Transactions</Text>
+          <Text color="lilac.main">Past Transactions</Text>
         </AppLink>
       </Flex>
     </Box>

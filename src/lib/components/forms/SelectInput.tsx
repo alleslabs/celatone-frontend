@@ -75,7 +75,7 @@ export const SelectInput = ({
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
-                borderColor: "primary.main",
+                borderColor: "lilac.main",
               },
             },
             "& .form-label": {
@@ -101,14 +101,14 @@ export const SelectInput = ({
             color={selected ? "text.main" : "text.dark"}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <Icon as={MdArrowDropDown} color="text.dark" fontSize="24px" />
+            <Icon as={MdArrowDropDown} color="pebble.600" fontSize="24px" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
         ref={optionRef}
         border="unset"
-        bg="gray.900"
+        bg="pebble.900"
         w="200px"
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
@@ -119,7 +119,7 @@ export const SelectInput = ({
         sx={{
           "> div:not(:last-of-type)": {
             borderBottom: "1px solid",
-            borderBottomColor: "divider.main",
+            borderBottomColor: "pebble.700",
           },
         }}
       >
