@@ -132,6 +132,7 @@ export const UploadSection = ({
         name="codeDesc"
         control={control}
         label="Code Description (Optional)"
+        placeholder="No Description"
         helperText="Short description of your code. You can add or change this later."
         rules={{
           maxLength: MAX_CODE_DESCRIPTION_LENGTH,

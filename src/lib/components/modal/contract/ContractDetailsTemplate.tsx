@@ -102,6 +102,7 @@ export const ContractDetailsTemplate = ({
     >
       <OffChainForm<OffchainDetail>
         state={offchainState}
+        label={contractLocalInfo.label}
         control={control}
         setTagsValue={setTagsValue}
         setContractListsValue={setContractListsValue}

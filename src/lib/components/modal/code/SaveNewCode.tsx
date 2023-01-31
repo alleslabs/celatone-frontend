@@ -183,12 +183,14 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           label="Code ID"
           labelBgColor="gray.800"
           status={codeIdStatus}
+          placeholder="ex. 1234"
           helperText="ex. 1150"
         />
         <TextInput
           value={uploader}
           label="Uploader"
           labelBgColor="gray.800"
+          placeholder="Uploader address will display here"
           setInputState={() => {}}
           status={uploaderStatus}
           isDisabled
@@ -199,6 +201,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           setInputState={setDescription}
           label="Code Description"
           labelBgColor="gray.800"
+          placeholder="No Description"
           helperText="Fill in code description to define its use as a reminder"
           status={descriptionStatus}
         />
