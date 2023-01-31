@@ -114,6 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#143](https://github.com/alleslabs/celatone-frontend/pull/143) Use dummy address only when getting execute cmds
 - [#132](https://github.com/alleslabs/celatone-frontend/pull/132) Fix permission field in upload simulation
 - [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
 - [#129](https://github.com/alleslabs/celatone-frontend/pull/129) Fix wallet disconnection on network query change
