@@ -54,7 +54,8 @@ export const useCodeListByUserQuery = (
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
-    if (!walletAddr) throw new Error("Wallet address not found");
+    if (!walletAddr)
+      throw new Error("Wallet address not found (useCodeListByUserQuery)");
 
     return indexerGraphClient
       .request(getCodeListByUserQueryDocument, {
@@ -84,8 +85,7 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
-    // eslint-disable-next-line sonarjs/no-duplicate-string
-    if (!ids) throw new Error("Code ID not found");
+    if (!ids) throw new Error("Code ID not found (useCodeListByIDsQuery)");
 
     return indexerGraphClient
       .request(getCodeListByIDsQueryDocument, {
@@ -116,7 +116,7 @@ export const useCodeInfoByCodeId = (
 ): UseQueryResult<Option<Omit<CodeData, "chainId">>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!codeId) throw new Error("Code ID not found");
+    if (!codeId) throw new Error("Code ID not found (useCodeInfoByCodeId)");
 
     return indexerGraphClient
       .request(getCodeInfoByCodeId, {
@@ -159,7 +159,7 @@ export const useContractListByCodeId = (
 ): UseQueryResult<Option<ContractInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!codeId) throw new Error("Code ID not found");
+    if (!codeId) throw new Error("Code ID not found (useContractListByCodeId)");
 
     return indexerGraphClient
       .request(getContractListByCodeId, { codeId, offset, pageSize })
@@ -192,7 +192,8 @@ export const useContractListCountByCodeId = (
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!codeId) throw new Error("Code ID not found");
+    if (!codeId)
+      throw new Error("Code ID not found (useContractListCountByCodeId)");
 
     return indexerGraphClient
       .request(getContractListCountByCodeId, {

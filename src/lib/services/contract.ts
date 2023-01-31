@@ -111,7 +111,8 @@ export const queryContractBalances = async (
   chainId: Option<string>,
   contractAddress: ContractAddr
 ): Promise<Option<Balance[]>> => {
-  if (!chainName || !chainId) throw new Error("Invalid chain");
+  if (!chainName || !chainId)
+    throw new Error("Invalid chain (queryContractBalances)");
   const { data } = await axios.get<Balance[]>(
     `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
       chainName
@@ -125,7 +126,8 @@ export const queryPublicInfo = async (
   chainId: string | undefined,
   contractAddress: ContractAddr
 ): Promise<PublicInfo | undefined> => {
-  if (!chainName || !chainId) throw new Error("Invalid chain");
+  if (!chainName || !chainId)
+    throw new Error("Invalid chain (queryPublicInfo)");
   return axios
     .get<PublicInfoResponse[]>(
       `https://cosmos-registry.alleslabs.dev/data/${chainName}/${chainId}/contracts.json`

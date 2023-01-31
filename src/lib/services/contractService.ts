@@ -54,7 +54,10 @@ export const useInstantiatedCountByUserQuery = (
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!walletAddr) throw new Error("Wallet address not found");
+    if (!walletAddr)
+      throw new Error(
+        "Wallet address not found (useInstantiatedCountByUserQuery)"
+      );
 
     return indexerGraphClient
       .request(getInstantiatedCountByUserQueryDocument, {
@@ -75,7 +78,10 @@ export const useInstantiatedListByUserQuery = (
 ): UseQueryResult<Option<ContractLocalInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!walletAddr) throw new Error("Wallet address not found");
+    if (!walletAddr)
+      throw new Error(
+        "Wallet address not found (useInstantiatedListByUserQuery)"
+      );
 
     return indexerGraphClient
       .request(getInstantiatedListByUserQueryDocument, {
@@ -102,7 +108,8 @@ export const useContractListByAdmin = (
 ): UseQueryResult<Option<ContractLocalInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!adminAddress) throw new Error("Admin address not found");
+    if (!adminAddress)
+      throw new Error("Admin address not found (useContractListByAdmin)");
 
     return indexerGraphClient
       .request(getContractListByAdmin, {
@@ -153,7 +160,8 @@ export const useAdminByContractAddresses = (
 ): UseQueryResult<Option<Dict<ContractAddr, string>>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!contractAddresses) throw new Error("No contract selected");
+    if (!contractAddresses)
+      throw new Error("No contract selected (useAdminByContractAddresses)");
 
     return indexerGraphClient
       .request(getAdminByContractAddressesQueryDocument, {
@@ -223,7 +231,10 @@ export const useExecuteTxsCountByContractAddress = (
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!contractAddress) throw new Error("Contract address not found");
+    if (!contractAddress)
+      throw new Error(
+        "Contract address not found (useExecuteTxsCountByContractAddress)"
+      );
 
     return indexerGraphClient
       .request(getExecuteTxsCountByContractAddress, {
@@ -360,7 +371,10 @@ export const useTxsCountByContractAddress = (
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!contractAddress) throw new Error("Contract address not found");
+    if (!contractAddress)
+      throw new Error(
+        "Contract address not found (useTxsCountByContractAddress)"
+      );
 
     return indexerGraphClient
       .request(getTxsCountByContractAddress, {
