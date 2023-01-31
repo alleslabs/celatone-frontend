@@ -30,9 +30,14 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
         client,
         onTxSucceed: () => {
           onTxSucceed?.();
-          queryClient.invalidateQueries({
-            queryKey: ["admin_by_contracts", "instantiateInfo"],
-          });
+          Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: ["admin_by_contracts"],
+            }),
+            queryClient.invalidateQueries({
+              queryKey: ["query", "instantiate_info"],
+            }),
+          ]);
         },
       });
     },

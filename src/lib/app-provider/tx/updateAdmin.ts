@@ -1,6 +1,5 @@
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
@@ -16,7 +15,6 @@ export interface UpdateAdminStreamParams {
 
 export const useUpdateAdminTx = () => {
   const { address, getCosmWasmClient } = useWallet();
-  const queryClient = useQueryClient();
 
   return useCallback(
     async ({
@@ -37,15 +35,10 @@ export const useUpdateAdminTx = () => {
         newAdmin,
         fee: estimatedFee,
         client,
-        onTxSucceed: () => {
-          onTxSucceed?.();
-          queryClient.invalidateQueries({
-            queryKey: ["admin_by_contracts", "instantiateInfo"],
-          });
-        },
+        onTxSucceed,
         onTxFailed,
       });
     },
-    [address, queryClient, getCosmWasmClient]
+    [address, getCosmWasmClient]
   );
 };
