@@ -1,4 +1,5 @@
 import { useWallet } from "@cosmos-kit/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useFabricateFee } from "../hooks";
@@ -7,11 +8,12 @@ import { CLEAR_ADMIN_GAS } from "lib/data";
 import type { ContractAddr } from "lib/types";
 
 export interface ClearAdminStreamParams {
-  onTxSucceed?: (txHash: string) => void;
+  onTxSucceed?: () => void;
 }
 
 export const useClearAdminTx = (contractAddress: ContractAddr) => {
   const { address, getCosmWasmClient } = useWallet();
+  const queryClient = useQueryClient();
   const fabricateFee = useFabricateFee();
   const clearAdminFee = fabricateFee(CLEAR_ADMIN_GAS);
 
@@ -26,9 +28,19 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
         contractAddress,
         fee: clearAdminFee,
         client,
-        onTxSucceed,
+        onTxSucceed: () => {
+          onTxSucceed?.();
+          Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: ["admin_by_contracts"],
+            }),
+            queryClient.invalidateQueries({
+              queryKey: ["query", "instantiate_info"],
+            }),
+          ]);
+        },
       });
     },
-    [address, clearAdminFee, contractAddress, getCosmWasmClient]
+    [address, clearAdminFee, queryClient, contractAddress, getCosmWasmClient]
   );
 };
