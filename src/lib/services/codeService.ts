@@ -85,7 +85,7 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
-    if (!ids) throw new Error("Code ID not found (useCodeListByIDsQuery)");
+    if (!ids) throw new Error("Code IDs not found (useCodeListByIDsQuery)");
 
     return indexerGraphClient
       .request(getCodeListByIDsQueryDocument, {
