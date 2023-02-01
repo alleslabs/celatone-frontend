@@ -285,10 +285,16 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             helperText="This address will be the admin for the deployed smart contract."
             variant="floating"
             error={validateAdmin(watchAdminAddress)}
-            helperAction={{
-              text: "Assign me",
-              action: () => setValue("adminAddress", address),
-            }}
+            helperAction={
+              <Text
+                textColor="primary.main"
+                variant="body3"
+                cursor="pointer"
+                onClick={() => setValue("adminAddress", address)}
+              >
+                Assign me
+              </Text>
+            }
           />
           <Heading
             variant="h6"

@@ -7,8 +7,8 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Text,
 } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 import type {
   Control,
   FieldPath,
@@ -28,10 +28,7 @@ interface ControllerInputProps<T extends FieldValues>
   rules?: UseControllerProps["rules"];
   status?: FormStatus;
   maxLength?: number;
-  helperAction?: {
-    text: string;
-    action: () => void;
-  };
+  helperAction?: ReactNode;
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -89,29 +86,15 @@ export const ControllerInput = <T extends FieldValues>({
           {status && getStatusIcon(status.state)}
         </InputRightElement>
       </InputGroup>
-      <Flex gap={1} alignItems="baseline">
+      <Flex gap={1} alignItems="center" mt={1}>
         {isError ? (
           <FormErrorMessage className="error-text">{error}</FormErrorMessage>
         ) : (
           <FormHelperText className="helper-text">
-            {status?.message ? (
-              getResponseMsg(status, helperText)
-            ) : (
-              <Text color="text.dark">{helperText}</Text>
-            )}
+            {status?.message ? getResponseMsg(status, helperText) : helperText}
           </FormHelperText>
         )}
-        {helperAction && (
-          <FormHelperText
-            m={0}
-            textColor="primary.main"
-            fontSize="12px"
-            onClick={helperAction.action}
-            cursor="pointer"
-          >
-            {helperAction.text}
-          </FormHelperText>
-        )}
+        {helperAction}
       </Flex>
     </FormControl>
   );
