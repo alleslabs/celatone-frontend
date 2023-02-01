@@ -65,6 +65,7 @@ const validateAddress = (
   return null;
 };
 
+// TODO: refactor
 export const useValidateAddress = () => {
   const { currentChainRecord } = useWallet();
 

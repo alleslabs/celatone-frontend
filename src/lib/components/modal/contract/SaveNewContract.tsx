@@ -95,7 +95,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "instantiateInfo", endpoint, contractAddressState],
+    ["query", "instantiate_info", endpoint, contractAddressState],
     async () =>
       queryInstantiateInfo(
         endpoint,
@@ -194,7 +194,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           control={control}
           label="Contract Address"
           variant="floating"
-          helperText={`ex. ${exampleContractAddress}`}
+          placeholder={`ex. ${exampleContractAddress}`}
           status={status}
           labelBgColor="pebble.800"
         />
@@ -209,6 +209,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
         <OffChainForm<SaveNewContractDetail>
           state={offchainState}
+          contractLabel={labelState}
           control={control}
           setTagsValue={setTagsValue}
           setContractListsValue={setContractListsValue}
