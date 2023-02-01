@@ -100,6 +100,7 @@ export function CreateNewList({
       disabledMain={status.state !== "success"}
       otherBtnTitle="Cancel"
       otherAction={resetListName}
+      closeOnOverlayClick={false}
     >
       <Box py={4}>
         <TextInput

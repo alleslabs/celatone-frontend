@@ -23,7 +23,7 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
   return (
     <Modal
       isOpen
-      closeOnOverlayClick={result.phase === TxStreamPhase.FAILED}
+      closeOnOverlayClick={result.phase !== TxStreamPhase.BROADCAST}
       onClose={onClose}
       isCentered
     >

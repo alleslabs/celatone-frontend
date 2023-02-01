@@ -71,13 +71,7 @@ export const SelectContractAdmin = ({
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={resetOnClose}
-        closeOnOverlayClick={false}
-        size="4xl"
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl" isCentered>
         <ModalOverlay />
         <ModalContent h="80%">
           <ModalHeader>

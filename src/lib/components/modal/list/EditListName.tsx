@@ -72,6 +72,7 @@ export function EditList({ list, menuItemProps }: ModalProps) {
       mainAction={handleSave}
       disabledMain={status.state !== "success"}
       otherAction={() => setListName(list.label)}
+      closeOnOverlayClick={false}
     >
       <TextInput
         variant="floating"
