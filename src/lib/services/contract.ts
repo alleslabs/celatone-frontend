@@ -10,7 +10,7 @@ import type {
   Option,
   PublicInfo,
 } from "lib/types";
-import { encode, parseDateDefault } from "lib/utils";
+import { encode, libDecode, parseDateDefault } from "lib/utils";
 
 export interface ContractCw2InfoRaw {
   data: string;
@@ -85,9 +85,7 @@ export const queryContractCw2Info = async (
   const { data } = await axios.get<ContractCw2InfoRaw>(
     `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
   );
-  return JSON.parse(
-    Buffer.from(data.data, "base64").toString("binary")
-  ) as ContractCw2Info;
+  return JSON.parse(libDecode(data.data)) as ContractCw2Info;
 };
 
 export const queryInstantiateInfo = async (

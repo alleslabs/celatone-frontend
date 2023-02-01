@@ -88,7 +88,7 @@ export const InstantiateInfo = ({
       <LabelText label="CW2 Info">
         {contractCw2Info ? (
           <Text variant="body2">
-            {contractCw2Info?.contract} ({contractCw2Info?.version})
+            {contractCw2Info.contract} ({contractCw2Info.version})
           </Text>
         ) : (
           <Text variant="body2" color="text.dark">

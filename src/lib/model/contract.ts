@@ -116,7 +116,7 @@ export const useContractData = (
   );
 
   const { data: contractCw2Info } = useQuery(
-    ["query", "contractCw2Info", endpoint, contractAddress],
+    ["query", "contract_cw2_info", endpoint, contractAddress],
     async () => queryContractCw2Info(endpoint, contractAddress),
     { enabled: !!currentChainRecord }
   );
