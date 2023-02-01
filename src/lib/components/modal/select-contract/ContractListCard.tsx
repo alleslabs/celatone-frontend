@@ -46,8 +46,8 @@ export const ContractListCard = ({
       <Flex
         p="4"
         alignItems="center"
-        bg="pebble.900"
-        _hover={{ bg: "pebble.800" }}
+        bg="pebble.800"
+        _hover={{ bg: "pebble.700" }}
         borderRadius="4"
         transition="all .25s ease-in-out"
         gap="4"

@@ -28,7 +28,7 @@ export const ProjectDetail = observer(() => {
     <Box py={12} pb={0}>
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs index={tabIndex}>
-        <TabList my={8} borderBottom="1px" px={12} borderColor="gray.800">
+        <TabList my={8} borderBottom="1px" px={12} borderColor="pebble.800">
           <CustomTab
             count={publicCodes.length + publicContracts.length}
             onClick={() => setTabIndex(0)}
@@ -72,7 +72,7 @@ export const ProjectDetail = observer(() => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      color="gray.500"
+                      color="text.dark"
                       onClick={() => setTabIndex(1)}
                     >
                       View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
@@ -111,7 +111,7 @@ export const ProjectDetail = observer(() => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      color="gray.500"
+                      color="text.dark"
                       onClick={() => setTabIndex(2)}
                     >
                       View More <Icon as={MdExpandMore} boxSize={4} ml={1} />

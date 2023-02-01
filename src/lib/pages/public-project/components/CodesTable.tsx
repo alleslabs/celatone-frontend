@@ -90,9 +90,8 @@ export const CodesTable = ({
                     "& td:last-of-type": { pr: "48px" },
                     "> td": { borderColor: "pebble.700" },
                   }}
-                  _hover={{
-                    bg: "gray.900",
-                  }}
+                  transition="all .25s ease-in-out"
+                  _hover={{ bg: "pebble.900" }}
                   onClick={() => navigate({ pathname: `/code/${code.id}` })}
                   cursor="pointer"
                 >
@@ -114,13 +113,13 @@ export const CodesTable = ({
                   </Td>
                   <Td width="15%">
                     {/* TODO: add condition for permission tag */}
-                    <Tag borderRadius="full" bgColor="gray.600">
+                    <Tag borderRadius="full" bgColor="pebble.700">
                       Nobody
                     </Tag>
-                    {/* <Tag borderRadius="full" bgColor="info.dark">
+                    {/* <Tag borderRadius="full" bgColor="pebble.700">
                     OnlyAddress
                   </Tag>
-                  <Tag borderRadius="full" bgColor="info.dark">
+                  <Tag borderRadius="full" bgColor="pebble.700">
                     AnyOfAddresses
                   </Tag>
                   <Tag borderRadius="full" bgColor="success.dark">
@@ -137,7 +136,7 @@ export const CodesTable = ({
                       <Icon
                         as={MdBookmarkBorder}
                         boxSize={6}
-                        color="gray.600"
+                        color="pebble.600"
                         cursor="pointer"
                       />
                     </Flex>

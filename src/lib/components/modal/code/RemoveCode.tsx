@@ -28,7 +28,7 @@ export function RemoveCode({
     <StyledIconButton
       icon={<MdDelete />}
       variant="ghost-gray"
-      color="gray.600"
+      color="pebble.600"
     />
   ),
 }: RemoveCodeModalProps) {

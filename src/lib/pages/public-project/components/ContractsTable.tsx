@@ -83,7 +83,7 @@ export const ContractsTable = ({
               {filteredContracts?.map((item) => (
                 <Tr
                   transition="all .25s ease-in-out"
-                  _hover={{ bg: "gray.900" }}
+                  _hover={{ bg: "pebble.900" }}
                   key={item.name + item.contractAddress + item.description}
                   sx={{
                     "& td:first-of-type": { pl: "48px" },
@@ -116,7 +116,7 @@ export const ContractsTable = ({
                             placement="top"
                           >
                             <InfoIcon
-                              color="gray.600"
+                              color="pebble.600"
                               boxSize="14px"
                               cursor="pointer"
                             />
@@ -150,7 +150,7 @@ export const ContractsTable = ({
                           <Icon
                             as={MdBookmarkBorder}
                             boxSize={6}
-                            color="gray.600"
+                            color="pebble.600"
                             cursor="pointer"
                           />
                         }

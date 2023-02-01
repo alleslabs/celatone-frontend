@@ -38,7 +38,7 @@ export const ContractTableRow = ({
           pathname: `/contract/${contractInfo.contractAddress}`,
         })
       }
-      _hover={{ bg: "gray.900" }}
+      _hover={{ bg: "pebble.900" }}
       cursor="pointer"
       minW="min-content"
     >

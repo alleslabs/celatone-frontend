@@ -75,7 +75,7 @@ const Header = () => {
             transition="all 0.2s"
             borderRadius="4px"
             borderWidth="1px"
-            _hover={{ bg: "gray.800" }}
+            _hover={{ bg: "pebble.800" }}
             w="170px"
           >
             <Flex
@@ -105,7 +105,7 @@ const Header = () => {
                 flexDirection="column"
                 alignItems="flex-start"
                 _hover={{
-                  backgroundColor: "hover.dark",
+                  backgroundColor: "pebble.800",
                 }}
               >
                 <Flex justify="space-between" align="center" w="full">
@@ -118,7 +118,7 @@ const Header = () => {
                     </Text>
                   </Flex>
                   {chainName === currentChainName && (
-                    <Icon as={MdCheck} boxSize={4} color="gray.600" />
+                    <Icon as={MdCheck} boxSize={4} color="pebble.600" />
                   )}
                 </Flex>
               </MenuItem>

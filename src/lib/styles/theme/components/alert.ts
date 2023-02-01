@@ -1,30 +1,27 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
 
-const honeydewMain = "honeydew.main";
 export const Alert: ComponentStyleConfig = {
   baseStyle: {
     title: {
       color: "white",
     },
     container: {
-      bg: "gray.800",
+      bg: "pebble.800",
     },
   },
   variants: {
     honeydew: {
       title: {
-        color: honeydewMain,
         fontSize: "16px",
-        fontcolor: honeydewMain,
         fontWeight: 600,
         letterSpacing: "0.4px",
       },
       container: {
-        bg: "rgba(#C6E141,0.2)",
+        bg: "honeydew.background",
         border: "1px solid",
-        borderColor: honeydewMain,
+        borderColor: "honeydew.main",
         borderRadius: "4px",
-        color: honeydewMain,
+        color: "honeydew.main",
       },
       description: {
         fontSize: "12px",

@@ -11,7 +11,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => (
   <Flex
     gap={1}
     p={2}
-    background="gray.900"
+    background="pebble.900"
     borderRadius="8px"
     alignItems="center"
   >

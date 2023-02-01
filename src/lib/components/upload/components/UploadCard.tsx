@@ -28,12 +28,12 @@ const getStatusDecorator = (
     case "completed":
       return {
         icon: <Icon as={MdCheckCircle} boxSize="6" color="success.main" />,
-        statusText: <span style={{ color: "#66BB6A" }}>Valid Wasm file</span>,
+        statusText: <Text color="success.main">Valid Wasm file</Text>,
       };
     case "failed":
       return {
         icon: <Icon as={IoIosWarning} boxSize="6" color="error.main" />,
-        statusText: <span style={{ color: "#EF5350" }}>Invalid Wasm file</span>,
+        statusText: <Text color="error.main">Invalid Wasm file</Text>,
         helperText: error,
       };
     default:
@@ -72,7 +72,7 @@ export const UploadCard = ({
           <Text variant="body1" color="text.main">
             {file.name}
           </Text>
-          <Text variant="body2" color="text.dark">
+          <Text variant="body2" color="text.dark" display="flex" gap="4px">
             {big(file.size).div(1000).toFixed(0)} KB • {statusText}
           </Text>
         </Flex>

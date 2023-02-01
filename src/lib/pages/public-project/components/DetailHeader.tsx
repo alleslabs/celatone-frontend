@@ -25,7 +25,7 @@ export const DetailHeader = ({ details, slug }: DetailProps) => {
       <Breadcrumb
         w="full"
         spacing={1}
-        separator={<MdChevronRight color="gray.600" />}
+        separator={<MdChevronRight color="pebble.600" />}
       >
         <BreadcrumbItem>
           <AppLink color="text.dark" href="/public-project">

@@ -29,7 +29,7 @@ export const CommandSection = () => {
     type: string
   ) => {
     if (isFetching) {
-      return <Spinner color="gray.400" size="md" mx={1} />;
+      return <Spinner color="pebble.600" size="md" mx={1} />;
     }
     if (cmds.length) {
       return (
@@ -73,7 +73,7 @@ export const CommandSection = () => {
     <Flex gap={6}>
       <Flex
         direction="column"
-        bg="gray.900"
+        bg="pebble.900"
         p={4}
         borderRadius="8px"
         flex={0.5}
@@ -85,7 +85,7 @@ export const CommandSection = () => {
       </Flex>
       <Flex
         direction="column"
-        bg="gray.900"
+        bg="pebble.900"
         p={4}
         borderRadius="8px"
         flex={0.5}

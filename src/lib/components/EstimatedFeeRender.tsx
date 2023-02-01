@@ -13,7 +13,7 @@ export const EstimatedFeeRender = ({
   if (loading) {
     return (
       <>
-        <Spinner color="gray.400" size="sm" mx={1} /> Estimating ...
+        <Spinner color="pebble.600" size="sm" mx={1} /> Estimating ...
       </>
     );
   }

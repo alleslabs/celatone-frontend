@@ -118,7 +118,7 @@ export const CodeDetailsTemplate = ({
         size="lg"
         helperText="Fill in code description to define its use as a reminder"
         label="Code Description"
-        labelBgColor="gray.800"
+        labelBgColor="pebble.800"
         maxLength={MAX_CODE_DESCRIPTION_LENGTH}
       />
     </ActionModal>

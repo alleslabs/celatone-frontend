@@ -57,7 +57,7 @@ export const StepperItem = ({
           content: '""',
           flex: 1,
           height: "1px",
-          backgroundColor: "gray.400",
+          backgroundColor: "pebble.600",
           marginInlineEnd: "8px",
         },
       }}

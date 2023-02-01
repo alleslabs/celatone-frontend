@@ -77,7 +77,7 @@ export function EditList({ list, menuItemProps }: ModalProps) {
         variant="floating"
         value={listName}
         setInputState={setListName}
-        labelBgColor="gray.800"
+        labelBgColor="pebble.800"
         status={status}
         label="List Name"
       />

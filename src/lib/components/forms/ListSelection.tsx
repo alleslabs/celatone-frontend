@@ -200,7 +200,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
           {displayOptions && (
             <List
               borderRadius="4px"
-              bg="gray.900"
+              bg="pebble.900"
               px="2"
               py="1"
               mt={0}
@@ -216,7 +216,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                 <ListItem
                   key={option.value}
                   style={listItemProps}
-                  _hover={{ bg: "gray.800" }}
+                  _hover={{ bg: "pebble.800" }}
                   onClick={() => selectOptionFromList(option)}
                 >
                   <Flex alignItems="center" justifyContent="space-between">
@@ -239,7 +239,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <ListItem
                       w="full"
                       style={listItemProps}
-                      _hover={{ bg: "gray.800" }}
+                      _hover={{ bg: "pebble.800" }}
                       data-testid="create-option"
                       onClick={() => setEnableOutside(false)}
                     >

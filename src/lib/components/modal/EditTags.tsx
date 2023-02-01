@@ -29,7 +29,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     <ActionModal
       title="Edit Tags"
       trigger={
-        <Icon as={MdMode} color="gray.600" boxSize="4" cursor="pointer" />
+        <Icon as={MdMode} color="pebble.600" boxSize="4" cursor="pointer" />
       }
       headerContent={
         <Flex pt="6" gap="36px">
@@ -66,7 +66,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
             setResult={(selectedOptions: string[]) => {
               setTagResult(selectedOptions);
             }}
-            labelBgColor="gray.800"
+            labelBgColor="pebble.800"
           />
         </Box>
       </FormControl>

@@ -60,7 +60,7 @@ export const TxsTableRow = ({
           <Flex gap={1} flexWrap="wrap">
             <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
-              <Tag borderRadius="full" bg="rgba(164, 133, 231, 0.6)">
+              <Tag borderRadius="full" bg="honeydew.dark" color="pebble.900">
                 IBC
               </Tag>
             )}

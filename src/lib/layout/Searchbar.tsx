@@ -126,13 +126,13 @@ const Searchbar = () => {
           onKeyDown={handleOnKeyEnter}
         />
         <InputRightElement pointerEvents="none" h="full">
-          <Icon as={MdSearch} w={5} h={5} color="gray.600" />
+          <Icon as={MdSearch} w={5} h={5} color="pebble.600" />
         </InputRightElement>
       </InputGroup>
       {displayResults && (
         <List
           borderRadius="4px"
-          bg="gray.900"
+          bg="pebble.900"
           position="absolute"
           zIndex="2"
           w="full"

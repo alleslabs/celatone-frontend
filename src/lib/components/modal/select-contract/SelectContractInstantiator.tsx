@@ -158,9 +158,9 @@ export const SelectContractInstantiator = ({
                 </Text>
 
                 <Flex my="24px" gap="8px" alignItems="center">
-                  <Divider borderColor="gray.500" />
+                  <Divider borderColor="pebble.700" />
                   <Text variant="body1">OR</Text>
-                  <Divider borderColor="gray.500" />
+                  <Divider borderColor="pebble.700" />
                 </Flex>
 
                 <Heading as="h6" variant="h6" mb={4}>
@@ -170,7 +170,7 @@ export const SelectContractInstantiator = ({
                   contractLists={contractLists}
                   handleListSelect={handleListSelect}
                   isReadOnly
-                  formLabelBgColor="gray.800"
+                  formLabelBgColor="pebble.900"
                 />
               </ModalBody>
             </>
@@ -179,7 +179,7 @@ export const SelectContractInstantiator = ({
               <ModalHeader>
                 <Icon
                   as={MdChevronLeft}
-                  color="text.dark"
+                  color="pebble.600"
                   fontSize="24px"
                   onClick={() => setListSlug("")}
                   cursor="pointer"

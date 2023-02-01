@@ -18,7 +18,6 @@ const lilacMain = "lilac.main";
 const lilacBg = "lilac.background";
 
 const textMain = "text.main";
-const white12 = "rgba(255, 255, 255, 0.12)";
 const borderDefualt = "1px solid";
 
 const generateStyle = ({
@@ -79,7 +78,7 @@ export const Button: ComponentStyleConfig = {
     primary: generateStyle({
       basic: { background: violetMain, color: textMain },
       disabled: {
-        background: "rgba(41, 38, 118, 0.7)",
+        background: "violet.background",
         color: pebble600,
       },
       hoverBg: violetDark,
@@ -105,21 +104,21 @@ export const Button: ComponentStyleConfig = {
         borderColor: pebble700,
         color: pebble600,
       },
-      hoverBg: lilacBg,
+      hoverBg: "violet.background",
       activeBg: "transparent",
     }),
     "outline-gray": generateStyle({
       basic: {
         border: borderDefualt,
-        borderColor: pebble400,
-        color: pebble400,
+        borderColor: "pebble.600",
+        color: "pebble.400",
       },
       disabled: {
         border: borderDefualt,
         borderColor: pebble700,
         color: pebble600,
       },
-      hoverBg: white12,
+      hoverBg: pebble700,
       activeBg: "transparent",
     }),
     "outline-info": generateStyle({

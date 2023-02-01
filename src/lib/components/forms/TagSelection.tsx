@@ -58,7 +58,7 @@ export const TagSelection = observer(
         result,
         setResult,
         placeholder,
-        badgeBgColor = "info.dark",
+        badgeBgColor = "honeydew.darker",
         helperText,
         labelBgColor = "background.main",
         label = "Tags",

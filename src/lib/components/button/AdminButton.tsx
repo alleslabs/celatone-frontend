@@ -65,7 +65,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
       </Tooltip>
       <MenuList>
         <StyledMenuItem
-          icon={<StyledIcon as={MdReadMore} color="gray.600" />}
+          icon={<StyledIcon as={MdReadMore} color="pebble.600" />}
           onClick={() => {
             navigate({
               pathname: "/migrate",
@@ -76,7 +76,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           Migrate
         </StyledMenuItem>
         <StyledMenuItem
-          icon={<StyledIcon as={MdPerson} color="gray.600" />}
+          icon={<StyledIcon as={MdPerson} color="pebble.600" />}
           onClick={() => {
             navigate({
               pathname: "/admin",
@@ -90,7 +90,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           contractAddress={contractAddress}
           triggerElement={
             <StyledMenuItem
-              icon={<StyledIcon as={MdPersonRemove} color="gray.600" />}
+              icon={<StyledIcon as={MdPersonRemove} color="pebble.600" />}
             >
               Clear Admin
             </StyledMenuItem>

@@ -19,7 +19,7 @@ export const sendingTx = (fee: StdFee) => {
       ],
       receiptInfo: {
         header: "Sending Transaction",
-        headerIcon: <Spinner size="md" color="gray.400" />,
+        headerIcon: <Spinner size="md" color="pebble.600" />,
       },
       actionVariant: "sending",
     } as TxResultRendering;

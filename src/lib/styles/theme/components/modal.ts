@@ -18,7 +18,7 @@ const baseStyle = definePartsStyle({
     py: "16px",
   },
   overlay: {
-    bg: "rgba(17, 17, 23, 0.7)",
+    bg: "background.overlay",
   },
   dialog: {
     borderRadius: "md",

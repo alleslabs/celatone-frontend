@@ -13,7 +13,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 const cardProps = {
   width: "100%",
   padding: "16px",
-  borderRadius: "4px",
+  borderRadius: "8px",
   justifyContent: "space-between",
   height: "100%",
 };

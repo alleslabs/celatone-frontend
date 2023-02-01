@@ -48,7 +48,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   return (
     <Flex
       borderRadius="8px"
-      bg="gray.900"
+      bg="pebble.900"
       justify="space-between"
       p={4}
       role="group"
@@ -94,14 +94,14 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="700px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <Icon as={MdAttachMoney} boxSize={5} color="gray.600" />
+              <Icon as={MdAttachMoney} boxSize={5} color="pebble.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>
             </Flex>
           </ModalHeader>
 
-          <ModalCloseButton color="gray.600" />
+          <ModalCloseButton color="pebble.600" />
           <ModalBody maxH="400px" overflow="overlay">
             <Flex direction="column" gap={5}>
               <Flex direction="row" gap={4}>

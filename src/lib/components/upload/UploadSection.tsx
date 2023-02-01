@@ -158,9 +158,7 @@ export const UploadSection = ({
           size="md"
           variant="outline-gray"
           w="128px"
-          leftIcon={
-            <Icon as={FiChevronLeft} color="text.dark" fontSize="18px" />
-          }
+          leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
           onClick={handleBack}
         >
           Back

@@ -20,17 +20,17 @@ const getBgColor = (
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
     case ProposalStatus.DEPOSIT_PERIOD:
-      return "#BA863A";
+      return "lilac.darker";
     case ProposalStatus.FAILED:
     case ProposalStatus.REJECTED:
-      return "rgba(242, 96, 91, 0.6)";
+      return "error.dark";
     case ProposalStatus.PASSED:
-      return "rgba(161, 229, 143, 0.5)";
+      return "success.dark";
     case ProposalStatus.VOTING_PERIOD:
-      return "#0288D1";
+      return "violet.dark";
     case ProposalStatus.INACTIVE:
     default:
-      return "rgba(173, 173, 173, 0.6)";
+      return "pebble.700";
   }
 };
 

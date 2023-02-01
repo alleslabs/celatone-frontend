@@ -31,8 +31,8 @@ export const PermissionChip = ({
     instantiatePermission === InstantiatePermission.EVERYBODY;
 
   const tagBgColor: CSSProperties["backgroundColor"] = isAllowed
-    ? "rgba(161, 230, 143, 0.5)"
-    : "rgba(173, 173, 173, 0.6)";
+    ? "honeydew.darker"
+    : "pebble.700";
 
   return <StyledTag bgColor={tagBgColor}>{instantiatePermission}</StyledTag>;
 };

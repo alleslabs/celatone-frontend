@@ -32,10 +32,10 @@ export const CodeSelect = ({
         p="16px"
         gap="16px"
         w="100%"
-        bgColor="gray.900"
+        bgColor="pebble.900"
         borderRadius="4px"
         borderWidth="1px"
-        borderColor={isError ? "error.main" : "gray.900"}
+        borderColor={isError ? "error.main" : "pebble.700"}
       >
         <UploadIcon variant={codeId ? "primary" : "muted"} />
         {codeId ? (

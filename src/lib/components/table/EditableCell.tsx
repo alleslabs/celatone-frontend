@@ -67,7 +67,7 @@ export const EditableCell = ({
           position="absolute"
           top="-28px"
           left="-16px"
-          bg="gray.800"
+          bg="pebble.800"
           p={3}
           borderRadius="md"
           zIndex="sticky"
@@ -115,7 +115,7 @@ export const EditableCell = ({
                 top="-16px"
                 left="-16px"
                 borderRadius="md"
-                bg="gray.800"
+                bg="pebble.800"
                 p={4}
                 position="absolute"
                 zIndex="1"
@@ -132,14 +132,14 @@ export const EditableCell = ({
               bg="honeydew.darker"
               arrowSize={8}
             >
-              <InfoIcon color="gray.600" boxSize="14px" cursor="pointer" />
+              <InfoIcon color="pebble.600" boxSize="14px" cursor="pointer" />
             </Tooltip>
           )}
           {!!onSave && (
             <Icon
               opacity={isHover ? 1 : 0}
               as={MdMode}
-              color="gray.600"
+              color="pebble.600"
               boxSize="4"
               cursor="pointer"
               onClick={handleEdit}

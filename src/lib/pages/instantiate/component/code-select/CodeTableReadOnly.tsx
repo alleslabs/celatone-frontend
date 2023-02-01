@@ -15,7 +15,8 @@ const CodeTableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
   return (
     <Grid
       cursor="pointer"
-      _hover={{ bg: "gray.900", transition: "all .2s" }}
+      transition="all .25s ease-in-out"
+      _hover={{ bg: "pebble.800" }}
       onClick={() => onCodeSelect(codeDetail.id.toString())}
       templateColumns={TEMPLATE_COLUMNS}
     >
