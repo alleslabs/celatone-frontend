@@ -61,7 +61,7 @@ export const CodeSelect = ({
         )}
         <CodeSelectModalButton
           onCodeSelect={onCodeSelect}
-          buttonText={codeId ? "Change" : "Select Code"}
+          buttonText={codeId ? "Change Code" : "Select Code"}
         />
       </Flex>
       {isError && (
