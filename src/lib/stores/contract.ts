@@ -1,3 +1,5 @@
+import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
@@ -19,7 +21,7 @@ interface ContractList {
   name: string;
   slug: string;
   contracts: ContractAddr[];
-  lastUpdated: Date;
+  lastUpdated: Dayjs;
   isInfoEditable: boolean;
   isContractRemovable: boolean;
 }
@@ -32,8 +34,7 @@ export const cmpContractListInfo = (
   a: ContractListInfo,
   b: ContractListInfo
 ) => {
-  if (a.lastUpdated !== b.lastUpdated)
-    return b.lastUpdated.getTime() - a.lastUpdated.getTime();
+  if (a.lastUpdated !== b.lastUpdated) return b.lastUpdated.diff(a.lastUpdated);
   return a.slug.localeCompare(b.slug);
 };
 
@@ -43,7 +44,7 @@ export interface Activity {
   sender: string | undefined;
   contractAddress: ContractAddr;
   msg: string; // base64
-  timestamp: Date;
+  timestamp: Dayjs;
 }
 
 export class ContractStore {
@@ -54,7 +55,7 @@ export class ContractStore {
       name: SAVED_LIST_NAME,
       slug: formatSlugName(SAVED_LIST_NAME),
       contracts: [],
-      lastUpdated: new Date(),
+      lastUpdated: dayjs(),
       isInfoEditable: false,
       isContractRemovable: true,
     },
@@ -160,7 +161,7 @@ export class ContractStore {
           name: name.trim(),
           slug: formatSlugName(name),
           contracts: [],
-          lastUpdated: new Date(),
+          lastUpdated: dayjs(),
           isInfoEditable: true,
           isContractRemovable: true,
         },
@@ -192,7 +193,7 @@ export class ContractStore {
 
       list.name = newName;
       list.slug = formatSlugName(newName);
-      list.lastUpdated = new Date();
+      list.lastUpdated = dayjs();
     }
   }
 
@@ -332,7 +333,7 @@ export class ContractStore {
     if (!list) return;
 
     list.contracts = Array.from(new Set(list.contracts).add(contractAddress));
-    list.lastUpdated = new Date();
+    list.lastUpdated = dayjs();
   }
 
   private removeContractFromList(
@@ -346,7 +347,7 @@ export class ContractStore {
     if (!list) return;
 
     list.contracts = list.contracts.filter((addr) => addr !== contractAddress);
-    list.lastUpdated = new Date();
+    list.lastUpdated = dayjs();
   }
 
   addActivity(userKey: string, activity: Activity) {
