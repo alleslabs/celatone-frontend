@@ -23,7 +23,7 @@ interface ClearAdminTxParams {
   fee: StdFee;
   memo?: string;
   client: SigningCosmWasmClient;
-  onTxSucceed?: (txHash: string) => void;
+  onTxSucceed?: () => void;
 }
 
 export const clearAdminTx = ({
@@ -40,7 +40,7 @@ export const clearAdminTx = ({
       postFn: () => client.clearAdmin(address, contractAddress, fee, memo),
     }),
     ({ value: txInfo }) => {
-      onTxSucceed?.(txInfo.transactionHash);
+      onTxSucceed?.();
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,

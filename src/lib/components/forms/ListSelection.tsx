@@ -190,7 +190,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               lineHeight="1.2"
               transform="scale(0.75) translateY(-24px)"
             >
-              Add to lists
+              Listed on
             </FormLabel>
           </Flex>
           <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">
