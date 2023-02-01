@@ -95,7 +95,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "instantiateInfo", endpoint, contractAddressState],
+    ["query", "instantiate_info", endpoint, contractAddressState],
     async () =>
       queryInstantiateInfo(
         endpoint,

@@ -109,7 +109,7 @@ const UpdateAdmin = () => {
    * @remarks Contract admin validation
    */
   useQuery(
-    ["query", "instantiateInfo", endpoint, contractAddressParam],
+    ["query", "instantiate_info", endpoint, contractAddressParam],
     async () =>
       queryInstantiateInfo(endpoint, indexerGraphClient, contractAddressParam),
     {
