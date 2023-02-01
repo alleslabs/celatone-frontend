@@ -12,11 +12,11 @@ import type {
 } from "lib/types";
 import { encode, parseDateDefault } from "lib/utils";
 
-export interface ContractVersionInfoRaw {
+export interface ContractCw2InfoRaw {
   data: string;
 }
 
-export interface ContractVersionInfo {
+export interface ContractCw2Info {
   contract: string;
   version: string;
 }
@@ -82,12 +82,12 @@ export const queryContractInfo = async (
   endpoint: string,
   contractAddress: ContractAddr
 ) => {
-  const { data } = await axios.get<ContractVersionInfoRaw>(
+  const { data } = await axios.get<ContractCw2InfoRaw>(
     `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
   );
   return JSON.parse(
     Buffer.from(data.data, "base64").toString("binary")
-  ) as ContractVersionInfo;
+  ) as ContractCw2Info;
 };
 
 export const queryInstantiateInfo = async (

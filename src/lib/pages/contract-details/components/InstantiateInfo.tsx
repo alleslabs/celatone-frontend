@@ -48,7 +48,7 @@ const RenderPortId = ({ portId }: { portId: string }) => {
 
 export const InstantiateInfo = ({
   contractData: {
-    contractInfo,
+    contractCw2Info,
     instantiateInfo,
     chainId,
     codeInfo,
@@ -86,9 +86,9 @@ export const InstantiateInfo = ({
       </LabelText>
 
       <LabelText label="CW2 Info">
-        {contractInfo ? (
+        {contractCw2Info ? (
           <Text variant="body2">
-            {contractInfo?.contract} ({contractInfo?.version})
+            {contractCw2Info?.contract} ({contractCw2Info?.version})
           </Text>
         ) : (
           <Text variant="body2" color="text.dark">
