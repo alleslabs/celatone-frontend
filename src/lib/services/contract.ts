@@ -11,7 +11,16 @@ import type {
   Option,
   PublicInfo,
 } from "lib/types";
-import { encode, parseDateDefault } from "lib/utils";
+import { encode, libDecode, parseDateDefault } from "lib/utils";
+
+export interface ContractCw2InfoRaw {
+  data: string;
+}
+
+export interface ContractCw2Info {
+  contract: string;
+  version: string;
+}
 
 interface ContractResponse {
   address: ContractAddr;
@@ -68,6 +77,16 @@ export const queryContract = async (
     `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`
   );
   return data;
+};
+
+export const queryContractCw2Info = async (
+  endpoint: string,
+  contractAddress: ContractAddr
+) => {
+  const { data } = await axios.get<ContractCw2InfoRaw>(
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
+  );
+  return JSON.parse(libDecode(data.data)) as ContractCw2Info;
 };
 
 export const queryInstantiateInfo = async (
