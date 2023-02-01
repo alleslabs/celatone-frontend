@@ -38,7 +38,7 @@ export const Form: ComponentStyleConfig = {
         },
         "div.helper-text, .error-text": {
           ml: 3,
-          mt: 1,
+          mt: 0,
           fontSize: "12px",
           color: "text.dark",
           _disabled: {

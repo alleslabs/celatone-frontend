@@ -21,7 +21,7 @@ import { AssetInput } from "lib/components/forms/AssetInput";
 import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useLCDEndpoint } from "lib/hooks";
+import { useLCDEndpoint, useValidateAddress } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr, Token, U } from "lib/types";
@@ -55,6 +55,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const nativeTokensInfo = useNativeTokensInfo();
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -88,6 +89,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
   const {
     codeId,
+    adminAddress: watchAdminAddress,
     assets: watchAssets,
     initMsg: watchInitMsg,
     simulateError,
@@ -238,6 +240,14 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     }
   }, [codeIdQuery, msgQuery, reset, setValue]);
 
+  const validateAdmin = useCallback(
+    (input: string) =>
+      input && !!validateContractAddress(input) && !!validateUserAddress(input)
+        ? "Invalid Address."
+        : undefined,
+    [validateContractAddress, validateUserAddress]
+  );
+
   return (
     <>
       <WasmPageContainer>
@@ -277,6 +287,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             label="Admin Address (optional)"
             helperText="This address will be the admin for the deployed smart contract."
             variant="floating"
+            error={validateAdmin(watchAdminAddress)}
+            helperAction={
+              <Text
+                textColor="primary.main"
+                variant="body3"
+                cursor="pointer"
+                onClick={() => setValue("adminAddress", address)}
+              >
+                Assign me
+              </Text>
+            }
           />
           <Heading
             variant="h6"

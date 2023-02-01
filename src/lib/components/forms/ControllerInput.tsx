@@ -1,4 +1,5 @@
 import {
+  Flex,
   FormControl,
   FormErrorMessage,
   FormHelperText,
@@ -6,8 +7,8 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Text,
 } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 import type {
   Control,
   FieldPath,
@@ -27,6 +28,7 @@ interface ControllerInputProps<T extends FieldValues>
   rules?: UseControllerProps["rules"];
   status?: FormStatus;
   maxLength?: number;
+  helperAction?: ReactNode;
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -42,6 +44,7 @@ export const ControllerInput = <T extends FieldValues>({
   rules = {},
   status,
   maxLength,
+  helperAction,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -83,17 +86,16 @@ export const ControllerInput = <T extends FieldValues>({
           {status && getStatusIcon(status.state)}
         </InputRightElement>
       </InputGroup>
-      {isError ? (
-        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      ) : (
-        <FormHelperText className="helper-text">
-          {status?.message ? (
-            getResponseMsg(status, helperText)
-          ) : (
-            <Text color="text.dark">{helperText}</Text>
-          )}
-        </FormHelperText>
-      )}
+      <Flex gap={1} alignItems="center" mt={1}>
+        {isError ? (
+          <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+        ) : (
+          <FormHelperText className="helper-text">
+            {status?.message ? getResponseMsg(status, helperText) : helperText}
+          </FormHelperText>
+        )}
+        {helperAction}
+      </Flex>
     </FormControl>
   );
 };
