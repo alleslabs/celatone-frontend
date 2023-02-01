@@ -1,17 +1,18 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
-import type { InstantiateInfo } from "lib/services/contract";
+import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
 import {
+  queryContractCw2Info,
   queryContractBalances,
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
-  useExecuteTxsCountByContractAddress,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
@@ -39,6 +40,7 @@ export interface ContractData {
   chainId: string;
   codeInfo: Option<CodeLocalInfo>;
   contractLocalInfo: Option<ContractLocalInfo>;
+  contractCw2Info: Option<ContractCw2Info>;
   instantiateInfo: Option<InstantiateInfo>;
   publicProject: {
     publicInfo: Option<PublicInfo>;
@@ -66,7 +68,7 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
-    lastUpdated: new Date(),
+    lastUpdated: dayjs(),
     isInfoEditable: false,
     isContractRemovable: false,
   };
@@ -83,11 +85,11 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
       contractAddress: "" as ContractAddr,
       instantiator: "",
       label: "",
-      created: new Date(0),
+      created: dayjs(0),
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
-    lastUpdated: new Date(),
+    lastUpdated: dayjs(),
     isInfoEditable: false,
     isContractRemovable: false,
   };
@@ -112,6 +114,13 @@ export const useContractData = (
       queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
     { enabled: !!currentChainRecord }
   );
+
+  const { data: contractCw2Info } = useQuery(
+    ["query", "contract_cw2_info", endpoint, contractAddress],
+    async () => queryContractCw2Info(endpoint, contractAddress),
+    { enabled: !!currentChainRecord }
+  );
+
   const { data: contractBalances } = useQuery(
     ["query", "contractBalances", contractAddress],
     async () =>
@@ -154,6 +163,7 @@ export const useContractData = (
     chainId: currentChainRecord.chain.chain_id,
     codeInfo,
     contractLocalInfo,
+    contractCw2Info,
     instantiateInfo,
     publicProject: {
       publicInfo,
@@ -167,26 +177,31 @@ export const useContractData = (
   };
 };
 
+/**
+ * @remark
+ * Remove execute table for now
+ *
+ */
 export const useContractDetailsTableCounts = (
   contractAddress: ContractAddr
 ) => {
-  const { data: executeCount = 0, refetch: refetchExecute } =
-    useExecuteTxsCountByContractAddress(contractAddress);
+  // const { data: executeCount = 0, refetch: refetchExecute } =
+  //   useExecuteTxsCountByContractAddress(contractAddress);
   const { data: migrationCount = 0, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
   const { data: transactionsCount = 0, refetch: refetchTransactions } =
     useTxsCountByContractAddress(contractAddress);
-
   const { data: relatedProposalsCount = 0, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
+
   return {
     tableCounts: {
-      executeCount,
+      // executeCount,
       migrationCount,
       transactionsCount,
       relatedProposalsCount,
     },
-    refetchExecute,
+    // refetchExecute,
     refetchMigration,
     refetchTransactions,
     refetchRelatedProposals,

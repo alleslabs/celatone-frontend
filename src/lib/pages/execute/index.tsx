@@ -12,9 +12,9 @@ import PageContainer from "lib/components/PageContainer";
 import type { ContractAddr } from "lib/types";
 import {
   getFirstQueryParam,
-  decode,
   jsonPrettify,
   jsonValidate,
+  libDecode,
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
@@ -61,7 +61,7 @@ const Execute = () => {
         router.query.contract
       ) as ContractAddr;
 
-      let decodeMsg = decode(getFirstQueryParam(router.query.msg));
+      let decodeMsg = libDecode(getFirstQueryParam(router.query.msg));
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contractAddressParam);
         decodeMsg = "";

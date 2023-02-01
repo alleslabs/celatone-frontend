@@ -5,6 +5,7 @@ import type {
 } from "@cosmjs/cosmwasm-stargate";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
+import dayjs from "dayjs";
 import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
@@ -52,7 +53,7 @@ export const executeContractTx = ({
         sender: address,
         contractAddress,
         msg: encode(JSON.stringify(msg)), // base64
-        timestamp: new Date(),
+        timestamp: dayjs(),
       });
       return {
         value: null,
