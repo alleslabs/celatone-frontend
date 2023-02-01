@@ -34,7 +34,7 @@ const RenderPortId = ({ portId }: { portId: string }) => {
     >
       {charArray?.map((line, idx) =>
         idx === charArray.length - 1 ? (
-          <Flex align="center">
+          <Flex align="center" key={line}>
             {line}
             <Copier value={portId} className="ibc-port-copy" display="none" />
           </Flex>
