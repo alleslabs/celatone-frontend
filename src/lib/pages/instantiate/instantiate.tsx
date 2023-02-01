@@ -240,10 +240,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     }
   }, [codeIdQuery, msgQuery, reset, setValue]);
 
-  const validateAdmin = (input: string) =>
-    input && !!validateContractAddress(input) && !!validateUserAddress(input)
-      ? "Invalid Address"
-      : undefined;
+  const validateAdmin = useCallback(
+    (input: string) =>
+      input && !!validateContractAddress(input) && !!validateUserAddress(input)
+        ? "Invalid Address."
+        : undefined,
+    [validateContractAddress, validateUserAddress]
+  );
 
   return (
     <>
