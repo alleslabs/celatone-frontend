@@ -7,7 +7,7 @@ import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
 import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
 import {
-  queryContractInfo,
+  queryContractCw2Info,
   queryContractBalances,
   queryInstantiateInfo,
 } from "lib/services/contract";
@@ -117,7 +117,7 @@ export const useContractData = (
 
   const { data: contractCw2Info } = useQuery(
     ["query", "contractCw2Info", endpoint, contractAddress],
-    async () => queryContractInfo(endpoint, contractAddress),
+    async () => queryContractCw2Info(endpoint, contractAddress),
     { enabled: !!currentChainRecord }
   );
 

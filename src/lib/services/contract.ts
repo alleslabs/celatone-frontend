@@ -78,7 +78,7 @@ export const queryContract = async (
   return data;
 };
 
-export const queryContractInfo = async (
+export const queryContractCw2Info = async (
   endpoint: string,
   contractAddress: ContractAddr
 ) => {
