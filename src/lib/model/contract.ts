@@ -5,8 +5,9 @@ import { useCelatoneApp } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
-import type { InstantiateInfo } from "lib/services/contract";
+import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
 import {
+  queryContractCw2Info,
   queryContractBalances,
   queryInstantiateInfo,
 } from "lib/services/contract";
@@ -39,6 +40,7 @@ export interface ContractData {
   chainId: string;
   codeInfo: Option<CodeLocalInfo>;
   contractLocalInfo: Option<ContractLocalInfo>;
+  contractCw2Info: Option<ContractCw2Info>;
   instantiateInfo: Option<InstantiateInfo>;
   publicProject: {
     publicInfo: Option<PublicInfo>;
@@ -112,6 +114,13 @@ export const useContractData = (
       queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
     { enabled: !!currentChainRecord }
   );
+
+  const { data: contractCw2Info } = useQuery(
+    ["query", "contract_cw2_info", endpoint, contractAddress],
+    async () => queryContractCw2Info(endpoint, contractAddress),
+    { enabled: !!currentChainRecord }
+  );
+
   const { data: contractBalances } = useQuery(
     ["query", "contractBalances", contractAddress],
     async () =>
@@ -154,6 +163,7 @@ export const useContractData = (
     chainId: currentChainRecord.chain.chain_id,
     codeInfo,
     contractLocalInfo,
+    contractCw2Info,
     instantiateInfo,
     publicProject: {
       publicInfo,
