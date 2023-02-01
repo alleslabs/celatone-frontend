@@ -62,7 +62,7 @@ const Migrate = () => {
   );
 
   useQuery(
-    ["query", "instantiateInfo", endpoint, contractAddress],
+    ["query", "instantiate_info", endpoint, contractAddress],
     async () =>
       queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
     {

@@ -48,6 +48,7 @@ const RenderPortId = ({ portId }: { portId: string }) => {
 
 export const InstantiateInfo = ({
   contractData: {
+    contractCw2Info,
     instantiateInfo,
     chainId,
     codeInfo,
@@ -82,6 +83,18 @@ export const InstantiateInfo = ({
           value={instantiateInfo.codeId}
           canCopyWithHover
         />
+      </LabelText>
+
+      <LabelText label="CW2 Info">
+        {contractCw2Info ? (
+          <Text variant="body2">
+            {contractCw2Info.contract} ({contractCw2Info.version})
+          </Text>
+        ) : (
+          <Text variant="body2" color="text.dark">
+            No Info
+          </Text>
+        )}
       </LabelText>
 
       <LabelText

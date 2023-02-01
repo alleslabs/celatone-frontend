@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#131](https://github.com/alleslabs/celatone-frontend/pull/131) Add CW2-related information to contract details page
 - [#120](https://github.com/alleslabs/celatone-frontend/pull/120) Add simulate migrate fee and the final migration step
 - [#108](https://github.com/alleslabs/celatone-frontend/pull/108) Add migrate options on migrate page and upload new code for migration
 - [#130](https://github.com/alleslabs/celatone-frontend/pull/130) Add support for Terra public projects
@@ -102,6 +103,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#139](https://github.com/alleslabs/celatone-frontend/pull/139) Fix Date to Dayjs
+- [#135](https://github.com/alleslabs/celatone-frontend/pull/135) Invalidate queries after update/clear admin tx
 - [#123](https://github.com/alleslabs/celatone-frontend/pull/123) Refactor tables to use custom components
 - [#128](https://github.com/alleslabs/celatone-frontend/pull/128) Rewrite add to other list state and add default list to save to
 - [#114](https://github.com/alleslabs/celatone-frontend/pull/114) Handle wallet connection cases in instantiate button
@@ -115,6 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#142](https://github.com/alleslabs/celatone-frontend/pull/142) Fix migration table row duplicate and add key to port id render
+- [#138](https://github.com/alleslabs/celatone-frontend/pull/138) Remove execute table in contract details page (due to data issue)
+- [#136](https://github.com/alleslabs/celatone-frontend/pull/136) Fix decode message from query param in execute page
 - [#132](https://github.com/alleslabs/celatone-frontend/pull/132) Fix permission field in upload simulation
 - [#121](https://github.com/alleslabs/celatone-frontend/pull/121) Fix code snippet for query axios
 - [#129](https://github.com/alleslabs/celatone-frontend/pull/129) Fix wallet disconnection on network query change
