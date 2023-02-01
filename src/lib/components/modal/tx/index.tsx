@@ -20,7 +20,7 @@ interface TxModalProps {
 
 export const TxModal = ({ result, onClose }: TxModalProps) => {
   return (
-    <Modal isOpen onClose={onClose} isCentered>
+    <Modal isOpen onClose={onClose} isCentered closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent w="600px">
         <ModalHeader>
