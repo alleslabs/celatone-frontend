@@ -142,6 +142,7 @@ export const SelectContractInstantiator = ({
                     size="md"
                   />
                   <Button
+                    height="40px"
                     isDisabled={searchContract.length === 0}
                     isLoading={isFetching || isRefetching}
                     onClick={() => {
@@ -163,7 +164,7 @@ export const SelectContractInstantiator = ({
                   <Divider borderColor="pebble.700" />
                 </Flex>
 
-                <Heading as="h6" variant="h6" mb={4}>
+                <Heading as="h6" variant="h6" mb={6}>
                   Select from your Contract List
                 </Heading>
                 <AllContractLists

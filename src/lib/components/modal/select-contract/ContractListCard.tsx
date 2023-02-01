@@ -76,6 +76,7 @@ export const ContractListCard = ({
               minW="min-content"
               backgroundColor="pebble.700"
               borderRadius="full"
+              paddingTop="1px"
               textColor="text.dark"
             >
               {item.contracts.length}

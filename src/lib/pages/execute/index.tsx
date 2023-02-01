@@ -1,10 +1,10 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useExecuteCmds, useInternalNavigate } from "lib/app-provider";
+import { BackButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -76,13 +76,7 @@ const Execute = () => {
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
-      <Button
-        variant="ghost-primary"
-        onClick={() => router.back()}
-        leftIcon={<ArrowBackIcon boxSize={4} />}
-      >
-        BACK
-      </Button>
+      <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
         <Heading as="h5" variant="h5">
           Execute Contract

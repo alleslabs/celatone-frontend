@@ -73,7 +73,10 @@ const ContractsByList = observer(() => {
           spacing="4px"
           separator={<MdChevronRight color="pebble.600" />}
         >
-          <BreadcrumbItem>
+          <BreadcrumbItem
+            _hover={{ opacity: 0.8 }}
+            transition="all 0.25s ease-in-out"
+          >
             <AppLink color="text.dark" href="/contract-list">
               Contract Lists
             </AppLink>

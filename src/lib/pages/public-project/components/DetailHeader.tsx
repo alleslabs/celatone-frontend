@@ -27,7 +27,10 @@ export const DetailHeader = ({ details, slug }: DetailProps) => {
         spacing={1}
         separator={<MdChevronRight color="pebble.600" />}
       >
-        <BreadcrumbItem>
+        <BreadcrumbItem
+          _hover={{ opacity: 0.8 }}
+          transition="all 0.25s ease-in-out"
+        >
           <AppLink color="text.dark" href="/public-project">
             Public Projects
           </AppLink>
