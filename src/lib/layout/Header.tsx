@@ -72,7 +72,7 @@ const Header = () => {
           <MenuButton
             px={4}
             py="5px"
-            transition="all 0.2s"
+            transition="all .25s ease-in-out"
             borderRadius="4px"
             borderWidth="1px"
             _hover={{ bg: "pebble.800" }}

@@ -121,7 +121,6 @@ const Searchbar = () => {
           onChange={handleSearchChange}
           placeholder="Search by Contract Address / Code ID"
           focusBorderColor="lilac.main"
-          _placeholder={{ color: "#A9A9A9" }}
           onFocus={() => setDisplayResults(keyword.length > 0)}
           onKeyDown={handleOnKeyEnter}
         />

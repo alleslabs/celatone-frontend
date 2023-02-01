@@ -62,7 +62,7 @@ const JsonEditor = ({
       height={boxHeight}
       resize={disableResizing ? "unset" : "vertical"}
       overflow="auto"
-      transition="all .15s"
+      transition="all .25s ease-in-out"
     >
       <AceEditor
         ref={editorRef}

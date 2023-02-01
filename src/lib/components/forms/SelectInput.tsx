@@ -36,7 +36,7 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => {
       p={4}
       onClick={onSelect}
       color="text.main"
-      transition="all .2s"
+      transition="all .25s ease-in-out"
       cursor="pointer"
       aria-disabled={disabled}
       _hover={{ bg: "pebble.800" }}

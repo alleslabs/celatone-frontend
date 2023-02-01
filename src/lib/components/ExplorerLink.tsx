@@ -141,6 +141,7 @@ export const ExplorerLink = ({
     <Box
       display="inline-flex"
       alignItems="center"
+      transition="all .25s ease-in-out"
       _hover={{
         ...(!readOnly && {
           textDecoration: "underline",

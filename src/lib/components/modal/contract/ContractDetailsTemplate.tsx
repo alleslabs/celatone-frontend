@@ -107,7 +107,7 @@ export const ContractDetailsTemplate = ({
         setTagsValue={setTagsValue}
         setContractListsValue={setContractListsValue}
         errors={errors}
-        labelBgColor="pebble.800"
+        labelBgColor="pebble.900"
       />
     </ActionModal>
   );

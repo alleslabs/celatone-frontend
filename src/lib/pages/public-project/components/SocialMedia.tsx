@@ -44,7 +44,7 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
             as={MdLanguage}
             color="pebble.600"
             _hover={{ color: iconHover }}
-            transition="all 0.2s"
+            transition="all .25s ease-in-out"
             boxSize="6"
           />
         </Link>
@@ -56,7 +56,7 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
             as={FaGithub}
             color="pebble.600"
             _hover={{ color: iconHover }}
-            transition="all 0.2s"
+            transition="all .25s ease-in-out"
             boxSize="5"
           />
         </Link>
@@ -76,7 +76,7 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
                   as={renderSocial(social.name)}
                   color="pebble.600"
                   _hover={{ color: iconHover }}
-                  transition="all 0.2s"
+                  transition="all .25s ease-in-out"
                   boxSize="5"
                 />
               </Link>

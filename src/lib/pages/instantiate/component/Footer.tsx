@@ -13,7 +13,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
   return (
     <Box
       w="full"
-      bg="oebble.900"
+      bg="pebble.900"
       h="70px"
       bottom="0"
       position="sticky"

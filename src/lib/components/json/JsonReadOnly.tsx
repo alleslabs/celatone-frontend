@@ -50,7 +50,7 @@ const JsonReadOnly = ({
       borderColor={!isJsonValid ? "error.main" : "pebble.700"}
       borderRadius="4px"
       position="relative"
-      transition="all .2s"
+      transition="all .25s ease-in-out"
       _hover={{
         borderColor: isJsonValid && "pebble.600",
         "& .copy-button-box": { display: "block" },

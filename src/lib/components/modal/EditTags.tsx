@@ -66,7 +66,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
             setResult={(selectedOptions: string[]) => {
               setTagResult(selectedOptions);
             }}
-            labelBgColor="pebble.800"
+            labelBgColor="pebble.900"
           />
         </Box>
       </FormControl>

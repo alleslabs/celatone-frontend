@@ -214,7 +214,7 @@ export const TagSelection = observer(
             {displayOptions && (
               <List
                 borderRadius="4px"
-                bg="pebble.900"
+                bg="pebble.800"
                 px="2"
                 py="1"
                 mt={0}
@@ -246,7 +246,8 @@ export const TagSelection = observer(
                   <ListItem
                     key={option}
                     style={listItemProps}
-                    _hover={{ bg: "pebble.800" }}
+                    _hover={{ bg: "pebble.700" }}
+                    transition="all .25s ease-in-out"
                     onClick={() => selectOptionFromList(option)}
                   >
                     <Flex alignItems="center" justifyContent="space-between">
@@ -272,7 +273,8 @@ export const TagSelection = observer(
                 {canCreateOption && inputValue && (
                   <ListItem
                     style={listItemProps}
-                    _hover={{ bg: "pebble.800" }}
+                    _hover={{ bg: "pebble.700" }}
+                    transition="all .25s ease-in-out"
                     data-testid="create-option"
                     onClick={() => createOption()}
                   >
