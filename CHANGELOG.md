@@ -104,6 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#140](https://github.com/alleslabs/celatone-frontend/pull/140) Add placeholder texts to upload&instantiate, save code, and save&edit contract
 - [#139](https://github.com/alleslabs/celatone-frontend/pull/139) Fix Date to Dayjs
 - [#135](https://github.com/alleslabs/celatone-frontend/pull/135) Invalidate queries after update/clear admin tx
 - [#123](https://github.com/alleslabs/celatone-frontend/pull/123) Refactor tables to use custom components
