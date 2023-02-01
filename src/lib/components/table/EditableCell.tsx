@@ -69,7 +69,7 @@ export const EditableCell = ({
           left="-16px"
           bg="pebble.800"
           p={3}
-          borderRadius="md"
+          borderRadius="8px"
           zIndex="sticky"
           onClick={(e) => e.stopPropagation()}
         >
@@ -114,7 +114,7 @@ export const EditableCell = ({
                 variant="body2"
                 top="-16px"
                 left="-16px"
-                borderRadius="md"
+                borderRadius="8px"
                 bg="pebble.800"
                 p={4}
                 position="absolute"

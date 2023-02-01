@@ -7,7 +7,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 const baseStyle = definePartsStyle({
   list: {
     py: "2",
-    borderRadius: "base",
+    borderRadius: "8px",
     border: "none",
     bg: "pebble.900",
   },

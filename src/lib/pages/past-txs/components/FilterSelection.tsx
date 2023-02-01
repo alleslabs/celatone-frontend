@@ -33,7 +33,7 @@ export interface FilterSelectionProps extends InputProps {
 }
 
 const listItemProps: CSSProperties = {
-  borderRadius: "4px",
+  borderRadius: "8px",
   margin: "4px 0px",
   padding: "8px",
   cursor: "pointer",
@@ -113,7 +113,7 @@ export const FilterSelection = observer(
               border="1px solid"
               borderColor="pebble.700"
               background="none"
-              borderRadius="4px"
+              borderRadius="8px"
               maxW="100%"
               overflowX="scroll"
             >
@@ -177,7 +177,7 @@ export const FilterSelection = observer(
 
             {displayOptions && (
               <List
-                borderRadius="4px"
+                borderRadius="8px"
                 bg="pebble.900"
                 px="2"
                 py="1"

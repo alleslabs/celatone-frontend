@@ -89,7 +89,7 @@ const JsonInput = ({ topic, text, setText, height }: JsonInputProps) => {
         p="16px 12px"
         borderWidth="thin"
         borderColor="pebble.700"
-        borderRadius="4px"
+        borderRadius="8px"
         position="relative"
         transition="all .25s ease-in-out"
         _hover={{

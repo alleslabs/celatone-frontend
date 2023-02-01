@@ -223,7 +223,7 @@ execute();
                     <Box
                       bgColor="background.main"
                       p={4}
-                      borderRadius={4}
+                      borderRadius="8px"
                       position="relative"
                     >
                       <AceEditor

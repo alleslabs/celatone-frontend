@@ -11,7 +11,7 @@ const StyledIconButton = chakra(IconButton, {
     display: "flex",
     alignItems: "center",
     fontSize: "22px",
-    borderRadius: "36px",
+    borderRadius: "full",
   },
 });
 

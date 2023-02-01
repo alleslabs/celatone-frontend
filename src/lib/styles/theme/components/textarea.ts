@@ -7,7 +7,7 @@ export const Textarea: ComponentStyleConfig = {
       border: "1px solid",
       borderColor: "pebble.700",
       background: "none",
-      borderRadius: "4px",
+      borderRadius: "8px",
       p: "16px 12px",
       height: "112px",
       _hover: {

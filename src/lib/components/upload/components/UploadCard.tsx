@@ -63,7 +63,7 @@ export const UploadCard = ({
         gap="16px"
         w="full"
         bgColor="pebble.900"
-        borderRadius="4px"
+        borderRadius="8px"
         border="1px solid"
         borderColor={isError ? "error.main" : "pebble.900"}
       >

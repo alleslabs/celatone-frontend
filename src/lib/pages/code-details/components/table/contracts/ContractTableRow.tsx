@@ -39,6 +39,7 @@ export const ContractTableRow = ({
         })
       }
       _hover={{ bg: "pebble.900" }}
+      transition="all .25s ease-in-out"
       cursor="pointer"
       minW="min-content"
     >

@@ -72,10 +72,10 @@ const Header = () => {
           <MenuButton
             px={4}
             py="5px"
-            transition="all .25s ease-in-out"
-            borderRadius="4px"
+            borderRadius="8px"
             borderWidth="1px"
             _hover={{ bg: "pebble.800" }}
+            transition="all .25s ease-in-out"
             w="170px"
           >
             <Flex
@@ -107,6 +107,7 @@ const Header = () => {
                 _hover={{
                   backgroundColor: "pebble.800",
                 }}
+                transition="all .25s ease-in-out"
               >
                 <Flex justify="space-between" align="center" w="full">
                   <Flex direction="column">

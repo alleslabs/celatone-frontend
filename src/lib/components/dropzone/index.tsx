@@ -34,7 +34,7 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
       borderColor="pebble.700"
       w="full"
       p="24px 16px"
-      borderRadius="4px"
+      borderRadius="8px"
       align="center"
       direction="column"
       _hover={{ bg: "pebble.900" }}

@@ -33,7 +33,7 @@ export const CodeSelect = ({
         gap="16px"
         w="100%"
         bgColor="pebble.900"
-        borderRadius="4px"
+        borderRadius="8px"
         borderWidth="1px"
         borderColor={isError ? "error.main" : "pebble.700"}
       >

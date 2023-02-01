@@ -48,7 +48,7 @@ export const ContractListCard = ({
         alignItems="center"
         bg="pebble.800"
         _hover={{ bg: "pebble.700" }}
-        borderRadius="4"
+        borderRadius="8px"
         transition="all .25s ease-in-out"
         gap="4"
         h="75px"
@@ -75,8 +75,7 @@ export const ContractListCard = ({
               size="sm"
               minW="min-content"
               backgroundColor="pebble.700"
-              borderRadius="10"
-              paddingTop="1px"
+              borderRadius="full"
               textColor="text.dark"
             >
               {item.contracts.length}

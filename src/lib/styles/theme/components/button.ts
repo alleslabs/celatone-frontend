@@ -52,7 +52,7 @@ export const Button: ComponentStyleConfig = {
     flexDir: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: "4px",
+    borderRadius: "8px",
     _active: {
       transform: "scale(0.98)",
     },

@@ -20,7 +20,7 @@ export const Alert: ComponentStyleConfig = {
         bg: "honeydew.background",
         border: "1px solid",
         borderColor: "honeydew.main",
-        borderRadius: "4px",
+        borderRadius: "8px",
         color: "honeydew.main",
       },
       description: {

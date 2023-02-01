@@ -61,8 +61,9 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
         <Text
           variant="body2"
           p="8px"
-          borderRadius="4px"
+          borderRadius="8px"
           _hover={{ bg: "pebble.800", cursor: "pointer" }}
+          transition="all 0.25s ease-in-out"
           onClick={() => handleSelectResult(type)}
         >
           {value}
@@ -130,7 +131,7 @@ const Searchbar = () => {
       </InputGroup>
       {displayResults && (
         <List
-          borderRadius="4px"
+          borderRadius="8px"
           bg="pebble.900"
           position="absolute"
           zIndex="2"

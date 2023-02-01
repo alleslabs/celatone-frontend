@@ -48,7 +48,7 @@ const JsonReadOnly = ({
       }
       borderWidth={zeroHeight ? "none" : "thin"}
       borderColor={!isJsonValid ? "error.main" : "pebble.700"}
-      borderRadius="4px"
+      borderRadius="8px"
       position="relative"
       transition="all .25s ease-in-out"
       _hover={{

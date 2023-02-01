@@ -196,13 +196,13 @@ const Navbar = observer(() => {
                   gap="2"
                   p={2}
                   cursor="pointer"
-                  _hover={{ bg: "pebble.800", borderRadius: "4px" }}
+                  _hover={{ bg: "pebble.800", borderRadius: "8px" }}
                   transition="all .25s ease-in-out"
                   alignItems="center"
                   bgColor={
                     isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
                   }
-                  borderRadius={isCurrentPage(submenu.slug) ? "4px" : "0px"}
+                  borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
                 >
                   {submenu.icon && (
                     <Icon as={submenu.icon} color="pebble.600" boxSize="4" />

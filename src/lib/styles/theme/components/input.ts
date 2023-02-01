@@ -8,7 +8,7 @@ export const Input: ComponentStyleConfig = {
         border: "1px solid",
         borderColor: "pebble.700",
         background: "none",
-        borderRadius: "4px",
+        borderRadius: "8px",
         _hover: {
           borderColor: "pebble.600",
         },

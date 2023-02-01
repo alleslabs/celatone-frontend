@@ -21,7 +21,7 @@ const baseStyle = definePartsStyle({
     bg: "background.overlay",
   },
   dialog: {
-    borderRadius: "md",
+    borderRadius: "8px",
     bg: "pebble.900",
   },
   closeButton: {

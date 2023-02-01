@@ -32,7 +32,7 @@ export interface ListSelectionProps extends InputProps {
 }
 
 const listItemProps: CSSProperties = {
-  borderRadius: "4px",
+  borderRadius: "8px",
   margin: "4px 0px",
   padding: "8px",
   cursor: "pointer",
@@ -129,7 +129,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
             border="1px solid"
             borderColor="pebble.700"
             background="none"
-            borderRadius="4px"
+            borderRadius="8px"
             maxW="100%"
             overflowX="scroll"
           >
@@ -199,7 +199,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
 
           {displayOptions && (
             <List
-              borderRadius="4px"
+              borderRadius="8px"
               bg="pebble.800"
               px="2"
               py="1"

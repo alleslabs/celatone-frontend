@@ -130,6 +130,7 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
       templateColumns={TEMPLATE_COLUMNS}
       px="48px"
       _hover={{ bg: "pebble.900" }}
+      transition="all .25s ease-in-out"
       cursor="pointer"
       minW="min-content"
       onClick={goToCodeDetails}

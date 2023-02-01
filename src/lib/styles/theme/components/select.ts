@@ -5,7 +5,7 @@ export const Select: ComponentStyleConfig = {
     "custom-select": {
       field: {
         color: "text.main",
-        borderRadius: "4px",
+        borderRadius: "8px",
         border: "1px solid",
         borderColor: "pebble.700",
         fontSize: "16px",

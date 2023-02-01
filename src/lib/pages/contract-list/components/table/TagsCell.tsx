@@ -69,7 +69,7 @@ export const TagsCell = ({
         <Flex
           bgColor={tags.length > 2 ? "pebble.800" : "inherit"}
           py={4}
-          borderRadius="md"
+          borderRadius="8px"
           position="absolute"
           top="-16px"
           left="-16px"

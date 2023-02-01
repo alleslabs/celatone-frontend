@@ -94,6 +94,7 @@ export const RecentActivities = observer(() => {
           px={12}
           borderTopWidth={1}
           borderBottomWidth={1}
+          borderColor="pebble.700"
           justifyContent="center"
           alignItems="center"
           minH="128px"

@@ -36,10 +36,10 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => {
       p={4}
       onClick={onSelect}
       color="text.main"
-      transition="all .25s ease-in-out"
       cursor="pointer"
       aria-disabled={disabled}
       _hover={{ bg: "pebble.800" }}
+      transition="all .25s ease-in-out"
       _disabled={{ opacity: 0.4, pointerEvents: "none" }}
     >
       {children}
@@ -112,7 +112,7 @@ export const SelectInput = ({
         w="200px"
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
-        borderRadius="4px"
+        borderRadius="8px"
         _focusVisible={{
           outline: "none",
         }}

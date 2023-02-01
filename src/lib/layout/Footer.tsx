@@ -44,7 +44,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             key={`social-${item.slug}`}
           >
-            <Button variant="ghost" size="xs">
+            <Button variant="ghost-gray" size="xs">
               <Icon
                 as={item.icon}
                 width="16px"

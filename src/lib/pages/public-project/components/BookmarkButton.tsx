@@ -18,7 +18,7 @@ const buttonTextProps: CSSProperties = {
   padding: "6px 16px",
   minWidth: "auto",
   height: "auto",
-  borderRadius: "4px",
+  borderRadius: "8px",
 };
 
 const buttonIconProps: CSSProperties = {
