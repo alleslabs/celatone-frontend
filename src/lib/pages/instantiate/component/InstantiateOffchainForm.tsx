@@ -90,7 +90,7 @@ export const InstantiateOffChainForm = observer(
         )}
         <OffChainForm<OffchainDetail>
           state={offchainState}
-          label={contractLabel}
+          contractLabel={contractLabel}
           control={control}
           setTagsValue={setTagsValue}
           setContractListsValue={setContractListsValue}

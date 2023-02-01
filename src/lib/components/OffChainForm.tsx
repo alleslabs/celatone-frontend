@@ -24,7 +24,7 @@ export interface OffchainDetail {
 
 interface OffChainFormProps<T extends OffchainDetail> {
   state: OffchainDetail;
-  label: string;
+  contractLabel: string;
   control: Control<T>;
   setTagsValue: (options: string[]) => void;
   setContractListsValue: (options: LVPair[]) => void;
@@ -34,7 +34,7 @@ interface OffChainFormProps<T extends OffchainDetail> {
 
 export const OffChainForm = <T extends OffchainDetail>({
   state,
-  label,
+  contractLabel,
   control,
   setTagsValue,
   setContractListsValue,
@@ -47,7 +47,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         name={"name" as FieldPath<T>}
         control={control}
         label="Name"
-        placeholder={label}
+        placeholder={contractLabel}
         helperText="Set name for your contract"
         variant="floating"
         rules={{

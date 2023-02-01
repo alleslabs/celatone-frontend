@@ -25,7 +25,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
     state: "init",
   });
-  const [uploader, setUploader] = useState("No Description");
+  const [uploader, setUploader] = useState("");
   const [uploaderStatus, setUploaderStatus] = useState<FormStatus>({
     state: "init",
   });
@@ -175,7 +175,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
       otherBtnTitle="Cancel"
     >
       <FormControl display="flex" flexDir="column" gap="36px">
-        Save other stored Codes to your &quot;Saved Codes&quot; list
+        Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
           variant="floating"
           value={codeId}
@@ -184,7 +184,6 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           labelBgColor="gray.800"
           status={codeIdStatus}
           placeholder="ex. 1234"
-          helperText="ex. 1150"
         />
         <TextInput
           value={uploader}

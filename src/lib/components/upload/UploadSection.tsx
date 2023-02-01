@@ -133,7 +133,7 @@ export const UploadSection = ({
         control={control}
         label="Code Description (Optional)"
         placeholder="No Description"
-        helperText="Short description of your code. You can add or change this later."
+        helperText="Define what your code works on in one sentence which visible to you only. You can add this later."
         rules={{
           maxLength: MAX_CODE_DESCRIPTION_LENGTH,
         }}
