@@ -1,4 +1,3 @@
-import { Dayjs } from "dayjs";
 import mapObject from "map-obj";
 import { snakeCase } from "snake-case";
 
@@ -10,8 +9,8 @@ export const camelToSnake = (obj: unknown): unknown => {
     return obj;
   }
 
-  // Ignore Dayjs, whose typeof is `object` too.
-  if (obj instanceof Dayjs) {
+  // Ignore Date, whose typeof is `object` too.
+  if (obj instanceof Date) {
     return obj;
   }
 
