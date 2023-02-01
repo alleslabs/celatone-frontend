@@ -103,6 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#145](https://github.com/alleslabs/celatone-frontend/pull/145/) Disable closing on some modal when click on modal overlay.
 - [#139](https://github.com/alleslabs/celatone-frontend/pull/139) Fix Date to Dayjs
 - [#135](https://github.com/alleslabs/celatone-frontend/pull/135) Invalidate queries after update/clear admin tx
 - [#123](https://github.com/alleslabs/celatone-frontend/pull/123) Refactor tables to use custom components

@@ -173,6 +173,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
       otherAction={reset}
       disabledMain={disableMain}
       otherBtnTitle="Cancel"
+      closeOnOverlayClick={false}
     >
       <FormControl display="flex" flexDir="column" gap="36px">
         Save other stored Codes to your &quot;Saved Codes&quot; list
