@@ -106,7 +106,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               height={7}
             />
           )}
-          <Heading as="h5" variant="h5" color="text.main" className="ellipsis">
+          <Heading as="h5" variant="h5" className="ellipsis">
             {displayName}
           </Heading>
         </Flex>

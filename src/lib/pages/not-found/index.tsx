@@ -20,7 +20,7 @@ const NotFoundPage = () => {
         <Heading variant="h1" as="h1" color="text.disabled">
           404
         </Heading>
-        <Heading variant="h5" as="h5">
+        <Heading variant="h5" as="h5" color="text.dark">
           This page is not found
         </Heading>
         <Text

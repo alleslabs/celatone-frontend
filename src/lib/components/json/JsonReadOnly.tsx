@@ -68,7 +68,7 @@ const JsonReadOnly = ({
         <Text
           top="-10px"
           background="background.main"
-          textColor={!isJsonValid ? "error.main" : "text.dark"}
+          color={!isJsonValid ? "error.main" : "text.dark"}
           fontSize="12px"
           position="absolute"
         >

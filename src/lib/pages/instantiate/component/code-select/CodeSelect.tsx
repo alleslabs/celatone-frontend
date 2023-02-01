@@ -42,7 +42,6 @@ export const CodeSelect = ({
           <Flex direction="column" w="60%">
             <Text
               variant="body1"
-              color="text.main"
               fontWeight={500}
               overflow="hidden"
               whiteSpace="nowrap"
@@ -55,7 +54,7 @@ export const CodeSelect = ({
             </Text>
           </Flex>
         ) : (
-          <Text variant="body1" color="text.main" fontWeight={500}>
+          <Text variant="body1" fontWeight={500}>
             Please select code
           </Text>
         )}

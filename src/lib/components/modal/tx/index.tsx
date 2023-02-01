@@ -36,7 +36,7 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
         {(result.receiptInfo.description || result.receipts.length > 0) && (
           <ModalBody>
             {result.receiptInfo.description && (
-              <Text variant="body1" color="text.main" mb="16px">
+              <Text variant="body1" mb="16px">
                 {result.receiptInfo.description}
               </Text>
             )}

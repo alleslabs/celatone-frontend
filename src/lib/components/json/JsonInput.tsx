@@ -107,7 +107,7 @@ const JsonInput = ({ topic, text, setText, height }: JsonInputProps) => {
             top="-10px"
             w="fit-content"
             background="background.main"
-            textColor="pebble.400"
+            color="text.dark"
             fontSize="12px"
             position="absolute"
           >

@@ -27,11 +27,9 @@ const StepLabel = ({
       borderRadius="50%"
     >
       {currentStep > step ? (
-        <Icon as={MdCheck} fontSize="20px" color="text.main" />
+        <Icon as={MdCheck} fontSize="16px" color="pebble.100" />
       ) : (
-        <Text variant="body3" color="text.main">
-          {step}
-        </Text>
+        <Text variant="body3">{step}</Text>
       )}
     </Flex>
   );

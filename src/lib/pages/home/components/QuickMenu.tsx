@@ -48,7 +48,7 @@ const secondaryMenu = [
 export const QuickMenu = () => {
   return (
     <Flex direction="column" gap={4} bg="pebble.900" p="48px">
-      <Heading as="h6" variant="h6" color="text.main">
+      <Heading as="h6" variant="h6">
         Start using Celatone
       </Heading>
       <ConnectWalletAlert
@@ -66,14 +66,14 @@ export const QuickMenu = () => {
             h="full"
           >
             <Flex direction="column" justifyItems="center">
-              <Text variant="body1" color="text.main" fontWeight="800">
+              <Text variant="body1" fontWeight="800">
                 Deploy a new contract
               </Text>
-              <Text color="text.main" variant="body2">
+              <Text variant="body2">
                 Upload a new wasm code or instantiate a new contract
               </Text>
             </Flex>
-            <Icon as={MdChevronRight} color="text.main" boxSize={9} />
+            <Icon as={MdChevronRight} boxSize={9} />
           </Flex>
         </AppLink>
 
@@ -90,14 +90,10 @@ export const QuickMenu = () => {
                 <Flex alignItems="center" gap={3}>
                   <Icon as={item.icon} color="pebble.600" boxSize={9} />
                   <Box>
-                    <Text color="text.main" variant="body1" fontWeight="800">
+                    <Text variant="body1" fontWeight="800">
                       {item.title}
                     </Text>
-                    <Text
-                      textDecoration="none"
-                      color="text.main"
-                      variant="body2"
-                    >
+                    <Text textDecoration="none" variant="body2">
                       {item.subtitle}
                     </Text>
                   </Box>

@@ -110,7 +110,7 @@ const PastTxs = () => {
   return (
     <Box>
       <Box px="48px" pt="48px">
-        <Heading variant="h5" as="h5" color="text.main">
+        <Heading variant="h5" as="h5">
           Past Transactions
         </Heading>
 

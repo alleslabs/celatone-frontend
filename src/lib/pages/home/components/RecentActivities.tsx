@@ -57,7 +57,6 @@ export const RecentActivities = observer(() => {
               <Flex alignItems="center" gap="4px">
                 <Text
                   variant="body3"
-                  color="text.main"
                   padding="4px 8px"
                   backgroundColor="pebble.700"
                   borderRadius="16px"
@@ -72,15 +71,13 @@ export const RecentActivities = observer(() => {
                 />
               </Flex>
               <Flex gap={1}>
-                <Text variant="body2" color="text.main">
+                <Text variant="body2">
                   {dayjs(item.timestamp).toNow(true)} ago{" "}
                 </Text>
                 {/* TODO - check address as me */}
                 {item.sender && (
                   <>
-                    <Text variant="body2" color="text.main">
-                      by
-                    </Text>
+                    <Text variant="body2">by</Text>
                     <ExplorerLink
                       value={item.sender}
                       type="user_address"

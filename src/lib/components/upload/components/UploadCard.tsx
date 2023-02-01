@@ -69,9 +69,7 @@ export const UploadCard = ({
       >
         <UploadIcon />
         <Flex direction="column">
-          <Text variant="body1" color="text.main">
-            {file.name}
-          </Text>
+          <Text variant="body1">{file.name}</Text>
           <Text variant="body2" color="text.dark" display="flex" gap="4px">
             {big(file.size).div(1000).toFixed(0)} KB • {statusText}
           </Text>

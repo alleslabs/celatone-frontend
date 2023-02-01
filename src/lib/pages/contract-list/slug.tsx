@@ -97,7 +97,7 @@ const ContractsByList = observer(() => {
           mt={2}
           gap={5}
         >
-          <Heading as="h5" variant="h5" color="text.main" className="ellipsis">
+          <Heading as="h5" variant="h5" className="ellipsis">
             {contractListInfo.name}
           </Heading>
           <Flex gap={2}>

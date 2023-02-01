@@ -84,7 +84,7 @@ const Execute = () => {
         BACK
       </Button>
       <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h5" variant="h5" color="text.main">
+        <Heading as="h5" variant="h5">
           Execute Contract
         </Heading>
         <Box>

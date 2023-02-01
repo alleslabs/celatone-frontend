@@ -74,7 +74,7 @@ const JsonEditor = ({
           width: "100%",
           height: "99%",
           background: "transparent",
-          color: readOnly && !isValid ? "#e57373" : "white",
+          color: readOnly && !isValid ? "error.light" : "white",
           offset: 0,
         }}
         setOptions={{

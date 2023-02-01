@@ -84,7 +84,7 @@ export const ContractDetailsTemplate = ({
       subtitle={subtitle}
       headerContent={
         <Flex gap={4} alignItems="center" pt="6">
-          <Text variant="body2" color="text.main" fontWeight="600">
+          <Text variant="body2" fontWeight="600">
             Contract Address
           </Text>
           <ExplorerLink

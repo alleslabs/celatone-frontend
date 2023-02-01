@@ -240,7 +240,7 @@ function CodesTable({
         px="48px"
       >
         {type !== "all" && (
-          <Heading as="h2" size="md" color="white">
+          <Heading as="h2" size="md">
             {tableName}
           </Heading>
         )}

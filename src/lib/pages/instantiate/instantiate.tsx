@@ -296,7 +296,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             error={validateAdmin(watchAdminAddress)}
             helperAction={
               <Text
-                textColor="primary.main"
+                color="lilac.main"
                 variant="body3"
                 cursor="pointer"
                 onClick={() => setValue("adminAddress", address)}
@@ -305,13 +305,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               </Text>
             }
           />
-          <Heading
-            variant="h6"
-            as="h6"
-            color="text.main"
-            my="32px"
-            alignSelf="flex-start"
-          >
+          <Heading variant="h6" as="h6" my="32px" alignSelf="flex-start">
             Instantiate Message
           </Heading>
           <JsonInput
@@ -319,13 +313,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             setText={(newVal: string) => setValue("initMsg", newVal)}
             height="120px"
           />
-          <Heading
-            variant="h6"
-            as="h6"
-            color="text.main"
-            my="32px"
-            alignSelf="flex-start"
-          >
+          <Heading variant="h6" as="h6" my="32px" alignSelf="flex-start">
             Send asset to contract
           </Heading>
           {fields.map((field, idx) => (

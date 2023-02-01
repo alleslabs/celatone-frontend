@@ -83,7 +83,7 @@ export function ActionModal({
                 {title}
               </Flex>
               {subtitle && (
-                <Text variant="body3" color="pebble.400" pt="2">
+                <Text variant="body3" color="text.dark" pt="2">
                   {subtitle}
                 </Text>
               )}

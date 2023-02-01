@@ -184,7 +184,7 @@ export const ContractSelectSection = observer(
                 maxWidth="none"
               />
             ) : (
-              <Text textColor="text.disabled" variant="body2">
+              <Text color="text.disabled" variant="body2">
                 Not Selected
               </Text>
             )}
