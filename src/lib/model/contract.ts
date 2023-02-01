@@ -13,7 +13,6 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
-  useExecuteTxsCountByContractAddress,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
@@ -178,26 +177,31 @@ export const useContractData = (
   };
 };
 
+/**
+ * @remark
+ * Remove execute table for now
+ *
+ */
 export const useContractDetailsTableCounts = (
   contractAddress: ContractAddr
 ) => {
-  const { data: executeCount = 0, refetch: refetchExecute } =
-    useExecuteTxsCountByContractAddress(contractAddress);
+  // const { data: executeCount = 0, refetch: refetchExecute } =
+  //   useExecuteTxsCountByContractAddress(contractAddress);
   const { data: migrationCount = 0, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
   const { data: transactionsCount = 0, refetch: refetchTransactions } =
     useTxsCountByContractAddress(contractAddress);
-
   const { data: relatedProposalsCount = 0, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
+
   return {
     tableCounts: {
-      executeCount,
+      // executeCount,
       migrationCount,
       transactionsCount,
       relatedProposalsCount,
     },
-    refetchExecute,
+    // refetchExecute,
     refetchMigration,
     refetchTransactions,
     refetchRelatedProposals,

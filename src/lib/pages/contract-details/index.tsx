@@ -26,7 +26,6 @@ import { ContractDesc } from "./components/contract-description";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { ExecuteTable } from "./components/tables/execute";
 import { MigrationTable } from "./components/tables/migration";
 import { RelatedProposalsTable } from "./components/tables/related-proposals";
 import { TransactionsTable } from "./components/tables/transactions";
@@ -44,7 +43,6 @@ const ContractDetailsBody = observer(
     const tableHeaderId = "contractDetailTableHeader";
     const {
       tableCounts,
-      refetchExecute,
       refetchMigration,
       refetchTransactions,
       refetchRelatedProposals,
@@ -95,7 +93,7 @@ const ContractDetailsBody = observer(
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>
-            <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
+            {/* <CustomTab count={tableCounts.executeCount}>Executes</CustomTab> */}
             <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
             <CustomTab count={tableCounts.relatedProposalsCount}>
               Related Proposals
@@ -110,14 +108,15 @@ const ContractDetailsBody = observer(
                 refetchCount={refetchTransactions}
               />
             </TabPanel>
-            <TabPanel p={0}>
+            {/* Remove execute table for now */}
+            {/* <TabPanel p={0}>
               <ExecuteTable
                 contractAddress={contractAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.executeCount}
                 refetchCount={refetchExecute}
               />
-            </TabPanel>
+            </TabPanel> */}
             <TabPanel p={0}>
               <MigrationTable
                 contractAddress={contractAddress}
