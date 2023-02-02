@@ -12,7 +12,7 @@ interface EditableCellProps {
   onSave?: (value?: string) => void;
 }
 export const EditableCell = ({
-  initialValue,
+  initialValue = "",
   defaultValue,
   maxLength,
   tooltip,
@@ -46,13 +46,21 @@ export const EditableCell = ({
     setIsEdit(false);
     setInputValue(initialValue);
   };
+  /**
+   *
+   * @remarks should not save if empty string
+   * */
   const handleSave = () => {
     setIsEdit(false);
-    onSave?.(inputValue);
+    if (inputValue.trim().length) {
+      onSave?.(inputValue.trim());
+    }
   };
 
   // TODO: reconsider 20
-  const showName = isHoverText && (inputValue ?? "").length > 20;
+  const showName = isHoverText && inputValue.trim().length > 20;
+  const isShowInputValue = inputValue?.trim().length;
+
   return (
     <Flex
       gap={1}
@@ -104,10 +112,10 @@ export const EditableCell = ({
               variant="body2"
               className="ellipsis"
               maxW="150px"
-              fontWeight={inputValue ? "600" : "400"}
-              color={inputValue ? "text.main" : "text.dark"}
+              fontWeight={isShowInputValue ? "600" : "400"}
+              color={isShowInputValue ? "text.main" : "text.dark"}
             >
-              {inputValue ?? defaultValue}
+              {isShowInputValue ? inputValue : defaultValue}
             </Text>
             {showName && (
               <Text
