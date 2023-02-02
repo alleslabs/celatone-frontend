@@ -195,7 +195,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           control={control}
           label="Contract Address"
           variant="floating"
-          helperText={`ex. ${exampleContractAddress}`}
+          placeholder={`ex. ${exampleContractAddress}`}
           status={status}
           labelBgColor="gray.800"
         />
@@ -210,6 +210,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
         <OffChainForm<SaveNewContractDetail>
           state={offchainState}
+          contractLabel={labelState}
           control={control}
           setTagsValue={setTagsValue}
           setContractListsValue={setContractListsValue}

@@ -10,8 +10,7 @@ import localforage from "localforage";
 import { configurePersistable } from "mobx-persist-store";
 import { enableStaticRendering } from "mobx-react-lite";
 import { DefaultSeo } from "next-seo";
-import type { AppProps, AppContext } from "next/app";
-import App from "next/app";
+import type { AppProps } from "next/app";
 import Head from "next/head";
 
 import defaultSEOConfig from "../../next-seo.config";
@@ -102,19 +101,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </QueryClientProvider>
     </Chakra>
   );
-};
-
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  // calls page's `getInitialProps` and fills `appProps.pageProps`
-  const appProps = await App.getInitialProps(appContext);
-
-  if (appContext.ctx.res?.statusCode === 404) {
-    appContext.ctx.res.writeHead(302, { Location: "/" });
-    appContext.ctx.res.end();
-    return undefined;
-  }
-
-  return { ...appProps };
 };
 
 export default MyApp;

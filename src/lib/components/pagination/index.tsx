@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { TiArrowSortedDown } from "react-icons/ti";
 
-import { scrollToComponent, scrollToTop } from "lib/utils";
+import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
 import { Next } from "./Next";
 import { Paginator } from "./Paginator";
@@ -31,10 +31,13 @@ export const Pagination = ({
   onPageSizeChange,
 }: PaginationProps) => {
   useEffect(() => {
-    if (!scrollComponentId) {
-      scrollToTop();
-    } else {
-      scrollToComponent(scrollComponentId);
+    const windowPosition = scrollYPosition();
+    if (windowPosition) {
+      if (!scrollComponentId) {
+        scrollToTop();
+      } else {
+        scrollToComponent(scrollComponentId);
+      }
     }
   }, [currentPage, pageSize, scrollComponentId]);
 

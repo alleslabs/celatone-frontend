@@ -1,4 +1,3 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useState } from "react";
 
 import { useSimulateFeeQuery } from "../queries";
@@ -9,16 +8,14 @@ import { composeMsg } from "lib/utils";
 
 export const useExecuteCmds = (contractAddress: ContractAddr) => {
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);
-  const { address } = useWallet();
   const { dummyAddress } = useDummyWallet();
 
-  const userAddress = address || dummyAddress;
-
   const { isFetching } = useSimulateFeeQuery({
-    enabled: !!contractAddress && !!userAddress,
+    isDummyUser: true,
+    enabled: !!contractAddress && !!dummyAddress,
     messages: [
       composeMsg(MsgType.EXECUTE, {
-        sender: (address || dummyAddress) as HumanAddr,
+        sender: dummyAddress as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from('{"": {}}'),
         funds: [],

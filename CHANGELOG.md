@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#141](https://github.com/alleslabs/celatone-frontend/pull/141) Add 404 not found page, catch network params error
+- [#134](https://github.com/alleslabs/celatone-frontend/pull/134) Fix un-align sub-page with sidebar
+- [#144](https://github.com/alleslabs/celatone-frontend/pull/144) Add `Assign me` for admin address on instantiate form
 - [#131](https://github.com/alleslabs/celatone-frontend/pull/131) Add CW2-related information to contract details page
 - [#120](https://github.com/alleslabs/celatone-frontend/pull/120) Add simulate migrate fee and the final migration step
 - [#108](https://github.com/alleslabs/celatone-frontend/pull/108) Add migrate options on migrate page and upload new code for migration
@@ -104,6 +107,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#145](https://github.com/alleslabs/celatone-frontend/pull/145/) Disable closing on some modal when click on modal overlay.
+- [#147](https://github.com/alleslabs/celatone-frontend/pull/147) Add empty state for select code modal
+- [#140](https://github.com/alleslabs/celatone-frontend/pull/140) Add placeholder texts to upload&instantiate, save code, and save&edit contract
 - [#139](https://github.com/alleslabs/celatone-frontend/pull/139) Fix Date to Dayjs
 - [#135](https://github.com/alleslabs/celatone-frontend/pull/135) Invalidate queries after update/clear admin tx
 - [#123](https://github.com/alleslabs/celatone-frontend/pull/123) Refactor tables to use custom components
@@ -118,6 +123,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#137](https://github.com/alleslabs/celatone-frontend/pull/137) Throw error instead of returning undefined in query function
+- [#148](https://github.com/alleslabs/celatone-frontend/pull/148) Fix scrolling to table header on first land
+- [#146](https://github.com/alleslabs/celatone-frontend/pull/146) Fix contract select always fetch when theres no contract address, edit query keys
+- [#143](https://github.com/alleslabs/celatone-frontend/pull/143) Use dummy address only when getting execute cmds
+- [#142](https://github.com/alleslabs/celatone-frontend/pull/142) Fix migration table row duplicate and add key to port id render
 - [#138](https://github.com/alleslabs/celatone-frontend/pull/138) Remove execute table in contract details page (due to data issue)
 - [#136](https://github.com/alleslabs/celatone-frontend/pull/136) Fix decode message from query param in execute page
 - [#132](https://github.com/alleslabs/celatone-frontend/pull/132) Fix permission field in upload simulation

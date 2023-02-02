@@ -68,7 +68,7 @@ export const AddToOtherList = observer(
         <Box my="16px">
           <ListSelection
             result={contractLists}
-            placeholder="Add to contract lists"
+            placeholder="Not listed"
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
             setResult={setContractLists}
