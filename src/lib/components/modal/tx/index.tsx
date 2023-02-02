@@ -10,7 +10,6 @@ import {
 
 import { TxReceiptRender } from "lib/components/tx/receipt";
 import type { TxResultRendering } from "lib/types";
-import { TxStreamPhase } from "lib/types";
 
 import { ButtonSection } from "./ButtonSection";
 
@@ -21,12 +20,7 @@ interface TxModalProps {
 
 export const TxModal = ({ result, onClose }: TxModalProps) => {
   return (
-    <Modal
-      isOpen
-      closeOnOverlayClick={result.phase === TxStreamPhase.FAILED}
-      onClose={onClose}
-      isCentered
-    >
+    <Modal isOpen onClose={onClose} isCentered closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent w="600px">
         <ModalHeader>

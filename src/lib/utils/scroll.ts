@@ -5,3 +5,7 @@ export const scrollToTop = () => {
 export const scrollToComponent = (componentId: string) => {
   document.getElementById(componentId)?.scrollIntoView();
 };
+
+export const scrollYPosition = () => {
+  return document.getElementById("content")?.scrollTop;
+};
