@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
-import { useCodeStore } from "lib/hooks";
+import type { PermissionFilterValue } from "lib/hooks";
+import { useCodeStore, usePermissionFilter, useSearchFilter } from "lib/hooks";
 import { useCodeListQuery } from "lib/services/codeService";
 import type { CodeInfo } from "lib/types";
 
@@ -9,9 +10,14 @@ interface AllCodesData {
   isLoading: boolean;
 }
 
-export const useAllCodesData = (keyword?: string): AllCodesData => {
+export const useAllCodesData = (
+  keyword: string,
+  permissionValue: PermissionFilterValue
+): AllCodesData => {
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
   const { data: rawAllCodes = [], isLoading } = useCodeListQuery();
+  const permissionFilterFn = usePermissionFilter(permissionValue);
+  const searchFilterFn = useSearchFilter(keyword);
 
   const allCodes = rawAllCodes.map<CodeInfo>((code) => ({
     ...code,
@@ -20,18 +26,9 @@ export const useAllCodesData = (keyword?: string): AllCodesData => {
   }));
 
   return useMemo(() => {
-    const filterFn = (code: CodeInfo) => {
-      if (keyword === undefined) return true;
-
-      const computedKeyword = keyword.trim();
-      if (computedKeyword.length === 0) return true;
-
-      return (
-        code.id.toString().startsWith(computedKeyword) ||
-        code.description?.toLowerCase().includes(computedKeyword.toLowerCase())
-      );
+    return {
+      allCodes: allCodes.filter(permissionFilterFn).filter(searchFilterFn),
+      isLoading,
     };
-
-    return { allCodes: allCodes.filter(filterFn), isLoading };
-  }, [keyword, allCodes, isLoading]);
+  }, [allCodes, isLoading, permissionFilterFn, searchFilterFn]);
 };

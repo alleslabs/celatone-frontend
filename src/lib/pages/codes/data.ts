@@ -1,7 +1,13 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
-import { useUserKey, useCodeStore } from "lib/hooks";
+import type { PermissionFilterValue } from "lib/hooks";
+import {
+  useUserKey,
+  useCodeStore,
+  usePermissionFilter,
+  useSearchFilter,
+} from "lib/hooks";
 import {
   useCodeListByIDsQuery,
   useCodeListByUserQuery,
@@ -17,7 +23,10 @@ interface CodeListData {
   allCodesCount: number;
 }
 
-export const useCodeListData = (keyword?: string): CodeListData => {
+export const useCodeListData = (
+  keyword?: string,
+  permissionValue?: PermissionFilterValue
+): CodeListData => {
   const { address } = useWallet();
   const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds, isCodeIdSaved } =
     useCodeStore();
@@ -25,6 +34,8 @@ export const useCodeListData = (keyword?: string): CodeListData => {
   const { data: rawStoredCodes = [] } = useCodeListByUserQuery(address);
 
   const userKey = useUserKey();
+  const permissionFilterFn = usePermissionFilter(permissionValue);
+  const searchFilterFn = useSearchFilter(keyword);
 
   const savedCodeIds = lastSavedCodeIds(userKey);
   const { data: querySavedCodeInfos = [] } =
@@ -60,20 +71,11 @@ export const useCodeListData = (keyword?: string): CodeListData => {
   const storedCodesCount = storedCodes.length;
 
   const [filteredSavedCodes, filteredStoredCodes] = useMemo(() => {
-    const filterFn = (code: CodeInfo) => {
-      if (keyword === undefined) return true;
-
-      const computedKeyword = keyword.trim();
-      if (computedKeyword.length === 0) return true;
-
-      return (
-        code.id.toString().startsWith(computedKeyword) ||
-        code.description?.toLowerCase().includes(computedKeyword.toLowerCase())
-      );
-    };
-
-    return [savedCodes.filter(filterFn), storedCodes.filter(filterFn)];
-  }, [keyword, savedCodes, storedCodes]);
+    return [
+      savedCodes.filter(permissionFilterFn).filter(searchFilterFn),
+      storedCodes.filter(permissionFilterFn).filter(searchFilterFn),
+    ];
+  }, [savedCodes, storedCodes, permissionFilterFn, searchFilterFn]);
 
   return {
     savedCodes: filteredSavedCodes,

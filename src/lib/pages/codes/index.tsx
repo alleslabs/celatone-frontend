@@ -5,34 +5,42 @@ import {
   TabPanels,
   TabPanel,
   Box,
+  Flex,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { CustomTab } from "lib/components/CustomTab";
+import { FilterByPermission } from "lib/components/forms/FilterByPermission";
 import InputWithIcon from "lib/components/InputWithIcon";
+import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";
 
 import SaveCodeButton from "./components/SaveCodeButton";
 import UploadButton from "./components/UploadButton";
 import { useCodeListData } from "./data";
 
+interface AllCodeState {
+  keyword: string;
+  permissionValue: PermissionFilterValue;
+}
+
 const Codes = observer(() => {
-  const [keyword, setKeyword] = useState("");
+  const { watch, setValue } = useForm<AllCodeState>({
+    defaultValues: {
+      permissionValue: "all",
+      keyword: "",
+    },
+  });
+  const { keyword, permissionValue } = watch();
   const {
     storedCodesCount,
     storedCodes: stored,
     savedCodesCount,
     savedCodes: saved,
     allCodesCount,
-  } = useCodeListData(keyword);
-
-  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-
-    setKeyword(inputValue);
-  };
+  } = useCodeListData(keyword, permissionValue);
 
   return (
     <Box>
@@ -48,12 +56,23 @@ const Codes = observer(() => {
             <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
             <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
           </TabList>
-          <InputWithIcon
-            placeholder="Search with code ID or code description"
-            value={keyword}
-            onChange={handleFilterChange}
-            size="lg"
-          />
+          <Flex gap={2}>
+            <InputWithIcon
+              placeholder="Search with code ID or code description"
+              value={keyword}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setValue("keyword", e.target.value)
+              }
+              size="lg"
+            />
+            <FilterByPermission
+              initialSelected="all"
+              setPermissionValue={(newVal: PermissionFilterValue) => {
+                if (newVal === permissionValue) return;
+                setValue("permissionValue", newVal);
+              }}
+            />
+          </Flex>
         </Box>
         <TabPanels mt="48px">
           <TabPanel p="0px">

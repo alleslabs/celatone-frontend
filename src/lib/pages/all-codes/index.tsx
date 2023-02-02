@@ -1,22 +1,30 @@
-import { Heading, Box } from "@chakra-ui/react";
+import { Heading, Box, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
+import { FilterByPermission } from "lib/components/forms/FilterByPermission";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
+import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";
 
 import { useAllCodesData } from "./data";
 
-const AllCodes = observer(() => {
-  const [keyword, setKeyword] = useState("");
-  const { allCodes, isLoading } = useAllCodesData(keyword);
+interface AllCodeState {
+  keyword: string;
+  permissionValue: PermissionFilterValue;
+}
 
-  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setKeyword(inputValue);
-  };
+const AllCodes = observer(() => {
+  const { watch, setValue } = useForm<AllCodeState>({
+    defaultValues: {
+      permissionValue: "all",
+      keyword: "",
+    },
+  });
+  const { keyword, permissionValue } = watch();
+  const { allCodes, isLoading } = useAllCodesData(keyword, permissionValue);
 
   return (
     <Box>
@@ -24,13 +32,23 @@ const AllCodes = observer(() => {
         <Heading as="h1" size="lg" color="white" mb={4}>
           All Codes
         </Heading>
-
-        <InputWithIcon
-          placeholder="Search with code ID or code description"
-          value={keyword}
-          onChange={handleFilterChange}
-          size="lg"
-        />
+        <Flex gap={2}>
+          <InputWithIcon
+            placeholder="Search with code ID or code description"
+            value={keyword}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setValue("keyword", e.target.value)
+            }
+            size="lg"
+          />
+          <FilterByPermission
+            initialSelected="all"
+            setPermissionValue={(newVal: PermissionFilterValue) => {
+              if (newVal === permissionValue) return;
+              setValue("permissionValue", newVal);
+            }}
+          />
+        </Flex>
       </Box>
       {isLoading ? (
         <Loading />
