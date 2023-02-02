@@ -99,9 +99,11 @@ export const ContractDetailsTemplate = ({
       disabledMain={!!errors.name || !!errors.description}
       otherBtnTitle="Cancel"
       otherAction={resetForm}
+      closeOnOverlayClick={false}
     >
       <OffChainForm<OffchainDetail>
         state={offchainState}
+        contractLabel={contractLocalInfo.label}
         control={control}
         setTagsValue={setTagsValue}
         setContractListsValue={setContractListsValue}

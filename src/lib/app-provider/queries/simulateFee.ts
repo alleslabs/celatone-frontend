@@ -8,6 +8,7 @@ import type { ComposedMsg, Gas } from "lib/types";
 interface SimulateQueryParams {
   enabled: boolean;
   messages: ComposedMsg[];
+  isDummyUser?: boolean;
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -15,6 +16,7 @@ interface SimulateQueryParams {
 export const useSimulateFeeQuery = ({
   enabled,
   messages,
+  isDummyUser,
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
@@ -22,24 +24,24 @@ export const useSimulateFeeQuery = ({
     useWallet();
   const { dummyWallet, dummyAddress } = useDummyWallet();
 
-  const userAddress = address || dummyAddress;
+  const userAddress = isDummyUser ? dummyAddress : address || dummyAddress;
 
   const simulateFn = async (msgs: ComposedMsg[]) => {
-    let client = await getCosmWasmClient();
     // TODO: revisit this logic
     if (!currentChainRecord?.preferredEndpoints?.rpc?.[0] || !userAddress) {
       throw new Error("No RPC endpoint or user address");
     }
 
-    if (!client && !address && dummyWallet) {
-      client = await SigningCosmWasmClient.connectWithSigner(
-        currentChainRecord.preferredEndpoints.rpc[0],
-        dummyWallet
-      );
-    }
+    const client =
+      dummyWallet && (isDummyUser || !address)
+        ? await SigningCosmWasmClient.connectWithSigner(
+            currentChainRecord.preferredEndpoints.rpc[0],
+            dummyWallet
+          )
+        : await getCosmWasmClient();
 
     if (!client) {
-      throw new Error("No client");
+      throw new Error("Fail to get SigningCosmWasmClient");
     }
 
     return (await client.simulate(userAddress, msgs, undefined)) as Gas;

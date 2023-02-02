@@ -1,9 +1,9 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { TableContainer } from "lib/components/table";
 import { useRelatedProposalsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
@@ -66,7 +66,7 @@ export const RelatedProposalsTable = ({
     );
 
   return (
-    <Flex direction="column" overflowX="scroll">
+    <TableContainer>
       <RelatedProposalsHeader templateColumns={templateColumns} />
       {relatedProposals.map((proposal) => (
         <RelatedProposalsRow
@@ -87,6 +87,6 @@ export const RelatedProposalsTable = ({
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </Flex>
+    </TableContainer>
   );
 };

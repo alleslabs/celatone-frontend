@@ -11,6 +11,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import dayjs from "dayjs";
 import { MdList, MdSwapHoriz } from "react-icons/md";
 
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
@@ -42,7 +43,7 @@ export const SelectContractAdmin = ({
       ...contract,
       ...getContractLocalInfo(contract.contractAddress),
     })),
-    lastUpdated: new Date(),
+    lastUpdated: dayjs(),
     isInfoEditable: false,
     isContractRemovable: false,
   };
@@ -70,13 +71,7 @@ export const SelectContractAdmin = ({
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={resetOnClose}
-        closeOnOverlayClick={false}
-        size="4xl"
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl" isCentered>
         <ModalOverlay />
         <ModalContent h="80%">
           <ModalHeader>

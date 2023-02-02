@@ -25,7 +25,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
     state: "init",
   });
-  const [uploader, setUploader] = useState("No Description");
+  const [uploader, setUploader] = useState("");
   const [uploaderStatus, setUploaderStatus] = useState<FormStatus>({
     state: "init",
   });
@@ -173,9 +173,10 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
       otherAction={reset}
       disabledMain={disableMain}
       otherBtnTitle="Cancel"
+      closeOnOverlayClick={false}
     >
       <FormControl display="flex" flexDir="column" gap="36px">
-        Save other stored Codes to your &quot;Saved Codes&quot; list
+        Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
           variant="floating"
           value={codeId}
@@ -183,12 +184,13 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           label="Code ID"
           labelBgColor="gray.800"
           status={codeIdStatus}
-          helperText="ex. 1150"
+          placeholder="ex. 1234"
         />
         <TextInput
           value={uploader}
           label="Uploader"
           labelBgColor="gray.800"
+          placeholder="Uploader address will display here"
           setInputState={() => {}}
           status={uploaderStatus}
           isDisabled
@@ -199,6 +201,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           setInputState={setDescription}
           label="Code Description"
           labelBgColor="gray.800"
+          placeholder="No Description"
           helperText="Fill in code description to define its use as a reminder"
           status={descriptionStatus}
         />

@@ -1,14 +1,7 @@
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-} from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { TableContainer, TableHeader, TableRow } from "lib/components/table";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr } from "lib/types";
 
@@ -20,56 +13,55 @@ interface ContractListReadOnlyTableProps {
   onContractSelect: (addr: ContractAddr) => void;
 }
 
+const TEMPLATE_COLUMNS = "160px 1fr 220px 160px";
+
 export const ContractListReadOnlyTable = ({
   contracts = [],
   onContractSelect,
 }: ContractListReadOnlyTableProps) => {
   return (
-    <TableContainer w="full" my="16px">
-      <Table variant="simple" sx={{ tableLayout: "auto" }}>
-        <Thead>
-          <Tr>
-            <Th width="10%">Contract Address</Th>
-            <Th width="50%">Contract Name</Th>
-            <Th width="30%">Tags</Th>
-            <Th width="10%">Instantiated by</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {contracts.map((item) => (
-            <Tr
-              transition="all .25s ease-in-out"
-              _hover={{ bg: "gray.900" }}
-              key={item.contractAddress}
-              onClick={() => {
-                onContractSelect(item.contractAddress);
-              }}
-              cursor="pointer"
-            >
-              <Td width="10%">
-                <ExplorerLink
-                  value={item.contractAddress}
-                  type="contract_address"
-                  isReadOnly
-                />
-              </Td>
-              <Td width="40%">
-                <ContractNameCell contractLocalInfo={item} isReadOnly />
-              </Td>
-              <Td width="30%">
-                <TagsCell contractLocalInfo={item} isReadOnly />
-              </Td>
-              <Td width="10%">
-                <ExplorerLink
-                  value={item.instantiator}
-                  type="user_address"
-                  isReadOnly
-                />
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+    <TableContainer my={4}>
+      <Grid
+        templateColumns={TEMPLATE_COLUMNS}
+        sx={{ "& div": { color: "text.dark" } }}
+      >
+        <TableHeader>Contract Address</TableHeader>
+        <TableHeader>Contract Name</TableHeader>
+        <TableHeader>Tags</TableHeader>
+        <TableHeader>Instantiated by</TableHeader>
+      </Grid>
+      {contracts.map((item) => (
+        <Grid
+          templateColumns={TEMPLATE_COLUMNS}
+          _hover={{ bg: "gray.900" }}
+          key={item.contractAddress}
+          onClick={() => {
+            onContractSelect(item.contractAddress);
+          }}
+          cursor="pointer"
+        >
+          <TableRow>
+            <ExplorerLink
+              value={item.contractAddress}
+              type="contract_address"
+              isReadOnly
+            />
+          </TableRow>
+          <TableRow>
+            <ContractNameCell contractLocalInfo={item} isReadOnly />
+          </TableRow>
+          <TableRow>
+            <TagsCell contractLocalInfo={item} isReadOnly />
+          </TableRow>
+          <TableRow>
+            <ExplorerLink
+              value={item.instantiator}
+              type="user_address"
+              isReadOnly
+            />
+          </TableRow>
+        </Grid>
+      ))}
     </TableContainer>
   );
 };

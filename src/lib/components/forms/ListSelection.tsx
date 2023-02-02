@@ -21,8 +21,7 @@ import { MdCheck, MdClose, MdAdd } from "react-icons/md";
 import { CreateNewList } from "lib/components/modal/list";
 import { useContractStore, useUserKey } from "lib/hooks";
 import type { LVPair } from "lib/types";
-import { formatSlugName } from "lib/utils";
-import mergeRefs from "lib/utils/mergeRefs";
+import { formatSlugName, mergeRefs } from "lib/utils";
 
 export interface ListSelectionProps extends InputProps {
   placeholder?: string;
@@ -191,7 +190,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               lineHeight="1.2"
               transform="scale(0.75) translateY(-24px)"
             >
-              Add to lists
+              Listed on
             </FormLabel>
           </Flex>
           <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">

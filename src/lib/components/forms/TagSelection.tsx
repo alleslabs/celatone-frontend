@@ -20,7 +20,7 @@ import { useEffect, useState, useRef, forwardRef } from "react";
 import { MdCheckCircle, MdClose } from "react-icons/md";
 
 import { useContractStore, useUserKey } from "lib/hooks";
-import mergeRefs from "lib/utils/mergeRefs";
+import { mergeRefs } from "lib/utils";
 
 export interface TagSelectionProps extends InputProps {
   placeholder?: string;

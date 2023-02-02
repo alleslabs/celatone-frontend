@@ -10,44 +10,12 @@ import {
 import { useEffect, useState } from "react";
 import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
-import { MultipleActionsMsg } from "lib/components/action-msg/MultipleActionsMsg";
-import { SingleActionMsg } from "lib/components/action-msg/SingleActionMsg";
-import { SingleMsg } from "lib/components/action-msg/SingleMsg";
+import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import { MsgDetail } from "lib/components/table/MsgDetail";
+import { AccordionTx } from "lib/components/table/AccordionTx";
 import type { AllTransaction } from "lib/types";
-import { ActionMsgType } from "lib/types";
-import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
-
-const RenderActionsMessages = ({
-  transaction,
-}: {
-  transaction: AllTransaction;
-}) => {
-  if (transaction.actionMsgType === ActionMsgType.SINGLE_ACTION_MSG) {
-    return (
-      <SingleActionMsg
-        messages={transaction.messages}
-        type={extractMsgType(transaction.messages[0].type)}
-        success={transaction.success}
-      />
-    );
-  }
-  if (transaction.actionMsgType === ActionMsgType.MULTIPLE_ACTION_MSG) {
-    return <MultipleActionsMsg messages={transaction.messages} />;
-  }
-  return (
-    <SingleMsg
-      type="Message"
-      tags={
-        transaction.messages.length === 1
-          ? [extractMsgType(transaction.messages[0].type)?.substring(3)]
-          : [transaction.messages.length.toString()]
-      }
-    />
-  );
-};
+import { dateFromNow, formatUTC } from "lib/utils";
 
 interface TxsTableRowProps {
   transaction: AllTransaction;
@@ -89,7 +57,7 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            <RenderActionsMessages transaction={transaction} />
+            <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
               <Tag borderRadius="full" bg="rgba(164, 133, 231, 0.6)">
                 IBC
@@ -133,7 +101,11 @@ export const TxsTableRow = ({
       {isAccordion && (
         <Grid w="full" py={4} hidden={!isOpen}>
           {transaction.messages.map((msg, index) => (
-            <MsgDetail key={index.toString() + msg.type} message={msg} />
+            <AccordionTx
+              key={index.toString() + msg.type}
+              message={msg}
+              allowFurtherAction={false}
+            />
           ))}
         </Grid>
       )}

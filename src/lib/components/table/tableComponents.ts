@@ -1,4 +1,12 @@
-import { chakra, GridItem } from "@chakra-ui/react";
+import { chakra, Flex, GridItem } from "@chakra-ui/react";
+
+export const TableContainer = chakra(Flex, {
+  baseStyle: {
+    overflowX: "scroll",
+    flexDir: "column",
+    w: "full",
+  },
+});
 
 export const TableHeader = chakra(GridItem, {
   baseStyle: {
@@ -12,6 +20,16 @@ export const TableHeader = chakra(GridItem, {
   },
 });
 
+export const TableHeaderNoBorder = chakra(GridItem, {
+  baseStyle: {
+    color: "text.main",
+    fontSize: "12px",
+    fontWeight: 700,
+    py: 6,
+    px: 4,
+  },
+});
+
 export const TableRow = chakra(GridItem, {
   baseStyle: {
     color: "text.main",
@@ -22,5 +40,16 @@ export const TableRow = chakra(GridItem, {
     alignItems: "center",
     borderBottom: "1px solid",
     borderColor: "divider.main",
+  },
+});
+
+export const TableRowNoBorder = chakra(GridItem, {
+  baseStyle: {
+    color: "text.main",
+    fontSize: "14px",
+    fontWeight: 400,
+    p: 4,
+    display: "flex",
+    alignItems: "center",
   },
 });

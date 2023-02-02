@@ -1,10 +1,10 @@
-import { Flex, Grid } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { TableHeader } from "lib/components/table";
+import { TableContainer, TableHeader } from "lib/components/table";
 import { useTxsByContractAddress } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 
@@ -66,7 +66,7 @@ export const TransactionsTable = ({
     "170px 70px minmax(360px, 1fr) repeat(2, max(170px)) max(300px)";
 
   return (
-    <Flex direction="column" overflowX="scroll">
+    <TableContainer>
       <Grid templateColumns={templateColumnsStyle}>
         <TableHeader>Transaction Hash</TableHeader>
         <TableHeader />
@@ -94,6 +94,6 @@ export const TransactionsTable = ({
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </Flex>
+    </TableContainer>
   );
 };

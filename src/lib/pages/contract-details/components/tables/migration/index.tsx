@@ -1,9 +1,9 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { TableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/model/data";
 import type { ContractAddr } from "lib/types";
 
@@ -66,11 +66,17 @@ export const MigrationTable = ({
     "90px minmax(300px, 1fr) repeat(2, max(150px)) max(232px) max(180px)";
 
   return (
-    <Flex direction="column" overflowX="scroll">
+    <TableContainer>
       <MigrationHeader templateColumns={templateColumns} />
-      {migrationHistories.map((history) => (
+      {migrationHistories.map((history, idx) => (
         <MigrationRow
-          key={history.codeId}
+          key={
+            history.codeId +
+            history.remark.operation +
+            history.remark.type +
+            history.remark.value +
+            idx.toString()
+          }
           history={history}
           templateColumns={templateColumns}
         />
@@ -87,6 +93,6 @@ export const MigrationTable = ({
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </Flex>
+    </TableContainer>
   );
 };

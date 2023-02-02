@@ -1,11 +1,14 @@
 import {
+  Flex,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
   Input,
-  Text,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 import type {
   Control,
   FieldPath,
@@ -15,7 +18,7 @@ import type {
 import { useWatch, useController } from "react-hook-form";
 
 import type { FormStatus } from "./FormStatus";
-import { getResponseMsg } from "./FormStatus";
+import { getStatusIcon, getResponseMsg } from "./FormStatus";
 import type { TextInputProps } from "./TextInput";
 
 interface ControllerInputProps<T extends FieldValues>
@@ -25,6 +28,7 @@ interface ControllerInputProps<T extends FieldValues>
   rules?: UseControllerProps["rules"];
   status?: FormStatus;
   maxLength?: number;
+  helperAction?: ReactNode;
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -40,6 +44,7 @@ export const ControllerInput = <T extends FieldValues>({
   rules = {},
   status,
   maxLength,
+  helperAction,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -58,7 +63,7 @@ export const ControllerInput = <T extends FieldValues>({
   return (
     <FormControl
       size={size}
-      isInvalid={isError}
+      isInvalid={isError || status?.state === "error"}
       isRequired={isRequired}
       {...componentProps}
       {...field}
@@ -68,26 +73,29 @@ export const ControllerInput = <T extends FieldValues>({
           {label}
         </FormLabel>
       )}
-      <Input
-        size={size}
-        placeholder={placeholder}
-        type={type}
-        value={watcher}
-        onChange={field.onChange}
-        maxLength={maxLength}
-      />
-      {/* TODO: add status */}
-      {isError ? (
-        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      ) : (
-        <FormHelperText className="helper-text">
-          {status?.message ? (
-            getResponseMsg(status, helperText)
-          ) : (
-            <Text color="text.dark">{helperText}</Text>
-          )}
-        </FormHelperText>
-      )}
+      <InputGroup>
+        <Input
+          size={size}
+          placeholder={placeholder}
+          type={type}
+          value={watcher}
+          onChange={field.onChange}
+          maxLength={maxLength}
+        />
+        <InputRightElement h="full">
+          {status && getStatusIcon(status.state)}
+        </InputRightElement>
+      </InputGroup>
+      <Flex gap={1} alignItems="center" mt={1}>
+        {isError ? (
+          <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+        ) : (
+          <FormHelperText className="helper-text">
+            {status?.message ? getResponseMsg(status, helperText) : helperText}
+          </FormHelperText>
+        )}
+        {helperAction}
+      </Flex>
     </FormControl>
   );
 };

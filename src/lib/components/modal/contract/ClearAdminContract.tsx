@@ -20,7 +20,7 @@ export const ClearAdminContract = ({
   const clearAdminTx = useClearAdminTx(contractAddress);
 
   const proceed = useCallback(async () => {
-    const stream = await clearAdminTx({ onTxSucceed: () => {} });
+    const stream = await clearAdminTx({});
     if (stream) broadcast(stream);
   }, [broadcast, clearAdminTx]);
 

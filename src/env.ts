@@ -77,6 +77,9 @@ export const getMainnetApiPath = (chainId: string) => {
     case "osmo-test-4":
     case "osmosis-1":
       return "osmosis-1";
+    case "pisco-1":
+    case "phoenix-1":
+      return "phoenix-1";
     default:
       return undefined;
   }
