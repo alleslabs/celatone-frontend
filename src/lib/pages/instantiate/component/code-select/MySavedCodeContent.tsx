@@ -20,7 +20,7 @@ export const MySavedCodeContent = ({
         py="64px"
         direction="column"
         borderY="1px solid"
-        borderColor="divider.main"
+        borderColor="pebble.700"
       >
         <EmptyState message="You don’t have any saved codes in this device." />
       </Flex>
