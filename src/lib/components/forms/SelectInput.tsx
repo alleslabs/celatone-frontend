@@ -20,16 +20,16 @@ import type { Option } from "lib/types";
 
 const ITEM_HEIGHT = 56;
 
-interface SelectInputProps {
+interface SelectInputProps<T extends string> {
   formLabel?: string;
   options: {
     label: string;
-    value: string;
+    value: T;
     disabled: boolean;
     icon?: IconType;
     iconColor?: string;
   }[];
-  onChange: (newVal: string) => void;
+  onChange: (newVal: T) => void;
   placeholder?: string;
   initialSelected: string;
   hasDivider?: boolean;
@@ -60,19 +60,19 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => {
   );
 };
 
-export const SelectInput = ({
+export const SelectInput = <T extends string>({
   formLabel,
   options,
   onChange,
   placeholder = "",
   initialSelected,
   hasDivider = false,
-}: SelectInputProps) => {
+}: SelectInputProps<T>) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const [selected, setSelected] = useState(
-    () => options.find((asset) => asset.value === initialSelected)?.label ?? ""
+    () => options.find((item) => item.value === initialSelected)?.label ?? ""
   );
   const [inputRefWidth, setInputRefWidth] = useState<Option<number>>();
   useOutsideClick({

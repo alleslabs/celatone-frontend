@@ -6,13 +6,14 @@ import { useForm } from "react-hook-form";
 import { FilterByPermission } from "lib/components/forms/FilterByPermission";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
+import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";
 
 import { useAllCodesData } from "./data";
 
 interface AllCodeState {
   keyword: string;
-  permissionValue: string;
+  permissionValue: PermissionFilterValue;
 }
 
 const AllCodes = observer(() => {
@@ -42,9 +43,10 @@ const AllCodes = observer(() => {
           />
           <FilterByPermission
             initialSelected="all"
-            setPermissionValue={(newVal: string) =>
-              setValue("permissionValue", newVal)
-            }
+            setPermissionValue={(newVal: PermissionFilterValue) => {
+              if (newVal === permissionValue) return;
+              setValue("permissionValue", newVal);
+            }}
           />
         </Flex>
       </Box>

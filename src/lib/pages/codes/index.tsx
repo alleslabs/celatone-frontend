@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { CustomTab } from "lib/components/CustomTab";
 import { FilterByPermission } from "lib/components/forms/FilterByPermission";
 import InputWithIcon from "lib/components/InputWithIcon";
+import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";
 
 import SaveCodeButton from "./components/SaveCodeButton";
@@ -22,8 +23,9 @@ import { useCodeListData } from "./data";
 
 interface AllCodeState {
   keyword: string;
-  permissionValue: string;
+  permissionValue: PermissionFilterValue;
 }
+
 const Codes = observer(() => {
   const { watch, setValue } = useForm<AllCodeState>({
     defaultValues: {
@@ -65,9 +67,10 @@ const Codes = observer(() => {
             />
             <FilterByPermission
               initialSelected="all"
-              setPermissionValue={(newVal: string) =>
-                setValue("permissionValue", newVal)
-              }
+              setPermissionValue={(newVal: PermissionFilterValue) => {
+                if (newVal === permissionValue) return;
+                setValue("permissionValue", newVal);
+              }}
             />
           </Flex>
         </Box>

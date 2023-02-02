@@ -1,8 +1,13 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
-import { usePermissionFilter, useSearchFilter } from "lib/app-fns/filter";
-import { useUserKey, useCodeStore } from "lib/hooks";
+import type { PermissionFilterValue } from "lib/hooks";
+import {
+  useUserKey,
+  useCodeStore,
+  usePermissionFilter,
+  useSearchFilter,
+} from "lib/hooks";
 import {
   useCodeListByIDsQuery,
   useCodeListByUserQuery,
@@ -20,7 +25,7 @@ interface CodeListData {
 
 export const useCodeListData = (
   keyword?: string,
-  permissionValue?: string
+  permissionValue?: PermissionFilterValue
 ): CodeListData => {
   const { address } = useWallet();
   const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds, isCodeIdSaved } =
@@ -29,6 +34,8 @@ export const useCodeListData = (
   const { data: rawStoredCodes = [] } = useCodeListByUserQuery(address);
 
   const userKey = useUserKey();
+  const permissionFilterFn = usePermissionFilter(permissionValue);
+  const searchFilterFn = useSearchFilter(keyword);
 
   const savedCodeIds = lastSavedCodeIds(userKey);
   const { data: querySavedCodeInfos = [] } =
@@ -63,14 +70,12 @@ export const useCodeListData = (
 
   const storedCodesCount = storedCodes.length;
 
-  const permissionFilter = usePermissionFilter(permissionValue);
-  const searchFilter = useSearchFilter(keyword);
   const [filteredSavedCodes, filteredStoredCodes] = useMemo(() => {
     return [
-      savedCodes.filter(permissionFilter).filter(searchFilter),
-      storedCodes.filter(permissionFilter).filter(searchFilter),
+      savedCodes.filter(permissionFilterFn).filter(searchFilterFn),
+      storedCodes.filter(permissionFilterFn).filter(searchFilterFn),
     ];
-  }, [savedCodes, permissionFilter, searchFilter, storedCodes]);
+  }, [savedCodes, storedCodes, permissionFilterFn, searchFilterFn]);
 
   return {
     savedCodes: filteredSavedCodes,

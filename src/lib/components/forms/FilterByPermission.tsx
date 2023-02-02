@@ -2,18 +2,20 @@ import { Grid } from "@chakra-ui/react";
 import type { IconType } from "react-icons";
 import { MdCheck, MdHowToVote, MdPerson } from "react-icons/md";
 
+import type { PermissionFilterValue } from "lib/hooks";
+
 import { SelectInput } from "./SelectInput";
 
 interface PermissionOption {
   label: string;
-  value: string;
+  value: PermissionFilterValue;
   disabled: boolean;
   icon?: IconType;
   iconColor: string;
 }
 
 interface FilterByPermissionProps {
-  setPermissionValue: (newVal: string) => void;
+  setPermissionValue: (newVal: PermissionFilterValue) => void;
   initialSelected: string;
 }
 
@@ -47,7 +49,7 @@ export const FilterByPermission = ({
 }: FilterByPermissionProps) => {
   return (
     <Grid columnGap="16px" w="full" mb="16px" maxW="360px">
-      <SelectInput
+      <SelectInput<PermissionFilterValue>
         formLabel="Filter by Instantiate Permission"
         options={options}
         onChange={setPermissionValue}
