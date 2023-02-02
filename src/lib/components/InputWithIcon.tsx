@@ -24,8 +24,8 @@ const InputWithIcon = ({
         onChange={onChange}
         size={size}
       />
-      <InputRightElement h="full">
-        <SearchIcon color="input.main" />
+      <InputRightElement h="56px" alignItems="center">
+        <SearchIcon color="gray.600" />
       </InputRightElement>
     </InputGroup>
   );

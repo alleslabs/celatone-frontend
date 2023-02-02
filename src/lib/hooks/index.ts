@@ -5,3 +5,4 @@ export * from "./useLCDEndpoint";
 export * from "./useUserKey";
 export * from "./useDummyWallet";
 export * from "./useAddress";
+export * from "./useCodeFilter";
