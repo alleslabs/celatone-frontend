@@ -58,8 +58,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           wallets={wallets}
           endpointOptions={{
             osmosis: {
-              rpc: ["https://rpc-osmosis.keplr.app/"],
-              rest: ["https://lcd-osmosis.keplr.app/"],
+              rpc: ["https://rpc.osmosis.zone/"],
+              rest: ["https://lcd.osmosis.zone/"],
             },
             osmosistestnet: {
               rpc: ["https://rpc-test.osmosis.zone/"],
