@@ -14,17 +14,17 @@ export const MySavedCodeContent = ({
   handleSelect,
   savedCodes,
 }: MySavedCodeContentProps) => {
-  if (savedCodes.length) {
-    return <CodeTableReadOnly onCodeSelect={handleSelect} codes={savedCodes} />;
+  if (!savedCodes.length) {
+    return (
+      <Flex
+        py="64px"
+        direction="column"
+        borderY="1px solid"
+        borderColor="divider.main"
+      >
+        <EmptyState message="You don’t have any saved codes in this device." />
+      </Flex>
+    );
   }
-  return (
-    <Flex
-      py="64px"
-      direction="column"
-      borderY="1px solid"
-      borderColor="divider.main"
-    >
-      <EmptyState message="You don’t have any saved codes in this device." />
-    </Flex>
-  );
+  return <CodeTableReadOnly onCodeSelect={handleSelect} codes={savedCodes} />;
 };
