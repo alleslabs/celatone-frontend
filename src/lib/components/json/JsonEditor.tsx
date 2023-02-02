@@ -62,7 +62,7 @@ const JsonEditor = ({
       height={boxHeight}
       resize={disableResizing ? "unset" : "vertical"}
       overflow="auto"
-      transition="all .15s"
+      transition="all .25s ease-in-out"
     >
       <AceEditor
         ref={editorRef}
@@ -74,7 +74,7 @@ const JsonEditor = ({
           width: "100%",
           height: "99%",
           background: "transparent",
-          color: readOnly && !isValid ? "#e57373" : "white",
+          color: readOnly && !isValid ? "error.light" : "white",
           offset: 0,
         }}
         setOptions={{

@@ -34,7 +34,7 @@ export const ConnectWalletAlert = ({
   return !address ? (
     <Alert
       {...alertProps}
-      variant="info"
+      variant="honeydew"
       alignItems="center"
       justifyContent="space-between"
       py="12px"
@@ -43,20 +43,20 @@ export const ConnectWalletAlert = ({
         <AlertIcon />
         <Box>
           <AlertTitle>
-            <Text variant="body1" fontWeight="600" color="info.main">
+            <Text variant="body1" fontWeight="600" color="honeydew.main">
               {title}
             </Text>
           </AlertTitle>
           <AlertDescription>
-            <Text variant="body2" color="info.main">
+            <Text variant="body2" color="honeydew.main">
               {subtitle}
             </Text>
           </AlertDescription>
         </Box>
       </Flex>
-      <Button variant="ghost" gap={2} onClick={onClickConnect}>
-        <Icon as={MdLink} boxSize={4} color="info.main" />
-        <Text color="info.main">Connect Wallet</Text>
+      <Button variant="ghost-info" gap={2} onClick={onClickConnect}>
+        <Icon as={MdLink} boxSize={4} />
+        <Text color="honeydew.main">Connect Wallet</Text>
       </Button>
     </Alert>
   ) : null;

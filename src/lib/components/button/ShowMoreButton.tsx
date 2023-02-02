@@ -16,12 +16,12 @@ export const ShowMoreButton = ({
   <Button
     p="0"
     rightIcon={toggleShowMore ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
-    color="primary.main"
+    color="lilac.main"
     variant="none"
     w="fit-content"
     onClick={setToggleShowMore}
   >
-    <Text variant="body3" color="primary.main" fontWeight="700">
+    <Text variant="body3" color="lilac.main" fontWeight="700">
       {toggleShowMore ? showLessText : showMoreText}
     </Text>
   </Button>

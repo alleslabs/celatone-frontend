@@ -69,10 +69,10 @@ export const SingleMsg = ({
             hasArrow
             label={`Token ID: ${token.id}`}
             placement="top"
-            bg="primary.dark"
+            bg="honeydew.darker"
             maxW="240px"
           >
-            <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
+            <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
           </Tooltip>
           <Box display="none" _groupHover={{ display: "flex" }}>
             <Copier ml="4px" value={token.id} copyLabel="Token ID Copied!" />

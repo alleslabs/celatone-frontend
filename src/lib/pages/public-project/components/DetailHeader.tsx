@@ -25,9 +25,12 @@ export const DetailHeader = ({ details, slug }: DetailProps) => {
       <Breadcrumb
         w="full"
         spacing={1}
-        separator={<MdChevronRight color="gray.600" />}
+        separator={<MdChevronRight color="pebble.600" />}
       >
-        <BreadcrumbItem>
+        <BreadcrumbItem
+          _hover={{ opacity: 0.8 }}
+          transition="all 0.25s ease-in-out"
+        >
           <AppLink color="text.dark" href="/public-project">
             Public Projects
           </AppLink>
@@ -60,12 +63,7 @@ export const DetailHeader = ({ details, slug }: DetailProps) => {
               width={8}
               height={8}
             />
-            <Heading
-              as="h5"
-              variant="h5"
-              color="primary.400"
-              className="ellipsis"
-            >
+            <Heading as="h5" variant="h5" className="ellipsis">
               {details?.name}
             </Heading>
           </Flex>

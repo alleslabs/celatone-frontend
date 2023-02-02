@@ -39,7 +39,7 @@ export interface ActionModalProps {
 }
 export function ActionModal({
   icon = MdMode,
-  iconColor = "gray.600",
+  iconColor = "pebble.600",
   title,
   subtitle,
   trigger,
@@ -82,7 +82,7 @@ export function ActionModal({
         <ModalContent>
           <ModalHeader
             borderBottomWidth={noHeaderBorder ? 0 : 1}
-            borderColor="divider.main"
+            borderColor="pebble.700"
           >
             <Box w="full">
               <Flex alignItems="center" gap="3">
@@ -90,14 +90,14 @@ export function ActionModal({
                 {title}
               </Flex>
               {subtitle && (
-                <Text variant="body3" color="gray.400" pt="2">
+                <Text variant="body3" color="text.dark" pt="2">
                   {subtitle}
                 </Text>
               )}
               <Box>{headerContent}</Box>
             </Box>
           </ModalHeader>
-          {!noCloseButton && <ModalCloseButton color="gray.600" />}
+          {!noCloseButton && <ModalCloseButton color="pebble.600" />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
             <Flex w="full" justifyContent="center" gap="2">

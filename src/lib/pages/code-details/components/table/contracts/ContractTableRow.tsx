@@ -38,7 +38,8 @@ export const ContractTableRow = ({
           pathname: `/contract/${contractInfo.contractAddress}`,
         })
       }
-      _hover={{ bg: "gray.900" }}
+      _hover={{ bg: "pebble.900" }}
+      transition="all .25s ease-in-out"
       cursor="pointer"
       minW="min-content"
     >
@@ -103,7 +104,7 @@ export const ContractTableRow = ({
                 <StyledIconButton
                   icon={<MdBookmark />}
                   variant="ghost-gray"
-                  color="primary.main"
+                  color="violet.light"
                 />
               }
             />
@@ -114,7 +115,7 @@ export const ContractTableRow = ({
                 <StyledIconButton
                   icon={<MdBookmarkBorder />}
                   variant="ghost-gray"
-                  color="gray.600"
+                  color="pebble.600"
                 />
               }
             />

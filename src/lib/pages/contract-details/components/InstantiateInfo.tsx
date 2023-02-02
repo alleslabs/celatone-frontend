@@ -31,6 +31,7 @@ const RenderPortId = ({ portId }: { portId: string }) => {
           display: "flex",
         },
       }}
+      transition="all .25s ease-in-out"
     >
       {charArray?.map((line, idx) =>
         idx === charArray.length - 1 ? (
@@ -116,7 +117,7 @@ export const InstantiateInfo = ({
         )}
       </LabelText>
 
-      <Divider border="1px solid" borderColor="divider.main" />
+      <Divider border="1px solid" borderColor="pebble.700" />
 
       {instantiateInfo &&
         (instantiateInfo.createdHeight !== -1 ? (

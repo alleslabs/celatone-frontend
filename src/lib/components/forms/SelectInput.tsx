@@ -48,11 +48,11 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => {
       py={2}
       onClick={onSelect}
       color="text.main"
-      transition="all .2s"
       cursor="pointer"
       gap={2}
       aria-disabled={disabled}
-      _hover={{ bg: "gray.800" }}
+      _hover={{ bg: "pebble.800" }}
+      transition="all .25s ease-in-out"
       _disabled={{ opacity: 0.4, pointerEvents: "none" }}
     >
       {children}
@@ -95,7 +95,7 @@ export const SelectInput = <T extends string>({
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
-                borderColor: "primary.main",
+                borderColor: "lilac.main",
               },
             },
             "& .form-label": {
@@ -132,25 +132,25 @@ export const SelectInput = <T extends string>({
             pl={selectedOption?.icon ? 9 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <Icon as={MdArrowDropDown} color="text.dark" fontSize="24px" />
+            <Icon as={MdArrowDropDown} color="pebble.600" fontSize="24px" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
         ref={optionRef}
         border="unset"
-        bg="gray.900"
+        bg="pebble.900"
         w={inputRefWidth}
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
-        borderRadius="4px"
+        borderRadius="8px"
         _focusVisible={{
           outline: "none",
         }}
         sx={{
           "> div:not(:last-of-type)": {
             borderBottom: hasDivider && "1px solid",
-            borderBottomColor: hasDivider && "divider.main",
+            borderBottomColor: hasDivider && "pebble.700",
           },
         }}
       >

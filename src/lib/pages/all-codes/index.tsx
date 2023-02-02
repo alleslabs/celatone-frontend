@@ -29,7 +29,7 @@ const AllCodes = observer(() => {
   return (
     <Box>
       <Box p="48px">
-        <Heading as="h1" size="lg" color="white" mb={4}>
+        <Heading as="h1" size="lg" mb={4}>
           All Codes
         </Heading>
         <Flex gap={2}>

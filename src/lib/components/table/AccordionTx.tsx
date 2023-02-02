@@ -43,7 +43,8 @@ export const AccordionTx = ({
       borderBottom="none"
       pl="256px"
       gap={3}
-      _hover={{ background: "divider.main" }}
+      _hover={{ background: "pebble.800" }}
+      transition="all .25s ease-in-out"
       css={{
         "&:not(:first-of-type) div#before-stepper": {
           visibility: "visible",

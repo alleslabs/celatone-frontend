@@ -28,7 +28,7 @@ const variantStyle: Record<
 
 const ReceiptRow = ({ title, value, html }: TxReceipt) => {
   return (
-    <Flex align="center" color="text.main" fontSize="14px">
+    <Flex align="center" fontSize="14px">
       <Text variant="body2" fontWeight={700}>
         {title}
       </Text>

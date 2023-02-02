@@ -35,7 +35,7 @@ export interface TagSelectionProps extends InputProps {
 }
 
 const listItemProps: CSSProperties = {
-  borderRadius: "4px",
+  borderRadius: "8px",
   margin: "4px 0px",
   padding: "8px",
   cursor: "pointer",
@@ -58,7 +58,7 @@ export const TagSelection = observer(
         result,
         setResult,
         placeholder,
-        badgeBgColor = "info.dark",
+        badgeBgColor = "honeydew.darker",
         helperText,
         labelBgColor = "background.main",
         label = "Tags",
@@ -147,10 +147,8 @@ export const TagSelection = observer(
             <Flex
               alignItems="center"
               color="text.main"
-              border="1px solid"
-              borderColor="divider.main"
               background="none"
-              borderRadius="4px"
+              borderRadius="8px"
               maxW="100%"
               overflowX="scroll"
             >
@@ -188,7 +186,6 @@ export const TagSelection = observer(
                 }}
                 ref={mergeRefs([inputRef, ref])}
                 maxLength={36}
-                style={{ border: "0" }}
                 {...rest}
               />
               <FormLabel
@@ -202,7 +199,7 @@ export const TagSelection = observer(
                 px={1}
                 my={2}
                 lineHeight="1.2"
-                transform="scale(0.75) translateY(-24px) translateX(8px)"
+                transform="scale(0.75) translateY(-24px) translateX(0px)"
               >
                 {label}
               </FormLabel>
@@ -213,8 +210,8 @@ export const TagSelection = observer(
 
             {displayOptions && (
               <List
-                borderRadius="4px"
-                bg="gray.900"
+                borderRadius="8px"
+                bg="pebble.800"
                 px="2"
                 py="1"
                 mt={0}
@@ -228,7 +225,7 @@ export const TagSelection = observer(
                 {/* header */}
                 <ListItem
                   p={2}
-                  borderBottomColor="divider.main"
+                  borderBottomColor="pebble.700"
                   borderBottomWidth={noResultAndUncreatable ? "0" : "1px"}
                 >
                   {noResultAndUncreatable ? (
@@ -246,7 +243,8 @@ export const TagSelection = observer(
                   <ListItem
                     key={option}
                     style={listItemProps}
-                    _hover={{ bg: "gray.800" }}
+                    _hover={{ bg: "pebble.700" }}
+                    transition="all .25s ease-in-out"
                     onClick={() => selectOptionFromList(option)}
                   >
                     <Flex alignItems="center" justifyContent="space-between">
@@ -272,7 +270,8 @@ export const TagSelection = observer(
                 {canCreateOption && inputValue && (
                   <ListItem
                     style={listItemProps}
-                    _hover={{ bg: "gray.800" }}
+                    _hover={{ bg: "pebble.700" }}
+                    transition="all .25s ease-in-out"
                     data-testid="create-option"
                     onClick={() => createOption()}
                   >

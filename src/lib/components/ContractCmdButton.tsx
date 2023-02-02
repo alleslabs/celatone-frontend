@@ -11,11 +11,11 @@ export const ContractCmdButton = ({
   return (
     <Button
       variant="outline-gray"
-      textColor="white"
       fontSize="12px"
       height="24px"
       px="10px"
-      borderColor="rgba(255, 255, 255, 0.3)"
+      textColor="white"
+      borderColor="pebble.700"
       borderRadius="16px"
       fontWeight="400"
       onClick={onClickCmd}

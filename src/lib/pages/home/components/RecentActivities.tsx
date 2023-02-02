@@ -32,9 +32,9 @@ export const RecentActivities = observer(() => {
               minW="360px"
               cursor="pointer"
               p={6}
-              bg="gray.900"
+              bg="pebble.900"
               borderRadius="8px"
-              _hover={{ bg: "hover.main" }}
+              _hover={{ bg: "pebble.800" }}
               transition="all .25s ease-in-out"
               key={item.type + item.contractAddress + item.timestamp}
               onClick={() =>
@@ -47,7 +47,7 @@ export const RecentActivities = observer(() => {
               <Flex alignItems="center" gap={1}>
                 <Icon
                   as={item.type === "query" ? MdSearch : MdInput}
-                  color="gray.600"
+                  color="pebble.600"
                   boxSize={4}
                 />
                 <Text variant="body2" color="text.dark">
@@ -57,9 +57,8 @@ export const RecentActivities = observer(() => {
               <Flex alignItems="center" gap="4px">
                 <Text
                   variant="body3"
-                  color="text.main"
                   padding="4px 8px"
-                  backgroundColor="hover.main"
+                  backgroundColor="pebble.700"
                   borderRadius="16px"
                 >
                   {item.action}
@@ -72,15 +71,13 @@ export const RecentActivities = observer(() => {
                 />
               </Flex>
               <Flex gap={1}>
-                <Text variant="body2" color="text.main">
+                <Text variant="body2">
                   {dayjs(item.timestamp).toNow(true)} ago{" "}
                 </Text>
                 {/* TODO - check address as me */}
                 {item.sender && (
                   <>
-                    <Text variant="body2" color="text.main">
-                      by
-                    </Text>
+                    <Text variant="body2">by</Text>
                     <ExplorerLink
                       value={item.sender}
                       type="user_address"
@@ -97,6 +94,7 @@ export const RecentActivities = observer(() => {
           px={12}
           borderTopWidth={1}
           borderBottomWidth={1}
+          borderColor="pebble.700"
           justifyContent="center"
           alignItems="center"
           minH="128px"

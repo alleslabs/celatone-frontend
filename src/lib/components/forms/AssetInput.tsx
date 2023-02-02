@@ -47,7 +47,7 @@ export const AssetInput = ({
         <Icon
           as={MdDelete}
           fontSize="18px"
-          color={disableDelete ? "divider.main" : "text.dark"}
+          color={disableDelete ? "pebble.500" : "text.dark"}
         />
       </Button>
     </Grid>

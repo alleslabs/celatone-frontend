@@ -52,7 +52,7 @@ export const ButtonSection = ({
           <Button
             variant="primary"
             rightIcon={
-              <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+              <Icon as={FiChevronRight} color="text.main" fontSize="18px" />
             }
             onClick={() => {
               const codeId = receipts.find((r) => r.title === "Code ID")?.value;
@@ -72,7 +72,7 @@ export const ButtonSection = ({
         <Button
           variant="primary"
           rightIcon={
-            <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+            <Icon as={FiChevronRight} color="text.main" fontSize="18px" />
           }
           onClick={() => {
             const codeId = receipts.find((r) => r.title === "Code ID")?.value;
@@ -97,7 +97,7 @@ export const ButtonSection = ({
           <Button
             variant="primary"
             rightIcon={
-              <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+              <Icon as={FiChevronRight} color="text.main" fontSize="18px" />
             }
             onClick={() =>
               navigate({ pathname: `/contract/${router.query.contract}` })

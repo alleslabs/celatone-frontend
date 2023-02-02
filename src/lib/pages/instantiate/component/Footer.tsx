@@ -13,7 +13,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
   return (
     <Box
       w="full"
-      bg="gray.900"
+      bg="pebble.900"
       h="70px"
       bottom="0"
       position="sticky"
@@ -22,9 +22,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
       <Flex align="center" justify="space-between" w="540px" h="full" mx="auto">
         <Button
           variant="outline-gray"
-          leftIcon={
-            <Icon as={FiChevronLeft} fontSize="18px" color="text.dark" />
-          }
+          leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
           onClick={router.back}
           w="128px"
         >
@@ -36,7 +34,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
           disabled={disabled}
           w="128px"
         >
-          {loading ? <Spinner size="md" color="gray.900" /> : "Instantiate"}
+          {loading ? <Spinner size="md" color="pebble.600" /> : "Instantiate"}
         </Button>
       </Flex>
     </Box>

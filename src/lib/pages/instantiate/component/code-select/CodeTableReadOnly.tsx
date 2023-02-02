@@ -15,19 +15,30 @@ const CodeTableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
   return (
     <Grid
       cursor="pointer"
-      _hover={{ bg: "gray.900", transition: "all .2s" }}
+      transition="all .25s ease-in-out"
+      _hover={{ bg: "pebble.800" }}
       onClick={() => onCodeSelect(codeDetail.id.toString())}
       templateColumns={TEMPLATE_COLUMNS}
     >
       <TableHeader />
       <TableRow>{codeDetail.id}</TableRow>
       <TableRow>
-        <Text variant="body2" className="ellipsis" maxW="300px">
+        <Text
+          variant="body2"
+          className="ellipsis"
+          maxW="300px"
+          color="text.dark"
+        >
           {codeDetail?.description ?? "No Description"}
         </Text>
       </TableRow>
       <TableRow justifyContent="center">
-        <Text variant="body2">{codeDetail.contracts}</Text>
+        <Text
+          variant="body2"
+          color={codeDetail.contracts > 0 ? "text.main" : "text.disabled"}
+        >
+          {codeDetail.contracts}
+        </Text>
       </TableRow>
       <TableRow>
         <ExplorerLink

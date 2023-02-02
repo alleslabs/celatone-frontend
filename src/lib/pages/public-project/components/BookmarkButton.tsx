@@ -18,7 +18,7 @@ const buttonTextProps: CSSProperties = {
   padding: "6px 16px",
   minWidth: "auto",
   height: "auto",
-  borderRadius: "4px",
+  borderRadius: "8px",
 };
 
 const buttonIconProps: CSSProperties = {
@@ -103,7 +103,7 @@ export const BookmarkButton = observer(
             variant="outline-primary"
             hasText={hasText}
             icon={MdBookmark}
-            iconColor="primary.main"
+            iconColor="violet.light"
             actionText="Bookmarked"
             action={(e) => {
               e.stopPropagation();
@@ -115,7 +115,7 @@ export const BookmarkButton = observer(
             variant="outline"
             hasText={hasText}
             icon={MdBookmarkBorder}
-            iconColor="gray.600"
+            iconColor="pebble.600"
             actionText="Bookmark Project"
             action={(e) => {
               if (details) {

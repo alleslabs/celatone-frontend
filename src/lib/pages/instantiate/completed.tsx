@@ -21,7 +21,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
   return (
     <WasmPageContainer>
       <Icon as={MdCheckCircle} color="success.main" boxSize="12" />
-      <Heading as="h4" variant="h4" color="text.main" mt={3} mb={12}>
+      <Heading as="h4" variant="h4" mt={3} mb={12}>
         Instantiate Complete!
       </Heading>
       <TxReceiptRender
@@ -56,7 +56,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
         gap={6}
         w="full"
         borderBottomWidth={1}
-        borderBottomColor="divider.main"
+        borderBottomColor="pebble.700"
         pb={8}
         my={8}
       >

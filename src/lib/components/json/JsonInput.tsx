@@ -26,7 +26,7 @@ const getResponse = (jsonState: JsonState) => {
   switch (jsonState.state) {
     case "loading":
       return {
-        color: "gray.500",
+        color: "text.dark",
         response: (
           <>
             <Spinner size="xs" /> Checking JSON Format...
@@ -35,7 +35,7 @@ const getResponse = (jsonState: JsonState) => {
       };
     case "success":
       return {
-        color: "white",
+        color: "text.main",
         response: (
           <>
             <CheckCircleIcon textColor="success.main" /> Valid JSON Format
@@ -88,12 +88,12 @@ const JsonInput = ({ topic, text, setText, height }: JsonInputProps) => {
         mt="8px"
         p="16px 12px"
         borderWidth="thin"
-        borderColor="divider.main"
-        borderRadius="4px"
+        borderColor="pebble.700"
+        borderRadius="8px"
         position="relative"
-        transition="all .2s"
+        transition="all .25s ease-in-out"
         _hover={{
-          borderColor: "gray.600",
+          borderColor: "pebble.600",
         }}
       >
         <JsonEditor
@@ -107,7 +107,7 @@ const JsonInput = ({ topic, text, setText, height }: JsonInputProps) => {
             top="-10px"
             w="fit-content"
             background="background.main"
-            textColor="gray.500"
+            color="text.dark"
             fontSize="12px"
             position="absolute"
           >

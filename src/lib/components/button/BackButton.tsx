@@ -7,6 +7,8 @@ export const BackButton = () => {
   return (
     <Button
       variant="ghost-primary"
+      size="sm"
+      mb="8px"
       onClick={() => router.back()}
       leftIcon={<ArrowBackIcon boxSize={4} />}
     >

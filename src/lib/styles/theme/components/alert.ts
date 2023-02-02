@@ -6,23 +6,22 @@ export const Alert: ComponentStyleConfig = {
       color: "white",
     },
     container: {
-      bg: "gray.800",
+      bg: "pebble.800",
     },
   },
   variants: {
-    info: {
+    honeydew: {
       title: {
-        color: "info.main",
         fontSize: "16px",
         fontWeight: 600,
         letterSpacing: "0.4px",
       },
       container: {
-        bg: "rgba(41,182,246,0.2)",
+        bg: "honeydew.background",
         border: "1px solid",
-        borderColor: "info.main",
-        borderRadius: "4px",
-        color: "info.main",
+        borderColor: "honeydew.main",
+        borderRadius: "8px",
+        color: "honeydew.main",
       },
       description: {
         fontSize: "12px",

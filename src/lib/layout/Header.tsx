@@ -61,7 +61,7 @@ const Header = () => {
       <Image
         src="/celatone-logo.svg"
         alt="Celatone"
-        width="115px"
+        width="152px"
         mr="36px"
         _hover={{ cursor: "pointer" }}
         onClick={() => navigate({ pathname: "/" })}
@@ -72,10 +72,10 @@ const Header = () => {
           <MenuButton
             px={4}
             py="5px"
-            transition="all 0.2s"
-            borderRadius="4px"
+            borderRadius="8px"
             borderWidth="1px"
-            _hover={{ bg: "gray.800" }}
+            _hover={{ bg: "pebble.800" }}
+            transition="all .25s ease-in-out"
             w="170px"
           >
             <Flex
@@ -105,8 +105,9 @@ const Header = () => {
                 flexDirection="column"
                 alignItems="flex-start"
                 _hover={{
-                  backgroundColor: "hover.dark",
+                  backgroundColor: "pebble.800",
                 }}
+                transition="all .25s ease-in-out"
               >
                 <Flex justify="space-between" align="center" w="full">
                   <Flex direction="column">
@@ -118,7 +119,7 @@ const Header = () => {
                     </Text>
                   </Flex>
                   {chainName === currentChainName && (
-                    <Icon as={MdCheck} boxSize={4} color="gray.600" />
+                    <Icon as={MdCheck} boxSize={4} color="pebble.600" />
                   )}
                 </Flex>
               </MenuItem>

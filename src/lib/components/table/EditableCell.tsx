@@ -67,9 +67,9 @@ export const EditableCell = ({
           position="absolute"
           top="-28px"
           left="-16px"
-          bg="gray.800"
+          bg="pebble.800"
           p={3}
-          borderRadius="md"
+          borderRadius="8px"
           zIndex="sticky"
           onClick={(e) => e.stopPropagation()}
         >
@@ -114,8 +114,8 @@ export const EditableCell = ({
                 variant="body2"
                 top="-16px"
                 left="-16px"
-                borderRadius="md"
-                bg="gray.800"
+                borderRadius="8px"
+                bg="pebble.800"
                 p={4}
                 position="absolute"
                 zIndex="1"
@@ -129,17 +129,17 @@ export const EditableCell = ({
               hasArrow
               label={tooltip}
               placement="top"
-              bg="primary.dark"
+              bg="honeydew.darker"
               arrowSize={8}
             >
-              <InfoIcon color="gray.600" boxSize="14px" cursor="pointer" />
+              <InfoIcon color="pebble.600" boxSize="14px" cursor="pointer" />
             </Tooltip>
           )}
           {!!onSave && (
             <Icon
               opacity={isHover ? 1 : 0}
               as={MdMode}
-              color="gray.600"
+              color="pebble.600"
               boxSize="4"
               cursor="pointer"
               onClick={handleEdit}

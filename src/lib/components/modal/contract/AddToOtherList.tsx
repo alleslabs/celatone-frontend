@@ -41,16 +41,16 @@ export const AddToOtherList = observer(
         headerContent={
           <Flex pt="6" gap="36px">
             <Flex direction="column" gap="8px">
-              <Text variant="body2" color="text.main" fontWeight="600">
+              <Text variant="body2" fontWeight="600">
                 Contract Name
               </Text>
-              <Text variant="body2" color="text.main" fontWeight="600">
+              <Text variant="body2" fontWeight="600">
                 Contract Address
               </Text>
             </Flex>
 
             <Flex direction="column" gap="8px">
-              <Text variant="body2" color="text.main">
+              <Text variant="body2">
                 {contractLocalInfo.name ?? contractLocalInfo.label}
               </Text>
               <ExplorerLink
@@ -72,7 +72,7 @@ export const AddToOtherList = observer(
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
             setResult={setContractLists}
-            labelBgColor="gray.800"
+            labelBgColor="pebble.900"
           />
         </Box>
       </ActionModal>

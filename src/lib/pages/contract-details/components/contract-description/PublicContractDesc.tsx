@@ -32,7 +32,7 @@ export const PublicContractDesc = ({
   return (
     <Flex
       direction="column"
-      bg="gray.900"
+      bg="pebble.900"
       maxW="100%"
       borderRadius="8px"
       p={4}

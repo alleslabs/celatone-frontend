@@ -25,9 +25,9 @@ export const MyStoredCodeContent = ({
         direction="column"
         gap={2}
         borderY="1px solid"
-        borderColor="divider.main"
+        borderColor="pebble.700"
       >
-        <Text variant="body1" color="gray.500">
+        <Text variant="body1" color="text.main">
           Connect your wallet to upload and see your stored Codes.
         </Text>
         <ConnectWalletBtn />
@@ -41,7 +41,7 @@ export const MyStoredCodeContent = ({
         py="64px"
         direction="column"
         borderY="1px solid"
-        borderColor="divider.main"
+        borderColor="pebble.700"
       >
         <EmptyState message="You don’t have any stored codes." />
       </Flex>

@@ -11,7 +11,7 @@ const StyledIconButton = chakra(IconButton, {
     display: "flex",
     alignItems: "center",
     fontSize: "22px",
-    borderRadius: "36px",
+    borderRadius: "full",
   },
 });
 
@@ -28,7 +28,7 @@ export function SaveOrRemoveCode({ codeInfo }: SaveOrRemoveCodeModalProps) {
         <StyledIconButton
           icon={<MdBookmark />}
           variant="ghost-gray"
-          color="primary.main"
+          color="lilac.main"
         />
       }
     />
@@ -39,7 +39,7 @@ export function SaveOrRemoveCode({ codeInfo }: SaveOrRemoveCodeModalProps) {
         <StyledIconButton
           icon={<MdBookmarkBorder />}
           variant="ghost-gray"
-          color="gray.600"
+          color="pebble.600"
         />
       }
     />

@@ -44,12 +44,12 @@ const Footer = () => {
             rel="noopener noreferrer"
             key={`social-${item.slug}`}
           >
-            <Button variant="ghost" size="xs">
+            <Button variant="ghost-gray" size="xs">
               <Icon
                 as={item.icon}
                 width="16px"
                 height="16px"
-                color="gray.600"
+                color="pebble.600"
               />
             </Button>
           </Link>
@@ -65,9 +65,9 @@ const Footer = () => {
                 as={BiUserVoice}
                 width="18px"
                 height="18px"
-                color="gray.600"
+                color="pebble.600"
               />
-              <Text variant="body3" color="gray.600">
+              <Text variant="body3" color="text.dark">
                 Feedback
               </Text>
             </Flex>
@@ -90,14 +90,14 @@ const Footer = () => {
                 as={IoSparklesSharp}
                 width="16px"
                 height="16px"
-                color="gray.600"
+                color="honeydew.light"
                 opacity="0"
                 transition="all .25s ease-in-out"
               />
-              <Text variant="body3" color="gray.600">
+              <Text variant="body3" color="text.dark">
                 Made by
               </Text>
-              <Text variant="body3" color="primary.main">
+              <Text variant="body3" color="lilac.main">
                 Alles Labs
               </Text>
             </Flex>

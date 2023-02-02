@@ -5,18 +5,19 @@ export const Input: ComponentStyleConfig = {
     "custom-outline": {
       field: {
         color: "text.main",
-        border: "1px solid rgba(255,255,255,0.12)",
+        border: "1px solid",
+        borderColor: "pebble.700",
         background: "none",
-        borderRadius: "4px",
+        borderRadius: "8px",
         _hover: {
-          borderColor: "gray.600",
+          borderColor: "pebble.600",
         },
         _focusWithin: {
-          borderColor: "primary.main",
+          borderColor: "lilac.main",
           borderWidth: "2px",
         },
         _active: {
-          borderColor: "primary.main",
+          borderColor: "lilac.main",
           borderWidth: "2px",
         },
         _disabled: {

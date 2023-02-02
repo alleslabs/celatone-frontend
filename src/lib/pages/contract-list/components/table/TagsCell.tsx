@@ -42,7 +42,7 @@ export const TagsCell = ({
               <Tag
                 borderRadius="full"
                 variant="solid"
-                bgColor="info.dark"
+                bgColor="honeydew.darker"
                 color="text.main"
                 key={tag}
               >
@@ -67,9 +67,9 @@ export const TagsCell = ({
 
       {isHover && (
         <Flex
-          bgColor={tags.length > 2 ? "gray.800" : "inherit"}
+          bgColor={tags.length > 2 ? "pebble.800" : "inherit"}
           py={4}
-          borderRadius="md"
+          borderRadius="8px"
           position="absolute"
           top="-16px"
           left="-16px"
@@ -83,7 +83,7 @@ export const TagsCell = ({
                     key={item}
                     borderRadius="full"
                     variant="solid"
-                    bgColor="info.dark"
+                    bgColor="honeydew.darker"
                     color="text.main"
                   >
                     <TagLabel>{item}</TagLabel>

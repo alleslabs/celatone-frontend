@@ -4,20 +4,21 @@ export const Textarea: ComponentStyleConfig = {
   variants: {
     "custom-outline": {
       color: "text.main",
-      border: "1px solid rgba(255,255,255,0.12)",
+      border: "1px solid",
+      borderColor: "pebble.700",
       background: "none",
-      borderRadius: "4px",
+      borderRadius: "8px",
       p: "16px 12px",
       height: "112px",
       _hover: {
-        borderColor: "gray.600",
+        borderColor: "pebble.700",
       },
       _focusWithin: {
-        borderColor: "primary.main",
+        borderColor: "lilac.main",
         borderWidth: "2px",
       },
       _active: {
-        borderColor: "primary.main",
+        borderColor: "lilac.main",
         borderWidth: "2px",
       },
       _disabled: {

@@ -67,7 +67,7 @@ export const ContractsTable = ({
                 sx={{
                   "& th:first-of-type": { pl: "48px" },
                   "> th": {
-                    borderColor: "divider.main",
+                    borderColor: "pebble.700",
                     textTransform: "capitalize",
                   },
                 }}
@@ -83,12 +83,12 @@ export const ContractsTable = ({
               {filteredContracts?.map((item) => (
                 <Tr
                   transition="all .25s ease-in-out"
-                  _hover={{ bg: "gray.900" }}
+                  _hover={{ bg: "pebble.900" }}
                   key={item.name + item.contractAddress + item.description}
                   sx={{
                     "& td:first-of-type": { pl: "48px" },
                     "& td:last-of-type": { pr: "48px" },
-                    "> td": { borderColor: "divider.main" },
+                    "> td": { borderColor: "pebble.700" },
                   }}
                   onClick={() =>
                     navigate({ pathname: `/contract/${item.contractAddress}` })
@@ -112,11 +112,11 @@ export const ContractsTable = ({
                           <Tooltip
                             hasArrow
                             label={item.description}
-                            bg="primary.dark"
+                            bg="honeydew.darker"
                             placement="top"
                           >
                             <InfoIcon
-                              color="gray.600"
+                              color="pebble.600"
                               boxSize="14px"
                               cursor="pointer"
                             />
@@ -150,7 +150,7 @@ export const ContractsTable = ({
                           <Icon
                             as={MdBookmarkBorder}
                             boxSize={6}
-                            color="gray.600"
+                            color="pebble.600"
                             cursor="pointer"
                           />
                         }

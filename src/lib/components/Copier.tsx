@@ -29,7 +29,7 @@ export const Copier = ({
       label={copyLabel}
       placement="top"
       arrowSize={8}
-      bg="primary.dark"
+      bg="honeydew.darker"
     >
       <div>
         <CopyIcon

@@ -58,10 +58,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           contractLocalInfo={contractLocalInfo}
           triggerElement={
             <IconButton
-              fontSize="22px"
+              fontSize="24px"
               variant="none"
               aria-label="save"
-              color={contractLocalInfo.lists ? "primary.main" : "gray.600"}
+              color={contractLocalInfo.lists ? "violet.light" : "pebble.600"}
               icon={
                 contractLocalInfo.lists ? <MdBookmark /> : <MdBookmarkBorder />
               }
@@ -80,10 +80,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           }}
           triggerElement={
             <IconButton
-              fontSize="22px"
+              fontSize="24px"
               variant="none"
               aria-label="save"
-              color="gray.600"
+              color="pebble.600"
               icon={<MdBookmarkBorder />}
             />
           }
@@ -106,7 +106,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               height={7}
             />
           )}
-          <Heading as="h5" variant="h5" color="text.main" className="ellipsis">
+          <Heading as="h5" variant="h5" className="ellipsis">
             {displayName}
           </Heading>
         </Flex>
@@ -170,10 +170,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               contractLocalInfo={contractLocalInfo}
               triggerElement={
                 <IconButton
-                  fontSize="22px"
+                  fontSize="24px"
                   variant="none"
                   aria-label="edit"
-                  color="gray.600"
+                  color="pebble.600"
                   icon={<RiPencilFill />}
                 />
               }

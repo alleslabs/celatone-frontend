@@ -28,7 +28,7 @@ export const ProjectDetail = observer(() => {
     <Box py={12} pb={0}>
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs index={tabIndex}>
-        <TabList my={8} borderBottom="1px" px={12} borderColor="gray.800">
+        <TabList my={8} borderBottom="1px" px={12} borderColor="pebble.800">
           <CustomTab
             count={publicCodes.length + publicContracts.length}
             onClick={() => setTabIndex(0)}
@@ -72,7 +72,7 @@ export const ProjectDetail = observer(() => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      color="gray.500"
+                      color="text.dark"
                       onClick={() => setTabIndex(1)}
                     >
                       View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
@@ -87,7 +87,7 @@ export const ProjectDetail = observer(() => {
                 width="full"
                 borderBottom="1px solid"
                 borderTop="1px solid"
-                borderColor="divider.main"
+                borderColor="pebble.700"
               >
                 <EmptyState message="There is currently no code in this project. Please check back soon for the updates." />
               </Flex>
@@ -111,7 +111,7 @@ export const ProjectDetail = observer(() => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      color="gray.500"
+                      color="text.dark"
                       onClick={() => setTabIndex(2)}
                     >
                       View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
@@ -126,7 +126,7 @@ export const ProjectDetail = observer(() => {
                 width="full"
                 borderBottom="1px solid"
                 borderTop="1px solid"
-                borderColor="divider.main"
+                borderColor="pebble.700"
               >
                 <EmptyState message="There is currently no contracts in this project. Please check back soon for the updates." />
               </Flex>

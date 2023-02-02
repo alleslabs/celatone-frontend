@@ -31,8 +31,8 @@ export const JsonInfo = ({
         align="center"
         p="12px 16px"
         borderRadius="8px"
-        _hover={{ backgroundColor: "gray.900" }}
-        transition="all .3s"
+        _hover={{ backgroundColor: "pebble.900" }}
+        transition="all .25s ease-in-out"
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
       >
@@ -44,7 +44,7 @@ export const JsonInfo = ({
           color="text.dark"
           boxSize={5}
           transform={expand ? "rotate(180deg)" : "rotate(0)"}
-          transition="all .3s"
+          transition="all .25s ease-in-out"
         />
       </Flex>
       <JsonReadOnly

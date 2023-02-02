@@ -85,7 +85,7 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Flex width="full" my="16px" alignItems="center">
+      <Flex width="full" my="24px" alignItems="center">
         {cmds.length ? (
           <ButtonGroup
             width="90%"
@@ -113,8 +113,6 @@ export const QueryArea = ({
             </Text>
           )
         )}
-        <Spacer />
-        <CopyButton isDisable={res.length === 0} value={res} />
       </Flex>
       <Flex gap="16px">
         <Box w="full">

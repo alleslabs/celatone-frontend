@@ -28,17 +28,17 @@ const getStatusDecorator = (
     case "completed":
       return {
         icon: <Icon as={MdCheckCircle} boxSize="6" color="success.main" />,
-        statusText: <span style={{ color: "#66BB6A" }}>Valid Wasm file</span>,
+        statusText: <Text color="success.main">Valid Wasm file</Text>,
       };
     case "failed":
       return {
         icon: <Icon as={IoIosWarning} boxSize="6" color="error.main" />,
-        statusText: <span style={{ color: "#EF5350" }}>Invalid Wasm file</span>,
+        statusText: <Text color="error.main">Invalid Wasm file</Text>,
         helperText: error,
       };
     default:
       return {
-        icon: <Spinner color="primary.main" w="40px" h="40px" />,
+        icon: <Spinner color="violet.light" w="40px" h="40px" />,
         statusText: "Loading",
       };
   }
@@ -62,17 +62,15 @@ export const UploadCard = ({
         p="16px"
         gap="16px"
         w="full"
-        bgColor="gray.900"
-        borderRadius="4px"
+        bgColor="pebble.900"
+        borderRadius="8px"
         border="1px solid"
-        borderColor={isError ? "error.main" : "gray.900"}
+        borderColor={isError ? "error.main" : "pebble.900"}
       >
         <UploadIcon />
         <Flex direction="column">
-          <Text variant="body1" color="text.main">
-            {file.name}
-          </Text>
-          <Text variant="body2" color="text.dark">
+          <Text variant="body1">{file.name}</Text>
+          <Text variant="body2" color="text.dark" display="flex" gap="4px">
             {big(file.size).div(1000).toFixed(0)} KB • {statusText}
           </Text>
         </Flex>

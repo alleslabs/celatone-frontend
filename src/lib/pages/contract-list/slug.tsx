@@ -71,9 +71,12 @@ const ContractsByList = observer(() => {
         <Breadcrumb
           w="full"
           spacing="4px"
-          separator={<MdChevronRight color="gray.600" />}
+          separator={<MdChevronRight color="pebble.600" />}
         >
-          <BreadcrumbItem>
+          <BreadcrumbItem
+            _hover={{ opacity: 0.8 }}
+            transition="all 0.25s ease-in-out"
+          >
             <AppLink color="text.dark" href="/contract-list">
               Contract Lists
             </AppLink>
@@ -97,12 +100,7 @@ const ContractsByList = observer(() => {
           mt={2}
           gap={5}
         >
-          <Heading
-            as="h5"
-            variant="h5"
-            color="primary.400"
-            className="ellipsis"
-          >
+          <Heading as="h5" variant="h5" className="ellipsis">
             {contractListInfo.name}
           </Heading>
           <Flex gap={2}>
@@ -129,15 +127,10 @@ const ContractsByList = observer(() => {
             )}
             {contractListInfo.isInfoEditable && (
               <Menu>
-                <MenuButton
-                  h="full"
-                  variant="ghost-gray"
-                  focusBorderColor="primary.main"
-                  as={Button}
-                >
+                <MenuButton h="full" variant="ghost-gray" as={Button}>
                   <Icon
                     as={MdMoreHoriz}
-                    color="gray.600"
+                    color="pebble.600"
                     boxSize="6"
                     display="flex"
                   />
@@ -149,7 +142,7 @@ const ContractsByList = observer(() => {
                       value: contractListInfo.slug,
                     }}
                     menuItemProps={{
-                      icon: <StyledIcon as={MdMode} color="gray.600" />,
+                      icon: <StyledIcon as={MdMode} color="pebble.600" />,
                       children: "Edit list name",
                     }}
                   />

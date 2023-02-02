@@ -110,7 +110,7 @@ const PastTxs = () => {
   return (
     <Box>
       <Box px="48px" pt="48px">
-        <Heading variant="h5" as="h5" color="primary.400">
+        <Heading variant="h5" as="h5">
           Past Transactions
         </Heading>
 
@@ -121,11 +121,10 @@ const PastTxs = () => {
                 value={pastTxsState.search}
                 onChange={(e) => setValue("search", e.target.value)}
                 placeholder="Search with transaction hash or contract address"
-                focusBorderColor="primary.main"
                 h="full"
               />
               <InputRightElement pointerEvents="none" h="full">
-                <Icon as={MdSearch} w="5" h="5" color="gray.600" />
+                <Icon as={MdSearch} w="5" h="5" color="pebble.600" />
               </InputRightElement>
             </InputGroup>
             <FilterSelection

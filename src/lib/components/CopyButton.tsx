@@ -1,5 +1,5 @@
 import { CopyIcon } from "@chakra-ui/icons";
-import { Button, useClipboard } from "@chakra-ui/react";
+import { Button, Tooltip, useClipboard } from "@chakra-ui/react";
 import type { ButtonProps } from "@chakra-ui/react";
 import { useEffect } from "react";
 
@@ -7,28 +7,41 @@ interface CopyButtonProps {
   isDisable?: boolean;
   value: string;
   size?: ButtonProps["size"];
+  copyLabel?: string;
 }
 
 export const CopyButton = ({
   isDisable,
   value,
   size = "sm",
+  copyLabel = "Copied!",
 }: CopyButtonProps) => {
   // TODO: revisit useClipboard later
-  const { onCopy, setValue } = useClipboard(value);
+  const { onCopy, hasCopied, setValue } = useClipboard(value);
 
   useEffect(() => setValue(value), [value, setValue]);
 
   return (
-    <Button
-      isDisabled={isDisable}
-      variant="outline-info"
-      size={size}
-      float="right"
-      onClick={onCopy}
-      leftIcon={<CopyIcon boxSize="5" onClick={onCopy} />}
+    <Tooltip
+      hasArrow
+      isOpen={hasCopied}
+      label={copyLabel}
+      placement="top"
+      arrowSize={8}
+      bg="honeydew.darker"
     >
-      Copy
-    </Button>
+      <div>
+        <Button
+          isDisabled={isDisable}
+          variant="outline-info"
+          size={size}
+          float="right"
+          onClick={onCopy}
+          leftIcon={<CopyIcon boxSize="4" onClick={onCopy} />}
+        >
+          Copy
+        </Button>
+      </div>
+    </Tooltip>
   );
 };

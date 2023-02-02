@@ -31,24 +31,30 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
   return (
     <Flex
       border="1px dashed"
-      borderColor="divider.main"
+      borderColor="pebble.700"
       w="full"
       p="24px 16px"
-      borderRadius="4px"
+      borderRadius="8px"
       align="center"
       direction="column"
+      _hover={{ bg: "pebble.900" }}
+      transition="all .25s ease-in-out"
       cursor="pointer"
       {...getRootProps()}
       {...componentProps}
     >
       <input {...getInputProps()} />
       <UploadIcon />
-      <Text variant="body1" my="8px">
-        <span style={{ color: "#f48fb1", textDecoration: "underline" }}>
+      <Flex my="8px" gap="4px">
+        <Text
+          variant="body1"
+          color="lilac.main"
+          style={{ textDecoration: "underline" }}
+        >
           Click to upload
-        </span>{" "}
-        or drag Wasm file here
-      </Text>
+        </Text>
+        <Text variant="body1">or drag Wasm file here</Text>
+      </Flex>
       <Text variant="body2" color="text.dark">
         .wasm (max. 800KB)
       </Text>

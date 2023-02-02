@@ -106,7 +106,7 @@ export function CreateNewList({
           variant="floating"
           value={listName}
           setInputState={setListName}
-          labelBgColor="gray.800"
+          labelBgColor="pebble.900"
           status={status}
           label="List Name"
         />

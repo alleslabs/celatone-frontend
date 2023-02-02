@@ -197,7 +197,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           variant="floating"
           placeholder={`ex. ${exampleContractAddress}`}
           status={status}
-          labelBgColor="gray.800"
+          labelBgColor="pebble.900"
         />
         <ControllerInput
           name="instantiator"
@@ -205,7 +205,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           label="Instantiated by"
           variant="floating"
           isDisabled
-          labelBgColor="gray.800"
+          labelBgColor="pebble.900"
         />
 
         <OffChainForm<SaveNewContractDetail>
@@ -215,7 +215,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           setTagsValue={setTagsValue}
           setContractListsValue={setContractListsValue}
           errors={errors}
-          labelBgColor="gray.800"
+          labelBgColor="pebble.900"
         />
       </VStack>
     </ActionModal>

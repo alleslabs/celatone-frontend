@@ -1,4 +1,4 @@
-import { Flex, Link, Icon } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import {
   FaTwitter,
   FaGithub,
@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { MdLanguage } from "react-icons/md";
 
+import { IconButton } from "lib/components/button/IconButton";
 import type { Option, Detail } from "lib/types";
 
 export const renderSocial = (name: string) => {
@@ -31,53 +32,22 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
   return (
     <Flex
       alignItems="center"
-      gap="2"
-      mt={2}
       onClick={(e) => e.stopPropagation()}
+      minHeight="32px"
     >
       {details.website && (
-        // todos: create ExternalLink component later
-        <Link href={details.website} target="_blank" rel="noopener noreferrer">
-          <Icon
-            as={MdLanguage}
-            color="gray.600"
-            _hover={{ color: "gray.500" }}
-            transition="all 0.2s"
-            boxSize="6"
-          />
-        </Link>
+        <IconButton href={details.website} icon={MdLanguage} />
       )}
-      {details.github && (
-        // todos: create ExternalLink component later
-        <Link href={details.github} target="_blank" rel="noopener noreferrer">
-          <Icon
-            as={FaGithub}
-            color="gray.600"
-            _hover={{ color: "gray.500" }}
-            transition="all 0.2s"
-            boxSize="5"
-          />
-        </Link>
-      )}
+      {details.github && <IconButton href={details.github} icon={FaGithub} />}
       {details.socials.length &&
         details.socials.map(
           (social) =>
             social.url !== "" && (
-              // todos: create ExternalLink component later
-              <Link
-                href={social.url}
-                target="_blank"
+              <IconButton
                 key={social.name}
-                rel="noopener noreferrer"
-              >
-                <Icon
-                  as={renderSocial(social.name)}
-                  color="gray.600"
-                  _hover={{ color: "gray.500" }}
-                  transition="all 0.2s"
-                  boxSize="5"
-                />
-              </Link>
+                href={social.url}
+                icon={renderSocial(social.name)}
+              />
             )
         )}
     </Flex>

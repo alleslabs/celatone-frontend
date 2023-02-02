@@ -13,8 +13,8 @@ export const ConnectWalletBtn = () => {
 
   return (
     <Button variant="outline-primary" gap={2} onClick={onClickConnect}>
-      <Text color="primary.main">Connect Wallet</Text>
-      <Icon as={MdLink} boxSize={4} color="primary.main" />
+      <Text color="violet.light">Connect Wallet</Text>
+      <Icon as={MdLink} boxSize={4} color="violet.light" />
     </Button>
   );
 };

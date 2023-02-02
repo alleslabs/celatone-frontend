@@ -165,9 +165,9 @@ export const ContractSelectSection = observer(
     return (
       <Flex
         borderWidth="thin"
-        borderColor="gray.800"
+        borderColor="pebble.800"
         p="16px"
-        borderRadius="4px"
+        borderRadius="8px"
         fontSize="12px"
         justify="space-between"
         align="center"
@@ -188,7 +188,7 @@ export const ContractSelectSection = observer(
                 maxWidth="none"
               />
             ) : (
-              <Text textColor="text.disabled" variant="body2">
+              <Text color="text.disabled" variant="body2">
                 Not Selected
               </Text>
             )}

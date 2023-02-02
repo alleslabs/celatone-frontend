@@ -11,7 +11,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => (
   <Flex
     gap={1}
     p={2}
-    background="gray.900"
+    background="pebble.900"
     borderRadius="8px"
     alignItems="center"
   >
@@ -20,12 +20,12 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => (
       src={userBalance.assetInfo?.logo}
       alt={userBalance.balance.symbol}
     />
-    <Text color="text.main" fontWeight="700">
+    <Text fontWeight="700">
       {formatTokenWithPrecision(
         userBalance.balance.amount as Token,
         userBalance.balance.precision
       )}
     </Text>
-    <Text color="text.main">{userBalance.balance.symbol}</Text>
+    <Text>{userBalance.balance.symbol}</Text>
   </Flex>
 );

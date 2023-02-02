@@ -60,7 +60,7 @@ export const SelectContractAdmin = ({
   return (
     <>
       <Button
-        variant={notSelected ? "primary" : "outline-info"}
+        variant={notSelected ? "primary" : "outline-primary"}
         py="6px"
         px="16px"
         onClick={onOpen}

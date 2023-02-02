@@ -33,7 +33,7 @@ export interface FilterSelectionProps extends InputProps {
 }
 
 const listItemProps: CSSProperties = {
-  borderRadius: "4px",
+  borderRadius: "8px",
   margin: "4px 0px",
   padding: "8px",
   cursor: "pointer",
@@ -110,10 +110,8 @@ export const FilterSelection = observer(
             <Flex
               alignItems="center"
               color="text.main"
-              border="1px solid"
-              borderColor="divider.main"
               background="none"
-              borderRadius="4px"
+              borderRadius="8px"
               maxW="100%"
               overflowX="scroll"
             >
@@ -128,8 +126,8 @@ export const FilterSelection = observer(
                       <Tag
                         style={tagItemProps}
                         size="md"
-                        bgColor="primary.main"
-                        color="background.main"
+                        bgColor="violet.light"
+                        color="pebble.900"
                       >
                         {displayActionValue(option)}
                         <Icon as={MdClose} boxSize="4" />
@@ -152,7 +150,6 @@ export const FilterSelection = observer(
                 }}
                 ref={mergeRefs([inputRef, ref])}
                 maxLength={36}
-                style={{ border: "0" }}
                 {...rest}
               />
               <FormLabel
@@ -166,7 +163,7 @@ export const FilterSelection = observer(
                 px={1}
                 my={2}
                 lineHeight="1.2"
-                transform="scale(0.75) translateY(-24px) translateX(8px)"
+                transform="scale(0.75) translateY(-24px) translateX(0px)"
               >
                 {label}
               </FormLabel>
@@ -177,8 +174,8 @@ export const FilterSelection = observer(
 
             {displayOptions && (
               <List
-                borderRadius="4px"
-                bg="gray.900"
+                borderRadius="8px"
+                bg="pebble.900"
                 px="2"
                 py="1"
                 mt={0}
@@ -192,7 +189,8 @@ export const FilterSelection = observer(
                   <ListItem
                     key={option}
                     style={listItemProps}
-                    _hover={{ bg: "gray.800" }}
+                    _hover={{ bg: "pebble.800" }}
+                    transition="all .25s ease-in-out"
                     onClick={() => selectOption(option)}
                   >
                     <Flex alignItems="center" justifyContent="space-between">

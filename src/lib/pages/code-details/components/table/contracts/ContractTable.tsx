@@ -79,9 +79,8 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
         </Heading>
         <Badge
           ml={2}
-          variant="primary"
+          variant={!codeContracts?.length ? "gray" : "violet"}
           textAlign="center"
-          bg={!codeContracts?.length ? "gray.800" : "primary.dark"}
         >
           {totalData}
         </Badge>

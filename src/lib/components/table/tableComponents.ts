@@ -16,7 +16,7 @@ export const TableHeader = chakra(GridItem, {
     py: 6,
     px: 4,
     borderBottom: "1px solid",
-    borderColor: "divider.main",
+    borderColor: "pebble.700",
   },
 });
 
@@ -39,7 +39,7 @@ export const TableRow = chakra(GridItem, {
     display: "flex",
     alignItems: "center",
     borderBottom: "1px solid",
-    borderColor: "divider.main",
+    borderColor: "pebble.700",
   },
 });
 

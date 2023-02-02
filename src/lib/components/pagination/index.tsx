@@ -78,10 +78,10 @@ export const Pagination = ({
           {`${offsetData} - ${lastDataInPage} of ${totalData}`}
         </Text>
         <Previous variant="unstyled" display="flex">
-          <Icon as={MdKeyboardArrowLeft} w={5} h={5} color="gray.600" />
+          <Icon as={MdKeyboardArrowLeft} w={5} h={5} color="pebble.600" />
         </Previous>
         <Next variant="unstyled" display="flex">
-          <Icon as={MdKeyboardArrowRight} w={5} h={5} color="gray.600" />
+          <Icon as={MdKeyboardArrowRight} w={5} h={5} color="pebble.600" />
         </Next>
       </Flex>
     </Paginator>

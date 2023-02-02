@@ -32,17 +32,16 @@ export const CodeSelect = ({
         p="16px"
         gap="16px"
         w="100%"
-        bgColor="gray.900"
-        borderRadius="4px"
+        bgColor="pebble.900"
+        borderRadius="8px"
         borderWidth="1px"
-        borderColor={isError ? "error.main" : "gray.900"}
+        borderColor={isError ? "error.main" : "pebble.700"}
       >
         <UploadIcon variant={codeId ? "primary" : "muted"} />
         {codeId ? (
           <Flex direction="column" w="60%">
             <Text
               variant="body1"
-              color="text.main"
               fontWeight={500}
               overflow="hidden"
               whiteSpace="nowrap"
@@ -55,7 +54,7 @@ export const CodeSelect = ({
             </Text>
           </Flex>
         ) : (
-          <Text variant="body1" color="text.main" fontWeight={500}>
+          <Text variant="body1" fontWeight={500}>
             Please select code
           </Text>
         )}

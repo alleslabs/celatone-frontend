@@ -8,7 +8,7 @@ export const AccordionStepperItem = () => (
       h="31px"
       right="45%"
       bottom="9px"
-      background="gray.600"
+      background="pebble.600"
       position="absolute"
       visibility="hidden"
       zIndex={0}
@@ -18,7 +18,7 @@ export const AccordionStepperItem = () => (
       borderRadius="full"
       h="10px"
       w="10px"
-      borderColor="gray.600"
+      borderColor="pebble.600"
       borderWidth="1px"
       position="relative"
       zIndex={1}
