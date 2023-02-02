@@ -68,22 +68,20 @@ const Query = () => {
   );
 
   useEffect(() => {
-    (async () => {
-      const contractAddressParam = getFirstQueryParam(
-        router.query.contract
-      ) as ContractAddr;
+    const contractAddressParam = getFirstQueryParam(
+      router.query.contract
+    ) as ContractAddr;
 
-      let decodeMsg = decode(getFirstQueryParam(router.query.msg));
-      if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddressParam);
-        decodeMsg = "";
-      }
-      const jsonMsg = jsonPrettify(decodeMsg);
+    let decodeMsg = decode(getFirstQueryParam(router.query.msg));
+    if (decodeMsg && jsonValidate(decodeMsg) !== null) {
+      onContractSelect(contractAddressParam);
+      decodeMsg = "";
+    }
+    const jsonMsg = jsonPrettify(decodeMsg);
 
-      setContractAddress(contractAddressParam);
-      setInitialMsg(jsonMsg);
-      if (!contractAddressParam) setCmds([]);
-    })();
+    setContractAddress(contractAddressParam);
+    setInitialMsg(jsonMsg);
+    if (!contractAddressParam) setCmds([]);
   }, [router, onContractSelect]);
 
   return (

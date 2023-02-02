@@ -18,8 +18,14 @@ export const useNetworkChange = () => {
 
     if (networkRoute !== networkRef.current) {
       networkRef.current = networkRoute;
-      const chainName = getChainNameByNetwork(networkRoute);
-      if (currentChainName !== chainName) setCurrentChain(chainName);
+      try {
+        const chainName = getChainNameByNetwork(networkRoute);
+        if (currentChainName !== chainName) setCurrentChain(chainName);
+      } catch {
+        /**
+         * @remarks Allows false chain name, will continue to operate as testnet
+         */
+      }
     }
-  }, [router.query.network, currentChainName, setCurrentChain]);
+  }, [router, currentChainName, setCurrentChain]);
 };

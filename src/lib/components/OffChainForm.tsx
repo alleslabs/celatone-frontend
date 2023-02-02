@@ -24,6 +24,7 @@ export interface OffchainDetail {
 
 interface OffChainFormProps<T extends OffchainDetail> {
   state: OffchainDetail;
+  contractLabel: string;
   control: Control<T>;
   setTagsValue: (options: string[]) => void;
   setContractListsValue: (options: LVPair[]) => void;
@@ -33,6 +34,7 @@ interface OffChainFormProps<T extends OffchainDetail> {
 
 export const OffChainForm = <T extends OffchainDetail>({
   state,
+  contractLabel,
   control,
   setTagsValue,
   setContractListsValue,
@@ -45,6 +47,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         name={"name" as FieldPath<T>}
         control={control}
         label="Name"
+        placeholder={contractLabel}
         helperText="Set name for your contract"
         variant="floating"
         rules={{
@@ -57,7 +60,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         name={"description" as FieldPath<T>}
         control={control}
         label="Description"
-        helperText="Help understanding what this contract do and how it works"
+        placeholder="Help understanding what this contract do and how it works ..."
         variant="floating"
         rules={{
           maxLength: MAX_CONTRACT_DESCRIPTION_LENGTH,
@@ -71,13 +74,13 @@ export const OffChainForm = <T extends OffchainDetail>({
       <TagSelection
         result={state.tags}
         setResult={setTagsValue}
-        placeholder="Tags"
+        placeholder="Select tags or create new ones"
         helperText="Add tag to organize and manage your contracts"
         labelBgColor={labelBgColor}
       />
       <ListSelection
         result={state.lists}
-        placeholder="Add to contract lists"
+        placeholder="Not listed"
         helperText="Grouping your contracts by adding to your existing list or create
               a new list"
         setResult={setContractListsValue}

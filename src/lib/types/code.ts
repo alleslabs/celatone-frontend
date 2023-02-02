@@ -1,3 +1,5 @@
+import type { Dayjs } from "dayjs";
+
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { HumanAddr, ContractAddr, Option } from "lib/types";
 
@@ -22,7 +24,7 @@ export interface CodeInfo extends CodeLocalInfo {
 interface CodeProposal {
   proposalId: number;
   height: Option<number>;
-  created: Date;
+  created: Dayjs;
 }
 
 export interface CodeData {
@@ -31,7 +33,7 @@ export interface CodeData {
   uploader: ContractAddr | HumanAddr;
   hash: Option<string>;
   height: Option<number>;
-  created: Date;
+  created: Dayjs;
   proposal: Option<CodeProposal>;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;

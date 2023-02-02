@@ -68,9 +68,15 @@ export const MigrationTable = ({
   return (
     <TableContainer>
       <MigrationHeader templateColumns={templateColumns} />
-      {migrationHistories.map((history) => (
+      {migrationHistories.map((history, idx) => (
         <MigrationRow
-          key={history.codeId}
+          key={
+            history.codeId +
+            history.remark.operation +
+            history.remark.type +
+            history.remark.value +
+            idx.toString()
+          }
           history={history}
           templateColumns={templateColumns}
         />

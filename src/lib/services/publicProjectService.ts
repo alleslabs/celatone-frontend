@@ -89,5 +89,7 @@ export const usePublicProjectByContractAddress = (
   return useQuery(["public_project_by_contract_address"], queryFn, {
     keepPreviousData: true,
     enabled: !!contractAddress,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 };

@@ -123,12 +123,18 @@ export const ContractSelectSection = observer(
     });
 
     const { refetch } = useQuery(
-      ["query", "instantiateInfo", endpoint, contractAddress],
+      [
+        "query",
+        "instantiate_info",
+        endpoint,
+        indexerGraphClient,
+        contractAddress,
+      ],
       async () =>
         queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
       {
         enabled: false,
-        retry: 0,
+        retry: false,
         onSuccess(data) {
           reset({
             isValid: true,
@@ -143,17 +149,15 @@ export const ContractSelectSection = observer(
     );
 
     useEffect(() => {
-      (async () => {
-        if (!contractLocalInfo) {
-          refetch();
-        } else {
-          reset({
-            isValid: true,
-            instantiator: contractLocalInfo.instantiator,
-            label: contractLocalInfo.label,
-          });
-        }
-      })();
+      if (!contractLocalInfo) {
+        if (contractAddress) refetch();
+      } else {
+        reset({
+          isValid: true,
+          instantiator: contractLocalInfo.instantiator,
+          label: contractLocalInfo.label,
+        });
+      }
     }, [contractAddress, contractLocalInfo, endpoint, reset, refetch]);
 
     const contractState = watch();
