@@ -9,12 +9,8 @@ export const useNetworkChange = () => {
   const { currentChainName, setCurrentChain } = useWallet();
   const networkRef = useRef<string>();
 
-  /**
-   * @todos Change default to mainnet later (currently is testnet)
-   */
-
   useEffect(() => {
-    const networkRoute = (router.query.network as string) || "testnet";
+    const networkRoute = (router.query.network as string) || "mainnet";
 
     if (networkRoute !== networkRef.current) {
       networkRef.current = networkRoute;
