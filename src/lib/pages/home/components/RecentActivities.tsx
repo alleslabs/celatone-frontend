@@ -47,10 +47,10 @@ export const RecentActivities = observer(() => {
               <Flex alignItems="center" gap={1}>
                 <Icon
                   as={item.type === "query" ? MdSearch : MdInput}
-                  color="pebble.600"
+                  color="honeydew.main"
                   boxSize={4}
                 />
-                <Text variant="body2" color="text.dark">
+                <Text variant="body2" color="honeydew.main">
                   {item.type === "query" ? "Query" : "Execute"}
                 </Text>
               </Flex>

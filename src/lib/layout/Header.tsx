@@ -58,14 +58,16 @@ const Header = () => {
       mb={1}
       gap="48px"
     >
-      <Image
-        src="/celatone-logo.svg"
-        alt="Celatone"
-        width="152px"
-        mr="36px"
-        _hover={{ cursor: "pointer" }}
-        onClick={() => navigate({ pathname: "/" })}
-      />
+      <a href="/" target="_blank" rel="noopener noreferrer">
+        <Image
+          src="/celatone-logo.svg"
+          alt="Celatone"
+          width="152px"
+          mr="36px"
+          transition="all 0.25s ease-in-out"
+          _hover={{ cursor: "pointer", opacity: 0.85 }}
+        />
+      </a>
       <Searchbar />
       <Flex gap={2}>
         <Menu>
