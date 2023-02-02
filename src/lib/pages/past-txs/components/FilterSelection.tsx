@@ -110,8 +110,6 @@ export const FilterSelection = observer(
             <Flex
               alignItems="center"
               color="text.main"
-              border="1px solid"
-              borderColor="pebble.700"
               background="none"
               borderRadius="8px"
               maxW="100%"
@@ -152,7 +150,6 @@ export const FilterSelection = observer(
                 }}
                 ref={mergeRefs([inputRef, ref])}
                 maxLength={36}
-                style={{ border: "0" }}
                 {...rest}
               />
               <FormLabel
@@ -166,7 +163,7 @@ export const FilterSelection = observer(
                 px={1}
                 my={2}
                 lineHeight="1.2"
-                transform="scale(0.75) translateY(-24px) translateX(8px)"
+                transform="scale(0.75) translateY(-24px) translateX(0px)"
               >
                 {label}
               </FormLabel>

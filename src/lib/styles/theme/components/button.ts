@@ -2,22 +2,10 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 type Dict = Record<string, string>;
 
-const pebble400 = "pebble.400";
 const pebble600 = "pebble.600";
 const pebble700 = "pebble.700";
-
 const violetLight = "violet.light";
-const violetMain = "violet.main";
-const violetDark = "violet.dark";
-
-const honeydewMain = "honeydew.main";
-const honeydewDarker = "honeydew.darker";
 const honeydewBg = "honeydew.background";
-
-const lilacMain = "lilac.main";
-const lilacBg = "lilac.background";
-
-const textMain = "text.main";
 const borderDefualt = "1px solid";
 
 const generateStyle = ({
@@ -76,12 +64,12 @@ export const Button: ComponentStyleConfig = {
   },
   variants: {
     primary: generateStyle({
-      basic: { background: violetMain, color: textMain },
+      basic: { background: "violet.main", color: "text.main" },
       disabled: {
         background: "violet.background",
         color: pebble600,
       },
-      hoverBg: violetDark,
+      hoverBg: "violet.dark",
       activeBg: violetLight,
     }),
     error: generateStyle({
@@ -110,7 +98,7 @@ export const Button: ComponentStyleConfig = {
     "outline-gray": generateStyle({
       basic: {
         border: borderDefualt,
-        borderColor: "pebble.600",
+        borderColor: pebble600,
         color: "pebble.400",
       },
       disabled: {
@@ -125,28 +113,28 @@ export const Button: ComponentStyleConfig = {
       basic: {
         border: borderDefualt,
         borderColor: honeydewBg,
-        color: honeydewMain,
+        color: "honeydew.main",
       },
       disabled: {
-        border: honeydewDarker,
-        color: honeydewDarker,
+        border: "honeydew.darker",
+        color: "honeydew.darker",
       },
       hoverBg: honeydewBg,
       activeBg: "transparent",
     }),
     "ghost-primary": generateStyle({
       basic: {
-        color: lilacMain,
+        color: "lilac.main",
       },
       disabled: {
-        color: lilacBg,
+        color: "lilac.background",
       },
-      hoverBg: lilacBg,
+      hoverBg: "lilac.background",
       activeBg: "transparent",
     }),
     "ghost-info": generateStyle({
       basic: {
-        color: honeydewMain,
+        color: "honeydew.main",
       },
       disabled: {
         color: honeydewBg,
@@ -156,7 +144,7 @@ export const Button: ComponentStyleConfig = {
     }),
     "ghost-gray": generateStyle({
       basic: {
-        color: pebble400,
+        color: "pebble.400",
       },
       disabled: {
         color: "pebble.500",

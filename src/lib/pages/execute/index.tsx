@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
@@ -82,7 +83,12 @@ const Execute = () => {
           Execute Contract
         </Heading>
         <Box>
-          <Button variant="ghost-primary" size="sm" onClick={goToQuery}>
+          <Button
+            variant="ghost-primary"
+            size="sm"
+            onClick={goToQuery}
+            rightIcon={<ChevronRightIcon boxSize={4} />}
+          >
             Go To Query
           </Button>
         </Box>

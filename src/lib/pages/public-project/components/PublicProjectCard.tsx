@@ -54,7 +54,7 @@ export const PublicProjectCard = observer(
               w="full"
               alignItems="flex-start"
             >
-              <Flex gap={2}>
+              <Flex gap={2} pr="1">
                 <Image
                   src={item.logo}
                   borderRadius="full"

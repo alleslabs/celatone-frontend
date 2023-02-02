@@ -56,7 +56,7 @@ const StyledButton = ({
   iconColor,
 }: StyledButtonProps) => (
   <Button
-    variant={hasText ? variant : "ghost-primary"}
+    variant={hasText ? variant : "ghost"}
     style={hasText ? buttonTextProps : buttonIconProps}
     gap={2}
     onClick={action}

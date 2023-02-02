@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
@@ -95,7 +96,12 @@ const Query = () => {
           Query Contract
         </Heading>
         <Box>
-          <Button variant="ghost-primary" size="sm" onClick={goToExecute}>
+          <Button
+            variant="ghost-primary"
+            size="sm"
+            onClick={goToExecute}
+            rightIcon={<ChevronRightIcon boxSize={4} />}
+          >
             Go To Execute
           </Button>
         </Box>
