@@ -109,17 +109,23 @@ const UpdateAdmin = () => {
    * @remarks Contract admin validation
    */
   useQuery(
-    ["query", "instantiate_info", endpoint, contractAddressParam],
+    [
+      "query",
+      "instantiate_info",
+      endpoint,
+      indexerGraphClient,
+      contractAddressParam,
+    ],
     async () =>
       queryInstantiateInfo(endpoint, indexerGraphClient, contractAddressParam),
     {
       enabled: !!contractAddressParam,
       refetchOnWindowFocus: false,
-      retry: 0,
+      retry: false,
       onSuccess: (contractInfo) => {
         if (contractInfo.admin !== address) onContractPathChange();
       },
-      onError: onContractPathChange,
+      onError: () => onContractPathChange(),
     }
   );
 
