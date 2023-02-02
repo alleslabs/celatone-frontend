@@ -3,7 +3,7 @@ import { NextSeo } from "next-seo";
 
 export const CelatoneSeo = () => {
   const { currentChainRecord } = useWallet();
-  const title = `Celatone ${currentChainRecord?.chain.pretty_name} Explorer`;
+  const title = `${currentChainRecord?.chain.pretty_name} Explorer | Celatone`;
 
   return (
     <NextSeo
