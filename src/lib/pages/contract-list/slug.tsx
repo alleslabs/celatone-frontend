@@ -145,6 +145,7 @@ const ContractsByList = observer(() => {
                       icon: <StyledIcon as={MdMode} color="pebble.600" />,
                       children: "Edit list name",
                     }}
+                    reroute
                   />
                   <RemoveList
                     list={{

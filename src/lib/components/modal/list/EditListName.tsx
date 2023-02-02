@@ -3,6 +3,7 @@ import { MenuItem, useToast, Icon } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
@@ -14,10 +15,12 @@ import { formatSlugName, shortenName } from "lib/utils";
 interface ModalProps {
   list: LVPair;
   menuItemProps: MenuItemProps;
+  reroute?: boolean;
 }
-export function EditList({ list, menuItemProps }: ModalProps) {
+export function EditList({ list, menuItemProps, reroute = false }: ModalProps) {
   const userKey = useUserKey();
   const { renameList, isContractListExist } = useContractStore();
+  const navigate = useInternalNavigate();
 
   const [listName, setListName] = useState<string>(list.label);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
@@ -69,7 +72,14 @@ export function EditList({ list, menuItemProps }: ModalProps) {
       icon={MdAddCircleOutline}
       trigger={<MenuItem {...menuItemProps} />}
       mainBtnTitle="Save"
-      mainAction={handleSave}
+      mainAction={() => {
+        handleSave();
+        if (reroute)
+          navigate({
+            pathname: `/contract-list/${formatSlugName(listName)}`,
+            replace: true,
+          });
+      }}
       disabledMain={status.state !== "success"}
       otherAction={() => setListName(list.label)}
     >
