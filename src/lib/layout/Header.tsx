@@ -35,11 +35,12 @@ const Header = () => {
       if (chainName === currentChainName) return;
       setCurrentChain(chainName);
       navigate({
-        pathname: router.asPath.replace(`/${router.query.network}`, ""),
+        pathname: router.pathname.replace("/[network]", ""),
         query: {
           /**
            * @remarks Condition checking varies by chain
            */
+          ...router.query,
           network: getNetworkByChainName(chainName),
         },
       });
