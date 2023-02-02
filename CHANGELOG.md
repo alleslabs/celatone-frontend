@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Features
-
+- [#155](https://github.com/alleslabs/celatone-frontend/pull/155) Fix css related issue and tag selection input
 - [#150](https://github.com/alleslabs/celatone-frontend/pull/150) Add Osmosis mainnet GraphQl, LCD, RPC
 - [#149](https://github.com/alleslabs/celatone-frontend/pull/149) Apply new branding
 - [#93](https://github.com/alleslabs/celatone-frontend/pull/93) Add filter code by instantiate permission in all codes page
