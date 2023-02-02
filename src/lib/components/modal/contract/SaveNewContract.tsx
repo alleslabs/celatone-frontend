@@ -187,6 +187,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       }
       otherBtnTitle="Cancel"
       otherAction={resetForm}
+      closeOnOverlayClick={false}
     >
       <VStack gap="16px">
         <ControllerInput

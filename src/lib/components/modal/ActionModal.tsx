@@ -35,6 +35,7 @@ export interface ActionModalProps {
   otherVariant?: string;
   noHeaderBorder?: boolean;
   noCloseButton?: boolean;
+  closeOnOverlayClick?: boolean;
 }
 export function ActionModal({
   icon = MdMode,
@@ -53,6 +54,7 @@ export function ActionModal({
   otherVariant = "outline-primary",
   noHeaderBorder = false,
   noCloseButton = false,
+  closeOnOverlayClick = true,
 }: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -70,7 +72,12 @@ export function ActionModal({
       <Flex onClick={onOpen}>
         {trigger || <Button>Open {title} Modal</Button>}
       </Flex>
-      <Modal isOpen={isOpen} onClose={handleOnOther} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={handleOnOther}
+        closeOnOverlayClick={closeOnOverlayClick}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
