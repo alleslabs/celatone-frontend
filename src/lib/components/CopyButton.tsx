@@ -40,7 +40,7 @@ export const CopyButton = ({
           leftIcon={<CopyIcon boxSize="4" onClick={onCopy} />}
         >
           Copy
-        </Button>{" "}
+        </Button>
       </div>
     </Tooltip>
   );
