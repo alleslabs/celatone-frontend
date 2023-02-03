@@ -1,6 +1,5 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
@@ -34,7 +33,7 @@ import type {
   Option,
   PublicInfo,
 } from "lib/types";
-import { formatSlugName } from "lib/utils";
+import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
 export interface ContractData {
   chainId: string;
@@ -68,7 +67,7 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
-    lastUpdated: dayjs(),
+    lastUpdated: getCurrentDate(),
     isInfoEditable: false,
     isContractRemovable: false,
   };
@@ -85,11 +84,11 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
       contractAddress: "" as ContractAddr,
       instantiator: "",
       label: "",
-      created: dayjs(0),
+      created: getDefaultDate(),
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
-    lastUpdated: dayjs(),
+    lastUpdated: getCurrentDate(),
     isInfoEditable: false,
     isContractRemovable: false,
   };

@@ -1,11 +1,9 @@
-import type { Dayjs } from "dayjs";
-import dayjs from "dayjs";
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import type { LVPair, Dict, ContractAddr } from "lib/types";
-import { formatSlugName, getTagsDefault } from "lib/utils";
+import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
 
 export interface ContractLocalInfo {
   contractAddress: ContractAddr;
@@ -21,7 +19,7 @@ interface ContractList {
   name: string;
   slug: string;
   contracts: ContractAddr[];
-  lastUpdated: Dayjs;
+  lastUpdated: Date;
   isInfoEditable: boolean;
   isContractRemovable: boolean;
 }
@@ -34,7 +32,8 @@ export const cmpContractListInfo = (
   a: ContractListInfo,
   b: ContractListInfo
 ) => {
-  if (a.lastUpdated !== b.lastUpdated) return b.lastUpdated.diff(a.lastUpdated);
+  if (a.lastUpdated !== b.lastUpdated)
+    return b.lastUpdated.getTime() - a.lastUpdated.getTime();
   return a.slug.localeCompare(b.slug);
 };
 
@@ -44,7 +43,7 @@ export interface Activity {
   sender: string | undefined;
   contractAddress: ContractAddr;
   msg: string; // base64
-  timestamp: Dayjs;
+  timestamp: Date;
 }
 
 export class ContractStore {
@@ -55,7 +54,7 @@ export class ContractStore {
       name: SAVED_LIST_NAME,
       slug: formatSlugName(SAVED_LIST_NAME),
       contracts: [],
-      lastUpdated: dayjs(),
+      lastUpdated: getCurrentDate(),
       isInfoEditable: false,
       isContractRemovable: true,
     },
@@ -161,7 +160,7 @@ export class ContractStore {
           name: name.trim(),
           slug: formatSlugName(name),
           contracts: [],
-          lastUpdated: dayjs(),
+          lastUpdated: getCurrentDate(),
           isInfoEditable: true,
           isContractRemovable: true,
         },
@@ -193,7 +192,7 @@ export class ContractStore {
 
       list.name = newName;
       list.slug = formatSlugName(newName);
-      list.lastUpdated = dayjs();
+      list.lastUpdated = getCurrentDate();
     }
   }
 
@@ -333,7 +332,7 @@ export class ContractStore {
     if (!list) return;
 
     list.contracts = Array.from(new Set(list.contracts).add(contractAddress));
-    list.lastUpdated = dayjs();
+    list.lastUpdated = getCurrentDate();
   }
 
   private removeContractFromList(
@@ -347,7 +346,7 @@ export class ContractStore {
     if (!list) return;
 
     list.contracts = list.contracts.filter((addr) => addr !== contractAddress);
-    list.lastUpdated = dayjs();
+    list.lastUpdated = getCurrentDate();
   }
 
   addActivity(userKey: string, activity: Activity) {
