@@ -187,6 +187,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           placeholder="ex. 1234"
         />
         <TextInput
+          variant="floating"
           value={uploader}
           label="Uploader"
           labelBgColor="pebble.900"

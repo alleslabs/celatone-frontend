@@ -28,7 +28,7 @@ export const Textarea: ComponentStyleConfig = {
       _invalid: {
         borderColor: "error.main",
       },
-      _placeholder: { color: "text.dark" },
+      _placeholder: { color: "pebble.600" },
     },
   },
   defaultProps: {

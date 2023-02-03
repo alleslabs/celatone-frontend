@@ -60,9 +60,10 @@ const Header = () => {
     >
       <a href="/" target="_blank" rel="noopener noreferrer">
         <Image
-          src="/celatone-logo.svg"
+          src="https://assets.alleslabs.dev/branding/logo/logo.svg"
           alt="Celatone"
           width="152px"
+          minWidth="152px"
           mr="36px"
           transition="all 0.25s ease-in-out"
           _hover={{ cursor: "pointer", opacity: 0.85 }}
