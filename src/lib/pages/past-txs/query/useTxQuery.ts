@@ -1,3 +1,4 @@
+import { useWallet } from "@cosmos-kit/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -58,6 +59,7 @@ export const useTxQuery = (
 ) => {
   const getAddressType = useGetAddressType();
   const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainRecord } = useWallet();
 
   // Filter when action buttons are pressed
   const queryFn = useCallback(async () => {
@@ -184,6 +186,7 @@ export const useTxQuery = (
       filters,
       offset,
       pageSize,
+      currentChainRecord,
     ],
     queryFn,
   });
@@ -196,6 +199,7 @@ export const useTxQueryCount = (
 ): UseQueryResult<number> => {
   const getAddressType = useGetAddressType();
   const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
     if (!userAddress) throw new Error("User address not found");
@@ -225,7 +229,13 @@ export const useTxQueryCount = (
   }, [filters, getAddressType, indexerGraphClient, search, userAddress]);
 
   return useQuery({
-    queryKey: ["past-transaction-count", userAddress, search, filters],
+    queryKey: [
+      "past-transaction-count",
+      userAddress,
+      search,
+      filters,
+      currentChainRecord,
+    ],
     queryFn,
   });
 };

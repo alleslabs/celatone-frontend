@@ -122,7 +122,7 @@ export const useContractData = (
   );
 
   const { data: contractBalances } = useQuery(
-    ["query", "contractBalances", contractAddress],
+    ["query", "contractBalances", contractAddress, currentChainRecord],
     async () =>
       queryContractBalances(
         currentChainRecord?.name,

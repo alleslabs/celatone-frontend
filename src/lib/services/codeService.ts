@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/no-identical-functions */
+import { useWallet } from "@cosmos-kit/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -26,6 +27,8 @@ import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
 
 export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainRecord } = useWallet();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getCodeListQueryDocument)
@@ -42,8 +45,7 @@ export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
       );
   }, [indexerGraphClient]);
 
-  // TODO: add query key later
-  return useQuery(["all_codes"], queryFn, {
+  return useQuery(["all_codes", currentChainRecord], queryFn, {
     keepPreviousData: true,
   });
 };
@@ -52,6 +54,7 @@ export const useCodeListByUserQuery = (
   walletAddr: Option<string>
 ): UseQueryResult<Option<CodeInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
     if (!walletAddr)
@@ -74,8 +77,7 @@ export const useCodeListByUserQuery = (
       );
   }, [indexerGraphClient, walletAddr]);
 
-  // TODO: add query key later
-  return useQuery(["codes_by_user", walletAddr], queryFn, {
+  return useQuery(["codes_by_user", walletAddr, currentChainRecord], queryFn, {
     keepPreviousData: true,
     enabled: !!walletAddr,
   });
@@ -83,6 +85,7 @@ export const useCodeListByUserQuery = (
 
 export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
     if (!ids) throw new Error("Code IDs not found (useCodeListByIDsQuery)");
@@ -104,8 +107,7 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
       );
   }, [ids, indexerGraphClient]);
 
-  // TODO: add query key later
-  return useQuery(["codes_by_ids", ids], queryFn, {
+  return useQuery(["codes_by_ids", ids, currentChainRecord], queryFn, {
     keepPreviousData: true,
     enabled: !!ids,
   });
@@ -115,6 +117,8 @@ export const useCodeInfoByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<Option<Omit<CodeData, "chainId">>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainRecord } = useWallet();
+
   const queryFn = useCallback(async () => {
     if (!codeId) throw new Error("Code ID not found (useCodeInfoByCodeId)");
 
@@ -146,7 +150,7 @@ export const useCodeInfoByCodeId = (
         };
       });
   }, [codeId, indexerGraphClient]);
-  return useQuery(["code_info_by_id", codeId], queryFn, {
+  return useQuery(["code_info_by_id", codeId, currentChainRecord], queryFn, {
     keepPreviousData: true,
     enabled: !!codeId,
   });
@@ -158,6 +162,8 @@ export const useContractListByCodeId = (
   pageSize: number
 ): UseQueryResult<Option<ContractInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainRecord } = useWallet();
+
   const queryFn = useCallback(async () => {
     if (!codeId) throw new Error("Code ID not found (useContractListByCodeId)");
 
@@ -181,16 +187,22 @@ export const useContractListByCodeId = (
       );
   }, [codeId, indexerGraphClient, offset, pageSize]);
 
-  return useQuery(["contract_list_by_code_id", codeId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
+  return useQuery(
+    ["contract_list_by_code_id", codeId, currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!codeId,
+    }
+  );
 };
 
 export const useContractListCountByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const { currentChainRecord } = useWallet();
+
   const queryFn = useCallback(async () => {
     if (!codeId)
       throw new Error("Code ID not found (useContractListCountByCodeId)");
@@ -202,8 +214,12 @@ export const useContractListCountByCodeId = (
       .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
   }, [codeId, indexerGraphClient]);
 
-  return useQuery(["contract_list_count_by_user", codeId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
+  return useQuery(
+    ["contract_list_count_by_user", codeId, currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!codeId,
+    }
+  );
 };

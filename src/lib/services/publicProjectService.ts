@@ -25,8 +25,8 @@ export const usePublicProjects = () => {
   const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
-    // eslint-disable-next-line sonarjs/no-duplicate-string
-    if (!currentChainRecord) throw new Error("No chain selected");
+    if (!currentChainRecord)
+      throw new Error("No chain selected (usePublicProjects)");
 
     return axios
       .get<RawPublicProjectInfo[]>(
@@ -42,7 +42,7 @@ export const usePublicProjects = () => {
       );
   }, [currentChainRecord]);
 
-  return useQuery(["public_project"], queryFn, {
+  return useQuery(["public_project", currentChainRecord], queryFn, {
     keepPreviousData: true,
   });
 };
@@ -50,8 +50,9 @@ export const usePublicProjects = () => {
 export const usePublicProjectBySlug = (slug: Option<string>) => {
   const { currentChainRecord } = useWallet();
   const queryFn = useCallback(async (): Promise<Option<PublicProjectInfo>> => {
-    if (!slug) throw new Error("No project selected");
-    if (!currentChainRecord) throw new Error("No chain selected");
+    if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
+    if (!currentChainRecord)
+      throw new Error("No chain selected (usePublicProjectBySlug)");
     return axios
       .get<RawPublicProjectInfo>(
         `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
@@ -64,7 +65,7 @@ export const usePublicProjectBySlug = (slug: Option<string>) => {
       }));
   }, [currentChainRecord, slug]);
 
-  return useQuery(["public_project_by_slug"], queryFn, {
+  return useQuery(["public_project_by_slug", currentChainRecord], queryFn, {
     keepPreviousData: true,
     enabled: !!slug,
   });
@@ -75,8 +76,12 @@ export const usePublicProjectByContractAddress = (
 ): UseQueryResult<PublicInfo> => {
   const { currentChainRecord } = useWallet();
   const queryFn = useCallback(async () => {
-    if (!contractAddress) throw new Error("Contract address not found");
-    if (!currentChainRecord) throw new Error("No chain selected");
+    if (!contractAddress)
+      throw new Error(
+        "Contract address not found (usePublicProjectByContractAddress)"
+      );
+    if (!currentChainRecord)
+      throw new Error("No chain selected (usePublicProjectByContractAddress)");
     return axios
       .get<PublicInfo>(
         `${CELATONE_API_ENDPOINT}/contracts/${getChainApiPath(
@@ -86,10 +91,14 @@ export const usePublicProjectByContractAddress = (
       .then(({ data: projectInfo }) => projectInfo);
   }, [contractAddress, currentChainRecord]);
 
-  return useQuery(["public_project_by_contract_address"], queryFn, {
-    keepPreviousData: true,
-    enabled: !!contractAddress,
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    ["public_project_by_contract_address", currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
