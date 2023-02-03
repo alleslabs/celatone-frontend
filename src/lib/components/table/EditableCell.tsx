@@ -40,21 +40,16 @@ export const EditableCell = ({
   };
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newVal = event.target.value;
-    setInputValue(newVal);
+    setInputValue(newVal.trimStart());
   };
   const handleCancel = () => {
     setIsEdit(false);
     setInputValue(initialValue);
   };
-  /**
-   *
-   * @remarks should not save if empty string
-   * */
+
   const handleSave = () => {
     setIsEdit(false);
-    if (inputValue.trim().length) {
-      onSave?.(inputValue.trim());
-    }
+    onSave?.(inputValue);
   };
 
   // TODO: reconsider 20
