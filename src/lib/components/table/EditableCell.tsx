@@ -54,7 +54,7 @@ export const EditableCell = ({
 
   // TODO: reconsider 20
   const showName = isHoverText && inputValue.trim().length > 20;
-  const isShowInputValue = inputValue?.trim().length;
+  const isShowInputValue = inputValue.trim().length;
 
   return (
     <Flex
