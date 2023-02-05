@@ -125,9 +125,12 @@ export const ContractsTable = ({
                       </Flex>
                     </Flex>
                   </Td>
-                  {/* TODO Instantiator Info */}
                   <Td>
-                    <Text>TODO</Text>
+                    <ExplorerLink
+                      value={item.instantiator}
+                      type="user_address"
+                      canCopyWithHover
+                    />
                   </Td>
                   <Td>
                     <Flex gap={3} justifyContent="flex-end" alignItems="center">

@@ -19,6 +19,8 @@ const parseContract = (raw: RawContract): Contract => ({
   description: raw.description,
   name: raw.name,
   slug: raw.slug,
+  instantiator: raw.instantiator,
+  admin: raw.admin,
 });
 
 export const usePublicProjects = () => {

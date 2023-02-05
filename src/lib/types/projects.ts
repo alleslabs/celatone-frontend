@@ -1,4 +1,10 @@
-import type { AssetInfo, ContractAddr, HumanAddr } from "lib/types";
+import type {
+  AssetInfo,
+  ContractAddr,
+  HumanAddr,
+  InstantiatePermission,
+  PermissionAddresses,
+} from "lib/types";
 
 export interface Account {
   address: HumanAddr;
@@ -12,6 +18,10 @@ export interface Code {
   id: number;
   name: string;
   slug: string;
+  contracts: number;
+  uploader: string;
+  instantiatePermission: InstantiatePermission;
+  permissionAddresses: PermissionAddresses;
 }
 
 export interface RawContract {
@@ -19,6 +29,8 @@ export interface RawContract {
   description: string;
   name: string;
   slug: string;
+  instantiator: string;
+  admin: string;
 }
 
 export interface Social {

@@ -12,7 +12,6 @@ import {
   Text,
   Flex,
   Box,
-  Tag,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
@@ -21,6 +20,7 @@ import { MdBookmarkBorder, MdHowToVote, MdSearchOff } from "react-icons/md";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
+import { PermissionChip } from "lib/components/PermissionChip";
 import { EmptyState } from "lib/components/state/EmptyState";
 import type { Code } from "lib/types/projects";
 
@@ -39,6 +39,7 @@ export const CodesTable = ({
       keys: ["id", "description"],
     });
   }, [codes, searchKeyword]);
+
   return (
     <Box>
       {hasSearchInput && (
@@ -106,25 +107,20 @@ export const CodesTable = ({
                     <Text variant="body2"> {code.description}</Text>
                   </Td>
                   <Td width="10%" textAlign="center">
-                    <Text>todo</Text>
+                    <Text>{code.contracts}</Text>
                   </Td>
                   <Td width="15%">
-                    <Text>todo</Text>
+                    <ExplorerLink
+                      value={code.uploader}
+                      type="user_address"
+                      canCopyWithHover
+                    />
                   </Td>
                   <Td width="15%">
-                    {/* TODO: add condition for permission tag */}
-                    <Tag borderRadius="full" bgColor="pebble.700">
-                      Nobody
-                    </Tag>
-                    {/* <Tag borderRadius="full" bgColor="pebble.700">
-                    OnlyAddress
-                  </Tag>
-                  <Tag borderRadius="full" bgColor="pebble.700">
-                    AnyOfAddresses
-                  </Tag>
-                  <Tag borderRadius="full" bgColor="success.dark">
-                    Everybody
-                  </Tag> */}
+                    <PermissionChip
+                      instantiatePermission={code.instantiatePermission}
+                      permissionAddresses={code.permissionAddresses}
+                    />
                   </Td>
                   <Td width="20%">
                     <Flex gap={3} justifyContent="flex-end" alignItems="center">
@@ -132,7 +128,6 @@ export const CodesTable = ({
                         <Icon as={MdHowToVote} boxSize={4} mr={1} />
                         Instantiate
                       </Button>
-                      {/* TODO save code */}
                       <Icon
                         as={MdBookmarkBorder}
                         boxSize={6}
