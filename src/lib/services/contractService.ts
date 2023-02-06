@@ -1,4 +1,3 @@
-import { useWallet } from "@cosmos-kit/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -19,6 +18,7 @@ import {
   getAdminByContractAddressesQueryDocument,
   getContractListByAdmin,
 } from "lib/data/queries";
+import { useChainId } from "lib/hooks";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
@@ -54,7 +54,7 @@ export const useInstantiatedCountByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!walletAddr)
@@ -70,7 +70,7 @@ export const useInstantiatedCountByUserQuery = (
   }, [indexerGraphClient, walletAddr]);
 
   return useQuery(
-    ["instantiated_count_by_user", walletAddr, currentChainRecord],
+    ["instantiated_count_by_user", walletAddr, chainId],
     queryFn,
     {
       keepPreviousData: true,
@@ -83,7 +83,7 @@ export const useInstantiatedListByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<Option<ContractLocalInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!walletAddr)
@@ -104,21 +104,17 @@ export const useInstantiatedListByUserQuery = (
       );
   }, [indexerGraphClient, walletAddr]);
 
-  return useQuery(
-    ["instantiated_list_by_user", walletAddr, currentChainRecord],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!walletAddr,
-    }
-  );
+  return useQuery(["instantiated_list_by_user", walletAddr, chainId], queryFn, {
+    keepPreviousData: true,
+    enabled: !!walletAddr,
+  });
 };
 
 export const useContractListByAdmin = (
   adminAddress: Option<ContractAddr | HumanAddr>
 ): UseQueryResult<Option<ContractLocalInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!adminAddress)
@@ -137,21 +133,17 @@ export const useContractListByAdmin = (
       );
   }, [adminAddress, indexerGraphClient]);
 
-  return useQuery(
-    ["contract_list_by_admin", adminAddress, currentChainRecord],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!adminAddress,
-    }
-  );
+  return useQuery(["contract_list_by_admin", adminAddress, chainId], queryFn, {
+    keepPreviousData: true,
+    enabled: !!adminAddress,
+  });
 };
 
 export const useInstantiateDetailByContractQuery = (
   contractAddress: ContractAddr
 ): UseQueryResult<InstantiateDetail> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
@@ -166,7 +158,7 @@ export const useInstantiateDetailByContractQuery = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["instantiate_detail_by_contract", contractAddress, currentChainRecord],
+    ["instantiate_detail_by_contract", contractAddress, chainId],
     queryFn,
     {
       keepPreviousData: true,
@@ -178,7 +170,7 @@ export const useAdminByContractAddresses = (
   contractAddresses: Option<ContractAddr[]>
 ): UseQueryResult<Option<Dict<ContractAddr, string>>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!contractAddresses)
@@ -199,14 +191,10 @@ export const useAdminByContractAddresses = (
       );
   }, [contractAddresses, indexerGraphClient]);
 
-  return useQuery(
-    ["admin_by_contracts", contractAddresses, currentChainRecord],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!contractAddresses,
-    }
-  );
+  return useQuery(["admin_by_contracts", contractAddresses, chainId], queryFn, {
+    keepPreviousData: true,
+    enabled: !!contractAddresses,
+  });
 };
 
 export const useExecuteTxsByContractAddress = (
@@ -215,7 +203,7 @@ export const useExecuteTxsByContractAddress = (
   pageSize: number
 ): UseQueryResult<Option<ExecuteTransaction[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
@@ -244,7 +232,7 @@ export const useExecuteTxsByContractAddress = (
       contractAddress,
       offset,
       pageSize,
-      currentChainRecord,
+      chainId,
     ],
     queryFn,
     {
@@ -258,7 +246,7 @@ export const useExecuteTxsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!contractAddress)
@@ -277,11 +265,7 @@ export const useExecuteTxsCountByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    [
-      "execute_transactions_count_by_contract_addr",
-      contractAddress,
-      currentChainRecord,
-    ],
+    ["execute_transactions_count_by_contract_addr", contractAddress, chainId],
     queryFn,
     {
       keepPreviousData: true,
@@ -298,7 +282,7 @@ export const useMigrationHistoriesByContractAddress = (
   Option<Omit<ContractMigrationHistory, "codeDescription">[]>
 > => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
@@ -325,13 +309,7 @@ export const useMigrationHistoriesByContractAddress = (
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
-    [
-      "migration_histories",
-      contractAddress,
-      offset,
-      pageSize,
-      currentChainRecord,
-    ],
+    ["migration_histories", contractAddress, offset, pageSize, chainId],
     queryFn,
     {
       keepPreviousData: true,
@@ -344,7 +322,7 @@ export const useMigrationHistoriesCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
@@ -358,7 +336,7 @@ export const useMigrationHistoriesCountByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["migration_histories_count", contractAddress, currentChainRecord],
+    ["migration_histories_count", contractAddress, chainId],
     queryFn,
     {
       keepPreviousData: true,
@@ -373,7 +351,7 @@ export const useTxsByContractAddress = (
   pageSize: number
 ): UseQueryResult<AllTransaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
@@ -412,7 +390,7 @@ export const useTxsByContractAddress = (
       contractAddress,
       offset,
       pageSize,
-      currentChainRecord,
+      chainId,
     ],
     queryFn,
     {
@@ -426,7 +404,7 @@ export const useTxsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!contractAddress)
@@ -445,11 +423,7 @@ export const useTxsCountByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    [
-      "transactions_count_by_contract_addr",
-      contractAddress,
-      currentChainRecord,
-    ],
+    ["transactions_count_by_contract_addr", contractAddress, chainId],
     queryFn,
     {
       keepPreviousData: true,
@@ -464,7 +438,7 @@ export const useRelatedProposalsByContractAddress = (
   pageSize: number
 ): UseQueryResult<Option<ContractRelatedProposals[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
@@ -490,13 +464,7 @@ export const useRelatedProposalsByContractAddress = (
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
-    [
-      "related_proposals",
-      contractAddress,
-      offset,
-      pageSize,
-      currentChainRecord,
-    ],
+    ["related_proposals", contractAddress, offset, pageSize, chainId],
     queryFn,
     {
       keepPreviousData: true,
@@ -509,7 +477,7 @@ export const useRelatedProposalsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
@@ -523,7 +491,7 @@ export const useRelatedProposalsCountByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["related_proposals_count", contractAddress, currentChainRecord],
+    ["related_proposals_count", contractAddress, chainId],
     queryFn,
     {
       keepPreviousData: true,
