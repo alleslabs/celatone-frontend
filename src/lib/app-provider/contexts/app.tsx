@@ -58,83 +58,85 @@ const AppContext = createContext<AppContextInterface<any, any>>({
   indexerGraphClient: new GraphQLClient(""),
 });
 
-export const AppProvider = <ContractAddress, Constants extends AppConstants>({
-  children,
-  fallbackGasPrice,
-  appContractAddressMap,
-  constants,
-}: AppProviderProps<ContractAddress, Constants>) => {
-  const { currentChainName, currentChainRecord } = useWallet();
-  const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
-  const { setContractUserKey, isContractUserKeyExist } = useContractStore();
-  const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
+export const AppProvider = observer(
+  <ContractAddress, Constants extends AppConstants>({
+    children,
+    fallbackGasPrice,
+    appContractAddressMap,
+    constants,
+  }: AppProviderProps<ContractAddress, Constants>) => {
+    const { currentChainName, currentChainRecord } = useWallet();
+    const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
+    const { setContractUserKey, isContractUserKeyExist } = useContractStore();
+    const { setProjectUserKey, isProjectUserKeyExist } =
+      usePublicProjectStore();
 
-  const chainGasPrice = useMemo(() => {
-    if (
-      !currentChainRecord ||
-      !currentChainRecord.chain.fees ||
-      !currentChainRecord.chain.fees.fee_tokens[0].average_gas_price
-    )
-      return fallbackGasPrice[currentChainName];
-    return {
-      denom: currentChainRecord.chain.fees?.fee_tokens[0].denom as string,
-      gasPrice: big(
-        currentChainRecord.chain.fees?.fee_tokens[0].average_gas_price ?? "0"
-      ).toFixed() as U<Token>,
-    };
-  }, [currentChainName, currentChainRecord, fallbackGasPrice]);
+    const chainGasPrice = useMemo(() => {
+      if (
+        !currentChainRecord ||
+        !currentChainRecord.chain.fees ||
+        !currentChainRecord.chain.fees.fee_tokens[0].average_gas_price
+      )
+        return fallbackGasPrice[currentChainName];
+      return {
+        denom: currentChainRecord.chain.fees?.fee_tokens[0].denom as string,
+        gasPrice: big(
+          currentChainRecord.chain.fees?.fee_tokens[0].average_gas_price ?? "0"
+        ).toFixed() as U<Token>,
+      };
+    }, [currentChainName, currentChainRecord, fallbackGasPrice]);
 
-  const chainBoundStates = useMemo(() => {
-    return {
-      explorerLink: {
-        txUrl: getExplorerTxUrl(currentChainName),
-        userUrl: getExplorerUserAddressUrl(currentChainName),
-      },
-      indexerGraphClient: getIndexerGraphClient(currentChainName),
-    };
-  }, [currentChainName]);
+    const chainBoundStates = useMemo(() => {
+      return {
+        explorerLink: {
+          txUrl: getExplorerTxUrl(currentChainName),
+          userUrl: getExplorerUserAddressUrl(currentChainName),
+        },
+        indexerGraphClient: getIndexerGraphClient(currentChainName),
+      };
+    }, [currentChainName]);
 
-  const states = useMemo<AppContextInterface<ContractAddress, Constants>>(
-    () => ({
-      chainGasPrice,
-      appContractAddress: appContractAddressMap(currentChainName),
-      constants,
-      ...chainBoundStates,
-    }),
-    [
-      chainGasPrice,
-      appContractAddressMap,
+    const states = useMemo<AppContextInterface<ContractAddress, Constants>>(
+      () => ({
+        chainGasPrice,
+        appContractAddress: appContractAddressMap(currentChainName),
+        constants,
+        ...chainBoundStates,
+      }),
+      [
+        chainGasPrice,
+        appContractAddressMap,
+        currentChainName,
+        constants,
+        chainBoundStates,
+      ]
+    );
+
+    useEffect(() => {
+      if (currentChainName) {
+        const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
+        setCodeUserKey(userKey);
+        setContractUserKey(userKey);
+        setProjectUserKey(userKey);
+      }
+    }, [
       currentChainName,
-      constants,
-      chainBoundStates,
-    ]
-  );
+      setCodeUserKey,
+      setContractUserKey,
+      setProjectUserKey,
+    ]);
 
-  useEffect(() => {
-    if (currentChainName) {
-      const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
-      setCodeUserKey(userKey);
-      setContractUserKey(userKey);
-      setProjectUserKey(userKey);
-    }
-  }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
+    useNetworkChange();
 
-  useNetworkChange();
-
-  const AppContent = observer(() => {
-    if (
-      isCodeUserKeyExist() &&
+    return isCodeUserKeyExist() &&
       isContractUserKeyExist() &&
-      isProjectUserKeyExist()
-    )
-      return (
-        <AppContext.Provider value={states}>{children}</AppContext.Provider>
-      );
-    return <LoadingOverlay />;
-  });
-
-  return <AppContent />;
-};
+      isProjectUserKeyExist() ? (
+      <AppContext.Provider value={states}>{children}</AppContext.Provider>
+    ) : (
+      <LoadingOverlay />
+    );
+  }
+);
 
 export const useApp = <
   ContractAddress,

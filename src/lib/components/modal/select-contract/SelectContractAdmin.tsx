@@ -11,7 +11,6 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import dayjs from "dayjs";
 import { MdList, MdSwapHoriz } from "react-icons/md";
 
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
@@ -19,6 +18,7 @@ import { useContractStore } from "lib/hooks";
 import { useContractListByAdmin } from "lib/services/contractService";
 import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
+import { getCurrentDate } from "lib/utils";
 
 import { ContractListDetail } from "./ContractListDetail";
 
@@ -43,7 +43,7 @@ export const SelectContractAdmin = ({
       ...contract,
       ...getContractLocalInfo(contract.contractAddress),
     })),
-    lastUpdated: dayjs(),
+    lastUpdated: getCurrentDate(),
     isInfoEditable: false,
     isContractRemovable: false,
   };
