@@ -31,7 +31,8 @@ export const JsonInfo = ({
         align="center"
         p="12px 16px"
         borderRadius="8px"
-        _hover={{ backgroundColor: "pebble.900" }}
+        background="pebble.900"
+        _hover={{ backgroundColor: "pebble.800" }}
         transition="all .25s ease-in-out"
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
