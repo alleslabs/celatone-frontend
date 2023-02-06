@@ -37,7 +37,7 @@ async function handler(req, res) {
     res.status(sentryResponse.status).send(sentryResponse.body);
   } catch (e) {
     captureException(e);
-    return res.status(400).json({ status: "invalid request" });
+    return res.status(400).json({ status: e });
   }
 }
 
