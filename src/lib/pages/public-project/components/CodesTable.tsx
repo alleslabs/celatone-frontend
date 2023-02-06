@@ -104,7 +104,7 @@ export const CodesTable = ({
                     />
                   </Td>
                   <Td width="45%">
-                    <Text variant="body2"> {code.description}</Text>
+                    <Text variant="body2"> {code.name}</Text>
                   </Td>
                   <Td width="10%" textAlign="center">
                     <Text>{code.contracts}</Text>

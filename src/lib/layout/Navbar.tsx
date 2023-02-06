@@ -133,7 +133,7 @@ const Navbar = observer(() => {
           logo: list.logo,
         })),
         {
-          name: "View All",
+          name: "All Public Projects",
           slug: "/public-project",
           icon: MdMoreHoriz,
         },

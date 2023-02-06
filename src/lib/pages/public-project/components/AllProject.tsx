@@ -62,8 +62,7 @@ export const AllProject = observer(() => {
         variant="floating"
         value={searchKeyword}
         setInputState={setSearchKeyword}
-        label="Search for existing public projects"
-        labelBgColor="pebble.900"
+        label="Search public projects"
         size="md"
         mb={12}
       />
