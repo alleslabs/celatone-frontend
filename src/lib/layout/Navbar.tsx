@@ -197,6 +197,7 @@ const Navbar = observer(() => {
                   p={2}
                   cursor="pointer"
                   _hover={{ bg: "pebble.800", borderRadius: "8px" }}
+                  my="1px"
                   transition="all .25s ease-in-out"
                   alignItems="center"
                   bgColor={
