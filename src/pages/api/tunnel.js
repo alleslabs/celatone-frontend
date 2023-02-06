@@ -6,7 +6,7 @@ const sentryHost = "sentry.io";
 
 // Set knownProjectIds to an array with your Sentry project IDs which you
 // want to accept through this proxy.
-const knownProjectIds = [];
+const knownProjectIds = ["4504615504248832"];
 
 async function handler(req, res) {
   try {
