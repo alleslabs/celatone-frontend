@@ -17,25 +17,28 @@ interface ContractDetailsTemplateProps {
   subtitle?: string;
   contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
+  isSave: boolean;
 }
 export const ContractDetailsTemplate = ({
   title,
   subtitle,
   contractLocalInfo,
   triggerElement,
+  isSave,
 }: ContractDetailsTemplateProps) => {
   const defaultValues = useMemo(() => {
     return {
       name: contractLocalInfo.name ?? "",
       description: getDescriptionDefault(contractLocalInfo.description),
       tags: getTagsDefault(contractLocalInfo.tags),
-      lists: contractLocalInfo.lists ?? DEFAULT_LIST,
+      lists: contractLocalInfo.lists ?? isSave ? DEFAULT_LIST : [],
     };
   }, [
     contractLocalInfo.description,
     contractLocalInfo.lists,
     contractLocalInfo.name,
     contractLocalInfo.tags,
+    isSave,
   ]);
 
   const {

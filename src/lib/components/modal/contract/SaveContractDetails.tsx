@@ -14,5 +14,6 @@ export const SaveContractDetails = ({
     title="Save Contract Details"
     contractLocalInfo={contractLocalInfo}
     triggerElement={triggerElement}
+    isSave
   />
 );

@@ -126,6 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#166](https://github.com/alleslabs/celatone-frontend/pull/166) Change default list when editing contract information
 - [#164](https://github.com/alleslabs/celatone-frontend/pull/164) Add observer in code details page
 - [#151](https://github.com/alleslabs/celatone-frontend/pull/151) Fix state reset on clicking wallet button
 - [#158](https://github.com/alleslabs/celatone-frontend/pull/158) Change dayjs back to Date type as it is incompatible with mobx storage
