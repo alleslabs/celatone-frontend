@@ -196,7 +196,7 @@ const NormalRender = ({
   isRemovable = false,
 }: Pick<CodesTableProps, "codes" | "tableName" | "isRemovable">) => {
   return (
-    <TableContainer mb={20}>
+    <TableContainer mb={20} position="relative">
       <CodeTableHead />
       {codes.map((code) => (
         <CodeTableRow
