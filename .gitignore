@@ -43,3 +43,18 @@ sitemap*.xml
 
 # TS
 *.tsbuildinfo
+
+# Sentry
+.sentryclirc
+
+# Sentry
+next.config.original.js
+
+# Sentry
+.sentryclirc
+
+# Sentry
+next.config.original.js
+
+# Sentry
+next.config.wizardcopy.js
