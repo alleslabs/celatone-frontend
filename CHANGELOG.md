@@ -126,6 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#165](https://github.com/alleslabs/celatone-frontend/pull/165) Fix messages type and message rendering for Send
 - [#151](https://github.com/alleslabs/celatone-frontend/pull/151) Fix state reset on clicking wallet button
 - [#158](https://github.com/alleslabs/celatone-frontend/pull/158) Change dayjs back to Date type as it is incompatible with mobx storage
 - [#153](https://github.com/alleslabs/celatone-frontend/pull/153) Fix network dropdown blocked by filter topic
