@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import * as amplitude from "@amplitude/analytics-browser";
 import { wallets } from "@cosmos-kit/keplr";
 import { WalletProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -40,6 +41,8 @@ configurePersistable({
   storage: isBrowser ? localforage : undefined,
   stringify: false,
 });
+
+amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY ?? "");
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();

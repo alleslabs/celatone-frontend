@@ -1,3 +1,4 @@
+import * as amplitude from "@amplitude/analytics-browser";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
@@ -135,6 +136,7 @@ export const QueryArea = ({
               fontSize="14px"
               p="6px 16px"
               onClick={() => {
+                amplitude.track("Query Clicked");
                 refetch();
               }}
               isDisabled={jsonValidate(msg) !== null}
