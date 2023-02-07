@@ -182,7 +182,7 @@ export const useContractListByCodeId = (
   }, [codeId, indexerGraphClient, offset, pageSize]);
 
   return useQuery(
-    ["contract_list_by_code_id", codeId, indexerGraphClient],
+    ["contract_list_by_code_id", codeId, indexerGraphClient, offset, pageSize],
     queryFn,
     {
       keepPreviousData: true,

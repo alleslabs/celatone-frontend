@@ -5,7 +5,6 @@ import axios from "axios";
 import { useCallback } from "react";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
-import { useChainId } from "lib/hooks";
 import type {
   Contract,
   Option,
@@ -24,7 +23,6 @@ const parseContract = (raw: RawContract): Contract => ({
 
 export const usePublicProjects = () => {
   const { currentChainRecord } = useWallet();
-  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!currentChainRecord)
@@ -44,14 +42,13 @@ export const usePublicProjects = () => {
       );
   }, [currentChainRecord]);
 
-  return useQuery(["public_project", chainId], queryFn, {
+  return useQuery(["public_project", currentChainRecord], queryFn, {
     keepPreviousData: true,
   });
 };
 
 export const usePublicProjectBySlug = (slug: Option<string>) => {
   const { currentChainRecord } = useWallet();
-  const chainId = useChainId();
 
   const queryFn = useCallback(async (): Promise<Option<PublicProjectInfo>> => {
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
@@ -69,17 +66,20 @@ export const usePublicProjectBySlug = (slug: Option<string>) => {
       }));
   }, [currentChainRecord, slug]);
 
-  return useQuery(["public_project_by_slug", chainId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!slug,
-  });
+  return useQuery(
+    ["public_project_by_slug", slug, currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!slug,
+    }
+  );
 };
 
 export const usePublicProjectByContractAddress = (
   contractAddress: Option<string>
 ): UseQueryResult<PublicInfo> => {
   const { currentChainRecord } = useWallet();
-  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!contractAddress)
@@ -97,10 +97,14 @@ export const usePublicProjectByContractAddress = (
       .then(({ data: projectInfo }) => projectInfo);
   }, [contractAddress, currentChainRecord]);
 
-  return useQuery(["public_project_by_contract_address", chainId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!contractAddress,
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    ["public_project_by_contract_address", contractAddress, currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
