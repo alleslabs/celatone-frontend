@@ -109,7 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#145](https://github.com/alleslabs/celatone-frontend/pull/145/) Disable closing on some modal when click on modal overlay.
+- [#145](https://github.com/alleslabs/celatone-frontend/pull/145) Disable closing on some modal when click on modal overlay
 - [#147](https://github.com/alleslabs/celatone-frontend/pull/147) Add empty state for select code modal
 - [#140](https://github.com/alleslabs/celatone-frontend/pull/140) Add placeholder texts to upload&instantiate, save code, and save&edit contract
 - [#139](https://github.com/alleslabs/celatone-frontend/pull/139) Fix Date to Dayjs
@@ -127,6 +127,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#156](https://github.com/alleslabs/celatone-frontend/pull/156) Fix json editor cannot focus by clicking on empty area
+- [#166](https://github.com/alleslabs/celatone-frontend/pull/166) Change default list when editing contract information
+- [#164](https://github.com/alleslabs/celatone-frontend/pull/164) Add observer in code details page
+- [#151](https://github.com/alleslabs/celatone-frontend/pull/151) Fix state reset on clicking wallet button
+- [#158](https://github.com/alleslabs/celatone-frontend/pull/158) Change dayjs back to Date type as it is incompatible with mobx storage
+- [#153](https://github.com/alleslabs/celatone-frontend/pull/153) Fix network dropdown blocked by filter topic
 - [#137](https://github.com/alleslabs/celatone-frontend/pull/137) Throw error instead of returning undefined in query function
 - [#148](https://github.com/alleslabs/celatone-frontend/pull/148) Fix scrolling to table header on first land
 - [#146](https://github.com/alleslabs/celatone-frontend/pull/146) Fix contract select always fetch when theres no contract address, edit query keys
