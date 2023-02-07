@@ -148,7 +148,7 @@ export const EditableCell = ({
                 fontWeight={isShowInputValue ? "600" : "400"}
                 color={isShowInputValue ? "text.main" : "text.dark"}
               >
-                {isShowInputValue ? inputValue : defaultValue}{" "}
+                {isShowInputValue ? inputValue : defaultValue}
               </Text>
               {showName && (
                 <Text
