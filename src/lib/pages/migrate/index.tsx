@@ -7,6 +7,7 @@ import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
@@ -152,6 +153,10 @@ const Migrate = () => {
           <Stepper mode="migrate" currentStep={2} />
         </Box>
       )}
+      <ConnectWalletAlert
+        mb="24px"
+        subtitle="You need to connect your wallet to perform this action"
+      />
       {/* Select Migrate Contract modal */}
       <ContractSelectSection
         mode="only-admin"
