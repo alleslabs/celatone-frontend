@@ -24,6 +24,10 @@ const VotingEndTimeRender = ({
   depositEndTime: ContractRelatedProposals["depositEndTime"];
   status: ContractRelatedProposals["status"];
 }) => {
+  if (status === ProposalStatus.INACTIVE) {
+    return <Text color="text.dark">N/A</Text>;
+  }
+
   const isDepositPeriod = status === ProposalStatus.DEPOSIT_PERIOD;
   return (
     <Flex
@@ -53,7 +57,13 @@ const VotingEndTimeRender = ({
 
 const ResolvedHeightRender = ({
   resolvedHeight,
-}: Pick<RelatedProposalsRowProps["proposal"], "resolvedHeight">) => {
+  isInactive,
+}: {
+  resolvedHeight: RelatedProposalsRowProps["proposal"]["resolvedHeight"];
+  isInactive: boolean;
+}) => {
+  if (isInactive) return <Text color="text.dark">N/A</Text>;
+
   switch (resolvedHeight) {
     case undefined:
       return <Text color="text.dark">N/A</Text>;
@@ -75,10 +85,12 @@ export const RelatedProposalsRow = ({
   templateColumns,
 }: RelatedProposalsRowProps) => {
   const getAddressType = useGetAddressType();
+  const isInactive = proposal.status === ProposalStatus.INACTIVE;
   return (
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <ExplorerLink
+          isReadOnly={isInactive}
           type="proposal_id"
           value={proposal.proposalId.toString()}
           canCopyWithHover
@@ -96,7 +108,10 @@ export const RelatedProposalsRow = ({
         />
       </TableRow>
       <TableRow>
-        <ResolvedHeightRender resolvedHeight={proposal.resolvedHeight} />
+        <ResolvedHeightRender
+          resolvedHeight={proposal.resolvedHeight}
+          isInactive={isInactive}
+        />
       </TableRow>
       <TableRow>
         <Text color="text.dark">{proposal.type}</Text>

@@ -40,6 +40,7 @@ import {
   parseTxHash,
   parseTxHashOpt,
   snakeToCamel,
+  unwrap,
 } from "lib/utils";
 
 interface InstantiateDetail {
@@ -331,24 +332,24 @@ export const useTxsByContractAddress = (
         offset,
         pageSize,
       })
-      .then(({ contract_transactions }) =>
-        contract_transactions.map((contractTx) => ({
-          hash: parseTxHash(contractTx.transaction.hash),
-          messages: snakeToCamel(contractTx.transaction.messages),
-          sender: contractTx.transaction.account.address as Addr,
-          height: contractTx.transaction.block.height,
-          created: parseDateDefault(contractTx.transaction.block?.timestamp),
-          success: contractTx.transaction.success,
+      .then(({ contract_transactions_view }) =>
+        contract_transactions_view.map((contractTx) => ({
+          hash: parseTxHash(contractTx.hash),
+          messages: snakeToCamel(contractTx.messages),
+          sender: contractTx.sender as Addr,
+          height: contractTx.height,
+          created: parseDateDefault(contractTx.timestamp),
+          success: contractTx.success,
           actionMsgType: getActionMsgType([
-            contractTx.transaction.is_execute,
-            contractTx.transaction.is_instantiate,
-            contractTx.transaction.is_send,
-            contractTx.transaction.is_store_code,
-            contractTx.transaction.is_migrate,
-            contractTx.transaction.is_update_admin,
-            contractTx.transaction.is_clear_admin,
+            unwrap(contractTx.is_execute),
+            unwrap(contractTx.is_instantiate),
+            unwrap(contractTx.is_send),
+            unwrap(contractTx.is_store_code),
+            unwrap(contractTx.is_migrate),
+            unwrap(contractTx.is_update_admin),
+            unwrap(contractTx.is_clear_admin),
           ]),
-          isIbc: contractTx.transaction.is_ibc,
+          isIbc: contractTx.is_ibc,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);

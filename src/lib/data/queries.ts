@@ -149,6 +149,7 @@ export const getExecuteTxsByContractAddress = graphql(`
     $offset: Int!
     $pageSize: Int!
   ) {
+    # TODO: change table to contract_transactions_view
     contract_transactions(
       where: {
         contract: { address: { _eq: $contractAddress } }
@@ -270,7 +271,7 @@ export const getContractListByAdmin = graphql(`
   query getContractListByAdmin($address: String!) {
     contracts(
       where: { account: { address: { _eq: $address } } }
-      order_by: { id: desc }
+      order_by: { transaction: { block: { timestamp: desc } } }
     ) {
       address
       label
@@ -285,7 +286,7 @@ export const getContractListByCodeId = graphql(`
   query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
       where: { code_id: { _eq: $codeId } }
-      order_by: { id: desc }
+      order_by: { transaction: { block: { timestamp: desc } } }
       offset: $offset
       limit: $pageSize
     ) {
@@ -358,32 +359,26 @@ export const getTxsByContractAddress = graphql(`
     $offset: Int!
     $pageSize: Int!
   ) {
-    contract_transactions(
-      where: { contract: { address: { _eq: $contractAddress } } }
-      order_by: { transaction: { block: { timestamp: desc } } }
+    contract_transactions_view(
+      where: { contract_address: { _eq: $contractAddress } }
+      order_by: { timestamp: desc }
       offset: $offset
       limit: $pageSize
     ) {
-      transaction {
-        hash
-        success
-        messages
-        account {
-          address
-        }
-        block {
-          height
-          timestamp
-        }
-        is_execute
-        is_ibc
-        is_instantiate
-        is_send
-        is_store_code
-        is_migrate
-        is_update_admin
-        is_clear_admin
-      }
+      hash
+      success
+      messages
+      sender
+      height
+      timestamp
+      is_execute
+      is_ibc
+      is_instantiate
+      is_send
+      is_store_code
+      is_migrate
+      is_update_admin
+      is_clear_admin
     }
   }
 `);
