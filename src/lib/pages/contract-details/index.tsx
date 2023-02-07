@@ -48,7 +48,7 @@ const ContractDetailsBody = observer(
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress);
 
-    if (!contractData) return <InvalidContract />;
+    if (!contractData?.instantiateInfo) return <InvalidContract />;
 
     return (
       <>
