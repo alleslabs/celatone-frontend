@@ -7,14 +7,21 @@ interface NavigationArgs {
   pathname: string;
   query?: ParsedUrlQueryInput;
   options?: Parameters<Pick<Router, "push">["push"]>[2];
+  replace?: boolean;
 }
 
 export const useInternalNavigate = () => {
   const router = useRouter();
 
   return useCallback(
-    ({ pathname, query = {}, options = {} }: NavigationArgs) => {
-      router.push(
+    ({
+      pathname,
+      query = {},
+      options = {},
+      replace = false,
+    }: NavigationArgs) => {
+      const routerFn = replace ? router.replace : router.push;
+      routerFn(
         {
           pathname: `/[network]${pathname}`,
           query: {
