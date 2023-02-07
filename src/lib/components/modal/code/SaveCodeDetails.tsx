@@ -1,16 +1,16 @@
 import type { CodeLocalInfo } from "lib/stores/code";
 
-import { CodeDetailsTemplate } from "./CodeDetailsTemplate";
+import { CodeDetailsTemplateModal } from "./CodeDetailsTemplate";
 
-interface SaveCodeDetailsProps {
+interface SaveCodeDetailsModalProps {
   codeLocalInfo: CodeLocalInfo;
   triggerElement: JSX.Element;
 }
-export const SaveCodeDetails = ({
+export const SaveCodeDetailsModal = ({
   codeLocalInfo,
   triggerElement,
-}: SaveCodeDetailsProps) => (
-  <CodeDetailsTemplate
+}: SaveCodeDetailsModalProps) => (
+  <CodeDetailsTemplateModal
     title="Save New Code"
     helperText={`Save other stored codes to your "Saved Codes" list`}
     mainBtnTitle="Save New Code"

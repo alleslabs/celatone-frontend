@@ -15,8 +15,8 @@ import { MdSearchOff } from "react-icons/md";
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { RemoveCode } from "lib/components/modal/code/RemoveCode";
-import { SaveOrRemoveCode } from "lib/components/modal/code/SaveOrRemoveCode";
+import { RemoveCodeModal } from "lib/components/modal/code/RemoveCode";
+import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
 import {
@@ -179,9 +179,12 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
               codeId={code.id}
             />
             {isRemovable ? (
-              <RemoveCode codeId={code.id} description={code.description} />
+              <RemoveCodeModal
+                codeId={code.id}
+                description={code.description}
+              />
             ) : (
-              <SaveOrRemoveCode codeInfo={code} />
+              <SaveOrRemoveCodeModal codeInfo={code} />
             )}
           </HStack>
         </Flex>

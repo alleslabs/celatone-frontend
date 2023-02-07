@@ -21,7 +21,7 @@ interface RemoveCodeModalProps {
   trigger?: JSX.Element;
 }
 
-export function RemoveCode({
+export function RemoveCodeModal({
   codeId,
   description,
   trigger = (

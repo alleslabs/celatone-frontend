@@ -96,7 +96,7 @@ const Header = () => {
               <Icon as={FiChevronDown} />
             </Flex>
           </MenuButton>
-          <MenuList>
+          <MenuList zIndex="dropdown">
             {getSupportedChainNames().map((chainName) => (
               <MenuItem
                 key={chainName}

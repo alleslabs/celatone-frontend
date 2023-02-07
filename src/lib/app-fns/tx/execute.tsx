@@ -5,7 +5,6 @@ import type {
 } from "@cosmjs/cosmwasm-stargate";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
-import dayjs from "dayjs";
 import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
@@ -13,7 +12,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Activity } from "lib/stores/contract";
 import type { ContractAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { encode, formatUFee } from "lib/utils";
+import { encode, formatUFee, getCurrentDate } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -53,7 +52,7 @@ export const executeContractTx = ({
         sender: address,
         contractAddress,
         msg: encode(JSON.stringify(msg)), // base64
-        timestamp: dayjs(),
+        timestamp: getCurrentDate(),
       });
       return {
         value: null,

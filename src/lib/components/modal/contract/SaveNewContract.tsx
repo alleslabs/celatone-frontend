@@ -33,11 +33,14 @@ interface SaveNewContractDetail extends OffchainDetail {
   label: string;
 }
 
-interface SaveNewContractProps {
+interface SaveNewContractModalProps {
   list: LVPair;
   buttonProps: ButtonProps;
 }
-export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
+export function SaveNewContractModal({
+  list,
+  buttonProps,
+}: SaveNewContractModalProps) {
   const endpoint = useLCDEndpoint();
   const { indexerGraphClient } = useCelatoneApp();
   const { getContractLocalInfo } = useContractStore();
