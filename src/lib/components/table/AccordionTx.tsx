@@ -41,7 +41,7 @@ export const AccordionTx = ({
     <TableRow
       h="40px"
       borderBottom="none"
-      pl="256px"
+      pl="267px"
       gap={3}
       _hover={{ background: "pebble.800" }}
       transition="all .25s ease-in-out"

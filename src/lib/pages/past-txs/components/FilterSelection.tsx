@@ -92,6 +92,10 @@ export const FilterSelection = observer(
         result.some((selectedOption) => selectedOption === option);
 
       const selectOption = (option: string) => {
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+
         if (isOptionSelected(option)) {
           setResult(option, false);
         } else {
