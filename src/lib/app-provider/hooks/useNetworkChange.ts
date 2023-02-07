@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
 import { getChainNameByNetwork } from "lib/data";
+import type { Network } from "lib/data";
+import { getFirstQueryParam } from "lib/utils";
 
 export const useNetworkChange = () => {
   const router = useRouter();
@@ -10,18 +12,21 @@ export const useNetworkChange = () => {
   const networkRef = useRef<string>();
 
   useEffect(() => {
-    const networkRoute = (router.query.network as string) || "mainnet";
+    let networkRoute = getFirstQueryParam(
+      router.query.network,
+      "mainnet"
+    ) as Network;
+    if (
+      networkRoute !== "mainnet" &&
+      networkRoute !== "testnet" &&
+      networkRoute !== "localnet"
+    )
+      networkRoute = "mainnet";
 
     if (networkRoute !== networkRef.current) {
       networkRef.current = networkRoute;
-      try {
-        const chainName = getChainNameByNetwork(networkRoute);
-        if (currentChainName !== chainName) setCurrentChain(chainName);
-      } catch {
-        /**
-         * @remarks Allows false chain name, will continue to operate as testnet
-         */
-      }
+      const chainName = getChainNameByNetwork(networkRoute);
+      if (currentChainName !== chainName) setCurrentChain(chainName);
     }
   }, [router, currentChainName, setCurrentChain]);
 };
