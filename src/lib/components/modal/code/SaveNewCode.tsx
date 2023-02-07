@@ -15,11 +15,11 @@ import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { getCodeIdInfo } from "lib/services/code";
 import { getDescriptionDefault } from "lib/utils";
 
-interface ModalProps {
+interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
 }
 
-export function SaveNewCodeModal({ buttonProps }: ModalProps) {
+export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   /* STATE */
   const [codeId, setCodeId] = useState("");
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({

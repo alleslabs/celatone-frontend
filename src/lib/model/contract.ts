@@ -3,7 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
+import {
+  useChainId,
+  useCodeStore,
+  useContractStore,
+  useLCDEndpoint,
+} from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
 import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
 import {
@@ -105,6 +110,7 @@ export const useContractData = (
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
+  const chainId = useChainId();
 
   const { data: instantiateInfo } = useQuery(
     ["query", "instantiate_info", endpoint, contractAddress],
@@ -120,7 +126,7 @@ export const useContractData = (
   );
 
   const { data: contractBalances } = useQuery(
-    ["query", "contractBalances", contractAddress],
+    ["query", "contractBalances", contractAddress, chainId],
     async () =>
       queryContractBalances(
         currentChainRecord?.name,

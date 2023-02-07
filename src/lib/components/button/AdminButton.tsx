@@ -16,7 +16,7 @@ import {
   MdReadMore,
 } from "react-icons/md";
 
-import { ClearAdminContract } from "../modal/contract/ClearAdminContract";
+import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { useInternalNavigate } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
@@ -86,7 +86,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         >
           Update Admin
         </StyledMenuItem>
-        <ClearAdminContract
+        <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
             <StyledMenuItem

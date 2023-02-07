@@ -25,11 +25,11 @@ import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
-  AddToOtherList,
-  EditContractDetails,
-  RemoveContract,
+  AddToOtherListModal,
+  EditContractDetailsModal,
+  RemoveContractModal,
 } from "lib/components/modal/contract";
-import { ClearAdminContract } from "lib/components/modal/contract/ClearAdminContract";
+import { ClearAdminModal } from "lib/components/modal/contract/ClearAdmin";
 import {
   TableContainer,
   TableHeaderNoBorder,
@@ -73,7 +73,7 @@ export const ContractListTable = ({
   );
 
   return (
-    <TableContainer>
+    <TableContainer position="relative">
       <Grid
         templateColumns={TEMPLATE_COLUMNS}
         px="48px"
@@ -167,7 +167,7 @@ export const ContractListTable = ({
                       />
                     </MenuButton>
                     <MenuList>
-                      <EditContractDetails
+                      <EditContractDetailsModal
                         contractLocalInfo={item}
                         triggerElement={
                           <StyledMenuItem
@@ -177,7 +177,7 @@ export const ContractListTable = ({
                           </StyledMenuItem>
                         }
                       />
-                      <AddToOtherList
+                      <AddToOtherListModal
                         contractLocalInfo={item}
                         triggerElement={
                           <StyledMenuItem
@@ -204,7 +204,7 @@ export const ContractListTable = ({
                       >
                         Update Admin
                       </StyledMenuItem>
-                      <ClearAdminContract
+                      <ClearAdminModal
                         contractAddress={item.contractAddress}
                         triggerElement={
                           <StyledMenuItem
@@ -223,7 +223,7 @@ export const ContractListTable = ({
                       {!!contractRemovalInfo && (
                         <>
                           <MenuDivider />
-                          <RemoveContract
+                          <RemoveContractModal
                             contractLocalInfo={item}
                             contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{

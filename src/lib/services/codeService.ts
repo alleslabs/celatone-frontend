@@ -26,6 +26,7 @@ import { parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getCodeListQueryDocument)
@@ -119,6 +120,7 @@ export const useCodeInfoByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<Option<Omit<CodeData, "chainId">>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!codeId) throw new Error("Code ID not found (useCodeInfoByCodeId)");
 
@@ -150,7 +152,7 @@ export const useCodeInfoByCodeId = (
         };
       });
   }, [codeId, indexerGraphClient]);
-  return useQuery(["code_info_by_id", codeId], queryFn, {
+  return useQuery(["code_info_by_id", codeId, indexerGraphClient], queryFn, {
     keepPreviousData: true,
     enabled: !!codeId,
   });
@@ -162,6 +164,7 @@ export const useContractListByCodeId = (
   pageSize: number
 ): UseQueryResult<Option<ContractInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!codeId) throw new Error("Code ID not found (useContractListByCodeId)");
 
@@ -183,16 +186,21 @@ export const useContractListByCodeId = (
       );
   }, [codeId, indexerGraphClient, offset, pageSize]);
 
-  return useQuery(["contract_list_by_code_id", codeId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
+  return useQuery(
+    ["contract_list_by_code_id", codeId, indexerGraphClient, offset, pageSize],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!codeId,
+    }
+  );
 };
 
 export const useContractListCountByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!codeId)
       throw new Error("Code ID not found (useContractListCountByCodeId)");
@@ -204,8 +212,12 @@ export const useContractListCountByCodeId = (
       .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
   }, [codeId, indexerGraphClient]);
 
-  return useQuery(["contract_list_count_by_user", codeId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
+  return useQuery(
+    ["contract_list_count_by_user", codeId, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!codeId,
+    }
+  );
 };
