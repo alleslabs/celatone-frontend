@@ -3,7 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { SaveNewContract } from "lib/components/modal/contract";
+import { SaveNewContractModal } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
@@ -29,7 +29,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
     <Flex alignItems="center" gap="4" color="text.dark" direction="column">
       <Flex align="center">
         Save existing contracts to the list with
-        <SaveNewContract
+        <SaveNewContractModal
           list={list}
           buttonProps={{
             variant: "outline-primary",

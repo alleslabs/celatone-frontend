@@ -26,8 +26,8 @@ import {
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { SaveNewContract } from "lib/components/modal/contract";
-import { EditListName, RemoveList } from "lib/components/modal/list";
+import { SaveNewContractModal } from "lib/components/modal/contract";
+import { EditListNameModal, RemoveListModal } from "lib/components/modal/list";
 import { ContractListDetail } from "lib/components/modal/select-contract";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
@@ -112,7 +112,7 @@ const ContractsByList = observer(() => {
                 Deploy New Contract
               </Button>
             ) : (
-              <SaveNewContract
+              <SaveNewContractModal
                 key={listSlug}
                 list={{
                   label: contractListInfo.name,
@@ -136,7 +136,7 @@ const ContractsByList = observer(() => {
                   />
                 </MenuButton>
                 <MenuList>
-                  <EditListName
+                  <EditListNameModal
                     list={{
                       label: contractListInfo.name,
                       value: contractListInfo.slug,
@@ -147,7 +147,7 @@ const ContractsByList = observer(() => {
                     }}
                     reroute
                   />
-                  <RemoveList
+                  <RemoveListModal
                     list={{
                       label: contractListInfo.name,
                       value: contractListInfo.slug,

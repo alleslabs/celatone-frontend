@@ -17,7 +17,7 @@ interface EditListNameProps {
   menuItemProps: MenuItemProps;
   reroute?: boolean;
 }
-export function EditListName({
+export function EditListNameModal({
   list,
   menuItemProps,
   reroute = false,

@@ -15,7 +15,7 @@ import {
 import dayjs from "dayjs";
 import { MdMoreHoriz, MdMode, MdDelete } from "react-icons/md";
 
-import { EditListName, RemoveList } from "../list";
+import { EditListNameModal, RemoveListModal } from "../list";
 import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
@@ -95,14 +95,14 @@ export const ContractListCard = ({
               <MdMoreHoriz />
             </MenuButton>
             <MenuList>
-              <EditListName
+              <EditListNameModal
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
                   icon: <StyledIcon as={MdMode} color="pebble.600" />,
                   children: "Edit list name",
                 }}
               />
-              <RemoveList
+              <RemoveListModal
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
                   icon: <StyledIcon as={MdDelete} color="error.light" />,

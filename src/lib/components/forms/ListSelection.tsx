@@ -18,7 +18,7 @@ import type { CSSProperties } from "react";
 import { useState, useRef, forwardRef } from "react";
 import { MdCheck, MdClose, MdAdd } from "react-icons/md";
 
-import { CreateNewList } from "lib/components/modal/list";
+import { CreateNewListModal } from "lib/components/modal/list";
 import { useContractStore, useUserKey } from "lib/hooks";
 import type { LVPair } from "lib/types";
 import { formatSlugName, mergeRefs } from "lib/utils";
@@ -235,7 +235,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               ))}
               {/* creation section */}
               {canCreateOption && (
-                <CreateNewList
+                <CreateNewListModal
                   trigger={
                     <ListItem
                       w="full"

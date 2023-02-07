@@ -3,8 +3,8 @@ import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
 import type { CodeInfo } from "lib/types";
 
-import { RemoveCode } from "./RemoveCode";
-import { SaveCodeDetails } from "./SaveCodeDetails";
+import { RemoveCodeModal } from "./RemoveCode";
+import { SaveCodeDetailsModal } from "./SaveCodeDetails";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
@@ -19,9 +19,11 @@ interface SaveOrRemoveCodeModalProps {
   codeInfo: CodeInfo;
 }
 
-export function SaveOrRemoveCode({ codeInfo }: SaveOrRemoveCodeModalProps) {
+export function SaveOrRemoveCodeModal({
+  codeInfo,
+}: SaveOrRemoveCodeModalProps) {
   return codeInfo.isSaved ? (
-    <RemoveCode
+    <RemoveCodeModal
       codeId={codeInfo.id}
       description={codeInfo.description}
       trigger={
@@ -33,7 +35,7 @@ export function SaveOrRemoveCode({ codeInfo }: SaveOrRemoveCodeModalProps) {
       }
     />
   ) : (
-    <SaveCodeDetails
+    <SaveCodeDetailsModal
       codeLocalInfo={codeInfo}
       triggerElement={
         <StyledIconButton

@@ -12,18 +12,18 @@ import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 import { getDescriptionDefault, getTagsDefault } from "lib/utils";
 
-interface ContractDetailsTemplateProps {
+interface ContractDetailsTemplateModalProps {
   title: string;
   subtitle?: string;
   contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
 }
-export const ContractDetailsTemplate = ({
+export const ContractDetailsTemplateModal = ({
   title,
   subtitle,
   contractLocalInfo,
   triggerElement,
-}: ContractDetailsTemplateProps) => {
+}: ContractDetailsTemplateModalProps) => {
   const defaultValues = useMemo(() => {
     return {
       name: contractLocalInfo.name ?? "",
