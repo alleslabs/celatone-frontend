@@ -39,12 +39,11 @@ interface MenuInfo {
 // TODO: move to proper place
 const PERMISSIONED_CHAINS = ["osmosis", "osmosistestnet"];
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
-
   const { getSavedPublicProjects } = usePublicProjectStore();
-
-  const { currentChainName } = useWallet();
+  const { currentChainName, currentChainRecord } = useWallet();
 
   const getAllCodesShortCut = () =>
     PERMISSIONED_CHAINS.includes(currentChainName)
@@ -124,7 +123,10 @@ const Navbar = observer(() => {
         },
       ],
     },
-    {
+  ];
+
+  if (currentChainRecord?.chain.network_type === "mainnet") {
+    navMenu.push({
       category: "Public Projects",
       submenu: [
         ...getSavedPublicProjects().map((list) => ({
@@ -138,9 +140,8 @@ const Navbar = observer(() => {
           icon: MdMoreHoriz,
         },
       ],
-    },
-  ];
-
+    });
+  }
   const router = useRouter();
   const { network } = router.query;
   const pathName = router.asPath;
