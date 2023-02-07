@@ -74,7 +74,7 @@ export const SelectContractInstantiator = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", searchContract],
+    ["query", "contract", searchContract, endpoint],
     async () => queryContract(endpoint, searchContract as ContractAddr),
     {
       enabled: false,
