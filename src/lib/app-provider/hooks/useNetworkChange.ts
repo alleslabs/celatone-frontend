@@ -12,21 +12,24 @@ export const useNetworkChange = () => {
   const networkRef = useRef<string>();
 
   useEffect(() => {
-    let networkRoute = getFirstQueryParam(
-      router.query.network,
-      "mainnet"
-    ) as Network;
-    if (
-      networkRoute !== "mainnet" &&
-      networkRoute !== "testnet" &&
-      networkRoute !== "localnet"
-    )
-      networkRoute = "mainnet";
+    if (router.isReady) {
+      let networkRoute = getFirstQueryParam(
+        router.query.network,
+        "mainnet"
+      ) as Network;
 
-    if (networkRoute !== networkRef.current) {
-      networkRef.current = networkRoute;
-      const chainName = getChainNameByNetwork(networkRoute);
-      if (currentChainName !== chainName) setCurrentChain(chainName);
+      if (
+        networkRoute !== "mainnet" &&
+        networkRoute !== "testnet" &&
+        networkRoute !== "localnet"
+      )
+        networkRoute = "mainnet";
+
+      if (networkRoute !== networkRef.current) {
+        networkRef.current = networkRoute;
+        const chainName = getChainNameByNetwork(networkRoute);
+        if (currentChainName !== chainName) setCurrentChain(chainName);
+      }
     }
   }, [router, currentChainName, setCurrentChain]);
 };
