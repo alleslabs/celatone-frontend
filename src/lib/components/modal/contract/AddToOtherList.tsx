@@ -10,13 +10,13 @@ import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
-interface AddToOtherListProps {
+interface AddToOtherListModalProps {
   contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
 }
 
-export const AddToOtherList = observer(
-  ({ contractLocalInfo, triggerElement }: AddToOtherListProps) => {
+export const AddToOtherListModal = observer(
+  ({ contractLocalInfo, triggerElement }: AddToOtherListModalProps) => {
     const [contractLists, setContractLists] = useState<LVPair[]>([]);
 
     const handleSave = useHandleContractSave({

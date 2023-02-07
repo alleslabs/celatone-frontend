@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { MdOutlineAdd } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { CreateNewList } from "lib/components/modal/list";
+import { CreateNewListModal } from "lib/components/modal/list";
 import { AllContractLists } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
 import { useContractStore } from "lib/hooks";
@@ -25,7 +25,7 @@ const AllContractListsPage = observer(() => {
           <Heading as="h5" variant="h5">
             Contract lists
           </Heading>
-          <CreateNewList
+          <CreateNewListModal
             buttonProps={{
               variant: "outline-primary",
               rightIcon: <MdOutlineAdd />,
