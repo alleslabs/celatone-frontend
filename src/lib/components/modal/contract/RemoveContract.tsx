@@ -8,7 +8,7 @@ import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 import { truncate } from "lib/utils";
 
-interface ModalProps {
+interface RemoveContractProps {
   contractLocalInfo: ContractLocalInfo;
   contractRemovalInfo: LVPair;
   menuItemProps: MenuItemProps;
@@ -18,7 +18,7 @@ export function RemoveContract({
   contractLocalInfo,
   contractRemovalInfo,
   menuItemProps,
-}: ModalProps) {
+}: RemoveContractProps) {
   const displayName = contractLocalInfo.name
     ? contractLocalInfo.name
     : truncate(contractLocalInfo.contractAddress);
