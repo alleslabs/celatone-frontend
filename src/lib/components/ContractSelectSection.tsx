@@ -12,7 +12,7 @@ import type { ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
-import { EditContractDetails, SaveContractDetails } from "./modal";
+import { EditContractDetailsModal, SaveContractDetailsModal } from "./modal";
 import {
   SelectContractAdmin,
   SelectContractInstantiator,
@@ -68,7 +68,7 @@ const ContractDetailsButton = ({
 }: ContractDetailsButtonProps) => {
   const isExist = !!contractLocalInfo?.lists;
   return isExist ? (
-    <EditContractDetails
+    <EditContractDetailsModal
       contractLocalInfo={contractLocalInfo}
       triggerElement={
         <Button
@@ -81,7 +81,7 @@ const ContractDetailsButton = ({
       }
     />
   ) : (
-    <SaveContractDetails
+    <SaveContractDetailsModal
       contractLocalInfo={{
         contractAddress,
         instantiator,

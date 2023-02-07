@@ -21,7 +21,7 @@ interface CodeDetailsBodyProps {
 
 const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
-const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
+const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
   const data = useCodeData(codeId);
@@ -61,7 +61,7 @@ const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
       )}
     </>
   );
-};
+});
 
 const CodeDetails = observer(() => {
   const router = useRouter();

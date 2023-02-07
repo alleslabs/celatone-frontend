@@ -11,7 +11,7 @@ import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useContractStore, useUserKey } from "lib/hooks";
 import { shortenName } from "lib/utils";
 
-interface CreateNewListProps {
+interface CreateNewListModalProps {
   buttonProps?: ButtonProps;
   trigger?: ReactNode;
   onCreate?: (listName: string) => void;
@@ -19,13 +19,13 @@ interface CreateNewListProps {
   inputValue?: string;
 }
 
-export function CreateNewList({
+export function CreateNewListModal({
   buttonProps,
   trigger,
   inputValue,
   onCreate,
   onClose,
-}: CreateNewListProps) {
+}: CreateNewListModalProps) {
   const userKey = useUserKey();
   const { createNewList, isContractListExist } = useContractStore();
 

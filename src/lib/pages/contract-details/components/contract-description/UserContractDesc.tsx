@@ -5,7 +5,7 @@ import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { ShowMoreButton } from "lib/components/button";
-import { EditContractDetails } from "lib/components/modal";
+import { EditContractDetailsModal } from "lib/components/modal";
 import type { ContractData } from "lib/model/contract";
 import { textLine } from "lib/utils";
 
@@ -33,7 +33,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const renderEditContractButton = () => {
     if (!contractData.instantiateInfo) return null;
     return (
-      <EditContractDetails
+      <EditContractDetailsModal
         contractLocalInfo={{
           contractAddress: contractData.instantiateInfo.contractAddress,
           instantiator: contractData.instantiateInfo.instantiator,
