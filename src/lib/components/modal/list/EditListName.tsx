@@ -12,16 +12,16 @@ import { useContractStore, useUserKey } from "lib/hooks";
 import type { LVPair } from "lib/types";
 import { formatSlugName, shortenName } from "lib/utils";
 
-interface EditListProps {
+interface EditListNameProps {
   list: LVPair;
   menuItemProps: MenuItemProps;
   reroute?: boolean;
 }
-export function EditList({
+export function EditListName({
   list,
   menuItemProps,
   reroute = false,
-}: EditListProps) {
+}: EditListNameProps) {
   const userKey = useUserKey();
   const { renameList, isContractListExist } = useContractStore();
   const navigate = useInternalNavigate();
