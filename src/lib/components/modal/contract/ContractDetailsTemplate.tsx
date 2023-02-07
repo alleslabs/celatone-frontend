@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Flex, Text } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -34,10 +35,10 @@ export const ContractDetailsTemplateModal = ({
     };
   }, [
     contractLocalInfo.description,
-    contractLocalInfo.lists,
+    JSON.stringify(contractLocalInfo.lists),
     contractLocalInfo.name,
     contractLocalInfo.tags,
-    defaultList,
+    JSON.stringify(defaultList),
   ]);
 
   const {
@@ -53,8 +54,7 @@ export const ContractDetailsTemplateModal = ({
 
   const resetForm = useCallback(
     () => reset(defaultValues),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(defaultValues), reset]
+    [defaultValues, reset]
   );
 
   useEffect(() => {
