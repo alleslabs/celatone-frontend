@@ -1,3 +1,4 @@
+import { DEFAULT_LIST } from "lib/data";
 import type { ContractLocalInfo } from "lib/stores/contract";
 
 import { ContractDetailsTemplate } from "./ContractDetailsTemplate";
@@ -14,6 +15,6 @@ export const SaveContractDetails = ({
     title="Save Contract Details"
     contractLocalInfo={contractLocalInfo}
     triggerElement={triggerElement}
-    isSave
+    defaultList={DEFAULT_LIST}
   />
 );
