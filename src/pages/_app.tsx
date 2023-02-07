@@ -9,6 +9,7 @@ import { enableStaticRendering } from "mobx-react-lite";
 import { DefaultSeo } from "next-seo";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import Script from "next/script";
 
 import defaultSEOConfig from "../../next-seo.config";
 import {
@@ -46,6 +47,21 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Chakra>
+      <Script
+        strategy="lazyOnload"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+      />
+      <Script strategy="lazyOnload" id="google-tag-manager">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+            page_path: window.location.pathname,
+          });
+        `}
+      </Script>
+
       <QueryClientProvider client={queryClient}>
         <WalletProvider
           chains={[...chains, terra2testnet]}
