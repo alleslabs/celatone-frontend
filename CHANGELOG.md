@@ -109,6 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#170](https://github.com/alleslabs/celatone-frontend/pull/170) Change gql query for better speed, remove unwrap and default values, and better handle data rendering
 - [#145](https://github.com/alleslabs/celatone-frontend/pull/145) Disable closing on some modal when click on modal overlay
 - [#147](https://github.com/alleslabs/celatone-frontend/pull/147) Add empty state for select code modal
 - [#140](https://github.com/alleslabs/celatone-frontend/pull/140) Add placeholder texts to upload&instantiate, save code, and save&edit contract
