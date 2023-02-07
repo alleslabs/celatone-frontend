@@ -4,8 +4,8 @@ import { MdBookmark, MdMode } from "react-icons/md";
 
 import type { CodeLocalInfo } from "lib/stores/code";
 
-import { EditCodeDetails } from "./EditCodeDetails";
-import { SaveCodeDetails } from "./SaveCodeDetails";
+import { EditCodeDetailsModal } from "./EditCodeDetails";
+import { SaveCodeDetailsModal } from "./SaveCodeDetails";
 
 interface SaveOrEditCodeModalProps {
   mode: "save" | "edit";
@@ -21,7 +21,7 @@ const StyledIcon = chakra(Icon, {
 export const SaveOrEditCodeModal = observer(
   ({ mode, codeLocalInfo }: SaveOrEditCodeModalProps) => {
     return mode === "save" ? (
-      <SaveCodeDetails
+      <SaveCodeDetailsModal
         codeLocalInfo={codeLocalInfo}
         triggerElement={
           <Button
@@ -33,7 +33,7 @@ export const SaveOrEditCodeModal = observer(
         }
       />
     ) : (
-      <EditCodeDetails
+      <EditCodeDetailsModal
         codeLocalInfo={codeLocalInfo}
         triggerElement={
           <Button variant="ghost-gray" leftIcon={<StyledIcon as={MdMode} />}>

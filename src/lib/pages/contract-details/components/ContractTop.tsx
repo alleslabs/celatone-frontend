@@ -16,9 +16,9 @@ import { useInternalNavigate } from "lib/app-provider";
 import { AdminButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
-  AddToOtherList,
-  EditContractDetails,
-  SaveContractDetails,
+  AddToOtherListModal,
+  EditContractDetailsModal,
+  SaveContractDetailsModal,
 } from "lib/components/modal";
 import type { ContractData } from "lib/model/contract";
 import type { ContractAddr } from "lib/types";
@@ -54,7 +54,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
   const renderSaveButton = () => {
     if (contractLocalInfo) {
       return (
-        <AddToOtherList
+        <AddToOtherListModal
           contractLocalInfo={contractLocalInfo}
           triggerElement={
             <IconButton
@@ -72,7 +72,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     }
     if (instantiateInfo) {
       return (
-        <SaveContractDetails
+        <SaveContractDetailsModal
           contractLocalInfo={{
             contractAddress: contractAddress as ContractAddr,
             instantiator: instantiateInfo.instantiator,
@@ -166,7 +166,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         </Button>
         <Flex>
           {contractLocalInfo && (
-            <EditContractDetails
+            <EditContractDetailsModal
               contractLocalInfo={contractLocalInfo}
               triggerElement={
                 <IconButton

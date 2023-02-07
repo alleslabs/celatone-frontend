@@ -6,36 +6,38 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
-import { DEFAULT_LIST } from "lib/data";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 import { getDescriptionDefault, getTagsDefault } from "lib/utils";
 
-interface ContractDetailsTemplateProps {
+interface ContractDetailsTemplateModalProps {
   title: string;
   subtitle?: string;
   contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
+  defaultList?: LVPair[];
 }
-export const ContractDetailsTemplate = ({
+export const ContractDetailsTemplateModal = ({
   title,
   subtitle,
   contractLocalInfo,
   triggerElement,
-}: ContractDetailsTemplateProps) => {
+  defaultList = [],
+}: ContractDetailsTemplateModalProps) => {
   const defaultValues = useMemo(() => {
     return {
       name: contractLocalInfo.name ?? "",
       description: getDescriptionDefault(contractLocalInfo.description),
       tags: getTagsDefault(contractLocalInfo.tags),
-      lists: contractLocalInfo.lists ?? DEFAULT_LIST,
+      lists: contractLocalInfo.lists ?? defaultList,
     };
   }, [
     contractLocalInfo.description,
     contractLocalInfo.lists,
     contractLocalInfo.name,
     contractLocalInfo.tags,
+    defaultList,
   ]);
 
   const {

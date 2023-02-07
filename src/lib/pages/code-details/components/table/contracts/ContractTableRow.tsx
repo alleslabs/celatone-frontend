@@ -3,7 +3,10 @@ import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { AddToOtherList, SaveContractDetails } from "lib/components/modal";
+import {
+  AddToOtherListModal,
+  SaveContractDetailsModal,
+} from "lib/components/modal";
 import { TableRow } from "lib/components/table/tableComponents";
 import { ContractNameCell } from "lib/pages/contract-list/components/table/ContractNameCell";
 import { TagsCell } from "lib/pages/contract-list/components/table/TagsCell";
@@ -98,7 +101,7 @@ export const ContractTableRow = ({
       <TableRow>
         <Box onClick={(e) => e.stopPropagation()}>
           {contractInfo.lists ? (
-            <AddToOtherList
+            <AddToOtherListModal
               contractLocalInfo={contractInfo}
               triggerElement={
                 <StyledIconButton
@@ -109,7 +112,7 @@ export const ContractTableRow = ({
               }
             />
           ) : (
-            <SaveContractDetails
+            <SaveContractDetailsModal
               contractLocalInfo={contractInfo}
               triggerElement={
                 <StyledIconButton
