@@ -233,31 +233,25 @@ const sendSingleMsgProps = (
     precision: assetInfos?.[coin.denom]?.precision,
   }));
 
-  const uniqueAddressLength = [
-    ...Array.from(
-      new Set(
-        messages.map((msg) => {
-          const msgDetail = msg.detail as DetailSend;
-          return msgDetail.toAddress;
-        })
-      )
-    ),
-  ].length;
-
   if (messages.length > 1) {
-    if (uniqueAddressLength > 1) {
+    if (
+      messages.some((msg) => {
+        const msgDetail = msg.detail as DetailExecute;
+        return msgDetail.contract !== detail.toAddress;
+      })
+    ) {
       return isSuccess
         ? {
             type: "Send ",
             text1: "assets to",
-            length: uniqueAddressLength,
+            length: messages.length,
             text2: "addresses",
           }
         : {
             type: "Failed",
             // eslint-disable-next-line sonarjs/no-duplicate-string
             text1: "to send assets to",
-            length: uniqueAddressLength,
+            length: messages.length,
             text2: "addresses",
           };
     }
@@ -278,11 +272,11 @@ const sendSingleMsgProps = (
           type: "Failed",
           text1: "to send assets to",
           link2: {
-            type: getAddressTypeByLength(
+            type: "contract_address" as LinkType,
+            value: getAddressTypeByLength(
               chainName,
               detail.toAddress
             ) as LinkType,
-            value: contractLocalInfo?.name || detail.toAddress,
             copyValue: detail.toAddress,
           },
         };
