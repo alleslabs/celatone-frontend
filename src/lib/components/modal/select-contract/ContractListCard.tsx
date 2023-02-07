@@ -12,13 +12,12 @@ import {
   Spacer,
   chakra,
 } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { MdMoreHoriz, MdMode, MdDelete } from "react-icons/md";
 
 import { EditListNameModal, RemoveListModal } from "../list";
 import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
-import { formatSlugName } from "lib/utils";
+import { dateFromNow, formatSlugName } from "lib/utils";
 
 const StyledIcon = chakra(Icon, {
   baseStyle: {
@@ -84,7 +83,7 @@ export const ContractListCard = ({
           </Flex>
           {showLastUpdated && (
             <Text variant="body3" color="text.dark">
-              Updated {dayjs(item.lastUpdated).toNow(true)} ago
+              Updated {dateFromNow(item.lastUpdated)}
             </Text>
           )}
         </Flex>
