@@ -1,8 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { ContractAddr, HumanAddr } from "../currency/addrs";
-
-type Addresses = HumanAddr | ContractAddr;
+import type { Addr, ContractAddr, HumanAddr } from "../currency/addrs";
 
 export enum MsgType {
   STORE_CODE = "STORE_CODE",
@@ -26,14 +24,14 @@ export interface AccessConfig {
 }
 
 export interface MsgStoreCode {
-  sender: Addresses;
+  sender: Addr;
   wasmByteCode: Uint8Array;
   instantiatePermission?: AccessConfig;
 }
 
 export interface MsgInstantiateContract {
-  sender: Addresses;
-  admin: Addresses;
+  sender: Addr;
+  admin: Addr;
   codeId: Long;
   label: string;
   msg: Uint8Array;
@@ -41,21 +39,21 @@ export interface MsgInstantiateContract {
 }
 
 export interface MsgExecuteContract {
-  sender: Addresses;
+  sender: Addr;
   contract: ContractAddr;
   msg: Uint8Array;
   funds: Coin[];
 }
 
 export interface MsgMigrateContract {
-  sender: Addresses;
-  contract: Addresses;
+  sender: Addr;
+  contract: ContractAddr;
   codeId: Long;
   msg: Uint8Array;
 }
 export interface MsgUpdateAdmin {
-  sender: Addresses;
-  newAdmin: Addresses;
+  sender: Addr;
+  newAdmin: Addr;
   contract: ContractAddr;
 }
 
@@ -81,28 +79,28 @@ export interface DetailInstantiate extends MsgInstantiateContract {
 
 export interface DetailSend {
   amount: Coin[];
-  fromAddress: Addresses;
-  toAddress: Addresses;
+  fromAddress: Addr;
+  toAddress: Addr;
 }
 export interface DetailUpload {
   id: number;
-  sender: Addresses;
+  sender: Addr;
 }
 
 export interface DetailClearAdmin {
   contract: ContractAddr;
-  sender: Addresses;
+  sender: Addr;
 }
 
 export interface DetailUpdateAdmin {
   contract: ContractAddr;
-  newAdmin: Addresses;
-  sender: Addresses;
+  newAdmin: Addr;
+  sender: Addr;
 }
 
 export interface DetailMigrate {
   codeId: number;
   contract: ContractAddr;
   msg: object;
-  sender: Addresses;
+  sender: Addr;
 }
