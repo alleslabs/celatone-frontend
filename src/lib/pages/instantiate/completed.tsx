@@ -17,7 +17,7 @@ interface CompletedProps {
 
 const Completed = ({ txInfo }: CompletedProps) => {
   const navigate = useInternalNavigate();
-
+  const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
     <WasmPageContainer>
       <Icon as={MdCheckCircle} color="success.main" boxSize="12" />
@@ -44,10 +44,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
           {
             title: "Tx Fee",
             // TODO: Implement event/rawlog attribute picker
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ]}
         variant="full"

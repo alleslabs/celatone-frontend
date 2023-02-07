@@ -156,7 +156,7 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
           m="auto"
           px={2}
         >
-          {code.contracts}
+          {code.contractCount ?? "N/A"}
         </Text>
       </TableRowNoBorder>
       <TableRowNoBorder>

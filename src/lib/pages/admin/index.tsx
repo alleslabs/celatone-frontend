@@ -26,7 +26,7 @@ import {
 } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { Addr, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
 
@@ -73,7 +73,7 @@ const UpdateAdmin = () => {
     messages: [
       composeMsg(MsgType.UPDATE_ADMIN, {
         sender: address as HumanAddr,
-        newAdmin: adminAddress as HumanAddr | ContractAddr,
+        newAdmin: adminAddress as Addr,
         contract: contractAddressParam,
       }),
     ],
@@ -92,7 +92,7 @@ const UpdateAdmin = () => {
   const proceed = useCallback(async () => {
     const stream = await updateAdminTx({
       contractAddress: contractAddressParam,
-      newAdmin: adminAddress as HumanAddr | ContractAddr,
+      newAdmin: adminAddress as Addr,
       estimatedFee,
     });
 

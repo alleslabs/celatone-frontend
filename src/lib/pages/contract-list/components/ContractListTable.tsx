@@ -9,6 +9,7 @@ import {
   chakra,
   MenuItem,
   Grid,
+  Text,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import {
@@ -122,11 +123,17 @@ export const ContractListTable = ({
             </TableRowNoBorder>
             <TableRowNoBorder>
               <Flex justify="space-between" w="full">
-                <ExplorerLink
-                  value={item.instantiator}
-                  type="user_address"
-                  canCopyWithHover
-                />
+                {item.instantiator ? (
+                  <ExplorerLink
+                    value={item.instantiator}
+                    type="user_address"
+                    canCopyWithHover
+                  />
+                ) : (
+                  <Text variant="body2" color="text.dark">
+                    N/A
+                  </Text>
+                )}
                 <Flex
                   gap={3}
                   justifyContent="flex-end"

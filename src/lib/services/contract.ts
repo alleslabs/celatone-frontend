@@ -4,9 +4,9 @@ import type { GraphQLClient } from "graphql-request";
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import { getBlockTimestampByHeightQueryDocument } from "lib/data/queries";
 import type {
+  Addr,
   Balance,
   ContractAddr,
-  HumanAddr,
   Option,
   PublicInfo,
 } from "lib/types";
@@ -25,8 +25,8 @@ interface ContractResponse {
   address: ContractAddr;
   contract_info: {
     code_id: string;
-    creator: HumanAddr | ContractAddr;
-    admin?: HumanAddr | ContractAddr;
+    creator: Addr;
+    admin?: Addr;
     label: string;
     created?: {
       block_height: number;
@@ -47,8 +47,8 @@ interface PublicInfoResponse {
 export interface InstantiateInfo {
   contractAddress: ContractAddr;
   codeId: string;
-  instantiator: HumanAddr | ContractAddr;
-  admin?: HumanAddr | ContractAddr;
+  instantiator: Addr;
+  admin?: Addr;
   label: string;
   createdHeight: number;
   createdTime: Option<Date>;

@@ -1,4 +1,4 @@
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { Addr } from "lib/types";
 
 import type {
   DetailClearAdmin,
@@ -60,7 +60,7 @@ export interface Msg {
 export interface ExecuteTransaction {
   hash: string;
   messages: Message[];
-  sender: ContractAddr | HumanAddr;
+  sender: Addr;
   height: number;
   created: Date;
   success: boolean;

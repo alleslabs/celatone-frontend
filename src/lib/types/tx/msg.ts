@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { ContractAddr, HumanAddr } from "../currency/addrs";
+import type { Addr, ContractAddr, HumanAddr } from "../addrs";
 
 export enum MsgType {
   STORE_CODE = "STORE_CODE",
@@ -53,7 +53,7 @@ export interface MsgMigrateContract {
 }
 export interface MsgUpdateAdmin {
   sender: HumanAddr;
-  newAdmin: HumanAddr | ContractAddr;
+  newAdmin: Addr;
   contract: ContractAddr;
 }
 
@@ -94,7 +94,7 @@ export interface DetailClearAdmin {
 
 export interface DetailUpdateAdmin {
   contract: ContractAddr;
-  newAdmin: HumanAddr | ContractAddr;
+  newAdmin: Addr;
   sender: HumanAddr;
 }
 

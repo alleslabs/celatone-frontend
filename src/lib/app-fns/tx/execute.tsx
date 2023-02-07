@@ -54,6 +54,8 @@ export const executeContractTx = ({
         msg: encode(JSON.stringify(msg)), // base64
         timestamp: getCurrentDate(),
       });
+      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
+        .value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -67,10 +69,7 @@ export const executeContractTx = ({
           },
           {
             title: "Tx Fee",
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ],
         receiptInfo: {

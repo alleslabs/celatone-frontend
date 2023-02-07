@@ -6515,11 +6515,11 @@ export type GetContractListByCodeIdQuery = {
     admin?: { __typename?: "accounts"; address: string } | null;
     init_by: Array<{
       __typename?: "contract_histories";
-      block: { __typename?: "blocks"; timestamp: any };
       account: { __typename?: "accounts"; address: string };
     }>;
     contract_histories: Array<{
       __typename?: "contract_histories";
+      remark: any;
       block: { __typename?: "blocks"; timestamp: any };
       account: { __typename?: "accounts"; address: string };
     }>;
@@ -6678,7 +6678,7 @@ export const GetCodeListQueryDocument = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "500" },
+                value: { kind: "IntValue", value: "100" },
               },
               {
                 kind: "Argument",
@@ -6827,7 +6827,7 @@ export const GetCodeListByUserQueryDocument = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "500" },
+                value: { kind: "IntValue", value: "100" },
               },
               {
                 kind: "Argument",
@@ -7250,7 +7250,7 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "500" },
+                value: { kind: "IntValue", value: "100" },
               },
               {
                 kind: "Argument",
@@ -8745,19 +8745,6 @@ export const GetContractListByCodeIdDocument = {
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
                         name: { kind: "Name", value: "account" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -8833,6 +8820,10 @@ export const GetContractListByCodeIdDocument = {
                             },
                           ],
                         },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "remark" },
                       },
                     ],
                   },
@@ -9009,6 +9000,13 @@ export const GetCodeInfoByCodeIdDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "code_proposals" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [

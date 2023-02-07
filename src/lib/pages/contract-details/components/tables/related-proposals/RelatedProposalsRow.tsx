@@ -51,6 +51,25 @@ const VotingEndTimeRender = ({
   );
 };
 
+const ResolvedHeightRender = ({
+  resolvedHeight,
+}: Pick<RelatedProposalsRowProps["proposal"], "resolvedHeight">) => {
+  switch (resolvedHeight) {
+    case undefined:
+      return <Text color="text.dark">N/A</Text>;
+    case null:
+      return <Text color="text.dark">Pending</Text>;
+    default:
+      return (
+        <ExplorerLink
+          type="block_height"
+          value={resolvedHeight.toString()}
+          canCopyWithHover
+        />
+      );
+  }
+};
+
 export const RelatedProposalsRow = ({
   proposal,
   templateColumns,
@@ -77,15 +96,7 @@ export const RelatedProposalsRow = ({
         />
       </TableRow>
       <TableRow>
-        {proposal.resolvedHeight ? (
-          <ExplorerLink
-            type="block_height"
-            value={proposal.resolvedHeight.toString()}
-            canCopyWithHover
-          />
-        ) : (
-          <Text color="text.dark">Pending</Text>
-        )}
+        <ResolvedHeightRender resolvedHeight={proposal.resolvedHeight} />
       </TableRow>
       <TableRow>
         <Text color="text.dark">{proposal.type}</Text>

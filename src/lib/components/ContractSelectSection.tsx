@@ -9,7 +9,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { ContractAddr, Option } from "lib/types";
+import type { Addr, ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { EditContractDetails, SaveContractDetails } from "./modal";
@@ -84,7 +84,7 @@ const ContractDetailsButton = ({
     <SaveContractDetails
       contractLocalInfo={{
         contractAddress,
-        instantiator,
+        instantiator: instantiator as Addr,
         label,
         ...contractLocalInfo,
       }}

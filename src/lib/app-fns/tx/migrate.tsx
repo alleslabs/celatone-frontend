@@ -53,6 +53,8 @@ export const migrateContractTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(txInfo.transactionHash);
+      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
+        .value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -66,10 +68,7 @@ export const migrateContractTx = ({
           },
           {
             title: "Tx Fee",
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ],
         receiptInfo: {

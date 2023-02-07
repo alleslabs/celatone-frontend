@@ -20,7 +20,7 @@ import {
 } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
+import type { Addr, ContractAddr, LVPair, RpcQueryError } from "lib/types";
 import {
   formatSlugName,
   getDescriptionDefault,
@@ -166,7 +166,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       offchainState.name.trim().length ? offchainState.name : labelState
     }`,
     contractAddress: contractAddressState as ContractAddr,
-    instantiator: instantiatorState,
+    instantiator: instantiatorState as Addr,
     label: labelState,
     name: offchainState.name,
     description: offchainState.description,

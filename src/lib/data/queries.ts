@@ -10,7 +10,7 @@ export const getBlockTimestampByHeightQueryDocument = graphql(`
 
 export const getCodeListQueryDocument = graphql(`
   query getCodeListQuery {
-    codes(limit: 500, offset: 0, order_by: { id: desc }) {
+    codes(limit: 100, offset: 0, order_by: { id: desc }) {
       id
       contracts_aggregate {
         aggregate {
@@ -30,7 +30,7 @@ export const getCodeListByUserQueryDocument = graphql(`
   query getCodeListByUserQuery($walletAddr: String!) {
     codes(
       where: { account: { address: { _eq: $walletAddr } } }
-      limit: 500
+      limit: 100
       offset: 0
       order_by: { id: desc }
     ) {
@@ -86,7 +86,7 @@ export const getInstantiatedListByUserQueryDocument = graphql(`
         accountByInitBy: { address: { _eq: $walletAddr } }
         _or: { transaction: { account: { address: { _eq: $walletAddr } } } }
       }
-      limit: 500
+      limit: 100
       offset: 0
       order_by: { transaction: { block: { timestamp: desc } } }
     ) {
@@ -298,9 +298,6 @@ export const getContractListByCodeId = graphql(`
         order_by: { block: { timestamp: asc } }
         limit: 1
       ) {
-        block {
-          timestamp
-        }
         account {
           address
         }
@@ -312,6 +309,7 @@ export const getContractListByCodeId = graphql(`
         account {
           address
         }
+        remark
       }
     }
   }
@@ -341,7 +339,7 @@ export const getCodeInfoByCodeId = graphql(`
           timestamp
         }
       }
-      code_proposals {
+      code_proposals(limit: 1) {
         proposal_id
         block {
           height

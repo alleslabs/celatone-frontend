@@ -6,14 +6,14 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer, TableHeader } from "lib/components/table";
 import { useTxsByContractAddress } from "lib/services/contractService";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import { TxsTableRow } from "./TxsTableRow";
 
 interface TransactionsTableProps {
   contractAddress: ContractAddr;
   scrollComponentId: string;
-  totalData: number;
+  totalData: Option<number>;
   refetchCount: () => void;
 }
 
@@ -82,7 +82,7 @@ export const TransactionsTable = ({
           templateColumnsStyle={templateColumnsStyle}
         />
       ))}
-      {totalData > 10 && (
+      {totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

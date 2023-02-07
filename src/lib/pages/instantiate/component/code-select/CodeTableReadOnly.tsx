@@ -35,9 +35,9 @@ const CodeTableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
       <TableRow justifyContent="center">
         <Text
           variant="body2"
-          color={codeDetail.contracts > 0 ? "text.main" : "text.disabled"}
+          color={codeDetail.contractCount ? "text.main" : "text.disabled"}
         >
-          {codeDetail.contracts}
+          {codeDetail.contractCount ?? "N/A"}
         </Text>
       </TableRow>
       <TableRow>

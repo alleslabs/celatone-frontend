@@ -5,7 +5,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/model/data";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
 import { MigrationRow } from "./MigrationRow";
@@ -13,7 +13,7 @@ import { MigrationRow } from "./MigrationRow";
 interface MigrationTableProps {
   contractAddress: ContractAddr;
   scrollComponentId: string;
-  totalData: number;
+  totalData: Option<number>;
   refetchCount: () => void;
 }
 
@@ -81,7 +81,7 @@ export const MigrationTable = ({
           templateColumns={templateColumns}
         />
       ))}
-      {totalData > 10 && (
+      {totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

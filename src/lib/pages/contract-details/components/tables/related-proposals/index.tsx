@@ -5,7 +5,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer } from "lib/components/table";
 import { useRelatedProposalsByContractAddress } from "lib/services/contractService";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import { RelatedProposalsHeader } from "./RelatedProposalsHeader";
 import { RelatedProposalsRow } from "./RelatedProposalsRow";
@@ -13,7 +13,7 @@ import { RelatedProposalsRow } from "./RelatedProposalsRow";
 interface RelatedProposalsTableProps {
   contractAddress: ContractAddr;
   scrollComponentId: string;
-  totalData: number;
+  totalData: Option<number>;
   refetchCount: () => void;
 }
 
@@ -75,7 +75,7 @@ export const RelatedProposalsTable = ({
           templateColumns={templateColumns}
         />
       ))}
-      {totalData > 10 && (
+      {totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

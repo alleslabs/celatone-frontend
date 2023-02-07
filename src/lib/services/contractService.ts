@@ -26,11 +26,12 @@ import type {
   ExecuteTransaction,
   AllTransaction,
   HumanAddr,
-  MigrationRemark,
+  ContractHistoryRemark,
   Option,
   ProposalStatus,
   ProposalType,
   Dict,
+  Addr,
 } from "lib/types";
 import {
   parseDate,
@@ -39,7 +40,6 @@ import {
   parseTxHash,
   parseTxHashOpt,
   snakeToCamel,
-  unwrap,
 } from "lib/utils";
 
 interface InstantiateDetail {
@@ -88,10 +88,10 @@ export const useInstantiatedListByUserQuery = (
         walletAddr,
       })
       .then(({ contracts }) =>
-        contracts.map<ContractLocalInfo>((contract) => ({
-          contractAddress: contract.address as ContractAddr,
-          instantiator: unwrap(contract.accountByInitBy?.address),
-          label: contract.label,
+        contracts.map<ContractLocalInfo>((contractInst) => ({
+          contractAddress: contractInst.address as ContractAddr,
+          instantiator: contractInst.accountByInitBy?.address as Addr,
+          label: contractInst.label,
         }))
       );
   }, [indexerGraphClient, walletAddr]);
@@ -104,7 +104,7 @@ export const useInstantiatedListByUserQuery = (
 };
 
 export const useContractListByAdmin = (
-  adminAddress: Option<ContractAddr | HumanAddr>
+  adminAddress: Option<Addr>
 ): UseQueryResult<Option<ContractLocalInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
@@ -116,10 +116,10 @@ export const useContractListByAdmin = (
         address: adminAddress,
       })
       .then(({ contracts }) =>
-        contracts.map<ContractLocalInfo>((contract) => ({
-          contractAddress: contract.address as ContractAddr,
-          instantiator: contract.accountByInitBy?.address ?? "",
-          label: contract.label,
+        contracts.map<ContractLocalInfo>((contractAdmin) => ({
+          contractAddress: contractAdmin.address as ContractAddr,
+          instantiator: contractAdmin.accountByInitBy?.address as Addr,
+          label: contractAdmin.label,
         }))
       );
   }, [adminAddress, indexerGraphClient]);
@@ -201,9 +201,7 @@ export const useExecuteTxsByContractAddress = (
         contract_transactions.map((transaction) => ({
           hash: parseTxHash(transaction.transaction.hash),
           messages: transaction.transaction.messages,
-          sender: transaction.transaction.account.address as
-            | ContractAddr
-            | HumanAddr,
+          sender: transaction.transaction.account.address as Addr,
           height: transaction.transaction.block.height,
           created: parseDateDefault(transaction.transaction?.block?.timestamp),
           success: transaction.transaction.success,
@@ -276,13 +274,14 @@ export const useMigrationHistoriesByContractAddress = (
           Omit<ContractMigrationHistory, "codeDescription">
         >((history) => ({
           codeId: history.code_id,
-          sender: history.account.address as HumanAddr | ContractAddr,
+          sender: history.account.address as Addr,
           height: history.block.height,
           timestamp: parseDate(history.block.timestamp),
           remark: {
-            operation: history.remark.operation as MigrationRemark["operation"],
-            type: history.remark.type as MigrationRemark["type"],
-            value: history.remark.value as MigrationRemark["value"],
+            operation: history.remark
+              .operation as ContractHistoryRemark["operation"],
+            type: history.remark.type as ContractHistoryRemark["type"],
+            value: history.remark.value as ContractHistoryRemark["value"],
           },
         }))
       );
@@ -336,9 +335,7 @@ export const useTxsByContractAddress = (
         contract_transactions.map((contractTx) => ({
           hash: parseTxHash(contractTx.transaction.hash),
           messages: snakeToCamel(contractTx.transaction.messages),
-          sender: contractTx.transaction.account.address as
-            | ContractAddr
-            | HumanAddr,
+          sender: contractTx.transaction.account.address as Addr,
           height: contractTx.transaction.block.height,
           created: parseDateDefault(contractTx.transaction.block?.timestamp),
           success: contractTx.transaction.success,
@@ -418,9 +415,7 @@ export const useRelatedProposalsByContractAddress = (
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.resolved_height,
           type: proposal.proposal.type as ProposalType,
-          proposer: proposal.proposal.account?.address as
-            | HumanAddr
-            | ContractAddr,
+          proposer: proposal.proposal.account?.address as Addr,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
