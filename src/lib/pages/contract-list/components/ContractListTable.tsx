@@ -72,7 +72,7 @@ export const ContractListTable = ({
   );
 
   return (
-    <TableContainer>
+    <TableContainer position="relative">
       <Grid
         templateColumns={TEMPLATE_COLUMNS}
         px="48px"
