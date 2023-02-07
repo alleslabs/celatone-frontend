@@ -53,12 +53,13 @@ export const ContractDetailsTemplateModal = ({
 
   const resetForm = useCallback(
     () => reset(defaultValues),
-    [defaultValues, reset]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(defaultValues), reset]
   );
 
   useEffect(() => {
     resetForm();
-  }, [defaultValues, resetForm]);
+  }, [resetForm]);
 
   const offchainState = watch();
 
