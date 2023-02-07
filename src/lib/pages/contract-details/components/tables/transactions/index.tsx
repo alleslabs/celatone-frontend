@@ -70,7 +70,7 @@ export const TransactionsTable = ({
       <Grid templateColumns={templateColumnsStyle}>
         <TableHeader>Transaction Hash</TableHeader>
         <TableHeader />
-        <TableHeader>Actions</TableHeader>
+        <TableHeader>Messages</TableHeader>
         <TableHeader>Sender</TableHeader>
         <TableHeader>Block Height</TableHeader>
         <TableHeader>Timestamp</TableHeader>
