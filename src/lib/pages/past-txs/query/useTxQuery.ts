@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
-import { useChainId, useGetAddressType } from "lib/hooks";
+import { useGetAddressType } from "lib/hooks";
 import type {
   Filters,
   Message,
@@ -58,7 +58,6 @@ export const useTxQuery = (
 ) => {
   const getAddressType = useGetAddressType();
   const { indexerGraphClient } = useCelatoneApp();
-  const chainId = useChainId();
 
   // Filter when action buttons are pressed
   const queryFn = useCallback(async () => {
@@ -185,7 +184,7 @@ export const useTxQuery = (
       filters,
       offset,
       pageSize,
-      chainId,
+      indexerGraphClient,
     ],
     queryFn,
   });
@@ -198,7 +197,6 @@ export const useTxQueryCount = (
 ): UseQueryResult<number> => {
   const getAddressType = useGetAddressType();
   const { indexerGraphClient } = useCelatoneApp();
-  const chainId = useChainId();
 
   const queryFn = useCallback(async () => {
     if (!userAddress) throw new Error("User address not found");
@@ -228,7 +226,13 @@ export const useTxQueryCount = (
   }, [filters, getAddressType, indexerGraphClient, search, userAddress]);
 
   return useQuery({
-    queryKey: ["past-transaction-count", userAddress, search, filters, chainId],
+    queryKey: [
+      "past-transaction-count",
+      userAddress,
+      search,
+      filters,
+      indexerGraphClient,
+    ],
     queryFn,
   });
 };
