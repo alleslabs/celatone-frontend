@@ -1,5 +1,3 @@
-import type { Dayjs } from "dayjs";
-
 import type { ContractAddr, HumanAddr } from "lib/types";
 
 import type {
@@ -27,7 +25,7 @@ export enum MsgFurtherAction {
 export interface PastTransaction {
   hash: string;
   messages: Message[];
-  created: Dayjs;
+  created: Date;
   success: boolean;
   actionMsgType: ActionMsgType;
   furtherAction: MsgFurtherAction;
@@ -64,7 +62,7 @@ export interface ExecuteTransaction {
   messages: Message[];
   sender: ContractAddr | HumanAddr;
   height: number;
-  created: Dayjs;
+  created: Date;
   success: boolean;
 }
 
