@@ -1,13 +1,11 @@
-import type { Dayjs } from "dayjs";
-
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 export interface ContractInfo extends ContractLocalInfo {
   admin: Option<string>;
-  instantiated: Dayjs;
+  instantiated: Date;
   latestUpdator: Option<string>;
-  latestUpdated: Dayjs;
+  latestUpdated: Date;
 }
 
 export interface ContractInstances {
@@ -34,7 +32,7 @@ export interface ContractMigrationHistory {
   codeDescription?: string;
   sender: HumanAddr | ContractAddr;
   height: number;
-  timestamp: Dayjs;
+  timestamp: Date;
   remark: MigrationRemark;
 }
 
@@ -60,8 +58,8 @@ export interface ContractRelatedProposals {
   proposalId: number;
   title: string;
   status: ProposalStatus;
-  votingEndTime: Dayjs;
-  depositEndTime: Dayjs;
+  votingEndTime: Date;
+  depositEndTime: Date;
   resolvedHeight: number | null | undefined;
   type: ProposalType;
   proposer: HumanAddr | ContractAddr | undefined;

@@ -30,6 +30,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
       <Flex align="center">
         Save existing contracts to the list with
         <SaveNewContract
+          key={list.value}
           list={list}
           buttonProps={{
             variant: "outline-primary",
