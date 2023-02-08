@@ -18,7 +18,7 @@ import {
 } from "react-icons/md";
 
 import { AppLink } from "lib/components/AppLink";
-import { CreateNewList } from "lib/components/modal";
+import { CreateNewListModal } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore, usePublicProjectStore } from "lib/hooks";
 import { cmpContractListInfo } from "lib/stores/contract";
@@ -180,7 +180,7 @@ const Navbar = observer(() => {
                 {item.category}
               </Text>
               {item.category === "Contracts" && (
-                <CreateNewList
+                <CreateNewListModal
                   buttonProps={{
                     variant: "ghost-info",
                     size: "xs",

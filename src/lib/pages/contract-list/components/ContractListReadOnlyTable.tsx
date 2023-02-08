@@ -20,7 +20,7 @@ export const ContractListReadOnlyTable = ({
   onContractSelect,
 }: ContractListReadOnlyTableProps) => {
   return (
-    <TableContainer my={4}>
+    <TableContainer my={4} position="relative">
       <Grid
         templateColumns={TEMPLATE_COLUMNS}
         sx={{ "& div": { color: "text.dark" } }}

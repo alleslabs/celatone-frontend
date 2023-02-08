@@ -8,12 +8,12 @@ import { useContractStore, useUserKey } from "lib/hooks";
 import type { LVPair } from "lib/types";
 import { shortenName } from "lib/utils";
 
-interface ModalProps {
+interface RemoveListModalProps {
   list: LVPair;
   menuItemProps: MenuItemProps;
 }
 
-export function RemoveList({ list, menuItemProps }: ModalProps) {
+export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   const userKey = useUserKey();
   const { removeList } = useContractStore();
 
