@@ -47,7 +47,7 @@ export const CodesTable = ({
             variant="floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
-            label="Search with code ID or code description"
+            placeholder="Search with code ID or code name"
             size="md"
             mb={6}
           />
@@ -71,7 +71,7 @@ export const CodesTable = ({
                 }}
               >
                 <Th width="10%">Code ID</Th>
-                <Th width="30%">Code Description</Th>
+                <Th width="30%">Code Name</Th>
                 <Th width="10%" textAlign="center">
                   Contracts
                 </Th>

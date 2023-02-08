@@ -63,6 +63,7 @@ const Header = () => {
         <Image
           src="https://assets.alleslabs.dev/branding/logo/logo.svg"
           alt="Celatone"
+          minWidth="152px"
           width="152px"
           maxWidth="152px"
           mr="36px"
