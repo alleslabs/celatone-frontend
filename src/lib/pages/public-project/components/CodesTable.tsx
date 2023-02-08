@@ -36,7 +36,7 @@ export const CodesTable = ({
   const [searchKeyword, setSearchKeyword] = useState("");
   const filteredCodes = useMemo(() => {
     return matchSorter(codes, searchKeyword, {
-      keys: ["id", "description"],
+      keys: ["id", "name"],
     });
   }, [codes, searchKeyword]);
   return (
@@ -103,7 +103,7 @@ export const CodesTable = ({
                     />
                   </Td>
                   <Td width="45%">
-                    <Text variant="body2"> {code.description}</Text>
+                    <Text variant="body2"> {code.name}</Text>
                   </Td>
                   <Td width="10%" textAlign="center">
                     <Text>todo</Text>

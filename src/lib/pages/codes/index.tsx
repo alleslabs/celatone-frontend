@@ -63,7 +63,7 @@ const Codes = observer(() => {
           </TabList>
           <Flex gap={2} px="48px">
             <InputWithIcon
-              placeholder="Search with code ID or code description"
+              placeholder="Search with code ID or code name"
               value={keyword}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setValue("keyword", e.target.value)
