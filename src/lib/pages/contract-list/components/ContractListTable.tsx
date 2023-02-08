@@ -55,7 +55,7 @@ const StyledIcon = chakra(Icon, {
   },
 });
 
-const TEMPLATE_COLUMNS = "140px minmax(300px, 3fr) minmax(200px, 2fr) 450px";
+const TEMPLATE_COLUMNS = "160px minmax(300px, 3fr) minmax(200px, 2fr) 460px";
 
 interface ContractListTableProps {
   contracts: ContractLocalInfo[];

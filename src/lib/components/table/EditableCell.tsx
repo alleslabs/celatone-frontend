@@ -30,10 +30,11 @@ export const EditableCell = ({
   const [isHover, setIsHover] = useState(false);
   const [isHoverText, setIsHoverText] = useState(false);
 
-  const ref = useRef(null);
+  const editCellRef = useRef(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
   const [isEditCellOpen, setIsEditCellOpen] = useState(false);
   useOutsideClick({
-    ref,
+    ref: editCellRef,
     handler: () => {
       setIsEditCellOpen(false);
     },
@@ -68,9 +69,11 @@ export const EditableCell = ({
     onSave?.(inputValue);
   };
 
-  // TODO: reconsider 20
-  const showName = isHoverText && inputValue.trim().length > 20;
-  const isShowInputValue = inputValue.trim().length;
+  const isShowInputValue = Boolean(inputValue.trim().length);
+  const showName =
+    isHoverText &&
+    isShowInputValue &&
+    Number(textRef.current?.scrollWidth) > Number(textRef.current?.clientWidth);
 
   return (
     <>
@@ -99,7 +102,7 @@ export const EditableCell = ({
       >
         {isEditCellOpen ? (
           <Flex
-            ref={ref}
+            ref={editCellRef}
             alignItems="center"
             gap={1}
             position="absolute"
@@ -147,6 +150,7 @@ export const EditableCell = ({
               fontWeight={isShowInputValue ? "600" : "400"}
               color={isShowInputValue ? "text.main" : "text.dark"}
               onMouseOver={handleMouseEnterText}
+              ref={textRef}
             >
               {isShowInputValue ? inputValue : defaultValue}
             </Text>
