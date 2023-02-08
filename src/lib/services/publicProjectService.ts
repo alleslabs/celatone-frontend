@@ -8,6 +8,7 @@ import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
 import type {
   Contract,
   Option,
+  PublicCodeData,
   PublicInfo,
   PublicProjectInfo,
   RawContract,
@@ -103,6 +104,38 @@ export const usePublicProjectByContractAddress = (
     {
       keepPreviousData: true,
       enabled: !!contractAddress,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const usePublicProjectByCodeId = (
+  codeId: Option<number>
+): UseQueryResult<PublicCodeData> => {
+  const { currentChainRecord } = useWallet();
+
+  const queryFn = useCallback(async () => {
+    if (!codeId)
+      throw new Error("Code ID not found (usePublicProjectByCodeId)");
+    if (!currentChainRecord)
+      throw new Error("No chain selected (usePublicProjectByCodeId)");
+
+    return axios
+      .get<PublicCodeData>(
+        `${CELATONE_API_ENDPOINT}/codes/${getChainApiPath(
+          currentChainRecord.chain.chain_name
+        )}/${currentChainRecord.chain.chain_id}/${codeId}`
+      )
+      .then(({ data: projectInfo }) => projectInfo);
+  }, [codeId, currentChainRecord]);
+
+  return useQuery(
+    ["public_project_by_code_id", codeId, currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!codeId,
       retry: false,
       refetchOnWindowFocus: false,
     }

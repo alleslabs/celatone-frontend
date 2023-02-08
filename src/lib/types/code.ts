@@ -36,3 +36,15 @@ export interface CodeData {
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
 }
+
+export interface PublicCodeData {
+  contracts: number;
+  description: string;
+  id: number;
+  instantiatePermission: string;
+  name: string;
+  permissionAddresses: string[];
+  slug: string;
+  uploader: string;
+  verified: boolean;
+}

@@ -150,6 +150,8 @@ export const TagSelection = observer(
               background="none"
               borderRadius="8px"
               maxW="100%"
+              border="1px solid"
+              borderColor="pebble.700"
               overflowX="scroll"
             >
               {result.length > 0 && (
@@ -188,6 +190,7 @@ export const TagSelection = observer(
                 maxLength={15}
                 autoComplete="off"
                 {...rest}
+                style={{ border: 0, maxHeight: "54px" }}
               />
               <FormLabel
                 position="absolute"

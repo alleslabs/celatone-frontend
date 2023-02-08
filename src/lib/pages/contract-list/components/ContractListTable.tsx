@@ -222,7 +222,6 @@ export const ContractListTable = ({
                             contractLocalInfo={item}
                             contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
-                              fontSize: "16px",
                               icon: (
                                 <StyledIcon as={MdDelete} color="error.light" />
                               ),

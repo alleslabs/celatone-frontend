@@ -23,7 +23,7 @@ import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
 import {
   formatSlugName,
-  getDescriptionDefault,
+  getNameAndDescriptionDefault,
   getTagsDefault,
 } from "lib/utils";
 
@@ -117,7 +117,9 @@ export function SaveNewContractModal({
           instantiator: data.instantiator,
           label: data.label,
           name: contractLocalInfo?.name ?? data.label,
-          description: getDescriptionDefault(contractLocalInfo?.description),
+          description: getNameAndDescriptionDefault(
+            contractLocalInfo?.description
+          ),
           tags: getTagsDefault(contractLocalInfo?.tags),
           lists: [
             ...initialList,

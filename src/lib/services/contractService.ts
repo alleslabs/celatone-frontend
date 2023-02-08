@@ -286,9 +286,7 @@ export const useMigrationHistoriesByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<
-  Option<Omit<ContractMigrationHistory, "codeDescription">[]>
-> => {
+): UseQueryResult<Option<Omit<ContractMigrationHistory, "codeName">[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -299,19 +297,20 @@ export const useMigrationHistoriesByContractAddress = (
         pageSize,
       })
       .then(({ contract_histories }) =>
-        contract_histories.map<
-          Omit<ContractMigrationHistory, "codeDescription">
-        >((history) => ({
-          codeId: history.code_id,
-          sender: history.account.address as HumanAddr | ContractAddr,
-          height: history.block.height,
-          timestamp: parseDate(history.block.timestamp),
-          remark: {
-            operation: history.remark.operation as MigrationRemark["operation"],
-            type: history.remark.type as MigrationRemark["type"],
-            value: history.remark.value as MigrationRemark["value"],
-          },
-        }))
+        contract_histories.map<Omit<ContractMigrationHistory, "codeName">>(
+          (history) => ({
+            codeId: history.code_id,
+            sender: history.account.address as HumanAddr | ContractAddr,
+            height: history.block.height,
+            timestamp: parseDate(history.block.timestamp),
+            remark: {
+              operation: history.remark
+                .operation as MigrationRemark["operation"],
+              type: history.remark.type as MigrationRemark["type"],
+              value: history.remark.value as MigrationRemark["value"],
+            },
+          })
+        )
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 

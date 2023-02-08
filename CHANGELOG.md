@@ -111,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#176](https://github.com/alleslabs/celatone-frontend/pull/176) Adjust contract table fraction, limit tag render, full ellipsis contract desc/name length
+- [#174](https://github.com/alleslabs/celatone-frontend/pull/174) Change "code description" to "code name" and wireup public code name in code detail page
 - [#173](https://github.com/alleslabs/celatone-frontend/pull/173) Add connect wallet alert to migrate page
 - [#161](https://github.com/alleslabs/celatone-frontend/pull/161) Fix editable cell, no wrap when hover and click outside to close the editable cell
 - [#159](https://github.com/alleslabs/celatone-frontend/pull/159) Add query key so refetch data when network change
@@ -131,6 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#175](https://github.com/alleslabs/celatone-frontend/pull/175) Fix css related issue and tag selection input
 - [#165](https://github.com/alleslabs/celatone-frontend/pull/165) Fix messages type
 - [#172](https://github.com/alleslabs/celatone-frontend/pull/172) Fix infinite loop dep, wrong fallback validation
 - [#157](https://github.com/alleslabs/celatone-frontend/pull/157) Fix chain path bug when mixed up with query params
