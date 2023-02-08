@@ -55,7 +55,7 @@ export const useCodeContractInstances = (
   codeId: number,
   offset: number,
   pageSize: number
-): Option<ContractInstances> => {
+): ContractInstances => {
   const { data: contractList } = useContractListByCodeId(
     codeId,
     offset,
@@ -70,6 +70,7 @@ export const useCodeContractInstances = (
       ...contract,
     } as ContractLocalInfo;
   });
+
   return {
     contractList: data,
     count,

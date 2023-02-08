@@ -12,9 +12,9 @@ export const AppLink = ({
     <Link
       {...linkProps}
       href={
-        router.query.network === "mainnet"
-          ? `/mainnet${componentHref}`
-          : `/testnet${componentHref}`
+        router.query.network === "testnet"
+          ? `/testnet${componentHref}`
+          : `/mainnet${componentHref}`
       }
     >
       {typeof children === "string" ? (
