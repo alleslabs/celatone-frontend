@@ -64,7 +64,7 @@ const Header = () => {
           src="https://assets.alleslabs.dev/branding/logo/logo.svg"
           alt="Celatone"
           width="152px"
-          minWidth="152px"
+          maxWidth="152px"
           mr="36px"
           transition="all 0.25s ease-in-out"
           _hover={{ cursor: "pointer", opacity: 0.85 }}
