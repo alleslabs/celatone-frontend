@@ -58,6 +58,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           gtag('js', new Date());
           gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
             page_path: window.location.pathname,
+            debug_mode: true
           });
         `}
       </Script>
