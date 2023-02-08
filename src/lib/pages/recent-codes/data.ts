@@ -5,21 +5,21 @@ import { useCodeStore, usePermissionFilter, useSearchFilter } from "lib/hooks";
 import { useCodeListQuery } from "lib/services/codeService";
 import type { CodeInfo } from "lib/types";
 
-interface AllCodesData {
-  allCodes: CodeInfo[];
+interface RecentCodesData {
+  recentCodes: CodeInfo[];
   isLoading: boolean;
 }
 
-export const useAllCodesData = (
+export const useRecentCodesData = (
   keyword: string,
   permissionValue: PermissionFilterValue
-): AllCodesData => {
+): RecentCodesData => {
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
-  const { data: rawAllCodes = [], isLoading } = useCodeListQuery();
+  const { data: rawRecentCodes = [], isLoading } = useCodeListQuery();
   const permissionFilterFn = usePermissionFilter(permissionValue);
   const searchFilterFn = useSearchFilter(keyword);
 
-  const allCodes = rawAllCodes.map<CodeInfo>((code) => ({
+  const recentCodes = rawRecentCodes.map<CodeInfo>((code) => ({
     ...code,
     description: getCodeLocalInfo(code.id)?.description,
     isSaved: isCodeIdSaved(code.id),
@@ -27,8 +27,10 @@ export const useAllCodesData = (
 
   return useMemo(() => {
     return {
-      allCodes: allCodes.filter(permissionFilterFn).filter(searchFilterFn),
+      recentCodes: recentCodes
+        .filter(permissionFilterFn)
+        .filter(searchFilterFn),
       isLoading,
     };
-  }, [allCodes, isLoading, permissionFilterFn, searchFilterFn]);
+  }, [recentCodes, isLoading, permissionFilterFn, searchFilterFn]);
 };

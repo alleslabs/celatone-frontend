@@ -9,28 +9,31 @@ import { Loading } from "lib/components/Loading";
 import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";
 
-import { useAllCodesData } from "./data";
+import { useRecentCodesData } from "./data";
 
-interface AllCodeState {
+interface RecentCodeState {
   keyword: string;
   permissionValue: PermissionFilterValue;
 }
 
-const AllCodes = observer(() => {
-  const { watch, setValue } = useForm<AllCodeState>({
+const RecentCodes = observer(() => {
+  const { watch, setValue } = useForm<RecentCodeState>({
     defaultValues: {
       permissionValue: "all",
       keyword: "",
     },
   });
   const { keyword, permissionValue } = watch();
-  const { allCodes, isLoading } = useAllCodesData(keyword, permissionValue);
+  const { recentCodes, isLoading } = useRecentCodesData(
+    keyword,
+    permissionValue
+  );
 
   return (
     <Box>
       <Box p="48px">
         <Heading as="h1" size="lg" mb={4}>
-          All Codes
+          Recent Codes
         </Heading>
         <Flex gap={2}>
           <InputWithIcon
@@ -54,9 +57,9 @@ const AllCodes = observer(() => {
         <Loading />
       ) : (
         <CodesTable
-          type="all"
-          tableName="All Codes"
-          codes={allCodes}
+          type="recent"
+          tableName="Recent Codes"
+          codes={recentCodes}
           isSearching={!!keyword}
         />
       )}
@@ -64,4 +67,4 @@ const AllCodes = observer(() => {
   );
 });
 
-export default AllCodes;
+export default RecentCodes;
