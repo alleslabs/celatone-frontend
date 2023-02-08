@@ -5,6 +5,7 @@ import { SingleActionMsg } from "../action-msg/SingleActionMsg";
 import { AccordionStepperItem } from "lib/components/AccordionStepperItem";
 import { RedoButton } from "lib/components/button/RedoButton";
 import { ResendButton } from "lib/components/button/ResendButton";
+import { ACCORDION_LEFT_SPACING } from "lib/data";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
@@ -41,7 +42,7 @@ export const AccordionTx = ({
     <TableRow
       h="40px"
       borderBottom="none"
-      pl="267px"
+      pl={ACCORDION_LEFT_SPACING}
       gap={3}
       _hover={{ background: "pebble.800" }}
       transition="all .25s ease-in-out"
