@@ -10,13 +10,13 @@ import {
 import { MdChevronRight } from "react-icons/md";
 
 import { AppLink } from "lib/components/AppLink";
-import type { Option, Detail } from "lib/types";
+import type { Option, PublicDetail } from "lib/types";
 
 import { BookmarkButton } from "./BookmarkButton";
 import { SocialMedia } from "./SocialMedia";
 
 interface DetailProps {
-  details: Option<Detail>;
+  details: Option<PublicDetail>;
   slug: string;
 }
 export const DetailHeader = ({ details, slug }: DetailProps) => {
