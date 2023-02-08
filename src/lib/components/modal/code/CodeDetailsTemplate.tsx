@@ -9,7 +9,7 @@ import { MAX_CODE_DESCRIPTION_LENGTH } from "lib/data";
 import { useCodeStore, useGetAddressType } from "lib/hooks";
 import type { CodeLocalInfo } from "lib/stores/code";
 
-interface CodeDetailsTemplateProps {
+interface CodeDetailsTemplateModalProps {
   title: string;
   helperText?: string;
   mainBtnTitle: string;
@@ -18,14 +18,14 @@ interface CodeDetailsTemplateProps {
   triggerElement: JSX.Element;
 }
 
-export const CodeDetailsTemplate = ({
+export const CodeDetailsTemplateModal = ({
   title,
   helperText,
   mainBtnTitle,
   isNewCode,
   codeLocalInfo,
   triggerElement,
-}: CodeDetailsTemplateProps) => {
+}: CodeDetailsTemplateModalProps) => {
   const { saveNewCode, updateCodeInfo } = useCodeStore();
   const toast = useToast();
   const getAddressType = useGetAddressType();

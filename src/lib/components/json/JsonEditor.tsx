@@ -82,7 +82,7 @@ const JsonEditor = ({
           showGutter: false,
           wrap: readOnly && !isValid,
           printMargin: false,
-          maxLines: 9999,
+          maxLines: readOnly ? 9999 : undefined,
         }}
         onChange={setValue}
         value={value}

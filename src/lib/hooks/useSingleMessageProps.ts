@@ -222,7 +222,9 @@ const sendSingleMsgProps = (
   ) => Option<ContractLocalInfo>
 ) => {
   const detail = messages[0].detail as DetailSend;
-  const contractLocalInfo = getContractLocalInfo(detail.toAddress);
+  const contractLocalInfo = getContractLocalInfo(
+    detail.toAddress as ContractAddr
+  );
 
   const tokens = detail.amount.map((coin) => ({
     symbol: assetInfos?.[coin.denom]?.symbol,
