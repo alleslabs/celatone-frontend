@@ -47,7 +47,7 @@ export const CodesTable = ({
             variant="floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
-            label="Search with code ID or code name"
+            placeholder="Search with code ID or code name"
             size="md"
             mb={6}
           />
