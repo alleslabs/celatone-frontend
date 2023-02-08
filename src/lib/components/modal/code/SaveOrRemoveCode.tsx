@@ -25,7 +25,7 @@ export function SaveOrRemoveCodeModal({
   return codeInfo.isSaved ? (
     <RemoveCodeModal
       codeId={codeInfo.id}
-      description={codeInfo.description}
+      name={codeInfo.name}
       trigger={
         <StyledIconButton
           icon={<MdBookmark />}

@@ -9,7 +9,7 @@ import { OffChainForm } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
-import { getDescriptionDefault, getTagsDefault } from "lib/utils";
+import { getNameAndDescriptionDefault, getTagsDefault } from "lib/utils";
 
 interface ContractDetailsTemplateModalProps {
   title: string;
@@ -28,7 +28,7 @@ export const ContractDetailsTemplateModal = ({
   const defaultValues = useMemo(() => {
     return {
       name: contractLocalInfo.name ?? "",
-      description: getDescriptionDefault(contractLocalInfo.description),
+      description: getNameAndDescriptionDefault(contractLocalInfo.description),
       tags: getTagsDefault(contractLocalInfo.tags),
       lists: contractLocalInfo.lists ?? defaultList,
     };

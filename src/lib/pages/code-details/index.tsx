@@ -35,7 +35,7 @@ const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
           <Flex align="center" justify="space-between" mt={6}>
             <Flex direction="column" gap={1}>
               <Heading as="h5" variant="h5">
-                {localCodeInfo?.description ?? codeId}
+                {localCodeInfo?.name ?? data.publicCodeData?.name ?? codeId}
               </Heading>
               <Flex gap={2}>
                 <Text fontWeight={500} color="text.dark" variant="body2">
@@ -47,7 +47,7 @@ const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
             <CTASection
               id={codeId}
               uploader={localCodeInfo?.uploader ?? codeData.uploader}
-              description={localCodeInfo?.description}
+              name={localCodeInfo?.name}
               instantiatePermission={
                 codeData.instantiatePermission ?? InstantiatePermission.UNKNOWN
               }

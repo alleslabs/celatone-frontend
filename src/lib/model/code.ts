@@ -6,17 +6,25 @@ import {
   useContractListByCodeId,
   useContractListCountByCodeId,
 } from "lib/services/codeService";
+import { usePublicProjectByCodeId } from "lib/services/publicProjectService";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { CodeData, ContractInstances, Option } from "lib/types";
+import type {
+  CodeData,
+  ContractInstances,
+  Option,
+  PublicCodeData,
+} from "lib/types";
 
 interface CodeDataState {
   isLoading: boolean;
   codeData: CodeData;
+  publicCodeData: Option<PublicCodeData>;
 }
 
 export const useCodeData = (codeId: number): Option<CodeDataState> => {
   const { currentChainRecord } = useWallet();
   const { data: codeInfo, isLoading } = useCodeInfoByCodeId(codeId);
+  const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   if (!currentChainRecord || (!codeInfo && !isLoading)) return undefined;
 
   return {
@@ -25,6 +33,7 @@ export const useCodeData = (codeId: number): Option<CodeDataState> => {
       chainId: currentChainRecord.chain.chain_id,
       ...codeInfo,
     } as CodeData,
+    publicCodeData: publicCodeInfo,
   };
 };
 
