@@ -6,10 +6,10 @@ import type { IconType } from "react-icons";
 import { MdBookmark, MdBookmarkBorder, MdCheckCircle } from "react-icons/md";
 
 import { usePublicProjectStore } from "lib/hooks";
-import type { Option, Detail } from "lib/types";
+import type { Option, PublicDetail } from "lib/types";
 
-interface DetailProps {
-  details: Option<Detail>;
+interface BookmarkButtonProps {
+  details: Option<PublicDetail>;
   slug: string;
   hasText?: boolean;
 }
@@ -67,7 +67,7 @@ const StyledButton = ({
 );
 
 export const BookmarkButton = observer(
-  ({ details, slug, hasText = true }: DetailProps) => {
+  ({ details, slug, hasText = true }: BookmarkButtonProps) => {
     const { isPublicProjectSaved, savePublicProject, removePublicProject } =
       usePublicProjectStore();
     const toast = useToast({
