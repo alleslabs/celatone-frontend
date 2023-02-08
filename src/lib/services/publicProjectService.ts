@@ -122,7 +122,7 @@ export const usePublicProjectByCodeId = (
       throw new Error("No chain selected (usePublicProjectByCodeId)");
 
     return axios
-      .get<PublicInfo>(
+      .get<PublicCodeData>(
         `${CELATONE_API_ENDPOINT}/codes/${getChainApiPath(
           currentChainRecord.chain.chain_name
         )}/${currentChainRecord.chain.chain_id}/${codeId}`

@@ -15,11 +15,11 @@ import type { Option, PublicDetail } from "lib/types";
 import { BookmarkButton } from "./BookmarkButton";
 import { SocialMedia } from "./SocialMedia";
 
-interface DetailProps {
+interface DetailHeaderProps {
   details: Option<PublicDetail>;
   slug: string;
 }
-export const DetailHeader = ({ details, slug }: DetailProps) => {
+export const DetailHeader = ({ details, slug }: DetailHeaderProps) => {
   return (
     <Box px={12}>
       <Breadcrumb

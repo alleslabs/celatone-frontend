@@ -142,7 +142,6 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   // update code name
   useEffect(() => {
     if (codeIdStatus.state === "success") {
-      // FIx
       const localName = getNameAndDescriptionDefault(
         getCodeLocalInfo(Number(codeId))?.name
       );
