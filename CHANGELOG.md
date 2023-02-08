@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#174](https://github.com/alleslabs/celatone-frontend/pull/174) Wireup public code name in code detail page
 - [#150](https://github.com/alleslabs/celatone-frontend/pull/150) Add Osmosis mainnet GraphQl, LCD, RPC
 - [#149](https://github.com/alleslabs/celatone-frontend/pull/149) Apply new branding
 - [#93](https://github.com/alleslabs/celatone-frontend/pull/93) Add filter code by instantiate permission in all codes page
@@ -109,6 +110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#174](https://github.com/alleslabs/celatone-frontend/pull/174) Change "code description" to "code name"
 - [#161](https://github.com/alleslabs/celatone-frontend/pull/161) Fix editable cell, no wrap when hover and click outside to close the editable cell
 - [#159](https://github.com/alleslabs/celatone-frontend/pull/159) Add query key so refetch data when network change
 - [#145](https://github.com/alleslabs/celatone-frontend/pull/145) Disable closing on some modal when click on modal overlay
