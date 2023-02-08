@@ -55,7 +55,8 @@ const StyledIcon = chakra(Icon, {
   },
 });
 
-const TEMPLATE_COLUMNS = "160px 280px 220px 1fr";
+const TEMPLATE_COLUMNS = "140px minmax(300px, 3fr) minmax(200px, 2fr) 450px";
+
 interface ContractListTableProps {
   contracts: ContractLocalInfo[];
   contractRemovalInfo?: LVPair;
@@ -72,8 +73,9 @@ export const ContractListTable = ({
   );
 
   return (
-    <TableContainer position="relative">
+    <TableContainer position="relative" overflow="visible">
       <Grid
+        minW="min-content"
         templateColumns={TEMPLATE_COLUMNS}
         px="48px"
         borderBottom="1px solid"

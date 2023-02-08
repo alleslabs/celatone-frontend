@@ -95,6 +95,7 @@ export const EditableCell = ({
         onMouseOut={handleMouseOut}
         position="relative"
         zIndex={2}
+        w="full"
       >
         {isEditCellOpen ? (
           <Flex
@@ -132,40 +133,39 @@ export const EditableCell = ({
           </Flex>
         ) : (
           <Flex
-            alignItems="center"
+            position="relative"
+            w="fit-content"
+            maxW="full"
+            align="center"
             gap={2}
             onClick={(e) => e.stopPropagation()}
           >
-            <Flex
-              position="relative"
+            <Text
+              variant="body2"
+              className="ellipsis"
+              maxW="full"
+              fontWeight={isShowInputValue ? "600" : "400"}
+              color={isShowInputValue ? "text.main" : "text.dark"}
               onMouseOver={handleMouseEnterText}
-              onMouseOut={handleMouseOutText}
             >
+              {isShowInputValue ? inputValue : defaultValue}
+            </Text>
+            {showName && (
               <Text
                 variant="body2"
-                className="ellipsis"
-                maxW="150px"
-                fontWeight={isShowInputValue ? "600" : "400"}
-                color={isShowInputValue ? "text.main" : "text.dark"}
+                top="-16px"
+                left="-16px"
+                borderRadius="8px"
+                bg="pebble.800"
+                whiteSpace="nowrap"
+                p={4}
+                position="absolute"
+                zIndex="1"
+                onMouseOut={handleMouseOutText}
               >
-                {isShowInputValue ? inputValue : defaultValue}
+                {inputValue}
               </Text>
-              {showName && (
-                <Text
-                  variant="body2"
-                  top="-16px"
-                  left="-16px"
-                  borderRadius="8px"
-                  bg="pebble.800"
-                  whiteSpace="nowrap"
-                  p={4}
-                  position="absolute"
-                  zIndex="1"
-                >
-                  {inputValue}
-                </Text>
-              )}
-            </Flex>
+            )}
             {!!tooltip && (
               <Tooltip
                 hasArrow

@@ -101,7 +101,7 @@ export const TagSelection = observer(
             result.filter((existingOption) => existingOption !== option)
           );
         } else {
-          setResult([option, ...result]);
+          setResult([...result, option]);
         }
       };
 
@@ -154,7 +154,7 @@ export const TagSelection = observer(
             >
               {result.length > 0 && (
                 <Flex alignItems="center" pl="2">
-                  {[...result].reverse().map((option) => (
+                  {result.map((option) => (
                     <Flex
                       display="inline-block"
                       onClick={() => selectOption(option)}
@@ -185,7 +185,8 @@ export const TagSelection = observer(
                   setDisplayOptions(true);
                 }}
                 ref={mergeRefs([inputRef, ref])}
-                maxLength={36}
+                maxLength={15}
+                autoComplete="off"
                 {...rest}
               />
               <FormLabel
