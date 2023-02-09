@@ -1,12 +1,16 @@
 import type { Filters } from "lib/types";
 import { MsgFurtherAction } from "lib/types";
 
-export const getMsgFurtherAction = (length: number, filters: Filters) => {
+export const getMsgFurtherAction = (
+  length: number,
+  filters: Filters,
+  isSuccess: boolean
+) => {
   // Redo: instantiate, execute, check length === 1
   if (length === 1 && (filters.isExecute || filters.isInstantiate)) {
     return MsgFurtherAction.REDO;
   }
-  // Resend: messages with execute, instantiate, or send
+  // Resend: messages with execute, instantiate, or send with success transaction
   if (
     !filters.isClearAdmin &&
     !filters.isUpload &&
@@ -14,7 +18,8 @@ export const getMsgFurtherAction = (length: number, filters: Filters) => {
     !filters.isClearAdmin &&
     !filters.isMigrate &&
     !filters.isUpdateAdmin &&
-    (filters.isExecute || filters.isInstantiate || filters.isSend)
+    (filters.isExecute || filters.isInstantiate || filters.isSend) &&
+    isSuccess
   ) {
     return MsgFurtherAction.RESEND;
   }

@@ -19,6 +19,8 @@ interface RenderButtonProps {
   message: Message;
 }
 
+const ACCORDION_LEFT_SPACING = "266px";
+
 const RenderButton = ({ message }: RenderButtonProps) => {
   if (
     extractMsgType(message.type) === "MsgExecuteContract" ||
@@ -41,7 +43,7 @@ export const AccordionTx = ({
     <TableRow
       h="40px"
       borderBottom="none"
-      pl="256px"
+      pl={ACCORDION_LEFT_SPACING}
       gap={3}
       _hover={{ background: "pebble.800" }}
       transition="all .25s ease-in-out"
@@ -59,6 +61,7 @@ export const AccordionTx = ({
         type={extractMsgType(message.type)}
         success
         singleMsg
+        showCopyButton={false}
       />
       {allowFurtherAction && (
         <SlideFade in={showButton} offsetY="20px">
