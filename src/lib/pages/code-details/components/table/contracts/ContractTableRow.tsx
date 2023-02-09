@@ -34,6 +34,9 @@ const InstantiatorRender = ({
 }: Pick<ContractTableRowProps, "contractInfo">) => {
   const getAddressType = useGetAddressType();
 
+  /**
+   * @remarks handle the case where the data is too old and cannot be found
+   */
   if (!latestUpdater)
     return (
       <Text variant="body2" color="text.dark">
@@ -41,10 +44,9 @@ const InstantiatorRender = ({
       </Text>
     );
 
-  const { operation } = remark;
   const updaterType = getAddressType(latestUpdater);
 
-  switch (operation) {
+  switch (remark?.operation) {
     case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS:
       return (
         <Text variant="body2" color="text.dark" cursor="text">

@@ -120,7 +120,7 @@ export const InstantiateInfo = ({
       <Divider border="1px solid" borderColor="pebble.700" />
 
       {instantiateInfo &&
-        (instantiateInfo.createdHeight !== -1 ? (
+        (instantiateInfo.createdHeight ? (
           <LabelText
             label="Instantiated Block Height"
             helperText1={

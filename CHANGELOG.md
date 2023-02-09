@@ -109,7 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#170](https://github.com/alleslabs/celatone-frontend/pull/170) Change gql query for better speed, remove unwrap and default values, and better handle data rendering
+- [#171](https://github.com/alleslabs/celatone-frontend/pull/171) Change gql query for better speed, remove unwrap and default values, and better handle data rendering
 - [#161](https://github.com/alleslabs/celatone-frontend/pull/161) Fix editable cell, no wrap when hover and click outside to close the editable cell
 - [#159](https://github.com/alleslabs/celatone-frontend/pull/159) Add query key so refetch data when network change
 - [#145](https://github.com/alleslabs/celatone-frontend/pull/145) Disable closing on some modal when click on modal overlay

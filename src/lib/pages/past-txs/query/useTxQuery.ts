@@ -22,7 +22,7 @@ import {
 
 import {
   actionsFilter,
-  generateWhereForContractTx,
+  generateWhereForContractTxView,
   generateWhereForTx,
 } from "./generateWhere";
 import {
@@ -49,6 +49,21 @@ interface GraphqlTransactionsResponse {
   };
 }
 
+interface GraphqlTransactionsViewResponse {
+  hash: string;
+  isSend: boolean;
+  isExecute: boolean;
+  isIbc: boolean;
+  isInstantiate: boolean;
+  isStoreCode: boolean;
+  isClearAdmin: boolean;
+  isMigrate: boolean;
+  isUpdateAdmin: boolean;
+  messages: Message[];
+  success: boolean;
+  timestamp: string;
+}
+
 export const useTxQuery = (
   userAddress: Option<HumanAddr>,
   search: string,
@@ -65,7 +80,7 @@ export const useTxQuery = (
 
     // Search with contract address -> query from contract transaction table
     if (getAddressType(search) === "contract_address") {
-      const where = generateWhereForContractTx({
+      const where = generateWhereForContractTxView({
         userAddress,
         contractAddress: search as ContractAddr,
         filters,
@@ -75,47 +90,38 @@ export const useTxQuery = (
           pageSize,
           offset,
         })
-        .then(({ contract_transactions }) => {
+        .then(({ contract_transactions_view }) => {
           const contractTransactionsToCamel = snakeToCamel(
-            contract_transactions
-          ) as { transaction: GraphqlTransactionsResponse }[];
+            contract_transactions_view
+          ) as GraphqlTransactionsViewResponse[];
           return contractTransactionsToCamel.map(
-            (contractTx: {
-              transaction: GraphqlTransactionsResponse;
-            }): PastTransaction => ({
-              hash: parseTxHash(contractTx.transaction.hash),
-              messages: snakeToCamel(
-                contractTx.transaction.messages
-              ) as Message[],
+            (contractTx): PastTransaction => ({
+              hash: parseTxHash(contractTx.hash),
+              messages: snakeToCamel(contractTx.messages) as Message[],
               // TODO - Remove default case
-              created: parseDateDefault(
-                contractTx.transaction.block?.timestamp
-              ),
-              success: contractTx.transaction.success,
+              created: parseDateDefault(contractTx.timestamp),
+              success: contractTx.success,
               actionMsgType: getActionMsgType([
-                contractTx.transaction.isExecute,
-                contractTx.transaction.isInstantiate,
-                contractTx.transaction.isSend,
-                contractTx.transaction.isStoreCode,
-                contractTx.transaction.isMigrate,
-                contractTx.transaction.isUpdateAdmin,
-                contractTx.transaction.isClearAdmin,
+                contractTx.isExecute,
+                contractTx.isInstantiate,
+                contractTx.isSend,
+                contractTx.isStoreCode,
+                contractTx.isMigrate,
+                contractTx.isUpdateAdmin,
+                contractTx.isClearAdmin,
               ]),
-              furtherAction: getMsgFurtherAction(
-                contractTx.transaction.messages.length,
-                {
-                  isExecute: contractTx.transaction.isExecute,
-                  isInstantiate: contractTx.transaction.isInstantiate,
-                  isSend: contractTx.transaction.isSend,
-                  isUpload: contractTx.transaction.isStoreCode,
-                  isMigrate: contractTx.transaction.isMigrate,
-                  isUpdateAdmin: contractTx.transaction.isUpdateAdmin,
-                  isClearAdmin: contractTx.transaction.isClearAdmin,
-                  isIbc: contractTx.transaction.isIbc,
-                }
-              ),
-              isIbc: contractTx.transaction.isIbc,
-              isInstantiate: contractTx.transaction.isInstantiate,
+              furtherAction: getMsgFurtherAction(contractTx.messages.length, {
+                isExecute: contractTx.isExecute,
+                isInstantiate: contractTx.isInstantiate,
+                isSend: contractTx.isSend,
+                isUpload: contractTx.isStoreCode,
+                isMigrate: contractTx.isMigrate,
+                isUpdateAdmin: contractTx.isUpdateAdmin,
+                isClearAdmin: contractTx.isClearAdmin,
+                isIbc: contractTx.isIbc,
+              }),
+              isIbc: contractTx.isIbc,
+              isInstantiate: contractTx.isInstantiate,
             })
           );
         });

@@ -36,18 +36,18 @@ import type {
 import {
   parseDate,
   getActionMsgType,
-  parseDateDefault,
   parseTxHash,
   parseTxHashOpt,
   snakeToCamel,
   unwrap,
+  parseDateOpt,
 } from "lib/utils";
 
 interface InstantiateDetail {
-  initMsg: string;
-  initTxHash?: string;
-  initProposalId?: number;
-  initProposalTitle?: string;
+  initMsg: Option<string>;
+  initTxHash: Option<string>;
+  initProposalId: Option<number>;
+  initProposalTitle: Option<string>;
 }
 
 export const useInstantiatedCountByUserQuery = (
@@ -80,7 +80,7 @@ export const useInstantiatedCountByUserQuery = (
 
 export const useInstantiatedListByUserQuery = (
   walletAddr: Option<HumanAddr>
-): UseQueryResult<Option<ContractLocalInfo[]>> => {
+): UseQueryResult<ContractLocalInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -113,7 +113,7 @@ export const useInstantiatedListByUserQuery = (
 };
 
 export const useContractListByAdmin = (
-  adminAddress: Option<Addr>
+  adminAddress: Addr
 ): UseQueryResult<Option<ContractLocalInfo[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -153,7 +153,7 @@ export const useInstantiateDetailByContractQuery = (
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then(({ contracts_by_pk }) => ({
-        initMsg: contracts_by_pk?.init_msg ?? "{}",
+        initMsg: contracts_by_pk?.init_msg,
         initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
         initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
         initProposalTitle:
@@ -172,7 +172,7 @@ export const useInstantiateDetailByContractQuery = (
 
 export const useAdminByContractAddresses = (
   contractAddresses: Option<ContractAddr[]>
-): UseQueryResult<Option<Dict<ContractAddr, string>>> => {
+): UseQueryResult<Option<Dict<ContractAddr, Addr>>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -184,10 +184,10 @@ export const useAdminByContractAddresses = (
         contractAddresses,
       })
       .then(({ contracts }) =>
-        contracts.reduce(
+        contracts.reduce<Dict<ContractAddr, Addr>>(
           (prev, contract) => ({
             ...prev,
-            [contract.address as ContractAddr]: contract.admin?.address,
+            [contract.address as ContractAddr]: contract.admin?.address as Addr,
           }),
           {}
         )
@@ -218,14 +218,14 @@ export const useExecuteTxsByContractAddress = (
         offset,
         pageSize,
       })
-      .then(({ contract_transactions }) =>
-        contract_transactions.map((transaction) => ({
-          hash: parseTxHash(transaction.transaction.hash),
-          messages: transaction.transaction.messages,
-          sender: transaction.transaction.account.address as Addr,
-          height: transaction.transaction.block.height,
-          created: parseDateDefault(transaction.transaction?.block?.timestamp),
-          success: transaction.transaction.success,
+      .then(({ contract_transactions_view }) =>
+        contract_transactions_view.map((transaction) => ({
+          hash: parseTxHash(transaction.hash),
+          messages: transaction.messages,
+          sender: transaction.sender as Addr,
+          height: transaction.height,
+          created: parseDateOpt(transaction.timestamp),
+          success: transaction.success,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
@@ -285,9 +285,7 @@ export const useMigrationHistoriesByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<
-  Option<Omit<ContractMigrationHistory, "codeDescription">[]>
-> => {
+): UseQueryResult<Omit<ContractMigrationHistory, "codeDescription">[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -377,7 +375,7 @@ export const useTxsByContractAddress = (
           messages: snakeToCamel(contractTx.messages),
           sender: contractTx.sender as Addr,
           height: contractTx.height,
-          created: parseDateDefault(contractTx.timestamp),
+          created: parseDateOpt(contractTx.timestamp),
           success: contractTx.success,
           actionMsgType: getActionMsgType([
             unwrap(contractTx.is_execute),
@@ -448,7 +446,7 @@ export const useRelatedProposalsByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<Option<ContractRelatedProposals[]>> => {
+): UseQueryResult<ContractRelatedProposals[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {

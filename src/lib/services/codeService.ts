@@ -24,7 +24,7 @@ import type {
 } from "lib/types";
 import { parseDateOpt, parseTxHashOpt } from "lib/utils";
 
-export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
+export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -54,7 +54,7 @@ export const useCodeListPageQuery = ({
 }: {
   walletAddr: Option<string>;
   ids: Option<number[]>;
-}) => {
+}): [UseQueryResult<CodeInfo[]>, UseQueryResult<CodeInfo[]>] => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const codeByUserQueryFn = useCallback(async () => {
@@ -118,7 +118,7 @@ export const useCodeListPageQuery = ({
 
 export const useCodeInfoByCodeId = (
   codeId: Option<number>
-): UseQueryResult<Option<Omit<CodeData, "chainId">>> => {
+): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -162,7 +162,7 @@ export const useContractListByCodeId = (
   codeId: Option<number>,
   offset: number,
   pageSize: number
-): UseQueryResult<Option<ContractInfo[]>> => {
+): UseQueryResult<ContractInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {

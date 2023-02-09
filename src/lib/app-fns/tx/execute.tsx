@@ -10,14 +10,14 @@ import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Activity } from "lib/stores/contract";
-import type { ContractAddr, TxResultRendering } from "lib/types";
+import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { encode, formatUFee, getCurrentDate } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
-  address: string;
+  address: HumanAddr;
   contractAddress: ContractAddr;
   fee: StdFee;
   msg: object;

@@ -2,7 +2,14 @@ import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
-import type { LVPair, Dict, ContractAddr, Option, Addr } from "lib/types";
+import type {
+  LVPair,
+  Dict,
+  ContractAddr,
+  Option,
+  Addr,
+  HumanAddr,
+} from "lib/types";
 import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
 
 export interface ContractLocalInfo {
@@ -39,7 +46,7 @@ export const cmpContractListInfo = (
 export interface Activity {
   type: "query" | "execute";
   action: string;
-  sender: string | undefined;
+  sender: Option<HumanAddr>;
   contractAddress: ContractAddr;
   msg: string; // base64
   timestamp: Date;
@@ -228,13 +235,13 @@ export class ContractStore {
     tags?: string[],
     lists?: LVPair[]
   ) {
-    const contractLocalInfo =
-      this.contractLocalInfo[userKey]?.[contractAddress] ??
-      ({
-        contractAddress,
-        instantiator,
-        label,
-      } as ContractLocalInfo);
+    const contractLocalInfo = this.contractLocalInfo[userKey]?.[
+      contractAddress
+    ] ?? {
+      contractAddress,
+      instantiator,
+      label,
+    };
 
     if (name !== undefined)
       contractLocalInfo.name = name.trim().length ? name.trim() : undefined;

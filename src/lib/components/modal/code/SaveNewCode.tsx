@@ -13,6 +13,7 @@ import {
 } from "lib/data";
 import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { getCodeIdInfo } from "lib/services/code";
+import type { Addr } from "lib/types";
 import { getDescriptionDefault } from "lib/utils";
 
 interface SaveNewCodeModalProps {
@@ -86,7 +87,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     const id = Number(codeId);
 
     saveNewCode(id);
-    updateCodeInfo(id, uploader, description);
+    updateCodeInfo(id, uploader as Addr, description);
 
     // TODO: abstract toast to template later
     toast({

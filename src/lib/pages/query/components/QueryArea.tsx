@@ -13,7 +13,7 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useLCDEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
-import type { ContractAddr, RpcQueryError } from "lib/types";
+import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
 import { encode, getCurrentDate, jsonPrettify, jsonValidate } from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
@@ -55,7 +55,7 @@ export const QueryArea = ({
         addActivity(userKey, {
           type: "query",
           action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-          sender: address,
+          sender: address as HumanAddr,
           contractAddress,
           msg: encode(msg),
           timestamp: getCurrentDate(),

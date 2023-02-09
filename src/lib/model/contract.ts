@@ -52,7 +52,7 @@ export interface ContractData {
     publicDetail: Option<Detail>;
   };
   balances: Option<BalanceWithAssetInfo[]>;
-  initMsg: string;
+  initMsg: Option<string>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
@@ -155,11 +155,8 @@ export const useContractData = (
     : undefined;
   const contractLocalInfo = getContractLocalInfo(contractAddress);
 
-  const {
-    data: instantiateDetail = {
-      initMsg: "{}",
-    },
-  } = useInstantiateDetailByContractQuery(contractAddress);
+  const { data: instantiateDetail } =
+    useInstantiateDetailByContractQuery(contractAddress);
 
   if (!currentChainRecord) return undefined;
 
@@ -174,10 +171,10 @@ export const useContractData = (
       publicDetail: publicInfoBySlug?.details,
     },
     balances: contractBalancesWithAssetInfos,
-    initMsg: instantiateDetail.initMsg,
-    initTxHash: instantiateDetail.initTxHash,
-    initProposalId: instantiateDetail.initProposalId,
-    initProposalTitle: instantiateDetail.initProposalTitle,
+    initMsg: instantiateDetail?.initMsg,
+    initTxHash: instantiateDetail?.initTxHash,
+    initProposalId: instantiateDetail?.initProposalId,
+    initProposalTitle: instantiateDetail?.initProposalTitle,
   };
 };
 

@@ -19,7 +19,7 @@ export interface ContractInfo extends ContractLocalInfo {
   admin: Option<Addr>;
   latestUpdater: Option<Addr>;
   latestUpdated: Option<Date>;
-  remark: ContractHistoryRemark;
+  remark: Option<ContractHistoryRemark>;
 }
 
 export interface ContractInstances {

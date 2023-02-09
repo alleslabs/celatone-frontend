@@ -149,28 +149,21 @@ export const getExecuteTxsByContractAddress = graphql(`
     $offset: Int!
     $pageSize: Int!
   ) {
-    # TODO: change table to contract_transactions_view
-    contract_transactions(
+    contract_transactions_view(
       where: {
-        contract: { address: { _eq: $contractAddress } }
-        transaction: { is_execute: { _eq: true } }
+        contract_address: { _eq: $contractAddress }
+        is_execute: { _eq: true }
       }
-      order_by: { transaction: { block: { timestamp: desc } } }
+      order_by: { timestamp: desc }
       limit: $pageSize
       offset: $offset
     ) {
-      transaction {
-        hash
-        messages
-        success
-        account {
-          address
-        }
-        block {
-          height
-          timestamp
-        }
-      }
+      hash
+      messages
+      success
+      sender
+      height
+      timestamp
     }
   }
 `);

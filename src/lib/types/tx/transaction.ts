@@ -1,4 +1,4 @@
-import type { Addr } from "lib/types";
+import type { Addr, Option } from "lib/types";
 
 import type {
   DetailClearAdmin,
@@ -62,7 +62,7 @@ export interface ExecuteTransaction {
   messages: Message[];
   sender: Addr;
   height: number;
-  created: Date;
+  created: Option<Date>;
   success: boolean;
 }
 

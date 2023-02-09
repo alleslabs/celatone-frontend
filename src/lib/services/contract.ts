@@ -50,7 +50,7 @@ export interface InstantiateInfo {
   instantiator: Addr;
   admin?: Addr;
   label: string;
-  createdHeight: number;
+  createdHeight: Option<number>;
   createdTime: Option<Date>;
   ibcPortId: string;
   raw: ContractResponse;
@@ -96,8 +96,8 @@ export const queryInstantiateInfo = async (
   const res = await queryContract(endpoint, contractAddress);
 
   // TODO: check `created` field for contracts created with proposals
-  let createdHeight = -1;
-  let createdTime;
+  let createdHeight: Option<number>;
+  let createdTime: Option<Date>;
   if (res.contract_info.created) {
     createdHeight = res.contract_info.created.block_height;
     await indexerGraphClient
@@ -129,7 +129,7 @@ export const queryContractBalances = async (
   chainName: Option<string>,
   chainId: Option<string>,
   contractAddress: ContractAddr
-): Promise<Option<Balance[]>> => {
+): Promise<Balance[]> => {
   if (!chainName || !chainId)
     throw new Error("Invalid chain (queryContractBalances)");
   const { data } = await axios.get<Balance[]>(
@@ -144,7 +144,7 @@ export const queryPublicInfo = async (
   chainName: string | undefined,
   chainId: string | undefined,
   contractAddress: ContractAddr
-): Promise<PublicInfo | undefined> => {
+): Promise<Option<PublicInfo>> => {
   if (!chainName || !chainId)
     throw new Error("Invalid chain (queryPublicInfo)");
   return axios

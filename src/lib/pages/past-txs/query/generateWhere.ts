@@ -55,6 +55,19 @@ export const generateWhereForContractTx = ({
   }`;
 };
 
+export const generateWhereForContractTxView = ({
+  userAddress,
+  contractAddress,
+  filters,
+}: GenerateWhereForContractTx) => {
+  const actionFilter = actionsFilter(filters);
+  return `{
+    sender: { _eq: "${userAddress}" },
+    ${actionFilter && `${actionFilter},`}
+    ${contractAddress && `contract_address: { _eq: "${contractAddress}" } ,`}
+  }`;
+};
+
 interface GenerateWhereForTx {
   userAddress: HumanAddr;
   txHash?: string;

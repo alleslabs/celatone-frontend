@@ -1,11 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 
-import type { Dict } from "lib/types";
+import type { Addr, Dict } from "lib/types";
 
 export interface CodeLocalInfo {
   id: number;
-  uploader: string;
+  uploader: Addr;
   description?: string;
 }
 
@@ -57,7 +57,7 @@ export class CodeStore {
     return savedCodeIdsByUserKey
       .map((codeId) => ({
         id: codeId,
-        uploader: this.codeInfo[userKey]?.[codeId]?.uploader ?? "TODO",
+        uploader: this.codeInfo[userKey]?.[codeId]?.uploader ?? ("N/A" as Addr),
         description: this.codeInfo[userKey]?.[codeId]?.description,
       }))
       .reverse();
@@ -77,7 +77,7 @@ export class CodeStore {
     );
   }
 
-  updateCodeInfo(id: number, uploader: string, description?: string): void {
+  updateCodeInfo(id: number, uploader: Addr, description?: string): void {
     const codeInfo = this.codeInfo[this.userKey]?.[id] || { id, uploader };
 
     if (description !== undefined) {

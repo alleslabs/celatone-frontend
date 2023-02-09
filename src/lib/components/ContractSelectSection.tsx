@@ -28,7 +28,7 @@ interface DisplayNameProps {
 interface ContractDetailsButtonProps {
   contractAddress: ContractAddr;
   contractLocalInfo: Option<ContractLocalInfo>;
-  instantiator: string;
+  instantiator: Addr;
   label: string;
 }
 
@@ -84,7 +84,7 @@ const ContractDetailsButton = ({
     <SaveContractDetailsModal
       contractLocalInfo={{
         contractAddress,
-        instantiator: instantiator as Addr,
+        instantiator,
         label,
         ...contractLocalInfo,
       }}
@@ -214,7 +214,7 @@ export const ContractSelectSection = observer(
             <ContractDetailsButton
               contractAddress={contractAddress}
               contractLocalInfo={contractLocalInfo}
-              instantiator={contractState.instantiator}
+              instantiator={contractState.instantiator as Addr}
               label={contractState.label}
             />
           )}

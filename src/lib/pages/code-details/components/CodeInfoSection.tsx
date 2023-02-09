@@ -29,7 +29,6 @@ const getMethodSpecificRender = (
           />
         </LabelText>
       ),
-      // TODO: ASK BEEB FOR CONFIRMATION
       storedBlockRender:
         height && created ? (
           <>
@@ -50,7 +49,7 @@ const getMethodSpecificRender = (
         ),
     };
   }
-  if (codeTxInfo.hash && codeTxInfo.height) {
+  if (codeTxInfo.hash) {
     const { hash, height, created } = codeTxInfo;
     return {
       methodRender: (
@@ -58,29 +57,26 @@ const getMethodSpecificRender = (
           <ExplorerLink type="tx_hash" value={hash} canCopyWithHover />
         </LabelText>
       ),
-      storedBlockRender: (
-        <>
-          <ExplorerLink
-            type="block_height"
-            value={height.toString()}
-            canCopyWithHover
-          />
-          {created ? (
-            <>
-              <Text variant="body3" color="text.dark">
-                {dateFromNow(created)}
-              </Text>
-              <Text variant="body3" color="text.dark">
-                {formatUTC(created)}
-              </Text>
-            </>
-          ) : (
+      storedBlockRender:
+        height && created ? (
+          <>
+            <ExplorerLink
+              type="block_height"
+              value={height.toString()}
+              canCopyWithHover
+            />
             <Text variant="body3" color="text.dark">
-              N/A
+              {dateFromNow(created)}
             </Text>
-          )}
-        </>
-      ),
+            <Text variant="body3" color="text.dark">
+              {formatUTC(created)}
+            </Text>
+          </>
+        ) : (
+          <Text variant="body3" color="text.dark">
+            N/A
+          </Text>
+        ),
     };
   }
   /**
