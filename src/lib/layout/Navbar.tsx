@@ -18,7 +18,7 @@ import {
 } from "react-icons/md";
 
 import { AppLink } from "lib/components/AppLink";
-import { CreateNewList } from "lib/components/modal";
+import { CreateNewListModal } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore, usePublicProjectStore } from "lib/hooks";
 import { cmpContractListInfo } from "lib/stores/contract";
@@ -57,7 +57,7 @@ const Navbar = observer(() => {
       category: "Quick Actions",
       submenu: [
         {
-          name: "Deploy contract",
+          name: "Deploy Contract",
           slug: "/deploy",
           icon: MdOutlineAdd,
         },
@@ -108,7 +108,7 @@ const Navbar = observer(() => {
             icon: getListIcon(list.name),
           })),
         {
-          name: "View All",
+          name: "View All Lists",
           slug: "/contract-list",
           icon: MdMoreHoriz,
         },
@@ -126,7 +126,7 @@ const Navbar = observer(() => {
           logo: list.logo,
         })),
         {
-          name: "View All",
+          name: "View All Projects",
           slug: "/public-project",
           icon: MdMoreHoriz,
         },
@@ -172,7 +172,7 @@ const Navbar = observer(() => {
                 {item.category}
               </Text>
               {item.category === "Contracts" && (
-                <CreateNewList
+                <CreateNewListModal
                   buttonProps={{
                     variant: "ghost-info",
                     size: "xs",
@@ -189,6 +189,7 @@ const Navbar = observer(() => {
                   p={2}
                   cursor="pointer"
                   _hover={{ bg: "pebble.800", borderRadius: "8px" }}
+                  my="1px"
                   transition="all .25s ease-in-out"
                   alignItems="center"
                   bgColor={

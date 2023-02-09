@@ -48,7 +48,7 @@ const ContractDetailsBody = observer(
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress);
 
-    if (!contractData) return <InvalidContract />;
+    if (!contractData?.instantiateInfo) return <InvalidContract />;
 
     return (
       <>
@@ -74,7 +74,7 @@ const ContractDetailsBody = observer(
                   contractData.instantiateInfo?.raw.contract_info ?? {}
                 )
               )}
-              jsonAreaHeight="180px"
+              jsonAreaHeight="230px"
             />
             <JsonInfo
               header="Instantiate Message"

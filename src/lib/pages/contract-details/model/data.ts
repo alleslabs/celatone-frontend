@@ -20,7 +20,7 @@ export const useMigrationHistories = (
     const localInfo = getCodeLocalInfo(data.codeId);
     return {
       ...data,
-      codeDescription: localInfo?.description,
+      codeName: localInfo?.name,
     };
   });
 };

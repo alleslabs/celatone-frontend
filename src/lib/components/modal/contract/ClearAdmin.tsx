@@ -7,15 +7,15 @@ import { useClearAdminTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { ContractAddr } from "lib/types";
 
-interface ClearAdminContractProps {
+interface ClearAdminModalProps {
   contractAddress: ContractAddr;
   triggerElement: JSX.Element;
 }
 
-export const ClearAdminContract = ({
+export const ClearAdminModal = ({
   contractAddress,
   triggerElement,
-}: ClearAdminContractProps) => {
+}: ClearAdminModalProps) => {
   const { broadcast } = useTxBroadcast();
   const clearAdminTx = useClearAdminTx(contractAddress);
 

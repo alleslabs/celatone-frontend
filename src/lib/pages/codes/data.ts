@@ -63,7 +63,7 @@ export const useCodeListData = (
   const storedCodes = rawStoredCodes.map<CodeInfo>((code) => {
     return {
       ...code,
-      description: getCodeLocalInfo(code.id)?.description,
+      name: getCodeLocalInfo(code.id)?.name,
       isSaved: isCodeIdSaved(code.id),
     };
   });

@@ -92,6 +92,10 @@ export const FilterSelection = observer(
         result.some((selectedOption) => selectedOption === option);
 
       const selectOption = (option: string) => {
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+
         if (isOptionSelected(option)) {
           setResult(option, false);
         } else {
@@ -112,6 +116,8 @@ export const FilterSelection = observer(
               color="text.main"
               background="none"
               borderRadius="8px"
+              border="1px solid"
+              borderColor="pebble.700"
               maxW="100%"
               overflowX="scroll"
             >
@@ -150,6 +156,7 @@ export const FilterSelection = observer(
                 }}
                 ref={mergeRefs([inputRef, ref])}
                 maxLength={36}
+                style={{ border: 0, maxHeight: "54px" }}
                 {...rest}
               />
               <FormLabel

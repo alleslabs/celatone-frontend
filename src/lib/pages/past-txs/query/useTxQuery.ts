@@ -112,7 +112,8 @@ export const useTxQuery = (
                   isUpdateAdmin: contractTx.transaction.isUpdateAdmin,
                   isClearAdmin: contractTx.transaction.isClearAdmin,
                   isIbc: contractTx.transaction.isIbc,
-                }
+                },
+                contractTx.transaction.success
               ),
               isIbc: contractTx.transaction.isIbc,
               isInstantiate: contractTx.transaction.isInstantiate,
@@ -151,16 +152,20 @@ export const useTxQuery = (
               transaction.isUpdateAdmin,
               transaction.isClearAdmin,
             ]),
-            furtherAction: getMsgFurtherAction(transaction.messages.length, {
-              isExecute: transaction.isExecute,
-              isInstantiate: transaction.isInstantiate,
-              isSend: transaction.isSend,
-              isUpload: transaction.isStoreCode,
-              isMigrate: transaction.isMigrate,
-              isUpdateAdmin: transaction.isUpdateAdmin,
-              isClearAdmin: transaction.isClearAdmin,
-              isIbc: transaction.isIbc,
-            }),
+            furtherAction: getMsgFurtherAction(
+              transaction.messages.length,
+              {
+                isExecute: transaction.isExecute,
+                isInstantiate: transaction.isInstantiate,
+                isSend: transaction.isSend,
+                isUpload: transaction.isStoreCode,
+                isMigrate: transaction.isMigrate,
+                isUpdateAdmin: transaction.isUpdateAdmin,
+                isClearAdmin: transaction.isClearAdmin,
+                isIbc: transaction.isIbc,
+              },
+              transaction.success
+            ),
             isIbc: transaction.isIbc,
             isInstantiate: transaction.isInstantiate,
           };
@@ -184,6 +189,7 @@ export const useTxQuery = (
       filters,
       offset,
       pageSize,
+      indexerGraphClient,
     ],
     queryFn,
   });
@@ -225,7 +231,13 @@ export const useTxQueryCount = (
   }, [filters, getAddressType, indexerGraphClient, search, userAddress]);
 
   return useQuery({
-    queryKey: ["past-transaction-count", userAddress, search, filters],
+    queryKey: [
+      "past-transaction-count",
+      userAddress,
+      search,
+      filters,
+      indexerGraphClient,
+    ],
     queryFn,
   });
 };

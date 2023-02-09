@@ -21,7 +21,7 @@ export const useRecentCodesData = (
 
   const recentCodes = rawRecentCodes.map<CodeInfo>((code) => ({
     ...code,
-    description: getCodeLocalInfo(code.id)?.description,
+    name: getCodeLocalInfo(code.id)?.name,
     isSaved: isCodeIdSaved(code.id),
   }));
 
