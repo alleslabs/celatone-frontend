@@ -68,7 +68,7 @@ export const TextInput = ({
           {status && getStatusIcon(status.state, "20px")}
         </InputRightElement>
       </InputGroup>
-      <Flex gap={1} alignItems="center" mt={1}>
+      <Flex gap={1} alignItems="center" mt={1} flexDir="row">
         {error ? (
           <FormErrorMessage className="error-text">{error}</FormErrorMessage>
         ) : (

@@ -45,7 +45,6 @@ const UpdateAdmin = () => {
   const [adminAddress, setAdminAddress] = useState("");
   const [adminFormStatus, setAdminFormStatus] = useState<FormStatus>({
     state: "init",
-    message: "",
   });
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState<string>();
@@ -142,7 +141,6 @@ const UpdateAdmin = () => {
     setAdminAddress("");
     setAdminFormStatus({
       state: "init",
-      message: "",
     });
     setEstimatedFee(undefined);
     setSimulateError(undefined);
