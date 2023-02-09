@@ -95,7 +95,7 @@ export const queryInstantiateInfo = async (
 ): Promise<InstantiateInfo> => {
   const res = await queryContract(endpoint, contractAddress);
 
-  // TODO: check `created` field for contracts created with proposals
+  // TODO: query height from gql instead when supporting Terra
   let createdHeight = -1;
   let createdTime;
   if (res.contract_info.created) {
