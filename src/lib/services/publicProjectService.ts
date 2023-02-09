@@ -6,20 +6,21 @@ import { useCallback } from "react";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
 import type {
-  Contract,
+  PublicContract,
   Option,
   PublicCodeData,
   PublicInfo,
   PublicProjectInfo,
-  RawContract,
+  RawPublicContract,
   RawPublicProjectInfo,
 } from "lib/types";
 
-const parseContract = (raw: RawContract): Contract => ({
+const parseContract = (raw: RawPublicContract): PublicContract => ({
   contractAddress: raw.address,
   description: raw.description,
   name: raw.name,
   slug: raw.slug,
+  label: raw.label,
   instantiator: raw.instantiator,
   admin: raw.admin,
 });

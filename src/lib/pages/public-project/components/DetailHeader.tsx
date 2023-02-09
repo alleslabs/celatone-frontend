@@ -56,13 +56,15 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => {
       >
         <Box>
           <Flex gap={2} align="center">
-            <Image
-              src={details?.logo}
-              borderRadius="full"
-              alt="Celatone"
-              width={8}
-              height={8}
-            />
+            {details?.logo && (
+              <Image
+                src={details?.logo}
+                borderRadius="full"
+                alt="Celatone"
+                width={8}
+                height={8}
+              />
+            )}
             <Heading as="h5" variant="h5" className="ellipsis">
               {details?.name}
             </Heading>

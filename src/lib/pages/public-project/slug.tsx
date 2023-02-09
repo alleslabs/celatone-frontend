@@ -16,9 +16,9 @@ import { MdExpandMore } from "react-icons/md";
 import { CustomTab } from "lib/components/CustomTab";
 import { EmptyState } from "lib/components/state/EmptyState";
 
-import { CodesTable } from "./components/CodesTable";
-import { ContractsTable } from "./components/ContractsTable";
 import { DetailHeader } from "./components/DetailHeader";
+import { PublicProjectCodeTable } from "./components/table/code/PublicProjectCodeTable";
+import { PublicProjectContractTable } from "./components/table/contract/PublicProjectContractTable";
 import { usePublicData } from "./data";
 
 export const ProjectDetail = observer(() => {
@@ -58,17 +58,12 @@ export const ProjectDetail = observer(() => {
             </Heading>
             {publicCodes.length ? (
               <Box>
-                <CodesTable
+                <PublicProjectCodeTable
                   hasSearchInput={false}
-                  codes={publicCodes.slice(0, 6)}
+                  codes={publicCodes.slice(0, 5)}
                 />
-                {publicCodes.length > 5 ?? (
-                  <Flex
-                    w="full"
-                    justifyContent="center"
-                    textAlign="center"
-                    py={4}
-                  >
+                {publicCodes.length >= 5 && (
+                  <Flex w="full" justifyContent="center" textAlign="center">
                     <Button
                       size="sm"
                       variant="ghost"
@@ -97,17 +92,12 @@ export const ProjectDetail = observer(() => {
             </Heading>
             {publicContracts.length ? (
               <Box>
-                <ContractsTable
+                <PublicProjectContractTable
                   hasSearchInput={false}
-                  contracts={publicContracts.slice(0, 6)}
+                  contracts={publicContracts.slice(0, 5)}
                 />
-                {publicContracts.length > 5 ?? (
-                  <Flex
-                    w="full"
-                    justifyContent="center"
-                    textAlign="center"
-                    py={4}
-                  >
+                {publicCodes.length >= 5 && (
+                  <Flex w="full" justifyContent="center" textAlign="center">
                     <Button
                       size="sm"
                       variant="ghost"
@@ -133,10 +123,10 @@ export const ProjectDetail = observer(() => {
             )}
           </TabPanel>
           <TabPanel p={0}>
-            <CodesTable codes={publicCodes} />
+            <PublicProjectCodeTable codes={publicCodes} />
           </TabPanel>
           <TabPanel p={0}>
-            <ContractsTable contracts={publicContracts} />
+            <PublicProjectContractTable contracts={publicContracts} />
           </TabPanel>
         </TabPanels>
       </Tabs>

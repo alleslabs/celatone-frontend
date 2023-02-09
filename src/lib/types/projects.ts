@@ -13,7 +13,7 @@ export interface Account {
   slug: string;
 }
 
-export interface Code {
+export interface PublicCode {
   description: string;
   id: number;
   name: string;
@@ -24,13 +24,14 @@ export interface Code {
   permissionAddresses: PermissionAddresses;
 }
 
-export interface RawContract {
+export interface RawPublicContract {
   address: ContractAddr;
   description: string;
   name: string;
   slug: string;
   instantiator: string;
   admin: string;
+  label: string;
 }
 
 export interface Social {
@@ -50,21 +51,21 @@ export interface PublicDetail {
 export interface RawPublicProjectInfo {
   accounts: Account[];
   assets: AssetInfo;
-  codes: Code[];
-  contracts: RawContract[];
+  codes: PublicCode[];
+  contracts: RawPublicContract[];
   details: PublicDetail;
   slug: string;
 }
 
-export interface Contract extends Omit<RawContract, "address"> {
+export interface PublicContract extends Omit<RawPublicContract, "address"> {
   contractAddress: string;
 }
 
 export interface PublicProjectInfo {
   accounts: Account[];
   assets: AssetInfo;
-  codes: Code[];
-  contracts: Contract[];
+  codes: PublicCode[];
+  contracts: PublicContract[];
   details: PublicDetail;
   slug: string;
 }
