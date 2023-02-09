@@ -125,7 +125,7 @@ export const PublicProjectContractRow = ({
                   <StyledIconButton
                     icon={<MdBookmark />}
                     variant="ghost-gray"
-                    color="violet.light"
+                    color="lilac.light"
                   />
                 }
               />
