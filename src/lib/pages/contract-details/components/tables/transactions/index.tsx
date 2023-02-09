@@ -63,14 +63,14 @@ export const TransactionsTable = ({
     );
 
   const templateColumnsStyle =
-    "170px 70px minmax(360px, 1fr) repeat(2, max(170px)) max(300px)";
+    "180px 70px minmax(360px, 1fr) repeat(2, max(170px)) max(300px)";
 
   return (
     <TableContainer>
       <Grid templateColumns={templateColumnsStyle}>
         <TableHeader>Transaction Hash</TableHeader>
         <TableHeader />
-        <TableHeader>Actions</TableHeader>
+        <TableHeader>Messages</TableHeader>
         <TableHeader>Sender</TableHeader>
         <TableHeader>Block Height</TableHeader>
         <TableHeader>Timestamp</TableHeader>
