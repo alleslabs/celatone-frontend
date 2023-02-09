@@ -77,5 +77,3 @@ export const typeUrlDict = {
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
-
-export const ACCORDION_LEFT_SPACING = "266px";

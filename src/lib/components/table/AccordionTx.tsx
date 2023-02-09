@@ -5,7 +5,6 @@ import { SingleActionMsg } from "../action-msg/SingleActionMsg";
 import { AccordionStepperItem } from "lib/components/AccordionStepperItem";
 import { RedoButton } from "lib/components/button/RedoButton";
 import { ResendButton } from "lib/components/button/ResendButton";
-import { ACCORDION_LEFT_SPACING } from "lib/data";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
@@ -19,6 +18,8 @@ interface AccordionTxProps {
 interface RenderButtonProps {
   message: Message;
 }
+
+const ACCORDION_LEFT_SPACING = "266px";
 
 const RenderButton = ({ message }: RenderButtonProps) => {
   if (
