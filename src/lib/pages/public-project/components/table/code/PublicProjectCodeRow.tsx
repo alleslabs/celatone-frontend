@@ -1,10 +1,9 @@
-import { Box, Grid, Text } from "@chakra-ui/react";
+import { HStack, Grid, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { RemoveCodeModal } from "lib/components/modal/code/RemoveCode";
 import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { TableRowNoBorder } from "lib/components/table";
@@ -74,23 +73,16 @@ export const PublicProjectCodeRow = ({
         />
       </TableRowNoBorder>
       <TableRowNoBorder justifyContent="end" gap={2}>
-        <InstantiateButton
-          instantiatePermission={
-            publicCodeInfo.publicInfo.instantiatePermission
-          }
-          permissionAddresses={publicCodeInfo.publicInfo.permissionAddresses}
-          codeId={publicCodeInfo.publicInfo.id}
-        />
-        <Box onClick={(e) => e.stopPropagation()}>
-          {publicCodeInfo.localInfo.isSaved ? (
-            <RemoveCodeModal
-              codeId={publicCodeInfo.localInfo.id}
-              name={publicCodeInfo.localInfo.name}
-            />
-          ) : (
-            <SaveOrRemoveCodeModal codeInfo={publicCodeInfo.localInfo} />
-          )}
-        </Box>
+        <HStack onClick={(e) => e.stopPropagation()}>
+          <InstantiateButton
+            instantiatePermission={
+              publicCodeInfo.publicInfo.instantiatePermission
+            }
+            permissionAddresses={publicCodeInfo.publicInfo.permissionAddresses}
+            codeId={publicCodeInfo.publicInfo.id}
+          />
+          <SaveOrRemoveCodeModal codeInfo={publicCodeInfo.localInfo} />
+        </HStack>
       </TableRowNoBorder>
     </Grid>
   );

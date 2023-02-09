@@ -1,3 +1,4 @@
+import { InfoIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -6,6 +7,7 @@ import {
   IconButton,
   Text,
   Flex,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
@@ -71,8 +73,19 @@ export const PublicProjectContractRow = ({
           canCopyWithHover
         />
       </TableRowNoBorder>
-      <TableRowNoBorder>
+      <TableRowNoBorder gap={1}>
         <Text>{publicContractInfo.publicInfo.name}</Text>
+        {publicContractInfo.publicInfo.description && (
+          <Tooltip
+            hasArrow
+            label={publicContractInfo.publicInfo.description}
+            placement="top"
+            bg="honeydew.darker"
+            arrowSize={8}
+          >
+            <InfoIcon color="pebble.600" boxSize="14px" cursor="pointer" />
+          </Tooltip>
+        )}
       </TableRowNoBorder>
       <TableRowNoBorder>
         <ExplorerLink
