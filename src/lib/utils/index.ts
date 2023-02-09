@@ -15,7 +15,7 @@ export * from "./date";
 export * from "./validate";
 export * from "./txHash";
 export * from "./option";
-export * from "./description";
+export * from "./descriptionAndName";
 export * from "./tags";
 export * from "./countMessages";
 export * from "./msgFurtherAction";

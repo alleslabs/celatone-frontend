@@ -9,7 +9,7 @@ import {
 import { MdLanguage } from "react-icons/md";
 
 import { IconButton } from "lib/components/button/IconButton";
-import type { Option, Detail } from "lib/types";
+import type { Option, PublicDetail } from "lib/types";
 
 export const renderSocial = (name: string) => {
   switch (name) {
@@ -25,7 +25,7 @@ export const renderSocial = (name: string) => {
 };
 
 interface SocialMediaProps {
-  details: Option<Detail>;
+  details: Option<PublicDetail>;
 }
 export const SocialMedia = ({ details }: SocialMediaProps) => {
   if (!details) return null;

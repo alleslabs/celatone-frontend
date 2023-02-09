@@ -47,7 +47,7 @@ export const ButtonSection = ({
               onClose?.();
             }}
           >
-            Go to Code List
+            See my codes list
           </Button>
           <Button
             variant="primary"

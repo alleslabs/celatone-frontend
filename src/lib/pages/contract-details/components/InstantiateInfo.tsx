@@ -78,7 +78,7 @@ export const InstantiateInfo = ({
     <Container>
       <LabelText label="Network">{chainId}</LabelText>
 
-      <LabelText label="From Code" helperText1={codeInfo?.description}>
+      <LabelText label="From Code" helperText1={codeInfo?.name}>
         <ExplorerLink
           type="code_id"
           value={instantiateInfo.codeId}

@@ -26,7 +26,7 @@ export interface Social {
   url: string;
 }
 
-export interface Detail {
+export interface PublicDetail {
   github: string;
   logo: string;
   name: string;
@@ -40,7 +40,7 @@ export interface RawPublicProjectInfo {
   assets: AssetInfo;
   codes: Code[];
   contracts: RawContract[];
-  details: Detail;
+  details: PublicDetail;
   slug: string;
 }
 
@@ -53,7 +53,7 @@ export interface PublicProjectInfo {
   assets: AssetInfo;
   codes: Code[];
   contracts: Contract[];
-  details: Detail;
+  details: PublicDetail;
   slug: string;
 }
 
