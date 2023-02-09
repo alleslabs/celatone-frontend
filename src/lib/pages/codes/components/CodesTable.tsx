@@ -28,7 +28,7 @@ import type { CodeInfo } from "lib/types";
 
 import { CodeDescriptionCell } from "./CodeDescriptionCell";
 
-// Types of Table: All Codes / My Stored Codes / My Saved Codes
+// Types of Table: Recent Codes / My Stored Codes / My Saved Codes
 type TableType = "recent" | "stored" | "saved";
 
 interface CodesTableProps {

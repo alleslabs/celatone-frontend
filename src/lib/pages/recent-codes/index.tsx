@@ -11,13 +11,13 @@ import CodesTable from "lib/pages/codes/components/CodesTable";
 
 import { useRecentCodesData } from "./data";
 
-interface RecentCodeState {
+interface RecentCodesState {
   keyword: string;
   permissionValue: PermissionFilterValue;
 }
 
 const RecentCodes = observer(() => {
-  const { watch, setValue } = useForm<RecentCodeState>({
+  const { watch, setValue } = useForm<RecentCodesState>({
     defaultValues: {
       permissionValue: "all",
       keyword: "",
