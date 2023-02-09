@@ -189,6 +189,7 @@ export const useTxQuery = (
       filters,
       offset,
       pageSize,
+      indexerGraphClient,
     ],
     queryFn,
   });
@@ -230,7 +231,13 @@ export const useTxQueryCount = (
   }, [filters, getAddressType, indexerGraphClient, search, userAddress]);
 
   return useQuery({
-    queryKey: ["past-transaction-count", userAddress, search, filters],
+    queryKey: [
+      "past-transaction-count",
+      userAddress,
+      search,
+      filters,
+      indexerGraphClient,
+    ],
     queryFn,
   });
 };

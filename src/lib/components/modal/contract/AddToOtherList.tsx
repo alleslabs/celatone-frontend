@@ -6,19 +6,18 @@ import { MdBookmark } from "react-icons/md";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/forms/ListSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { DEFAULT_LIST } from "lib/data";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
-interface AddToOtherListProps {
+interface AddToOtherListModalProps {
   contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
 }
 
-export const AddToOtherList = observer(
-  ({ contractLocalInfo, triggerElement }: AddToOtherListProps) => {
-    const [contractLists, setContractLists] = useState<LVPair[]>(DEFAULT_LIST);
+export const AddToOtherListModal = observer(
+  ({ contractLocalInfo, triggerElement }: AddToOtherListModalProps) => {
+    const [contractLists, setContractLists] = useState<LVPair[]>([]);
 
     const handleSave = useHandleContractSave({
       title: "Action Complete!",
@@ -30,7 +29,7 @@ export const AddToOtherList = observer(
 
     useEffect(() => {
       setContractLists(
-        contractLocalInfo.lists?.length ? contractLocalInfo.lists : DEFAULT_LIST
+        contractLocalInfo.lists?.length ? contractLocalInfo.lists : []
       );
     }, [contractLocalInfo.lists]);
 

@@ -62,7 +62,6 @@ const JsonEditor = ({
       height={boxHeight}
       resize={disableResizing ? "unset" : "vertical"}
       overflow="auto"
-      transition="all .25s ease-in-out"
     >
       <AceEditor
         ref={editorRef}
@@ -83,7 +82,7 @@ const JsonEditor = ({
           showGutter: false,
           wrap: readOnly && !isValid,
           printMargin: false,
-          maxLines: 9999,
+          maxLines: readOnly ? 9999 : undefined,
         }}
         onChange={setValue}
         value={value}

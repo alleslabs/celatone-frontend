@@ -49,7 +49,7 @@ export const ContractsTable = ({
             variant="floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
-            label="Search with contract address or contract description"
+            placeholder="Search with contract address, name, or description"
             size="md"
             mb={6}
           />

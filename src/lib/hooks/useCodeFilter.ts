@@ -38,7 +38,7 @@ export const useSearchFilter = (keyword = "") => {
       if (!computedKeyword.length) return true;
       return (
         code.id.toString().startsWith(computedKeyword) ||
-        code.description?.toLowerCase().includes(computedKeyword.toLowerCase())
+        code.name?.toLowerCase().includes(computedKeyword.toLowerCase())
       );
     },
     [keyword]

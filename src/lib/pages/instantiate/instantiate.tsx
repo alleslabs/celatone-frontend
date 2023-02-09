@@ -296,7 +296,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             error={validateAdmin(watchAdminAddress)}
             helperAction={
               <Text
-                color="lilac.main"
+                color="honeydew.main"
+                fontWeight="600"
                 variant="body3"
                 cursor="pointer"
                 onClick={() => setValue("adminAddress", address)}

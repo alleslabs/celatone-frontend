@@ -29,7 +29,7 @@ const CodeTableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
           maxW="300px"
           color="text.dark"
         >
-          {codeDetail?.description ?? "No Description"}
+          {codeDetail?.name ?? "Untitled Name"}
         </Text>
       </TableRow>
       <TableRow justifyContent="center">
@@ -66,7 +66,7 @@ export const CodeTableReadOnly = ({
       <Grid templateColumns={TEMPLATE_COLUMNS}>
         <TableHeader />
         <TableHeader>Code ID</TableHeader>
-        <TableHeader>Description</TableHeader>
+        <TableHeader>Code Name</TableHeader>
         <TableHeader textAlign="center">Contracts</TableHeader>
         <TableHeader>Uploader</TableHeader>
         <TableHeader />
