@@ -7,6 +7,7 @@ import {
   FormLabel,
   Input,
   Text,
+  Flex,
 } from "@chakra-ui/react";
 import type { FormControlProps } from "@chakra-ui/react";
 import type { HTMLInputTypeAttribute, Dispatch, SetStateAction } from "react";
@@ -67,18 +68,19 @@ export const TextInput = ({
           {status && getStatusIcon(status.state, "20px")}
         </InputRightElement>
       </InputGroup>
-
-      {error ? (
-        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      ) : (
-        <FormHelperText className="helper-text">
-          {status?.message ? (
-            getResponseMsg(status, helperText)
-          ) : (
-            <Text color="text.dark">{helperText}</Text>
-          )}
-        </FormHelperText>
-      )}
+      <Flex gap={1} alignItems="center" mt={1}>
+        {error ? (
+          <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+        ) : (
+          <FormHelperText className="helper-text">
+            {status?.message ? (
+              getResponseMsg(status, helperText)
+            ) : (
+              <Text color="text.dark">{helperText}</Text>
+            )}
+          </FormHelperText>
+        )}
+      </Flex>
     </FormControl>
   );
 };

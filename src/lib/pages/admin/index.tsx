@@ -136,6 +136,19 @@ const UpdateAdmin = () => {
   }, [contractAddressParam, onContractPathChange, validateContractAddress]);
 
   /**
+   * @remarks Reset states on update admin succeed modal close
+   */
+  useEffect(() => {
+    setAdminAddress("");
+    setAdminFormStatus({
+      state: "init",
+      message: "",
+    });
+    setEstimatedFee(undefined);
+    setSimulateError(undefined);
+  }, [router.asPath]);
+
+  /**
    * @remarks Admin address input validation
    */
   useEffect(() => {
