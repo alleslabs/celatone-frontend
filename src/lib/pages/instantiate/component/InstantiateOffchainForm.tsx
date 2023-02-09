@@ -77,7 +77,7 @@ export const InstantiateOffChainForm = observer(
     };
 
     return (
-      <Flex direction="column" gap={8}>
+      <Flex direction="column" gap={8} width="full">
         {title && subtitle && (
           <Flex direction="column" gap={1}>
             <Heading as="h6" variant="h6">

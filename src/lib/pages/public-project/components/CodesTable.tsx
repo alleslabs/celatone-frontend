@@ -36,7 +36,7 @@ export const CodesTable = ({
   const [searchKeyword, setSearchKeyword] = useState("");
   const filteredCodes = useMemo(() => {
     return matchSorter(codes, searchKeyword, {
-      keys: ["id", "description"],
+      keys: ["id", "name"],
     });
   }, [codes, searchKeyword]);
   return (
@@ -47,7 +47,7 @@ export const CodesTable = ({
             variant="floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
-            label="Search with code ID or code description"
+            placeholder="Search with code ID or code name"
             size="md"
             mb={6}
           />
@@ -71,7 +71,7 @@ export const CodesTable = ({
                 }}
               >
                 <Th width="10%">Code ID</Th>
-                <Th width="30%">Code Description</Th>
+                <Th width="30%">Code Name</Th>
                 <Th width="10%" textAlign="center">
                   Contracts
                 </Th>
@@ -103,7 +103,7 @@ export const CodesTable = ({
                     />
                   </Td>
                   <Td width="45%">
-                    <Text variant="body2"> {code.description}</Text>
+                    <Text variant="body2"> {code.name}</Text>
                   </Td>
                   <Td width="10%" textAlign="center">
                     <Text>todo</Text>

@@ -34,7 +34,7 @@ import type {
   Addr,
   BalanceWithAssetInfo,
   ContractAddr,
-  Detail,
+  PublicDetail,
   HumanAddr,
   Option,
   PublicInfo,
@@ -49,7 +49,7 @@ export interface ContractData {
   instantiateInfo: Option<InstantiateInfo>;
   publicProject: {
     publicInfo: Option<PublicInfo>;
-    publicDetail: Option<Detail>;
+    publicDetail: Option<PublicDetail>;
   };
   balances: Option<BalanceWithAssetInfo[]>;
   initMsg: Option<string>;

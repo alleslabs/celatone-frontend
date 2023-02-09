@@ -30,10 +30,11 @@ export const EditableCell = ({
   const [isHover, setIsHover] = useState(false);
   const [isHoverText, setIsHoverText] = useState(false);
 
-  const ref = useRef(null);
+  const editCellRef = useRef(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
   const [isEditCellOpen, setIsEditCellOpen] = useState(false);
   useOutsideClick({
-    ref,
+    ref: editCellRef,
     handler: () => {
       setIsEditCellOpen(false);
     },
@@ -68,9 +69,11 @@ export const EditableCell = ({
     onSave?.(inputValue);
   };
 
-  // TODO: reconsider 20
-  const showName = isHoverText && inputValue.trim().length > 20;
-  const isShowInputValue = inputValue.trim().length;
+  const isShowInputValue = Boolean(inputValue.trim().length);
+  const showName =
+    isHoverText &&
+    isShowInputValue &&
+    Number(textRef.current?.scrollWidth) > Number(textRef.current?.clientWidth);
 
   return (
     <>
@@ -95,10 +98,11 @@ export const EditableCell = ({
         onMouseOut={handleMouseOut}
         position="relative"
         zIndex={2}
+        w="full"
       >
         {isEditCellOpen ? (
           <Flex
-            ref={ref}
+            ref={editCellRef}
             alignItems="center"
             gap={1}
             position="absolute"
@@ -132,40 +136,40 @@ export const EditableCell = ({
           </Flex>
         ) : (
           <Flex
-            alignItems="center"
+            position="relative"
+            w="fit-content"
+            maxW="full"
+            align="center"
             gap={2}
             onClick={(e) => e.stopPropagation()}
           >
-            <Flex
-              position="relative"
+            <Text
+              variant="body2"
+              className="ellipsis"
+              maxW="full"
+              fontWeight={isShowInputValue ? "600" : "400"}
+              color={isShowInputValue ? "text.main" : "text.dark"}
               onMouseOver={handleMouseEnterText}
-              onMouseOut={handleMouseOutText}
+              ref={textRef}
             >
+              {isShowInputValue ? inputValue : defaultValue}
+            </Text>
+            {showName && (
               <Text
                 variant="body2"
-                className="ellipsis"
-                maxW="150px"
-                fontWeight={isShowInputValue ? "600" : "400"}
-                color={isShowInputValue ? "text.main" : "text.dark"}
+                top="-16px"
+                left="-16px"
+                borderRadius="8px"
+                bg="pebble.800"
+                whiteSpace="nowrap"
+                p={4}
+                position="absolute"
+                zIndex="1"
+                onMouseOut={handleMouseOutText}
               >
-                {isShowInputValue ? inputValue : defaultValue}
+                {inputValue}
               </Text>
-              {showName && (
-                <Text
-                  variant="body2"
-                  top="-16px"
-                  left="-16px"
-                  borderRadius="8px"
-                  bg="pebble.800"
-                  whiteSpace="nowrap"
-                  p={4}
-                  position="absolute"
-                  zIndex="1"
-                >
-                  {inputValue}
-                </Text>
-              )}
-            </Flex>
+            )}
             {!!tooltip && (
               <Tooltip
                 hasArrow

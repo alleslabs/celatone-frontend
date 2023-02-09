@@ -24,11 +24,8 @@ export const useInternalNavigate = () => {
       routerFn(
         {
           pathname: `/[network]${pathname}`,
-          /**
-           * @todos Change default to mainnet later (right now is testnet)
-           */
           query: {
-            network: router.query.network === "mainnet" ? "mainnet" : "testnet",
+            network: router.query.network === "testnet" ? "testnet" : "mainnet",
             ...query,
           },
         },

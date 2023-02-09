@@ -45,7 +45,6 @@ const UpdateAdmin = () => {
   const [adminAddress, setAdminAddress] = useState("");
   const [adminFormStatus, setAdminFormStatus] = useState<FormStatus>({
     state: "init",
-    message: "",
   });
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState<string>();
@@ -134,6 +133,18 @@ const UpdateAdmin = () => {
       onContractPathChange();
     }
   }, [contractAddressParam, onContractPathChange, validateContractAddress]);
+
+  /**
+   * @remarks Reset states on update admin succeed modal close
+   */
+  useEffect(() => {
+    setAdminAddress("");
+    setAdminFormStatus({
+      state: "init",
+    });
+    setEstimatedFee(undefined);
+    setSimulateError(undefined);
+  }, [router.asPath]);
 
   /**
    * @remarks Admin address input validation

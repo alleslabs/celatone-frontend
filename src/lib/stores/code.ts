@@ -6,7 +6,7 @@ import type { Addr, Dict } from "lib/types";
 export interface CodeLocalInfo {
   id: number;
   uploader: Addr;
-  description?: string;
+  name?: string;
 }
 
 export class CodeStore {
@@ -58,7 +58,7 @@ export class CodeStore {
       .map((codeId) => ({
         id: codeId,
         uploader: this.codeInfo[userKey]?.[codeId]?.uploader ?? ("N/A" as Addr),
-        description: this.codeInfo[userKey]?.[codeId]?.description,
+        name: this.codeInfo[userKey]?.[codeId]?.name,
       }))
       .reverse();
   }
@@ -77,13 +77,11 @@ export class CodeStore {
     );
   }
 
-  updateCodeInfo(id: number, uploader: Addr, description?: string): void {
+  updateCodeInfo(id: number, uploader: Addr, name?: string): void {
     const codeInfo = this.codeInfo[this.userKey]?.[id] || { id, uploader };
 
-    if (description !== undefined) {
-      codeInfo.description = description.trim().length
-        ? description.trim()
-        : undefined;
+    if (name !== undefined) {
+      codeInfo.name = name.trim().length ? name.trim() : undefined;
     }
 
     this.codeInfo[this.userKey] = {

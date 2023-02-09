@@ -97,7 +97,12 @@ const Footer = () => {
               <Text variant="body3" color="text.dark">
                 Made by
               </Text>
-              <Text variant="body3" color="lilac.main">
+              <Text
+                variant="body3"
+                color="lilac.main"
+                transition="all .25s ease-in-out"
+                _hover={{ color: "lilac.light" }}
+              >
                 Alles Labs
               </Text>
             </Flex>

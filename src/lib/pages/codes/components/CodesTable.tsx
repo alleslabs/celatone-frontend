@@ -26,10 +26,10 @@ import {
 } from "lib/components/table";
 import type { CodeInfo } from "lib/types";
 
-import { CodeDescriptionCell } from "./CodeDescriptionCell";
+import { CodeNameCell } from "./CodeNameCell";
 
-// Types of Table: All Codes / My Stored Codes / My Saved Codes
-type TableType = "all" | "stored" | "saved";
+// Types of Table: Recent Codes / My Stored Codes / My Saved Codes
+type TableType = "recent" | "stored" | "saved";
 
 interface CodesTableProps {
   type: TableType;
@@ -58,7 +58,7 @@ const StateContainer = ({ children }: { children: ReactNode }) => (
     borderBottomWidth={1}
     minH="128px"
     justifyContent="center"
-    gap={2}
+    py={8}
   >
     {children}
   </VStack>
@@ -84,8 +84,8 @@ const Unconnected = () => {
 const Empty = ({ type }: OtherTBodyProps) => {
   const renderEmptyText = () => {
     switch (type) {
-      case "all":
-        return "All Code IDs will display here";
+      case "recent":
+        return "Most recent 100 code IDs will display here";
       case "saved":
         return "Your saved code IDs will display here. Saved codes are stored locally on your device.";
       case "stored":
@@ -111,7 +111,7 @@ const CodeTableHead = () => {
       borderColor="pebble.700"
     >
       <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
-      <TableHeaderNoBorder>Code Description</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Code Name</TableHeaderNoBorder>
       <TableHeaderNoBorder textAlign="center">Contracts</TableHeaderNoBorder>
       <TableHeaderNoBorder>Uploader</TableHeaderNoBorder>
       <TableHeaderNoBorder>Permission</TableHeaderNoBorder>
@@ -145,7 +145,7 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
         />
       </TableRowNoBorder>
       <TableRowNoBorder>
-        <CodeDescriptionCell code={code} />
+        <CodeNameCell code={code} />
       </TableRowNoBorder>
       <TableRowNoBorder>
         <Text
@@ -179,10 +179,7 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
               codeId={code.id}
             />
             {isRemovable ? (
-              <RemoveCodeModal
-                codeId={code.id}
-                description={code.description}
-              />
+              <RemoveCodeModal codeId={code.id} name={code.name} />
             ) : (
               <SaveOrRemoveCodeModal codeInfo={code} />
             )}
@@ -203,7 +200,7 @@ const NormalRender = ({
       <CodeTableHead />
       {codes.map((code) => (
         <CodeTableRow
-          key={`row-${tableName}-${code.id}-${code.description}-${code.uploader}`}
+          key={`row-${tableName}-${code.id}-${code.name}-${code.uploader}`}
           code={code}
           isRemovable={isRemovable}
         />
@@ -243,7 +240,7 @@ function CodesTable({
         mb="18px"
         px="48px"
       >
-        {type !== "all" && (
+        {type !== "recent" && (
           <Heading as="h2" size="md">
             {tableName}
           </Heading>

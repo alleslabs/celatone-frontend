@@ -36,7 +36,7 @@ export const CTASection = observer(
         {isSaved ? (
           <RemoveCodeModal
             codeId={id}
-            description={codeInfo.description}
+            name={codeInfo.name}
             trigger={
               <Button
                 variant="outline-gray"

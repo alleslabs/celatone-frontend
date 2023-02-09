@@ -26,7 +26,6 @@ import type {
   ExecuteTransaction,
   AllTransaction,
   HumanAddr,
-  ContractHistoryRemark,
   Option,
   ProposalStatus,
   ProposalType,
@@ -39,7 +38,7 @@ import {
   parseTxHash,
   parseTxHashOpt,
   snakeToCamel,
-  unwrap,
+  unwrapAll,
   parseDateOpt,
 } from "lib/utils";
 
@@ -285,7 +284,7 @@ export const useMigrationHistoriesByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<Omit<ContractMigrationHistory, "codeDescription">[]> => {
+): UseQueryResult<Omit<ContractMigrationHistory, "codeName">[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -296,20 +295,15 @@ export const useMigrationHistoriesByContractAddress = (
         pageSize,
       })
       .then(({ contract_histories }) =>
-        contract_histories.map<
-          Omit<ContractMigrationHistory, "codeDescription">
-        >((history) => ({
-          codeId: history.code_id,
-          sender: history.account.address as Addr,
-          height: history.block.height,
-          timestamp: parseDate(history.block.timestamp),
-          remark: {
-            operation: history.remark
-              .operation as ContractHistoryRemark["operation"],
-            type: history.remark.type as ContractHistoryRemark["type"],
-            value: history.remark.value as ContractHistoryRemark["value"],
-          },
-        }))
+        contract_histories.map<Omit<ContractMigrationHistory, "codeName">>(
+          (history) => ({
+            codeId: history.code_id,
+            sender: history.account.address as Addr,
+            height: history.block.height,
+            timestamp: parseDate(history.block.timestamp),
+            remark: history.remark,
+          })
+        )
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
@@ -369,8 +363,8 @@ export const useTxsByContractAddress = (
         offset,
         pageSize,
       })
-      .then(({ contract_transactions_view }) =>
-        contract_transactions_view.map((contractTx) => ({
+      .then(({ contract_transactions_view }) => {
+        return contract_transactions_view.map((contractTx) => ({
           hash: parseTxHash(contractTx.hash),
           messages: snakeToCamel(contractTx.messages),
           sender: contractTx.sender as Addr,
@@ -378,17 +372,18 @@ export const useTxsByContractAddress = (
           created: parseDateOpt(contractTx.timestamp),
           success: contractTx.success,
           actionMsgType: getActionMsgType([
-            unwrap(contractTx.is_execute),
-            unwrap(contractTx.is_instantiate),
-            unwrap(contractTx.is_send),
-            unwrap(contractTx.is_store_code),
-            unwrap(contractTx.is_migrate),
-            unwrap(contractTx.is_update_admin),
-            unwrap(contractTx.is_clear_admin),
+            /* these value must not be null */
+            unwrapAll(contractTx.is_execute),
+            unwrapAll(contractTx.is_instantiate),
+            unwrapAll(contractTx.is_send),
+            unwrapAll(contractTx.is_store_code),
+            unwrapAll(contractTx.is_migrate),
+            unwrapAll(contractTx.is_update_admin),
+            unwrapAll(contractTx.is_clear_admin),
           ]),
           isIbc: contractTx.is_ibc,
-        }))
-      );
+        }));
+      });
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(

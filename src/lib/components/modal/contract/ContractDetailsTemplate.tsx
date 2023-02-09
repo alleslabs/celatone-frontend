@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Flex, Text } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -9,7 +10,7 @@ import { OffChainForm } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
-import { getDescriptionDefault, getTagsDefault } from "lib/utils";
+import { getNameAndDescriptionDefault, getTagsDefault } from "lib/utils";
 
 interface ContractDetailsTemplateModalProps {
   title: string;
@@ -28,16 +29,16 @@ export const ContractDetailsTemplateModal = ({
   const defaultValues = useMemo(() => {
     return {
       name: contractLocalInfo.name ?? "",
-      description: getDescriptionDefault(contractLocalInfo.description),
+      description: getNameAndDescriptionDefault(contractLocalInfo.description),
       tags: getTagsDefault(contractLocalInfo.tags),
       lists: contractLocalInfo.lists ?? defaultList,
     };
   }, [
     contractLocalInfo.description,
-    contractLocalInfo.lists,
+    JSON.stringify(contractLocalInfo.lists),
     contractLocalInfo.name,
     contractLocalInfo.tags,
-    defaultList,
+    JSON.stringify(defaultList),
   ]);
 
   const {
@@ -58,7 +59,7 @@ export const ContractDetailsTemplateModal = ({
 
   useEffect(() => {
     resetForm();
-  }, [defaultValues, resetForm]);
+  }, [resetForm]);
 
   const offchainState = watch();
 

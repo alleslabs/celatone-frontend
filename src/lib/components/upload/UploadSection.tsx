@@ -12,10 +12,7 @@ import {
 import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ControllerInput } from "lib/components/forms";
-import {
-  getMaxCodeDescriptionLengthError,
-  MAX_CODE_DESCRIPTION_LENGTH,
-} from "lib/data";
+import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import type { HumanAddr } from "lib/types";
@@ -131,15 +128,13 @@ export const UploadSection = ({
       <ControllerInput
         name="codeDesc"
         control={control}
-        label="Code Description (Optional)"
-        placeholder="No Description"
+        label="Code Name (Optional)"
+        placeholder="Untitled Name"
         helperText="Define what your code works on in one sentence which visible to you only. You can add this later."
         rules={{
-          maxLength: MAX_CODE_DESCRIPTION_LENGTH,
+          maxLength: MAX_CODE_NAME_LENGTH,
         }}
-        error={
-          errors.codeDesc && getMaxCodeDescriptionLengthError(codeDesc.length)
-        }
+        error={errors.codeDesc && getMaxCodeNameLengthError(codeDesc.length)}
         variant="floating"
         my="32px"
       />

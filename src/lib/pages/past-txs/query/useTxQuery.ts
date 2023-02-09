@@ -110,16 +110,20 @@ export const useTxQuery = (
                 contractTx.isUpdateAdmin,
                 contractTx.isClearAdmin,
               ]),
-              furtherAction: getMsgFurtherAction(contractTx.messages.length, {
-                isExecute: contractTx.isExecute,
-                isInstantiate: contractTx.isInstantiate,
-                isSend: contractTx.isSend,
-                isUpload: contractTx.isStoreCode,
-                isMigrate: contractTx.isMigrate,
-                isUpdateAdmin: contractTx.isUpdateAdmin,
-                isClearAdmin: contractTx.isClearAdmin,
-                isIbc: contractTx.isIbc,
-              }),
+              furtherAction: getMsgFurtherAction(
+                contractTx.messages.length,
+                {
+                  isExecute: contractTx.isExecute,
+                  isInstantiate: contractTx.isInstantiate,
+                  isSend: contractTx.isSend,
+                  isUpload: contractTx.isStoreCode,
+                  isMigrate: contractTx.isMigrate,
+                  isUpdateAdmin: contractTx.isUpdateAdmin,
+                  isClearAdmin: contractTx.isClearAdmin,
+                  isIbc: contractTx.isIbc,
+                },
+                contractTx.success
+              ),
               isIbc: contractTx.isIbc,
               isInstantiate: contractTx.isInstantiate,
             })
@@ -157,16 +161,20 @@ export const useTxQuery = (
               transaction.isUpdateAdmin,
               transaction.isClearAdmin,
             ]),
-            furtherAction: getMsgFurtherAction(transaction.messages.length, {
-              isExecute: transaction.isExecute,
-              isInstantiate: transaction.isInstantiate,
-              isSend: transaction.isSend,
-              isUpload: transaction.isStoreCode,
-              isMigrate: transaction.isMigrate,
-              isUpdateAdmin: transaction.isUpdateAdmin,
-              isClearAdmin: transaction.isClearAdmin,
-              isIbc: transaction.isIbc,
-            }),
+            furtherAction: getMsgFurtherAction(
+              transaction.messages.length,
+              {
+                isExecute: transaction.isExecute,
+                isInstantiate: transaction.isInstantiate,
+                isSend: transaction.isSend,
+                isUpload: transaction.isStoreCode,
+                isMigrate: transaction.isMigrate,
+                isUpdateAdmin: transaction.isUpdateAdmin,
+                isClearAdmin: transaction.isClearAdmin,
+                isIbc: transaction.isIbc,
+              },
+              transaction.success
+            ),
             isIbc: transaction.isIbc,
             isInstantiate: transaction.isInstantiate,
           };

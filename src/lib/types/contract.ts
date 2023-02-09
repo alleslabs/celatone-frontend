@@ -29,7 +29,7 @@ export interface ContractInstances {
 
 export interface ContractMigrationHistory {
   codeId: number;
-  codeDescription?: string;
+  codeName?: string;
   sender: Addr;
   height: number;
   timestamp: Date;
