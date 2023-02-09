@@ -37,19 +37,14 @@ export const TagsCell = ({
         onClick={(e) => e.stopPropagation()}
       >
         {tags.length ? (
-          tags.slice(0, 2).map((tag) => {
-            return (
-              <Tag
-                borderRadius="full"
-                variant="solid"
-                bgColor="honeydew.darker"
-                color="text.main"
-                key={tag}
-              >
-                <TagLabel>{tag}</TagLabel>
-              </Tag>
-            );
-          })
+          <Tag
+            borderRadius="full"
+            variant="solid"
+            bgColor="honeydew.darker"
+            color="text.main"
+          >
+            <TagLabel>{tags.at(0)}</TagLabel>
+          </Tag>
         ) : (
           <Text variant="body2" color="text.dark">
             Not Tagged
@@ -59,23 +54,33 @@ export const TagsCell = ({
           borderRadius="full"
           variant="solid"
           colorScheme="gray"
-          display={tags.length > 2 ? "flex" : "none"}
+          display={tags.length > 1 ? "flex" : "none"}
         >
-          <TagLabel>{tags.length - 2}+</TagLabel>
+          <TagLabel>{tags.length - 1}+</TagLabel>
         </Tag>
       </Flex>
 
       {isHover && (
         <Flex
-          bgColor={tags.length > 2 ? "pebble.800" : "inherit"}
+          bgColor={tags.length > 1 ? "pebble.800" : "inherit"}
           py={4}
           borderRadius="8px"
           position="absolute"
+          w="340px"
           top="-16px"
           left="-16px"
           onClick={(e) => e.stopPropagation()}
+          zIndex="dropdown"
         >
-          <Flex gap={1} px={4} alignItems="center">
+          <Flex
+            gap={1}
+            px={4}
+            alignItems="center"
+            maxW="full"
+            display="flex"
+            flexWrap="wrap"
+            rowGap={2}
+          >
             {tags.length ? (
               tags.map((item) => {
                 return (

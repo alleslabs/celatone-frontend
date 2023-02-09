@@ -1,5 +1,5 @@
 import { InfoIcon } from "@chakra-ui/icons";
-import { Tag, Text, Box, Flex, Tooltip } from "@chakra-ui/react";
+import { Tag, Text, Flex, Tooltip } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
@@ -31,6 +31,7 @@ export interface SingleMsgProps {
   link1?: LinkElement;
   text3?: string;
   link2?: LinkElement;
+  showCopyButton?: boolean;
 }
 
 export const SingleMsg = ({
@@ -43,6 +44,7 @@ export const SingleMsg = ({
   link1,
   text3,
   link2,
+  showCopyButton = false,
 }: SingleMsgProps) => {
   if (!type) return <Text>Message Unavailable</Text>;
   return (
@@ -74,9 +76,13 @@ export const SingleMsg = ({
           >
             <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
           </Tooltip>
-          <Box display="none" _groupHover={{ display: "flex" }}>
-            <Copier ml="4px" value={token.id} copyLabel="Token ID Copied!" />
-          </Box>
+          <Copier
+            display={showCopyButton ? "flex" : "none"}
+            value={token.id}
+            ml="4px"
+            className="copy-button"
+            copyLabel="Token ID Copied!"
+          />
         </Flex>
       ))}
       {/* Tags  */}
@@ -99,7 +105,7 @@ export const SingleMsg = ({
           value={link1.value}
           copyValue={link1.copyValue}
           type={link1.type}
-          canCopyWithHover
+          canCopyWithHover={!showCopyButton}
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link1.type !== "code_id" ? "truncate" : "normal"}
         />
@@ -112,7 +118,7 @@ export const SingleMsg = ({
           value={link2.value}
           copyValue={link2.copyValue}
           type={link2.type}
-          canCopyWithHover
+          canCopyWithHover={!showCopyButton}
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link2.type !== "code_id" ? "truncate" : "normal"}
         />

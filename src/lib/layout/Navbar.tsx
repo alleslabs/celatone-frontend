@@ -36,20 +36,10 @@ interface MenuInfo {
   submenu: SubmenuInfo[];
 }
 
-// TODO: move to proper place
-const PERMISSIONED_CHAINS = ["osmosis", "osmosistestnet"];
-
 const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
-
   const { getSavedPublicProjects } = usePublicProjectStore();
-
-  const { currentChainName } = useWallet();
-
-  const getAllCodesShortCut = () =>
-    PERMISSIONED_CHAINS.includes(currentChainName)
-      ? [{ name: "All Stored Codes", slug: "/all-codes", icon: MdPublic }]
-      : [];
+  const { currentChainRecord } = useWallet();
 
   const navMenu: MenuInfo[] = [
     {
@@ -92,7 +82,7 @@ const Navbar = observer(() => {
       category: "Codes",
       submenu: [
         { name: "My Codes", slug: "/codes", icon: MdCode },
-        ...getAllCodesShortCut(),
+        { name: "Recent Codes", slug: "/recent-codes", icon: MdPublic },
       ],
     },
     {
@@ -124,7 +114,10 @@ const Navbar = observer(() => {
         },
       ],
     },
-    {
+  ];
+
+  if (currentChainRecord?.chain.network_type === "mainnet") {
+    navMenu.push({
       category: "Public Projects",
       submenu: [
         ...getSavedPublicProjects().map((list) => ({
@@ -138,9 +131,8 @@ const Navbar = observer(() => {
           icon: MdMoreHoriz,
         },
       ],
-    },
-  ];
-
+    });
+  }
   const router = useRouter();
   const { network } = router.query;
   const pathName = router.asPath;
