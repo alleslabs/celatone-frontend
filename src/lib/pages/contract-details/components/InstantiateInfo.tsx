@@ -91,7 +91,7 @@ const InitRender = ({
     </LabelText>
   ) : (
     <LabelText label="Instantiate Transaction">
-      <Text variant="body2">Data Not Available</Text>
+      <Text variant="body2">N/A</Text>
     </LabelText>
   );
 };
