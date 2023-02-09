@@ -74,7 +74,7 @@ const ContractDetailsBody = observer(
                   contractData.instantiateInfo?.raw.contract_info ?? {}
                 )
               )}
-              jsonAreaHeight="180px"
+              jsonAreaHeight="230px"
             />
             <JsonInfo
               header="Instantiate Message"

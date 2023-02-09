@@ -132,6 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#175](https://github.com/alleslabs/celatone-frontend/pull/175) Fix css related issue and tag selection input
 - [#165](https://github.com/alleslabs/celatone-frontend/pull/165) Fix messages type
 - [#172](https://github.com/alleslabs/celatone-frontend/pull/172) Fix infinite loop dep, wrong fallback validation
 - [#157](https://github.com/alleslabs/celatone-frontend/pull/157) Fix chain path bug when mixed up with query params

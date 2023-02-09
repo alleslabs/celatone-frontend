@@ -58,7 +58,7 @@ const StateContainer = ({ children }: { children: ReactNode }) => (
     borderBottomWidth={1}
     minH="128px"
     justifyContent="center"
-    gap={2}
+    py={8}
   >
     {children}
   </VStack>

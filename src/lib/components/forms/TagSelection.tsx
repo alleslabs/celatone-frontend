@@ -150,6 +150,8 @@ export const TagSelection = observer(
               background="none"
               borderRadius="8px"
               maxW="100%"
+              border="1px solid"
+              borderColor="pebble.700"
               overflowX="scroll"
             >
               {result.length > 0 && (
@@ -187,6 +189,7 @@ export const TagSelection = observer(
                 ref={mergeRefs([inputRef, ref])}
                 maxLength={36}
                 {...rest}
+                style={{ border: 0, maxHeight: "54px" }}
               />
               <FormLabel
                 position="absolute"

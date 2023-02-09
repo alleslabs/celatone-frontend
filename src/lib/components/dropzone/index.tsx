@@ -49,6 +49,8 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
         <Text
           variant="body1"
           color="lilac.main"
+          transition="all .25s ease-in-out"
+          _hover={{ color: "lilac.light" }}
           style={{ textDecoration: "underline" }}
         >
           Click to upload

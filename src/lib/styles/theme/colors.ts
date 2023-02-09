@@ -63,6 +63,7 @@ const extendedColors: BasicColor = {
   },
   lilac: {
     main: "#D8BEFC",
+    light: "#E8D8FD",
     dark: "#A28FBD",
     darker: "#6C5F7E",
     background: "#36303F",
