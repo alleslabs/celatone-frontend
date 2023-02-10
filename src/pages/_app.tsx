@@ -3,9 +3,6 @@ import { wallets } from "@cosmos-kit/keplr";
 import { WalletProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { assets, chains } from "chain-registry";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
 import localforage from "localforage";
 import { configurePersistable } from "mobx-persist-store";
 import { enableStaticRendering } from "mobx-react-lite";
@@ -27,8 +24,6 @@ import "lib/styles/globals.css";
 import { StoreProvider } from "lib/providers/store";
 import { TxBroadcastProvider } from "lib/providers/tx-broadcast";
 
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
 enableStaticRendering(typeof window === "undefined");
 
 localforage.config({

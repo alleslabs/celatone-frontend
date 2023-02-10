@@ -1,7 +1,5 @@
-import type { Dayjs } from "dayjs";
-
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { HumanAddr, ContractAddr, Option } from "lib/types";
+import type { Option, Addr } from "lib/types";
 
 export enum InstantiatePermission {
   EVERYBODY = "Everybody",
@@ -12,10 +10,10 @@ export enum InstantiatePermission {
   UNKNOWN = "Unknown",
 }
 
-export type PermissionAddresses = (HumanAddr | ContractAddr)[];
+export type PermissionAddresses = Addr[];
 
 export interface CodeInfo extends CodeLocalInfo {
-  contracts: number;
+  contractCount: Option<number>;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
   isSaved?: boolean;
@@ -24,17 +22,29 @@ export interface CodeInfo extends CodeLocalInfo {
 interface CodeProposal {
   proposalId: number;
   height: Option<number>;
-  created: Dayjs;
+  created: Option<Date>;
 }
 
 export interface CodeData {
   chainId: Option<string>;
   codeId: number;
-  uploader: ContractAddr | HumanAddr;
+  uploader: Addr;
   hash: Option<string>;
   height: Option<number>;
-  created: Dayjs;
+  created: Option<Date>;
   proposal: Option<CodeProposal>;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
+}
+
+export interface PublicCodeData {
+  contracts: number;
+  description: string;
+  id: number;
+  instantiatePermission: string;
+  name: string;
+  permissionAddresses: string[];
+  slug: string;
+  uploader: string;
+  verified: boolean;
 }

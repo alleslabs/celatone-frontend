@@ -1,10 +1,14 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useCodeStore, useContractStore, useLCDEndpoint } from "lib/hooks";
+import {
+  useChainId,
+  useCodeStore,
+  useContractStore,
+  useLCDEndpoint,
+} from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
 import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
 import {
@@ -27,14 +31,15 @@ import {
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type {
+  Addr,
   BalanceWithAssetInfo,
   ContractAddr,
-  Detail,
+  PublicDetail,
   HumanAddr,
   Option,
   PublicInfo,
 } from "lib/types";
-import { formatSlugName } from "lib/utils";
+import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
 export interface ContractData {
   chainId: string;
@@ -44,10 +49,10 @@ export interface ContractData {
   instantiateInfo: Option<InstantiateInfo>;
   publicProject: {
     publicInfo: Option<PublicInfo>;
-    publicDetail: Option<Detail>;
+    publicDetail: Option<PublicDetail>;
   };
   balances: Option<BalanceWithAssetInfo[]>;
-  initMsg: string;
+  initMsg: Option<string>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
@@ -68,7 +73,7 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
-    lastUpdated: dayjs(),
+    lastUpdated: getCurrentDate(),
     isInfoEditable: false,
     isContractRemovable: false,
   };
@@ -76,20 +81,18 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
 
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   const { address } = useWallet();
-  const { data: count = 0 } = useInstantiatedCountByUserQuery(
-    address as HumanAddr
-  );
+  const { data: count } = useInstantiatedCountByUserQuery(address as HumanAddr);
 
   return {
-    contracts: Array.from({ length: count }, () => ({
+    contracts: Array.from({ length: count ?? 0 }, () => ({
       contractAddress: "" as ContractAddr,
-      instantiator: "",
+      instantiator: "" as Addr,
       label: "",
-      created: dayjs(0),
+      created: getDefaultDate(),
     })),
     name: INSTANTIATED_LIST_NAME,
     slug: formatSlugName(INSTANTIATED_LIST_NAME),
-    lastUpdated: dayjs(),
+    lastUpdated: getCurrentDate(),
     isInfoEditable: false,
     isContractRemovable: false,
   };
@@ -107,6 +110,7 @@ export const useContractData = (
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
+  const chainId = useChainId();
 
   const { data: instantiateInfo } = useQuery(
     ["query", "instantiate_info", endpoint, contractAddress],
@@ -122,7 +126,7 @@ export const useContractData = (
   );
 
   const { data: contractBalances } = useQuery(
-    ["query", "contractBalances", contractAddress],
+    ["query", "contractBalances", contractAddress, chainId],
     async () =>
       queryContractBalances(
         currentChainRecord?.name,
@@ -151,11 +155,8 @@ export const useContractData = (
     : undefined;
   const contractLocalInfo = getContractLocalInfo(contractAddress);
 
-  const {
-    data: instantiateDetail = {
-      initMsg: "{}",
-    },
-  } = useInstantiateDetailByContractQuery(contractAddress);
+  const { data: instantiateDetail } =
+    useInstantiateDetailByContractQuery(contractAddress);
 
   if (!currentChainRecord) return undefined;
 
@@ -170,10 +171,10 @@ export const useContractData = (
       publicDetail: publicInfoBySlug?.details,
     },
     balances: contractBalancesWithAssetInfos,
-    initMsg: instantiateDetail.initMsg,
-    initTxHash: instantiateDetail.initTxHash,
-    initProposalId: instantiateDetail.initProposalId,
-    initProposalTitle: instantiateDetail.initProposalTitle,
+    initMsg: instantiateDetail?.initMsg,
+    initTxHash: instantiateDetail?.initTxHash,
+    initProposalId: instantiateDetail?.initProposalId,
+    initProposalTitle: instantiateDetail?.initProposalTitle,
   };
 };
 
@@ -185,13 +186,13 @@ export const useContractData = (
 export const useContractDetailsTableCounts = (
   contractAddress: ContractAddr
 ) => {
-  // const { data: executeCount = 0, refetch: refetchExecute } =
+  // const { data: executeCount, refetch: refetchExecute } =
   //   useExecuteTxsCountByContractAddress(contractAddress);
-  const { data: migrationCount = 0, refetch: refetchMigration } =
+  const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
-  const { data: transactionsCount = 0, refetch: refetchTransactions } =
+  const { data: transactionsCount, refetch: refetchTransactions } =
     useTxsCountByContractAddress(contractAddress);
-  const { data: relatedProposalsCount = 0, refetch: refetchRelatedProposals } =
+  const { data: relatedProposalsCount, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
 
   return {

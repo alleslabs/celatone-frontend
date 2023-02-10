@@ -34,6 +34,7 @@ const Codes = observer(() => {
     },
   });
   const { keyword, permissionValue } = watch();
+
   const {
     storedCodesCount,
     storedCodes: stored,
@@ -46,19 +47,24 @@ const Codes = observer(() => {
     <Box>
       <Box pt="48px" px="48px">
         <Heading as="h1" size="lg" color="white" mb={4}>
-          Code Lists
+          My Codes
         </Heading>
       </Box>
       <Tabs>
-        <Box px="48px">
-          <TabList border="none" mb="32px">
+        <Box py={4}>
+          <TabList
+            mb="32px"
+            borderBottom="1px"
+            px={12}
+            borderColor="pebble.800"
+          >
             <CustomTab count={allCodesCount}>All Codes</CustomTab>
             <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
             <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
           </TabList>
-          <Flex gap={2}>
+          <Flex gap={2} px="48px">
             <InputWithIcon
-              placeholder="Search with code ID or code description"
+              placeholder="Search with code ID or code name"
               value={keyword}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setValue("keyword", e.target.value)
@@ -74,8 +80,8 @@ const Codes = observer(() => {
             />
           </Flex>
         </Box>
-        <TabPanels mt="48px">
-          <TabPanel p="0px">
+        <TabPanels>
+          <TabPanel p={0}>
             <CodesTable
               type="stored"
               tableName="My Stored Codes"

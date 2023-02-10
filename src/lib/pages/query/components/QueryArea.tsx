@@ -3,7 +3,6 @@ import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-import dayjs from "dayjs";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -14,8 +13,8 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useLCDEndpoint, useUserKey } from "lib/hooks";
 import { queryData } from "lib/services/contract";
-import type { ContractAddr, RpcQueryError } from "lib/types";
-import { encode, jsonPrettify, jsonValidate } from "lib/utils";
+import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
+import { encode, getCurrentDate, jsonPrettify, jsonValidate } from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -56,10 +55,10 @@ export const QueryArea = ({
         addActivity(userKey, {
           type: "query",
           action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-          sender: address,
+          sender: address as HumanAddr,
           contractAddress,
           msg: encode(msg),
-          timestamp: dayjs(),
+          timestamp: getCurrentDate(),
         });
       },
       onError(err: AxiosError<RpcQueryError>) {

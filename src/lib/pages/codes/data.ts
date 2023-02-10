@@ -8,11 +8,8 @@ import {
   usePermissionFilter,
   useSearchFilter,
 } from "lib/hooks";
-import {
-  useCodeListByIDsQuery,
-  useCodeListByUserQuery,
-} from "lib/services/codeService";
-import type { CodeInfo } from "lib/types";
+import { useCodeListPageQuery } from "lib/services/codeService";
+import type { CodeInfo, HumanAddr } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 
 interface CodeListData {
@@ -28,18 +25,19 @@ export const useCodeListData = (
   permissionValue?: PermissionFilterValue
 ): CodeListData => {
   const { address } = useWallet();
+  const userKey = useUserKey();
   const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds, isCodeIdSaved } =
     useCodeStore();
-
-  const { data: rawStoredCodes = [] } = useCodeListByUserQuery(address);
-
-  const userKey = useUserKey();
   const permissionFilterFn = usePermissionFilter(permissionValue);
   const searchFilterFn = useSearchFilter(keyword);
 
   const savedCodeIds = lastSavedCodeIds(userKey);
-  const { data: querySavedCodeInfos = [] } =
-    useCodeListByIDsQuery(savedCodeIds);
+
+  const [{ data: rawStoredCodes = [] }, { data: querySavedCodeInfos = [] }] =
+    useCodeListPageQuery({
+      walletAddr: address as HumanAddr,
+      ids: savedCodeIds,
+    });
 
   const savedCodes = lastSavedCodes(userKey)?.map<CodeInfo>(
     (localSavedCode) => {
@@ -48,7 +46,7 @@ export const useCodeListData = (
       );
       return {
         ...localSavedCode,
-        contracts: querySavedCodeInfo?.contracts ?? 0,
+        contractCount: querySavedCodeInfo?.contractCount,
         instantiatePermission:
           querySavedCodeInfo?.instantiatePermission ??
           InstantiatePermission.UNKNOWN,
@@ -58,12 +56,12 @@ export const useCodeListData = (
     }
   );
 
-  const savedCodesCount = savedCodes?.length ?? 0;
+  const savedCodesCount = savedCodes.length;
 
   const storedCodes = rawStoredCodes.map<CodeInfo>((code) => {
     return {
       ...code,
-      description: getCodeLocalInfo(code.id)?.description,
+      name: getCodeLocalInfo(code.id)?.name,
       isSaved: isCodeIdSaved(code.id),
     };
   });

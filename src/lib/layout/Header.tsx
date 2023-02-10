@@ -35,11 +35,12 @@ const Header = () => {
       if (chainName === currentChainName) return;
       setCurrentChain(chainName);
       navigate({
-        pathname: router.asPath.replace(`/${router.query.network}`, ""),
+        pathname: router.pathname.replace("/[network]", ""),
         query: {
           /**
            * @remarks Condition checking varies by chain
            */
+          ...router.query,
           network: getNetworkByChainName(chainName),
         },
       });
@@ -58,14 +59,18 @@ const Header = () => {
       mb={1}
       gap="48px"
     >
-      <Image
-        src="/celatone-logo.svg"
-        alt="Celatone"
-        width="152px"
-        mr="36px"
-        _hover={{ cursor: "pointer" }}
-        onClick={() => navigate({ pathname: "/" })}
-      />
+      <a href="/" target="_blank" rel="noopener noreferrer">
+        <Image
+          src="https://assets.alleslabs.dev/branding/logo/logo.svg"
+          alt="Celatone"
+          minWidth="152px"
+          width="152px"
+          maxWidth="152px"
+          mr="36px"
+          transition="all 0.25s ease-in-out"
+          _hover={{ cursor: "pointer", opacity: 0.85 }}
+        />
+      </a>
       <Searchbar />
       <Flex gap={2}>
         <Menu>
@@ -95,7 +100,7 @@ const Header = () => {
               <Icon as={FiChevronDown} />
             </Flex>
           </MenuButton>
-          <MenuList>
+          <MenuList zIndex="dropdown">
             {getSupportedChainNames().map((chainName) => (
               <MenuItem
                 key={chainName}

@@ -8,7 +8,7 @@ import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
-import type { ContractAddr, LVPair } from "lib/types";
+import type { ContractAddr, HumanAddr, LVPair } from "lib/types";
 
 interface InstantiateOffChainFormProps {
   title?: string;
@@ -65,7 +65,7 @@ export const InstantiateOffChainForm = observer(
         updateContractLocalInfo(
           userKey,
           contractAddress,
-          address,
+          address as HumanAddr,
           contractLabel,
           data.name,
           data.description,
@@ -77,7 +77,7 @@ export const InstantiateOffChainForm = observer(
     };
 
     return (
-      <Flex direction="column" gap={8}>
+      <Flex direction="column" gap={8} width="full">
         {title && subtitle && (
           <Flex direction="column" gap={1}>
             <Heading as="h6" variant="h6">

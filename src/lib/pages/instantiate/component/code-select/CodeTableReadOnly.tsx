@@ -29,15 +29,15 @@ const CodeTableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
           maxW="300px"
           color="text.dark"
         >
-          {codeDetail?.description ?? "No Description"}
+          {codeDetail?.name ?? "Untitled Name"}
         </Text>
       </TableRow>
       <TableRow justifyContent="center">
         <Text
           variant="body2"
-          color={codeDetail.contracts > 0 ? "text.main" : "text.disabled"}
+          color={codeDetail.contractCount ? "text.main" : "text.disabled"}
         >
-          {codeDetail.contracts}
+          {codeDetail.contractCount ?? "N/A"}
         </Text>
       </TableRow>
       <TableRow>
@@ -66,7 +66,7 @@ export const CodeTableReadOnly = ({
       <Grid templateColumns={TEMPLATE_COLUMNS}>
         <TableHeader />
         <TableHeader>Code ID</TableHeader>
-        <TableHeader>Description</TableHeader>
+        <TableHeader>Code Name</TableHeader>
         <TableHeader textAlign="center">Contracts</TableHeader>
         <TableHeader>Uploader</TableHeader>
         <TableHeader />

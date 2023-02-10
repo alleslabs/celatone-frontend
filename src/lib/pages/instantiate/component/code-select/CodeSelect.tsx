@@ -22,7 +22,7 @@ export const CodeSelect = ({
 }: CodeSelectProps) => {
   const { codeInfo } = useCodeStore();
   const userKey = useUserKey();
-  const description = codeInfo?.[userKey]?.[Number(codeId)]?.description;
+  const name = codeInfo?.[userKey]?.[Number(codeId)]?.name;
 
   const isError = status.state === "error";
   return (
@@ -47,7 +47,7 @@ export const CodeSelect = ({
               whiteSpace="nowrap"
               textOverflow="ellipsis"
             >
-              {description ?? "No description"}
+              {name ?? "Untitled Name"}
             </Text>
             <Text variant="body2" color="text.dark">
               Code ID {codeId}

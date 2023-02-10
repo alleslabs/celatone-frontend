@@ -5,20 +5,19 @@ import type {
 } from "@cosmjs/cosmwasm-stargate";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
-import dayjs from "dayjs";
 import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Activity } from "lib/stores/contract";
-import type { ContractAddr, TxResultRendering } from "lib/types";
+import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { encode, formatUFee } from "lib/utils";
+import { encode, formatUFee, getCurrentDate } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
-  address: string;
+  address: HumanAddr;
   contractAddress: ContractAddr;
   fee: StdFee;
   msg: object;
@@ -53,8 +52,10 @@ export const executeContractTx = ({
         sender: address,
         contractAddress,
         msg: encode(JSON.stringify(msg)), // base64
-        timestamp: dayjs(),
+        timestamp: getCurrentDate(),
       });
+      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
+        .value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -68,10 +69,7 @@ export const executeContractTx = ({
           },
           {
             title: "Tx Fee",
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ],
         receiptInfo: {

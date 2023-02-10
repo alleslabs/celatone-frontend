@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
 import type { UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
@@ -20,20 +20,22 @@ import type {
   ContractInfo,
   InstantiatePermission,
   PermissionAddresses,
+  Addr,
   HumanAddr,
 } from "lib/types";
-import { parseDateDefault, parseTxHashOpt, unwrap } from "lib/utils";
+import { parseDateOpt, parseTxHashOpt } from "lib/utils";
 
-export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
+export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getCodeListQueryDocument)
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          uploader: code.account.uploader as ContractAddr | HumanAddr,
-          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
+          uploader: code.account.uploader as Addr,
+          contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
@@ -42,20 +44,23 @@ export const useCodeListQuery = (): UseQueryResult<Option<CodeInfo[]>> => {
       );
   }, [indexerGraphClient]);
 
-  // TODO: add query key later
-  return useQuery(["all_codes"], queryFn, {
+  return useQuery(["all_codes", indexerGraphClient], queryFn, {
     keepPreviousData: true,
   });
 };
 
-export const useCodeListByUserQuery = (
-  walletAddr: Option<string>
-): UseQueryResult<Option<CodeInfo[]>> => {
+export const useCodeListPageQuery = ({
+  walletAddr,
+  ids,
+}: {
+  walletAddr: Option<HumanAddr>;
+  ids: Option<number[]>;
+}): [UseQueryResult<CodeInfo[]>, UseQueryResult<CodeInfo[]>] => {
   const { indexerGraphClient } = useCelatoneApp();
 
-  const queryFn = useCallback(async () => {
+  const codeByUserQueryFn = useCallback(async () => {
     if (!walletAddr)
-      throw new Error("Wallet address not found (useCodeListByUserQuery)");
+      throw new Error("Wallet address not found (codeByUserQueryFn)");
 
     return indexerGraphClient
       .request(getCodeListByUserQueryDocument, {
@@ -64,28 +69,18 @@ export const useCodeListByUserQuery = (
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          uploader: code.account.uploader as ContractAddr | HumanAddr,
-          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
+          uploader: code.account.uploader as Addr,
+          contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
         }))
       );
-  }, [indexerGraphClient, walletAddr]);
+  }, [walletAddr, indexerGraphClient]);
 
-  // TODO: add query key later
-  return useQuery(["codes_by_user", walletAddr], queryFn, {
-    keepPreviousData: true,
-    enabled: !!walletAddr,
-  });
-};
-
-export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    if (!ids) throw new Error("Code IDs not found (useCodeListByIDsQuery)");
+  const codeByIdsQueryFn = useCallback(async () => {
+    if (!ids) throw new Error("Code IDs not found (codeByIdsQueryFn)");
 
     return indexerGraphClient
       .request(getCodeListByIDsQueryDocument, {
@@ -94,8 +89,8 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
       .then(({ codes }) =>
         codes.map<CodeInfo>((code) => ({
           id: code.id,
-          uploader: code.account.uploader as ContractAddr | HumanAddr,
-          contracts: code.contracts_aggregate.aggregate?.count ?? 0,
+          uploader: code.account.uploader as Addr,
+          contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
@@ -104,17 +99,29 @@ export const useCodeListByIDsQuery = (ids: Option<number[]>) => {
       );
   }, [ids, indexerGraphClient]);
 
-  // TODO: add query key later
-  return useQuery(["codes_by_ids", ids], queryFn, {
-    keepPreviousData: true,
-    enabled: !!ids,
+  return useQueries({
+    queries: [
+      {
+        queryKey: ["codes_by_user", indexerGraphClient, walletAddr],
+        queryFn: codeByUserQueryFn,
+        keepPreviousData: true,
+        enabled: !!walletAddr,
+      },
+      {
+        queryKey: ["codes_by_ids", indexerGraphClient, ids],
+        queryFn: codeByIdsQueryFn,
+        keepPreviousData: true,
+        enabled: !!ids,
+      },
+    ],
   });
 };
 
 export const useCodeInfoByCodeId = (
   codeId: Option<number>
-): UseQueryResult<Option<Omit<CodeData, "chainId">>> => {
+): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!codeId) throw new Error("Code ID not found (useCodeInfoByCodeId)");
 
@@ -127,15 +134,15 @@ export const useCodeInfoByCodeId = (
 
         return {
           codeId: codes_by_pk.id,
-          uploader: codes_by_pk.account.address as ContractAddr | HumanAddr,
+          uploader: codes_by_pk.account.address as Addr,
           hash: parseTxHashOpt(codes_by_pk.transaction?.hash),
           height: codes_by_pk.transaction?.block.height,
-          created: parseDateDefault(codes_by_pk.transaction?.block?.timestamp),
+          created: parseDateOpt(codes_by_pk.transaction?.block?.timestamp),
           proposal: codes_by_pk.code_proposals[0]
             ? {
                 proposalId: codes_by_pk.code_proposals[0].proposal_id,
                 height: codes_by_pk.code_proposals[0].block?.height,
-                created: parseDateDefault(
+                created: parseDateOpt(
                   codes_by_pk.code_proposals[0].block?.timestamp
                 ),
               }
@@ -146,7 +153,7 @@ export const useCodeInfoByCodeId = (
         };
       });
   }, [codeId, indexerGraphClient]);
-  return useQuery(["code_info_by_id", codeId], queryFn, {
+  return useQuery(["code_info_by_id", codeId, indexerGraphClient], queryFn, {
     keepPreviousData: true,
     enabled: !!codeId,
   });
@@ -156,8 +163,9 @@ export const useContractListByCodeId = (
   codeId: Option<number>,
   offset: number,
   pageSize: number
-): UseQueryResult<Option<ContractInfo[]>> => {
+): UseQueryResult<ContractInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!codeId) throw new Error("Code ID not found (useContractListByCodeId)");
 
@@ -166,31 +174,34 @@ export const useContractListByCodeId = (
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: unwrap(contract.init_by.at(0)?.account.address),
+          instantiator: contract.init_by.at(0)?.account.address as Addr,
           label: contract.label,
-          admin: contract.admin?.address,
-          instantiated: parseDateDefault(
-            contract.init_by.at(0)?.block.timestamp
-          ),
-          // TODO: handle Genesis case
-          latestUpdator: contract.contract_histories.at(0)?.account.address,
-          latestUpdated: parseDateDefault(
+          admin: contract.admin?.address as Addr,
+          latestUpdater: contract.contract_histories.at(0)?.account
+            .address as Addr,
+          latestUpdated: parseDateOpt(
             contract.contract_histories.at(0)?.block.timestamp
           ),
+          remark: contract.contract_histories.at(0)?.remark,
         }))
       );
   }, [codeId, indexerGraphClient, offset, pageSize]);
 
-  return useQuery(["contract_list_by_code_id", codeId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
+  return useQuery(
+    ["contract_list_by_code_id", codeId, indexerGraphClient, offset, pageSize],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!codeId,
+    }
+  );
 };
 
 export const useContractListCountByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     if (!codeId)
       throw new Error("Code ID not found (useContractListCountByCodeId)");
@@ -202,8 +213,12 @@ export const useContractListCountByCodeId = (
       .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
   }, [codeId, indexerGraphClient]);
 
-  return useQuery(["contract_list_count_by_user", codeId], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
+  return useQuery(
+    ["contract_list_count_by_user", codeId, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!codeId,
+    }
+  );
 };

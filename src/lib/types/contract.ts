@@ -1,19 +1,5 @@
-import type { Dayjs } from "dayjs";
-
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr, Option } from "lib/types";
-
-export interface ContractInfo extends ContractLocalInfo {
-  admin: Option<string>;
-  instantiated: Dayjs;
-  latestUpdator: Option<string>;
-  latestUpdated: Dayjs;
-}
-
-export interface ContractInstances {
-  contractList: Option<ContractLocalInfo[]>;
-  count: number;
-}
+import type { Addr, Option } from "lib/types";
 
 export enum RemarkOperation {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT",
@@ -23,19 +9,31 @@ export enum RemarkOperation {
 
 type RemarkType = "governance" | "transaction";
 
-export interface MigrationRemark {
+export interface ContractHistoryRemark {
   operation: RemarkOperation;
   type: RemarkType;
-  value: string;
+  value: string | number;
+}
+
+export interface ContractInfo extends ContractLocalInfo {
+  admin: Option<Addr>;
+  latestUpdater: Option<Addr>;
+  latestUpdated: Option<Date>;
+  remark: Option<ContractHistoryRemark>;
+}
+
+export interface ContractInstances {
+  contractList: Option<ContractLocalInfo[]>;
+  count: Option<number>;
 }
 
 export interface ContractMigrationHistory {
   codeId: number;
-  codeDescription?: string;
-  sender: HumanAddr | ContractAddr;
+  codeName?: string;
+  sender: Addr;
   height: number;
-  timestamp: Dayjs;
-  remark: MigrationRemark;
+  timestamp: Date;
+  remark: ContractHistoryRemark;
 }
 
 export enum ProposalStatus {
@@ -54,15 +52,16 @@ export enum ProposalType {
   UPDATE_ADMIN = "UpdateAdmin",
   CLEAR_ADMIN = "ClearAdmin",
   EXECUTE_CONTRACT = "ExecuteContract",
+  SUDO_CONTRACT = "SudoContract",
 }
 
 export interface ContractRelatedProposals {
   proposalId: number;
   title: string;
   status: ProposalStatus;
-  votingEndTime: Dayjs;
-  depositEndTime: Dayjs;
-  resolvedHeight: number | null | undefined;
+  votingEndTime: Date;
+  depositEndTime: Date;
+  resolvedHeight: Option<number | null>;
   type: ProposalType;
-  proposer: HumanAddr | ContractAddr | undefined;
+  proposer: Option<Addr>;
 }

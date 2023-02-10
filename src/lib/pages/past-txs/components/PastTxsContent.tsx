@@ -27,7 +27,7 @@ export const PastTxsContent = ({
   const { address } = useWallet();
 
   const templateColumnsStyle =
-    "200px 70px minmax(360px, 1fr) max(300px) max(100px)  max(70px)";
+    "180px 70px minmax(360px, 1fr) max(300px) max(100px)  max(70px)";
 
   if (!address) {
     return (

@@ -16,9 +16,9 @@ import {
   MdReadMore,
 } from "react-icons/md";
 
-import { ClearAdminContract } from "../modal/contract/ClearAdminContract";
+import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { useInternalNavigate } from "lib/app-provider";
-import type { ContractAddr, HumanAddr, Option } from "lib/types";
+import type { Addr, ContractAddr, Option } from "lib/types";
 
 const StyledMenuItem = chakra(MenuItem, {
   baseStyle: {
@@ -36,7 +36,7 @@ const StyledIcon = chakra(Icon, {
 
 interface AdminButtonProps {
   contractAddress: ContractAddr;
-  admin: Option<HumanAddr | ContractAddr>;
+  admin: Option<Addr>;
 }
 
 export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
@@ -86,7 +86,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         >
           Update Admin
         </StyledMenuItem>
-        <ClearAdminContract
+        <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
             <StyledMenuItem

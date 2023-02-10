@@ -92,6 +92,8 @@ const LinkRender = ({
     <Text
       variant="body2"
       color="lilac.main"
+      transition="all .25s ease-in-out"
+      _hover={{ color: "lilac.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
       maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
@@ -145,7 +147,7 @@ export const ExplorerLink = ({
       _hover={{
         ...(!readOnly && {
           textDecoration: "underline",
-          textDecorationColor: "lilac.main",
+          textDecorationColor: "lilac.light",
         }),
         "& .copy-button": {
           display: "flex",

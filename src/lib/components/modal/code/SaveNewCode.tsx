@@ -7,19 +7,17 @@ import { MdBookmark, MdCheckCircle } from "react-icons/md";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import {
-  getMaxCodeDescriptionLengthError,
-  MAX_CODE_DESCRIPTION_LENGTH,
-} from "lib/data";
+import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { getCodeIdInfo } from "lib/services/code";
-import { getDescriptionDefault } from "lib/utils";
+import type { Addr } from "lib/types";
+import { getNameAndDescriptionDefault } from "lib/utils";
 
-interface ModalProps {
+interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
 }
 
-export function SaveNewCodeModal({ buttonProps }: ModalProps) {
+export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   /* STATE */
   const [codeId, setCodeId] = useState("");
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
@@ -29,23 +27,23 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
   const [uploaderStatus, setUploaderStatus] = useState<FormStatus>({
     state: "init",
   });
-  const [description, setDescription] = useState("");
-  const [descriptionStatus, setDescriptionStatus] = useState<FormStatus>({
+  const [name, setName] = useState("");
+  const [nameStatus, setNameStatus] = useState<FormStatus>({
     state: "init",
   });
 
   // TODO: apply use-react-form later
   useEffect(() => {
-    const trimedDescription = description.trim();
-    if (trimedDescription.length === 0) {
-      setDescriptionStatus({ state: "init" });
-    } else if (trimedDescription.length > MAX_CODE_DESCRIPTION_LENGTH)
-      setDescriptionStatus({
+    const trimedName = name.trim();
+    if (trimedName.length === 0) {
+      setNameStatus({ state: "init" });
+    } else if (trimedName.length > MAX_CODE_NAME_LENGTH)
+      setNameStatus({
         state: "error",
-        message: getMaxCodeDescriptionLengthError(trimedDescription.length),
+        message: getMaxCodeNameLengthError(trimedName.length),
       });
-    else setDescriptionStatus({ state: "success" });
-  }, [description]);
+    else setNameStatus({ state: "success" });
+  }, [name]);
 
   /* DEPENDENCY */
   const toast = useToast();
@@ -79,14 +77,14 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     setCodeIdStatus({ state: "init" });
     setUploader("");
     setUploaderStatus({ state: "init" });
-    setDescription("");
+    setName("");
   };
 
   const handleSave = () => {
     const id = Number(codeId);
 
     saveNewCode(id);
-    updateCodeInfo(id, uploader, description);
+    updateCodeInfo(id, uploader as Addr, name);
 
     // TODO: abstract toast to template later
     toast({
@@ -142,15 +140,15 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     return () => {};
   }, [isCodeIdSaved, codeId, refetch]);
 
-  // update code description
+  // update code name
   useEffect(() => {
     if (codeIdStatus.state === "success") {
-      const localDescription = getDescriptionDefault(
-        getCodeLocalInfo(Number(codeId))?.description
+      const localName = getNameAndDescriptionDefault(
+        getCodeLocalInfo(Number(codeId))?.name
       );
-      setDescription(localDescription);
+      setName(localName);
     }
-  }, [codeId, codeIdStatus.state, getCodeLocalInfo, setDescription]);
+  }, [codeId, codeIdStatus.state, getCodeLocalInfo, setName]);
 
   /* LOGIC */
   // TODO: apply use-react-form later
@@ -159,9 +157,9 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
     return (
       codeIdStatus.state !== "success" ||
       uploader.length < 20 ||
-      descriptionStatus.state === "error"
+      nameStatus.state === "error"
     );
-  }, [codeIdStatus, uploader, descriptionStatus]);
+  }, [codeIdStatus, uploader, nameStatus]);
 
   return (
     <ActionModal
@@ -187,6 +185,7 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
           placeholder="ex. 1234"
         />
         <TextInput
+          variant="floating"
           value={uploader}
           label="Uploader"
           labelBgColor="pebble.900"
@@ -197,13 +196,13 @@ export function SaveNewCodeModal({ buttonProps }: ModalProps) {
         />
         <TextInput
           variant="floating"
-          value={description}
-          setInputState={setDescription}
-          label="Code Description"
+          value={name}
+          setInputState={setName}
+          label="Code Name"
           labelBgColor="pebble.900"
-          placeholder="No Description"
-          helperText="Fill in code description to define its use as a reminder"
-          status={descriptionStatus}
+          placeholder="Untitled Name"
+          helperText="Fill in code name to define its use as a reminder"
+          status={nameStatus}
         />
       </FormControl>
     </ActionModal>

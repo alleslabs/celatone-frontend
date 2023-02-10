@@ -1,5 +1,4 @@
 import { Flex, Heading, Box, Text, Icon } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import { useMemo } from "react";
 import { MdSearch, MdInput } from "react-icons/md";
@@ -7,6 +6,7 @@ import { MdSearch, MdInput } from "react-icons/md";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useContractStore, useUserKey } from "lib/hooks";
+import { dateFromNow } from "lib/utils";
 
 export const RecentActivities = observer(() => {
   const userKey = useUserKey();
@@ -47,10 +47,10 @@ export const RecentActivities = observer(() => {
               <Flex alignItems="center" gap={1}>
                 <Icon
                   as={item.type === "query" ? MdSearch : MdInput}
-                  color="pebble.600"
+                  color="honeydew.main"
                   boxSize={4}
                 />
-                <Text variant="body2" color="text.dark">
+                <Text variant="body2" color="honeydew.main">
                   {item.type === "query" ? "Query" : "Execute"}
                 </Text>
               </Flex>
@@ -71,9 +71,7 @@ export const RecentActivities = observer(() => {
                 />
               </Flex>
               <Flex gap={1}>
-                <Text variant="body2">
-                  {dayjs(item.timestamp).toNow(true)} ago{" "}
-                </Text>
+                <Text variant="body2">{dateFromNow(item.timestamp)}</Text>
                 {/* TODO - check address as me */}
                 {item.sender && (
                   <>

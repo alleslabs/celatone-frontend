@@ -9,6 +9,7 @@ import {
   chakra,
   MenuItem,
   Grid,
+  Text,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import {
@@ -24,11 +25,11 @@ import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
-  AddToOtherList,
-  EditContractDetails,
-  RemoveContract,
+  AddToOtherListModal,
+  EditContractDetailsModal,
+  RemoveContractModal,
 } from "lib/components/modal/contract";
-import { ClearAdminContract } from "lib/components/modal/contract/ClearAdminContract";
+import { ClearAdminModal } from "lib/components/modal/contract/ClearAdmin";
 import {
   TableContainer,
   TableHeaderNoBorder,
@@ -55,7 +56,8 @@ const StyledIcon = chakra(Icon, {
   },
 });
 
-const TEMPLATE_COLUMNS = "160px 280px 220px 1fr";
+const TEMPLATE_COLUMNS = "160px minmax(300px, 3fr) minmax(200px, 2fr) 460px";
+
 interface ContractListTableProps {
   contracts: ContractLocalInfo[];
   contractRemovalInfo?: LVPair;
@@ -72,8 +74,9 @@ export const ContractListTable = ({
   );
 
   return (
-    <TableContainer>
+    <TableContainer position="relative" overflow="visible">
       <Grid
+        minW="min-content"
         templateColumns={TEMPLATE_COLUMNS}
         px="48px"
         borderBottom="1px solid"
@@ -122,11 +125,17 @@ export const ContractListTable = ({
             </TableRowNoBorder>
             <TableRowNoBorder>
               <Flex justify="space-between" w="full">
-                <ExplorerLink
-                  value={item.instantiator}
-                  type="user_address"
-                  canCopyWithHover
-                />
+                {item.instantiator ? (
+                  <ExplorerLink
+                    value={item.instantiator}
+                    type="user_address"
+                    canCopyWithHover
+                  />
+                ) : (
+                  <Text variant="body2" color="text.dark">
+                    N/A
+                  </Text>
+                )}
                 <Flex
                   gap={3}
                   justifyContent="flex-end"
@@ -160,7 +169,7 @@ export const ContractListTable = ({
                       />
                     </MenuButton>
                     <MenuList>
-                      <EditContractDetails
+                      <EditContractDetailsModal
                         contractLocalInfo={item}
                         triggerElement={
                           <StyledMenuItem
@@ -170,7 +179,7 @@ export const ContractListTable = ({
                           </StyledMenuItem>
                         }
                       />
-                      <AddToOtherList
+                      <AddToOtherListModal
                         contractLocalInfo={item}
                         triggerElement={
                           <StyledMenuItem
@@ -197,7 +206,7 @@ export const ContractListTable = ({
                       >
                         Update Admin
                       </StyledMenuItem>
-                      <ClearAdminContract
+                      <ClearAdminModal
                         contractAddress={item.contractAddress}
                         triggerElement={
                           <StyledMenuItem
@@ -216,11 +225,10 @@ export const ContractListTable = ({
                       {!!contractRemovalInfo && (
                         <>
                           <MenuDivider />
-                          <RemoveContract
+                          <RemoveContractModal
                             contractLocalInfo={item}
                             contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
-                              fontSize: "16px",
                               icon: (
                                 <StyledIcon as={MdDelete} color="error.light" />
                               ),

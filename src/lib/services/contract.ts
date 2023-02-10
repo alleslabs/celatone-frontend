@@ -1,13 +1,12 @@
 import axios from "axios";
-import type { Dayjs } from "dayjs";
 import type { GraphQLClient } from "graphql-request";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import { getBlockTimestampByHeightQueryDocument } from "lib/data/queries";
 import type {
+  Addr,
   Balance,
   ContractAddr,
-  HumanAddr,
   Option,
   PublicInfo,
 } from "lib/types";
@@ -26,8 +25,8 @@ interface ContractResponse {
   address: ContractAddr;
   contract_info: {
     code_id: string;
-    creator: HumanAddr | ContractAddr;
-    admin?: HumanAddr | ContractAddr;
+    creator: Addr;
+    admin?: Addr;
     label: string;
     created?: {
       block_height: number;
@@ -48,11 +47,11 @@ interface PublicInfoResponse {
 export interface InstantiateInfo {
   contractAddress: ContractAddr;
   codeId: string;
-  instantiator: HumanAddr | ContractAddr;
-  admin?: HumanAddr | ContractAddr;
+  instantiator: Addr;
+  admin: Option<Addr>;
   label: string;
-  createdHeight: number;
-  createdTime: Option<Dayjs>;
+  createdHeight: Option<number>;
+  createdTime: Option<Date>;
   ibcPortId: string;
   raw: ContractResponse;
 }
@@ -96,9 +95,9 @@ export const queryInstantiateInfo = async (
 ): Promise<InstantiateInfo> => {
   const res = await queryContract(endpoint, contractAddress);
 
-  // TODO: check `created` field for contracts created with proposals
-  let createdHeight = -1;
-  let createdTime;
+  // TODO: query height from gql instead when supporting Terra
+  let createdHeight: Option<number>;
+  let createdTime: Option<Date>;
   if (res.contract_info.created) {
     createdHeight = res.contract_info.created.block_height;
     await indexerGraphClient
@@ -130,7 +129,7 @@ export const queryContractBalances = async (
   chainName: Option<string>,
   chainId: Option<string>,
   contractAddress: ContractAddr
-): Promise<Option<Balance[]>> => {
+): Promise<Balance[]> => {
   if (!chainName || !chainId)
     throw new Error("Invalid chain (queryContractBalances)");
   const { data } = await axios.get<Balance[]>(
@@ -145,7 +144,7 @@ export const queryPublicInfo = async (
   chainName: string | undefined,
   chainId: string | undefined,
   contractAddress: ContractAddr
-): Promise<PublicInfo | undefined> => {
+): Promise<Option<PublicInfo>> => {
   if (!chainName || !chainId)
     throw new Error("Invalid chain (queryPublicInfo)");
   return axios
