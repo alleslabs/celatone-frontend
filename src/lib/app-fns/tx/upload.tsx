@@ -10,7 +10,7 @@ import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxStreamPhase } from "lib/types";
-import type { TxResultRendering } from "lib/types";
+import type { HumanAddr, TxResultRendering } from "lib/types";
 import { formatUFee } from "lib/utils/formatter/denom";
 
 import { catchTxError } from "./common/catchTxError";
@@ -18,7 +18,7 @@ import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
 interface UploadTxParams {
-  address: string;
+  address: HumanAddr;
   codeDesc: string;
   wasmCode: Uint8Array;
   wasmFileName: string;

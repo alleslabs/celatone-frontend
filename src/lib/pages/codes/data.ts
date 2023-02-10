@@ -9,7 +9,7 @@ import {
   useSearchFilter,
 } from "lib/hooks";
 import { useCodeListPageQuery } from "lib/services/codeService";
-import type { CodeInfo } from "lib/types";
+import type { CodeInfo, HumanAddr } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 
 interface CodeListData {
@@ -35,7 +35,7 @@ export const useCodeListData = (
 
   const [{ data: rawStoredCodes = [] }, { data: querySavedCodeInfos = [] }] =
     useCodeListPageQuery({
-      walletAddr: address,
+      walletAddr: address as HumanAddr,
       ids: savedCodeIds,
     });
 

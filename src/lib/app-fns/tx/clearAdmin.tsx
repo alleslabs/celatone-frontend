@@ -10,7 +10,7 @@ import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxStreamPhase } from "lib/types";
-import type { TxResultRendering, ContractAddr } from "lib/types";
+import type { TxResultRendering, ContractAddr, HumanAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
 
 import { catchTxError } from "./common/catchTxError";
@@ -18,7 +18,7 @@ import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
 interface ClearAdminTxParams {
-  address: string;
+  address: HumanAddr;
   contractAddress: ContractAddr;
   fee: StdFee;
   memo?: string;

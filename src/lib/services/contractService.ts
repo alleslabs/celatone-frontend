@@ -113,7 +113,7 @@ export const useInstantiatedListByUserQuery = (
 
 export const useContractListByAdmin = (
   adminAddress: Addr
-): UseQueryResult<Option<ContractLocalInfo[]>> => {
+): UseQueryResult<ContractLocalInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -171,7 +171,7 @@ export const useInstantiateDetailByContractQuery = (
 
 export const useAdminByContractAddresses = (
   contractAddresses: Option<ContractAddr[]>
-): UseQueryResult<Option<Dict<ContractAddr, Addr>>> => {
+): UseQueryResult<Dict<ContractAddr, Addr>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -207,7 +207,7 @@ export const useExecuteTxsByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<Option<ExecuteTransaction[]>> => {
+): UseQueryResult<ExecuteTransaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -218,6 +218,9 @@ export const useExecuteTxsByContractAddress = (
         pageSize,
       })
       .then(({ contract_transactions_view }) =>
+        /**
+         * @remarks because contract_transactions_view is view table, all fields can be undefined by type
+         */
         contract_transactions_view.map((transaction) => ({
           hash: parseTxHash(transaction.hash),
           messages: transaction.messages,
@@ -363,8 +366,11 @@ export const useTxsByContractAddress = (
         offset,
         pageSize,
       })
-      .then(({ contract_transactions_view }) => {
-        return contract_transactions_view.map((contractTx) => ({
+      .then(({ contract_transactions_view }) =>
+        /**
+         * @remarks because contract_transactions_view is view table, all fields can be undefined by type
+         */
+        contract_transactions_view.map((contractTx) => ({
           hash: parseTxHash(contractTx.hash),
           messages: snakeToCamel(contractTx.messages),
           sender: contractTx.sender as Addr,
@@ -382,8 +388,8 @@ export const useTxsByContractAddress = (
             unwrapAll(contractTx.is_clear_admin),
           ]),
           isIbc: contractTx.is_ibc,
-        }));
-      });
+        }))
+      );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(

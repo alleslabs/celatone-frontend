@@ -7,14 +7,14 @@ import { MdCloudUpload } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { TxResultRendering } from "lib/types";
+import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ResendTxParams {
-  address: string;
+  address: HumanAddr;
   client: SigningCosmWasmClient;
   onTxSucceed?: (txHash: string) => void;
   fee: StdFee;

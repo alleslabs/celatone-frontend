@@ -12,7 +12,7 @@ type RemarkType = "governance" | "transaction";
 export interface ContractHistoryRemark {
   operation: RemarkOperation;
   type: RemarkType;
-  value: string;
+  value: string | number;
 }
 
 export interface ContractInfo extends ContractLocalInfo {

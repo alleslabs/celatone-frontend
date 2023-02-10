@@ -48,7 +48,7 @@ export interface InstantiateInfo {
   contractAddress: ContractAddr;
   codeId: string;
   instantiator: Addr;
-  admin?: Addr;
+  admin: Option<Addr>;
   label: string;
   createdHeight: Option<number>;
   createdTime: Option<Date>;

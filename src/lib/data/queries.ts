@@ -333,6 +333,7 @@ export const getCodeInfoByCodeId = graphql(`
           timestamp
         }
       }
+      # Can only have 1 store code proposal
       code_proposals(limit: 1) {
         proposal_id
         block {

@@ -25,7 +25,7 @@ export enum MsgFurtherAction {
 export interface PastTransaction {
   hash: string;
   messages: Message[];
-  created: Date;
+  created: Option<Date>;
   success: boolean;
   actionMsgType: ActionMsgType;
   furtherAction: MsgFurtherAction;

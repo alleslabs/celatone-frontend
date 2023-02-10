@@ -18,10 +18,11 @@ import {
   parseTxHash,
   snakeToCamel,
   getMsgFurtherAction,
+  parseDateOpt,
 } from "lib/utils";
 
 import {
-  actionsFilter,
+  generateWhereForContractTx,
   generateWhereForContractTxView,
   generateWhereForTx,
 } from "./generateWhere";
@@ -98,8 +99,7 @@ export const useTxQuery = (
             (contractTx): PastTransaction => ({
               hash: parseTxHash(contractTx.hash),
               messages: snakeToCamel(contractTx.messages) as Message[],
-              // TODO - Remove default case
-              created: parseDateDefault(contractTx.timestamp),
+              created: parseDateOpt(contractTx.timestamp),
               success: contractTx.success,
               actionMsgType: getActionMsgType([
                 contractTx.isExecute,
@@ -216,8 +216,14 @@ export const useTxQueryCount = (
     if (!userAddress) throw new Error("User address not found");
 
     if (getAddressType(search) === "contract_address") {
+      const where = generateWhereForContractTx({
+        userAddress: userAddress as HumanAddr,
+        contractAddress: search as ContractAddr,
+        filters,
+      });
+
       return indexerGraphClient
-        .request(queryTransactionCountFromContractTxs(actionsFilter(filters)), {
+        .request(queryTransactionCountFromContractTxs(where), {
           userAddress,
           contractAddress: search,
         })

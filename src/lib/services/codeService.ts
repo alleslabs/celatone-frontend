@@ -21,6 +21,7 @@ import type {
   InstantiatePermission,
   PermissionAddresses,
   Addr,
+  HumanAddr,
 } from "lib/types";
 import { parseDateOpt, parseTxHashOpt } from "lib/utils";
 
@@ -52,7 +53,7 @@ export const useCodeListPageQuery = ({
   walletAddr,
   ids,
 }: {
-  walletAddr: Option<string>;
+  walletAddr: Option<HumanAddr>;
   ids: Option<number[]>;
 }): [UseQueryResult<CodeInfo[]>, UseQueryResult<CodeInfo[]>] => {
   const { indexerGraphClient } = useCelatoneApp();
