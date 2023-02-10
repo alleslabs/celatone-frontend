@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { useFabricateFee } from "../hooks";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
 import { CLEAR_ADMIN_GAS } from "lib/data";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, HumanAddr } from "lib/types";
 
 export interface ClearAdminStreamParams {
   onTxSucceed?: () => void;
@@ -24,7 +24,7 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
         throw new Error("Please check your wallet connection.");
 
       return clearAdminTx({
-        address,
+        address: address as HumanAddr,
         contractAddress,
         fee: clearAdminFee,
         client,

@@ -9,6 +9,7 @@ import {
   chakra,
   MenuItem,
   Grid,
+  Text,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import {
@@ -55,7 +56,8 @@ const StyledIcon = chakra(Icon, {
   },
 });
 
-const TEMPLATE_COLUMNS = "160px 280px 220px 1fr";
+const TEMPLATE_COLUMNS = "160px minmax(300px, 3fr) minmax(200px, 2fr) 460px";
+
 interface ContractListTableProps {
   contracts: ContractLocalInfo[];
   contractRemovalInfo?: LVPair;
@@ -72,8 +74,9 @@ export const ContractListTable = ({
   );
 
   return (
-    <TableContainer position="relative">
+    <TableContainer position="relative" overflow="visible">
       <Grid
+        minW="min-content"
         templateColumns={TEMPLATE_COLUMNS}
         px="48px"
         borderBottom="1px solid"
@@ -122,11 +125,17 @@ export const ContractListTable = ({
             </TableRowNoBorder>
             <TableRowNoBorder>
               <Flex justify="space-between" w="full">
-                <ExplorerLink
-                  value={item.instantiator}
-                  type="user_address"
-                  canCopyWithHover
-                />
+                {item.instantiator ? (
+                  <ExplorerLink
+                    value={item.instantiator}
+                    type="user_address"
+                    canCopyWithHover
+                  />
+                ) : (
+                  <Text variant="body2" color="text.dark">
+                    N/A
+                  </Text>
+                )}
                 <Flex
                   gap={3}
                   justifyContent="flex-end"

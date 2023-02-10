@@ -45,7 +45,7 @@ const RemarkRender = ({
       <p>{isGovernance ? `${prefix} Proposal ID` : `${prefix} Tx`}</p>
       <ExplorerLink
         type={isGovernance ? "proposal_id" : "tx_hash"}
-        value={value}
+        value={value.toString()}
         canCopyWithHover
         textFormat={textFormat}
       />

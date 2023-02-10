@@ -7,14 +7,14 @@ import { MdCloudUpload } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { TxResultRendering } from "lib/types";
+import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ResendTxParams {
-  address: string;
+  address: HumanAddr;
   client: SigningCosmWasmClient;
   onTxSucceed?: (txHash: string) => void;
   fee: StdFee;
@@ -35,6 +35,8 @@ export const resendTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(txInfo.transactionHash);
+      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
+        .value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -48,10 +50,7 @@ export const resendTx = ({
           },
           {
             title: "Tx Fee",
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ],
         receiptInfo: {

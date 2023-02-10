@@ -28,8 +28,8 @@ import type { CodeInfo } from "lib/types";
 
 import { CodeNameCell } from "./CodeNameCell";
 
-// Types of Table: All Codes / My Stored Codes / My Saved Codes
-type TableType = "all" | "stored" | "saved";
+// Types of Table: Recent Codes / My Stored Codes / My Saved Codes
+type TableType = "recent" | "stored" | "saved";
 
 interface CodesTableProps {
   type: TableType;
@@ -84,8 +84,8 @@ const Unconnected = () => {
 const Empty = ({ type }: OtherTBodyProps) => {
   const renderEmptyText = () => {
     switch (type) {
-      case "all":
-        return "All Code IDs will display here";
+      case "recent":
+        return "Most recent 100 code IDs will display here";
       case "saved":
         return "Your saved code IDs will display here. Saved codes are stored locally on your device.";
       case "stored":
@@ -156,7 +156,7 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
           m="auto"
           px={2}
         >
-          {code.contracts}
+          {code.contractCount ?? "N/A"}
         </Text>
       </TableRowNoBorder>
       <TableRowNoBorder>
@@ -240,7 +240,7 @@ function CodesTable({
         mb="18px"
         px="48px"
       >
-        {type !== "all" && (
+        {type !== "recent" && (
           <Heading as="h2" size="md">
             {tableName}
           </Heading>

@@ -23,7 +23,7 @@ interface ContractTableProps {
 export const ContractTable = observer(({ codeId }: ContractTableProps) => {
   const { getContractLocalInfo } = useContractStore();
 
-  const { data: totalData = 0, refetch } = useContractListCountByCodeId(codeId);
+  const { data: totalData, refetch } = useContractListCountByCodeId(codeId);
   const {
     pagesQuantity,
     currentPage,
@@ -82,7 +82,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
           variant={!codeContracts?.length ? "gray" : "violet"}
           textAlign="center"
         >
-          {totalData}
+          {totalData ?? 0}
         </Badge>
       </Flex>
       {!codeContracts?.length ? (
@@ -110,7 +110,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
               templateColumnsStyle={templateColumnsStyle}
             />
           ))}
-          {totalData > 10 && (
+          {totalData && totalData > 10 && (
             <Pagination
               currentPage={currentPage}
               pagesQuantity={pagesQuantity}
