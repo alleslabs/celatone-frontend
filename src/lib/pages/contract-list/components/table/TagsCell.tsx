@@ -34,7 +34,9 @@ export const TagsCell = ({
         gap={1}
         color="text.dark"
         opacity={isHover ? "0" : "1"}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          if (!isReadOnly) e.stopPropagation();
+        }}
       >
         {tags.length ? (
           <Tag
@@ -69,7 +71,9 @@ export const TagsCell = ({
           w="340px"
           top="-16px"
           left="-16px"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            if (!isReadOnly) e.stopPropagation();
+          }}
           zIndex="dropdown"
         >
           <Flex
