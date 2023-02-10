@@ -1,4 +1,11 @@
-import type { AssetInfo, ContractAddr, HumanAddr } from "lib/types";
+import type {
+  Addr,
+  AssetInfo,
+  ContractAddr,
+  HumanAddr,
+  InstantiatePermission,
+  PermissionAddresses,
+} from "lib/types";
 
 export interface Account {
   address: HumanAddr;
@@ -7,18 +14,25 @@ export interface Account {
   slug: string;
 }
 
-export interface Code {
+export interface PublicCode {
   description: string;
   id: number;
   name: string;
   slug: string;
+  contractCount: number;
+  uploader: Addr;
+  instantiatePermission: InstantiatePermission;
+  permissionAddresses: PermissionAddresses;
 }
 
-export interface RawContract {
+export interface RawPublicContract {
   address: ContractAddr;
   description: string;
   name: string;
   slug: string;
+  instantiator: Addr;
+  admin: Addr;
+  label: string;
 }
 
 export interface Social {
@@ -38,21 +52,21 @@ export interface PublicDetail {
 export interface RawPublicProjectInfo {
   accounts: Account[];
   assets: AssetInfo;
-  codes: Code[];
-  contracts: RawContract[];
+  codes: PublicCode[];
+  contracts: RawPublicContract[];
   details: PublicDetail;
   slug: string;
 }
 
-export interface Contract extends Omit<RawContract, "address"> {
-  contractAddress: string;
+export interface PublicContract extends Omit<RawPublicContract, "address"> {
+  contractAddress: ContractAddr;
 }
 
 export interface PublicProjectInfo {
   accounts: Account[];
   assets: AssetInfo;
-  codes: Code[];
-  contracts: Contract[];
+  codes: PublicCode[];
+  contracts: PublicContract[];
   details: PublicDetail;
   slug: string;
 }
