@@ -2,13 +2,19 @@ import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
-import type { LVPair, Dict, ContractAddr } from "lib/types";
+import type {
+  LVPair,
+  Dict,
+  ContractAddr,
+  Option,
+  Addr,
+  HumanAddr,
+} from "lib/types";
 import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
 
 export interface ContractLocalInfo {
   contractAddress: ContractAddr;
-  // TODO: handle Genesis case
-  instantiator: string;
+  instantiator: Option<Addr>;
   label: string;
   name?: string;
   description?: string;
@@ -40,7 +46,7 @@ export const cmpContractListInfo = (
 export interface Activity {
   type: "query" | "execute";
   action: string;
-  sender: string | undefined;
+  sender: Option<HumanAddr>;
   contractAddress: ContractAddr;
   msg: string; // base64
   timestamp: Date;
@@ -122,14 +128,13 @@ export class ContractStore {
     return contractListByUserKey.map((contractListInfo) => ({
       ...contractListInfo,
       contracts: contractListInfo.contracts.map((contractAddress) => {
-        if (!contractLocalInfoByUserKey)
+        const contractLocalInfo = contractLocalInfoByUserKey?.[contractAddress];
+        if (!contractLocalInfo)
           return {
             contractAddress,
-            instantiator: "TODO",
-            label: "TODO",
-          };
-
-        const contractLocalInfo = contractLocalInfoByUserKey[contractAddress];
+            instantiator: undefined,
+            label: "N/A",
+          } as ContractLocalInfo;
 
         return { ...contractLocalInfo };
       }),
@@ -223,7 +228,7 @@ export class ContractStore {
   updateContractLocalInfo(
     userKey: string,
     contractAddress: ContractAddr,
-    instantiator: string,
+    instantiator: Option<Addr>,
     label: string,
     name?: string,
     description?: string,

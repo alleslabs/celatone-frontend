@@ -5,6 +5,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useGetAddressType } from "lib/hooks";
 import type { ContractData } from "lib/model/contract";
+import type { Option } from "lib/types";
 import { formatUTC, dateFromNow } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
 
@@ -56,7 +57,7 @@ const InitRender = ({
   initTxHash: ContractData["initTxHash"];
   initProposalTitle: ContractData["initProposalTitle"];
   initProposalId: ContractData["initProposalId"];
-  createdHeight: number;
+  createdHeight: Option<number>;
 }) => {
   if (initTxHash) {
     return (
@@ -169,7 +170,7 @@ export const InstantiateInfo = ({
       <Divider border="1px solid" borderColor="pebble.700" />
 
       {instantiateInfo &&
-        (instantiateInfo.createdHeight !== -1 ? (
+        (instantiateInfo.createdHeight ? (
           <LabelText
             label="Instantiated Block Height"
             helperText1={

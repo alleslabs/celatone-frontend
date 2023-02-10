@@ -15,7 +15,7 @@ const StyledIcon = chakra(Icon, {
 });
 
 export const CTASection = observer(
-  ({ id, ...codeInfo }: Omit<CodeInfo, "contracts">) => {
+  ({ id, ...codeInfo }: Omit<CodeInfo, "contractCount">) => {
     const { isCodeIdSaved } = useCodeStore();
     const isSaved = isCodeIdSaved(id);
 

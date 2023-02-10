@@ -67,7 +67,7 @@ export const UploadSection = ({
         onTxSucceed: (codeId: number) => {
           updateCodeInfo(
             codeId,
-            address,
+            address as HumanAddr,
             codeDesc || `${wasmFile?.name}(${codeId})`
           );
         },

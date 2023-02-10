@@ -8,6 +8,7 @@ import { TextInput } from "lib/components/forms";
 import { MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore, useGetAddressType } from "lib/hooks";
 import type { CodeLocalInfo } from "lib/stores/code";
+import type { Addr } from "lib/types";
 
 interface CodeDetailsTemplateModalProps {
   title: string;
@@ -37,7 +38,7 @@ export const CodeDetailsTemplateModal = ({
   const handleAction = useCallback(() => {
     if (isNewCode) saveNewCode(codeLocalInfo.id);
 
-    updateCodeInfo(codeLocalInfo.id, codeLocalInfo.uploader, name);
+    updateCodeInfo(codeLocalInfo.id, codeLocalInfo.uploader as Addr, name);
 
     // TODO: abstract toast to template later
     toast({

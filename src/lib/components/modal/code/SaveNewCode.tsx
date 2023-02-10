@@ -10,6 +10,7 @@ import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { getCodeIdInfo } from "lib/services/code";
+import type { Addr } from "lib/types";
 import { getNameAndDescriptionDefault } from "lib/utils";
 
 interface SaveNewCodeModalProps {
@@ -83,7 +84,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     const id = Number(codeId);
 
     saveNewCode(id);
-    updateCodeInfo(id, uploader, name);
+    updateCodeInfo(id, uploader as Addr, name);
 
     // TODO: abstract toast to template later
     toast({

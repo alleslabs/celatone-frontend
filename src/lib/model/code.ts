@@ -61,7 +61,7 @@ export const useCodeContractInstances = (
     offset,
     pageSize
   );
-  const { data: count = 0 } = useContractListCountByCodeId(codeId);
+  const { data: count } = useContractListCountByCodeId(codeId);
   const { getContractLocalInfo } = useContractStore();
   const data = contractList?.map((contract) => {
     const contractLocalInfo = getContractLocalInfo(contract.contractAddress);
