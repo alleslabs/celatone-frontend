@@ -36,10 +36,7 @@ export const CopyButton = ({
           variant="outline-info"
           size={size}
           float="right"
-          onClick={() => {
-            throw new Error("FRONTEND ERROR");
-            onCopy();
-          }}
+          onClick={onCopy}
           leftIcon={<CopyIcon boxSize="4" onClick={onCopy} />}
         >
           Copy
