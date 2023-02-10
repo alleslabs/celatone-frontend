@@ -9,7 +9,7 @@ import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { ContractAddr, TxResultRendering } from "lib/types";
+import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
 
@@ -18,7 +18,7 @@ import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
 interface MigrateTxParams {
-  sender: string;
+  sender: HumanAddr;
   contractAddress: ContractAddr;
   codeId: number;
   migrateMsg: object;
@@ -53,6 +53,8 @@ export const migrateContractTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(txInfo.transactionHash);
+      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
+        .value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -66,10 +68,7 @@ export const migrateContractTx = ({
           },
           {
             title: "Tx Fee",
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ],
         receiptInfo: {

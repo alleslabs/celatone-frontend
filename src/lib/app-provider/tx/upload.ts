@@ -3,7 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
 import { uploadContractTx } from "lib/app-fns/tx/upload";
-import type { Option } from "lib/types";
+import type { HumanAddr, Option } from "lib/types";
 
 export interface UploadStreamParams {
   wasmFileName: Option<string>;
@@ -30,7 +30,7 @@ export const useUploadContractTx = (isMigrate: boolean) => {
       if (!wasmFileName || !wasmCode || !estimatedFee) return null;
 
       return uploadContractTx({
-        address,
+        address: address as HumanAddr,
         wasmCode: new Uint8Array(await wasmCode),
         codeDesc,
         wasmFileName,

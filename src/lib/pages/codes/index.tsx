@@ -34,6 +34,7 @@ const Codes = observer(() => {
     },
   });
   const { keyword, permissionValue } = watch();
+
   const {
     storedCodesCount,
     storedCodes: stored,

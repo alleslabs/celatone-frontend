@@ -22,7 +22,7 @@ import { MdCode } from "react-icons/md";
 import { CopyButton } from "../CopyButton";
 import { CustomTab } from "lib/components/CustomTab";
 import { useLCDEndpoint } from "lib/hooks";
-import type { ContractAddr, HumanAddr, Option } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-sh";
@@ -31,7 +31,7 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
 
 interface CodeSnippetProps {
-  contractAddress: HumanAddr | ContractAddr;
+  contractAddress: ContractAddr;
   message: string;
   type: "query" | "execute";
 }

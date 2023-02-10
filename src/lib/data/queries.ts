@@ -10,7 +10,7 @@ export const getBlockTimestampByHeightQueryDocument = graphql(`
 
 export const getCodeListQueryDocument = graphql(`
   query getCodeListQuery {
-    codes(limit: 500, offset: 0, order_by: { id: desc }) {
+    codes(limit: 100, offset: 0, order_by: { id: desc }) {
       id
       contracts_aggregate {
         aggregate {
@@ -30,7 +30,7 @@ export const getCodeListByUserQueryDocument = graphql(`
   query getCodeListByUserQuery($walletAddr: String!) {
     codes(
       where: { account: { address: { _eq: $walletAddr } } }
-      limit: 500
+      limit: 100
       offset: 0
       order_by: { id: desc }
     ) {
@@ -86,7 +86,7 @@ export const getInstantiatedListByUserQueryDocument = graphql(`
         accountByInitBy: { address: { _eq: $walletAddr } }
         _or: { transaction: { account: { address: { _eq: $walletAddr } } } }
       }
-      limit: 500
+      limit: 100
       offset: 0
       order_by: { transaction: { block: { timestamp: desc } } }
     ) {
@@ -149,27 +149,21 @@ export const getExecuteTxsByContractAddress = graphql(`
     $offset: Int!
     $pageSize: Int!
   ) {
-    contract_transactions(
+    contract_transactions_view(
       where: {
-        contract: { address: { _eq: $contractAddress } }
-        transaction: { is_execute: { _eq: true } }
+        contract_address: { _eq: $contractAddress }
+        is_execute: { _eq: true }
       }
-      order_by: { transaction: { block: { timestamp: desc } } }
+      order_by: { timestamp: desc }
       limit: $pageSize
       offset: $offset
     ) {
-      transaction {
-        hash
-        messages
-        success
-        account {
-          address
-        }
-        block {
-          height
-          timestamp
-        }
-      }
+      hash
+      messages
+      success
+      sender
+      height
+      timestamp
     }
   }
 `);
@@ -270,7 +264,7 @@ export const getContractListByAdmin = graphql(`
   query getContractListByAdmin($address: String!) {
     contracts(
       where: { account: { address: { _eq: $address } } }
-      order_by: { id: desc }
+      order_by: { transaction: { block: { timestamp: desc } } }
     ) {
       address
       label
@@ -285,7 +279,7 @@ export const getContractListByCodeId = graphql(`
   query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
     contracts(
       where: { code_id: { _eq: $codeId } }
-      order_by: { id: desc }
+      order_by: { transaction: { block: { timestamp: desc } } }
       offset: $offset
       limit: $pageSize
     ) {
@@ -298,9 +292,6 @@ export const getContractListByCodeId = graphql(`
         order_by: { block: { timestamp: asc } }
         limit: 1
       ) {
-        block {
-          timestamp
-        }
         account {
           address
         }
@@ -312,6 +303,7 @@ export const getContractListByCodeId = graphql(`
         account {
           address
         }
+        remark
       }
     }
   }
@@ -341,7 +333,8 @@ export const getCodeInfoByCodeId = graphql(`
           timestamp
         }
       }
-      code_proposals {
+      # Can only have 1 store code proposal
+      code_proposals(limit: 1) {
         proposal_id
         block {
           height
@@ -360,32 +353,26 @@ export const getTxsByContractAddress = graphql(`
     $offset: Int!
     $pageSize: Int!
   ) {
-    contract_transactions(
-      where: { contract: { address: { _eq: $contractAddress } } }
-      order_by: { transaction: { block: { timestamp: desc } } }
+    contract_transactions_view(
+      where: { contract_address: { _eq: $contractAddress } }
+      order_by: { timestamp: desc }
       offset: $offset
       limit: $pageSize
     ) {
-      transaction {
-        hash
-        success
-        messages
-        account {
-          address
-        }
-        block {
-          height
-          timestamp
-        }
-        is_execute
-        is_ibc
-        is_instantiate
-        is_send
-        is_store_code
-        is_migrate
-        is_update_admin
-        is_clear_admin
-      }
+      hash
+      success
+      messages
+      sender
+      height
+      timestamp
+      is_execute
+      is_ibc
+      is_instantiate
+      is_send
+      is_store_code
+      is_migrate
+      is_update_admin
+      is_clear_admin
     }
   }
 `);

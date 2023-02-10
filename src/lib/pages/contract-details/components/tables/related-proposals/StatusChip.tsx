@@ -39,5 +39,9 @@ export const StatusChip = ({
 }: {
   status: ContractRelatedProposals["status"];
 }) => {
-  return <StyledTag bgColor={getBgColor(status)}>{status}</StyledTag>;
+  return (
+    <StyledTag bgColor={getBgColor(status)}>
+      {status === ProposalStatus.INACTIVE ? "DepositFailed" : status}
+    </StyledTag>
+  );
 };

@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { Addr, ContractAddr, HumanAddr } from "../currency/addrs";
+import type { Addr, ContractAddr, HumanAddr } from "../addrs";
 
 export enum MsgType {
   STORE_CODE = "STORE_CODE",

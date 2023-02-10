@@ -1,4 +1,4 @@
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { Addr, Option } from "lib/types";
 
 import type {
   DetailClearAdmin,
@@ -25,7 +25,7 @@ export enum MsgFurtherAction {
 export interface PastTransaction {
   hash: string;
   messages: Message[];
-  created: Date;
+  created: Option<Date>;
   success: boolean;
   actionMsgType: ActionMsgType;
   furtherAction: MsgFurtherAction;
@@ -60,9 +60,9 @@ export interface Msg {
 export interface ExecuteTransaction {
   hash: string;
   messages: Message[];
-  sender: ContractAddr | HumanAddr;
+  sender: Addr;
   height: number;
-  created: Date;
+  created: Option<Date>;
   success: boolean;
 }
 

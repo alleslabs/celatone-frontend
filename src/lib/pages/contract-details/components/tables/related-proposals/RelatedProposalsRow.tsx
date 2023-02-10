@@ -24,6 +24,10 @@ const VotingEndTimeRender = ({
   depositEndTime: ContractRelatedProposals["depositEndTime"];
   status: ContractRelatedProposals["status"];
 }) => {
+  if (status === ProposalStatus.INACTIVE) {
+    return <Text color="text.dark">N/A</Text>;
+  }
+
   const isDepositPeriod = status === ProposalStatus.DEPOSIT_PERIOD;
   return (
     <Flex
@@ -51,15 +55,42 @@ const VotingEndTimeRender = ({
   );
 };
 
+const ResolvedHeightRender = ({
+  resolvedHeight,
+  isInactive,
+}: {
+  resolvedHeight: RelatedProposalsRowProps["proposal"]["resolvedHeight"];
+  isInactive: boolean;
+}) => {
+  if (isInactive) return <Text color="text.dark">N/A</Text>;
+
+  switch (resolvedHeight) {
+    case undefined:
+      return <Text color="text.dark">N/A</Text>;
+    case null:
+      return <Text color="text.dark">Pending</Text>;
+    default:
+      return (
+        <ExplorerLink
+          type="block_height"
+          value={resolvedHeight.toString()}
+          canCopyWithHover
+        />
+      );
+  }
+};
+
 export const RelatedProposalsRow = ({
   proposal,
   templateColumns,
 }: RelatedProposalsRowProps) => {
   const getAddressType = useGetAddressType();
+  const isInactive = proposal.status === ProposalStatus.INACTIVE;
   return (
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <ExplorerLink
+          isReadOnly={isInactive}
           type="proposal_id"
           value={proposal.proposalId.toString()}
           canCopyWithHover
@@ -77,15 +108,10 @@ export const RelatedProposalsRow = ({
         />
       </TableRow>
       <TableRow>
-        {proposal.resolvedHeight ? (
-          <ExplorerLink
-            type="block_height"
-            value={proposal.resolvedHeight.toString()}
-            canCopyWithHover
-          />
-        ) : (
-          <Text color="text.dark">Pending</Text>
-        )}
+        <ResolvedHeightRender
+          resolvedHeight={proposal.resolvedHeight}
+          isInactive={isInactive}
+        />
       </TableRow>
       <TableRow>
         <Text color="text.dark">{proposal.type}</Text>

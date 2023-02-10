@@ -31,6 +31,7 @@ import {
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type {
+  Addr,
   BalanceWithAssetInfo,
   ContractAddr,
   PublicDetail,
@@ -51,7 +52,7 @@ export interface ContractData {
     publicDetail: Option<PublicDetail>;
   };
   balances: Option<BalanceWithAssetInfo[]>;
-  initMsg: string;
+  initMsg: Option<string>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
@@ -80,14 +81,12 @@ export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
 
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   const { address } = useWallet();
-  const { data: count = 0 } = useInstantiatedCountByUserQuery(
-    address as HumanAddr
-  );
+  const { data: count } = useInstantiatedCountByUserQuery(address as HumanAddr);
 
   return {
-    contracts: Array.from({ length: count }, () => ({
+    contracts: Array.from({ length: count ?? 0 }, () => ({
       contractAddress: "" as ContractAddr,
-      instantiator: "",
+      instantiator: "" as Addr,
       label: "",
       created: getDefaultDate(),
     })),
@@ -156,11 +155,8 @@ export const useContractData = (
     : undefined;
   const contractLocalInfo = getContractLocalInfo(contractAddress);
 
-  const {
-    data: instantiateDetail = {
-      initMsg: "{}",
-    },
-  } = useInstantiateDetailByContractQuery(contractAddress);
+  const { data: instantiateDetail } =
+    useInstantiateDetailByContractQuery(contractAddress);
 
   if (!currentChainRecord) return undefined;
 
@@ -175,10 +171,10 @@ export const useContractData = (
       publicDetail: publicInfoBySlug?.details,
     },
     balances: contractBalancesWithAssetInfos,
-    initMsg: instantiateDetail.initMsg,
-    initTxHash: instantiateDetail.initTxHash,
-    initProposalId: instantiateDetail.initProposalId,
-    initProposalTitle: instantiateDetail.initProposalTitle,
+    initMsg: instantiateDetail?.initMsg,
+    initTxHash: instantiateDetail?.initTxHash,
+    initProposalId: instantiateDetail?.initProposalId,
+    initProposalTitle: instantiateDetail?.initProposalTitle,
   };
 };
 
@@ -190,13 +186,13 @@ export const useContractData = (
 export const useContractDetailsTableCounts = (
   contractAddress: ContractAddr
 ) => {
-  // const { data: executeCount = 0, refetch: refetchExecute } =
+  // const { data: executeCount, refetch: refetchExecute } =
   //   useExecuteTxsCountByContractAddress(contractAddress);
-  const { data: migrationCount = 0, refetch: refetchMigration } =
+  const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
-  const { data: transactionsCount = 0, refetch: refetchTransactions } =
+  const { data: transactionsCount, refetch: refetchTransactions } =
     useTxsCountByContractAddress(contractAddress);
-  const { data: relatedProposalsCount = 0, refetch: refetchRelatedProposals } =
+  const { data: relatedProposalsCount, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
 
   return {

@@ -2854,6 +2854,228 @@ export type Contract_Transactions_Variance_Order_By = {
   tx_id?: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "contract_transactions_view" */
+export type Contract_Transactions_View = {
+  __typename?: "contract_transactions_view";
+  contract_address?: Maybe<Scalars["String"]>;
+  hash?: Maybe<Scalars["bytea"]>;
+  height?: Maybe<Scalars["Int"]>;
+  is_clear_admin?: Maybe<Scalars["Boolean"]>;
+  is_execute?: Maybe<Scalars["Boolean"]>;
+  is_ibc?: Maybe<Scalars["Boolean"]>;
+  is_instantiate?: Maybe<Scalars["Boolean"]>;
+  is_migrate?: Maybe<Scalars["Boolean"]>;
+  is_send?: Maybe<Scalars["Boolean"]>;
+  is_store_code?: Maybe<Scalars["Boolean"]>;
+  is_update_admin?: Maybe<Scalars["Boolean"]>;
+  messages?: Maybe<Scalars["json"]>;
+  sender?: Maybe<Scalars["String"]>;
+  success?: Maybe<Scalars["Boolean"]>;
+  timestamp?: Maybe<Scalars["timestamp"]>;
+};
+
+/** columns and relationships of "contract_transactions_view" */
+export type Contract_Transactions_ViewMessagesArgs = {
+  path?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregated selection of "contract_transactions_view" */
+export type Contract_Transactions_View_Aggregate = {
+  __typename?: "contract_transactions_view_aggregate";
+  aggregate?: Maybe<Contract_Transactions_View_Aggregate_Fields>;
+  nodes: Array<Contract_Transactions_View>;
+};
+
+/** aggregate fields of "contract_transactions_view" */
+export type Contract_Transactions_View_Aggregate_Fields = {
+  __typename?: "contract_transactions_view_aggregate_fields";
+  avg?: Maybe<Contract_Transactions_View_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Contract_Transactions_View_Max_Fields>;
+  min?: Maybe<Contract_Transactions_View_Min_Fields>;
+  stddev?: Maybe<Contract_Transactions_View_Stddev_Fields>;
+  stddev_pop?: Maybe<Contract_Transactions_View_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Contract_Transactions_View_Stddev_Samp_Fields>;
+  sum?: Maybe<Contract_Transactions_View_Sum_Fields>;
+  var_pop?: Maybe<Contract_Transactions_View_Var_Pop_Fields>;
+  var_samp?: Maybe<Contract_Transactions_View_Var_Samp_Fields>;
+  variance?: Maybe<Contract_Transactions_View_Variance_Fields>;
+};
+
+/** aggregate fields of "contract_transactions_view" */
+export type Contract_Transactions_View_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Contract_Transactions_View_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** aggregate avg on columns */
+export type Contract_Transactions_View_Avg_Fields = {
+  __typename?: "contract_transactions_view_avg_fields";
+  height?: Maybe<Scalars["Float"]>;
+};
+
+/** Boolean expression to filter rows from the table "contract_transactions_view". All fields are combined with a logical 'AND'. */
+export type Contract_Transactions_View_Bool_Exp = {
+  _and?: InputMaybe<Array<Contract_Transactions_View_Bool_Exp>>;
+  _not?: InputMaybe<Contract_Transactions_View_Bool_Exp>;
+  _or?: InputMaybe<Array<Contract_Transactions_View_Bool_Exp>>;
+  contract_address?: InputMaybe<String_Comparison_Exp>;
+  hash?: InputMaybe<Bytea_Comparison_Exp>;
+  height?: InputMaybe<Int_Comparison_Exp>;
+  is_clear_admin?: InputMaybe<Boolean_Comparison_Exp>;
+  is_execute?: InputMaybe<Boolean_Comparison_Exp>;
+  is_ibc?: InputMaybe<Boolean_Comparison_Exp>;
+  is_instantiate?: InputMaybe<Boolean_Comparison_Exp>;
+  is_migrate?: InputMaybe<Boolean_Comparison_Exp>;
+  is_send?: InputMaybe<Boolean_Comparison_Exp>;
+  is_store_code?: InputMaybe<Boolean_Comparison_Exp>;
+  is_update_admin?: InputMaybe<Boolean_Comparison_Exp>;
+  messages?: InputMaybe<Json_Comparison_Exp>;
+  sender?: InputMaybe<String_Comparison_Exp>;
+  success?: InputMaybe<Boolean_Comparison_Exp>;
+  timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
+};
+
+/** aggregate max on columns */
+export type Contract_Transactions_View_Max_Fields = {
+  __typename?: "contract_transactions_view_max_fields";
+  contract_address?: Maybe<Scalars["String"]>;
+  height?: Maybe<Scalars["Int"]>;
+  sender?: Maybe<Scalars["String"]>;
+  timestamp?: Maybe<Scalars["timestamp"]>;
+};
+
+/** aggregate min on columns */
+export type Contract_Transactions_View_Min_Fields = {
+  __typename?: "contract_transactions_view_min_fields";
+  contract_address?: Maybe<Scalars["String"]>;
+  height?: Maybe<Scalars["Int"]>;
+  sender?: Maybe<Scalars["String"]>;
+  timestamp?: Maybe<Scalars["timestamp"]>;
+};
+
+/** Ordering options when selecting data from "contract_transactions_view". */
+export type Contract_Transactions_View_Order_By = {
+  contract_address?: InputMaybe<Order_By>;
+  hash?: InputMaybe<Order_By>;
+  height?: InputMaybe<Order_By>;
+  is_clear_admin?: InputMaybe<Order_By>;
+  is_execute?: InputMaybe<Order_By>;
+  is_ibc?: InputMaybe<Order_By>;
+  is_instantiate?: InputMaybe<Order_By>;
+  is_migrate?: InputMaybe<Order_By>;
+  is_send?: InputMaybe<Order_By>;
+  is_store_code?: InputMaybe<Order_By>;
+  is_update_admin?: InputMaybe<Order_By>;
+  messages?: InputMaybe<Order_By>;
+  sender?: InputMaybe<Order_By>;
+  success?: InputMaybe<Order_By>;
+  timestamp?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "contract_transactions_view" */
+export enum Contract_Transactions_View_Select_Column {
+  /** column name */
+  ContractAddress = "contract_address",
+  /** column name */
+  Hash = "hash",
+  /** column name */
+  Height = "height",
+  /** column name */
+  IsClearAdmin = "is_clear_admin",
+  /** column name */
+  IsExecute = "is_execute",
+  /** column name */
+  IsIbc = "is_ibc",
+  /** column name */
+  IsInstantiate = "is_instantiate",
+  /** column name */
+  IsMigrate = "is_migrate",
+  /** column name */
+  IsSend = "is_send",
+  /** column name */
+  IsStoreCode = "is_store_code",
+  /** column name */
+  IsUpdateAdmin = "is_update_admin",
+  /** column name */
+  Messages = "messages",
+  /** column name */
+  Sender = "sender",
+  /** column name */
+  Success = "success",
+  /** column name */
+  Timestamp = "timestamp",
+}
+
+/** aggregate stddev on columns */
+export type Contract_Transactions_View_Stddev_Fields = {
+  __typename?: "contract_transactions_view_stddev_fields";
+  height?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Contract_Transactions_View_Stddev_Pop_Fields = {
+  __typename?: "contract_transactions_view_stddev_pop_fields";
+  height?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Contract_Transactions_View_Stddev_Samp_Fields = {
+  __typename?: "contract_transactions_view_stddev_samp_fields";
+  height?: Maybe<Scalars["Float"]>;
+};
+
+/** Streaming cursor of the table "contract_transactions_view" */
+export type Contract_Transactions_View_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Contract_Transactions_View_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Contract_Transactions_View_Stream_Cursor_Value_Input = {
+  contract_address?: InputMaybe<Scalars["String"]>;
+  hash?: InputMaybe<Scalars["bytea"]>;
+  height?: InputMaybe<Scalars["Int"]>;
+  is_clear_admin?: InputMaybe<Scalars["Boolean"]>;
+  is_execute?: InputMaybe<Scalars["Boolean"]>;
+  is_ibc?: InputMaybe<Scalars["Boolean"]>;
+  is_instantiate?: InputMaybe<Scalars["Boolean"]>;
+  is_migrate?: InputMaybe<Scalars["Boolean"]>;
+  is_send?: InputMaybe<Scalars["Boolean"]>;
+  is_store_code?: InputMaybe<Scalars["Boolean"]>;
+  is_update_admin?: InputMaybe<Scalars["Boolean"]>;
+  messages?: InputMaybe<Scalars["json"]>;
+  sender?: InputMaybe<Scalars["String"]>;
+  success?: InputMaybe<Scalars["Boolean"]>;
+  timestamp?: InputMaybe<Scalars["timestamp"]>;
+};
+
+/** aggregate sum on columns */
+export type Contract_Transactions_View_Sum_Fields = {
+  __typename?: "contract_transactions_view_sum_fields";
+  height?: Maybe<Scalars["Int"]>;
+};
+
+/** aggregate var_pop on columns */
+export type Contract_Transactions_View_Var_Pop_Fields = {
+  __typename?: "contract_transactions_view_var_pop_fields";
+  height?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate var_samp on columns */
+export type Contract_Transactions_View_Var_Samp_Fields = {
+  __typename?: "contract_transactions_view_var_samp_fields";
+  height?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate variance on columns */
+export type Contract_Transactions_View_Variance_Fields = {
+  __typename?: "contract_transactions_view_variance_fields";
+  height?: Maybe<Scalars["Float"]>;
+};
+
 /** columns and relationships of "contracts" */
 export type Contracts = {
   __typename?: "contracts";
@@ -4624,6 +4846,10 @@ export type Query_Root = {
   contract_transactions: Array<Contract_Transactions>;
   /** An aggregate relationship */
   contract_transactions_aggregate: Contract_Transactions_Aggregate;
+  /** fetch data from the table: "contract_transactions_view" */
+  contract_transactions_view: Array<Contract_Transactions_View>;
+  /** fetch aggregated fields from the table: "contract_transactions_view" */
+  contract_transactions_view_aggregate: Contract_Transactions_View_Aggregate;
   /** An array relationship */
   contracts: Array<Contracts>;
   /** An aggregate relationship */
@@ -4795,6 +5021,22 @@ export type Query_RootContract_Transactions_AggregateArgs = {
   where?: InputMaybe<Contract_Transactions_Bool_Exp>;
 };
 
+export type Query_RootContract_Transactions_ViewArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Transactions_View_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Transactions_View_Order_By>>;
+  where?: InputMaybe<Contract_Transactions_View_Bool_Exp>;
+};
+
+export type Query_RootContract_Transactions_View_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Transactions_View_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Transactions_View_Order_By>>;
+  where?: InputMaybe<Contract_Transactions_View_Bool_Exp>;
+};
+
 export type Query_RootContractsArgs = {
   distinct_on?: InputMaybe<Array<Contracts_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -4933,6 +5175,12 @@ export type Subscription_Root = {
   contract_transactions_aggregate: Contract_Transactions_Aggregate;
   /** fetch data from the table in a streaming manner: "contract_transactions" */
   contract_transactions_stream: Array<Contract_Transactions>;
+  /** fetch data from the table: "contract_transactions_view" */
+  contract_transactions_view: Array<Contract_Transactions_View>;
+  /** fetch aggregated fields from the table: "contract_transactions_view" */
+  contract_transactions_view_aggregate: Contract_Transactions_View_Aggregate;
+  /** fetch data from the table in a streaming manner: "contract_transactions_view" */
+  contract_transactions_view_stream: Array<Contract_Transactions_View>;
   /** An array relationship */
   contracts: Array<Contracts>;
   /** An aggregate relationship */
@@ -5158,6 +5406,28 @@ export type Subscription_RootContract_Transactions_StreamArgs = {
   batch_size: Scalars["Int"];
   cursor: Array<InputMaybe<Contract_Transactions_Stream_Cursor_Input>>;
   where?: InputMaybe<Contract_Transactions_Bool_Exp>;
+};
+
+export type Subscription_RootContract_Transactions_ViewArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Transactions_View_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Transactions_View_Order_By>>;
+  where?: InputMaybe<Contract_Transactions_View_Bool_Exp>;
+};
+
+export type Subscription_RootContract_Transactions_View_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contract_Transactions_View_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Contract_Transactions_View_Order_By>>;
+  where?: InputMaybe<Contract_Transactions_View_Bool_Exp>;
+};
+
+export type Subscription_RootContract_Transactions_View_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Contract_Transactions_View_Stream_Cursor_Input>>;
+  where?: InputMaybe<Contract_Transactions_View_Bool_Exp>;
 };
 
 export type Subscription_RootContractsArgs = {
@@ -6387,16 +6657,14 @@ export type GetExecuteTxsByContractAddressQueryVariables = Exact<{
 
 export type GetExecuteTxsByContractAddressQuery = {
   __typename?: "query_root";
-  contract_transactions: Array<{
-    __typename?: "contract_transactions";
-    transaction: {
-      __typename?: "transactions";
-      hash: any;
-      messages: any;
-      success: boolean;
-      account: { __typename?: "accounts"; address: string };
-      block: { __typename?: "blocks"; height: number; timestamp: any };
-    };
+  contract_transactions_view: Array<{
+    __typename?: "contract_transactions_view";
+    hash?: any | null;
+    messages?: any | null;
+    success?: boolean | null;
+    sender?: string | null;
+    height?: number | null;
+    timestamp?: any | null;
   }>;
 };
 
@@ -6515,11 +6783,11 @@ export type GetContractListByCodeIdQuery = {
     admin?: { __typename?: "accounts"; address: string } | null;
     init_by: Array<{
       __typename?: "contract_histories";
-      block: { __typename?: "blocks"; timestamp: any };
       account: { __typename?: "accounts"; address: string };
     }>;
     contract_histories: Array<{
       __typename?: "contract_histories";
+      remark: any;
       block: { __typename?: "blocks"; timestamp: any };
       account: { __typename?: "accounts"; address: string };
     }>;
@@ -6574,24 +6842,22 @@ export type GetTxsByContractAddressQueryVariables = Exact<{
 
 export type GetTxsByContractAddressQuery = {
   __typename?: "query_root";
-  contract_transactions: Array<{
-    __typename?: "contract_transactions";
-    transaction: {
-      __typename?: "transactions";
-      hash: any;
-      success: boolean;
-      messages: any;
-      is_execute: boolean;
-      is_ibc: boolean;
-      is_instantiate: boolean;
-      is_send: boolean;
-      is_store_code: boolean;
-      is_migrate: boolean;
-      is_update_admin: boolean;
-      is_clear_admin: boolean;
-      account: { __typename?: "accounts"; address: string };
-      block: { __typename?: "blocks"; height: number; timestamp: any };
-    };
+  contract_transactions_view: Array<{
+    __typename?: "contract_transactions_view";
+    hash?: any | null;
+    success?: boolean | null;
+    messages?: any | null;
+    sender?: string | null;
+    height?: number | null;
+    timestamp?: any | null;
+    is_execute?: boolean | null;
+    is_ibc?: boolean | null;
+    is_instantiate?: boolean | null;
+    is_send?: boolean | null;
+    is_store_code?: boolean | null;
+    is_migrate?: boolean | null;
+    is_update_admin?: boolean | null;
+    is_clear_admin?: boolean | null;
   }>;
 };
 
@@ -6678,7 +6944,7 @@ export const GetCodeListQueryDocument = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "500" },
+                value: { kind: "IntValue", value: "100" },
               },
               {
                 kind: "Argument",
@@ -6827,7 +7093,7 @@ export const GetCodeListByUserQueryDocument = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "500" },
+                value: { kind: "IntValue", value: "100" },
               },
               {
                 kind: "Argument",
@@ -7250,7 +7516,7 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "500" },
+                value: { kind: "IntValue", value: "100" },
               },
               {
                 kind: "Argument",
@@ -7638,7 +7904,7 @@ export const GetExecuteTxsByContractAddressDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "contract_transactions" },
+            name: { kind: "Name", value: "contract_transactions_view" },
             arguments: [
               {
                 kind: "Argument",
@@ -7648,28 +7914,16 @@ export const GetExecuteTxsByContractAddressDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "contract" },
+                      name: { kind: "Name", value: "contract_address" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "address" },
+                            name: { kind: "Name", value: "_eq" },
                             value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: {
-                                      kind: "Name",
-                                      value: "contractAddress",
-                                    },
-                                  },
-                                },
-                              ],
+                              kind: "Variable",
+                              name: { kind: "Name", value: "contractAddress" },
                             },
                           },
                         ],
@@ -7677,23 +7931,14 @@ export const GetExecuteTxsByContractAddressDocument = {
                     },
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
+                      name: { kind: "Name", value: "is_execute" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "is_execute" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: { kind: "BooleanValue", value: true },
-                                },
-                              ],
-                            },
+                            name: { kind: "Name", value: "_eq" },
+                            value: { kind: "BooleanValue", value: true },
                           },
                         ],
                       },
@@ -7709,26 +7954,8 @@ export const GetExecuteTxsByContractAddressDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "desc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
+                      name: { kind: "Name", value: "timestamp" },
+                      value: { kind: "EnumValue", value: "desc" },
                     },
                   ],
                 },
@@ -7753,54 +7980,12 @@ export const GetExecuteTxsByContractAddressDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "transaction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "hash" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "messages" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "success" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "account" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "address" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "height" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "sender" } },
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
               ],
             },
           },
@@ -8545,8 +8730,26 @@ export const GetContractListByAdminDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "id" },
-                      value: { kind: "EnumValue", value: "desc" },
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
                     },
                   ],
                 },
@@ -8664,8 +8867,26 @@ export const GetContractListByCodeIdDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "id" },
-                      value: { kind: "EnumValue", value: "desc" },
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
                     },
                   ],
                 },
@@ -8745,19 +8966,6 @@ export const GetContractListByCodeIdDocument = {
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
                         name: { kind: "Name", value: "account" },
                         selectionSet: {
                           kind: "SelectionSet",
@@ -8833,6 +9041,10 @@ export const GetContractListByCodeIdDocument = {
                             },
                           ],
                         },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "remark" },
                       },
                     ],
                   },
@@ -9009,6 +9221,13 @@ export const GetCodeInfoByCodeIdDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "code_proposals" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
@@ -9105,7 +9324,7 @@ export const GetTxsByContractAddressDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "contract_transactions" },
+            name: { kind: "Name", value: "contract_transactions_view" },
             arguments: [
               {
                 kind: "Argument",
@@ -9115,28 +9334,16 @@ export const GetTxsByContractAddressDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "contract" },
+                      name: { kind: "Name", value: "contract_address" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "address" },
+                            name: { kind: "Name", value: "_eq" },
                             value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: {
-                                      kind: "Name",
-                                      value: "contractAddress",
-                                    },
-                                  },
-                                },
-                              ],
+                              kind: "Variable",
+                              name: { kind: "Name", value: "contractAddress" },
                             },
                           },
                         ],
@@ -9153,26 +9360,8 @@ export const GetTxsByContractAddressDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "desc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
+                      name: { kind: "Name", value: "timestamp" },
+                      value: { kind: "EnumValue", value: "desc" },
                     },
                   ],
                 },
@@ -9197,85 +9386,31 @@ export const GetTxsByContractAddressDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                { kind: "Field", name: { kind: "Name", value: "sender" } },
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
+                { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "transaction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "hash" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "success" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "messages" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "account" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "address" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "height" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_execute" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_ibc" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_instantiate" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_send" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_store_code" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_migrate" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_update_admin" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "is_clear_admin" },
-                      },
-                    ],
-                  },
+                  name: { kind: "Name", value: "is_instantiate" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_send" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_store_code" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_update_admin" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_clear_admin" },
                 },
               ],
             },
