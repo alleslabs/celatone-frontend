@@ -223,10 +223,7 @@ export const useTxQueryCount = (
       });
 
       return indexerGraphClient
-        .request(queryTransactionCountFromContractTxs(where), {
-          userAddress,
-          contractAddress: search,
-        })
+        .request(queryTransactionCountFromContractTxs(where))
         .then(
           ({ contract_transactions_aggregate }) =>
             contract_transactions_aggregate.aggregate.count
