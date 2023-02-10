@@ -1,5 +1,6 @@
 import { Button, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
+import type { Coin } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
@@ -30,9 +31,9 @@ import { MsgType } from "lib/types";
 import {
   composeMsg,
   demicrofy,
+  fabricateFunds,
   jsonValidate,
   libDecode,
-  microfy,
 } from "lib/utils";
 
 import { FailedModal, Footer } from "./component";
@@ -65,6 +66,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------STATES------------------//
   // ------------------------------------------//
   const [simulating, setSimulating] = useState(false);
+  const [status, setStatus] = useState<FormStatus>({ state: "init" });
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
@@ -83,7 +85,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       label: "",
       adminAddress: "",
       initMsg: "",
-      assets: [{ denom: "", amount: "" }],
+      assets: [{ denom: "", amount: "" }] as Coin[],
       simulateError: "",
     },
   });
@@ -98,7 +100,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     initMsg: watchInitMsg,
     simulateError,
   } = watch();
-  const [status, setStatus] = useState<FormStatus>({ state: "init" });
 
   const selectedAssets = watchAssets.map((asset) => asset.denom);
 
@@ -107,10 +108,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       !codeId ||
       !address ||
       !!jsonValidate(watchInitMsg) ||
-      !!formErrors.label ||
+      Object.keys(formErrors).length > 0 ||
       status.state !== "success"
     );
-  }, [codeId, address, watchInitMsg, formErrors.label, status.state]);
+    // formErrors change doesnt trigger this effect
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [codeId, address, watchInitMsg, Object.keys(formErrors), status.state]);
 
   const assetOptions = useMemo(
     () =>
@@ -157,12 +160,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const proceed = useCallback(() => {
     handleSubmit(async ({ adminAddress, label, initMsg, assets }) => {
       setSimulating(true);
-      const funds = assets
-        .filter((asset) => asset.amount && asset.denom)
-        .map((asset) => ({
-          ...asset,
-          amount: microfy(asset.amount as Token).toFixed(0),
-        }));
+      const funds = fabricateFunds(assets);
       const msg = composeMsg(MsgType.INSTANTIATE, {
         sender: address as HumanAddr,
         admin: adminAddress as HumanAddr,
@@ -328,12 +326,23 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               assetOptions={assetOptions}
               initialSelected={field.denom}
               amountInput={
+                /**
+                 * @remarks refactor along with execute page
+                 */
                 <ControllerInput
                   name={`assets.${idx}.amount`}
                   control={control}
                   label="Amount"
                   variant="floating"
                   type="number"
+                  rules={{
+                    pattern: {
+                      // Move to constant
+                      value: /^[0-9]+([.][0-9]{0,6})?$/i,
+                      message: 'Invalid amount. e.g. "100.00"',
+                    },
+                  }}
+                  error={formErrors.assets?.[idx]?.amount?.message}
                 />
               }
             />
