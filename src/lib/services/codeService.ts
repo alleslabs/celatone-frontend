@@ -44,9 +44,7 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
       );
   }, [indexerGraphClient]);
 
-  return useQuery(["all_codes", indexerGraphClient], queryFn, {
-    keepPreviousData: true,
-  });
+  return useQuery(["all_codes", indexerGraphClient], queryFn);
 };
 
 export const useCodeListPageQuery = ({

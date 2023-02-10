@@ -81,7 +81,6 @@ export const useInstantiatedListByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<ContractLocalInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
-
   const queryFn = useCallback(async () => {
     if (!walletAddr)
       throw new Error(
@@ -103,11 +102,7 @@ export const useInstantiatedListByUserQuery = (
 
   return useQuery(
     ["instantiated_list_by_user", walletAddr, indexerGraphClient],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!walletAddr,
-    }
+    queryFn
   );
 };
 

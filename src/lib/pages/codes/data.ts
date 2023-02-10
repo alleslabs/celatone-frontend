@@ -18,6 +18,7 @@ interface CodeListData {
   savedCodesCount: number;
   storedCodesCount: number;
   allCodesCount: number;
+  isLoading: boolean;
 }
 
 export const useCodeListData = (
@@ -28,16 +29,19 @@ export const useCodeListData = (
   const userKey = useUserKey();
   const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds, isCodeIdSaved } =
     useCodeStore();
+
   const permissionFilterFn = usePermissionFilter(permissionValue);
   const searchFilterFn = useSearchFilter(keyword);
 
   const savedCodeIds = lastSavedCodeIds(userKey);
 
-  const [{ data: rawStoredCodes = [] }, { data: querySavedCodeInfos = [] }] =
-    useCodeListPageQuery({
-      walletAddr: address as HumanAddr,
-      ids: savedCodeIds,
-    });
+  const [
+    { data: rawStoredCodes = [], isLoading },
+    { data: querySavedCodeInfos = [] },
+  ] = useCodeListPageQuery({
+    walletAddr: address as HumanAddr,
+    ids: savedCodeIds,
+  });
 
   const savedCodes = lastSavedCodes(userKey)?.map<CodeInfo>(
     (localSavedCode) => {
@@ -81,5 +85,6 @@ export const useCodeListData = (
     savedCodesCount,
     storedCodesCount,
     allCodesCount: storedCodesCount + savedCodesCount,
+    isLoading,
   };
 };

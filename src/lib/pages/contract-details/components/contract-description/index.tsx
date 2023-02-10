@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
-import type { ContractData } from "lib/model/contract";
+import type { ContractData } from "lib/types";
 
 import { PublicContractDesc } from "./PublicContractDesc";
 import { UserContractDesc } from "./UserContractDesc";

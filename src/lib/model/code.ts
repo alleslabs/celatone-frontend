@@ -19,7 +19,7 @@ import type {
   PublicCodeData,
 } from "lib/types";
 
-interface CodeDataState {
+export interface CodeDataState {
   isLoading: boolean;
   codeData: CodeData;
   publicProject: {

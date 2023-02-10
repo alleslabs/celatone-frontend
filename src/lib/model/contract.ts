@@ -41,41 +41,52 @@ import type {
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
-export interface ContractData {
-  chainId: string;
-  codeInfo: Option<CodeLocalInfo>;
-  contractLocalInfo: Option<ContractLocalInfo>;
-  contractCw2Info: Option<ContractCw2Info>;
-  instantiateInfo: Option<InstantiateInfo>;
-  publicProject: {
-    publicInfo: Option<PublicInfo>;
-    publicDetail: Option<PublicDetail>;
+export interface ContractDataState {
+  contractData: {
+    chainId: string;
+    codeInfo: Option<CodeLocalInfo>;
+    contractLocalInfo: Option<ContractLocalInfo>;
+    contractCw2Info: Option<ContractCw2Info>;
+    instantiateInfo: Option<InstantiateInfo>;
+    publicProject: {
+      publicInfo: Option<PublicInfo>;
+      publicDetail: Option<PublicDetail>;
+    };
+    balances: Option<BalanceWithAssetInfo[]>;
+    initMsg: Option<string>;
+    initTxHash: Option<string>;
+    initProposalId: Option<number>;
+    initProposalTitle: Option<string>;
   };
-  balances: Option<BalanceWithAssetInfo[]>;
-  initMsg: Option<string>;
-  initTxHash: Option<string>;
-  initProposalId: Option<number>;
-  initProposalTitle: Option<string>;
+  isLoading: boolean;
 }
 
-export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
+interface InstantiatedByMeState {
+  instantiatedListInfo: ContractListInfo;
+  isLoading: boolean;
+}
+
+export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
   const { address } = useWallet();
-  const { data: contracts = [] } = useInstantiatedListByUserQuery(
+  const { data: contracts = [], isLoading } = useInstantiatedListByUserQuery(
     enable ? (address as HumanAddr) : undefined
   );
 
   const { getContractLocalInfo } = useContractStore();
 
   return {
-    contracts: contracts.map((contract) => ({
-      ...contract,
-      ...getContractLocalInfo(contract.contractAddress),
-    })),
-    name: INSTANTIATED_LIST_NAME,
-    slug: formatSlugName(INSTANTIATED_LIST_NAME),
-    lastUpdated: getCurrentDate(),
-    isInfoEditable: false,
-    isContractRemovable: false,
+    instantiatedListInfo: {
+      contracts: contracts.map((contract) => ({
+        ...contract,
+        ...getContractLocalInfo(contract.contractAddress),
+      })),
+      name: INSTANTIATED_LIST_NAME,
+      slug: formatSlugName(INSTANTIATED_LIST_NAME),
+      lastUpdated: getCurrentDate(),
+      isInfoEditable: false,
+      isContractRemovable: false,
+    },
+    isLoading,
   };
 };
 
@@ -100,7 +111,7 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 
 export const useContractData = (
   contractAddress: ContractAddr
-): Option<ContractData> => {
+): Option<ContractDataState> => {
   const { indexerGraphClient } = useCelatoneApp();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
@@ -112,12 +123,13 @@ export const useContractData = (
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
   const chainId = useChainId();
 
-  const { data: instantiateInfo } = useQuery(
-    ["query", "instantiate_info", endpoint, contractAddress],
-    async () =>
-      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
-    { enabled: !!currentChainRecord }
-  );
+  const { data: instantiateInfo, isLoading: isInstantiateInfoLoading } =
+    useQuery(
+      ["query", "instantiate_info", endpoint, contractAddress],
+      async () =>
+        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
+      { enabled: !!currentChainRecord }
+    );
 
   const { data: contractCw2Info } = useQuery(
     ["query", "contract_cw2_info", endpoint, contractAddress],
@@ -161,20 +173,23 @@ export const useContractData = (
   if (!currentChainRecord) return undefined;
 
   return {
-    chainId: currentChainRecord.chain.chain_id,
-    codeInfo,
-    contractLocalInfo,
-    contractCw2Info,
-    instantiateInfo,
-    publicProject: {
-      publicInfo,
-      publicDetail: publicInfoBySlug?.details,
+    contractData: {
+      chainId: currentChainRecord.chain.chain_id,
+      codeInfo,
+      contractLocalInfo,
+      contractCw2Info,
+      instantiateInfo,
+      publicProject: {
+        publicInfo,
+        publicDetail: publicInfoBySlug?.details,
+      },
+      balances: contractBalancesWithAssetInfos,
+      initMsg: instantiateDetail?.initMsg,
+      initTxHash: instantiateDetail?.initTxHash,
+      initProposalId: instantiateDetail?.initProposalId,
+      initProposalTitle: instantiateDetail?.initProposalTitle,
     },
-    balances: contractBalancesWithAssetInfos,
-    initMsg: instantiateDetail?.initMsg,
-    initTxHash: instantiateDetail?.initTxHash,
-    initProposalId: instantiateDetail?.initProposalId,
-    initProposalTitle: instantiateDetail?.initProposalTitle,
+    isLoading: isInstantiateInfoLoading,
   };
 };
 

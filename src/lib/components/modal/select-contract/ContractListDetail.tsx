@@ -1,15 +1,18 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 import { MdSearchOff } from "react-icons/md";
 
 import { TagSelection, TextInput } from "lib/components/forms";
+import { Loading } from "lib/components/Loading";
+import { DisconnectedState } from "lib/components/state/DisconnectedState";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { ZeroState } from "lib/components/state/ZeroState";
 import { ContractListReadOnlyTable } from "lib/pages/contract-list/components/ContractListReadOnlyTable";
 import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, LVPair } from "lib/types";
+import type { ContractAddr, LVPair, Option } from "lib/types";
 
 interface FilteredListDetailProps {
   contracts: ContractLocalInfo[];
@@ -46,20 +49,72 @@ const FilteredListDetail = ({
   );
 };
 
+interface ContractListTableProps {
+  address: Option<string>;
+  contractListInfo: ContractListInfo;
+  isLoading?: boolean;
+  isReadOnly?: boolean;
+  filteredContracts: ContractLocalInfo[];
+  onContractSelect?: (addr: ContractAddr) => void;
+}
+
+const ContractListContent = ({
+  address,
+  contractListInfo,
+  isReadOnly,
+  filteredContracts,
+  onContractSelect,
+  isLoading,
+}: ContractListTableProps) => {
+  if (!address) {
+    return (
+      <DisconnectedState text="to see contracts you've previously instantiated." />
+    );
+  }
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (contractListInfo.contracts.length === 0) {
+    return (
+      <ZeroState
+        list={{
+          label: contractListInfo.name,
+          value: contractListInfo.slug,
+        }}
+        isReadOnly={isReadOnly}
+      />
+    );
+  }
+  return (
+    <FilteredListDetail
+      contracts={filteredContracts}
+      isReadOnly={isReadOnly}
+      contractRemovalInfo={
+        contractListInfo.isContractRemovable
+          ? { label: contractListInfo.name, value: contractListInfo.slug }
+          : undefined
+      }
+      onContractSelect={onContractSelect}
+    />
+  );
+};
+
 interface ContractListDetailProps {
   contractListInfo: ContractListInfo;
+  isLoading?: boolean;
   isReadOnly?: boolean;
   onContractSelect?: (addr: ContractAddr) => void;
 }
 
 export const ContractListDetail = ({
   contractListInfo,
+  isLoading,
   isReadOnly,
   onContractSelect,
 }: ContractListDetailProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [tagFilter, setTagFilter] = useState<string[]>([]);
-
+  const { address } = useWallet();
   const filteredContracts = useMemo(
     () =>
       matchSorter(contractListInfo.contracts, searchKeyword, {
@@ -94,23 +149,14 @@ export const ContractListDetail = ({
           )}
         </Flex>
       </Box>
-      {contractListInfo.contracts.length === 0 ? (
-        <ZeroState
-          list={{ label: contractListInfo.name, value: contractListInfo.slug }}
-          isReadOnly={isReadOnly}
-        />
-      ) : (
-        <FilteredListDetail
-          contracts={filteredContracts}
-          isReadOnly={isReadOnly}
-          contractRemovalInfo={
-            contractListInfo.isContractRemovable
-              ? { label: contractListInfo.name, value: contractListInfo.slug }
-              : undefined
-          }
-          onContractSelect={onContractSelect}
-        />
-      )}
+      <ContractListContent
+        address={address}
+        contractListInfo={contractListInfo}
+        filteredContracts={filteredContracts}
+        isReadOnly={isReadOnly}
+        onContractSelect={onContractSelect}
+        isLoading={isLoading}
+      />
     </Box>
   );
 };

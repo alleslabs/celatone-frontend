@@ -6,7 +6,7 @@ import { useClampText } from "use-clamp-text";
 
 import { ShowMoreButton } from "lib/components/button";
 import { EditContractDetailsModal } from "lib/components/modal";
-import type { ContractData } from "lib/model/contract";
+import type { ContractData } from "lib/types";
 import { textLine } from "lib/utils";
 
 interface UserContractDescProps {

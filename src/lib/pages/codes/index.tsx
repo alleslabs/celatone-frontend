@@ -41,6 +41,7 @@ const Codes = observer(() => {
     savedCodesCount,
     savedCodes: saved,
     allCodesCount,
+    isLoading,
   } = useCodeListData(keyword, permissionValue);
 
   return (
@@ -83,6 +84,7 @@ const Codes = observer(() => {
         <TabPanels>
           <TabPanel p={0}>
             <CodesTable
+              isLoading={isLoading}
               type="stored"
               tableName="My Stored Codes"
               codes={stored}

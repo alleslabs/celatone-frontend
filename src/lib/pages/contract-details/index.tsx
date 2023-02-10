@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state/InvalidState";
 import { useValidateAddress } from "lib/hooks";
@@ -18,7 +19,7 @@ import {
   useContractData,
   useContractDetailsTableCounts,
 } from "lib/model/contract";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, ContractData, Option } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -32,14 +33,14 @@ import { TransactionsTable } from "./components/tables/transactions";
 import { TokenSection } from "./components/token/TokenSection";
 
 interface ContractDetailsBodyProps {
+  contractData: Option<ContractData>;
   contractAddress: ContractAddr;
 }
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 const ContractDetailsBody = observer(
-  ({ contractAddress }: ContractDetailsBodyProps) => {
-    const contractData = useContractData(contractAddress);
+  ({ contractData, contractAddress }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailTableHeader";
     const {
       tableCounts,
@@ -144,7 +145,12 @@ const ContractDetails = () => {
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
 
-  const contractAddressParam = getFirstQueryParam(router.query.contractAddress);
+  const contractAddressParam = getFirstQueryParam(
+    router.query.contractAddress
+  ) as ContractAddr;
+  const data = useContractData(contractAddressParam);
+
+  if (data?.isLoading) return <Loading />;
 
   return (
     <PageContainer>
@@ -153,7 +159,8 @@ const ContractDetails = () => {
         <InvalidContract />
       ) : (
         <ContractDetailsBody
-          contractAddress={contractAddressParam as ContractAddr}
+          contractData={data?.contractData}
+          contractAddress={contractAddressParam}
         />
       )}
     </PageContainer>

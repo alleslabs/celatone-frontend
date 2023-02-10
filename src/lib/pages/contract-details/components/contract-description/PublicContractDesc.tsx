@@ -5,7 +5,7 @@ import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { ShowMoreButton } from "lib/components/button";
-import type { ContractData } from "lib/model/contract";
+import type { ContractData } from "lib/types";
 import { textLine } from "lib/utils";
 
 interface PublicContractDescProps {
