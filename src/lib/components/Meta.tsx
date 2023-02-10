@@ -29,7 +29,7 @@ const Meta = () => {
       />
       <meta
         property="og:image"
-        content="https://assets.alleslabs.dev/branding/banners/celatone-cover.jpg"
+        content="https://assets.alleslabs.dev/branding/celatone-cover.jpg"
       />
 
       {/* Twitter */}
@@ -41,7 +41,7 @@ const Meta = () => {
       />
       <meta
         property="twitter:image"
-        content="https://assets.alleslabs.dev/branding/banners/celatone-cover.jpg"
+        content="https://assets.alleslabs.dev/branding/celatone-cover.jpg"
       />
     </>
   );

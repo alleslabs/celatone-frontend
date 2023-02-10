@@ -14,7 +14,7 @@ export const CelatoneSeo = () => {
         description: "A smart contract powered explorer for the Cosmos",
         images: [
           {
-            url: "https://assets.alleslabs.dev/branding/banners/celatone-cover.jpg",
+            url: "https://assets.alleslabs.dev/branding/celatone-cover.jpg",
             width: 1200,
             height: 630,
             alt: title,
