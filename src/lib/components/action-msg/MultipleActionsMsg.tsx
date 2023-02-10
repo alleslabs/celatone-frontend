@@ -11,7 +11,7 @@ export const MultipleActionsMsg = ({ messages }: MultipleActionsMsgProps) => {
     (msg) => msg.count !== 0
   );
   return (
-    <Flex gap={1}>
+    <Flex gap={1} flexWrap="wrap">
       {displayMessagesCount.map((msg, index) => (
         <Flex key={msg.type} gap={1}>
           {msg.type} <Tag borderRadius="full">{msg.count}</Tag>

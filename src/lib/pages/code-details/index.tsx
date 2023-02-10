@@ -1,4 +1,4 @@
-import { Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { Divider, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
@@ -21,22 +21,35 @@ interface CodeDetailsBodyProps {
 
 const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
-const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
+const CodeDetailsBody = observer(({ codeId }: CodeDetailsBodyProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
   const data = useCodeData(codeId);
   if (!data) return <InvalidCode />;
 
-  const { isLoading, codeData } = data;
+  const { isLoading, codeData, publicProject } = data;
   return (
     <>
       {!isLoading && (
         <>
           <Flex align="center" justify="space-between" mt={6}>
             <Flex direction="column" gap={1}>
-              <Heading as="h5" variant="h5">
-                {localCodeInfo?.description ?? codeId}
-              </Heading>
+              <Flex gap={1}>
+                {publicProject.publicDetail?.logo && (
+                  <Image
+                    src={publicProject.publicDetail.logo}
+                    borderRadius="full"
+                    alt={publicProject.publicDetail.name}
+                    width={7}
+                    height={7}
+                  />
+                )}
+                <Heading as="h5" variant="h5">
+                  {localCodeInfo?.name ??
+                    publicProject.publicCodeData?.name ??
+                    codeId}
+                </Heading>
+              </Flex>
               <Flex gap={2}>
                 <Text fontWeight={500} color="text.dark" variant="body2">
                   Code ID
@@ -47,7 +60,7 @@ const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
             <CTASection
               id={codeId}
               uploader={localCodeInfo?.uploader ?? codeData.uploader}
-              description={localCodeInfo?.description}
+              name={localCodeInfo?.name}
               instantiatePermission={
                 codeData.instantiatePermission ?? InstantiatePermission.UNKNOWN
               }
@@ -61,7 +74,7 @@ const CodeDetailsBody = ({ codeId }: CodeDetailsBodyProps) => {
       )}
     </>
   );
-};
+});
 
 const CodeDetails = observer(() => {
   const router = useRouter();

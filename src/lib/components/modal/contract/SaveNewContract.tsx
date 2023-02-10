@@ -23,7 +23,7 @@ import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
 import {
   formatSlugName,
-  getDescriptionDefault,
+  getNameAndDescriptionDefault,
   getTagsDefault,
 } from "lib/utils";
 
@@ -33,11 +33,14 @@ interface SaveNewContractDetail extends OffchainDetail {
   label: string;
 }
 
-interface SaveNewContractProps {
+interface SaveNewContractModalProps {
   list: LVPair;
   buttonProps: ButtonProps;
 }
-export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
+export function SaveNewContractModal({
+  list,
+  buttonProps,
+}: SaveNewContractModalProps) {
   const endpoint = useLCDEndpoint();
   const { indexerGraphClient } = useCelatoneApp();
   const { getContractLocalInfo } = useContractStore();
@@ -114,7 +117,9 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           instantiator: data.instantiator,
           label: data.label,
           name: contractLocalInfo?.name ?? data.label,
-          description: getDescriptionDefault(contractLocalInfo?.description),
+          description: getNameAndDescriptionDefault(
+            contractLocalInfo?.description
+          ),
           tags: getTagsDefault(contractLocalInfo?.tags),
           lists: [
             ...initialList,

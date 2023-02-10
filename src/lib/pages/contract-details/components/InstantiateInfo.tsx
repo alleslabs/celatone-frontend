@@ -20,7 +20,7 @@ const Container = chakra(Flex, {
   },
 });
 
-const RenderPortId = ({ portId }: { portId: string }) => {
+const PortIdRender = ({ portId }: { portId: string }) => {
   const charArray = portId.match(/.{1,28}/g);
 
   return (
@@ -44,6 +44,55 @@ const RenderPortId = ({ portId }: { portId: string }) => {
         )
       )}
     </Box>
+  );
+};
+
+const InitRender = ({
+  initTxHash,
+  initProposalTitle,
+  initProposalId,
+  createdHeight,
+}: {
+  initTxHash: ContractData["initTxHash"];
+  initProposalTitle: ContractData["initProposalTitle"];
+  initProposalId: ContractData["initProposalId"];
+  createdHeight: number;
+}) => {
+  if (initTxHash) {
+    return (
+      <LabelText label="Instantiate Transaction">
+        <ExplorerLink
+          type="tx_hash"
+          value={initTxHash.toUpperCase()}
+          canCopyWithHover
+        />
+      </LabelText>
+    );
+  }
+
+  if (initProposalTitle && initProposalId) {
+    return (
+      <LabelText
+        label="Instantiate Proposal ID"
+        helperText1={initProposalTitle}
+      >
+        <ExplorerLink
+          type="proposal_id"
+          value={initProposalId.toString()}
+          canCopyWithHover
+        />
+      </LabelText>
+    );
+  }
+
+  return createdHeight === 0 ? (
+    <LabelText label="Created by">
+      <Text variant="body2">Genesis</Text>
+    </LabelText>
+  ) : (
+    <LabelText label="Instantiate Transaction">
+      <Text variant="body2">N/A</Text>
+    </LabelText>
   );
 };
 
@@ -78,7 +127,7 @@ export const InstantiateInfo = ({
     <Container>
       <LabelText label="Network">{chainId}</LabelText>
 
-      <LabelText label="From Code" helperText1={codeInfo?.description}>
+      <LabelText label="From Code" helperText1={codeInfo?.name}>
         <ExplorerLink
           type="code_id"
           value={instantiateInfo.codeId}
@@ -155,30 +204,16 @@ export const InstantiateInfo = ({
         />
       </LabelText>
 
-      {initTxHash ? (
-        <LabelText label="Instantiate Transaction">
-          <ExplorerLink
-            type="tx_hash"
-            value={initTxHash.toUpperCase()}
-            canCopyWithHover
-          />
-        </LabelText>
-      ) : (
-        <LabelText
-          label="Instantiate Proposal ID"
-          helperText1={initProposalTitle}
-        >
-          <ExplorerLink
-            value={initProposalId ? `#${initProposalId}` : "Genesis"}
-            canCopyWithHover
-            isReadOnly={!initProposalId}
-          />
-        </LabelText>
-      )}
+      <InitRender
+        initTxHash={initTxHash}
+        initProposalId={initProposalId}
+        initProposalTitle={initProposalTitle}
+        createdHeight={instantiateInfo.createdHeight}
+      />
 
       {instantiateInfo.ibcPortId && (
         <LabelText label="IBC Port ID">
-          <RenderPortId portId={instantiateInfo.ibcPortId} />
+          <PortIdRender portId={instantiateInfo.ibcPortId} />
         </LabelText>
       )}
     </Container>
