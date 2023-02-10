@@ -56,7 +56,7 @@ export const PublicProjectCodeTable = observer(
     const publicCodes: Option<PublicCodeInfo[]> = filteredCodes?.map(
       (code) => ({
         localInfo: {
-          contracts: code.contracts,
+          contracts: code.contractCount,
           instantiatePermission: code.instantiatePermission,
           permissionAddresses: code.permissionAddresses,
           id: code.id,

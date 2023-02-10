@@ -52,7 +52,7 @@ export const PublicProjectCodeRow = ({
         <Text>{publicCodeInfo.publicInfo.name}</Text>
       </TableRowNoBorder>
       <TableRowNoBorder justifyContent="center">
-        <Text>{publicCodeInfo.publicInfo.contracts}</Text>
+        <Text>{publicCodeInfo.publicInfo.contractCount}</Text>
       </TableRowNoBorder>
       <TableRowNoBorder>
         <ExplorerLink

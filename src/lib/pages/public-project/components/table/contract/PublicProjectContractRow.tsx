@@ -29,6 +29,7 @@ interface ContractTableRowProps {
   templateColumn: string;
 }
 
+// TODO - Revisit this style (exist in multiple places)
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
     display: "flex",

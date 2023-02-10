@@ -1,4 +1,5 @@
 import type {
+  Addr,
   AssetInfo,
   ContractAddr,
   HumanAddr,
@@ -18,8 +19,8 @@ export interface PublicCode {
   id: number;
   name: string;
   slug: string;
-  contracts: number;
-  uploader: string;
+  contractCount: number;
+  uploader: Addr;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
 }
@@ -29,8 +30,8 @@ export interface RawPublicContract {
   description: string;
   name: string;
   slug: string;
-  instantiator: string;
-  admin: string;
+  instantiator: Addr;
+  admin: Addr;
   label: string;
 }
 
@@ -58,7 +59,7 @@ export interface RawPublicProjectInfo {
 }
 
 export interface PublicContract extends Omit<RawPublicContract, "address"> {
-  contractAddress: string;
+  contractAddress: ContractAddr;
 }
 
 export interface PublicProjectInfo {

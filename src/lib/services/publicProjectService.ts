@@ -54,7 +54,7 @@ export const usePublicProjects = () => {
 export const usePublicProjectBySlug = (slug: Option<string>) => {
   const { currentChainRecord } = useWallet();
 
-  const queryFn = useCallback(async (): Promise<Option<PublicProjectInfo>> => {
+  const queryFn = useCallback(async () => {
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
     if (!currentChainRecord)
       throw new Error("No chain selected (usePublicProjectBySlug)");
@@ -64,7 +64,7 @@ export const usePublicProjectBySlug = (slug: Option<string>) => {
           currentChainRecord.chain.chain_name
         )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
       )
-      .then(({ data: project }) => ({
+      .then<PublicProjectInfo>(({ data: project }) => ({
         ...project,
         contracts: project.contracts.map(parseContract),
       }));
