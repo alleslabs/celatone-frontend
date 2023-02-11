@@ -6,11 +6,9 @@ import { assets, chains } from "chain-registry";
 import localforage from "localforage";
 import { configurePersistable } from "mobx-persist-store";
 import { enableStaticRendering } from "mobx-react-lite";
-import { DefaultSeo } from "next-seo";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 
-import defaultSEOConfig from "../../next-seo.config";
 import {
   CELATONE_CONSTANTS,
   CELATONE_APP_CONTRACT_ADDRESS,
@@ -19,6 +17,7 @@ import {
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
+import { CelatoneSeo } from "lib/components/Seo";
 import { terra2testnet, terra2testnetAssets } from "lib/config/terra2testnet";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
@@ -82,8 +81,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                     name="viewport"
                     content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
                   />
+                  <CelatoneSeo />
                 </Head>
-                <DefaultSeo {...defaultSEOConfig} />
                 <Layout>
                   <MobileGuard>
                     <Component {...pageProps} />
