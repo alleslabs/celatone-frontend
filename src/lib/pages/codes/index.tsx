@@ -8,7 +8,9 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { CustomTab } from "lib/components/CustomTab";
@@ -16,6 +18,7 @@ import { FilterByPermission } from "lib/components/forms/FilterByPermission";
 import InputWithIcon from "lib/components/InputWithIcon";
 import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import SaveCodeButton from "./components/SaveCodeButton";
 import UploadButton from "./components/UploadButton";
@@ -27,6 +30,7 @@ interface AllCodeState {
 }
 
 const Codes = observer(() => {
+  const router = useRouter();
   const { watch, setValue } = useForm<AllCodeState>({
     defaultValues: {
       permissionValue: "all",
@@ -42,6 +46,10 @@ const Codes = observer(() => {
     savedCodes: saved,
     allCodesCount,
   } = useCodeListData(keyword, permissionValue);
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);
+  }, [router.isReady]);
 
   return (
     <Box>

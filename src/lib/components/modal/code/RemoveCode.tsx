@@ -4,6 +4,7 @@ import { MdCheckCircle, MdDelete } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useCodeStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
@@ -36,6 +37,8 @@ export function RemoveCodeModal({
   const toast = useToast();
 
   const handleRemove = useCallback(() => {
+    AmpTrack(AmpEvent.CODE_REMOVE);
+
     removeSavedCode(codeId);
 
     toast({

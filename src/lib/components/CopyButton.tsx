@@ -3,6 +3,8 @@ import { Button, Tooltip, useClipboard } from "@chakra-ui/react";
 import type { ButtonProps } from "@chakra-ui/react";
 import { useEffect } from "react";
 
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
 interface CopyButtonProps {
   isDisable?: boolean;
   value: string;
@@ -37,7 +39,7 @@ export const CopyButton = ({
           size={size}
           float="right"
           onClick={() => {
-            throw new Error("FRONTEND");
+            AmpTrack(AmpEvent.USE_COPY_BOTTON);
             onCopy();
           }}
           leftIcon={<CopyIcon boxSize="4" onClick={onCopy} />}

@@ -21,6 +21,7 @@ import { AppLink } from "lib/components/AppLink";
 import { CreateNewListModal } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore, usePublicProjectStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
@@ -179,11 +180,16 @@ const Navbar = observer(() => {
                     leftIcon: <MdAdd />,
                     children: "NEW LIST",
                   }}
+                  onClose={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
                 />
               )}
             </Flex>
             {item.submenu.map((submenu) => (
-              <AppLink href={submenu.slug} key={submenu.slug}>
+              <AppLink
+                href={submenu.slug}
+                key={submenu.slug}
+                onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+              >
                 <Flex
                   gap="2"
                   p={2}

@@ -1,6 +1,8 @@
 import { Heading, Box, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { FilterByPermission } from "lib/components/forms/FilterByPermission";
@@ -8,6 +10,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { useRecentCodesData } from "./data";
 
@@ -17,6 +20,7 @@ interface RecentCodesState {
 }
 
 const RecentCodes = observer(() => {
+  const router = useRouter();
   const { watch, setValue } = useForm<RecentCodesState>({
     defaultValues: {
       permissionValue: "all",
@@ -28,6 +32,10 @@ const RecentCodes = observer(() => {
     keyword,
     permissionValue
   );
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
+  }, [router.isReady]);
 
   return (
     <Box>

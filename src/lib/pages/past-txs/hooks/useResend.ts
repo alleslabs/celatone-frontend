@@ -3,6 +3,7 @@ import { useCallback } from "react";
 
 import { useFabricateFee, useResendTx, useSimulateFee } from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Message } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
 
@@ -20,6 +21,7 @@ export const useResend = () => {
       setError: (err: string) => void
     ) => {
       (async () => {
+        AmpTrack(AmpEvent.ACTION_RESEND);
         e.stopPropagation();
         setIsButtonLoading(true);
         const formatedMsgs = messages.reduce(

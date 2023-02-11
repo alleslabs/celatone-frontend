@@ -5,6 +5,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { ActionModal } from "../ActionModal";
 import { useClearAdminTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 
 interface ClearAdminModalProps {
@@ -20,6 +21,7 @@ export const ClearAdminModal = ({
   const clearAdminTx = useClearAdminTx(contractAddress);
 
   const proceed = useCallback(async () => {
+    AmpTrack(AmpEvent.ACTION_ADMIN_CLEAR);
     const stream = await clearAdminTx({});
     if (stream) broadcast(stream);
   }, [broadcast, clearAdminTx]);

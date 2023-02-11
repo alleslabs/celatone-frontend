@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
@@ -18,6 +19,7 @@ import {
   useContractData,
   useContractDetailsTableCounts,
 } from "lib/model/contract";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
@@ -143,8 +145,11 @@ const ContractDetailsBody = observer(
 const ContractDetails = () => {
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
-
   const contractAddressParam = getFirstQueryParam(router.query.contractAddress);
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
+  }, [router.isReady]);
 
   return (
     <PageContainer>

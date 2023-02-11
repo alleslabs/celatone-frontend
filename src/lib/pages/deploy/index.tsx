@@ -1,12 +1,21 @@
 import { Heading, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const Deploy = () => {
+  const router = useRouter();
   const navigate = useInternalNavigate();
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
+  }, [router.isReady]);
+
   return (
     <WasmPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>

@@ -15,8 +15,10 @@ import { FiChevronDown } from "react-icons/fi";
 import { MdCheck } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { WalletSection } from "lib/components/Wallet";
 import { getNetworkByChainName, getSupportedChainNames } from "lib/data";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import Searchbar from "./Searchbar";
 
@@ -59,7 +61,7 @@ const Header = () => {
       mb={1}
       gap="48px"
     >
-      <a href="/" target="_blank" rel="noopener noreferrer">
+      <AppLink href="/">
         <Image
           src="https://assets.alleslabs.dev/branding/logo/logo.svg"
           alt="Celatone"
@@ -70,10 +72,10 @@ const Header = () => {
           transition="all 0.25s ease-in-out"
           _hover={{ cursor: "pointer", opacity: 0.85 }}
         />
-      </a>
+      </AppLink>
       <Searchbar />
       <Flex gap={2}>
-        <Menu>
+        <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
           <MenuButton
             px={4}
             py="5px"
