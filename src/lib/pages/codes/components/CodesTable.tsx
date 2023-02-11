@@ -15,7 +15,6 @@ import { MdSearchOff } from "react-icons/md";
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { RemoveCodeModal } from "lib/components/modal/code/RemoveCode";
 import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
@@ -36,13 +35,11 @@ interface CodesTableProps {
   tableName: string;
   codes: CodeInfo[];
   action?: ReactNode;
-  isRemovable?: boolean;
   isSearching: boolean;
 }
 
 interface CodesRowProps {
   code: CodeInfo;
-  isRemovable: boolean;
 }
 
 interface OtherTBodyProps {
@@ -119,7 +116,7 @@ const CodeTableHead = () => {
   );
 };
 
-const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
+const CodeTableRow = ({ code }: CodesRowProps) => {
   const navigate = useInternalNavigate();
   const goToCodeDetails = () => {
     navigate({ pathname: `/code/${code.id}` });
@@ -178,11 +175,7 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
               permissionAddresses={code.permissionAddresses}
               codeId={code.id}
             />
-            {isRemovable ? (
-              <RemoveCodeModal codeId={code.id} name={code.name} />
-            ) : (
-              <SaveOrRemoveCodeModal codeInfo={code} />
-            )}
+            <SaveOrRemoveCodeModal codeInfo={code} />
           </HStack>
         </Flex>
       </TableRowNoBorder>
@@ -193,8 +186,7 @@ const CodeTableRow = ({ code, isRemovable }: CodesRowProps) => {
 const NormalRender = ({
   codes,
   tableName,
-  isRemovable = false,
-}: Pick<CodesTableProps, "codes" | "tableName" | "isRemovable">) => {
+}: Pick<CodesTableProps, "codes" | "tableName">) => {
   return (
     <TableContainer mb={20} position="relative">
       <CodeTableHead />
@@ -202,7 +194,6 @@ const NormalRender = ({
         <CodeTableRow
           key={`row-${tableName}-${code.id}-${code.name}-${code.uploader}`}
           code={code}
-          isRemovable={isRemovable}
         />
       ))}
     </TableContainer>
@@ -214,7 +205,6 @@ function CodesTable({
   tableName,
   codes,
   action,
-  isRemovable,
   isSearching,
 }: CodesTableProps) {
   const { address } = useWallet();
@@ -223,13 +213,7 @@ function CodesTable({
     if (!address && type === "stored") return <Unconnected />;
     if (codes.length === 0 && isSearching) return <NotMatched />;
     if (codes.length === 0) return <Empty type={type} />;
-    return (
-      <NormalRender
-        isRemovable={isRemovable}
-        codes={codes}
-        tableName={tableName}
-      />
-    );
+    return <NormalRender codes={codes} tableName={tableName} />;
   };
 
   return (
