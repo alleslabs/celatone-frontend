@@ -102,7 +102,8 @@ export const useInstantiatedListByUserQuery = (
 
   return useQuery(
     ["instantiated_list_by_user", walletAddr, indexerGraphClient],
-    queryFn
+    queryFn,
+    { enabled: !!walletAddr }
   );
 };
 
@@ -160,6 +161,7 @@ export const useInstantiateDetailByContractQuery = (
     queryFn,
     {
       keepPreviousData: true,
+      enabled: !!contractAddress,
     }
   );
 };

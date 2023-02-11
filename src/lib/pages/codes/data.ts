@@ -18,7 +18,10 @@ interface CodeListData {
   savedCodesCount: number;
   storedCodesCount: number;
   allCodesCount: number;
-  isLoading: boolean;
+  isLoading: {
+    isStoredCodesLoading: boolean;
+    isSavedCodesLoading: boolean;
+  };
 }
 
 export const useCodeListData = (
@@ -36,8 +39,8 @@ export const useCodeListData = (
   const savedCodeIds = lastSavedCodeIds(userKey);
 
   const [
-    { data: rawStoredCodes = [], isLoading },
-    { data: querySavedCodeInfos = [] },
+    { data: rawStoredCodes = [], isLoading: isStoredCodesLoading },
+    { data: querySavedCodeInfos = [], isLoading: isSavedCodesLoading },
   ] = useCodeListPageQuery({
     walletAddr: address as HumanAddr,
     ids: savedCodeIds,
@@ -85,6 +88,9 @@ export const useCodeListData = (
     savedCodesCount,
     storedCodesCount,
     allCodesCount: storedCodesCount + savedCodesCount,
-    isLoading,
+    isLoading: {
+      isStoredCodesLoading,
+      isSavedCodesLoading,
+    },
   };
 };

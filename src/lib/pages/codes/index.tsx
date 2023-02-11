@@ -84,7 +84,7 @@ const Codes = observer(() => {
         <TabPanels>
           <TabPanel p={0}>
             <CodesTable
-              isLoading={isLoading}
+              isLoading={isLoading.isStoredCodesLoading}
               type="stored"
               tableName="My Stored Codes"
               codes={stored}
@@ -92,6 +92,7 @@ const Codes = observer(() => {
               isSearching={!!keyword}
             />
             <CodesTable
+              isLoading={isLoading.isSavedCodesLoading}
               type="saved"
               tableName="My Saved Codes"
               codes={saved}
@@ -102,6 +103,7 @@ const Codes = observer(() => {
           </TabPanel>
           <TabPanel p="0px">
             <CodesTable
+              isLoading={isLoading.isStoredCodesLoading}
               type="stored"
               tableName="My Stored Codes"
               codes={stored}
@@ -111,6 +113,7 @@ const Codes = observer(() => {
           </TabPanel>
           <TabPanel p="0px">
             <CodesTable
+              isLoading={isLoading.isSavedCodesLoading}
               type="saved"
               tableName="My Saved Codes"
               codes={saved}

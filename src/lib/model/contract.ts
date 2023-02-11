@@ -128,25 +128,27 @@ export const useContractData = (
       ["query", "instantiate_info", endpoint, contractAddress],
       async () =>
         queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
-      { enabled: !!currentChainRecord }
+      { enabled: !!currentChainRecord, retry: false }
     );
 
-  const { data: contractCw2Info } = useQuery(
-    ["query", "contract_cw2_info", endpoint, contractAddress],
-    async () => queryContractCw2Info(endpoint, contractAddress),
-    { enabled: !!currentChainRecord }
-  );
+  const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
+    useQuery(
+      ["query", "contract_cw2_info", endpoint, contractAddress],
+      async () => queryContractCw2Info(endpoint, contractAddress),
+      { enabled: !!currentChainRecord, retry: false }
+    );
 
-  const { data: contractBalances } = useQuery(
-    ["query", "contractBalances", contractAddress, chainId],
-    async () =>
-      queryContractBalances(
-        currentChainRecord?.name,
-        currentChainRecord?.chain.chain_id,
-        contractAddress
-      ),
-    { enabled: !!currentChainRecord }
-  );
+  const { data: contractBalances, isLoading: isContractBalancesLoading } =
+    useQuery(
+      ["query", "contractBalances", contractAddress, chainId],
+      async () =>
+        queryContractBalances(
+          currentChainRecord?.name,
+          currentChainRecord?.chain.chain_id,
+          contractAddress
+        ),
+      { enabled: !!currentChainRecord, retry: false }
+    );
 
   const contractBalancesWithAssetInfos = contractBalances
     ?.map(
@@ -189,7 +191,10 @@ export const useContractData = (
       initProposalId: instantiateDetail?.initProposalId,
       initProposalTitle: instantiateDetail?.initProposalTitle,
     },
-    isLoading: isInstantiateInfoLoading,
+    isLoading:
+      isInstantiateInfoLoading &&
+      isContractCw2InfoLoading &&
+      isContractBalancesLoading,
   };
 };
 
