@@ -1,4 +1,5 @@
 import { InfoIcon } from "@chakra-ui/icons";
+import type { TextProps } from "@chakra-ui/react";
 import {
   Flex,
   Text,
@@ -17,13 +18,27 @@ interface EditableCellProps {
   defaultValue: string;
   maxLength: number;
   tooltip?: string;
+  isReadOnly?: boolean;
   onSave?: (value?: string) => void;
 }
+
+const getInputValueTextProps = (
+  isShowInputValue: boolean,
+  inputValue: string,
+  defaultValue: string
+): Pick<TextProps, "fontWeight" | "color" | "children"> => {
+  if (isShowInputValue) {
+    return { fontWeight: 600, color: "text.main", children: inputValue };
+  }
+  return { fontWeight: 400, color: "text.dark", children: defaultValue };
+};
+
 export const EditableCell = ({
   initialValue = "",
   defaultValue,
   maxLength,
   tooltip,
+  isReadOnly,
   onSave,
 }: EditableCellProps) => {
   const [inputValue, setInputValue] = useState(initialValue);
@@ -145,26 +160,29 @@ export const EditableCell = ({
             maxW="full"
             align="center"
             gap={2}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              if (!isReadOnly) e.stopPropagation();
+            }}
           >
             <Text
               variant="body2"
               className="ellipsis"
               maxW="full"
-              fontWeight={isShowInputValue ? "600" : "400"}
-              color={isShowInputValue ? "text.main" : "text.dark"}
               onMouseOver={handleMouseEnterText}
               ref={textRef}
-            >
-              {isShowInputValue ? inputValue : defaultValue}
-            </Text>
+              {...getInputValueTextProps(
+                isShowInputValue,
+                inputValue,
+                defaultValue
+              )}
+            />
             {showName && (
               <Text
                 variant="body2"
                 top="-16px"
                 left="-16px"
                 borderRadius="8px"
-                bg="pebble.800"
+                bg={isReadOnly ? "pebble.700" : "pebble.800"}
                 whiteSpace="nowrap"
                 p={4}
                 position="absolute"
