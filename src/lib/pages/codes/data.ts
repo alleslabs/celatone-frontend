@@ -18,10 +18,8 @@ interface CodeListData {
   savedCodesCount: number;
   storedCodesCount: number;
   allCodesCount: number;
-  isLoading: {
-    isStoredCodesLoading: boolean;
-    isSavedCodesLoading: boolean;
-  };
+  isStoredCodesLoading: boolean;
+  isSavedCodesLoading: boolean;
 }
 
 export const useCodeListData = (
@@ -88,9 +86,7 @@ export const useCodeListData = (
     savedCodesCount,
     storedCodesCount,
     allCodesCount: storedCodesCount + savedCodesCount,
-    isLoading: {
-      isStoredCodesLoading,
-      isSavedCodesLoading,
-    },
+    isStoredCodesLoading,
+    isSavedCodesLoading,
   };
 };

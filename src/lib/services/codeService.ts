@@ -102,13 +102,11 @@ export const useCodeListPageQuery = ({
       {
         queryKey: ["codes_by_user", indexerGraphClient, walletAddr],
         queryFn: codeByUserQueryFn,
-        keepPreviousData: true,
         enabled: !!walletAddr,
       },
       {
         queryKey: ["codes_by_ids", indexerGraphClient, ids],
         queryFn: codeByIdsQueryFn,
-        keepPreviousData: true,
         enabled: !!ids,
       },
     ],

@@ -10,7 +10,6 @@ import {
   useLCDEndpoint,
 } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
-import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
 import {
   queryContractCw2Info,
   queryContractBalances,
@@ -28,36 +27,19 @@ import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { CodeLocalInfo } from "lib/stores/code";
-import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
+import type { ContractListInfo } from "lib/stores/contract";
 import type {
   Addr,
   BalanceWithAssetInfo,
   ContractAddr,
-  PublicDetail,
   HumanAddr,
   Option,
-  PublicInfo,
+  ContractData,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
 export interface ContractDataState {
-  contractData: {
-    chainId: string;
-    codeInfo: Option<CodeLocalInfo>;
-    contractLocalInfo: Option<ContractLocalInfo>;
-    contractCw2Info: Option<ContractCw2Info>;
-    instantiateInfo: Option<InstantiateInfo>;
-    publicProject: {
-      publicInfo: Option<PublicInfo>;
-      publicDetail: Option<PublicDetail>;
-    };
-    balances: Option<BalanceWithAssetInfo[]>;
-    initMsg: Option<string>;
-    initTxHash: Option<string>;
-    initProposalId: Option<number>;
-    initProposalTitle: Option<string>;
-  };
+  contractData: ContractData;
   isLoading: boolean;
 }
 
@@ -172,11 +154,9 @@ export const useContractData = (
   const { data: instantiateDetail } =
     useInstantiateDetailByContractQuery(contractAddress);
 
-  if (!currentChainRecord) return undefined;
-
   return {
     contractData: {
-      chainId: currentChainRecord.chain.chain_id,
+      chainId,
       codeInfo,
       contractLocalInfo,
       contractCw2Info,

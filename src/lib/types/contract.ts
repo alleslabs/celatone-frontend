@@ -1,3 +1,4 @@
+// TODO -  Revisit type later to prevent dependency cycling
 import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo } from "lib/stores/contract";

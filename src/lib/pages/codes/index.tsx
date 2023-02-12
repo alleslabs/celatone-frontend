@@ -41,7 +41,8 @@ const Codes = observer(() => {
     savedCodesCount,
     savedCodes: saved,
     allCodesCount,
-    isLoading,
+    isStoredCodesLoading,
+    isSavedCodesLoading,
   } = useCodeListData(keyword, permissionValue);
 
   return (
@@ -84,7 +85,7 @@ const Codes = observer(() => {
         <TabPanels>
           <TabPanel p={0}>
             <CodesTable
-              isLoading={isLoading.isStoredCodesLoading}
+              isLoading={isStoredCodesLoading}
               type="stored"
               tableName="My Stored Codes"
               codes={stored}
@@ -92,7 +93,7 @@ const Codes = observer(() => {
               isSearching={!!keyword}
             />
             <CodesTable
-              isLoading={isLoading.isSavedCodesLoading}
+              isLoading={isSavedCodesLoading}
               type="saved"
               tableName="My Saved Codes"
               codes={saved}
@@ -103,7 +104,7 @@ const Codes = observer(() => {
           </TabPanel>
           <TabPanel p="0px">
             <CodesTable
-              isLoading={isLoading.isStoredCodesLoading}
+              isLoading={isStoredCodesLoading}
               type="stored"
               tableName="My Stored Codes"
               codes={stored}
@@ -113,7 +114,7 @@ const Codes = observer(() => {
           </TabPanel>
           <TabPanel p="0px">
             <CodesTable
-              isLoading={isLoading.isSavedCodesLoading}
+              isLoading={isSavedCodesLoading}
               type="saved"
               tableName="My Saved Codes"
               codes={saved}
