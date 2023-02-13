@@ -33,7 +33,6 @@ import type {
   BalanceWithAssetInfo,
   ContractAddr,
   HumanAddr,
-  Option,
   ContractData,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
@@ -93,7 +92,7 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 
 export const useContractData = (
   contractAddress: ContractAddr
-): Option<ContractDataState> => {
+): ContractDataState => {
   const { indexerGraphClient } = useCelatoneApp();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
@@ -172,8 +171,8 @@ export const useContractData = (
       initProposalTitle: instantiateDetail?.initProposalTitle,
     },
     isLoading:
-      isInstantiateInfoLoading &&
-      isContractCw2InfoLoading &&
+      isInstantiateInfoLoading ||
+      isContractCw2InfoLoading ||
       isContractBalancesLoading,
   };
 };

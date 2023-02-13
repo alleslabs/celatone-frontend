@@ -12,7 +12,7 @@ import { ZeroState } from "lib/components/state/ZeroState";
 import { ContractListReadOnlyTable } from "lib/pages/contract-list/components/ContractListReadOnlyTable";
 import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
-import type { ContractAddr, LVPair, Option } from "lib/types";
+import type { ContractAddr, HumanAddr, LVPair, Option } from "lib/types";
 
 interface FilteredListDetailProps {
   contracts: ContractLocalInfo[];
@@ -50,7 +50,7 @@ const FilteredListDetail = ({
 };
 
 interface ContractListTableProps {
-  address: Option<string>;
+  address: Option<HumanAddr>;
   contractListInfo: ContractListInfo;
   isLoading?: boolean;
   isReadOnly?: boolean;
@@ -150,7 +150,7 @@ export const ContractListDetail = ({
         </Flex>
       </Box>
       <ContractListContent
-        address={address}
+        address={address as HumanAddr}
         contractListInfo={contractListInfo}
         filteredContracts={filteredContracts}
         isReadOnly={isReadOnly}

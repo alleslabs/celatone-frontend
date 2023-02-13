@@ -166,7 +166,7 @@ const ContractsByList = observer(() => {
       </Box>
       <ContractListDetail
         contractListInfo={contractListInfo}
-        isLoading={isLoading}
+        isLoading={isInstantiatedByMe ? isLoading : false}
       />
     </>
   );

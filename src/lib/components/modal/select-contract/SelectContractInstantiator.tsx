@@ -55,6 +55,8 @@ export const SelectContractInstantiator = ({
   const [invalid, setInvalid] = useState("");
 
   const { getContractLists } = useContractStore();
+
+  // TODO - Revisit false case
   const contractLists = [
     useInstantiatedByMe(true).instantiatedListInfo,
     ...getContractLists(),

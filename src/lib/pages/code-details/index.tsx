@@ -10,7 +10,6 @@ import { InvalidState } from "lib/components/state/InvalidState";
 import { useCodeStore } from "lib/hooks";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
-import type { Option } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 import { getFirstQueryParam, isCodeId } from "lib/utils";
 
@@ -19,7 +18,7 @@ import { CTASection } from "./components/CTASection";
 import { ContractTable } from "./components/table/contracts/ContractTable";
 
 interface CodeDetailsBodyProps {
-  codeDataState: Option<CodeDataState>;
+  codeDataState: CodeDataState;
   codeId: number;
 }
 
@@ -29,8 +28,9 @@ const CodeDetailsBody = observer(
   ({ codeDataState, codeId }: CodeDetailsBodyProps) => {
     const { getCodeLocalInfo } = useCodeStore();
     const localCodeInfo = getCodeLocalInfo(codeId);
-    if (!codeDataState) return <InvalidCode />;
-    const { codeData, publicProject } = codeDataState;
+    const { chainId, codeData, publicProject } = codeDataState;
+
+    if (!codeData) return <InvalidCode />;
 
     return (
       <>
@@ -70,7 +70,7 @@ const CodeDetailsBody = observer(
           />
         </Flex>
         <Divider borderColor="pebble.700" my={12} />
-        <CodeInfoSection codeData={codeData} />
+        <CodeInfoSection codeData={codeData} chainId={chainId} />
         <ContractTable codeId={codeId} />
       </>
     );
@@ -81,7 +81,8 @@ const CodeDetails = observer(() => {
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(Number(codeIdParam));
-  if (data?.isLoading) return <Loading />;
+
+  if (data.isLoading) return <Loading />;
 
   return (
     <PageContainer>

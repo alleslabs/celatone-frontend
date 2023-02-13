@@ -19,7 +19,7 @@ import {
   useContractData,
   useContractDetailsTableCounts,
 } from "lib/model/contract";
-import type { ContractAddr, ContractData, Option } from "lib/types";
+import type { ContractAddr, ContractData } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -33,7 +33,7 @@ import { TransactionsTable } from "./components/tables/transactions";
 import { TokenSection } from "./components/token/TokenSection";
 
 interface ContractDetailsBodyProps {
-  contractData: Option<ContractData>;
+  contractData: ContractData;
   contractAddress: ContractAddr;
 }
 
@@ -49,7 +49,7 @@ const ContractDetailsBody = observer(
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress);
 
-    if (!contractData?.instantiateInfo) return <InvalidContract />;
+    if (!contractData.instantiateInfo) return <InvalidContract />;
 
     return (
       <>
@@ -141,16 +141,15 @@ const ContractDetailsBody = observer(
   }
 );
 
-const ContractDetails = () => {
+const ContractDetails = observer(() => {
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
-
   const contractAddressParam = getFirstQueryParam(
     router.query.contractAddress
   ) as ContractAddr;
   const data = useContractData(contractAddressParam);
 
-  if (data?.isLoading) return <Loading />;
+  if (data.isLoading) return <Loading />;
 
   return (
     <PageContainer>
@@ -159,12 +158,12 @@ const ContractDetails = () => {
         <InvalidContract />
       ) : (
         <ContractDetailsBody
-          contractData={data?.contractData}
+          contractData={data.contractData}
           contractAddress={contractAddressParam}
         />
       )}
     </PageContainer>
   );
-};
+});
 
 export default ContractDetails;
