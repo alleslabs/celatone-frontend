@@ -37,7 +37,7 @@ interface CodesTableProps {
   codes: CodeInfo[];
   isSearching: boolean;
   action?: ReactNode;
-  isLoading?: boolean;
+  isLoading: boolean;
 }
 
 interface CodesRowProps {

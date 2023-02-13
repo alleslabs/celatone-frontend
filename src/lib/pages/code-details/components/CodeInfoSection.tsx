@@ -161,7 +161,7 @@ export const CodeInfoSection = ({
         Code Information
       </Heading>
       <Grid templateColumns="repeat(5, 1fr)" columnGap={12}>
-        <LabelText label="Network">{chainId ?? "unknown"}</LabelText>
+        <LabelText label="Network">{chainId}</LabelText>
         <LabelText label="Uploaded by">
           <Flex direction="column" gap={1}>
             <ExplorerLink

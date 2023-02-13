@@ -147,9 +147,9 @@ const ContractDetails = observer(() => {
   const contractAddressParam = getFirstQueryParam(
     router.query.contractAddress
   ) as ContractAddr;
-  const data = useContractData(contractAddressParam);
+  const { isLoading, contractData } = useContractData(contractAddressParam);
 
-  if (data.isLoading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <PageContainer>
@@ -158,7 +158,7 @@ const ContractDetails = observer(() => {
         <InvalidContract />
       ) : (
         <ContractDetailsBody
-          contractData={data.contractData}
+          contractData={contractData}
           contractAddress={contractAddressParam}
         />
       )}
