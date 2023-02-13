@@ -13,7 +13,7 @@ interface ContractListReadOnlyTableProps {
   onContractSelect: (addr: ContractAddr) => void;
 }
 
-const TEMPLATE_COLUMNS = "160px 1fr 220px 160px";
+const TEMPLATE_COLUMNS = "160px 280px 260px 1fr";
 
 export const ContractListReadOnlyTable = ({
   contracts = [],

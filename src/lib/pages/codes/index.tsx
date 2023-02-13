@@ -15,8 +15,8 @@ import { CustomTab } from "lib/components/CustomTab";
 import { FilterByPermission } from "lib/components/forms/FilterByPermission";
 import InputWithIcon from "lib/components/InputWithIcon";
 import type { PermissionFilterValue } from "lib/hooks";
-import CodesTable from "lib/pages/codes/components/CodesTable";
 
+import CodesTable from "./components/CodesTable";
 import SaveCodeButton from "./components/SaveCodeButton";
 import UploadButton from "./components/UploadButton";
 import { useCodeListData } from "./data";
@@ -98,7 +98,6 @@ const Codes = observer(() => {
               tableName="My Saved Codes"
               codes={saved}
               action={<SaveCodeButton />}
-              isRemovable
               isSearching={!!keyword}
             />
           </TabPanel>
@@ -120,7 +119,6 @@ const Codes = observer(() => {
               codes={saved}
               action={<SaveCodeButton />}
               isSearching={!!keyword}
-              isRemovable
             />
           </TabPanel>
         </TabPanels>
