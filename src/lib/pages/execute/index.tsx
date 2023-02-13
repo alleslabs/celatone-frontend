@@ -77,7 +77,7 @@ const Execute = () => {
       {isFetching && <LoadingOverlay />}
       <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h5" variant="h5">
+        <Heading as="h4" variant="h4">
           Execute Contract
         </Heading>
         <Box>

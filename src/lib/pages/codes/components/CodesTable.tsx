@@ -225,7 +225,7 @@ function CodesTable({
         px="48px"
       >
         {type !== "recent" && (
-          <Heading as="h2" size="md">
+          <Heading as="h6" variant="h6">
             {tableName}
           </Heading>
         )}
