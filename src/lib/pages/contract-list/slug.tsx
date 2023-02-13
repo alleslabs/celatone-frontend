@@ -61,7 +61,7 @@ const ContractsByList = observer(() => {
     const timeoutId = setTimeout(() => {
       if (isHydrated && contractListInfo === undefined)
         navigate({ pathname: "/contract-list" });
-    }, 500);
+    }, 100);
     return () => clearTimeout(timeoutId);
   }, [contractListInfo, isHydrated, navigate]);
 

@@ -72,7 +72,10 @@ export const InstantiateOffChainForm = observer(
           data.tags,
           data.lists
         );
-        navigate({ pathname: "/contract-list/instantiated-by-me" });
+        navigate({
+          pathname: "/contract-list/[slug]",
+          query: { slug: "instantiated-by-me" },
+        });
       })();
     };
 
@@ -109,7 +112,10 @@ export const InstantiateOffChainForm = observer(
               w="128px"
               variant="outline-gray"
               onClick={() =>
-                navigate({ pathname: "/contract-list/instantiated-by-me" })
+                navigate({
+                  pathname: "/contract-list/[slug]",
+                  query: { slug: "instantiated-by-me" },
+                })
               }
             >
               Skip
