@@ -88,7 +88,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
       {!codeContracts?.length ? (
         <NoContracts />
       ) : (
-        <TableContainer>
+        <TableContainer overflow="visible">
           <Grid templateColumns={templateColumnsStyle} minW="min-content">
             <TableHeader borderTopStyle="none">Contract Address</TableHeader>
             <TableHeader>Contract Name</TableHeader>

@@ -5,7 +5,7 @@ import { QuickMenu } from "./components/QuickMenu";
 import { RecentActivities } from "./components/RecentActivities";
 
 const Home = () => (
-  <Box mx="1">
+  <Box m="1">
     <QuickMenu />
     <RecentActivities />
     {/* <PastTransaction /> */}

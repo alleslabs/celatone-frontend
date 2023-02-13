@@ -94,7 +94,6 @@ const Codes = observer(() => {
               tableName="My Saved Codes"
               codes={saved}
               action={<SaveCodeButton />}
-              isRemovable
               isSearching={!!keyword}
             />
           </TabPanel>
@@ -114,7 +113,6 @@ const Codes = observer(() => {
               codes={saved}
               action={<SaveCodeButton />}
               isSearching={!!keyword}
-              isRemovable
             />
           </TabPanel>
         </TabPanels>
