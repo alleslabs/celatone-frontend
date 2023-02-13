@@ -44,9 +44,7 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
       );
   }, [indexerGraphClient]);
 
-  return useQuery(["all_codes", indexerGraphClient], queryFn, {
-    keepPreviousData: true,
-  });
+  return useQuery(["all_codes", indexerGraphClient], queryFn);
 };
 
 export const useCodeListPageQuery = ({
@@ -104,13 +102,11 @@ export const useCodeListPageQuery = ({
       {
         queryKey: ["codes_by_user", indexerGraphClient, walletAddr],
         queryFn: codeByUserQueryFn,
-        keepPreviousData: true,
         enabled: !!walletAddr,
       },
       {
         queryKey: ["codes_by_ids", indexerGraphClient, ids],
         queryFn: codeByIdsQueryFn,
-        keepPreviousData: true,
         enabled: !!ids,
       },
     ],
