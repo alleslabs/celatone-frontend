@@ -8,4 +8,3 @@ export * from "./useTokensInfo";
 export * from "./useInternalNavigate";
 export * from "./useNetworkChange";
 export * from "./useSelectChain";
-export * from "./useCurrentNetwork";

@@ -6,19 +6,17 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 
-import {
-  useCurrentNetwork,
-  useInternalNavigate,
-  useSelectChain,
-} from "lib/app-provider";
+import { useInternalNavigate, useSelectChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { getChainNameByNetwork } from "lib/data";
+import { getChainNameByNetwork, getNetworkByChainName } from "lib/data";
 
 const Deploy = () => {
-  const network = useCurrentNetwork();
+  const { currentChainName } = useWallet();
+  const network = getNetworkByChainName(currentChainName);
   const navigate = useInternalNavigate();
   const selectChain = useSelectChain();
 
