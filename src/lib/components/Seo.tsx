@@ -1,12 +1,12 @@
 import { useWallet } from "@cosmos-kit/react";
-import { NextSeo } from "next-seo";
+import { DefaultSeo } from "next-seo";
 
 export const CelatoneSeo = () => {
   const { currentChainRecord } = useWallet();
   const title = `${currentChainRecord?.chain.pretty_name} Explorer | Celatone`;
 
   return (
-    <NextSeo
+    <DefaultSeo
       title={title}
       description=""
       openGraph={{
