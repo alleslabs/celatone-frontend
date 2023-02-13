@@ -179,8 +179,8 @@ const Navbar = observer(() => {
                     size: "xs",
                     leftIcon: <MdAdd />,
                     children: "NEW LIST",
+                    onClick: () => AmpTrack(AmpEvent.USE_SIDEBAR),
                   }}
-                  onClose={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
                 />
               )}
             </Flex>
