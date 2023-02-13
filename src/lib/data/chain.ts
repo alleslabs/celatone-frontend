@@ -47,17 +47,17 @@ export const getChainNameByNetwork = (network: Network): string => {
   }
 };
 
-export const getNetworkByChainName = (chainName: string): string => {
-  let network: Option<string>;
+export const getNetworkByChainName = (chainName: string): Network => {
+  let network: Option<Network>;
 
   switch (SELECTED_CHAIN) {
     case "terra":
-      network = Object.keys(TERRA_CHAINS).find(
+      network = (Object.keys(TERRA_CHAINS) as Network[]).find(
         (each) => TERRA_CHAINS[each as keyof Chain] === chainName
       );
       break;
     case "osmosis":
-      network = Object.keys(OSMOSIS_CHAINS).find(
+      network = (Object.keys(OSMOSIS_CHAINS) as Network[]).find(
         (each) => OSMOSIS_CHAINS[each as keyof Chain] === chainName
       );
       break;
