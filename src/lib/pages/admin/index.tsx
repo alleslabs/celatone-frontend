@@ -25,7 +25,11 @@ import {
   useValidateAddress,
 } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackToAdminUpdate,
+} from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { Addr, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
@@ -178,6 +182,10 @@ const UpdateAdmin = () => {
     validateContractAddress,
     validateUserAddress,
   ]);
+
+  useEffect(() => {
+    if (router.isReady) AmpTrackToAdminUpdate(!!contractAddressParam);
+  }, [router.isReady, contractAddressParam]);
 
   return (
     <WasmPageContainer>
