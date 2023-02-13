@@ -14,13 +14,7 @@ const moduleExports = {
 
   sentry: {
     hideSourceMaps: true,
-    disableServerWebpackPlugin: false,
-    disableClientWebpackPlugin: false,
   },
 };
 
-const sentryWebpackPluginOptions = {
-  silent: true,
-};
-
-module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
+module.exports = withSentryConfig(moduleExports);
