@@ -8,7 +8,7 @@ export const CelatoneSeo = () => {
   return (
     <DefaultSeo
       title={title}
-      description=""
+      description="A smart contract powered explorer for the Cosmos."
       openGraph={{
         type: "website",
         description: "A smart contract powered explorer for the Cosmos",
