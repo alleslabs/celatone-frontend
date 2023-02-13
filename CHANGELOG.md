@@ -143,6 +143,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#186](https://github.com/alleslabs/celatone-frontend/pull/186) Fix logo navigation
 - [#185](https://github.com/alleslabs/celatone-frontend/pull/185) Fix sentry in next.config.js
 - [#183](https://github.com/alleslabs/celatone-frontend/pull/183) Fix build failed because sentry env
 - [#175](https://github.com/alleslabs/celatone-frontend/pull/175) Fix css related issue and tag selection input
