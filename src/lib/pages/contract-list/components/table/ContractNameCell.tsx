@@ -26,6 +26,7 @@ export const ContractNameCell = ({
       defaultValue={contractLocalInfo.label}
       maxLength={MAX_CONTRACT_NAME_LENGTH}
       tooltip={contractLocalInfo.description}
+      isReadOnly={isReadOnly}
       onSave={!isReadOnly ? onSave : undefined}
     />
   );

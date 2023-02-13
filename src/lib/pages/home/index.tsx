@@ -15,7 +15,7 @@ const Home = () => {
   }, [router.isReady]);
 
   return (
-    <Box mx="1">
+    <Box m="1">
       <QuickMenu />
       <RecentActivities />
       {/* <PastTransaction /> */}

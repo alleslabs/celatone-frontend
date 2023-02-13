@@ -24,9 +24,14 @@ import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
-import type { ComposedMsg, ContractAddr, HumanAddr, Token } from "lib/types";
+import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, jsonPrettify, jsonValidate, microfy } from "lib/utils";
+import {
+  composeMsg,
+  fabricateFunds,
+  jsonPrettify,
+  jsonValidate,
+} from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -98,12 +103,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
 
   const proceed = useCallback(async () => {
     AmpTrack(AmpEvent.ACTION_EXECUTE);
-    const funds = assets
-      .filter((asset) => asset.amount && asset.denom)
-      .map((asset) => ({
-        ...asset,
-        amount: microfy(asset.amount as Token).toFixed(0),
-      }));
+    const funds = fabricateFunds(assets);
 
     const stream = await executeTx({
       onTxSucceed: (userKey: string, activity: Activity) => {
@@ -128,13 +128,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
     if (enableExecute) {
       setError(undefined);
 
-      const funds = assets
-        .filter((asset) => asset.amount && asset.denom)
-        .map((asset) => ({
-          ...asset,
-          amount: microfy(asset.amount as Token).toFixed(0),
-        }))
-        .filter((asset) => asset.amount !== "0");
+      const funds = fabricateFunds(assets);
 
       const composedMsg = composeMsg(MsgType.EXECUTE, {
         sender: address as HumanAddr,
@@ -223,6 +217,9 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
               assetOptions={assetOptions}
               initialSelected={field.denom}
               amountInput={
+                /**
+                 * @remarks refactor along with instantiate page
+                 */
                 <ControllerInput
                   name={`assets.${idx}.amount`}
                   control={control}
