@@ -25,6 +25,6 @@ module.exports = withPWA({
 
 module.exports = withSentryConfig(
   module.exports,
-  { silent: true },
+  { silent: true, authToken: process.env.SENTRY_AUTH_TOKEN },
   { hideSourcemaps: true }
 );

@@ -142,6 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#183](https://github.com/alleslabs/celatone-frontend/pull/183) Fix build failed because sentry env
 - [#175](https://github.com/alleslabs/celatone-frontend/pull/175) Fix css related issue and tag selection input
 - [#165](https://github.com/alleslabs/celatone-frontend/pull/165) Fix messages type
 - [#172](https://github.com/alleslabs/celatone-frontend/pull/172) Fix infinite loop dep, wrong fallback validation
