@@ -58,9 +58,11 @@ const ContractsByList = observer(() => {
     : getContractLists().find((item) => item.slug === listSlug);
 
   useEffect(() => {
-    if (isHydrated && contractListInfo === undefined) {
-      navigate({ pathname: "/contract-list" });
-    }
+    const timeoutId = setTimeout(() => {
+      if (isHydrated && contractListInfo === undefined)
+        navigate({ pathname: "/contract-list" });
+      return () => clearTimeout(timeoutId);
+    }, 100);
   }, [contractListInfo, isHydrated, navigate]);
 
   if (!contractListInfo) return null;
