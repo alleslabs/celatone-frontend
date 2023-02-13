@@ -116,6 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#179](https://github.com/alleslabs/celatone-frontend/pull/179) Add loading state to My code, Recent Codes, Contract details, Code details, All public projects, Public project, Saved Contract, Instantiated my be
+- [#182](https://github.com/alleslabs/celatone-frontend/pull/182) Disable mainnet store code and show alert, refactor select chain hook and alert variants
 - [#180](https://github.com/alleslabs/celatone-frontend/pull/180) Add helper text to editable cell, Change trash button to bookmark button
 - [#181](https://github.com/alleslabs/celatone-frontend/pull/181) Refactor funds filtering logic and sort by denom, enable clicking the whole row of contract list when its readOnly
 - [#171](https://github.com/alleslabs/celatone-frontend/pull/171) Change gql query for better speed, remove unwrap and default values, and better handle data rendering
@@ -143,6 +144,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#184](https://github.com/alleslabs/celatone-frontend/pull/184) Fix next seo to use default seo
+- [#186](https://github.com/alleslabs/celatone-frontend/pull/186) Fix logo navigation
+- [#185](https://github.com/alleslabs/celatone-frontend/pull/185) Fix sentry in next.config.js
+- [#183](https://github.com/alleslabs/celatone-frontend/pull/183) Fix build failed because sentry env
 - [#175](https://github.com/alleslabs/celatone-frontend/pull/175) Fix css related issue and tag selection input
 - [#165](https://github.com/alleslabs/celatone-frontend/pull/165) Fix messages type
 - [#172](https://github.com/alleslabs/celatone-frontend/pull/172) Fix infinite loop dep, wrong fallback validation
