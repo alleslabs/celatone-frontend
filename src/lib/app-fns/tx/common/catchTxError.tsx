@@ -37,9 +37,12 @@ export const catchTxError = (
 ): OperatorFunction<TxResultRendering, TxResultRendering> => {
   return catchError((error: Error) => {
     const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.at(1);
-    const isRejected = !txHash;
 
-    AmpTrack(isRejected ? AmpEvent.TX_REJECTED : AmpEvent.TX_FAILED);
+    AmpTrack(
+      error.message === "Request rejected"
+        ? AmpEvent.TX_REJECTED
+        : AmpEvent.TX_FAILED
+    );
     onTxFailed?.();
     return Promise.resolve<TxResultRendering>({
       value: null,
@@ -51,7 +54,7 @@ export const catchTxError = (
         ),
       },
       receipts: getTxHashReceipt(txHash),
-      actionVariant: getActionVariant(isRejected),
+      actionVariant: getActionVariant(!txHash),
     });
   });
 };
