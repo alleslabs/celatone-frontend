@@ -122,7 +122,7 @@ const Searchbar = () => {
           value={keyword}
           h="36px"
           onChange={handleSearchChange}
-          placeholder="Search by Contract Address / Code ID"
+          placeholder="Search by Wallet Address / Contract Address / Code ID"
           focusBorderColor="lilac.main"
           onFocus={() => setDisplayResults(keyword.length > 0)}
           onKeyDown={handleOnKeyEnter}
