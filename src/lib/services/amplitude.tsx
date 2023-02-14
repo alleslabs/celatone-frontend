@@ -1,6 +1,7 @@
 import { track } from "@amplitude/analytics-browser";
 
 export enum AmpEvent {
+  INVALID_STATE = "To Invalid State",
   // CODE
   CODE_SAVE = "Code Save",
   CODE_EDIT = "Code Edit",
@@ -87,16 +88,21 @@ export enum AmpEvent {
 }
 
 type SpecialAmpEvent =
+  | AmpEvent.INVALID_STATE
   | AmpEvent.TO_QUERY
   | AmpEvent.TO_EXECUTE
   | AmpEvent.TO_INSTANTIATE
   | AmpEvent.TO_MIGRATE
   | AmpEvent.TO_ADMIN_UPDATE
   | AmpEvent.USE_MAIN_SEARCH
+  | AmpEvent.USE_OTHER_MODAL
   | AmpEvent.MINTSCAN
   | AmpEvent.WEBSITE
   | AmpEvent.SOCIAL
   | AmpEvent.CELATONE;
+
+export const AmpTrackInvalidState = (title: string) =>
+  track(AmpEvent.INVALID_STATE, { title });
 
 export const AmpTrack = (event: Exclude<AmpEvent, SpecialAmpEvent>) =>
   track(event);
@@ -118,6 +124,9 @@ export const AmpTrackToAdminUpdate = (contract: boolean) =>
 
 export const AmpTrackUseMainSearch = (isClick: boolean) =>
   track(AmpEvent.USE_MAIN_SEARCH, { isClick });
+
+export const AmpTrackUseOtherModal = (title: string) =>
+  track(AmpEvent.USE_OTHER_MODAL, { title });
 
 export const AmpTrackMintscan = (type: string) =>
   track(AmpEvent.MINTSCAN, { type });

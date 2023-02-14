@@ -18,7 +18,7 @@ import { useCallback } from "react";
 import type { IconType } from "react-icons/lib";
 import { MdMode } from "react-icons/md";
 
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { AmpTrackUseOtherModal } from "lib/services/amplitude";
 
 export interface ActionModalProps {
   icon?: IconType;
@@ -73,7 +73,7 @@ export function ActionModal({
     <>
       <Flex
         onClick={() => {
-          AmpTrack(AmpEvent.USE_OTHER_MODAL);
+          AmpTrackUseOtherModal(title);
           onOpen();
         }}
       >
