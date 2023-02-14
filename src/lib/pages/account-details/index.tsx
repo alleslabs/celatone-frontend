@@ -29,7 +29,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   return (
     <>
-      <Flex direction="column" gap={1}>
+      <Flex direction="column" gap={1} mt={6} mb={12}>
         <Flex gap={1}>
           <Heading as="h5" variant="h5">
             Account Details
@@ -39,7 +39,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <Text fontWeight={500} color="text.dark" variant="body2">
             Wallet Address:
           </Text>
-          <ExplorerLink type="user_address" value={accountAddress} />
+          <ExplorerLink
+            type="user_address"
+            value={accountAddress}
+            textFormat="normal"
+            maxWidth="full"
+          />
         </Flex>
       </Flex>
       <Tabs>

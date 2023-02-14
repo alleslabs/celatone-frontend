@@ -41,6 +41,8 @@ const getRoute = (type: SearchResultType) => {
       return "/code";
     case "Contract Address":
       return "/contract";
+    case "Wallet Address":
+      return "/account";
     default:
       return null;
   }
@@ -143,12 +145,14 @@ const Searchbar = () => {
         >
           {!results.length ? (
             <ResultItem
+              key="Not Found"
               value={keyword}
               handleSelectResult={handleSelectResult}
             />
           ) : (
             results.map((type) => (
               <ResultItem
+                key={type}
                 type={type}
                 value={keyword}
                 handleSelectResult={handleSelectResult}
