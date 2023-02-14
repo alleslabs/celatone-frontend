@@ -82,7 +82,8 @@ export function EditListNameModal({
         handleSave();
         if (reroute)
           navigate({
-            pathname: `/contract-list/${formatSlugName(listName)}`,
+            pathname: "/contract-list/[slug]",
+            query: { slug: formatSlugName(listName) },
             replace: true,
           });
       }}

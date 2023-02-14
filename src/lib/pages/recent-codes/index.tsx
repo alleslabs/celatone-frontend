@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 
 import { FilterByPermission } from "lib/components/forms/FilterByPermission";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { Loading } from "lib/components/Loading";
 import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -61,16 +60,13 @@ const RecentCodes = observer(() => {
           />
         </Flex>
       </Box>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <CodesTable
-          type="recent"
-          tableName="Recent Codes"
-          codes={recentCodes}
-          isSearching={!!keyword}
-        />
-      )}
+      <CodesTable
+        isLoading={isLoading}
+        type="recent"
+        tableName="Recent Codes"
+        codes={recentCodes}
+        isSearching={!!keyword}
+      />
     </Box>
   );
 });

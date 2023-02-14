@@ -56,7 +56,12 @@ export const SelectContractInstantiator = ({
   const [invalid, setInvalid] = useState("");
 
   const { getContractLists } = useContractStore();
-  const contractLists = [useInstantiatedByMe(true), ...getContractLists()];
+
+  // TODO - Revisit false case
+  const contractLists = [
+    useInstantiatedByMe(true).instantiatedListInfo,
+    ...getContractLists(),
+  ];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
   const endpoint = useLCDEndpoint();

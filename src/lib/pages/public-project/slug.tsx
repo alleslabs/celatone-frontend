@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { MdExpandMore } from "react-icons/md";
 
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
@@ -26,12 +27,14 @@ import { usePublicData } from "./data";
 export const ProjectDetail = observer(() => {
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState(0);
-  const { publicCodes, publicContracts, projectDetail, slug } = usePublicData();
+  const { publicCodes, publicContracts, projectDetail, slug, isLoading } =
+    usePublicData();
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROJECT_DETAIL);
   }, [router.isReady]);
 
+  if (isLoading) return <Loading />;
   return (
     <Box py={12} pb={0}>
       <DetailHeader details={projectDetail} slug={slug} />

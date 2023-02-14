@@ -12,6 +12,7 @@ import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state/InvalidState";
 import { useValidateAddress } from "lib/hooks";
@@ -20,7 +21,7 @@ import {
   useContractDetailsTableCounts,
 } from "lib/model/contract";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, ContractData } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -34,14 +35,14 @@ import { TransactionsTable } from "./components/tables/transactions";
 import { TokenSection } from "./components/token/TokenSection";
 
 interface ContractDetailsBodyProps {
+  contractData: ContractData;
   contractAddress: ContractAddr;
 }
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 const ContractDetailsBody = observer(
-  ({ contractAddress }: ContractDetailsBodyProps) => {
-    const contractData = useContractData(contractAddress);
+  ({ contractData, contractAddress }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailTableHeader";
     const {
       tableCounts,
@@ -50,7 +51,7 @@ const ContractDetailsBody = observer(
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress);
 
-    if (!contractData?.instantiateInfo) return <InvalidContract />;
+    if (!contractData.instantiateInfo) return <InvalidContract />;
 
     return (
       <>
@@ -142,10 +143,15 @@ const ContractDetailsBody = observer(
   }
 );
 
-const ContractDetails = () => {
+const ContractDetails = observer(() => {
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
-  const contractAddressParam = getFirstQueryParam(router.query.contractAddress);
+  const contractAddressParam = getFirstQueryParam(
+    router.query.contractAddress
+  ) as ContractAddr;
+  const { isLoading, contractData } = useContractData(contractAddressParam);
+
+  if (isLoading) return <Loading />;
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
@@ -158,11 +164,12 @@ const ContractDetails = () => {
         <InvalidContract />
       ) : (
         <ContractDetailsBody
-          contractAddress={contractAddressParam as ContractAddr}
+          contractData={contractData}
+          contractAddress={contractAddressParam}
         />
       )}
     </PageContainer>
   );
-};
+});
 
 export default ContractDetails;

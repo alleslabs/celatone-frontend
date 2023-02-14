@@ -1,16 +1,30 @@
-import { Heading, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  Flex,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useSelectChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { getChainNameByNetwork, getNetworkByChainName } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const Deploy = () => {
+  const { currentChainName } = useWallet();
+  const network = getNetworkByChainName(currentChainName);
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const selectChain = useSelectChain();
+
+  const isMainnet = network === "mainnet";
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
@@ -25,9 +39,38 @@ const Deploy = () => {
       <Heading as="h4" variant="h4" my="48px">
         Select Deploy Option
       </Heading>
+      {isMainnet && (
+        <Alert variant="violet" mb="16px" alignItems="flex-start">
+          <AlertIcon mt={2} />
+          <AlertDescription>
+            Uploading new Wasm files on permissioned chains is coming soon to
+            Celatone. Currently, you can upload codes and instantiate contracts
+            without permission on testnet.
+          </AlertDescription>
+        </Alert>
+      )}
       <ButtonCard
         title="Upload new WASM File"
-        description="Store a new Wasm file on-chain"
+        description={
+          isMainnet ? (
+            <Flex fontSize="14px" gap={1}>
+              <Text color="text.disabled">
+                Currently available on testnet only.
+              </Text>
+              <Text
+                color="honeydew.main"
+                _hover={{ textDecoration: "underline" }}
+                cursor="pointer"
+                onClick={() => selectChain(getChainNameByNetwork("testnet"))}
+              >
+                Switch to testnet
+              </Text>
+            </Flex>
+          ) : (
+            "Store a new Wasm file on-chain"
+          )
+        }
+        disabled={isMainnet}
         onClick={() => navigate({ pathname: "/upload" })}
         mb="16px"
       />

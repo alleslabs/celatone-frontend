@@ -6,6 +6,7 @@ import { BsGithub } from "react-icons/bs";
 import { MdOutlineManageSearch, MdSearchOff } from "react-icons/md";
 
 import { TextInput } from "lib/components/forms";
+import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { usePublicProjectStore } from "lib/hooks";
 import { usePublicProjects } from "lib/services/publicProjectService";
@@ -17,7 +18,7 @@ const sortByAtoZ = (projects: PublicProjectInfo[]) =>
   projects.sort((a, b) => a.details.name.localeCompare(b.details.name));
 
 export const AllProject = observer(() => {
-  const { data: publicProjectInfo } = usePublicProjects();
+  const { data: publicProjectInfo, isLoading } = usePublicProjects();
   const [searchKeyword, setSearchKeyword] = useState("");
   const { getSavedPublicProjects } = usePublicProjectStore();
   const savedProjects = getSavedPublicProjects();
@@ -42,6 +43,7 @@ export const AllProject = observer(() => {
     return [];
   }, [publicProjectInfo, savedProjects, searchKeyword]);
 
+  if (isLoading) return <Loading />;
   if (!publicProjectInfo)
     return (
       <Flex flexDirection="column" alignItems="center">

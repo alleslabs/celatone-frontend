@@ -4,8 +4,7 @@ import { Copier } from "lib/components/Copier";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useGetAddressType } from "lib/hooks";
-import type { ContractData } from "lib/model/contract";
-import type { Option } from "lib/types";
+import type { ContractData, Option } from "lib/types";
 import { formatUTC, dateFromNow } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
 
