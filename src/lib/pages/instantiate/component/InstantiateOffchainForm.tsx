@@ -6,9 +6,11 @@ import { useForm } from "react-hook-form";
 import { useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
+import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
 import type { ContractAddr, HumanAddr, LVPair } from "lib/types";
+import { formatSlugName } from "lib/utils";
 
 interface InstantiateOffChainFormProps {
   title?: string;
@@ -30,6 +32,7 @@ export const InstantiateOffChainForm = observer(
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();
     const userKey = useUserKey();
+    const instantiatedListSlug = formatSlugName(INSTANTIATED_LIST_NAME);
 
     const {
       control,
@@ -74,7 +77,7 @@ export const InstantiateOffChainForm = observer(
         );
         navigate({
           pathname: "/contract-list/[slug]",
-          query: { slug: "instantiated-by-me" },
+          query: { slug: instantiatedListSlug },
         });
       })();
     };
@@ -114,7 +117,7 @@ export const InstantiateOffChainForm = observer(
               onClick={() =>
                 navigate({
                   pathname: "/contract-list/[slug]",
-                  query: { slug: "instantiated-by-me" },
+                  query: { slug: instantiatedListSlug },
                 })
               }
             >
