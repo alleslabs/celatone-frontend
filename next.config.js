@@ -7,6 +7,14 @@ const nextConfig = {
   eslint: {
     dirs: ["src"],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/amplitude/:path*",
+        destination: `https://api2.amplitude.com/2/httpapi/:path*`,
+      },
+    ];
+  },
 };
 
 const moduleExports = {

@@ -17,6 +17,7 @@ export const useAmplitude = () => {
         osVersion: false,
         platform: false,
       },
+      serverUrl: "/amplitude",
     });
 
     let deviceId = localStorage.getItem("deviceId");
