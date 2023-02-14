@@ -136,6 +136,7 @@ export const QueryArea = ({
               p="6px 16px"
               onClick={() => {
                 refetch();
+                throw new Error("test");
               }}
               isDisabled={jsonValidate(msg) !== null}
               isLoading={isFetching || isRefetching}
