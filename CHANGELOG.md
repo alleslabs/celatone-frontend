@@ -144,6 +144,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#188](https://github.com/alleslabs/celatone-frontend/pull/188) Fix "No contact description" prefil in description section in contract detail page 
 - [#184](https://github.com/alleslabs/celatone-frontend/pull/184) Fix next seo to use default seo
 - [#186](https://github.com/alleslabs/celatone-frontend/pull/186) Fix logo navigation
 - [#185](https://github.com/alleslabs/celatone-frontend/pull/185) Fix sentry in next.config.js
