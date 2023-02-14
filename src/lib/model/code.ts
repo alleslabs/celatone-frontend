@@ -1,6 +1,4 @@
-import { useWallet } from "@cosmos-kit/react";
-
-import { useContractStore } from "lib/hooks";
+import { useChainId, useContractStore } from "lib/hooks";
 import {
   useCodeInfoByCodeId,
   useContractListByCodeId,
@@ -19,31 +17,29 @@ import type {
   PublicCodeData,
 } from "lib/types";
 
-interface CodeDataState {
+export interface CodeDataState {
   isLoading: boolean;
-  codeData: CodeData;
+  chainId: string;
+  codeData: Option<CodeData>;
   publicProject: {
     publicCodeData: Option<PublicCodeData>;
     publicDetail: Option<PublicDetail>;
   };
 }
 
-export const useCodeData = (codeId: number): Option<CodeDataState> => {
-  const { currentChainRecord } = useWallet();
+export const useCodeData = (codeId: number): CodeDataState => {
   const { data: codeInfo, isLoading } = useCodeInfoByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug
   );
 
-  if (!currentChainRecord || (!codeInfo && !isLoading)) return undefined;
+  const chainId = useChainId();
 
   return {
     isLoading,
-    codeData: {
-      chainId: currentChainRecord.chain.chain_id,
-      ...codeInfo,
-    } as CodeData,
+    chainId,
+    codeData: codeInfo as CodeData,
     publicProject: {
       publicCodeData: publicCodeInfo,
       publicDetail: publicInfoBySlug?.details,

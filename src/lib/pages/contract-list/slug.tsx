@@ -51,7 +51,8 @@ const ContractsByList = observer(() => {
   const isInstantiatedByMe =
     listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
 
-  const instantiatedListInfo = useInstantiatedByMe(isInstantiatedByMe);
+  const { instantiatedListInfo, isLoading } =
+    useInstantiatedByMe(isInstantiatedByMe);
 
   const contractListInfo = isInstantiatedByMe
     ? instantiatedListInfo
@@ -166,7 +167,10 @@ const ContractsByList = observer(() => {
           </Flex>
         </Flex>
       </Box>
-      <ContractListDetail contractListInfo={contractListInfo} />
+      <ContractListDetail
+        contractListInfo={contractListInfo}
+        isLoading={isInstantiatedByMe ? isLoading : false}
+      />
     </>
   );
 });
