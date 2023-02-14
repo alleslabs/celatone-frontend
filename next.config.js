@@ -1,7 +1,5 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   swcMinify: true,
@@ -14,7 +12,9 @@ const nextConfig = {
       {
         source: "/sentry/:path*",
         // https://abcdefghijklmnopqrstquwxyzabcdef@o123456.ingest.sentry.io/1234567
-        destination: `https://${SENTRY_DSN.split("@")[1].split("/")[0]}/:path*`,
+        destination: `https://${
+          process.env.NEXT_PUBLIC_SENTRY_DSN.split("@")[1].split("/")[0]
+        }/:path*`,
       },
     ];
   },
