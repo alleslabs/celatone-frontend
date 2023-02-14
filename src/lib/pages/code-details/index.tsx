@@ -84,12 +84,11 @@ const CodeDetails = observer(() => {
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(Number(codeIdParam));
 
-  if (data.isLoading) return <Loading />;
-
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
   }, [router.isReady]);
 
+  if (data.isLoading) return <Loading />;
   return (
     <PageContainer>
       <BackButton />

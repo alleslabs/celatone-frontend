@@ -151,12 +151,11 @@ const ContractDetails = observer(() => {
   ) as ContractAddr;
   const { isLoading, contractData } = useContractData(contractAddressParam);
 
-  if (isLoading) return <Loading />;
-
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
   }, [router.isReady]);
 
+  if (isLoading) return <Loading />;
   return (
     <PageContainer>
       <BackButton />
