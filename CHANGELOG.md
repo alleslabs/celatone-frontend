@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
 - [#133](https://github.com/alleslabs/celatone-frontend/pull/133) Add OG and default SEO with next-seo
 - [#160](https://github.com/alleslabs/celaotne-frontend/pull/160) Add remaining public codes and contracts info
 - [#162](https://github.com/alleslabs/celatone-frontend/pull/162) Add sentry.io for error logging and stack tracing

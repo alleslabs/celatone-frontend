@@ -41,7 +41,7 @@ const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 const ContractDetailsBody = observer(
   ({ contractData, contractAddress }: ContractDetailsBodyProps) => {
-    const tableHeaderId = "contractDetailTableHeader";
+    const tableHeaderId = "contractDetailsTableHeader";
     const {
       tableCounts,
       refetchMigration,
