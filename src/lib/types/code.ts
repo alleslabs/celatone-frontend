@@ -26,7 +26,6 @@ interface CodeProposal {
 }
 
 export interface CodeData {
-  chainId: Option<string>;
   codeId: number;
   uploader: Addr;
   hash: Option<string>;

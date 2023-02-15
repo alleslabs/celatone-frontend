@@ -51,16 +51,20 @@ const ContractsByList = observer(() => {
   const isInstantiatedByMe =
     listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
 
-  const instantiatedListInfo = useInstantiatedByMe(isInstantiatedByMe);
+  const { instantiatedListInfo, isLoading } =
+    useInstantiatedByMe(isInstantiatedByMe);
 
   const contractListInfo = isInstantiatedByMe
     ? instantiatedListInfo
     : getContractLists().find((item) => item.slug === listSlug);
 
   useEffect(() => {
-    if (isHydrated && contractListInfo === undefined) {
-      navigate({ pathname: "/contract-list" });
-    }
+    // TODO: find a better approach?
+    const timeoutId = setTimeout(() => {
+      if (isHydrated && contractListInfo === undefined)
+        navigate({ pathname: "/contract-list" });
+    }, 100);
+    return () => clearTimeout(timeoutId);
   }, [contractListInfo, isHydrated, navigate]);
 
   if (!contractListInfo) return null;
@@ -163,7 +167,10 @@ const ContractsByList = observer(() => {
           </Flex>
         </Flex>
       </Box>
-      <ContractListDetail contractListInfo={contractListInfo} />
+      <ContractListDetail
+        contractListInfo={contractListInfo}
+        isLoading={isInstantiatedByMe ? isLoading : false}
+      />
     </>
   );
 });

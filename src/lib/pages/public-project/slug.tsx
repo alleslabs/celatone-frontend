@@ -14,6 +14,7 @@ import { useState } from "react";
 import { MdExpandMore } from "react-icons/md";
 
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state/EmptyState";
 
 import { DetailHeader } from "./components/DetailHeader";
@@ -23,7 +24,9 @@ import { usePublicData } from "./data";
 
 export const ProjectDetail = observer(() => {
   const [tabIndex, setTabIndex] = useState(0);
-  const { publicCodes, publicContracts, projectDetail, slug } = usePublicData();
+  const { publicCodes, publicContracts, projectDetail, slug, isLoading } =
+    usePublicData();
+  if (isLoading) return <Loading />;
   return (
     <Box py={12} pb={0}>
       <DetailHeader details={projectDetail} slug={slug} />

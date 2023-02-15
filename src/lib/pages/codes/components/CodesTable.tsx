@@ -15,6 +15,7 @@ import { MdSearchOff } from "react-icons/md";
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { Loading } from "lib/components/Loading";
 import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
@@ -34,8 +35,9 @@ interface CodesTableProps {
   type: TableType;
   tableName: string;
   codes: CodeInfo[];
-  action?: ReactNode;
   isSearching: boolean;
+  action?: ReactNode;
+  isLoading: boolean;
 }
 
 interface CodesRowProps {
@@ -206,11 +208,13 @@ function CodesTable({
   codes,
   action,
   isSearching,
+  isLoading,
 }: CodesTableProps) {
   const { address } = useWallet();
 
   const renderBody = () => {
     if (!address && type === "stored") return <Unconnected />;
+    if (isLoading) return <Loading />;
     if (codes.length === 0 && isSearching) return <NotMatched />;
     if (codes.length === 0) return <Empty type={type} />;
     return <NormalRender codes={codes} tableName={tableName} />;

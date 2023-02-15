@@ -11,6 +11,7 @@ import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
   codeData: CodeData;
+  chainId: string;
 }
 
 const getMethodSpecificRender = (
@@ -130,7 +131,10 @@ const ViewAddresses = ({
   );
 };
 
-export const CodeInfoSection = ({ codeData }: CodeInfoSectionProps) => {
+export const CodeInfoSection = ({
+  codeData,
+  chainId,
+}: CodeInfoSectionProps) => {
   const getAddressType = useGetAddressType();
   const {
     hash,
@@ -157,7 +161,7 @@ export const CodeInfoSection = ({ codeData }: CodeInfoSectionProps) => {
         Code Information
       </Heading>
       <Grid templateColumns="repeat(5, 1fr)" columnGap={12}>
-        <LabelText label="Network">{codeData.chainId ?? "unknown"}</LabelText>
+        <LabelText label="Network">{chainId}</LabelText>
         <LabelText label="Uploaded by">
           <Flex direction="column" gap={1}>
             <ExplorerLink

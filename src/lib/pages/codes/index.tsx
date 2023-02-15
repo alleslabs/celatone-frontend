@@ -15,8 +15,8 @@ import { CustomTab } from "lib/components/CustomTab";
 import { FilterByPermission } from "lib/components/forms/FilterByPermission";
 import InputWithIcon from "lib/components/InputWithIcon";
 import type { PermissionFilterValue } from "lib/hooks";
-import CodesTable from "lib/pages/codes/components/CodesTable";
 
+import CodesTable from "./components/CodesTable";
 import SaveCodeButton from "./components/SaveCodeButton";
 import UploadButton from "./components/UploadButton";
 import { useCodeListData } from "./data";
@@ -41,6 +41,8 @@ const Codes = observer(() => {
     savedCodesCount,
     savedCodes: saved,
     allCodesCount,
+    isStoredCodesLoading,
+    isSavedCodesLoading,
   } = useCodeListData(keyword, permissionValue);
 
   return (
@@ -83,6 +85,7 @@ const Codes = observer(() => {
         <TabPanels>
           <TabPanel p={0}>
             <CodesTable
+              isLoading={isStoredCodesLoading}
               type="stored"
               tableName="My Stored Codes"
               codes={stored}
@@ -90,6 +93,7 @@ const Codes = observer(() => {
               isSearching={!!keyword}
             />
             <CodesTable
+              isLoading={isSavedCodesLoading}
               type="saved"
               tableName="My Saved Codes"
               codes={saved}
@@ -99,6 +103,7 @@ const Codes = observer(() => {
           </TabPanel>
           <TabPanel p="0px">
             <CodesTable
+              isLoading={isStoredCodesLoading}
               type="stored"
               tableName="My Stored Codes"
               codes={stored}
@@ -108,6 +113,7 @@ const Codes = observer(() => {
           </TabPanel>
           <TabPanel p="0px">
             <CodesTable
+              isLoading={isSavedCodesLoading}
               type="saved"
               tableName="My Saved Codes"
               codes={saved}
