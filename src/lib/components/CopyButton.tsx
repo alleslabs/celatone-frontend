@@ -39,7 +39,7 @@ export const CopyButton = ({
           size={size}
           float="right"
           onClick={() => {
-            AmpTrack(AmpEvent.USE_COPY_BOTTON);
+            AmpTrack(AmpEvent.USE_COPY_BUTTON);
             onCopy();
           }}
           leftIcon={<CopyIcon boxSize="4" onClick={onCopy} />}
