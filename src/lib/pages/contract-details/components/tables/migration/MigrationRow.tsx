@@ -1,9 +1,11 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
+import { CodeNameCell } from "lib/components/CodeNameCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { useGetAddressType } from "lib/hooks";
+import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractMigrationHistory } from "lib/types";
 import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
@@ -68,7 +70,15 @@ export const MigrationRow = ({
         />
       </TableRow>
       <TableRow>
-        {history.codeName || <Text color="text.dark">Untitled Name</Text>}
+        <CodeNameCell
+          code={
+            {
+              id: history.codeId,
+              uploader: history.sender,
+              name: history.codeName,
+            } as CodeLocalInfo
+          }
+        />
       </TableRow>
       <TableRow>
         <ExplorerLink
