@@ -15,6 +15,7 @@ import { ControllerInput } from "lib/components/forms";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
@@ -59,6 +60,7 @@ export const UploadSection = ({
 
   const proceed = useCallback(async () => {
     if (address) {
+      AmpTrack(AmpEvent.ACTION_UPLOAD);
       const stream = await postUploadTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),

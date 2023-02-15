@@ -6,6 +6,7 @@ import { ExplorerLink } from "../ExplorerLink";
 import { TagSelection } from "lib/components/forms/TagSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import { getTagsDefault } from "lib/utils";
 
@@ -23,6 +24,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
     tags: tagResult,
+    actions: () => AmpTrack(AmpEvent.CONTRACT_EDIT_TAGS),
   });
 
   return (

@@ -3,10 +3,13 @@ import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
 import { MdLink } from "react-icons/md";
 
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
 export const ConnectWalletBtn = () => {
   const { connect } = useWallet();
 
   const onClickConnect: MouseEventHandler = async (e) => {
+    AmpTrack(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
     await connect();
   };

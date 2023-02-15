@@ -10,6 +10,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
+import { AmpTrackToExecute } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import {
   getFirstQueryParam,
@@ -57,19 +58,24 @@ const Execute = () => {
   );
 
   useEffect(() => {
-    const contractAddressParam = getFirstQueryParam(
-      router.query.contract
-    ) as ContractAddr;
+    if (router.isReady) {
+      const contractAddressParam = getFirstQueryParam(
+        router.query.contract
+      ) as ContractAddr;
 
-    let decodeMsg = libDecode(getFirstQueryParam(router.query.msg));
-    if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-      onContractSelect(contractAddressParam);
-      decodeMsg = "";
+      const msgParam = getFirstQueryParam(router.query.msg);
+      let decodeMsg = libDecode(msgParam);
+      if (decodeMsg && jsonValidate(decodeMsg) !== null) {
+        onContractSelect(contractAddressParam);
+        decodeMsg = "";
+      }
+      const jsonMsg = jsonPrettify(decodeMsg);
+
+      setValue("contractAddress", contractAddressParam);
+      setValue("initialMsg", jsonMsg);
+
+      AmpTrackToExecute(!!contractAddressParam, !!msgParam);
     }
-    const jsonMsg = jsonPrettify(decodeMsg);
-
-    setValue("contractAddress", contractAddressParam);
-    setValue("initialMsg", jsonMsg);
   }, [router, onContractSelect, setValue]);
 
   return (

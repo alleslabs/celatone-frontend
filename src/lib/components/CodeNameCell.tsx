@@ -4,6 +4,7 @@ import { MdCheckCircle } from "react-icons/md";
 import { EditableCell } from "lib/components/table";
 import { MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeLocalInfo } from "lib/stores/code";
 
 interface CodeNameCellProps {
@@ -15,6 +16,7 @@ export const CodeNameCell = ({ code }: CodeNameCellProps) => {
   const { updateCodeInfo } = useCodeStore();
 
   const onSave = (inputValue?: string) => {
+    AmpTrack(AmpEvent.USE_QUICK_EDIT_CODE);
     updateCodeInfo(code.id, code.uploader, inputValue);
     toast({
       title: "New Code Name Saved",
