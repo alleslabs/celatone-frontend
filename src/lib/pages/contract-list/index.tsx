@@ -15,7 +15,7 @@ const AllContractListsPage = observer(() => {
   const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
 
   const handleListSelect = (slug: string) => {
-    navigate({ pathname: `/contract-list/${slug}` });
+    navigate({ pathname: "/contract-list/[slug]", query: { slug } });
   };
 
   return (
