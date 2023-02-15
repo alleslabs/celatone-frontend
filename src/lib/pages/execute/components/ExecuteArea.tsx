@@ -22,7 +22,7 @@ import { AssetInput, ControllerInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { AmpEvent, AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
@@ -102,7 +102,10 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
   });
 
   const proceed = useCallback(async () => {
-    AmpTrack(AmpEvent.ACTION_EXECUTE);
+    AmpTrackAction(
+      AmpEvent.ACTION_EXECUTE,
+      assets.filter((asset) => !!asset.denom).length
+    );
     const funds = fabricateFunds(assets);
 
     const stream = await executeTx({

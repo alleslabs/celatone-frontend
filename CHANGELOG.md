@@ -147,6 +147,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#200](https://github.com/alleslabs/celatone-frontend/pull/200) Fix add attached assets property
 - [#198](https://github.com/alleslabs/celatone-frontend/pull/198) Fix handle keplr wallet ready
 - [#194](https://github.com/alleslabs/celatone-frontend/pull/194) Fix "connect wallet state" for tables
 - [#196](https://github.com/alleslabs/celatone-frontend/pull/196) Fix rewrite rule for amplitude
