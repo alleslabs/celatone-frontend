@@ -68,9 +68,6 @@ export const CodeSelectModalButton = ({
             <Heading as="h6" variant="h6" mb="8px" ml="24px">
               My Stored Codes
             </Heading>
-            {/* <Text variant="body1" fontWeight={700} ml="24px" mb="16px">
-              My Stored Codes
-            </Text> */}
             <MyStoredCodeContent
               storedCodes={storedCodes}
               handleSelect={handleSelect}
