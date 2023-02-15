@@ -1,3 +1,4 @@
+import { State } from "@cosmos-kit/core";
 import { useWallet } from "@cosmos-kit/react";
 import big from "big.js";
 import { GraphQLClient } from "graphql-request";
@@ -66,7 +67,7 @@ export const AppProvider = observer(
     appContractAddressMap,
     constants,
   }: AppProviderProps<ContractAddress, Constants>) => {
-    const { currentChainName, currentChainRecord } = useWallet();
+    const { currentChainName, currentChainRecord, state } = useWallet();
     const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
     const { setContractUserKey, isContractUserKeyExist } = useContractStore();
     const { setProjectUserKey, isProjectUserKeyExist } =
@@ -114,7 +115,7 @@ export const AppProvider = observer(
     );
 
     useEffect(() => {
-      if (currentChainName) {
+      if (state === State.Done) {
         const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
         setCodeUserKey(userKey);
         setContractUserKey(userKey);
@@ -125,6 +126,7 @@ export const AppProvider = observer(
       setCodeUserKey,
       setContractUserKey,
       setProjectUserKey,
+      state,
     ]);
 
     useNetworkChange();
