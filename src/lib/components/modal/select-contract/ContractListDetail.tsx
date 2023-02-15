@@ -54,7 +54,7 @@ interface ContractListTableProps {
   contractListInfo: ContractListInfo;
   isLoading?: boolean;
   isReadOnly?: boolean;
-  isShowConnectWallet: boolean;
+  isShowConnectWallet?: boolean;
   filteredContracts: ContractLocalInfo[];
   onContractSelect?: (addr: ContractAddr) => void;
 }
@@ -103,17 +103,17 @@ const ContractListContent = ({
 
 interface ContractListDetailProps {
   contractListInfo: ContractListInfo;
-  isShowConnectWallet: boolean;
   isLoading?: boolean;
   isReadOnly?: boolean;
+  isShowConnectWallet?: boolean;
   onContractSelect?: (addr: ContractAddr) => void;
 }
 
 export const ContractListDetail = ({
   contractListInfo,
-  isShowConnectWallet,
   isLoading,
   isReadOnly,
+  isShowConnectWallet,
   onContractSelect,
 }: ContractListDetailProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");

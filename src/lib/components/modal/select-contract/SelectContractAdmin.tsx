@@ -67,6 +67,7 @@ export const SelectContractAdmin = ({
         leftIcon={
           !notSelected ? <Icon as={MdSwapHoriz} boxSize="5" /> : undefined
         }
+        disabled={!address}
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
@@ -86,7 +87,6 @@ export const SelectContractAdmin = ({
               contractListInfo={contractList}
               isReadOnly
               onContractSelect={onSelectThenClose}
-              isShowConnectWallet
             />
           </ModalBody>
         </ModalContent>
