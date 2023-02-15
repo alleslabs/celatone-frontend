@@ -9,6 +9,7 @@ import {
 import { MdLanguage } from "react-icons/md";
 
 import { IconButton } from "lib/components/button/IconButton";
+import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
 export const renderSocial = (name: string) => {
@@ -36,7 +37,11 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
       minHeight="32px"
     >
       {details.website && (
-        <IconButton href={details.website} icon={MdLanguage} />
+        <IconButton
+          href={details.website}
+          icon={MdLanguage}
+          onClick={() => AmpTrackWebsite(details.website)}
+        />
       )}
       {details.github && <IconButton href={details.github} icon={FaGithub} />}
       {details.socials.length &&
@@ -47,6 +52,7 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
                 key={social.name}
                 href={social.url}
                 icon={renderSocial(social.name)}
+                onClick={() => AmpTrackSocial(social.url)}
               />
             )
         )}

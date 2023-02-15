@@ -16,6 +16,7 @@ import { useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { WalletSection } from "lib/components/Wallet";
 import { getSupportedChainNames } from "lib/data";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import Searchbar from "./Searchbar";
 
@@ -48,7 +49,7 @@ const Header = () => {
       </AppLink>
       <Searchbar />
       <Flex gap={2}>
-        <Menu>
+        <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
           <MenuButton
             px={4}
             py="5px"

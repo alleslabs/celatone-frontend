@@ -5,11 +5,12 @@ import { MdLanguage } from "react-icons/md";
 interface IconButtonProps {
   href: string;
   icon: IconType;
+  onClick?: () => void;
 }
 
 const iconHover = "pebble.500";
 
-export const IconButton = ({ href, icon }: IconButtonProps) => {
+export const IconButton = ({ href, icon, onClick }: IconButtonProps) => {
   return (
     <Button
       variant="ghost"
@@ -25,6 +26,7 @@ export const IconButton = ({ href, icon }: IconButtonProps) => {
         rel="noopener noreferrer"
         display="flex"
         alignItems="center"
+        onClick={onClick}
       >
         <Icon
           as={icon}

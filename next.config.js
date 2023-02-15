@@ -18,6 +18,10 @@ const nextConfig = {
         // https://abcdefghijklmnopqrstquwxyzabcdef@o123456.ingest.sentry.io/1234567
         destination: `https://${SENTRY_DSN.split("@")[1].split("/")[0]}/:path*`,
       },
+      {
+        source: "/amplitude/:path*",
+        destination: `https://api2.amplitude.com/2/httpapi/:path*`,
+      },
     ];
   },
 };

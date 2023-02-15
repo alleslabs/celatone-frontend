@@ -3,6 +3,8 @@ import type { LayoutProps } from "@chakra-ui/react";
 import { Tooltip, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
 
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
 interface CopierProps {
   value: string;
   ml?: string;
@@ -40,6 +42,7 @@ export const Copier = ({
           cursor="pointer"
           marginLeft={ml}
           onClick={(e) => {
+            AmpTrack(AmpEvent.USE_COPIER);
             e.stopPropagation();
             onCopy();
           }}
