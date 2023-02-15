@@ -86,6 +86,7 @@ export const SelectContractAdmin = ({
               contractListInfo={contractList}
               isReadOnly
               onContractSelect={onSelectThenClose}
+              isShowConnectWallet
             />
           </ModalBody>
         </ModalContent>

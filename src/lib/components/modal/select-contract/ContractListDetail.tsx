@@ -54,6 +54,7 @@ interface ContractListTableProps {
   contractListInfo: ContractListInfo;
   isLoading?: boolean;
   isReadOnly?: boolean;
+  isShowConnectWallet: boolean;
   filteredContracts: ContractLocalInfo[];
   onContractSelect?: (addr: ContractAddr) => void;
 }
@@ -62,11 +63,12 @@ const ContractListContent = ({
   address,
   contractListInfo,
   isReadOnly,
+  isShowConnectWallet,
   filteredContracts,
   onContractSelect,
   isLoading,
 }: ContractListTableProps) => {
-  if (!address) {
+  if (!address && isShowConnectWallet) {
     return (
       <DisconnectedState text="to see contracts you've previously instantiated." />
     );
@@ -101,6 +103,7 @@ const ContractListContent = ({
 
 interface ContractListDetailProps {
   contractListInfo: ContractListInfo;
+  isShowConnectWallet: boolean;
   isLoading?: boolean;
   isReadOnly?: boolean;
   onContractSelect?: (addr: ContractAddr) => void;
@@ -108,6 +111,7 @@ interface ContractListDetailProps {
 
 export const ContractListDetail = ({
   contractListInfo,
+  isShowConnectWallet,
   isLoading,
   isReadOnly,
   onContractSelect,
@@ -156,6 +160,7 @@ export const ContractListDetail = ({
         isReadOnly={isReadOnly}
         onContractSelect={onContractSelect}
         isLoading={isLoading}
+        isShowConnectWallet={isShowConnectWallet}
       />
     </Box>
   );

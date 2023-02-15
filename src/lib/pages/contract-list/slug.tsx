@@ -170,6 +170,7 @@ const ContractsByList = observer(() => {
       <ContractListDetail
         contractListInfo={contractListInfo}
         isLoading={isInstantiatedByMe ? isLoading : false}
+        isShowConnectWallet={isInstantiatedByMe}
       />
     </>
   );
