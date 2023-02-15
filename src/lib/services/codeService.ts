@@ -191,7 +191,8 @@ export const useCodeListByWalletAddressWithPagination = (
       pageSize,
       walletAddress,
     ],
-    queryFn
+    queryFn,
+    { enabled: !!walletAddress }
   );
 };
 
