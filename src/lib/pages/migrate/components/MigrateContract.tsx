@@ -16,6 +16,7 @@ import type { FormStatus } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { useLCDEndpoint } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
@@ -107,6 +108,7 @@ export const MigrateContract = ({
   );
 
   const proceed = useCallback(async () => {
+    AmpTrack(AmpEvent.ACTION_MIGRATE);
     const stream = await migrateTx({
       contractAddress,
       codeId: Number(codeId),

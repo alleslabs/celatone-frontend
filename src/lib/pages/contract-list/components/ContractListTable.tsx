@@ -35,6 +35,7 @@ import {
   TableHeaderNoBorder,
   TableRowNoBorder,
 } from "lib/components/table";
+import { useGetAddressType } from "lib/hooks";
 import { useAdminByContractAddresses } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
@@ -68,6 +69,7 @@ export const ContractListTable = ({
   contractRemovalInfo,
 }: ContractListTableProps) => {
   const navigate = useInternalNavigate();
+  const getAddressType = useGetAddressType();
   const { address } = useWallet();
   const { data: admins = {} } = useAdminByContractAddresses(
     contracts.map((contract) => contract.contractAddress)
@@ -128,7 +130,7 @@ export const ContractListTable = ({
                 {item.instantiator ? (
                   <ExplorerLink
                     value={item.instantiator}
-                    type="user_address"
+                    type={getAddressType(item.instantiator)}
                     canCopyWithHover
                   />
                 ) : (

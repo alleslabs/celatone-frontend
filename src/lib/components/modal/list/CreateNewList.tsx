@@ -9,6 +9,7 @@ import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useContractStore, useUserKey } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { shortenName } from "lib/utils";
 
 interface CreateNewListModalProps {
@@ -59,6 +60,8 @@ export function CreateNewListModal({
     resetListName();
     onCreate?.(listName);
     onClose?.();
+
+    AmpTrack(AmpEvent.LIST_CREATE);
 
     toast({
       title: `Create ${shortenName(listName)} successfully`,

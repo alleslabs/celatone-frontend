@@ -16,5 +16,6 @@ export const SaveContractDetailsModal = ({
     contractLocalInfo={contractLocalInfo}
     triggerElement={triggerElement}
     defaultList={DEFAULT_LIST}
+    isSave
   />
 );

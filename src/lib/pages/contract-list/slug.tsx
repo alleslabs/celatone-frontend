@@ -29,9 +29,10 @@ import { AppLink } from "lib/components/AppLink";
 import { SaveNewContractModal } from "lib/components/modal/contract";
 import { EditListNameModal, RemoveListModal } from "lib/components/modal/list";
 import { ContractListDetail } from "lib/components/modal/select-contract";
-import { INSTANTIATED_LIST_NAME } from "lib/data";
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 const StyledIcon = chakra(Icon, {
@@ -66,6 +67,21 @@ const ContractsByList = observer(() => {
     }, 100);
     return () => clearTimeout(timeoutId);
   }, [contractListInfo, isHydrated, navigate]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      switch (listSlug) {
+        case formatSlugName(INSTANTIATED_LIST_NAME):
+          AmpTrack(AmpEvent.TO_LIST_BY_ME);
+          break;
+        case formatSlugName(SAVED_LIST_NAME):
+          AmpTrack(AmpEvent.TO_LIST_SAVED);
+          break;
+        default:
+          AmpTrack(AmpEvent.TO_LIST_OTHERS);
+      }
+    }
+  }, [router.isReady, listSlug]);
 
   if (!contractListInfo) return null;
 
