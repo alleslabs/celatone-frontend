@@ -65,9 +65,12 @@ export const CodeSelectModalButton = ({
           </ModalHeader>
           <ModalCloseButton color="text.dark" />
           <ModalBody px={0} maxH="640px" overflow="scroll">
-            <Text variant="body1" fontWeight={700} ml="24px" mb="16px">
+            <Heading as="h6" variant="h6" mb="8px" ml="24px">
               My Stored Codes
-            </Text>
+            </Heading>
+            {/* <Text variant="body1" fontWeight={700} ml="24px" mb="16px">
+              My Stored Codes
+            </Text> */}
             <MyStoredCodeContent
               storedCodes={storedCodes}
               handleSelect={handleSelect}

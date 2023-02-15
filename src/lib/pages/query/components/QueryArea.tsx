@@ -84,7 +84,10 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Flex width="full" my="24px" alignItems="center">
+      <Box width="full" my="16px" alignItems="center">
+        <Text variant="body3" mb="8px">
+          Message Suggestions:
+        </Text>
         {cmds.length ? (
           <ButtonGroup
             width="90%"
@@ -107,12 +110,12 @@ export const QueryArea = ({
           </ButtonGroup>
         ) : (
           contractAddress && (
-            <Text ml="16px" variant="body2" color="text.dark">
+            <Text my="4px" variant="body2" color="text.dark">
               No QueryMsgs suggestion available
             </Text>
           )
         )}
-      </Flex>
+      </Box>
       <Flex gap="16px">
         <Box w="full">
           <JsonInput

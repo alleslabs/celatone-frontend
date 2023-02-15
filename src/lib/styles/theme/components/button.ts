@@ -6,6 +6,7 @@ const pebble600 = "pebble.600";
 const pebble700 = "pebble.700";
 const violetLight = "violet.light";
 const honeydewBg = "honeydew.background";
+const honeydewDarker = "honeydew.darker";
 const borderDefualt = "1px solid";
 
 const generateStyle = ({
@@ -116,8 +117,21 @@ export const Button: ComponentStyleConfig = {
         color: "honeydew.main",
       },
       disabled: {
-        border: "honeydew.darker",
-        color: "honeydew.darker",
+        border: honeydewDarker,
+        color: honeydewDarker,
+      },
+      hoverBg: honeydewBg,
+      activeBg: "transparent",
+    }),
+    "command-button": generateStyle({
+      basic: {
+        border: borderDefualt,
+        borderColor: honeydewDarker,
+        color: "text.main",
+      },
+      disabled: {
+        border: honeydewDarker,
+        color: honeydewDarker,
       },
       hoverBg: honeydewBg,
       activeBg: "transparent",
