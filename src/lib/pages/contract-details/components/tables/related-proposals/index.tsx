@@ -4,7 +4,7 @@ import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer } from "lib/components/table";
-import { useRelatedProposalsByContractAddress } from "lib/services/contractService";
+import { useRelatedProposalsByContractAddress } from "lib/services/proposalService";
 import type { ContractAddr, Option } from "lib/types";
 
 import { RelatedProposalsHeader } from "./RelatedProposalsHeader";

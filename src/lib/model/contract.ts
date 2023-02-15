@@ -21,8 +21,8 @@ import {
   useInstantiatedListByUserQuery,
   useMigrationHistoriesCountByContractAddress,
   useTxsCountByContractAddress,
-  useRelatedProposalsCountByContractAddress,
 } from "lib/services/contractService";
+import { useRelatedProposalsCountByContractAddress } from "lib/services/proposalService";
 import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,

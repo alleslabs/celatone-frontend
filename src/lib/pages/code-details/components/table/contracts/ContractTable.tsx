@@ -11,7 +11,7 @@ import { useContractStore } from "lib/hooks";
 import {
   useContractListByCodeId,
   useContractListCountByCodeId,
-} from "lib/services/codeService";
+} from "lib/services/contractService";
 import type { ContractInfo, Option } from "lib/types";
 
 import { ContractTableRow } from "./ContractTableRow";

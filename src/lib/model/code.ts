@@ -1,9 +1,9 @@
 import { useChainId, useContractStore } from "lib/hooks";
+import { useCodeInfoByCodeId } from "lib/services/codeService";
 import {
-  useCodeInfoByCodeId,
   useContractListByCodeId,
   useContractListCountByCodeId,
-} from "lib/services/codeService";
+} from "lib/services/contractService";
 import {
   usePublicProjectByCodeId,
   usePublicProjectBySlug,

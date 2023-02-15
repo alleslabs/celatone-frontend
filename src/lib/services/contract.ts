@@ -2,7 +2,7 @@ import axios from "axios";
 import type { GraphQLClient } from "graphql-request";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
-import { getBlockTimestampByHeightQueryDocument } from "lib/data/queries";
+import { getBlockTimestampByHeightQueryDocument } from "lib/query/other";
 import type {
   Addr,
   Balance,
