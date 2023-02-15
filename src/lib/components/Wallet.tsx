@@ -2,6 +2,7 @@ import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
 
 import {
@@ -19,11 +20,13 @@ export const WalletSection = () => {
 
   // Events
   const onClickConnect: MouseEventHandler = async (e) => {
+    AmpTrack(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
     await connect();
   };
 
   const onClickOpenView: MouseEventHandler = (e) => {
+    AmpTrack(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
     openView();
   };

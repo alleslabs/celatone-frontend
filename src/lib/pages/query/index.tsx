@@ -11,6 +11,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { useLCDEndpoint } from "lib/hooks";
+import { AmpTrackToQuery } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 import {
@@ -69,20 +70,25 @@ const Query = () => {
   );
 
   useEffect(() => {
-    const contractAddressParam = getFirstQueryParam(
-      router.query.contract
-    ) as ContractAddr;
+    if (router.isReady) {
+      const contractAddressParam = getFirstQueryParam(
+        router.query.contract
+      ) as ContractAddr;
 
-    let decodeMsg = decode(getFirstQueryParam(router.query.msg));
-    if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-      onContractSelect(contractAddressParam);
-      decodeMsg = "";
+      const msgParam = getFirstQueryParam(router.query.msg);
+      let decodeMsg = decode(msgParam);
+      if (decodeMsg && jsonValidate(decodeMsg) !== null) {
+        onContractSelect(contractAddressParam);
+        decodeMsg = "";
+      }
+      const jsonMsg = jsonPrettify(decodeMsg);
+
+      setContractAddress(contractAddressParam);
+      setInitialMsg(jsonMsg);
+      if (!contractAddressParam) setCmds([]);
+
+      AmpTrackToQuery(!!contractAddressParam, !!msgParam);
     }
-    const jsonMsg = jsonPrettify(decodeMsg);
-
-    setContractAddress(contractAddressParam);
-    setInitialMsg(jsonMsg);
-    if (!contractAddressParam) setCmds([]);
   }, [router, onContractSelect]);
 
   return (

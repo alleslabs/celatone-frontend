@@ -8,6 +8,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -15,6 +16,7 @@ import { MdSearch } from "react-icons/md";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 
 import { FilterSelection } from "./components/FilterSelection";
@@ -22,6 +24,7 @@ import { PastTxsContent } from "./components/PastTxsContent";
 import { useTxQuery, useTxQueryCount } from "./query/useTxQuery";
 
 const PastTxs = () => {
+  const router = useRouter();
   const { address } = useWallet();
 
   const { watch, setValue } = useForm({
@@ -106,6 +109,10 @@ const PastTxs = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [pastTxsState.filters, pastTxsState.search, setCurrentPage]);
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_PAST_TXS);
+  }, [router.isReady]);
 
   return (
     <Box>

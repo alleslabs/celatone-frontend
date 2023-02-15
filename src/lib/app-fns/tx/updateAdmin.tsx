@@ -9,6 +9,7 @@ import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type {
   Addr,
   ContractAddr,
@@ -46,6 +47,7 @@ export const updateAdminTx = ({
         client.updateAdmin(address, contractAddress, newAdmin, fee, undefined),
     }),
     ({ value: txInfo }) => {
+      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.();
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;

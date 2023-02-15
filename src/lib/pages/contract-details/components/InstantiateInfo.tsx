@@ -120,9 +120,8 @@ export const InstantiateInfo = ({
   }
 
   const instantiatorType = getAddressType(instantiateInfo.instantiator);
-  const adminTypeOpt = instantiateInfo.admin
-    ? getAddressType(instantiateInfo.admin)
-    : undefined;
+  const adminType = getAddressType(instantiateInfo.admin ?? "");
+
   return (
     <Container>
       <LabelText label="Network">{chainId}</LabelText>
@@ -149,13 +148,11 @@ export const InstantiateInfo = ({
 
       <LabelText
         label="Admin Address"
-        helperText1={
-          adminTypeOpt ? getAddressTypeText(adminTypeOpt) : undefined
-        }
+        helperText1={instantiateInfo.admin ? adminType : undefined}
       >
         {instantiateInfo.admin ? (
           <ExplorerLink
-            type={adminTypeOpt}
+            type={adminType}
             value={instantiateInfo.admin}
             canCopyWithHover
           />
