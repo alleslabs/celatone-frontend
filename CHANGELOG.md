@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#170](https://github.com/alleslabs/celatone-frontend/pull/170) Add Google Analytics 4 for website analytics
 - [#169](https://github.com/alleslabs/celatone-frontend/pull/169) Add amplitude for website analytics
 - [#133](https://github.com/alleslabs/celatone-frontend/pull/133) Add OG and default SEO with next-seo
 - [#160](https://github.com/alleslabs/celaotne-frontend/pull/160) Add remaining public codes and contracts info
@@ -116,6 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#190](https://github.com/alleslabs/celatone-frontend/pull/190) Setup sentry tunnel in next config
 - [#179](https://github.com/alleslabs/celatone-frontend/pull/179) Add loading state to My code, Recent Codes, Contract details, Code details, All public projects, Public project, Saved Contract, Instantiated my be
 - [#182](https://github.com/alleslabs/celatone-frontend/pull/182) Disable mainnet store code and show alert, refactor select chain hook and alert variants
 - [#180](https://github.com/alleslabs/celatone-frontend/pull/180) Add helper text to editable cell, Change trash button to bookmark button
@@ -146,7 +148,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#195](https://github.com/alleslabs/celatone-frontend/pull/195) Make code name cell for migration table to be editable in contract detail page
-- [#188](https://github.com/alleslabs/celatone-frontend/pull/188) Fix "No contact description" prefill in description section in contract detail page 
+- [#188](https://github.com/alleslabs/celatone-frontend/pull/188) Fix "No contact description" prefill in description section in contract detail page
 - [#187](https://github.com/alleslabs/celatone-frontend/pull/187) Fix renaming list flicker to the all lists for a second
 - [#184](https://github.com/alleslabs/celatone-frontend/pull/184) Fix next seo to use default seo
 - [#186](https://github.com/alleslabs/celatone-frontend/pull/186) Fix logo navigation
