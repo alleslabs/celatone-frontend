@@ -20,7 +20,7 @@ import { useState } from "react";
 import { MdChevronLeft, MdList, MdSwapHoriz } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
-import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
+import { DEFAULT_RPC_ERROR } from "lib/data";
 import {
   useContractStore,
   useLCDEndpoint,
@@ -29,7 +29,6 @@ import {
 import { useInstantiatedByMe } from "lib/model/contract";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
-import { formatSlugName } from "lib/utils";
 
 import { AllContractLists } from "./AllContractLists";
 import { ContractListDetail } from "./ContractListDetail";
@@ -99,9 +98,6 @@ export const SelectContractInstantiator = ({
   const handleListSelect = (slug: string) => {
     setListSlug(slug);
   };
-
-  const isInstantiatedByMe =
-    listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
 
   return (
     <>
@@ -198,7 +194,6 @@ export const SelectContractInstantiator = ({
                   contractListInfo={contractList}
                   isReadOnly
                   onContractSelect={onSelectThenClose}
-                  isShowConnectWallet={isInstantiatedByMe}
                 />
               </ModalBody>
             </>
