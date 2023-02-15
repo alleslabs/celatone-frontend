@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { RiPencilFill } from "react-icons/ri";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
@@ -15,9 +15,10 @@ interface UserContractDescProps {
 export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
+  const description = contractData.contractLocalInfo?.description;
+
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text:
-      contractData.contractLocalInfo?.description || "No Contract description",
+    text: description || "No Contract description",
     ellipsis: "...",
     lines: textLine(
       !contractData.publicProject.publicInfo?.description,
@@ -34,7 +35,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
           instantiator: contractData.instantiateInfo.instantiator,
           label: contractData.instantiateInfo.label,
           name: contractData.contractLocalInfo?.name,
-          description: contractData.contractLocalInfo?.description,
+          description,
           tags: contractData.contractLocalInfo?.tags,
           lists: contractData.contractLocalInfo?.lists,
         }}
@@ -45,21 +46,19 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
             variant="ghost-primary"
             leftIcon={<RiPencilFill />}
           >
-            {contractData.contractLocalInfo?.description
-              ? "Edit"
-              : "Add Description"}
+            {description ? "Edit" : "Add Description"}
           </Button>
         }
       />
     );
   };
 
-  const displayDescription = () => {
-    if (!contractData.contractLocalInfo?.description) {
+  const displayDescription = useMemo(() => {
+    if (!description) {
       return "No Contract Description";
     }
-    return showMore ? contractData.contractLocalInfo.description : clampedText;
-  };
+    return showMore ? description : clampedText;
+  }, [clampedText, description, showMore]);
 
   return (
     <Flex
@@ -86,10 +85,10 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
         ref={ref as React.MutableRefObject<HTMLParagraphElement>}
         key={key}
       >
-        <Linkify>{displayDescription()}</Linkify>
+        <Linkify>{displayDescription}</Linkify>
       </Text>
 
-      {!noClamp && contractData.contractLocalInfo?.description && (
+      {!noClamp && description && (
         <ShowMoreButton
           showMoreText="View Full Description"
           showLessText="View Less Description"
