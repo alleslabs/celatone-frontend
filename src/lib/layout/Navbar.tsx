@@ -49,6 +49,7 @@ const StyledIconButton = chakra(IconButton, {
     p: 1,
     mt: 2,
     mx: 2,
+    _hover: { borderRadius: "8px" },
   },
 });
 
@@ -188,7 +189,6 @@ const IconNavMenu = ({
                 variant="ghost-info"
                 icon={<MdDoubleArrow />}
                 onClick={handleResize}
-                _hover={{ bg: pebble800, borderRadius: "8px" }}
               />
             </Tooltip>
           )}
@@ -201,11 +201,7 @@ const IconNavMenu = ({
                   placement="right"
                   bg="honeydew.darker"
                 >
-                  <StyledIconButton
-                    variant="ghost-info"
-                    icon={<MdAdd />}
-                    _hover={{ bg: pebble800, borderRadius: "8px" }}
-                  />
+                  <StyledIconButton variant="ghost-info" icon={<MdAdd />} />
                 </Tooltip>
               }
             />
