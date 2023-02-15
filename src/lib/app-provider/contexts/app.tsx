@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import { useEffect, useContext, useMemo, createContext } from "react";
 
+import { useAmplitude } from "../hooks/useAmplitude";
 import { useNetworkChange } from "../hooks/useNetworkChange";
 import { getIndexerGraphClient } from "../query-client";
 import type { AppConstants } from "../types";
@@ -127,6 +128,8 @@ export const AppProvider = observer(
     ]);
 
     useNetworkChange();
+
+    useAmplitude();
 
     return isCodeUserKeyExist() &&
       isContractUserKeyExist() &&

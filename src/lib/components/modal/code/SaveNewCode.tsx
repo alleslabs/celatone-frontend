@@ -9,6 +9,7 @@ import { TextInput, NumberInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore, useLCDEndpoint } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { Addr } from "lib/types";
 import { getNameAndDescriptionDefault } from "lib/utils";
@@ -81,6 +82,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   };
 
   const handleSave = () => {
+    AmpTrack(AmpEvent.CODE_SAVE);
     const id = Number(codeId);
 
     saveNewCode(id);

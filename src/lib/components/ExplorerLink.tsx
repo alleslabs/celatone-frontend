@@ -9,6 +9,7 @@ import {
   getProposalUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/hooks";
+import { AmpTrackMintscan } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
 
 import { AppLink } from "./AppLink";
@@ -23,7 +24,7 @@ export type LinkType =
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
-  type?: LinkType;
+  type: LinkType;
   copyValue?: string;
   canCopyWithHover?: boolean;
   isReadOnly?: boolean;
@@ -76,12 +77,14 @@ const getValueText = (
 };
 
 const LinkRender = ({
+  type,
   isInternal,
   hrefLink,
   textValue,
   isEllipsis,
   maxWidth,
 }: {
+  type: string;
   isInternal: boolean;
   hrefLink: string;
   textValue: string;
@@ -112,7 +115,10 @@ const LinkRender = ({
       target="_blank"
       rel="noopener noreferrer"
       data-peer
-      onClick={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        AmpTrackMintscan(type);
+        e.stopPropagation();
+      }}
     >
       {textElement}
     </a>
@@ -160,6 +166,7 @@ export const ExplorerLink = ({
       ) : (
         <>
           <LinkRender
+            type={type}
             isInternal={isInternal}
             hrefLink={hrefLink}
             textValue={textValue}

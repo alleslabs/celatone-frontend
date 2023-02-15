@@ -19,6 +19,7 @@ import {
   useValidateAddress,
 } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { Addr, ContractAddr, LVPair, RpcQueryError } from "lib/types";
 import {
@@ -177,7 +178,10 @@ export function SaveNewContractModal({
     description: offchainState.description,
     tags: offchainState.tags,
     lists: offchainState.lists,
-    actions: resetForm,
+    actions: () => {
+      AmpTrack(AmpEvent.CONTRACT_SAVE);
+      resetForm();
+    },
   });
 
   return (
