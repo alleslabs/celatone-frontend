@@ -3,7 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
 import { migrateContractTx } from "lib/app-fns/tx/migrate";
-import type { ContractAddr, Option } from "lib/types";
+import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 export interface MigrateStreamParams {
   contractAddress: ContractAddr;
@@ -32,7 +32,7 @@ export const useMigrateTx = () => {
       if (!estimatedFee) return null;
 
       return migrateContractTx({
-        sender: address,
+        sender: address as HumanAddr,
         contractAddress,
         codeId,
         migrateMsg,

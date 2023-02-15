@@ -1,4 +1,4 @@
-import { Grid } from "@chakra-ui/react";
+import { Grid, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableContainer, TableHeader, TableRow } from "lib/components/table";
@@ -13,7 +13,7 @@ interface ContractListReadOnlyTableProps {
   onContractSelect: (addr: ContractAddr) => void;
 }
 
-const TEMPLATE_COLUMNS = "160px 1fr 220px 160px";
+const TEMPLATE_COLUMNS = "160px 280px 260px 1fr";
 
 export const ContractListReadOnlyTable = ({
   contracts = [],
@@ -55,11 +55,17 @@ export const ContractListReadOnlyTable = ({
             <TagsCell contractLocalInfo={item} isReadOnly />
           </TableRow>
           <TableRow>
-            <ExplorerLink
-              value={item.instantiator}
-              type="user_address"
-              isReadOnly
-            />
+            {item.instantiator ? (
+              <ExplorerLink
+                value={item.instantiator}
+                type="user_address"
+                isReadOnly
+              />
+            ) : (
+              <Text variant="body2" color="text.dark">
+                N/A
+              </Text>
+            )}
           </TableRow>
         </Grid>
       ))}

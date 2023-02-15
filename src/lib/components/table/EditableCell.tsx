@@ -1,4 +1,5 @@
 import { InfoIcon } from "@chakra-ui/icons";
+import type { TextProps } from "@chakra-ui/react";
 import {
   Flex,
   Text,
@@ -17,23 +18,38 @@ interface EditableCellProps {
   defaultValue: string;
   maxLength: number;
   tooltip?: string;
+  isReadOnly?: boolean;
   onSave?: (value?: string) => void;
 }
+
+const getInputValueTextProps = (
+  isShowInputValue: boolean,
+  inputValue: string,
+  defaultValue: string
+): Pick<TextProps, "fontWeight" | "color" | "children"> => {
+  if (isShowInputValue) {
+    return { fontWeight: 600, color: "text.main", children: inputValue };
+  }
+  return { fontWeight: 400, color: "text.dark", children: defaultValue };
+};
+
 export const EditableCell = ({
   initialValue = "",
   defaultValue,
   maxLength,
   tooltip,
+  isReadOnly,
   onSave,
 }: EditableCellProps) => {
   const [inputValue, setInputValue] = useState(initialValue);
   const [isHover, setIsHover] = useState(false);
   const [isHoverText, setIsHoverText] = useState(false);
 
-  const ref = useRef(null);
+  const editCellRef = useRef(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
   const [isEditCellOpen, setIsEditCellOpen] = useState(false);
   useOutsideClick({
-    ref,
+    ref: editCellRef,
     handler: () => {
       setIsEditCellOpen(false);
     },
@@ -68,9 +84,11 @@ export const EditableCell = ({
     onSave?.(inputValue);
   };
 
-  // TODO: reconsider 20
-  const showName = isHoverText && inputValue.trim().length > 20;
-  const isShowInputValue = inputValue.trim().length;
+  const isShowInputValue = Boolean(inputValue.trim().length);
+  const showName =
+    isHoverText &&
+    isShowInputValue &&
+    Number(textRef.current?.scrollWidth) > Number(textRef.current?.clientWidth);
 
   return (
     <>
@@ -94,78 +112,86 @@ export const EditableCell = ({
         onMouseOver={handleMouseEnter}
         onMouseOut={handleMouseOut}
         position="relative"
-        zIndex={2}
+        w="full"
       >
         {isEditCellOpen ? (
           <Flex
-            ref={ref}
-            alignItems="center"
-            gap={1}
+            direction="column"
             position="absolute"
-            top="-28px"
+            zIndex="sticky"
+            top="-32px"
             left="-16px"
             bg="pebble.800"
             p={3}
             borderRadius="8px"
-            zIndex="sticky"
             onClick={(e) => e.stopPropagation()}
+            ref={editCellRef}
           >
-            <Input
-              size="sm"
-              value={inputValue}
-              onChange={handleChange}
-              width="full"
-              minWidth="300px"
-              maxLength={maxLength}
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSave();
-                else if (e.key === "Escape") handleCancel();
-              }}
-            />
-            <Button size="sm" onClick={handleSave} variant="ghost-gray">
-              <Icon as={MdCheck} color="success.main" />
-            </Button>
-            <Button onClick={handleCancel} size="sm" variant="ghost-gray">
-              <Icon as={MdClose} color="error.light" />
-            </Button>
+            <Flex alignItems="center" gap={1}>
+              <Input
+                size="sm"
+                value={inputValue}
+                onChange={handleChange}
+                width="full"
+                minW="472px"
+                minH="40px"
+                maxLength={maxLength}
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSave();
+                  else if (e.key === "Escape") handleCancel();
+                }}
+              />
+              <Button size="sm" onClick={handleSave} variant="ghost-gray">
+                <Icon boxSize={6} as={MdCheck} color="success.main" />
+              </Button>
+              <Button onClick={handleCancel} size="sm" variant="ghost-gray">
+                <Icon boxSize={6} as={MdClose} color="error.light" />
+              </Button>
+            </Flex>
+            <Text fontSize="body3" color="text.dark" ml={4} mt={2}>
+              Your input will be stored in this device only.
+            </Text>
           </Flex>
         ) : (
           <Flex
-            alignItems="center"
+            position="relative"
+            w="fit-content"
+            maxW="full"
+            align="center"
             gap={2}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              if (!isReadOnly) e.stopPropagation();
+            }}
           >
-            <Flex
-              position="relative"
+            <Text
+              variant="body2"
+              className="ellipsis"
+              maxW="full"
               onMouseOver={handleMouseEnterText}
-              onMouseOut={handleMouseOutText}
-            >
+              ref={textRef}
+              {...getInputValueTextProps(
+                isShowInputValue,
+                inputValue,
+                defaultValue
+              )}
+            />
+            {showName && (
               <Text
                 variant="body2"
-                className="ellipsis"
-                maxW="150px"
-                fontWeight={isShowInputValue ? "600" : "400"}
-                color={isShowInputValue ? "text.main" : "text.dark"}
+                top="-16px"
+                left="-16px"
+                borderRadius="8px"
+                bg={isReadOnly ? "pebble.700" : "pebble.800"}
+                whiteSpace="nowrap"
+                p={4}
+                position="absolute"
+                zIndex="1"
+                onMouseOut={handleMouseOutText}
               >
-                {isShowInputValue ? inputValue : defaultValue}
+                {inputValue}
               </Text>
-              {showName && (
-                <Text
-                  variant="body2"
-                  top="-16px"
-                  left="-16px"
-                  borderRadius="8px"
-                  bg="pebble.800"
-                  whiteSpace="nowrap"
-                  p={4}
-                  position="absolute"
-                  zIndex="1"
-                >
-                  {inputValue}
-                </Text>
-              )}
-            </Flex>
+            )}
             {!!tooltip && (
               <Tooltip
                 hasArrow

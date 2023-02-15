@@ -20,8 +20,7 @@ import {
   EditContractDetailsModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
-import type { ContractData } from "lib/model/contract";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, ContractData } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 interface ContractTopProps {

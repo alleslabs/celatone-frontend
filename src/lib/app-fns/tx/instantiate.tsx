@@ -6,6 +6,7 @@ import type { Coin, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { TxResultRendering } from "lib/types";
 
 import { catchTxError } from "./common/catchTxError";
@@ -45,6 +46,7 @@ export const instantiateContractTx = ({
         }),
     }),
     ({ value: txInfo }) => {
+      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.(txInfo, label);
       // TODO: this is type hack
       return null as unknown as TxResultRendering;

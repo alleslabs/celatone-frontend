@@ -45,7 +45,7 @@ const RemarkRender = ({
       <p>{isGovernance ? `${prefix} Proposal ID` : `${prefix} Tx`}</p>
       <ExplorerLink
         type={isGovernance ? "proposal_id" : "tx_hash"}
-        value={value}
+        value={value.toString()}
         canCopyWithHover
         textFormat={textFormat}
       />
@@ -68,9 +68,7 @@ export const MigrationRow = ({
         />
       </TableRow>
       <TableRow>
-        {history.codeDescription || (
-          <Text color="text.dark">No Description</Text>
-        )}
+        {history.codeName || <Text color="text.dark">Untitled Name</Text>}
       </TableRow>
       <TableRow>
         <ExplorerLink

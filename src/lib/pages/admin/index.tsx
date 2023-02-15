@@ -25,8 +25,13 @@ import {
   useValidateAddress,
 } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackToAdminUpdate,
+} from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { Addr, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
 
@@ -45,7 +50,6 @@ const UpdateAdmin = () => {
   const [adminAddress, setAdminAddress] = useState("");
   const [adminFormStatus, setAdminFormStatus] = useState<FormStatus>({
     state: "init",
-    message: "",
   });
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState<string>();
@@ -73,7 +77,7 @@ const UpdateAdmin = () => {
     messages: [
       composeMsg(MsgType.UPDATE_ADMIN, {
         sender: address as HumanAddr,
-        newAdmin: adminAddress as HumanAddr | ContractAddr,
+        newAdmin: adminAddress as Addr,
         contract: contractAddressParam,
       }),
     ],
@@ -90,9 +94,10 @@ const UpdateAdmin = () => {
   });
 
   const proceed = useCallback(async () => {
+    AmpTrack(AmpEvent.ACTION_ADMIN_UPDATE);
     const stream = await updateAdminTx({
       contractAddress: contractAddressParam,
-      newAdmin: adminAddress as HumanAddr | ContractAddr,
+      newAdmin: adminAddress as Addr,
       estimatedFee,
     });
 
@@ -136,6 +141,18 @@ const UpdateAdmin = () => {
   }, [contractAddressParam, onContractPathChange, validateContractAddress]);
 
   /**
+   * @remarks Reset states on update admin succeed modal close
+   */
+  useEffect(() => {
+    setAdminAddress("");
+    setAdminFormStatus({
+      state: "init",
+    });
+    setEstimatedFee(undefined);
+    setSimulateError(undefined);
+  }, [router.asPath]);
+
+  /**
    * @remarks Admin address input validation
    */
   useEffect(() => {
@@ -165,6 +182,10 @@ const UpdateAdmin = () => {
     validateContractAddress,
     validateUserAddress,
   ]);
+
+  useEffect(() => {
+    if (router.isReady) AmpTrackToAdminUpdate(!!contractAddressParam);
+  }, [router.isReady, contractAddressParam]);
 
   return (
     <WasmPageContainer>

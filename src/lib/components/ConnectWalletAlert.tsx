@@ -14,6 +14,8 @@ import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
 import { MdLink } from "react-icons/md";
 
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
 interface ConnectWalletAlertProps extends AlertProps {
   title?: string;
   subtitle?: string;
@@ -27,6 +29,7 @@ export const ConnectWalletAlert = ({
   const { address, connect } = useWallet();
 
   const onClickConnect: MouseEventHandler = async (e) => {
+    AmpTrack(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
     await connect();
   };
@@ -42,16 +45,8 @@ export const ConnectWalletAlert = ({
       <Flex>
         <AlertIcon />
         <Box>
-          <AlertTitle>
-            <Text variant="body1" fontWeight="600" color="honeydew.main">
-              {title}
-            </Text>
-          </AlertTitle>
-          <AlertDescription>
-            <Text variant="body2" color="honeydew.main">
-              {subtitle}
-            </Text>
-          </AlertDescription>
+          <AlertTitle>{title}</AlertTitle>
+          <AlertDescription>{subtitle}</AlertDescription>
         </Box>
       </Flex>
       <Button variant="ghost-info" gap={2} onClick={onClickConnect}>

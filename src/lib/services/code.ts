@@ -1,11 +1,11 @@
 import axios from "axios";
 
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { Addr } from "lib/types";
 
 interface CodeIdInfoResponse {
   code_info: {
     code_id: string;
-    creator: HumanAddr | ContractAddr;
+    creator: Addr;
     data_hash: string;
     instantiate_permission: {
       permission: string;

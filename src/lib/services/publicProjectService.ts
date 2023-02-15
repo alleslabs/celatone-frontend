@@ -6,19 +6,23 @@ import { useCallback } from "react";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
 import type {
-  Contract,
+  PublicContract,
   Option,
+  PublicCodeData,
   PublicInfo,
   PublicProjectInfo,
-  RawContract,
+  RawPublicContract,
   RawPublicProjectInfo,
 } from "lib/types";
 
-const parseContract = (raw: RawContract): Contract => ({
+const parseContract = (raw: RawPublicContract): PublicContract => ({
   contractAddress: raw.address,
   description: raw.description,
   name: raw.name,
   slug: raw.slug,
+  label: raw.label,
+  instantiator: raw.instantiator,
+  admin: raw.admin,
 });
 
 export const usePublicProjects = () => {
@@ -50,7 +54,7 @@ export const usePublicProjects = () => {
 export const usePublicProjectBySlug = (slug: Option<string>) => {
   const { currentChainRecord } = useWallet();
 
-  const queryFn = useCallback(async (): Promise<Option<PublicProjectInfo>> => {
+  const queryFn = useCallback(async () => {
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
     if (!currentChainRecord)
       throw new Error("No chain selected (usePublicProjectBySlug)");
@@ -60,7 +64,7 @@ export const usePublicProjectBySlug = (slug: Option<string>) => {
           currentChainRecord.chain.chain_name
         )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
       )
-      .then(({ data: project }) => ({
+      .then<PublicProjectInfo>(({ data: project }) => ({
         ...project,
         contracts: project.contracts.map(parseContract),
       }));
@@ -103,6 +107,38 @@ export const usePublicProjectByContractAddress = (
     {
       keepPreviousData: true,
       enabled: !!contractAddress,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const usePublicProjectByCodeId = (
+  codeId: Option<number>
+): UseQueryResult<PublicCodeData> => {
+  const { currentChainRecord } = useWallet();
+
+  const queryFn = useCallback(async () => {
+    if (!codeId)
+      throw new Error("Code ID not found (usePublicProjectByCodeId)");
+    if (!currentChainRecord)
+      throw new Error("No chain selected (usePublicProjectByCodeId)");
+
+    return axios
+      .get<PublicCodeData>(
+        `${CELATONE_API_ENDPOINT}/codes/${getChainApiPath(
+          currentChainRecord.chain.chain_name
+        )}/${currentChainRecord.chain.chain_id}/${codeId}`
+      )
+      .then(({ data: projectInfo }) => projectInfo);
+  }, [codeId, currentChainRecord]);
+
+  return useQuery(
+    ["public_project_by_code_id", codeId, currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!codeId,
       retry: false,
       refetchOnWindowFocus: false,
     }

@@ -1,23 +1,33 @@
 import { useRouter } from "next/router";
 
 import { usePublicProjectBySlug } from "lib/services/publicProjectService";
+import type {
+  PublicCode,
+  PublicContract,
+  PublicDetail,
+  Option,
+} from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
-// TODO:
-// 1. contract -> get instantiator
-// 2. code -> get uploader
-// 3. code -> get contract amount that instantiated from this code ID
-// 4. code -> get permission and render the right tag (already has UI)
+interface PublicDataState {
+  publicCodes: PublicCode[];
+  publicContracts: PublicContract[];
+  projectDetail: Option<PublicDetail>;
+  slug: string;
+  isLoading: boolean;
+}
 
-export const usePublicData = () => {
+// TODO - Revisit: handle when data is underfined
+export const usePublicData = (): PublicDataState => {
   const router = useRouter();
   const projectSlug = getFirstQueryParam(router.query.slug);
-  const { data: projectInfo } = usePublicProjectBySlug(projectSlug);
+  const { data: projectInfo, isLoading } = usePublicProjectBySlug(projectSlug);
 
   return {
     publicCodes: projectInfo?.codes || [],
     publicContracts: projectInfo?.contracts || [],
     projectDetail: projectInfo?.details,
     slug: projectSlug,
+    isLoading,
   };
 };

@@ -9,7 +9,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { ContractAddr, Option } from "lib/types";
+import type { Addr, ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { EditContractDetailsModal, SaveContractDetailsModal } from "./modal";
@@ -28,7 +28,7 @@ interface DisplayNameProps {
 interface ContractDetailsButtonProps {
   contractAddress: ContractAddr;
   contractLocalInfo: Option<ContractLocalInfo>;
-  instantiator: string;
+  instantiator: Addr;
   label: string;
 }
 
@@ -214,7 +214,7 @@ export const ContractSelectSection = observer(
             <ContractDetailsButton
               contractAddress={contractAddress}
               contractLocalInfo={contractLocalInfo}
-              instantiator={contractState.instantiator}
+              instantiator={contractState.instantiator as Addr}
               label={contractState.label}
             />
           )}

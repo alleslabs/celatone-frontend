@@ -19,11 +19,12 @@ import {
   useValidateAddress,
 } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
+import type { Addr, ContractAddr, LVPair, RpcQueryError } from "lib/types";
 import {
   formatSlugName,
-  getDescriptionDefault,
+  getNameAndDescriptionDefault,
   getTagsDefault,
 } from "lib/utils";
 
@@ -117,7 +118,9 @@ export function SaveNewContractModal({
           instantiator: data.instantiator,
           label: data.label,
           name: contractLocalInfo?.name ?? data.label,
-          description: getDescriptionDefault(contractLocalInfo?.description),
+          description: getNameAndDescriptionDefault(
+            contractLocalInfo?.description
+          ),
           tags: getTagsDefault(contractLocalInfo?.tags),
           lists: [
             ...initialList,
@@ -169,13 +172,16 @@ export function SaveNewContractModal({
       offchainState.name.trim().length ? offchainState.name : labelState
     }`,
     contractAddress: contractAddressState as ContractAddr,
-    instantiator: instantiatorState,
+    instantiator: instantiatorState as Addr,
     label: labelState,
     name: offchainState.name,
     description: offchainState.description,
     tags: offchainState.tags,
     lists: offchainState.lists,
-    actions: resetForm,
+    actions: () => {
+      AmpTrack(AmpEvent.CONTRACT_SAVE);
+      resetForm();
+    },
   });
 
   return (

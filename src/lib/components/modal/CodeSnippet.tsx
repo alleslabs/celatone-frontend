@@ -22,7 +22,8 @@ import { MdCode } from "react-icons/md";
 import { CopyButton } from "../CopyButton";
 import { CustomTab } from "lib/components/CustomTab";
 import { useLCDEndpoint } from "lib/hooks";
-import type { ContractAddr, HumanAddr, Option } from "lib/types";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { ContractAddr, Option } from "lib/types";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-sh";
@@ -31,7 +32,7 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
 
 interface CodeSnippetProps {
-  contractAddress: HumanAddr | ContractAddr;
+  contractAddress: ContractAddr;
   message: string;
   type: "query" | "execute";
 }
@@ -194,7 +195,10 @@ execute();
         variant="outline-info"
         size="sm"
         ml="auto"
-        onClick={onOpen}
+        onClick={() => {
+          AmpTrack(AmpEvent.USE_CONTRACT_SNIPPET);
+          onOpen();
+        }}
       >
         <Icon as={MdCode} boxSize={5} mr={1} />
         Code Snippet

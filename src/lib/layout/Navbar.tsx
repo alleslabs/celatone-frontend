@@ -21,6 +21,7 @@ import { AppLink } from "lib/components/AppLink";
 import { CreateNewListModal } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore, usePublicProjectStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
@@ -36,20 +37,10 @@ interface MenuInfo {
   submenu: SubmenuInfo[];
 }
 
-// TODO: move to proper place
-const PERMISSIONED_CHAINS = ["osmosis", "osmosistestnet"];
-
 const Navbar = observer(() => {
   const { getContractLists } = useContractStore();
-
   const { getSavedPublicProjects } = usePublicProjectStore();
-
-  const { currentChainName } = useWallet();
-
-  const getAllCodesShortCut = () =>
-    PERMISSIONED_CHAINS.includes(currentChainName)
-      ? [{ name: "All Stored Codes", slug: "/all-codes", icon: MdPublic }]
-      : [];
+  const { currentChainRecord } = useWallet();
 
   const navMenu: MenuInfo[] = [
     {
@@ -67,7 +58,7 @@ const Navbar = observer(() => {
       category: "Quick Actions",
       submenu: [
         {
-          name: "Deploy contract",
+          name: "Deploy Contract",
           slug: "/deploy",
           icon: MdOutlineAdd,
         },
@@ -92,7 +83,7 @@ const Navbar = observer(() => {
       category: "Codes",
       submenu: [
         { name: "My Codes", slug: "/codes", icon: MdCode },
-        ...getAllCodesShortCut(),
+        { name: "Recent Codes", slug: "/recent-codes", icon: MdPublic },
       ],
     },
     {
@@ -118,13 +109,16 @@ const Navbar = observer(() => {
             icon: getListIcon(list.name),
           })),
         {
-          name: "View All",
+          name: "View All Lists",
           slug: "/contract-list",
           icon: MdMoreHoriz,
         },
       ],
     },
-    {
+  ];
+
+  if (currentChainRecord?.chain.network_type === "mainnet") {
+    navMenu.push({
       category: "Public Projects",
       submenu: [
         ...getSavedPublicProjects().map((list) => ({
@@ -133,14 +127,13 @@ const Navbar = observer(() => {
           logo: list.logo,
         })),
         {
-          name: "View All",
+          name: "View All Projects",
           slug: "/public-project",
           icon: MdMoreHoriz,
         },
       ],
-    },
-  ];
-
+    });
+  }
   const router = useRouter();
   const { network } = router.query;
   const pathName = router.asPath;
@@ -186,17 +179,23 @@ const Navbar = observer(() => {
                     size: "xs",
                     leftIcon: <MdAdd />,
                     children: "NEW LIST",
+                    onClick: () => AmpTrack(AmpEvent.USE_SIDEBAR),
                   }}
                 />
               )}
             </Flex>
             {item.submenu.map((submenu) => (
-              <AppLink href={submenu.slug} key={submenu.slug}>
+              <AppLink
+                href={submenu.slug}
+                key={submenu.slug}
+                onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
+              >
                 <Flex
                   gap="2"
                   p={2}
                   cursor="pointer"
                   _hover={{ bg: "pebble.800", borderRadius: "8px" }}
+                  my="1px"
                   transition="all .25s ease-in-out"
                   alignItems="center"
                   bgColor={

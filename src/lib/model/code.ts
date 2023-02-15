@@ -1,30 +1,49 @@
-import { useWallet } from "@cosmos-kit/react";
-
-import { useContractStore } from "lib/hooks";
+import { useChainId, useContractStore } from "lib/hooks";
 import {
   useCodeInfoByCodeId,
   useContractListByCodeId,
   useContractListCountByCodeId,
 } from "lib/services/codeService";
+import {
+  usePublicProjectByCodeId,
+  usePublicProjectBySlug,
+} from "lib/services/publicProjectService";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { CodeData, ContractInstances, Option } from "lib/types";
+import type {
+  CodeData,
+  ContractInstances,
+  PublicDetail,
+  Option,
+  PublicCodeData,
+} from "lib/types";
 
-interface CodeDataState {
+export interface CodeDataState {
   isLoading: boolean;
-  codeData: CodeData;
+  chainId: string;
+  codeData: Option<CodeData>;
+  publicProject: {
+    publicCodeData: Option<PublicCodeData>;
+    publicDetail: Option<PublicDetail>;
+  };
 }
 
-export const useCodeData = (codeId: number): Option<CodeDataState> => {
-  const { currentChainRecord } = useWallet();
+export const useCodeData = (codeId: number): CodeDataState => {
   const { data: codeInfo, isLoading } = useCodeInfoByCodeId(codeId);
-  if (!currentChainRecord || (!codeInfo && !isLoading)) return undefined;
+  const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
+  const { data: publicInfoBySlug } = usePublicProjectBySlug(
+    publicCodeInfo?.slug
+  );
+
+  const chainId = useChainId();
 
   return {
     isLoading,
-    codeData: {
-      chainId: currentChainRecord.chain.chain_id,
-      ...codeInfo,
-    } as CodeData,
+    chainId,
+    codeData: codeInfo as CodeData,
+    publicProject: {
+      publicCodeData: publicCodeInfo,
+      publicDetail: publicInfoBySlug?.details,
+    },
   };
 };
 
@@ -32,13 +51,13 @@ export const useCodeContractInstances = (
   codeId: number,
   offset: number,
   pageSize: number
-): Option<ContractInstances> => {
+): ContractInstances => {
   const { data: contractList } = useContractListByCodeId(
     codeId,
     offset,
     pageSize
   );
-  const { data: count = 0 } = useContractListCountByCodeId(codeId);
+  const { data: count } = useContractListCountByCodeId(codeId);
   const { getContractLocalInfo } = useContractStore();
   const data = contractList?.map((contract) => {
     const contractLocalInfo = getContractLocalInfo(contract.contractAddress);
@@ -47,6 +66,7 @@ export const useCodeContractInstances = (
       ...contract,
     } as ContractLocalInfo;
   });
+
   return {
     contractList: data,
     count,

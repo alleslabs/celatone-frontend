@@ -6,10 +6,11 @@ import type { IconType } from "react-icons";
 import { MdBookmark, MdBookmarkBorder, MdCheckCircle } from "react-icons/md";
 
 import { usePublicProjectStore } from "lib/hooks";
-import type { Option, Detail } from "lib/types";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { Option, PublicDetail } from "lib/types";
 
-interface DetailProps {
-  details: Option<Detail>;
+interface BookmarkButtonProps {
+  details: Option<PublicDetail>;
   slug: string;
   hasText?: boolean;
 }
@@ -67,7 +68,7 @@ const StyledButton = ({
 );
 
 export const BookmarkButton = observer(
-  ({ details, slug, hasText = true }: DetailProps) => {
+  ({ details, slug, hasText = true }: BookmarkButtonProps) => {
     const { isPublicProjectSaved, savePublicProject, removePublicProject } =
       usePublicProjectStore();
     const toast = useToast({
@@ -79,6 +80,7 @@ export const BookmarkButton = observer(
     });
 
     const handleSave = useCallback(() => {
+      AmpTrack(AmpEvent.PUBLIC_SAVE);
       savePublicProject({
         name: details?.name || "",
         slug,
@@ -90,6 +92,7 @@ export const BookmarkButton = observer(
     }, [slug, details, savePublicProject, toast]);
 
     const handleRemove = useCallback(() => {
+      AmpTrack(AmpEvent.PUBLIC_REMOVE);
       removePublicProject(slug);
       toast({
         title: `\u2018${details?.name}\u2019 is removed from bookmark`,

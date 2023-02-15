@@ -4,7 +4,8 @@ import { MdCheckCircle, MdDelete } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useCodeStore } from "lib/hooks";
-import { getDescriptionDefault, shortenName } from "lib/utils";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
@@ -17,13 +18,13 @@ const StyledIconButton = chakra(IconButton, {
 
 interface RemoveCodeModalProps {
   codeId: number;
-  description?: string;
+  name?: string;
   trigger?: JSX.Element;
 }
 
 export function RemoveCodeModal({
   codeId,
-  description,
+  name,
   trigger = (
     <StyledIconButton
       icon={<MdDelete />}
@@ -36,11 +37,13 @@ export function RemoveCodeModal({
   const toast = useToast();
 
   const handleRemove = useCallback(() => {
+    AmpTrack(AmpEvent.CODE_REMOVE);
+
     removeSavedCode(codeId);
 
     toast({
       title: `Removed \u2018${
-        shortenName(getDescriptionDefault(description), 20) || codeId
+        shortenName(getNameAndDescriptionDefault(name), 20) || codeId
       }\u2019 from Saved Codes`,
       status: "success",
       duration: 5000,
@@ -56,13 +59,13 @@ export function RemoveCodeModal({
         />
       ),
     });
-  }, [codeId, description, removeSavedCode, toast]);
+  }, [codeId, name, removeSavedCode, toast]);
 
   return (
     <ActionModal
       title={
-        description
-          ? `Remove \u2018${shortenName(description, 20)}\u2019?`
+        name
+          ? `Remove \u2018${shortenName(name, 20)}\u2019?`
           : `Remove Code ID: ${codeId} ?`
       }
       icon={MdDelete}
@@ -76,7 +79,7 @@ export function RemoveCodeModal({
     >
       <Text>
         You can save this code again later, but you will need to add its new
-        code description.
+        code name.
       </Text>
     </ActionModal>
   );

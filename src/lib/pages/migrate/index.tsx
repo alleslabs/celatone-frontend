@@ -2,15 +2,17 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useLCDEndpoint } from "lib/hooks";
+import { AmpTrackToMigrate } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
@@ -29,6 +31,7 @@ const defaultValues: MigratePageState = {
 
 const Migrate = () => {
   const { indexerGraphClient } = useCelatoneApp();
+  const router = useRouter();
   const navigate = useInternalNavigate();
   const endpoint = useLCDEndpoint();
   const { address = "" } = useWallet();
@@ -89,6 +92,11 @@ const Migrate = () => {
     if (contractAddressParam && codeIdParam)
       setValue("migrateStep", "migrate_contract");
   }, [codeIdParam, contractAddressParam, setValue]);
+
+  useEffect(() => {
+    if (router.isReady)
+      AmpTrackToMigrate(!!contractAddressParam, !!codeIdParam);
+  }, [router.isReady, codeIdParam, contractAddressParam]);
 
   const renderBody = () => {
     switch (migrateStep) {
@@ -152,6 +160,10 @@ const Migrate = () => {
           <Stepper mode="migrate" currentStep={2} />
         </Box>
       )}
+      <ConnectWalletAlert
+        mb="24px"
+        subtitle="You need to connect your wallet to perform this action"
+      />
       {/* Select Migrate Contract modal */}
       <ContractSelectSection
         mode="only-admin"

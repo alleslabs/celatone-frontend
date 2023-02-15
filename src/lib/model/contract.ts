@@ -10,7 +10,6 @@ import {
   useLCDEndpoint,
 } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
-import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
 import {
   queryContractCw2Info,
   queryContractBalances,
@@ -28,66 +27,58 @@ import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { CodeLocalInfo } from "lib/stores/code";
-import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
+import type { ContractListInfo } from "lib/stores/contract";
 import type {
+  Addr,
   BalanceWithAssetInfo,
   ContractAddr,
-  Detail,
   HumanAddr,
-  Option,
-  PublicInfo,
+  ContractData,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
-export interface ContractData {
-  chainId: string;
-  codeInfo: Option<CodeLocalInfo>;
-  contractLocalInfo: Option<ContractLocalInfo>;
-  contractCw2Info: Option<ContractCw2Info>;
-  instantiateInfo: Option<InstantiateInfo>;
-  publicProject: {
-    publicInfo: Option<PublicInfo>;
-    publicDetail: Option<Detail>;
-  };
-  balances: Option<BalanceWithAssetInfo[]>;
-  initMsg: string;
-  initTxHash: Option<string>;
-  initProposalId: Option<number>;
-  initProposalTitle: Option<string>;
+export interface ContractDataState {
+  contractData: ContractData;
+  isLoading: boolean;
 }
 
-export const useInstantiatedByMe = (enable: boolean): ContractListInfo => {
+interface InstantiatedByMeState {
+  instantiatedListInfo: ContractListInfo;
+  isLoading: boolean;
+}
+
+export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
   const { address } = useWallet();
-  const { data: contracts = [] } = useInstantiatedListByUserQuery(
+  const { data: contracts = [], isLoading } = useInstantiatedListByUserQuery(
     enable ? (address as HumanAddr) : undefined
   );
 
   const { getContractLocalInfo } = useContractStore();
 
   return {
-    contracts: contracts.map((contract) => ({
-      ...contract,
-      ...getContractLocalInfo(contract.contractAddress),
-    })),
-    name: INSTANTIATED_LIST_NAME,
-    slug: formatSlugName(INSTANTIATED_LIST_NAME),
-    lastUpdated: getCurrentDate(),
-    isInfoEditable: false,
-    isContractRemovable: false,
+    instantiatedListInfo: {
+      contracts: contracts.map((contract) => ({
+        ...contract,
+        ...getContractLocalInfo(contract.contractAddress),
+      })),
+      name: INSTANTIATED_LIST_NAME,
+      slug: formatSlugName(INSTANTIATED_LIST_NAME),
+      lastUpdated: getCurrentDate(),
+      isInfoEditable: false,
+      isContractRemovable: false,
+    },
+    isLoading,
   };
 };
 
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   const { address } = useWallet();
-  const { data: count = 0 } = useInstantiatedCountByUserQuery(
-    address as HumanAddr
-  );
+  const { data: count } = useInstantiatedCountByUserQuery(address as HumanAddr);
 
   return {
-    contracts: Array.from({ length: count }, () => ({
+    contracts: Array.from({ length: count ?? 0 }, () => ({
       contractAddress: "" as ContractAddr,
-      instantiator: "",
+      instantiator: "" as Addr,
       label: "",
       created: getDefaultDate(),
     })),
@@ -101,7 +92,7 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 
 export const useContractData = (
   contractAddress: ContractAddr
-): Option<ContractData> => {
+): ContractDataState => {
   const { indexerGraphClient } = useCelatoneApp();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
@@ -113,29 +104,32 @@ export const useContractData = (
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
   const chainId = useChainId();
 
-  const { data: instantiateInfo } = useQuery(
-    ["query", "instantiate_info", endpoint, contractAddress],
-    async () =>
-      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
-    { enabled: !!currentChainRecord }
-  );
+  const { data: instantiateInfo, isLoading: isInstantiateInfoLoading } =
+    useQuery(
+      ["query", "instantiate_info", endpoint, contractAddress],
+      async () =>
+        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
+      { enabled: !!currentChainRecord, retry: false }
+    );
 
-  const { data: contractCw2Info } = useQuery(
-    ["query", "contract_cw2_info", endpoint, contractAddress],
-    async () => queryContractCw2Info(endpoint, contractAddress),
-    { enabled: !!currentChainRecord }
-  );
+  const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
+    useQuery(
+      ["query", "contract_cw2_info", endpoint, contractAddress],
+      async () => queryContractCw2Info(endpoint, contractAddress),
+      { enabled: !!currentChainRecord, retry: false }
+    );
 
-  const { data: contractBalances } = useQuery(
-    ["query", "contractBalances", contractAddress, chainId],
-    async () =>
-      queryContractBalances(
-        currentChainRecord?.name,
-        currentChainRecord?.chain.chain_id,
-        contractAddress
-      ),
-    { enabled: !!currentChainRecord }
-  );
+  const { data: contractBalances, isLoading: isContractBalancesLoading } =
+    useQuery(
+      ["query", "contractBalances", contractAddress, chainId],
+      async () =>
+        queryContractBalances(
+          currentChainRecord?.name,
+          currentChainRecord?.chain.chain_id,
+          contractAddress
+        ),
+      { enabled: !!currentChainRecord, retry: false }
+    );
 
   const contractBalancesWithAssetInfos = contractBalances
     ?.map(
@@ -156,29 +150,30 @@ export const useContractData = (
     : undefined;
   const contractLocalInfo = getContractLocalInfo(contractAddress);
 
-  const {
-    data: instantiateDetail = {
-      initMsg: "{}",
-    },
-  } = useInstantiateDetailByContractQuery(contractAddress);
-
-  if (!currentChainRecord) return undefined;
+  const { data: instantiateDetail } =
+    useInstantiateDetailByContractQuery(contractAddress);
 
   return {
-    chainId: currentChainRecord.chain.chain_id,
-    codeInfo,
-    contractLocalInfo,
-    contractCw2Info,
-    instantiateInfo,
-    publicProject: {
-      publicInfo,
-      publicDetail: publicInfoBySlug?.details,
+    contractData: {
+      chainId,
+      codeInfo,
+      contractLocalInfo,
+      contractCw2Info,
+      instantiateInfo,
+      publicProject: {
+        publicInfo,
+        publicDetail: publicInfoBySlug?.details,
+      },
+      balances: contractBalancesWithAssetInfos,
+      initMsg: instantiateDetail?.initMsg,
+      initTxHash: instantiateDetail?.initTxHash,
+      initProposalId: instantiateDetail?.initProposalId,
+      initProposalTitle: instantiateDetail?.initProposalTitle,
     },
-    balances: contractBalancesWithAssetInfos,
-    initMsg: instantiateDetail.initMsg,
-    initTxHash: instantiateDetail.initTxHash,
-    initProposalId: instantiateDetail.initProposalId,
-    initProposalTitle: instantiateDetail.initProposalTitle,
+    isLoading:
+      isInstantiateInfoLoading ||
+      isContractCw2InfoLoading ||
+      isContractBalancesLoading,
   };
 };
 
@@ -190,13 +185,13 @@ export const useContractData = (
 export const useContractDetailsTableCounts = (
   contractAddress: ContractAddr
 ) => {
-  // const { data: executeCount = 0, refetch: refetchExecute } =
+  // const { data: executeCount, refetch: refetchExecute } =
   //   useExecuteTxsCountByContractAddress(contractAddress);
-  const { data: migrationCount = 0, refetch: refetchMigration } =
+  const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
-  const { data: transactionsCount = 0, refetch: refetchTransactions } =
+  const { data: transactionsCount, refetch: refetchTransactions } =
     useTxsCountByContractAddress(contractAddress);
-  const { data: relatedProposalsCount = 0, refetch: refetchRelatedProposals } =
+  const { data: relatedProposalsCount, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
 
   return {

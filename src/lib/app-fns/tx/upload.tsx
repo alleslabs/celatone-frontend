@@ -9,8 +9,9 @@ import { MdCloudUpload } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { TxStreamPhase } from "lib/types";
-import type { TxResultRendering } from "lib/types";
+import type { HumanAddr, TxResultRendering } from "lib/types";
 import { formatUFee } from "lib/utils/formatter/denom";
 
 import { catchTxError } from "./common/catchTxError";
@@ -18,7 +19,7 @@ import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
 interface UploadTxParams {
-  address: string;
+  address: HumanAddr;
   codeDesc: string;
   wasmCode: Uint8Array;
   wasmFileName: string;
@@ -46,7 +47,10 @@ export const uploadContractTx = ({
       postFn: () => client.upload(address, wasmCode, fee, memo),
     }),
     ({ value: txInfo }) => {
+      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.(txInfo.codeId);
+      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
+        .value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -69,10 +73,7 @@ export const uploadContractTx = ({
           },
           {
             title: "Tx Fee",
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ],
         receiptInfo: {

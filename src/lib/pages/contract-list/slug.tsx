@@ -29,9 +29,10 @@ import { AppLink } from "lib/components/AppLink";
 import { SaveNewContractModal } from "lib/components/modal/contract";
 import { EditListNameModal, RemoveListModal } from "lib/components/modal/list";
 import { ContractListDetail } from "lib/components/modal/select-contract";
-import { INSTANTIATED_LIST_NAME } from "lib/data";
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 const StyledIcon = chakra(Icon, {
@@ -51,17 +52,36 @@ const ContractsByList = observer(() => {
   const isInstantiatedByMe =
     listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
 
-  const instantiatedListInfo = useInstantiatedByMe(isInstantiatedByMe);
+  const { instantiatedListInfo, isLoading } =
+    useInstantiatedByMe(isInstantiatedByMe);
 
   const contractListInfo = isInstantiatedByMe
     ? instantiatedListInfo
     : getContractLists().find((item) => item.slug === listSlug);
 
   useEffect(() => {
-    if (isHydrated && contractListInfo === undefined) {
-      navigate({ pathname: "/contract-list" });
-    }
+    // TODO: find a better approach?
+    const timeoutId = setTimeout(() => {
+      if (isHydrated && contractListInfo === undefined)
+        navigate({ pathname: "/contract-list" });
+    }, 100);
+    return () => clearTimeout(timeoutId);
   }, [contractListInfo, isHydrated, navigate]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      switch (listSlug) {
+        case formatSlugName(INSTANTIATED_LIST_NAME):
+          AmpTrack(AmpEvent.TO_LIST_BY_ME);
+          break;
+        case formatSlugName(SAVED_LIST_NAME):
+          AmpTrack(AmpEvent.TO_LIST_SAVED);
+          break;
+        default:
+          AmpTrack(AmpEvent.TO_LIST_OTHERS);
+      }
+    }
+  }, [router.isReady, listSlug]);
 
   if (!contractListInfo) return null;
 
@@ -163,7 +183,10 @@ const ContractsByList = observer(() => {
           </Flex>
         </Flex>
       </Box>
-      <ContractListDetail contractListInfo={contractListInfo} />
+      <ContractListDetail
+        contractListInfo={contractListInfo}
+        isLoading={isInstantiatedByMe ? isLoading : false}
+      />
     </>
   );
 });

@@ -9,44 +9,20 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
-import { useCallback } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { MdCheck } from "react-icons/md";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useSelectChain } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { WalletSection } from "lib/components/Wallet";
-import { getNetworkByChainName, getSupportedChainNames } from "lib/data";
+import { getSupportedChainNames } from "lib/data";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import Searchbar from "./Searchbar";
 
 const Header = () => {
-  const router = useRouter();
-  const navigate = useInternalNavigate();
-  const {
-    currentChainRecord,
-    currentChainName,
-    setCurrentChain,
-    getChainRecord,
-  } = useWallet();
-
-  const handleChainSelect = useCallback(
-    (chainName: string) => {
-      if (chainName === currentChainName) return;
-      setCurrentChain(chainName);
-      navigate({
-        pathname: router.pathname.replace("/[network]", ""),
-        query: {
-          /**
-           * @remarks Condition checking varies by chain
-           */
-          ...router.query,
-          network: getNetworkByChainName(chainName),
-        },
-      });
-    },
-    [currentChainName, setCurrentChain, navigate, router]
-  );
+  const { currentChainRecord, currentChainName, getChainRecord } = useWallet();
+  const selectChain = useSelectChain();
 
   return (
     <Flex
@@ -59,17 +35,21 @@ const Header = () => {
       mb={1}
       gap="48px"
     >
-      <Image
-        src="/celatone-logo.svg"
-        alt="Celatone"
-        width="152px"
-        mr="36px"
-        _hover={{ cursor: "pointer" }}
-        onClick={() => navigate({ pathname: "/" })}
-      />
+      <AppLink href="/">
+        <Image
+          src="https://assets.alleslabs.dev/branding/logo/logo.svg"
+          alt="Celatone"
+          minWidth="152px"
+          width="152px"
+          maxWidth="152px"
+          mr="36px"
+          transition="all 0.25s ease-in-out"
+          _hover={{ cursor: "pointer", opacity: 0.85 }}
+        />
+      </AppLink>
       <Searchbar />
       <Flex gap={2}>
-        <Menu>
+        <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
           <MenuButton
             px={4}
             py="5px"
@@ -101,7 +81,7 @@ const Header = () => {
               <MenuItem
                 key={chainName}
                 onClick={() => {
-                  handleChainSelect(chainName);
+                  selectChain(chainName);
                 }}
                 flexDirection="column"
                 alignItems="flex-start"

@@ -28,6 +28,7 @@ export const TxsTableRow = ({
 }: TxsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const [isAccordion, setIsAccordion] = useState(false);
+  const [showCopyButton, setShowCopyButton] = useState(false);
 
   useEffect(() => {
     if (transaction.messages.length > 1) setIsAccordion(true);
@@ -41,6 +42,8 @@ export const TxsTableRow = ({
         _hover={{ background: "pebble.900" }}
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
+        onMouseEnter={() => setShowCopyButton(true)}
+        onMouseLeave={() => setShowCopyButton(false)}
       >
         <TableRow>
           <ExplorerLink
@@ -58,7 +61,10 @@ export const TxsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            <RenderActionMessages transaction={transaction} />
+            <RenderActionMessages
+              transaction={transaction}
+              showCopyButton={showCopyButton}
+            />
             {transaction.isIbc && (
               <Tag borderRadius="full" bg="honeydew.dark" color="pebble.900">
                 IBC
@@ -84,10 +90,16 @@ export const TxsTableRow = ({
         <TableRow>
           <Flex direction="row" justify="space-between" align="center" w="full">
             <Flex direction="column" gap={1}>
-              <Text variant="body3">{formatUTC(transaction.created)}</Text>
-              <Text variant="body3" color="text.dark">
-                {`(${dateFromNow(transaction.created)})`}
-              </Text>
+              {transaction.created ? (
+                <>
+                  <Text variant="body3">{formatUTC(transaction.created)}</Text>
+                  <Text variant="body3" color="text.dark">
+                    {`(${dateFromNow(transaction.created)})`}
+                  </Text>
+                </>
+              ) : (
+                <Text variant="body3">N/A</Text>
+              )}
             </Flex>
             {isAccordion && (
               <Icon

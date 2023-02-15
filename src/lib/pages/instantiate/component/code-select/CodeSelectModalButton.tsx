@@ -14,6 +14,7 @@ import {
 import { IoList } from "react-icons/io5";
 
 import { useCodeListData } from "lib/pages/codes/data";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { MySavedCodeContent } from "./MySavedCodeContent";
 import { MyStoredCodeContent } from "./MyStoredCodeContent";
@@ -49,7 +50,10 @@ export const CodeSelectModalButton = ({
         size="md"
         ml="auto"
         w="120px"
-        onClick={onOpen}
+        onClick={() => {
+          AmpTrack(AmpEvent.USE_CODE_MODAL);
+          onOpen();
+        }}
       >
         {buttonText}
       </Button>

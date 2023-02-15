@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Flex, Text } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -7,9 +8,10 @@ import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
-import { getDescriptionDefault, getTagsDefault } from "lib/utils";
+import { getNameAndDescriptionDefault, getTagsDefault } from "lib/utils";
 
 interface ContractDetailsTemplateModalProps {
   title: string;
@@ -17,6 +19,7 @@ interface ContractDetailsTemplateModalProps {
   contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
   defaultList?: LVPair[];
+  isSave?: boolean;
 }
 export const ContractDetailsTemplateModal = ({
   title,
@@ -24,20 +27,21 @@ export const ContractDetailsTemplateModal = ({
   contractLocalInfo,
   triggerElement,
   defaultList = [],
+  isSave = false,
 }: ContractDetailsTemplateModalProps) => {
   const defaultValues = useMemo(() => {
     return {
       name: contractLocalInfo.name ?? "",
-      description: getDescriptionDefault(contractLocalInfo.description),
+      description: getNameAndDescriptionDefault(contractLocalInfo.description),
       tags: getTagsDefault(contractLocalInfo.tags),
       lists: contractLocalInfo.lists ?? defaultList,
     };
   }, [
     contractLocalInfo.description,
-    contractLocalInfo.lists,
+    JSON.stringify(contractLocalInfo.lists),
     contractLocalInfo.name,
     contractLocalInfo.tags,
-    defaultList,
+    JSON.stringify(defaultList),
   ]);
 
   const {
@@ -58,7 +62,7 @@ export const ContractDetailsTemplateModal = ({
 
   useEffect(() => {
     resetForm();
-  }, [defaultValues, resetForm]);
+  }, [resetForm]);
 
   const offchainState = watch();
 
@@ -78,6 +82,8 @@ export const ContractDetailsTemplateModal = ({
     description: offchainState.description,
     tags: offchainState.tags,
     lists: offchainState.lists,
+    actions: () =>
+      AmpTrack(isSave ? AmpEvent.CONTRACT_SAVE : AmpEvent.CONTRACT_EDIT),
   });
 
   return (

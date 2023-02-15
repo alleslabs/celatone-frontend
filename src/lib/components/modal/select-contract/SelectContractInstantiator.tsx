@@ -27,6 +27,7 @@ import {
   useValidateAddress,
 } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
@@ -55,7 +56,12 @@ export const SelectContractInstantiator = ({
   const [invalid, setInvalid] = useState("");
 
   const { getContractLists } = useContractStore();
-  const contractLists = [useInstantiatedByMe(true), ...getContractLists()];
+
+  // TODO - Revisit false case
+  const contractLists = [
+    useInstantiatedByMe(true).instantiatedListInfo,
+    ...getContractLists(),
+  ];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
   const endpoint = useLCDEndpoint();
@@ -68,6 +74,7 @@ export const SelectContractInstantiator = ({
   };
 
   const onSelectThenClose = (contract: ContractAddr) => {
+    AmpTrack(AmpEvent.USE_CONTRACT_MODAL_LISTS);
     onContractSelect(contract);
     resetOnClose();
   };
@@ -100,7 +107,10 @@ export const SelectContractInstantiator = ({
         variant={notSelected ? "primary" : "outline-primary"}
         py="6px"
         px="16px"
-        onClick={onOpen}
+        onClick={() => {
+          AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
+          onOpen();
+        }}
         leftIcon={
           !notSelected ? <Icon as={MdSwapHoriz} boxSize="5" /> : undefined
         }
@@ -142,7 +152,10 @@ export const SelectContractInstantiator = ({
                     onClick={() => {
                       const err = validateContractAddress(searchContract);
                       if (err !== null) setInvalid(err);
-                      else refetch();
+                      else {
+                        AmpTrack(AmpEvent.USE_CONTRACT_MODAL_SEARCH);
+                        refetch();
+                      }
                     }}
                   >
                     Submit

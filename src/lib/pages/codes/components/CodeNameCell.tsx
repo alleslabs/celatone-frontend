@@ -2,22 +2,24 @@ import { Icon, useToast } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 
 import { EditableCell } from "lib/components/table";
-import { MAX_CODE_DESCRIPTION_LENGTH } from "lib/data";
+import { MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeLocalInfo } from "lib/stores/code";
 
-interface CodeDescriptionCellProps {
+interface CodeNameCellProps {
   code: CodeLocalInfo;
 }
 
-export const CodeDescriptionCell = ({ code }: CodeDescriptionCellProps) => {
+export const CodeNameCell = ({ code }: CodeNameCellProps) => {
   const toast = useToast();
   const { updateCodeInfo } = useCodeStore();
 
   const onSave = (inputValue?: string) => {
+    AmpTrack(AmpEvent.USE_QUICK_EDIT_CODE);
     updateCodeInfo(code.id, code.uploader, inputValue);
     toast({
-      title: "New Code Description saved",
+      title: "New Code Name Saved",
       status: "success",
       duration: 5000,
       isClosable: false,
@@ -35,9 +37,9 @@ export const CodeDescriptionCell = ({ code }: CodeDescriptionCellProps) => {
   };
   return (
     <EditableCell
-      initialValue={code.description}
-      defaultValue="No Description"
-      maxLength={MAX_CODE_DESCRIPTION_LENGTH}
+      initialValue={code.name}
+      defaultValue="Untitled Name"
+      maxLength={MAX_CODE_NAME_LENGTH}
       onSave={onSave}
     />
   );

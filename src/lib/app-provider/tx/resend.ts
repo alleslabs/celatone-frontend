@@ -4,6 +4,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
 import { resendTx } from "lib/app-fns/tx/resend";
+import type { HumanAddr } from "lib/types";
 
 export interface ResendStreamParams {
   onTxSucceed?: (txHash: string) => void;
@@ -21,7 +22,7 @@ export const useResendTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
       return resendTx({
-        address,
+        address: address as HumanAddr,
         client,
         onTxSucceed,
         fee: estimatedFee,
