@@ -1,6 +1,6 @@
 import { init, setDeviceId, setUserId } from "@amplitude/analytics-browser";
 import { useWallet } from "@cosmos-kit/react";
-import { createHash } from "crypto";
+import { createHash, randomUUID } from "crypto";
 import { useEffect } from "react";
 
 export const useAmplitude = () => {
@@ -22,7 +22,7 @@ export const useAmplitude = () => {
 
     let deviceId = localStorage.getItem("deviceId");
     if (!deviceId) {
-      deviceId = window.crypto.randomUUID();
+      deviceId = randomUUID();
       localStorage.setItem("deviceId", deviceId);
     }
     setDeviceId(deviceId);
