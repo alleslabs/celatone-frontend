@@ -9,10 +9,12 @@ import { Loading } from "lib/components/Loading";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { ZeroState } from "lib/components/state/ZeroState";
+import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { ContractListReadOnlyTable } from "lib/pages/contract-list/components/ContractListReadOnlyTable";
 import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr, LVPair, Option } from "lib/types";
+import { formatSlugName } from "lib/utils";
 
 interface FilteredListDetailProps {
   contracts: ContractLocalInfo[];
@@ -66,7 +68,10 @@ const ContractListContent = ({
   onContractSelect,
   isLoading,
 }: ContractListTableProps) => {
-  if (!address) {
+  const isInstantiatedByMe =
+    contractListInfo.slug === formatSlugName(INSTANTIATED_LIST_NAME);
+
+  if (!address && isInstantiatedByMe) {
     return (
       <DisconnectedState text="to see contracts you've previously instantiated." />
     );
