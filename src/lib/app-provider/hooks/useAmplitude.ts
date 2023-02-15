@@ -29,9 +29,14 @@ export const useAmplitude = () => {
   }
 
   useEffect(() => {
-    const userId = address
-      ? createHash("sha256").update(address).digest("hex")
-      : undefined;
-    setUserId(`${currentChainName}/${userId}`);
+    const timeoutId = setTimeout(() => {
+      if (currentChainName) {
+        const userId = address
+          ? createHash("sha256").update(address).digest("hex")
+          : undefined;
+        setUserId(`${currentChainName}/${userId}`);
+      }
+    }, 300);
+    return () => clearTimeout(timeoutId);
   }, [address, currentChainName]);
 };
