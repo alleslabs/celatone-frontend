@@ -12,6 +12,7 @@ const actions = {
 };
 
 /**
+ * @remarks
  * Generate action filter for where clause used in graphql. Only return action that is true
  *
  * @example
@@ -28,6 +29,7 @@ export const generateActionsFilter = (filters: Filters) => {
 };
 
 /**
+ * @remarks
  * Generate action filter for where clause used in graphql for default case (no filter is chosen)
  *
  */
@@ -41,11 +43,7 @@ const generateActionsFilterDefault = () => {
 };
 
 const chooseActionFilter = (filters: Filters) => {
-  if (
-    Object.keys(filters).every(
-      (value) => !filters[value as keyof typeof filters]
-    )
-  ) {
+  if (Object.values(filters).every((value) => !value)) {
     return generateActionsFilterDefault();
   }
   return generateActionsFilter(filters);
