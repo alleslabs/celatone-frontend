@@ -25,6 +25,12 @@ import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useLCDEndpoint, useValidateAddress } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackAction,
+  AmpTrackToInstantiate,
+} from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr, Token, U } from "lib/types";
 import { MsgType } from "lib/types";
@@ -159,6 +165,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   const proceed = useCallback(() => {
     handleSubmit(async ({ adminAddress, label, initMsg, assets }) => {
+      AmpTrackAction(
+        AmpEvent.ACTION_INSTANTIATE,
+        assets.filter((asset) => Number(asset.amount) && asset.denom).length
+      );
       setSimulating(true);
       const funds = fabricateFunds(assets);
       const msg = composeMsg(MsgType.INSTANTIATE, {
@@ -242,6 +252,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     }
   }, [codeIdQuery, msgQuery, reset, setValue]);
 
+  useEffect(() => {
+    if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
+  }, [router.isReady, msgQuery, codeIdQuery]);
+
   const validateAdmin = useCallback(
     (input: string) =>
       input && !!validateContractAddress(input) && !!validateUserAddress(input)
@@ -298,7 +312,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                 fontWeight="600"
                 variant="body3"
                 cursor="pointer"
-                onClick={() => setValue("adminAddress", address)}
+                onClick={() => {
+                  AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                  setValue("adminAddress", address);
+                }}
               >
                 Assign me
               </Text>

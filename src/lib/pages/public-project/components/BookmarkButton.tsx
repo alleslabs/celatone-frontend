@@ -6,6 +6,7 @@ import type { IconType } from "react-icons";
 import { MdBookmark, MdBookmarkBorder, MdCheckCircle } from "react-icons/md";
 
 import { usePublicProjectStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
 interface BookmarkButtonProps {
@@ -79,6 +80,7 @@ export const BookmarkButton = observer(
     });
 
     const handleSave = useCallback(() => {
+      AmpTrack(AmpEvent.PUBLIC_SAVE);
       savePublicProject({
         name: details?.name || "",
         slug,
@@ -90,6 +92,7 @@ export const BookmarkButton = observer(
     }, [slug, details, savePublicProject, toast]);
 
     const handleRemove = useCallback(() => {
+      AmpTrack(AmpEvent.PUBLIC_REMOVE);
       removePublicProject(slug);
       toast({
         title: `\u2018${details?.name}\u2019 is removed from bookmark`,

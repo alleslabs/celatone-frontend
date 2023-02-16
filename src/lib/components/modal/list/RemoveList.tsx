@@ -5,6 +5,7 @@ import { MdDeleteForever, MdCheckCircle } from "react-icons/md";
 import { useInternalNavigate } from "lib/app-provider";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useContractStore, useUserKey } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { LVPair } from "lib/types";
 import { shortenName } from "lib/utils";
 
@@ -20,6 +21,7 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   const toast = useToast();
   const navigate = useInternalNavigate();
   const handleRemove = () => {
+    AmpTrack(AmpEvent.LIST_REMOVE);
     removeList(userKey, list.value);
     navigate({ pathname: "/contract-list" });
     // TODO: show toast after removed and redirect to /contract-list

@@ -22,6 +22,7 @@ import { MdCode } from "react-icons/md";
 import { CopyButton } from "../CopyButton";
 import { CustomTab } from "lib/components/CustomTab";
 import { useLCDEndpoint } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr, Option } from "lib/types";
 
 import "ace-builds/src-noconflict/ace";
@@ -194,7 +195,10 @@ execute();
         variant="outline-info"
         size="sm"
         ml="auto"
-        onClick={onOpen}
+        onClick={() => {
+          AmpTrack(AmpEvent.USE_CONTRACT_SNIPPET);
+          onOpen();
+        }}
       >
         <Icon as={MdCode} boxSize={5} mr={1} />
         Code Snippet

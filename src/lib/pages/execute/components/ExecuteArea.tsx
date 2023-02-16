@@ -29,6 +29,7 @@ import { AssetInput, ControllerInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { AmpEvent, AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
@@ -108,6 +109,10 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
   });
 
   const proceed = useCallback(async () => {
+    AmpTrackAction(
+      AmpEvent.ACTION_EXECUTE,
+      assets.filter((asset) => Number(asset.amount) && asset.denom).length
+    );
     const funds = fabricateFunds(assets);
 
     const stream = await executeTx({
@@ -184,7 +189,10 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
             <ContractCmdButton
               key={`query-cmd-${cmd}`}
               cmd={cmd}
-              onClickCmd={() => setMsg(jsonPrettify(queryMsg))}
+              onClickCmd={() => {
+                AmpTrack(AmpEvent.USE_CMD_EXECUTE);
+                setMsg(jsonPrettify(queryMsg));
+              }}
             />
           ))}
         </ButtonGroup>
