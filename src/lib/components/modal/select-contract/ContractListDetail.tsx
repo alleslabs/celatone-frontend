@@ -2,7 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
-import { MdSearchOff } from "react-icons/md";
 
 import { TagSelection, TextInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";
@@ -32,7 +31,7 @@ const FilteredListDetail = ({
   if (contracts.length === 0)
     return (
       <EmptyState
-        icon={MdSearchOff}
+        image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
         message="No contracts match found. 
         Make sure you are searching with contract address, name, or description."
       />

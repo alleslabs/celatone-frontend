@@ -4,6 +4,7 @@ import {
   AlertIcon,
   Flex,
   Heading,
+  Button,
   Text,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
@@ -76,9 +77,20 @@ const Deploy = () => {
       />
       <ButtonCard
         title="Use existing Code IDs"
-        description="Input code ID or select from previously stored codes or your saved codes"
+        description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
       />
+      <Flex justify="center" w="100%" mt="32px">
+        <Button
+          onClick={() => {
+            router.back();
+          }}
+          size="md"
+          variant="ghost-gray"
+        >
+          Cancel
+        </Button>
+      </Flex>
     </WasmPageContainer>
   );
 };

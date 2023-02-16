@@ -2,7 +2,6 @@ import { TableContainer, Flex, Box, Grid } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
-import { MdSearchOff } from "react-icons/md";
 
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -86,7 +85,10 @@ export const PublicProjectCodeTable = observer(
         )}
         {!publicCodes.length ? (
           <Flex my={8}>
-            <EmptyState message="No contract found." icon={MdSearchOff} />
+            <EmptyState
+              message="No contract found."
+              image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+            />
           </Flex>
         ) : (
           <TableContainer mb={10}>

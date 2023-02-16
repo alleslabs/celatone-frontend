@@ -205,7 +205,7 @@ export const MigrateContract = ({
           leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
           onClick={handleBack}
         >
-          Back
+          Previous
         </Button>
         <Button
           size="md"

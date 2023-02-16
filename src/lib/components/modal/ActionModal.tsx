@@ -1,6 +1,7 @@
 import {
   Modal,
   ModalHeader,
+  Heading,
   Flex,
   Icon,
   Box,
@@ -94,7 +95,9 @@ export function ActionModal({
             <Box w="full">
               <Flex alignItems="center" gap="3">
                 <Icon as={icon} color={iconColor} boxSize="6" />
-                {title}
+                <Heading as="h5" variant="h5">
+                  {title}
+                </Heading>
               </Flex>
               {subtitle && (
                 <Text variant="body3" color="text.dark" pt="2">
