@@ -14,15 +14,19 @@ export interface Account {
   slug: string;
 }
 
-export interface PublicCode {
+export interface RawPublicCode {
   description: string;
   id: number;
   name: string;
   slug: string;
-  contractCount: number;
+  contracts: number;
   uploader: Addr;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
+}
+
+export interface PublicCode extends Omit<RawPublicCode, "contracts"> {
+  contractCount: number;
 }
 
 export interface RawPublicContract {
@@ -52,7 +56,7 @@ export interface PublicDetail {
 export interface RawPublicProjectInfo {
   accounts: Account[];
   assets: AssetInfo;
-  codes: PublicCode[];
+  codes: RawPublicCode[];
   contracts: RawPublicContract[];
   details: PublicDetail;
   slug: string;
