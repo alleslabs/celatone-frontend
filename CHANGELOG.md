@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#199](https://github.com/alleslabs/celatone-frontend/pull/199) Final prelaunch cleanup
+- [#202](https://github.com/alleslabs/celatone-frontend/pull/202) Reorder absolute and relative timestmap in stored block height
+- [#201](https://github.com/alleslabs/celatone-frontend/pull/201) Add GPLv3 license
 - [#170](https://github.com/alleslabs/celatone-frontend/pull/170) Add Google Analytics 4 for website analytics
 - [#169](https://github.com/alleslabs/celatone-frontend/pull/169) Add amplitude for website analytics
 - [#133](https://github.com/alleslabs/celatone-frontend/pull/133) Add OG and default SEO with next-seo
@@ -148,6 +150,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#200](https://github.com/alleslabs/celatone-frontend/pull/200) Fix add attached assets property
 - [#198](https://github.com/alleslabs/celatone-frontend/pull/198) Fix handle keplr wallet ready
 - [#194](https://github.com/alleslabs/celatone-frontend/pull/194) Fix "connect wallet state" for tables
 - [#196](https://github.com/alleslabs/celatone-frontend/pull/196) Fix rewrite rule for amplitude
