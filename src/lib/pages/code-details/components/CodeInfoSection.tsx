@@ -39,10 +39,10 @@ const getMethodSpecificRender = (
               canCopyWithHover
             />
             <Text variant="body3" color="text.dark">
-              {dateFromNow(created)}
+              {formatUTC(created)}
             </Text>
             <Text variant="body3" color="text.dark">
-              {formatUTC(created)}
+              {dateFromNow(created)}
             </Text>
           </>
         ) : (
@@ -67,10 +67,10 @@ const getMethodSpecificRender = (
               canCopyWithHover
             />
             <Text variant="body3" color="text.dark">
-              {dateFromNow(created)}
+              {formatUTC(created)}
             </Text>
             <Text variant="body3" color="text.dark">
-              {formatUTC(created)}
+              {dateFromNow(created)}
             </Text>
           </>
         ) : (

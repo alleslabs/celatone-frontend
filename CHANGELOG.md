@@ -37,8 +37,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v1.0.0
+
 ### Features
 
+- [#199](https://github.com/alleslabs/celatone-frontend/pull/199) Final prelaunch cleanup
+- [#202](https://github.com/alleslabs/celatone-frontend/pull/202) Reorder absolute and relative timestmap in stored block height
+- [#201](https://github.com/alleslabs/celatone-frontend/pull/201) Add GPLv3 license
 - [#170](https://github.com/alleslabs/celatone-frontend/pull/170) Add Google Analytics 4 for website analytics
 - [#169](https://github.com/alleslabs/celatone-frontend/pull/169) Add amplitude for website analytics
 - [#133](https://github.com/alleslabs/celatone-frontend/pull/133) Add OG and default SEO with next-seo
@@ -117,6 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#191](https://github.com/alleslabs/celatone-frontend/pull/191) Add typeface (Poppins) and add new styling for command shortcut
 - [#190](https://github.com/alleslabs/celatone-frontend/pull/190) Setup sentry tunnel in next config
 - [#179](https://github.com/alleslabs/celatone-frontend/pull/179) Add loading state to My code, Recent Codes, Contract details, Code details, All public projects, Public project, Saved Contract, Instantiated my be
 - [#182](https://github.com/alleslabs/celatone-frontend/pull/182) Disable mainnet store code and show alert, refactor select chain hook and alert variants

@@ -132,7 +132,7 @@ export const UploadSection = ({
         control={control}
         label="Code Name (Optional)"
         placeholder="Untitled Name"
-        helperText="Define what your code works on in one sentence which visible to you only. You can add this later."
+        helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
         rules={{
           maxLength: MAX_CODE_NAME_LENGTH,
         }}

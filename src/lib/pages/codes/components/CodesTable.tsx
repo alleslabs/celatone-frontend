@@ -86,7 +86,7 @@ const Empty = ({ type }: OtherTBodyProps) => {
       case "recent":
         return "Most recent 100 code IDs will display here";
       case "saved":
-        return "Your saved code IDs will display here. Saved codes are stored locally on your device.";
+        return "Codes saved using Celatone will display here. Saved codes are stored locally on your device.";
       case "stored":
         return "Your uploaded Wasm files will display as My Stored Codes";
       default:
@@ -229,7 +229,7 @@ function CodesTable({
         px="48px"
       >
         {type !== "recent" && (
-          <Heading as="h2" size="md">
+          <Heading as="h6" variant="h6">
             {tableName}
           </Heading>
         )}
