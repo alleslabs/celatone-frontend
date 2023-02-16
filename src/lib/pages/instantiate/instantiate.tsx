@@ -28,6 +28,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
   AmpTrack,
+  AmpTrackAction,
   AmpTrackToInstantiate,
 } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
@@ -163,8 +164,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ----------------FUNCTIONS-----------------//
   // ------------------------------------------//
   const proceed = useCallback(() => {
-    AmpTrack(AmpEvent.ACTION_INSTANTIATE);
     handleSubmit(async ({ adminAddress, label, initMsg, assets }) => {
+      AmpTrackAction(
+        AmpEvent.ACTION_INSTANTIATE,
+        assets.filter((asset) => Number(asset.amount) && asset.denom).length
+      );
       setSimulating(true);
       const funds = fabricateFunds(assets);
       const msg = composeMsg(MsgType.INSTANTIATE, {
