@@ -74,7 +74,7 @@ export const MigrationRow = ({
           code={
             {
               id: history.codeId,
-              uploader: history.sender,
+              uploader: history.uploader,
               name: history.codeName,
             } as CodeLocalInfo
           }
