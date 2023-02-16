@@ -37,6 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Bug fixes
+
+- [#211](https://github.com/alleslabs/celatone-frontend/pull/211) Fix `window.crypto.randomUUID()` in old safari version (< 15.2) and `at()` of array
+
 ## v1.0.0
 
 ### Features
@@ -160,7 +164,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#198](https://github.com/alleslabs/celatone-frontend/pull/198) Fix handle keplr wallet ready
 - [#194](https://github.com/alleslabs/celatone-frontend/pull/194) Fix "connect wallet state" for tables
 - [#196](https://github.com/alleslabs/celatone-frontend/pull/196) Fix rewrite rule for amplitude
-- [#188](https://github.com/alleslabs/celatone-frontend/pull/188) Fix "No contact description" prefill in description section in contract detail page 
+- [#188](https://github.com/alleslabs/celatone-frontend/pull/188) Fix "No contact description" prefill in description section in contract detail page
 - [#187](https://github.com/alleslabs/celatone-frontend/pull/187) Fix renaming list flicker to the all lists for a second
 - [#184](https://github.com/alleslabs/celatone-frontend/pull/184) Fix next seo to use default seo
 - [#186](https://github.com/alleslabs/celatone-frontend/pull/186) Fix logo navigation
