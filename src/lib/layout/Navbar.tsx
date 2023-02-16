@@ -6,7 +6,6 @@ import {
   Image,
   Button,
   IconButton,
-  chakra,
   Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
@@ -36,22 +35,6 @@ import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
 const pebble800 = "pebble.800";
-
-const StyledIconButton = chakra(IconButton, {
-  baseStyle: {
-    display: "flex",
-    alignItems: "center",
-    fontSize: "24px",
-    h: "fit-content",
-    minW: "fit-content",
-    transition: "all .25s ease-in-out",
-    borderRadius: "0px",
-    p: 1,
-    mt: 2,
-    mx: 2,
-    _hover: { borderRadius: "8px" },
-  },
-});
 
 interface SubmenuInfo {
   name: string;
@@ -185,26 +168,19 @@ const IconNavMenu = ({
               placement="right"
               bg="honeydew.darker"
             >
-              <StyledIconButton
+              <IconButton
+                aria-label="overview"
                 variant="ghost-info"
+                fontSize="24px"
+                height="fit-content"
+                minW="fit-content"
+                p={1}
+                mt={2}
+                mx={2}
                 icon={<MdDoubleArrow />}
                 onClick={handleResize}
               />
             </Tooltip>
-          )}
-          {item.category === "Contracts" && (
-            <CreateNewListModal
-              trigger={
-                <Tooltip
-                  label="New List"
-                  hasArrow
-                  placement="right"
-                  bg="honeydew.darker"
-                >
-                  <StyledIconButton variant="ghost-info" icon={<MdAdd />} />
-                </Tooltip>
-              }
-            />
           )}
         </Flex>
         {item.submenu.map((submenu) => (
