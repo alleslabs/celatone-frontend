@@ -159,7 +159,7 @@ export const UploadSection = ({
           leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
           onClick={handleBack}
         >
-          Back
+          Previous
         </Button>
         <Button
           size="md"

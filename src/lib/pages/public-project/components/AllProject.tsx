@@ -11,7 +11,6 @@ import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 import { BsGithub } from "react-icons/bs";
-import { MdOutlineManageSearch, MdSearchOff } from "react-icons/md";
 
 import { TextInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";
@@ -57,7 +56,7 @@ export const AllProject = observer(() => {
     return (
       <Flex flexDirection="column" alignItems="center">
         <EmptyState
-          icon={MdOutlineManageSearch}
+          image="https://assets.alleslabs.dev/illustration/search-empty.svg"
           message="We are currently gathering public projects to feature here. If you would like to share your project with the community, please submit your request."
         />
         <Link
@@ -88,7 +87,7 @@ export const AllProject = observer(() => {
       {!filteredPublicProjects.length ? (
         <EmptyState
           message="None of your lists matches this search."
-          icon={MdSearchOff}
+          image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
         />
       ) : (
         <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={4} w="full">
