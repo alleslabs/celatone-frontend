@@ -85,9 +85,11 @@ export const QueryArea = ({
   return (
     <Flex direction="column">
       <Box width="full" my="16px" alignItems="center">
-        <Text variant="body3" mb="8px">
-          Message Suggestions:
-        </Text>
+        {contractAddress && (
+          <Text variant="body3" mb="8px">
+            Message Suggestions:
+          </Text>
+        )}
         {cmds.length ? (
           <ButtonGroup
             width="90%"

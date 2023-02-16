@@ -164,12 +164,15 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
 
   return (
     <Box my={4}>
-      <Text variant="body3">Message Suggestions:</Text>
+      {contractAddress && (
+        <Text variant="body3" mb="8px">
+          Message Suggestions:
+        </Text>
+      )}
       {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
           rowGap="8px"
-          mt={8}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
