@@ -1,4 +1,11 @@
-import { Box, Flex, Button, ButtonGroup, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Button,
+  ButtonGroup,
+  Text,
+  Heading,
+} from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import dynamic from "next/dynamic";
@@ -161,12 +168,16 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
   });
 
   return (
-    <Box>
+    <Box my={4}>
+      {contractAddress && (
+        <Text variant="body3" mb="8px">
+          Message Suggestions:
+        </Text>
+      )}
       {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
           rowGap="8px"
-          mt={8}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
@@ -187,16 +198,16 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
         </ButtonGroup>
       ) : (
         contractAddress && (
-          <Text m="16px" variant="body2" color="text.dark">
+          <Text mt="8px" variant="body2" color="text.dark">
             No ExecuteMsgs suggestion available
           </Text>
         )
       )}
       <Flex gap="32px" mt={8} direction={{ sm: "column", xl: "row" }}>
         <Box w={{ sm: "full", xl: "70%" }}>
-          <Text variant="body1" fontWeight="600" mb={4}>
+          <Heading as="h6" variant="h6" mb={6}>
             Execute Messages
-          </Text>
+          </Heading>
           <JsonInput
             topic="Execute Msg"
             text={msg}
@@ -206,9 +217,9 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
           {error && <ErrorMessageRender error={error} mb={4} />}
         </Box>
         <Box w={{ sm: "full", xl: "50%" }}>
-          <Text variant="body1" fontWeight="600" mb={4}>
+          <Heading as="h6" variant="h6" mb={6}>
             Send Assets
-          </Text>
+          </Heading>
           {fields.map((field, idx) => (
             <AssetInput
               key={field.id}

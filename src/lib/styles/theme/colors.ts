@@ -51,7 +51,7 @@ const extendedColors: BasicColor = {
     lighter: "#DCDBFB",
     dark: "#3E38B0",
     darker: "#292676",
-    background: "rgba(41, 38, 118,0.7)",
+    background: "#181733",
   },
   honeydew: {
     main: "#C6E141",
@@ -59,7 +59,7 @@ const extendedColors: BasicColor = {
     lighter: "#E8F3B3",
     dark: "#95A931",
     darker: "#637121",
-    background: "rgba(198, 225, 65, 0.2)",
+    background: "#3D470B",
   },
   lilac: {
     main: "#D8BEFC",
