@@ -7,6 +7,7 @@ export enum AmpEvent {
   CODE_EDIT = "Code Edit",
   CODE_REMOVE = "Code Remove",
   // CONTRACT
+  CONTRACT_SAVE_AFTER_INIT = "Contract Save After Init",
   CONTRACT_SAVE = "Contract Save",
   CONTRACT_EDIT = "Contract Edit",
   CONTRACT_EDIT_TAGS = "Contract Edit Tags",
