@@ -104,7 +104,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
   const proceed = useCallback(async () => {
     AmpTrackAction(
       AmpEvent.ACTION_EXECUTE,
-      assets.filter((asset) => !!asset.denom).length
+      assets.filter((asset) => Number(asset.amount) && asset.denom).length
     );
     const funds = fabricateFunds(assets);
 

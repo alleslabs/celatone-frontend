@@ -167,7 +167,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     handleSubmit(async ({ adminAddress, label, initMsg, assets }) => {
       AmpTrackAction(
         AmpEvent.ACTION_INSTANTIATE,
-        assets.filter((asset) => !!asset.denom).length
+        assets.filter((asset) => Number(asset.amount) && asset.denom).length
       );
       setSimulating(true);
       const funds = fabricateFunds(assets);
