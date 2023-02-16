@@ -1,19 +1,19 @@
-import { Flex, Grid } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { TableHeader } from "lib/components/table";
+import { TableContainer, TableHeader } from "lib/components/table";
 import { useTxsByContractAddress } from "lib/services/contractService";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import { TxsTableRow } from "./TxsTableRow";
 
 interface TransactionsTableProps {
   contractAddress: ContractAddr;
   scrollComponentId: string;
-  totalData: number;
+  totalData: Option<number>;
   refetchCount: () => void;
 }
 
@@ -63,14 +63,14 @@ export const TransactionsTable = ({
     );
 
   const templateColumnsStyle =
-    "170px 70px minmax(360px, 1fr) repeat(2, max(170px)) max(300px)";
+    "180px 70px minmax(360px, 1fr) repeat(2, max(170px)) max(300px)";
 
   return (
-    <Flex direction="column" overflowX="scroll">
+    <TableContainer>
       <Grid templateColumns={templateColumnsStyle}>
         <TableHeader>Transaction Hash</TableHeader>
         <TableHeader />
-        <TableHeader>Actions</TableHeader>
+        <TableHeader>Messages</TableHeader>
         <TableHeader>Sender</TableHeader>
         <TableHeader>Block Height</TableHeader>
         <TableHeader>Timestamp</TableHeader>
@@ -82,7 +82,7 @@ export const TransactionsTable = ({
           templateColumnsStyle={templateColumnsStyle}
         />
       ))}
-      {totalData > 10 && (
+      {totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
@@ -94,6 +94,6 @@ export const TransactionsTable = ({
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </Flex>
+    </TableContainer>
   );
 };

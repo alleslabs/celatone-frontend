@@ -89,7 +89,7 @@ export const InstantiateButton = ({
       label={tooltipLabel}
       placement="top"
       arrowSize={8}
-      bg="primary.dark"
+      bg="honeydew.darker"
     >
       <Button
         // Change to isDisabled when create proposal flow is done

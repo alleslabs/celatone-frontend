@@ -19,11 +19,12 @@ import {
   useValidateAddress,
 } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
-import type { ContractAddr, LVPair, RpcQueryError } from "lib/types";
+import type { Addr, ContractAddr, LVPair, RpcQueryError } from "lib/types";
 import {
   formatSlugName,
-  getDescriptionDefault,
+  getNameAndDescriptionDefault,
   getTagsDefault,
 } from "lib/utils";
 
@@ -33,11 +34,14 @@ interface SaveNewContractDetail extends OffchainDetail {
   label: string;
 }
 
-interface SaveNewContractProps {
+interface SaveNewContractModalProps {
   list: LVPair;
   buttonProps: ButtonProps;
 }
-export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
+export function SaveNewContractModal({
+  list,
+  buttonProps,
+}: SaveNewContractModalProps) {
   const endpoint = useLCDEndpoint();
   const { indexerGraphClient } = useCelatoneApp();
   const { getContractLocalInfo } = useContractStore();
@@ -95,7 +99,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "instantiateInfo", contractAddressState],
+    ["query", "instantiate_info", endpoint, contractAddressState],
     async () =>
       queryInstantiateInfo(
         endpoint,
@@ -114,7 +118,9 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           instantiator: data.instantiator,
           label: data.label,
           name: contractLocalInfo?.name ?? data.label,
-          description: getDescriptionDefault(contractLocalInfo?.description),
+          description: getNameAndDescriptionDefault(
+            contractLocalInfo?.description
+          ),
           tags: getTagsDefault(contractLocalInfo?.tags),
           lists: [
             ...initialList,
@@ -166,13 +172,16 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       offchainState.name.trim().length ? offchainState.name : labelState
     }`,
     contractAddress: contractAddressState as ContractAddr,
-    instantiator: instantiatorState,
+    instantiator: instantiatorState as Addr,
     label: labelState,
     name: offchainState.name,
     description: offchainState.description,
     tags: offchainState.tags,
     lists: offchainState.lists,
-    actions: resetForm,
+    actions: () => {
+      AmpTrack(AmpEvent.CONTRACT_SAVE);
+      resetForm();
+    },
   });
 
   return (
@@ -187,6 +196,7 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       }
       otherBtnTitle="Cancel"
       otherAction={resetForm}
+      closeOnOverlayClick={false}
     >
       <VStack gap="16px">
         <ControllerInput
@@ -194,9 +204,9 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           control={control}
           label="Contract Address"
           variant="floating"
-          helperText={`ex. ${exampleContractAddress}`}
+          placeholder={`ex. ${exampleContractAddress}`}
           status={status}
-          labelBgColor="gray.800"
+          labelBgColor="pebble.900"
         />
         <ControllerInput
           name="instantiator"
@@ -204,16 +214,17 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
           label="Instantiated by"
           variant="floating"
           isDisabled
-          labelBgColor="gray.800"
+          labelBgColor="pebble.900"
         />
 
         <OffChainForm<SaveNewContractDetail>
           state={offchainState}
+          contractLabel={labelState}
           control={control}
           setTagsValue={setTagsValue}
           setContractListsValue={setContractListsValue}
           errors={errors}
-          labelBgColor="gray.800"
+          labelBgColor="pebble.900"
         />
       </VStack>
     </ActionModal>

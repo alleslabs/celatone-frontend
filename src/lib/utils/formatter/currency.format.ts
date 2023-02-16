@@ -11,5 +11,5 @@ export function formatToken(
   if (denom[0] === "u") {
     return formatTokenWithPrecision(amount, 6);
   }
-  return amount.toString();
+  return formatTokenWithPrecision(amount, 0);
 }

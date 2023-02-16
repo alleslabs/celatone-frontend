@@ -1,4 +1,4 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
@@ -6,10 +6,12 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { BackButton } from "lib/components/button";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { useLCDEndpoint } from "lib/hooks";
+import { AmpTrackToQuery } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 import {
@@ -68,12 +70,13 @@ const Query = () => {
   );
 
   useEffect(() => {
-    (async () => {
+    if (router.isReady) {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
 
-      let decodeMsg = decode(getFirstQueryParam(router.query.msg));
+      const msgParam = getFirstQueryParam(router.query.msg);
+      let decodeMsg = decode(msgParam);
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contractAddressParam);
         decodeMsg = "";
@@ -83,25 +86,26 @@ const Query = () => {
       setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
       if (!contractAddressParam) setCmds([]);
-    })();
+
+      AmpTrackToQuery(!!contractAddressParam, !!msgParam);
+    }
   }, [router, onContractSelect]);
 
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
-      <Button
-        variant="ghost-primary"
-        onClick={() => router.back()}
-        leftIcon={<ArrowBackIcon boxSize={4} />}
-      >
-        BACK
-      </Button>
+      <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h5" variant="h5" color="text.main">
+        <Heading as="h5" variant="h5">
           Query Contract
         </Heading>
         <Box>
-          <Button variant="ghost-primary" size="sm" onClick={goToExecute}>
+          <Button
+            variant="ghost-primary"
+            size="sm"
+            onClick={goToExecute}
+            rightIcon={<ChevronRightIcon boxSize={4} />}
+          >
             Go To Execute
           </Button>
         </Box>

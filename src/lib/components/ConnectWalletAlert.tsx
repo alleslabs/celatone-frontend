@@ -14,6 +14,8 @@ import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
 import { MdLink } from "react-icons/md";
 
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
 interface ConnectWalletAlertProps extends AlertProps {
   title?: string;
   subtitle?: string;
@@ -27,6 +29,7 @@ export const ConnectWalletAlert = ({
   const { address, connect } = useWallet();
 
   const onClickConnect: MouseEventHandler = async (e) => {
+    AmpTrack(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
     await connect();
   };
@@ -34,7 +37,7 @@ export const ConnectWalletAlert = ({
   return !address ? (
     <Alert
       {...alertProps}
-      variant="info"
+      variant="honeydew"
       alignItems="center"
       justifyContent="space-between"
       py="12px"
@@ -42,21 +45,13 @@ export const ConnectWalletAlert = ({
       <Flex>
         <AlertIcon />
         <Box>
-          <AlertTitle>
-            <Text variant="body1" fontWeight="600" color="info.main">
-              {title}
-            </Text>
-          </AlertTitle>
-          <AlertDescription>
-            <Text variant="body2" color="info.main">
-              {subtitle}
-            </Text>
-          </AlertDescription>
+          <AlertTitle>{title}</AlertTitle>
+          <AlertDescription>{subtitle}</AlertDescription>
         </Box>
       </Flex>
-      <Button variant="ghost" gap={2} onClick={onClickConnect}>
-        <Icon as={MdLink} boxSize={4} color="info.main" />
-        <Text color="info.main">Connect Wallet</Text>
+      <Button variant="ghost-info" gap={2} onClick={onClickConnect}>
+        <Icon as={MdLink} boxSize={4} />
+        <Text color="honeydew.main">Connect Wallet</Text>
       </Button>
     </Alert>
   ) : null;

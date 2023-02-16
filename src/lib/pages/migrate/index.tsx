@@ -1,111 +1,178 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
-import { ButtonCard } from "lib/components/ButtonCard";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useLCDEndpoint } from "lib/hooks";
+import { AmpTrackToMigrate } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
+import { MigrateContract } from "./components/MigrateContract";
+import { MigrateOptions } from "./components/MigrateOptions";
+import { UploadNewCode } from "./components/UploadNewCode";
 import type { MigratePageState } from "./types";
 
 const defaultValues: MigratePageState = {
-  isValid: false,
+  migrateStep: "migrate_options",
   contractAddress: "" as ContractAddr,
   admin: undefined,
-  codeId: undefined,
+  codeId: "",
 };
 
 const Migrate = () => {
   const { indexerGraphClient } = useCelatoneApp();
+  const router = useRouter();
   const navigate = useInternalNavigate();
   const endpoint = useLCDEndpoint();
-  const { address } = useWallet();
+  const { address = "" } = useWallet();
 
   const { setValue, watch } = useForm<MigratePageState>({
     mode: "all",
     defaultValues,
   });
-  const { isValid, contractAddress, admin } = watch();
+  const { migrateStep, contractAddress, admin, codeId } = watch();
+
+  const firstStep = migrateStep !== "migrate_contract";
+  const handleBack = () => setValue("migrateStep", "migrate_options");
+
+  const contractAddressParam = getFirstQueryParam(
+    router.query.contract
+  ) as ContractAddr;
+  const codeIdParam = getFirstQueryParam(router.query["code-id"]);
 
   const onContractSelect = useCallback(
     (contract: ContractAddr) => {
       navigate({
         pathname: "/migrate",
-        query: { ...(contract && { contract }) },
+        query: {
+          ...(!firstStep && { "code-id": codeIdParam }),
+          contract,
+        },
         options: { shallow: true },
       });
     },
-    [navigate]
+    [codeIdParam, firstStep, navigate]
   );
 
   useQuery(
-    ["query", "instantiateInfo", contractAddress],
+    ["query", "instantiate_info", endpoint, contractAddress],
     async () =>
       queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
     {
       enabled: !!contractAddress,
       retry: 0,
       onSuccess(data) {
-        const codeIdParam = Number(getFirstQueryParam(router.query.codeId));
-        setValue("isValid", true);
-        setValue("admin", data.admin);
-        setValue("codeId", codeIdParam);
+        if (data.admin === address) {
+          setValue("admin", data.admin);
+        } else {
+          setValue("admin", defaultValues.admin);
+          setValue("contractAddress", defaultValues.contractAddress);
+        }
       },
       onError() {
-        setValue("isValid", false);
         setValue("admin", defaultValues.admin);
-        setValue("codeId", defaultValues.codeId);
+        setValue("contractAddress", defaultValues.contractAddress);
       },
     }
   );
 
   useEffect(() => {
-    const contractAddressParam = getFirstQueryParam(
-      router.query.contract
-    ) as ContractAddr;
-
     setValue("contractAddress", contractAddressParam);
-  }, [setValue]);
+    setValue("codeId", codeIdParam);
+    if (contractAddressParam && codeIdParam)
+      setValue("migrateStep", "migrate_contract");
+  }, [codeIdParam, contractAddressParam, setValue]);
 
-  const disabled = !isValid || admin !== address;
+  useEffect(() => {
+    if (router.isReady)
+      AmpTrackToMigrate(!!contractAddressParam, !!codeIdParam);
+  }, [router.isReady, codeIdParam, contractAddressParam]);
+
+  const renderBody = () => {
+    switch (migrateStep) {
+      case "migrate_contract":
+        return (
+          <MigrateContract
+            contractAddress={contractAddress}
+            codeIdParam={codeId}
+            handleBack={handleBack}
+          />
+        );
+      case "upload_new_code":
+        return <UploadNewCode handleBack={handleBack} />;
+      case "migrate_options":
+      default:
+        return (
+          <MigrateOptions
+            isAdmin={admin === address}
+            uploadHandler={() => {
+              setValue("migrateStep", "upload_new_code");
+            }}
+            existHandler={() => {
+              setValue("migrateStep", "migrate_contract");
+            }}
+          />
+        );
+    }
+  };
 
   return (
     <WasmPageContainer>
-      <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
-        MIGRATE CONTRACT
-      </Text>
-      <Stepper currentStep={1} />
-      <Heading as="h4" variant="h4" my="48px">
-        Migrate Contract
-      </Heading>
+      {firstStep ? (
+        <Box w="full" mb="24px">
+          <Text
+            variant="body1"
+            color="text.dark"
+            textAlign="center"
+            mb={3}
+            fontWeight={700}
+          >
+            MIGRATE CONTRACT
+          </Text>
+          <Stepper mode="migrate" currentStep={1} />
+          <Heading as="h4" variant="h4" textAlign="center" mt="48px">
+            Migrate Contract
+          </Heading>
+        </Box>
+      ) : (
+        <Box w="full" mb="48px">
+          <Button
+            alignSelf="start"
+            variant="ghost-primary"
+            onClick={handleBack}
+            leftIcon={<ArrowBackIcon boxSize={4} />}
+          >
+            BACK
+          </Button>
+          <Heading as="h4" variant="h4" textAlign="center" my="12px">
+            Migrate Contract
+          </Heading>
+          <Stepper mode="migrate" currentStep={2} />
+        </Box>
+      )}
+      <ConnectWalletAlert
+        mb="24px"
+        subtitle="You need to connect your wallet to perform this action"
+      />
       {/* Select Migrate Contract modal */}
       <ContractSelectSection
         mode="only-admin"
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />
-      <ButtonCard
-        disabled={disabled}
-        title="Upload new WASM File"
-        description="Deploy contract by upload new Wasm file"
-        onClick={() => {}}
-        mb="16px"
-      />
-      <ButtonCard
-        disabled={disabled}
-        title="Use existing Code IDs"
-        description="Input code ID or select from stored codes or your saved codes"
-        onClick={() => {}}
-      />
+      <Box mt="48px" w="full">
+        {renderBody()}
+      </Box>
     </WasmPageContainer>
   );
 };

@@ -12,13 +12,12 @@ import {
   Spacer,
   chakra,
 } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { MdMoreHoriz, MdMode, MdDelete } from "react-icons/md";
 
-import { EditList, RemoveList } from "../list";
+import { EditListNameModal, RemoveListModal } from "../list";
 import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
-import { formatSlugName } from "lib/utils";
+import { dateFromNow, formatSlugName } from "lib/utils";
 
 const StyledIcon = chakra(Icon, {
   baseStyle: {
@@ -46,12 +45,14 @@ export const ContractListCard = ({
       <Flex
         p="4"
         alignItems="center"
-        bg="gray.900"
-        borderRadius="4"
+        bg="pebble.800"
+        _hover={{ bg: "pebble.700" }}
+        borderRadius="8px"
+        transition="all .25s ease-in-out"
         gap="4"
         h="75px"
       >
-        <Icon as={getListIcon(item.name)} color="gray.600" boxSize="6" />
+        <Icon as={getListIcon(item.name)} color="pebble.600" boxSize="6" />
         <Flex flexDirection="column">
           <Flex alignItems="center" gap="2">
             <LinkOverlay
@@ -72,40 +73,35 @@ export const ContractListCard = ({
               variant="solid"
               size="sm"
               minW="min-content"
-              backgroundColor="gray.800"
-              borderRadius="10"
-              textColor="gray.50"
+              backgroundColor="pebble.700"
+              borderRadius="full"
+              paddingTop="1px"
+              textColor="text.dark"
             >
               {item.contracts.length}
             </Tag>
           </Flex>
           {showLastUpdated && (
-            <Text variant="body3" color="gray.400">
-              Updated {dayjs(item.lastUpdated).toNow(true)} ago
+            <Text variant="body3" color="text.dark">
+              Updated {dateFromNow(item.lastUpdated)}
             </Text>
           )}
         </Flex>
         <Spacer />
         {!isReadOnly && (
           <Menu>
-            <MenuButton
-              m="0"
-              h="full"
-              variant="ghost-gray"
-              focusBorderColor="primary.main"
-              as={Button}
-            >
+            <MenuButton m="0" h="full" variant="ghost-gray" as={Button}>
               <MdMoreHoriz />
             </MenuButton>
             <MenuList>
-              <EditList
+              <EditListNameModal
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
-                  icon: <StyledIcon as={MdMode} color="gray.600" />,
+                  icon: <StyledIcon as={MdMode} color="pebble.600" />,
                   children: "Edit list name",
                 }}
               />
-              <RemoveList
+              <RemoveListModal
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
                   icon: <StyledIcon as={MdDelete} color="error.light" />,

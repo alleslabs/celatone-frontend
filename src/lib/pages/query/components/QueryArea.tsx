@@ -12,9 +12,10 @@ import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useLCDEndpoint, useUserKey } from "lib/hooks";
+import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
-import type { ContractAddr, RpcQueryError } from "lib/types";
-import { encode, jsonPrettify, jsonValidate } from "lib/utils";
+import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
+import { encode, getCurrentDate, jsonPrettify, jsonValidate } from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -55,10 +56,10 @@ export const QueryArea = ({
         addActivity(userKey, {
           type: "query",
           action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-          sender: address,
+          sender: address as HumanAddr,
           contractAddress,
           msg: encode(msg),
-          timestamp: new Date(),
+          timestamp: getCurrentDate(),
         });
       },
       onError(err: AxiosError<RpcQueryError>) {
@@ -66,15 +67,17 @@ export const QueryArea = ({
       },
     }
   );
+  const handleQuery = () => {
+    AmpTrack(AmpEvent.ACTION_QUERY);
+    refetch();
+  };
 
   useEffect(() => setMsg(initialMsg), [initialMsg]);
 
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
       // TODO: problem with safari if focusing in the textarea
-      if (e.ctrlKey && e.key === "Enter") {
-        refetch();
-      }
+      if (e.ctrlKey && e.key === "Enter") handleQuery();
     };
     document.addEventListener("keydown", keydownHandler);
     return () => {
@@ -84,7 +87,7 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Flex width="full" my="16px" alignItems="center">
+      <Flex width="full" my="24px" alignItems="center">
         {cmds.length ? (
           <ButtonGroup
             width="90%"
@@ -101,7 +104,10 @@ export const QueryArea = ({
               <ContractCmdButton
                 key={`query-cmd-${cmd}`}
                 cmd={cmd}
-                onClickCmd={() => setMsg(jsonPrettify(queryMsg))}
+                onClickCmd={() => {
+                  AmpTrack(AmpEvent.USE_CMD_QUERY);
+                  setMsg(jsonPrettify(queryMsg));
+                }}
               />
             ))}
           </ButtonGroup>
@@ -112,8 +118,6 @@ export const QueryArea = ({
             </Text>
           )
         )}
-        <Spacer />
-        <CopyButton isDisable={res.length === 0} value={res} />
       </Flex>
       <Flex gap="16px">
         <Box w="full">
@@ -136,9 +140,7 @@ export const QueryArea = ({
               variant="primary"
               fontSize="14px"
               p="6px 16px"
-              onClick={() => {
-                refetch();
-              }}
+              onClick={handleQuery}
               isDisabled={jsonValidate(msg) !== null}
               isLoading={isFetching || isRefetching}
               leftIcon={<SearchIcon />}

@@ -15,9 +15,11 @@ import { MdList, MdSwapHoriz } from "react-icons/md";
 
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useContractListByAdmin } from "lib/services/contractService";
 import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr } from "lib/types";
+import { getCurrentDate } from "lib/utils";
 
 import { ContractListDetail } from "./ContractListDetail";
 
@@ -42,42 +44,36 @@ export const SelectContractAdmin = ({
       ...contract,
       ...getContractLocalInfo(contract.contractAddress),
     })),
-    lastUpdated: new Date(),
+    lastUpdated: getCurrentDate(),
     isInfoEditable: false,
     isContractRemovable: false,
   };
 
-  const resetOnClose = () => {
-    onClose();
-  };
-
   const onSelectThenClose = (contract: ContractAddr) => {
     onContractSelect(contract);
-    resetOnClose();
+    onClose();
   };
 
   return (
     <>
       <Button
-        variant={notSelected ? "primary" : "outline-info"}
+        variant={notSelected ? "primary" : "outline-primary"}
         py="6px"
         px="16px"
         size="sm"
-        onClick={onOpen}
+        onClick={() => {
+          AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
+          onOpen();
+        }}
         leftIcon={
           !notSelected ? <Icon as={MdSwapHoriz} boxSize="5" /> : undefined
         }
+        disabled={!address}
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={resetOnClose}
-        closeOnOverlayClick={false}
-        size="4xl"
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={onClose} size="4xl" isCentered>
         <ModalOverlay />
         <ModalContent h="80%">
           <ModalHeader>

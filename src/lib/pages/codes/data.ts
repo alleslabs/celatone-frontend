@@ -1,12 +1,15 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
-import { useUserKey, useCodeStore } from "lib/hooks";
+import type { PermissionFilterValue } from "lib/hooks";
 import {
-  useCodeListByIDsQuery,
-  useCodeListByUserQuery,
-} from "lib/services/codeService";
-import type { CodeInfo } from "lib/types";
+  useUserKey,
+  useCodeStore,
+  usePermissionFilter,
+  useSearchFilter,
+} from "lib/hooks";
+import { useCodeListPageQuery } from "lib/services/codeService";
+import type { CodeInfo, HumanAddr } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 
 interface CodeListData {
@@ -15,20 +18,31 @@ interface CodeListData {
   savedCodesCount: number;
   storedCodesCount: number;
   allCodesCount: number;
+  isStoredCodesLoading: boolean;
+  isSavedCodesLoading: boolean;
 }
 
-export const useCodeListData = (keyword?: string): CodeListData => {
+export const useCodeListData = (
+  keyword?: string,
+  permissionValue?: PermissionFilterValue
+): CodeListData => {
   const { address } = useWallet();
+  const userKey = useUserKey();
   const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds, isCodeIdSaved } =
     useCodeStore();
 
-  const { data: rawStoredCodes = [] } = useCodeListByUserQuery(address);
-
-  const userKey = useUserKey();
+  const permissionFilterFn = usePermissionFilter(permissionValue);
+  const searchFilterFn = useSearchFilter(keyword);
 
   const savedCodeIds = lastSavedCodeIds(userKey);
-  const { data: querySavedCodeInfos = [] } =
-    useCodeListByIDsQuery(savedCodeIds);
+
+  const [
+    { data: rawStoredCodes = [], isLoading: isStoredCodesLoading },
+    { data: querySavedCodeInfos = [], isLoading: isSavedCodesLoading },
+  ] = useCodeListPageQuery({
+    walletAddr: address as HumanAddr,
+    ids: savedCodeIds,
+  });
 
   const savedCodes = lastSavedCodes(userKey)?.map<CodeInfo>(
     (localSavedCode) => {
@@ -37,7 +51,7 @@ export const useCodeListData = (keyword?: string): CodeListData => {
       );
       return {
         ...localSavedCode,
-        contracts: querySavedCodeInfo?.contracts ?? 0,
+        contractCount: querySavedCodeInfo?.contractCount,
         instantiatePermission:
           querySavedCodeInfo?.instantiatePermission ??
           InstantiatePermission.UNKNOWN,
@@ -47,12 +61,12 @@ export const useCodeListData = (keyword?: string): CodeListData => {
     }
   );
 
-  const savedCodesCount = savedCodes?.length ?? 0;
+  const savedCodesCount = savedCodes.length;
 
   const storedCodes = rawStoredCodes.map<CodeInfo>((code) => {
     return {
       ...code,
-      description: getCodeLocalInfo(code.id)?.description,
+      name: getCodeLocalInfo(code.id)?.name,
       isSaved: isCodeIdSaved(code.id),
     };
   });
@@ -60,20 +74,11 @@ export const useCodeListData = (keyword?: string): CodeListData => {
   const storedCodesCount = storedCodes.length;
 
   const [filteredSavedCodes, filteredStoredCodes] = useMemo(() => {
-    const filterFn = (code: CodeInfo) => {
-      if (keyword === undefined) return true;
-
-      const computedKeyword = keyword.trim();
-      if (computedKeyword.length === 0) return true;
-
-      return (
-        code.id.toString().startsWith(computedKeyword) ||
-        code.description?.toLowerCase().includes(computedKeyword.toLowerCase())
-      );
-    };
-
-    return [savedCodes.filter(filterFn), storedCodes.filter(filterFn)];
-  }, [keyword, savedCodes, storedCodes]);
+    return [
+      savedCodes.filter(permissionFilterFn).filter(searchFilterFn),
+      storedCodes.filter(permissionFilterFn).filter(searchFilterFn),
+    ];
+  }, [savedCodes, storedCodes, permissionFilterFn, searchFilterFn]);
 
   return {
     savedCodes: filteredSavedCodes,
@@ -81,5 +86,7 @@ export const useCodeListData = (keyword?: string): CodeListData => {
     savedCodesCount,
     storedCodesCount,
     allCodesCount: storedCodesCount + savedCodesCount,
+    isStoredCodesLoading,
+    isSavedCodesLoading,
   };
 };

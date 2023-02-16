@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { NoContracts } from "../NoContracts";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { TableHeader } from "lib/components/table";
+import { TableContainer, TableHeader } from "lib/components/table";
 import { useContractStore } from "lib/hooks";
 import {
   useContractListByCodeId,
@@ -23,7 +23,7 @@ interface ContractTableProps {
 export const ContractTable = observer(({ codeId }: ContractTableProps) => {
   const { getContractLocalInfo } = useContractStore();
 
-  const { data: totalData = 0, refetch } = useContractListCountByCodeId(codeId);
+  const { data: totalData, refetch } = useContractListCountByCodeId(codeId);
   const {
     pagesQuantity,
     currentPage,
@@ -79,18 +79,17 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
         </Heading>
         <Badge
           ml={2}
-          variant="primary"
+          variant={!codeContracts?.length ? "gray" : "violet"}
           textAlign="center"
-          bg={!codeContracts?.length ? "gray.800" : "primary.dark"}
         >
-          {totalData}
+          {totalData ?? 0}
         </Badge>
       </Flex>
       {!codeContracts?.length ? (
         <NoContracts />
       ) : (
-        <Flex direction="column" overflowX="scroll">
-          <Grid templateColumns={templateColumnsStyle}>
+        <TableContainer overflow="visible">
+          <Grid templateColumns={templateColumnsStyle} minW="min-content">
             <TableHeader borderTopStyle="none">Contract Address</TableHeader>
             <TableHeader>Contract Name</TableHeader>
             <TableHeader>Tags</TableHeader>
@@ -111,7 +110,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
               templateColumnsStyle={templateColumnsStyle}
             />
           ))}
-          {totalData > 10 && (
+          {totalData && totalData > 10 && (
             <Pagination
               currentPage={currentPage}
               pagesQuantity={pagesQuantity}
@@ -123,7 +122,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
               onPageSizeChange={onPageSizeChange}
             />
           )}
-        </Flex>
+        </TableContainer>
       )}
     </>
   );

@@ -48,9 +48,10 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   return (
     <Flex
       borderRadius="8px"
-      bg="gray.900"
+      bg="pebble.800"
       justify="space-between"
-      p={4}
+      px={4}
+      py={3}
       role="group"
     >
       <Flex direction="column" maxW="70%">
@@ -94,15 +95,15 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="700px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <Icon as={MdAttachMoney} boxSize={5} color="gray.600" />
+              <Icon as={MdAttachMoney} boxSize={5} color="pebble.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>
             </Flex>
           </ModalHeader>
 
-          <ModalCloseButton color="gray.600" />
-          <ModalBody maxH="400px" overflow="overlay">
+          <ModalCloseButton color="pebble.600" />
+          <ModalBody maxH="400px" overflow="overlay" pb={6}>
             <Flex direction="column" gap={5}>
               <Flex direction="row" gap={4}>
                 <Text variant="body2" fontWeight="700">
@@ -110,7 +111,7 @@ export const UnsupportedTokensModal = ({
                 </Text>
                 <ExplorerLink value={contractAddress} type="contract_address" />
               </Flex>
-              <Flex gap={2} direction="column">
+              <Flex gap={3} direction="column">
                 {unsupportedAssets.map((asset) => (
                   <UnsupportedToken
                     balance={asset.balance}

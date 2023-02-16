@@ -6,6 +6,7 @@ import { ExplorerLink } from "../ExplorerLink";
 import { TagSelection } from "lib/components/forms/TagSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import { getTagsDefault } from "lib/utils";
 
@@ -23,27 +24,28 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
     tags: tagResult,
+    actions: () => AmpTrack(AmpEvent.CONTRACT_EDIT_TAGS),
   });
 
   return (
     <ActionModal
       title="Edit Tags"
       trigger={
-        <Icon as={MdMode} color="gray.600" boxSize="4" cursor="pointer" />
+        <Icon as={MdMode} color="pebble.600" boxSize="4" cursor="pointer" />
       }
       headerContent={
         <Flex pt="6" gap="36px">
           <Flex direction="column" gap="8px">
-            <Text variant="body2" color="text.main" fontWeight="600">
+            <Text variant="body2" fontWeight="600">
               Contract Name
             </Text>
-            <Text variant="body2" color="text.main" fontWeight="600">
+            <Text variant="body2" fontWeight="600">
               Contract Address
             </Text>
           </Flex>
 
           <Flex direction="column" gap="8px">
-            <Text variant="body2" color="text.main">
+            <Text variant="body2">
               {contractLocalInfo.name ?? contractLocalInfo.label}
             </Text>
             <ExplorerLink
@@ -66,7 +68,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
             setResult={(selectedOptions: string[]) => {
               setTagResult(selectedOptions);
             }}
-            labelBgColor="gray.800"
+            labelBgColor="pebble.900"
           />
         </Box>
       </FormControl>

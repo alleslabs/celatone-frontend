@@ -1,17 +1,14 @@
+// TODO -  Revisit type later to prevent dependency cycling
+import type { ContractCw2Info, InstantiateInfo } from "lib/services/contract";
+import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { ContractAddr, HumanAddr, Option } from "lib/types";
-
-export interface ContractInfo extends ContractLocalInfo {
-  admin: Option<string>;
-  instantiated: Date;
-  latestUpdator: Option<string>;
-  latestUpdated: Date;
-}
-
-export interface ContractInstances {
-  contractList: Option<ContractLocalInfo[]>;
-  count: number;
-}
+import type {
+  Addr,
+  BalanceWithAssetInfo,
+  Option,
+  PublicDetail,
+  PublicInfo,
+} from "lib/types";
 
 export enum RemarkOperation {
   CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT = "CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT",
@@ -21,19 +18,31 @@ export enum RemarkOperation {
 
 type RemarkType = "governance" | "transaction";
 
-export interface MigrationRemark {
+export interface ContractHistoryRemark {
   operation: RemarkOperation;
   type: RemarkType;
-  value: string;
+  value: string | number;
+}
+
+export interface ContractInfo extends ContractLocalInfo {
+  admin: Option<Addr>;
+  latestUpdater: Option<Addr>;
+  latestUpdated: Option<Date>;
+  remark: Option<ContractHistoryRemark>;
+}
+
+export interface ContractInstances {
+  contractList: Option<ContractLocalInfo[]>;
+  count: Option<number>;
 }
 
 export interface ContractMigrationHistory {
   codeId: number;
-  codeDescription?: string;
-  sender: HumanAddr | ContractAddr;
+  codeName?: string;
+  sender: Addr;
   height: number;
   timestamp: Date;
-  remark: MigrationRemark;
+  remark: ContractHistoryRemark;
 }
 
 export enum ProposalStatus {
@@ -52,6 +61,7 @@ export enum ProposalType {
   UPDATE_ADMIN = "UpdateAdmin",
   CLEAR_ADMIN = "ClearAdmin",
   EXECUTE_CONTRACT = "ExecuteContract",
+  SUDO_CONTRACT = "SudoContract",
 }
 
 export interface ContractRelatedProposals {
@@ -60,7 +70,24 @@ export interface ContractRelatedProposals {
   status: ProposalStatus;
   votingEndTime: Date;
   depositEndTime: Date;
-  resolvedHeight: number | null | undefined;
+  resolvedHeight: Option<number | null>;
   type: ProposalType;
-  proposer: HumanAddr | ContractAddr | undefined;
+  proposer: Option<Addr>;
+}
+
+export interface ContractData {
+  chainId: string;
+  codeInfo: Option<CodeLocalInfo>;
+  contractLocalInfo: Option<ContractLocalInfo>;
+  contractCw2Info: Option<ContractCw2Info>;
+  instantiateInfo: Option<InstantiateInfo>;
+  publicProject: {
+    publicInfo: Option<PublicInfo>;
+    publicDetail: Option<PublicDetail>;
+  };
+  balances: Option<BalanceWithAssetInfo[]>;
+  initMsg: Option<string>;
+  initTxHash: Option<string>;
+  initProposalId: Option<number>;
+  initProposalTitle: Option<string>;
 }

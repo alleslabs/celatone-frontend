@@ -1,10 +1,11 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading, Icon, Stack, Text } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 import { MdChevronRight } from "react-icons/md";
 
 interface ButtonCardProps extends FlexProps {
   title: string;
-  description: string;
+  description: ReactNode;
   onClick: () => void;
   disabled?: boolean;
 }
@@ -22,13 +23,14 @@ export const ButtonCard = ({
     align="center"
     justify="space-between"
     onClick={!disabled ? onClick : undefined}
-    bgColor="gray.900"
-    borderRadius="4px 4px 0 0"
+    bgColor="pebble.800"
+    borderRadius="8px"
     w="100%"
     cursor="pointer"
-    _hover={{ bgColor: "rgba(255, 255, 255, 0.15)" }}
+    _hover={{ bgColor: "pebble.700" }}
+    transition="all .25s ease-in-out"
     _disabled={{
-      bgColor: "divider.main",
+      bgColor: "pebble.900",
       cursor: "not-allowed",
     }}
     {...componentProps}
@@ -41,10 +43,14 @@ export const ButtonCard = ({
       >
         {title}
       </Heading>
-      <Text variant="body2" color={disabled ? "text.disabled" : "text.main"}>
-        {description}
-      </Text>
+      {typeof description === "string" ? (
+        <Text variant="body2" color={disabled ? "text.disabled" : "text.main"}>
+          {description}
+        </Text>
+      ) : (
+        description
+      )}
     </Stack>
-    <Icon as={MdChevronRight} color="gray.600" fontSize="28px" />
+    <Icon as={MdChevronRight} color="pebble.600" fontSize="28px" />
   </Flex>
 );

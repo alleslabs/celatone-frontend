@@ -15,6 +15,7 @@ import { MdSearch } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { useValidateAddress } from "lib/hooks";
+import { AmpTrackUseMainSearch } from "lib/services/amplitude";
 import { isCodeId, isTxHash } from "lib/utils";
 
 type SearchResultType =
@@ -32,7 +33,7 @@ const NOT_SUPPORTED =
 interface ResultItemProps {
   type?: SearchResultType;
   value: string;
-  handleSelectResult: (type?: SearchResultType) => void;
+  handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
 }
 
 const getRoute = (type: SearchResultType) => {
@@ -53,16 +54,18 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
   const route = type ? getRoute(type) : null;
 
   return (
-    <ListItem p={2} borderBottomColor="divider.main">
-      <Text variant="body2" fontWeight="500" color="gray.500" p="6px">
+    <ListItem p={2} borderBottomColor="pebble.700" bg="pebble.900">
+      <Text variant="body2" fontWeight="500" color="text.dark" p="8px">
         {text}
       </Text>
       {route && (
         <Text
           variant="body2"
-          p="6px"
-          _hover={{ bg: "gray.800", cursor: "pointer" }}
-          onClick={() => handleSelectResult(type)}
+          p="8px"
+          borderRadius="8px"
+          _hover={{ bg: "pebble.800", cursor: "pointer" }}
+          transition="all 0.25s ease-in-out"
+          onClick={() => handleSelectResult(type, true)}
         >
           {value}
         </Text>
@@ -97,7 +100,8 @@ const Searchbar = () => {
     setDisplayResults(inputValue.length > 0);
   };
 
-  const handleSelectResult = (type?: SearchResultType) => {
+  const handleSelectResult = (type?: SearchResultType, isClick = false) => {
+    AmpTrackUseMainSearch(isClick);
     const route = type ? getRoute(type) : null;
     if (route) navigate({ pathname: `${route}/${keyword}` });
   };
@@ -119,19 +123,18 @@ const Searchbar = () => {
           h="36px"
           onChange={handleSearchChange}
           placeholder="Search by Contract Address / Code ID"
-          focusBorderColor="primary.main"
-          _placeholder={{ color: "#A9A9A9" }}
+          focusBorderColor="lilac.main"
           onFocus={() => setDisplayResults(keyword.length > 0)}
           onKeyDown={handleOnKeyEnter}
         />
         <InputRightElement pointerEvents="none" h="full">
-          <Icon as={MdSearch} w={5} h={5} color="gray.600" />
+          <Icon as={MdSearch} w={5} h={5} color="pebble.600" />
         </InputRightElement>
       </InputGroup>
       {displayResults && (
         <List
-          borderRadius="4px"
-          bg="gray.900"
+          borderRadius="8px"
+          bg="pebble.900"
           position="absolute"
           zIndex="2"
           w="full"
@@ -142,12 +145,14 @@ const Searchbar = () => {
         >
           {!results.length ? (
             <ResultItem
+              key="Not Found"
               value={keyword}
               handleSelectResult={handleSelectResult}
             />
           ) : (
             results.map((type) => (
               <ResultItem
+                key={type}
                 type={type}
                 value={keyword}
                 handleSelectResult={handleSelectResult}

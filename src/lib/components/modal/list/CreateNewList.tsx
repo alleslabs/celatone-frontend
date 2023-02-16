@@ -9,9 +9,10 @@ import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useContractStore, useUserKey } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { shortenName } from "lib/utils";
 
-interface CreateNewListProps {
+interface CreateNewListModalProps {
   buttonProps?: ButtonProps;
   trigger?: ReactNode;
   onCreate?: (listName: string) => void;
@@ -19,13 +20,13 @@ interface CreateNewListProps {
   inputValue?: string;
 }
 
-export function CreateNewList({
+export function CreateNewListModal({
   buttonProps,
   trigger,
   inputValue,
   onCreate,
   onClose,
-}: CreateNewListProps) {
+}: CreateNewListModalProps) {
   const userKey = useUserKey();
   const { createNewList, isContractListExist } = useContractStore();
 
@@ -59,6 +60,8 @@ export function CreateNewList({
     resetListName();
     onCreate?.(listName);
     onClose?.();
+
+    AmpTrack(AmpEvent.LIST_CREATE);
 
     toast({
       title: `Create ${shortenName(listName)} successfully`,
@@ -106,7 +109,7 @@ export function CreateNewList({
           variant="floating"
           value={listName}
           setInputState={setListName}
-          labelBgColor="gray.800"
+          labelBgColor="pebble.900"
           status={status}
           label="List Name"
         />

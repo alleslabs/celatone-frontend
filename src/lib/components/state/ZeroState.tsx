@@ -1,14 +1,11 @@
 import { Flex, Button, Icon, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { SaveNewContract } from "lib/components/modal/contract";
+import { SaveNewContractModal } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
-
-import { DisconnectedState } from "./DisconnectedState";
 
 interface ZeroStateProps {
   list: LVPair;
@@ -29,7 +26,8 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
     <Flex alignItems="center" gap="4" color="text.dark" direction="column">
       <Flex align="center">
         Save existing contracts to the list with
-        <SaveNewContract
+        <SaveNewContractModal
+          key={list.value}
           list={list}
           buttonProps={{
             variant: "outline-primary",
@@ -61,34 +59,25 @@ const renderText = (listSlug: string) => {
 
 export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
   const navigate = useInternalNavigate();
-  const { isWalletConnected } = useWallet();
-
-  const isInstantiatedByMe =
-    list.value === formatSlugName(INSTANTIATED_LIST_NAME);
-
   return (
     <Flex
       borderY="1px solid"
-      borderColor="divider.main"
+      borderColor="pebble.700"
       width="full"
       py="48px"
       direction="column"
       alignContent="center"
     >
-      {!isWalletConnected && isInstantiatedByMe ? (
-        <DisconnectedState text="to see contracts you've previously instantiated." />
-      ) : (
-        <Flex alignItems="center" flexDir="column" gap="4">
-          <Icon as={MdSearch} color="gray.600" boxSize="16" />
-          <Text color="text.dark">{renderText(list.value)}</Text>
-          {!isReadOnly && (
-            <ActionSection
-              list={list}
-              handleAction={() => navigate({ pathname: "/deploy" })}
-            />
-          )}
-        </Flex>
-      )}
+      <Flex alignItems="center" flexDir="column" gap="4">
+        <Icon as={MdSearch} color="pebble.600" boxSize="16" />
+        <Text color="text.dark">{renderText(list.value)}</Text>
+        {!isReadOnly && (
+          <ActionSection
+            list={list}
+            handleAction={() => navigate({ pathname: "/deploy" })}
+          />
+        )}
+      </Flex>
     </Flex>
   );
 };

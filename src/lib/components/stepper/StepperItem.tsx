@@ -1,7 +1,12 @@
 import { Flex, Icon, Text } from "@chakra-ui/react";
 import { MdCheck } from "react-icons/md";
 
-import type { Step } from "./types";
+import type { Mode, Step } from "./types";
+
+export const stepperText: Record<Mode, Record<number, string>> = {
+  deploy: { 1: "Upload or Select Code ID", 2: "Instantiate Code" },
+  migrate: { 1: "Migrate Options", 2: "Migrate Details" },
+};
 
 const StepLabel = ({
   step,
@@ -16,26 +21,26 @@ const StepLabel = ({
     <Flex
       justify="center"
       align="center"
-      backgroundColor={disabled ? "text.disabled" : "primary.main"}
+      backgroundColor={disabled ? "text.disabled" : "violet.main"}
       width="24px"
       height="24px"
       borderRadius="50%"
     >
       {currentStep > step ? (
-        <Icon as={MdCheck} fontSize="20px" color="background.main" />
+        <Icon as={MdCheck} fontSize="16px" color="pebble.100" />
       ) : (
-        <Text variant="body3" color="background.main">
-          {step}
-        </Text>
+        <Text variant="body3">{step}</Text>
       )}
     </Flex>
   );
 };
 
 export const StepperItem = ({
+  mode,
   step,
   currentStep,
 }: {
+  mode: Mode;
   step: Step;
   currentStep: Step;
 }) => {
@@ -50,7 +55,7 @@ export const StepperItem = ({
           content: '""',
           flex: 1,
           height: "1px",
-          backgroundColor: "gray.400",
+          backgroundColor: "pebble.600",
           marginInlineEnd: "8px",
         },
       }}
@@ -61,7 +66,7 @@ export const StepperItem = ({
         fontWeight={disabled ? 400 : 700}
         color={disabled ? "text.disabled" : "text.main"}
       >
-        {step === 1 ? "Upload or Select Code ID" : "Instantiate Code"}
+        {stepperText[mode][step]}
       </Text>
     </Flex>
   );

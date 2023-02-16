@@ -9,7 +9,13 @@ import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type {
+  Addr,
+  ContractAddr,
+  HumanAddr,
+  TxResultRendering,
+} from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
 
@@ -18,7 +24,7 @@ import { catchTxError, postTx, sendingTx } from "./common";
 interface UpdateAdminTxParams {
   address: HumanAddr;
   contractAddress: ContractAddr;
-  newAdmin: HumanAddr | ContractAddr;
+  newAdmin: Addr;
   fee: StdFee;
   client: SigningCosmWasmClient;
   onTxSucceed?: () => void;
@@ -41,7 +47,10 @@ export const updateAdminTx = ({
         client.updateAdmin(address, contractAddress, newAdmin, fee, undefined),
     }),
     ({ value: txInfo }) => {
+      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.();
+      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
+        .value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -55,10 +64,7 @@ export const updateAdminTx = ({
           },
           {
             title: "Tx Fee",
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ],
         receiptInfo: {

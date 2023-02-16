@@ -1,20 +1,22 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useExecuteCmds, useInternalNavigate } from "lib/app-provider";
+import { BackButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
+import { AmpTrackToExecute } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import {
   getFirstQueryParam,
-  decode,
   jsonPrettify,
   jsonValidate,
+  libDecode,
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
@@ -56,12 +58,13 @@ const Execute = () => {
   );
 
   useEffect(() => {
-    (async () => {
+    if (router.isReady) {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
 
-      let decodeMsg = decode(getFirstQueryParam(router.query.msg));
+      const msgParam = getFirstQueryParam(router.query.msg);
+      let decodeMsg = libDecode(msgParam);
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contractAddressParam);
         decodeMsg = "";
@@ -70,25 +73,26 @@ const Execute = () => {
 
       setValue("contractAddress", contractAddressParam);
       setValue("initialMsg", jsonMsg);
-    })();
+
+      AmpTrackToExecute(!!contractAddressParam, !!msgParam);
+    }
   }, [router, onContractSelect, setValue]);
 
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
-      <Button
-        variant="ghost-primary"
-        onClick={() => router.back()}
-        leftIcon={<ArrowBackIcon boxSize={4} />}
-      >
-        BACK
-      </Button>
+      <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h5" variant="h5" color="text.main">
+        <Heading as="h5" variant="h5">
           Execute Contract
         </Heading>
         <Box>
-          <Button variant="ghost-primary" size="sm" onClick={goToQuery}>
+          <Button
+            variant="ghost-primary"
+            size="sm"
+            onClick={goToQuery}
+            rightIcon={<ChevronRightIcon boxSize={4} />}
+          >
             Go To Query
           </Button>
         </Box>

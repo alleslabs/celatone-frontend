@@ -6,9 +6,11 @@ import { useForm } from "react-hook-form";
 import { useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
+import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
-import type { ContractAddr, LVPair } from "lib/types";
+import type { ContractAddr, HumanAddr, LVPair } from "lib/types";
+import { formatSlugName } from "lib/utils";
 
 interface InstantiateOffChainFormProps {
   title?: string;
@@ -30,6 +32,7 @@ export const InstantiateOffChainForm = observer(
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();
     const userKey = useUserKey();
+    const instantiatedListSlug = formatSlugName(INSTANTIATED_LIST_NAME);
 
     const {
       control,
@@ -65,22 +68,25 @@ export const InstantiateOffChainForm = observer(
         updateContractLocalInfo(
           userKey,
           contractAddress,
-          address,
+          address as HumanAddr,
           contractLabel,
           data.name,
           data.description,
           data.tags,
           data.lists
         );
-        navigate({ pathname: "/contract-list/instantiated-by-me" });
+        navigate({
+          pathname: "/contract-list/[slug]",
+          query: { slug: instantiatedListSlug },
+        });
       })();
     };
 
     return (
-      <Flex direction="column" gap={8}>
+      <Flex direction="column" gap={8} width="full">
         {title && subtitle && (
           <Flex direction="column" gap={1}>
-            <Heading as="h6" variant="h6" color="text.main">
+            <Heading as="h6" variant="h6">
               {title}
             </Heading>
             <Text color="text.dark" variant="body2">
@@ -90,6 +96,7 @@ export const InstantiateOffChainForm = observer(
         )}
         <OffChainForm<OffchainDetail>
           state={offchainState}
+          contractLabel={contractLabel}
           control={control}
           setTagsValue={setTagsValue}
           setContractListsValue={setContractListsValue}
@@ -108,7 +115,10 @@ export const InstantiateOffChainForm = observer(
               w="128px"
               variant="outline-gray"
               onClick={() =>
-                navigate({ pathname: "/contract-list/instantiated-by-me" })
+                navigate({
+                  pathname: "/contract-list/[slug]",
+                  query: { slug: instantiatedListSlug },
+                })
               }
             >
               Skip

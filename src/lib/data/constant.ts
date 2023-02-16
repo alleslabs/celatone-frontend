@@ -38,13 +38,9 @@ export const getMaxContractDescriptionLengthError = (currentLength: number) =>
     MAX_CONTRACT_DESCRIPTION_LENGTH
   );
 
-export const MAX_CODE_DESCRIPTION_LENGTH = 50;
-export const getMaxCodeDescriptionLengthError = (currentLength: number) =>
-  getMaxLengthError(
-    "Code description",
-    currentLength,
-    MAX_CODE_DESCRIPTION_LENGTH
-  );
+export const MAX_CODE_NAME_LENGTH = 50;
+export const getMaxCodeNameLengthError = (currentLength: number) =>
+  getMaxLengthError("Code name", currentLength, MAX_CODE_NAME_LENGTH);
 
 export const getListIcon = (listName: string) => {
   switch (listName) {
@@ -76,6 +72,7 @@ export const typeUrlDict = {
   [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
   [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
   [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
+  [MsgType.MIGRATE]: "/cosmwasm.wasm.v1.MsgMigrateContract",
   [MsgType.UPDATE_ADMIN]: "/cosmwasm.wasm.v1.MsgUpdateAdmin",
 };
 

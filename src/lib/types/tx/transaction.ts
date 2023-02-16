@@ -1,4 +1,4 @@
-import type { ContractAddr, HumanAddr } from "lib/types";
+import type { Addr, Option } from "lib/types";
 
 import type {
   DetailClearAdmin,
@@ -10,22 +10,27 @@ import type {
   DetailUpload,
 } from "./msg";
 
-export interface Transaction {
+export enum ActionMsgType {
+  SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
+  MULTIPLE_ACTION_MSG = "MULTIPLE_ACTION_MSG",
+  OTHER_ACTION_MSG = "OTHER_ACTION_MSG",
+}
+
+export enum MsgFurtherAction {
+  REDO = "REDO",
+  RESEND = "RESEND",
+  NONE = "NONE",
+}
+
+export interface PastTransaction {
   hash: string;
-  isSend?: boolean;
-  isExecute?: boolean;
-  isInstantiate?: boolean;
-  isStoreCode?: boolean;
-  isIbc?: boolean;
   messages: Message[];
+  created: Option<Date>;
   success: boolean;
-  account?: {
-    address: string;
-  };
-  block: {
-    height?: number;
-    timestamp: string;
-  };
+  actionMsgType: ActionMsgType;
+  furtherAction: MsgFurtherAction;
+  isIbc: boolean;
+  isInstantiate: boolean;
 }
 
 export interface Message {
@@ -55,18 +60,24 @@ export interface Msg {
 export interface ExecuteTransaction {
   hash: string;
   messages: Message[];
-  sender: ContractAddr | HumanAddr;
+  sender: Addr;
   height: number;
-  created: Date;
+  created: Option<Date>;
   success: boolean;
 }
 
-export enum ActionMsgType {
-  SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
-  MULTIPLE_ACTION_MSG = "MULTIPLE_ACTION_MSG",
-  OTHER_ACTION_MSG = "OTHER_ACTION_MSG",
-}
 export interface AllTransaction extends ExecuteTransaction {
   actionMsgType: ActionMsgType;
   isIbc: boolean;
+}
+
+export interface Filters {
+  isExecute: boolean;
+  isInstantiate: boolean;
+  isUpload: boolean;
+  isIbc: boolean;
+  isSend: boolean;
+  isMigrate: boolean;
+  isUpdateAdmin: boolean;
+  isClearAdmin: boolean;
 }

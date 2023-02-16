@@ -1,7 +1,7 @@
 import { Icon, Spinner, Text } from "@chakra-ui/react";
 import { MdCheckCircle, MdOutlineWarning } from "react-icons/md";
 
-type ResponseState = "init" | "loading" | "success" | "error";
+export type ResponseState = "init" | "loading" | "success" | "error";
 
 export interface FormStatus {
   state: ResponseState;

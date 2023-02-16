@@ -16,12 +16,11 @@ import { useInternalNavigate } from "lib/app-provider";
 import { AdminButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
-  AddToOtherList,
-  EditContractDetails,
-  SaveContractDetails,
+  AddToOtherListModal,
+  EditContractDetailsModal,
+  SaveContractDetailsModal,
 } from "lib/components/modal";
-import type { ContractData } from "lib/model/contract";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, ContractData } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 interface ContractTopProps {
@@ -54,14 +53,14 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
   const renderSaveButton = () => {
     if (contractLocalInfo) {
       return (
-        <AddToOtherList
+        <AddToOtherListModal
           contractLocalInfo={contractLocalInfo}
           triggerElement={
             <IconButton
-              fontSize="22px"
+              fontSize="24px"
               variant="none"
               aria-label="save"
-              color={contractLocalInfo.lists ? "primary.main" : "gray.600"}
+              color={contractLocalInfo.lists ? "violet.light" : "pebble.600"}
               icon={
                 contractLocalInfo.lists ? <MdBookmark /> : <MdBookmarkBorder />
               }
@@ -72,7 +71,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     }
     if (instantiateInfo) {
       return (
-        <SaveContractDetails
+        <SaveContractDetailsModal
           contractLocalInfo={{
             contractAddress: contractAddress as ContractAddr,
             instantiator: instantiateInfo.instantiator,
@@ -80,10 +79,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           }}
           triggerElement={
             <IconButton
-              fontSize="22px"
+              fontSize="24px"
               variant="none"
               aria-label="save"
-              color="gray.600"
+              color="pebble.600"
               icon={<MdBookmarkBorder />}
             />
           }
@@ -106,7 +105,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               height={7}
             />
           )}
-          <Heading as="h5" variant="h5" color="text.main" className="ellipsis">
+          <Heading as="h5" variant="h5" className="ellipsis">
             {displayName}
           </Heading>
         </Flex>
@@ -166,14 +165,14 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         </Button>
         <Flex>
           {contractLocalInfo && (
-            <EditContractDetails
+            <EditContractDetailsModal
               contractLocalInfo={contractLocalInfo}
               triggerElement={
                 <IconButton
-                  fontSize="22px"
+                  fontSize="24px"
                   variant="none"
                   aria-label="edit"
-                  color="gray.600"
+                  color="pebble.600"
                   icon={<RiPencilFill />}
                 />
               }

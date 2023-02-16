@@ -1,17 +1,17 @@
 import type { CodeLocalInfo } from "lib/stores/code";
 
-import { CodeDetailsTemplate } from "./CodeDetailsTemplate";
+import { CodeDetailsTemplateModal } from "./CodeDetailsTemplate";
 
-interface EditCodeDetailsProps {
+interface EditCodeDetailsModalProps {
   codeLocalInfo: CodeLocalInfo;
   triggerElement: JSX.Element;
 }
-export const EditCodeDetails = ({
+export const EditCodeDetailsModal = ({
   codeLocalInfo,
   triggerElement,
-}: EditCodeDetailsProps) => (
-  <CodeDetailsTemplate
-    title="Edit Code Description"
+}: EditCodeDetailsModalProps) => (
+  <CodeDetailsTemplateModal
+    title="Edit Code Name"
     mainBtnTitle="Save"
     isNewCode={false}
     codeLocalInfo={codeLocalInfo}

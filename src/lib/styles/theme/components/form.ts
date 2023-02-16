@@ -27,7 +27,7 @@ export const Form: ComponentStyleConfig = {
             color: "text.disabled",
           },
           _active: {
-            color: "primary.main",
+            color: "lilac.main",
           },
           "&.md-label, &.textarea-label": {
             transform: "scale(0.75) translateY(-20px)",
@@ -38,7 +38,7 @@ export const Form: ComponentStyleConfig = {
         },
         "div.helper-text, .error-text": {
           ml: 3,
-          mt: 1,
+          mt: 0,
           fontSize: "12px",
           color: "text.dark",
           _disabled: {

@@ -9,8 +9,8 @@ interface EmptyStateProps {
 export const EmptyState = ({ icon, message }: EmptyStateProps) => {
   return (
     <Flex alignItems="center" flexDir="column" gap="4" width="full">
-      {icon && <Icon as={icon} color="gray.600" boxSize="16" />}
-      <Text color="gray.500" w="540px" textAlign="center">
+      {icon && <Icon as={icon} color="pebble.600" boxSize="16" />}
+      <Text color="text.dark" w="540px" textAlign="center">
         {message}
       </Text>
     </Flex>

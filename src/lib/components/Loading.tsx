@@ -4,9 +4,10 @@ export const Loading = () => {
   return (
     <Flex
       borderY="1px solid"
-      borderColor="divider.main"
+      borderColor="pebble.700"
       width="full"
       py={12}
+      my={12}
       flexDirection="column"
       alignItems="center"
     >

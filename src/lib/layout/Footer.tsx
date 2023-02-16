@@ -4,6 +4,8 @@ import { BiUserVoice } from "react-icons/bi";
 import { BsMedium, BsGithub, BsTwitter, BsTelegram } from "react-icons/bs";
 import { IoSparklesSharp } from "react-icons/io5";
 
+import { AmpEvent, AmpTrack, AmpTrackCelatone } from "lib/services/amplitude";
+
 const Footer = () => {
   const socialMenu = [
     {
@@ -39,17 +41,18 @@ const Footer = () => {
       <Flex direction="row" gap={1} align="center">
         {socialMenu.map((item) => (
           <Link
+            key={`social-${item.slug}`}
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            key={`social-${item.slug}`}
+            onClick={() => AmpTrackCelatone(item.url)}
           >
-            <Button variant="ghost" size="xs">
+            <Button variant="ghost-gray" size="xs">
               <Icon
                 as={item.icon}
                 width="16px"
                 height="16px"
-                color="gray.600"
+                color="pebble.600"
               />
             </Button>
           </Link>
@@ -58,6 +61,7 @@ const Footer = () => {
           href="https://feedback.alleslabs.com"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => AmpTrack(AmpEvent.FEEDBACK)}
         >
           <Button variant="ghost" size="xs">
             <Flex gap={1} align="center">
@@ -65,9 +69,9 @@ const Footer = () => {
                 as={BiUserVoice}
                 width="18px"
                 height="18px"
-                color="gray.600"
+                color="pebble.600"
               />
-              <Text variant="body3" color="gray.600">
+              <Text variant="body3" color="text.dark">
                 Feedback
               </Text>
             </Flex>
@@ -80,7 +84,12 @@ const Footer = () => {
           size="xs"
           sx={{ _hover: { "> div > svg": { opacity: "100" } } }}
         >
-          <Link href="https://twitter.com/alleslabs">
+          <Link
+            href="https://twitter.com/alleslabs"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => AmpTrack(AmpEvent.ALLESLABS)}
+          >
             <Flex
               gap={1}
               align="center"
@@ -90,14 +99,19 @@ const Footer = () => {
                 as={IoSparklesSharp}
                 width="16px"
                 height="16px"
-                color="gray.600"
+                color="honeydew.light"
                 opacity="0"
                 transition="all .25s ease-in-out"
               />
-              <Text variant="body3" color="gray.600">
+              <Text variant="body3" color="text.dark">
                 Made by
               </Text>
-              <Text variant="body3" color="primary.main">
+              <Text
+                variant="body3"
+                color="lilac.main"
+                transition="all .25s ease-in-out"
+                _hover={{ color: "lilac.light" }}
+              >
                 Alles Labs
               </Text>
             </Flex>

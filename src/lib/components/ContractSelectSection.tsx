@@ -9,10 +9,10 @@ import { useCelatoneApp } from "lib/app-provider";
 import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import type { ContractAddr, Option } from "lib/types";
+import type { Addr, ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
-import { EditContractDetails, SaveContractDetails } from "./modal";
+import { EditContractDetailsModal, SaveContractDetailsModal } from "./modal";
 import {
   SelectContractAdmin,
   SelectContractInstantiator,
@@ -28,7 +28,7 @@ interface DisplayNameProps {
 interface ContractDetailsButtonProps {
   contractAddress: ContractAddr;
   contractLocalInfo: Option<ContractLocalInfo>;
-  instantiator: string;
+  instantiator: Addr;
   label: string;
 }
 
@@ -68,7 +68,7 @@ const ContractDetailsButton = ({
 }: ContractDetailsButtonProps) => {
   const isExist = !!contractLocalInfo?.lists;
   return isExist ? (
-    <EditContractDetails
+    <EditContractDetailsModal
       contractLocalInfo={contractLocalInfo}
       triggerElement={
         <Button
@@ -82,7 +82,7 @@ const ContractDetailsButton = ({
       }
     />
   ) : (
-    <SaveContractDetails
+    <SaveContractDetailsModal
       contractLocalInfo={{
         contractAddress,
         instantiator,
@@ -104,6 +104,7 @@ const ContractDetailsButton = ({
 };
 
 export const ContractSelectSection = observer(
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
     const { indexerGraphClient } = useCelatoneApp();
@@ -125,12 +126,18 @@ export const ContractSelectSection = observer(
     });
 
     const { refetch } = useQuery(
-      ["query", "instantiateInfo", contractAddress],
+      [
+        "query",
+        "instantiate_info",
+        endpoint,
+        indexerGraphClient,
+        contractAddress,
+      ],
       async () =>
         queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
       {
         enabled: false,
-        retry: 0,
+        retry: false,
         onSuccess(data) {
           reset({
             isValid: true,
@@ -145,17 +152,15 @@ export const ContractSelectSection = observer(
     );
 
     useEffect(() => {
-      (async () => {
-        if (!contractLocalInfo) {
-          refetch();
-        } else {
-          reset({
-            isValid: true,
-            instantiator: contractLocalInfo.instantiator,
-            label: contractLocalInfo.label,
-          });
-        }
-      })();
+      if (!contractLocalInfo) {
+        if (contractAddress) refetch();
+      } else {
+        reset({
+          isValid: true,
+          instantiator: contractLocalInfo.instantiator,
+          label: contractLocalInfo.label,
+        });
+      }
     }, [contractAddress, contractLocalInfo, endpoint, reset, refetch]);
 
     const contractState = watch();
@@ -164,9 +169,9 @@ export const ContractSelectSection = observer(
       <Flex
         mb={mode === "all-lists" ? "0px" : 12}
         borderWidth="thin"
-        borderColor="gray.800"
+        borderColor="pebble.800"
         p="16px"
-        borderRadius="4px"
+        borderRadius="8px"
         fontSize="12px"
         justify="space-between"
         align="center"
@@ -189,7 +194,7 @@ export const ContractSelectSection = observer(
                 wordBreak="break-all"
               />
             ) : (
-              <Text textColor="text.disabled" variant="body2">
+              <Text color="text.disabled" variant="body2">
                 Not Selected
               </Text>
             )}
@@ -208,7 +213,7 @@ export const ContractSelectSection = observer(
               <ContractDetailsButton
                 contractAddress={contractAddress}
                 contractLocalInfo={contractLocalInfo}
-                instantiator={contractState.instantiator}
+                instantiator={contractState.instantiator as Addr}
                 label={contractState.label}
               />
             )}

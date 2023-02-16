@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Flex, Text } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -6,36 +7,41 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
-import { DEFAULT_LIST } from "lib/data";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
-import { getDescriptionDefault, getTagsDefault } from "lib/utils";
+import { getNameAndDescriptionDefault, getTagsDefault } from "lib/utils";
 
-interface ContractDetailsTemplateProps {
+interface ContractDetailsTemplateModalProps {
   title: string;
   subtitle?: string;
   contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
+  defaultList?: LVPair[];
+  isSave?: boolean;
 }
-export const ContractDetailsTemplate = ({
+export const ContractDetailsTemplateModal = ({
   title,
   subtitle,
   contractLocalInfo,
   triggerElement,
-}: ContractDetailsTemplateProps) => {
+  defaultList = [],
+  isSave = false,
+}: ContractDetailsTemplateModalProps) => {
   const defaultValues = useMemo(() => {
     return {
       name: contractLocalInfo.name ?? "",
-      description: getDescriptionDefault(contractLocalInfo.description),
+      description: getNameAndDescriptionDefault(contractLocalInfo.description),
       tags: getTagsDefault(contractLocalInfo.tags),
-      lists: contractLocalInfo.lists ?? DEFAULT_LIST,
+      lists: contractLocalInfo.lists ?? defaultList,
     };
   }, [
     contractLocalInfo.description,
-    contractLocalInfo.lists,
+    JSON.stringify(contractLocalInfo.lists),
     contractLocalInfo.name,
     contractLocalInfo.tags,
+    JSON.stringify(defaultList),
   ]);
 
   const {
@@ -56,7 +62,7 @@ export const ContractDetailsTemplate = ({
 
   useEffect(() => {
     resetForm();
-  }, [defaultValues, resetForm]);
+  }, [resetForm]);
 
   const offchainState = watch();
 
@@ -76,6 +82,8 @@ export const ContractDetailsTemplate = ({
     description: offchainState.description,
     tags: offchainState.tags,
     lists: offchainState.lists,
+    actions: () =>
+      AmpTrack(isSave ? AmpEvent.CONTRACT_SAVE : AmpEvent.CONTRACT_EDIT),
   });
 
   return (
@@ -84,7 +92,7 @@ export const ContractDetailsTemplate = ({
       subtitle={subtitle}
       headerContent={
         <Flex gap={4} alignItems="center" pt="6">
-          <Text variant="body2" color="text.main" fontWeight="600">
+          <Text variant="body2" fontWeight="600">
             Contract Address
           </Text>
           <ExplorerLink
@@ -99,14 +107,16 @@ export const ContractDetailsTemplate = ({
       disabledMain={!!errors.name || !!errors.description}
       otherBtnTitle="Cancel"
       otherAction={resetForm}
+      closeOnOverlayClick={false}
     >
       <OffChainForm<OffchainDetail>
         state={offchainState}
+        contractLabel={contractLocalInfo.label}
         control={control}
         setTagsValue={setTagsValue}
         setContractListsValue={setContractListsValue}
         errors={errors}
-        labelBgColor="gray.800"
+        labelBgColor="pebble.900"
       />
     </ActionModal>
   );

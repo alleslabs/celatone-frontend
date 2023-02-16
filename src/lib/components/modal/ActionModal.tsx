@@ -18,6 +18,8 @@ import { useCallback } from "react";
 import type { IconType } from "react-icons/lib";
 import { MdMode } from "react-icons/md";
 
+import { AmpTrackUseOtherModal } from "lib/services/amplitude";
+
 export interface ActionModalProps {
   icon?: IconType;
   iconColor?: string;
@@ -35,10 +37,11 @@ export interface ActionModalProps {
   otherVariant?: string;
   noHeaderBorder?: boolean;
   noCloseButton?: boolean;
+  closeOnOverlayClick?: boolean;
 }
 export function ActionModal({
   icon = MdMode,
-  iconColor = "gray.600",
+  iconColor = "pebble.600",
   title,
   subtitle,
   trigger,
@@ -53,6 +56,7 @@ export function ActionModal({
   otherVariant = "outline-primary",
   noHeaderBorder = false,
   noCloseButton = false,
+  closeOnOverlayClick = true,
 }: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -67,15 +71,25 @@ export function ActionModal({
 
   return (
     <>
-      <Flex onClick={onOpen}>
+      <Flex
+        onClick={() => {
+          AmpTrackUseOtherModal(title);
+          onOpen();
+        }}
+      >
         {trigger || <Button>Open {title} Modal</Button>}
       </Flex>
-      <Modal isOpen={isOpen} onClose={handleOnOther} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={handleOnOther}
+        closeOnOverlayClick={closeOnOverlayClick}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
             borderBottomWidth={noHeaderBorder ? 0 : 1}
-            borderColor="divider.main"
+            borderColor="pebble.700"
           >
             <Box w="full">
               <Flex alignItems="center" gap="3">
@@ -83,14 +97,14 @@ export function ActionModal({
                 {title}
               </Flex>
               {subtitle && (
-                <Text variant="body3" color="gray.400" pt="2">
+                <Text variant="body3" color="text.dark" pt="2">
                   {subtitle}
                 </Text>
               )}
               <Box>{headerContent}</Box>
             </Box>
           </ModalHeader>
-          {!noCloseButton && <ModalCloseButton color="gray.600" />}
+          {!noCloseButton && <ModalCloseButton color="pebble.600" />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
             <Flex w="full" justifyContent="center" gap="2">

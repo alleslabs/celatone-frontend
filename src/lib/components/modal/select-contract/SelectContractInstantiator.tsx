@@ -27,6 +27,7 @@ import {
   useValidateAddress,
 } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
@@ -55,7 +56,12 @@ export const SelectContractInstantiator = ({
   const [invalid, setInvalid] = useState("");
 
   const { getContractLists } = useContractStore();
-  const contractLists = [useInstantiatedByMe(true), ...getContractLists()];
+
+  // TODO - Revisit false case
+  const contractLists = [
+    useInstantiatedByMe(true).instantiatedListInfo,
+    ...getContractLists(),
+  ];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
   const endpoint = useLCDEndpoint();
@@ -68,13 +74,14 @@ export const SelectContractInstantiator = ({
   };
 
   const onSelectThenClose = (contract: ContractAddr) => {
+    AmpTrack(AmpEvent.USE_CONTRACT_MODAL_LISTS);
     onContractSelect(contract);
     resetOnClose();
   };
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", searchContract],
+    ["query", "contract", searchContract, endpoint],
     async () => queryContract(endpoint, searchContract as ContractAddr),
     {
       enabled: false,
@@ -97,24 +104,21 @@ export const SelectContractInstantiator = ({
   return (
     <>
       <Button
-        variant={notSelected ? "primary" : "outline-info"}
+        variant={notSelected ? "primary" : "outline-primary"}
         py="6px"
         size="sm"
         px="16px"
-        onClick={onOpen}
+        onClick={() => {
+          AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
+          onOpen();
+        }}
         leftIcon={
           !notSelected ? <Icon as={MdSwapHoriz} boxSize="5" /> : undefined
         }
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
-      <Modal
-        isOpen={isOpen}
-        onClose={resetOnClose}
-        closeOnOverlayClick={false}
-        size="4xl"
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl" isCentered>
         <ModalOverlay />
         <ModalContent h="80%">
           {listSlug.length === 0 || !contractList ? (
@@ -143,12 +147,16 @@ export const SelectContractInstantiator = ({
                     size="md"
                   />
                   <Button
+                    height="40px"
                     isDisabled={searchContract.length === 0}
                     isLoading={isFetching || isRefetching}
                     onClick={() => {
                       const err = validateContractAddress(searchContract);
                       if (err !== null) setInvalid(err);
-                      else refetch();
+                      else {
+                        AmpTrack(AmpEvent.USE_CONTRACT_MODAL_SEARCH);
+                        refetch();
+                      }
                     }}
                   >
                     Submit
@@ -159,19 +167,19 @@ export const SelectContractInstantiator = ({
                 </Text>
 
                 <Flex my="24px" gap="8px" alignItems="center">
-                  <Divider borderColor="gray.500" />
+                  <Divider borderColor="pebble.700" />
                   <Text variant="body1">OR</Text>
-                  <Divider borderColor="gray.500" />
+                  <Divider borderColor="pebble.700" />
                 </Flex>
 
-                <Heading as="h6" variant="h6" mb={4}>
+                <Heading as="h6" variant="h6" mb={6}>
                   Select from your Contract List
                 </Heading>
                 <AllContractLists
                   contractLists={contractLists}
                   handleListSelect={handleListSelect}
                   isReadOnly
-                  formLabelBgColor="gray.800"
+                  formLabelBgColor="pebble.900"
                 />
               </ModalBody>
             </>
@@ -180,7 +188,7 @@ export const SelectContractInstantiator = ({
               <ModalHeader>
                 <Icon
                   as={MdChevronLeft}
-                  color="text.dark"
+                  color="pebble.600"
                   fontSize="24px"
                   onClick={() => setListSlug("")}
                   cursor="pointer"

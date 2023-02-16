@@ -3,11 +3,14 @@ import type { LayoutProps } from "@chakra-ui/react";
 import { Tooltip, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
 
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
 interface CopierProps {
   value: string;
   ml?: string;
   className?: string;
   display?: LayoutProps["display"];
+  copyLabel?: string;
 }
 
 export const Copier = ({
@@ -15,6 +18,7 @@ export const Copier = ({
   ml = "8px",
   className,
   display = "flex",
+  copyLabel = "Copied!",
 }: CopierProps) => {
   const { onCopy, hasCopied, setValue } = useClipboard(value);
 
@@ -24,10 +28,10 @@ export const Copier = ({
     <Tooltip
       hasArrow
       isOpen={hasCopied}
-      label="Copied!"
+      label={copyLabel}
       placement="top"
       arrowSize={8}
-      bg="primary.dark"
+      bg="honeydew.darker"
     >
       <div>
         <CopyIcon
@@ -38,6 +42,7 @@ export const Copier = ({
           cursor="pointer"
           marginLeft={ml}
           onClick={(e) => {
+            AmpTrack(AmpEvent.USE_COPIER);
             e.stopPropagation();
             onCopy();
           }}

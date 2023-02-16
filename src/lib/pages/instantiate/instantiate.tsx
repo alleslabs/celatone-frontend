@@ -1,13 +1,8 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Radio,
-  RadioGroup,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
+import type { Coin } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -18,25 +13,36 @@ import {
   useNativeTokensInfo,
   useSimulateFee,
   useInstantiateTx,
+  useCelatoneApp,
 } from "lib/app-provider";
+import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import { AssetInput } from "lib/components/forms/AssetInput";
 import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useLCDEndpoint, useValidateAddress } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackAction,
+  AmpTrackToInstantiate,
+} from "lib/services/amplitude";
+import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr, Token, U } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
   demicrofy,
+  fabricateFunds,
   jsonValidate,
   libDecode,
-  microfy,
 } from "lib/utils";
 
-import { CodeSelect, FailedModal, Footer } from "./component";
+import { FailedModal, Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageProps {
@@ -50,20 +56,23 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const router = useRouter();
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
+  const {
+    appContractAddress: { example: exampleContractAddress },
+  } = useCelatoneApp();
   const { address = "" } = useWallet();
+  const endpoint = useLCDEndpoint();
   const postInstantiateTx = useInstantiateTx();
   const { simulate } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const nativeTokensInfo = useNativeTokensInfo();
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
-  const [method, setMethod] = useState<"select-existing" | "fill-manually">(
-    "select-existing"
-  );
   const [simulating, setSimulating] = useState(false);
+  const [status, setStatus] = useState<FormStatus>({ state: "init" });
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
@@ -82,7 +91,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       label: "",
       adminAddress: "",
       initMsg: "",
-      assets: [{ denom: "", amount: "" }],
+      assets: [{ denom: "", amount: "" }] as Coin[],
       simulateError: "",
     },
   });
@@ -92,6 +101,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
   const {
     codeId,
+    adminAddress: watchAdminAddress,
     assets: watchAssets,
     initMsg: watchInitMsg,
     simulateError,
@@ -101,9 +111,15 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
 
   const disableInstantiate = useMemo(() => {
     return (
-      !codeId || !address || !!jsonValidate(watchInitMsg) || !!formErrors.label
+      !codeId ||
+      !address ||
+      !!jsonValidate(watchInitMsg) ||
+      Object.keys(formErrors).length > 0 ||
+      status.state !== "success"
     );
-  }, [codeId, address, watchInitMsg, formErrors.label]);
+    // formErrors change doesnt trigger this effect
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [codeId, address, watchInitMsg, Object.keys(formErrors), status.state]);
 
   const assetOptions = useMemo(
     () =>
@@ -115,18 +131,46 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     [nativeTokensInfo, selectedAssets]
   );
 
+  const { refetch } = useQuery(
+    ["query", endpoint, codeId],
+    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    {
+      enabled: !!address && !!codeId.length,
+      retry: false,
+      cacheTime: 0,
+      onSuccess(data) {
+        const permission = data.code_info.instantiate_permission;
+        if (
+          address &&
+          (permission.permission === "Everybody" ||
+            permission.addresses.includes(address) ||
+            permission.address === address)
+        )
+          setStatus({ state: "success" });
+        else {
+          setStatus({
+            state: "error",
+            message: "You can instantiate to this code through proposal only",
+          });
+        }
+      },
+      onError() {
+        setStatus({ state: "error", message: "This code ID does not exist" });
+      },
+    }
+  );
+
   // ------------------------------------------//
   // ----------------FUNCTIONS-----------------//
   // ------------------------------------------//
   const proceed = useCallback(() => {
     handleSubmit(async ({ adminAddress, label, initMsg, assets }) => {
+      AmpTrackAction(
+        AmpEvent.ACTION_INSTANTIATE,
+        assets.filter((asset) => Number(asset.amount) && asset.denom).length
+      );
       setSimulating(true);
-      const funds = assets
-        .filter((asset) => asset.amount && asset.denom)
-        .map((asset) => ({
-          ...asset,
-          amount: microfy(asset.amount as Token).toFixed(0),
-        }));
+      const funds = fabricateFunds(assets);
       const msg = composeMsg(MsgType.INSTANTIATE, {
         sender: address as HumanAddr,
         admin: adminAddress as HumanAddr,
@@ -170,6 +214,19 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // --------------SIDE EFFECTS----------------//
   // ------------------------------------------//
   useEffect(() => {
+    if (codeId.length) {
+      setStatus({ state: "loading" });
+      const timer = setTimeout(() => {
+        refetch();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    setStatus({ state: "init" });
+
+    return () => {};
+  }, [address, codeId, refetch]);
+
+  useEffect(() => {
     if (codeIdQuery) setValue("codeId", codeIdQuery);
     if (msgQuery) {
       const decodedMsg = libDecode(msgQuery);
@@ -195,13 +252,25 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     }
   }, [codeIdQuery, msgQuery, reset, setValue]);
 
+  useEffect(() => {
+    if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
+  }, [router.isReady, msgQuery, codeIdQuery]);
+
+  const validateAdmin = useCallback(
+    (input: string) =>
+      input && !!validateContractAddress(input) && !!validateUserAddress(input)
+        ? "Invalid Address."
+        : undefined,
+    [validateContractAddress, validateUserAddress]
+  );
+
   return (
     <>
       <WasmPageContainer>
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
-        <Stepper currentStep={2} />
+        <Stepper mode="deploy" currentStep={2} />
         <Heading as="h4" variant="h4" my="48px">
           Instantiate new contract
         </Heading>
@@ -209,46 +278,20 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           subtitle="You need to connect your wallet to perform this action"
           mb={6}
         />
-        <RadioGroup
-          onChange={(nextVal: "select-existing" | "fill-manually") =>
-            setMethod(nextVal)
-          }
-          value={method}
-          w="100%"
-        >
-          <Flex justify="space-around">
-            <Radio value="select-existing" size="lg">
-              Select from your code
-            </Radio>
-            <Radio value="fill-manually" size="lg">
-              Fill Code ID manually
-            </Radio>
-          </Flex>
-        </RadioGroup>
+        <CodeSelectSection
+          name="codeId"
+          control={control}
+          status={status}
+          error={formErrors.codeId?.message}
+          onCodeSelect={(code: string) => setValue("codeId", code)}
+          codeId={codeId}
+        />
         <form style={{ width: "100%" }}>
-          {method === "select-existing" ? (
-            <CodeSelect
-              mt="24px"
-              mb="32px"
-              onCodeSelect={(code: string) => setValue("codeId", code)}
-              codeId={codeId}
-            />
-          ) : (
-            <ControllerInput
-              name="codeId"
-              control={control}
-              error={!codeId ? formErrors.codeId?.message : undefined}
-              label="Code ID"
-              helperText="Input existing Code ID manually"
-              variant="floating"
-              my="32px"
-              rules={{ required: "Code ID is required" }}
-            />
-          )}
           <ControllerInput
             name="label"
             control={control}
             error={formErrors.label?.message}
+            placeholder="ex. Token Factory"
             label="Label"
             helperText="Label will help remind you or other contract viewer to understand what this contract do and how it works"
             variant="floating"
@@ -259,16 +302,26 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             name="adminAddress"
             control={control}
             label="Admin Address (optional)"
+            placeholder={`ex. ${exampleContractAddress}`}
             helperText="This address will be the admin for the deployed smart contract."
             variant="floating"
+            error={validateAdmin(watchAdminAddress)}
+            helperAction={
+              <Text
+                color="honeydew.main"
+                fontWeight="600"
+                variant="body3"
+                cursor="pointer"
+                onClick={() => {
+                  AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                  setValue("adminAddress", address);
+                }}
+              >
+                Assign me
+              </Text>
+            }
           />
-          <Heading
-            variant="h6"
-            as="h6"
-            color="text.main"
-            my="32px"
-            alignSelf="flex-start"
-          >
+          <Heading variant="h6" as="h6" my="32px" alignSelf="flex-start">
             Instantiate Message
           </Heading>
           <JsonInput
@@ -276,13 +329,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             setText={(newVal: string) => setValue("initMsg", newVal)}
             height="120px"
           />
-          <Heading
-            variant="h6"
-            as="h6"
-            color="text.main"
-            my="32px"
-            alignSelf="flex-start"
-          >
+          <Heading variant="h6" as="h6" my="32px" alignSelf="flex-start">
             Send asset to contract
           </Heading>
           {fields.map((field, idx) => (
@@ -296,12 +343,23 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               assetOptions={assetOptions}
               initialSelected={field.denom}
               amountInput={
+                /**
+                 * @remarks refactor along with execute page
+                 */
                 <ControllerInput
                   name={`assets.${idx}.amount`}
                   control={control}
                   label="Amount"
                   variant="floating"
                   type="number"
+                  rules={{
+                    pattern: {
+                      // Move to constant
+                      value: /^[0-9]+([.][0-9]{0,6})?$/i,
+                      message: 'Invalid amount. e.g. "100.00"',
+                    },
+                  }}
+                  error={formErrors.assets?.[idx]?.amount?.message}
                 />
               }
             />

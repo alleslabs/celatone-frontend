@@ -4,21 +4,22 @@ import { MdDeleteForever } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 import { truncate } from "lib/utils";
 
-interface ModalProps {
+interface RemoveContractModalProps {
   contractLocalInfo: ContractLocalInfo;
   contractRemovalInfo: LVPair;
   menuItemProps: MenuItemProps;
 }
 
-export function RemoveContract({
+export function RemoveContractModal({
   contractLocalInfo,
   contractRemovalInfo,
   menuItemProps,
-}: ModalProps) {
+}: RemoveContractModalProps) {
   const displayName = contractLocalInfo.name
     ? contractLocalInfo.name
     : truncate(contractLocalInfo.contractAddress);
@@ -31,6 +32,7 @@ export function RemoveContract({
     lists: contractLocalInfo.lists?.filter(
       (item) => item.value !== contractRemovalInfo.value
     ),
+    actions: () => AmpTrack(AmpEvent.CONTRACT_REMOVE),
   });
 
   return (

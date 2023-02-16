@@ -2,7 +2,7 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 export const Heading: ComponentStyleConfig = {
   baseStyle: {
-    color: "#ffffff",
+    color: "text.main",
     "&.ellipsis": {
       whiteSpace: "nowrap",
       overflow: "hidden",

@@ -1,11 +1,11 @@
-import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
 import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { TableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/model/data";
-import type { ContractAddr } from "lib/types";
+import type { ContractAddr, Option } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
 import { MigrationRow } from "./MigrationRow";
@@ -13,7 +13,7 @@ import { MigrationRow } from "./MigrationRow";
 interface MigrationTableProps {
   contractAddress: ContractAddr;
   scrollComponentId: string;
-  totalData: number;
+  totalData: Option<number>;
   refetchCount: () => void;
 }
 
@@ -66,16 +66,22 @@ export const MigrationTable = ({
     "90px minmax(300px, 1fr) repeat(2, max(150px)) max(232px) max(180px)";
 
   return (
-    <Flex direction="column" overflowX="scroll">
+    <TableContainer>
       <MigrationHeader templateColumns={templateColumns} />
-      {migrationHistories.map((history) => (
+      {migrationHistories.map((history, idx) => (
         <MigrationRow
-          key={history.codeId}
+          key={
+            history.codeId +
+            history.remark.operation +
+            history.remark.type +
+            history.remark.value +
+            idx.toString()
+          }
           history={history}
           templateColumns={templateColumns}
         />
       ))}
-      {totalData > 10 && (
+      {totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
@@ -87,6 +93,6 @@ export const MigrationTable = ({
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </Flex>
+    </TableContainer>
   );
 };

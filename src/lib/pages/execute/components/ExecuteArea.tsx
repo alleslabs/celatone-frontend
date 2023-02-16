@@ -23,10 +23,16 @@ import { AssetInput, ControllerInput, SelectInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { AmpEvent, AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
-import type { ComposedMsg, ContractAddr, HumanAddr, Token } from "lib/types";
+import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, jsonPrettify, jsonValidate, microfy } from "lib/utils";
+import {
+  composeMsg,
+  fabricateFunds,
+  jsonPrettify,
+  jsonValidate,
+} from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -120,13 +126,11 @@ export const ExecuteArea = ({
   });
 
   const proceed = useCallback(async () => {
-    const funds = assets
-      .filter((asset) => asset.amount && asset.denom)
-      .map((asset) => ({
-        ...asset,
-        amount: microfy(asset.amount as Token).toFixed(0),
-      }))
-      .filter((asset) => asset.amount !== "0");
+    AmpTrackAction(
+      AmpEvent.ACTION_EXECUTE,
+      assets.filter((asset) => Number(asset.amount) && asset.denom).length
+    );
+    const funds = fabricateFunds(assets);
 
     const stream = await executeTx({
       onTxSucceed: (userKey: string, activity: Activity) => {
@@ -151,13 +155,7 @@ export const ExecuteArea = ({
     if (enableExecute) {
       setError(undefined);
 
-      const funds = assets
-        .filter((asset) => asset.amount && asset.denom)
-        .map((asset) => ({
-          ...asset,
-          amount: microfy(asset.amount as Token).toFixed(0),
-        }))
-        .filter((asset) => asset.amount !== "0");
+      const funds = fabricateFunds(assets);
 
       const composedMsg = composeMsg(MsgType.EXECUTE, {
         sender: address as HumanAddr,
@@ -205,7 +203,10 @@ export const ExecuteArea = ({
             <ContractCmdButton
               key={`query-cmd-${cmd}`}
               cmd={cmd}
-              onClickCmd={() => setMsg(jsonPrettify(queryMsg))}
+              onClickCmd={() => {
+                AmpTrack(AmpEvent.USE_CMD_EXECUTE);
+                setMsg(jsonPrettify(queryMsg));
+              }}
             />
           ))}
         </ButtonGroup>
@@ -255,6 +256,9 @@ export const ExecuteArea = ({
                   assetOptions={assetOptions}
                   initialSelected={field.denom}
                   amountInput={
+                    /**
+                     * @remarks refactor along with instantiate page
+                     */
                     <ControllerInput
                       name={`assets.${idx}.amount`}
                       control={control}

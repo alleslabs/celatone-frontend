@@ -10,25 +10,36 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { MdExpandMore } from "react-icons/md";
 
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state/EmptyState";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
-import { CodesTable } from "./components/CodesTable";
-import { ContractsTable } from "./components/ContractsTable";
 import { DetailHeader } from "./components/DetailHeader";
+import { PublicProjectCodeTable } from "./components/table/code/PublicProjectCodeTable";
+import { PublicProjectContractTable } from "./components/table/contract/PublicProjectContractTable";
 import { usePublicData } from "./data";
 
 export const ProjectDetail = observer(() => {
+  const router = useRouter();
   const [tabIndex, setTabIndex] = useState(0);
-  const { publicCodes, publicContracts, projectDetail, slug } = usePublicData();
+  const { publicCodes, publicContracts, projectDetail, slug, isLoading } =
+    usePublicData();
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_PROJECT_DETAIL);
+  }, [router.isReady]);
+
+  if (isLoading) return <Loading />;
   return (
     <Box py={12} pb={0}>
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs index={tabIndex}>
-        <TabList my={8} borderBottom="1px" px={12} borderColor="gray.800">
+        <TabList my={8} borderBottom="1px" px={12} borderColor="pebble.800">
           <CustomTab
             count={publicCodes.length + publicContracts.length}
             onClick={() => setTabIndex(0)}
@@ -58,21 +69,16 @@ export const ProjectDetail = observer(() => {
             </Heading>
             {publicCodes.length ? (
               <Box>
-                <CodesTable
+                <PublicProjectCodeTable
                   hasSearchInput={false}
-                  codes={publicCodes.slice(0, 6)}
+                  codes={publicCodes.slice(0, 5)}
                 />
-                {publicCodes.length > 5 ?? (
-                  <Flex
-                    w="full"
-                    justifyContent="center"
-                    textAlign="center"
-                    py={4}
-                  >
+                {publicCodes.length >= 5 && (
+                  <Flex w="full" justifyContent="center" textAlign="center">
                     <Button
                       size="sm"
                       variant="ghost"
-                      color="gray.500"
+                      color="text.dark"
                       onClick={() => setTabIndex(1)}
                     >
                       View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
@@ -87,9 +93,9 @@ export const ProjectDetail = observer(() => {
                 width="full"
                 borderBottom="1px solid"
                 borderTop="1px solid"
-                borderColor="divider.main"
+                borderColor="pebble.700"
               >
-                <EmptyState message="There is currently no code in this project. Please check back soon for the updates." />
+                <EmptyState message="There is currently no code related to this project." />
               </Flex>
             )}
             <Heading as="h6" variant="h6" mb={6} mt={12} px="48px">
@@ -97,21 +103,16 @@ export const ProjectDetail = observer(() => {
             </Heading>
             {publicContracts.length ? (
               <Box>
-                <ContractsTable
+                <PublicProjectContractTable
                   hasSearchInput={false}
-                  contracts={publicContracts.slice(0, 6)}
+                  contracts={publicContracts.slice(0, 5)}
                 />
-                {publicContracts.length > 5 ?? (
-                  <Flex
-                    w="full"
-                    justifyContent="center"
-                    textAlign="center"
-                    py={4}
-                  >
+                {publicCodes.length >= 5 && (
+                  <Flex w="full" justifyContent="center" textAlign="center">
                     <Button
                       size="sm"
                       variant="ghost"
-                      color="gray.500"
+                      color="text.dark"
                       onClick={() => setTabIndex(2)}
                     >
                       View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
@@ -126,17 +127,17 @@ export const ProjectDetail = observer(() => {
                 width="full"
                 borderBottom="1px solid"
                 borderTop="1px solid"
-                borderColor="divider.main"
+                borderColor="pebble.700"
               >
-                <EmptyState message="There is currently no contracts in this project. Please check back soon for the updates." />
+                <EmptyState message="There is currently no contracts related to this project." />
               </Flex>
             )}
           </TabPanel>
           <TabPanel p={0}>
-            <CodesTable codes={publicCodes} />
+            <PublicProjectCodeTable codes={publicCodes} />
           </TabPanel>
           <TabPanel p={0}>
-            <ContractsTable contracts={publicContracts} />
+            <PublicProjectContractTable contracts={publicContracts} />
           </TabPanel>
         </TabPanels>
       </Tabs>

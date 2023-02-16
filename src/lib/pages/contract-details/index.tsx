@@ -8,9 +8,11 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state/InvalidState";
 import { useValidateAddress } from "lib/hooks";
@@ -18,7 +20,8 @@ import {
   useContractData,
   useContractDetailsTableCounts,
 } from "lib/model/contract";
-import type { ContractAddr } from "lib/types";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { ContractAddr, ContractData } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -26,31 +29,29 @@ import { ContractDesc } from "./components/contract-description";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { ExecuteTable } from "./components/tables/execute";
 import { MigrationTable } from "./components/tables/migration";
 import { RelatedProposalsTable } from "./components/tables/related-proposals";
 import { TransactionsTable } from "./components/tables/transactions";
 import { TokenSection } from "./components/token/TokenSection";
 
 interface ContractDetailsBodyProps {
+  contractData: ContractData;
   contractAddress: ContractAddr;
 }
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 const ContractDetailsBody = observer(
-  ({ contractAddress }: ContractDetailsBodyProps) => {
-    const contractData = useContractData(contractAddress);
+  ({ contractData, contractAddress }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailTableHeader";
     const {
       tableCounts,
-      refetchExecute,
       refetchMigration,
       refetchTransactions,
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress);
 
-    if (!contractData) return <InvalidContract />;
+    if (!contractData.instantiateInfo) return <InvalidContract />;
 
     return (
       <>
@@ -76,10 +77,10 @@ const ContractDetailsBody = observer(
                   contractData.instantiateInfo?.raw.contract_info ?? {}
                 )
               )}
-              jsonAreaHeight="180px"
+              jsonAreaHeight="230px"
             />
             <JsonInfo
-              header="Instantiate Messages"
+              header="Instantiate Message"
               jsonString={jsonPrettify(contractData.initMsg ?? "")}
               showViewFullButton
               defaultExpand
@@ -91,11 +92,11 @@ const ContractDetailsBody = observer(
           History
         </Heading>
         <Tabs>
-          <TabList borderBottom="1px solid" borderColor="divider.main">
+          <TabList borderBottom="1px solid" borderColor="pebble.700">
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>
-            <CustomTab count={tableCounts.executeCount}>Executes</CustomTab>
+            {/* <CustomTab count={tableCounts.executeCount}>Executes</CustomTab> */}
             <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
             <CustomTab count={tableCounts.relatedProposalsCount}>
               Related Proposals
@@ -110,14 +111,15 @@ const ContractDetailsBody = observer(
                 refetchCount={refetchTransactions}
               />
             </TabPanel>
-            <TabPanel p={0}>
+            {/* Remove execute table for now */}
+            {/* <TabPanel p={0}>
               <ExecuteTable
                 contractAddress={contractAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.executeCount}
                 refetchCount={refetchExecute}
               />
-            </TabPanel>
+            </TabPanel> */}
             <TabPanel p={0}>
               <MigrationTable
                 contractAddress={contractAddress}
@@ -141,12 +143,19 @@ const ContractDetailsBody = observer(
   }
 );
 
-const ContractDetails = () => {
+const ContractDetails = observer(() => {
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
+  const contractAddressParam = getFirstQueryParam(
+    router.query.contractAddress
+  ) as ContractAddr;
+  const { isLoading, contractData } = useContractData(contractAddressParam);
 
-  const contractAddressParam = getFirstQueryParam(router.query.contractAddress);
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
+  }, [router.isReady]);
 
+  if (isLoading) return <Loading />;
   return (
     <PageContainer>
       <BackButton />
@@ -154,11 +163,12 @@ const ContractDetails = () => {
         <InvalidContract />
       ) : (
         <ContractDetailsBody
-          contractAddress={contractAddressParam as ContractAddr}
+          contractData={contractData}
+          contractAddress={contractAddressParam}
         />
       )}
     </PageContainer>
   );
-};
+});
 
 export default ContractDetails;

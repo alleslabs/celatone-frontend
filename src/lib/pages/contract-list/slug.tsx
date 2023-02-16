@@ -26,12 +26,13 @@ import {
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { SaveNewContract } from "lib/components/modal/contract";
-import { EditList, RemoveList } from "lib/components/modal/list";
+import { SaveNewContractModal } from "lib/components/modal/contract";
+import { EditListNameModal, RemoveListModal } from "lib/components/modal/list";
 import { ContractListDetail } from "lib/components/modal/select-contract";
-import { INSTANTIATED_LIST_NAME } from "lib/data";
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 const StyledIcon = chakra(Icon, {
@@ -51,17 +52,36 @@ const ContractsByList = observer(() => {
   const isInstantiatedByMe =
     listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
 
-  const instantiatedListInfo = useInstantiatedByMe(isInstantiatedByMe);
+  const { instantiatedListInfo, isLoading } =
+    useInstantiatedByMe(isInstantiatedByMe);
 
   const contractListInfo = isInstantiatedByMe
     ? instantiatedListInfo
     : getContractLists().find((item) => item.slug === listSlug);
 
   useEffect(() => {
-    if (isHydrated && contractListInfo === undefined) {
-      navigate({ pathname: "/contract-list" });
-    }
+    // TODO: find a better approach?
+    const timeoutId = setTimeout(() => {
+      if (isHydrated && contractListInfo === undefined)
+        navigate({ pathname: "/contract-list" });
+    }, 100);
+    return () => clearTimeout(timeoutId);
   }, [contractListInfo, isHydrated, navigate]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      switch (listSlug) {
+        case formatSlugName(INSTANTIATED_LIST_NAME):
+          AmpTrack(AmpEvent.TO_LIST_BY_ME);
+          break;
+        case formatSlugName(SAVED_LIST_NAME):
+          AmpTrack(AmpEvent.TO_LIST_SAVED);
+          break;
+        default:
+          AmpTrack(AmpEvent.TO_LIST_OTHERS);
+      }
+    }
+  }, [router.isReady, listSlug]);
 
   if (!contractListInfo) return null;
 
@@ -71,9 +91,12 @@ const ContractsByList = observer(() => {
         <Breadcrumb
           w="full"
           spacing="4px"
-          separator={<MdChevronRight color="gray.600" />}
+          separator={<MdChevronRight color="pebble.600" />}
         >
-          <BreadcrumbItem>
+          <BreadcrumbItem
+            _hover={{ opacity: 0.8 }}
+            transition="all 0.25s ease-in-out"
+          >
             <AppLink color="text.dark" href="/contract-list">
               Contract Lists
             </AppLink>
@@ -97,12 +120,7 @@ const ContractsByList = observer(() => {
           mt={2}
           gap={5}
         >
-          <Heading
-            as="h5"
-            variant="h5"
-            color="primary.400"
-            className="ellipsis"
-          >
+          <Heading as="h5" variant="h5" className="ellipsis">
             {contractListInfo.name}
           </Heading>
           <Flex gap={2}>
@@ -114,7 +132,7 @@ const ContractsByList = observer(() => {
                 Deploy New Contract
               </Button>
             ) : (
-              <SaveNewContract
+              <SaveNewContractModal
                 key={listSlug}
                 list={{
                   label: contractListInfo.name,
@@ -129,31 +147,27 @@ const ContractsByList = observer(() => {
             )}
             {contractListInfo.isInfoEditable && (
               <Menu>
-                <MenuButton
-                  h="full"
-                  variant="ghost-gray"
-                  focusBorderColor="primary.main"
-                  as={Button}
-                >
+                <MenuButton h="full" variant="ghost-gray" as={Button}>
                   <Icon
                     as={MdMoreHoriz}
-                    color="gray.600"
+                    color="pebble.600"
                     boxSize="6"
                     display="flex"
                   />
                 </MenuButton>
                 <MenuList>
-                  <EditList
+                  <EditListNameModal
                     list={{
                       label: contractListInfo.name,
                       value: contractListInfo.slug,
                     }}
                     menuItemProps={{
-                      icon: <StyledIcon as={MdMode} color="gray.600" />,
+                      icon: <StyledIcon as={MdMode} color="pebble.600" />,
                       children: "Edit list name",
                     }}
+                    reroute
                   />
-                  <RemoveList
+                  <RemoveListModal
                     list={{
                       label: contractListInfo.name,
                       value: contractListInfo.slug,
@@ -169,7 +183,10 @@ const ContractsByList = observer(() => {
           </Flex>
         </Flex>
       </Box>
-      <ContractListDetail contractListInfo={contractListInfo} />
+      <ContractListDetail
+        contractListInfo={contractListInfo}
+        isLoading={isInstantiatedByMe ? isLoading : false}
+      />
     </>
   );
 });

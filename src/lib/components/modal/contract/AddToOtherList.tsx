@@ -6,19 +6,19 @@ import { MdBookmark } from "react-icons/md";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/forms/ListSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { DEFAULT_LIST } from "lib/data";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
 
-interface AddToOtherListProps {
+interface AddToOtherListModalProps {
   contractLocalInfo: ContractLocalInfo;
   triggerElement: JSX.Element;
 }
 
-export const AddToOtherList = observer(
-  ({ contractLocalInfo, triggerElement }: AddToOtherListProps) => {
-    const [contractLists, setContractLists] = useState<LVPair[]>(DEFAULT_LIST);
+export const AddToOtherListModal = observer(
+  ({ contractLocalInfo, triggerElement }: AddToOtherListModalProps) => {
+    const [contractLists, setContractLists] = useState<LVPair[]>([]);
 
     const handleSave = useHandleContractSave({
       title: "Action Complete!",
@@ -26,11 +26,12 @@ export const AddToOtherList = observer(
       instantiator: contractLocalInfo.instantiator,
       label: contractLocalInfo.label,
       lists: contractLists,
+      actions: () => AmpTrack(AmpEvent.CONTRACT_EDIT_LISTS),
     });
 
     useEffect(() => {
       setContractLists(
-        contractLocalInfo.lists?.length ? contractLocalInfo.lists : DEFAULT_LIST
+        contractLocalInfo.lists?.length ? contractLocalInfo.lists : []
       );
     }, [contractLocalInfo.lists]);
 
@@ -41,16 +42,16 @@ export const AddToOtherList = observer(
         headerContent={
           <Flex pt="6" gap="36px">
             <Flex direction="column" gap="8px">
-              <Text variant="body2" color="text.main" fontWeight="600">
+              <Text variant="body2" fontWeight="600">
                 Contract Name
               </Text>
-              <Text variant="body2" color="text.main" fontWeight="600">
+              <Text variant="body2" fontWeight="600">
                 Contract Address
               </Text>
             </Flex>
 
             <Flex direction="column" gap="8px">
-              <Text variant="body2" color="text.main">
+              <Text variant="body2">
                 {contractLocalInfo.name ?? contractLocalInfo.label}
               </Text>
               <ExplorerLink
@@ -68,11 +69,11 @@ export const AddToOtherList = observer(
         <Box my="16px">
           <ListSelection
             result={contractLists}
-            placeholder="Add to contract lists"
+            placeholder="Not listed"
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
             setResult={setContractLists}
-            labelBgColor="gray.800"
+            labelBgColor="pebble.900"
           />
         </Box>
       </ActionModal>

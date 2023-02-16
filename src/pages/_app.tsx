@@ -3,18 +3,13 @@ import { wallets } from "@cosmos-kit/keplr";
 import { WalletProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { assets, chains } from "chain-registry";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
 import localforage from "localforage";
 import { configurePersistable } from "mobx-persist-store";
 import { enableStaticRendering } from "mobx-react-lite";
-import { DefaultSeo } from "next-seo";
-import type { AppProps, AppContext } from "next/app";
-import App from "next/app";
+import type { AppProps } from "next/app";
 import Head from "next/head";
+import Script from "next/script";
 
-import defaultSEOConfig from "../../next-seo.config";
 import {
   CELATONE_CONSTANTS,
   CELATONE_APP_CONTRACT_ADDRESS,
@@ -23,14 +18,13 @@ import {
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
+import { CelatoneSeo } from "lib/components/Seo";
 import { terra2testnet, terra2testnetAssets } from "lib/config/terra2testnet";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import { StoreProvider } from "lib/providers/store";
 import { TxBroadcastProvider } from "lib/providers/tx-broadcast";
 
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
 enableStaticRendering(typeof window === "undefined");
 
 localforage.config({
@@ -52,6 +46,22 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Chakra>
+      <Script
+        strategy="lazyOnload"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+      />
+      <Script strategy="lazyOnload" id="google-tag-manager">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+            page_path: window.location.pathname,
+            debug_mode: true
+          });
+        `}
+      </Script>
+
       <QueryClientProvider client={queryClient}>
         <WalletProvider
           chains={[...chains, terra2testnet]}
@@ -59,8 +69,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           wallets={wallets}
           endpointOptions={{
             osmosis: {
-              rpc: ["https://rpc-osmosis.keplr.app/"],
-              rest: ["https://lcd-osmosis.keplr.app/"],
+              rpc: ["https://rpc.osmosis.zone/"],
+              rest: ["https://lcd.osmosis.zone/"],
             },
             osmosistestnet: {
               rpc: ["https://rpc-test.osmosis.zone/"],
@@ -89,7 +99,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                     content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
                   />
                 </Head>
-                <DefaultSeo {...defaultSEOConfig} />
+                <CelatoneSeo />
                 <Layout>
                   <MobileGuard>
                     <Component {...pageProps} />
@@ -102,19 +112,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </QueryClientProvider>
     </Chakra>
   );
-};
-
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  // calls page's `getInitialProps` and fills `appProps.pageProps`
-  const appProps = await App.getInitialProps(appContext);
-
-  if (appContext.ctx.res?.statusCode === 404) {
-    appContext.ctx.res.writeHead(302, { Location: "/" });
-    appContext.ctx.res.end();
-    return undefined;
-  }
-
-  return { ...appProps };
 };
 
 export default MyApp;

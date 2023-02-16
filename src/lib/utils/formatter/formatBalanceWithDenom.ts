@@ -2,14 +2,22 @@ import type { Coin } from "@cosmjs/stargate";
 
 import type { Token, U } from "lib/types";
 
-import { formatToken } from "./currency.format";
+import { formatTokenWithPrecision } from "./token";
 import { getTokenLabel } from "./tokenType";
 
-export const formatBalanceWithDenom = (coin: Coin) => {
-  return `${formatToken(coin.amount as U<Token>, coin.denom)} ${getTokenLabel(
-    coin.denom
-  )}`;
-};
+interface FormatBalanceWithDenom {
+  coin: Coin;
+  symbol?: string;
+  precision?: number;
+}
 
-export const formatBalanceWithDenomList = (coins: Coin[]) =>
-  coins.map(formatBalanceWithDenom);
+export const formatBalanceWithDenom = ({
+  coin,
+  symbol,
+  precision,
+}: FormatBalanceWithDenom) => {
+  return `${formatTokenWithPrecision(
+    coin.amount as U<Token>,
+    precision || 0
+  )} ${getTokenLabel(symbol || coin.denom)}`;
+};

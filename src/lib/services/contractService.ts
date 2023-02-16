@@ -26,35 +26,39 @@ import type {
   ExecuteTransaction,
   AllTransaction,
   HumanAddr,
-  MigrationRemark,
   Option,
   ProposalStatus,
   ProposalType,
   Dict,
+  Addr,
 } from "lib/types";
 import {
   parseDate,
   getActionMsgType,
-  parseDateDefault,
   parseTxHash,
   parseTxHashOpt,
   snakeToCamel,
-  unwrap,
+  unwrapAll,
+  parseDateOpt,
 } from "lib/utils";
 
 interface InstantiateDetail {
-  initMsg: string;
-  initTxHash?: string;
-  initProposalId?: number;
-  initProposalTitle?: string;
+  initMsg: Option<string>;
+  initTxHash: Option<string>;
+  initProposalId: Option<number>;
+  initProposalTitle: Option<string>;
 }
 
 export const useInstantiatedCountByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
-    if (!walletAddr) return undefined;
+    if (!walletAddr)
+      throw new Error(
+        "Wallet address not found (useInstantiatedCountByUserQuery)"
+      );
 
     return indexerGraphClient
       .request(getInstantiatedCountByUserQueryDocument, {
@@ -63,75 +67,88 @@ export const useInstantiatedCountByUserQuery = (
       .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
   }, [indexerGraphClient, walletAddr]);
 
-  // TODO: add query key later
-  return useQuery(["instantiated_count_by_user", walletAddr], queryFn, {
-    keepPreviousData: true,
-    enabled: !!walletAddr,
-  });
+  return useQuery(
+    ["instantiated_count_by_user", walletAddr, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!walletAddr,
+    }
+  );
 };
 
 export const useInstantiatedListByUserQuery = (
   walletAddr: Option<HumanAddr>
-): UseQueryResult<Option<ContractLocalInfo[]>> => {
+): UseQueryResult<ContractLocalInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!walletAddr) return undefined;
+    if (!walletAddr)
+      throw new Error(
+        "Wallet address not found (useInstantiatedListByUserQuery)"
+      );
 
     return indexerGraphClient
       .request(getInstantiatedListByUserQueryDocument, {
         walletAddr,
       })
       .then(({ contracts }) =>
-        contracts.map<ContractLocalInfo>((contract) => ({
-          contractAddress: contract.address as ContractAddr,
-          instantiator: unwrap(contract.accountByInitBy?.address),
-          label: contract.label,
+        contracts.map<ContractLocalInfo>((contractInst) => ({
+          contractAddress: contractInst.address as ContractAddr,
+          instantiator: contractInst.accountByInitBy?.address as Addr,
+          label: contractInst.label,
         }))
       );
   }, [indexerGraphClient, walletAddr]);
 
-  // TODO: add query key later
-  return useQuery(["instantiated_list_by_user", walletAddr], queryFn, {
-    keepPreviousData: true,
-    enabled: !!walletAddr,
-  });
+  return useQuery(
+    ["instantiated_list_by_user", walletAddr, indexerGraphClient],
+    queryFn,
+    { enabled: !!walletAddr }
+  );
 };
 
 export const useContractListByAdmin = (
-  adminAddress: Option<ContractAddr | HumanAddr>
-): UseQueryResult<Option<ContractLocalInfo[]>> => {
+  adminAddress: Addr
+): UseQueryResult<ContractLocalInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
-    if (!adminAddress) return undefined;
+    if (!adminAddress)
+      throw new Error("Admin address not found (useContractListByAdmin)");
 
     return indexerGraphClient
       .request(getContractListByAdmin, {
         address: adminAddress,
       })
       .then(({ contracts }) =>
-        contracts.map<ContractLocalInfo>((contract) => ({
-          contractAddress: contract.address as ContractAddr,
-          instantiator: contract.accountByInitBy?.address ?? "",
-          label: contract.label,
+        contracts.map<ContractLocalInfo>((contractAdmin) => ({
+          contractAddress: contractAdmin.address as ContractAddr,
+          instantiator: contractAdmin.accountByInitBy?.address as Addr,
+          label: contractAdmin.label,
         }))
       );
   }, [adminAddress, indexerGraphClient]);
 
-  return useQuery(["contract_list_by_admin", adminAddress], queryFn, {
-    keepPreviousData: true,
-    enabled: !!adminAddress,
-  });
+  return useQuery(
+    ["contract_list_by_admin", adminAddress, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!adminAddress,
+    }
+  );
 };
 
 export const useInstantiateDetailByContractQuery = (
   contractAddress: ContractAddr
 ): UseQueryResult<InstantiateDetail> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then(({ contracts_by_pk }) => ({
-        initMsg: contracts_by_pk?.init_msg ?? "{}",
+        initMsg: contracts_by_pk?.init_msg,
         initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
         initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
         initProposalTitle:
@@ -140,48 +157,56 @@ export const useInstantiateDetailByContractQuery = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["instantiate_detail_by_contract", contractAddress],
+    ["instantiate_detail_by_contract", contractAddress, indexerGraphClient],
     queryFn,
     {
       keepPreviousData: true,
+      enabled: !!contractAddress,
     }
   );
 };
 
 export const useAdminByContractAddresses = (
   contractAddresses: Option<ContractAddr[]>
-): UseQueryResult<Option<Dict<ContractAddr, string>>> => {
+): UseQueryResult<Dict<ContractAddr, Addr>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
-    if (!contractAddresses) throw new Error("No contract selected");
+    if (!contractAddresses)
+      throw new Error("No contract selected (useAdminByContractAddresses)");
 
     return indexerGraphClient
       .request(getAdminByContractAddressesQueryDocument, {
         contractAddresses,
       })
       .then(({ contracts }) =>
-        contracts.reduce(
+        contracts.reduce<Dict<ContractAddr, Addr>>(
           (prev, contract) => ({
             ...prev,
-            [contract.address as ContractAddr]: contract.admin?.address,
+            [contract.address as ContractAddr]: contract.admin?.address as Addr,
           }),
           {}
         )
       );
   }, [contractAddresses, indexerGraphClient]);
 
-  return useQuery(["admin_by_contracts", contractAddresses], queryFn, {
-    keepPreviousData: true,
-    enabled: !!contractAddresses,
-  });
+  return useQuery(
+    ["admin_by_contracts", contractAddresses, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddresses,
+    }
+  );
 };
 
 export const useExecuteTxsByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<Option<ExecuteTransaction[]>> => {
+): UseQueryResult<ExecuteTransaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getExecuteTxsByContractAddress, {
@@ -189,16 +214,17 @@ export const useExecuteTxsByContractAddress = (
         offset,
         pageSize,
       })
-      .then(({ contract_transactions }) =>
-        contract_transactions.map((transaction) => ({
-          hash: parseTxHash(transaction.transaction.hash),
-          messages: transaction.transaction.messages,
-          sender: transaction.transaction.account.address as
-            | ContractAddr
-            | HumanAddr,
-          height: transaction.transaction.block.height,
-          created: parseDateDefault(transaction.transaction?.block?.timestamp),
-          success: transaction.transaction.success,
+      .then(({ contract_transactions_view }) =>
+        /**
+         * @remarks because contract_transactions_view is view table, all fields can be undefined by type
+         */
+        contract_transactions_view.map((transaction) => ({
+          hash: parseTxHash(transaction.hash),
+          messages: transaction.messages,
+          sender: transaction.sender as Addr,
+          height: transaction.height,
+          created: parseDateOpt(transaction.timestamp),
+          success: transaction.success,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
@@ -209,6 +235,7 @@ export const useExecuteTxsByContractAddress = (
       contractAddress,
       offset,
       pageSize,
+      indexerGraphClient,
     ],
     queryFn,
     {
@@ -222,8 +249,12 @@ export const useExecuteTxsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
-    if (!contractAddress) return undefined;
+    if (!contractAddress)
+      throw new Error(
+        "Contract address not found (useExecuteTxsCountByContractAddress)"
+      );
 
     return indexerGraphClient
       .request(getExecuteTxsCountByContractAddress, {
@@ -236,7 +267,11 @@ export const useExecuteTxsCountByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["execute_transactions_count_by_contract_addr", contractAddress],
+    [
+      "execute_transactions_count_by_contract_addr",
+      contractAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -249,10 +284,9 @@ export const useMigrationHistoriesByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<
-  Option<Omit<ContractMigrationHistory, "codeDescription">[]>
-> => {
+): UseQueryResult<Omit<ContractMigrationHistory, "codeName">[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getMigrationHistoriesByContractAddress, {
@@ -261,24 +295,26 @@ export const useMigrationHistoriesByContractAddress = (
         pageSize,
       })
       .then(({ contract_histories }) =>
-        contract_histories.map<
-          Omit<ContractMigrationHistory, "codeDescription">
-        >((history) => ({
-          codeId: history.code_id,
-          sender: history.account.address as HumanAddr | ContractAddr,
-          height: history.block.height,
-          timestamp: parseDate(history.block.timestamp),
-          remark: {
-            operation: history.remark.operation as MigrationRemark["operation"],
-            type: history.remark.type as MigrationRemark["type"],
-            value: history.remark.value as MigrationRemark["value"],
-          },
-        }))
+        contract_histories.map<Omit<ContractMigrationHistory, "codeName">>(
+          (history) => ({
+            codeId: history.code_id,
+            sender: history.account.address as Addr,
+            height: history.block.height,
+            timestamp: parseDate(history.block.timestamp),
+            remark: history.remark,
+          })
+        )
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
-    ["migration_histories", contractAddress, offset, pageSize],
+    [
+      "migration_histories",
+      contractAddress,
+      offset,
+      pageSize,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -291,6 +327,7 @@ export const useMigrationHistoriesCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getMigrationHistoriesCountByContractAddress, {
@@ -302,10 +339,14 @@ export const useMigrationHistoriesCountByContractAddress = (
       );
   }, [contractAddress, indexerGraphClient]);
 
-  return useQuery(["migration_histories_count", contractAddress], queryFn, {
-    keepPreviousData: true,
-    enabled: !!contractAddress,
-  });
+  return useQuery(
+    ["migration_histories_count", contractAddress, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
 };
 
 export const useTxsByContractAddress = (
@@ -314,6 +355,7 @@ export const useTxsByContractAddress = (
   pageSize: number
 ): UseQueryResult<AllTransaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getTxsByContractAddress, {
@@ -321,32 +363,40 @@ export const useTxsByContractAddress = (
         offset,
         pageSize,
       })
-      .then(({ contract_transactions }) =>
-        contract_transactions.map((contractTx) => ({
-          hash: parseTxHash(contractTx.transaction.hash),
-          messages: snakeToCamel(contractTx.transaction.messages),
-          sender: contractTx.transaction.account.address as
-            | ContractAddr
-            | HumanAddr,
-          height: contractTx.transaction.block.height,
-          created: parseDateDefault(contractTx.transaction.block?.timestamp),
-          success: contractTx.transaction.success,
+      .then(({ contract_transactions_view }) =>
+        /**
+         * @remarks because contract_transactions_view is view table, all fields can be undefined by type
+         */
+        contract_transactions_view.map((contractTx) => ({
+          hash: parseTxHash(contractTx.hash),
+          messages: snakeToCamel(contractTx.messages),
+          sender: contractTx.sender as Addr,
+          height: contractTx.height,
+          created: parseDateOpt(contractTx.timestamp),
+          success: contractTx.success,
           actionMsgType: getActionMsgType([
-            contractTx.transaction.is_execute,
-            contractTx.transaction.is_instantiate,
-            contractTx.transaction.is_send,
-            contractTx.transaction.is_store_code,
-            contractTx.transaction.is_migrate,
-            contractTx.transaction.is_update_admin,
-            contractTx.transaction.is_clear_admin,
+            /* these value must not be null */
+            unwrapAll(contractTx.is_execute),
+            unwrapAll(contractTx.is_instantiate),
+            unwrapAll(contractTx.is_send),
+            unwrapAll(contractTx.is_store_code),
+            unwrapAll(contractTx.is_migrate),
+            unwrapAll(contractTx.is_update_admin),
+            unwrapAll(contractTx.is_clear_admin),
           ]),
-          isIbc: contractTx.transaction.is_ibc,
+          isIbc: contractTx.is_ibc,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
-    ["transactions_by_contract_addr", contractAddress, offset, pageSize],
+    [
+      "transactions_by_contract_addr",
+      contractAddress,
+      offset,
+      pageSize,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -359,8 +409,12 @@ export const useTxsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
-    if (!contractAddress) return undefined;
+    if (!contractAddress)
+      throw new Error(
+        "Contract address not found (useTxsCountByContractAddress)"
+      );
 
     return indexerGraphClient
       .request(getTxsCountByContractAddress, {
@@ -373,7 +427,11 @@ export const useTxsCountByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["transactions_count_by_contract_addr", contractAddress],
+    [
+      "transactions_count_by_contract_addr",
+      contractAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -386,8 +444,9 @@ export const useRelatedProposalsByContractAddress = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<Option<ContractRelatedProposals[]>> => {
+): UseQueryResult<ContractRelatedProposals[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getRelatedProposalsByContractAddress, {
@@ -404,15 +463,19 @@ export const useRelatedProposalsByContractAddress = (
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.resolved_height,
           type: proposal.proposal.type as ProposalType,
-          proposer: proposal.proposal.account?.address as
-            | HumanAddr
-            | ContractAddr,
+          proposer: proposal.proposal.account?.address as Addr,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
-    ["related_proposals", contractAddress, offset, pageSize],
+    [
+      "related_proposals",
+      contractAddress,
+      offset,
+      pageSize,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -425,6 +488,7 @@ export const useRelatedProposalsCountByContractAddress = (
   contractAddress: ContractAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getRelatedProposalsCountByContractAddress, {
@@ -436,8 +500,12 @@ export const useRelatedProposalsCountByContractAddress = (
       );
   }, [contractAddress, indexerGraphClient]);
 
-  return useQuery(["related_proposals_count", contractAddress], queryFn, {
-    keepPreviousData: true,
-    enabled: !!contractAddress,
-  });
+  return useQuery(
+    ["related_proposals_count", contractAddress, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
 };

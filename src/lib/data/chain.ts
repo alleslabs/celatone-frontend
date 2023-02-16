@@ -7,6 +7,8 @@ interface Chain {
   localnet?: string;
 }
 
+export type Network = keyof Chain;
+
 export const TERRA_CHAINS: Chain = {
   mainnet: "terra2",
   testnet: "terra2testnet",
@@ -34,44 +36,28 @@ export const getSupportedChainNames = (): string[] => {
  * @returns chain name
  * @throws Error if network doesn't match any of the supported networks
  */
-export const getChainNameByNetwork = (network: string): string => {
-  if (network !== "mainnet" && network !== "testnet" && network !== "localnet")
-    throw new Error(
-      `Network doesn't match any of the supported networks, Currently: ${network}`
-    );
-
-  let chainName: Option<string>;
-
+export const getChainNameByNetwork = (network: Network): string => {
   switch (SELECTED_CHAIN) {
     case "terra":
-      chainName = TERRA_CHAINS[network];
-      break;
+      return TERRA_CHAINS[network] ?? TERRA_CHAINS.mainnet;
     case "osmosis":
-      chainName = OSMOSIS_CHAINS[network];
-      break;
+      return OSMOSIS_CHAINS[network] ?? OSMOSIS_CHAINS.mainnet;
     default:
       throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
   }
-
-  if (!chainName)
-    throw new Error(
-      `Can't find chain name for network: ${network} and chain: ${SELECTED_CHAIN}`
-    );
-
-  return chainName;
 };
 
-export const getNetworkByChainName = (chainName: string): string => {
-  let network: Option<string>;
+export const getNetworkByChainName = (chainName: string): Network => {
+  let network: Option<Network>;
 
   switch (SELECTED_CHAIN) {
     case "terra":
-      network = Object.keys(TERRA_CHAINS).find(
+      network = (Object.keys(TERRA_CHAINS) as Network[]).find(
         (each) => TERRA_CHAINS[each as keyof Chain] === chainName
       );
       break;
     case "osmosis":
-      network = Object.keys(OSMOSIS_CHAINS).find(
+      network = (Object.keys(OSMOSIS_CHAINS) as Network[]).find(
         (each) => OSMOSIS_CHAINS[each as keyof Chain] === chainName
       );
       break;

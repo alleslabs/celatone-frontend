@@ -5,7 +5,7 @@ import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { ShowMoreButton } from "lib/components/button";
-import type { ContractData } from "lib/model/contract";
+import type { ContractData } from "lib/types";
 import { textLine } from "lib/utils";
 
 interface PublicContractDescProps {
@@ -32,7 +32,7 @@ export const PublicContractDesc = ({
   return (
     <Flex
       direction="column"
-      bg="gray.900"
+      bg="pebble.900"
       maxW="100%"
       borderRadius="8px"
       p={4}

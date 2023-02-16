@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { MdCheck } from "react-icons/md";
 
 import { InstantiateButton } from "lib/components/button";
-import { RemoveCode } from "lib/components/modal/code/RemoveCode";
+import { RemoveCodeModal } from "lib/components/modal/code/RemoveCode";
 import { SaveOrEditCodeModal } from "lib/components/modal/code/SaveOrEditCode";
 import { useCodeStore } from "lib/hooks";
 import type { CodeInfo } from "lib/types";
@@ -15,7 +15,7 @@ const StyledIcon = chakra(Icon, {
 });
 
 export const CTASection = observer(
-  ({ id, ...codeInfo }: Omit<CodeInfo, "contracts">) => {
+  ({ id, ...codeInfo }: Omit<CodeInfo, "contractCount">) => {
     const { isCodeIdSaved } = useCodeStore();
     const isSaved = isCodeIdSaved(id);
 
@@ -34,9 +34,9 @@ export const CTASection = observer(
           size="md"
         />
         {isSaved ? (
-          <RemoveCode
+          <RemoveCodeModal
             codeId={id}
-            description={codeInfo.description}
+            name={codeInfo.name}
             trigger={
               <Button
                 variant="outline-gray"
