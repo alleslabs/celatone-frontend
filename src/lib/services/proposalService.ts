@@ -52,7 +52,7 @@ export const useRelatedProposalsByContractAddress = (
 
   return useQuery(
     [
-      "related_proposals",
+      "related_proposals_by_contract_address",
       contractAddress,
       offset,
       pageSize,
@@ -83,7 +83,11 @@ export const useRelatedProposalsCountByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["related_proposals_count", contractAddress, indexerGraphClient],
+    [
+      "related_proposals_count_by_contract_address",
+      contractAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -92,7 +96,7 @@ export const useRelatedProposalsCountByContractAddress = (
   );
 };
 
-export const useProposalsByUserAddressWithPagination = (
+export const useProposalsByUserAddress = (
   offset: number,
   pageSize: number
 ): UseQueryResult<UserProposal> => {
@@ -100,9 +104,7 @@ export const useProposalsByUserAddressWithPagination = (
   const { address } = useWallet();
   const queryFn = useCallback(async () => {
     if (!address)
-      throw new Error(
-        "Wallet address not found (useProposalsByUserAddressWithPagination)"
-      );
+      throw new Error("Wallet address not found (useProposalsByUserAddress)");
 
     return indexerGraphClient
       .request(getProposalsByUserAddress, {
@@ -124,7 +126,7 @@ export const useProposalsByUserAddressWithPagination = (
 
   return useQuery(
     [
-      "proposal_by_user_address_pagination",
+      "proposals_by_user_address",
       address,
       indexerGraphClient,
       offset,
@@ -155,11 +157,7 @@ export const useProposalsCountByUserAddress = (
   }, [walletAddress, indexerGraphClient]);
 
   return useQuery(
-    [
-      "contract_list_count_by_admin_pagination",
-      walletAddress,
-      indexerGraphClient,
-    ],
+    ["proposals_count_by_user_address", walletAddress, indexerGraphClient],
     queryFn,
     {
       keepPreviousData: true,

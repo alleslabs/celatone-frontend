@@ -9,6 +9,7 @@ import {
   useContractListByWalletAddressWithPagination,
 } from "lib/services/contractService";
 import type { BalanceWithAssetInfo, HumanAddr } from "lib/types";
+import { assetValue } from "lib/utils/assetValue";
 
 export const useContractInstances = (offset: number, pageSize: number) => {
   const { address } = useWallet();
@@ -91,23 +92,24 @@ export const useUserAssetInfos = () => {
   const { data: assets, isLoading } = useAccountBalance(address as HumanAddr);
   const assetInfos = useAssetInfos();
 
-  const contractBalancesWithAssetInfos = assets
-    ?.map(
-      (balance): BalanceWithAssetInfo => ({
-        balance,
-        assetInfo: assetInfos?.[balance.id],
-      })
-    )
-    .sort((a, b) => {
-      if (a.balance.symbol && b.balance.symbol) {
-        return a.balance.symbol.localeCompare(b.balance.symbol);
-      }
-      return -1;
-    });
-
-  const supportedAssets = contractBalancesWithAssetInfos?.filter(
-    (balance) => balance.assetInfo
+  const contractBalancesWithAssetInfos = assets?.map(
+    (balance): BalanceWithAssetInfo => ({
+      balance,
+      assetInfo: assetInfos?.[balance.id],
+    })
   );
+
+  // Supported assets should order by its value
+  const supportedAssets = contractBalancesWithAssetInfos
+    ?.filter((balance) => balance.assetInfo)
+    .sort((a, b) => {
+      if (a.balance.price && b.balance.price) {
+        return assetValue(b.balance.amount, b.balance.price)
+          .sub(assetValue(a.balance.amount, a.balance.price))
+          .toNumber();
+      }
+      return 1;
+    });
 
   const unsupportedAssets = contractBalancesWithAssetInfos?.filter(
     (balance) => !balance.assetInfo
