@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useCallback } from "react";
 
+import type { PublicCode, RawPublicCode } from "../types/projects";
 import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
 import type {
   PublicContract,
@@ -25,6 +26,11 @@ const parseContract = (raw: RawPublicContract): PublicContract => ({
   admin: raw.admin,
 });
 
+const parseCode = (raw: RawPublicCode): PublicCode => ({
+  ...raw,
+  contractCount: raw.contracts,
+});
+
 export const usePublicProjects = () => {
   const { currentChainRecord } = useWallet();
 
@@ -41,6 +47,7 @@ export const usePublicProjects = () => {
       .then(({ data: projects }) =>
         projects.map<PublicProjectInfo>((project) => ({
           ...project,
+          codes: project.codes.map(parseCode),
           contracts: project.contracts.map(parseContract),
         }))
       );
@@ -58,16 +65,20 @@ export const usePublicProjectBySlug = (slug: Option<string>) => {
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
     if (!currentChainRecord)
       throw new Error("No chain selected (usePublicProjectBySlug)");
-    return axios
-      .get<RawPublicProjectInfo>(
-        `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
-          currentChainRecord.chain.chain_name
-        )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
-      )
-      .then<PublicProjectInfo>(({ data: project }) => ({
-        ...project,
-        contracts: project.contracts.map(parseContract),
-      }));
+    return (
+      axios
+        .get<RawPublicProjectInfo>(
+          `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
+            currentChainRecord.chain.chain_name
+          )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
+        )
+        // eslint-disable-next-line sonarjs/no-identical-functions
+        .then<PublicProjectInfo>(({ data: project }) => ({
+          ...project,
+          codes: project.codes.map(parseCode),
+          contracts: project.contracts.map(parseContract),
+        }))
+    );
   }, [currentChainRecord, slug]);
 
   return useQuery(
