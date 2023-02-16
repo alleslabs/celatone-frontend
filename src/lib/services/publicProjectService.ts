@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useCallback } from "react";
 
-import type { PublicCode, RawPublicCode } from "../types/projects";
 import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
 import type {
   PublicContract,
@@ -14,6 +13,8 @@ import type {
   PublicProjectInfo,
   RawPublicContract,
   RawPublicProjectInfo,
+  PublicCode,
+  RawPublicCode,
 } from "lib/types";
 
 const parseContract = (raw: RawPublicContract): PublicContract => ({
