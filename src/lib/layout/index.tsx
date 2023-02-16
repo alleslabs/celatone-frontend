@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { scrollTop } from "lib/utils/scrollTop";
+import { scrollToTop } from "lib/utils";
 
+import Footer from "./Footer";
 import Header from "./Header";
 import Navbar from "./Navbar";
 
@@ -16,9 +17,8 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    scrollTop();
+    scrollToTop();
   }, [router.asPath]);
-
   return (
     <Grid
       templateAreas={`"header header"
@@ -29,14 +29,15 @@ const Layout = ({ children }: LayoutProps) => {
       overflowX="hidden"
       bg="background.main"
     >
-      <GridItem bg="#212121" area="header">
+      <GridItem bg="pebble.900" area="header" mb="1">
         <Header />
       </GridItem>
-      <GridItem bg="#212121" area="nav" mt="1">
+      <GridItem bg="pebble.900" area="nav" overflowY="auto">
         <Navbar />
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">
-        {children}
+        <div style={{ minHeight: `calc(100vh - 129px)` }}>{children}</div>
+        <Footer />
       </GridItem>
     </Grid>
   );

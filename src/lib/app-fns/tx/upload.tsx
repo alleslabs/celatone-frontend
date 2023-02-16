@@ -9,8 +9,9 @@ import { MdCloudUpload } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { TxStreamPhase } from "lib/types";
-import type { TxResultRendering } from "lib/types";
+import type { HumanAddr, TxResultRendering } from "lib/types";
 import { formatUFee } from "lib/utils/formatter/denom";
 
 import { catchTxError } from "./common/catchTxError";
@@ -18,7 +19,7 @@ import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
 interface UploadTxParams {
-  address: string;
+  address: HumanAddr;
   codeDesc: string;
   wasmCode: Uint8Array;
   wasmFileName: string;
@@ -26,6 +27,7 @@ interface UploadTxParams {
   memo?: string;
   client: SigningCosmWasmClient;
   onTxSucceed?: (codeId: number) => void;
+  isMigrate: boolean;
 }
 
 export const uploadContractTx = ({
@@ -37,6 +39,7 @@ export const uploadContractTx = ({
   memo,
   client,
   onTxSucceed,
+  isMigrate,
 }: UploadTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -44,7 +47,10 @@ export const uploadContractTx = ({
       postFn: () => client.upload(address, wasmCode, fee, memo),
     }),
     ({ value: txInfo }) => {
+      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.(txInfo.codeId);
+      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
+        .value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -54,7 +60,7 @@ export const uploadContractTx = ({
             value: txInfo.codeId,
             html: (
               <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <ExplorerLink value={txInfo.codeId.toString()} />
+                <ExplorerLink type="code_id" value={txInfo.codeId.toString()} />
               </div>
             ),
           },
@@ -67,10 +73,7 @@ export const uploadContractTx = ({
           },
           {
             title: "Tx Fee",
-            value: `${formatUFee(
-              txInfo.events.find((e) => e.type === "tx")?.attributes[0].value ??
-                "0u"
-            )}`,
+            value: txFee ? formatUFee(txFee) : "N/A",
           },
         ],
         receiptInfo: {
@@ -80,15 +83,15 @@ export const uploadContractTx = ({
               <span style={{ fontWeight: 700 }}>
                 ‘{codeDesc || `${wasmFileName}(${txInfo.codeId})`}’
               </span>{" "}
-              is available on your stored code. Would you like to instantiate
-              your code now?
+              is has been uploaded. Would you like to{" "}
+              {isMigrate ? "migrate" : "instantiate"} your code now?
             </>
           ),
           headerIcon: (
             <Icon as={MdCloudUpload} fontSize="24px" color="text.dark" />
           ),
         },
-        actionVariant: "upload",
+        actionVariant: isMigrate ? "upload-migrate" : "upload",
       } as TxResultRendering;
     }
   )().pipe(catchTxError());

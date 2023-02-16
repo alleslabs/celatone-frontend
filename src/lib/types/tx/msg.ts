@@ -1,11 +1,13 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { ContractAddr, HumanAddr } from "../currency/addrs";
+import type { Addr, ContractAddr, HumanAddr } from "../addrs";
 
 export enum MsgType {
   STORE_CODE = "STORE_CODE",
   INSTANTIATE = "INSTANTIATE",
   EXECUTE = "EXECUTE",
+  MIGRATE = "MIGRATE",
+  UPDATE_ADMIN = "UPDATE_ADMIN",
 }
 
 export enum AccessType {
@@ -22,14 +24,14 @@ export interface AccessConfig {
 }
 
 export interface MsgStoreCode {
-  sender: HumanAddr;
+  sender: Addr;
   wasmByteCode: Uint8Array;
   instantiatePermission?: AccessConfig;
 }
 
 export interface MsgInstantiateContract {
-  sender: HumanAddr;
-  admin: HumanAddr;
+  sender: Addr;
+  admin: Addr;
   codeId: Long;
   label: string;
   msg: Uint8Array;
@@ -37,16 +39,30 @@ export interface MsgInstantiateContract {
 }
 
 export interface MsgExecuteContract {
-  sender: HumanAddr;
+  sender: Addr;
   contract: ContractAddr;
   msg: Uint8Array;
   funds: Coin[];
 }
 
+export interface MsgMigrateContract {
+  sender: Addr;
+  contract: ContractAddr;
+  codeId: Long;
+  msg: Uint8Array;
+}
+export interface MsgUpdateAdmin {
+  sender: Addr;
+  newAdmin: Addr;
+  contract: ContractAddr;
+}
+
 export type TxMessage =
   | MsgStoreCode
   | MsgInstantiateContract
-  | MsgExecuteContract;
+  | MsgExecuteContract
+  | MsgMigrateContract
+  | MsgUpdateAdmin;
 
 export interface ComposedMsg {
   typeUrl: string;
@@ -63,10 +79,28 @@ export interface DetailInstantiate extends MsgInstantiateContract {
 
 export interface DetailSend {
   amount: Coin[];
-  fromAddress: ContractAddr;
-  toAddress: ContractAddr;
+  fromAddress: Addr;
+  toAddress: Addr;
 }
 export interface DetailUpload {
-  id: Long;
-  sender: ContractAddr;
+  id: number;
+  sender: Addr;
+}
+
+export interface DetailClearAdmin {
+  contract: ContractAddr;
+  sender: Addr;
+}
+
+export interface DetailUpdateAdmin {
+  contract: ContractAddr;
+  newAdmin: Addr;
+  sender: Addr;
+}
+
+export interface DetailMigrate {
+  codeId: number;
+  contract: ContractAddr;
+  msg: object;
+  sender: Addr;
 }

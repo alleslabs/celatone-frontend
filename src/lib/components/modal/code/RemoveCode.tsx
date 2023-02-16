@@ -1,24 +1,50 @@
-import { useToast, Icon, Text } from "@chakra-ui/react";
+import { useToast, Icon, Text, chakra, IconButton } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { MdDeleteForever, MdCheckCircle, MdDelete } from "react-icons/md";
+import { MdCheckCircle, MdDelete } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { useCodeStore, useUserKey } from "lib/hooks";
+import { useCodeStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
 
-interface ModalProps {
+const StyledIconButton = chakra(IconButton, {
+  baseStyle: {
+    display: "flex",
+    alignItems: "center",
+    fontSize: "22px",
+    borderRadius: "36px",
+  },
+});
+
+interface RemoveCodeModalProps {
   codeId: number;
+  name?: string;
+  trigger?: JSX.Element;
 }
 
-export function RemoveCode({ codeId }: ModalProps) {
-  const userKey = useUserKey();
+export function RemoveCodeModal({
+  codeId,
+  name,
+  trigger = (
+    <StyledIconButton
+      icon={<MdDelete />}
+      variant="ghost-gray"
+      color="pebble.600"
+    />
+  ),
+}: RemoveCodeModalProps) {
   const { removeSavedCode } = useCodeStore();
   const toast = useToast();
 
   const handleRemove = useCallback(() => {
-    removeSavedCode(userKey, codeId);
+    AmpTrack(AmpEvent.CODE_REMOVE);
+
+    removeSavedCode(codeId);
 
     toast({
-      title: `Removed '${codeId}' from Saved Codes`,
+      title: `Removed \u2018${
+        shortenName(getNameAndDescriptionDefault(name), 20) || codeId
+      }\u2019 from Saved Codes`,
       status: "success",
       duration: 5000,
       isClosable: false,
@@ -33,27 +59,28 @@ export function RemoveCode({ codeId }: ModalProps) {
         />
       ),
     });
-  }, [codeId, userKey, removeSavedCode, toast]);
+  }, [codeId, name, removeSavedCode, toast]);
 
   return (
     <ActionModal
-      title={`Remove Code ID: ${codeId} ?`}
-      icon={MdDeleteForever}
+      title={
+        name
+          ? `Remove \u2018${shortenName(name, 20)}\u2019?`
+          : `Remove Code ID: ${codeId} ?`
+      }
+      icon={MdDelete}
       iconColor="error.light"
       mainBtnTitle="Yes, Remove It"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
-      trigger={
-        <Icon
-          as={MdDelete}
-          width="24px"
-          height="24px"
-          color="gray.600"
-          cursor="pointer"
-        />
-      }
+      trigger={trigger}
+      noCloseButton
+      noHeaderBorder
     >
-      <Text>You can save this code again later</Text>
+      <Text>
+        You can save this code again later, but you will need to add its new
+        code name.
+      </Text>
     </ActionModal>
   );
 }

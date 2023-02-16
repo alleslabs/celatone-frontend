@@ -5,50 +5,51 @@ import { MdMode } from "react-icons/md";
 import { ExplorerLink } from "../ExplorerLink";
 import { TagSelection } from "lib/components/forms/TagSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { useContractStore, useUserKey } from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractInfo } from "lib/stores/contract";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import { getTagsDefault } from "lib/utils";
 
 interface EditTagsProps {
-  contractInfo: ContractInfo;
+  contractLocalInfo: ContractLocalInfo;
 }
 
-export function EditTags({ contractInfo }: EditTagsProps) {
-  const userKey = useUserKey();
-  const { getAllTags } = useContractStore();
-  const [tagResult, setTagResult] = useState<string[]>(contractInfo.tags ?? []);
+export function EditTags({ contractLocalInfo }: EditTagsProps) {
+  const [tagResult, setTagResult] = useState<string[]>(
+    getTagsDefault(contractLocalInfo.tags)
+  );
   const handleSave = useHandleContractSave({
     title: "Updated tags successfully!",
-    address: contractInfo.address,
-    instantiator: contractInfo.instantiator,
-    label: contractInfo.label,
-    created: contractInfo.created,
+    contractAddress: contractLocalInfo.contractAddress,
+    instantiator: contractLocalInfo.instantiator,
+    label: contractLocalInfo.label,
     tags: tagResult,
+    actions: () => AmpTrack(AmpEvent.CONTRACT_EDIT_TAGS),
   });
 
   return (
     <ActionModal
       title="Edit Tags"
       trigger={
-        <Icon as={MdMode} color="gray.600" boxSize="4" cursor="pointer" />
+        <Icon as={MdMode} color="pebble.600" boxSize="4" cursor="pointer" />
       }
       headerContent={
         <Flex pt="6" gap="36px">
           <Flex direction="column" gap="8px">
-            <Text variant="body2" color="text.main" fontWeight="600">
+            <Text variant="body2" fontWeight="600">
               Contract Name
             </Text>
-            <Text variant="body2" color="text.main" fontWeight="600">
+            <Text variant="body2" fontWeight="600">
               Contract Address
             </Text>
           </Flex>
 
           <Flex direction="column" gap="8px">
-            <Text variant="body2" color="text.main">
-              {contractInfo.name ?? contractInfo.label}
+            <Text variant="body2">
+              {contractLocalInfo.name ?? contractLocalInfo.label}
             </Text>
             <ExplorerLink
-              value={contractInfo.address}
+              value={contractLocalInfo.contractAddress}
               type="contract_address"
             />
           </Flex>
@@ -61,13 +62,13 @@ export function EditTags({ contractInfo }: EditTagsProps) {
       <FormControl>
         <Box my="24px">
           <TagSelection
-            options={getAllTags(userKey)}
             result={tagResult}
             placeholder="Tags"
             helperText="Add tag to organize and manage your contracts"
             setResult={(selectedOptions: string[]) => {
               setTagResult(selectedOptions);
             }}
+            labelBgColor="pebble.900"
           />
         </Box>
       </FormControl>

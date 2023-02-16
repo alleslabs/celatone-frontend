@@ -1,10 +1,18 @@
 import { MdBookmark, MdInbox, MdLibraryBooks } from "react-icons/md";
 
+import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
+/**
+ * @todos Revisit utils import later
+ */
+import { formatSlugName } from "lib/utils/format";
 
 export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
 export const SAVED_LIST_NAME = "Saved Contracts";
+
+// special slug with all cap letters to avoid conflict with any list
+export const ADMIN_SPECIAL_SLUG = "ADMIN";
 
 export const getMaxLengthError = (
   field: string,
@@ -30,13 +38,9 @@ export const getMaxContractDescriptionLengthError = (currentLength: number) =>
     MAX_CONTRACT_DESCRIPTION_LENGTH
   );
 
-export const MAX_CODE_DESCRIPTION_LENGTH = 50;
-export const getMaxCodeDescriptionLengthError = (currentLength: number) =>
-  getMaxLengthError(
-    "Code description",
-    currentLength,
-    MAX_CODE_DESCRIPTION_LENGTH
-  );
+export const MAX_CODE_NAME_LENGTH = 50;
+export const getMaxCodeNameLengthError = (currentLength: number) =>
+  getMaxLengthError("Code name", currentLength, MAX_CODE_NAME_LENGTH);
 
 export const getListIcon = (listName: string) => {
   switch (listName) {
@@ -49,21 +53,27 @@ export const getListIcon = (listName: string) => {
   }
 };
 
+export const DEFAULT_LIST: LVPair[] = [
+  {
+    label: SAVED_LIST_NAME,
+    value: formatSlugName(SAVED_LIST_NAME),
+  },
+];
+
 export const DEFAULT_ADDRESS = "default-address";
 
 export const MAX_FILE_SIZE = 800_000;
 
-export const MICRO = 1000000;
+export const CLEAR_ADMIN_GAS = 50_000;
+
+export const MICRO = 1_000_000;
 
 export const typeUrlDict = {
   [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
   [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
   [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
+  [MsgType.MIGRATE]: "/cosmwasm.wasm.v1.MsgMigrateContract",
+  [MsgType.UPDATE_ADMIN]: "/cosmwasm.wasm.v1.MsgUpdateAdmin",
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
-// TODO
-export const LCD_ENDPOINT: Record<string, string> = {
-  osmosis: "https://lcd.osmosis.zone",
-  osmosistestnet: "https://lcd-test.osmosis.zone",
-};

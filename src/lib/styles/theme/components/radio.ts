@@ -11,9 +11,9 @@ export const Radio: ComponentStyleConfig = {
     control: {
       borderColor: "text.dark",
       _checked: {
-        borderColor: "primary.main",
+        borderColor: "violet.light",
         background: "transparent",
-        color: "primary.main",
+        color: "violet.light",
         _before: {
           w: "10px",
           h: "10px",

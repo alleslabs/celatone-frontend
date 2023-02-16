@@ -1,17 +1,19 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Heading, Button, Box, Flex, Spacer, Text } from "@chakra-ui/react";
+import { ChevronRightIcon } from "@chakra-ui/icons";
+import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useInternalNavigate } from "lib/app-provider";
+import { BackButton } from "lib/components/button";
+import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { SelectContract } from "lib/components/modal/select-contract";
 import PageContainer from "lib/components/PageContainer";
-import { useContractStore, useEndpoint, useMobile } from "lib/hooks";
-import { queryContract, queryData } from "lib/services/contract";
-import type { RpcQueryError } from "lib/types";
+import { useLCDEndpoint } from "lib/hooks";
+import { AmpTrackToQuery } from "lib/services/amplitude";
+import { queryData } from "lib/services/contract";
+import type { ContractAddr, RpcQueryError } from "lib/types";
 import {
   jsonPrettify,
   getFirstQueryParam,
@@ -23,42 +25,37 @@ import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
   const router = useRouter();
-  const { getContractInfo } = useContractStore();
-  const endpoint = useEndpoint();
-  const isMobile = useMobile();
+  const navigate = useInternalNavigate();
+  const endpoint = useLCDEndpoint();
 
-  const [addr, setAddr] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [cmds, setCmds] = useState<[string, string][]>([]);
+  const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");
+  const [cmds, setCmds] = useState<[string, string][]>([]);
 
   const goToExecute = () => {
-    router.push({
+    navigate({
       pathname: "/execute",
-      query: { ...(addr && { contract: addr }) },
+      query: { ...(contractAddress && { contract: contractAddress }) },
     });
   };
 
   const onContractSelect = useCallback(
-    (contract: string) => {
-      router.push(
-        {
-          pathname: "/query",
-          query: { ...(contract && { contract }) },
-        },
-        undefined,
-        { shallow: true }
-      );
+    (contract: ContractAddr) => {
+      navigate({
+        pathname: "/query",
+        query: { ...(contract && { contract }) },
+        options: { shallow: true },
+      });
     },
-    [router]
+    [navigate]
   );
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, addr, '{"": {}}'],
-    async () => queryData(endpoint, addr, '{"": {}}'),
+    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
+    async () => queryData(endpoint, contractAddress, '{"": {}}'),
     {
-      enabled: !!addr,
+      enabled: !!contractAddress,
       retry: false,
       cacheTime: 0,
       refetchOnWindowFocus: false,
@@ -73,102 +70,58 @@ const Query = () => {
   );
 
   useEffect(() => {
-    (async () => {
-      const contractAddr = getFirstQueryParam(router.query.contract);
-      const contractState = getContractInfo(contractAddr);
-      let decodeMsg = decode(getFirstQueryParam(router.query.msg));
+    if (router.isReady) {
+      const contractAddressParam = getFirstQueryParam(
+        router.query.contract
+      ) as ContractAddr;
+
+      const msgParam = getFirstQueryParam(router.query.msg);
+      let decodeMsg = decode(msgParam);
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddr);
+        onContractSelect(contractAddressParam);
         decodeMsg = "";
       }
       const jsonMsg = jsonPrettify(decodeMsg);
 
-      if (!contractState) {
-        try {
-          const onChainDetail = await queryContract(endpoint, contractAddr);
-          setName(onChainDetail.result?.label);
-        } catch {
-          setName("Invalid Contract");
-        }
-      } else {
-        setName(contractState.name ?? contractState.label);
-      }
-
-      setAddr(contractAddr);
+      setContractAddress(contractAddressParam);
       setInitialMsg(jsonMsg);
-      if (!contractAddr) setCmds([]);
-    })();
-  }, [router, endpoint, getContractInfo, onContractSelect]);
+      if (!contractAddressParam) setCmds([]);
 
-  const notSelected = addr.length === 0;
+      AmpTrackToQuery(!!contractAddressParam, !!msgParam);
+    }
+  }, [router, onContractSelect]);
 
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
-      <Button
-        variant="ghost-primary"
-        onClick={() => router.back()}
-        leftIcon={<ArrowBackIcon boxSize={4} />}
-      >
-        BACK
-      </Button>
-      <Flex my="10px">
-        <Heading as="h1" size="lg" textColor="white" mb={4}>
-          Query
+      <BackButton />
+      <Flex mt={1} mb={8} justify="space-between">
+        <Heading as="h4" variant="h4">
+          Query Contract
         </Heading>
-        <Spacer />
         <Box>
-          <Button variant="ghost-primary" size="sm" onClick={goToExecute}>
+          <Button
+            variant="ghost-primary"
+            size="sm"
+            onClick={goToExecute}
+            rightIcon={<ChevronRightIcon boxSize={4} />}
+          >
             Go To Execute
           </Button>
         </Box>
       </Flex>
 
-      <Flex
-        mb="32px"
-        borderWidth="thin"
-        borderColor="gray.800"
-        p="16px"
-        borderRadius="4px"
-        fontSize="12px"
-        justify="space-between"
-        align="center"
-      >
-        <Flex gap="24px" width="80%">
-          <Flex direction="column" width="60%">
-            Contract Address
-            {!notSelected ? (
-              <ExplorerLink
-                value={addr}
-                type="contract_address"
-                canCopyWithHover
-                // TODO - Revisit not necessary if disable UI for mobile is implemented
-                textFormat={isMobile ? "truncate" : "normal"}
-                maxWidth="none"
-              />
-            ) : (
-              <Text textColor="text.disabled" variant="body2">
-                Not Selected
-              </Text>
-            )}
-          </Flex>
-          <Flex direction="column">
-            Contract Name
-            <Text
-              textColor={notSelected ? "text.disabled" : "text.dark"}
-              variant="body2"
-            >
-              {notSelected ? "Not Selected" : name}
-            </Text>
-          </Flex>
-        </Flex>
-        <SelectContract
-          notSelected={notSelected}
-          onContractSelect={onContractSelect}
-        />
-      </Flex>
+      <ContractSelectSection
+        mode="all-lists"
+        contractAddress={contractAddress}
+        onContractSelect={onContractSelect}
+      />
 
-      <QueryArea contractAddress={addr} initialMsg={initialMsg} cmds={cmds} />
+      <QueryArea
+        contractAddress={contractAddress}
+        initialMsg={initialMsg}
+        cmds={cmds}
+      />
     </PageContainer>
   );
 };

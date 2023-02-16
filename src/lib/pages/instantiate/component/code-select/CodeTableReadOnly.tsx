@@ -1,48 +1,54 @@
-import {
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+import { Grid, Text } from "@chakra-ui/react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { TableContainer, TableHeader, TableRow } from "lib/components/table";
 import type { CodeInfo } from "lib/types";
-import { truncate } from "lib/utils";
+
+const TEMPLATE_COLUMNS = "48px 1fr 4fr 1fr 2fr 48px";
 
 interface TableRowProps {
   onCodeSelect: (newVal: string) => void;
   codeDetail: CodeInfo;
 }
 
-const TableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
+const CodeTableRow = ({ onCodeSelect, codeDetail }: TableRowProps) => {
   return (
-    <Tr
-      sx={{
-        "& td:first-of-type": { pl: "60px" },
-        "& td:last-child": { pr: "60px" },
-      }}
+    <Grid
       cursor="pointer"
-      _hover={{ bg: "gray.900", transition: "all .2s" }}
+      transition="all .25s ease-in-out"
+      _hover={{ bg: "pebble.800" }}
       onClick={() => onCodeSelect(codeDetail.id.toString())}
+      templateColumns={TEMPLATE_COLUMNS}
     >
-      <Td width="20%">
-        <Text variant="body2">{codeDetail.id}</Text>
-      </Td>
-      <Td width="40%">
-        <Text variant="body2" className="ellipsis">
-          {codeDetail?.description ?? "No Description"}
+      <TableHeader />
+      <TableRow>{codeDetail.id}</TableRow>
+      <TableRow>
+        <Text
+          variant="body2"
+          className="ellipsis"
+          maxW="300px"
+          color="text.dark"
+        >
+          {codeDetail?.name ?? "Untitled Name"}
         </Text>
-      </Td>
-      <Td width="15%" textAlign="center">
-        <Text variant="body2">{codeDetail.contracts}</Text>
-      </Td>
-      <Td width="25%">
-        <Text variant="body2">{truncate(codeDetail.uploader)}</Text>
-      </Td>
-    </Tr>
+      </TableRow>
+      <TableRow justifyContent="center">
+        <Text
+          variant="body2"
+          color={codeDetail.contractCount ? "text.main" : "text.disabled"}
+        >
+          {codeDetail.contractCount ?? "N/A"}
+        </Text>
+      </TableRow>
+      <TableRow>
+        <ExplorerLink
+          value={codeDetail.uploader}
+          type="user_address"
+          isReadOnly
+        />
+      </TableRow>
+      <TableHeader />
+    </Grid>
   );
 };
 
@@ -56,32 +62,22 @@ export const CodeTableReadOnly = ({
   codes,
 }: CodeTableReadOnlyProps) => {
   return (
-    <TableContainer w="full" my="16px">
-      <Table variant="simple">
-        <Thead>
-          <Tr
-            sx={{
-              "& th:first-of-type": { pl: "60px" },
-              "& th:last-child": { pr: "60px" },
-              "& th": { textTransform: "none", border: "none", color: "white" },
-            }}
-          >
-            <Th width="20%">Code ID</Th>
-            <Th width="40%">Description</Th>
-            <Th width="15%">Contracts</Th>
-            <Th width="25%">Uploader</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {codes.map((code, index) => (
-            <TableRow
-              key={code.id + index.toString()}
-              codeDetail={code}
-              onCodeSelect={onCodeSelect}
-            />
-          ))}
-        </Tbody>
-      </Table>
+    <TableContainer>
+      <Grid templateColumns={TEMPLATE_COLUMNS}>
+        <TableHeader />
+        <TableHeader>Code ID</TableHeader>
+        <TableHeader>Code Name</TableHeader>
+        <TableHeader textAlign="center">Contracts</TableHeader>
+        <TableHeader>Uploader</TableHeader>
+        <TableHeader />
+      </Grid>
+      {codes.map((code, index) => (
+        <CodeTableRow
+          key={code.id + index.toString()}
+          codeDetail={code}
+          onCodeSelect={onCodeSelect}
+        />
+      ))}
     </TableContainer>
   );
 };

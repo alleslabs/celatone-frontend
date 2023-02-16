@@ -12,7 +12,7 @@ import type {
   FieldValues,
   UseControllerProps,
 } from "react-hook-form";
-import { useController } from "react-hook-form";
+import { useWatch, useController } from "react-hook-form";
 
 import type { TextAreaProps } from "./TextAreaInput";
 
@@ -34,27 +34,28 @@ export const ControllerTextarea = <T extends FieldValues>({
   rules = {},
   ...componentProps
 }: ControllerTextareaProps<T>) => {
+  const watcher = useWatch({
+    name,
+    control,
+  });
+
   const { field } = useController({ name, control, rules });
 
   const isError = !!error;
 
   return (
-    <FormControl
-      className="textarea-form"
-      size="md"
-      isInvalid={isError}
-      {...componentProps}
-      {...field}
-    >
+    <FormControl size="md" isInvalid={isError} {...componentProps} {...field}>
       {label && (
-        <FormLabel
-          bgColor={labelBgColor}
-          className={field.value.length ? "floating" : ""}
-        >
+        <FormLabel className="textarea-label" bgColor={labelBgColor}>
           {label}
         </FormLabel>
       )}
-      <Textarea resize="none" placeholder={placeholder} />
+      <Textarea
+        resize="none"
+        placeholder={placeholder}
+        value={watcher}
+        onChange={field.onChange}
+      />
       {isError ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (

@@ -4,9 +4,12 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { FiChevronRight } from "react-icons/fi";
 
-import { getExplorerTxUrl } from "lib/data";
+import { getExplorerTxUrl } from "lib/app-fns/explorer";
+import { useInternalNavigate } from "lib/app-provider";
+import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
+// TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
   actionVariant?: ActionVariant;
   onClose?: () => void;
@@ -19,9 +22,11 @@ export const ButtonSection = ({
   receipts,
 }: ButtonSectionProps) => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
 
   const openExplorer = useCallback(() => {
+    AmpTrackMintscan("tx_hash");
     const txHash = receipts.find((r) => r.title === "Tx Hash")?.value;
     window.open(
       `${getExplorerTxUrl(currentChainName)}/${txHash}`,
@@ -40,20 +45,20 @@ export const ButtonSection = ({
           <Button
             variant="ghost-primary"
             onClick={() => {
-              router.push("/codes");
+              navigate({ pathname: "/codes" });
               onClose?.();
             }}
           >
-            Go to Code List
+            See my codes list
           </Button>
           <Button
             variant="primary"
             rightIcon={
-              <Icon as={FiChevronRight} color="gray.900" fontSize="18px" />
+              <Icon as={FiChevronRight} color="text.main" fontSize="18px" />
             }
             onClick={() => {
               const codeId = receipts.find((r) => r.title === "Code ID")?.value;
-              router.push({
+              navigate({
                 pathname: "/instantiate",
                 query: { "code-id": codeId },
               });
@@ -61,6 +66,46 @@ export const ButtonSection = ({
             }}
           >
             Proceed to instantiate
+          </Button>
+        </>
+      );
+    case "upload-migrate":
+      return (
+        <Button
+          variant="primary"
+          rightIcon={
+            <Icon as={FiChevronRight} color="text.main" fontSize="18px" />
+          }
+          onClick={() => {
+            const codeId = receipts.find((r) => r.title === "Code ID")?.value;
+
+            navigate({
+              pathname: "/migrate",
+              query: { contract: router.query.contract, "code-id": codeId },
+            });
+            onClose?.();
+          }}
+        >
+          Proceed to Migrate
+        </Button>
+      );
+    case "migrate":
+    case "update-admin":
+      return (
+        <>
+          <Button variant="ghost-primary" onClick={openExplorer}>
+            See Transaction
+          </Button>
+          <Button
+            variant="primary"
+            rightIcon={
+              <Icon as={FiChevronRight} color="text.main" fontSize="18px" />
+            }
+            onClick={() =>
+              navigate({ pathname: `/contract/${router.query.contract}` })
+            }
+          >
+            View Contract Details
           </Button>
         </>
       );

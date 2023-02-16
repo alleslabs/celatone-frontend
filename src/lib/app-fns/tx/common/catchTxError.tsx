@@ -4,6 +4,7 @@ import type { OperatorFunction } from "rxjs";
 import { catchError } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 
@@ -37,6 +38,11 @@ export const catchTxError = (
   return catchError((error: Error) => {
     const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.at(1);
 
+    AmpTrack(
+      error.message === "Request rejected"
+        ? AmpEvent.TX_REJECTED
+        : AmpEvent.TX_FAILED
+    );
     onTxFailed?.();
     return Promise.resolve<TxResultRendering>({
       value: null,

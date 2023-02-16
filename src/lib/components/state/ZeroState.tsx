@@ -1,49 +1,83 @@
 import { Flex, Button, Icon, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
 
-import { SaveNewContract } from "lib/components/modal/contract";
-import type { Option } from "lib/types";
+import { useInternalNavigate } from "lib/app-provider";
+import { SaveNewContractModal } from "lib/components/modal/contract";
+import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
+import type { LVPair } from "lib/types";
+import { formatSlugName } from "lib/utils";
 
 interface ZeroStateProps {
-  list: Option;
-  isReadOnly: boolean;
+  list: LVPair;
+  isReadOnly?: boolean;
 }
 
+interface ActionSectionProps {
+  list: LVPair;
+  handleAction?: () => void;
+}
+
+const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
+  list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? (
+    <Button rightIcon={<MdOutlineAdd />} onClick={handleAction}>
+      Deploy New Contract
+    </Button>
+  ) : (
+    <Flex alignItems="center" gap="4" color="text.dark" direction="column">
+      <Flex align="center">
+        Save existing contracts to the list with
+        <SaveNewContractModal
+          key={list.value}
+          list={list}
+          buttonProps={{
+            variant: "outline-primary",
+            rightIcon: <MdBookmarkBorder />,
+            children: "Save Contract",
+            ml: 2,
+          }}
+        />
+      </Flex>
+      Contract lists and saved contracts are stored locally on your device.
+    </Flex>
+  );
+
+const renderText = (listSlug: string) => {
+  switch (listSlug) {
+    case formatSlugName(INSTANTIATED_LIST_NAME):
+      return "Your deployed contract through this address will display here.";
+    case ADMIN_SPECIAL_SLUG:
+      return "You don’t have any admin access to any contracts.";
+    default:
+      return "You don’t have any saved contracts.";
+  }
+};
+
+/**
+ *
+ * @todo Will be refactored in the next PR
+ */
+
 export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
-  const router = useRouter();
+  const navigate = useInternalNavigate();
   return (
-    <Flex alignItems="center" flexDir="column" gap="4">
-      <Icon as={MdSearch} color="gray.600" boxSize="16" />
-      <Text color="gray.500">
-        You don’t have any deployed or saved contracts.
-      </Text>
-      {!isReadOnly && (
-        <>
-          <Flex alignItems="center" gap="2">
-            <Text color="gray.500">You can</Text>
-            <Button
-              rightIcon={<MdOutlineAdd />}
-              onClick={() => router.push("/deploy")}
-            >
-              Deploy New Contract
-            </Button>
-          </Flex>
-          <Flex alignItems="center" gap="2">
-            <Text color="gray.500">
-              or save deployed contracts to lists with
-            </Text>
-            <SaveNewContract
-              list={list}
-              buttonProps={{
-                variant: "outline-primary",
-                rightIcon: <MdBookmarkBorder />,
-                children: "Save Contract",
-              }}
-            />
-          </Flex>
-        </>
-      )}
+    <Flex
+      borderY="1px solid"
+      borderColor="pebble.700"
+      width="full"
+      py="48px"
+      direction="column"
+      alignContent="center"
+    >
+      <Flex alignItems="center" flexDir="column" gap="4">
+        <Icon as={MdSearch} color="pebble.600" boxSize="16" />
+        <Text color="text.dark">{renderText(list.value)}</Text>
+        {!isReadOnly && (
+          <ActionSection
+            list={list}
+            handleAction={() => navigate({ pathname: "/deploy" })}
+          />
+        )}
+      </Flex>
     </Flex>
   );
 };

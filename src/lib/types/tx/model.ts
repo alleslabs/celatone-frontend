@@ -23,7 +23,14 @@ export interface ReceiptInfo {
   description?: ReactNode;
 }
 
-export type ActionVariant = "sending" | "upload" | "rejected" | "resend";
+export type ActionVariant =
+  | "sending"
+  | "upload"
+  | "upload-migrate"
+  | "migrate"
+  | "rejected"
+  | "resend"
+  | "update-admin";
 
 export interface TxResultRendering<T = unknown> {
   /**

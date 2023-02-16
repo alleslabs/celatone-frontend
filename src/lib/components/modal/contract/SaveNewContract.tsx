@@ -3,107 +3,149 @@ import { VStack, Button } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { MdBookmark } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
-import { TextInput } from "lib/components/forms";
+import { ControllerInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { OffChainDetail } from "lib/components/OffChain/OffChainDetail";
+import type { OffchainDetail } from "lib/components/OffChainForm";
+import { OffChainForm } from "lib/components/OffChainForm";
+import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
 import {
-  DEFAULT_RPC_ERROR,
-  INSTANTIATED_LIST_NAME,
-  MAX_CONTRACT_DESCRIPTION_LENGTH,
-  MAX_CONTRACT_NAME_LENGTH,
-} from "lib/data";
-import { useContractStore, useEndpoint } from "lib/hooks";
+  useContractStore,
+  useLCDEndpoint,
+  useValidateAddress,
+} from "lib/hooks";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import { queryContractWithTime } from "lib/services/contract";
-import type { Option, RpcContractError } from "lib/types";
-import { formatSlugName } from "lib/utils";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { queryInstantiateInfo } from "lib/services/contract";
+import type { Addr, ContractAddr, LVPair, RpcQueryError } from "lib/types";
+import {
+  formatSlugName,
+  getNameAndDescriptionDefault,
+  getTagsDefault,
+} from "lib/utils";
 
-interface SaveNewContractProps {
-  list: Option;
+interface SaveNewContractDetail extends OffchainDetail {
+  contractAddress: string;
+  instantiator: string;
+  label: string;
+}
+
+interface SaveNewContractModalProps {
+  list: LVPair;
   buttonProps: ButtonProps;
 }
-export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
+export function SaveNewContractModal({
+  list,
+  buttonProps,
+}: SaveNewContractModalProps) {
+  const endpoint = useLCDEndpoint();
+  const { indexerGraphClient } = useCelatoneApp();
+  const { getContractLocalInfo } = useContractStore();
+  const { validateContractAddress } = useValidateAddress();
+
   const {
-    contractAddress: { example: exampleContractAddress },
+    appContractAddress: { example: exampleContractAddress },
   } = useCelatoneApp();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 
-  const [contractAddress, setContractAddress] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [lists, setLists] = useState<Option[]>(initialList);
-
-  const [instantiator, setInstantiator] = useState("");
-  const [label, setLabel] = useState("");
-  const [created, setCreated] = useState(new Date(0));
+  const {
+    control,
+    setValue,
+    watch,
+    reset,
+    formState: { errors, defaultValues },
+  } = useForm<SaveNewContractDetail>({
+    defaultValues: {
+      contractAddress: "",
+      instantiator: "",
+      label: "",
+      name: "",
+      description: "",
+      tags: [],
+      lists: initialList,
+    },
+    mode: "all",
+  });
 
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
 
-  const endpoint = useEndpoint();
+  const contractAddressState = watch("contractAddress");
+  const instantiatorState = watch("instantiator");
+  const labelState = watch("label");
+  const offchainState: OffchainDetail = {
+    name: watch("name"),
+    description: watch("description"),
+    tags: watch("tags"),
+    lists: watch("lists"),
+  };
+  const setTagsValue = (selecteTags: string[]) => {
+    setValue("tags", selecteTags);
+  };
+  const setContractListsValue = (selectedLists: LVPair[]) => {
+    setValue("lists", selectedLists);
+  };
 
-  const { getContractInfo } = useContractStore();
-
-  const reset = (resetContractAddress = true) => {
-    if (resetContractAddress) setContractAddress("");
-    setName("");
-    setTags([]);
-    setLists(initialList);
-    setInstantiator("");
-    setCreated(new Date(0));
-    setLabel("");
-    setStatus({ state: "init" });
+  const resetForm = (resetContractAddress = true) => {
+    reset({
+      ...defaultValues,
+      contractAddress: resetContractAddress ? "" : contractAddressState,
+    });
   };
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "contractWithTime", contractAddress],
-    async () => queryContractWithTime(endpoint, contractAddress),
+    ["query", "instantiate_info", endpoint, contractAddressState],
+    async () =>
+      queryInstantiateInfo(
+        endpoint,
+        indexerGraphClient,
+        contractAddressState as ContractAddr
+      ),
     {
       enabled: false,
       retry: false,
       cacheTime: 0,
       refetchOnReconnect: false,
       onSuccess(data) {
-        setInstantiator(data.instantiator);
-        setLabel(data.label);
-        setCreated(data.created);
-        setName(data.label);
+        const contractLocalInfo = getContractLocalInfo(contractAddressState);
+        reset({
+          contractAddress: contractAddressState,
+          instantiator: data.instantiator,
+          label: data.label,
+          name: contractLocalInfo?.name ?? data.label,
+          description: getNameAndDescriptionDefault(
+            contractLocalInfo?.description
+          ),
+          tags: getTagsDefault(contractLocalInfo?.tags),
+          lists: [
+            ...initialList,
+            ...(contractLocalInfo?.lists ?? []).filter(
+              (item) => item.value !== list.value
+            ),
+          ],
+        });
         setStatus({
           state: "success",
           message: "Valid Contract Address",
         });
-        const contractInfo = getContractInfo(contractAddress);
-        if (contractInfo) {
-          if (contractInfo.name) setName(contractInfo.name);
-          if (contractInfo.description)
-            setDescription(contractInfo.description);
-          if (contractInfo.tags) setTags(contractInfo.tags);
-          if (contractInfo.lists) {
-            const filteredLists = contractInfo.lists.filter(
-              (item) => item.value !== list.value
-            );
-            setLists([list, ...filteredLists]);
-          }
-        }
       },
-      onError(err: AxiosError<RpcContractError>) {
-        reset(false);
+      onError(err: AxiosError<RpcQueryError>) {
+        resetForm(false);
         setStatus({
           state: "error",
-          message: err.response?.data.error || DEFAULT_RPC_ERROR,
+          message: err.response?.data.message || DEFAULT_RPC_ERROR,
         });
       },
     }
   );
 
   useEffect(() => {
-    if (contractAddress.trim().length === 0) {
+    if (contractAddressState.trim().length === 0) {
       setStatus({
         state: "init",
       });
@@ -112,24 +154,34 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
         state: "loading",
       });
       const timeoutId = setTimeout(() => {
-        refetch();
+        const err = validateContractAddress(contractAddressState);
+        if (err !== null)
+          setStatus({
+            state: "error",
+            message: err,
+          });
+        else refetch();
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
     return () => {};
-  }, [contractAddress, refetch]);
+  }, [contractAddressState, refetch, validateContractAddress]);
 
   const handleSave = useHandleContractSave({
-    title: `Saved ${name.trim().length ? name : label}`,
-    address: contractAddress,
-    instantiator,
-    label,
-    created,
-    name,
-    description,
-    tags,
-    lists,
-    actions: reset,
+    title: `Saved ${
+      offchainState.name.trim().length ? offchainState.name : labelState
+    }`,
+    contractAddress: contractAddressState as ContractAddr,
+    instantiator: instantiatorState as Addr,
+    label: labelState,
+    name: offchainState.name,
+    description: offchainState.description,
+    tags: offchainState.tags,
+    lists: offchainState.lists,
+    actions: () => {
+      AmpTrack(AmpEvent.CONTRACT_SAVE);
+      resetForm();
+    },
   });
 
   return (
@@ -139,42 +191,40 @@ export function SaveNewContract({ list, buttonProps }: SaveNewContractProps) {
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}
-      // TODO: apply use-react-form later
       disabledMain={
-        status.state !== "success" ||
-        name.trim().length > MAX_CONTRACT_NAME_LENGTH ||
-        description.trim().length > MAX_CONTRACT_DESCRIPTION_LENGTH
+        status.state !== "success" || !!errors.name || !!errors.description
       }
       otherBtnTitle="Cancel"
-      otherAction={reset}
+      otherAction={resetForm}
+      closeOnOverlayClick={false}
     >
       <VStack gap="16px">
-        <TextInput
-          variant="floating"
-          value={contractAddress}
-          setInputState={setContractAddress}
+        <ControllerInput
+          name="contractAddress"
+          control={control}
           label="Contract Address"
-          labelBgColor="gray.800"
-          helperText={`ex. ${exampleContractAddress}`}
-          status={status}
-        />
-        <TextInput
           variant="floating"
-          value={instantiator}
-          setInputState={setInstantiator}
-          label="Instantiator"
-          labelBgColor="gray.800"
-          isDisabled
+          placeholder={`ex. ${exampleContractAddress}`}
+          status={status}
+          labelBgColor="pebble.900"
         />
-        <OffChainDetail
-          name={name}
-          setName={setName}
-          description={description}
-          setDescription={setDescription}
-          tags={tags}
-          setTags={setTags}
-          lists={lists}
-          setLists={setLists}
+        <ControllerInput
+          name="instantiator"
+          control={control}
+          label="Instantiated by"
+          variant="floating"
+          isDisabled
+          labelBgColor="pebble.900"
+        />
+
+        <OffChainForm<SaveNewContractDetail>
+          state={offchainState}
+          contractLabel={labelState}
+          control={control}
+          setTagsValue={setTagsValue}
+          setContractListsValue={setContractListsValue}
+          errors={errors}
+          labelBgColor="pebble.900"
         />
       </VStack>
     </ActionModal>

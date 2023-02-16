@@ -1,6 +1,7 @@
 import {
   Modal,
   ModalHeader,
+  Heading,
   Flex,
   Icon,
   Box,
@@ -18,7 +19,9 @@ import { useCallback } from "react";
 import type { IconType } from "react-icons/lib";
 import { MdMode } from "react-icons/md";
 
-interface ModalProps {
+import { AmpTrackUseOtherModal } from "lib/services/amplitude";
+
+export interface ActionModalProps {
   icon?: IconType;
   iconColor?: string;
   title: string;
@@ -28,13 +31,18 @@ interface ModalProps {
   children?: ReactNode;
   mainBtnTitle?: string;
   mainAction: () => void;
+  mainVariant?: string;
   disabledMain?: boolean;
   otherBtnTitle?: string;
   otherAction?: () => void;
+  otherVariant?: string;
+  noHeaderBorder?: boolean;
+  noCloseButton?: boolean;
+  closeOnOverlayClick?: boolean;
 }
 export function ActionModal({
   icon = MdMode,
-  iconColor = "gray.600",
+  iconColor = "pebble.600",
   title,
   subtitle,
   trigger,
@@ -42,10 +50,15 @@ export function ActionModal({
   children,
   mainBtnTitle = "Proceed",
   mainAction,
+  mainVariant = "primary",
   disabledMain = false,
   otherBtnTitle = "Cancel",
   otherAction,
-}: ModalProps) {
+  otherVariant = "outline-primary",
+  noHeaderBorder = false,
+  noCloseButton = false,
+  closeOnOverlayClick = true,
+}: ActionModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleOnMain = useCallback(() => {
@@ -59,42 +72,54 @@ export function ActionModal({
 
   return (
     <>
-      <Flex onClick={onOpen}>
+      <Flex
+        onClick={() => {
+          AmpTrackUseOtherModal(title);
+          onOpen();
+        }}
+      >
         {trigger || <Button>Open {title} Modal</Button>}
       </Flex>
-      <Modal isOpen={isOpen} onClose={handleOnOther} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={handleOnOther}
+        closeOnOverlayClick={closeOnOverlayClick}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader borderBottomWidth={1} borderColor="divider.main">
-            <Box>
+          <ModalHeader
+            borderBottomWidth={noHeaderBorder ? 0 : 1}
+            borderColor="pebble.700"
+          >
+            <Box w="full">
               <Flex alignItems="center" gap="3">
                 <Icon as={icon} color={iconColor} boxSize="6" />
-                {title}
+                <Heading as="h5" variant="h5">
+                  {title}
+                </Heading>
               </Flex>
               {subtitle && (
-                <Text variant="body3" color="gray.400" pt="2">
+                <Text variant="body3" color="text.dark" pt="2">
                   {subtitle}
                 </Text>
               )}
               <Box>{headerContent}</Box>
             </Box>
           </ModalHeader>
-          <ModalCloseButton />
+          {!noCloseButton && <ModalCloseButton color="pebble.600" />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
             <Flex w="full" justifyContent="center" gap="2">
               <Button
                 w="200px"
                 onClick={handleOnMain}
+                variant={mainVariant}
                 isDisabled={disabledMain}
               >
                 {mainBtnTitle}
               </Button>
-              <Button
-                w="200px"
-                variant="outline-primary"
-                onClick={handleOnOther}
-              >
+              <Button w="200px" variant={otherVariant} onClick={handleOnOther}>
                 {otherBtnTitle}
               </Button>
             </Flex>

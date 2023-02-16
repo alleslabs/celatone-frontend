@@ -9,16 +9,14 @@ export const LoadingOverlay = () => {
       align="center"
       direction="column"
       gap={3}
-      bgColor="overlay.main"
+      bgColor="background.overlay"
       position="absolute"
       top={0}
       left={0}
       zIndex="overlay"
     >
-      <Spinner color="gray.400" size="xl" />
-      <Text variant="body1" color="text.main">
-        Loading ...
-      </Text>
+      <Spinner color="pebble.600" size="xl" />
+      <Text variant="body1">Loading ...</Text>
     </Flex>
   );
 };

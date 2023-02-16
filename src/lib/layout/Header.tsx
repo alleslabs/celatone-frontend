@@ -1,6 +1,5 @@
 import {
   Flex,
-  Heading,
   Menu,
   MenuButton,
   MenuList,
@@ -10,14 +9,20 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import Link from "next/link";
 import { FiChevronDown } from "react-icons/fi";
+import { MdCheck } from "react-icons/md";
 
+import { useSelectChain } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { WalletSection } from "lib/components/Wallet";
-import { CHAIN_NAMES } from "lib/data";
+import { getSupportedChainNames } from "lib/data";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
+import Searchbar from "./Searchbar";
 
 const Header = () => {
-  const { currentChainRecord, setCurrentChain, getChainRecord } = useWallet();
+  const { currentChainRecord, currentChainName, getChainRecord } = useWallet();
+  const selectChain = useSelectChain();
 
   return (
     <Flex
@@ -27,21 +32,31 @@ const Header = () => {
       align="center"
       justifyContent="space-between"
       px={6}
+      mb={1}
+      gap="48px"
     >
-      <Link href="/">
-        <Heading as="h4" variant="h4">
-          <Image src="/celatone-logo.svg" alt="Celatone" width="160px" />
-        </Heading>
-      </Link>
+      <AppLink href="/">
+        <Image
+          src="https://assets.alleslabs.dev/branding/logo/logo.svg"
+          alt="Celatone"
+          minWidth="152px"
+          width="152px"
+          maxWidth="152px"
+          mr="36px"
+          transition="all 0.25s ease-in-out"
+          _hover={{ cursor: "pointer", opacity: 0.85 }}
+        />
+      </AppLink>
+      <Searchbar />
       <Flex gap={2}>
-        <Menu>
+        <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
           <MenuButton
             px={4}
             py="5px"
-            transition="all 0.2s"
-            borderRadius="4px"
+            borderRadius="8px"
             borderWidth="1px"
-            _hover={{ bg: "gray.800" }}
+            _hover={{ bg: "pebble.800" }}
+            transition="all .25s ease-in-out"
             w="170px"
           >
             <Flex
@@ -61,22 +76,35 @@ const Header = () => {
               <Icon as={FiChevronDown} />
             </Flex>
           </MenuButton>
-          <MenuList>
-            {CHAIN_NAMES.map((chainName) => {
-              return (
-                <MenuItem
-                  key={chainName}
-                  onClick={() => setCurrentChain(chainName)}
-                  flexDirection="column"
-                  alignItems="flex-start"
-                >
-                  <Text>{getChainRecord(chainName)?.chain.pretty_name}</Text>
-                  <Text color="text.dark" fontSize="sm">
-                    {getChainRecord(chainName)?.chain.chain_id}
-                  </Text>
-                </MenuItem>
-              );
-            })}
+          <MenuList zIndex="dropdown">
+            {getSupportedChainNames().map((chainName) => (
+              <MenuItem
+                key={chainName}
+                onClick={() => {
+                  selectChain(chainName);
+                }}
+                flexDirection="column"
+                alignItems="flex-start"
+                _hover={{
+                  backgroundColor: "pebble.800",
+                }}
+                transition="all .25s ease-in-out"
+              >
+                <Flex justify="space-between" align="center" w="full">
+                  <Flex direction="column">
+                    <Text variant="body2">
+                      {getChainRecord(chainName)?.chain.pretty_name}
+                    </Text>
+                    <Text color="text.dark" variant="body3">
+                      {getChainRecord(chainName)?.chain.chain_id}
+                    </Text>
+                  </Flex>
+                  {chainName === currentChainName && (
+                    <Icon as={MdCheck} boxSize={4} color="pebble.600" />
+                  )}
+                </Flex>
+              </MenuItem>
+            ))}
           </MenuList>
         </Menu>
         <WalletSection />

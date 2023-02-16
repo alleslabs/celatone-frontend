@@ -7,6 +7,7 @@ import {
   FormLabel,
   Input,
   Text,
+  Flex,
 } from "@chakra-ui/react";
 import type { FormControlProps } from "@chakra-ui/react";
 import type { HTMLInputTypeAttribute, Dispatch, SetStateAction } from "react";
@@ -23,6 +24,7 @@ export interface TextInputProps extends FormControlProps {
   error?: string;
   type?: HTMLInputTypeAttribute;
   status?: FormStatus;
+  maxLength?: number;
 }
 
 export const TextInput = ({
@@ -36,21 +38,18 @@ export const TextInput = ({
   size = "lg",
   type = "text",
   status,
+  maxLength,
   ...componentProps
 }: TextInputProps) => {
   // Design system size: md = 40px, lg = 56px
   return (
     <FormControl
-      className={`${size}-form`}
       isInvalid={!!error || status?.state === "error"}
       size={size}
       {...componentProps}
     >
       {label && (
-        <FormLabel
-          className={value.length ? "floating" : ""}
-          backgroundColor={labelBgColor}
-        >
+        <FormLabel className={`${size}-label`} backgroundColor={labelBgColor}>
           {label}
         </FormLabel>
       )}
@@ -63,23 +62,25 @@ export const TextInput = ({
           value={value}
           pr={status && "36px"}
           onChange={(e) => setInputState(e.target.value)}
+          maxLength={maxLength}
         />
         <InputRightElement h="full">
-          {status && getStatusIcon(status.state)}
+          {status && getStatusIcon(status.state, "20px")}
         </InputRightElement>
       </InputGroup>
-
-      {error ? (
-        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      ) : (
-        <FormHelperText className="helper-text">
-          {status?.message ? (
-            getResponseMsg(status, helperText)
-          ) : (
-            <Text color="text.dark">{helperText}</Text>
-          )}
-        </FormHelperText>
-      )}
+      <Flex gap={1} alignItems="center" mt={1} flexDir="row">
+        {error ? (
+          <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+        ) : (
+          <FormHelperText className="helper-text">
+            {status?.message ? (
+              getResponseMsg(status, helperText)
+            ) : (
+              <Text color="text.dark">{helperText}</Text>
+            )}
+          </FormHelperText>
+        )}
+      </Flex>
     </FormControl>
   );
 };

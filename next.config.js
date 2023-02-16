@@ -1,19 +1,38 @@
-const withPWA = require("next-pwa")({
-  dest: "public",
-  disable:
-    process.env.NODE_ENV === "development" ||
-    process.env.NODE_ENV === "preview" ||
-    process.env.NODE_ENV === "production",
-  // delete two lines above to enable PWA in production deployment
-  // add your own icons to public/manifest.json
-  // to re-generate manifest.json, you can visit https://tomitm.github.io/appmanifest/
-});
+const { withSentryConfig } = require("@sentry/nextjs");
 
 /** @type {import('next').NextConfig} */
-module.exports = withPWA({
+const SENTRY_DSN =
+  process.env.NEXT_PUBLIC_SENTRY_DSN ??
+  "https://examplePublicKey@o0.ingest.sentry.io/0";
+
+const nextConfig = {
   swcMinify: true,
   reactStrictMode: true,
   eslint: {
     dirs: ["src"],
   },
-});
+  async rewrites() {
+    return [
+      {
+        source: "/sentry/:path*",
+        // https://abcdefghijklmnopqrstquwxyzabcdef@o123456.ingest.sentry.io/1234567
+        destination: `https://${SENTRY_DSN.split("@")[1].split("/")[0]}/:path*`,
+      },
+      {
+        source: "/amplitude",
+        destination: `https://api2.amplitude.com/2/httpapi`,
+      },
+    ];
+  },
+};
+
+const moduleExports = {
+  ...nextConfig,
+
+  sentry: {
+    hideSourceMaps: true,
+    tunnelRoute: "/sentry",
+  },
+};
+
+module.exports = withSentryConfig(moduleExports);

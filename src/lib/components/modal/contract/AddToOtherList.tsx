@@ -1,79 +1,82 @@
-import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, Flex, Text, Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { Flex, Text, Box } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
 import { MdBookmark } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/forms/ListSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractInfo } from "lib/stores/contract";
-import type { Option } from "lib/types";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type { LVPair } from "lib/types";
 
-interface AddToOtherListProps {
-  contractInfo: ContractInfo;
-  menuItemProps: MenuItemProps;
+interface AddToOtherListModalProps {
+  contractLocalInfo: ContractLocalInfo;
+  triggerElement: JSX.Element;
 }
 
-export function AddToOtherList({
-  contractInfo,
-  menuItemProps,
-}: AddToOtherListProps) {
-  const [listResult, setListResult] = useState<Option[]>(
-    contractInfo.lists ?? []
-  );
+export const AddToOtherListModal = observer(
+  ({ contractLocalInfo, triggerElement }: AddToOtherListModalProps) => {
+    const [contractLists, setContractLists] = useState<LVPair[]>([]);
 
-  const handleSave = useHandleContractSave({
-    title: "Action complete!",
-    address: contractInfo.address,
-    instantiator: contractInfo.instantiator,
-    label: contractInfo.label,
-    created: contractInfo.created,
-    lists: listResult,
-  });
+    const handleSave = useHandleContractSave({
+      title: "Action Complete!",
+      contractAddress: contractLocalInfo.contractAddress,
+      instantiator: contractLocalInfo.instantiator,
+      label: contractLocalInfo.label,
+      lists: contractLists,
+      actions: () => AmpTrack(AmpEvent.CONTRACT_EDIT_LISTS),
+    });
 
-  return (
-    <ActionModal
-      title="Add or remove from other lists"
-      icon={MdBookmark}
-      headerContent={
-        <Flex pt="6" gap="36px">
-          <Flex direction="column" gap="8px">
-            <Text variant="body2" color="text.main" fontWeight="600">
-              Contract Name
-            </Text>
-            <Text variant="body2" color="text.main" fontWeight="600">
-              Contract Address
-            </Text>
+    useEffect(() => {
+      setContractLists(
+        contractLocalInfo.lists?.length ? contractLocalInfo.lists : []
+      );
+    }, [contractLocalInfo.lists]);
+
+    return (
+      <ActionModal
+        title="Add or remove from other lists"
+        icon={MdBookmark}
+        headerContent={
+          <Flex pt="6" gap="36px">
+            <Flex direction="column" gap="8px">
+              <Text variant="body2" fontWeight="600">
+                Contract Name
+              </Text>
+              <Text variant="body2" fontWeight="600">
+                Contract Address
+              </Text>
+            </Flex>
+
+            <Flex direction="column" gap="8px">
+              <Text variant="body2">
+                {contractLocalInfo.name ?? contractLocalInfo.label}
+              </Text>
+              <ExplorerLink
+                value={contractLocalInfo.contractAddress}
+                type="contract_address"
+              />
+            </Flex>
           </Flex>
-
-          <Flex direction="column" gap="8px">
-            <Text variant="body2" color="text.main">
-              {contractInfo.name ?? contractInfo.label}
-            </Text>
-            <ExplorerLink
-              value={contractInfo.address}
-              type="contract_address"
-            />
-          </Flex>
-        </Flex>
-      }
-      trigger={<MenuItem {...menuItemProps} />}
-      mainBtnTitle="Save"
-      mainAction={handleSave}
-      otherBtnTitle="Cancel"
-    >
-      <Box my="16px">
-        <ListSelection
-          result={listResult}
-          placeholder="Add to contract lists"
-          helperText="Grouping your contracts by adding to your existing list or create
+        }
+        trigger={triggerElement}
+        mainBtnTitle="Save"
+        mainAction={handleSave}
+        otherBtnTitle="Cancel"
+      >
+        <Box my="16px">
+          <ListSelection
+            result={contractLists}
+            placeholder="Not listed"
+            helperText="Grouping your contracts by adding to your existing list or create
               a new list"
-          setResult={(selectedOptions: Option[]) => {
-            setListResult(selectedOptions);
-          }}
-        />
-      </Box>
-    </ActionModal>
-  );
-}
+            setResult={setContractLists}
+            labelBgColor="pebble.900"
+          />
+        </Box>
+      </ActionModal>
+    );
+  }
+);

@@ -1,17 +1,17 @@
 import { Flex, Heading, Box, Text, Icon } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { MdSearch, MdInput } from "react-icons/md";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useContractStore, useUserKey } from "lib/hooks";
+import { dateFromNow } from "lib/utils";
 
 export const RecentActivities = observer(() => {
   const userKey = useUserKey();
   const { getRecentActivities, isHydrated } = useContractStore();
-  const router = useRouter();
+  const navigate = useInternalNavigate();
 
   const activities = useMemo(() => {
     return getRecentActivities(userKey);
@@ -21,7 +21,7 @@ export const RecentActivities = observer(() => {
   return (
     <Box py={8}>
       <Heading px={12} as="h6" variant="h6" mb={4}>
-        Recent Activities on this device
+        Recent Queries and Executes on this device
       </Heading>
       {activities.length ? (
         <Flex px={12} gap={4} overflowX="scroll" w="100%">
@@ -32,33 +32,33 @@ export const RecentActivities = observer(() => {
               minW="360px"
               cursor="pointer"
               p={6}
-              bg="gray.900"
+              bg="pebble.900"
               borderRadius="8px"
-              _hover={{ bg: "hover.main" }}
+              _hover={{ bg: "pebble.800" }}
               transition="all .25s ease-in-out"
               key={item.type + item.contractAddress + item.timestamp}
               onClick={() =>
-                router.push(
-                  `/${item.type}?contract=${item.contractAddress}&msg=${item.msg}`
-                )
+                navigate({
+                  pathname: `/${item.type}`,
+                  query: { contract: item.contractAddress, msg: item.msg },
+                })
               }
             >
               <Flex alignItems="center" gap={1}>
                 <Icon
                   as={item.type === "query" ? MdSearch : MdInput}
-                  color="gray.600"
+                  color="honeydew.main"
                   boxSize={4}
                 />
-                <Text variant="body2" color="text.dark">
+                <Text variant="body2" color="honeydew.main">
                   {item.type === "query" ? "Query" : "Execute"}
                 </Text>
               </Flex>
               <Flex alignItems="center" gap="4px">
                 <Text
                   variant="body3"
-                  color="text.main"
                   padding="4px 8px"
-                  backgroundColor="hover.main"
+                  backgroundColor="pebble.700"
                   borderRadius="16px"
                 >
                   {item.action}
@@ -71,15 +71,11 @@ export const RecentActivities = observer(() => {
                 />
               </Flex>
               <Flex gap={1}>
-                <Text variant="body2" color="text.main">
-                  {dayjs(item.timestamp).toNow(true)} ago{" "}
-                </Text>
+                <Text variant="body2">{dateFromNow(item.timestamp)}</Text>
                 {/* TODO - check address as me */}
                 {item.sender && (
                   <>
-                    <Text variant="body2" color="text.main">
-                      by
-                    </Text>
+                    <Text variant="body2">by</Text>
                     <ExplorerLink
                       value={item.sender}
                       type="user_address"
@@ -96,12 +92,13 @@ export const RecentActivities = observer(() => {
           px={12}
           borderTopWidth={1}
           borderBottomWidth={1}
+          borderColor="pebble.700"
           justifyContent="center"
           alignItems="center"
           minH="128px"
         >
           <Text color="text.dark" variant="body1">
-            Your recent queries will display here.
+            Your recent interactions will display here.
           </Text>
         </Flex>
       )}

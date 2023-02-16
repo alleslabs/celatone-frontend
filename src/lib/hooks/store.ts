@@ -9,3 +9,8 @@ export function useContractStore() {
   const { contractStore } = useStore();
   return contractStore;
 }
+
+export function usePublicProjectStore() {
+  const { publicProjectStore } = useStore();
+  return publicProjectStore;
+}

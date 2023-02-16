@@ -1,4 +1,3 @@
-import { MsgType } from "lib/types";
 import type { ContractAddr, ChainGasPrice, Token, U } from "lib/types";
 import type { CelatoneConstants, CelatoneContractAddress } from "types";
 
@@ -9,11 +8,15 @@ export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
   },
   terra2: {
     denom: "uluna",
+    gasPrice: "0.015" as U<Token>,
+  },
+  terra2testnet: {
+    denom: "uluna",
     gasPrice: "0.15" as U<Token>,
   },
 };
 
-export const CELATONE_CONTRACT_ADDRESS = (
+export const CELATONE_APP_CONTRACT_ADDRESS = (
   chainName: string
 ): CelatoneContractAddress => {
   switch (chainName) {
@@ -23,6 +26,7 @@ export const CELATONE_CONTRACT_ADDRESS = (
         example:
           "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
       };
+    case "terra2":
     case "terra2testnet":
       return {
         example:
@@ -35,22 +39,48 @@ export const CELATONE_CONTRACT_ADDRESS = (
   }
 };
 
-export const LCD_ENDPOINT: Record<string, string> = {
+export const FALLBACK_LCD_ENDPOINT: Record<string, string> = {
   osmosis: "https://lcd.osmosis.zone",
   osmosistestnet: "https://lcd-test.osmosis.zone",
+  terra2: "https://phoenix-lcd.terra.dev",
+  terra2testnet: "https://pisco-lcd.terra.dev",
 };
 
 export const MAX_FILE_SIZE = 800_000;
 
-export const MSG_TYPE_URL = {
-  [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
-  [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
-  [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
-};
-
 export const CELATONE_CONSTANTS: CelatoneConstants = {
   gasAdjustment: 1.6,
-  lcdEndpoint: LCD_ENDPOINT,
   maxFileSize: MAX_FILE_SIZE,
-  msgTypeUrl: MSG_TYPE_URL,
+};
+
+export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
+
+export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN;
+
+export const CELATONE_API_ENDPOINT = "https://celatone-api.alleslabs.dev";
+
+export const getChainApiPath = (chainName: string) => {
+  switch (chainName) {
+    case "osmosistestnet":
+    case "osmosis":
+      return "osmosis";
+    case "terra2":
+    case "terra2testnet":
+      return "terra";
+    default:
+      return undefined;
+  }
+};
+// TODO to handle testnet separately later
+export const getMainnetApiPath = (chainId: string) => {
+  switch (chainId) {
+    case "osmo-test-4":
+    case "osmosis-1":
+      return "osmosis-1";
+    case "pisco-1":
+    case "phoenix-1":
+      return "phoenix-1";
+    default:
+      return undefined;
+  }
 };

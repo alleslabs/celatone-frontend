@@ -14,8 +14,10 @@ import {
 import { IoList } from "react-icons/io5";
 
 import { useCodeListData } from "lib/pages/codes/data";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
-import { CodeTableReadOnly } from "./CodeTableReadOnly";
+import { MySavedCodeContent } from "./MySavedCodeContent";
+import { MyStoredCodeContent } from "./MyStoredCodeContent";
 
 interface CodeSelectModalButtonProps {
   onCodeSelect: (code: string) => void;
@@ -48,7 +50,10 @@ export const CodeSelectModalButton = ({
         size="md"
         ml="auto"
         w="120px"
-        onClick={onOpen}
+        onClick={() => {
+          AmpTrack(AmpEvent.USE_CODE_MODAL);
+          onOpen();
+        }}
       >
         {buttonText}
       </Button>
@@ -64,17 +69,26 @@ export const CodeSelectModalButton = ({
           </ModalHeader>
           <ModalCloseButton color="text.dark" />
           <ModalBody px={0} maxH="640px" overflow="scroll">
-            <Text variant="body1" fontWeight={700} ml="24px" mb="24px">
+            <Heading as="h6" variant="h6" mb="8px" ml="24px">
               My Stored Codes
-            </Text>
-            <CodeTableReadOnly
-              onCodeSelect={handleSelect}
-              codes={storedCodes}
+            </Heading>
+            <MyStoredCodeContent
+              storedCodes={storedCodes}
+              handleSelect={handleSelect}
             />
-            <Text variant="body1" fontWeight={700} ml="24px" my="24px">
+            <Text
+              variant="body1"
+              fontWeight={700}
+              ml="24px"
+              mt="24px"
+              mb="16px"
+            >
               Saved Codes
             </Text>
-            <CodeTableReadOnly onCodeSelect={handleSelect} codes={savedCodes} />
+            <MySavedCodeContent
+              savedCodes={savedCodes}
+              handleSelect={handleSelect}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>

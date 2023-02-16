@@ -1,49 +1,55 @@
 import {
   Icon,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Button,
-  TableContainer,
   Heading,
   HStack,
   VStack,
   Text,
   Box,
+  Flex,
+  Grid,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { MdSearchOff } from "react-icons/md";
 
-import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
+import { useInternalNavigate } from "lib/app-provider";
+import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { RemoveCode } from "lib/components/modal/code/RemoveCode";
+import { Loading } from "lib/components/Loading";
+import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
+import { PermissionChip } from "lib/components/PermissionChip";
+import { DisconnectedState } from "lib/components/state/DisconnectedState";
+import {
+  TableContainer,
+  TableHeaderNoBorder,
+  TableRowNoBorder,
+} from "lib/components/table";
 import type { CodeInfo } from "lib/types";
 
-import { CodeDescriptionCell } from "./CodeDescriptionCell";
+import { CodeNameCell } from "./CodeNameCell";
 
-type TableType = "stored" | "saved";
+// Types of Table: Recent Codes / My Stored Codes / My Saved Codes
+type TableType = "recent" | "stored" | "saved";
+
 interface CodesTableProps {
   type: TableType;
   tableName: string;
   codes: CodeInfo[];
-  action?: ReactNode;
-  isRemovable?: boolean;
   isSearching: boolean;
+  action?: ReactNode;
+  isLoading: boolean;
 }
 
 interface CodesRowProps {
   code: CodeInfo;
-  isRemovable: boolean;
 }
 
 interface OtherTBodyProps {
   type: TableType;
 }
+
+const TEMPLATE_COLUMNS =
+  "max(80px) minmax(320px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
 
 const StateContainer = ({ children }: { children: ReactNode }) => (
   <VStack
@@ -51,7 +57,7 @@ const StateContainer = ({ children }: { children: ReactNode }) => (
     borderBottomWidth={1}
     minH="128px"
     justifyContent="center"
-    gap={2}
+    py={8}
   >
     {children}
   </VStack>
@@ -60,7 +66,7 @@ const StateContainer = ({ children }: { children: ReactNode }) => (
 const NotMatched = () => {
   return (
     <StateContainer>
-      <Icon as={MdSearchOff} width="64px" height="64px" color="gray.600" />
+      <Icon as={MdSearchOff} width="64px" height="64px" color="pebble.600" />
       <Text color="text.dark">No matched codes found.</Text>
     </StateContainer>
   );
@@ -69,121 +75,129 @@ const NotMatched = () => {
 const Unconnected = () => {
   return (
     <StateContainer>
-      <Text color="text.dark">
-        Connect your wallet to upload and see your stored Codes.
-      </Text>
-      <ConnectWalletBtn />
+      <DisconnectedState text="to see your previously uploaded and stored codes." />
     </StateContainer>
   );
 };
 
 const Empty = ({ type }: OtherTBodyProps) => {
+  const renderEmptyText = () => {
+    switch (type) {
+      case "recent":
+        return "Most recent 100 code IDs will display here";
+      case "saved":
+        return "Codes saved using Celatone will display here. Saved codes are stored locally on your device.";
+      case "stored":
+        return "Your uploaded Wasm files will display as My Stored Codes";
+      default:
+        return "";
+    }
+  };
   return (
     <StateContainer>
-      {type === "saved" ? (
-        <Text color="text.dark">
-          Your saved Code ID will display here. Saved Codes are stored in your
-          device.
-        </Text>
-      ) : (
-        <Text color="text.dark">
-          Your uploaded Wasm files will display as My Stored Codes
-        </Text>
-      )}
+      <Text color="text.dark">{renderEmptyText()}</Text>
     </StateContainer>
   );
 };
 
-const TableHead = () => {
+const CodeTableHead = () => {
   return (
-    <Thead borderBottom="1px solid #2E2E2E">
-      <Tr
-        sx={{
-          "> th": {
-            padding: "16px",
-            textTransform: "capitalize",
-          },
-        }}
-      >
-        <Th width="10%">Code ID</Th>
-        <Th width="45%">Code Description</Th>
-        <Th width="10%" textAlign="center">
-          Contracts
-        </Th>
-        <Th width="15%">Uploader</Th>
-        <Th width="20%" />
-      </Tr>
-    </Thead>
+    <Grid
+      templateColumns={TEMPLATE_COLUMNS}
+      px="48px"
+      sx={{ "& div": { color: "text.dark" } }}
+      borderBottom="1px solid"
+      borderColor="pebble.700"
+    >
+      <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Code Name</TableHeaderNoBorder>
+      <TableHeaderNoBorder textAlign="center">Contracts</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Uploader</TableHeaderNoBorder>
+      <TableHeaderNoBorder>Permission</TableHeaderNoBorder>
+    </Grid>
   );
 };
 
-const TableRow = ({ code, isRemovable }: CodesRowProps) => {
-  const router = useRouter();
-  const { address } = useWallet();
-
-  const goToInstantiate = () => {
-    router.push({ pathname: "/instantiate", query: { "code-id": code.id } });
+const CodeTableRow = ({ code }: CodesRowProps) => {
+  const navigate = useInternalNavigate();
+  const goToCodeDetails = () => {
+    navigate({ pathname: `/code/${code.id}` });
   };
 
   return (
-    <Tr
-      borderBottom="1px solid #2E2E2E"
-      sx={{ "> td": { padding: "16px" } }}
-      _hover={{
-        bg: "gray.900",
-      }}
+    <Grid
+      templateColumns={TEMPLATE_COLUMNS}
+      px="48px"
+      _hover={{ bg: "pebble.900" }}
+      transition="all .25s ease-in-out"
+      cursor="pointer"
+      minW="min-content"
+      onClick={goToCodeDetails}
+      borderBottom="1px solid"
+      borderColor="pebble.700"
     >
-      <Td width="10%" color="primary.main">
-        <ExplorerLink value={code.id.toString()} canCopyWithHover />
-      </Td>
-      <Td width="45%">
-        <CodeDescriptionCell codeId={code.id} description={code.description} />
-      </Td>
-      <Td width="10%" textAlign="center">
-        {code.contracts}
-      </Td>
-      <Td width="15%">
-        {address && code.uploader === address ? (
-          "Me"
-        ) : (
-          <ExplorerLink
-            value={code.uploader}
-            type="user_address"
-            canCopyWithHover
+      <TableRowNoBorder>
+        <ExplorerLink
+          type="code_id"
+          value={code.id.toString()}
+          canCopyWithHover
+        />
+      </TableRowNoBorder>
+      <TableRowNoBorder>
+        <CodeNameCell code={code} />
+      </TableRowNoBorder>
+      <TableRowNoBorder>
+        <Text
+          variant="body2"
+          onClick={(e) => e.stopPropagation()}
+          cursor="text"
+          w="fit-content"
+          m="auto"
+          px={2}
+        >
+          {code.contractCount ?? "N/A"}
+        </Text>
+      </TableRowNoBorder>
+      <TableRowNoBorder>
+        <ExplorerLink
+          value={code.uploader}
+          type="user_address"
+          canCopyWithHover
+        />
+      </TableRowNoBorder>
+      <TableRowNoBorder>
+        <Flex justify="space-between" align="center" w="full">
+          <PermissionChip
+            instantiatePermission={code.instantiatePermission}
+            permissionAddresses={code.permissionAddresses}
           />
-        )}
-      </Td>
-      <Td width="20%">
-        <HStack>
-          <Button variant="outline-gray" size="sm" onClick={goToInstantiate}>
-            Instantiate
-          </Button>
-          {isRemovable && <RemoveCode codeId={code.id} />}
-        </HStack>
-      </Td>
-    </Tr>
+          <HStack onClick={(e) => e.stopPropagation()}>
+            <InstantiateButton
+              instantiatePermission={code.instantiatePermission}
+              permissionAddresses={code.permissionAddresses}
+              codeId={code.id}
+            />
+            <SaveOrRemoveCodeModal codeInfo={code} />
+          </HStack>
+        </Flex>
+      </TableRowNoBorder>
+    </Grid>
   );
 };
 
 const NormalRender = ({
   codes,
   tableName,
-  isRemovable = false,
-}: Pick<CodesTableProps, "codes" | "tableName" | "isRemovable">) => {
+}: Pick<CodesTableProps, "codes" | "tableName">) => {
   return (
-    <TableContainer width="100%" mb="20">
-      <Table variant="unstyled">
-        <TableHead />
-        <Tbody>
-          {codes.map((code) => (
-            <TableRow
-              key={`row-${tableName}-${code.id}-${code.description}-${code.uploader}`}
-              code={code}
-              isRemovable={isRemovable}
-            />
-          ))}
-        </Tbody>
-      </Table>
+    <TableContainer mb={20} position="relative">
+      <CodeTableHead />
+      {codes.map((code) => (
+        <CodeTableRow
+          key={`row-${tableName}-${code.id}-${code.name}-${code.uploader}`}
+          code={code}
+        />
+      ))}
     </TableContainer>
   );
 };
@@ -193,45 +207,35 @@ function CodesTable({
   tableName,
   codes,
   action,
-  isRemovable,
   isSearching,
+  isLoading,
 }: CodesTableProps) {
   const { address } = useWallet();
 
-  const renderBodyStored = () => {
-    if (!address) return <Unconnected />;
+  const renderBody = () => {
+    if (!address && type === "stored") return <Unconnected />;
+    if (isLoading) return <Loading />;
     if (codes.length === 0 && isSearching) return <NotMatched />;
     if (codes.length === 0) return <Empty type={type} />;
-    return (
-      <NormalRender
-        isRemovable={isRemovable}
-        codes={codes}
-        tableName={tableName}
-      />
-    );
-  };
-
-  const renderBodySaved = () => {
-    if (codes.length === 0 && isSearching) return <NotMatched />;
-    if (codes.length === 0) return <Empty type={type} />;
-    return (
-      <NormalRender
-        isRemovable={isRemovable}
-        codes={codes}
-        tableName={tableName}
-      />
-    );
+    return <NormalRender codes={codes} tableName={tableName} />;
   };
 
   return (
     <Box mb={5}>
-      <HStack alignItems="center" justifyContent="space-between" mb="18px">
-        <Heading as="h2" size="md" color="white">
-          {tableName}
-        </Heading>
+      <HStack
+        alignItems="center"
+        justifyContent="space-between"
+        mb="18px"
+        px="48px"
+      >
+        {type !== "recent" && (
+          <Heading as="h6" variant="h6">
+            {tableName}
+          </Heading>
+        )}
         {action}
       </HStack>
-      {type === "saved" ? renderBodySaved() : renderBodyStored()}
+      {renderBody()}
     </Box>
   );
 }

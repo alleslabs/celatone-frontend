@@ -1,30 +1,28 @@
 import { Icon, useToast } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 
-import type { Option } from "lib/types";
+import type { Addr, ContractAddr, LVPair, Option } from "lib/types";
 
 import { useContractStore } from "./store";
 import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {
   title: string;
-  address: string;
-  instantiator: string;
+  contractAddress: ContractAddr;
+  instantiator: Option<Addr>;
   label: string;
-  created: Date;
   name?: string;
   description?: string;
   tags?: string[];
-  lists?: Option[];
+  lists?: LVPair[];
   actions?: () => void;
 }
 
 export const useHandleContractSave = ({
   title,
-  address,
+  contractAddress,
   instantiator,
   label,
-  created,
   name,
   description,
   tags,
@@ -33,15 +31,14 @@ export const useHandleContractSave = ({
 }: UseHandleContractSaveProps) => {
   const toast = useToast();
   const userKey = useUserKey();
-  const { updateContractInfo } = useContractStore();
+  const { updateContractLocalInfo } = useContractStore();
   // TODO: optimize to take name, description, tags, lists, actions only here
   return (inputName?: string) => {
-    updateContractInfo(
+    updateContractLocalInfo(
       userKey,
-      address,
+      contractAddress,
       instantiator,
       label,
-      created,
       inputName ?? name,
       description,
       tags,

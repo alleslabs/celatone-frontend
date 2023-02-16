@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { TiArrowSortedDown } from "react-icons/ti";
 
-import { scrollTop } from "lib/utils/scrollTop";
+import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
 import { Next } from "./Next";
 import { Paginator } from "./Paginator";
@@ -16,6 +16,7 @@ interface PaginationProps {
   offset: number;
   totalData: number;
   pageSize: number;
+  scrollComponentId?: string;
   onPageChange: (pageNumber: number) => void;
   onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -25,12 +26,20 @@ export const Pagination = ({
   offset,
   totalData,
   pageSize,
+  scrollComponentId,
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
   useEffect(() => {
-    scrollTop();
-  }, [currentPage, pageSize]);
+    const windowPosition = scrollYPosition();
+    if (windowPosition) {
+      if (!scrollComponentId) {
+        scrollToTop();
+      } else {
+        scrollToComponent(scrollComponentId);
+      }
+    }
+  }, [currentPage, pageSize, scrollComponentId]);
 
   const { offsetData, lastDataInPage } = useMemo(() => {
     return {
@@ -69,10 +78,10 @@ export const Pagination = ({
           {`${offsetData} - ${lastDataInPage} of ${totalData}`}
         </Text>
         <Previous variant="unstyled" display="flex">
-          <Icon as={MdKeyboardArrowLeft} w={5} h={5} color="gray.600" />
+          <Icon as={MdKeyboardArrowLeft} w={5} h={5} color="pebble.600" />
         </Previous>
         <Next variant="unstyled" display="flex">
-          <Icon as={MdKeyboardArrowRight} w={5} h={5} color="gray.600" />
+          <Icon as={MdKeyboardArrowRight} w={5} h={5} color="pebble.600" />
         </Next>
       </Flex>
     </Paginator>

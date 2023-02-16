@@ -2,7 +2,7 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 export const Heading: ComponentStyleConfig = {
   baseStyle: {
-    color: "#ffffff",
+    color: "text.main",
     "&.ellipsis": {
       whiteSpace: "nowrap",
       overflow: "hidden",
@@ -28,7 +28,7 @@ export const Heading: ComponentStyleConfig = {
       lineHeight: 1.2,
     },
     h4: {
-      fontSize: "34px",
+      fontSize: "32px",
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: "0.25px",
@@ -40,8 +40,8 @@ export const Heading: ComponentStyleConfig = {
       letterSpacing: "0.25px",
     },
     h6: {
-      fontSize: "20px",
-      fontWeight: 700,
+      fontSize: "18px",
+      fontWeight: 500,
       lineHeight: 1.2,
       letterSpacing: "0.15px",
     },

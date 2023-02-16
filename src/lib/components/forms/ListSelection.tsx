@@ -18,22 +18,21 @@ import type { CSSProperties } from "react";
 import { useState, useRef, forwardRef } from "react";
 import { MdCheck, MdClose, MdAdd } from "react-icons/md";
 
-import { CreateNewList } from "lib/components/modal/list";
+import { CreateNewListModal } from "lib/components/modal/list";
 import { useContractStore, useUserKey } from "lib/hooks";
-import type { Option } from "lib/types";
-import { formatSlugName } from "lib/utils";
-import mergeRefs from "lib/utils/mergeRefs";
+import type { LVPair } from "lib/types";
+import { formatSlugName, mergeRefs } from "lib/utils";
 
 export interface ListSelectionProps extends InputProps {
   placeholder?: string;
-  result: Option[];
-  setResult: (options: Option[]) => void;
+  result: LVPair[];
+  setResult: (options: LVPair[]) => void;
   helperText?: string;
   labelBgColor?: string;
 }
 
 const listItemProps: CSSProperties = {
-  borderRadius: "4px",
+  borderRadius: "8px",
   margin: "4px 0px",
   padding: "8px",
   cursor: "pointer",
@@ -46,7 +45,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       setResult,
       placeholder,
       helperText,
-      labelBgColor = "gray.800",
+      labelBgColor = "pebble.900",
       ...rest
     }: ListSelectionProps,
     ref
@@ -59,7 +58,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       value: item.slug,
     }));
 
-    const [partialResult, setPartialResult] = useState<Option[]>([]);
+    const [partialResult, setPartialResult] = useState<LVPair[]>([]);
     const [displayOptions, setDisplayOptions] = useState(false);
     const [inputValue, setInputValue] = useState<string>("");
     const [enableOutside, setEnableOutside] = useState(true);
@@ -76,10 +75,10 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       setInputValue(value);
     };
 
-    const isOptionSelected = (option: Option) =>
+    const isOptionSelected = (option: LVPair) =>
       result.some((selectedOption) => selectedOption.value === option.value);
 
-    const selectOption = (option: Option) => {
+    const selectOption = (option: LVPair) => {
       if (isOptionSelected(option)) {
         setResult(
           result.filter(
@@ -104,7 +103,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       }
     };
 
-    const selectOptionFromList = (option: Option) => {
+    const selectOptionFromList = (option: LVPair) => {
       selectOption(option);
       setDisplayOptions(false);
       setInputValue("");
@@ -127,9 +126,10 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
           <Flex
             alignItems="center"
             color="text.main"
-            border="1px solid rgba(255,255,255,0.12)"
+            border="1px solid"
+            borderColor="pebble.700"
             background="none"
-            borderRadius="4px"
+            borderRadius="8px"
             maxW="100%"
             overflowX="scroll"
           >
@@ -145,8 +145,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       cursor="pointer"
                       whiteSpace="nowrap"
                       size="md"
-                      bgColor="primary.main"
-                      color="gray.900"
+                      bgColor="violet.light"
+                      color="pebble.900"
                       alignItems="center"
                       display="flex"
                       textTransform="none"
@@ -155,7 +155,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       borderRadius="full"
                     >
                       {option.label}
-                      <Icon as={MdClose} boxSize="4" color="gray.900" />
+                      <Icon as={MdClose} boxSize="4" color="pebble.900" />
                     </Tag>
                   </Flex>
                 ))}
@@ -190,7 +190,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               lineHeight="1.2"
               transform="scale(0.75) translateY(-24px)"
             >
-              Add to lists
+              Listed on
             </FormLabel>
           </Flex>
           <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">
@@ -199,8 +199,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
 
           {displayOptions && (
             <List
-              borderRadius="4px"
-              bg="gray.900"
+              borderRadius="8px"
+              bg="pebble.800"
               px="2"
               py="1"
               mt={0}
@@ -216,7 +216,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                 <ListItem
                   key={option.value}
                   style={listItemProps}
-                  _hover={{ bg: "gray.800" }}
+                  _hover={{ bg: "pebble.700" }}
+                  transition="all .25s ease-in-out"
                   onClick={() => selectOptionFromList(option)}
                 >
                   <Flex alignItems="center" justifyContent="space-between">
@@ -234,12 +235,13 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               ))}
               {/* creation section */}
               {canCreateOption && (
-                <CreateNewList
+                <CreateNewListModal
                   trigger={
                     <ListItem
                       w="full"
                       style={listItemProps}
-                      _hover={{ bg: "gray.800" }}
+                      _hover={{ bg: "pebble.700" }}
+                      transition="all .25s ease-in-out"
                       data-testid="create-option"
                       onClick={() => setEnableOutside(false)}
                     >

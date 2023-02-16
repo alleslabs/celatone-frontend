@@ -1,11 +1,14 @@
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
+import { useDummyWallet } from "lib/hooks";
 import type { ComposedMsg, Gas } from "lib/types";
 
 interface SimulateQueryParams {
   enabled: boolean;
   messages: ComposedMsg[];
+  isDummyUser?: boolean;
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -13,24 +16,40 @@ interface SimulateQueryParams {
 export const useSimulateFeeQuery = ({
   enabled,
   messages,
+  isDummyUser,
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
-  const { address, getCosmWasmClient, currentChainName } = useWallet();
+  const { address, getCosmWasmClient, currentChainName, currentChainRecord } =
+    useWallet();
+  const { dummyWallet, dummyAddress } = useDummyWallet();
+
+  const userAddress = isDummyUser ? dummyAddress : address || dummyAddress;
+
   const simulateFn = async (msgs: ComposedMsg[]) => {
-    const client = await getCosmWasmClient();
-    if (!client || !address) {
-      return Promise.resolve(undefined);
+    // TODO: revisit this logic
+    if (!currentChainRecord?.preferredEndpoints?.rpc?.[0] || !userAddress) {
+      throw new Error("No RPC endpoint or user address");
     }
-    return (await client.simulate(address, msgs, undefined)) as Gas;
+
+    const client =
+      dummyWallet && (isDummyUser || !address)
+        ? await SigningCosmWasmClient.connectWithSigner(
+            currentChainRecord.preferredEndpoints.rpc[0],
+            dummyWallet
+          )
+        : await getCosmWasmClient();
+
+    if (!client) {
+      throw new Error("Fail to get SigningCosmWasmClient");
+    }
+
+    return (await client.simulate(userAddress, msgs, undefined)) as Gas;
   };
 
-  // TODO: make this as query key constant
   return useQuery({
-    queryKey: ["simulate", currentChainName, address, messages],
-    queryFn: async ({ queryKey }) => {
-      return simulateFn(queryKey[3] as ComposedMsg[]);
-    },
+    queryKey: ["simulate", currentChainName, userAddress, messages],
+    queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
     enabled,
     keepPreviousData: true,
     retry: false,

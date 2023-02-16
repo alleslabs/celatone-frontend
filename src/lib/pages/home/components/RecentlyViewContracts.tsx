@@ -1,46 +1,52 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 
-import { ContractListTable } from "lib/pages/contracts/components/ContractListTable";
+import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
+import type { Addr, ContractAddr } from "lib/types";
+import { getCurrentDate } from "lib/utils";
 
 /* TODO: change data -> recently view contracts */
 const contracts = [
   {
-    address: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
+    contractAddress:
+      "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
     name: "Deposit asset",
     tags: ["deposit", "lending"],
-    instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
+    instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as Addr,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed facilisis facilisis risus. Ut volutpat accumsan massa eget consequat, id egestas nulla.",
     label: "label1",
-    created: new Date(),
+    created: getCurrentDate(),
   },
   {
-    address: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
+    contractAddress:
+      "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
     name: "Borrow asset",
     tags: ["deposit", "lending", "borrow", "beeb", "margin"],
-    instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
+    instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as Addr,
     description: "Lorem ipsum dolor id egestas nulla.",
     label: "label2",
-    created: new Date(),
+    created: getCurrentDate(),
   },
   {
-    address: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
+    contractAddress:
+      "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
     name: "",
     tags: ["deposit", "lending", "borrow", "margin"],
-    instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
+    instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as Addr,
     description: "",
     label: "label3",
-    created: new Date(),
+    created: getCurrentDate(),
   },
   {
-    address: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
+    contractAddress:
+      "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as ContractAddr,
     name: "Deposit asset to Lorem",
     tags: [],
-    instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq",
+    instantiator: "terra18kw0z0nmpk9drz4qxq8y7xvh05tr7spyzja3rq" as Addr,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. id egestas nulla.",
     label: "label4",
-    created: new Date(),
+    created: getCurrentDate(),
   },
 ];
 export const RecentlyViewContracts = () => {

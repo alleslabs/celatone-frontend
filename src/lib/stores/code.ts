@@ -1,17 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 
-import type { Dict } from "lib/types";
+import type { Addr, Dict } from "lib/types";
 
-interface CodeLocalInfo {
-  description?: string;
-  uploader?: string;
-}
-
-interface SavedCodeInfo {
+export interface CodeLocalInfo {
   id: number;
-  description?: string;
-  uploader?: string;
+  uploader: Addr;
+  name?: string;
 }
 
 export class CodeStore {
@@ -19,7 +14,7 @@ export class CodeStore {
 
   savedCodeIds: Dict<string, number[]>;
 
-  codeInfo: Dict<string, Dict<number, CodeLocalInfo>>;
+  codeInfo: Dict<string, Record<number, CodeLocalInfo>>;
 
   constructor() {
     this.savedCodeIds = {};
@@ -42,19 +37,19 @@ export class CodeStore {
     this.userKey = userKey;
   }
 
-  getCodeLocalInfo(userKey: string, id: number): CodeLocalInfo | undefined {
-    return this.codeInfo[userKey]?.[id];
+  getCodeLocalInfo(id: number): CodeLocalInfo | undefined {
+    return this.codeInfo[this.userKey]?.[id];
   }
 
-  isCodeIdExist(userKey: string, id: number): boolean {
-    return this.savedCodeIds[userKey]?.includes(id) ?? false;
+  isCodeIdSaved(id: number): boolean {
+    return this.savedCodeIds[this.userKey]?.includes(id) ?? false;
   }
 
   lastSavedCodeIds(userKey: string): number[] {
     return this.savedCodeIds[userKey]?.slice().reverse() ?? [];
   }
 
-  lastSavedCodes(userKey: string): SavedCodeInfo[] {
+  lastSavedCodes(userKey: string): CodeLocalInfo[] {
     const savedCodeIdsByUserKey = this.savedCodeIds[userKey];
 
     if (!savedCodeIdsByUserKey) return [];
@@ -62,43 +57,35 @@ export class CodeStore {
     return savedCodeIdsByUserKey
       .map((codeId) => ({
         id: codeId,
-        description: this.codeInfo[userKey]?.[codeId]?.description,
-        uploader: this.codeInfo[userKey]?.[codeId]?.uploader,
+        uploader: this.codeInfo[userKey]?.[codeId]?.uploader ?? ("N/A" as Addr),
+        name: this.codeInfo[userKey]?.[codeId]?.name,
       }))
       .reverse();
   }
 
-  saveNewCode(userKey: string, id: number): void {
-    if (this.savedCodeIds[userKey]) {
-      this.savedCodeIds[userKey]?.push(id);
+  saveNewCode(id: number): void {
+    if (this.savedCodeIds[this.userKey]) {
+      this.savedCodeIds[this.userKey]?.push(id);
     } else {
-      this.savedCodeIds[userKey] = [id];
+      this.savedCodeIds[this.userKey] = [id];
     }
   }
 
-  removeSavedCode(userKey: string, id: number): void {
-    this.savedCodeIds[userKey] = this.savedCodeIds[userKey]?.filter(
+  removeSavedCode(id: number): void {
+    this.savedCodeIds[this.userKey] = this.savedCodeIds[this.userKey]?.filter(
       (each) => each !== id
     );
   }
 
-  updateCodeInfo(
-    userKey: string,
-    id: number,
-    newCodeInfo: CodeLocalInfo
-  ): void {
-    const codeInfo = this.codeInfo[userKey]?.[id] || {};
+  updateCodeInfo(id: number, uploader: Addr, name?: string): void {
+    const codeInfo = this.codeInfo[this.userKey]?.[id] || { id, uploader };
 
-    if (newCodeInfo.description !== undefined) {
-      codeInfo.description = newCodeInfo.description.trim().length
-        ? newCodeInfo.description.trim()
-        : undefined;
+    if (name !== undefined) {
+      codeInfo.name = name.trim().length ? name.trim() : undefined;
     }
-    if (newCodeInfo.uploader !== undefined)
-      codeInfo.uploader = newCodeInfo.uploader;
 
-    this.codeInfo[userKey] = {
-      ...this.codeInfo[userKey],
+    this.codeInfo[this.userKey] = {
+      ...this.codeInfo[this.userKey],
       [id]: codeInfo,
     };
   }

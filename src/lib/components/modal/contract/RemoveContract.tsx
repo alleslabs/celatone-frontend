@@ -4,32 +4,35 @@ import { MdDeleteForever } from "react-icons/md";
 
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractInfo } from "lib/stores/contract";
-import type { Option } from "lib/types";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type { LVPair } from "lib/types";
 import { truncate } from "lib/utils";
 
-interface ModalProps {
-  contractInfo: ContractInfo;
-  list: Option;
+interface RemoveContractModalProps {
+  contractLocalInfo: ContractLocalInfo;
+  contractRemovalInfo: LVPair;
   menuItemProps: MenuItemProps;
 }
 
-export function RemoveContract({
-  contractInfo,
-  list,
+export function RemoveContractModal({
+  contractLocalInfo,
+  contractRemovalInfo,
   menuItemProps,
-}: ModalProps) {
-  const displayName = contractInfo.name
-    ? contractInfo.name
-    : truncate(contractInfo.address);
+}: RemoveContractModalProps) {
+  const displayName = contractLocalInfo.name
+    ? contractLocalInfo.name
+    : truncate(contractLocalInfo.contractAddress);
 
   const handleRemove = useHandleContractSave({
-    title: `Removed ${displayName} from ${list.label}`,
-    address: contractInfo.address,
-    instantiator: contractInfo.instantiator,
-    label: contractInfo.label,
-    created: contractInfo.created,
-    lists: contractInfo.lists?.filter((item) => item.value !== list.value),
+    title: `Removed ${displayName} from ${contractRemovalInfo.label}`,
+    contractAddress: contractLocalInfo.contractAddress,
+    instantiator: contractLocalInfo.instantiator,
+    label: contractLocalInfo.label,
+    lists: contractLocalInfo.lists?.filter(
+      (item) => item.value !== contractRemovalInfo.value
+    ),
+    actions: () => AmpTrack(AmpEvent.CONTRACT_REMOVE),
   });
 
   return (
@@ -44,10 +47,10 @@ export function RemoveContract({
     >
       <Text>
         <Highlight
-          query={[displayName, list.label]}
+          query={[displayName, contractRemovalInfo.label]}
           styles={{ fontWeight: "bold", color: "inherit" }}
         >
-          {`This action will remove ${displayName} from ${list.label}. 
+          {`This action will remove ${displayName} from ${contractRemovalInfo.label}. 
         The contract’s off-chain detail will be preserved in other lists or when you save this contract again.`}
         </Highlight>
       </Text>
