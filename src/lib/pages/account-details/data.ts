@@ -8,7 +8,8 @@ import {
   useContractListByAdminWithPagination,
   useContractListByWalletAddressWithPagination,
 } from "lib/services/contractService";
-import type { BalanceWithAssetInfo, HumanAddr } from "lib/types";
+import type { BalanceWithAssetInfo, HumanAddr, Token } from "lib/types";
+import { formatTokenWithPrecision } from "lib/utils";
 import { assetValue } from "lib/utils/assetValue";
 
 export const useContractInstances = (offset: number, pageSize: number) => {
@@ -104,8 +105,22 @@ export const useUserAssetInfos = () => {
     ?.filter((balance) => balance.assetInfo)
     .sort((a, b) => {
       if (a.balance.price && b.balance.price) {
-        return assetValue(b.balance.amount, b.balance.price)
-          .sub(assetValue(a.balance.amount, a.balance.price))
+        return assetValue(
+          formatTokenWithPrecision(
+            b.balance.amount as Token,
+            b.balance.precision
+          ),
+          b.balance.price
+        )
+          .sub(
+            assetValue(
+              formatTokenWithPrecision(
+                a.balance.amount as Token,
+                a.balance.precision
+              ),
+              a.balance.price
+            )
+          )
           .toNumber();
       }
       return 1;
