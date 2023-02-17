@@ -1,26 +1,36 @@
 import { Box, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+import { useMemo } from "react";
 
+import { Copier } from "lib/components/Copier";
 import type { BalanceWithAssetInfo, Token } from "lib/types";
-import { assetValue, formatTokenWithPrecision } from "lib/utils";
+import { displayAssetValue, formatTokenWithPrecision } from "lib/utils";
 
 interface TokenCardProps {
   userBalance: BalanceWithAssetInfo;
 }
 
 export const TokenCard = ({ userBalance }: TokenCardProps) => {
-  const { symbol, price, amount, precision } = userBalance.balance;
+  const { symbol, price, amount, precision, id } = userBalance.balance;
   const tokenWithPrecision = formatTokenWithPrecision(
     amount as Token,
     precision
   );
 
+  const tokenInfoText = useMemo(
+    () => `1 ${symbol} = $${price}
+    Token ID: ${id}`,
+    [id, price, symbol]
+  );
+
   return (
     <Tooltip
       hasArrow
-      label={price ? `1 ${symbol} = $${price}` : "No Price Data"}
+      label={price ? tokenInfoText : "No Price Data"}
       placement="top"
       bg="honeydew.darker"
       maxW="240px"
+      whiteSpace="pre-line"
+      textAlign="center"
     >
       <Flex
         gap={2}
@@ -28,6 +38,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
         background="pebble.900"
         borderRadius="8px"
         alignItems="center"
+        role="group"
       >
         <Image boxSize={8} src={userBalance.assetInfo?.logo} alt={symbol} />
         <Box>
@@ -36,9 +47,16 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
               {tokenWithPrecision}
             </Text>
             <Text variant="body2">{symbol}</Text>
+            <Box
+              _groupHover={{ display: "flex" }}
+              display="none"
+              alignItems="center"
+            >
+              <Copier value={id} copyLabel="Token ID Copied!" />
+            </Box>
           </Flex>
           <Text variant="body3" color="text.dark">
-            {price ? `$${assetValue(tokenWithPrecision, price)}` : "-"}
+            {price ? `$${displayAssetValue(tokenWithPrecision, price)}` : "-"}
           </Text>
         </Box>
       </Flex>
