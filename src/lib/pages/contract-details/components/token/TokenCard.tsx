@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import { Copier } from "lib/components/Copier";
 import type { BalanceWithAssetInfo, Token } from "lib/types";
-import { displayAssetValue, formatTokenWithPrecision } from "lib/utils";
+import { assetValue, formatPrice, formatTokenWithPrecision } from "lib/utils";
 
 interface TokenCardProps {
   userBalance: BalanceWithAssetInfo;
@@ -17,15 +17,18 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
   );
 
   const tokenInfoText = useMemo(
-    () => `1 ${symbol} = $${price}
-    Token ID: ${id}`,
+    () =>
+      price
+        ? `1 ${symbol} = $${formatPrice(price)}
+    Token ID: ${id}`
+        : "No Price Data",
     [id, price, symbol]
   );
 
   return (
     <Tooltip
       hasArrow
-      label={price ? tokenInfoText : "No Price Data"}
+      label={tokenInfoText}
       placement="top"
       bg="honeydew.darker"
       maxW="240px"
@@ -52,11 +55,15 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
               display="none"
               alignItems="center"
             >
-              <Copier value={id} copyLabel="Token ID Copied!" />
+              <Copier value={id} copyLabel="Token ID Copied!" ml="1px" />
             </Box>
           </Flex>
           <Text variant="body3" color="text.dark">
-            {price ? `$${displayAssetValue(tokenWithPrecision, price)}` : "-"}
+            {price
+              ? `$${formatPrice(
+                  assetValue(tokenWithPrecision, price).toNumber()
+                )}`
+              : "-"}
           </Text>
         </Box>
       </Flex>
