@@ -201,6 +201,7 @@ export const useTxQuery = (
       indexerGraphClient,
     ],
     queryFn,
+    enabled: !!userAddress,
   });
 };
 
@@ -251,5 +252,6 @@ export const useTxQueryCount = (
       indexerGraphClient,
     ],
     queryFn,
+    enabled: !!userAddress,
   });
 };

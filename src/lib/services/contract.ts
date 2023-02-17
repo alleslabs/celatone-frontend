@@ -10,7 +10,7 @@ import type {
   Option,
   PublicInfo,
 } from "lib/types";
-import { encode, libDecode, parseDateDefault } from "lib/utils";
+import { encode, libDecode, parseDateOpt } from "lib/utils";
 
 export interface ContractCw2InfoRaw {
   data: string;
@@ -105,9 +105,7 @@ export const queryInstantiateInfo = async (
         height: createdHeight,
       })
       .then(({ blocks_by_pk }) => {
-        createdTime = blocks_by_pk
-          ? parseDateDefault(blocks_by_pk?.timestamp)
-          : undefined;
+        createdTime = parseDateOpt(blocks_by_pk?.timestamp);
       })
       .catch(() => {});
   }

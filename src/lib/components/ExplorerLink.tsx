@@ -1,4 +1,4 @@
-import type { BoxProps } from "@chakra-ui/react";
+import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
@@ -30,6 +30,7 @@ interface ExplorerLinkProps extends BoxProps {
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
   maxWidth?: string;
+  textVariant?: TextProps["variant"];
 }
 
 const getNavigationUrl = (
@@ -83,6 +84,7 @@ const LinkRender = ({
   textValue,
   isEllipsis,
   maxWidth,
+  textVariant,
 }: {
   type: string;
   isInternal: boolean;
@@ -90,10 +92,11 @@ const LinkRender = ({
   textValue: string;
   isEllipsis: boolean;
   maxWidth: ExplorerLinkProps["maxWidth"];
+  textVariant: TextProps["variant"];
 }) => {
   const textElement = (
     <Text
-      variant="body2"
+      variant={textVariant}
       color="lilac.main"
       transition="all .25s ease-in-out"
       _hover={{ color: "lilac.light" }}
@@ -132,7 +135,8 @@ export const ExplorerLink = ({
   canCopyWithHover = false,
   isReadOnly = false,
   textFormat = "truncate",
-  maxWidth = "150px",
+  maxWidth = "160px",
+  textVariant = "body2",
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address, currentChainName } = useWallet();
@@ -172,6 +176,7 @@ export const ExplorerLink = ({
             textValue={textValue}
             isEllipsis={textFormat === "ellipsis"}
             maxWidth={maxWidth}
+            textVariant={textVariant}
           />
           <Copier
             value={copyValue || value}

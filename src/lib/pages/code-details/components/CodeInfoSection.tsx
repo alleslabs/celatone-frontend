@@ -1,12 +1,11 @@
-import { Heading, Flex, Text, Box, Grid, Button, Icon } from "@chakra-ui/react";
-import { useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
+import { Heading, Flex, Text, Box, Grid } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
+import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
 import { useGetAddressType } from "lib/hooks";
-import type { CodeData, PermissionAddresses } from "lib/types";
+import type { CodeData } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
@@ -89,48 +88,6 @@ const getMethodSpecificRender = (
   };
 };
 
-const ViewAddresses = ({
-  permissionAddresses,
-}: {
-  permissionAddresses: PermissionAddresses;
-}) => {
-  const [viewAll, setViewAll] = useState(false);
-  const getAddressType = useGetAddressType();
-  return (
-    <>
-      {(viewAll || permissionAddresses.length === 1) &&
-        permissionAddresses.map((addr) => {
-          return (
-            <ExplorerLink
-              key={addr}
-              type={getAddressType(addr)}
-              value={addr}
-              canCopyWithHover
-            />
-          );
-        })}
-      {permissionAddresses.length > 1 && (
-        <Button
-          variant="ghost-primary"
-          onClick={() => setViewAll((prev) => !prev)}
-          size="sm"
-          p="unset"
-          w="fit-content"
-          rightIcon={
-            <Icon
-              as={FiChevronDown}
-              boxSize={4}
-              sx={{ transform: viewAll ? "rotate(180deg)" : "rotate(0deg)" }}
-            />
-          }
-        >
-          {viewAll ? "See Less" : "View All Addresses"}
-        </Button>
-      )}
-    </>
-  );
-};
-
 export const CodeInfoSection = ({
   codeData,
   chainId,
@@ -181,7 +138,9 @@ export const CodeInfoSection = ({
               instantiatePermission={instantiatePermission}
               permissionAddresses={permissionAddresses}
             />
-            <ViewAddresses permissionAddresses={permissionAddresses} />
+            <ViewPermissionAddresses
+              permissionAddresses={permissionAddresses}
+            />
           </Flex>
         </LabelText>
         <LabelText label="Stored on block">
