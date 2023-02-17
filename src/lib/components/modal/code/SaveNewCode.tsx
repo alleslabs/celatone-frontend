@@ -1,5 +1,6 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, Icon, useToast, FormControl } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { MdBookmark, MdCheckCircle } from "react-icons/md";
@@ -12,13 +13,51 @@ import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { Addr } from "lib/types";
-import { getNameAndDescriptionDefault } from "lib/utils";
+import { InstantiatePermission } from "lib/types";
+import { getNameAndDescriptionDefault, truncate } from "lib/utils";
+
+const getPermissionHelper = (
+  address: string | undefined,
+  permission: string,
+  permissionAddress: string,
+  permissionAddresses: string[]
+) => {
+  const getMessage = () => {
+    switch (permission) {
+      case InstantiatePermission.EVERYBODY:
+        return "Everyone can instantiate contract with this code (Everyone)";
+      case InstantiatePermission.NOBODY:
+        return "You can instantiate contract with this code through proposal only (Nobody)";
+      case InstantiatePermission.ANY_OF_ADDRESSES:
+        return address && permissionAddresses.includes(address)
+          ? "You are included in designated addresses to instantiate (AnyOfAddresses)"
+          : "This code can instantiate by designated addresses (AnyOfAddresses)";
+      case InstantiatePermission.ONLY_ADDRESS:
+        return address && permissionAddress === address
+          ? "You are designated to instantiate contract from this code (OnlyAddress)"
+          : `This code can instantiated by ${truncate(
+              permissionAddress
+            )} (OnlyAddress)`;
+      default:
+        return "Valid Code ID";
+    }
+  };
+  const getColor = () =>
+    permission === InstantiatePermission.EVERYBODY ||
+    (address &&
+      (permissionAddresses.includes(address) || permissionAddress === address))
+      ? "success.main"
+      : "info.main";
+
+  return { message: getMessage(), messageColor: getColor() };
+};
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
 }
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
+  const { address } = useWallet();
   /* STATE */
   const [codeId, setCodeId] = useState("");
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
@@ -60,7 +99,17 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       retry: false,
       cacheTime: 0,
       onSuccess(data) {
-        setCodeIdStatus({ state: "success", message: "Valid Code ID" });
+        const { message, messageColor } = getPermissionHelper(
+          address,
+          data.code_info.instantiate_permission.permission,
+          data.code_info.instantiate_permission.address,
+          data.code_info.instantiate_permission.addresses
+        );
+        setCodeIdStatus({
+          state: "success",
+          message,
+          messageColor,
+        });
         setUploader(data.code_info.creator);
         setUploaderStatus({ state: "success" });
       },

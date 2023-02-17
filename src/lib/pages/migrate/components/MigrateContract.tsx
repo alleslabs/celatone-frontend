@@ -19,7 +19,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
-import { MsgType } from "lib/types";
+import { InstantiatePermission, MsgType } from "lib/types";
 import { composeMsg, jsonValidate } from "lib/utils";
 
 interface MigrateContractProps {
@@ -87,7 +87,7 @@ export const MigrateContract = ({
         const permission = data.code_info.instantiate_permission;
         if (
           address &&
-          (permission.permission === "Everybody" ||
+          (permission.permission === InstantiatePermission.EVERYBODY ||
             permission.addresses.includes(address) ||
             permission.address === address)
         )
