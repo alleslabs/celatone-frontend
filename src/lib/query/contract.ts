@@ -76,8 +76,8 @@ export const getAdminByContractAddressesQueryDocument = graphql(`
   }
 `);
 
-export const getExecuteTxsByContractAddress = graphql(`
-  query getExecuteTxsByContractAddress(
+export const getExecuteTxsByContractAddressPagination = graphql(`
+  query getExecuteTxsByContractAddressPagination(
     $contractAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -131,8 +131,12 @@ export const getContractListByAdmin = graphql(`
   }
 `);
 
-export const getContractListByCodeId = graphql(`
-  query getContractListByCodeId($codeId: Int!, $offset: Int!, $pageSize: Int!) {
+export const getContractListByCodeIdPagination = graphql(`
+  query getContractListByCodeIdPagination(
+    $codeId: Int!
+    $offset: Int!
+    $pageSize: Int!
+  ) {
     contracts(
       where: { code_id: { _eq: $codeId } }
       order_by: { transaction: { block: { timestamp: desc } } }
@@ -175,49 +179,7 @@ export const getContractListCountByCodeId = graphql(`
   }
 `);
 
-export const getTxsByContractAddress = graphql(`
-  query getTxsByContractAddress(
-    $contractAddress: String!
-    $offset: Int!
-    $pageSize: Int!
-  ) {
-    contract_transactions_view(
-      where: { contract_address: { _eq: $contractAddress } }
-      order_by: { timestamp: desc }
-      offset: $offset
-      limit: $pageSize
-    ) {
-      hash
-      success
-      messages
-      sender
-      height
-      timestamp
-      is_execute
-      is_ibc
-      is_instantiate
-      is_send
-      is_store_code
-      is_migrate
-      is_update_admin
-      is_clear_admin
-    }
-  }
-`);
-
-export const getTxsCountByContractAddress = graphql(`
-  query getTxsCountByContractAddress($contractAddress: String!) {
-    contract_transactions_aggregate(
-      where: { contract: { address: { _eq: $contractAddress } } }
-    ) {
-      aggregate {
-        count
-      }
-    }
-  }
-`);
-
-export const getMigrationHistoriesByContractAddress = graphql(`
+export const getMigrationHistoriesByContractAddressPagination = graphql(`
   query getMigrationHistoriesByContractAddress(
     $contractAddress: String!
     $offset: Int!
@@ -254,8 +216,8 @@ export const getMigrationHistoriesCountByContractAddress = graphql(`
   }
 `);
 
-export const getContractListByWalletAddressWithPagination = graphql(`
-  query getContractListByWalletAddressWithPagination(
+export const getContractListByWalletAddressPagination = graphql(`
+  query getContractListByWalletAddressPagination(
     $walletAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -295,10 +257,8 @@ export const getContractListByWalletAddressWithPagination = graphql(`
   }
 `);
 
-export const getContractListCountByWalletAddressWithPagination = graphql(`
-  query getContractListCountByWalletAddressWithPagination(
-    $walletAddress: String!
-  ) {
+export const getContractListCountByWalletAddress = graphql(`
+  query getContractListCountByWalletAddress($walletAddress: String!) {
     contracts_aggregate(
       where: {
         accountByInitBy: { address: { _eq: $walletAddress } }
@@ -312,8 +272,8 @@ export const getContractListCountByWalletAddressWithPagination = graphql(`
   }
 `);
 
-export const getContractListByAdminWithPagination = graphql(`
-  query getContractListByAdminWithPagination(
+export const getContractListByAdminPagination = graphql(`
+  query getContractListByAdminPagination(
     $walletAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -350,8 +310,8 @@ export const getContractListByAdminWithPagination = graphql(`
   }
 `);
 
-export const getContractListCountByAdminWithPagination = graphql(`
-  query getContractListCountByAdminWithPagination($walletAddress: String!) {
+export const getContractListCountByAdmin = graphql(`
+  query getContractListCountByAdmin($walletAddress: String!) {
     contracts_aggregate(
       where: { account: { address: { _eq: $walletAddress } } }
     ) {

@@ -87,8 +87,8 @@ export const getCodeInfoByCodeId = graphql(`
   }
 `);
 
-export const getCodeListByWalletAddressWithPagination = graphql(`
-  query getCodeListByWalletAddressWithPagination(
+export const getCodeListByWalletAddressPagination = graphql(`
+  query getCodeListByWalletAddressPagination(
     $walletAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -114,8 +114,8 @@ export const getCodeListByWalletAddressWithPagination = graphql(`
   }
 `);
 
-export const getCodeListCountByWalletAddressWithPagination = graphql(`
-  query getCodeListCountByWalletAddressWithPagination($walletAddress: String!) {
+export const getCodeListCountByWalletAddress = graphql(`
+  query getCodeListCountByWalletAddress($walletAddress: String!) {
     codes_aggregate(where: { account: { address: { _eq: $walletAddress } } }) {
       aggregate {
         count

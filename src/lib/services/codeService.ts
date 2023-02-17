@@ -8,8 +8,8 @@ import {
   getCodeInfoByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
-  getCodeListByWalletAddressWithPagination,
-  getCodeListCountByWalletAddressWithPagination,
+  getCodeListByWalletAddressPagination,
+  getCodeListCountByWalletAddress,
   getCodeListQueryDocument,
 } from "lib/query/code";
 import type {
@@ -153,7 +153,7 @@ export const useCodeInfoByCodeId = (
   });
 };
 
-export const useCodeListByWalletAddressWithPagination = (
+export const useCodeListByWalletAddressPagination = (
   walletAddress: Option<HumanAddr>,
   offset: number,
   pageSize: number
@@ -162,10 +162,10 @@ export const useCodeListByWalletAddressWithPagination = (
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
-        "Wallet address not found (useCodeListByWalletAddressWithPagination)"
+        "Wallet address not found (useCodeListByWalletAddressPagination)"
       );
     return indexerGraphClient
-      .request(getCodeListByWalletAddressWithPagination, {
+      .request(getCodeListByWalletAddressPagination, {
         walletAddress,
         offset,
         pageSize,
@@ -185,7 +185,7 @@ export const useCodeListByWalletAddressWithPagination = (
 
   return useQuery(
     [
-      "code_list_by_user_address_pagination",
+      "code_list_by_wallet_address_pagination",
       indexerGraphClient,
       offset,
       pageSize,
@@ -196,29 +196,25 @@ export const useCodeListByWalletAddressWithPagination = (
   );
 };
 
-export const useCodeListCountByWalletAddressWithPagination = (
+export const useCodeListCountByWalletAddress = (
   walletAddress: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
-        "Wallet address not found (useCodeListCountByWalletAddressWithPagination)"
+        "Wallet address not found (useCodeListCountByWalletAddress)"
       );
 
     return indexerGraphClient
-      .request(getCodeListCountByWalletAddressWithPagination, {
+      .request(getCodeListCountByWalletAddress, {
         walletAddress,
       })
       .then(({ codes_aggregate }) => codes_aggregate?.aggregate?.count);
   }, [walletAddress, indexerGraphClient]);
 
   return useQuery(
-    [
-      "code_list_count_by_user_address_pagination",
-      walletAddress,
-      indexerGraphClient,
-    ],
+    ["code_list_count_by_wallet_address", walletAddress, indexerGraphClient],
     queryFn,
     {
       keepPreviousData: true,

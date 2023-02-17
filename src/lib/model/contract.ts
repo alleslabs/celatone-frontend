@@ -20,13 +20,13 @@ import {
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
   useMigrationHistoriesCountByContractAddress,
-  useTxsCountByContractAddress,
 } from "lib/services/contractService";
 import { useRelatedProposalsCountByContractAddress } from "lib/services/proposalService";
 import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
+import { useTxsCountByContractAddress } from "lib/services/txService";
 import type { ContractListInfo } from "lib/stores/contract";
 import type {
   Addr,

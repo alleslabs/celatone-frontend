@@ -6886,6 +6886,15 @@ export type Transactions_Variance_Order_By = {
   sender?: InputMaybe<Order_By>;
 };
 
+export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
+  height: Scalars["Int"];
+}>;
+
+export type GetBlockTimestampByHeightQueryQuery = {
+  __typename?: "query_root";
+  blocks_by_pk?: { __typename?: "blocks"; timestamp: any } | null;
+};
+
 export type GetCodeListQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCodeListQueryQuery = {
@@ -6975,13 +6984,13 @@ export type GetCodeInfoByCodeIdQuery = {
   } | null;
 };
 
-export type GetCodeListByWalletAddressWithPaginationQueryVariables = Exact<{
+export type GetCodeListByWalletAddressPaginationQueryVariables = Exact<{
   walletAddress: Scalars["String"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetCodeListByWalletAddressWithPaginationQuery = {
+export type GetCodeListByWalletAddressPaginationQuery = {
   __typename?: "query_root";
   codes: Array<{
     __typename?: "codes";
@@ -6999,12 +7008,11 @@ export type GetCodeListByWalletAddressWithPaginationQuery = {
   }>;
 };
 
-export type GetCodeListCountByWalletAddressWithPaginationQueryVariables =
-  Exact<{
-    walletAddress: Scalars["String"];
-  }>;
+export type GetCodeListCountByWalletAddressQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
+}>;
 
-export type GetCodeListCountByWalletAddressWithPaginationQuery = {
+export type GetCodeListCountByWalletAddressQuery = {
   __typename?: "query_root";
   codes_aggregate: {
     __typename?: "codes_aggregate";
@@ -7071,13 +7079,13 @@ export type GetAdminByContractAddressesQueryDocumentQuery = {
   }>;
 };
 
-export type GetExecuteTxsByContractAddressQueryVariables = Exact<{
+export type GetExecuteTxsByContractAddressPaginationQueryVariables = Exact<{
   contractAddress: Scalars["String"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetExecuteTxsByContractAddressQuery = {
+export type GetExecuteTxsByContractAddressPaginationQuery = {
   __typename?: "query_root";
   contract_transactions_view: Array<{
     __typename?: "contract_transactions_view";
@@ -7119,13 +7127,13 @@ export type GetContractListByAdminQuery = {
   }>;
 };
 
-export type GetContractListByCodeIdQueryVariables = Exact<{
+export type GetContractListByCodeIdPaginationQueryVariables = Exact<{
   codeId: Scalars["Int"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetContractListByCodeIdQuery = {
+export type GetContractListByCodeIdPaginationQuery = {
   __typename?: "query_root";
   contracts: Array<{
     __typename?: "contracts";
@@ -7234,13 +7242,13 @@ export type GetMigrationHistoriesCountByContractAddressQuery = {
   };
 };
 
-export type GetContractListByWalletAddressWithPaginationQueryVariables = Exact<{
+export type GetContractListByWalletAddressPaginationQueryVariables = Exact<{
   walletAddress: Scalars["String"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetContractListByWalletAddressWithPaginationQuery = {
+export type GetContractListByWalletAddressPaginationQuery = {
   __typename?: "query_root";
   contracts: Array<{
     __typename?: "contracts";
@@ -7260,79 +7268,70 @@ export type GetContractListByWalletAddressWithPaginationQuery = {
   }>;
 };
 
-export type GetContractListCountByWalletAddressWithPaginationQueryVariables =
+export type GetContractListCountByWalletAddressQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
+}>;
+
+export type GetContractListCountByWalletAddressQuery = {
+  __typename?: "query_root";
+  contracts_aggregate: {
+    __typename?: "contracts_aggregate";
+    aggregate?: {
+      __typename?: "contracts_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetContractListByAdminPaginationQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetContractListByAdminPaginationQuery = {
+  __typename?: "query_root";
+  contracts: Array<{
+    __typename?: "contracts";
+    address: string;
+    label: string;
+    admin?: { __typename?: "accounts"; address: string } | null;
+    init_by: Array<{
+      __typename?: "contract_histories";
+      account: { __typename?: "accounts"; address: string };
+    }>;
+    contract_histories: Array<{
+      __typename?: "contract_histories";
+      remark: any;
+      block: { __typename?: "blocks"; timestamp: any };
+      account: { __typename?: "accounts"; address: string };
+    }>;
+  }>;
+};
+
+export type GetContractListCountByAdminQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
+}>;
+
+export type GetContractListCountByAdminQuery = {
+  __typename?: "query_root";
+  contracts_aggregate: {
+    __typename?: "contracts_aggregate";
+    aggregate?: {
+      __typename?: "contracts_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetRelatedProposalsByContractAddressPaginationQueryVariables =
   Exact<{
-    walletAddress: Scalars["String"];
+    contractAddress: Scalars["String"];
+    offset: Scalars["Int"];
+    pageSize: Scalars["Int"];
   }>;
 
-export type GetContractListCountByWalletAddressWithPaginationQuery = {
-  __typename?: "query_root";
-  contracts_aggregate: {
-    __typename?: "contracts_aggregate";
-    aggregate?: {
-      __typename?: "contracts_aggregate_fields";
-      count: number;
-    } | null;
-  };
-};
-
-export type GetContractListByAdminWithPaginationQueryVariables = Exact<{
-  walletAddress: Scalars["String"];
-  offset: Scalars["Int"];
-  pageSize: Scalars["Int"];
-}>;
-
-export type GetContractListByAdminWithPaginationQuery = {
-  __typename?: "query_root";
-  contracts: Array<{
-    __typename?: "contracts";
-    address: string;
-    label: string;
-    admin?: { __typename?: "accounts"; address: string } | null;
-    init_by: Array<{
-      __typename?: "contract_histories";
-      account: { __typename?: "accounts"; address: string };
-    }>;
-    contract_histories: Array<{
-      __typename?: "contract_histories";
-      remark: any;
-      block: { __typename?: "blocks"; timestamp: any };
-      account: { __typename?: "accounts"; address: string };
-    }>;
-  }>;
-};
-
-export type GetContractListCountByAdminWithPaginationQueryVariables = Exact<{
-  walletAddress: Scalars["String"];
-}>;
-
-export type GetContractListCountByAdminWithPaginationQuery = {
-  __typename?: "query_root";
-  contracts_aggregate: {
-    __typename?: "contracts_aggregate";
-    aggregate?: {
-      __typename?: "contracts_aggregate_fields";
-      count: number;
-    } | null;
-  };
-};
-
-export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
-  height: Scalars["Int"];
-}>;
-
-export type GetBlockTimestampByHeightQueryQuery = {
-  __typename?: "query_root";
-  blocks_by_pk?: { __typename?: "blocks"; timestamp: any } | null;
-};
-
-export type GetRelatedProposalsByContractAddressQueryVariables = Exact<{
-  contractAddress: Scalars["String"];
-  offset: Scalars["Int"];
-  pageSize: Scalars["Int"];
-}>;
-
-export type GetRelatedProposalsByContractAddressQuery = {
+export type GetRelatedProposalsByContractAddressPaginationQuery = {
   __typename?: "query_root";
   contract_proposals: Array<{
     __typename?: "contract_proposals";
@@ -7365,13 +7364,13 @@ export type GetRelatedProposalsCountByContractAddressQuery = {
   };
 };
 
-export type GetProposalsByUserAddressQueryVariables = Exact<{
+export type GetProposalsByWalletAddressPaginationQueryVariables = Exact<{
   walletAddress: Scalars["String"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetProposalsByUserAddressQuery = {
+export type GetProposalsByWalletAddressPaginationQuery = {
   __typename?: "query_root";
   proposals: Array<{
     __typename?: "proposals";
@@ -7384,11 +7383,11 @@ export type GetProposalsByUserAddressQuery = {
   }>;
 };
 
-export type GetProposalsCountByUserAddressQueryVariables = Exact<{
+export type GetProposalsCountByWalletAddressQueryVariables = Exact<{
   walletAddress: Scalars["String"];
 }>;
 
-export type GetProposalsCountByUserAddressQuery = {
+export type GetProposalsCountByWalletAddressQuery = {
   __typename?: "query_root";
   proposals_aggregate: {
     __typename?: "proposals_aggregate";
@@ -7399,6 +7398,57 @@ export type GetProposalsCountByUserAddressQuery = {
   };
 };
 
+export const GetBlockTimestampByHeightQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTimestampByHeightQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "height" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "height" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "height" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockTimestampByHeightQueryQuery,
+  GetBlockTimestampByHeightQueryQueryVariables
+>;
 export const GetCodeListQueryDocument = {
   kind: "Document",
   definitions: [
@@ -7901,13 +7951,13 @@ export const GetCodeInfoByCodeIdDocument = {
   GetCodeInfoByCodeIdQuery,
   GetCodeInfoByCodeIdQueryVariables
 >;
-export const GetCodeListByWalletAddressWithPaginationDocument = {
+export const GetCodeListByWalletAddressPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getCodeListByWalletAddressWithPagination" },
+      name: { kind: "Name", value: "getCodeListByWalletAddressPagination" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -8078,19 +8128,16 @@ export const GetCodeListByWalletAddressWithPaginationDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetCodeListByWalletAddressWithPaginationQuery,
-  GetCodeListByWalletAddressWithPaginationQueryVariables
+  GetCodeListByWalletAddressPaginationQuery,
+  GetCodeListByWalletAddressPaginationQueryVariables
 >;
-export const GetCodeListCountByWalletAddressWithPaginationDocument = {
+export const GetCodeListCountByWalletAddressDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: {
-        kind: "Name",
-        value: "getCodeListCountByWalletAddressWithPagination",
-      },
+      name: { kind: "Name", value: "getCodeListCountByWalletAddress" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -8174,8 +8221,8 @@ export const GetCodeListCountByWalletAddressWithPaginationDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetCodeListCountByWalletAddressWithPaginationQuery,
-  GetCodeListCountByWalletAddressWithPaginationQueryVariables
+  GetCodeListCountByWalletAddressQuery,
+  GetCodeListCountByWalletAddressQueryVariables
 >;
 export const GetInstantiatedListByUserQueryDocumentDocument = {
   kind: "Document",
@@ -8738,13 +8785,13 @@ export const GetAdminByContractAddressesQueryDocumentDocument = {
   GetAdminByContractAddressesQueryDocumentQuery,
   GetAdminByContractAddressesQueryDocumentQueryVariables
 >;
-export const GetExecuteTxsByContractAddressDocument = {
+export const GetExecuteTxsByContractAddressPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getExecuteTxsByContractAddress" },
+      name: { kind: "Name", value: "getExecuteTxsByContractAddressPagination" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -8878,8 +8925,8 @@ export const GetExecuteTxsByContractAddressDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetExecuteTxsByContractAddressQuery,
-  GetExecuteTxsByContractAddressQueryVariables
+  GetExecuteTxsByContractAddressPaginationQuery,
+  GetExecuteTxsByContractAddressPaginationQueryVariables
 >;
 export const GetExecuteTxsCountByContractAddressDocument = {
   kind: "Document",
@@ -9124,13 +9171,13 @@ export const GetContractListByAdminDocument = {
   GetContractListByAdminQuery,
   GetContractListByAdminQueryVariables
 >;
-export const GetContractListByCodeIdDocument = {
+export const GetContractListByCodeIdPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getContractListByCodeId" },
+      name: { kind: "Name", value: "getContractListByCodeIdPagination" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -9397,8 +9444,8 @@ export const GetContractListByCodeIdDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListByCodeIdQuery,
-  GetContractListByCodeIdQueryVariables
+  GetContractListByCodeIdPaginationQuery,
+  GetContractListByCodeIdPaginationQueryVariables
 >;
 export const GetContractListCountByCodeIdDocument = {
   kind: "Document",
@@ -9992,16 +10039,13 @@ export const GetMigrationHistoriesCountByContractAddressDocument = {
   GetMigrationHistoriesCountByContractAddressQuery,
   GetMigrationHistoriesCountByContractAddressQueryVariables
 >;
-export const GetContractListByWalletAddressWithPaginationDocument = {
+export const GetContractListByWalletAddressPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: {
-        kind: "Name",
-        value: "getContractListByWalletAddressWithPagination",
-      },
+      name: { kind: "Name", value: "getContractListByWalletAddressPagination" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -10336,19 +10380,16 @@ export const GetContractListByWalletAddressWithPaginationDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListByWalletAddressWithPaginationQuery,
-  GetContractListByWalletAddressWithPaginationQueryVariables
+  GetContractListByWalletAddressPaginationQuery,
+  GetContractListByWalletAddressPaginationQueryVariables
 >;
-export const GetContractListCountByWalletAddressWithPaginationDocument = {
+export const GetContractListCountByWalletAddressDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: {
-        kind: "Name",
-        value: "getContractListCountByWalletAddressWithPagination",
-      },
+      name: { kind: "Name", value: "getContractListCountByWalletAddress" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -10485,16 +10526,16 @@ export const GetContractListCountByWalletAddressWithPaginationDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListCountByWalletAddressWithPaginationQuery,
-  GetContractListCountByWalletAddressWithPaginationQueryVariables
+  GetContractListCountByWalletAddressQuery,
+  GetContractListCountByWalletAddressQueryVariables
 >;
-export const GetContractListByAdminWithPaginationDocument = {
+export const GetContractListByAdminPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getContractListByAdminWithPagination" },
+      name: { kind: "Name", value: "getContractListByAdminPagination" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -10776,19 +10817,16 @@ export const GetContractListByAdminWithPaginationDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListByAdminWithPaginationQuery,
-  GetContractListByAdminWithPaginationQueryVariables
+  GetContractListByAdminPaginationQuery,
+  GetContractListByAdminPaginationQueryVariables
 >;
-export const GetContractListCountByAdminWithPaginationDocument = {
+export const GetContractListCountByAdminDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: {
-        kind: "Name",
-        value: "getContractListCountByAdminWithPagination",
-      },
+      name: { kind: "Name", value: "getContractListCountByAdmin" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -10872,67 +10910,19 @@ export const GetContractListCountByAdminWithPaginationDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListCountByAdminWithPaginationQuery,
-  GetContractListCountByAdminWithPaginationQueryVariables
+  GetContractListCountByAdminQuery,
+  GetContractListCountByAdminQueryVariables
 >;
-export const GetBlockTimestampByHeightQueryDocument = {
+export const GetRelatedProposalsByContractAddressPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getBlockTimestampByHeightQuery" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "height" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "blocks_by_pk" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "height" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "height" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
-              ],
-            },
-          },
-        ],
+      name: {
+        kind: "Name",
+        value: "getRelatedProposalsByContractAddressPagination",
       },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetBlockTimestampByHeightQueryQuery,
-  GetBlockTimestampByHeightQueryQueryVariables
->;
-export const GetRelatedProposalsByContractAddressDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getRelatedProposalsByContractAddress" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -11099,8 +11089,8 @@ export const GetRelatedProposalsByContractAddressDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetRelatedProposalsByContractAddressQuery,
-  GetRelatedProposalsByContractAddressQueryVariables
+  GetRelatedProposalsByContractAddressPaginationQuery,
+  GetRelatedProposalsByContractAddressPaginationQueryVariables
 >;
 export const GetRelatedProposalsCountByContractAddressDocument = {
   kind: "Document",
@@ -11198,13 +11188,13 @@ export const GetRelatedProposalsCountByContractAddressDocument = {
   GetRelatedProposalsCountByContractAddressQuery,
   GetRelatedProposalsCountByContractAddressQueryVariables
 >;
-export const GetProposalsByUserAddressDocument = {
+export const GetProposalsByWalletAddressPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getProposalsByUserAddress" },
+      name: { kind: "Name", value: "getProposalsByWalletAddressPagination" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -11328,16 +11318,16 @@ export const GetProposalsByUserAddressDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetProposalsByUserAddressQuery,
-  GetProposalsByUserAddressQueryVariables
+  GetProposalsByWalletAddressPaginationQuery,
+  GetProposalsByWalletAddressPaginationQueryVariables
 >;
-export const GetProposalsCountByUserAddressDocument = {
+export const GetProposalsCountByWalletAddressDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getProposalsCountByUserAddress" },
+      name: { kind: "Name", value: "getProposalsCountByWalletAddress" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -11421,6 +11411,6 @@ export const GetProposalsCountByUserAddressDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetProposalsCountByUserAddressQuery,
-  GetProposalsCountByUserAddressQueryVariables
+  GetProposalsCountByWalletAddressQuery,
+  GetProposalsCountByWalletAddressQueryVariables
 >;

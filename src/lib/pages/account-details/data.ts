@@ -1,25 +1,22 @@
-import { useWallet } from "@cosmos-kit/react";
-
 import { useCodeStore, useContractStore } from "lib/hooks";
-import { useAccountBalance } from "lib/services/accountService";
+import { useAccountBalances } from "lib/services/accountService";
 import { useAssetInfos } from "lib/services/assetService";
-import { useCodeListByWalletAddressWithPagination } from "lib/services/codeService";
+import { useCodeListByWalletAddressPagination } from "lib/services/codeService";
 import {
-  useContractListByAdminWithPagination,
-  useContractListByWalletAddressWithPagination,
+  useContractListByAdminPagination,
+  useContractListByWalletAddressPagination,
 } from "lib/services/contractService";
 import type { BalanceWithAssetInfo, HumanAddr, Token } from "lib/types";
 import { formatTokenWithPrecision } from "lib/utils";
 import { assetValue } from "lib/utils/assetValue";
 
-export const useContractInstances = (offset: number, pageSize: number) => {
-  const { address } = useWallet();
+export const useContractInstances = (
+  walletAddress: HumanAddr,
+  offset: number,
+  pageSize: number
+) => {
   const { data: contracts, isLoading } =
-    useContractListByWalletAddressWithPagination(
-      address as HumanAddr,
-      offset,
-      pageSize
-    );
+    useContractListByWalletAddressPagination(walletAddress, offset, pageSize);
   const { getContractLocalInfo } = useContractStore();
   const data = contracts?.map((contract) => {
     const localInfo = getContractLocalInfo(contract.contractAddress);
@@ -36,23 +33,23 @@ export const useContractInstances = (offset: number, pageSize: number) => {
   };
 };
 
-export const useContractsAdmin = (offset: number, pageSize: number) => {
-  const { address } = useWallet();
-
-  const { data: contractsAdmin, isLoading } =
-    useContractListByAdminWithPagination(
-      address as HumanAddr,
-      offset,
-      pageSize
-    );
+export const useContractsAdmin = (
+  walletAddress: HumanAddr,
+  offset: number,
+  pageSize: number
+) => {
+  const { data: contractsAdmin, isLoading } = useContractListByAdminPagination(
+    walletAddress as HumanAddr,
+    offset,
+    pageSize
+  );
   const { getContractLocalInfo } = useContractStore();
 
-  // eslint-disable-next-line sonarjs/no-identical-functions
-  const data = contractsAdmin?.map((contract) => {
-    const localInfo = getContractLocalInfo(contract.contractAddress);
+  const data = contractsAdmin?.map((contractAdmin) => {
+    const localInfo = getContractLocalInfo(contractAdmin.contractAddress);
 
     return {
-      ...contract,
+      ...contractAdmin,
       tags: localInfo?.tags,
       contractName: localInfo?.name,
     };
@@ -64,10 +61,13 @@ export const useContractsAdmin = (offset: number, pageSize: number) => {
   };
 };
 
-export const useCodeStored = (offset: number, pageSize: number) => {
-  const { address } = useWallet();
-  const { data: codes, isLoading } = useCodeListByWalletAddressWithPagination(
-    address as HumanAddr,
+export const useCodeStored = (
+  walletAddress: HumanAddr,
+  offset: number,
+  pageSize: number
+) => {
+  const { data: codes, isLoading } = useCodeListByWalletAddressPagination(
+    walletAddress as HumanAddr,
     offset,
     pageSize
   );
@@ -87,10 +87,8 @@ export const useCodeStored = (offset: number, pageSize: number) => {
   };
 };
 
-export const useUserAssetInfos = () => {
-  const { address } = useWallet();
-
-  const { data: assets, isLoading } = useAccountBalance(address as HumanAddr);
+export const useUserAssetInfos = (walletAddress: HumanAddr) => {
+  const { data: assets, isLoading } = useAccountBalances(walletAddress);
   const assetInfos = useAssetInfos();
 
   const contractBalancesWithAssetInfos = assets?.map(
@@ -100,7 +98,7 @@ export const useUserAssetInfos = () => {
     })
   );
 
-  // Supported assets should order by its value
+  // Supported assets should order by descending value
   const supportedAssets = contractBalancesWithAssetInfos
     ?.filter((balance) => balance.assetInfo)
     .sort((a, b) => {

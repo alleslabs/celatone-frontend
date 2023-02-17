@@ -1,7 +1,7 @@
 import { useChainId, useContractStore } from "lib/hooks";
 import { useCodeInfoByCodeId } from "lib/services/codeService";
 import {
-  useContractListByCodeId,
+  useContractListByCodeIdPagination,
   useContractListCountByCodeId,
 } from "lib/services/contractService";
 import {
@@ -52,7 +52,7 @@ export const useCodeContractInstances = (
   offset: number,
   pageSize: number
 ): ContractInstances => {
-  const { data: contractList } = useContractListByCodeId(
+  const { data: contractList } = useContractListByCodeIdPagination(
     codeId,
     offset,
     pageSize

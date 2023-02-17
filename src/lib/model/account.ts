@@ -1,31 +1,29 @@
-import { useWallet } from "@cosmos-kit/react";
-
 import { useTxQueryCount } from "lib/pages/past-txs/query/useTxQuery";
-import { useCodeListCountByWalletAddressWithPagination } from "lib/services/codeService";
+import { useCodeListCountByWalletAddress } from "lib/services/codeService";
 import {
-  useContractListCountByAdminWithPagination,
-  useContractListCountByWalletAddressWithPagination,
+  useContractListCountByAdmin,
+  useContractListCountByWalletAddress,
 } from "lib/services/contractService";
-import { useProposalsCountByUserAddress } from "lib/services/proposalService";
-import type { HumanAddr } from "lib/types";
+import { useProposalsCountByWalletAddress } from "lib/services/proposalService";
+import type { HumanAddr, Option } from "lib/types";
 
 /**
  * @remark
  * Counts for stored codes, contract admin, contract instances, transactions, and opened proposals tables
  */
-export const useAccountDetailsTableCounts = () => {
-  const { address } = useWallet();
-  const humanAddress = address as HumanAddr;
+export const useAccountDetailsTableCounts = (
+  walletAddress: Option<HumanAddr>
+) => {
   const { data: codesCount, refetch: refetchCodes } =
-    useCodeListCountByWalletAddressWithPagination(humanAddress);
+    useCodeListCountByWalletAddress(walletAddress);
   const { data: contractsAdminCount, refetch: refetchContractsAdminCount } =
-    useContractListCountByAdminWithPagination(humanAddress);
+    useContractListCountByAdmin(walletAddress);
   const { data: contractsCount, refetch: refetchContractsCount } =
-    useContractListCountByWalletAddressWithPagination(humanAddress);
+    useContractListCountByWalletAddress(walletAddress);
   const { data: proposalCount, refetch: refetchProposalCount } =
-    useProposalsCountByUserAddress(humanAddress);
+    useProposalsCountByWalletAddress(walletAddress);
   const { data: countTxs, refetch: refetchCountTxs } = useTxQueryCount(
-    address,
+    walletAddress,
     "",
     {
       isExecute: false,

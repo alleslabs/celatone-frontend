@@ -1,7 +1,7 @@
 import { graphql } from "lib/gql";
 
-export const getRelatedProposalsByContractAddress = graphql(`
-  query getRelatedProposalsByContractAddress(
+export const getRelatedProposalsByContractAddressPagination = graphql(`
+  query getRelatedProposalsByContractAddressPagination(
     $contractAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -40,8 +40,8 @@ export const getRelatedProposalsCountByContractAddress = graphql(`
   }
 `);
 
-export const getProposalsByUserAddress = graphql(`
-  query getProposalsByUserAddress(
+export const getProposalsByWalletAddressPagination = graphql(`
+  query getProposalsByWalletAddressPagination(
     $walletAddress: String!
     $offset: Int!
     $pageSize: Int!
@@ -61,8 +61,8 @@ export const getProposalsByUserAddress = graphql(`
   }
 `);
 
-export const getProposalsCountByUserAddress = graphql(`
-  query getProposalsCountByUserAddress($walletAddress: String!) {
+export const getProposalsCountByWalletAddress = graphql(`
+  query getProposalsCountByWalletAddress($walletAddress: String!) {
     proposals_aggregate(
       where: { account: { address: { _eq: $walletAddress } } }
     ) {
