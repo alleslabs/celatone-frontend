@@ -42,6 +42,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
         borderRadius="8px"
         alignItems="center"
         role="group"
+        _hover={{ bgColor: "pebble.800" }}
       >
         <Image boxSize={8} src={userBalance.assetInfo?.logo} alt={symbol} />
         <Box>
