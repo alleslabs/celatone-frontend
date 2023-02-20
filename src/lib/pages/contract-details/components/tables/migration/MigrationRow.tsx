@@ -5,7 +5,6 @@ import { CodeNameCell } from "lib/components/CodeNameCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { useGetAddressType } from "lib/hooks";
-import type { CodeLocalInfo } from "lib/stores/code";
 import type { ContractMigrationHistory } from "lib/types";
 import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
@@ -71,13 +70,11 @@ export const MigrationRow = ({
       </TableRow>
       <TableRow>
         <CodeNameCell
-          code={
-            {
-              id: history.codeId,
-              uploader: history.uploader,
-              name: history.codeName,
-            } as CodeLocalInfo
-          }
+          code={{
+            id: history.codeId,
+            uploader: history.uploader,
+            name: history.codeName,
+          }}
         />
       </TableRow>
       <TableRow>
