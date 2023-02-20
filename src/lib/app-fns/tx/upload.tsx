@@ -83,7 +83,7 @@ export const uploadContractTx = ({
               <span style={{ fontWeight: 700 }}>
                 ‘{codeDesc || `${wasmFileName}(${txInfo.codeId})`}’
               </span>{" "}
-              is available on your stored code. Would you like to{" "}
+              is has been uploaded. Would you like to{" "}
               {isMigrate ? "migrate" : "instantiate"} your code now?
             </>
           ),

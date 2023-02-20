@@ -1,7 +1,6 @@
-import { Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { MdSearchOff } from "react-icons/md";
 
 import { AmpTrackInvalidState } from "lib/services/amplitude";
 
@@ -25,7 +24,11 @@ export const InvalidState = ({ title }: InvalidStateProps) => {
       my="24px"
       py="24px"
     >
-      <Icon as={MdSearchOff} color="pebble.600" boxSize="128" />
+      <Image
+        src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+        alt="result not found"
+        width="200px"
+      />
       <Heading as="h5" variant="h5" my="8px">
         {title}
       </Heading>

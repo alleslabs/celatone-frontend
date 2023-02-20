@@ -1,5 +1,4 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -146,14 +145,6 @@ const Migrate = () => {
         </Box>
       ) : (
         <Box w="full" mb="48px">
-          <Button
-            alignSelf="start"
-            variant="ghost-primary"
-            onClick={handleBack}
-            leftIcon={<ArrowBackIcon boxSize={4} />}
-          >
-            BACK
-          </Button>
           <Heading as="h4" variant="h4" textAlign="center" my="12px">
             Migrate Contract
           </Heading>

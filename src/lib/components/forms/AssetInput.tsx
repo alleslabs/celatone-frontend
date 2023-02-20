@@ -29,7 +29,7 @@ export const AssetInput = ({
   return (
     <Grid templateColumns="130px 1fr auto" columnGap="16px" w="full" mb="16px">
       <SelectInput
-        formLabel="Currency"
+        formLabel="Asset"
         options={assetOptions}
         onChange={setCurrencyValue}
         placeholder="Select"

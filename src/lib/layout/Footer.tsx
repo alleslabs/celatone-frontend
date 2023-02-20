@@ -19,12 +19,12 @@ const Footer = () => {
       slug: "twitter",
     },
     {
-      url: "https://medium.com/alles-labs",
+      url: "https://blog.alleslabs.com",
       icon: BsMedium,
       slug: "medium",
     },
     {
-      url: "https://t.me/celatone",
+      url: "https://t.me/celatone_announcements",
       icon: BsTelegram,
       slug: "telegram",
     },

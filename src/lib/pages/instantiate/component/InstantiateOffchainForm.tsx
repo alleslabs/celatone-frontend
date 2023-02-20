@@ -9,6 +9,7 @@ import type { OffchainDetail } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/hooks";
 import { useUserKey } from "lib/hooks/useUserKey";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr, HumanAddr, LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
@@ -65,6 +66,7 @@ export const InstantiateOffChainForm = observer(
 
     const saveContract = () => {
       handleSubmit((data) => {
+        AmpTrack(AmpEvent.CONTRACT_SAVE_AFTER_INIT);
         updateContractLocalInfo(
           userKey,
           contractAddress,
