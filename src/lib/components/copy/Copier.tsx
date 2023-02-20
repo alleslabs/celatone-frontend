@@ -31,10 +31,7 @@ export const Copier = ({
         color="text.dark"
         cursor="pointer"
         marginLeft={ml}
-        onClick={(e) => {
-          AmpTrack(AmpEvent.USE_COPIER);
-          e.stopPropagation();
-        }}
+        onClick={() => AmpTrack(AmpEvent.USE_COPIER)}
       />
     }
   />

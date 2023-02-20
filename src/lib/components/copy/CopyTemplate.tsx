@@ -24,7 +24,14 @@ export const CopyTemplate = ({
       arrowSize={8}
       bg="honeydew.darker"
     >
-      <Box onClick={onCopy}>{triggerElement}</Box>
+      <Box
+        onClick={(e) => {
+          onCopy();
+          e.stopPropagation();
+        }}
+      >
+        {triggerElement}
+      </Box>
     </Tooltip>
   );
 };
