@@ -66,7 +66,7 @@ const FullNavMenu = ({
   isCurrentPage,
   handleResize,
 }: NavMenuProps) => (
-  <Box px={4} py={2} overflowY="scroll">
+  <Box px={4} py={2} overflowY="auto">
     {navMenu.map((item) => (
       <Box
         pb="4"
@@ -152,7 +152,7 @@ const IconNavMenu = ({
   isCurrentPage,
   handleResize,
 }: NavMenuProps) => (
-  <Box overflowY="scroll">
+  <Box overflowY="auto" overflowX="hidden">
     {navMenu.map((item) => (
       <Box
         key={item.category}
@@ -203,6 +203,7 @@ const IconNavMenu = ({
             >
               <Flex
                 cursor="pointer"
+                w="full"
                 p={1}
                 m={2}
                 _hover={{ bg: pebble800, borderRadius: "8px" }}
