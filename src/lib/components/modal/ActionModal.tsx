@@ -1,6 +1,7 @@
 import {
   Modal,
   ModalHeader,
+  Heading,
   Flex,
   Icon,
   Box,
@@ -17,6 +18,8 @@ import type { ReactNode } from "react";
 import { useCallback } from "react";
 import type { IconType } from "react-icons/lib";
 import { MdMode } from "react-icons/md";
+
+import { AmpTrackUseOtherModal } from "lib/services/amplitude";
 
 export interface ActionModalProps {
   icon?: IconType;
@@ -69,7 +72,12 @@ export function ActionModal({
 
   return (
     <>
-      <Flex onClick={onOpen}>
+      <Flex
+        onClick={() => {
+          AmpTrackUseOtherModal(title);
+          onOpen();
+        }}
+      >
         {trigger || <Button>Open {title} Modal</Button>}
       </Flex>
       <Modal
@@ -87,7 +95,9 @@ export function ActionModal({
             <Box w="full">
               <Flex alignItems="center" gap="3">
                 <Icon as={icon} color={iconColor} boxSize="6" />
-                {title}
+                <Heading as="h5" variant="h5">
+                  {title}
+                </Heading>
               </Flex>
               {subtitle && (
                 <Text variant="body3" color="text.dark" pt="2">

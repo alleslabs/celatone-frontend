@@ -19,6 +19,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^1.8.0",
     "@chain-registry/types": "^0.13.1",
     "@chakra-ui/anatomy": "^2.1.0",
     "@chakra-ui/card": "^2.1.1",
@@ -71,13 +72,15 @@
     "react-responsive": "^9.0.0",
     "rxjs": "^7.5.7",
     "snake-case": "^3.0.4",
-    "use-clamp-text": "^1.1.0"
+    "use-clamp-text": "^1.1.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.1.0",
     "@commitlint/cz-commitlint": "^17.1.2",
     "@types/react": "^18.0.21",
     "@types/react-linkify": "^1.0.1",
+    "@types/uuid": "^9.0.0",
     "commitizen": "^4.2.5",
     "commitlint": "^17.1.2",
     "cross-env": "^7.0.3",

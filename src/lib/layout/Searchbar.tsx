@@ -15,6 +15,7 @@ import { MdSearch } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { useValidateAddress } from "lib/hooks";
+import { AmpTrackUseMainSearch } from "lib/services/amplitude";
 import { isCodeId, isTxHash } from "lib/utils";
 
 type SearchResultType =
@@ -32,7 +33,7 @@ const NOT_SUPPORTED =
 interface ResultItemProps {
   type?: SearchResultType;
   value: string;
-  handleSelectResult: (type?: SearchResultType) => void;
+  handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
 }
 
 const getRoute = (type: SearchResultType) => {
@@ -64,7 +65,7 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
           borderRadius="8px"
           _hover={{ bg: "pebble.800", cursor: "pointer" }}
           transition="all 0.25s ease-in-out"
-          onClick={() => handleSelectResult(type)}
+          onClick={() => handleSelectResult(type, true)}
         >
           {value}
         </Text>
@@ -99,7 +100,8 @@ const Searchbar = () => {
     setDisplayResults(inputValue.length > 0);
   };
 
-  const handleSelectResult = (type?: SearchResultType) => {
+  const handleSelectResult = (type?: SearchResultType, isClick = false) => {
+    AmpTrackUseMainSearch(isClick);
     const route = type ? getRoute(type) : null;
     if (route) navigate({ pathname: `${route}/${keyword}` });
   };
@@ -143,12 +145,14 @@ const Searchbar = () => {
         >
           {!results.length ? (
             <ResultItem
+              key="Not Found"
               value={keyword}
               handleSelectResult={handleSelectResult}
             />
           ) : (
             results.map((type) => (
               <ResultItem
+                key={type}
                 type={type}
                 value={keyword}
                 handleSelectResult={handleSelectResult}

@@ -9,6 +9,7 @@ import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { formatUFee } from "lib/utils";
@@ -52,6 +53,7 @@ export const migrateContractTx = ({
         ),
     }),
     ({ value: txInfo }) => {
+      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.(txInfo.transactionHash);
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;

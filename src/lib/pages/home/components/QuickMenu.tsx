@@ -21,7 +21,7 @@ const cardProps = {
 const secondaryMenu = [
   {
     title: "Query",
-    subtitle: "Query and get state data",
+    subtitle: "Query and get contract state data",
     slug: "query",
     icon: MdSearch,
   },
@@ -33,7 +33,7 @@ const secondaryMenu = [
   },
   {
     title: "Migrate",
-    subtitle: "Migrate to other Code ID",
+    subtitle: "Migrate contract to new code ID",
     slug: "migrate",
     icon: MdReadMore,
   },

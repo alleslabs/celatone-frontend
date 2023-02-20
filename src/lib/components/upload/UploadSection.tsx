@@ -15,6 +15,7 @@ import { ControllerInput } from "lib/components/forms";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
@@ -59,6 +60,7 @@ export const UploadSection = ({
 
   const proceed = useCallback(async () => {
     if (address) {
+      AmpTrack(AmpEvent.ACTION_UPLOAD);
       const stream = await postUploadTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),
@@ -130,7 +132,7 @@ export const UploadSection = ({
         control={control}
         label="Code Name (Optional)"
         placeholder="Untitled Name"
-        helperText="Define what your code works on in one sentence which visible to you only. You can add this later."
+        helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
         rules={{
           maxLength: MAX_CODE_NAME_LENGTH,
         }}
@@ -157,7 +159,7 @@ export const UploadSection = ({
           leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
           onClick={handleBack}
         >
-          Back
+          Previous
         </Button>
         <Button
           size="md"
