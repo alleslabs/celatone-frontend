@@ -25,7 +25,7 @@ interface AccountDetailsBodyProps {
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
-  const tableHeaderId = "accountDetailsTableHeader";
+  const tableHeaderId = "accountDetailsTab";
 
   return (
     <>
@@ -56,14 +56,16 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <CustomTab>Overall</CustomTab>
           {/* TODO: add counts for Assets */}
           <CustomTab count={0}>Assets</CustomTab>
+          {/* TODO: add counts for Delegations */}
+          <CustomTab count={0}>Delegations</CustomTab>
           {/* TODO: add counts for Txs */}
           <CustomTab count={0}>Transactions</CustomTab>
+          {/* TODO: add counts for Codes */}
+          <CustomTab count={0}>Codes</CustomTab>
           {/* TODO: add counts for Contracts */}
           <CustomTab count={0}>Contracts</CustomTab>
           {/* TODO: add counts for Admins */}
           <CustomTab count={0}>Admins</CustomTab>
-          {/* TODO: add counts for Codes */}
-          <CustomTab count={0}>Codes</CustomTab>
           {/* TODO: add counts for Proposals */}
           <CustomTab count={0}>Proposals</CustomTab>
         </TabList>
@@ -71,12 +73,14 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             {/* TODO: replace with the truncated Assets table */}
             <Text>Assets</Text>
+            {/* TODO: replace with the truncated Delegations table */}
+            <Text>Delegations</Text>
             {/* TODO: replace with the truncated Transactions table */}
             <Text>Transactions</Text>
-            {/* TODO: replace with the truncated Contracts table */}
-            <Text>Contract Instances</Text>
             {/* TODO: replace with the truncated Codes table */}
             <Text>Stored Codes</Text>
+            {/* TODO: replace with the truncated Contracts table */}
+            <Text>Contract Instances</Text>
             {/* TODO: replace with the truncated Admins table */}
             <Text>Contract Admin</Text>
             {/* TODO: replace with the truncated Proposals table */}
@@ -87,8 +91,16 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Assets</Text>
           </TabPanel>
           <TabPanel p={0}>
+            {/* TODO: replace with the full Delegations table */}
+            <Text>Delegations</Text>
+          </TabPanel>
+          <TabPanel p={0}>
             {/* TODO: replace with the full Transactions table */}
             <Text>Transactions</Text>
+          </TabPanel>
+          <TabPanel p={0}>
+            {/* TODO: replace with the full Codes table */}
+            <Text>Stored Codes</Text>
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Contracts table */}
@@ -97,10 +109,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             {/* TODO: replace with the full Admins table */}
             <Text>Contract Admins</Text>
-          </TabPanel>
-          <TabPanel p={0}>
-            {/* TODO: replace with the full Codes table */}
-            <Text>Stored Codes</Text>
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Proposals table */}
