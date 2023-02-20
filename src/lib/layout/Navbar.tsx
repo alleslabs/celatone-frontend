@@ -35,8 +35,6 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 
-const pebble800 = "pebble.800";
-
 interface SubmenuInfo {
   name: string;
   slug: string;
@@ -118,11 +116,13 @@ const FullNavMenu = ({
               gap="2"
               p={2}
               cursor="pointer"
-              _hover={{ bg: pebble800, borderRadius: "8px" }}
+              _hover={{ bg: "pebble.700", borderRadius: "8px" }}
               my="1px"
               transition="all .25s ease-in-out"
               alignItems="center"
-              bgColor={isCurrentPage(submenu.slug) ? pebble800 : "transparent"}
+              bgColor={
+                isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
+              }
               borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
             >
               {submenu.icon && (
@@ -155,6 +155,7 @@ const IconNavMenu = ({
   <Box overflowY="auto" overflowX="hidden">
     {navMenu.map((item) => (
       <Box
+        minW="fit-content"
         key={item.category}
         borderBottom="1px solid"
         borderColor="pebble.700"
@@ -203,14 +204,13 @@ const IconNavMenu = ({
             >
               <Flex
                 cursor="pointer"
-                w="full"
                 p={1}
                 m={2}
-                _hover={{ bg: pebble800, borderRadius: "8px" }}
+                _hover={{ bg: "pebble.700", borderRadius: "8px" }}
                 transition="all .25s ease-in-out"
                 alignItems="center"
                 bgColor={
-                  isCurrentPage(submenu.slug) ? pebble800 : "transparent"
+                  isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
                 }
                 borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
               >
