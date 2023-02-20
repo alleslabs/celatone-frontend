@@ -6,12 +6,12 @@ import {
   useContractListByAdminPagination,
   useContractListByWalletAddressPagination,
 } from "lib/services/contractService";
-import type { BalanceWithAssetInfo, HumanAddr, Token } from "lib/types";
+import type { BalanceWithAssetInfo, HumanAddr, Token, Option } from "lib/types";
 import { formatTokenWithPrecision } from "lib/utils";
-import { assetValue } from "lib/utils/assetValue";
+import { calculateAssetValue } from "lib/utils/assetValue";
 
 export const useContractInstances = (
-  walletAddress: HumanAddr,
+  walletAddress: Option<HumanAddr>,
   offset: number,
   pageSize: number
 ) => {
@@ -34,7 +34,7 @@ export const useContractInstances = (
 };
 
 export const useContractsAdmin = (
-  walletAddress: HumanAddr,
+  walletAddress: Option<HumanAddr>,
   offset: number,
   pageSize: number
 ) => {
@@ -56,13 +56,13 @@ export const useContractsAdmin = (
   });
 
   return {
-    contractsAdmin: data,
+    contracts: data,
     isLoading,
   };
 };
 
 export const useCodeStored = (
-  walletAddress: HumanAddr,
+  walletAddress: Option<HumanAddr>,
   offset: number,
   pageSize: number
 ) => {
@@ -87,11 +87,11 @@ export const useCodeStored = (
   };
 };
 
-export const useUserAssetInfos = (walletAddress: HumanAddr) => {
-  const { data: assets, isLoading } = useAccountBalances(walletAddress);
+export const useUserAssetInfos = (walletAddress: Option<HumanAddr>) => {
+  const { data: balances, isLoading } = useAccountBalances(walletAddress);
   const assetInfos = useAssetInfos();
 
-  const contractBalancesWithAssetInfos = assets?.map(
+  const contractBalancesWithAssetInfos = balances?.map(
     (balance): BalanceWithAssetInfo => ({
       balance,
       assetInfo: assetInfos?.[balance.id],
@@ -103,7 +103,7 @@ export const useUserAssetInfos = (walletAddress: HumanAddr) => {
     ?.filter((balance) => balance.assetInfo)
     .sort((a, b) => {
       if (a.balance.price && b.balance.price) {
-        return assetValue(
+        return calculateAssetValue(
           formatTokenWithPrecision(
             b.balance.amount as Token,
             b.balance.precision
@@ -111,7 +111,7 @@ export const useUserAssetInfos = (walletAddress: HumanAddr) => {
           b.balance.price
         )
           .sub(
-            assetValue(
+            calculateAssetValue(
               formatTokenWithPrecision(
                 a.balance.amount as Token,
                 a.balance.precision
