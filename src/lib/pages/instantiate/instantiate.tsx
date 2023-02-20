@@ -28,6 +28,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
   AmpTrack,
+  AmpTrackAction,
   AmpTrackToInstantiate,
 } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
@@ -163,8 +164,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ----------------FUNCTIONS-----------------//
   // ------------------------------------------//
   const proceed = useCallback(() => {
-    AmpTrack(AmpEvent.ACTION_INSTANTIATE);
     handleSubmit(async ({ adminAddress, label, initMsg, assets }) => {
+      AmpTrackAction(
+        AmpEvent.ACTION_INSTANTIATE,
+        assets.filter((asset) => Number(asset.amount) && asset.denom).length
+      );
       setSimulating(true);
       const funds = fabricateFunds(assets);
       const msg = composeMsg(MsgType.INSTANTIATE, {
@@ -289,7 +293,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             error={formErrors.label?.message}
             placeholder="ex. Token Factory"
             label="Label"
-            helperText="Label will help remind you or other contract viewer to understand what this contract do and how it works"
+            helperText="The contract's label help briefly describe the contract and what it does."
             variant="floating"
             mb="32px"
             rules={{ required: "Label is required" }}
@@ -299,7 +303,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             control={control}
             label="Admin Address (optional)"
             placeholder={`ex. ${exampleContractAddress}`}
-            helperText="This address will be the admin for the deployed smart contract."
+            helperText="The contract's admin will be able to migrate and update future admins."
             variant="floating"
             error={validateAdmin(watchAdminAddress)}
             helperAction={

@@ -1,5 +1,5 @@
 import {
-  Icon,
+  Image,
   Heading,
   HStack,
   VStack,
@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { ReactNode } from "react";
-import { MdSearchOff } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
@@ -65,7 +64,11 @@ const StateContainer = ({ children }: { children: ReactNode }) => (
 const NotMatched = () => {
   return (
     <StateContainer>
-      <Icon as={MdSearchOff} width="64px" height="64px" color="pebble.600" />
+      <Image
+        src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+        alt="result not found"
+        width="200px"
+      />
       <Text color="text.dark">No matched codes found.</Text>
     </StateContainer>
   );
@@ -85,7 +88,7 @@ const Empty = ({ type }: OtherTBodyProps) => {
       case "recent":
         return "Most recent 100 code IDs will display here";
       case "saved":
-        return "Your saved code IDs will display here. Saved codes are stored locally on your device.";
+        return "Codes saved using Celatone will display here. Saved codes are stored locally on your device.";
       case "stored":
         return "Your uploaded Wasm files will display as My Stored Codes";
       default:
@@ -228,7 +231,7 @@ function CodesTable({
         px="48px"
       >
         {type !== "recent" && (
-          <Heading as="h2" size="md">
+          <Heading as="h6" variant="h6">
             {tableName}
           </Heading>
         )}

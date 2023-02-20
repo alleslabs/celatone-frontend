@@ -6,6 +6,7 @@ import { FiChevronRight } from "react-icons/fi";
 
 import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
+import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
 // TODO: refactor props to pass param in txResultRendering instead of receipt
@@ -25,6 +26,7 @@ export const ButtonSection = ({
   const { currentChainName } = useWallet();
 
   const openExplorer = useCallback(() => {
+    AmpTrackMintscan("tx_hash");
     const txHash = receipts.find((r) => r.title === "Tx Hash")?.value;
     window.open(
       `${getExplorerTxUrl(currentChainName)}/${txHash}`,

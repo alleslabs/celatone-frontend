@@ -7,6 +7,7 @@ export enum AmpEvent {
   CODE_EDIT = "Code Edit",
   CODE_REMOVE = "Code Remove",
   // CONTRACT
+  CONTRACT_SAVE_AFTER_INIT = "Contract Save After Init",
   CONTRACT_SAVE = "Contract Save",
   CONTRACT_EDIT = "Contract Edit",
   CONTRACT_EDIT_TAGS = "Contract Edit Tags",
@@ -88,6 +89,8 @@ export enum AmpEvent {
   ALLESLABS = "AllesLabs",
 }
 
+type ActionAmpEvent = AmpEvent.ACTION_INSTANTIATE | AmpEvent.ACTION_EXECUTE;
+
 type SpecialAmpEvent =
   | AmpEvent.INVALID_STATE
   | AmpEvent.TO_QUERY
@@ -105,8 +108,12 @@ type SpecialAmpEvent =
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
 
-export const AmpTrack = (event: Exclude<AmpEvent, SpecialAmpEvent>) =>
-  track(event);
+export const AmpTrack = (
+  event: Exclude<AmpEvent, ActionAmpEvent | SpecialAmpEvent>
+) => track(event);
+
+export const AmpTrackAction = (event: ActionAmpEvent, funds: number) =>
+  track(event, { funds });
 
 export const AmpTrackToQuery = (contract: boolean, msg: boolean) =>
   track(AmpEvent.TO_QUERY, { contract, msg });

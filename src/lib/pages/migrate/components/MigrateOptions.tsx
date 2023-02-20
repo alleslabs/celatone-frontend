@@ -15,7 +15,7 @@ export const MigrateOptions = ({
 }: MigrateOptionsProps) => {
   return (
     <>
-      <Heading as="h5" variant="h5" mb="24px">
+      <Heading as="h5" variant="h5" mb="24px" textAlign="center">
         Migrate Options
       </Heading>
       <ButtonCard

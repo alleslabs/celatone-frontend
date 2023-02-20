@@ -145,12 +145,14 @@ const Searchbar = () => {
         >
           {!results.length ? (
             <ResultItem
+              key="Not Found"
               value={keyword}
               handleSelectResult={handleSelectResult}
             />
           ) : (
             results.map((type) => (
               <ResultItem
+                key={type}
                 type={type}
                 value={keyword}
                 handleSelectResult={handleSelectResult}
