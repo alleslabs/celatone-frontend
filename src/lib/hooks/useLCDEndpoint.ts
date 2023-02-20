@@ -6,7 +6,7 @@ export const useLCDEndpoint = () => {
   const { currentChainRecord, currentChainName } = useWallet();
 
   return (
-    currentChainRecord?.preferredEndpoints?.rest?.at(0) ??
+    currentChainRecord?.preferredEndpoints?.rest?.[0] ??
     FALLBACK_LCD_ENDPOINT[currentChainName]
   );
 };
