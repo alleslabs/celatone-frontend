@@ -3,10 +3,7 @@ import { graphql } from "lib/gql";
 export const getInstantiatedListByUserQueryDocument = graphql(`
   query getInstantiatedListByUserQueryDocument($walletAddr: String!) {
     contracts(
-      where: {
-        accountByInitBy: { address: { _eq: $walletAddr } }
-        _or: { transaction: { account: { address: { _eq: $walletAddr } } } }
-      }
+      where: { accountByInitBy: { address: { _eq: $walletAddr } } }
       limit: 100
       offset: 0
       order_by: { transaction: { block: { timestamp: desc } } }
@@ -23,7 +20,7 @@ export const getInstantiatedListByUserQueryDocument = graphql(`
 export const getInstantiatedCountByUserQueryDocument = graphql(`
   query getInstantiatedCountByUserQueryDocument($walletAddr: String!) {
     contracts_aggregate(
-      where: { transaction: { account: { address: { _eq: $walletAddr } } } }
+      where: { accountByInitBy: { address: { _eq: $walletAddr } } }
     ) {
       aggregate {
         count
@@ -228,10 +225,7 @@ export const getContractListByWalletAddressPagination = graphql(`
     $pageSize: Int!
   ) {
     contracts(
-      where: {
-        accountByInitBy: { address: { _eq: $walletAddress } }
-        _or: { transaction: { account: { address: { _eq: $walletAddress } } } }
-      }
+      where: { accountByInitBy: { address: { _eq: $walletAddress } } }
       limit: $pageSize
       offset: $offset
       order_by: { transaction: { block: { timestamp: desc } } }
@@ -257,21 +251,6 @@ export const getContractListByWalletAddressPagination = graphql(`
           address
         }
         remark
-      }
-    }
-  }
-`);
-
-export const getContractListCountByWalletAddress = graphql(`
-  query getContractListCountByWalletAddress($walletAddress: String!) {
-    contracts_aggregate(
-      where: {
-        accountByInitBy: { address: { _eq: $walletAddress } }
-        _or: { transaction: { account: { address: { _eq: $walletAddress } } } }
-      }
-    ) {
-      aggregate {
-        count
       }
     }
   }

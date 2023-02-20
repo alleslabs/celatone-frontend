@@ -11,7 +11,7 @@ import {
   getCodeListByWalletAddressPagination,
   getCodeListCountByWalletAddress,
   getCodeListQueryDocument,
-} from "lib/query/code";
+} from "lib/query";
 import type {
   CodeInfo,
   CodeData,
@@ -171,7 +171,7 @@ export const useCodeListByWalletAddressPagination = (
         pageSize,
       })
       .then(({ codes }) =>
-        codes.map((code) => ({
+        codes.map<CodeInfo>((code) => ({
           id: code.id,
           uploader: code.account.uploader as Addr,
           contractCount: code.contracts_aggregate.aggregate?.count,

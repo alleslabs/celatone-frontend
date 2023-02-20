@@ -6,7 +6,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import {
   getTxsByContractAddressPagination,
   getTxsCountByContractAddress,
-} from "lib/query/tx";
+} from "lib/query";
 import type { Addr, AllTransaction, ContractAddr, Option } from "lib/types";
 import {
   getActionMsgType,

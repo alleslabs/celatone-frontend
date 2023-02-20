@@ -6,19 +6,41 @@ import {
   useContractListByAdminPagination,
   useContractListByWalletAddressPagination,
 } from "lib/services/contractService";
-import type { BalanceWithAssetInfo, HumanAddr, Token, Option } from "lib/types";
-import { formatTokenWithPrecision } from "lib/utils";
-import { calculateAssetValue } from "lib/utils/assetValue";
+import type {
+  BalanceWithAssetInfo,
+  CodeInfo,
+  ContractInfo,
+  HumanAddr,
+  Token,
+  Option,
+} from "lib/types";
+import { calculateAssetValue, formatTokenWithPrecision } from "lib/utils";
+
+interface AccountContracts {
+  contracts: Option<ContractInfo[]>;
+  isLoading: boolean;
+}
+
+interface AccountCodes {
+  codes: Option<CodeInfo[]>;
+  isLoading: boolean;
+}
+
+interface AccountAssetInfos {
+  supportedAssets: Option<BalanceWithAssetInfo[]>;
+  unsupportedAssets: Option<BalanceWithAssetInfo[]>;
+  isLoading: boolean;
+}
 
 export const useContractInstances = (
-  walletAddress: Option<HumanAddr>,
+  walletAddress: HumanAddr,
   offset: number,
   pageSize: number
-) => {
+): AccountContracts => {
   const { data: contracts, isLoading } =
     useContractListByWalletAddressPagination(walletAddress, offset, pageSize);
   const { getContractLocalInfo } = useContractStore();
-  const data = contracts?.map((contract) => {
+  const data = contracts?.map<ContractInfo>((contract) => {
     const localInfo = getContractLocalInfo(contract.contractAddress);
 
     return {
@@ -34,10 +56,10 @@ export const useContractInstances = (
 };
 
 export const useContractsAdmin = (
-  walletAddress: Option<HumanAddr>,
+  walletAddress: HumanAddr,
   offset: number,
   pageSize: number
-) => {
+): AccountContracts => {
   const { data: contractsAdmin, isLoading } = useContractListByAdminPagination(
     walletAddress as HumanAddr,
     offset,
@@ -45,7 +67,7 @@ export const useContractsAdmin = (
   );
   const { getContractLocalInfo } = useContractStore();
 
-  const data = contractsAdmin?.map((contractAdmin) => {
+  const data = contractsAdmin?.map<ContractInfo>((contractAdmin) => {
     const localInfo = getContractLocalInfo(contractAdmin.contractAddress);
 
     return {
@@ -62,10 +84,10 @@ export const useContractsAdmin = (
 };
 
 export const useCodeStored = (
-  walletAddress: Option<HumanAddr>,
+  walletAddress: HumanAddr,
   offset: number,
   pageSize: number
-) => {
+): AccountCodes => {
   const { data: codes, isLoading } = useCodeListByWalletAddressPagination(
     walletAddress as HumanAddr,
     offset,
@@ -73,7 +95,7 @@ export const useCodeStored = (
   );
   const { getCodeLocalInfo } = useCodeStore();
 
-  const data = codes?.map((code) => {
+  const data = codes?.map<CodeInfo>((code) => {
     const localInfo = getCodeLocalInfo(code.id);
     return {
       ...code,
@@ -87,11 +109,13 @@ export const useCodeStored = (
   };
 };
 
-export const useUserAssetInfos = (walletAddress: Option<HumanAddr>) => {
+export const useUserAssetInfos = (
+  walletAddress: HumanAddr
+): AccountAssetInfos => {
   const { data: balances, isLoading } = useAccountBalances(walletAddress);
   const assetInfos = useAssetInfos();
 
-  const contractBalancesWithAssetInfos = balances?.map(
+  const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
     (balance): BalanceWithAssetInfo => ({
       balance,
       assetInfo: assetInfos?.[balance.id],

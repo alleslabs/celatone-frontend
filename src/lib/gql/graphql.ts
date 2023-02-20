@@ -7230,21 +7230,6 @@ export type GetContractListByWalletAddressPaginationQuery = {
   }>;
 };
 
-export type GetContractListCountByWalletAddressQueryVariables = Exact<{
-  walletAddress: Scalars["String"];
-}>;
-
-export type GetContractListCountByWalletAddressQuery = {
-  __typename?: "query_root";
-  contracts_aggregate: {
-    __typename?: "contracts_aggregate";
-    aggregate?: {
-      __typename?: "contracts_aggregate_fields";
-      count: number;
-    } | null;
-  };
-};
-
 export type GetContractListByAdminPaginationQueryVariables = Exact<{
   walletAddress: Scalars["String"];
   offset: Scalars["Int"];
@@ -8290,59 +8275,6 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
                         ],
                       },
                     },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_or" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "transaction" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "account" },
-                                  value: {
-                                    kind: "ObjectValue",
-                                    fields: [
-                                      {
-                                        kind: "ObjectField",
-                                        name: {
-                                          kind: "Name",
-                                          value: "address",
-                                        },
-                                        value: {
-                                          kind: "ObjectValue",
-                                          fields: [
-                                            {
-                                              kind: "ObjectField",
-                                              name: {
-                                                kind: "Name",
-                                                value: "_eq",
-                                              },
-                                              value: {
-                                                kind: "Variable",
-                                                name: {
-                                                  kind: "Name",
-                                                  value: "walletAddr",
-                                                },
-                                              },
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
                   ],
                 },
               },
@@ -8456,34 +8388,22 @@ export const GetInstantiatedCountByUserQueryDocumentDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
+                      name: { kind: "Name", value: "accountByInitBy" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "account" },
+                            name: { kind: "Name", value: "address" },
                             value: {
                               kind: "ObjectValue",
                               fields: [
                                 {
                                   kind: "ObjectField",
-                                  name: { kind: "Name", value: "address" },
+                                  name: { kind: "Name", value: "_eq" },
                                   value: {
-                                    kind: "ObjectValue",
-                                    fields: [
-                                      {
-                                        kind: "ObjectField",
-                                        name: { kind: "Name", value: "_eq" },
-                                        value: {
-                                          kind: "Variable",
-                                          name: {
-                                            kind: "Name",
-                                            value: "walletAddr",
-                                          },
-                                        },
-                                      },
-                                    ],
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "walletAddr" },
                                   },
                                 },
                               ],
@@ -9910,59 +9830,6 @@ export const GetContractListByWalletAddressPaginationDocument = {
                         ],
                       },
                     },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_or" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "transaction" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "account" },
-                                  value: {
-                                    kind: "ObjectValue",
-                                    fields: [
-                                      {
-                                        kind: "ObjectField",
-                                        name: {
-                                          kind: "Name",
-                                          value: "address",
-                                        },
-                                        value: {
-                                          kind: "ObjectValue",
-                                          fields: [
-                                            {
-                                              kind: "ObjectField",
-                                              name: {
-                                                kind: "Name",
-                                                value: "_eq",
-                                              },
-                                              value: {
-                                                kind: "Variable",
-                                                name: {
-                                                  kind: "Name",
-                                                  value: "walletAddress",
-                                                },
-                                              },
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
                   ],
                 },
               },
@@ -10166,152 +10033,6 @@ export const GetContractListByWalletAddressPaginationDocument = {
 } as unknown as DocumentNode<
   GetContractListByWalletAddressPaginationQuery,
   GetContractListByWalletAddressPaginationQueryVariables
->;
-export const GetContractListCountByWalletAddressDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getContractListCountByWalletAddress" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "walletAddress" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "contracts_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "accountByInitBy" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "address" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: {
-                                      kind: "Name",
-                                      value: "walletAddress",
-                                    },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_or" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "transaction" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "account" },
-                                  value: {
-                                    kind: "ObjectValue",
-                                    fields: [
-                                      {
-                                        kind: "ObjectField",
-                                        name: {
-                                          kind: "Name",
-                                          value: "address",
-                                        },
-                                        value: {
-                                          kind: "ObjectValue",
-                                          fields: [
-                                            {
-                                              kind: "ObjectField",
-                                              name: {
-                                                kind: "Name",
-                                                value: "_eq",
-                                              },
-                                              value: {
-                                                kind: "Variable",
-                                                name: {
-                                                  kind: "Name",
-                                                  value: "walletAddress",
-                                                },
-                                              },
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "count" } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetContractListCountByWalletAddressQuery,
-  GetContractListCountByWalletAddressQueryVariables
 >;
 export const GetContractListByAdminPaginationDocument = {
   kind: "Document",

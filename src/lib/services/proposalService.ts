@@ -8,7 +8,7 @@ import {
   getProposalsCountByWalletAddress,
   getRelatedProposalsByContractAddressPagination,
   getRelatedProposalsCountByContractAddress,
-} from "lib/query/proposal";
+} from "lib/query";
 import type {
   ContractAddr,
   ContractRelatedProposals,
@@ -99,14 +99,9 @@ export const useProposalsByWalletAddressPagination = (
   walletAddress: HumanAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<UserProposal> => {
+): UseQueryResult<UserProposal[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useProposalsByWalletAddressPagination)"
-      );
-
     return indexerGraphClient
       .request(getProposalsByWalletAddressPagination, {
         walletAddress: walletAddress as HumanAddr,
@@ -114,7 +109,7 @@ export const useProposalsByWalletAddressPagination = (
         pageSize,
       })
       .then(({ proposals }) =>
-        proposals.map((proposal) => ({
+        proposals.map<UserProposal>((proposal) => ({
           proposalId: proposal.id,
           title: proposal.title,
           status: proposal.status as ProposalStatus,
@@ -141,15 +136,10 @@ export const useProposalsByWalletAddressPagination = (
 };
 
 export const useProposalsCountByWalletAddress = (
-  walletAddress: Option<HumanAddr>
+  walletAddress: HumanAddr
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useProposalsCountByWalletAddress)"
-      );
-
     return indexerGraphClient
       .request(getProposalsCountByWalletAddress, {
         walletAddress,

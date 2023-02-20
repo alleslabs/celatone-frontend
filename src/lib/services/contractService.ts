@@ -11,7 +11,6 @@ import {
   getContractListByWalletAddressPagination,
   getContractListCountByAdmin,
   getContractListCountByCodeId,
-  getContractListCountByWalletAddress,
   getExecuteTxsByContractAddressPagination,
   getExecuteTxsCountByContractAddress,
   getInstantiatedCountByUserQueryDocument,
@@ -19,7 +18,7 @@ import {
   getInstantiatedListByUserQueryDocument,
   getMigrationHistoriesByContractAddressPagination,
   getMigrationHistoriesCountByContractAddress,
-} from "lib/query/contract";
+} from "lib/query";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
@@ -452,7 +451,7 @@ export const useContractListByWalletAddressPagination = (
 
   return useQuery(
     [
-      "contract_list_by_wallet_address_pagination",
+      "contract_list_by_wallet_address",
       indexerGraphClient,
       offset,
       pageSize,
@@ -460,37 +459,6 @@ export const useContractListByWalletAddressPagination = (
     ],
     queryFn,
     { enabled: !!walletAddress }
-  );
-};
-
-export const useContractListCountByWalletAddress = (
-  walletAddress: Option<HumanAddr>
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    if (!walletAddress)
-      throw new Error(
-        "Wallet address not found (useContractListCountByWalletAddress)"
-      );
-
-    return indexerGraphClient
-      .request(getContractListCountByWalletAddress, {
-        walletAddress,
-      })
-      .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
-  }, [walletAddress, indexerGraphClient]);
-
-  return useQuery(
-    [
-      "contract_list_count_by_wallet_address_pagination",
-      walletAddress,
-      indexerGraphClient,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!walletAddress,
-    }
   );
 };
 

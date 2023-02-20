@@ -14,7 +14,7 @@ export const getAccountBalanceInfo = async (
   if (!walletAddr) {
     throw new Error("Wallet address not found (getAccountBalanceInfo)");
   }
-  const { data } = await axios.get(
+  const { data } = await axios.get<Balance[]>(
     `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
       chainName
     )}/${chainId}/${walletAddr}`

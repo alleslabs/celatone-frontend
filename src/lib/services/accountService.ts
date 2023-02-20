@@ -7,23 +7,23 @@ import type { Balance, HumanAddr, Option } from "lib/types";
 import { getAccountBalanceInfo } from "./account";
 
 export const useAccountBalances = (
-  address: Option<HumanAddr>
+  walletAddress: Option<HumanAddr>
 ): UseQueryResult<Balance[]> => {
   const { currentChainRecord } = useWallet();
 
   return useQuery(
     [
       "account_balance_info",
-      address,
+      walletAddress,
       currentChainRecord?.name,
       currentChainRecord?.chain.chain_id,
     ],
     async () =>
       getAccountBalanceInfo(
-        address as HumanAddr,
+        walletAddress as HumanAddr,
         currentChainRecord?.name,
         currentChainRecord?.chain.chain_id
       ),
-    { enabled: !!currentChainRecord || !!address }
+    { enabled: !!currentChainRecord || !!walletAddress }
   );
 };
