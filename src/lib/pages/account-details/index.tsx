@@ -54,10 +54,10 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           id={tableHeaderId}
         >
           <CustomTab>Overall</CustomTab>
+          {/* TODO: add counts for Delegations */}
+          <CustomTab>Delegations</CustomTab>
           {/* TODO: add counts for Assets */}
           <CustomTab count={0}>Assets</CustomTab>
-          {/* TODO: add counts for Delegations */}
-          <CustomTab count={0}>Delegations</CustomTab>
           {/* TODO: add counts for Txs */}
           <CustomTab count={0}>Transactions</CustomTab>
           {/* TODO: add counts for Codes */}
@@ -71,10 +71,10 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            {/* TODO: replace with the truncated Assets table */}
-            <Text>Assets</Text>
             {/* TODO: replace with the truncated Delegations table */}
             <Text>Delegations</Text>
+            {/* TODO: replace with the truncated Assets table */}
+            <Text>Assets</Text>
             {/* TODO: replace with the truncated Transactions table */}
             <Text>Transactions</Text>
             {/* TODO: replace with the truncated Codes table */}
@@ -87,12 +87,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Opened Proposals</Text>
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Assets table */}
-            <Text>Assets</Text>
-          </TabPanel>
-          <TabPanel p={0}>
             {/* TODO: replace with the full Delegations table */}
             <Text>Delegations</Text>
+          </TabPanel>
+          <TabPanel p={0}>
+            {/* TODO: replace with the full Assets table */}
+            <Text>Assets</Text>
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Transactions table */}
