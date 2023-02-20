@@ -25,6 +25,12 @@ import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useLCDEndpoint, useValidateAddress } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackAction,
+  AmpTrackToInstantiate,
+} from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr, Token, U } from "lib/types";
 import { MsgType } from "lib/types";
@@ -159,6 +165,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   const proceed = useCallback(() => {
     handleSubmit(async ({ adminAddress, label, initMsg, assets }) => {
+      AmpTrackAction(
+        AmpEvent.ACTION_INSTANTIATE,
+        assets.filter((asset) => Number(asset.amount) && asset.denom).length
+      );
       setSimulating(true);
       const funds = fabricateFunds(assets);
       const msg = composeMsg(MsgType.INSTANTIATE, {
@@ -242,6 +252,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     }
   }, [codeIdQuery, msgQuery, reset, setValue]);
 
+  useEffect(() => {
+    if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
+  }, [router.isReady, msgQuery, codeIdQuery]);
+
   const validateAdmin = useCallback(
     (input: string) =>
       input && !!validateContractAddress(input) && !!validateUserAddress(input)
@@ -279,7 +293,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             error={formErrors.label?.message}
             placeholder="ex. Token Factory"
             label="Label"
-            helperText="Label will help remind you or other contract viewer to understand what this contract do and how it works"
+            helperText="The contract's label help briefly describe the contract and what it does."
             variant="floating"
             mb="32px"
             rules={{ required: "Label is required" }}
@@ -289,7 +303,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             control={control}
             label="Admin Address (optional)"
             placeholder={`ex. ${exampleContractAddress}`}
-            helperText="This address will be the admin for the deployed smart contract."
+            helperText="The contract's admin will be able to migrate and update future admins."
             variant="floating"
             error={validateAdmin(watchAdminAddress)}
             helperAction={
@@ -298,7 +312,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                 fontWeight="600"
                 variant="body3"
                 cursor="pointer"
-                onClick={() => setValue("adminAddress", address)}
+                onClick={() => {
+                  AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                  setValue("adminAddress", address);
+                }}
               >
                 Assign me
               </Text>

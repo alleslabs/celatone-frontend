@@ -7168,48 +7168,6 @@ export type GetContractListCountByCodeIdQuery = {
   };
 };
 
-export type GetTxsByContractAddressQueryVariables = Exact<{
-  contractAddress: Scalars["String"];
-  offset: Scalars["Int"];
-  pageSize: Scalars["Int"];
-}>;
-
-export type GetTxsByContractAddressQuery = {
-  __typename?: "query_root";
-  contract_transactions_view: Array<{
-    __typename?: "contract_transactions_view";
-    hash?: any | null;
-    success?: boolean | null;
-    messages?: any | null;
-    sender?: string | null;
-    height?: number | null;
-    timestamp?: any | null;
-    is_execute?: boolean | null;
-    is_ibc?: boolean | null;
-    is_instantiate?: boolean | null;
-    is_send?: boolean | null;
-    is_store_code?: boolean | null;
-    is_migrate?: boolean | null;
-    is_update_admin?: boolean | null;
-    is_clear_admin?: boolean | null;
-  }>;
-};
-
-export type GetTxsCountByContractAddressQueryVariables = Exact<{
-  contractAddress: Scalars["String"];
-}>;
-
-export type GetTxsCountByContractAddressQuery = {
-  __typename?: "query_root";
-  contract_transactions_aggregate: {
-    __typename?: "contract_transactions_aggregate";
-    aggregate?: {
-      __typename?: "contract_transactions_aggregate_fields";
-      count: number;
-    } | null;
-  };
-};
-
 export type GetMigrationHistoriesByContractAddressQueryVariables = Exact<{
   contractAddress: Scalars["String"];
   offset: Scalars["Int"];
@@ -7224,6 +7182,10 @@ export type GetMigrationHistoriesByContractAddressQuery = {
     remark: any;
     account: { __typename?: "accounts"; address: string };
     block: { __typename?: "blocks"; height: number; timestamp: any };
+    code: {
+      __typename?: "codes";
+      account: { __typename?: "accounts"; address: string };
+    };
   }>;
 };
 
@@ -7393,6 +7355,48 @@ export type GetProposalsCountByWalletAddressQuery = {
     __typename?: "proposals_aggregate";
     aggregate?: {
       __typename?: "proposals_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetTxsByContractAddressQueryVariables = Exact<{
+  contractAddress: Scalars["String"];
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetTxsByContractAddressQuery = {
+  __typename?: "query_root";
+  contract_transactions_view: Array<{
+    __typename?: "contract_transactions_view";
+    hash?: any | null;
+    success?: boolean | null;
+    messages?: any | null;
+    sender?: string | null;
+    height?: number | null;
+    timestamp?: any | null;
+    is_execute?: boolean | null;
+    is_ibc?: boolean | null;
+    is_instantiate?: boolean | null;
+    is_send?: boolean | null;
+    is_store_code?: boolean | null;
+    is_migrate?: boolean | null;
+    is_update_admin?: boolean | null;
+    is_clear_admin?: boolean | null;
+  }>;
+};
+
+export type GetTxsCountByContractAddressQueryVariables = Exact<{
+  contractAddress: Scalars["String"];
+}>;
+
+export type GetTxsCountByContractAddressQuery = {
+  __typename?: "query_root";
+  contract_transactions_aggregate: {
+    __typename?: "contract_transactions_aggregate";
+    aggregate?: {
+      __typename?: "contract_transactions_aggregate_fields";
       count: number;
     } | null;
   };
@@ -9525,248 +9529,6 @@ export const GetContractListCountByCodeIdDocument = {
   GetContractListCountByCodeIdQuery,
   GetContractListCountByCodeIdQueryVariables
 >;
-export const GetTxsByContractAddressDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getTxsByContractAddress" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "contractAddress" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "offset" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "pageSize" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "contract_transactions_view" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "contract_address" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "contractAddress" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "timestamp" },
-                      value: { kind: "EnumValue", value: "desc" },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "offset" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "offset" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "pageSize" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "hash" } },
-                { kind: "Field", name: { kind: "Name", value: "success" } },
-                { kind: "Field", name: { kind: "Name", value: "messages" } },
-                { kind: "Field", name: { kind: "Name", value: "sender" } },
-                { kind: "Field", name: { kind: "Name", value: "height" } },
-                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
-                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
-                { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_instantiate" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "is_send" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_store_code" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_update_admin" },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "is_clear_admin" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetTxsByContractAddressQuery,
-  GetTxsByContractAddressQueryVariables
->;
-export const GetTxsCountByContractAddressDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getTxsCountByContractAddress" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "contractAddress" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "contract_transactions_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "contract" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "address" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: {
-                                      kind: "Name",
-                                      value: "contractAddress",
-                                    },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "count" } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetTxsCountByContractAddressQuery,
-  GetTxsCountByContractAddressQueryVariables
->;
 export const GetMigrationHistoriesByContractAddressDocument = {
   kind: "Document",
   definitions: [
@@ -9932,6 +9694,28 @@ export const GetMigrationHistoriesByContractAddressDocument = {
                   },
                 },
                 { kind: "Field", name: { kind: "Name", value: "remark" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "code" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -11413,4 +11197,246 @@ export const GetProposalsCountByWalletAddressDocument = {
 } as unknown as DocumentNode<
   GetProposalsCountByWalletAddressQuery,
   GetProposalsCountByWalletAddressQueryVariables
+>;
+export const GetTxsByContractAddressDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getTxsByContractAddress" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "contractAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contract_transactions_view" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "contract_address" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "contractAddress" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "timestamp" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                { kind: "Field", name: { kind: "Name", value: "sender" } },
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
+                { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_instantiate" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_send" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_store_code" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_update_admin" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_clear_admin" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetTxsByContractAddressQuery,
+  GetTxsByContractAddressQueryVariables
+>;
+export const GetTxsCountByContractAddressDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getTxsCountByContractAddress" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "contractAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contract_transactions_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "contract" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "contractAddress",
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetTxsCountByContractAddressQuery,
+  GetTxsCountByContractAddressQueryVariables
 >;

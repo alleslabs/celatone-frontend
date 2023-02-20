@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { CustomTab } from "lib/components/CustomTab";
@@ -19,6 +20,7 @@ import {
   useContractData,
   useContractDetailsTableCounts,
 } from "lib/model/contract";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr, ContractData } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
@@ -41,7 +43,7 @@ const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 const ContractDetailsBody = observer(
   ({ contractData, contractAddress }: ContractDetailsBodyProps) => {
-    const tableHeaderId = "contractDetailTableHeader";
+    const tableHeaderId = "contractDetailsTableHeader";
     const {
       tableCounts,
       refetchMigration,
@@ -149,8 +151,11 @@ const ContractDetails = observer(() => {
   ) as ContractAddr;
   const { isLoading, contractData } = useContractData(contractAddressParam);
 
-  if (isLoading) return <Loading />;
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
+  }, [router.isReady]);
 
+  if (isLoading) return <Loading />;
   return (
     <PageContainer>
       <BackButton />

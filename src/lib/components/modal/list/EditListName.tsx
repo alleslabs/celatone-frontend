@@ -9,6 +9,7 @@ import { TextInput } from "lib/components/forms/TextInput";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useContractStore, useUserKey } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { LVPair } from "lib/types";
 import { formatSlugName, shortenName } from "lib/utils";
 
@@ -49,6 +50,7 @@ export function EditListNameModal({
 
   const toast = useToast();
   const handleSave = () => {
+    AmpTrack(AmpEvent.LIST_EDIT);
     // TODO: check list name and different toast status
     renameList(userKey, list.value, listName);
     toast({
@@ -80,7 +82,8 @@ export function EditListNameModal({
         handleSave();
         if (reroute)
           navigate({
-            pathname: `/contract-list/${formatSlugName(listName)}`,
+            pathname: "/contract-list/[slug]",
+            query: { slug: formatSlugName(listName) },
             replace: true,
           });
       }}

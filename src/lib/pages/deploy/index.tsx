@@ -4,23 +4,33 @@ import {
   AlertIcon,
   Flex,
   Heading,
+  Button,
   Text,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { useInternalNavigate, useSelectChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { getChainNameByNetwork, getNetworkByChainName } from "lib/data";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const Deploy = () => {
   const { currentChainName } = useWallet();
   const network = getNetworkByChainName(currentChainName);
+  const router = useRouter();
   const navigate = useInternalNavigate();
   const selectChain = useSelectChain();
 
   const isMainnet = network === "mainnet";
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
+  }, [router.isReady]);
+
   return (
     <WasmPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
@@ -67,9 +77,20 @@ const Deploy = () => {
       />
       <ButtonCard
         title="Use existing Code IDs"
-        description="Input code ID or select from previously stored codes or your saved codes"
+        description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
       />
+      <Flex justify="center" w="100%" mt="32px">
+        <Button
+          onClick={() => {
+            router.back();
+          }}
+          size="md"
+          variant="ghost-gray"
+        >
+          Cancel
+        </Button>
+      </Flex>
     </WasmPageContainer>
   );
 };

@@ -298,6 +298,7 @@ export const useMigrationHistoriesByContractAddressPagination = (
             height: history.block.height,
             timestamp: parseDate(history.block.timestamp),
             remark: history.remark,
+            uploader: history.code.account.address as Addr,
           })
         )
       );

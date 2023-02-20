@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { MdSearch, MdSearchOff } from "react-icons/md";
 
 import { Loading } from "lib/components/Loading";
 import { DisconnectedState } from "lib/components/state/DisconnectedState";
@@ -51,7 +50,7 @@ export const PastTxsContent = ({
     return (
       <Flex my="20" direction="column">
         <EmptyState
-          icon={MdSearchOff}
+          image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
           message={`
         No past transaction matches found with your input.
         You can search with transaction hash, and contract address.
@@ -65,7 +64,7 @@ export const PastTxsContent = ({
     return (
       <Flex my="20" direction="column">
         <EmptyState
-          icon={MdSearch}
+          image="https://assets.alleslabs.dev/illustration/search-empty.svg"
           message={`
         Past transactions involving with Wasm module
         such as Instantiate, Execute, or Upload Wasm file will display here.

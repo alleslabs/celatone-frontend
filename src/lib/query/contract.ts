@@ -200,6 +200,11 @@ export const getMigrationHistoriesByContractAddressPagination = graphql(`
         timestamp
       }
       remark
+      code {
+        account {
+          address
+        }
+      }
     }
   }
 `);

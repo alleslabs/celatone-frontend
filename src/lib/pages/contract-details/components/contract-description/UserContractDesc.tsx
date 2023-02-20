@@ -15,14 +15,10 @@ interface UserContractDescProps {
 export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
-  const description = useMemo(
-    () =>
-      contractData.contractLocalInfo?.description || "No contract description",
-    [contractData.contractLocalInfo?.description]
-  );
+  const description = contractData.contractLocalInfo?.description;
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description,
+    text: description || "No Contract description",
     ellipsis: "...",
     lines: textLine(
       !contractData.publicProject.publicInfo?.description,
@@ -57,6 +53,13 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
     );
   };
 
+  const displayDescription = useMemo(() => {
+    if (!description) {
+      return "No Contract Description";
+    }
+    return showMore ? description : clampedText;
+  }, [clampedText, description, showMore]);
+
   return (
     <Flex
       direction="column"
@@ -82,10 +85,10 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
         ref={ref as React.MutableRefObject<HTMLParagraphElement>}
         key={key}
       >
-        <Linkify>{showMore ? description : clampedText}</Linkify>
+        <Linkify>{displayDescription}</Linkify>
       </Text>
 
-      {!noClamp && (
+      {!noClamp && description && (
         <ShowMoreButton
           showMoreText="View Full Description"
           showLessText="View Less Description"

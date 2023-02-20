@@ -1,6 +1,7 @@
 import { Divider, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button/BackButton";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -10,6 +11,7 @@ import { InvalidState } from "lib/components/state/InvalidState";
 import { useCodeStore } from "lib/hooks";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { InstantiatePermission } from "lib/types";
 import { getFirstQueryParam, isCodeId } from "lib/utils";
 
@@ -82,8 +84,11 @@ const CodeDetails = observer(() => {
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(Number(codeIdParam));
 
-  if (data.isLoading) return <Loading />;
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
+  }, [router.isReady]);
 
+  if (data.isLoading) return <Loading />;
   return (
     <PageContainer>
       <BackButton />

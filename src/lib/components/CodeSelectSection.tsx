@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
 import { CodeSelect } from "lib/pages/instantiate/component";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 
 import type { FormStatus } from "./forms";
@@ -32,9 +33,14 @@ export const CodeSelectSection = <T extends FieldValues>({
   return (
     <>
       <RadioGroup
-        onChange={(nextVal: "select-existing" | "fill-manually") =>
-          setMethod(nextVal)
-        }
+        onChange={(nextVal: "select-existing" | "fill-manually") => {
+          AmpTrack(
+            nextVal === "fill-manually"
+              ? AmpEvent.USE_CODE_FILL
+              : AmpEvent.USE_CODE_SELECT
+          );
+          setMethod(nextVal);
+        }}
         value={method}
         w="100%"
       >

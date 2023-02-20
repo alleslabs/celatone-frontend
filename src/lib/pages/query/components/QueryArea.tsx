@@ -12,6 +12,7 @@ import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore, useLCDEndpoint, useUserKey } from "lib/hooks";
+import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
 import { encode, getCurrentDate, jsonPrettify, jsonValidate } from "lib/utils";
@@ -66,15 +67,17 @@ export const QueryArea = ({
       },
     }
   );
+  const handleQuery = () => {
+    AmpTrack(AmpEvent.ACTION_QUERY);
+    refetch();
+  };
 
   useEffect(() => setMsg(initialMsg), [initialMsg]);
 
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
       // TODO: problem with safari if focusing in the textarea
-      if (e.ctrlKey && e.key === "Enter") {
-        refetch();
-      }
+      if (e.ctrlKey && e.key === "Enter") handleQuery();
     };
     document.addEventListener("keydown", keydownHandler);
     return () => {
@@ -84,7 +87,12 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Flex width="full" my="24px" alignItems="center">
+      <Box width="full" my="16px" alignItems="center">
+        {contractAddress && (
+          <Text variant="body3" mb="8px">
+            Message Suggestions:
+          </Text>
+        )}
         {cmds.length ? (
           <ButtonGroup
             width="90%"
@@ -101,18 +109,21 @@ export const QueryArea = ({
               <ContractCmdButton
                 key={`query-cmd-${cmd}`}
                 cmd={cmd}
-                onClickCmd={() => setMsg(jsonPrettify(queryMsg))}
+                onClickCmd={() => {
+                  AmpTrack(AmpEvent.USE_CMD_QUERY);
+                  setMsg(jsonPrettify(queryMsg));
+                }}
               />
             ))}
           </ButtonGroup>
         ) : (
           contractAddress && (
-            <Text ml="16px" variant="body2" color="text.dark">
+            <Text my="4px" variant="body2" color="text.dark">
               No QueryMsgs suggestion available
             </Text>
           )
         )}
-      </Flex>
+      </Box>
       <Flex gap="16px">
         <Box w="full">
           <JsonInput
@@ -134,9 +145,7 @@ export const QueryArea = ({
               variant="primary"
               fontSize="14px"
               p="6px 16px"
-              onClick={() => {
-                refetch();
-              }}
+              onClick={handleQuery}
               isDisabled={jsonValidate(msg) !== null}
               isLoading={isFetching || isRefetching}
               leftIcon={<SearchIcon />}

@@ -9,6 +9,7 @@ import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
@@ -46,6 +47,7 @@ export const executeContractTx = ({
         client.execute(address, contractAddress, msg, fee, undefined, funds),
     }),
     ({ value: txInfo }) => {
+      AmpTrack(AmpEvent.TX_SUCCEED);
       onTxSucceed?.(userKey, {
         type: "execute",
         action: Object.keys(msg)[0],
