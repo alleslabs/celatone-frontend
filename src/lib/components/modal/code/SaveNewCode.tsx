@@ -8,49 +8,13 @@ import { MdBookmark, MdCheckCircle } from "react-icons/md";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
+import { getPermissionHelper } from "lib/components/PermissionChip";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
-import type { Addr } from "lib/types";
-import { InstantiatePermission } from "lib/types";
-import { getNameAndDescriptionDefault, truncate } from "lib/utils";
-
-const getPermissionHelper = (
-  address: string | undefined,
-  permission: string,
-  permissionAddress: string,
-  permissionAddresses: string[]
-) => {
-  const getMessage = () => {
-    switch (permission) {
-      case InstantiatePermission.EVERYBODY:
-        return "Everyone can instantiate contract with this code (Everyone)";
-      case InstantiatePermission.NOBODY:
-        return "You can instantiate contract with this code through proposal only (Nobody)";
-      case InstantiatePermission.ANY_OF_ADDRESSES:
-        return address && permissionAddresses.includes(address)
-          ? "You are included in designated addresses to instantiate (AnyOfAddresses)"
-          : "This code can instantiate by designated addresses (AnyOfAddresses)";
-      case InstantiatePermission.ONLY_ADDRESS:
-        return address && permissionAddress === address
-          ? "You are designated to instantiate contract from this code (OnlyAddress)"
-          : `This code can instantiated by ${truncate(
-              permissionAddress
-            )} (OnlyAddress)`;
-      default:
-        return "Valid Code ID";
-    }
-  };
-  const getColor = () =>
-    permission === InstantiatePermission.EVERYBODY ||
-    (address &&
-      (permissionAddresses.includes(address) || permissionAddress === address))
-      ? "success.main"
-      : "info.main";
-
-  return { message: getMessage(), messageColor: getColor() };
-};
+import type { Addr, HumanAddr } from "lib/types";
+import { getNameAndDescriptionDefault } from "lib/utils";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
@@ -100,14 +64,15 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       cacheTime: 0,
       onSuccess(data) {
         const { message, messageColor } = getPermissionHelper(
-          address,
+          address as HumanAddr,
           data.code_info.instantiate_permission.permission,
-          data.code_info.instantiate_permission.address,
-          data.code_info.instantiate_permission.addresses
+          data.code_info.instantiate_permission.address
+            ? [data.code_info.instantiate_permission.address]
+            : data.code_info.instantiate_permission.addresses
         );
         setCodeIdStatus({
           state: "success",
-          message,
+          message: `${message} (${data.code_info.instantiate_permission.permission})`,
           messageColor,
         });
         setUploader(data.code_info.creator);

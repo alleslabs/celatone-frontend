@@ -111,6 +111,7 @@ const CodeTableHead = () => {
       sx={{ "& div": { color: "text.dark" } }}
       borderBottom="1px solid"
       borderColor="pebble.700"
+      minW="min-content"
     >
       <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
       <TableHeaderNoBorder>Code Name</TableHeaderNoBorder>

@@ -88,7 +88,7 @@ export const MigrateContract = ({
         if (
           address &&
           (permission.permission === InstantiatePermission.EVERYBODY ||
-            permission.addresses.includes(address) ||
+            permission.addresses.includes(address as HumanAddr) ||
             permission.address === address)
         )
           setStatus({ state: "success" });
