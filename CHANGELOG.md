@@ -37,6 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Features
+
+- [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
+
 ### Bug fixes
 
 - [#213](https://github.com/alleslabs/celatone-frontend/pull/213) Fix `window.crypto.randomUUID()` in old safari version (< 15.4) and `at()` of array
@@ -45,7 +49,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
 - [#199](https://github.com/alleslabs/celatone-frontend/pull/199) Final prelaunch cleanup
 - [#202](https://github.com/alleslabs/celatone-frontend/pull/202) Reorder absolute and relative timestmap in stored block height
 - [#201](https://github.com/alleslabs/celatone-frontend/pull/201) Add GPLv3 license
