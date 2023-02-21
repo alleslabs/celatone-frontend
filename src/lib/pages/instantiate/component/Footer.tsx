@@ -11,14 +11,7 @@ interface FooterProps {
 export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
   const router = useRouter();
   return (
-    <Box
-      w="full"
-      bg="pebble.900"
-      h="70px"
-      bottom="0"
-      position="sticky"
-      zIndex="sticky"
-    >
+    <Box w="full" bg="pebble.900" h="70px" bottom="0" position="sticky">
       <Flex align="center" justify="space-between" w="540px" h="full" mx="auto">
         <Button
           variant="outline-gray"

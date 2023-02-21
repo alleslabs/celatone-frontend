@@ -12,7 +12,7 @@ const WasmPageContainer = ({ children }: WasmPageContainerProps) => {
       align="center"
       width="540px"
       mx="auto"
-      my="48px"
+      my="90px"
       direction="column"
     >
       {children}

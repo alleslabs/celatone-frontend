@@ -1,54 +1,47 @@
 import { Box, Flex, Button, ButtonGroup, Text } from "@chakra-ui/react";
-import type { StdFee } from "@cosmjs/stargate";
+import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import dynamic from "next/dynamic";
-import type { SetStateAction } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFieldArray, useFormState, useWatch } from "react-hook-form";
-import type { Control, UseFormSetValue } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { MdInput } from "react-icons/md";
 
-import type { ExecutePageState } from "../types";
-import {
-  useFabricateFee,
-  useNativeTokensInfo,
-  useExecuteContractTx,
-} from "lib/app-provider";
+import { useFabricateFee, useExecuteContractTx } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import { AssetInput, ControllerInput, SelectInput } from "lib/components/forms";
+import { AttachFund } from "lib/components/fund";
 import JsonInput from "lib/components/json/JsonInput";
-import { useContractStore } from "lib/hooks";
+import { useAttachFunds, useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
-import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
-import { MsgType } from "lib/types";
-import {
-  composeMsg,
-  fabricateFunds,
-  jsonPrettify,
-  jsonValidate,
-} from "lib/utils";
+import type {
+  AttachFundsState,
+  ComposedMsg,
+  ContractAddr,
+  HumanAddr,
+} from "lib/types";
+import { AttachFundsType, MsgType } from "lib/types";
+import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
 });
 
 interface ExecuteAreaProps {
-  control: Control<ExecutePageState>;
-  setValue: UseFormSetValue<ExecutePageState>;
-  initialFundMsg?: string;
+  contractAddress: ContractAddr;
+  initialMsg: string;
+  initialFunds: Coin[];
   cmds: [string, string][];
 }
 
 export const ExecuteArea = ({
-  control,
-  setValue,
-  initialFundMsg,
+  contractAddress,
+  initialMsg,
+  initialFunds,
   cmds,
 }: ExecuteAreaProps) => {
   const { address } = useWallet();
@@ -56,66 +49,76 @@ export const ExecuteArea = ({
   const executeTx = useExecuteContractTx();
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
-  const nativeTokensInfo = useNativeTokensInfo();
-
-  const [contractAddress, initialMsg, assets] = useWatch({
-    control,
-    name: ["contractAddress", "initialMsg", "assets"],
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "assets",
-  });
-  const { errors } = useFormState({ control });
-
-  const selectedAssets = assets.map((asset) => asset.denom);
-
-  const assetOptions = useMemo(
-    () =>
-      nativeTokensInfo.map((asset) => ({
-        label: asset.symbol,
-        value: asset.base,
-        disabled: selectedAssets.includes(asset.base),
-      })),
-    [nativeTokensInfo, selectedAssets]
-  );
-
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(initialMsg);
-  const [fundMsg, setFundMsg] = useState(initialFundMsg);
+
   const [error, setError] = useState<string>();
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
-  const [attachFundOption, setAttachFundOption] = useState("");
-  const attachFundOptions = [
-    { label: "No funds attached", value: "null", disabled: false },
-    {
-      label: "Select from default assets",
-      value: "fill",
-      disabled: false,
-    },
-    {
-      label: "Provide asset list as JSON",
-      value: "json",
-      disabled: false,
-    },
-  ];
-  const handleAttachFundOption = (e: SetStateAction<string>) => {
-    setAttachFundOption(e);
-  };
-  const enableExecute =
-    !!(
+
+  const assetDefault = useMemo(
+    () => ({
+      assetsSelect: [{ denom: "", amount: "" }] as Coin[],
+      assetsJson: jsonPrettify(`[{ "denom": "", "amount": "" }]`),
+      attachFundOption: AttachFundsType.ATTACH_FUNDS_NULL,
+    }),
+    []
+  );
+
+  const { control, setValue, watch, reset } = useForm<AttachFundsState>({
+    mode: "all",
+    defaultValues: assetDefault,
+  });
+
+  /**
+   * @remarks
+   * Handle when there is an initialFunds
+   */
+  useEffect(() => {
+    if (initialFunds.length) {
+      setValue("assetsJson", jsonPrettify(JSON.stringify(initialFunds)));
+      setValue("attachFundOption", AttachFundsType.ATTACH_FUNDS_JSON);
+    } else {
+      reset(assetDefault);
+    }
+  }, [assetDefault, initialFunds, reset, setValue]);
+
+  const { errors } = useFormState({ control });
+
+  const { assetsJson, assetsSelect, attachFundOption } = watch();
+
+  const validateAssetsSelect = !errors.assetsSelect;
+  const validateAssetsJson =
+    !errors.assetsJson && jsonValidate(assetsJson) === null;
+
+  const enableExecute = useMemo(() => {
+    const generalCheck = !!(
       msg.trim().length &&
       jsonValidate(msg) === null &&
       address &&
       contractAddress
-    ) && !errors.assets;
+    );
+    if (attachFundOption === AttachFundsType.ATTACH_FUNDS_SELECT) {
+      return generalCheck && validateAssetsSelect;
+    }
+    if (attachFundOption === AttachFundsType.ATTACH_FUNDS_JSON) {
+      return generalCheck && validateAssetsJson;
+    }
+    return generalCheck;
+  }, [
+    address,
+    attachFundOption,
+    contractAddress,
+    msg,
+    validateAssetsJson,
+    validateAssetsSelect,
+  ]);
 
   const { isFetching } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
     onSuccess: (gasRes) => {
+      setError(undefined);
       if (gasRes) setFee(fabricateFee(gasRes));
       else setFee(undefined);
     },
@@ -125,13 +128,14 @@ export const ExecuteArea = ({
     },
   });
 
-  const proceed = useCallback(async () => {
-    AmpTrackAction(
-      AmpEvent.ACTION_EXECUTE,
-      assets.filter((asset) => Number(asset.amount) && asset.denom).length
-    );
-    const funds = fabricateFunds(assets);
+  const funds = useAttachFunds({
+    attachFundOption,
+    assetsJson,
+    assetsSelect,
+  });
 
+  const proceed = useCallback(async () => {
+    AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundOption);
     const stream = await executeTx({
       onTxSucceed: (userKey: string, activity: Activity) => {
         addActivity(userKey, activity);
@@ -141,27 +145,33 @@ export const ExecuteArea = ({
       estimatedFee: fee,
       contractAddress,
       msg: JSON.parse(msg),
-      funds,
+      funds: funds(),
     });
     if (stream) {
       setProcessing(true);
       broadcast(stream);
     }
-  }, [contractAddress, fee, msg, assets, addActivity, executeTx, broadcast]);
+  }, [
+    funds,
+    executeTx,
+    fee,
+    contractAddress,
+    msg,
+    attachFundOption,
+    addActivity,
+    broadcast,
+  ]);
 
   useEffect(() => setMsg(initialMsg), [initialMsg]);
-  useEffect(() => setFundMsg(initialFundMsg), [initialFundMsg]);
+
+  const assetsSelectString = JSON.stringify(assetsSelect);
   useEffect(() => {
     if (enableExecute) {
-      setError(undefined);
-
-      const funds = fabricateFunds(assets);
-
       const composedMsg = composeMsg(MsgType.EXECUTE, {
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds,
+        funds: funds(),
       });
 
       const timeoutId = setTimeout(() => {
@@ -170,7 +180,15 @@ export const ExecuteArea = ({
       return () => clearTimeout(timeoutId);
     }
     return () => {};
-  }, [address, contractAddress, enableExecute, msg, assets]);
+  }, [
+    address,
+    contractAddress,
+    enableExecute,
+    msg,
+    funds,
+    assetsJson,
+    assetsSelectString,
+  ]);
 
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
@@ -219,9 +237,6 @@ export const ExecuteArea = ({
       )}
       <Flex gap="32px" mt={8} direction={{ sm: "column", lg: "row" }}>
         <Box w={{ sm: "full", lg: "50%" }}>
-          <Text variant="body1" fontWeight="600" mb={4}>
-            Execute Messages
-          </Text>
           <JsonInput
             topic="Execute Msg"
             text={msg}
@@ -231,67 +246,11 @@ export const ExecuteArea = ({
           {error && <ErrorMessageRender error={error} mb={4} />}
         </Box>
         <Box w={{ sm: "full", lg: "50%" }}>
-          <Text variant="body1" fontWeight="600" mb={4}>
-            Send Assets
-          </Text>
-          <Flex mb={6}>
-            <SelectInput
-              formLabel="Attach Funds"
-              options={attachFundOptions}
-              onChange={handleAttachFundOption}
-              placeholder="Select"
-              initialSelected="null"
-            />
-          </Flex>
-          {attachFundOption === "fill" ? (
-            <Box>
-              {fields.map((field, idx) => (
-                <AssetInput
-                  key={field.id}
-                  disableDelete={fields.length <= 1}
-                  onDelete={() => remove(idx)}
-                  setCurrencyValue={(newVal: string) =>
-                    setValue(`assets.${idx}.denom`, newVal)
-                  }
-                  assetOptions={assetOptions}
-                  initialSelected={field.denom}
-                  amountInput={
-                    /**
-                     * @remarks refactor along with instantiate page
-                     */
-                    <ControllerInput
-                      name={`assets.${idx}.amount`}
-                      control={control}
-                      label="Amount"
-                      variant="floating"
-                      type="number"
-                      rules={{
-                        pattern: {
-                          // Move to constant
-                          value: /^[0-9]+([.][0-9]{0,6})?$/i,
-                          message: 'Invalid amount. e.g. "100.00"',
-                        },
-                      }}
-                      error={errors.assets?.[idx]?.amount?.message}
-                    />
-                  }
-                />
-              ))}
-              <Button
-                variant="outline-primary"
-                mt="32px"
-                mx="auto"
-                onClick={() => append({ denom: "", amount: "" })}
-                disabled={assetOptions.length === selectedAssets.length}
-              >
-                Add More Asset
-              </Button>
-            </Box>
-          ) : (
-            <Box>
-              <JsonInput text={fundMsg} setText={setFundMsg} height="160px" />
-            </Box>
-          )}
+          <AttachFund
+            control={control}
+            setValue={setValue}
+            attachFundOption={attachFundOption}
+          />
         </Box>
       </Flex>
       <Flex alignItems="center" justify="space-between">

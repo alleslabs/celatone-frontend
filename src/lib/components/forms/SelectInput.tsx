@@ -12,7 +12,7 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import type { IconType } from "react-icons/lib";
 import { MdArrowDropDown } from "react-icons/md";
 
@@ -33,6 +33,7 @@ interface SelectInputProps<T extends string> {
   placeholder?: string;
   initialSelected: string;
   hasDivider?: boolean;
+  helperTextComponent?: JSX.Element;
 }
 
 interface SelectItemProps {
@@ -67,13 +68,16 @@ export const SelectInput = <T extends string>({
   placeholder = "",
   initialSelected,
   hasDivider = false,
+  helperTextComponent,
 }: SelectInputProps<T>) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [selected, setSelected] = useState(
-    () => options.find((item) => item.value === initialSelected)?.label ?? ""
+  const initialSelectedValue = useMemo(
+    () => options.find((item) => item.value === initialSelected)?.label ?? "",
+    [initialSelected, options]
   );
+  const [selected, setSelected] = useState(initialSelectedValue);
   const [inputRefWidth, setInputRefWidth] = useState<Option<number>>();
   useOutsideClick({
     ref: optionRef,
@@ -86,6 +90,11 @@ export const SelectInput = <T extends string>({
       setInputRefWidth(inputRef.current.clientWidth);
     }
   }, [inputRef]);
+
+  useEffect(() => {
+    setSelected(initialSelectedValue);
+  }, [initialSelectedValue]);
+
   return (
     <Popover placement="bottom-start" isOpen={isOpen}>
       <PopoverTrigger>
@@ -168,6 +177,15 @@ export const SelectInput = <T extends string>({
             {label}
           </SelectItem>
         ))}
+        <Flex
+          px={4}
+          h={`${ITEM_HEIGHT}px`}
+          align="center"
+          borderTop={!hasDivider ? "1px solid" : "none"}
+          borderTopColor={!hasDivider ? "pebble.700" : "none"}
+        >
+          {helperTextComponent}
+        </Flex>
       </PopoverContent>
     </Popover>
   );
