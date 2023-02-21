@@ -150,7 +150,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         else {
           setStatus({
             state: "error",
-            message: "You can instantiate to this code through proposal only",
+            message:
+              "This wallet does not have permission to instantiate to this code",
           });
         }
       },
