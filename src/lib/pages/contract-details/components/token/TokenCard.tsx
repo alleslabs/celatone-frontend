@@ -3,7 +3,7 @@ import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import { Copier } from "lib/components/Copier";
 import type { BalanceWithAssetInfo, Token } from "lib/types";
 import {
-  calculateAssetValue,
+  calAssetValueWithPrecision,
   formatPrice,
   formatTokenWithPrecision,
 } from "lib/utils";
@@ -14,11 +14,6 @@ interface TokenCardProps {
 
 export const TokenCard = ({ userBalance }: TokenCardProps) => {
   const { symbol, price, amount, precision, id } = userBalance.balance;
-  const tokenWithPrecision = formatTokenWithPrecision(
-    amount as Token,
-    precision
-  );
-
   const tokenInfoText = price
     ? `1 ${symbol} = $${formatPrice(price)}
     Token ID: ${id}`
@@ -49,7 +44,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
         <div>
           <Flex gap={1} align="center">
             <Text fontWeight="700" variant="body2">
-              {tokenWithPrecision}
+              {formatTokenWithPrecision(amount as Token, precision)}
             </Text>
             <Text variant="body2">{symbol}</Text>
             <Copier
@@ -63,7 +58,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
           <Text variant="body3" color="text.dark">
             {price
               ? `$${formatPrice(
-                  calculateAssetValue(tokenWithPrecision, price)
+                  calAssetValueWithPrecision(userBalance.balance)
                 )}`
               : "-"}
           </Text>
