@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { MdBookmark } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
@@ -187,7 +186,7 @@ export function SaveNewContractModal({
   return (
     <ActionModal
       title="Save New Contract"
-      icon={MdBookmark}
+      icon="bookmarkSolid"
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}

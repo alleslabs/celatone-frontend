@@ -1,8 +1,8 @@
-import { Flex, Icon, Heading, Button } from "@chakra-ui/react";
-import { MdCheckCircle } from "react-icons/md";
+import { Flex, Heading, Button } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { TxReceiptRender } from "lib/components/tx/receipt";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { InstantiateOffChainForm } from "lib/pages/instantiate/component/InstantiateOffchainForm";
@@ -20,7 +20,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
   const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
     <WasmPageContainer>
-      <Icon as={MdCheckCircle} color="success.main" boxSize="12" />
+      <CustomIcon name="checkCircle" color="success.main" boxSize="12" />
       <Heading as="h4" variant="h4" mt={3} mb={12}>
         Instantiate Complete!
       </Heading>

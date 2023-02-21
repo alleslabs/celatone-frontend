@@ -1,23 +1,12 @@
-import { Flex, Box, Text, Icon, Image } from "@chakra-ui/react";
+import { Flex, Box, Text, Image } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import type { IconType } from "react-icons";
-import {
-  MdHome,
-  MdCode,
-  MdMoreHoriz,
-  MdOutlineAdd,
-  MdSearch,
-  MdInput,
-  MdAdd,
-  MdOutlineHistory,
-  MdPublic,
-  MdReadMore,
-} from "react-icons/md";
 
 import { AppLink } from "lib/components/AppLink";
+import type { ICONS } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { CreateNewListModal } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore, usePublicProjectStore } from "lib/hooks";
@@ -28,7 +17,7 @@ import { formatSlugName } from "lib/utils";
 interface SubmenuInfo {
   name: string;
   slug: string;
-  icon?: IconType;
+  icon?: keyof typeof ICONS;
   logo?: string;
 }
 
@@ -46,11 +35,11 @@ const Navbar = observer(() => {
     {
       category: "Overview",
       submenu: [
-        { name: "Overview", slug: "/", icon: MdHome },
+        { name: "Overview", slug: "/", icon: "home" },
         {
           name: "Past Transactions",
           slug: "/past-txs",
-          icon: MdOutlineHistory,
+          icon: "history",
         },
       ],
     },
@@ -60,30 +49,30 @@ const Navbar = observer(() => {
         {
           name: "Deploy Contract",
           slug: "/deploy",
-          icon: MdOutlineAdd,
+          icon: "addNew",
         },
         {
           name: "Query",
           slug: "/query",
-          icon: MdSearch,
+          icon: "query",
         },
         {
           name: "Execute",
           slug: "/execute",
-          icon: MdInput,
+          icon: "execute",
         },
         {
           name: "Migrate",
           slug: "/migrate",
-          icon: MdReadMore,
+          icon: "migrate",
         },
       ],
     },
     {
       category: "Codes",
       submenu: [
-        { name: "My Codes", slug: "/codes", icon: MdCode },
-        { name: "Recent Codes", slug: "/recent-codes", icon: MdPublic },
+        { name: "My Codes", slug: "/codes", icon: "code" },
+        { name: "Recent Codes", slug: "/recent-codes", icon: "website" },
       ],
     },
     {
@@ -111,7 +100,7 @@ const Navbar = observer(() => {
         {
           name: "View All Lists",
           slug: "/contract-list",
-          icon: MdMoreHoriz,
+          icon: "more",
         },
       ],
     },
@@ -129,7 +118,7 @@ const Navbar = observer(() => {
         {
           name: "View All Projects",
           slug: "/public-project",
-          icon: MdMoreHoriz,
+          icon: "more",
         },
       ],
     });
@@ -177,7 +166,13 @@ const Navbar = observer(() => {
                   buttonProps={{
                     variant: "ghost-info",
                     size: "xs",
-                    leftIcon: <MdAdd />,
+                    leftIcon: (
+                      <CustomIcon
+                        name="plus"
+                        color="honeydew.main"
+                        boxSize="12px"
+                      />
+                    ),
                     children: "NEW LIST",
                     onClick: () => AmpTrack(AmpEvent.USE_SIDEBAR),
                   }}
@@ -203,9 +198,7 @@ const Navbar = observer(() => {
                   }
                   borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
                 >
-                  {submenu.icon && (
-                    <Icon as={submenu.icon} color="pebble.600" boxSize="4" />
-                  )}
+                  {submenu.icon && <CustomIcon name={submenu.icon} />}
                   {submenu.logo && (
                     <Image
                       src={submenu.logo}

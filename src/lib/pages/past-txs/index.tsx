@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   Heading,
-  Icon,
   Input,
   InputGroup,
   InputRightElement,
@@ -12,8 +11,8 @@ import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { MdSearch } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -130,8 +129,8 @@ const PastTxs = () => {
                 placeholder="Search with transaction hash or contract address"
                 h="full"
               />
-              <InputRightElement pointerEvents="none" h="full">
-                <Icon as={MdSearch} w="5" h="5" color="pebble.600" />
+              <InputRightElement pointerEvents="none" h="full" mr="1">
+                <CustomIcon name="search" />
               </InputRightElement>
             </InputGroup>
             <FilterSelection

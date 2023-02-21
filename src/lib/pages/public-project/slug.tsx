@@ -7,14 +7,14 @@ import {
   Flex,
   TabPanel,
   Button,
-  Icon,
+  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { MdExpandMore } from "react-icons/md";
 
 import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -78,10 +78,18 @@ export const ProjectDetail = observer(() => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      color="text.dark"
+                      gap="1"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
                       onClick={() => setTabIndex(1)}
                     >
-                      View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
+                      <Text color="text.dark">View More </Text>
+                      <CustomIcon
+                        name="chevronDown"
+                        color="text.dark"
+                        boxSize="12px"
+                      />
                     </Button>
                   </Flex>
                 )}
@@ -112,10 +120,14 @@ export const ProjectDetail = observer(() => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      color="text.dark"
                       onClick={() => setTabIndex(2)}
                     >
-                      View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
+                      <Text color="text.dark">View More </Text>
+                      <CustomIcon
+                        name="chevronDown"
+                        color="text.dark"
+                        boxSize="12px"
+                      />
                     </Button>
                   </Flex>
                 )}

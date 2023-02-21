@@ -1,7 +1,7 @@
-import { Flex, Icon, Tag, Text, Grid } from "@chakra-ui/react";
-import { MdCheck, MdClose } from "react-icons/md";
+import { Flex, Tag, Text, Grid } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { TableRow } from "lib/components/table";
 import type { ExecuteTransaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
@@ -26,11 +26,11 @@ export const ExecuteTableRow = ({
         />
       </TableRow>
       <TableRow>
-        <Icon
-          as={transaction.success ? MdCheck : MdClose}
-          fontSize="24px"
-          color={transaction.success ? "success.main" : "error.main"}
-        />
+        {transaction.success ? (
+          <CustomIcon name="check" color="success.main" />
+        ) : (
+          <CustomIcon name="close" color="error.main" />
+        )}
       </TableRow>
       <TableRow>
         <Flex gap={1} flexWrap="wrap">

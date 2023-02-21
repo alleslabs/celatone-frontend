@@ -1,9 +1,9 @@
 import { Flex, Text, Icon, Button } from "@chakra-ui/react";
 import Link from "next/link";
-import { BiUserVoice } from "react-icons/bi";
 import { BsMedium, BsGithub, BsTwitter, BsTelegram } from "react-icons/bs";
 import { IoSparklesSharp } from "react-icons/io5";
 
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { AmpEvent, AmpTrack, AmpTrackCelatone } from "lib/services/amplitude";
 
 const Footer = () => {
@@ -65,12 +65,7 @@ const Footer = () => {
         >
           <Button variant="ghost" size="xs">
             <Flex gap={1} align="center">
-              <Icon
-                as={BiUserVoice}
-                width="18px"
-                height="18px"
-                color="pebble.600"
-              />
+              <CustomIcon name="feedback" />
               <Text variant="body3" color="text.dark">
                 Feedback
               </Text>

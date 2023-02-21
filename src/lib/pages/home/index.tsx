@@ -27,77 +27,77 @@ const Home = () => {
         <CustomIcon name="adminLockSolid" />
         <CustomIcon name="addNew" />
         <CustomIcon name="addNewSolid" />
-        <CustomIcon name="alertSolid" viewBox="0.5 0.5 16 16" />
-        <CustomIcon name="arrowLeft" viewBox="-2 -2 16 16" />
-        <CustomIcon name="arrowRight" viewBox="-2 -2 16 16" />
-        <CustomIcon name="arrowUp" viewBox="-2 -2 16 16" />
-        <CustomIcon name="arrowDown" viewBox="-2 -2 16 16" />
-        <CustomIcon name="bookmark" viewBox="-1 0 16 16" />
-        <CustomIcon name="bookmarkSolid" viewBox="-1 0 16 16" />
-        <CustomIcon name="check" viewBox="0 -2 16 16" />
+        <CustomIcon name="alertSolid" />
+        <CustomIcon name="arrowLeft" />
+        <CustomIcon name="arrowRight" />
+        <CustomIcon name="arrowUp" />
+        <CustomIcon name="arrowDown" />
+        <CustomIcon name="bookmark" />
+        <CustomIcon name="bookmarkSolid" />
+        <CustomIcon name="check" />
         <CustomIcon name="checkCircle" />
-        <CustomIcon name="chevronLeft" viewBox="-4 -2 16 16" />
-        <CustomIcon name="chevronRight" viewBox="-4 -2 16 16" />
-        <CustomIcon name="chevronUp" viewBox="-2 -4 16 16" />
-        <CustomIcon name="chevronDown" viewBox="-2 -4 16 16" />
-        <CustomIcon name="close" viewBox="-2 -2.5 16 16" />
+        <CustomIcon name="chevronLeft" />
+        <CustomIcon name="chevronRight" />
+        <CustomIcon name="chevronUp" />
+        <CustomIcon name="chevronDown" />
+        <CustomIcon name="close" />
         <CustomIcon name="closeCircle" />
-        <CustomIcon name="envelope" viewBox="0 -2 16 16" />
-        <CustomIcon name="envelopeSolid" viewBox="0 -2 16 16" />
       </Flex>
       <Flex>
-        <CustomIcon name="connect" viewBox="0 -4 16 16" />
-        <CustomIcon name="contract" viewBox="-1 0 16 16" />
-        <CustomIcon name="contractSolid" viewBox="-1 0 16 16" />
+        <CustomIcon name="connect" />
+        <CustomIcon name="contract" />
+        <CustomIcon name="contractSolid" />
         <CustomIcon name="contractAddress" />
         <CustomIcon name="contractAddressSolid" />
-        <CustomIcon name="contractList" viewBox="0 -3 16 16" />
-        <CustomIcon name="copy" viewBox="-0.5 0 16 16" />
-        <CustomIcon name="copySolid" viewBox="-0.5 0 16 16" />
-        <CustomIcon name="delete" viewBox="-1 0 16 16" />
-        <CustomIcon name="deleteSolid" viewBox="-1 0 16 16" />
+        <CustomIcon name="contractList" />
+        <CustomIcon name="copy" />
+        <CustomIcon name="code" />
+        <CustomIcon name="copySolid" />
+        <CustomIcon name="delete" />
+        <CustomIcon name="deleteSolid" />
         <CustomIcon name="deligate" />
-        <CustomIcon name="disconnect" viewBox="0 -1.5 16 16" />
+        <CustomIcon name="disconnect" />
         <CustomIcon name="document" />
         <CustomIcon name="documentSolid" />
-        <CustomIcon name="doubleChevronLeft" viewBox="-1 -2 16 16" />
-        <CustomIcon name="download" viewBox="-1 -2 16 16" />
+        <CustomIcon name="doubleChevronLeft" />
+        <CustomIcon name="download" />
         <CustomIcon name="edit" />
         <CustomIcon name="editSolid" />
+        <CustomIcon name="envelope" />
+        <CustomIcon name="envelopeSolid" />
         <CustomIcon name="execute" />
         <CustomIcon name="external" />
         <CustomIcon name="feedback" />
         <CustomIcon name="feedbackSolid" />
-        <CustomIcon name="folder" viewBox="0 -1 16 16" />
-        <CustomIcon name="folderSolid" viewBox="0 -1 16 16" />
+        <CustomIcon name="folder" />
+        <CustomIcon name="folderSolid" />
 
         <CustomIcon name="home" />
-        <CustomIcon name="history" viewBox="1.5 -0.5 16 16" />
+        <CustomIcon name="history" />
       </Flex>
       <Flex>
         <CustomIcon name="infoCircle" />
         <CustomIcon name="instantiate" />
-        <CustomIcon name="migrate" viewBox="0 -1 16 16" />
-        <CustomIcon name="minus" viewBox="-2 -7 16 16" />
-        <CustomIcon name="more" viewBox="0 -6 16 16" />
-        <CustomIcon name="plus" viewBox="-2 -1 16 16" />
+        <CustomIcon name="migrate" />
+        <CustomIcon name="minus" />
+        <CustomIcon name="more" />
+        <CustomIcon name="plus" />
         <CustomIcon name="proposal" />
         <CustomIcon name="proposalSolid" />
-        <CustomIcon name="query" viewBox=" -1 0 16 16" />
-        <CustomIcon name="redo" viewBox="-1 0.5 16 16" />
-        <CustomIcon name="saveDocument" viewBox="-1 0 16 16" />
-        <CustomIcon name="saveDocumentSolid" viewBox="-1 0 16 16" />
+        <CustomIcon name="query" />
+        <CustomIcon name="redo" />
+        <CustomIcon name="saveDocument" />
+        <CustomIcon name="saveDocumentSolid" />
         <CustomIcon name="search" />
         <CustomIcon name="searchNotFound" />
-        <CustomIcon name="send" viewBox="0.5 1 16 16" />
-        <CustomIcon name="sendSolid" viewBox="0.5 1 16 16" />
-        <CustomIcon name="submitProposal" viewBox="0.5 -2.5 16 16" />
-
+        <CustomIcon name="send" />
+        <CustomIcon name="sendSolid" />
+        <CustomIcon name="submitProposal" />
         <CustomIcon name="swap" />
-        <CustomIcon name="vote" viewBox="0 1 16 16" />
-        <CustomIcon name="voteSolid" viewBox="0 1 16 16" />
-        <CustomIcon name="upload" viewBox="-1 -2 16 16" />
-        <CustomIcon name="uploadCloud" viewBox="0 -2 16 16" />
+        <CustomIcon name="vote" />
+        <CustomIcon name="voteSolid" />
+        <CustomIcon name="upload" />
+        <CustomIcon name="uploadCloud" />
         <CustomIcon name="wallet" />
         <CustomIcon name="walletSolid" />
         <CustomIcon name="website" />

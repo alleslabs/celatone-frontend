@@ -1,14 +1,13 @@
-import { Icon } from "@chakra-ui/react";
 import type {
   SigningCosmWasmClient,
   ChangeAdminResult,
 } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
-import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { TxStreamPhase } from "lib/types";
 import type { TxResultRendering, ContractAddr, HumanAddr } from "lib/types";
@@ -63,9 +62,7 @@ export const clearAdminTx = ({
         ],
         receiptInfo: {
           header: "Transaction Complete",
-          headerIcon: (
-            <Icon as={MdCheckCircle} color="success.main" boxSize={6} />
-          ),
+          headerIcon: <CustomIcon name="checkCircle" color="success.main" />,
         },
       } as TxResultRendering;
     }

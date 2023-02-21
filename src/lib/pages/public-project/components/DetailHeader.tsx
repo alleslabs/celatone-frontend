@@ -7,9 +7,9 @@ import {
   Heading,
   Image,
 } from "@chakra-ui/react";
-import { MdChevronRight } from "react-icons/md";
 
 import { AppLink } from "lib/components/AppLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import type { Option, PublicDetail } from "lib/types";
 import { getNameAndDescriptionDefault } from "lib/utils";
 
@@ -26,7 +26,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => {
       <Breadcrumb
         w="full"
         spacing={1}
-        separator={<MdChevronRight color="pebble.600" />}
+        separator={<CustomIcon name="chevronRight" boxSize="3" />}
       >
         <BreadcrumbItem
           _hover={{ opacity: 0.8 }}

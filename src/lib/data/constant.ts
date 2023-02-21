@@ -1,5 +1,4 @@
-import { MdBookmark, MdInbox, MdLibraryBooks } from "react-icons/md";
-
+import type { ICONS } from "lib/components/icon/CustomIcon";
 import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
 /**
@@ -45,11 +44,11 @@ export const getMaxCodeNameLengthError = (currentLength: number) =>
 export const getListIcon = (listName: string) => {
   switch (listName) {
     case INSTANTIATED_LIST_NAME:
-      return MdInbox;
+      return "wallet" as keyof typeof ICONS;
     case SAVED_LIST_NAME:
-      return MdBookmark;
+      return "bookmark" as keyof typeof ICONS;
     default:
-      return MdLibraryBooks;
+      return "contractList" as keyof typeof ICONS;
   }
 };
 

@@ -1,17 +1,9 @@
-import {
-  Flex,
-  Icon,
-  Text,
-  Grid,
-  useDisclosure,
-  Tag,
-  Box,
-} from "@chakra-ui/react";
+import { Flex, Text, Grid, useDisclosure, Tag, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
 import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { TableRow } from "lib/components/table";
 import { AccordionTx } from "lib/components/table/AccordionTx";
 import type { AllTransaction } from "lib/types";
@@ -53,11 +45,11 @@ export const TxsTableRow = ({
           />
         </TableRow>
         <TableRow>
-          <Icon
-            as={transaction.success ? MdCheck : MdClose}
-            fontSize="24px"
-            color={transaction.success ? "success.main" : "error.main"}
-          />
+          {transaction.success ? (
+            <CustomIcon name="check" color="success.main" />
+          ) : (
+            <CustomIcon name="close" color="error.main" />
+          )}
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
@@ -101,13 +93,12 @@ export const TxsTableRow = ({
                 <Text variant="body3">N/A</Text>
               )}
             </Flex>
-            {isAccordion && (
-              <Icon
-                as={MdKeyboardArrowDown}
-                transform={isOpen ? "rotate(180deg)" : "rotate(0deg)"}
-                boxSize="18px"
-              />
-            )}
+            {isAccordion &&
+              (isOpen ? (
+                <CustomIcon name="chevronUp" />
+              ) : (
+                <CustomIcon name="chevronDown" />
+              ))}
           </Flex>
         </TableRow>
       </Grid>

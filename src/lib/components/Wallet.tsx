@@ -35,7 +35,11 @@ export const WalletSection = () => {
     <WalletConnectComponent
       walletStatus={walletStatus}
       disconnect={
-        <Disconnected buttonText="Connect" onClick={onClickConnect} />
+        <Disconnected
+          buttonText="Connect"
+          onClick={onClickConnect}
+          iconColor="text.main"
+        />
       }
       connecting={<Connecting />}
       connected={
@@ -44,6 +48,7 @@ export const WalletSection = () => {
           icon={MdOutlineAccountBalanceWallet}
           onClick={onClickOpenView}
           variant="outline-info"
+          iconColor="honeydew.main"
         />
       }
       rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}

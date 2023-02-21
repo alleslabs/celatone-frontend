@@ -7,9 +7,8 @@ import {
   FaInfo,
 } from "react-icons/fa";
 
-import { IconButton } from "lib/components/button/IconButton";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
-import { AmpTrackSocial } from "lib/services/amplitude";
+import { CustomIconButton } from "lib/components/button/CustomIconButton";
+import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
 export const renderSocial = (name: string) => {
@@ -37,22 +36,23 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
       minHeight="32px"
     >
       {details.website && (
-        <CustomIcon name="website" boxSize="20px" />
-        // <IconButton
-        //   href={details.website}
-        //   icon={MdLanguage}
-        //   onClick={() => AmpTrackWebsite(details.website)}
-        // />
+        <CustomIconButton
+          href={details.website}
+          icon="website"
+          onClick={() => AmpTrackWebsite(details.website)}
+        />
       )}
-      {details.github && <IconButton href={details.github} icon={FaGithub} />}
+      {details.github && (
+        <CustomIconButton href={details.github} socialIcon={FaGithub} />
+      )}
       {details.socials.length &&
         details.socials.map(
           (social) =>
             social.url !== "" && (
-              <IconButton
+              <CustomIconButton
                 key={social.name}
                 href={social.url}
-                icon={renderSocial(social.name)}
+                socialIcon={renderSocial(social.name)}
                 onClick={() => AmpTrackSocial(social.url)}
               />
             )

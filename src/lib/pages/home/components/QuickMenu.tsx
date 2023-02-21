@@ -2,6 +2,7 @@ import { Flex, Heading, Box, Text, SimpleGrid } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import type { ICONS } from "lib/components/icon/CustomIcon";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 
 const cardProps = {
@@ -17,25 +18,25 @@ const secondaryMenu = [
     title: "Query",
     subtitle: "Query and get contract state data",
     slug: "query",
-    icon: "query",
+    icon: "query" as keyof typeof ICONS,
   },
   {
     title: "Execute",
     subtitle: "Send transactions to contracts",
     slug: "execute",
-    icon: "execute",
+    icon: "execute" as keyof typeof ICONS,
   },
   {
     title: "Migrate",
     subtitle: "Migrate contract to new code ID",
     slug: "migrate",
-    icon: "migrate",
+    icon: "migrate" as keyof typeof ICONS,
   },
   {
     title: "Update Admin",
     subtitle: "Change contract admin",
     slug: "admin",
-    icon: "admin",
+    icon: "admin" as keyof typeof ICONS,
   },
 ];
 
@@ -67,12 +68,7 @@ export const QuickMenu = () => {
                 Upload a new wasm code or instantiate a new contract
               </Text>
             </Flex>
-            <CustomIcon
-              name="chevronRight"
-              viewBox="-4 -2 16 16"
-              color="text.main"
-              boxSize="24px"
-            />
+            <CustomIcon name="chevronRight" color="text.main" boxSize="24px" />
           </Flex>
         </AppLink>
 
@@ -87,7 +83,7 @@ export const QuickMenu = () => {
                 alignItems="center"
               >
                 <Flex alignItems="center" gap={3}>
-                  {/* <CustomIcon name={item.icon} boxSize="24px" /> */}
+                  <CustomIcon name={item.icon} boxSize="24px" />
                   <Box>
                     <Text variant="body1" fontWeight="800">
                       {item.title}
@@ -97,11 +93,7 @@ export const QuickMenu = () => {
                     </Text>
                   </Box>
                 </Flex>
-                <CustomIcon
-                  name="chevronRight"
-                  viewBox="-4 -2 16 16"
-                  boxSize="24px"
-                />
+                <CustomIcon name="chevronRight" boxSize="24px" />
               </Flex>
             </AppLink>
           ))}

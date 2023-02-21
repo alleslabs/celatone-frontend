@@ -1,7 +1,7 @@
-import { useToast, Icon, Text, chakra, IconButton } from "@chakra-ui/react";
+import { useToast, Text, chakra, IconButton } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { MdCheckCircle, MdDelete } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useCodeStore } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -27,7 +27,7 @@ export function RemoveCodeModal({
   name,
   trigger = (
     <StyledIconButton
-      icon={<MdDelete />}
+      icon={<CustomIcon name="delete" />}
       variant="ghost-gray"
       color="pebble.600"
     />
@@ -49,15 +49,7 @@ export function RemoveCodeModal({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
+      icon: <CustomIcon name="checkCircle" color="success.main" />,
     });
   }, [codeId, name, removeSavedCode, toast]);
 
@@ -68,7 +60,7 @@ export function RemoveCodeModal({
           ? `Remove \u2018${shortenName(name, 20)}\u2019?`
           : `Remove Code ID: ${codeId} ?`
       }
-      icon={MdDelete}
+      icon="delete"
       iconColor="error.light"
       mainBtnTitle="Yes, Remove It"
       mainAction={handleRemove}

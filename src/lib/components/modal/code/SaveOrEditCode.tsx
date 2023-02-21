@@ -1,7 +1,7 @@
-import { Button, chakra, Icon } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { MdBookmarkBorder, MdMode } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import type { CodeLocalInfo } from "lib/stores/code";
 
 import { EditCodeDetailsModal } from "./EditCodeDetails";
@@ -12,12 +12,6 @@ interface SaveOrEditCodeModalProps {
   codeLocalInfo: CodeLocalInfo;
 }
 
-const StyledIcon = chakra(Icon, {
-  baseStyle: {
-    boxSize: "18px",
-  },
-});
-
 export const SaveOrEditCodeModal = observer(
   ({ mode, codeLocalInfo }: SaveOrEditCodeModalProps) => {
     return mode === "save" ? (
@@ -26,7 +20,7 @@ export const SaveOrEditCodeModal = observer(
         triggerElement={
           <Button
             variant="outline-gray"
-            leftIcon={<StyledIcon as={MdBookmarkBorder} />}
+            leftIcon={<CustomIcon name="bookmark" />}
           >
             Save Code
           </Button>
@@ -36,7 +30,7 @@ export const SaveOrEditCodeModal = observer(
       <EditCodeDetailsModal
         codeLocalInfo={codeLocalInfo}
         triggerElement={
-          <Button variant="ghost-gray" leftIcon={<StyledIcon as={MdMode} />}>
+          <Button variant="ghost-gray" leftIcon={<CustomIcon name="edit" />}>
             Edit
           </Button>
         }

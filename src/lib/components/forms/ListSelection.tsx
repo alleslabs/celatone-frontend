@@ -9,15 +9,14 @@ import {
   Input,
   List,
   ListItem,
-  Icon,
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
 import { useState, useRef, forwardRef } from "react";
-import { MdCheck, MdClose, MdAdd } from "react-icons/md";
 
+import { CustomIcon } from "../icon/CustomIcon";
 import { CreateNewListModal } from "lib/components/modal/list";
 import { useContractStore, useUserKey } from "lib/hooks";
 import type { LVPair } from "lib/types";
@@ -155,7 +154,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       borderRadius="full"
                     >
                       {option.label}
-                      <Icon as={MdClose} boxSize="4" color="pebble.900" />
+                      <CustomIcon name="close" color="pebble.900" boxSize="3" />
                     </Tag>
                   </Flex>
                 ))}
@@ -212,27 +211,30 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               overflow="scroll"
             >
               {/* option selection section */}
-              {partialResult.map((option) => (
-                <ListItem
-                  key={option.value}
-                  style={listItemProps}
-                  _hover={{ bg: "pebble.700" }}
-                  transition="all .25s ease-in-out"
-                  onClick={() => selectOptionFromList(option)}
-                >
-                  <Flex alignItems="center" justifyContent="space-between">
-                    <Text variant="body2">{option.label}</Text>
-                    {isOptionSelected(option) && (
-                      <Icon
-                        as={MdCheck}
-                        color="text.dark"
-                        data-label={option.label}
-                        mr={2}
-                      />
-                    )}
-                  </Flex>
-                </ListItem>
-              ))}
+              {partialResult.map((option) => {
+                return (
+                  <ListItem
+                    key={option.value}
+                    style={listItemProps}
+                    _hover={{ bg: "pebble.700" }}
+                    transition="all .25s ease-in-out"
+                    onClick={() => selectOptionFromList(option)}
+                  >
+                    <Flex alignItems="center" justifyContent="space-between">
+                      <Text variant="body2">{option.label}</Text>
+                      {isOptionSelected(option) && (
+                        <Flex data-label={option.label} mr={2}>
+                          <CustomIcon
+                            name="check"
+                            color="pebble.600"
+                            boxSize="3"
+                          />
+                        </Flex>
+                      )}
+                    </Flex>
+                  </ListItem>
+                );
+              })}
               {/* creation section */}
               {canCreateOption && (
                 <CreateNewListModal
@@ -246,7 +248,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       onClick={() => setEnableOutside(false)}
                     >
                       <Flex alignItems="center" gap={2}>
-                        <Icon as={MdAdd} color="text.dark" />
+                        <CustomIcon name="plus" color="text.dark" boxSize="3" />
                         <Text variant="body2">Create New List </Text>
                       </Flex>
                     </ListItem>

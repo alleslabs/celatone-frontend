@@ -148,7 +148,7 @@ export const QueryArea = ({
               onClick={handleQuery}
               isDisabled={jsonValidate(msg) !== null}
               isLoading={isFetching || isRefetching}
-              leftIcon={<CustomIcon name="query" viewBox=" 0 0 16 16" />}
+              leftIcon={<CustomIcon name="query" />}
             >
               Query (Ctrl + Enter)
             </Button>

@@ -1,10 +1,10 @@
-import { Flex, Icon, Text, useToast } from "@chakra-ui/react";
+import { Flex, Text, useToast } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
 import { ActionModal } from "..";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore, useGetAddressType } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -53,15 +53,7 @@ export const CodeDetailsTemplateModal = ({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
+      icon: <CustomIcon name="checkCircle" color="success.main" />,
     });
   }, [
     codeLocalInfo.id,
@@ -83,8 +75,7 @@ export const CodeDetailsTemplateModal = ({
     <ActionModal
       title={title}
       trigger={triggerElement}
-      icon={MdAddCircleOutline}
-      iconColor="text.dark"
+      icon="bookmarkSolid"
       noHeaderBorder
       noCloseButton
       mainBtnTitle={mainBtnTitle}

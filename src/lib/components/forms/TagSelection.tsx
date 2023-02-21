@@ -9,7 +9,6 @@ import {
   Input,
   List,
   ListItem,
-  Icon,
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
@@ -17,8 +16,8 @@ import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { useEffect, useState, useRef, forwardRef } from "react";
-import { MdCheckCircle, MdClose } from "react-icons/md";
 
+import { CustomIcon } from "../icon/CustomIcon";
 import { useContractStore, useUserKey } from "lib/hooks";
 import { mergeRefs } from "lib/utils";
 
@@ -168,7 +167,11 @@ export const TagSelection = observer(
                         bgColor={badgeBgColor}
                       >
                         {option}
-                        <Icon as={MdClose} boxSize="4" color="text.dark" />
+                        <CustomIcon
+                          name="close"
+                          color="text.dark"
+                          boxSize="3"
+                        />
                       </Tag>
                     </Flex>
                   ))}
@@ -260,12 +263,13 @@ export const TagSelection = observer(
                         {option}
                       </Tag>
                       {isOptionSelected(option) && (
-                        <Icon
-                          as={MdCheckCircle}
-                          color="success.main"
-                          data-label={option}
-                          mr={2}
-                        />
+                        <Flex data-label={option} mr={2}>
+                          <CustomIcon
+                            name="check"
+                            color="pebble.600"
+                            boxSize="3"
+                          />
+                        </Flex>
                       )}
                     </Flex>
                   </ListItem>

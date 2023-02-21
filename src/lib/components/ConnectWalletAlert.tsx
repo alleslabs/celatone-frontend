@@ -49,7 +49,7 @@ export const ConnectWalletAlert = ({
         </Box>
       </Flex>
       <Button variant="ghost-info" gap={2} onClick={onClickConnect}>
-        <CustomIcon name="connect" color="honeydew.main" viewBox="0 -4 16 16" />
+        <CustomIcon name="connect" color="honeydew.main" />
         <Text color="honeydew.main">Connect Wallet</Text>
       </Button>
     </Alert>

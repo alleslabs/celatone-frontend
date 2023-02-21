@@ -1,6 +1,5 @@
 import { Text } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { MdDeleteForever } from "react-icons/md";
 
 import { ActionModal } from "../ActionModal";
 import { useClearAdminTx } from "lib/app-provider";
@@ -29,7 +28,7 @@ export const ClearAdminModal = ({
   return (
     <ActionModal
       title="You'll no longer have admin access"
-      icon={MdDeleteForever}
+      icon="delete"
       iconColor="error.light"
       trigger={triggerElement}
       mainBtnTitle="Yes, clear it"

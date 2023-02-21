@@ -1,5 +1,4 @@
 import {
-  Icon,
   Input,
   InputGroup,
   InputRightElement,
@@ -13,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import type { IconType } from "react-icons/lib";
-import { MdArrowDropDown } from "react-icons/md";
 
+import type { ICONS } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon/CustomIcon";
 import type { Option } from "lib/types";
 
 const ITEM_HEIGHT = 56;
@@ -26,7 +25,7 @@ interface SelectInputProps<T extends string> {
     label: string;
     value: T;
     disabled: boolean;
-    icon?: IconType;
+    icon?: keyof typeof ICONS;
     iconColor?: string;
   }[];
   onChange: (newVal: T) => void;
@@ -113,11 +112,10 @@ export const SelectInput = <T extends string>({
         >
           <div className="form-label">{formLabel}</div>
           {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full">
-              <Icon
-                as={selectedOption.icon}
+            <InputLeftElement pointerEvents="none" h="full" ml="1">
+              <CustomIcon
+                name={selectedOption.icon}
                 color={selectedOption.iconColor}
-                fontSize="20px"
               />
             </InputLeftElement>
           )}
@@ -129,10 +127,10 @@ export const SelectInput = <T extends string>({
             fontSize="14px"
             color={selected ? "text.main" : "text.dark"}
             ref={inputRef}
-            pl={selectedOption?.icon ? 9 : 4}
+            pl={selectedOption?.icon ? 10 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <Icon as={MdArrowDropDown} color="pebble.600" fontSize="24px" />
+            <CustomIcon name="chevronDown" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
@@ -164,7 +162,7 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {icon && <Icon as={icon} boxSize={5} color={iconColor} />}
+            {icon && <CustomIcon name={icon} color={iconColor} />}
             {label}
           </SelectItem>
         ))}

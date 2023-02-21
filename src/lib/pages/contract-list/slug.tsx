@@ -2,7 +2,6 @@ import {
   Flex,
   Heading,
   Button,
-  Icon,
   Menu,
   MenuButton,
   MenuList,
@@ -10,18 +9,10 @@ import {
   BreadcrumbItem,
   Box,
   Text,
-  chakra,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import {
-  MdMoreHoriz,
-  MdBookmarkBorder,
-  MdMode,
-  MdDelete,
-  MdChevronRight,
-} from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -34,14 +25,6 @@ import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
-
-const StyledIcon = chakra(Icon, {
-  baseStyle: {
-    boxSize: "4",
-    display: "flex",
-    alignItems: "center",
-  },
-});
 
 const ContractsByList = observer(() => {
   const router = useRouter();
@@ -91,7 +74,7 @@ const ContractsByList = observer(() => {
         <Breadcrumb
           w="full"
           spacing="4px"
-          separator={<MdChevronRight color="pebble.600" />}
+          separator={<CustomIcon name="chevronRight" boxSize="3" />}
         >
           <BreadcrumbItem
             _hover={{ opacity: 0.8 }}
@@ -127,12 +110,7 @@ const ContractsByList = observer(() => {
             {isInstantiatedByMe ? (
               <Button
                 rightIcon={
-                  <CustomIcon
-                    name="plus"
-                    viewBox="-2 -1 16 16"
-                    color="text.main"
-                    boxSize="12px"
-                  />
+                  <CustomIcon name="plus" color="text.main" boxSize="12px" />
                 }
                 onClick={() => navigate({ pathname: "/deploy" })}
               >
@@ -147,7 +125,13 @@ const ContractsByList = observer(() => {
                 }}
                 buttonProps={{
                   variant: "outline-primary",
-                  rightIcon: <MdBookmarkBorder />,
+                  rightIcon: (
+                    <CustomIcon
+                      name="bookmark"
+                      boxSize="3"
+                      color="violet.light"
+                    />
+                  ),
                   children: "Save Contract",
                 }}
               />
@@ -155,12 +139,7 @@ const ContractsByList = observer(() => {
             {contractListInfo.isInfoEditable && (
               <Menu>
                 <MenuButton h="full" variant="ghost-gray" as={Button}>
-                  <Icon
-                    as={MdMoreHoriz}
-                    color="pebble.600"
-                    boxSize="6"
-                    display="flex"
-                  />
+                  <CustomIcon name="more" />
                 </MenuButton>
                 <MenuList>
                   <EditListNameModal
@@ -169,7 +148,7 @@ const ContractsByList = observer(() => {
                       value: contractListInfo.slug,
                     }}
                     menuItemProps={{
-                      icon: <StyledIcon as={MdMode} color="pebble.600" />,
+                      icon: <CustomIcon name="edit" />,
                       children: "Edit list name",
                     }}
                     reroute
@@ -180,7 +159,7 @@ const ContractsByList = observer(() => {
                       value: contractListInfo.slug,
                     }}
                     menuItemProps={{
-                      icon: <StyledIcon as={MdDelete} color="error.light" />,
+                      icon: <CustomIcon name="delete" color="error.light" />,
                       children: "Remove list",
                     }}
                   />

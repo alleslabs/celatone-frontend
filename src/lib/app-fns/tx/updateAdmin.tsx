@@ -1,14 +1,13 @@
-import { Icon } from "@chakra-ui/react";
 import type {
   ExecuteResult,
   SigningCosmWasmClient,
 } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
-import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type {
   Addr,
@@ -69,9 +68,7 @@ export const updateAdminTx = ({
         ],
         receiptInfo: {
           header: "Update Admin Complete",
-          headerIcon: (
-            <Icon as={MdCheckCircle} color="success.main" boxSize={6} />
-          ),
+          headerIcon: <CustomIcon name="checkCircle" color="success.main" />,
         },
         actionVariant: "update-admin",
       } as TxResultRendering;

@@ -1,10 +1,10 @@
-import { Flex, Heading, Box, Text, Icon } from "@chakra-ui/react";
+import { Flex, Heading, Box, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useMemo } from "react";
-import { MdSearch, MdInput } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { useContractStore, useUserKey } from "lib/hooks";
 import { dateFromNow } from "lib/utils";
 
@@ -45,11 +45,11 @@ export const RecentActivities = observer(() => {
               }
             >
               <Flex alignItems="center" gap={1}>
-                <Icon
-                  as={item.type === "query" ? MdSearch : MdInput}
-                  color="honeydew.main"
-                  boxSize={4}
-                />
+                {item.type === "query" ? (
+                  <CustomIcon name="query" color="honeydew.main" />
+                ) : (
+                  <CustomIcon name="execute" color="honeydew.main" />
+                )}
                 <Text variant="body2" color="honeydew.main">
                   {item.type === "query" ? "Query" : "Execute"}
                 </Text>
