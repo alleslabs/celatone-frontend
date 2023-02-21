@@ -148,7 +148,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 refetchCount={refetchContractsCount}
                 isPreview
               />
-              {tableCounts.contractsCount &&
+              {!!tableCounts.contractsCount &&
                 tableCounts.contractsCount >= 5 && (
                   <ViewMore onClick={() => setTabIndex(TabIndex.Contracts)} />
                 )}
@@ -161,7 +161,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 refetchCount={refetchContractsAdminCount}
                 isPreview
               />
-              {tableCounts.contractsAdminCount &&
+              {!!tableCounts.contractsAdminCount &&
                 tableCounts.contractsAdminCount >= 5 && (
                   <ViewMore onClick={() => setTabIndex(TabIndex.Admins)} />
                 )}

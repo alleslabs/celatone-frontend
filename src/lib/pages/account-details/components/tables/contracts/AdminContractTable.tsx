@@ -1,8 +1,9 @@
-import { Box, Flex, Grid } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
 import { AccountTableHeader } from "../AccountTableHeader";
+import { EmptyState } from "../EmptyState";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -66,9 +67,7 @@ const ContractTableBody = ({
   if (isLoading) return <Loading />;
   if (!contracts?.length)
     return (
-      <Flex align="center" justify="center">
-        This account does not have any admin access for any contracts.
-      </Flex>
+      <EmptyState text="This account does not have any admin access for any contracts." />
     );
   return (
     <TableContainer overflow="visible">
