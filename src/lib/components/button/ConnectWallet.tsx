@@ -1,8 +1,8 @@
-import { Button, Icon, Text } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
-import { MdLink } from "react-icons/md";
 
+import { CustomIcon } from "../icon/CustomIcon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 export const ConnectWalletBtn = () => {
@@ -17,7 +17,7 @@ export const ConnectWalletBtn = () => {
   return (
     <Button variant="outline-primary" gap={2} onClick={onClickConnect}>
       <Text color="violet.light">Connect Wallet</Text>
-      <Icon as={MdLink} boxSize={4} color="violet.light" />
+      <CustomIcon name="connect" viewBox="0 -4 16 16" color="violet.light" />
     </Button>
   );
 };

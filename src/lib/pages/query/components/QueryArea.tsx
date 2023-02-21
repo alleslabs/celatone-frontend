@@ -1,4 +1,3 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/CopyButton";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -148,7 +148,7 @@ export const QueryArea = ({
               onClick={handleQuery}
               isDisabled={jsonValidate(msg) !== null}
               isLoading={isFetching || isRefetching}
-              leftIcon={<SearchIcon />}
+              leftIcon={<CustomIcon name="query" viewBox=" 0 0 16 16" />}
             >
               Query (Ctrl + Enter)
             </Button>

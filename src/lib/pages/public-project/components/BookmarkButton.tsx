@@ -3,8 +3,9 @@ import { observer } from "mobx-react-lite";
 import type { CSSProperties, MouseEvent } from "react";
 import { useCallback } from "react";
 import type { IconType } from "react-icons";
-import { MdBookmark, MdBookmarkBorder, MdCheckCircle } from "react-icons/md";
+import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { usePublicProjectStore } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
@@ -30,13 +31,7 @@ const buttonIconProps: CSSProperties = {
 };
 
 const toastIcon = (
-  <Icon
-    as={MdCheckCircle}
-    color="success.main"
-    boxSize="6"
-    display="flex"
-    alignItems="center"
-  />
+  <CustomIcon name="checkCircle" boxSize="24px" color="success.main" />
 );
 
 interface StyledButtonProps {

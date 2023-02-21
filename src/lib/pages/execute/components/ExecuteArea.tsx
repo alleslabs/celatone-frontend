@@ -12,7 +12,6 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useFormState, useWatch } from "react-hook-form";
 import type { Control, UseFormSetValue } from "react-hook-form";
-import { MdInput } from "react-icons/md";
 
 import type { ExecutePageState } from "../types";
 import {
@@ -26,6 +25,7 @@ import { CopyButton } from "lib/components/CopyButton";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { AssetInput, ControllerInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -283,7 +283,7 @@ export const ExecuteArea = ({ control, setValue, cmds }: ExecuteAreaProps) => {
             p="6px 16px"
             onClick={proceed}
             isDisabled={!enableExecute || !fee || isFetching}
-            leftIcon={<MdInput />}
+            leftIcon={<CustomIcon name="execute" viewBox=" 0 0 16 16" />}
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >

@@ -1,5 +1,6 @@
-import { Flex, Icon } from "@chakra-ui/react";
-import { MdUploadFile } from "react-icons/md";
+import { Flex } from "@chakra-ui/react";
+
+import { CustomIcon } from "./CustomIcon";
 
 interface UploadIconProps {
   variant?: "primary" | "muted";
@@ -26,7 +27,12 @@ export const UploadIcon = ({ variant = "primary" }: UploadIconProps) => {
       h="40px"
       bgColor={style.bgColor}
     >
-      <Icon as={MdUploadFile} fontSize="24px" color={style.color} />
+      <CustomIcon
+        name="upload"
+        boxSize="24px"
+        viewBox="-1 -2 16 16"
+        color={style.color}
+      />
     </Flex>
   );
 };

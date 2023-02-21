@@ -17,9 +17,10 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
-import { MdChevronLeft, MdList, MdSwapHoriz } from "react-icons/md";
+import { MdChevronLeft, MdList } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import {
   useContractStore,
@@ -112,7 +113,9 @@ export const SelectContractInstantiator = ({
           onOpen();
         }}
         leftIcon={
-          !notSelected ? <Icon as={MdSwapHoriz} boxSize="5" /> : undefined
+          !notSelected ? (
+            <CustomIcon name="swap" color="violet.light" />
+          ) : undefined
         }
       >
         {notSelected ? "Select Contract" : "Change Contract"}

@@ -1,20 +1,19 @@
 import {
   Alert,
-  AlertIcon,
   AlertTitle,
   AlertDescription,
   Flex,
   Box,
   Button,
-  Icon,
   Text,
 } from "@chakra-ui/react";
 import type { AlertProps } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
-import { MdLink } from "react-icons/md";
 
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
+import { CustomIcon } from "./icon/CustomIcon";
 
 interface ConnectWalletAlertProps extends AlertProps {
   title?: string;
@@ -42,15 +41,15 @@ export const ConnectWalletAlert = ({
       justifyContent="space-between"
       py="12px"
     >
-      <Flex>
-        <AlertIcon />
+      <Flex gap={2}>
+        <CustomIcon name="infoCircle" color="honeydew.main" boxSize="20px" />
         <Box>
           <AlertTitle>{title}</AlertTitle>
           <AlertDescription>{subtitle}</AlertDescription>
         </Box>
       </Flex>
       <Button variant="ghost-info" gap={2} onClick={onClickConnect}>
-        <Icon as={MdLink} boxSize={4} />
+        <CustomIcon name="connect" color="honeydew.main" viewBox="0 -4 16 16" />
         <Text color="honeydew.main">Connect Wallet</Text>
       </Button>
     </Alert>

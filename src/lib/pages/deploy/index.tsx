@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertDescription,
-  AlertIcon,
   Flex,
   Heading,
   Button,
@@ -13,6 +12,7 @@ import { useEffect } from "react";
 
 import { useInternalNavigate, useSelectChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { getChainNameByNetwork, getNetworkByChainName } from "lib/data";
@@ -41,8 +41,8 @@ const Deploy = () => {
         Select Deploy Option
       </Heading>
       {isMainnet && (
-        <Alert variant="violet" mb="16px" alignItems="flex-start">
-          <AlertIcon mt={2} />
+        <Alert variant="violet" mb="16px" alignItems="flex-start" gap="1">
+          <CustomIcon name="infoCircle" color="violet.ligt" boxSize="20px" />
           <AlertDescription>
             Uploading new Wasm files on permissioned chains is coming soon to
             Celatone. Currently, you can upload codes and instantiate contracts

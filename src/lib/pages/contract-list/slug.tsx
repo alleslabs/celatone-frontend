@@ -16,7 +16,6 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import {
-  MdOutlineAdd,
   MdMoreHoriz,
   MdBookmarkBorder,
   MdMode,
@@ -26,6 +25,7 @@ import {
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { SaveNewContractModal } from "lib/components/modal/contract";
 import { EditListNameModal, RemoveListModal } from "lib/components/modal/list";
 import { ContractListDetail } from "lib/components/modal/select-contract";
@@ -126,7 +126,14 @@ const ContractsByList = observer(() => {
           <Flex gap={2}>
             {isInstantiatedByMe ? (
               <Button
-                rightIcon={<MdOutlineAdd />}
+                rightIcon={
+                  <CustomIcon
+                    name="plus"
+                    viewBox="-2 -1 16 16"
+                    color="text.main"
+                    boxSize="12px"
+                  />
+                }
                 onClick={() => navigate({ pathname: "/deploy" })}
               >
                 Deploy New Contract
