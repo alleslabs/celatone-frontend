@@ -23,7 +23,10 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
-import { ContractTable } from "./components/tables/contracts";
+import {
+  InstantiatedContractTable,
+  AdminContractTable,
+} from "./components/tables/contracts";
 
 enum TabIndex {
   Overview,
@@ -48,7 +51,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const {
     tableCounts,
     // refetchCodes,
-    // refetchContractsAdminCount,
+    refetchContractsAdminCount,
     refetchContractsCount,
     // refetchCountTxs,
     // refetchProposalCount,
@@ -138,7 +141,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             {/* TODO: replace with the truncated Codes table */}
             <Text>Stored Codes</Text>
             <Box>
-              <ContractTable
+              <InstantiatedContractTable
                 walletAddress={accountAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.contractsCount}
@@ -150,7 +153,19 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                   <ViewMore onClick={() => setTabIndex(TabIndex.Contracts)} />
                 )}
             </Box>
-            {/* TODO: replace with the truncated Admins table */}
+            <Box>
+              <AdminContractTable
+                walletAddress={accountAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.contractsAdminCount}
+                refetchCount={refetchContractsAdminCount}
+                isPreview
+              />
+              {tableCounts.contractsAdminCount &&
+                tableCounts.contractsAdminCount >= 5 && (
+                  <ViewMore onClick={() => setTabIndex(TabIndex.Admins)} />
+                )}
+            </Box>
             <Text>Contract Admin</Text>
             {/* TODO: replace with the truncated Proposals table */}
             <Text>Opened Proposals</Text>
@@ -172,7 +187,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Stored Codes</Text>
           </TabPanel>
           <TabPanel p={0}>
-            <ContractTable
+            <InstantiatedContractTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
@@ -180,8 +195,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Admins table */}
-            <Text>Contract Admins</Text>
+            <AdminContractTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.contractsAdminCount}
+              refetchCount={refetchContractsAdminCount}
+            />
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Proposals table */}

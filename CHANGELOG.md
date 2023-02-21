@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated contracts of an account
+- [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated and admin contracts of an account
 - [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
 - [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
 
