@@ -204,12 +204,16 @@ export const ExecuteArea = ({
   });
 
   return (
-    <Box>
+    <Box my={4}>
+      {contractAddress && (
+        <Text variant="body3" mb="8px">
+          Message Suggestions:
+        </Text>
+      )}
       {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
           rowGap="8px"
-          mt={8}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
@@ -230,7 +234,7 @@ export const ExecuteArea = ({
         </ButtonGroup>
       ) : (
         contractAddress && (
-          <Text m="16px" variant="body2" color="text.dark">
+          <Text mt="8px" variant="body2" color="text.dark">
             No ExecuteMsgs suggestion available
           </Text>
         )

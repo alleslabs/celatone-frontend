@@ -10,7 +10,7 @@ const generateVariantStyle = (variant: "honeydew" | "violet") => {
   switch (variant) {
     case "violet":
       mainColor = `${variant}.light`;
-      bgColor = "black";
+      bgColor = `${variant}.background`;
       borderColor = `${variant}.dark`;
       break;
     case "honeydew":

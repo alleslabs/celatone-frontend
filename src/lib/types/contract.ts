@@ -43,6 +43,7 @@ export interface ContractMigrationHistory {
   height: number;
   timestamp: Date;
   remark: ContractHistoryRemark;
+  uploader: Addr;
 }
 
 export enum ProposalStatus {

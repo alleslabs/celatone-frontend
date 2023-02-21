@@ -19,7 +19,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
           onClick={router.back}
           w="128px"
         >
-          Back
+          Previous
         </Button>
         <Button
           variant="primary"
