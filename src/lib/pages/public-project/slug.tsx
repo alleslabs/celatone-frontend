@@ -6,17 +6,15 @@ import {
   TabPanels,
   Flex,
   TabPanel,
-  Button,
-  Icon,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { MdExpandMore } from "react-icons/md";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state/EmptyState";
+import { ViewMore } from "lib/components/table/ViewMore";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { DetailHeader } from "./components/DetailHeader";
@@ -74,16 +72,7 @@ export const ProjectDetail = observer(() => {
                   codes={publicCodes.slice(0, 5)}
                 />
                 {publicCodes.length >= 5 && (
-                  <Flex w="full" justifyContent="center" textAlign="center">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      color="text.dark"
-                      onClick={() => setTabIndex(1)}
-                    >
-                      View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
-                    </Button>
-                  </Flex>
+                  <ViewMore onClick={() => setTabIndex(1)} />
                 )}
               </Box>
             ) : (
@@ -108,16 +97,7 @@ export const ProjectDetail = observer(() => {
                   contracts={publicContracts.slice(0, 5)}
                 />
                 {publicCodes.length >= 5 && (
-                  <Flex w="full" justifyContent="center" textAlign="center">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      color="text.dark"
-                      onClick={() => setTabIndex(2)}
-                    >
-                      View More <Icon as={MdExpandMore} boxSize={4} ml={1} />
-                    </Button>
-                  </Flex>
+                  <ViewMore onClick={() => setTabIndex(2)} />
                 )}
               </Box>
             ) : (
