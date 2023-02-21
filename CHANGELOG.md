@@ -162,15 +162,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-# <<<<<<< HEAD
-
 - [#211](https://github.com/alleslabs/celatone-frontend/pull/211) Fix contract count not display for code table in public project
 - [#208](https://github.com/alleslabs/celatone-frontend/pull/208) Fix messages shown in past tx page (should show only wasm and send messages)
 - [#200](https://github.com/alleslabs/celatone-frontend/pull/200) Fix add attached assets property
 - [#198](https://github.com/alleslabs/celatone-frontend/pull/198) Fix handle keplr wallet ready
 - [#194](https://github.com/alleslabs/celatone-frontend/pull/194) Fix "connect wallet state" for tables
 - [#196](https://github.com/alleslabs/celatone-frontend/pull/196) Fix rewrite rule for amplitude
-  > > > > > > > develop
 - [#188](https://github.com/alleslabs/celatone-frontend/pull/188) Fix "No contact description" prefill in description section in contract detail page
 - [#187](https://github.com/alleslabs/celatone-frontend/pull/187) Fix renaming list flicker to the all lists for a second
 - [#184](https://github.com/alleslabs/celatone-frontend/pull/184) Fix next seo to use default seo

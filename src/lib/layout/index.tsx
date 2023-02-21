@@ -8,7 +8,7 @@ import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
 import Header from "./Header";
-import Navbar from "./Navbar";
+import Navbar from "./navbar";
 
 type LayoutProps = {
   children: ReactNode;
@@ -18,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
 
-  const [isFull, setIsFull] = useState(!isMobile);
+  const [isExpand, setIsExpand] = useState(!isMobile);
 
   useEffect(() => {
     scrollToTop();
@@ -28,7 +28,7 @@ const Layout = ({ children }: LayoutProps) => {
       templateAreas={`"header header"
     "nav main"`}
       gridTemplateRows="70px 1fr"
-      gridTemplateColumns={isFull ? "224px 1fr" : "48px 1fr"}
+      gridTemplateColumns={isExpand ? "224px 1fr" : "48px 1fr"}
       h="100vh"
       overflowX="hidden"
       bg="background.main"
@@ -37,11 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
         <Header />
       </GridItem>
       <GridItem bg="pebble.900" area="nav" overflowY="auto">
-        <Navbar
-          isFull={isFull}
-          handleCollapse={() => setIsFull(false)}
-          handleExpand={isMobile ? undefined : () => setIsFull(true)}
-        />
+        <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">
         <div style={{ minHeight: `calc(100vh - 129px)` }}>{children}</div>
