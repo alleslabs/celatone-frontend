@@ -67,7 +67,7 @@ const ContractTableBody = ({
   if (!contracts?.length)
     return (
       <Flex align="center" justify="center">
-        This account did not instantiate any contracts before.
+        This account does not have any admin access for any contracts.
       </Flex>
     );
   return (
