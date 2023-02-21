@@ -37,6 +37,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Features
+
+- [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
+- [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
+- [#210](https://github.com/alleslabs/celatone-frontend/pull/210) New design for token card, currently support price
+
+
+## v1.0.1
+
+### Bug fixes
+
+- [#195](https://github.com/alleslabs/celatone-frontend/pull/195) Make code name cell for migration table to be editable in contract detail page
+- [#213](https://github.com/alleslabs/celatone-frontend/pull/213) Fix `window.crypto.randomUUID()` in old safari version (< 15.4) and `at()` of array
+
 ## v1.0.0
 
 ### Features
@@ -122,7 +136,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#210](https://github.com/alleslabs/celatone-frontend/pull/210) New design for token card
 - [#204](https://github.com/alleslabs/celatone-frontend/pull/204) Change back button wording and adjust flow
 - [#191](https://github.com/alleslabs/celatone-frontend/pull/191) Add typeface (Poppins) and add new styling for command shortcut
 - [#190](https://github.com/alleslabs/celatone-frontend/pull/190) Setup sentry tunnel in next config
@@ -155,12 +168,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#211](https://github.com/alleslabs/celatone-frontend/pull/211) Fix contract count not display for code table in public project
 - [#208](https://github.com/alleslabs/celatone-frontend/pull/208) Fix messages shown in past tx page (should show only wasm and send messages)
 - [#200](https://github.com/alleslabs/celatone-frontend/pull/200) Fix add attached assets property
 - [#198](https://github.com/alleslabs/celatone-frontend/pull/198) Fix handle keplr wallet ready
 - [#194](https://github.com/alleslabs/celatone-frontend/pull/194) Fix "connect wallet state" for tables
 - [#196](https://github.com/alleslabs/celatone-frontend/pull/196) Fix rewrite rule for amplitude
-- [#188](https://github.com/alleslabs/celatone-frontend/pull/188) Fix "No contact description" prefill in description section in contract detail page 
+- [#188](https://github.com/alleslabs/celatone-frontend/pull/188) Fix "No contact description" prefill in description section in contract detail page
 - [#187](https://github.com/alleslabs/celatone-frontend/pull/187) Fix renaming list flicker to the all lists for a second
 - [#184](https://github.com/alleslabs/celatone-frontend/pull/184) Fix next seo to use default seo
 - [#186](https://github.com/alleslabs/celatone-frontend/pull/186) Fix logo navigation
