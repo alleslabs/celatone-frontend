@@ -451,7 +451,7 @@ export const useContractListByWalletAddressPagination = (
 
   return useQuery(
     [
-      "contract_list_by_wallet_address",
+      "contract_list_by_wallet_address_pagination",
       indexerGraphClient,
       offset,
       pageSize,

@@ -2,12 +2,12 @@ import { useWallet } from "@cosmos-kit/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import type { Balance, HumanAddr, Option } from "lib/types";
+import type { Balance, HumanAddr } from "lib/types";
 
 import { getAccountBalanceInfo } from "./account";
 
 export const useAccountBalances = (
-  walletAddress: Option<HumanAddr>
+  walletAddress: HumanAddr
 ): UseQueryResult<Balance[]> => {
   const { currentChainRecord } = useWallet();
 

@@ -11,10 +11,9 @@ import type {
   CodeInfo,
   ContractInfo,
   HumanAddr,
-  Token,
   Option,
 } from "lib/types";
-import { calculateAssetValue, formatTokenWithPrecision } from "lib/utils";
+import { calAssetValueWithPrecision } from "lib/utils";
 
 interface AccountContracts {
   contracts: Option<ContractInfo[]>;
@@ -125,28 +124,13 @@ export const useUserAssetInfos = (
   // Supported assets should order by descending value
   const supportedAssets = contractBalancesWithAssetInfos
     ?.filter((balance) => balance.assetInfo)
-    .sort((a, b) => {
-      if (a.balance.price && b.balance.price) {
-        return calculateAssetValue(
-          formatTokenWithPrecision(
-            b.balance.amount as Token,
-            b.balance.precision
-          ),
-          b.balance.price
-        )
-          .sub(
-            calculateAssetValue(
-              formatTokenWithPrecision(
-                a.balance.amount as Token,
-                a.balance.precision
-              ),
-              a.balance.price
-            )
+    .sort((a, b) =>
+      a.balance.price && b.balance.price
+        ? calAssetValueWithPrecision(b.balance).cmp(
+            calAssetValueWithPrecision(a.balance)
           )
-          .toNumber();
-      }
-      return 1;
-    });
+        : 1
+    );
 
   const unsupportedAssets = contractBalancesWithAssetInfos?.filter(
     (balance) => !balance.assetInfo
