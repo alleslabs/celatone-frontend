@@ -85,7 +85,6 @@ const JsonInput = ({ topic, text = "", setText, height }: JsonInputProps) => {
   return (
     <>
       <Box
-        mt="8px"
         p="16px 12px"
         borderWidth="thin"
         borderColor="pebble.700"
