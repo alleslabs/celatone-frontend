@@ -31,9 +31,25 @@ export const formatDemimal =
     return (ii === "0" && num[0] === "-" ? "-" : "") + ii + dd;
   };
 
+const d2Formatter = formatDemimal({ decimalPoints: 2, delimiter: true });
 const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
+
+export const tokenWithPrecision = (
+  amount: Token<BigSource>,
+  precision: number
+) => big(amount).div(big(10).pow(precision));
 
 export const formatTokenWithPrecision = (
   amount: Token<BigSource>,
   precision: number
-): string => d6Formatter(big(amount).div(big(10).pow(precision)), "0");
+): string => d6Formatter(tokenWithPrecision(amount, precision), "0");
+
+/**
+ * @remarks
+ * If the value is greater than or equal to 1, should return 2 decimal points else 6 decimal points
+ *
+ */
+export const formatPrice = (value: BigSource) => {
+  const price = big(value);
+  return price.gte(1) ? d2Formatter(price, "0") : d6Formatter(price, "0");
+};

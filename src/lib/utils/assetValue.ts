@@ -3,7 +3,7 @@ import big from "big.js";
 
 import type { Balance, Token } from "lib/types";
 
-import { formatTokenWithPrecision } from "./formatter";
+import { tokenWithPrecision } from "./formatter";
 
 export const calculateAssetValue = (amount: BigSource, price: BigSource): Big =>
   big(amount).mul(price);
@@ -11,7 +11,7 @@ export const calculateAssetValue = (amount: BigSource, price: BigSource): Big =>
 export const calAssetValueWithPrecision = (balance: Balance): Big => {
   if (balance.price) {
     return calculateAssetValue(
-      formatTokenWithPrecision(balance.amount as Token, balance.precision),
+      tokenWithPrecision(balance.amount as Token, balance.precision),
       balance.price
     );
   }
