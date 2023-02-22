@@ -8,8 +8,8 @@ import {
 } from "react";
 import type React from "react";
 import type { FC, SetStateAction, Dispatch } from "react";
-import type { IconType } from "react-icons";
 
+import type { ICONS } from "../icon/CustomIcon";
 import { isDecimalNumber } from "lib/utils";
 
 import { INITIAL_VALUES } from "./paginationData";
@@ -20,12 +20,12 @@ export type PaginatorContextValues = {
     pagesQuantity?: number;
     outerLimit: number;
     activeStyles: ButtonProps;
-    hoverIconRight?: IconType;
-    hoverIconLeft?: IconType;
+    hoverIconRight?: keyof typeof ICONS;
+    hoverIconLeft?: keyof typeof ICONS;
     separatorStyles: ButtonProps;
     normalStyles: ButtonProps;
     innerLimit: number;
-    separatorIcon?: IconType;
+    separatorIcon?: keyof typeof ICONS;
     isDisabled: boolean;
   };
   actions: {
@@ -62,13 +62,13 @@ type PaginatorProviderProps = {
   pagesQuantity?: number;
   normalStyles: ButtonProps;
   activeStyles: ButtonProps;
-  hoverIconRight?: IconType;
+  hoverIconRight?: keyof typeof ICONS;
   separatorStyles: ButtonProps;
-  hoverIconLeft?: IconType;
+  hoverIconLeft?: keyof typeof ICONS;
   innerLimit: number;
   currentPage: number;
   outerLimit: number;
-  separatorIcon?: IconType;
+  separatorIcon?: keyof typeof ICONS;
   onPageChange: (page: number) => void;
   isDisabled: boolean;
 };

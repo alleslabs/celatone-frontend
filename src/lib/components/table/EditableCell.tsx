@@ -213,7 +213,7 @@ export const EditableCell = ({
                 onClick={handleEdit}
               >
                 {" "}
-                <CustomIcon name="editSolid" color="pebble.600" boxSize="3" />
+                <CustomIcon name="edit" color="pebble.600" boxSize="3" />
               </Flex>
             )}
           </Flex>

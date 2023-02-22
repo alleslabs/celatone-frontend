@@ -1,8 +1,8 @@
-import { Heading, Flex, Text, Box, Grid, Button, Icon } from "@chakra-ui/react";
+import { Heading, Flex, Text, Box, Grid, Button } from "@chakra-ui/react";
 import { useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useGetAddressType } from "lib/hooks";
@@ -117,11 +117,13 @@ const ViewAddresses = ({
           p="unset"
           w="fit-content"
           rightIcon={
-            <Icon
-              as={FiChevronDown}
-              boxSize={4}
-              sx={{ transform: viewAll ? "rotate(180deg)" : "rotate(0deg)" }}
-            />
+            <Flex>
+              {viewAll ? (
+                <CustomIcon name="chevronUp" color="lilac.main" boxSize="3" />
+              ) : (
+                <CustomIcon name="chevronDown" color="lilac.main" boxSize="3" />
+              )}
+            </Flex>
           }
         >
           {viewAll ? "See Less" : "View All Addresses"}

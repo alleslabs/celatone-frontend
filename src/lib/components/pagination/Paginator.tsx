@@ -1,7 +1,8 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import type { FC } from "react";
 import type React from "react";
-import type { IconType } from "react-icons";
+
+import type { ICONS } from "../icon/CustomIcon";
 
 import { INITIAL_VALUES } from "./paginationData";
 import { PaginatorProvider } from "./PaginatorProvider";
@@ -15,9 +16,9 @@ export type PaginatorProps = {
   currentPage?: number;
   innerLimit?: number;
   outerLimit?: number;
-  separatorIcon?: IconType;
-  hoverIconRight?: IconType;
-  hoverIconLeft?: IconType;
+  separatorIcon?: keyof typeof ICONS;
+  hoverIconRight?: keyof typeof ICONS;
+  hoverIconLeft?: keyof typeof ICONS;
   isDisabled?: boolean;
   onPageChange: (page: number) => void;
 };

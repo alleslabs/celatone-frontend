@@ -1,26 +1,20 @@
 import { Flex } from "@chakra-ui/react";
-import {
-  FaTwitter,
-  FaGithub,
-  FaTelegram,
-  FaDiscord,
-  FaInfo,
-} from "react-icons/fa";
 
 import { CustomIconButton } from "lib/components/button/CustomIconButton";
+import type { ICONS } from "lib/components/icon/CustomIcon";
 import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
 export const renderSocial = (name: string) => {
   switch (name) {
     case "twitter":
-      return FaTwitter;
+      return "twitter" as keyof typeof ICONS;
     case "telegram":
-      return FaTelegram;
+      return "telegram" as keyof typeof ICONS;
     case "discord":
-      return FaDiscord;
+      return "discord" as keyof typeof ICONS;
     default:
-      return FaInfo;
+      return "infoCircle";
   }
 };
 
@@ -43,7 +37,7 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
         />
       )}
       {details.github && (
-        <CustomIconButton href={details.github} socialIcon={FaGithub} />
+        <CustomIconButton href={details.github} icon="github" />
       )}
       {details.socials.length &&
         details.socials.map(
@@ -52,7 +46,7 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
               <CustomIconButton
                 key={social.name}
                 href={social.url}
-                socialIcon={renderSocial(social.name)}
+                icon={renderSocial(social.name)}
                 onClick={() => AmpTrackSocial(social.url)}
               />
             )

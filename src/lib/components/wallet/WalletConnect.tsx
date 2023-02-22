@@ -1,8 +1,8 @@
 import { Button } from "@chakra-ui/react";
 import { WalletStatus } from "@cosmos-kit/core";
 import type { MouseEventHandler, ReactNode } from "react";
-import type { IconType } from "react-icons";
 
+import type { ICONS } from "../icon/CustomIcon";
 import { CustomIcon } from "../icon/CustomIcon";
 import type { ConnectWalletType } from "lib/types";
 
@@ -38,7 +38,7 @@ export const Connected = ({
 }: {
   buttonText: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
-  icon?: IconType;
+  icon?: keyof typeof ICONS;
   variant?: string;
   iconColor?: string;
 }) => {

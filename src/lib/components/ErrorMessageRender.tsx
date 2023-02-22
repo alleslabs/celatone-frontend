@@ -1,6 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Icon, Text } from "@chakra-ui/react";
-import { IoIosWarning } from "react-icons/io";
+import { Flex, Text } from "@chakra-ui/react";
+
+import { CustomIcon } from "./icon/CustomIcon";
 
 interface ErrorMessageRenderProps extends FlexProps {
   error: string;
@@ -12,7 +13,7 @@ export const ErrorMessageRender = ({
 }: ErrorMessageRenderProps) => {
   return (
     <Flex gap={2} {...restProps}>
-      <Icon as={IoIosWarning} boxSize={4} color="error.main" />
+      <CustomIcon name="alertSolid" color="error.main" boxSize="3" />
       <Text variant="body3" color="error.main">
         {error}
       </Text>

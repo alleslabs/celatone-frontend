@@ -1,4 +1,3 @@
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
@@ -8,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useInternalNavigate } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { useLCDEndpoint } from "lib/hooks";
@@ -103,10 +103,12 @@ const Query = () => {
           <Button
             variant="ghost-primary"
             size="sm"
+            p="unset"
+            pl="2"
             onClick={goToExecute}
-            rightIcon={<ChevronRightIcon boxSize={4} />}
           >
             Go To Execute
+            <CustomIcon name="chevronRight" color="lilac.main" boxSize="3" />
           </Button>
         </Box>
       </Flex>

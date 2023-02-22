@@ -74,7 +74,7 @@ const ContractDetailsButton = ({
         <Button
           variant="ghost-gray"
           float="right"
-          leftIcon={<CustomIcon name="editSolid" color="text.dark" />}
+          leftIcon={<CustomIcon name="edit" color="text.dark" />}
         >
           Edit
         </Button>

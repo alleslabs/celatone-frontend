@@ -19,6 +19,9 @@ const Home = () => {
     <Box mx="1">
       <QuickMenu />
       <Flex>
+        <CustomIcon name="modeLight" />
+        <CustomIcon name="modeDark" />
+        <CustomIcon name="discord" />
         <CustomIcon name="admin" />
         <CustomIcon name="assetsSolid" />
         <CustomIcon name="adminClear" />

@@ -1,5 +1,6 @@
 import { Button, Text } from "@chakra-ui/react";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+
+import { CustomIcon } from "../icon/CustomIcon";
 
 interface ShowMoreButtonProps {
   showMoreText: string;
@@ -15,7 +16,13 @@ export const ShowMoreButton = ({
 }: ShowMoreButtonProps) => (
   <Button
     p="0"
-    rightIcon={toggleShowMore ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
+    rightIcon={
+      toggleShowMore ? (
+        <CustomIcon name="chevronUp" />
+      ) : (
+        <CustomIcon name="chevronDown" />
+      )
+    }
     color="lilac.main"
     variant="none"
     w="fit-content"

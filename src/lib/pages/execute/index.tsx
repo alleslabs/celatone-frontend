@@ -1,4 +1,3 @@
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
@@ -8,6 +7,7 @@ import { useExecuteCmds, useInternalNavigate } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { AmpTrackToExecute } from "lib/services/amplitude";
@@ -90,10 +90,12 @@ const Execute = () => {
           <Button
             variant="ghost-primary"
             size="sm"
+            p="unset"
+            pl="2"
             onClick={goToQuery}
-            rightIcon={<ChevronRightIcon boxSize={4} />}
           >
             Go To Query
+            <CustomIcon name="chevronRight" color="lilac.main" boxSize="3" />
           </Button>
         </Box>
       </Flex>

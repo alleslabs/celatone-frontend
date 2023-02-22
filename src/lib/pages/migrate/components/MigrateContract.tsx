@@ -1,18 +1,17 @@
-import { Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FiChevronLeft } from "react-icons/fi";
-import { IoIosWarning } from "react-icons/io";
 
 import { useFabricateFee, useSimulateFeeQuery } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import JsonInput from "lib/components/json/JsonInput";
 import { useLCDEndpoint } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -178,7 +177,7 @@ export const MigrateContract = ({
       />
       {simulateError && (
         <Flex gap={2} mb={4}>
-          <Icon as={IoIosWarning} boxSize={4} color="error.main" />
+          <CustomIcon name="alertSolid" boxSize="3" color="error.main" />
           <Text variant="body3" color="error.main">
             {simulateError}
           </Text>
@@ -203,7 +202,7 @@ export const MigrateContract = ({
           size="md"
           variant="outline-gray"
           w="128px"
-          leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
+          leftIcon={<CustomIcon name="chevronLeft" />}
           onClick={handleBack}
         >
           Previous

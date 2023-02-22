@@ -1,8 +1,7 @@
-import { Flex, Text, Icon, Button } from "@chakra-ui/react";
+import { Flex, Text, Button } from "@chakra-ui/react";
 import Link from "next/link";
-import { BsMedium, BsGithub, BsTwitter, BsTelegram } from "react-icons/bs";
-import { IoSparklesSharp } from "react-icons/io5";
 
+import type { ICONS } from "lib/components/icon/CustomIcon";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { AmpEvent, AmpTrack, AmpTrackCelatone } from "lib/services/amplitude";
 
@@ -10,22 +9,22 @@ const Footer = () => {
   const socialMenu = [
     {
       url: "https://github.com/alleslabs",
-      icon: BsGithub,
+      icon: "github" as keyof typeof ICONS,
       slug: "github",
     },
     {
       url: "https://twitter.com/celatone_",
-      icon: BsTwitter,
+      icon: "twitter" as keyof typeof ICONS,
       slug: "twitter",
     },
     {
       url: "https://blog.alleslabs.com",
-      icon: BsMedium,
+      icon: "medium" as keyof typeof ICONS,
       slug: "medium",
     },
     {
       url: "https://t.me/celatone_announcements",
-      icon: BsTelegram,
+      icon: "telegram" as keyof typeof ICONS,
       slug: "telegram",
     },
   ];
@@ -47,13 +46,8 @@ const Footer = () => {
             rel="noopener noreferrer"
             onClick={() => AmpTrackCelatone(item.url)}
           >
-            <Button variant="ghost-gray" size="xs">
-              <Icon
-                as={item.icon}
-                width="16px"
-                height="16px"
-                color="pebble.600"
-              />
+            <Button variant="ghost-gray" size="xs" px="1">
+              <CustomIcon name={item.icon} boxSize="5" />
             </Button>
           </Link>
         ))}
@@ -88,16 +82,11 @@ const Footer = () => {
             <Flex
               gap={1}
               align="center"
-              sx={{ _hover: { "> svg": { opacity: "100" } } }}
+              sx={{ _hover: { "> div": { opacity: "100" } } }}
             >
-              <Icon
-                as={IoSparklesSharp}
-                width="16px"
-                height="16px"
-                color="honeydew.light"
-                opacity="0"
-                transition="all .25s ease-in-out"
-              />
+              <Flex opacity="0" transition="all .25s ease-in-out">
+                <CustomIcon name="alles" />
+              </Flex>
               <Text variant="body3" color="text.dark">
                 Made by
               </Text>

@@ -11,11 +11,10 @@ import {
   Text,
   Flex,
   Heading,
-  Icon,
 } from "@chakra-ui/react";
-import { IoIosWarning } from "react-icons/io";
 
 import { CopyButton } from "lib/components/CopyButton";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 
 interface FailedModalProps {
   errorLog: string;
@@ -29,7 +28,7 @@ export const FailedModal = ({ errorLog, onClose }: FailedModalProps) => {
       <ModalContent w="600px">
         <ModalHeader>
           <Flex gap="12px" align="center">
-            <Icon as={IoIosWarning} fontSize="24px" color="error.light" />
+            <CustomIcon name="alertSolid" color="error.light" boxSize="5" />
             <Heading as="h5" variant="h5">
               Failed to instantiate
             </Heading>

@@ -1,9 +1,10 @@
-import { CopyIcon } from "@chakra-ui/icons";
-import { Button, Tooltip, useClipboard } from "@chakra-ui/react";
+import { Button, Flex, Tooltip, useClipboard } from "@chakra-ui/react";
 import type { ButtonProps } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
+import { CustomIcon } from "./icon/CustomIcon";
 
 interface CopyButtonProps {
   isDisable?: boolean;
@@ -42,8 +43,14 @@ export const CopyButton = ({
             AmpTrack(AmpEvent.USE_COPY_BUTTON);
             onCopy();
           }}
-          leftIcon={<CopyIcon boxSize="4" onClick={onCopy} />}
         >
+          <Flex onClick={onCopy}>
+            <CustomIcon
+              name="copy"
+              boxSize="3"
+              color={isDisable ? "honeydew.darker" : "honeydew.main"}
+            />
+          </Flex>
           Copy
         </Button>
       </div>

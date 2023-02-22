@@ -32,7 +32,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
       title="Edit Tags"
       trigger={
         <Flex cursor="pointer">
-          <CustomIcon name="editSolid" color="pebble.600" boxSize="3" />
+          <CustomIcon name="edit" color="pebble.600" boxSize="3" />
         </Flex>
       }
       headerContent={

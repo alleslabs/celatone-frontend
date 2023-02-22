@@ -1,8 +1,8 @@
-import { Flex, Heading, Icon } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 import { useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
 
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 
 interface JsonInfoProps {
@@ -40,13 +40,13 @@ export const JsonInfo = ({
         <Heading as="h6" variant="h6">
           {header}
         </Heading>
-        <Icon
-          as={FiChevronDown}
-          color="text.dark"
-          boxSize={5}
-          transform={expand ? "rotate(180deg)" : "rotate(0)"}
-          transition="all .25s ease-in-out"
-        />
+        <Flex transition="all .25s ease-in-out">
+          {expand ? (
+            <CustomIcon name="chevronUp" />
+          ) : (
+            <CustomIcon name="chevronDown" />
+          )}
+        </Flex>
       </Flex>
       <JsonReadOnly
         text={jsonString}

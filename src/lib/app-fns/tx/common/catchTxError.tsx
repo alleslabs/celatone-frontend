@@ -1,9 +1,8 @@
-import { Icon } from "@chakra-ui/react";
-import { IoIosWarning } from "react-icons/io";
 import type { OperatorFunction } from "rxjs";
 import { catchError } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
@@ -50,7 +49,7 @@ export const catchTxError = (
       receiptInfo: {
         ...getReceiptInfo(error),
         headerIcon: (
-          <Icon as={IoIosWarning} boxSize="24px" color="error.light" />
+          <CustomIcon name="alertSolid" color="error.light" boxSize="5" />
         ),
       },
       receipts: getTxHashReceipt(txHash),

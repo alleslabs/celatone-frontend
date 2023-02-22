@@ -1,10 +1,10 @@
-import { Box, SimpleGrid, Flex, Button, Icon } from "@chakra-ui/react";
+import { Box, SimpleGrid, Flex, Button } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
-import { BsGithub } from "react-icons/bs";
 
 import { TextInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { usePublicProjectStore } from "lib/hooks";
@@ -51,7 +51,7 @@ export const AllProject = observer(() => {
           message="We are currently gathering public projects to feature here. If you would like to share your project with the community, please submit your request."
         />
         <Button gap={2} mt={8}>
-          <Icon as={BsGithub} />
+          <CustomIcon name="github" />
           Submit on Github
         </Button>
       </Flex>

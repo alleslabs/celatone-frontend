@@ -13,7 +13,6 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { BsArrowCounterclockwise } from "react-icons/bs";
 
 import { CustomIcon } from "../icon/CustomIcon";
 import { useRedo } from "lib/pages/past-txs/hooks/useRedo";
@@ -33,7 +32,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
     <>
       <Flex onClick={onOpen}>
         <Button
-          leftIcon={<BsArrowCounterclockwise />}
+          leftIcon={<CustomIcon name="redo" />}
           variant="outline"
           iconSpacing="2"
           size="sm"

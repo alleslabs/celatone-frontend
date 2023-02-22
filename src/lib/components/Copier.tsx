@@ -1,9 +1,10 @@
-import { CopyIcon } from "@chakra-ui/icons";
 import type { LayoutProps } from "@chakra-ui/react";
-import { Tooltip, useClipboard } from "@chakra-ui/react";
+import { Flex, Tooltip, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+
+import { CustomIcon } from "./icon/CustomIcon";
 
 interface CopierProps {
   value: string;
@@ -34,11 +35,9 @@ export const Copier = ({
       bg="honeydew.darker"
     >
       <div>
-        <CopyIcon
+        <Flex
           className={className}
           display={display}
-          boxSize="16px"
-          color="text.dark"
           cursor="pointer"
           marginLeft={ml}
           onClick={(e) => {
@@ -46,7 +45,9 @@ export const Copier = ({
             e.stopPropagation();
             onCopy();
           }}
-        />
+        >
+          <CustomIcon name="copy" />
+        </Flex>
       </div>
     </Tooltip>
   );
