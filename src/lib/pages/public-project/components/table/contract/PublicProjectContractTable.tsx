@@ -1,57 +1,52 @@
-import { TableContainer, Flex, Box, Grid } from "@chakra-ui/react";
+import { TableContainer, Flex, Grid, Box } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { TableHeaderNoBorder } from "lib/components/table";
+import { TableHeader } from "lib/components/table";
+import { TableTitle } from "lib/components/table/TableTitle";
+import { ViewMore } from "lib/components/table/ViewMore";
 import { useContractStore } from "lib/hooks";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { PublicContract, Option, ContractAddr } from "lib/types";
 
 import { PublicProjectContractRow } from "./PublicProjectContractRow";
 
-interface PublicProjectContractTableProps {
-  contracts: PublicContract[];
-  hasSearchInput?: boolean;
-}
-
 export interface PublicContractInfo {
   localInfo: ContractLocalInfo;
   publicInfo: PublicContract;
+}
+interface PublicProjectContractTableProps {
+  contracts: PublicContract[];
+  onViewMore?: () => void;
 }
 
 const TEMPLATE_COLUMNS = "max(160px) minmax(300px, 1fr) max(200px) max(300px) ";
 
 const ContractTableHeader = () => (
-  <Grid
-    templateColumns={TEMPLATE_COLUMNS}
-    px="32px"
-    borderBottom="1px solid"
-    borderColor="pebble.700"
-  >
-    <TableHeaderNoBorder>Contract Address</TableHeaderNoBorder>
-    <TableHeaderNoBorder>Contract Name</TableHeaderNoBorder>
-    <TableHeaderNoBorder>Instantiated By</TableHeaderNoBorder>
-    <TableHeaderNoBorder />
+  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+    <TableHeader>Contract Address</TableHeader>
+    <TableHeader>Contract Name</TableHeader>
+    <TableHeader>Instantiated By</TableHeader>
+    <TableHeader />
   </Grid>
 );
 
 export const PublicProjectContractTable = observer(
-  ({
-    contracts = [],
-    hasSearchInput = true,
-  }: PublicProjectContractTableProps) => {
+  ({ contracts = [], onViewMore }: PublicProjectContractTableProps) => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const { getContractLocalInfo } = useContractStore();
 
     const filteredContracts = useMemo(() => {
-      return matchSorter(contracts, searchKeyword, {
-        keys: ["name", "contractAddress"],
-        threshold: matchSorter.rankings.CONTAINS,
-      });
-    }, [contracts, searchKeyword]);
+      return onViewMore
+        ? contracts.slice(0, 5)
+        : matchSorter(contracts, searchKeyword, {
+            keys: ["name", "contractAddress"],
+            threshold: matchSorter.rankings.CONTAINS,
+          });
+    }, [contracts, onViewMore, searchKeyword]);
 
     const publicContracts: Option<PublicContractInfo[]> =
       filteredContracts?.map((contract) => ({
@@ -67,24 +62,34 @@ export const PublicProjectContractTable = observer(
       }));
 
     return (
-      <Box>
-        {hasSearchInput && (
-          <Flex px="12">
-            <TextInput
-              variant="floating"
-              value={searchKeyword}
-              setInputState={setSearchKeyword}
-              placeholder="Search with contract address or contract name"
-              size="md"
-              mb={6}
-            />
-          </Flex>
+      <Box mt={12} mb={4}>
+        <TableTitle title="Contracts" count={contracts.length} />
+        {!onViewMore && (
+          <TextInput
+            variant="floating"
+            value={searchKeyword}
+            setInputState={setSearchKeyword}
+            placeholder="Search with contract address or contract name"
+            size="md"
+            mb={6}
+          />
         )}
         {!publicContracts.length ? (
-          <Flex my={8}>
+          <Flex
+            my={6}
+            py={6}
+            width="full"
+            borderBottom="1px solid"
+            borderTop="1px solid"
+            borderColor="pebble.700"
+          >
             <EmptyState
-              message="No contract found."
-              image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+              message="There is currently no contracts related to this project."
+              image={
+                onViewMore
+                  ? undefined
+                  : "https://assets.alleslabs.dev/illustration/search-not-found.svg"
+              }
             />
           </Flex>
         ) : (
@@ -97,6 +102,7 @@ export const PublicProjectContractTable = observer(
                 templateColumn={TEMPLATE_COLUMNS}
               />
             ))}
+            {onViewMore && <ViewMore onClick={onViewMore} />}
           </TableContainer>
         )}
       </Box>

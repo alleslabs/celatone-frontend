@@ -7,14 +7,13 @@ import { NoContracts } from "../NoContracts";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer, TableHeader } from "lib/components/table";
+import { ContractTableRow } from "lib/components/table/contracts/ContractTableRow";
 import { useContractStore } from "lib/hooks";
 import {
   useContractListByCodeIdPagination,
   useContractListCountByCodeId,
 } from "lib/services/contractService";
 import type { ContractInfo, Option } from "lib/types";
-
-import { ContractTableRow } from "./ContractTableRow";
 
 interface ContractTableProps {
   codeId: number;

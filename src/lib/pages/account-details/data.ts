@@ -44,8 +44,10 @@ export const useContractInstances = (
 
     return {
       ...contract,
+      name: localInfo?.name,
+      description: localInfo?.description,
       tags: localInfo?.tags,
-      contractName: localInfo?.name,
+      lists: localInfo?.lists,
     };
   });
   return {
@@ -71,8 +73,10 @@ export const useContractsAdmin = (
 
     return {
       ...contractAdmin,
+      name: localInfo?.name,
+      description: localInfo?.description,
       tags: localInfo?.tags,
-      contractName: localInfo?.name,
+      lists: localInfo?.lists,
     };
   });
 
@@ -92,15 +96,13 @@ export const useCodeStored = (
     offset,
     pageSize
   );
-  const { getCodeLocalInfo } = useCodeStore();
+  const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
-  const data = codes?.map<CodeInfo>((code) => {
-    const localInfo = getCodeLocalInfo(code.id);
-    return {
-      ...code,
-      codeName: localInfo?.name,
-    };
-  });
+  const data = codes?.map<CodeInfo>((code) => ({
+    ...code,
+    codeName: getCodeLocalInfo(code.id)?.name,
+    isSaved: isCodeIdSaved(code.id),
+  }));
 
   return {
     codes: data,
