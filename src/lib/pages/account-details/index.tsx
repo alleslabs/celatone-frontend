@@ -25,6 +25,7 @@ import {
   InstantiatedContractTable,
   AdminContractTable,
 } from "./components/tables/contracts";
+import { TransactionTable } from "./components/tables/transactions";
 
 enum TabIndex {
   Overview,
@@ -51,7 +52,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     // refetchCodes,
     refetchContractsAdminCount,
     refetchContractsCount,
-    // refetchCountTxs,
+    refetchCountTxs,
     // refetchProposalCount,
   } = useAccountDetailsTableCounts(accountAddress);
 
@@ -134,8 +135,13 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Delegations</Text>
             {/* TODO: replace with the truncated Assets table */}
             <Text>Assets</Text>
-            {/* TODO: replace with the truncated Transactions table */}
-            <Text>Transactions</Text>
+            <TransactionTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.countTxs}
+              refetchCount={refetchCountTxs}
+              onViewMore={() => setTabIndex(TabIndex.Txs)}
+            />
             {/* TODO: replace with the truncated Codes table */}
             <Text>Stored Codes</Text>
             <InstantiatedContractTable
@@ -165,8 +171,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Assets</Text>
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Transactions table */}
-            <Text>Transactions</Text>
+            <TransactionTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.countTxs}
+              refetchCount={refetchCountTxs}
+            />
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Codes table */}
