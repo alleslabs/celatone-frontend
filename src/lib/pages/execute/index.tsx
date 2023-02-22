@@ -48,8 +48,6 @@ const Execute = () => {
         query: { ...(contract && { contract }) },
         options: { shallow: true },
       });
-      setInitialMsg("");
-      setInitialFunds([]);
     },
     [navigate]
   );
@@ -61,6 +59,11 @@ const Execute = () => {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
+
+      if (!msgParam.length) {
+        setInitialMsg("");
+        setInitialFunds([]);
+      }
 
       const decodeMsg = libDecode(msgParam);
 

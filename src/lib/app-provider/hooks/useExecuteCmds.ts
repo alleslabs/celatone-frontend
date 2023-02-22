@@ -12,7 +12,7 @@ export const useExecuteCmds = (contractAddress: ContractAddr) => {
 
   const { isFetching } = useSimulateFeeQuery({
     isDummyUser: true,
-    enabled: !!contractAddress && !!dummyAddress,
+    enabled: !!dummyAddress,
     messages: [
       composeMsg(MsgType.EXECUTE, {
         sender: dummyAddress as HumanAddr,
