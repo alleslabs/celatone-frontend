@@ -1,16 +1,12 @@
 import { Badge, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-interface AccountTableHeaderProps {
+interface TableTitleProps {
   title: string;
   count: number;
   helperText?: string;
 }
 
-export const AccountTableHeader = ({
-  title,
-  count,
-  helperText,
-}: AccountTableHeaderProps) => (
+export const TableTitle = ({ title, count, helperText }: TableTitleProps) => (
   <Box mb={6}>
     <Flex gap={2} h="29px" alignItems="center">
       <Heading as="h6" variant="h6">

@@ -2,7 +2,7 @@ import { Button, Flex, Icon } from "@chakra-ui/react";
 import { MdExpandMore } from "react-icons/md";
 
 interface ViewMoreProps {
-  onClick?: () => void;
+  onClick: () => void;
 }
 
 export const ViewMore = ({ onClick }: ViewMoreProps) => (

@@ -1,20 +1,11 @@
-import {
-  Box,
-  Heading,
-  Tabs,
-  TabList,
-  TabPanels,
-  Flex,
-  TabPanel,
-} from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
-import { EmptyState } from "lib/components/state/EmptyState";
-import { ViewMore } from "lib/components/table/ViewMore";
+import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { DetailHeader } from "./components/DetailHeader";
@@ -34,10 +25,10 @@ export const ProjectDetail = observer(() => {
 
   if (isLoading) return <Loading />;
   return (
-    <Box py={12} pb={0}>
+    <PageContainer>
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs index={tabIndex}>
-        <TabList my={8} borderBottom="1px" px={12} borderColor="pebble.800">
+        <TabList my={8} borderBottom="1px" borderColor="pebble.800">
           <CustomTab
             count={publicCodes.length + publicContracts.length}
             onClick={() => setTabIndex(0)}
@@ -62,56 +53,18 @@ export const ProjectDetail = observer(() => {
 
         <TabPanels my={8}>
           <TabPanel p={0}>
-            <Heading as="h6" variant="h6" mb={6} px={12}>
-              Codes
-            </Heading>
-            {publicCodes.length ? (
-              <Box>
-                <PublicProjectCodeTable
-                  hasSearchInput={false}
-                  codes={publicCodes.slice(0, 5)}
-                />
-                {publicCodes.length >= 5 && (
-                  <ViewMore onClick={() => setTabIndex(1)} />
-                )}
-              </Box>
-            ) : (
-              <Flex
-                my={6}
-                py={6}
-                width="full"
-                borderBottom="1px solid"
-                borderTop="1px solid"
-                borderColor="pebble.700"
-              >
-                <EmptyState message="There is currently no code related to this project." />
-              </Flex>
-            )}
-            <Heading as="h6" variant="h6" mb={6} mt={12} px="48px">
-              Contracts
-            </Heading>
-            {publicContracts.length ? (
-              <Box>
-                <PublicProjectContractTable
-                  hasSearchInput={false}
-                  contracts={publicContracts.slice(0, 5)}
-                />
-                {publicCodes.length >= 5 && (
-                  <ViewMore onClick={() => setTabIndex(2)} />
-                )}
-              </Box>
-            ) : (
-              <Flex
-                my={6}
-                py={6}
-                width="full"
-                borderBottom="1px solid"
-                borderTop="1px solid"
-                borderColor="pebble.700"
-              >
-                <EmptyState message="There is currently no contracts related to this project." />
-              </Flex>
-            )}
+            <PublicProjectCodeTable
+              codes={publicCodes.slice(0, 5)}
+              onViewMore={
+                publicCodes.length > 5 ? () => setTabIndex(1) : undefined
+              }
+            />
+            <PublicProjectContractTable
+              contracts={publicContracts.slice(0, 5)}
+              onViewMore={
+                publicContracts.length > 5 ? () => setTabIndex(2) : undefined
+              }
+            />
           </TabPanel>
           <TabPanel p={0}>
             <PublicProjectCodeTable codes={publicCodes} />
@@ -121,6 +74,6 @@ export const ProjectDetail = observer(() => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </Box>
+    </PageContainer>
   );
 });

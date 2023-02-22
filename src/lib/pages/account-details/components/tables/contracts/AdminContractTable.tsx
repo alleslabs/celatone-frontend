@@ -1,24 +1,24 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Flex, Grid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
-import { AccountTableHeader } from "../AccountTableHeader";
-import { EmptyState } from "../EmptyState";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { EmptyState } from "lib/components/state/EmptyState";
 import { TableContainer, TableHeader } from "lib/components/table";
+import { ContractTableRow } from "lib/components/table/contracts/ContractTableRow";
+import { TableTitle } from "lib/components/table/TableTitle";
+import { ViewMore } from "lib/components/table/ViewMore";
 import { useContractsAdmin } from "lib/pages/account-details/data";
 import type { HumanAddr, Option } from "lib/types";
-
-import { ContractTableRow } from "./ContractTableRow";
 
 interface ContractTableProps {
   walletAddress: HumanAddr;
   scrollComponentId: string;
   totalData: Option<number>;
   refetchCount: () => void;
-  isPreview?: boolean;
+  onViewMore?: () => void;
 }
 
 const ContractTableBody = ({
@@ -26,7 +26,7 @@ const ContractTableBody = ({
   scrollComponentId,
   totalData,
   refetchCount,
-  isPreview = false,
+  onViewMore,
 }: ContractTableProps) => {
   const {
     pagesQuantity,
@@ -46,7 +46,7 @@ const ContractTableBody = ({
   const { contracts, isLoading } = useContractsAdmin(
     walletAddress,
     offset,
-    isPreview ? 5 : pageSize
+    onViewMore ? 5 : pageSize
   );
 
   const onPageChange = (nextPage: number) => {
@@ -67,7 +67,14 @@ const ContractTableBody = ({
   if (isLoading) return <Loading />;
   if (!contracts?.length)
     return (
-      <EmptyState text="This account does not have any admin access for any contracts." />
+      <Flex
+        py="64px"
+        direction="column"
+        borderY="1px solid"
+        borderColor="pebble.700"
+      >
+        <EmptyState message="This account does not have any admin access for any contracts." />
+      </Flex>
     );
   return (
     <TableContainer overflow="visible">
@@ -92,18 +99,21 @@ const ContractTableBody = ({
           templateColumnsStyle={templateColumnsStyle}
         />
       ))}
-      {!isPreview && totalData && totalData > 10 && (
-        <Pagination
-          currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
-          offset={offset}
-          totalData={totalData}
-          scrollComponentId={scrollComponentId}
-          pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-        />
-      )}
+      {totalData &&
+        (onViewMore
+          ? totalData > 5 && <ViewMore onClick={onViewMore} />
+          : totalData > 10 && (
+              <Pagination
+                currentPage={currentPage}
+                pagesQuantity={pagesQuantity}
+                offset={offset}
+                totalData={totalData}
+                scrollComponentId={scrollComponentId}
+                pageSize={pageSize}
+                onPageChange={onPageChange}
+                onPageSizeChange={onPageSizeChange}
+              />
+            ))}
     </TableContainer>
   );
 };
@@ -112,7 +122,7 @@ export const AdminContractTable = observer(
   (contractTableProps: ContractTableProps) => {
     return (
       <Box mt={12} mb={4}>
-        <AccountTableHeader
+        <TableTitle
           title="Contract Admins"
           count={contractTableProps.totalData ?? 0}
           helperText="This account is the admin for following contracts"

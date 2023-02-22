@@ -16,7 +16,6 @@ import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state/InvalidState";
-import { ViewMore } from "lib/components/table/ViewMore";
 import { useValidateAddress } from "lib/hooks";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -146,12 +145,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.contractsCount}
                 refetchCount={refetchContractsCount}
-                isPreview
+                onViewMore={() => setTabIndex(TabIndex.Contracts)}
               />
-              {!!tableCounts.contractsCount &&
-                tableCounts.contractsCount >= 5 && (
-                  <ViewMore onClick={() => setTabIndex(TabIndex.Contracts)} />
-                )}
             </Box>
             <Box>
               <AdminContractTable
@@ -159,12 +154,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.contractsAdminCount}
                 refetchCount={refetchContractsAdminCount}
-                isPreview
+                onViewMore={() => setTabIndex(TabIndex.Admins)}
               />
-              {!!tableCounts.contractsAdminCount &&
-                tableCounts.contractsAdminCount >= 5 && (
-                  <ViewMore onClick={() => setTabIndex(TabIndex.Admins)} />
-                )}
             </Box>
             <Text>Contract Admin</Text>
             {/* TODO: replace with the truncated Proposals table */}
