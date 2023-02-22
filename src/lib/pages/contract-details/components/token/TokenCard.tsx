@@ -1,6 +1,8 @@
 import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+import { useState } from "react";
 
 import { Copier } from "lib/components/Copier";
+import { NAToken } from "lib/icon";
 import type { BalanceWithAssetInfo, Token } from "lib/types";
 import {
   calAssetValueWithPrecision,
@@ -13,6 +15,7 @@ interface TokenCardProps {
 }
 
 export const TokenCard = ({ userBalance }: TokenCardProps) => {
+  const [logoError, setLogoError] = useState(false);
   const { symbol, price, amount, precision, id } = userBalance.balance;
   const tokenInfoText = price
     ? `1 ${symbol} = $${formatPrice(price)}
@@ -40,7 +43,16 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
           "& .copy-button": { display: "flex" },
         }}
       >
-        <Image boxSize={8} src={userBalance.assetInfo?.logo} alt={symbol} />
+        {!logoError ? (
+          <Image
+            boxSize={8}
+            src={userBalance.assetInfo?.logo}
+            alt={symbol}
+            onError={() => setLogoError(true)}
+          />
+        ) : (
+          <NAToken />
+        )}
         <div>
           <Flex gap={1} align="center">
             <Text fontWeight="700" variant="body2">

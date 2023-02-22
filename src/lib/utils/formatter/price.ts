@@ -3,10 +3,10 @@ import big from "big.js";
 
 /**
  * @remarks
- * If the value is greater then or equal to 1, should return 2 decimal point
+ * If the value is greater than or equal to 1, should return 2 decimal points else 6 decimal points
  *
  */
 export const formatPrice = (value: BigSource) => {
   const price = big(value);
-  return price.gte(1) ? price.toFixed(2) : price;
+  return price.gte(1) ? price.toFixed(2) : price.toFixed(6);
 };
