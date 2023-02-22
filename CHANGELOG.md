@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#210](https://github.com/alleslabs/celatone-frontend/pull/210) New design for token card, currently support price
 - [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
 - [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
 

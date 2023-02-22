@@ -19,8 +19,7 @@ export const formatDemimal =
         .split(".")[0]
     )
       .div(10 ** decimalPoints)
-      .toFixed();
-
+      .toFixed(decimalPoints);
     if (num === "NaN") return fallbackValue;
 
     const [i, d] = num.split(".");
@@ -37,6 +36,4 @@ const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 export const formatTokenWithPrecision = (
   amount: Token<BigSource>,
   precision: number
-): string => {
-  return d6Formatter(big(amount).div(big(10).pow(precision)), "0");
-};
+): string => d6Formatter(big(amount).div(big(10).pow(precision)), "0");
