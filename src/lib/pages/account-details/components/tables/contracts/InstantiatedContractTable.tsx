@@ -120,17 +120,16 @@ const ContractTableBody = observer(
   }
 );
 
-export const InstantiatedContractTable = observer(
-  (contractTableProps: ContractTableProps) => {
-    return (
-      <Box mt={12} mb={4}>
-        <TableTitle
-          title="Contract Instances"
-          count={contractTableProps.totalData ?? 0}
-          helperText="This account instantiated the following contracts"
-        />
-        <ContractTableBody {...contractTableProps} />
-      </Box>
-    );
-  }
+export const InstantiatedContractTable = ({
+  totalData,
+  ...componentProps
+}: ContractTableProps) => (
+  <Box mt={12} mb={4}>
+    <TableTitle
+      title="Contract Instances"
+      count={totalData ?? 0}
+      helperText="This account instantiated the following contracts"
+    />
+    <ContractTableBody totalData={totalData} {...componentProps} />
+  </Box>
 );

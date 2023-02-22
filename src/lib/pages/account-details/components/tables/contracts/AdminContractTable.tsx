@@ -120,17 +120,16 @@ const ContractTableBody = observer(
   }
 );
 
-export const AdminContractTable = observer(
-  (contractTableProps: ContractTableProps) => {
-    return (
-      <Box mt={12} mb={4}>
-        <TableTitle
-          title="Contract Admins"
-          count={contractTableProps.totalData ?? 0}
-          helperText="This account is the admin for following contracts"
-        />
-        <ContractTableBody {...contractTableProps} />
-      </Box>
-    );
-  }
+export const AdminContractTable = ({
+  totalData,
+  ...componentProps
+}: ContractTableProps) => (
+  <Box mt={12} mb={4}>
+    <TableTitle
+      title="Contract Admins"
+      count={totalData ?? 0}
+      helperText="This account is the admin for following contracts"
+    />
+    <ContractTableBody totalData={totalData} {...componentProps} />
+  </Box>
 );

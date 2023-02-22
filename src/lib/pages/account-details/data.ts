@@ -98,13 +98,11 @@ export const useCodeStored = (
   );
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
-  const data = codes?.map<CodeInfo>((code) => {
-    return {
-      ...code,
-      codeName: getCodeLocalInfo(code.id)?.name,
-      isSaved: isCodeIdSaved(code.id),
-    };
-  });
+  const data = codes?.map<CodeInfo>((code) => ({
+    ...code,
+    codeName: getCodeLocalInfo(code.id)?.name,
+    isSaved: isCodeIdSaved(code.id),
+  }));
 
   return {
     codes: data,

@@ -224,7 +224,7 @@ export const TagSelection = observer(
                 w="full"
                 top="60px"
                 maxH="195px"
-                overflow="scroll"
+                overflowY="scroll"
               >
                 {/* header */}
                 <ListItem
