@@ -7,7 +7,7 @@ export const getAssetInfo = async (
   chainName: Option<string>,
   chainId: Option<string>
 ): Promise<Option<AssetInfo[]>> => {
-  if (!chainName || !chainId) return undefined;
+  if (!chainName || !chainId) throw new Error("Invalid chain (getAssetInfo)");
   const { data } = await axios.get(
     `${CELATONE_API_ENDPOINT}/assets/${getChainApiPath(chainName)}/${chainId}`
   );

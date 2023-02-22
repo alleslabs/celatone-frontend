@@ -52,22 +52,24 @@ export function SaveNewContractModal({
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 
+  const defaultValues: SaveNewContractDetail = {
+    contractAddress: "",
+    instantiator: "",
+    label: "",
+    name: "",
+    description: "",
+    tags: [],
+    lists: initialList,
+  };
+
   const {
     control,
     setValue,
     watch,
     reset,
-    formState: { errors, defaultValues },
+    formState: { errors },
   } = useForm<SaveNewContractDetail>({
-    defaultValues: {
-      contractAddress: "",
-      instantiator: "",
-      label: "",
-      name: "",
-      description: "",
-      tags: [],
-      lists: initialList,
-    },
+    defaultValues,
     mode: "all",
   });
 
