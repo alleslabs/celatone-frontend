@@ -40,11 +40,12 @@ export const PublicProjectContractTable = observer(
     const { getContractLocalInfo } = useContractStore();
 
     const filteredContracts = useMemo(() => {
-      return matchSorter(contracts, searchKeyword, {
+      const slicedContracts = onViewMore ? contracts.slice(0, 5) : contracts;
+      return matchSorter(slicedContracts, searchKeyword, {
         keys: ["name", "contractAddress"],
         threshold: matchSorter.rankings.CONTAINS,
       });
-    }, [contracts, searchKeyword]);
+    }, [contracts, onViewMore, searchKeyword]);
 
     const publicContracts: Option<PublicContractInfo[]> =
       filteredContracts?.map((contract) => ({

@@ -45,7 +45,7 @@ interface AccountDetailsBodyProps {
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
   const tableHeaderId = "accountDetailsTab";
   const {
     tableCounts,

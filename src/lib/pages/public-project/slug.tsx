@@ -13,9 +13,15 @@ import { PublicProjectCodeTable } from "./components/table/code/PublicProjectCod
 import { PublicProjectContractTable } from "./components/table/contract/PublicProjectContractTable";
 import { usePublicData } from "./data";
 
+enum TabIndex {
+  Overview,
+  Codes,
+  Contracts,
+}
+
 export const ProjectDetail = observer(() => {
   const router = useRouter();
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
   const { publicCodes, publicContracts, projectDetail, slug, isLoading } =
     usePublicData();
 
@@ -31,21 +37,21 @@ export const ProjectDetail = observer(() => {
         <TabList my={8} borderBottom="1px" borderColor="pebble.800">
           <CustomTab
             count={publicCodes.length + publicContracts.length}
-            onClick={() => setTabIndex(0)}
+            onClick={() => setTabIndex(TabIndex.Overview)}
           >
             Overview
           </CustomTab>
           <CustomTab
-            onClick={() => setTabIndex(1)}
-            isDisabled={!publicCodes.length}
             count={publicCodes.length}
+            isDisabled={!publicCodes.length}
+            onClick={() => setTabIndex(TabIndex.Codes)}
           >
             Codes
           </CustomTab>
           <CustomTab
-            onClick={() => setTabIndex(2)}
-            isDisabled={!publicContracts.length}
             count={publicContracts.length}
+            isDisabled={!publicContracts.length}
+            onClick={() => setTabIndex(TabIndex.Contracts)}
           >
             Contracts
           </CustomTab>
@@ -54,16 +60,12 @@ export const ProjectDetail = observer(() => {
         <TabPanels my={8}>
           <TabPanel p={0}>
             <PublicProjectCodeTable
-              codes={publicCodes.slice(0, 5)}
-              onViewMore={
-                publicCodes.length > 5 ? () => setTabIndex(1) : undefined
-              }
+              codes={publicCodes}
+              onViewMore={() => setTabIndex(TabIndex.Codes)}
             />
             <PublicProjectContractTable
-              contracts={publicContracts.slice(0, 5)}
-              onViewMore={
-                publicContracts.length > 5 ? () => setTabIndex(2) : undefined
-              }
+              contracts={publicContracts}
+              onViewMore={() => setTabIndex(TabIndex.Contracts)}
             />
           </TabPanel>
           <TabPanel p={0}>
