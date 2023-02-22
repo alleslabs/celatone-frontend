@@ -89,7 +89,7 @@ export const ExpandNavMenu = ({
                   src={submenu.logo}
                   borderRadius="full"
                   alt={submenu.slug}
-                  boxSize={4}
+                  boxSize={5}
                 />
               )}
               <Text variant="body2" className="ellipsis">

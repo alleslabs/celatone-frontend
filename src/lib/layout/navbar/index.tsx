@@ -126,7 +126,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         {
           name: "View All Projects",
           slug: "/public-project",
-          icon: "more",
+          icon: "publicProject",
         },
       ],
     });
