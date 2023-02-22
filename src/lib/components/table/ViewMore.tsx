@@ -6,7 +6,7 @@ interface ViewMoreProps {
 }
 
 export const ViewMore = ({ onClick }: ViewMoreProps) => (
-  <Flex w="full" justifyContent="center" textAlign="center">
+  <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
     <Button
       size="sm"
       variant="ghost"

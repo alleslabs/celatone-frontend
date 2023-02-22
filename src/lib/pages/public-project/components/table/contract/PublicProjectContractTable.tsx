@@ -102,9 +102,9 @@ export const PublicProjectContractTable = observer(
                 templateColumn={TEMPLATE_COLUMNS}
               />
             ))}
+            {onViewMore && <ViewMore onClick={onViewMore} />}
           </TableContainer>
         )}
-        {onViewMore && <ViewMore onClick={onViewMore} />}
       </Box>
     );
   }

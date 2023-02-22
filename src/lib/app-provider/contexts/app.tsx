@@ -9,10 +9,6 @@ import { useAmplitude } from "../hooks/useAmplitude";
 import { useNetworkChange } from "../hooks/useNetworkChange";
 import { getIndexerGraphClient } from "../query-client";
 import type { AppConstants } from "../types";
-import {
-  getExplorerTxUrl,
-  getExplorerUserAddressUrl,
-} from "lib/app-fns/explorer";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
@@ -40,10 +36,6 @@ interface AppContextInterface<
   chainGasPrice: ChainGasPrice;
   appContractAddress: ContractAddress;
   constants: Constants;
-  explorerLink: {
-    txUrl: string;
-    userUrl: string;
-  };
   indexerGraphClient: GraphQLClient;
 }
 
@@ -52,10 +44,6 @@ const AppContext = createContext<AppContextInterface<any, any>>({
   chainGasPrice: { denom: "", gasPrice: "0" as U<Token> },
   appContractAddress: {},
   constants: { gasAdjustment: 0 },
-  explorerLink: {
-    txUrl: "",
-    userUrl: "",
-  },
   indexerGraphClient: new GraphQLClient(""),
 });
 
@@ -89,10 +77,6 @@ export const AppProvider = observer(
 
     const chainBoundStates = useMemo(() => {
       return {
-        explorerLink: {
-          txUrl: getExplorerTxUrl(currentChainName),
-          userUrl: getExplorerUserAddressUrl(currentChainName),
-        },
         indexerGraphClient: getIndexerGraphClient(currentChainName),
       };
     }, [currentChainName]);
