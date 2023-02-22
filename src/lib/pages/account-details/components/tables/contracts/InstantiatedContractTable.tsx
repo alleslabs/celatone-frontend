@@ -21,102 +21,104 @@ interface ContractTableProps {
   onViewMore?: () => void;
 }
 
-const ContractTableBody = ({
-  walletAddress,
-  scrollComponentId,
-  totalData,
-  refetchCount,
-  onViewMore,
-}: ContractTableProps) => {
-  const {
-    pagesQuantity,
-    currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
-    offset,
-  } = usePaginator({
-    total: totalData,
-    initialState: {
-      pageSize: 10,
-      currentPage: 1,
-      isDisabled: false,
-    },
-  });
-  const { contracts, isLoading } = useContractInstances(
+const ContractTableBody = observer(
+  ({
     walletAddress,
-    offset,
-    onViewMore ? 5 : pageSize
-  );
-
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
-    setCurrentPage(1);
-  };
-
-  const templateColumnsStyle =
-    "150px minmax(250px, 1fr) 200px 150px minmax(250px, 300px) 70px";
-
-  if (isLoading) return <Loading />;
-  if (!contracts?.length)
-    return (
-      <Flex
-        py="64px"
-        direction="column"
-        borderY="1px solid"
-        borderColor="pebble.700"
-      >
-        <EmptyState message="This account did not instantiate any contracts before." />
-      </Flex>
+    scrollComponentId,
+    totalData,
+    refetchCount,
+    onViewMore,
+  }: ContractTableProps) => {
+    const {
+      pagesQuantity,
+      currentPage,
+      setCurrentPage,
+      pageSize,
+      setPageSize,
+      offset,
+    } = usePaginator({
+      total: totalData,
+      initialState: {
+        pageSize: 10,
+        currentPage: 1,
+        isDisabled: false,
+      },
+    });
+    const { contracts, isLoading } = useContractInstances(
+      walletAddress,
+      offset,
+      onViewMore ? 5 : pageSize
     );
-  return (
-    <TableContainer overflow="visible">
-      <Grid templateColumns={templateColumnsStyle} minW="min-content">
-        <TableHeader borderTopStyle="none">Contract Address</TableHeader>
-        <TableHeader>Contract Name</TableHeader>
-        <TableHeader>Tags</TableHeader>
-        <TableHeader>Instantiator</TableHeader>
-        <TableHeader>Timestamp</TableHeader>
-        <TableHeader />
-      </Grid>
-      {contracts.map((contractInfo) => (
-        <ContractTableRow
-          key={
-            contractInfo.name +
-            contractInfo.contractAddress +
-            contractInfo.description +
-            contractInfo.tags +
-            contractInfo.lists
-          }
-          contractInfo={contractInfo}
-          templateColumnsStyle={templateColumnsStyle}
-        />
-      ))}
-      {totalData &&
-        (onViewMore
-          ? totalData > 5 && <ViewMore onClick={onViewMore} />
-          : totalData > 10 && (
-              <Pagination
-                currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
-                offset={offset}
-                totalData={totalData}
-                scrollComponentId={scrollComponentId}
-                pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
-              />
-            ))}
-    </TableContainer>
-  );
-};
+
+    const onPageChange = (nextPage: number) => {
+      refetchCount();
+      setCurrentPage(nextPage);
+    };
+
+    const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+      const size = Number(e.target.value);
+      refetchCount();
+      setPageSize(size);
+      setCurrentPage(1);
+    };
+
+    const templateColumnsStyle =
+      "150px minmax(250px, 1fr) 200px 150px minmax(250px, 300px) 70px";
+
+    if (isLoading) return <Loading />;
+    if (!contracts?.length)
+      return (
+        <Flex
+          py="64px"
+          direction="column"
+          borderY="1px solid"
+          borderColor="pebble.700"
+        >
+          <EmptyState message="This account did not instantiate any contracts before." />
+        </Flex>
+      );
+    return (
+      <TableContainer overflow="visible">
+        <Grid templateColumns={templateColumnsStyle} minW="min-content">
+          <TableHeader borderTopStyle="none">Contract Address</TableHeader>
+          <TableHeader>Contract Name</TableHeader>
+          <TableHeader>Tags</TableHeader>
+          <TableHeader>Instantiator</TableHeader>
+          <TableHeader>Timestamp</TableHeader>
+          <TableHeader />
+        </Grid>
+        {contracts.map((contractInfo) => (
+          <ContractTableRow
+            key={
+              contractInfo.name +
+              contractInfo.contractAddress +
+              contractInfo.description +
+              contractInfo.tags +
+              contractInfo.lists
+            }
+            contractInfo={contractInfo}
+            templateColumnsStyle={templateColumnsStyle}
+          />
+        ))}
+        {totalData &&
+          (onViewMore
+            ? totalData > 5 && <ViewMore onClick={onViewMore} />
+            : totalData > 10 && (
+                <Pagination
+                  currentPage={currentPage}
+                  pagesQuantity={pagesQuantity}
+                  offset={offset}
+                  totalData={totalData}
+                  scrollComponentId={scrollComponentId}
+                  pageSize={pageSize}
+                  onPageChange={onPageChange}
+                  onPageSizeChange={onPageSizeChange}
+                />
+              ))}
+      </TableContainer>
+    );
+  }
+);
 
 export const InstantiatedContractTable = observer(
   (contractTableProps: ContractTableProps) => {

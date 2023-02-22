@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Heading,
   TabList,
@@ -139,24 +138,20 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Transactions</Text>
             {/* TODO: replace with the truncated Codes table */}
             <Text>Stored Codes</Text>
-            <Box>
-              <InstantiatedContractTable
-                walletAddress={accountAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.contractsCount}
-                refetchCount={refetchContractsCount}
-                onViewMore={() => setTabIndex(TabIndex.Contracts)}
-              />
-            </Box>
-            <Box>
-              <AdminContractTable
-                walletAddress={accountAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.contractsAdminCount}
-                refetchCount={refetchContractsAdminCount}
-                onViewMore={() => setTabIndex(TabIndex.Admins)}
-              />
-            </Box>
+            <InstantiatedContractTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.contractsCount}
+              refetchCount={refetchContractsCount}
+              onViewMore={() => setTabIndex(TabIndex.Contracts)}
+            />
+            <AdminContractTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.contractsAdminCount}
+              refetchCount={refetchContractsAdminCount}
+              onViewMore={() => setTabIndex(TabIndex.Admins)}
+            />
             <Text>Contract Admin</Text>
             {/* TODO: replace with the truncated Proposals table */}
             <Text>Opened Proposals</Text>
