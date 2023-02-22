@@ -9,9 +9,9 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer, TableHeader } from "lib/components/table";
 import { useContractStore } from "lib/hooks";
 import {
-  useContractListByCodeId,
+  useContractListByCodeIdPagination,
   useContractListCountByCodeId,
-} from "lib/services/codeService";
+} from "lib/services/contractService";
 import type { ContractInfo, Option } from "lib/types";
 
 import { ContractTableRow } from "./ContractTableRow";
@@ -40,7 +40,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
     },
   });
 
-  const { data: rawCodeContracts } = useContractListByCodeId(
+  const { data: rawCodeContracts } = useContractListByCodeIdPagination(
     codeId,
     offset,
     pageSize
