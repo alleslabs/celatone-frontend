@@ -209,7 +209,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               w="full"
               top="60px"
               maxH="195px"
-              overflowY="scroll"
+              overflow="scroll"
             >
               {/* option selection section */}
               {partialResult.map((option) => (
