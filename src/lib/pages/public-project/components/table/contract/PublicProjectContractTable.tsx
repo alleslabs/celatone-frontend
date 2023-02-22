@@ -40,11 +40,12 @@ export const PublicProjectContractTable = observer(
     const { getContractLocalInfo } = useContractStore();
 
     const filteredContracts = useMemo(() => {
-      const slicedContracts = onViewMore ? contracts.slice(0, 5) : contracts;
-      return matchSorter(slicedContracts, searchKeyword, {
-        keys: ["name", "contractAddress"],
-        threshold: matchSorter.rankings.CONTAINS,
-      });
+      return onViewMore
+        ? contracts.slice(0, 5)
+        : matchSorter(contracts, searchKeyword, {
+            keys: ["name", "contractAddress"],
+            threshold: matchSorter.rankings.CONTAINS,
+          });
     }, [contracts, onViewMore, searchKeyword]);
 
     const publicContracts: Option<PublicContractInfo[]> =
@@ -62,7 +63,7 @@ export const PublicProjectContractTable = observer(
 
     return (
       <Box mt={12} mb={4}>
-        <TableTitle title="Contracts" count={publicContracts.length} />
+        <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
           <TextInput
             variant="floating"

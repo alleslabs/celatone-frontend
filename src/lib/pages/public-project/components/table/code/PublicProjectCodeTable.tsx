@@ -43,11 +43,12 @@ export const PublicProjectCodeTable = observer(
     const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
     const filteredCodes = useMemo(() => {
-      const slicedCodes = onViewMore ? codes.slice(0, 5) : codes;
-      return matchSorter(slicedCodes, searchKeyword, {
-        keys: ["name", "id"],
-        threshold: matchSorter.rankings.CONTAINS,
-      });
+      return onViewMore
+        ? codes.slice(0, 5)
+        : matchSorter(codes, searchKeyword, {
+            keys: ["name", "id"],
+            threshold: matchSorter.rankings.CONTAINS,
+          });
     }, [codes, onViewMore, searchKeyword]);
 
     const publicCodes: Option<PublicCodeInfo[]> = filteredCodes?.map(
@@ -69,7 +70,7 @@ export const PublicProjectCodeTable = observer(
 
     return (
       <Box mt={12} mb={4}>
-        <TableTitle title="Codes" count={publicCodes.length} />
+        <TableTitle title="Codes" count={codes.length} />
         {!onViewMore && (
           <TextInput
             variant="floating"
