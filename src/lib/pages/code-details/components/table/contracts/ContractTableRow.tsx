@@ -1,8 +1,8 @@
 import { Flex, Text, Grid, IconButton, Box, chakra } from "@chakra-ui/react";
-import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import {
   AddToOtherListModal,
   SaveContractDetailsModal,
@@ -153,9 +153,10 @@ export const ContractTableRow = ({
               contractLocalInfo={contractInfo}
               triggerElement={
                 <StyledIconButton
-                  icon={<MdBookmark />}
+                  icon={
+                    <CustomIcon name="bookmarkSolid" color="violet.light" />
+                  }
                   variant="ghost-gray"
-                  color="violet.light"
                 />
               }
             />
@@ -164,9 +165,8 @@ export const ContractTableRow = ({
               contractLocalInfo={contractInfo}
               triggerElement={
                 <StyledIconButton
-                  icon={<MdBookmarkBorder />}
+                  icon={<CustomIcon name="bookmark" />}
                   variant="ghost-gray"
-                  color="pebble.600"
                 />
               }
             />

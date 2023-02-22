@@ -1,5 +1,4 @@
-import { MdBookmarkBorder } from "react-icons/md";
-
+import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { SaveNewCodeModal } from "lib/components/modal/code/SaveNewCode";
 
 export default () => {
@@ -7,7 +6,7 @@ export default () => {
     <SaveNewCodeModal
       buttonProps={{
         variant: "outline-primary",
-        rightIcon: <MdBookmarkBorder />,
+        rightIcon: <CustomIcon name="bookmark" color="violet.light" />,
         children: "Save New Code",
       }}
     />

@@ -8,7 +8,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Icon,
   Input,
   Flex,
   Divider,
@@ -17,7 +16,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
-import { MdChevronLeft, MdList } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
@@ -126,7 +124,7 @@ export const SelectContractInstantiator = ({
           {listSlug.length === 0 || !contractList ? (
             <>
               <ModalHeader>
-                <Icon as={MdList} color="text.dark" fontSize="24px" />
+                <CustomIcon name="contract" boxSize="5" />
                 <Heading as="h5" variant="h5">
                   Select Contract
                 </Heading>
@@ -188,13 +186,10 @@ export const SelectContractInstantiator = ({
           ) : (
             <>
               <ModalHeader>
-                <Icon
-                  as={MdChevronLeft}
-                  color="pebble.600"
-                  fontSize="24px"
-                  onClick={() => setListSlug("")}
-                  cursor="pointer"
-                />
+                <Flex onClick={() => setListSlug("")} cursor="pointer">
+                  <CustomIcon name="chevronLeft" boxSize="5" />
+                </Flex>
+
                 <Heading as="h5" variant="h5">
                   {contractList.name}
                 </Heading>

@@ -20,6 +20,7 @@ const Home = () => {
       <QuickMenu />
       <Flex>
         <CustomIcon name="admin" />
+        <CustomIcon name="assetsSolid" />
         <CustomIcon name="adminClear" />
         <CustomIcon name="adminClearSolid" />
         <CustomIcon name="adminEdit" />

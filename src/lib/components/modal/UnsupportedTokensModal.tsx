@@ -2,7 +2,6 @@ import {
   Modal,
   ModalHeader,
   Flex,
-  Icon,
   Text,
   ModalOverlay,
   ModalContent,
@@ -15,10 +14,10 @@ import {
 } from "@chakra-ui/react";
 import router from "next/router";
 import { useMemo } from "react";
-import { MdAttachMoney } from "react-icons/md";
 
 import { Copier } from "../Copier";
 import { ExplorerLink } from "../ExplorerLink";
+import { CustomIcon } from "../icon/CustomIcon";
 import type { BalanceWithAssetInfo, Balance, Token } from "lib/types";
 import {
   getFirstQueryParam,
@@ -95,7 +94,7 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="700px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <Icon as={MdAttachMoney} boxSize={5} color="pebble.600" />
+              <CustomIcon name="assetsSolid" boxSize="5" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>

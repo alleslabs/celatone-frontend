@@ -1,9 +1,8 @@
-import { Button, Flex, Icon, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { MdMode, MdOutlineBookmarkBorder } from "react-icons/md";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
@@ -12,6 +11,7 @@ import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
+import { CustomIcon } from "./icon/CustomIcon";
 import { EditContractDetailsModal, SaveContractDetailsModal } from "./modal";
 import {
   SelectContractAdmin,
@@ -74,7 +74,7 @@ const ContractDetailsButton = ({
         <Button
           variant="ghost-gray"
           float="right"
-          leftIcon={<Icon as={MdMode} boxSize="5" />}
+          leftIcon={<CustomIcon name="editSolid" color="text.dark" />}
         >
           Edit
         </Button>
@@ -92,7 +92,7 @@ const ContractDetailsButton = ({
         <Button
           variant="outline-gray"
           float="right"
-          leftIcon={<Icon as={MdOutlineBookmarkBorder} boxSize="5" />}
+          leftIcon={<CustomIcon name="bookmark" color="text.dark" />}
         >
           Add To List
         </Button>

@@ -1,10 +1,9 @@
-import { Flex, Icon, Button, useToast, Text } from "@chakra-ui/react";
+import { Flex, Button, useToast, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { CSSProperties, MouseEvent } from "react";
 import { useCallback } from "react";
-import type { IconType } from "react-icons";
-import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
+import type { ICONS } from "lib/components/icon/CustomIcon";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { usePublicProjectStore } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -30,14 +29,12 @@ const buttonIconProps: CSSProperties = {
   borderRadius: "full",
 };
 
-const toastIcon = (
-  <CustomIcon name="checkCircle" boxSize="24px" color="success.main" />
-);
+const toastIcon = <CustomIcon name="checkCircle" color="success.main" />;
 
 interface StyledButtonProps {
   hasText: boolean;
   actionText: string;
-  icon: IconType;
+  icon: keyof typeof ICONS;
   iconColor: string;
   action: (e: MouseEvent<HTMLButtonElement>) => void;
   variant: string;
@@ -57,7 +54,7 @@ const StyledButton = ({
     gap={2}
     onClick={action}
   >
-    <Icon as={icon} boxSize={hasText ? 4 : 6} color={iconColor} />
+    <CustomIcon name={icon} color={iconColor} />
     {hasText && <Text>{actionText}</Text>}
   </Button>
 );
@@ -100,7 +97,7 @@ export const BookmarkButton = observer(
           <StyledButton
             variant="outline-primary"
             hasText={hasText}
-            icon={MdBookmark}
+            icon="bookmarkSolid"
             iconColor="violet.light"
             actionText="Bookmarked"
             action={(e) => {
@@ -112,7 +109,7 @@ export const BookmarkButton = observer(
           <StyledButton
             variant="outline"
             hasText={hasText}
-            icon={MdBookmarkBorder}
+            icon="bookmark"
             iconColor="pebble.600"
             actionText="Bookmark Project"
             action={(e) => {

@@ -200,7 +200,6 @@ execute();
           onOpen();
         }}
       >
-        {/* <Icon as={MdCode} boxSize={5} mr={1} /> */}
         <CustomIcon
           name="code"
           color={isDisabled ? "honeydew.darker" : "honeydew.main"}

@@ -72,13 +72,11 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
       alignContent="center"
     >
       <Flex alignItems="center" flexDir="column" gap="4">
-        {/* <Icon as={MdSearch} color="pebble.600" boxSize="16" /> */}
         <Image
           src="https://assets.alleslabs.dev/illustration/search-empty.svg"
           alt="result not found"
           width="200px"
         />
-        {/* image="https://assets.alleslabs.dev/illustration/search-empty.svg" */}
         <Text color="text.dark">{renderText(list.value)}</Text>
         {!isReadOnly && (
           <ActionSection
