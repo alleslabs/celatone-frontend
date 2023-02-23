@@ -30,7 +30,6 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
     >
       <Flex
         direction="column"
-        w="260px"
         h="101px"
         gap={2}
         p={3}
