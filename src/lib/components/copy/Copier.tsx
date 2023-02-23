@@ -15,7 +15,7 @@ interface CopierProps {
 
 export const Copier = ({
   value,
-  copyLabel = "Copied!",
+  copyLabel,
   className,
   display = "flex",
   ml = "8px",

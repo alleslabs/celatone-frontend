@@ -17,7 +17,7 @@ export const CopyButton = ({
   isDisable,
   value,
   size = "sm",
-  copyLabel = "Copied!",
+  copyLabel,
 }: CopyButtonProps) => (
   <CopyTemplate
     value={value}
