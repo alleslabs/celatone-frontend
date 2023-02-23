@@ -7,7 +7,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { TableContainer, TableHeader } from "lib/components/table";
-import { ContractTableRow } from "lib/components/table/contracts/ContractTableRow";
+import { ContractsTableRow } from "lib/components/table/contracts/ContractsTableRow";
 import { TableTitle } from "lib/components/table/TableTitle";
 import { ViewMore } from "lib/components/table/ViewMore";
 import { useContractsAdmin } from "lib/pages/account-details/data";
@@ -88,7 +88,7 @@ const ContractsTableBody = observer(
           <TableHeader />
         </Grid>
         {contracts.map((contractInfo) => (
-          <ContractTableRow
+          <ContractsTableRow
             key={
               contractInfo.name +
               contractInfo.contractAddress +

@@ -7,7 +7,7 @@ import { NoContracts } from "../NoContracts";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer, TableHeader } from "lib/components/table";
-import { ContractTableRow } from "lib/components/table/contracts/ContractTableRow";
+import { ContractsTableRow } from "lib/components/table/contracts/ContractsTableRow";
 import { useContractStore } from "lib/hooks";
 import {
   useContractListByCodeIdPagination,
@@ -97,7 +97,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
             <TableHeader />
           </Grid>
           {codeContracts.map((contractInfo) => (
-            <ContractTableRow
+            <ContractsTableRow
               key={
                 contractInfo.name +
                 contractInfo.contractAddress +
