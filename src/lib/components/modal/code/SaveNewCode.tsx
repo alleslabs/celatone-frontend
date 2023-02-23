@@ -8,13 +8,13 @@ import { MdBookmark, MdCheckCircle } from "react-icons/md";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { getPermissionHelper } from "lib/components/PermissionChip";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { Addr, HumanAddr } from "lib/types";
 import { getNameAndDescriptionDefault } from "lib/utils";
+import { getPermissionHelper } from "lib/utils/codePermission";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
