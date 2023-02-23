@@ -43,7 +43,7 @@ export const toToken = (
 export const formatUTokenWithPrecision = (
   amount: U<Token<BigSource>>,
   precision: number
-): Token => d6Formatter(toToken(amount, precision), "0") as Token;
+): string => d6Formatter(toToken(amount, precision), "0");
 
 /**
  * @remarks
