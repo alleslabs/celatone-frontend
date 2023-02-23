@@ -5,7 +5,7 @@ import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer, TableHeader } from "lib/components/table";
-import { useTxsByContractAddress } from "lib/services/contractService";
+import { useTxsByContractAddressPagination } from "lib/services/txService";
 import type { ContractAddr, Option } from "lib/types";
 
 import { TxsTableRow } from "./TxsTableRow";
@@ -39,7 +39,7 @@ export const TransactionsTable = ({
     },
   });
 
-  const { data: transactions } = useTxsByContractAddress(
+  const { data: transactions } = useTxsByContractAddressPagination(
     contractAddress,
     offset,
     pageSize

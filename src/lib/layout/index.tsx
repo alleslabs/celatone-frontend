@@ -1,13 +1,14 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
+import { useMobile } from "lib/hooks";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
 import Header from "./Header";
-import Navbar from "./Navbar";
+import Navbar from "./navbar";
 
 type LayoutProps = {
   children: ReactNode;
@@ -15,6 +16,9 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
+  const isMobile = useMobile();
+
+  const [isExpand, setIsExpand] = useState(!isMobile);
 
   useEffect(() => {
     scrollToTop();
@@ -24,7 +28,7 @@ const Layout = ({ children }: LayoutProps) => {
       templateAreas={`"header header"
     "nav main"`}
       gridTemplateRows="70px 1fr"
-      gridTemplateColumns="224px 1fr"
+      gridTemplateColumns={isExpand ? "224px 1fr" : "48px 1fr"}
       h="100vh"
       overflowX="hidden"
       bg="background.main"
@@ -33,7 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
         <Header />
       </GridItem>
       <GridItem bg="pebble.900" area="nav" overflowY="auto">
-        <Navbar />
+        <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">
         <div style={{ minHeight: `calc(100vh - 129px)` }}>{children}</div>

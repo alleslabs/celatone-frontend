@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -25,9 +25,11 @@ const NotFoundPage = () => {
         py={6}
         mt={6}
       >
-        <Heading variant="h1" as="h1" color="text.disabled">
-          404
-        </Heading>
+        <Image
+          src="https://assets.alleslabs.dev/illustration/404.svg"
+          alt="page not found"
+          width="404px"
+        />
         <Heading variant="h5" as="h5" color="text.dark">
           This page is not found
         </Heading>

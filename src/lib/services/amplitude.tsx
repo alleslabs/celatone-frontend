@@ -7,6 +7,7 @@ export enum AmpEvent {
   CODE_EDIT = "Code Edit",
   CODE_REMOVE = "Code Remove",
   // CONTRACT
+  CONTRACT_SAVE_AFTER_INIT = "Contract Save After Init",
   CONTRACT_SAVE = "Contract Save",
   CONTRACT_EDIT = "Contract Edit",
   CONTRACT_EDIT_TAGS = "Contract Edit Tags",
@@ -39,6 +40,7 @@ export enum AmpEvent {
   TO_LIST_OTHERS = "To List Others",
   TO_ALL_LISTS = "To All Lists",
   TO_ALL_PROJECTS = "To All Public Projects",
+  TO_ACCOUNT_DETAIL = "To Account Detail",
   TO_CONTRACT_DETAIL = "To Contract Detail",
   TO_CODE_DETAIL = "To Code Detail",
   TO_PROJECT_DETAIL = "To Public Project Detail",

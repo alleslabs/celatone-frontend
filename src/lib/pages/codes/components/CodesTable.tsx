@@ -1,5 +1,5 @@
 import {
-  Icon,
+  Image,
   Heading,
   HStack,
   VStack,
@@ -10,10 +10,10 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { ReactNode } from "react";
-import { MdSearchOff } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
+import { CodeNameCell } from "lib/components/CodeNameCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
@@ -25,8 +25,6 @@ import {
   TableRowNoBorder,
 } from "lib/components/table";
 import type { CodeInfo } from "lib/types";
-
-import { CodeNameCell } from "./CodeNameCell";
 
 // Types of Table: Recent Codes / My Stored Codes / My Saved Codes
 type TableType = "recent" | "stored" | "saved";
@@ -66,7 +64,11 @@ const StateContainer = ({ children }: { children: ReactNode }) => (
 const NotMatched = () => {
   return (
     <StateContainer>
-      <Icon as={MdSearchOff} width="64px" height="64px" color="pebble.600" />
+      <Image
+        src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+        alt="result not found"
+        width="200px"
+      />
       <Text color="text.dark">No matched codes found.</Text>
     </StateContainer>
   );

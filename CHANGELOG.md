@@ -37,9 +37,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Features
+
+- [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated and admin contracts of an account
+- [#192](https://github.com/alleslabs/celatone-frontend/pull/192) Add alternative sidebar with only icons
+- [#210](https://github.com/alleslabs/celatone-frontend/pull/210) New design for token card, currently support price
+- [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
+- [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
+
 ### Improvements
 
 - [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
+
+### Bug fixes
+
+- [#217](https://github.com/alleslabs/celatone-frontend/pull/217) Fix state reset in Save New Code modal and no permission in migration
+
+## v1.0.1
+
+### Bug fixes
+
+- [#195](https://github.com/alleslabs/celatone-frontend/pull/195) Make code name cell for migration table to be editable in contract detail page
+- [#213](https://github.com/alleslabs/celatone-frontend/pull/213) Fix `window.crypto.randomUUID()` in old safari version (< 15.4) and `at()` of array
 
 ## v1.0.0
 
@@ -126,6 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#204](https://github.com/alleslabs/celatone-frontend/pull/204) Change back button wording and adjust flow
 - [#191](https://github.com/alleslabs/celatone-frontend/pull/191) Add typeface (Poppins) and add new styling for command shortcut
 - [#190](https://github.com/alleslabs/celatone-frontend/pull/190) Setup sentry tunnel in next config
 - [#179](https://github.com/alleslabs/celatone-frontend/pull/179) Add loading state to My code, Recent Codes, Contract details, Code details, All public projects, Public project, Saved Contract, Instantiated my be
@@ -157,6 +177,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#211](https://github.com/alleslabs/celatone-frontend/pull/211) Fix contract count not display for code table in public project
+- [#208](https://github.com/alleslabs/celatone-frontend/pull/208) Fix messages shown in past tx page (should show only wasm and send messages)
 - [#200](https://github.com/alleslabs/celatone-frontend/pull/200) Fix add attached assets property
 - [#198](https://github.com/alleslabs/celatone-frontend/pull/198) Fix handle keplr wallet ready
 - [#194](https://github.com/alleslabs/celatone-frontend/pull/194) Fix "connect wallet state" for tables

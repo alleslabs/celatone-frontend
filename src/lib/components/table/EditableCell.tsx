@@ -10,7 +10,7 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { MdMode, MdCheck, MdClose } from "react-icons/md";
 
 interface EditableCellProps {
@@ -89,6 +89,8 @@ export const EditableCell = ({
     isHoverText &&
     isShowInputValue &&
     Number(textRef.current?.scrollWidth) > Number(textRef.current?.clientWidth);
+
+  useEffect(() => setInputValue(initialValue), [initialValue]);
 
   return (
     <>

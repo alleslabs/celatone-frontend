@@ -1,24 +1,25 @@
 import type { Filters, HumanAddr, ContractAddr } from "lib/types";
 
+const actions = {
+  isExecute: "is_execute",
+  isInstantiate: "is_instantiate",
+  isUpload: "is_store_code",
+  isIbc: "is_ibc",
+  isSend: "is_send",
+  isMigrate: "is_migrate",
+  isUpdateAdmin: "is_update_admin",
+  isClearAdmin: "is_clear_admin",
+};
+
 /**
+ * @remarks
  * Generate action filter for where clause used in graphql. Only return action that is true
  *
  * @example
  * is_send: {_eq: true}, is_execute: {_eq: true}
  *
  */
-export const actionsFilter = (filters: Filters) => {
-  const actions = {
-    isExecute: "is_execute",
-    isInstantiate: "is_instantiate",
-    isUpload: "is_store_code",
-    isIbc: "is_ibc",
-    isSend: "is_send",
-    isMigrate: "is_migrate",
-    isUpdateAdmin: "is_update_admin",
-    isClearAdmin: "is_clear_admin",
-  };
-
+export const generateActionsFilter = (filters: Filters) => {
   return Object.keys(filters).reduce((acc: string, key: string) => {
     if (filters[key as keyof typeof filters]) {
       return `${acc} ${actions[key as keyof Filters]}: {_eq: true },`;
@@ -27,6 +28,26 @@ export const actionsFilter = (filters: Filters) => {
   }, "");
 };
 
+/**
+ * @remarks
+ * Generate action filter for where clause used in graphql for default case (no filter is chosen)
+ *
+ */
+const generateActionsFilterDefault = () => {
+  return `${Object.keys(actions).reduce((acc: string, key: string) => {
+    if (key !== "isIbc") {
+      return `${acc} {${actions[key as keyof Filters]}: {_eq: true }},`;
+    }
+    return acc;
+  }, "_or: [")}]`;
+};
+
+const chooseActionFilter = (filters: Filters) => {
+  if (Object.values(filters).every((value) => !value)) {
+    return generateActionsFilterDefault();
+  }
+  return generateActionsFilter(filters);
+};
 interface GenerateWhereForContractTx {
   userAddress: HumanAddr;
   contractAddress: ContractAddr;
@@ -43,7 +64,8 @@ export const generateWhereForContractTx = ({
   contractAddress,
   filters,
 }: GenerateWhereForContractTx) => {
-  const actionFilter = actionsFilter(filters);
+  const actionFilter = chooseActionFilter(filters);
+
   return `{
     transaction: { 
       account: { address: { _eq: "${userAddress}" } },
@@ -60,7 +82,8 @@ export const generateWhereForContractTxView = ({
   contractAddress,
   filters,
 }: GenerateWhereForContractTx) => {
-  const actionFilter = actionsFilter(filters);
+  const actionFilter = chooseActionFilter(filters);
+
   return `{
     sender: { _eq: "${userAddress}" },
     ${actionFilter && `${actionFilter},`}
@@ -84,7 +107,8 @@ export const generateWhereForTx = ({
   txHash,
   filters,
 }: GenerateWhereForTx) => {
-  const actionFilter = actionsFilter(filters);
+  const actionFilter = chooseActionFilter(filters);
+
   return ` {
     account: { address: { _eq: "${userAddress}" } },
     ${actionFilter !== "" ? `${actionFilter},` : ""}

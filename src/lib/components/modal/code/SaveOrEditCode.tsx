@@ -1,6 +1,6 @@
 import { Button, chakra, Icon } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { MdBookmark, MdMode } from "react-icons/md";
+import { MdBookmarkBorder, MdMode } from "react-icons/md";
 
 import type { CodeLocalInfo } from "lib/stores/code";
 
@@ -26,7 +26,7 @@ export const SaveOrEditCodeModal = observer(
         triggerElement={
           <Button
             variant="outline-gray"
-            leftIcon={<StyledIcon as={MdBookmark} />}
+            leftIcon={<StyledIcon as={MdBookmarkBorder} />}
           >
             Save Code
           </Button>

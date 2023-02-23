@@ -95,7 +95,8 @@ export const MigrateContract = ({
         else {
           setStatus({
             state: "error",
-            message: "You can migrate to this code through proposal only",
+            message:
+              "This wallet does not have permission to migrate to this code",
           });
           setSimulateError("");
         }
@@ -205,7 +206,7 @@ export const MigrateContract = ({
           leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
           onClick={handleBack}
         >
-          Back
+          Previous
         </Button>
         <Button
           size="md"
