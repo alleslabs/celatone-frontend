@@ -17,8 +17,8 @@ import router from "next/router";
 import { useMemo } from "react";
 import { MdAttachMoney } from "react-icons/md";
 
-import { Copier } from "../Copier";
 import { ExplorerLink } from "../ExplorerLink";
+import { Copier } from "lib/components/copy";
 import type { BalanceWithAssetInfo, Balance, Token } from "lib/types";
 import {
   getFirstQueryParam,

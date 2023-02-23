@@ -3,7 +3,7 @@ import { Tag, Text, Flex, Tooltip } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
-import { Copier } from "../Copier";
+import { Copier } from "lib/components/copy";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Option } from "lib/types";

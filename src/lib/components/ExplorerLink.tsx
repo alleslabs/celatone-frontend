@@ -12,7 +12,7 @@ import { AmpTrackMintscan } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
 
 import { AppLink } from "./AppLink";
-import { Copier } from "./Copier";
+import { Copier } from "./copy";
 
 export type LinkType =
   | AddressReturnType
