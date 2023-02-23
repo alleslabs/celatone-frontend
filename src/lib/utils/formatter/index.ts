@@ -6,4 +6,3 @@ export * from "./snakeToCamel";
 export * from "./formatBalanceWithDenom";
 export * from "./tokenType";
 export * from "./token";
-export * from "./price";

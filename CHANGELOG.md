@@ -45,7 +45,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
 - [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
 
-### Improvements
+### Bug fixes
+
+-[#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
 
 - [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
 
