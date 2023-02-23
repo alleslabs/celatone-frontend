@@ -1,4 +1,4 @@
-import { Badge, Flex, Grid, Heading } from "@chakra-ui/react";
+import { Badge, Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
@@ -6,8 +6,11 @@ import { useEffect } from "react";
 import { NoContracts } from "../NoContracts";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { TableContainer, TableHeader } from "lib/components/table";
-import { ContractsTableRow } from "lib/components/table/contracts/ContractsTableRow";
+import { TableContainer } from "lib/components/table";
+import {
+  ContractsTableHeader,
+  ContractsTableRow,
+} from "lib/components/table/contracts";
 import { useContractStore } from "lib/hooks";
 import {
   useContractListByCodeIdPagination,
@@ -67,7 +70,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
 
   // FIXME - might be a better way to scroll to table header
   const tableHeaderId = "contractTableHeader";
-  const templateColumnsStyle =
+  const templateColumns =
     "150px minmax(250px, 1fr) 200px 150px minmax(250px, 300px) 70px";
 
   return (
@@ -87,28 +90,23 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
       {!codeContracts?.length ? (
         <NoContracts />
       ) : (
-        <TableContainer overflow="visible">
-          <Grid templateColumns={templateColumnsStyle} minW="min-content">
-            <TableHeader borderTopStyle="none">Contract Address</TableHeader>
-            <TableHeader>Contract Name</TableHeader>
-            <TableHeader>Tags</TableHeader>
-            <TableHeader>Instantiator</TableHeader>
-            <TableHeader>Timestamp</TableHeader>
-            <TableHeader />
-          </Grid>
-          {codeContracts.map((contractInfo) => (
-            <ContractsTableRow
-              key={
-                contractInfo.name +
-                contractInfo.contractAddress +
-                contractInfo.description +
-                contractInfo.tags +
-                contractInfo.lists
-              }
-              contractInfo={contractInfo}
-              templateColumnsStyle={templateColumnsStyle}
-            />
-          ))}
+        <>
+          <TableContainer overflow="visible">
+            <ContractsTableHeader templateColumns={templateColumns} />
+            {codeContracts.map((contractInfo) => (
+              <ContractsTableRow
+                key={
+                  contractInfo.name +
+                  contractInfo.contractAddress +
+                  contractInfo.description +
+                  contractInfo.tags +
+                  contractInfo.lists
+                }
+                contractInfo={contractInfo}
+                templateColumns={templateColumns}
+              />
+            ))}
+          </TableContainer>
           {totalData && totalData > 10 && (
             <Pagination
               currentPage={currentPage}
@@ -121,7 +119,7 @@ export const ContractTable = observer(({ codeId }: ContractTableProps) => {
               onPageSizeChange={onPageSizeChange}
             />
           )}
-        </TableContainer>
+        </>
       )}
     </>
   );

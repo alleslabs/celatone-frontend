@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
@@ -6,8 +6,8 @@ import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { TableContainer, TableHeader } from "lib/components/table";
-import { CodesTableRow } from "lib/components/table/codes/CodesTableRow";
+import { TableContainer } from "lib/components/table";
+import { CodesTableHeader, CodesTableRow } from "lib/components/table/codes";
 import { TableTitle } from "lib/components/table/TableTitle";
 import { ViewMore } from "lib/components/table/ViewMore";
 import { useCodeStored } from "lib/pages/account-details/data";
@@ -62,7 +62,7 @@ const CodesTableBody = observer(
       setCurrentPage(1);
     };
 
-    const templateColumnsStyle =
+    const templateColumns =
       "max(80px) minmax(320px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
 
     if (isLoading) return <Loading />;
@@ -80,18 +80,12 @@ const CodesTableBody = observer(
     return (
       <>
         <TableContainer>
-          <Grid templateColumns={templateColumnsStyle} minW="min-content">
-            <TableHeader borderTopStyle="none">Code ID</TableHeader>
-            <TableHeader>Code Name</TableHeader>
-            <TableHeader>Contracts</TableHeader>
-            <TableHeader>Uploader</TableHeader>
-            <TableHeader>Permission</TableHeader>
-          </Grid>
+          <CodesTableHeader templateColumns={templateColumns} />
           {codes.map((code) => (
             <CodesTableRow
               key={code.id + code.uploader + code.name}
               codeInfo={code}
-              templateColumnsStyle={templateColumnsStyle}
+              templateColumns={templateColumns}
             />
           ))}
         </TableContainer>
@@ -121,7 +115,7 @@ export const CodesTable = ({
 }: CodesTableProps) => (
   <Box mt={12} mb={4}>
     <TableTitle
-      title="Stored COdes"
+      title="Stored Codes"
       count={totalData ?? 0}
       helperText="This account stored the following codes"
     />

@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
@@ -6,8 +6,11 @@ import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { TableContainer, TableHeader } from "lib/components/table";
-import { ContractsTableRow } from "lib/components/table/contracts/ContractsTableRow";
+import { TableContainer } from "lib/components/table";
+import {
+  ContractsTableHeader,
+  ContractsTableRow,
+} from "lib/components/table/contracts";
 import { TableTitle } from "lib/components/table/TableTitle";
 import { ViewMore } from "lib/components/table/ViewMore";
 import { useContractInstances } from "lib/pages/account-details/data";
@@ -62,7 +65,7 @@ const ContractsTableBody = observer(
       setCurrentPage(1);
     };
 
-    const templateColumnsStyle =
+    const templateColumns =
       "150px minmax(250px, 1fr) 200px 150px minmax(250px, 300px) 70px";
 
     if (isLoading) return <Loading />;
@@ -78,28 +81,23 @@ const ContractsTableBody = observer(
         </Flex>
       );
     return (
-      <TableContainer overflow="visible">
-        <Grid templateColumns={templateColumnsStyle} minW="min-content">
-          <TableHeader borderTopStyle="none">Contract Address</TableHeader>
-          <TableHeader>Contract Name</TableHeader>
-          <TableHeader>Tags</TableHeader>
-          <TableHeader>Instantiator</TableHeader>
-          <TableHeader>Timestamp</TableHeader>
-          <TableHeader />
-        </Grid>
-        {contracts.map((contractInfo) => (
-          <ContractsTableRow
-            key={
-              contractInfo.name +
-              contractInfo.contractAddress +
-              contractInfo.description +
-              contractInfo.tags +
-              contractInfo.lists
-            }
-            contractInfo={contractInfo}
-            templateColumnsStyle={templateColumnsStyle}
-          />
-        ))}
+      <>
+        <TableContainer overflow="visible">
+          <ContractsTableHeader templateColumns={templateColumns} />
+          {contracts.map((contractInfo) => (
+            <ContractsTableRow
+              key={
+                contractInfo.name +
+                contractInfo.contractAddress +
+                contractInfo.description +
+                contractInfo.tags +
+                contractInfo.lists
+              }
+              contractInfo={contractInfo}
+              templateColumns={templateColumns}
+            />
+          ))}
+        </TableContainer>
         {totalData &&
           (onViewMore
             ? totalData > 5 && <ViewMore onClick={onViewMore} />
@@ -115,7 +113,7 @@ const ContractsTableBody = observer(
                   onPageSizeChange={onPageSizeChange}
                 />
               ))}
-      </TableContainer>
+      </>
     );
   }
 );

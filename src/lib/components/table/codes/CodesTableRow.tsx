@@ -11,18 +11,18 @@ import type { CodeInfo } from "lib/types";
 
 interface CodesTableRowProps {
   codeInfo: CodeInfo;
-  templateColumnsStyle: string;
+  templateColumns: string;
 }
 
 export const CodesTableRow = ({
   codeInfo,
-  templateColumnsStyle,
+  templateColumns,
 }: CodesTableRowProps) => {
   const navigate = useInternalNavigate();
 
   return (
     <Grid
-      templateColumns={templateColumnsStyle}
+      templateColumns={templateColumns}
       onClick={() =>
         navigate({
           pathname: `/code/${codeInfo.id}`,
