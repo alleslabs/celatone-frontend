@@ -1,5 +1,4 @@
 import { Box, Flex, Grid } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 
@@ -149,55 +148,52 @@ const TransactionTableBody = ({
   );
 };
 
-export const TransactionTable = observer(
-  (transactionTableProps: TransactionTableProps) => {
-    const [filters, setFilters] = useState<TxFilters>({
-      isExecute: false,
-      isInstantiate: false,
-      isUpload: false,
-      isIbc: false,
-      isSend: false,
-      isMigrate: false,
-      isUpdateAdmin: false,
-      isClearAdmin: false,
-    });
+export const TransactionTable = (
+  transactionTableProps: TransactionTableProps
+) => {
+  const [filters, setFilters] = useState<TxFilters>({
+    isExecute: false,
+    isInstantiate: false,
+    isUpload: false,
+    isIbc: false,
+    isSend: false,
+    isMigrate: false,
+    isUpdateAdmin: false,
+    isClearAdmin: false,
+  });
 
-    const handleSetFilters = (filter: string, bool: boolean) => {
-      setFilters({ ...filters, [filter]: bool });
-    };
+  const handleSetFilters = (filter: string, bool: boolean) => {
+    setFilters({ ...filters, [filter]: bool });
+  };
 
-    const filterSelected = useMemo(() => {
-      return Object.keys(filters).reduce((acc: string[], key: string) => {
-        if (filters[key as keyof typeof filters]) {
-          acc.push(key);
-        }
-        return acc;
-      }, []);
-    }, [filters]);
+  const filterSelected = useMemo(() => {
+    return Object.keys(filters).reduce((acc: string[], key: string) => {
+      if (filters[key as keyof typeof filters]) {
+        acc.push(key);
+      }
+      return acc;
+    }, []);
+  }, [filters]);
 
-    return (
-      <Box mt={12} mb={4}>
-        <Flex direction="row" justify="space-between" alignItems="center">
-          <TableTitle
-            title="Transactions"
-            count={transactionTableProps.totalData ?? 0}
-            mb={0}
+  const { totalData, onViewMore } = transactionTableProps;
+  return (
+    <Box mt={12} mb={4}>
+      <Flex direction="row" justify="space-between" alignItems="center">
+        <TableTitle title="Transactions" count={totalData ?? 0} mb={0} />
+        {!onViewMore && (
+          <FilterSelection
+            result={filterSelected}
+            setResult={handleSetFilters}
+            boxWidth="400px"
+            placeholder="All"
           />
-          {!transactionTableProps.onViewMore && (
-            <FilterSelection
-              result={filterSelected}
-              setResult={handleSetFilters}
-              boxWidth="400px"
-              placeholder="All"
-            />
-          )}
-        </Flex>
-        <TransactionTableBody
-          {...transactionTableProps}
-          filters={filters}
-          filterSelected={filterSelected}
-        />
-      </Box>
-    );
-  }
-);
+        )}
+      </Flex>
+      <TransactionTableBody
+        {...transactionTableProps}
+        filters={filters}
+        filterSelected={filterSelected}
+      />
+    </Box>
+  );
+};
