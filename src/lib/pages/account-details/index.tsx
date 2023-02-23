@@ -24,7 +24,8 @@ import { getFirstQueryParam } from "lib/utils";
 import {
   InstantiatedContractTable,
   AdminContractTable,
-} from "./components/tables/contracts";
+  ProposalsTable,
+} from "./components/tables";
 
 enum TabIndex {
   Overview,
@@ -52,7 +53,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchContractsAdminCount,
     refetchContractsCount,
     // refetchCountTxs,
-    // refetchProposalCount,
+    refetchProposalsCount,
   } = useAccountDetailsTableCounts(accountAddress);
 
   return (
@@ -121,8 +122,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Admins
           </CustomTab>
           <CustomTab
-            count={tableCounts.proposalCount}
-            isDisabled={!tableCounts.proposalCount}
+            count={tableCounts.proposalsCount}
+            isDisabled={!tableCounts.proposalsCount}
             onClick={() => setTabIndex(TabIndex.Proposals)}
           >
             Proposals
@@ -153,8 +154,13 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               onViewMore={() => setTabIndex(TabIndex.Admins)}
             />
             <Text>Contract Admin</Text>
-            {/* TODO: replace with the truncated Proposals table */}
-            <Text>Opened Proposals</Text>
+            <ProposalsTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.proposalsCount}
+              refetchCount={refetchProposalsCount}
+              onViewMore={() => setTabIndex(TabIndex.Proposals)}
+            />
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Delegations table */}
@@ -189,8 +195,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Proposals table */}
-            <Text>Proposals</Text>
+            <ProposalsTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.proposalsCount}
+              refetchCount={refetchProposalsCount}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

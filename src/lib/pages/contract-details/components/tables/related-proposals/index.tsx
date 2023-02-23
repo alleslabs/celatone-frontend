@@ -4,11 +4,12 @@ import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableContainer } from "lib/components/table";
+import {
+  ProposalsTableHeader,
+  ProposalsTableRow,
+} from "lib/components/table/proposals";
 import { useRelatedProposalsByContractAddressPagination } from "lib/services/proposalService";
 import type { ContractAddr, Option } from "lib/types";
-
-import { RelatedProposalsHeader } from "./RelatedProposalsHeader";
-import { RelatedProposalsRow } from "./RelatedProposalsRow";
 
 interface RelatedProposalsTableProps {
   contractAddress: ContractAddr;
@@ -67,15 +68,17 @@ export const RelatedProposalsTable = ({
     );
 
   return (
-    <TableContainer>
-      <RelatedProposalsHeader templateColumns={templateColumns} />
-      {relatedProposals.map((proposal) => (
-        <RelatedProposalsRow
-          key={proposal.proposalId}
-          proposal={proposal}
-          templateColumns={templateColumns}
-        />
-      ))}
+    <>
+      <TableContainer>
+        <ProposalsTableHeader templateColumns={templateColumns} />
+        {relatedProposals.map((proposal) => (
+          <ProposalsTableRow
+            key={proposal.proposalId}
+            proposal={proposal}
+            templateColumns={templateColumns}
+          />
+        ))}
+      </TableContainer>
       {totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
@@ -88,6 +91,6 @@ export const RelatedProposalsTable = ({
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </TableContainer>
+    </>
   );
 };

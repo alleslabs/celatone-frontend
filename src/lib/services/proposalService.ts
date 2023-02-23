@@ -11,13 +11,12 @@ import {
 } from "lib/query";
 import type {
   ContractAddr,
-  ContractRelatedProposals,
   HumanAddr,
   Option,
   ProposalStatus,
   ProposalType,
   Addr,
-  UserProposal,
+  Proposal,
 } from "lib/types";
 import { parseDate } from "lib/utils";
 
@@ -25,7 +24,7 @@ export const useRelatedProposalsByContractAddressPagination = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<ContractRelatedProposals[]> => {
+): UseQueryResult<Proposal[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -36,7 +35,7 @@ export const useRelatedProposalsByContractAddressPagination = (
         pageSize,
       })
       .then(({ contract_proposals }) =>
-        contract_proposals.map<ContractRelatedProposals>((proposal) => ({
+        contract_proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.proposal_id,
           title: proposal.proposal.title,
           status: proposal.proposal.status as ProposalStatus,
@@ -99,7 +98,7 @@ export const useProposalsByWalletAddressPagination = (
   walletAddress: HumanAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<UserProposal[]> => {
+): UseQueryResult<Proposal[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
@@ -109,13 +108,15 @@ export const useProposalsByWalletAddressPagination = (
         pageSize,
       })
       .then(({ proposals }) =>
-        proposals.map<UserProposal>((proposal) => ({
+        proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.id,
           title: proposal.title,
           status: proposal.status as ProposalStatus,
           votingEndTime: parseDate(proposal.voting_end_time),
           depositEndTime: parseDate(proposal.deposit_end_time),
+          resolvedHeight: undefined,
           type: proposal.type as ProposalType,
+          proposer: walletAddress,
         }))
       );
   }, [indexerGraphClient, offset, pageSize, walletAddress]);
