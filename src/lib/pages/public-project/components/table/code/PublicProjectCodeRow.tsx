@@ -35,7 +35,6 @@ export const PublicProjectCodeRow = ({
       transition="all .25s ease-in-out"
       cursor="pointer"
       onClick={goToCodeDetails}
-      px="32px"
       minW="min-content"
       templateColumns={templateColumn}
       borderBottom="1px solid"

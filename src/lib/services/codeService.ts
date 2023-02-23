@@ -8,16 +8,14 @@ import {
   getCodeInfoByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
+  getCodeListByWalletAddressPagination,
+  getCodeListCountByWalletAddress,
   getCodeListQueryDocument,
-  getContractListByCodeId,
-  getContractListCountByCodeId,
-} from "lib/data/queries";
+} from "lib/query";
 import type {
   CodeInfo,
   CodeData,
-  ContractAddr,
   Option,
-  ContractInfo,
   InstantiatePermission,
   PermissionAddresses,
   Addr,
@@ -155,66 +153,72 @@ export const useCodeInfoByCodeId = (
   });
 };
 
-export const useContractListByCodeId = (
-  codeId: Option<number>,
+export const useCodeListByWalletAddressPagination = (
+  walletAddress: Option<HumanAddr>,
   offset: number,
   pageSize: number
-): UseQueryResult<ContractInfo[]> => {
+): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
-
   const queryFn = useCallback(async () => {
-    if (!codeId) throw new Error("Code ID not found (useContractListByCodeId)");
-
+    if (!walletAddress)
+      throw new Error(
+        "Wallet address not found (useCodeListByWalletAddressPagination)"
+      );
     return indexerGraphClient
-      .request(getContractListByCodeId, { codeId, offset, pageSize })
-      .then(({ contracts }) =>
-        contracts.map<ContractInfo>((contract) => ({
-          contractAddress: contract.address as ContractAddr,
-          instantiator: contract.init_by.at(0)?.account.address as Addr,
-          label: contract.label,
-          admin: contract.admin?.address as Addr,
-          latestUpdater: contract.contract_histories.at(0)?.account
-            .address as Addr,
-          latestUpdated: parseDateOpt(
-            contract.contract_histories.at(0)?.block.timestamp
-          ),
-          remark: contract.contract_histories.at(0)?.remark,
+      .request(getCodeListByWalletAddressPagination, {
+        walletAddress,
+        offset,
+        pageSize,
+      })
+      .then(({ codes }) =>
+        codes.map<CodeInfo>((code) => ({
+          id: code.id,
+          uploader: code.account.uploader as Addr,
+          contractCount: code.contracts_aggregate.aggregate?.count,
+          instantiatePermission:
+            code.access_config_permission as InstantiatePermission,
+          permissionAddresses:
+            code.access_config_addresses as PermissionAddresses,
         }))
       );
-  }, [codeId, indexerGraphClient, offset, pageSize]);
+  }, [indexerGraphClient, offset, pageSize, walletAddress]);
 
   return useQuery(
-    ["contract_list_by_code_id", codeId, indexerGraphClient, offset, pageSize],
+    [
+      "code_list_by_wallet_address_pagination",
+      indexerGraphClient,
+      offset,
+      pageSize,
+      walletAddress,
+    ],
     queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!codeId,
-    }
+    { enabled: !!walletAddress }
   );
 };
 
-export const useContractListCountByCodeId = (
-  codeId: Option<number>
+export const useCodeListCountByWalletAddress = (
+  walletAddress: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
-
   const queryFn = useCallback(async () => {
-    if (!codeId)
-      throw new Error("Code ID not found (useContractListCountByCodeId)");
+    if (!walletAddress)
+      throw new Error(
+        "Wallet address not found (useCodeListCountByWalletAddress)"
+      );
 
     return indexerGraphClient
-      .request(getContractListCountByCodeId, {
-        codeId,
+      .request(getCodeListCountByWalletAddress, {
+        walletAddress,
       })
-      .then(({ contracts_aggregate }) => contracts_aggregate?.aggregate?.count);
-  }, [codeId, indexerGraphClient]);
+      .then(({ codes_aggregate }) => codes_aggregate?.aggregate?.count);
+  }, [walletAddress, indexerGraphClient]);
 
   return useQuery(
-    ["contract_list_count_by_user", codeId, indexerGraphClient],
+    ["code_list_count_by_wallet_address", walletAddress, indexerGraphClient],
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!codeId,
+      enabled: !!walletAddress,
     }
   );
 };
