@@ -7,7 +7,7 @@ import { useFieldArray } from "react-hook-form";
 import { useNativeTokensInfo } from "lib/app-provider";
 import { AssetInput, ControllerInput } from "lib/components/forms";
 
-import type { AttachFundsState } from "./funds";
+import type { AttachFundsState } from "./types";
 
 interface SelectFundProps {
   control: Control<AttachFundsState>;

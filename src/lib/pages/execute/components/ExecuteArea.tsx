@@ -13,8 +13,8 @@ import { CopyButton } from "lib/components/CopyButton";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { AttachFund } from "lib/components/fund";
-import type { AttachFundsState } from "lib/components/fund/funds";
-import { AttachFundsType } from "lib/components/fund/funds";
+import type { AttachFundsState } from "lib/components/fund/types";
+import { AttachFundsType } from "lib/components/fund/types";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -104,9 +104,8 @@ export const ExecuteArea = ({
       case AttachFundsType.ATTACH_FUNDS_JSON: {
         return generalCheck && isValidAssetsJson;
       }
-      default: {
+      default:
         return generalCheck;
-      }
     }
   }, [
     address,

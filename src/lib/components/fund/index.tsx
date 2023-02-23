@@ -4,10 +4,10 @@ import { useWatch } from "react-hook-form";
 
 import { SelectInput } from "lib/components/forms";
 
-import type { AttachFundsState } from "./funds";
-import { AttachFundsType } from "./funds";
 import { JsonFund } from "./jsonFund";
 import { SelectFund } from "./selectFund";
+import type { AttachFundsState } from "./types";
+import { AttachFundsType } from "./types";
 
 interface AttachFundContentProps {
   control: Control<AttachFundsState>;
@@ -56,9 +56,8 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
         />
       );
     }
-    default: {
+    default:
       return null;
-    }
   }
 };
 

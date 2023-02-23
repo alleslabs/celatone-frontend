@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import { AttachFundsType } from "lib/components/fund/funds";
+import { AttachFundsType } from "lib/components/fund/types";
 
 import { fabricateFunds } from "./funds";
 

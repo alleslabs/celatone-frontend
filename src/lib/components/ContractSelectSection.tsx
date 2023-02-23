@@ -56,14 +56,13 @@ const modeStyle = (mode: string) => {
         contractNameContainer: "60%",
       };
     }
-    default: {
+    default:
       return {
         container: "12",
         contractAddrContainer: "40%",
         contractAddrW: "auto",
         contractNameContainer: "60%",
       };
-    }
   }
 };
 
