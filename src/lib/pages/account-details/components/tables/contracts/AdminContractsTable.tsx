@@ -10,10 +10,10 @@ import { TableContainer, TableHeader } from "lib/components/table";
 import { ContractTableRow } from "lib/components/table/contracts/ContractTableRow";
 import { TableTitle } from "lib/components/table/TableTitle";
 import { ViewMore } from "lib/components/table/ViewMore";
-import { useContractInstances } from "lib/pages/account-details/data";
+import { useContractsAdmin } from "lib/pages/account-details/data";
 import type { HumanAddr, Option } from "lib/types";
 
-interface ContractTableProps {
+interface ContractsTableProps {
   walletAddress: HumanAddr;
   scrollComponentId: string;
   totalData: Option<number>;
@@ -21,14 +21,14 @@ interface ContractTableProps {
   onViewMore?: () => void;
 }
 
-const ContractTableBody = observer(
+const ContractsTableBody = observer(
   ({
     walletAddress,
     scrollComponentId,
     totalData,
     refetchCount,
     onViewMore,
-  }: ContractTableProps) => {
+  }: ContractsTableProps) => {
     const {
       pagesQuantity,
       currentPage,
@@ -44,7 +44,7 @@ const ContractTableBody = observer(
         isDisabled: false,
       },
     });
-    const { contracts, isLoading } = useContractInstances(
+    const { contracts, isLoading } = useContractsAdmin(
       walletAddress,
       offset,
       onViewMore ? 5 : pageSize
@@ -74,7 +74,7 @@ const ContractTableBody = observer(
           borderY="1px solid"
           borderColor="pebble.700"
         >
-          <EmptyState message="This account did not instantiate any contracts before." />
+          <EmptyState message="This account does not have any admin access for any contracts." />
         </Flex>
       );
     return (
@@ -120,16 +120,16 @@ const ContractTableBody = observer(
   }
 );
 
-export const InstantiatedContractTable = ({
+export const AdminContractsTable = ({
   totalData,
   ...componentProps
-}: ContractTableProps) => (
+}: ContractsTableProps) => (
   <Box mt={12} mb={4}>
     <TableTitle
-      title="Contract Instances"
+      title="Contract Admins"
       count={totalData ?? 0}
-      helperText="This account instantiated the following contracts"
+      helperText="This account is the admin for following contracts"
     />
-    <ContractTableBody totalData={totalData} {...componentProps} />
+    <ContractsTableBody totalData={totalData} {...componentProps} />
   </Box>
 );

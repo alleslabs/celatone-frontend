@@ -1,2 +1,2 @@
-export * from "./AdminContractTable";
-export * from "./InstantiatedContractTable";
+export * from "./AdminContractsTable";
+export * from "./InstantiatedContractsTable";
