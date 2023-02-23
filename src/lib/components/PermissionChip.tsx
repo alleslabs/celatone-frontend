@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { InstantiatePermission } from "lib/types";
-import { getPermissionHelper } from "lib/utils/codePermission";
+import { getPermissionHelper } from "lib/utils";
 
 const StyledTag = chakra(Tag, {
   baseStyle: {

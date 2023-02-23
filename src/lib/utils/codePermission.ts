@@ -1,9 +1,10 @@
-import type { Addr, PermissionAddresses } from "lib/types";
+import type { Addr, PermissionAddresses, Option } from "lib/types";
 import { InstantiatePermission } from "lib/types";
-import { truncate } from "lib/utils";
+
+import { truncate } from "./truncate";
 
 export const getPermissionHelper = (
-  address: Addr | undefined,
+  address: Option<Addr>,
   instantiatePermission: InstantiatePermission,
   permissionAddresses: PermissionAddresses
 ) => {

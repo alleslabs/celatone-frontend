@@ -13,8 +13,7 @@ import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { Addr, HumanAddr } from "lib/types";
-import { getNameAndDescriptionDefault } from "lib/utils";
-import { getPermissionHelper } from "lib/utils/codePermission";
+import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
