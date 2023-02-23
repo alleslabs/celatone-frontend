@@ -89,10 +89,7 @@ const TransactionTableBody = ({
       >
         <EmptyState
           image="https://assets.alleslabs.dev/illustration/search-empty.svg"
-          message={`
-        Transactions involving with Wasm module
-        such as Instantiate, Execute, or Upload Wasm file will display here.
-        `}
+          message="No past transaction matches found with your input."
         />
       </Flex>
     );
