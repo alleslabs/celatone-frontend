@@ -1,7 +1,7 @@
 import type { BigSource } from "big.js";
 import big from "big.js";
 
-import type { Token, U } from "lib/types";
+import type { Token, U, USD } from "lib/types";
 
 export const formatDemimal =
   ({
@@ -50,7 +50,7 @@ export const formatUTokenWithPrecision = (
  * If the value is greater than or equal to 1, should return 2 decimal points else 6 decimal points
  *
  */
-export const formatPrice = (value: BigSource) => {
+export const formatPrice = (value: USD<BigSource>): string => {
   const price = big(value);
   return price.gte(1) ? d2Formatter(price, "0") : d6Formatter(price, "0");
 };

@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Copier } from "lib/components/Copier";
 import { NAToken } from "lib/icon";
-import type { BalanceWithAssetInfo, Token, U } from "lib/types";
+import type { BalanceWithAssetInfo, Token, U, USD } from "lib/types";
 import {
   calAssetValueWithPrecision,
   formatPrice,
@@ -18,7 +18,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
   const [logoError, setLogoError] = useState(false);
   const { symbol, price, amount, precision, id } = userBalance.balance;
   const tokenInfoText = price
-    ? `1 ${symbol} = $${formatPrice(price)}
+    ? `1 ${symbol} = $${formatPrice(price as USD<number>)}
     Token ID: ${id}`
     : "No Price Data";
 
