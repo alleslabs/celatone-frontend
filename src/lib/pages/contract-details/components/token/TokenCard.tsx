@@ -1,4 +1,4 @@
-import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+import { Badge, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { Copier } from "lib/components/copy";
@@ -17,15 +17,11 @@ interface TokenCardProps {
 export const TokenCard = ({ userBalance }: TokenCardProps) => {
   const [logoError, setLogoError] = useState(false);
   const { symbol, price, amount, precision, id } = userBalance.balance;
-  const tokenInfoText = price
-    ? `1 ${symbol} = $${formatPrice(price as USD<number>)}
-    Token ID: ${id}`
-    : "No Price Data";
 
   return (
     <Tooltip
       hasArrow
-      label={tokenInfoText}
+      label={`Token ID: ${id}`}
       placement="top"
       bg="honeydew.darker"
       maxW="240px"
@@ -33,32 +29,42 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
       textAlign="center"
     >
       <Flex
+        direction="column"
+        w="260px"
+        h="101px"
         gap={2}
-        p={2}
+        p={3}
         background="pebble.900"
         borderRadius="8px"
-        alignItems="center"
         _hover={{
           bgColor: "pebble.800",
           "& .copy-button": { display: "flex" },
         }}
       >
-        {!logoError ? (
-          <Image
-            boxSize={8}
-            src={userBalance.assetInfo?.logo}
-            alt={symbol}
-            onError={() => setLogoError(true)}
-          />
-        ) : (
-          <NAToken />
-        )}
         <div>
-          <Flex gap={1} align="center">
-            <Text fontWeight="700" variant="body2">
-              {formatUTokenWithPrecision(amount as U<Token>, precision)}
+          <Flex
+            gap={1}
+            alignItems="center"
+            borderBottom="1px solid"
+            borderBottomColor="pebble.700"
+            pb={2}
+          >
+            {!logoError ? (
+              <Image
+                boxSize={6}
+                src={userBalance.assetInfo?.logo}
+                alt={symbol}
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <NAToken />
+            )}
+            <Text variant="body2" className="ellipsis" maxW="91">
+              {symbol}
             </Text>
-            <Text variant="body2">{symbol}</Text>
+            <Badge variant="gray" ml="6px">
+              {price ? formatPrice(price as USD<number>) : "N/A"}
+            </Badge>
             <Copier
               value={id}
               copyLabel="Token ID Copied!"
@@ -67,14 +73,20 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
               className="copy-button"
             />
           </Flex>
-          <Text variant="body3" color="text.dark">
-            {price
-              ? `$${formatPrice(
-                  calAssetValueWithPrecision(userBalance.balance)
-                )}`
-              : "-"}
-          </Text>
         </div>
+
+        <Flex direction="column">
+          <Text fontWeight="700" variant="body2">
+            {formatUTokenWithPrecision(amount as U<Token>, precision)}
+          </Text>
+          <Text variant="body3" color="grey.400">
+            {price
+              ? `(${formatPrice(
+                  calAssetValueWithPrecision(userBalance.balance)
+                )})`
+              : "N/A"}
+          </Text>
+        </Flex>
       </Flex>
     </Tooltip>
   );

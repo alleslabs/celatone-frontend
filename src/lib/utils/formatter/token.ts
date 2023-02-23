@@ -1,7 +1,9 @@
-import type { BigSource } from "big.js";
+import type { Big, BigSource } from "big.js";
 import big from "big.js";
 
 import type { Token, U, USD } from "lib/types";
+
+const B = 1000000000;
 
 export const formatDemimal =
   ({
@@ -31,26 +33,58 @@ export const formatDemimal =
     return (ii === "0" && num[0] === "-" ? "-" : "") + ii + dd;
   };
 
-const d2Formatter = formatDemimal({ decimalPoints: 2, delimiter: true });
-const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
-
 export const toToken = (
   uAmount: U<Token<BigSource>>,
   precision: number
 ): Token<BigSource> =>
   big(uAmount).div(big(10).pow(precision)) as Token<BigSource>;
 
+/**
+ * @remarks
+ * If token is more than or equal to 1 billion, should add postfix M and format to 2 decimal point
+ *
+ */
 export const formatUTokenWithPrecision = (
   amount: U<Token<BigSource>>,
   precision: number
-): string => d6Formatter(toToken(amount, precision), "0");
+): string => {
+  const token = toToken(amount, precision);
+  const bToken = token as Big;
+  if (bToken.gte(B)) {
+    return `${formatDemimal({ decimalPoints: 2, delimiter: true })(
+      bToken.div(B),
+      "0.00"
+    )}M`;
+  }
+  return formatDemimal({ decimalPoints: precision, delimiter: true })(
+    token,
+    "0.00"
+  );
+};
+
+const d2Formatter = formatDemimal({ decimalPoints: 2, delimiter: true });
+const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 
 /**
  * @remarks
- * If the value is greater than or equal to 1, should return 2 decimal points else 6 decimal points
- *
+ * Condition for price rendering
+ * $0 or >= $1 -> 2d
+ * < $1 -> 6d
+ * <$0.000001 -> <$0.000001
  */
 export const formatPrice = (value: USD<BigSource>): string => {
   const price = big(value);
-  return price.gte(1) ? d2Formatter(price, "0") : d6Formatter(price, "0");
+  const lowestThreshold = 0.000001;
+
+  const d2 = d2Formatter(price, "0.00");
+  const d6 = d6Formatter(price, "0.00");
+
+  if (price.eq(0) || price.gte(1)) {
+    return `$${d2}`;
+  }
+
+  if (price.lt(lowestThreshold)) {
+    return `<$${lowestThreshold}`;
+  }
+  return `$${d6}`;
 };
