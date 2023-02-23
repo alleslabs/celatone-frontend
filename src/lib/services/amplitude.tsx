@@ -1,6 +1,6 @@
 import { track } from "@amplitude/analytics-browser";
 
-import type { AttachFundsType } from "lib/types";
+import type { AttachFundsType } from "lib/components/fund/funds";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",

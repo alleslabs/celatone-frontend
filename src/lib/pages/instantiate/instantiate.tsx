@@ -19,10 +19,12 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import { AttachFund } from "lib/components/fund";
+import type { AttachFundsState } from "lib/components/fund/funds";
+import { AttachFundsType } from "lib/components/fund/funds";
 import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useAttachFunds, useLCDEndpoint, useValidateAddress } from "lib/hooks";
+import { useLCDEndpoint, useValidateAddress } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
@@ -31,9 +33,15 @@ import {
   AmpTrackToInstantiate,
 } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
-import type { AttachFundsState, HumanAddr } from "lib/types";
-import { AttachFundsType, MsgType } from "lib/types";
-import { composeMsg, jsonPrettify, jsonValidate, libDecode } from "lib/utils";
+import type { HumanAddr } from "lib/types";
+import { MsgType } from "lib/types";
+import {
+  composeMsg,
+  getAttachFunds,
+  jsonPrettify,
+  jsonValidate,
+  libDecode,
+} from "lib/utils";
 
 import { FailedModal, Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
@@ -129,7 +137,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codeId, address, watchInitMsg, Object.keys(formErrors), status.state]);
 
-  const funds = useAttachFunds({
+  const funds = getAttachFunds({
     attachFundOption,
     assetsJson,
     assetsSelect,
@@ -179,7 +187,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         codeId: Long.fromString(codeId),
         label,
         msg: Buffer.from(initMsg),
-        funds: funds(),
+        funds,
       });
       try {
         const estimatedFee = await simulate([msg]);
@@ -189,7 +197,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           initMsg: JSON.parse(initMsg),
           label,
           admin: adminAddress,
-          funds: funds(),
+          funds,
           onTxSucceed: onComplete,
         });
 

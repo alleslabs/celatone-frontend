@@ -38,6 +38,35 @@ interface ContractSelectSectionProps {
   onContractSelect: (contract: ContractAddr) => void;
 }
 
+const modeStyle = (mode: string) => {
+  switch (mode) {
+    case "all-lists": {
+      return {
+        container: "0px",
+        contractAddrContainer: "70%",
+        contractAddrW: "auto",
+        contractNameContainer: "30%",
+      };
+    }
+    case "only-admin": {
+      return {
+        container: "12",
+        contractAddrContainer: "40%",
+        contractAddrW: "144px",
+        contractNameContainer: "60%",
+      };
+    }
+    default: {
+      return {
+        container: "12",
+        contractAddrContainer: "40%",
+        contractAddrW: "auto",
+        contractNameContainer: "60%",
+      };
+    }
+  }
+};
+
 const DisplayName = ({
   notSelected,
   isValid,
@@ -104,7 +133,6 @@ const ContractDetailsButton = ({
 };
 
 export const ContractSelectSection = observer(
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
     const { indexerGraphClient } = useCelatoneApp();
@@ -165,9 +193,11 @@ export const ContractSelectSection = observer(
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;
+    const style = modeStyle(mode);
+
     return (
       <Flex
-        mb={mode === "all-lists" ? "0px" : 12}
+        mb={style.container}
         borderWidth="thin"
         borderColor="pebble.800"
         p="16px"
@@ -178,7 +208,7 @@ export const ContractSelectSection = observer(
         width="full"
       >
         <Flex gap={4} width="100%">
-          <Flex direction="column" width={mode === "all-lists" ? "70%" : "40%"}>
+          <Flex direction="column" width={style.contractAddrContainer}>
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -190,7 +220,7 @@ export const ContractSelectSection = observer(
                   isMobile || mode === "only-admin" ? "truncate" : "normal"
                 }
                 maxWidth="none"
-                minWidth={mode === "only-admin" ? "144px" : "auto"}
+                minWidth={style.contractAddrW}
                 wordBreak="break-all"
               />
             ) : (
@@ -199,7 +229,7 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex direction="column" width={mode === "all-lists" ? "30%" : "60%"}>
+          <Flex direction="column" width={style.contractNameContainer}>
             Contract Name
             <DisplayName
               notSelected={notSelected}

@@ -52,9 +52,8 @@ const Execute = () => {
     [navigate]
   );
 
-  const msgParam = getFirstQueryParam(router.query.msg);
-
   useEffect(() => {
+    const msgParam = getFirstQueryParam(router.query.msg);
     if (router.isReady) {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
@@ -76,7 +75,7 @@ const Execute = () => {
       setContractAddress(contractAddressParam);
       AmpTrackToExecute(!!contractAddressParam, !!msgParam);
     }
-  }, [router, onContractSelect, msgParam]);
+  }, [router, onContractSelect]);
 
   return (
     <PageContainer>

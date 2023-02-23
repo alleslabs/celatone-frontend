@@ -13,19 +13,21 @@ import { CopyButton } from "lib/components/CopyButton";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { AttachFund } from "lib/components/fund";
+import type { AttachFundsState } from "lib/components/fund/funds";
+import { AttachFundsType } from "lib/components/fund/funds";
 import JsonInput from "lib/components/json/JsonInput";
-import { useAttachFunds, useContractStore } from "lib/hooks";
+import { useContractStore } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
-import type {
-  AttachFundsState,
-  ComposedMsg,
-  ContractAddr,
-  HumanAddr,
-} from "lib/types";
-import { AttachFundsType, MsgType } from "lib/types";
-import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
+import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
+import { MsgType } from "lib/types";
+import {
+  composeMsg,
+  getAttachFunds,
+  jsonPrettify,
+  jsonValidate,
+} from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -37,6 +39,12 @@ interface ExecuteAreaProps {
   initialFunds: Coin[];
   cmds: [string, string][];
 }
+
+const assetDefault = {
+  assetsSelect: [{ denom: "", amount: "" }] as Coin[],
+  assetsJson: jsonPrettify(`[{ "denom": "", "amount": "" }]`),
+  attachFundOption: AttachFundsType.ATTACH_FUNDS_NULL,
+};
 
 export const ExecuteArea = ({
   contractAddress,
@@ -56,15 +64,6 @@ export const ExecuteArea = ({
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
 
-  const assetDefault = useMemo(
-    () => ({
-      assetsSelect: [{ denom: "", amount: "" }] as Coin[],
-      assetsJson: jsonPrettify(`[{ "denom": "", "amount": "" }]`),
-      attachFundOption: AttachFundsType.ATTACH_FUNDS_NULL,
-    }),
-    []
-  );
-
   const { control, setValue, watch, reset } = useForm<AttachFundsState>({
     mode: "all",
     defaultValues: assetDefault,
@@ -81,14 +80,14 @@ export const ExecuteArea = ({
     } else {
       reset(assetDefault);
     }
-  }, [assetDefault, initialFunds, reset, setValue]);
+  }, [initialFunds, reset, setValue]);
 
   const { errors } = useFormState({ control });
 
   const { assetsJson, assetsSelect, attachFundOption } = watch();
 
-  const validateAssetsSelect = !errors.assetsSelect;
-  const validateAssetsJson =
+  const isValidAssetsSelect = !errors.assetsSelect;
+  const isValidAssetsJson =
     !errors.assetsJson && jsonValidate(assetsJson) === null;
 
   const enableExecute = useMemo(() => {
@@ -98,20 +97,24 @@ export const ExecuteArea = ({
       address &&
       contractAddress
     );
-    if (attachFundOption === AttachFundsType.ATTACH_FUNDS_SELECT) {
-      return generalCheck && validateAssetsSelect;
+    switch (attachFundOption) {
+      case AttachFundsType.ATTACH_FUNDS_SELECT: {
+        return generalCheck && isValidAssetsSelect;
+      }
+      case AttachFundsType.ATTACH_FUNDS_JSON: {
+        return generalCheck && isValidAssetsJson;
+      }
+      default: {
+        return generalCheck;
+      }
     }
-    if (attachFundOption === AttachFundsType.ATTACH_FUNDS_JSON) {
-      return generalCheck && validateAssetsJson;
-    }
-    return generalCheck;
   }, [
     address,
     attachFundOption,
     contractAddress,
     msg,
-    validateAssetsJson,
-    validateAssetsSelect,
+    isValidAssetsJson,
+    isValidAssetsSelect,
   ]);
 
   const { isFetching } = useSimulateFeeQuery({
@@ -128,7 +131,7 @@ export const ExecuteArea = ({
     },
   });
 
-  const funds = useAttachFunds({
+  const funds = getAttachFunds({
     attachFundOption,
     assetsJson,
     assetsSelect,
@@ -145,7 +148,7 @@ export const ExecuteArea = ({
       estimatedFee: fee,
       contractAddress,
       msg: JSON.parse(msg),
-      funds: funds(),
+      funds,
     });
     if (stream) {
       setProcessing(true);
@@ -171,7 +174,7 @@ export const ExecuteArea = ({
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds: funds(),
+        funds,
       });
 
       const timeoutId = setTimeout(() => {

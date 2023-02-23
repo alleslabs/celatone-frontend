@@ -1,8 +1,8 @@
 import type { Coin } from "@cosmjs/stargate";
-import { useCallback } from "react";
 
-import { AttachFundsType } from "lib/types";
-import { fabricateFunds } from "lib/utils";
+import { AttachFundsType } from "lib/components/fund/funds";
+
+import { fabricateFunds } from "./funds";
 
 interface AttachFundsParams {
   attachFundOption: AttachFundsType;
@@ -10,16 +10,16 @@ interface AttachFundsParams {
   assetsSelect: Coin[];
 }
 
-export const useAttachFunds = ({
+export const getAttachFunds = ({
   attachFundOption,
   assetsJson,
   assetsSelect,
 }: AttachFundsParams) => {
-  return useCallback(() => {
-    if (attachFundOption === AttachFundsType.ATTACH_FUNDS_SELECT) {
+  switch (attachFundOption) {
+    case AttachFundsType.ATTACH_FUNDS_SELECT: {
       return fabricateFunds(assetsSelect);
     }
-    if (attachFundOption === AttachFundsType.ATTACH_FUNDS_JSON) {
+    case AttachFundsType.ATTACH_FUNDS_JSON: {
       try {
         if (JSON.parse(assetsJson)) {
           return JSON.parse(assetsJson) as Coin[];
@@ -27,8 +27,9 @@ export const useAttachFunds = ({
       } catch {
         // comment just to avoid eslint no-empty
       }
+      return [];
     }
-
-    return [];
-  }, [assetsJson, assetsSelect, attachFundOption]);
+    default:
+      return [];
+  }
 };

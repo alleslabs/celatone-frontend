@@ -3,9 +3,9 @@ import type { Control, UseFormSetValue } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 
 import { SelectInput } from "lib/components/forms";
-import type { AttachFundsState } from "lib/types";
-import { AttachFundsType } from "lib/types";
 
+import type { AttachFundsState } from "./funds";
+import { AttachFundsType } from "./funds";
 import { JsonFund } from "./jsonFund";
 import { SelectFund } from "./selectFund";
 
@@ -38,21 +38,28 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
     name: ["assetsSelect", "assetsJson", "attachFundOption"],
   });
 
-  if (attachFundOption === AttachFundsType.ATTACH_FUNDS_SELECT) {
-    return (
-      <SelectFund
-        assetsSelect={assetsSelect}
-        control={control}
-        setValue={setValue}
-      />
-    );
+  switch (attachFundOption) {
+    case AttachFundsType.ATTACH_FUNDS_SELECT: {
+      return (
+        <SelectFund
+          assetsSelect={assetsSelect}
+          control={control}
+          setValue={setValue}
+        />
+      );
+    }
+    case AttachFundsType.ATTACH_FUNDS_JSON: {
+      return (
+        <JsonFund
+          setValue={(value) => setValue("assetsJson", value)}
+          assetsJson={assetsJson}
+        />
+      );
+    }
+    default: {
+      return null;
+    }
   }
-
-  if (attachFundOption === AttachFundsType.ATTACH_FUNDS_JSON) {
-    return <JsonFund setValue={setValue} assetsJson={assetsJson} />;
-  }
-
-  return null;
 };
 
 interface AttachFundProps {
@@ -75,7 +82,7 @@ export const AttachFund = ({
           onChange={(value: AttachFundsType) =>
             setValue("attachFundOption", value)
           }
-          initialSelected={attachFundOption.toString()}
+          initialSelected={attachFundOption}
           helperTextComponent={
             <Text variant="body3" color="text.dark">
               Only the input values in your selected{" "}
