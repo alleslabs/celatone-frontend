@@ -1,7 +1,7 @@
 import type { BigSource } from "big.js";
 import big from "big.js";
 
-import type { Token } from "lib/types";
+import type { Token, U } from "lib/types";
 
 export const formatDemimal =
   ({
@@ -34,15 +34,16 @@ export const formatDemimal =
 const d2Formatter = formatDemimal({ decimalPoints: 2, delimiter: true });
 const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 
-export const tokenWithPrecision = (
-  amount: Token<BigSource>,
+export const toToken = (
+  uAmount: U<Token<BigSource>>,
   precision: number
-) => big(amount).div(big(10).pow(precision));
+): Token<BigSource> =>
+  big(uAmount).div(big(10).pow(precision)) as Token<BigSource>;
 
-export const formatTokenWithPrecision = (
-  amount: Token<BigSource>,
+export const formatUTokenWithPrecision = (
+  amount: U<Token<BigSource>>,
   precision: number
-): string => d6Formatter(tokenWithPrecision(amount, precision), "0");
+): Token => d6Formatter(toToken(amount, precision), "0") as Token;
 
 /**
  * @remarks
