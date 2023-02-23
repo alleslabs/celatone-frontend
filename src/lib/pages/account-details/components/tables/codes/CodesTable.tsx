@@ -78,21 +78,23 @@ const CodesTableBody = observer(
         </Flex>
       );
     return (
-      <TableContainer>
-        <Grid templateColumns={templateColumnsStyle} minW="min-content">
-          <TableHeader borderTopStyle="none">Code ID</TableHeader>
-          <TableHeader>Code Name</TableHeader>
-          <TableHeader>Contracts</TableHeader>
-          <TableHeader>Uploader</TableHeader>
-          <TableHeader>Permission</TableHeader>
-        </Grid>
-        {codes.map((code) => (
-          <CodesTableRow
-            key={code.id + code.uploader + code.name}
-            codeInfo={code}
-            templateColumnsStyle={templateColumnsStyle}
-          />
-        ))}
+      <>
+        <TableContainer>
+          <Grid templateColumns={templateColumnsStyle} minW="min-content">
+            <TableHeader borderTopStyle="none">Code ID</TableHeader>
+            <TableHeader>Code Name</TableHeader>
+            <TableHeader>Contracts</TableHeader>
+            <TableHeader>Uploader</TableHeader>
+            <TableHeader>Permission</TableHeader>
+          </Grid>
+          {codes.map((code) => (
+            <CodesTableRow
+              key={code.id + code.uploader + code.name}
+              codeInfo={code}
+              templateColumnsStyle={templateColumnsStyle}
+            />
+          ))}
+        </TableContainer>
         {totalData &&
           (onViewMore
             ? totalData > 5 && <ViewMore onClick={onViewMore} />
@@ -108,7 +110,7 @@ const CodesTableBody = observer(
                   onPageSizeChange={onPageSizeChange}
                 />
               ))}
-      </TableContainer>
+      </>
     );
   }
 );
