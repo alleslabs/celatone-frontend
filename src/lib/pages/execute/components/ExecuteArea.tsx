@@ -9,7 +9,7 @@ import { MdInput } from "react-icons/md";
 import { useFabricateFee, useExecuteContractTx } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import { CopyButton } from "lib/components/CopyButton";
+import { CopyButton } from "lib/components/copy";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { AttachFund } from "lib/components/fund";

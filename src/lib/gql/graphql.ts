@@ -6959,18 +6959,64 @@ export type GetCodeListByIDsQueryQuery = {
   }>;
 };
 
-export type GetInstantiatedCountByUserQueryDocumentQueryVariables = Exact<{
-  walletAddr: Scalars["String"];
+export type GetCodeInfoByCodeIdQueryVariables = Exact<{
+  codeId: Scalars["Int"];
 }>;
 
-export type GetInstantiatedCountByUserQueryDocumentQuery = {
+export type GetCodeInfoByCodeIdQuery = {
   __typename?: "query_root";
-  contracts_aggregate: {
-    __typename?: "contracts_aggregate";
-    aggregate?: {
-      __typename?: "contracts_aggregate_fields";
-      count: number;
+  codes_by_pk?: {
+    __typename?: "codes";
+    id: number;
+    access_config_permission: string;
+    access_config_addresses: any;
+    account: { __typename?: "accounts"; address: string };
+    transaction?: {
+      __typename?: "transactions";
+      hash: any;
+      block: { __typename?: "blocks"; height: number; timestamp: any };
     } | null;
+    code_proposals: Array<{
+      __typename?: "code_proposals";
+      proposal_id: number;
+      block?: { __typename?: "blocks"; height: number; timestamp: any } | null;
+    }>;
+  } | null;
+};
+
+export type GetCodeListByWalletAddressPaginationQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetCodeListByWalletAddressPaginationQuery = {
+  __typename?: "query_root";
+  codes: Array<{
+    __typename?: "codes";
+    id: number;
+    access_config_permission: string;
+    access_config_addresses: any;
+    contracts_aggregate: {
+      __typename?: "contracts_aggregate";
+      aggregate?: {
+        __typename?: "contracts_aggregate_fields";
+        count: number;
+      } | null;
+    };
+    account: { __typename?: "accounts"; uploader: string };
+  }>;
+};
+
+export type GetCodeListCountByWalletAddressQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
+}>;
+
+export type GetCodeListCountByWalletAddressQuery = {
+  __typename?: "query_root";
+  codes_aggregate: {
+    __typename?: "codes_aggregate";
+    aggregate?: { __typename?: "codes_aggregate_fields"; count: number } | null;
   };
 };
 
@@ -6986,6 +7032,21 @@ export type GetInstantiatedListByUserQueryDocumentQuery = {
     address: string;
     accountByInitBy?: { __typename?: "accounts"; address: string } | null;
   }>;
+};
+
+export type GetInstantiatedCountByUserQueryDocumentQueryVariables = Exact<{
+  walletAddr: Scalars["String"];
+}>;
+
+export type GetInstantiatedCountByUserQueryDocumentQuery = {
+  __typename?: "query_root";
+  contracts_aggregate: {
+    __typename?: "contracts_aggregate";
+    aggregate?: {
+      __typename?: "contracts_aggregate_fields";
+      count: number;
+    } | null;
+  };
 };
 
 export type GetInstantiateDetailByContractQueryDocumentQueryVariables = Exact<{
@@ -7018,13 +7079,13 @@ export type GetAdminByContractAddressesQueryDocumentQuery = {
   }>;
 };
 
-export type GetExecuteTxsByContractAddressQueryVariables = Exact<{
+export type GetExecuteTxsByContractAddressPaginationQueryVariables = Exact<{
   contractAddress: Scalars["String"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetExecuteTxsByContractAddressQuery = {
+export type GetExecuteTxsByContractAddressPaginationQuery = {
   __typename?: "query_root";
   contract_transactions_view: Array<{
     __typename?: "contract_transactions_view";
@@ -7047,6 +7108,61 @@ export type GetExecuteTxsCountByContractAddressQuery = {
     __typename?: "contract_transactions_aggregate";
     aggregate?: {
       __typename?: "contract_transactions_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetContractListByAdminQueryVariables = Exact<{
+  address: Scalars["String"];
+}>;
+
+export type GetContractListByAdminQuery = {
+  __typename?: "query_root";
+  contracts: Array<{
+    __typename?: "contracts";
+    address: string;
+    label: string;
+    accountByInitBy?: { __typename?: "accounts"; address: string } | null;
+  }>;
+};
+
+export type GetContractListByCodeIdPaginationQueryVariables = Exact<{
+  codeId: Scalars["Int"];
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetContractListByCodeIdPaginationQuery = {
+  __typename?: "query_root";
+  contracts: Array<{
+    __typename?: "contracts";
+    address: string;
+    label: string;
+    admin?: { __typename?: "accounts"; address: string } | null;
+    init_by: Array<{
+      __typename?: "contract_histories";
+      account: { __typename?: "accounts"; address: string };
+    }>;
+    contract_histories: Array<{
+      __typename?: "contract_histories";
+      remark: any;
+      block: { __typename?: "blocks"; timestamp: any };
+      account: { __typename?: "accounts"; address: string };
+    }>;
+  }>;
+};
+
+export type GetContractListCountByCodeIdQueryVariables = Exact<{
+  codeId: Scalars["Int"];
+}>;
+
+export type GetContractListCountByCodeIdQuery = {
+  __typename?: "query_root";
+  contracts_aggregate: {
+    __typename?: "contracts_aggregate";
+    aggregate?: {
+      __typename?: "contracts_aggregate_fields";
       count: number;
     } | null;
   };
@@ -7088,13 +7204,81 @@ export type GetMigrationHistoriesCountByContractAddressQuery = {
   };
 };
 
-export type GetRelatedProposalsByContractAddressQueryVariables = Exact<{
-  contractAddress: Scalars["String"];
+export type GetContractListByWalletAddressPaginationQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetRelatedProposalsByContractAddressQuery = {
+export type GetContractListByWalletAddressPaginationQuery = {
+  __typename?: "query_root";
+  contracts: Array<{
+    __typename?: "contracts";
+    address: string;
+    label: string;
+    admin?: { __typename?: "accounts"; address: string } | null;
+    init_by: Array<{
+      __typename?: "contract_histories";
+      account: { __typename?: "accounts"; address: string };
+    }>;
+    contract_histories: Array<{
+      __typename?: "contract_histories";
+      remark: any;
+      block: { __typename?: "blocks"; timestamp: any };
+      account: { __typename?: "accounts"; address: string };
+    }>;
+  }>;
+};
+
+export type GetContractListByAdminPaginationQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetContractListByAdminPaginationQuery = {
+  __typename?: "query_root";
+  contracts: Array<{
+    __typename?: "contracts";
+    address: string;
+    label: string;
+    admin?: { __typename?: "accounts"; address: string } | null;
+    init_by: Array<{
+      __typename?: "contract_histories";
+      account: { __typename?: "accounts"; address: string };
+    }>;
+    contract_histories: Array<{
+      __typename?: "contract_histories";
+      remark: any;
+      block: { __typename?: "blocks"; timestamp: any };
+      account: { __typename?: "accounts"; address: string };
+    }>;
+  }>;
+};
+
+export type GetContractListCountByAdminQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
+}>;
+
+export type GetContractListCountByAdminQuery = {
+  __typename?: "query_root";
+  contracts_aggregate: {
+    __typename?: "contracts_aggregate";
+    aggregate?: {
+      __typename?: "contracts_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetRelatedProposalsByContractAddressPaginationQueryVariables =
+  Exact<{
+    contractAddress: Scalars["String"];
+    offset: Scalars["Int"];
+    pageSize: Scalars["Int"];
+  }>;
+
+export type GetRelatedProposalsByContractAddressPaginationQuery = {
   __typename?: "query_root";
   contract_proposals: Array<{
     __typename?: "contract_proposals";
@@ -7127,84 +7311,38 @@ export type GetRelatedProposalsCountByContractAddressQuery = {
   };
 };
 
-export type GetContractListByAdminQueryVariables = Exact<{
-  address: Scalars["String"];
-}>;
-
-export type GetContractListByAdminQuery = {
-  __typename?: "query_root";
-  contracts: Array<{
-    __typename?: "contracts";
-    address: string;
-    label: string;
-    accountByInitBy?: { __typename?: "accounts"; address: string } | null;
-  }>;
-};
-
-export type GetContractListByCodeIdQueryVariables = Exact<{
-  codeId: Scalars["Int"];
+export type GetProposalsByWalletAddressPaginationQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetContractListByCodeIdQuery = {
+export type GetProposalsByWalletAddressPaginationQuery = {
   __typename?: "query_root";
-  contracts: Array<{
-    __typename?: "contracts";
-    address: string;
-    label: string;
-    admin?: { __typename?: "accounts"; address: string } | null;
-    init_by: Array<{
-      __typename?: "contract_histories";
-      account: { __typename?: "accounts"; address: string };
-    }>;
-    contract_histories: Array<{
-      __typename?: "contract_histories";
-      remark: any;
-      block: { __typename?: "blocks"; timestamp: any };
-      account: { __typename?: "accounts"; address: string };
-    }>;
+  proposals: Array<{
+    __typename?: "proposals";
+    title: string;
+    status: any;
+    voting_end_time: any;
+    deposit_end_time: any;
+    type: string;
+    id: number;
   }>;
 };
 
-export type GetContractListCountByCodeIdQueryVariables = Exact<{
-  codeId: Scalars["Int"];
+export type GetProposalsCountByWalletAddressQueryVariables = Exact<{
+  walletAddress: Scalars["String"];
 }>;
 
-export type GetContractListCountByCodeIdQuery = {
+export type GetProposalsCountByWalletAddressQuery = {
   __typename?: "query_root";
-  contracts_aggregate: {
-    __typename?: "contracts_aggregate";
+  proposals_aggregate: {
+    __typename?: "proposals_aggregate";
     aggregate?: {
-      __typename?: "contracts_aggregate_fields";
+      __typename?: "proposals_aggregate_fields";
       count: number;
     } | null;
   };
-};
-
-export type GetCodeInfoByCodeIdQueryVariables = Exact<{
-  codeId: Scalars["Int"];
-}>;
-
-export type GetCodeInfoByCodeIdQuery = {
-  __typename?: "query_root";
-  codes_by_pk?: {
-    __typename?: "codes";
-    id: number;
-    access_config_permission: string;
-    access_config_addresses: any;
-    account: { __typename?: "accounts"; address: string };
-    transaction?: {
-      __typename?: "transactions";
-      hash: any;
-      block: { __typename?: "blocks"; height: number; timestamp: any };
-    } | null;
-    code_proposals: Array<{
-      __typename?: "code_proposals";
-      proposal_id: number;
-      block?: { __typename?: "blocks"; height: number; timestamp: any } | null;
-    }>;
-  } | null;
 };
 
 export type GetTxsByContractAddressQueryVariables = Exact<{
@@ -7666,19 +7804,335 @@ export const GetCodeListByIDsQueryDocument = {
   GetCodeListByIDsQueryQuery,
   GetCodeListByIDsQueryQueryVariables
 >;
-export const GetInstantiatedCountByUserQueryDocumentDocument = {
+export const GetCodeInfoByCodeIdDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getInstantiatedCountByUserQueryDocument" },
+      name: { kind: "Name", value: "getCodeInfoByCodeId" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "walletAddr" },
+            name: { kind: "Name", value: "codeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "codes_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "codeId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "code_proposals" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "proposal_id" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_permission" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_addresses" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCodeInfoByCodeIdQuery,
+  GetCodeInfoByCodeIdQueryVariables
+>;
+export const GetCodeListByWalletAddressPaginationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getCodeListByWalletAddressPagination" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "walletAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "codes" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "account" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "walletAddress",
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contracts_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "count" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "uploader" },
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_permission" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "access_config_addresses" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCodeListByWalletAddressPaginationQuery,
+  GetCodeListByWalletAddressPaginationQueryVariables
+>;
+export const GetCodeListCountByWalletAddressDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getCodeListCountByWalletAddress" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "walletAddress" },
           },
           type: {
             kind: "NonNullType",
@@ -7694,7 +8148,7 @@ export const GetInstantiatedCountByUserQueryDocumentDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "contracts_aggregate" },
+            name: { kind: "Name", value: "codes_aggregate" },
             arguments: [
               {
                 kind: "Argument",
@@ -7704,34 +8158,25 @@ export const GetInstantiatedCountByUserQueryDocumentDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
+                      name: { kind: "Name", value: "account" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "account" },
+                            name: { kind: "Name", value: "address" },
                             value: {
                               kind: "ObjectValue",
                               fields: [
                                 {
                                   kind: "ObjectField",
-                                  name: { kind: "Name", value: "address" },
+                                  name: { kind: "Name", value: "_eq" },
                                   value: {
-                                    kind: "ObjectValue",
-                                    fields: [
-                                      {
-                                        kind: "ObjectField",
-                                        name: { kind: "Name", value: "_eq" },
-                                        value: {
-                                          kind: "Variable",
-                                          name: {
-                                            kind: "Name",
-                                            value: "walletAddr",
-                                          },
-                                        },
-                                      },
-                                    ],
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "walletAddress",
+                                    },
                                   },
                                 },
                               ],
@@ -7765,8 +8210,8 @@ export const GetInstantiatedCountByUserQueryDocumentDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetInstantiatedCountByUserQueryDocumentQuery,
-  GetInstantiatedCountByUserQueryDocumentQueryVariables
+  GetCodeListCountByWalletAddressQuery,
+  GetCodeListCountByWalletAddressQueryVariables
 >;
 export const GetInstantiatedListByUserQueryDocumentDocument = {
   kind: "Document",
@@ -7822,59 +8267,6 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
                                   value: {
                                     kind: "Variable",
                                     name: { kind: "Name", value: "walletAddr" },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_or" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "transaction" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "account" },
-                                  value: {
-                                    kind: "ObjectValue",
-                                    fields: [
-                                      {
-                                        kind: "ObjectField",
-                                        name: {
-                                          kind: "Name",
-                                          value: "address",
-                                        },
-                                        value: {
-                                          kind: "ObjectValue",
-                                          fields: [
-                                            {
-                                              kind: "ObjectField",
-                                              name: {
-                                                kind: "Name",
-                                                value: "_eq",
-                                              },
-                                              value: {
-                                                kind: "Variable",
-                                                name: {
-                                                  kind: "Name",
-                                                  value: "walletAddr",
-                                                },
-                                              },
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
                                   },
                                 },
                               ],
@@ -7957,6 +8349,96 @@ export const GetInstantiatedListByUserQueryDocumentDocument = {
 } as unknown as DocumentNode<
   GetInstantiatedListByUserQueryDocumentQuery,
   GetInstantiatedListByUserQueryDocumentQueryVariables
+>;
+export const GetInstantiatedCountByUserQueryDocumentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getInstantiatedCountByUserQueryDocument" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "walletAddr" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "accountByInitBy" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "walletAddr" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetInstantiatedCountByUserQueryDocumentQuery,
+  GetInstantiatedCountByUserQueryDocumentQueryVariables
 >;
 export const GetInstantiateDetailByContractQueryDocumentDocument = {
   kind: "Document",
@@ -8227,13 +8709,13 @@ export const GetAdminByContractAddressesQueryDocumentDocument = {
   GetAdminByContractAddressesQueryDocumentQuery,
   GetAdminByContractAddressesQueryDocumentQueryVariables
 >;
-export const GetExecuteTxsByContractAddressDocument = {
+export const GetExecuteTxsByContractAddressPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getExecuteTxsByContractAddress" },
+      name: { kind: "Name", value: "getExecuteTxsByContractAddressPagination" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -8367,8 +8849,8 @@ export const GetExecuteTxsByContractAddressDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetExecuteTxsByContractAddressQuery,
-  GetExecuteTxsByContractAddressQueryVariables
+  GetExecuteTxsByContractAddressPaginationQuery,
+  GetExecuteTxsByContractAddressPaginationQueryVariables
 >;
 export const GetExecuteTxsCountByContractAddressDocument = {
   kind: "Document",
@@ -8485,6 +8967,487 @@ export const GetExecuteTxsCountByContractAddressDocument = {
 } as unknown as DocumentNode<
   GetExecuteTxsCountByContractAddressQuery,
   GetExecuteTxsCountByContractAddressQueryVariables
+>;
+export const GetContractListByAdminDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getContractListByAdmin" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "account" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "address" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "accountByInitBy" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractListByAdminQuery,
+  GetContractListByAdminQueryVariables
+>;
+export const GetContractListByCodeIdPaginationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getContractListByCodeIdPagination" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "codeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "code_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "codeId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "admin" },
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "init_by" },
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "remark" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractListByCodeIdPaginationQuery,
+  GetContractListByCodeIdPaginationQueryVariables
+>;
+export const GetContractListCountByCodeIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getContractListCountByCodeId" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "codeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "code_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "codeId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractListCountByCodeIdQuery,
+  GetContractListCountByCodeIdQueryVariables
 >;
 export const GetMigrationHistoriesByContractAddressDocument = {
   kind: "Document",
@@ -8780,13 +9743,691 @@ export const GetMigrationHistoriesCountByContractAddressDocument = {
   GetMigrationHistoriesCountByContractAddressQuery,
   GetMigrationHistoriesCountByContractAddressQueryVariables
 >;
-export const GetRelatedProposalsByContractAddressDocument = {
+export const GetContractListByWalletAddressPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getRelatedProposalsByContractAddress" },
+      name: { kind: "Name", value: "getContractListByWalletAddressPagination" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "walletAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "accountByInitBy" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "walletAddress",
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "admin" },
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "init_by" },
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "remark" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractListByWalletAddressPaginationQuery,
+  GetContractListByWalletAddressPaginationQueryVariables
+>;
+export const GetContractListByAdminPaginationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getContractListByAdminPagination" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "walletAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "account" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "walletAddress",
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "admin" },
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "init_by" },
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "desc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "remark" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractListByAdminPaginationQuery,
+  GetContractListByAdminPaginationQueryVariables
+>;
+export const GetContractListCountByAdminDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getContractListCountByAdmin" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "walletAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "account" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "address" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "walletAddress",
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractListCountByAdminQuery,
+  GetContractListCountByAdminQueryVariables
+>;
+export const GetRelatedProposalsByContractAddressPaginationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: {
+        kind: "Name",
+        value: "getRelatedProposalsByContractAddressPagination",
+      },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -8953,8 +10594,8 @@ export const GetRelatedProposalsByContractAddressDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetRelatedProposalsByContractAddressQuery,
-  GetRelatedProposalsByContractAddressQueryVariables
+  GetRelatedProposalsByContractAddressPaginationQuery,
+  GetRelatedProposalsByContractAddressPaginationQueryVariables
 >;
 export const GetRelatedProposalsCountByContractAddressDocument = {
   kind: "Document",
@@ -9052,19 +10693,19 @@ export const GetRelatedProposalsCountByContractAddressDocument = {
   GetRelatedProposalsCountByContractAddressQuery,
   GetRelatedProposalsCountByContractAddressQueryVariables
 >;
-export const GetContractListByAdminDocument = {
+export const GetProposalsByWalletAddressPaginationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getContractListByAdmin" },
+      name: { kind: "Name", value: "getProposalsByWalletAddressPagination" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "address" },
+            name: { kind: "Name", value: "walletAddress" },
           },
           type: {
             kind: "NonNullType",
@@ -9072,130 +10713,6 @@ export const GetContractListByAdminDocument = {
               kind: "NamedType",
               name: { kind: "Name", value: "String" },
             },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "contracts" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "account" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "address" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "address" },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "desc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "address" } },
-                { kind: "Field", name: { kind: "Name", value: "label" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "accountByInitBy" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "address" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetContractListByAdminQuery,
-  GetContractListByAdminQueryVariables
->;
-export const GetContractListByCodeIdDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getContractListByCodeId" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "codeId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
         {
@@ -9226,7 +10743,7 @@ export const GetContractListByCodeIdDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "contracts" },
+            name: { kind: "Name", value: "proposals" },
             arguments: [
               {
                 kind: "Argument",
@@ -9236,46 +10753,26 @@ export const GetContractListByCodeIdDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "code_id" },
+                      name: { kind: "Name", value: "account" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "codeId" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
+                            name: { kind: "Name", value: "address" },
                             value: {
                               kind: "ObjectValue",
                               fields: [
                                 {
                                   kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "desc" },
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "walletAddress",
+                                    },
+                                  },
                                 },
                               ],
                             },
@@ -9306,144 +10803,18 @@ export const GetContractListByCodeIdDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "address" } },
-                { kind: "Field", name: { kind: "Name", value: "label" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "status" } },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "admin" },
-                  name: { kind: "Name", value: "account" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "address" },
-                      },
-                    ],
-                  },
+                  name: { kind: "Name", value: "voting_end_time" },
                 },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "init_by" },
-                  name: { kind: "Name", value: "contract_histories" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "asc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "limit" },
-                      value: { kind: "IntValue", value: "1" },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "account" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "address" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
+                  name: { kind: "Name", value: "deposit_end_time" },
                 },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "contract_histories" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "desc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "limit" },
-                      value: { kind: "IntValue", value: "1" },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "account" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "address" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "remark" },
-                      },
-                    ],
-                  },
-                },
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
               ],
             },
           },
@@ -9452,26 +10823,29 @@ export const GetContractListByCodeIdDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListByCodeIdQuery,
-  GetContractListByCodeIdQueryVariables
+  GetProposalsByWalletAddressPaginationQuery,
+  GetProposalsByWalletAddressPaginationQueryVariables
 >;
-export const GetContractListCountByCodeIdDocument = {
+export const GetProposalsCountByWalletAddressDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getContractListCountByCodeId" },
+      name: { kind: "Name", value: "getProposalsCountByWalletAddress" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "codeId" },
+            name: { kind: "Name", value: "walletAddress" },
           },
           type: {
             kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
           },
         },
       ],
@@ -9480,7 +10854,7 @@ export const GetContractListCountByCodeIdDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "contracts_aggregate" },
+            name: { kind: "Name", value: "proposals_aggregate" },
             arguments: [
               {
                 kind: "Argument",
@@ -9490,16 +10864,28 @@ export const GetContractListCountByCodeIdDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "code_id" },
+                      name: { kind: "Name", value: "account" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
+                            name: { kind: "Name", value: "address" },
                             value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "codeId" },
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: {
+                                      kind: "Name",
+                                      value: "walletAddress",
+                                    },
+                                  },
+                                },
+                              ],
                             },
                           },
                         ],
@@ -9530,144 +10916,8 @@ export const GetContractListCountByCodeIdDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetContractListCountByCodeIdQuery,
-  GetContractListCountByCodeIdQueryVariables
->;
-export const GetCodeInfoByCodeIdDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getCodeInfoByCodeId" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "codeId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "codes_by_pk" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "codeId" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "account" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "address" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "transaction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "hash" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "height" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "code_proposals" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "limit" },
-                      value: { kind: "IntValue", value: "1" },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "proposal_id" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "height" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "access_config_permission" },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "access_config_addresses" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetCodeInfoByCodeIdQuery,
-  GetCodeInfoByCodeIdQueryVariables
+  GetProposalsCountByWalletAddressQuery,
+  GetProposalsCountByWalletAddressQueryVariables
 >;
 export const GetTxsByContractAddressDocument = {
   kind: "Document",

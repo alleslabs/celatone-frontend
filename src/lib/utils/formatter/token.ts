@@ -1,7 +1,7 @@
 import type { BigSource } from "big.js";
 import big from "big.js";
 
-import type { Token } from "lib/types";
+import type { Token, U, USD } from "lib/types";
 
 export const formatDemimal =
   ({
@@ -19,8 +19,7 @@ export const formatDemimal =
         .split(".")[0]
     )
       .div(10 ** decimalPoints)
-      .toFixed();
-
+      .toFixed(decimalPoints);
     if (num === "NaN") return fallbackValue;
 
     const [i, d] = num.split(".");
@@ -32,11 +31,26 @@ export const formatDemimal =
     return (ii === "0" && num[0] === "-" ? "-" : "") + ii + dd;
   };
 
+const d2Formatter = formatDemimal({ decimalPoints: 2, delimiter: true });
 const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 
-export const formatTokenWithPrecision = (
-  amount: Token<BigSource>,
+export const toToken = (
+  uAmount: U<Token<BigSource>>,
   precision: number
-): string => {
-  return d6Formatter(big(amount).div(big(10).pow(precision)), "0");
+): Token<BigSource> =>
+  big(uAmount).div(big(10).pow(precision)) as Token<BigSource>;
+
+export const formatUTokenWithPrecision = (
+  amount: U<Token<BigSource>>,
+  precision: number
+): string => d6Formatter(toToken(amount, precision), "0");
+
+/**
+ * @remarks
+ * If the value is greater than or equal to 1, should return 2 decimal points else 6 decimal points
+ *
+ */
+export const formatPrice = (value: USD<BigSource>): string => {
+  const price = big(value);
+  return price.gte(1) ? d2Formatter(price, "0") : d6Formatter(price, "0");
 };

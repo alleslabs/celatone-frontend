@@ -8,6 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { BackButton } from "lib/components/button";
 import { CustomTab } from "lib/components/CustomTab";
@@ -15,8 +16,26 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state/InvalidState";
 import { useValidateAddress } from "lib/hooks";
+import { useAccountDetailsTableCounts } from "lib/model/account";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
+
+import {
+  InstantiatedContractTable,
+  AdminContractTable,
+} from "./components/tables/contracts";
+
+enum TabIndex {
+  Overview,
+  Delegations,
+  Assets,
+  Txs,
+  Codes,
+  Contracts,
+  Admins,
+  Proposals,
+}
 
 interface AccountDetailsBodyProps {
   accountAddress: HumanAddr;
@@ -25,7 +44,16 @@ interface AccountDetailsBodyProps {
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
+  const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
   const tableHeaderId = "accountDetailsTab";
+  const {
+    tableCounts,
+    // refetchCodes,
+    refetchContractsAdminCount,
+    refetchContractsCount,
+    // refetchCountTxs,
+    // refetchProposalCount,
+  } = useAccountDetailsTableCounts(accountAddress);
 
   return (
     <>
@@ -47,27 +75,58 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           />
         </Flex>
       </Flex>
-      <Tabs>
+      <Tabs index={tabIndex}>
         <TabList
           borderBottom="1px solid"
           borderColor="pebble.700"
           id={tableHeaderId}
         >
-          <CustomTab>Overall</CustomTab>
+          <CustomTab onClick={() => setTabIndex(TabIndex.Overview)}>
+            Overall
+          </CustomTab>
           {/* TODO: add counts for Delegations */}
-          <CustomTab>Delegations</CustomTab>
+          <CustomTab onClick={() => setTabIndex(TabIndex.Delegations)}>
+            Delegations
+          </CustomTab>
           {/* TODO: add counts for Assets */}
-          <CustomTab count={0}>Assets</CustomTab>
-          {/* TODO: add counts for Txs */}
-          <CustomTab count={0}>Transactions</CustomTab>
-          {/* TODO: add counts for Codes */}
-          <CustomTab count={0}>Codes</CustomTab>
-          {/* TODO: add counts for Contracts */}
-          <CustomTab count={0}>Contracts</CustomTab>
-          {/* TODO: add counts for Admins */}
-          <CustomTab count={0}>Admins</CustomTab>
-          {/* TODO: add counts for Proposals */}
-          <CustomTab count={0}>Proposals</CustomTab>
+          <CustomTab count={0} onClick={() => setTabIndex(TabIndex.Assets)}>
+            Assets
+          </CustomTab>
+          <CustomTab
+            count={tableCounts.countTxs}
+            isDisabled={!tableCounts.countTxs}
+            onClick={() => setTabIndex(TabIndex.Txs)}
+          >
+            Transactions
+          </CustomTab>
+          <CustomTab
+            count={tableCounts.codesCount}
+            isDisabled={!tableCounts.codesCount}
+            onClick={() => setTabIndex(TabIndex.Codes)}
+          >
+            Codes
+          </CustomTab>
+          <CustomTab
+            count={tableCounts.contractsCount}
+            isDisabled={!tableCounts.contractsCount}
+            onClick={() => setTabIndex(TabIndex.Contracts)}
+          >
+            Contracts
+          </CustomTab>
+          <CustomTab
+            count={tableCounts.contractsAdminCount}
+            isDisabled={!tableCounts.contractsAdminCount}
+            onClick={() => setTabIndex(TabIndex.Admins)}
+          >
+            Admins
+          </CustomTab>
+          <CustomTab
+            count={tableCounts.proposalCount}
+            isDisabled={!tableCounts.proposalCount}
+            onClick={() => setTabIndex(TabIndex.Proposals)}
+          >
+            Proposals
+          </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
@@ -79,9 +138,20 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Transactions</Text>
             {/* TODO: replace with the truncated Codes table */}
             <Text>Stored Codes</Text>
-            {/* TODO: replace with the truncated Contracts table */}
-            <Text>Contract Instances</Text>
-            {/* TODO: replace with the truncated Admins table */}
+            <InstantiatedContractTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.contractsCount}
+              refetchCount={refetchContractsCount}
+              onViewMore={() => setTabIndex(TabIndex.Contracts)}
+            />
+            <AdminContractTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.contractsAdminCount}
+              refetchCount={refetchContractsAdminCount}
+              onViewMore={() => setTabIndex(TabIndex.Admins)}
+            />
             <Text>Contract Admin</Text>
             {/* TODO: replace with the truncated Proposals table */}
             <Text>Opened Proposals</Text>
@@ -103,12 +173,20 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Stored Codes</Text>
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Contracts table */}
-            <Text>Contract Instances</Text>
+            <InstantiatedContractTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.contractsCount}
+              refetchCount={refetchContractsCount}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Admins table */}
-            <Text>Contract Admins</Text>
+            <AdminContractTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.contractsAdminCount}
+              refetchCount={refetchContractsAdminCount}
+            />
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Proposals table */}
@@ -126,6 +204,10 @@ const AccountDetails = () => {
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
   ) as HumanAddr;
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL);
+  }, [router.isReady]);
 
   return (
     <PageContainer>

@@ -40,7 +40,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and wireup up json attach funds
+- [#214](https://github.com/alleslabs/celatone-frontend/pull/214) Show code permission helper text in save new code modal
+- [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated and admin contracts of an account
+- [#192](https://github.com/alleslabs/celatone-frontend/pull/192) Add alternative sidebar with only icons
+- [#210](https://github.com/alleslabs/celatone-frontend/pull/210) New design for token card, currently support price
 - [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
+- [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
+
+### Bug fixes
+
+-[#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
+
+- [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
+
+### Bug fixes
+
+- [#217](https://github.com/alleslabs/celatone-frontend/pull/217) Fix state reset in Save New Code modal and no permission in migration
 
 ## v1.0.1
 
