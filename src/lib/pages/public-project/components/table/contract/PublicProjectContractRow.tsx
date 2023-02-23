@@ -58,7 +58,6 @@ export const PublicProjectContractRow = ({
       transition="all .25s ease-in-out"
       cursor="pointer"
       onClick={goToContractDetails}
-      px="32px"
       minW="min-content"
       templateColumns={templateColumn}
       borderBottom="1px solid"

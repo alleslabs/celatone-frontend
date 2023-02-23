@@ -1,7 +1,7 @@
 import { Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { Copier } from "lib/components/Copier";
+import { Copier } from "lib/components/copy";
 import { NAToken } from "lib/icon";
 import type { BalanceWithAssetInfo, Token, U, USD } from "lib/types";
 import {
