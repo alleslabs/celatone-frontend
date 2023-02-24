@@ -49,13 +49,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
--[#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
-
+- [#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
+- [#217](https://github.com/alleslabs/celatone-frontend/pull/217) Fix state reset in Save New Code modal and no permission in migration
 - [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
 
-### Bug fixes
+### Improvements
 
-- [#217](https://github.com/alleslabs/celatone-frontend/pull/217) Fix state reset in Save New Code modal and no permission in migration
+- [#207](https://github.com/alleslabs/celatone-frontend/pull/207) Add cta to submit public project in list page
 
 ## v1.0.1
 
@@ -149,7 +149,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#207](https://github.com/alleslabs/celatone-frontend/pull/207) Add cta to submit public project in list page
 - [#204](https://github.com/alleslabs/celatone-frontend/pull/204) Change back button wording and adjust flow
 - [#191](https://github.com/alleslabs/celatone-frontend/pull/191) Add typeface (Poppins) and add new styling for command shortcut
 - [#190](https://github.com/alleslabs/celatone-frontend/pull/190) Setup sentry tunnel in next config
