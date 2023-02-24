@@ -6,6 +6,7 @@ export type ResponseState = "init" | "loading" | "success" | "error";
 export interface FormStatus {
   state: ResponseState;
   message?: string;
+  messageColor?: string;
 }
 
 export const getStatusIcon = (state: ResponseState, boxSize = "1em") => {
@@ -27,12 +28,22 @@ export const getStatusIcon = (state: ResponseState, boxSize = "1em") => {
 export const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
   switch (statusInfo.state) {
     case "success":
-      return <Text color="success.main">{statusInfo.message}</Text>;
+      return (
+        <Text color={statusInfo.messageColor ?? "success.main"}>
+          {statusInfo.message}
+        </Text>
+      );
     case "error":
-      return <Text color="error.main">{statusInfo.message}</Text>;
+      return (
+        <Text color={statusInfo.messageColor ?? "error.main"}>
+          {statusInfo.message}
+        </Text>
+      );
     case "init":
     case "loading":
     default:
-      return <Text color="text.dark">{helperText}</Text>;
+      return (
+        <Text color={statusInfo.messageColor ?? "text.dark"}>{helperText}</Text>
+      );
   }
 };

@@ -14,45 +14,35 @@ const StyledIcon = chakra(Icon, {
   },
 });
 
-export const CTASection = observer(
-  ({ id, ...codeInfo }: Omit<CodeInfo, "contractCount">) => {
-    const { isCodeIdSaved } = useCodeStore();
-    const isSaved = isCodeIdSaved(id);
+export const CTASection = observer((codeInfo: CodeInfo) => {
+  const { isCodeIdSaved } = useCodeStore();
+  const isSaved = isCodeIdSaved(codeInfo.id);
 
-    return (
-      <Flex gap={4}>
-        {isSaved && (
-          <SaveOrEditCodeModal
-            mode="edit"
-            codeLocalInfo={{ id, ...codeInfo }}
-          />
-        )}
-        <InstantiateButton
-          instantiatePermission={codeInfo.instantiatePermission}
-          permissionAddresses={codeInfo.permissionAddresses}
-          codeId={id}
-          size="md"
+  return (
+    <Flex gap={4}>
+      {isSaved && <SaveOrEditCodeModal mode="edit" codeInfo={codeInfo} />}
+      <InstantiateButton
+        instantiatePermission={codeInfo.instantiatePermission}
+        permissionAddresses={codeInfo.permissionAddresses}
+        codeId={codeInfo.id}
+        size="md"
+      />
+      {isSaved ? (
+        <RemoveCodeModal
+          codeId={codeInfo.id}
+          name={codeInfo.name}
+          trigger={
+            <Button
+              variant="outline-gray"
+              leftIcon={<StyledIcon as={MdCheck} />}
+            >
+              Saved
+            </Button>
+          }
         />
-        {isSaved ? (
-          <RemoveCodeModal
-            codeId={id}
-            name={codeInfo.name}
-            trigger={
-              <Button
-                variant="outline-gray"
-                leftIcon={<StyledIcon as={MdCheck} />}
-              >
-                Saved
-              </Button>
-            }
-          />
-        ) : (
-          <SaveOrEditCodeModal
-            mode="save"
-            codeLocalInfo={{ id, ...codeInfo }}
-          />
-        )}
-      </Flex>
-    );
-  }
-);
+      ) : (
+        <SaveOrEditCodeModal mode="save" codeInfo={codeInfo} />
+      )}
+    </Flex>
+  );
+});

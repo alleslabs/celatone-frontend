@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#223](https://github.com/alleslabs/celatone-frontend/pull/223) Newer version of token card and format mechanism
+- [#214](https://github.com/alleslabs/celatone-frontend/pull/214) Show code permission helper text in save new code modal
 - [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated and admin contracts of an account
 - [#192](https://github.com/alleslabs/celatone-frontend/pull/192) Add alternative sidebar with only icons
 - [#210](https://github.com/alleslabs/celatone-frontend/pull/210) New design for token card, currently support price

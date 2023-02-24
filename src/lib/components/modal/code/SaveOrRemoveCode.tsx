@@ -36,7 +36,7 @@ export function SaveOrRemoveCodeModal({
     />
   ) : (
     <SaveCodeDetailsModal
-      codeLocalInfo={codeInfo}
+      codeInfo={codeInfo}
       triggerElement={
         <StyledIconButton
           icon={<MdBookmarkBorder />}
