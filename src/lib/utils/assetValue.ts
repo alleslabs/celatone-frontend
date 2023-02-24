@@ -21,6 +21,8 @@ export const calAssetValueWithPrecision = (balance: Balance): USD<Big> => {
 };
 
 export const calTotalValue = (assets: BalanceWithAssetInfo[]): USD<Big> =>
-  assets.reduce((acc: USD<Big>, curr: BalanceWithAssetInfo) => {
-    return acc.add(calAssetValueWithPrecision(curr.balance)) as USD<Big>;
-  }, Big(0) as USD<Big>);
+  assets.reduce(
+    (acc: USD<Big>, curr: BalanceWithAssetInfo) =>
+      acc.add(calAssetValueWithPrecision(curr.balance)) as USD<Big>,
+    Big(0) as USD<Big>
+  );
