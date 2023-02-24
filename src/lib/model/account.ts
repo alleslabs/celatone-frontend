@@ -14,7 +14,7 @@ import type { HumanAddr } from "lib/types";
  * Counts for stored codes, contract admin, contract instances, transactions, and opened proposals tables
  */
 export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
-  const { data: codesCount, refetch: refetchCodes } =
+  const { data: codesCount, refetch: refetchCodesCount } =
     useCodeListCountByWalletAddress(walletAddress);
   const { data: contractsAdminCount, refetch: refetchContractsAdminCount } =
     useContractListCountByAdmin(walletAddress);
@@ -36,7 +36,7 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
       countTxs,
       proposalCount,
     },
-    refetchCodes,
+    refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
     refetchCountTxs,

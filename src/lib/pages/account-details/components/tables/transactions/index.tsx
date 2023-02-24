@@ -16,7 +16,7 @@ import type { HumanAddr, Option, TxFilters } from "lib/types";
 
 import { TxsTableRow } from "./TxsTableRow";
 
-interface TransactionTableProps {
+interface TransactionsTableProps {
   walletAddress: HumanAddr;
   scrollComponentId: string;
   totalData: Option<number>;
@@ -24,12 +24,12 @@ interface TransactionTableProps {
   onViewMore?: () => void;
 }
 
-interface TransactionTableBodyProps extends TransactionTableProps {
+interface TransactionsTableBodyProps extends TransactionsTableProps {
   filters: TxFilters;
   filterSelected: string[];
 }
 
-const TransactionTableBody = ({
+const TransactionsTableBody = ({
   walletAddress,
   scrollComponentId,
   totalData,
@@ -37,7 +37,7 @@ const TransactionTableBody = ({
   onViewMore,
   filters,
   filterSelected,
-}: TransactionTableBodyProps) => {
+}: TransactionsTableBodyProps) => {
   const {
     pagesQuantity,
     currentPage,
@@ -145,8 +145,8 @@ const TransactionTableBody = ({
   );
 };
 
-export const TransactionTable = (
-  transactionTableProps: TransactionTableProps
+export const TransactionsTable = (
+  transactionsTableProps: TransactionsTableProps
 ) => {
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_FILTERS);
 
@@ -158,7 +158,7 @@ export const TransactionTable = (
     (key) => filters[key as keyof typeof filters]
   );
 
-  const { totalData, onViewMore } = transactionTableProps;
+  const { totalData, onViewMore } = transactionsTableProps;
   return (
     <Box mt={12} mb={4}>
       <Flex direction="row" justify="space-between" alignItems="center">
@@ -172,8 +172,8 @@ export const TransactionTable = (
           />
         )}
       </Flex>
-      <TransactionTableBody
-        {...transactionTableProps}
+      <TransactionsTableBody
+        {...transactionsTableProps}
         filters={filters}
         filterSelected={filterSelected}
       />

@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#220](https://github.com/alleslabs/celatone-frontend/pull/220) Add transactions table for account details page
+- [#221](https://github.com/alleslabs/celatone-frontend/pull/221) Add codes of an account
+- [#223](https://github.com/alleslabs/celatone-frontend/pull/223) Newer version of token card and format mechanism
+- [#214](https://github.com/alleslabs/celatone-frontend/pull/214) Show code permission helper text in save new code modal
 - [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated and admin contracts of an account
 - [#192](https://github.com/alleslabs/celatone-frontend/pull/192) Add alternative sidebar with only icons
 - [#210](https://github.com/alleslabs/celatone-frontend/pull/210) New design for token card, currently support price
@@ -48,8 +51,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
 - [#217](https://github.com/alleslabs/celatone-frontend/pull/217) Fix state reset in Save New Code modal and no permission in migration
 
+### Improvements
+
+- [#207](https://github.com/alleslabs/celatone-frontend/pull/207) Add cta to submit public project in list page
+- [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
 
 ## v1.0.1
 
@@ -57,7 +65,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#195](https://github.com/alleslabs/celatone-frontend/pull/195) Make code name cell for migration table to be editable in contract detail page
 - [#213](https://github.com/alleslabs/celatone-frontend/pull/213) Fix `window.crypto.randomUUID()` in old safari version (< 15.4) and `at()` of array
-
 
 ## v1.0.0
 

@@ -22,10 +22,11 @@ import type { HumanAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
-  InstantiatedContractTable,
-  AdminContractTable,
-} from "./components/tables/contracts";
-import { TransactionTable } from "./components/tables/transactions";
+  CodesTable,
+  InstantiatedContractsTable,
+  AdminContractsTable,
+} from "./components/tables";
+import { TransactionsTable } from "./components/tables/transactions";
 
 enum TabIndex {
   Overview,
@@ -49,7 +50,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const tableHeaderId = "accountDetailsTab";
   const {
     tableCounts,
-    // refetchCodes,
+    refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
     refetchCountTxs,
@@ -135,23 +136,28 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Delegations</Text>
             {/* TODO: replace with the truncated Assets table */}
             <Text>Assets</Text>
-            <TransactionTable
+            <TransactionsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.countTxs}
               refetchCount={refetchCountTxs}
               onViewMore={() => setTabIndex(TabIndex.Txs)}
             />
-            {/* TODO: replace with the truncated Codes table */}
-            <Text>Stored Codes</Text>
-            <InstantiatedContractTable
+            <CodesTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.codesCount}
+              refetchCount={refetchCodesCount}
+              onViewMore={() => setTabIndex(TabIndex.Codes)}
+            />
+            <InstantiatedContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
               refetchCount={refetchContractsCount}
               onViewMore={() => setTabIndex(TabIndex.Contracts)}
             />
-            <AdminContractTable
+            <AdminContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount}
@@ -171,7 +177,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Assets</Text>
           </TabPanel>
           <TabPanel p={0}>
-            <TransactionTable
+            <TransactionsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.countTxs}
@@ -179,11 +185,15 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Codes table */}
-            <Text>Stored Codes</Text>
+            <CodesTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.codesCount}
+              refetchCount={refetchCodesCount}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <InstantiatedContractTable
+            <InstantiatedContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
@@ -191,7 +201,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <AdminContractTable
+            <AdminContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount}

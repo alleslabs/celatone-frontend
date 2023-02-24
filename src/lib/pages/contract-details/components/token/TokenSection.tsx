@@ -3,9 +3,8 @@ import { useMemo, useState } from "react";
 
 import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
+import { TokenCard } from "lib/components/TokenCard";
 import type { BalanceWithAssetInfo, Option } from "lib/types";
-
-import { TokenCard } from "./TokenCard";
 
 interface TokenSectionProps {
   balances: Option<BalanceWithAssetInfo[]>;

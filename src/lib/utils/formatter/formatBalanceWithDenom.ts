@@ -2,7 +2,7 @@ import type { Coin } from "@cosmjs/stargate";
 
 import type { Token, U } from "lib/types";
 
-import { formatTokenWithPrecision } from "./token";
+import { formatUTokenWithPrecision } from "./token";
 import { getTokenLabel } from "./tokenType";
 
 interface FormatBalanceWithDenom {
@@ -16,7 +16,7 @@ export const formatBalanceWithDenom = ({
   symbol,
   precision,
 }: FormatBalanceWithDenom) => {
-  return `${formatTokenWithPrecision(
+  return `${formatUTokenWithPrecision(
     coin.amount as U<Token>,
     precision || 0
   )} ${getTokenLabel(symbol || coin.denom)}`;
