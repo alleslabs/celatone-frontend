@@ -57,6 +57,12 @@ export const getProposalsByWalletAddressPagination = graphql(`
       deposit_end_time
       type
       id
+      contract_proposals {
+        resolved_height
+      }
+      code_proposals {
+        resolved_height
+      }
     }
   }
 `);
