@@ -1,5 +1,5 @@
 // TODO - Refactor Past txs query
-import { DEFAULT_FILTERS } from "lib/data";
+import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxQueryCount } from "lib/pages/past-txs/query/useTxQuery";
 import { useCodeListCountByWalletAddress } from "lib/services/codeService";
 import {
@@ -22,10 +22,10 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
     useInstantiatedCountByUserQuery(walletAddress);
   const { data: proposalCount, refetch: refetchProposalCount } =
     useProposalsCountByWalletAddress(walletAddress);
-  const { data: countTxs, refetch: refetchCountTxs } = useTxQueryCount(
+  const { data: txsCount, refetch: refetchTxsCount } = useTxQueryCount(
     walletAddress,
     "",
-    DEFAULT_FILTERS
+    DEFAULT_TX_FILTERS
   );
 
   return {
@@ -33,13 +33,13 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
       codesCount,
       contractsAdminCount,
       contractsCount,
-      countTxs,
+      txsCount,
       proposalCount,
     },
     refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
-    refetchCountTxs,
+    refetchTxsCount,
     refetchProposalCount,
   };
 };

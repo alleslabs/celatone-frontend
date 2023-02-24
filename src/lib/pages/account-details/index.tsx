@@ -53,7 +53,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
-    refetchCountTxs,
+    refetchTxsCount,
     // refetchProposalCount,
   } = useAccountDetailsTableCounts(accountAddress);
 
@@ -95,8 +95,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Assets
           </CustomTab>
           <CustomTab
-            count={tableCounts.countTxs}
-            isDisabled={!tableCounts.countTxs}
+            count={tableCounts.txsCount}
+            isDisabled={!tableCounts.txsCount}
             onClick={() => setTabIndex(TabIndex.Txs)}
           >
             Transactions
@@ -139,8 +139,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <TransactionsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.countTxs}
-              refetchCount={refetchCountTxs}
+              totalData={tableCounts.txsCount}
+              refetchCount={refetchTxsCount}
               onViewMore={() => setTabIndex(TabIndex.Txs)}
             />
             <CodesTable
@@ -180,8 +180,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <TransactionsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.countTxs}
-              refetchCount={refetchCountTxs}
+              totalData={tableCounts.txsCount}
+              refetchCount={refetchTxsCount}
             />
           </TabPanel>
           <TabPanel p={0}>

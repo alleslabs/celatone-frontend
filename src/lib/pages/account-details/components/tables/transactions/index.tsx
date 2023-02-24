@@ -1,3 +1,4 @@
+// TODO - Refactor: move common component out of pasttx
 import { Box, Flex, Grid } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
@@ -9,7 +10,7 @@ import { EmptyState } from "lib/components/state/EmptyState";
 import { TableContainer, TableHeader } from "lib/components/table";
 import { TableTitle } from "lib/components/table/TableTitle";
 import { ViewMore } from "lib/components/table/ViewMore";
-import { DEFAULT_FILTERS } from "lib/data";
+import { DEFAULT_TX_FILTERS } from "lib/data";
 import { FilterSelection } from "lib/pages/past-txs/components/FilterSelection";
 import { useTxQuery } from "lib/pages/past-txs/query/useTxQuery";
 import type { HumanAddr, Option, TxFilters } from "lib/types";
@@ -74,8 +75,7 @@ const TransactionsTableBody = ({
     setCurrentPage(1);
   };
 
-  const templateColumnsStyle =
-    "180px 70px minmax(360px, 1fr) max(250px) max(70px)";
+  const templateColumns = "180px 70px minmax(360px, 1fr) max(250px) max(70px)";
 
   if (isLoading) return <Loading />;
 
@@ -111,7 +111,7 @@ const TransactionsTableBody = ({
   return (
     <>
       <TableContainer>
-        <Grid templateColumns={templateColumnsStyle}>
+        <Grid templateColumns={templateColumns}>
           <TableHeader>Transaction Hash</TableHeader>
           <TableHeader />
           <TableHeader>Messages</TableHeader>
@@ -122,7 +122,7 @@ const TransactionsTableBody = ({
           <TxsTableRow
             key={transaction.hash}
             transaction={transaction}
-            templateColumnsStyle={templateColumnsStyle}
+            templateColumns={templateColumns}
           />
         ))}
       </TableContainer>
@@ -148,7 +148,7 @@ const TransactionsTableBody = ({
 export const TransactionsTable = (
   transactionsTableProps: TransactionsTableProps
 ) => {
-  const [filters, setFilters] = useState<TxFilters>(DEFAULT_FILTERS);
+  const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
 
   const handleSetFilters = (filter: string, bool: boolean) => {
     setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));

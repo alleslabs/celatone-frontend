@@ -19,12 +19,12 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 interface TxsTableRowProps {
   transaction: PastTransaction;
-  templateColumnsStyle: string;
+  templateColumns: string;
 }
 
 export const TxsTableRow = ({
   transaction,
-  templateColumnsStyle,
+  templateColumns,
 }: TxsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
@@ -33,7 +33,7 @@ export const TxsTableRow = ({
   return (
     <Box w="full" minW="min-content">
       <Grid
-        templateColumns={templateColumnsStyle}
+        templateColumns={templateColumns}
         onClick={isAccordion ? onToggle : undefined}
         _hover={{ background: "pebble.900" }}
         onMouseEnter={() => setShowCopyButton(true)}
@@ -71,12 +71,12 @@ export const TxsTableRow = ({
         <TableRow>
           <Flex direction="column" gap={1}>
             {transaction.created ? (
-              <Box>
+              <Flex direction="column" gap={1}>
                 <Text variant="body3">{formatUTC(transaction.created)}</Text>
                 <Text variant="body3" color="text.dark">
                   {`(${dateFromNow(transaction.created)})`}
                 </Text>
-              </Box>
+              </Flex>
             ) : (
               <Text variant="body3">N/A</Text>
             )}

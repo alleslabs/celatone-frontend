@@ -16,7 +16,7 @@ import { MdSearch } from "react-icons/md";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { DEFAULT_FILTERS } from "lib/data";
+import { DEFAULT_TX_FILTERS } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 
@@ -31,7 +31,7 @@ const PastTxs = () => {
   const { watch, setValue } = useForm({
     defaultValues: {
       search: "",
-      filters: DEFAULT_FILTERS,
+      filters: DEFAULT_TX_FILTERS,
     },
     mode: "all",
   });
