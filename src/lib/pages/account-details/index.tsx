@@ -21,6 +21,7 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
+import { AssetsSection } from "./components/asset";
 import {
   InstantiatedContractTable,
   AdminContractTable,
@@ -88,8 +89,11 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <CustomTab onClick={() => setTabIndex(TabIndex.Delegations)}>
             Delegations
           </CustomTab>
-          {/* TODO: add counts for Assets */}
-          <CustomTab count={0} onClick={() => setTabIndex(TabIndex.Assets)}>
+          <CustomTab
+            count={tableCounts.assetsCount}
+            isDisabled={!tableCounts.assetsCount}
+            onClick={() => setTabIndex(TabIndex.Assets)}
+          >
             Assets
           </CustomTab>
           <CustomTab
@@ -132,8 +136,10 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             {/* TODO: replace with the truncated Delegations table */}
             <Text>Delegations</Text>
-            {/* TODO: replace with the truncated Assets table */}
-            <Text>Assets</Text>
+            <AssetsSection
+              walletAddress={accountAddress}
+              onViewMore={() => setTabIndex(TabIndex.Assets)}
+            />
             {/* TODO: replace with the truncated Transactions table */}
             <Text>Transactions</Text>
             {/* TODO: replace with the truncated Codes table */}
@@ -161,8 +167,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Delegations</Text>
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Assets table */}
-            <Text>Assets</Text>
+            <AssetsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Transactions table */}

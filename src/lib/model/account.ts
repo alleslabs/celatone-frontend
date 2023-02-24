@@ -1,4 +1,5 @@
 // TODO - Refactor Past txs query
+import { useUserAssetInfos } from "lib/pages/account-details/data";
 import { useTxQueryCount } from "lib/pages/past-txs/query/useTxQuery";
 import { useCodeListCountByWalletAddress } from "lib/services/codeService";
 import {
@@ -36,6 +37,9 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
     }
   );
 
+  const { supportedAssets, unsupportedAssets } =
+    useUserAssetInfos(walletAddress);
+
   return {
     tableCounts: {
       codesCount,
@@ -43,6 +47,10 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
       contractsCount,
       countTxs,
       proposalCount,
+      assetsCount:
+        supportedAssets &&
+        unsupportedAssets &&
+        supportedAssets.length + unsupportedAssets.length,
     },
     refetchCodes,
     refetchContractsAdminCount,

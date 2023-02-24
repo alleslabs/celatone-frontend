@@ -29,6 +29,7 @@ interface AccountAssetInfos {
   supportedAssets: Option<BalanceWithAssetInfo[]>;
   unsupportedAssets: Option<BalanceWithAssetInfo[]>;
   isLoading: boolean;
+  error: Error;
 }
 
 export const useContractInstances = (
@@ -113,7 +114,11 @@ export const useCodeStored = (
 export const useUserAssetInfos = (
   walletAddress: HumanAddr
 ): AccountAssetInfos => {
-  const { data: balances, isLoading } = useAccountBalances(walletAddress);
+  const {
+    data: balances,
+    isLoading,
+    error,
+  } = useAccountBalances(walletAddress);
   const assetInfos = useAssetInfos();
 
   const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
@@ -142,5 +147,6 @@ export const useUserAssetInfos = (
     supportedAssets,
     unsupportedAssets,
     isLoading,
+    error: error as Error,
   };
 };
