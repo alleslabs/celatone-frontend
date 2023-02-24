@@ -1,4 +1,5 @@
 // TODO - Refactor Past txs query
+import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
 import { useTxQueryCount } from "lib/pages/past-txs/query/useTxQuery";
 import { useCodeListCountByWalletAddress } from "lib/services/codeService";
@@ -14,27 +15,18 @@ import type { HumanAddr } from "lib/types";
  * Counts for stored codes, contract admin, contract instances, transactions, and opened proposals tables
  */
 export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
-  const { data: codesCount, refetch: refetchCodes } =
+  const { data: codesCount, refetch: refetchCodesCount } =
     useCodeListCountByWalletAddress(walletAddress);
   const { data: contractsAdminCount, refetch: refetchContractsAdminCount } =
     useContractListCountByAdmin(walletAddress);
   const { data: contractsCount, refetch: refetchContractsCount } =
     useInstantiatedCountByUserQuery(walletAddress);
-  const { data: proposalCount, refetch: refetchProposalCount } =
+  const { data: proposalsCount, refetch: refetchProposalsCount } =
     useProposalsCountByWalletAddress(walletAddress);
-  const { data: countTxs, refetch: refetchCountTxs } = useTxQueryCount(
+  const { data: txsCount, refetch: refetchTxsCount } = useTxQueryCount(
     walletAddress,
     "",
-    {
-      isExecute: false,
-      isInstantiate: false,
-      isUpload: false,
-      isIbc: false,
-      isSend: false,
-      isMigrate: false,
-      isUpdateAdmin: false,
-      isClearAdmin: false,
-    }
+    DEFAULT_TX_FILTERS
   );
 
   const { totalData: assetsCount } = useUserAssetInfos(walletAddress);
@@ -44,14 +36,14 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
       codesCount,
       contractsAdminCount,
       contractsCount,
-      countTxs,
-      proposalCount,
+      txsCount,
+      proposalsCount,
       assetsCount,
     },
-    refetchCodes,
+    refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
-    refetchCountTxs,
-    refetchProposalCount,
+    refetchTxsCount,
+    refetchProposalsCount,
   };
 };

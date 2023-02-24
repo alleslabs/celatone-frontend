@@ -1,7 +1,7 @@
 import { chakra, Tag } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
-import type { ContractRelatedProposals } from "lib/types";
+import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 const StyledTag = chakra(Tag, {
@@ -16,7 +16,7 @@ const StyledTag = chakra(Tag, {
 });
 
 const getBgColor = (
-  status: ContractRelatedProposals["status"]
+  status: Proposal["status"]
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
     case ProposalStatus.DEPOSIT_PERIOD:
@@ -34,11 +34,7 @@ const getBgColor = (
   }
 };
 
-export const StatusChip = ({
-  status,
-}: {
-  status: ContractRelatedProposals["status"];
-}) => {
+export const StatusChip = ({ status }: { status: Proposal["status"] }) => {
   return (
     <StyledTag bgColor={getBgColor(status)}>
       {status === ProposalStatus.INACTIVE ? "DepositFailed" : status}

@@ -96,7 +96,7 @@ export const AssetsSection = ({
       />
       {supportedAssets &&
         onViewMore &&
-        supportedAssets.length >= MaxAssetsShow && (
+        supportedAssets.length > MaxAssetsShow && (
           <ViewMore onClick={onViewMore} />
         )}
     </Flex>

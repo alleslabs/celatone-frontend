@@ -77,3 +77,14 @@ export const typeUrlDict = {
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
+
+export const DEFAULT_TX_FILTERS = {
+  isExecute: false,
+  isInstantiate: false,
+  isUpload: false,
+  isIbc: false,
+  isSend: false,
+  isMigrate: false,
+  isUpdateAdmin: false,
+  isClearAdmin: false,
+};

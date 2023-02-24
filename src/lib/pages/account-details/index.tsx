@@ -23,9 +23,12 @@ import { getFirstQueryParam } from "lib/utils";
 
 import { AssetsSection } from "./components/asset";
 import {
-  InstantiatedContractTable,
-  AdminContractTable,
-} from "./components/tables/contracts";
+  AdminContractsTable,
+  CodesTable,
+  InstantiatedContractsTable,
+  ProposalsTable,
+} from "./components/tables";
+import { TransactionsTable } from "./components/tables/transactions";
 
 enum TabIndex {
   Overview,
@@ -49,11 +52,11 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const tableHeaderId = "accountDetailsTab";
   const {
     tableCounts,
-    // refetchCodes,
+    refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
-    // refetchCountTxs,
-    // refetchProposalCount,
+    refetchTxsCount,
+    refetchProposalsCount,
   } = useAccountDetailsTableCounts(accountAddress);
 
   return (
@@ -97,8 +100,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Assets
           </CustomTab>
           <CustomTab
-            count={tableCounts.countTxs}
-            isDisabled={!tableCounts.countTxs}
+            count={tableCounts.txsCount}
+            isDisabled={!tableCounts.txsCount}
             onClick={() => setTabIndex(TabIndex.Txs)}
           >
             Transactions
@@ -125,8 +128,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Admins
           </CustomTab>
           <CustomTab
-            count={tableCounts.proposalCount}
-            isDisabled={!tableCounts.proposalCount}
+            count={tableCounts.proposalsCount}
+            isDisabled={!tableCounts.proposalsCount}
             onClick={() => setTabIndex(TabIndex.Proposals)}
           >
             Proposals
@@ -140,27 +143,41 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               walletAddress={accountAddress}
               onViewMore={() => setTabIndex(TabIndex.Assets)}
             />
-            {/* TODO: replace with the truncated Transactions table */}
-            <Text>Transactions</Text>
-            {/* TODO: replace with the truncated Codes table */}
-            <Text>Stored Codes</Text>
-            <InstantiatedContractTable
+            <TransactionsTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.txsCount}
+              refetchCount={refetchTxsCount}
+              onViewMore={() => setTabIndex(TabIndex.Txs)}
+            />
+            <CodesTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.codesCount}
+              refetchCount={refetchCodesCount}
+              onViewMore={() => setTabIndex(TabIndex.Codes)}
+            />
+            <InstantiatedContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
               refetchCount={refetchContractsCount}
               onViewMore={() => setTabIndex(TabIndex.Contracts)}
             />
-            <AdminContractTable
+            <AdminContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount}
               refetchCount={refetchContractsAdminCount}
               onViewMore={() => setTabIndex(TabIndex.Admins)}
             />
-            <Text>Contract Admin</Text>
-            {/* TODO: replace with the truncated Proposals table */}
-            <Text>Opened Proposals</Text>
+            <ProposalsTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.proposalsCount}
+              refetchCount={refetchProposalsCount}
+              onViewMore={() => setTabIndex(TabIndex.Proposals)}
+            />
           </TabPanel>
           <TabPanel p={0}>
             {/* TODO: replace with the full Delegations table */}
@@ -170,15 +187,23 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <AssetsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Transactions table */}
-            <Text>Transactions</Text>
+            <TransactionsTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.txsCount}
+              refetchCount={refetchTxsCount}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Codes table */}
-            <Text>Stored Codes</Text>
+            <CodesTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.codesCount}
+              refetchCount={refetchCodesCount}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <InstantiatedContractTable
+            <InstantiatedContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
@@ -186,7 +211,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <AdminContractTable
+            <AdminContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount}
@@ -194,8 +219,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Proposals table */}
-            <Text>Proposals</Text>
+            <ProposalsTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.proposalsCount}
+              refetchCount={refetchProposalsCount}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
