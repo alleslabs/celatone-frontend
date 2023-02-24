@@ -27,6 +27,7 @@ import {
   InstantiatedContractsTable,
   ProposalsTable,
 } from "./components/tables";
+import { TransactionsTable } from "./components/tables/transactions";
 
 enum TabIndex {
   Overview,
@@ -53,7 +54,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
-    // refetchCountTxs,
+    refetchTxsCount,
     refetchProposalsCount,
   } = useAccountDetailsTableCounts(accountAddress);
 
@@ -95,8 +96,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             Assets
           </CustomTab>
           <CustomTab
-            count={tableCounts.countTxs}
-            isDisabled={!tableCounts.countTxs}
+            count={tableCounts.txsCount}
+            isDisabled={!tableCounts.txsCount}
             onClick={() => setTabIndex(TabIndex.Txs)}
           >
             Transactions
@@ -136,8 +137,13 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Delegations</Text>
             {/* TODO: replace with the truncated Assets table */}
             <Text>Assets</Text>
-            {/* TODO: replace with the truncated Transactions table */}
-            <Text>Transactions</Text>
+            <TransactionsTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.txsCount}
+              refetchCount={refetchTxsCount}
+              onViewMore={() => setTabIndex(TabIndex.Txs)}
+            />
             <CodesTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
@@ -176,8 +182,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Assets</Text>
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Transactions table */}
-            <Text>Transactions</Text>
+            <TransactionsTable
+              walletAddress={accountAddress}
+              scrollComponentId={tableHeaderId}
+              totalData={tableCounts.txsCount}
+              refetchCount={refetchTxsCount}
+            />
           </TabPanel>
           <TabPanel p={0}>
             <CodesTable
