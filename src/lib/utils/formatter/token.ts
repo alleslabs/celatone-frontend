@@ -3,7 +3,7 @@ import big from "big.js";
 
 import type { Token, U, USD } from "lib/types";
 
-const B = 1000000000;
+const B = 1_000_000_000;
 
 export const formatDemimal =
   ({
@@ -36,8 +36,7 @@ export const formatDemimal =
 export const toToken = (
   uAmount: U<Token<BigSource>>,
   precision: number
-): Token<BigSource> =>
-  big(uAmount).div(big(10).pow(precision)) as Token<BigSource>;
+): Token<Big> => big(uAmount).div(big(10).pow(precision)) as Token<Big>;
 
 /**
  * @remarks
@@ -49,12 +48,11 @@ export const formatUTokenWithPrecision = (
   precision: number
 ): string => {
   const token = toToken(amount, precision);
-  const bToken = token as Big;
-  if (bToken.gte(B)) {
+  if (token.gte(B)) {
     return `${formatDemimal({ decimalPoints: 2, delimiter: true })(
-      bToken.div(B),
+      token.div(B),
       "0.00"
-    )}M`;
+    )}B`;
   }
   return formatDemimal({ decimalPoints: precision, delimiter: true })(
     token,
