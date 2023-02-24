@@ -1,13 +1,14 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
+import type { Big } from "big.js";
+import big from "big.js";
 
 import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
 import { ViewMore } from "lib/components/table/ViewMore";
 import { TokenCard } from "lib/components/TokenCard";
-import { useTotalValue } from "lib/hooks";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
-import type { BalanceWithAssetInfo, HumanAddr, Option } from "lib/types";
-import { formatPrice } from "lib/utils";
+import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
+import { calTotalValue, formatPrice } from "lib/utils";
 
 import { UserAssetInfoCard } from "./UserAssetInfo";
 
@@ -57,7 +58,8 @@ export const AssetsSection = ({
   const { supportedAssets, unsupportedAssets, isLoading, error } =
     useUserAssetInfos(walletAddress);
 
-  const totalValue = useTotalValue(supportedAssets);
+  let totalValue = big(0) as USD<Big>;
+  if (supportedAssets) totalValue = calTotalValue(supportedAssets);
 
   if (isLoading) return <Loading />;
 
@@ -66,13 +68,15 @@ export const AssetsSection = ({
       <Flex justify="space-between" width="full" align="center">
         <Flex gap="50px">
           <UserAssetInfoCard
-            value={totalValue ? formatPrice(totalValue) : "N/A"}
-            isZeroValue={totalValue ? totalValue.eq(0) : false}
+            value={
+              totalValue && supportedAssets ? formatPrice(totalValue) : "N/A"
+            }
+            isZeroValue={totalValue.eq(0) || !supportedAssets}
             helperText="Total Value"
           />
           <UserAssetInfoCard
-            value={supportedAssets ? supportedAssets?.length.toString() : "N/A"}
-            isZeroValue={supportedAssets?.length === 0}
+            value={supportedAssets ? supportedAssets.length.toString() : "N/A"}
+            isZeroValue={!supportedAssets?.length}
             helperText="Holding Supported Assets"
           />
         </Flex>

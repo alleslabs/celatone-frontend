@@ -18,7 +18,7 @@ export const UserAssetInfoCard = ({
       as="h5"
       variant="h5"
       fontWeight="600"
-      color={isZeroValue ? "text.dark" : "grey.100"}
+      color={isZeroValue ? "text.dark" : "text.main"}
     >
       {value}
     </Heading>

@@ -29,6 +29,7 @@ interface AccountAssetInfos {
   supportedAssets: Option<BalanceWithAssetInfo[]>;
   unsupportedAssets: Option<BalanceWithAssetInfo[]>;
   isLoading: boolean;
+  totalData: Option<number>;
   error: Error;
 }
 
@@ -147,6 +148,7 @@ export const useUserAssetInfos = (
     supportedAssets,
     unsupportedAssets,
     isLoading,
+    totalData: contractBalancesWithAssetInfos?.length,
     error: error as Error,
   };
 };

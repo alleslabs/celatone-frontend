@@ -7,4 +7,3 @@ export * from "./useDummyWallet";
 export * from "./useAddress";
 export * from "./useCodeFilter";
 export * from "./useChainId";
-export * from "./useTotalValue";

@@ -37,8 +37,7 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
     }
   );
 
-  const { supportedAssets, unsupportedAssets } =
-    useUserAssetInfos(walletAddress);
+  const { totalData: assetsCount } = useUserAssetInfos(walletAddress);
 
   return {
     tableCounts: {
@@ -47,10 +46,7 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
       contractsCount,
       countTxs,
       proposalCount,
-      assetsCount:
-        supportedAssets &&
-        unsupportedAssets &&
-        supportedAssets.length + unsupportedAssets.length,
+      assetsCount,
     },
     refetchCodes,
     refetchContractsAdminCount,
