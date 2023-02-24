@@ -1,13 +1,13 @@
-import type { CodeLocalInfo } from "lib/stores/code";
+import type { CodeInfo } from "lib/types";
 
 import { CodeDetailsTemplateModal } from "./CodeDetailsTemplate";
 
 interface SaveCodeDetailsModalProps {
-  codeLocalInfo: CodeLocalInfo;
+  codeInfo: CodeInfo;
   triggerElement: JSX.Element;
 }
 export const SaveCodeDetailsModal = ({
-  codeLocalInfo,
+  codeInfo,
   triggerElement,
 }: SaveCodeDetailsModalProps) => (
   <CodeDetailsTemplateModal
@@ -15,7 +15,7 @@ export const SaveCodeDetailsModal = ({
     helperText={`Save other stored codes to your "Saved Codes" list`}
     mainBtnTitle="Save New Code"
     isNewCode
-    codeLocalInfo={codeLocalInfo}
+    codeInfo={codeInfo}
     triggerElement={triggerElement}
   />
 );
