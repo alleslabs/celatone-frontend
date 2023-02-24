@@ -52,7 +52,7 @@ export const AllProject = observer(() => {
   }, [publicProjectInfo, savedProjects, searchKeyword]);
 
   if (isLoading) return <Loading />;
-  if (publicProjectInfo)
+  if (!publicProjectInfo)
     return (
       <Flex flexDirection="column" alignItems="center">
         <EmptyState
