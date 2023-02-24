@@ -49,14 +49,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
 - [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
 
-### Bug fixes
+### Improvements
 
--[#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
-
+- [#207](https://github.com/alleslabs/celatone-frontend/pull/207) Add cta to submit public project in list page
 - [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
 
 ### Bug fixes
 
+- [#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
 - [#217](https://github.com/alleslabs/celatone-frontend/pull/217) Fix state reset in Save New Code modal and no permission in migration
 
 ## v1.0.1
