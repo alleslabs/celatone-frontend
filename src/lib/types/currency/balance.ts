@@ -7,6 +7,7 @@ export interface Balance {
   precision: number;
   symbol: Option<string>;
   type: string;
+  price?: number;
 }
 
 export interface AssetInfo {

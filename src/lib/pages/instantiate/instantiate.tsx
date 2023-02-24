@@ -33,7 +33,7 @@ import {
 } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr, Token, U } from "lib/types";
-import { MsgType } from "lib/types";
+import { InstantiatePermission, MsgType } from "lib/types";
 import {
   composeMsg,
   demicrofy,
@@ -142,15 +142,16 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         const permission = data.code_info.instantiate_permission;
         if (
           address &&
-          (permission.permission === "Everybody" ||
-            permission.addresses.includes(address) ||
+          (permission.permission === InstantiatePermission.EVERYBODY ||
+            permission.addresses.includes(address as HumanAddr) ||
             permission.address === address)
         )
           setStatus({ state: "success" });
         else {
           setStatus({
             state: "error",
-            message: "You can instantiate to this code through proposal only",
+            message:
+              "This wallet does not have permission to instantiate to this code",
           });
         }
       },

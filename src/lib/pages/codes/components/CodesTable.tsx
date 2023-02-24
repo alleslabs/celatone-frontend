@@ -13,6 +13,7 @@ import type { ReactNode } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
+import { CodeNameCell } from "lib/components/CodeNameCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
@@ -24,8 +25,6 @@ import {
   TableRowNoBorder,
 } from "lib/components/table";
 import type { CodeInfo } from "lib/types";
-
-import { CodeNameCell } from "./CodeNameCell";
 
 // Types of Table: Recent Codes / My Stored Codes / My Saved Codes
 type TableType = "recent" | "stored" | "saved";
@@ -111,6 +110,7 @@ const CodeTableHead = () => {
       sx={{ "& div": { color: "text.dark" } }}
       borderBottom="1px solid"
       borderColor="pebble.700"
+      minW="min-content"
     >
       <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
       <TableHeaderNoBorder>Code Name</TableHeaderNoBorder>

@@ -4,9 +4,9 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Text,
   InputGroup,
   InputRightElement,
+  Box,
 } from "@chakra-ui/react";
 import type { FormControlProps } from "@chakra-ui/react";
 import type { HTMLInputTypeAttribute, ChangeEvent } from "react";
@@ -81,18 +81,15 @@ export const NumberInput = ({
         )}
       </InputGroup>
 
-      <FormErrorMessage>{error}</FormErrorMessage>
-      {error ? (
-        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      ) : (
-        <FormHelperText className="helper-text">
-          {status ? (
-            getResponseMsg(status, helperText)
-          ) : (
-            <Text color="text.dark">{helperText}</Text>
-          )}
-        </FormHelperText>
-      )}
+      <Box mt={1}>
+        {error ? (
+          <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+        ) : (
+          <FormHelperText className="helper-text">
+            {status?.message ? getResponseMsg(status, helperText) : helperText}
+          </FormHelperText>
+        )}
+      </Box>
     </FormControl>
   );
 };
