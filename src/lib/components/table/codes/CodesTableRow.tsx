@@ -25,7 +25,8 @@ export const CodesTableRow = ({
       templateColumns={templateColumns}
       onClick={() =>
         navigate({
-          pathname: `/code/${codeInfo.id}`,
+          pathname: "/code/[codeId]",
+          query: { codeId: codeInfo.id },
         })
       }
       _hover={{ bg: "pebble.900" }}
