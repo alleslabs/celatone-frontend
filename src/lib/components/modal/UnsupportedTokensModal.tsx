@@ -13,15 +13,18 @@ import {
   Heading,
   Box,
 } from "@chakra-ui/react";
-import router from "next/router";
+import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
+import { BsQuestionCircleFill } from "react-icons/bs";
+import { FaCoins } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 
 import { ExplorerLink } from "../ExplorerLink";
 import { Copier } from "lib/components/copy";
-import type { BalanceWithAssetInfo, Balance, Token, U } from "lib/types";
+import type { AddressReturnType } from "lib/hooks";
+import { getAddressTypeByLength } from "lib/hooks";
+import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
 import {
-  getFirstQueryParam,
   getTokenType,
   getTokenLabel,
   formatUTokenWithPrecision,
@@ -29,6 +32,7 @@ import {
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: BalanceWithAssetInfo[];
+  address: Addr;
 }
 
 interface UnsupportedTokenProps {
@@ -77,14 +81,39 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   );
 };
 
+const unsupportedTokensContent = (addressType: AddressReturnType) => {
+  switch (addressType) {
+    case "contract_address": {
+      return {
+        icon: MdAttachMoney,
+        header: "Contract Address",
+      };
+    }
+    case "user_address": {
+      return {
+        icon: FaCoins,
+        header: "Wallet Address",
+      };
+    }
+    default:
+      return {
+        icon: BsQuestionCircleFill,
+        header: "Invalid Address",
+      };
+  }
+};
+
 export const UnsupportedTokensModal = ({
   unsupportedAssets,
+  address,
 }: UnsupportedTokensModalProps) => {
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
-
+  const { currentChainName } = useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (unsupportedAssets.length === 0) return null;
+
+  const addressType = getAddressTypeByLength(currentChainName, address);
+  const content = unsupportedTokensContent(addressType);
 
   return (
     <>
@@ -98,7 +127,7 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="700px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <Icon as={MdAttachMoney} boxSize={5} color="pebble.600" />
+              <Icon as={content.icon} boxSize={5} color="pebble.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>
@@ -110,9 +139,9 @@ export const UnsupportedTokensModal = ({
             <Flex direction="column" gap={5}>
               <Flex direction="row" gap={4}>
                 <Text variant="body2" fontWeight="700">
-                  Contract Address
+                  {content.header}
                 </Text>
-                <ExplorerLink value={contractAddress} type="contract_address" />
+                <ExplorerLink value={address} type={addressType} />
               </Flex>
               <Flex gap={3} direction="column">
                 {unsupportedAssets.map((asset) => (

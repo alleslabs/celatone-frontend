@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#225](https://github.com/alleslabs/celatone-frontend/pull/225) Add assets section in account details page
 - [#220](https://github.com/alleslabs/celatone-frontend/pull/220) Add transactions table for account details page
 - [#222](https://github.com/alleslabs/celatone-frontend/pull/222) Add proposals of an account
 - [#221](https://github.com/alleslabs/celatone-frontend/pull/221) Add codes of an account

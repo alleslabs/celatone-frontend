@@ -57,7 +57,12 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
           ) : (
             <NAToken />
           )}
-          <Text variant="body2" className="ellipsis" maxW="91">
+          <Text
+            variant="body2"
+            className="ellipsis"
+            maxW="91"
+            fontWeight="bold"
+          >
             {symbol}
           </Text>
           <Badge variant="gray" ml="6px">
@@ -76,7 +81,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
           <Text fontWeight="700" variant="body2">
             {formatUTokenWithPrecision(amount as U<Token>, precision)}
           </Text>
-          <Text variant="body3" color="grey.400">
+          <Text variant="body3" color="text.dark">
             {price
               ? `(${formatPrice(
                   calAssetValueWithPrecision(userBalance.balance)

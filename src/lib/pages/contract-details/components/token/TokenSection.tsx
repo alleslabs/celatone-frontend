@@ -1,16 +1,20 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
+import router from "next/router";
 import { useMemo, useState } from "react";
 
 import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
 import { TokenCard } from "lib/components/TokenCard";
-import type { BalanceWithAssetInfo, Option } from "lib/types";
+import type { BalanceWithAssetInfo, ContractAddr, Option } from "lib/types";
+import { getFirstQueryParam } from "lib/utils";
 
 interface TokenSectionProps {
   balances: Option<BalanceWithAssetInfo[]>;
 }
 export const TokenSection = ({ balances }: TokenSectionProps) => {
   const [showMore, setShowMore] = useState(false);
+  const contractAddress = getFirstQueryParam(router.query.contractAddress);
+
   const unsupportedAssets = useMemo(
     () => balances?.filter((balance) => !balance.assetInfo) ?? [],
     [balances]
@@ -57,7 +61,10 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
         <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
           Assets
         </Text>
-        <UnsupportedTokensModal unsupportedAssets={unsupportedAssets} />
+        <UnsupportedTokensModal
+          unsupportedAssets={unsupportedAssets}
+          address={contractAddress as ContractAddr}
+        />
       </Flex>
       {renderContext()}
     </>
