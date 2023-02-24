@@ -43,7 +43,7 @@ export const TxsTableRow = ({
       >
         <TableRow pl="16px">
           <ExplorerLink
-            value={transaction.hash.toLocaleUpperCase()}
+            value={transaction.hash.toUpperCase()}
             type="tx_hash"
             canCopyWithHover
           />
@@ -69,19 +69,17 @@ export const TxsTableRow = ({
           </Flex>
         </TableRow>
         <TableRow>
-          <Flex direction="row" justify="space-between" align="center" w="full">
-            <Flex direction="column" gap={1}>
-              {transaction.created ? (
-                <>
-                  <Text variant="body3">{formatUTC(transaction.created)}</Text>
-                  <Text variant="body3" color="text.dark">
-                    {`(${dateFromNow(transaction.created)})`}
-                  </Text>
-                </>
-              ) : (
-                <Text variant="body3">N/A</Text>
-              )}
-            </Flex>
+          <Flex direction="column" gap={1}>
+            {transaction.created ? (
+              <Box>
+                <Text variant="body3">{formatUTC(transaction.created)}</Text>
+                <Text variant="body3" color="text.dark">
+                  {`(${dateFromNow(transaction.created)})`}
+                </Text>
+              </Box>
+            ) : (
+              <Text variant="body3">N/A</Text>
+            )}
           </Flex>
         </TableRow>
         <TableRow>

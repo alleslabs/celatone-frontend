@@ -1,6 +1,6 @@
 import { Box, Flex, Grid } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
@@ -154,14 +154,9 @@ export const TransactionTable = (
     setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
   };
 
-  const filterSelected = useMemo(() => {
-    return Object.keys(filters).reduce((acc: string[], key: string) => {
-      if (filters[key as keyof typeof filters]) {
-        acc.push(key);
-      }
-      return acc;
-    }, []);
-  }, [filters]);
+  const filterSelected = Object.keys(filters).filter(
+    (key) => filters[key as keyof typeof filters]
+  );
 
   const { totalData, onViewMore } = transactionTableProps;
   return (
