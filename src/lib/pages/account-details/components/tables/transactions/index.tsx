@@ -9,6 +9,7 @@ import { EmptyState } from "lib/components/state/EmptyState";
 import { TableContainer, TableHeader } from "lib/components/table";
 import { TableTitle } from "lib/components/table/TableTitle";
 import { ViewMore } from "lib/components/table/ViewMore";
+import { DEFAULT_FILTERS } from "lib/data";
 import { FilterSelection } from "lib/pages/past-txs/components/FilterSelection";
 import { useTxQuery } from "lib/pages/past-txs/query/useTxQuery";
 import type { HumanAddr, Option, TxFilters } from "lib/types";
@@ -78,7 +79,7 @@ const TransactionTableBody = ({
 
   if (isLoading) return <Loading />;
 
-  if (!transactions?.length && filterSelected.length > 0) {
+  if (!transactions?.length && filterSelected.length > 0)
     return (
       <Flex
         mt="20px"
@@ -93,7 +94,6 @@ const TransactionTableBody = ({
         />
       </Flex>
     );
-  }
 
   if (!transactions?.length)
     return (
@@ -148,19 +148,10 @@ const TransactionTableBody = ({
 export const TransactionTable = (
   transactionTableProps: TransactionTableProps
 ) => {
-  const [filters, setFilters] = useState<TxFilters>({
-    isExecute: false,
-    isInstantiate: false,
-    isUpload: false,
-    isIbc: false,
-    isSend: false,
-    isMigrate: false,
-    isUpdateAdmin: false,
-    isClearAdmin: false,
-  });
+  const [filters, setFilters] = useState<TxFilters>(DEFAULT_FILTERS);
 
   const handleSetFilters = (filter: string, bool: boolean) => {
-    setFilters({ ...filters, [filter]: bool });
+    setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
   };
 
   const filterSelected = useMemo(() => {
