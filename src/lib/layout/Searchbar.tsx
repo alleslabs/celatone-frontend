@@ -44,6 +44,8 @@ const getRoute = (type: SearchResultType) => {
       return "/contract";
     case "Wallet Address":
       return "/account";
+    case "Transaction Hash":
+      return "/tx";
     default:
       return null;
   }
@@ -124,7 +126,7 @@ const Searchbar = () => {
           value={keyword}
           h="36px"
           onChange={handleSearchChange}
-          placeholder="Search by Wallet Address / Contract Address / Code ID"
+          placeholder="Search by Wallet Address / Contract Address / Code ID / Tx Hash"
           focusBorderColor="lilac.main"
           onFocus={() => setDisplayResults(keyword.length > 0)}
           onKeyDown={handleOnKeyEnter}

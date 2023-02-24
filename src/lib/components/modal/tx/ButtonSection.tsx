@@ -1,12 +1,9 @@
 import { Button, Icon } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { FiChevronRight } from "react-icons/fi";
 
-import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
-import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
 // TODO: refactor props to pass param in txResultRendering instead of receipt
@@ -23,18 +20,16 @@ export const ButtonSection = ({
 }: ButtonSectionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { currentChainName } = useWallet();
 
   const openExplorer = useCallback(() => {
-    AmpTrackMintscan("tx_hash");
     const txHash = receipts.find((r) => r.title === "Tx Hash")?.value;
     window.open(
-      `${getExplorerTxUrl(currentChainName)}/${txHash}`,
+      `/${router.query.network}/tx/${txHash}`,
       "_blank",
       "noopener,noreferrer"
     );
     onClose?.();
-  }, [receipts, onClose, currentChainName]);
+  }, [receipts, router.query.network, onClose]);
 
   switch (actionVariant) {
     case "sending":

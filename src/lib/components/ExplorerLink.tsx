@@ -2,11 +2,7 @@ import type { BoxProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import {
-  getExplorerBlockUrl,
-  getExplorerTxUrl,
-  getProposalUrl,
-} from "lib/app-fns/explorer";
+import { getExplorerBlockUrl, getProposalUrl } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/hooks";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
@@ -39,7 +35,7 @@ const getNavigationUrl = (
   let url = "";
   switch (type) {
     case "tx_hash":
-      url = getExplorerTxUrl(currentChainName);
+      url = "/tx";
       break;
     case "contract_address":
       url = "/contract";
@@ -138,7 +134,8 @@ export const ExplorerLink = ({
   const isInternal =
     type === "code_id" ||
     type === "contract_address" ||
-    type === "user_address";
+    type === "user_address" ||
+    type === "tx_hash";
 
   const [hrefLink, textValue] = [
     getNavigationUrl(type, currentChainName, copyValue || value),
