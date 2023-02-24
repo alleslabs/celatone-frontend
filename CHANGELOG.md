@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#225](https://github.com/alleslabs/celatone-frontend/pull/225) Add assets section in account details page
 - [#223](https://github.com/alleslabs/celatone-frontend/pull/223) Newer version of token card and format mechanism
 - [#214](https://github.com/alleslabs/celatone-frontend/pull/214) Show code permission helper text in save new code modal
 - [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated and admin contracts of an account
