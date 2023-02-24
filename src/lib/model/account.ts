@@ -20,7 +20,7 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
     useContractListCountByAdmin(walletAddress);
   const { data: contractsCount, refetch: refetchContractsCount } =
     useInstantiatedCountByUserQuery(walletAddress);
-  const { data: proposalCount, refetch: refetchProposalCount } =
+  const { data: proposalsCount, refetch: refetchProposalsCount } =
     useProposalsCountByWalletAddress(walletAddress);
   const { data: txsCount, refetch: refetchTxsCount } = useTxQueryCount(
     walletAddress,
@@ -34,12 +34,12 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
       contractsAdminCount,
       contractsCount,
       txsCount,
-      proposalCount,
+      proposalsCount,
     },
     refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
     refetchTxsCount,
-    refetchProposalCount,
+    refetchProposalsCount,
   };
 };
