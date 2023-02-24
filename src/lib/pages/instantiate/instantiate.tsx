@@ -1,4 +1,4 @@
-import { Heading, Text, Flex } from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { Coin } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
@@ -287,7 +287,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   );
 
   return (
-    <Flex direction="column" minH="inherit" justify="space-between">
+    <>
       <WasmPageContainer>
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
@@ -372,7 +372,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           onClose={() => setValue("simulateError", "")}
         />
       )}
-    </Flex>
+    </>
   );
 };
 

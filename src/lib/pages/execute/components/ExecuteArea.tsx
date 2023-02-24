@@ -98,12 +98,10 @@ export const ExecuteArea = ({
       contractAddress
     );
     switch (attachFundOption) {
-      case AttachFundsType.ATTACH_FUNDS_SELECT: {
+      case AttachFundsType.ATTACH_FUNDS_SELECT:
         return generalCheck && isValidAssetsSelect;
-      }
-      case AttachFundsType.ATTACH_FUNDS_JSON: {
+      case AttachFundsType.ATTACH_FUNDS_JSON:
         return generalCheck && isValidAssetsJson;
-      }
       default:
         return generalCheck;
     }

@@ -40,22 +40,20 @@ interface ContractSelectSectionProps {
 
 const modeStyle = (mode: string) => {
   switch (mode) {
-    case "all-lists": {
+    case "all-lists":
       return {
         container: "0px",
         contractAddrContainer: "70%",
         contractAddrW: "auto",
         contractNameContainer: "30%",
       };
-    }
-    case "only-admin": {
+    case "only-admin":
       return {
         container: "12",
         contractAddrContainer: "40%",
         contractAddrW: "144px",
         contractNameContainer: "60%",
       };
-    }
     default:
       return {
         container: "12",

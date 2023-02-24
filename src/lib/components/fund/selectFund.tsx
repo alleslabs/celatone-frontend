@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useMemo } from "react";
 import type { Control, UseFormSetValue } from "react-hook-form";
@@ -45,7 +45,7 @@ export const SelectFund = ({
   };
 
   return (
-    <Box>
+    <>
       {fields.map((field, idx) => (
         <AssetInput
           key={field.id}
@@ -77,6 +77,6 @@ export const SelectFund = ({
       >
         Add More Asset
       </Button>
-    </Box>
+    </>
   );
 };

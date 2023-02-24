@@ -39,7 +39,7 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
   });
 
   switch (attachFundOption) {
-    case AttachFundsType.ATTACH_FUNDS_SELECT: {
+    case AttachFundsType.ATTACH_FUNDS_SELECT:
       return (
         <SelectFund
           assetsSelect={assetsSelect}
@@ -47,15 +47,13 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
           setValue={setValue}
         />
       );
-    }
-    case AttachFundsType.ATTACH_FUNDS_JSON: {
+    case AttachFundsType.ATTACH_FUNDS_JSON:
       return (
         <JsonFund
           setValue={(value) => setValue("assetsJson", value)}
           assetsJson={assetsJson}
         />
       );
-    }
     default:
       return null;
   }

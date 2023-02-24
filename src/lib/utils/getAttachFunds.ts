@@ -16,10 +16,9 @@ export const getAttachFunds = ({
   assetsSelect,
 }: AttachFundsParams) => {
   switch (attachFundOption) {
-    case AttachFundsType.ATTACH_FUNDS_SELECT: {
+    case AttachFundsType.ATTACH_FUNDS_SELECT:
       return fabricateFunds(assetsSelect);
-    }
-    case AttachFundsType.ATTACH_FUNDS_JSON: {
+    case AttachFundsType.ATTACH_FUNDS_JSON:
       try {
         if (JSON.parse(assetsJson)) {
           return JSON.parse(assetsJson) as Coin[];
@@ -28,7 +27,6 @@ export const getAttachFunds = ({
         // comment just to avoid eslint no-empty
       }
       return [];
-    }
     default:
       return [];
   }
