@@ -1,9 +1,10 @@
-import { chakra, Tag } from "@chakra-ui/react";
+import { chakra, Tag, Tooltip } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { CSSProperties } from "react";
 
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { InstantiatePermission } from "lib/types";
+import { getPermissionHelper } from "lib/utils";
 
 const StyledTag = chakra(Tag, {
   baseStyle: {
@@ -34,5 +35,15 @@ export const PermissionChip = ({
     ? "honeydew.darker"
     : "pebble.700";
 
-  return <StyledTag bgColor={tagBgColor}>{instantiatePermission}</StyledTag>;
+  const { message } = getPermissionHelper(
+    address as HumanAddr,
+    instantiatePermission,
+    permissionAddresses
+  );
+
+  return (
+    <Tooltip hasArrow label={message} placement="top" bg="honeydew.darker">
+      <StyledTag bgColor={tagBgColor}>{instantiatePermission}</StyledTag>
+    </Tooltip>
+  );
 };
