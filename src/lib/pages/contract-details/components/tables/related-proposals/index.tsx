@@ -60,7 +60,7 @@ export const RelatedProposalsTable = ({
   };
 
   const templateColumns =
-    "100px minmax(300px, 1fr) 150px 330px 180px 160px 160px";
+    "100px minmax(300px, 1fr) 150px 280px 180px 190px 160px";
 
   if (!relatedProposals?.length)
     return (

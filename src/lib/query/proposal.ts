@@ -48,6 +48,7 @@ export const getProposalsByWalletAddressPagination = graphql(`
   ) {
     proposals(
       where: { account: { address: { _eq: $walletAddress } } }
+      order_by: { id: desc }
       offset: $offset
       limit: $pageSize
     ) {
