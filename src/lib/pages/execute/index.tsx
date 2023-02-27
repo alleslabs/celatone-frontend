@@ -68,8 +68,12 @@ const Execute = () => {
 
       if (decodeMsg && !jsonValidate(decodeMsg)) {
         const jsonMsg = JSON.parse(decodeMsg);
-        setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg.msg)));
-        setInitialFunds(jsonMsg.funds);
+        if (!jsonMsg.msg) {
+          setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg)));
+        } else {
+          setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg.msg)));
+          setInitialFunds(jsonMsg.funds);
+        }
       }
 
       setContractAddress(contractAddressParam);

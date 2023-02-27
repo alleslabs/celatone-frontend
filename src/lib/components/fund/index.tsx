@@ -4,6 +4,7 @@ import { useWatch } from "react-hook-form";
 
 import { SelectInput } from "lib/components/forms";
 
+import { ASSETS_JSON_STR, ASSETS_SELECT, ATTACH_FUNDS_OPTION } from "./data";
 import { JsonFund } from "./jsonFund";
 import { SelectFund } from "./selectFund";
 import type { AttachFundsState } from "./types";
@@ -14,7 +15,7 @@ interface AttachFundContentProps {
   setValue: UseFormSetValue<AttachFundsState>;
 }
 
-const attachFundOptions = [
+const attachFundsOptions = [
   {
     label: "No funds attached",
     value: AttachFundsType.ATTACH_FUNDS_NULL,
@@ -33,12 +34,12 @@ const attachFundOptions = [
 ];
 
 const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
-  const [assetsSelect, assetsJson, attachFundOption] = useWatch({
+  const [assetsSelect, assetsJson, attachFundsOption] = useWatch({
     control,
-    name: ["assetsSelect", "assetsJson", "attachFundOption"],
+    name: [ASSETS_SELECT, ASSETS_JSON_STR, ATTACH_FUNDS_OPTION],
   });
 
-  switch (attachFundOption) {
+  switch (attachFundsOption) {
     case AttachFundsType.ATTACH_FUNDS_SELECT:
       return (
         <SelectFund
@@ -50,10 +51,11 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
     case AttachFundsType.ATTACH_FUNDS_JSON:
       return (
         <JsonFund
-          setValue={(value) => setValue("assetsJson", value)}
+          setValue={(value) => setValue(ASSETS_JSON_STR, value)}
           assetsJson={assetsJson}
         />
       );
+    case AttachFundsType.ATTACH_FUNDS_NULL:
     default:
       return null;
   }
@@ -61,25 +63,25 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
 
 interface AttachFundProps {
   control: Control<AttachFundsState>;
-  attachFundOption: AttachFundsType;
+  attachFundsOption: AttachFundsType;
   setValue: UseFormSetValue<AttachFundsState>;
 }
 
 export const AttachFund = ({
   control,
   setValue,
-  attachFundOption,
+  attachFundsOption,
 }: AttachFundProps) => {
   return (
     <>
       <Flex mb={6}>
         <SelectInput
           formLabel="Attach Funds"
-          options={attachFundOptions}
+          options={attachFundsOptions}
           onChange={(value: AttachFundsType) =>
-            setValue("attachFundOption", value)
+            setValue(ATTACH_FUNDS_OPTION, value)
           }
-          initialSelected={attachFundOption}
+          initialSelected={attachFundsOption}
           helperTextComponent={
             <Text variant="body3" color="text.dark">
               Only the input values in your selected{" "}

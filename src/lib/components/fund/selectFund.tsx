@@ -7,6 +7,7 @@ import { useFieldArray } from "react-hook-form";
 import { useNativeTokensInfo } from "lib/app-provider";
 import { AssetInput, ControllerInput } from "lib/components/forms";
 
+import { ASSETS_SELECT } from "./data";
 import type { AttachFundsState } from "./types";
 
 interface SelectFundProps {
@@ -22,7 +23,7 @@ export const SelectFund = ({
   const nativeTokensInfo = useNativeTokensInfo();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "assetsSelect",
+    name: ASSETS_SELECT,
   });
 
   const selectedAssets = assetsSelect.map((asset) => asset.denom);
@@ -52,13 +53,13 @@ export const SelectFund = ({
           disableDelete={fields.length <= 1}
           onDelete={() => remove(idx)}
           setCurrencyValue={(newVal: string) =>
-            setValue(`assetsSelect.${idx}.denom`, newVal)
+            setValue(`${ASSETS_SELECT}.${idx}.denom`, newVal)
           }
           assetOptions={assetOptions}
           initialSelected={field.denom}
           amountInput={
             <ControllerInput
-              name={`assetsSelect.${idx}.amount`}
+              name={`${ASSETS_SELECT}.${idx}.amount`}
               control={control}
               label="Amount"
               variant="floating"

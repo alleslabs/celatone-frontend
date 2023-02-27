@@ -8,6 +8,6 @@ export enum AttachFundsType {
 
 export interface AttachFundsState {
   assetsSelect: Coin[];
-  assetsJson: string;
-  attachFundOption: AttachFundsType;
+  assetsJsonStr: string;
+  attachFundsOption: AttachFundsType;
 }

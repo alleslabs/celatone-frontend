@@ -13,6 +13,12 @@ import { CopyButton } from "lib/components/copy";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { AttachFund } from "lib/components/fund";
+import {
+  ASSETS_JSON_STR,
+  ATTACH_FUNDS_OPTION,
+  defaultAsset,
+  defaultAssetJsonStr,
+} from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import JsonInput from "lib/components/json/JsonInput";
@@ -41,9 +47,9 @@ interface ExecuteAreaProps {
 }
 
 const assetDefault = {
-  assetsSelect: [{ denom: "", amount: "" }] as Coin[],
-  assetsJson: jsonPrettify(`[{ "denom": "", "amount": "" }]`),
-  attachFundOption: AttachFundsType.ATTACH_FUNDS_NULL,
+  assetsSelect: defaultAsset,
+  assetsJsonStr: defaultAssetJsonStr,
+  attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
 };
 
 export const ExecuteArea = ({
@@ -74,21 +80,25 @@ export const ExecuteArea = ({
    * Handle when there is an initialFunds
    */
   useEffect(() => {
-    if (initialFunds.length) {
-      setValue("assetsJson", jsonPrettify(JSON.stringify(initialFunds)));
-      setValue("attachFundOption", AttachFundsType.ATTACH_FUNDS_JSON);
-    } else {
-      reset(assetDefault);
+    try {
+      if (initialFunds.length) {
+        setValue(ASSETS_JSON_STR, jsonPrettify(JSON.stringify(initialFunds)));
+        setValue(ATTACH_FUNDS_OPTION, AttachFundsType.ATTACH_FUNDS_JSON);
+      } else {
+        reset(assetDefault);
+      }
+    } catch {
+      // comment just to avoid eslint no-empty
     }
   }, [initialFunds, reset, setValue]);
 
   const { errors } = useFormState({ control });
 
-  const { assetsJson, assetsSelect, attachFundOption } = watch();
+  const { assetsJsonStr, assetsSelect, attachFundsOption } = watch();
 
   const isValidAssetsSelect = !errors.assetsSelect;
-  const isValidAssetsJson =
-    !errors.assetsJson && jsonValidate(assetsJson) === null;
+  const isValidAssetsJsonStr =
+    !errors.assetsJsonStr && jsonValidate(assetsJsonStr) === null;
 
   const enableExecute = useMemo(() => {
     const generalCheck = !!(
@@ -97,21 +107,21 @@ export const ExecuteArea = ({
       address &&
       contractAddress
     );
-    switch (attachFundOption) {
+    switch (attachFundsOption) {
       case AttachFundsType.ATTACH_FUNDS_SELECT:
         return generalCheck && isValidAssetsSelect;
       case AttachFundsType.ATTACH_FUNDS_JSON:
-        return generalCheck && isValidAssetsJson;
+        return generalCheck && isValidAssetsJsonStr;
       default:
         return generalCheck;
     }
   }, [
-    address,
-    attachFundOption,
-    contractAddress,
     msg,
-    isValidAssetsJson,
+    address,
+    contractAddress,
+    attachFundsOption,
     isValidAssetsSelect,
+    isValidAssetsJsonStr,
   ]);
 
   const { isFetching } = useSimulateFeeQuery({
@@ -129,13 +139,13 @@ export const ExecuteArea = ({
   });
 
   const funds = getAttachFunds({
-    attachFundOption,
-    assetsJson,
+    attachFundsOption,
+    assetsJsonStr,
     assetsSelect,
   });
 
   const proceed = useCallback(async () => {
-    AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundOption);
+    AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await executeTx({
       onTxSucceed: (userKey: string, activity: Activity) => {
         addActivity(userKey, activity);
@@ -157,7 +167,7 @@ export const ExecuteArea = ({
     fee,
     contractAddress,
     msg,
-    attachFundOption,
+    attachFundsOption,
     addActivity,
     broadcast,
   ]);
@@ -186,7 +196,7 @@ export const ExecuteArea = ({
     enableExecute,
     msg,
     funds,
-    assetsJson,
+    assetsJsonStr,
     assetsSelectString,
   ]);
 
@@ -253,7 +263,7 @@ export const ExecuteArea = ({
           <AttachFund
             control={control}
             setValue={setValue}
-            attachFundOption={attachFundOption}
+            attachFundsOption={attachFundsOption}
           />
         </Box>
       </Flex>

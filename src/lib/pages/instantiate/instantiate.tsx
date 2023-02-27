@@ -1,6 +1,5 @@
 import { Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
-import type { Coin } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
@@ -19,6 +18,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import { AttachFund } from "lib/components/fund";
+import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import JsonInput from "lib/components/json/JsonInput";
@@ -117,13 +117,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   } = useForm<AttachFundsState>({
     mode: "all",
     defaultValues: {
-      assetsSelect: [{ denom: "", amount: "" }] as Coin[],
-      assetsJson: jsonPrettify('[{"denom": "","amount":""}]'),
-      attachFundOption: AttachFundsType.ATTACH_FUNDS_NULL,
+      assetsSelect: defaultAsset,
+      assetsJsonStr: defaultAssetJsonStr,
+      attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
     },
   });
 
-  const { assetsSelect, assetsJson, attachFundOption } = watchAssets();
+  const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
   const disableInstantiate = useMemo(() => {
     return (
@@ -138,8 +138,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   }, [codeId, address, watchInitMsg, Object.keys(formErrors), status.state]);
 
   const funds = getAttachFunds({
-    attachFundOption,
-    assetsJson,
+    attachFundsOption,
+    assetsJsonStr,
     assetsSelect,
   });
 
@@ -178,7 +178,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   const proceed = useCallback(() => {
     handleSubmit(async ({ adminAddress, label, initMsg }) => {
-      AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundOption);
+      AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
 
       setSimulating(true);
 
@@ -212,7 +212,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   }, [
     funds,
     handleSubmit,
-    attachFundOption,
+    attachFundsOption,
     address,
     codeId,
     simulate,
@@ -256,8 +256,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         if (msgObject.funds.length) {
           resetAssets({
             assetsSelect: [{ denom: "", amount: "" }],
-            assetsJson: jsonPrettify(JSON.stringify(msgObject.funds)),
-            attachFundOption: AttachFundsType.ATTACH_FUNDS_JSON,
+            assetsJsonStr: jsonPrettify(JSON.stringify(msgObject.funds)),
+            attachFundsOption: AttachFundsType.ATTACH_FUNDS_JSON,
           });
         }
       } catch {
@@ -265,7 +265,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       }
     }
   }, [
-    assetsJson,
+    assetsJsonStr,
     codeIdQuery,
     msgQuery,
     reset,
@@ -357,7 +357,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           <AttachFund
             control={assetsControl}
             setValue={setAssets}
-            attachFundOption={attachFundOption}
+            attachFundsOption={attachFundsOption}
           />
         </form>
       </WasmPageContainer>

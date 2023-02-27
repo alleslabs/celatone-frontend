@@ -33,7 +33,7 @@ interface SelectInputProps<T extends string> {
   placeholder?: string;
   initialSelected: string;
   hasDivider?: boolean;
-  helperTextComponent?: JSX.Element | string;
+  helperTextComponent?: ReactNode;
 }
 
 interface SelectItemProps {
