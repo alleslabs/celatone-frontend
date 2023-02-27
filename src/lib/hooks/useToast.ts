@@ -8,7 +8,7 @@ import type { AlertStatus } from "@chakra-ui/react";
 // const getStatusIcon = (status: AlertStatus) => {
 //   switch (status) {
 //     case "success":
-//       return  ( <CustomIcon name="checkCircle" color="success.main"/>)
+//       return  ( <CustomIcon name="check-circle-solid" color="success.main"/>)
 //     case "error":
 //       return ( <CustomIcon name="close" color="error.light"/>
 // )

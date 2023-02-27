@@ -42,7 +42,11 @@ const Deploy = () => {
       </Heading>
       {isMainnet && (
         <Alert variant="violet" mb="16px" alignItems="flex-start" gap="1">
-          <CustomIcon name="infoCircle" color="violet.ligt" boxSize="20px" />
+          <CustomIcon
+            name="info-circle-solid"
+            color="violet.ligth"
+            boxSize="20px"
+          />
           <AlertDescription>
             Uploading new Wasm files on permissioned chains is coming soon to
             Celatone. Currently, you can upload codes and instantiate contracts

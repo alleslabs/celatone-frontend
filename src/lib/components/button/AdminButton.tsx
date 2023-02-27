@@ -44,7 +44,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           variant="outline-gray"
           as={Button}
           isDisabled={!isAdmin}
-          rightIcon={<CustomIcon name="chevronDown" />}
+          rightIcon={<CustomIcon name="chevron-down" />}
         >
           Admin
         </MenuButton>
@@ -75,7 +75,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
-            <StyledMenuItem icon={<CustomIcon name="adminClear" />}>
+            <StyledMenuItem icon={<CustomIcon name="admin-clear" />}>
               Clear Admin
             </StyledMenuItem>
           }

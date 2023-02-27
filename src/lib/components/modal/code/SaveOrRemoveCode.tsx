@@ -28,14 +28,14 @@ export function SaveOrRemoveCodeModal({
       name={codeInfo.name}
       trigger={
         <StyledIconButton
-          icon={<CustomIcon name="bookmarkSolid" color="violet.light" />}
+          icon={<CustomIcon name="bookmark-solid" color="violet.light" />}
           variant="ghost-gray"
         />
       }
     />
   ) : (
     <SaveCodeDetailsModal
-      codeLocalInfo={codeInfo}
+      codeInfo={codeInfo}
       triggerElement={
         <StyledIconButton
           icon={<CustomIcon name="bookmark" />}

@@ -29,6 +29,8 @@ interface AccountAssetInfos {
   supportedAssets: Option<BalanceWithAssetInfo[]>;
   unsupportedAssets: Option<BalanceWithAssetInfo[]>;
   isLoading: boolean;
+  totalData: Option<number>;
+  error: Error;
 }
 
 export const useContractInstances = (
@@ -44,8 +46,10 @@ export const useContractInstances = (
 
     return {
       ...contract,
+      name: localInfo?.name,
+      description: localInfo?.description,
       tags: localInfo?.tags,
-      contractName: localInfo?.name,
+      lists: localInfo?.lists,
     };
   });
   return {
@@ -71,8 +75,10 @@ export const useContractsAdmin = (
 
     return {
       ...contractAdmin,
+      name: localInfo?.name,
+      description: localInfo?.description,
       tags: localInfo?.tags,
-      contractName: localInfo?.name,
+      lists: localInfo?.lists,
     };
   });
 
@@ -92,15 +98,13 @@ export const useCodeStored = (
     offset,
     pageSize
   );
-  const { getCodeLocalInfo } = useCodeStore();
+  const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
-  const data = codes?.map<CodeInfo>((code) => {
-    const localInfo = getCodeLocalInfo(code.id);
-    return {
-      ...code,
-      codeName: localInfo?.name,
-    };
-  });
+  const data = codes?.map<CodeInfo>((code) => ({
+    ...code,
+    name: getCodeLocalInfo(code.id)?.name,
+    isSaved: isCodeIdSaved(code.id),
+  }));
 
   return {
     codes: data,
@@ -111,7 +115,11 @@ export const useCodeStored = (
 export const useUserAssetInfos = (
   walletAddress: HumanAddr
 ): AccountAssetInfos => {
-  const { data: balances, isLoading } = useAccountBalances(walletAddress);
+  const {
+    data: balances,
+    isLoading,
+    error,
+  } = useAccountBalances(walletAddress);
   const assetInfos = useAssetInfos();
 
   const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
@@ -140,5 +148,7 @@ export const useUserAssetInfos = (
     supportedAssets,
     unsupportedAssets,
     isLoading,
+    totalData: contractBalancesWithAssetInfos?.length,
+    error: error as Error,
   };
 };

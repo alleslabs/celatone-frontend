@@ -42,7 +42,7 @@ export const ConnectWalletAlert = ({
       py="12px"
     >
       <Flex gap={2}>
-        <CustomIcon name="infoCircle" color="honeydew.main" boxSize="20px" />
+        <CustomIcon name="wallet-solid" color="honeydew.main" boxSize="4" />
         <Box>
           <AlertTitle>{title}</AlertTitle>
           <AlertDescription>{subtitle}</AlertDescription>

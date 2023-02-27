@@ -40,7 +40,7 @@ export interface ActionModalProps {
   closeOnOverlayClick?: boolean;
 }
 export function ActionModal({
-  icon = "editSolid",
+  icon = "edit-solid",
   iconColor = "pebble.600",
   title,
   subtitle,

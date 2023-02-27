@@ -119,9 +119,13 @@ const ViewAddresses = ({
           rightIcon={
             <Flex>
               {viewAll ? (
-                <CustomIcon name="chevronUp" color="lilac.main" boxSize="3" />
+                <CustomIcon name="chevron-up" color="lilac.main" boxSize="3" />
               ) : (
-                <CustomIcon name="chevronDown" color="lilac.main" boxSize="3" />
+                <CustomIcon
+                  name="chevron-down"
+                  color="lilac.main"
+                  boxSize="3"
+                />
               )}
             </Flex>
           }

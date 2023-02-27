@@ -42,9 +42,9 @@ export const JsonInfo = ({
         </Heading>
         <Flex transition="all .25s ease-in-out">
           {expand ? (
-            <CustomIcon name="chevronUp" />
+            <CustomIcon name="chevron-up" />
           ) : (
-            <CustomIcon name="chevronDown" />
+            <CustomIcon name="chevron-down" />
           )}
         </Flex>
       </Flex>

@@ -68,7 +68,9 @@ export const updateAdminTx = ({
         ],
         receiptInfo: {
           header: "Update Admin Complete",
-          headerIcon: <CustomIcon name="checkCircle" color="success.main" />,
+          headerIcon: (
+            <CustomIcon name="check-circle-solid" color="success.main" />
+          ),
         },
         actionVariant: "update-admin",
       } as TxResultRendering;

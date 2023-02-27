@@ -99,7 +99,7 @@ export const ButtonSection = ({
             }
           >
             View Contract Details
-            <CustomIcon name="chevronRight" color="text.main" boxSize="3" />
+            <CustomIcon name="chevron-right" color="text.main" boxSize="3" />
           </Button>
         </>
       );

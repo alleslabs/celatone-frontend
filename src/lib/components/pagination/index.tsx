@@ -63,7 +63,7 @@ export const Pagination = ({
           w="70px"
           fontSize="12px"
           focusBorderColor="none"
-          icon={<CustomIcon name="chevronDown" />}
+          icon={<CustomIcon name="chevron-down" />}
           cursor="pointer"
           onChange={onPageSizeChange}
         >
@@ -76,10 +76,10 @@ export const Pagination = ({
           {`${offsetData} - ${lastDataInPage} of ${totalData}`}
         </Text>
         <Previous variant="unstyled" display="flex">
-          <CustomIcon name="chevronLeft" />
+          <CustomIcon name="chevron-left" />
         </Previous>
         <Next variant="unstyled" display="flex">
-          <CustomIcon name="chevronRight" />
+          <CustomIcon name="chevron-right" />
         </Next>
       </Flex>
     </Paginator>

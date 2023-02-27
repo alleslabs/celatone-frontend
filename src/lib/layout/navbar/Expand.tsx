@@ -39,7 +39,7 @@ export const ExpandNavMenu = ({
               iconSpacing={1}
               leftIcon={
                 <CustomIcon
-                  name="doubleChevronLeft"
+                  name="double-chevron-left"
                   color="honeydew.main"
                   boxSize="3"
                 />
@@ -78,11 +78,22 @@ export const ExpandNavMenu = ({
               my="1px"
               transition="all .25s ease-in-out"
               alignItems="center"
+              position="relative"
               bgColor={
                 isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
               }
               borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
             >
+              <Flex
+                opacity={isCurrentPage(submenu.slug) ? 1 : 0}
+                width="3px"
+                height="20px"
+                bgColor="violet.light"
+                position="absolute"
+                top="10px"
+                borderRadius="2px"
+                left="0px"
+              />
               {submenu.icon && <CustomIcon name={submenu.icon} />}
               {submenu.logo && (
                 <Image

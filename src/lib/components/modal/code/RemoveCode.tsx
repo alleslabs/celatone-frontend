@@ -49,7 +49,7 @@ export function RemoveCodeModal({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="checkCircle" color="success.main" />,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   }, [codeId, name, removeSavedCode, toast]);
 

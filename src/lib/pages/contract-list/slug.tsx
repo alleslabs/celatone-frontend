@@ -74,7 +74,7 @@ const ContractsByList = observer(() => {
         <Breadcrumb
           w="full"
           spacing="4px"
-          separator={<CustomIcon name="chevronRight" boxSize="3" />}
+          separator={<CustomIcon name="chevron-right" boxSize="3" />}
         >
           <BreadcrumbItem
             _hover={{ opacity: 0.8 }}
@@ -110,7 +110,7 @@ const ContractsByList = observer(() => {
             {isInstantiatedByMe ? (
               <Button
                 leftIcon={
-                  <CustomIcon name="addNew" color="text.main" boxSize="16px" />
+                  <CustomIcon name="add-new" color="text.main" boxSize="16px" />
                 }
                 onClick={() => navigate({ pathname: "/deploy" })}
               >

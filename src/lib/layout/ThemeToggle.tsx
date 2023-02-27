@@ -10,9 +10,9 @@ const ThemeToggle = () => {
       aria-label="theme toggle"
       icon={
         colorMode === "light" ? (
-          <CustomIcon name="modeDark" />
+          <CustomIcon name="mode-dark" />
         ) : (
-          <CustomIcon name="modeLight" />
+          <CustomIcon name="mode-light" />
         )
       }
       onClick={toggleColorMode}

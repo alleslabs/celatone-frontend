@@ -95,9 +95,9 @@ export const TxsTableRow = ({
             </Flex>
             {isAccordion &&
               (isOpen ? (
-                <CustomIcon name="chevronUp" />
+                <CustomIcon name="chevron-up" />
               ) : (
-                <CustomIcon name="chevronDown" />
+                <CustomIcon name="chevron-down" />
               ))}
           </Flex>
         </TableRow>

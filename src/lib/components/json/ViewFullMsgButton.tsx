@@ -34,9 +34,9 @@ export const ViewFullMsgButton = ({
         {viewFull ? "View Less" : "View Full Message"}
       </Text>
       {viewFull ? (
-        <CustomIcon name="chevronUp" boxSize="3" color="text.dark" />
+        <CustomIcon name="chevron-up" boxSize="3" color="text.dark" />
       ) : (
-        <CustomIcon name="chevronDown" boxSize="3" color="text.dark" />
+        <CustomIcon name="chevron-down" boxSize="3" color="text.dark" />
       )}
     </Flex>
   );

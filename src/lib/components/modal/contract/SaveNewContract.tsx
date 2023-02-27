@@ -188,7 +188,7 @@ export function SaveNewContractModal({
   return (
     <ActionModal
       title="Save New Contract"
-      icon="bookmarkSolid"
+      icon="bookmark-solid"
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}

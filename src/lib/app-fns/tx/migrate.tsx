@@ -74,7 +74,9 @@ export const migrateContractTx = ({
         ],
         receiptInfo: {
           header: "Migration Completed",
-          headerIcon: <CustomIcon name="checkCircle" color="success.main" />,
+          headerIcon: (
+            <CustomIcon name="check-circle-solid" color="success.main" />
+          ),
         },
         actionVariant: "migrate",
       } as TxResultRendering;

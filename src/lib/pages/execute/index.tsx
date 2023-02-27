@@ -95,7 +95,7 @@ const Execute = () => {
             onClick={goToQuery}
           >
             Go To Query
-            <CustomIcon name="chevronRight" color="lilac.main" boxSize="3" />
+            <CustomIcon name="chevron-right" color="lilac.main" boxSize="3" />
           </Button>
         </Box>
       </Flex>

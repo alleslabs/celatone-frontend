@@ -130,7 +130,7 @@ export const SelectInput = <T extends string>({
             pl={selectedOption?.icon ? 10 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <CustomIcon name="chevronDown" />
+            <CustomIcon name="chevron-down" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>

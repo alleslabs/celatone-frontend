@@ -37,6 +37,7 @@ export const PublicProjectCard = observer(
         transition="all .25s ease-in-out"
         borderRadius="8px"
         gap={4}
+        minH={48}
         height="full"
         onClick={handleOnClick}
         cursor="pointer"

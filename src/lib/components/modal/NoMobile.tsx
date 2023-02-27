@@ -20,7 +20,11 @@ export const NoMobile = () => (
         padding="8"
         textAlign="center"
       >
-        <CustomIcon name="infoCircle" color="violet.light" boxSize="10" />
+        <CustomIcon
+          name="info-circle-solid"
+          color="violet.light"
+          boxSize="10"
+        />
         <Heading as="h6" py="4">
           Sorry, we currently do not support mobile use.
         </Heading>

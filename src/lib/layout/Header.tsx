@@ -72,7 +72,7 @@ const Header = () => {
               >
                 {currentChainRecord?.chain.chain_id}
               </Text>
-              <CustomIcon name="chevronDown" />
+              <CustomIcon name="chevron-down" />
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">

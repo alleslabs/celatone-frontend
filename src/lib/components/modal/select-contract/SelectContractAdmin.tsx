@@ -77,7 +77,7 @@ export const SelectContractAdmin = ({
         <ModalOverlay />
         <ModalContent h="80%">
           <ModalHeader>
-            <CustomIcon name="contract" boxSize="5" />
+            <CustomIcon name="contract-address-solid" boxSize="5" />
             <Heading as="h5" variant="h5">
               Select contract which you have permission
             </Heading>

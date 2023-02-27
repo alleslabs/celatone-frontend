@@ -156,7 +156,7 @@ export const UploadSection = ({
           size="md"
           variant="outline-gray"
           w="128px"
-          leftIcon={<CustomIcon name="chevronLeft" />}
+          leftIcon={<CustomIcon name="chevron-left" />}
           onClick={handleBack}
         >
           Previous

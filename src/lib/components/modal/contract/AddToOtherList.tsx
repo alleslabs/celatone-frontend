@@ -37,7 +37,7 @@ export const AddToOtherListModal = observer(
     return (
       <ActionModal
         title="Add or remove from other lists"
-        icon="bookmarkSolid"
+        icon="bookmark-solid"
         headerContent={
           <Flex pt="6" gap="36px">
             <Flex direction="column" gap="8px">

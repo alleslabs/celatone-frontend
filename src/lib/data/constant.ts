@@ -46,7 +46,7 @@ export const getListIcon = (listName: string) => {
     case INSTANTIATED_LIST_NAME:
       return "wallet" as keyof typeof ICONS;
     case SAVED_LIST_NAME:
-      return "bookmark" as keyof typeof ICONS;
+      return "bookmark-solid" as keyof typeof ICONS;
     default:
       return "contractList" as keyof typeof ICONS;
   }
@@ -76,3 +76,14 @@ export const typeUrlDict = {
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
+
+export const DEFAULT_TX_FILTERS = {
+  isExecute: false,
+  isInstantiate: false,
+  isUpload: false,
+  isIbc: false,
+  isSend: false,
+  isMigrate: false,
+  isUpdateAdmin: false,
+  isClearAdmin: false,
+};

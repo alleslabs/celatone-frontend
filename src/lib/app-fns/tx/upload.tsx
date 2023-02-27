@@ -86,7 +86,7 @@ export const uploadContractTx = ({
               {isMigrate ? "migrate" : "instantiate"} your code now?
             </>
           ),
-          headerIcon: <CustomIcon name="uploadCloud" boxSize="5" />,
+          headerIcon: <CustomIcon name="upload-cloud" boxSize="5" />,
         },
         actionVariant: isMigrate ? "upload-migrate" : "upload",
       } as TxResultRendering;

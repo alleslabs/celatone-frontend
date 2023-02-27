@@ -202,7 +202,7 @@ export const EditableCell = ({
                 arrowSize={8}
               >
                 <Flex cursor="pointer">
-                  <CustomIcon name="infoCircle" boxSize="12px" />
+                  <CustomIcon name="info-circle" boxSize="12px" />
                 </Flex>
               </Tooltip>
             )}

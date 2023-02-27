@@ -18,7 +18,7 @@ export const BackButton = () => {
         router.back();
       }}
     >
-      <CustomIcon name="chevronLeft" color="lilac.main" boxSize="3" />
+      <CustomIcon name="chevron-left" color="lilac.main" boxSize="3" />
       BACK
     </Button>
   );

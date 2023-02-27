@@ -68,7 +68,7 @@ export const QuickMenu = () => {
                 Upload a new wasm code or instantiate a new contract
               </Text>
             </Flex>
-            <CustomIcon name="chevronRight" color="text.main" boxSize="24px" />
+            <CustomIcon name="chevron-right" color="text.main" boxSize="24px" />
           </Flex>
         </AppLink>
 
@@ -93,7 +93,7 @@ export const QuickMenu = () => {
                     </Text>
                   </Box>
                 </Flex>
-                <CustomIcon name="chevronRight" boxSize="24px" />
+                <CustomIcon name="chevron-right" boxSize="24px" />
               </Flex>
             </AppLink>
           ))}

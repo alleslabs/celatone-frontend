@@ -87,9 +87,9 @@ export const PastTxRow = ({
         <TableRow>
           {isAccordion &&
             (isOpen ? (
-              <CustomIcon name="chevronUp" />
+              <CustomIcon name="chevron-up" />
             ) : (
-              <CustomIcon name="chevronDown" />
+              <CustomIcon name="chevron-down" />
             ))}
         </TableRow>
       </Grid>

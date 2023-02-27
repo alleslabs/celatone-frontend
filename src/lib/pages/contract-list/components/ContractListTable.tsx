@@ -188,7 +188,7 @@ export const ContractListTable = ({
                         triggerElement={
                           <StyledMenuItem
                             icon={
-                              <CustomIcon name="adminClear" boxSize="16px" />
+                              <CustomIcon name="admin-clear" boxSize="16px" />
                             }
                             isDisabled={!isAdmin}
                           >

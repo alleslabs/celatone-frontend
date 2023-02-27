@@ -14,7 +14,7 @@ export const renderSocial = (name: string) => {
     case "discord":
       return "discord" as keyof typeof ICONS;
     default:
-      return "infoCircle";
+      return "info-circle-solid";
   }
 };
 
@@ -37,7 +37,11 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
         />
       )}
       {details.github && (
-        <CustomIconButton href={details.github} icon="github" />
+        <CustomIconButton
+          href={details.github}
+          icon="github"
+          onClick={() => AmpTrackSocial(details.github)}
+        />
       )}
       {details.socials.length &&
         details.socials.map(

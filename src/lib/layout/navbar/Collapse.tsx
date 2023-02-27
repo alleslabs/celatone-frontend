@@ -49,7 +49,7 @@ export const CollapseNavMenu = ({
                   mx={2}
                   icon={
                     <CustomIcon
-                      name="doubleChevronRight"
+                      name="double-chevron-right"
                       color="honeydew.main"
                     />
                   }

@@ -1,5 +1,6 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, useToast, FormControl } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
@@ -11,14 +12,15 @@ import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore, useLCDEndpoint } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
-import type { Addr } from "lib/types";
-import { getNameAndDescriptionDefault } from "lib/utils";
+import type { Addr, HumanAddr } from "lib/types";
+import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
 }
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
+  const { address } = useWallet();
   /* STATE */
   const [codeId, setCodeId] = useState("");
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
@@ -60,7 +62,18 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       retry: false,
       cacheTime: 0,
       onSuccess(data) {
-        setCodeIdStatus({ state: "success", message: "Valid Code ID" });
+        const { message, messageColor } = getPermissionHelper(
+          address as HumanAddr,
+          data.code_info.instantiate_permission.permission,
+          data.code_info.instantiate_permission.address
+            ? [data.code_info.instantiate_permission.address]
+            : data.code_info.instantiate_permission.addresses
+        );
+        setCodeIdStatus({
+          state: "success",
+          message: `${message} (${data.code_info.instantiate_permission.permission})`,
+          messageColor,
+        });
         setUploader(data.code_info.creator);
         setUploaderStatus({ state: "success" });
       },
@@ -158,7 +171,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   return (
     <ActionModal
       title="Save New Code"
-      icon="bookmarkSolid"
+      icon="bookmark-solid"
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save New Code"
       mainAction={handleSave}

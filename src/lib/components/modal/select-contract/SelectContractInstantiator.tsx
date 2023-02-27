@@ -124,7 +124,7 @@ export const SelectContractInstantiator = ({
           {listSlug.length === 0 || !contractList ? (
             <>
               <ModalHeader>
-                <CustomIcon name="contract" boxSize="5" />
+                <CustomIcon name="contract-address-solid" boxSize="5" />
                 <Heading as="h5" variant="h5">
                   Select Contract
                 </Heading>
@@ -187,7 +187,7 @@ export const SelectContractInstantiator = ({
             <>
               <ModalHeader>
                 <Flex onClick={() => setListSlug("")} cursor="pointer">
-                  <CustomIcon name="chevronLeft" boxSize="5" />
+                  <CustomIcon name="chevron-left" boxSize="5" />
                 </Flex>
 
                 <Heading as="h5" variant="h5">

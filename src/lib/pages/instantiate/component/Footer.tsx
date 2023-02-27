@@ -23,7 +23,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
       <Flex align="center" justify="space-between" w="540px" h="full" mx="auto">
         <Button
           variant="outline-gray"
-          leftIcon={<CustomIcon name="chevronLeft" />}
+          leftIcon={<CustomIcon name="chevron-left" />}
           onClick={router.back}
           w="128px"
         >

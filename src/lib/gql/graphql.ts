@@ -7327,6 +7327,14 @@ export type GetProposalsByWalletAddressPaginationQuery = {
     deposit_end_time: any;
     type: string;
     id: number;
+    contract_proposals: Array<{
+      __typename?: "contract_proposals";
+      resolved_height?: number | null;
+    }>;
+    code_proposals: Array<{
+      __typename?: "code_proposals";
+      resolved_height?: number | null;
+    }>;
   }>;
 };
 
@@ -10785,6 +10793,20 @@ export const GetProposalsByWalletAddressPaginationDocument = {
               },
               {
                 kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
                 name: { kind: "Name", value: "offset" },
                 value: {
                   kind: "Variable",
@@ -10815,6 +10837,32 @@ export const GetProposalsByWalletAddressPaginationDocument = {
                 },
                 { kind: "Field", name: { kind: "Name", value: "type" } },
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_proposals" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "resolved_height" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "code_proposals" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "resolved_height" },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },

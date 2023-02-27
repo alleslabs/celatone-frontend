@@ -18,7 +18,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
-import { MsgType } from "lib/types";
+import { InstantiatePermission, MsgType } from "lib/types";
 import { composeMsg, jsonValidate } from "lib/utils";
 
 interface MigrateContractProps {
@@ -86,8 +86,8 @@ export const MigrateContract = ({
         const permission = data.code_info.instantiate_permission;
         if (
           address &&
-          (permission.permission === "Everybody" ||
-            permission.addresses.includes(address) ||
+          (permission.permission === InstantiatePermission.EVERYBODY ||
+            permission.addresses.includes(address as HumanAddr) ||
             permission.address === address)
         )
           setStatus({ state: "success" });
@@ -177,7 +177,7 @@ export const MigrateContract = ({
       />
       {simulateError && (
         <Flex gap={2} mb={4}>
-          <CustomIcon name="alertSolid" boxSize="3" color="error.main" />
+          <CustomIcon name="alert-solid" boxSize="3" color="error.main" />
           <Text variant="body3" color="error.main">
             {simulateError}
           </Text>
@@ -202,7 +202,7 @@ export const MigrateContract = ({
           size="md"
           variant="outline-gray"
           w="128px"
-          leftIcon={<CustomIcon name="chevronLeft" />}
+          leftIcon={<CustomIcon name="chevron-left" />}
           onClick={handleBack}
         >
           Previous

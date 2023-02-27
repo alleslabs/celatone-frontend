@@ -22,11 +22,11 @@ interface DetailHeaderProps {
 }
 export const DetailHeader = ({ details, slug }: DetailHeaderProps) => {
   return (
-    <Box px={12}>
+    <>
       <Breadcrumb
         w="full"
         spacing={1}
-        separator={<CustomIcon name="chevronRight" boxSize="3" />}
+        separator={<CustomIcon name="chevron-right" boxSize="3" />}
       >
         <BreadcrumbItem
           _hover={{ opacity: 0.8 }}
@@ -79,6 +79,6 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => {
           <BookmarkButton details={details} slug={slug} />
         </Flex>
       </Flex>
-    </Box>
+    </>
   );
 };

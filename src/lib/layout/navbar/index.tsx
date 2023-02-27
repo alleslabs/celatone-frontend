@@ -57,7 +57,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         {
           name: "Deploy Contract",
           slug: "/deploy",
-          icon: "addNew",
+          icon: "add-new",
         },
         {
           name: "Query",
@@ -126,7 +126,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         {
           name: "View All Projects",
           slug: "/public-project",
-          icon: "publicProject",
+          icon: "public-project",
         },
       ],
     });

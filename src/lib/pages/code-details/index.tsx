@@ -69,6 +69,7 @@ const CodeDetailsBody = observer(
               codeData.instantiatePermission ?? InstantiatePermission.UNKNOWN
             }
             permissionAddresses={codeData.permissionAddresses ?? []}
+            contractCount={undefined}
           />
         </Flex>
         <Divider borderColor="pebble.700" my={12} />

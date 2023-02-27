@@ -141,7 +141,7 @@ const Searchbar = () => {
           w="full"
           top="50px"
           maxH="195px"
-          overflow="scroll"
+          overflowY="scroll"
           shadow="dark-lg"
         >
           {!results.length ? (

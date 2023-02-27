@@ -2,21 +2,21 @@ import { Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
 import { CustomIcon } from "lib/components/icon/CustomIcon";
-import type { CodeLocalInfo } from "lib/stores/code";
+import type { CodeInfo } from "lib/types";
 
 import { EditCodeDetailsModal } from "./EditCodeDetails";
 import { SaveCodeDetailsModal } from "./SaveCodeDetails";
 
 interface SaveOrEditCodeModalProps {
   mode: "save" | "edit";
-  codeLocalInfo: CodeLocalInfo;
+  codeInfo: CodeInfo;
 }
 
 export const SaveOrEditCodeModal = observer(
-  ({ mode, codeLocalInfo }: SaveOrEditCodeModalProps) => {
+  ({ mode, codeInfo }: SaveOrEditCodeModalProps) => {
     return mode === "save" ? (
       <SaveCodeDetailsModal
-        codeLocalInfo={codeLocalInfo}
+        codeInfo={codeInfo}
         triggerElement={
           <Button
             variant="outline-gray"
@@ -28,7 +28,7 @@ export const SaveOrEditCodeModal = observer(
       />
     ) : (
       <EditCodeDetailsModal
-        codeLocalInfo={codeLocalInfo}
+        codeInfo={codeInfo}
         triggerElement={
           <Button variant="ghost-gray" leftIcon={<CustomIcon name="edit" />}>
             Edit

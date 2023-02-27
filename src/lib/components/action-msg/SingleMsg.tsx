@@ -75,7 +75,7 @@ export const SingleMsg = ({
             maxW="240px"
           >
             <Flex cursor="pointer">
-              <CustomIcon name="infoCircle" boxSize="3" />
+              <CustomIcon name="info-circle" boxSize="3" />
             </Flex>
           </Tooltip>
           <Copier

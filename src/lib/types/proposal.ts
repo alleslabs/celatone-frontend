@@ -19,16 +19,7 @@ export enum ProposalType {
   SUDO_CONTRACT = "SudoContract",
 }
 
-export interface UserProposal {
-  proposalId: number;
-  title: string;
-  status: ProposalStatus;
-  votingEndTime: Date;
-  depositEndTime: Date;
-  type: ProposalType;
-}
-
-export interface ContractRelatedProposals {
+export interface Proposal {
   proposalId: number;
   title: string;
   status: ProposalStatus;

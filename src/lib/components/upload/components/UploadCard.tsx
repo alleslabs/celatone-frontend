@@ -26,12 +26,12 @@ const getStatusDecorator = (
   switch (status) {
     case "completed":
       return {
-        icon: <CustomIcon name="checkCircle" color="success.main" />,
+        icon: <CustomIcon name="check-circle-solid" color="success.main" />,
         statusText: <Text color="success.main">Valid Wasm file</Text>,
       };
     case "failed":
       return {
-        icon: <CustomIcon name="alertSolid" color="error.main" />,
+        icon: <CustomIcon name="alert-solid" color="error.main" />,
         statusText: <Text color="error.main">Invalid Wasm file</Text>,
         helperText: error,
       };

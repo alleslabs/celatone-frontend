@@ -57,7 +57,6 @@ export const PublicProjectContractRow = ({
       transition="all .25s ease-in-out"
       cursor="pointer"
       onClick={goToContractDetails}
-      px="32px"
       minW="min-content"
       templateColumns={templateColumn}
       borderBottom="1px solid"
@@ -84,7 +83,7 @@ export const PublicProjectContractRow = ({
             arrowSize={8}
           >
             <Flex cursor="pointer">
-              <CustomIcon name="infoCircle" boxSize="12px" />
+              <CustomIcon name="info-circle" boxSize="12px" />
             </Flex>
           </Tooltip>
         )}
@@ -127,7 +126,7 @@ export const PublicProjectContractRow = ({
                 triggerElement={
                   <StyledIconButton
                     icon={
-                      <CustomIcon name="bookmarkSolid" color="violet.light" />
+                      <CustomIcon name="bookmark-solid" color="violet.light" />
                     }
                     variant="ghost-gray"
                   />

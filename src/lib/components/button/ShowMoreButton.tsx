@@ -18,9 +18,9 @@ export const ShowMoreButton = ({
     p="0"
     rightIcon={
       toggleShowMore ? (
-        <CustomIcon name="chevronUp" />
+        <CustomIcon name="chevron-up" />
       ) : (
-        <CustomIcon name="chevronDown" />
+        <CustomIcon name="chevron-down" />
       )
     }
     color="lilac.main"

@@ -29,7 +29,7 @@ const buttonIconProps: CSSProperties = {
   borderRadius: "full",
 };
 
-const toastIcon = <CustomIcon name="checkCircle" color="success.main" />;
+const toastIcon = <CustomIcon name="check-circle-solid" color="success.main" />;
 
 interface StyledButtonProps {
   hasText: boolean;
@@ -97,7 +97,7 @@ export const BookmarkButton = observer(
           <StyledButton
             variant="outline-primary"
             hasText={hasText}
-            icon="bookmarkSolid"
+            icon="bookmark-solid"
             iconColor="violet.light"
             actionText="Bookmarked"
             action={(e) => {

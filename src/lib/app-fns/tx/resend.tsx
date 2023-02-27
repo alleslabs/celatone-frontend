@@ -63,7 +63,11 @@ export const resendTx = ({
             </Text>
           ),
           headerIcon: (
-            <CustomIcon name="checkCircle" color="success.main" boxSize="5" />
+            <CustomIcon
+              name="check-circle-solid"
+              color="success.main"
+              boxSize="5"
+            />
           ),
         },
         actionVariant: "resend",

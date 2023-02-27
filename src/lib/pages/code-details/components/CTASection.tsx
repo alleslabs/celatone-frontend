@@ -8,45 +8,35 @@ import { SaveOrEditCodeModal } from "lib/components/modal/code/SaveOrEditCode";
 import { useCodeStore } from "lib/hooks";
 import type { CodeInfo } from "lib/types";
 
-export const CTASection = observer(
-  ({ id, ...codeInfo }: Omit<CodeInfo, "contractCount">) => {
-    const { isCodeIdSaved } = useCodeStore();
-    const isSaved = isCodeIdSaved(id);
+export const CTASection = observer((codeInfo: CodeInfo) => {
+  const { isCodeIdSaved } = useCodeStore();
+  const isSaved = isCodeIdSaved(codeInfo.id);
 
-    return (
-      <Flex gap={4}>
-        {isSaved && (
-          <SaveOrEditCodeModal
-            mode="edit"
-            codeLocalInfo={{ id, ...codeInfo }}
-          />
-        )}
-        <InstantiateButton
-          instantiatePermission={codeInfo.instantiatePermission}
-          permissionAddresses={codeInfo.permissionAddresses}
-          codeId={id}
-          size="md"
+  return (
+    <Flex gap={4}>
+      {isSaved && <SaveOrEditCodeModal mode="edit" codeInfo={codeInfo} />}
+      <InstantiateButton
+        instantiatePermission={codeInfo.instantiatePermission}
+        permissionAddresses={codeInfo.permissionAddresses}
+        codeId={codeInfo.id}
+        size="md"
+      />
+      {isSaved ? (
+        <RemoveCodeModal
+          codeId={codeInfo.id}
+          name={codeInfo.name}
+          trigger={
+            <Button
+              variant="outline-gray"
+              leftIcon={<CustomIcon name="check" />}
+            >
+              Saved
+            </Button>
+          }
         />
-        {isSaved ? (
-          <RemoveCodeModal
-            codeId={id}
-            name={codeInfo.name}
-            trigger={
-              <Button
-                variant="outline-gray"
-                leftIcon={<CustomIcon name="check" />}
-              >
-                Saved
-              </Button>
-            }
-          />
-        ) : (
-          <SaveOrEditCodeModal
-            mode="save"
-            codeLocalInfo={{ id, ...codeInfo }}
-          />
-        )}
-      </Flex>
-    );
-  }
-);
+      ) : (
+        <SaveOrEditCodeModal mode="save" codeInfo={codeInfo} />
+      )}
+    </Flex>
+  );
+});

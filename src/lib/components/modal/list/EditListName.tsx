@@ -61,13 +61,13 @@ export function EditListNameModal({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="checkCircle" color="success.main" />,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
   return (
     <ActionModal
       title="Edit list name"
-      icon="addNew"
+      icon="add-new"
       trigger={<MenuItem {...menuItemProps} />}
       mainBtnTitle="Save"
       mainAction={() => {
