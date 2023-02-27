@@ -60,6 +60,7 @@ export const SelectContractAdmin = ({
         variant={notSelected ? "primary" : "outline-primary"}
         py="6px"
         px="16px"
+        size="sm"
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
