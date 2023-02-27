@@ -255,7 +255,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
 
         if (msgObject.funds.length) {
           resetAssets({
-            assetsSelect: [{ denom: "", amount: "" }],
+            assetsSelect: defaultAsset,
             assetsJsonStr: jsonPrettify(JSON.stringify(msgObject.funds)),
             attachFundsOption: AttachFundsType.ATTACH_FUNDS_JSON,
           });
