@@ -33,55 +33,81 @@ export const TxMsgExpand = ({
   const getAddressType = useGetAddressType();
   let msgIcon: IconType = MdInfo;
   let content: ReactNode;
+  const isIBC = Boolean(
+    log?.events?.find((event) => event.type === "send_packet")
+  );
+
   switch (type) {
     case "wasm/MsgStoreCode":
-      {
-        const codeId = log
-          ? findAttribute([log], "store_code", "code_id").value
-          : "N/A";
-        msgIcon = MdUpload;
-        content = (
-          <>
-            Upload Wasm to Code ID
-            <ExplorerLink
-              type="code_id"
-              value={codeId}
-              canCopyWithHover
-              fontSize="24px"
-              textVariant="body1"
-            />
-          </>
-        );
-      }
+      msgIcon = MdUpload;
+      content = (
+        <>
+          Upload Wasm
+          {log && (
+            <>
+              {" "}
+              and stored as
+              <ExplorerLink
+                type="code_id"
+                value={findAttribute([log], "store_code", "code_id").value}
+                canCopyWithHover
+                fontSize="24px"
+                textVariant="body1"
+              />
+            </>
+          )}
+        </>
+      );
       break;
     case "wasm/MsgInstantiateContract":
-      {
-        const [codeId, contractAddr] = log
-          ? [
-              findAttribute([log], "instantiate", "code_id").value,
-              findAttribute([log], "instantiate", "_contract_address").value,
-            ]
-          : ["N/A", "N/A"];
-        msgIcon = MdAdd;
-        content = (
-          <>
-            Instantiate
+      msgIcon = MdAdd;
+      content = (
+        <>
+          Instantiate
+          {log && (
             <ExplorerLink
               type="contract_address"
-              value={contractAddr}
+              value={
+                findAttribute([log], "instantiate", "_contract_address").value
+              }
               canCopyWithHover
               textVariant="body1"
             />
-            from
+          )}
+          <p>from</p>
+          <ExplorerLink
+            type="code_id"
+            value={value.codeId}
+            canCopyWithHover
+            textVariant="body1"
+          />
+        </>
+      );
+      break;
+    case "wasm/MsgInstantiateContract2":
+      msgIcon = MdAdd;
+      content = (
+        <>
+          Instantiate2
+          {log && (
             <ExplorerLink
-              type="code_id"
-              value={codeId}
+              type="contract_address"
+              value={
+                findAttribute([log], "instantiate", "_contract_address").value
+              }
               canCopyWithHover
               textVariant="body1"
             />
-          </>
-        );
-      }
+          )}
+          <p>from</p>
+          <ExplorerLink
+            type="code_id"
+            value={value.codeId}
+            canCopyWithHover
+            textVariant="body1"
+          />
+        </>
+      );
       break;
     case "wasm/MsgExecuteContract":
       msgIcon = MdMessage;
@@ -103,7 +129,7 @@ export const TxMsgExpand = ({
       break;
     case "cosmos-sdk/MsgSend":
       {
-        const toAddress = value.to_address as Addr;
+        const toAddress = value.toAddress as Addr;
         msgIcon = MdSend;
         content = (
           <>
@@ -119,59 +145,68 @@ export const TxMsgExpand = ({
       }
       break;
     case "cosmos-sdk/MsgSubmitProposal":
-      {
-        const proposalId = log
-          ? findAttribute([log], "submit_proposal", "proposal_id").value
-          : "N/A";
-        msgIcon = MdMail;
-        content = (
-          <>
-            Submit Proposal ID
-            <ExplorerLink
-              type="proposal_id"
-              value={proposalId}
-              canCopyWithHover
-              textVariant="body1"
-            />
-          </>
-        );
-      }
-      break;
-    default: {
-      const typeSplit = type.split("/");
-      const isIBC = Boolean(
-        log?.events?.find((event) => event.type === "send_packet")
-      );
+      msgIcon = MdMail;
       content = (
         <>
-          {typeSplit[typeSplit.length - 1]}
-          {isIBC && (
-            <Badge variant="honeydew" ml={2}>
-              IBC
-            </Badge>
+          Submit Proposal
+          {log && (
+            <>
+              <p>ID</p>
+              <ExplorerLink
+                type="proposal_id"
+                value={
+                  findAttribute([log], "submit_proposal", "proposal_id").value
+                }
+                canCopyWithHover
+                textVariant="body1"
+              />
+            </>
           )}
         </>
       );
+      break;
+    default: {
+      const msgType = type.split("/");
+      content =
+        msgType.at(0) === "osmosis"
+          ? msgType
+              .pop()
+              ?.split("-")
+              .reduce(
+                (acc, curr) => acc + curr[0].toUpperCase() + curr.slice(1),
+                ""
+              )
+          : msgType[msgType.length - 1];
       break;
     }
   }
 
   return (
     <Flex
-      p="12px 16px"
+      position="relative"
+      p="16px 8px"
       align="center"
       justify="space-between"
-      borderRadius="8px 8px 0 0"
+      borderRadius="8px"
       transition="all .25s ease-in-out"
       cursor="pointer"
       onClick={onClick}
-      borderBottom="1px solid"
-      borderBottomColor="pebble.700"
       _hover={{ backgroundColor: "pebble.800" }}
+      _after={{
+        content: '""',
+        position: "absolute",
+        bottom: 0,
+        left: "50%",
+        transform: "translateX(-50%)",
+        h: "1px",
+        w: "99%",
+        bg: "pebble.700",
+      }}
     >
       <Flex align="center" gap={2} fontSize="16px" fontWeight={500}>
         <Icon as={msgIcon} boxSize={6} color="lilac.main" />
         {content}
+        {isIBC && <Badge variant="honeydew">IBC</Badge>}
       </Flex>
       <Icon
         as={FiChevronDown}

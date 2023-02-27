@@ -148,7 +148,9 @@ export const InstantiateInfo = ({
 
       <LabelText
         label="Admin Address"
-        helperText1={instantiateInfo.admin ? adminType : undefined}
+        helperText1={
+          instantiateInfo.admin ? getAddressTypeText(adminType) : undefined
+        }
       >
         {instantiateInfo.admin ? (
           <ExplorerLink

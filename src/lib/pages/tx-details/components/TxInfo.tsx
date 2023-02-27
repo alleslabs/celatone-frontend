@@ -28,7 +28,13 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
           canCopyWithHover
         />
       </LabelText>
-      <LabelText label="Transaction Fee">{txData.formattedFee}</LabelText>
+      <LabelText label="Transaction Fee">
+        {txData.formattedFee || (
+          <Text variant="body2" color="text.dark">
+            No Fee
+          </Text>
+        )}
+      </LabelText>
       <LabelText label="Gas Used/Requested">
         {`${txData.gasUsed}/${txData.gasWanted}`}
       </LabelText>

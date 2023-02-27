@@ -70,3 +70,20 @@ export const getProposalUrl = (chainName: string) => {
   }
   return `${explorerMap[chainName]}/${pathSuffix}`;
 };
+
+export const getExplorerValidatorUrl = (chainName: string) => {
+  let pathSuffix = "";
+  switch (chainName) {
+    case "osmosis":
+    case "osmosistestnet":
+      pathSuffix = "validators";
+      break;
+    case "terra2":
+    case "terra2testnet":
+      pathSuffix = "validator";
+      break;
+    default:
+      break;
+  }
+  return `${explorerMap[chainName]}/${pathSuffix}`;
+};

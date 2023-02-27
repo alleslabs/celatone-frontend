@@ -19,7 +19,7 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
   const isTxFailed = Boolean(txData.code);
   const msgs = txData.tx.value.msg;
   return (
-    <Flex direction="column" flex={0.8} gap={4}>
+    <Flex direction="column" flex={0.98} gap={4}>
       {isTxFailed && (
         <Alert variant="error" mb={2} alignItems="center">
           <AlertIcon />
@@ -36,7 +36,16 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
       </Flex>
       {msgs.map((msg, idx) => {
         const msgLog = txData.logs?.at(idx);
-        return <TxMessage type={msg.type} value={msg.value} log={msgLog} />;
+        return (
+          <TxMessage
+            key={msg.type + msg.value + (msgLog?.msg_index?.toString() || "0")}
+            type={msg.type}
+            value={msg.value}
+            log={msgLog}
+            events={txData.events}
+            isSingleMsg={msgs.length === 1}
+          />
+        );
       })}
     </Flex>
   );

@@ -7,6 +7,7 @@ import {
   getExplorerTxUrl,
   getExplorerUserAddressUrl,
   getProposalUrl,
+  getExplorerValidatorUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/hooks";
 import { AmpTrackMintscan } from "lib/services/amplitude";
@@ -48,6 +49,9 @@ const getNavigationUrl = (
       break;
     case "user_address":
       url = getExplorerUserAddressUrl(currentChainName);
+      break;
+    case "validator_address":
+      url = getExplorerValidatorUrl(currentChainName);
       break;
     case "code_id":
       url = "/code";

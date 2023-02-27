@@ -14,7 +14,7 @@ import { queryTxData } from "./tx";
 
 export interface TxData extends TxResponse {
   chainId: string;
-  formattedFee: string;
+  formattedFee: Option<string>;
 }
 
 export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
@@ -29,7 +29,9 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
       return {
         ...txData,
         chainId,
-        formattedFee: formatStdFee(txData.tx.value.fee),
+        formattedFee: txData.tx.value.fee.amount.length
+          ? formatStdFee(txData.tx.value.fee)
+          : undefined,
       };
     },
     [chainId]

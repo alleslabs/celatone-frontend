@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { BackButton } from "lib/components/button";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { useTxData } from "lib/services/txService";
 import { getFirstQueryParam } from "lib/utils";
@@ -13,9 +14,10 @@ const TxDetails = () => {
   const router = useRouter();
   const hashParam = getFirstQueryParam(router.query.txHash);
 
-  const { data: txData } = useTxData(hashParam);
+  const { data: txData, isFetching } = useTxData(hashParam);
   // console.log(txData);
   // Render Loading
+  if (isFetching) return <Loading />;
   if (!txData) return null;
 
   return (

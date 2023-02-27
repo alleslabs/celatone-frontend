@@ -6,6 +6,7 @@ import type { TxReceipt } from "lib/types";
 interface TxReceiptRenderProps extends FlexProps {
   receipts: TxReceipt[];
   variant?: "full" | "packed" | "tx-page";
+  keyPrefix?: string;
 }
 
 const variantStyle: Record<
@@ -13,7 +14,7 @@ const variantStyle: Record<
   SystemStyleObject
 > = {
   full: {
-    w: "100%",
+    w: "full",
     "> div": {
       justifyContent: "space-between",
       alignItems: "center",
@@ -35,7 +36,8 @@ const variantStyle: Record<
       alignItems: "flex-start",
     },
     "> div > p:first-of-type": {
-      w: "200px",
+      minW: "180px",
+      w: "180px",
       color: "text.dark",
       fontWeight: 500,
     },
@@ -44,9 +46,13 @@ const variantStyle: Record<
 
 const ReceiptRow = ({ title, value, html }: TxReceipt) => {
   return (
-    <Flex fontSize="14px">
+    <Flex fontSize="14px" w="full">
       <Text variant="body2">{title}</Text>
-      {html || <Text variant="body2">{value}</Text>}
+      {html || (
+        <Text variant="body2" wordBreak="break-word">
+          {value}
+        </Text>
+      )}
     </Flex>
   );
 };
@@ -54,11 +60,16 @@ const ReceiptRow = ({ title, value, html }: TxReceipt) => {
 export const TxReceiptRender = ({
   receipts,
   variant = "packed",
+  gap = 2,
+  keyPrefix = "",
 }: TxReceiptRenderProps) => {
   return (
-    <Flex direction="column" gap={2} sx={variantStyle[variant]}>
-      {receipts.map((receipt) => (
-        <ReceiptRow key={receipt.title} {...receipt} />
+    <Flex direction="column" gap={gap} sx={variantStyle[variant]}>
+      {receipts.map((receipt, idx) => (
+        <ReceiptRow
+          key={keyPrefix + idx.toString() + receipt.title + receipt.value}
+          {...receipt}
+        />
       ))}
     </Flex>
   );

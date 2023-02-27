@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import type { Event } from "@cosmjs/stargate";
 import type { Log } from "@cosmjs/stargate/build/logs";
 import { useState } from "react";
 
@@ -10,10 +11,12 @@ import { TxMsgExpand } from "./TxMsgExpand";
 
 export interface TxMsgData extends TxValueMsg {
   log: Option<Log>;
+  events: Event[];
+  isSingleMsg?: boolean;
 }
 
-export const TxMessage = ({ ...txMsgData }: TxMsgData) => {
-  const [expand, setExpand] = useState(false);
+export const TxMessage = ({ isSingleMsg, ...txMsgData }: TxMsgData) => {
+  const [expand, setExpand] = useState(!!isSingleMsg);
   return (
     <Flex direction="column">
       <TxMsgExpand
