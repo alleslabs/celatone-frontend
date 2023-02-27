@@ -4,14 +4,14 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { useGetAddressType } from "lib/hooks";
-import type { ContractRelatedProposals } from "lib/types";
+import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { StatusChip } from "./StatusChip";
 
-interface RelatedProposalsRowProps {
-  proposal: ContractRelatedProposals;
+interface ProposalsTableRowProps {
+  proposal: Proposal;
   templateColumns: GridProps["templateColumns"];
 }
 
@@ -20,9 +20,9 @@ const VotingEndTimeRender = ({
   depositEndTime,
   status,
 }: {
-  votingEndTime: ContractRelatedProposals["votingEndTime"];
-  depositEndTime: ContractRelatedProposals["depositEndTime"];
-  status: ContractRelatedProposals["status"];
+  votingEndTime: Proposal["votingEndTime"];
+  depositEndTime: Proposal["depositEndTime"];
+  status: Proposal["status"];
 }) => {
   if (status === ProposalStatus.INACTIVE) {
     return <Text color="text.dark">N/A</Text>;
@@ -59,7 +59,7 @@ const ResolvedHeightRender = ({
   resolvedHeight,
   isInactive,
 }: {
-  resolvedHeight: RelatedProposalsRowProps["proposal"]["resolvedHeight"];
+  resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
   isInactive: boolean;
 }) => {
   if (isInactive) return <Text color="text.dark">N/A</Text>;
@@ -80,10 +80,10 @@ const ResolvedHeightRender = ({
   }
 };
 
-export const RelatedProposalsRow = ({
+export const ProposalsTableRow = ({
   proposal,
   templateColumns,
-}: RelatedProposalsRowProps) => {
+}: ProposalsTableRowProps) => {
   const getAddressType = useGetAddressType();
   const isInactive = proposal.status === ProposalStatus.INACTIVE;
   return (

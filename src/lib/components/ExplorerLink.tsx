@@ -5,7 +5,6 @@ import { useWallet } from "@cosmos-kit/react";
 import {
   getExplorerBlockUrl,
   getExplorerTxUrl,
-  getExplorerUserAddressUrl,
   getProposalUrl,
   getExplorerValidatorUrl,
 } from "lib/app-fns/explorer";
@@ -14,7 +13,7 @@ import { AmpTrackMintscan } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
 
 import { AppLink } from "./AppLink";
-import { Copier } from "./Copier";
+import { Copier } from "./copy";
 
 export type LinkType =
   | AddressReturnType
@@ -48,7 +47,7 @@ const getNavigationUrl = (
       url = "/contract";
       break;
     case "user_address":
-      url = getExplorerUserAddressUrl(currentChainName);
+      url = "/account";
       break;
     case "validator_address":
       url = getExplorerValidatorUrl(currentChainName);
@@ -144,7 +143,10 @@ export const ExplorerLink = ({
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address, currentChainName } = useWallet();
-  const isInternal = type === "code_id" || type === "contract_address";
+  const isInternal =
+    type === "code_id" ||
+    type === "contract_address" ||
+    type === "user_address";
 
   const [hrefLink, textValue] = [
     getNavigationUrl(type, currentChainName, copyValue || value),

@@ -1,6 +1,7 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
+import { CodeNameCell } from "lib/components/CodeNameCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { useGetAddressType } from "lib/hooks";
@@ -68,7 +69,13 @@ export const MigrationRow = ({
         />
       </TableRow>
       <TableRow>
-        {history.codeName || <Text color="text.dark">Untitled Name</Text>}
+        <CodeNameCell
+          code={{
+            id: history.codeId,
+            uploader: history.uploader,
+            name: history.codeName,
+          }}
+        />
       </TableRow>
       <TableRow>
         <ExplorerLink

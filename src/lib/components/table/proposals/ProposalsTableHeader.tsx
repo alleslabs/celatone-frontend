@@ -3,7 +3,7 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "lib/components/table";
 
-export const RelatedProposalsHeader = ({
+export const ProposalsTableHeader = ({
   templateColumns,
 }: {
   templateColumns: GridProps["templateColumns"];
@@ -14,7 +14,7 @@ export const RelatedProposalsHeader = ({
       <TableHeader>Proposal Title</TableHeader>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Vote Finish on</TableHeader>
-      <TableHeader>Resolve Block Height</TableHeader>
+      <TableHeader>Resolved Block Height</TableHeader>
       <TableHeader>Type</TableHeader>
       <TableHeader>Proposer</TableHeader>
     </Grid>

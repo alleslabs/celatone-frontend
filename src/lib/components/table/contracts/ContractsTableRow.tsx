@@ -24,14 +24,14 @@ const StyledIconButton = chakra(IconButton, {
   },
 });
 
-interface ContractTableRowProps {
+interface ContractsTableRowProps {
   contractInfo: ContractInfo;
-  templateColumnsStyle: string;
+  templateColumns: string;
 }
 
 const InstantiatorRender = ({
   contractInfo: { remark, latestUpdater },
-}: Pick<ContractTableRowProps, "contractInfo">) => {
+}: Pick<ContractsTableRowProps, "contractInfo">) => {
   const getAddressType = useGetAddressType();
 
   /**
@@ -83,15 +83,15 @@ const InstantiatorRender = ({
   }
 };
 
-export const ContractTableRow = ({
+export const ContractsTableRow = ({
   contractInfo,
-  templateColumnsStyle,
-}: ContractTableRowProps) => {
+  templateColumns,
+}: ContractsTableRowProps) => {
   const navigate = useInternalNavigate();
 
   return (
     <Grid
-      templateColumns={templateColumnsStyle}
+      templateColumns={templateColumns}
       onClick={() =>
         navigate({
           pathname: `/contract/${contractInfo.contractAddress}`,

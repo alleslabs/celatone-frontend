@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useSimulateFeeQuery } from "../queries";
 import { useDummyWallet } from "lib/hooks";
@@ -9,6 +9,10 @@ import { composeMsg } from "lib/utils";
 export const useExecuteCmds = (contractAddress: ContractAddr) => {
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);
   const { dummyAddress } = useDummyWallet();
+
+  useEffect(() => {
+    if (!contractAddress) setExecCmds([]);
+  }, [contractAddress]);
 
   const { isFetching } = useSimulateFeeQuery({
     isDummyUser: true,

@@ -1,6 +1,6 @@
 import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
-import { Copier } from "lib/components/Copier";
+import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useGetAddressType } from "lib/hooks";

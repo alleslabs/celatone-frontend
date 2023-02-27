@@ -17,7 +17,7 @@ export const useRedo = () => {
       e.stopPropagation();
       if (!type || !msg) return null;
       if (type === "MsgExecuteContract") {
-        const encodeMsg = libEncode(JSON.stringify(camelToSnake(msg.msg)));
+        const encodeMsg = libEncode(JSON.stringify(camelToSnake(msg)));
         navigate({
           pathname: "/execute",
           query: { chainName, contract: msg.contract, msg: encodeMsg },

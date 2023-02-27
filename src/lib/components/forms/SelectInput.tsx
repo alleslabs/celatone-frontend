@@ -33,6 +33,7 @@ interface SelectInputProps<T extends string> {
   placeholder?: string;
   initialSelected: string;
   hasDivider?: boolean;
+  helperTextComponent?: ReactNode;
 }
 
 interface SelectItemProps {
@@ -67,10 +68,11 @@ export const SelectInput = <T extends string>({
   placeholder = "",
   initialSelected,
   hasDivider = false,
+  helperTextComponent,
 }: SelectInputProps<T>) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const [selected, setSelected] = useState(
     () => options.find((item) => item.value === initialSelected)?.label ?? ""
   );
@@ -86,6 +88,16 @@ export const SelectInput = <T extends string>({
       setInputRefWidth(inputRef.current.clientWidth);
     }
   }, [inputRef]);
+
+  useEffect(() => {
+    if (options.every((option) => !option.disabled)) {
+      setSelected(
+        () =>
+          options.find((item) => item.value === initialSelected)?.label ?? ""
+      );
+    }
+  }, [initialSelected, options]);
+
   return (
     <Popover placement="bottom-start" isOpen={isOpen}>
       <PopoverTrigger>
@@ -122,13 +134,13 @@ export const SelectInput = <T extends string>({
             </InputLeftElement>
           )}
           <Input
+            ref={inputRef}
             size="lg"
             textAlign="start"
             type="button"
             value={selected || placeholder}
             fontSize="14px"
             color={selected ? "text.main" : "text.dark"}
-            ref={inputRef}
             pl={selectedOption?.icon ? 9 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
@@ -168,6 +180,17 @@ export const SelectInput = <T extends string>({
             {label}
           </SelectItem>
         ))}
+        {helperTextComponent && (
+          <Flex
+            px={4}
+            h={`${ITEM_HEIGHT}px`}
+            align="center"
+            borderTop={!hasDivider ? "1px solid" : "none"}
+            borderTopColor="pebble.700"
+          >
+            {helperTextComponent}
+          </Flex>
+        )}
       </PopoverContent>
     </Popover>
   );

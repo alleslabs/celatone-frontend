@@ -1,16 +1,14 @@
-import { Button, Heading, Text } from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
-import type { Coin } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import {
   useFabricateFee,
-  useNativeTokensInfo,
   useSimulateFee,
   useInstantiateTx,
   useCelatoneApp,
@@ -19,7 +17,10 @@ import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
-import { AssetInput } from "lib/components/forms/AssetInput";
+import { AttachFund } from "lib/components/fund";
+import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
+import type { AttachFundsState } from "lib/components/fund/types";
+import { AttachFundsType } from "lib/components/fund/types";
 import JsonInput from "lib/components/json/JsonInput";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
@@ -32,12 +33,12 @@ import {
   AmpTrackToInstantiate,
 } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
-import type { HumanAddr, Token, U } from "lib/types";
-import { MsgType } from "lib/types";
+import type { HumanAddr } from "lib/types";
+import { InstantiatePermission, MsgType } from "lib/types";
 import {
   composeMsg,
-  demicrofy,
-  fabricateFunds,
+  getAttachFunds,
+  jsonPrettify,
   jsonValidate,
   libDecode,
 } from "lib/utils";
@@ -45,6 +46,13 @@ import {
 import { FailedModal, Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
+interface InstantiatePageState {
+  codeId: string;
+  label: string;
+  adminAddress: string;
+  initMsg: string;
+  simulateError: string;
+}
 interface InstantiatePageProps {
   onComplete: (txResult: InstantiateResult, contractLabel: string) => void;
 }
@@ -65,7 +73,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { simulate } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
-  const nativeTokensInfo = useNativeTokensInfo();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
   // ------------------------------------------//
@@ -84,30 +91,39 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     watch,
     handleSubmit,
     reset,
-  } = useForm({
+  } = useForm<InstantiatePageState>({
     mode: "all",
     defaultValues: {
       codeId: "",
       label: "",
       adminAddress: "",
       initMsg: "",
-      assets: [{ denom: "", amount: "" }] as Coin[],
       simulateError: "",
     },
   });
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "assets",
-  });
+
   const {
     codeId,
     adminAddress: watchAdminAddress,
-    assets: watchAssets,
     initMsg: watchInitMsg,
     simulateError,
   } = watch();
 
-  const selectedAssets = watchAssets.map((asset) => asset.denom);
+  const {
+    control: assetsControl,
+    setValue: setAssets,
+    watch: watchAssets,
+    reset: resetAssets,
+  } = useForm<AttachFundsState>({
+    mode: "all",
+    defaultValues: {
+      assetsSelect: defaultAsset,
+      assetsJsonStr: defaultAssetJsonStr,
+      attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
+    },
+  });
+
+  const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
   const disableInstantiate = useMemo(() => {
     return (
@@ -121,15 +137,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codeId, address, watchInitMsg, Object.keys(formErrors), status.state]);
 
-  const assetOptions = useMemo(
-    () =>
-      nativeTokensInfo.map((asset) => ({
-        label: asset.symbol,
-        value: asset.base,
-        disabled: selectedAssets.includes(asset.base),
-      })),
-    [nativeTokensInfo, selectedAssets]
-  );
+  const funds = getAttachFunds({
+    attachFundsOption,
+    assetsJsonStr,
+    assetsSelect,
+  });
 
   const { refetch } = useQuery(
     ["query", endpoint, codeId],
@@ -142,15 +154,16 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         const permission = data.code_info.instantiate_permission;
         if (
           address &&
-          (permission.permission === "Everybody" ||
-            permission.addresses.includes(address) ||
+          (permission.permission === InstantiatePermission.EVERYBODY ||
+            permission.addresses.includes(address as HumanAddr) ||
             permission.address === address)
         )
           setStatus({ state: "success" });
         else {
           setStatus({
             state: "error",
-            message: "You can instantiate to this code through proposal only",
+            message:
+              "This wallet does not have permission to instantiate to this code",
           });
         }
       },
@@ -164,13 +177,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ----------------FUNCTIONS-----------------//
   // ------------------------------------------//
   const proceed = useCallback(() => {
-    handleSubmit(async ({ adminAddress, label, initMsg, assets }) => {
-      AmpTrackAction(
-        AmpEvent.ACTION_INSTANTIATE,
-        assets.filter((asset) => Number(asset.amount) && asset.denom).length
-      );
+    handleSubmit(async ({ adminAddress, label, initMsg }) => {
+      AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
+
       setSimulating(true);
-      const funds = fabricateFunds(assets);
+
       const msg = composeMsg(MsgType.INSTANTIATE, {
         sender: address as HumanAddr,
         admin: adminAddress as HumanAddr,
@@ -199,14 +210,16 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       }
     })();
   }, [
+    funds,
+    handleSubmit,
+    attachFundsOption,
     address,
     codeId,
-    handleSubmit,
-    fabricateFee,
-    postInstantiateTx,
     simulate,
-    broadcast,
+    postInstantiateTx,
+    fabricateFee,
     onComplete,
+    broadcast,
     setValue,
   ]);
 
@@ -238,19 +251,28 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           label: msgObject.label,
           adminAddress: msgObject.admin,
           initMsg: JSON.stringify(msgObject.msg, null, 2),
-          assets:
-            msgObject.funds.length === 0
-              ? [{ denom: "", amount: "" }]
-              : msgObject.funds.map((fund) => ({
-                  ...fund,
-                  amount: demicrofy(fund.amount as U<Token>).toFixed(),
-                })),
         });
+
+        if (msgObject.funds.length) {
+          resetAssets({
+            assetsSelect: defaultAsset,
+            assetsJsonStr: jsonPrettify(JSON.stringify(msgObject.funds)),
+            attachFundsOption: AttachFundsType.ATTACH_FUNDS_JSON,
+          });
+        }
       } catch {
         // comment just to avoid eslint no-empty
       }
     }
-  }, [codeIdQuery, msgQuery, reset, setValue]);
+  }, [
+    assetsJsonStr,
+    codeIdQuery,
+    msgQuery,
+    reset,
+    resetAssets,
+    setAssets,
+    setValue,
+  ]);
 
   useEffect(() => {
     if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
@@ -332,47 +354,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           <Heading variant="h6" as="h6" my="32px" alignSelf="flex-start">
             Send asset to contract
           </Heading>
-          {fields.map((field, idx) => (
-            <AssetInput
-              key={field.id}
-              disableDelete={fields.length <= 1}
-              onDelete={() => remove(idx)}
-              setCurrencyValue={(newVal: string) =>
-                setValue(`assets.${idx}.denom`, newVal)
-              }
-              assetOptions={assetOptions}
-              initialSelected={field.denom}
-              amountInput={
-                /**
-                 * @remarks refactor along with execute page
-                 */
-                <ControllerInput
-                  name={`assets.${idx}.amount`}
-                  control={control}
-                  label="Amount"
-                  variant="floating"
-                  type="number"
-                  rules={{
-                    pattern: {
-                      // Move to constant
-                      value: /^[0-9]+([.][0-9]{0,6})?$/i,
-                      message: 'Invalid amount. e.g. "100.00"',
-                    },
-                  }}
-                  error={formErrors.assets?.[idx]?.amount?.message}
-                />
-              }
-            />
-          ))}
-          <Button
-            variant="outline-primary"
-            mt="32px"
-            mx="auto"
-            onClick={() => append({ denom: "", amount: "" })}
-            disabled={assetOptions.length === selectedAssets.length}
-          >
-            Add More Asset
-          </Button>
+          <AttachFund
+            control={assetsControl}
+            setValue={setAssets}
+            attachFundsOption={attachFundsOption}
+          />
         </form>
       </WasmPageContainer>
       <Footer

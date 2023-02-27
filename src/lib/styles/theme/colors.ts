@@ -37,6 +37,9 @@ const extendedColors: BasicColor = {
     light: "#67CBB7",
     dark: "#207966",
   },
+  info: {
+    main: "#29B6F6",
+  },
   background: {
     main: "#111117",
     overlay: "rgba(17, 17, 23, 0.7)",
