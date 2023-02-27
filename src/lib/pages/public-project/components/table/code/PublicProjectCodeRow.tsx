@@ -4,7 +4,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
+import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { TableRowNoBorder } from "lib/components/table";
 import { getAddressTypeByLength } from "lib/hooks";

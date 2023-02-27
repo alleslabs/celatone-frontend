@@ -10,10 +10,10 @@ import { IoIosWarning } from "react-icons/io";
 
 import { useFabricateFee, useSimulateFeeQuery } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
-import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
+import { CodeSelectSection } from "lib/components/modal/select-code";
 import { useLCDEndpoint } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

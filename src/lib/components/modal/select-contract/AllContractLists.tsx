@@ -2,7 +2,7 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { TextInput } from "lib/components/forms";
-import { EmptyState } from "lib/components/state/EmptyState";
+import { EmptyState } from "lib/components/state";
 import type { ContractListInfo } from "lib/stores/contract";
 
 import { ContractListCard } from "./ContractListCard";

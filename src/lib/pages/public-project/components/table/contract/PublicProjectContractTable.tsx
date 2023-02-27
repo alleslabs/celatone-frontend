@@ -1,13 +1,11 @@
-import { TableContainer, Flex, Grid, Box } from "@chakra-ui/react";
+import { TableContainer, Grid, Box } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
 import { TextInput } from "lib/components/forms";
-import { EmptyState } from "lib/components/state/EmptyState";
-import { TableHeader } from "lib/components/table";
-import { TableTitle } from "lib/components/table/TableTitle";
-import { ViewMore } from "lib/components/table/ViewMore";
+import { EmptyState } from "lib/components/state";
+import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
 import { useContractStore } from "lib/hooks";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { PublicContract, Option, ContractAddr } from "lib/types";
@@ -75,23 +73,15 @@ export const PublicProjectContractTable = observer(
           />
         )}
         {!publicContracts.length ? (
-          <Flex
-            my={6}
-            py={6}
-            width="full"
-            borderBottom="1px solid"
-            borderTop="1px solid"
-            borderColor="pebble.700"
-          >
-            <EmptyState
-              message="There is currently no contracts related to this project."
-              image={
-                onViewMore
-                  ? undefined
-                  : "https://assets.alleslabs.dev/illustration/search-not-found.svg"
-              }
-            />
-          </Flex>
+          <EmptyState
+            message="There is currently no contracts related to this project."
+            image={
+              onViewMore
+                ? undefined
+                : "https://assets.alleslabs.dev/illustration/search-not-found.svg"
+            }
+            withBorder
+          />
         ) : (
           <TableContainer mb={10}>
             <ContractTableHeader />

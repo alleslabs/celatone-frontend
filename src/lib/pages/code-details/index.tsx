@@ -3,11 +3,11 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { BackButton } from "lib/components/button/BackButton";
+import { BackButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state/InvalidState";
+import { InvalidState } from "lib/components/state";
 import { useCodeStore } from "lib/hooks";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
@@ -17,7 +17,7 @@ import { getFirstQueryParam, isCodeId } from "lib/utils";
 
 import { CodeInfoSection } from "./components/CodeInfoSection";
 import { CTASection } from "./components/CTASection";
-import { ContractTable } from "./components/table/contracts/ContractTable";
+import { CodeContractsTable } from "./components/table/CodeContractsTable";
 
 interface CodeDetailsBodyProps {
   codeDataState: CodeDataState;
@@ -74,7 +74,7 @@ const CodeDetailsBody = observer(
         </Flex>
         <Divider borderColor="pebble.700" my={12} />
         <CodeInfoSection codeData={codeData} chainId={chainId} />
-        <ContractTable codeId={codeId} />
+        <CodeContractsTable codeId={codeId} />
       </>
     );
   }

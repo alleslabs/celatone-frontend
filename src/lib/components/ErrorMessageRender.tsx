@@ -9,13 +9,11 @@ interface ErrorMessageRenderProps extends FlexProps {
 export const ErrorMessageRender = ({
   error,
   ...restProps
-}: ErrorMessageRenderProps) => {
-  return (
-    <Flex gap={2} {...restProps}>
-      <Icon as={IoIosWarning} boxSize={4} color="error.main" />
-      <Text variant="body3" color="error.main">
-        {error}
-      </Text>
-    </Flex>
-  );
-};
+}: ErrorMessageRenderProps) => (
+  <Flex gap={2} {...restProps}>
+    <Icon as={IoIosWarning} boxSize={4} color="error.main" />
+    <Text variant="body3" color="error.main">
+      {error}
+    </Text>
+  </Flex>
+);

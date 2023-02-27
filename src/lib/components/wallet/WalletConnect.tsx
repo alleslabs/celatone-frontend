@@ -13,20 +13,18 @@ export const ConnectWalletButton = ({
   onClickConnectBtn,
   icon,
   variant,
-}: ConnectWalletType) => {
-  return (
-    <Button
-      w="170px"
-      isLoading={isLoading}
-      isDisabled={isDisabled}
-      onClick={onClickConnectBtn}
-      variant={variant}
-    >
-      <Icon as={icon || MdLink} boxSize="4" mr={2} />
-      {buttonText || "Connect"}
-    </Button>
-  );
-};
+}: ConnectWalletType) => (
+  <Button
+    w="170px"
+    isLoading={isLoading}
+    isDisabled={isDisabled}
+    onClick={onClickConnectBtn}
+    variant={variant}
+  >
+    <Icon as={icon || MdLink} boxSize="4" mr={2} />
+    {buttonText || "Connect"}
+  </Button>
+);
 
 export const Connected = ({
   buttonText,

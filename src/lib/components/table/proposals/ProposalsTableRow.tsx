@@ -1,8 +1,8 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
+import { TableRow } from "../tableComponents";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TableRow } from "lib/components/table";
 import { useGetAddressType } from "lib/hooks";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";

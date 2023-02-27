@@ -1,13 +1,14 @@
 import { Flex, Text, Grid, HStack } from "@chakra-ui/react";
 
+import { TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
-import { CodeNameCell } from "lib/components/CodeNameCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
+import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
-import { TableRow } from "lib/components/table/tableComponents";
 import type { CodeInfo } from "lib/types";
+
+import { CodeNameCell } from "./CodeNameCell";
 
 interface CodesTableRowProps {
   codeInfo: CodeInfo;

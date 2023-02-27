@@ -1,13 +1,13 @@
 // TODO - Refactor Past txs query
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
-import { useTxQueryCount } from "lib/pages/past-txs/query/useTxQuery";
 import { useCodeListCountByWalletAddress } from "lib/services/codeService";
 import {
   useContractListCountByAdmin,
   useInstantiatedCountByUserQuery,
 } from "lib/services/contractService";
 import { useProposalsCountByWalletAddress } from "lib/services/proposalService";
+import { useTxQueryCount } from "lib/services/txQuery/useTxQuery";
 import type { HumanAddr } from "lib/types";
 
 /**

@@ -8,13 +8,11 @@ import { UserContractDesc } from "./UserContractDesc";
 interface ContractDescProps {
   contractData: ContractData;
 }
-export const ContractDesc = ({ contractData }: ContractDescProps) => {
-  return (
-    <Flex gap={6}>
-      {contractData.publicProject.publicInfo?.description && (
-        <PublicContractDesc contractData={contractData} />
-      )}
-      <UserContractDesc contractData={contractData} />
-    </Flex>
-  );
-};
+export const ContractDesc = ({ contractData }: ContractDescProps) => (
+  <Flex gap={6}>
+    {contractData.publicProject.publicInfo?.description && (
+      <PublicContractDesc contractData={contractData} />
+    )}
+    <UserContractDesc contractData={contractData} />
+  </Flex>
+);

@@ -2,7 +2,7 @@ import { Flex, Icon, Text, useToast } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
-import { ActionModal } from "..";
+import { ActionModal } from "../ActionModal";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
 import { PermissionChip } from "lib/components/PermissionChip";

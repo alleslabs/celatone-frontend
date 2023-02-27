@@ -18,6 +18,7 @@ interface ResendTxParams {
   address: HumanAddr;
   client: SigningCosmWasmClient;
   onTxSucceed?: (txHash: string) => void;
+  onTxFailed?: () => void;
   fee: StdFee;
   messages: EncodeObject[];
 }
@@ -26,6 +27,7 @@ export const resendTx = ({
   address,
   client,
   onTxSucceed,
+  onTxFailed,
   fee,
   messages,
 }: ResendTxParams): Observable<TxResultRendering> => {
@@ -69,5 +71,5 @@ export const resendTx = ({
         actionVariant: "resend",
       } as TxResultRendering;
     }
-  )().pipe(catchTxError());
+  )().pipe(catchTxError(onTxFailed));
 };

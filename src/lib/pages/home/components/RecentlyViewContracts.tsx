@@ -1,6 +1,6 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 
-import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
+import { ContractListTable } from "lib/components/modal/select-contract/ContractListTable";
 import type { Addr, ContractAddr } from "lib/types";
 import { getCurrentDate } from "lib/utils";
 

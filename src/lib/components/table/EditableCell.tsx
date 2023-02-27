@@ -106,7 +106,7 @@ export const EditableCell = ({
             e.stopPropagation();
             setIsEditCellOpen(false);
           }}
-          zIndex={1}
+          zIndex={10000}
         />
       )}
       <Flex

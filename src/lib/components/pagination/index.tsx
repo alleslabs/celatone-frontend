@@ -55,7 +55,7 @@ export const Pagination = ({
       pagesQuantity={pagesQuantity}
       onPageChange={onPageChange}
     >
-      <Flex align="center" justify="center" w="full" p={4}>
+      <Flex align="center" justify="center" w="full" px={4}>
         <Text variant="body3" color="text.dark">
           Items per page:
         </Text>

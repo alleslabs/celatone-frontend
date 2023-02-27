@@ -13,7 +13,6 @@ import {
   useInstantiateTx,
   useCelatoneApp,
 } from "lib/app-provider";
-import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
@@ -22,6 +21,7 @@ import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import JsonInput from "lib/components/json/JsonInput";
+import { CodeSelectSection } from "lib/components/modal/select-code";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useLCDEndpoint, useValidateAddress } from "lib/hooks";

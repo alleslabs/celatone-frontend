@@ -14,7 +14,7 @@ import { BsGithub } from "react-icons/bs";
 
 import { TextInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";
-import { EmptyState } from "lib/components/state/EmptyState";
+import { EmptyState } from "lib/components/state";
 import { usePublicProjectStore } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { usePublicProjects } from "lib/services/publicProjectService";

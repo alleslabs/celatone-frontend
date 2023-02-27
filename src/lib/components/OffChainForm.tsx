@@ -40,52 +40,50 @@ export const OffChainForm = <T extends OffchainDetail>({
   setContractListsValue,
   errors,
   labelBgColor = "background.main",
-}: OffChainFormProps<T>) => {
-  return (
-    <VStack gap="16px" w="full">
-      <ControllerInput
-        name={"name" as FieldPath<T>}
-        control={control}
-        label="Name"
-        placeholder={contractLabel}
-        helperText="Set name for your contract"
-        variant="floating"
-        rules={{
-          maxLength: MAX_CONTRACT_NAME_LENGTH,
-        }}
-        error={errors.name && getMaxContractNameLengthError(state.name.length)}
-        labelBgColor={labelBgColor}
-      />
-      <ControllerTextarea
-        name={"description" as FieldPath<T>}
-        control={control}
-        label="Description"
-        placeholder="Help understanding what this contract do and how it works ..."
-        variant="floating"
-        rules={{
-          maxLength: MAX_CONTRACT_DESCRIPTION_LENGTH,
-        }}
-        error={
-          errors.description &&
-          getMaxContractDescriptionLengthError(state.description.length)
-        }
-        labelBgColor={labelBgColor}
-      />
-      <TagSelection
-        result={state.tags}
-        setResult={setTagsValue}
-        placeholder="Select tags or create new ones"
-        helperText="Add tag to organize and manage your contracts"
-        labelBgColor={labelBgColor}
-      />
-      <ListSelection
-        result={state.lists}
-        placeholder="Not listed"
-        helperText="Grouping your contracts by adding to your existing list or create
+}: OffChainFormProps<T>) => (
+  <VStack gap="16px" w="full">
+    <ControllerInput
+      name={"name" as FieldPath<T>}
+      control={control}
+      label="Name"
+      placeholder={contractLabel}
+      helperText="Set name for your contract"
+      variant="floating"
+      rules={{
+        maxLength: MAX_CONTRACT_NAME_LENGTH,
+      }}
+      error={errors.name && getMaxContractNameLengthError(state.name.length)}
+      labelBgColor={labelBgColor}
+    />
+    <ControllerTextarea
+      name={"description" as FieldPath<T>}
+      control={control}
+      label="Description"
+      placeholder="Help understanding what this contract do and how it works ..."
+      variant="floating"
+      rules={{
+        maxLength: MAX_CONTRACT_DESCRIPTION_LENGTH,
+      }}
+      error={
+        errors.description &&
+        getMaxContractDescriptionLengthError(state.description.length)
+      }
+      labelBgColor={labelBgColor}
+    />
+    <TagSelection
+      result={state.tags}
+      setResult={setTagsValue}
+      placeholder="Select tags or create new ones"
+      helperText="Add tag to organize and manage your contracts"
+      labelBgColor={labelBgColor}
+    />
+    <ListSelection
+      result={state.lists}
+      placeholder="Not listed"
+      helperText="Grouping your contracts by adding to your existing list or create
               a new list"
-        setResult={setContractListsValue}
-        labelBgColor={labelBgColor}
-      />
-    </VStack>
-  );
-};
+      setResult={setContractListsValue}
+      labelBgColor={labelBgColor}
+    />
+  </VStack>
+);

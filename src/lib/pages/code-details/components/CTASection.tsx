@@ -3,8 +3,7 @@ import { observer } from "mobx-react-lite";
 import { MdCheck } from "react-icons/md";
 
 import { InstantiateButton } from "lib/components/button";
-import { RemoveCodeModal } from "lib/components/modal/code/RemoveCode";
-import { SaveOrEditCodeModal } from "lib/components/modal/code/SaveOrEditCode";
+import { RemoveCodeModal, SaveOrEditCodeModal } from "lib/components/modal";
 import { useCodeStore } from "lib/hooks";
 import type { CodeInfo } from "lib/types";
 

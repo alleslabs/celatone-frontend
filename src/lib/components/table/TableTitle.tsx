@@ -18,7 +18,11 @@ export const TableTitle = ({
       <Heading as="h6" variant="h6">
         {title}
       </Heading>
-      <Badge variant="gray" color="text.main">
+      <Badge
+        variant="gray"
+        color="text.main"
+        textColor={count ? "gray.100" : "gray.500"}
+      >
         {count}
       </Badge>
     </Flex>

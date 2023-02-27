@@ -5,12 +5,10 @@ type PageContainerProps = {
   children: ReactNode;
 };
 
-const PageContainer = ({ children }: PageContainerProps) => {
-  return (
-    <Box as="main" p="48px" overflowX="hidden">
-      {children}
-    </Box>
-  );
-};
+const PageContainer = ({ children }: PageContainerProps) => (
+  <Box as="main" p="48px" overflowX="hidden">
+    {children}
+  </Box>
+);
 
 export default PageContainer;

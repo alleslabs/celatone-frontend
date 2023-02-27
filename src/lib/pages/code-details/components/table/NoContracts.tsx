@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
+import { ConnectWalletBtn } from "lib/components/button";
 
 const DisconnectedState = () => (
   <Flex direction="column" alignItems="center" gap="16px">

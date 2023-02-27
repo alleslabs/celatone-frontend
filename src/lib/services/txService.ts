@@ -4,10 +4,13 @@ import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import {
+  getExecuteTxsByContractAddressPagination,
+  getExecuteTxsCountByContractAddress,
   getTxsByContractAddressPagination,
   getTxsCountByContractAddress,
 } from "lib/query";
-import type { Addr, AllTransaction, ContractAddr, Option } from "lib/types";
+import { MsgFurtherAction } from "lib/types";
+import type { Addr, ContractAddr, Option, Transaction } from "lib/types";
 import {
   getActionMsgType,
   parseDateOpt,
@@ -16,11 +19,104 @@ import {
   unwrapAll,
 } from "lib/utils";
 
+export const useExecuteTxsByContractAddressPagination = (
+  contractAddress: ContractAddr,
+  offset: number,
+  pageSize: number
+): UseQueryResult<Transaction[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getExecuteTxsByContractAddressPagination, {
+        contractAddress,
+        offset,
+        pageSize,
+      })
+      .then(({ contract_transactions_view }) =>
+        /**
+         * @remarks because contract_transactions_view is view table, all fields can be undefined by type
+         */
+        contract_transactions_view.map((transaction) => ({
+          hash: parseTxHash(transaction.hash),
+          messages: snakeToCamel(transaction.messages),
+          sender: transaction.sender as Addr,
+          height: transaction.height,
+          created: parseDateOpt(transaction.timestamp),
+          success: transaction.success,
+          actionMsgType: getActionMsgType([
+            /* these value must not be null */
+            unwrapAll(transaction.is_execute),
+            unwrapAll(transaction.is_instantiate),
+            unwrapAll(transaction.is_send),
+            unwrapAll(transaction.is_store_code),
+            unwrapAll(transaction.is_migrate),
+            unwrapAll(transaction.is_update_admin),
+            unwrapAll(transaction.is_clear_admin),
+          ]),
+          furtherAction: MsgFurtherAction.NONE,
+          isIbc: transaction.is_ibc,
+          isInstantiate: transaction.is_instantiate,
+        }))
+      );
+  }, [contractAddress, offset, pageSize, indexerGraphClient]);
+
+  return useQuery(
+    [
+      "execute_transactions_by_contract_addr_pagination",
+      contractAddress,
+      offset,
+      pageSize,
+      indexerGraphClient,
+    ],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
+export const useExecuteTxsCountByContractAddress = (
+  contractAddress: ContractAddr
+): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    if (!contractAddress)
+      throw new Error(
+        "Contract address not found (useExecuteTxsCountByContractAddress)"
+      );
+
+    return indexerGraphClient
+      .request(getExecuteTxsCountByContractAddress, {
+        contractAddress,
+      })
+      .then(
+        ({ contract_transactions_aggregate }) =>
+          contract_transactions_aggregate?.aggregate?.count
+      );
+  }, [contractAddress, indexerGraphClient]);
+
+  return useQuery(
+    [
+      "execute_transactions_count_by_contract_addr",
+      contractAddress,
+      indexerGraphClient,
+    ],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!contractAddress,
+    }
+  );
+};
+
 export const useTxsByContractAddressPagination = (
   contractAddress: ContractAddr,
   offset: number,
   pageSize: number
-): UseQueryResult<AllTransaction[]> => {
+): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -51,7 +147,9 @@ export const useTxsByContractAddressPagination = (
             unwrapAll(contractTx.is_update_admin),
             unwrapAll(contractTx.is_clear_admin),
           ]),
+          furtherAction: MsgFurtherAction.NONE,
           isIbc: contractTx.is_ibc,
+          isInstantiate: contractTx.is_instantiate,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);

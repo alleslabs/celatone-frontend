@@ -4,7 +4,7 @@ import big from "big.js";
 
 import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
-import { ViewMore } from "lib/components/table/ViewMore";
+import { ViewMore } from "lib/components/table";
 import { TokenCard } from "lib/components/TokenCard";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
