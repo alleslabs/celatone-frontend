@@ -6,12 +6,15 @@ import type { CodeInfo } from "lib/types";
 
 const TEMPLATE_COLUMNS = "48px 1fr 4fr 1fr 2fr 48px";
 
-interface CodesTableRowProps {
+interface CodesReadOnlyTableRowProps {
   codeInfo: CodeInfo;
   onCodeSelect: (newVal: string) => void;
 }
 
-const CodesTableRow = ({ codeInfo, onCodeSelect }: CodesTableRowProps) => (
+const CodesReadOnlyTableRow = ({
+  codeInfo,
+  onCodeSelect,
+}: CodesReadOnlyTableRowProps) => (
   <Grid
     cursor="pointer"
     transition="all .25s ease-in-out"
@@ -41,15 +44,15 @@ const CodesTableRow = ({ codeInfo, onCodeSelect }: CodesTableRowProps) => (
   </Grid>
 );
 
-interface CodesTableReadOnlyProps {
+interface CodesReadOnlyTableProps {
   onCodeSelect: (code: string) => void;
   codes: CodeInfo[];
 }
 
-export const CodesTableReadOnly = ({
+export const CodesReadOnlyTable = ({
   onCodeSelect,
   codes,
-}: CodesTableReadOnlyProps) => (
+}: CodesReadOnlyTableProps) => (
   <TableContainer>
     <Grid templateColumns={TEMPLATE_COLUMNS}>
       <TableHeader />
@@ -60,7 +63,7 @@ export const CodesTableReadOnly = ({
       <TableHeader />
     </Grid>
     {codes.map((code, index) => (
-      <CodesTableRow
+      <CodesReadOnlyTableRow
         key={code.id + index.toString()}
         codeInfo={code}
         onCodeSelect={onCodeSelect}

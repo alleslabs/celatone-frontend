@@ -5,7 +5,7 @@ import { ConnectWalletBtn } from "lib/components/button";
 import { EmptyState } from "lib/components/state";
 import type { CodeInfo } from "lib/types";
 
-import { CodesTableReadOnly } from "./CodesTableReadOnly";
+import { CodesReadOnlyTable } from "./CodesReadOnlyTable";
 
 interface MyStoredCodeContentProps {
   handleSelect: (code: string) => void;
@@ -38,5 +38,5 @@ export const MyStoredCodeContent = ({
   if (!storedCodes.length) {
     return <EmptyState message="You don’t have any stored codes." withBorder />;
   }
-  return <CodesTableReadOnly onCodeSelect={handleSelect} codes={storedCodes} />;
+  return <CodesReadOnlyTable onCodeSelect={handleSelect} codes={storedCodes} />;
 };

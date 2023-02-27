@@ -1,7 +1,7 @@
 import { EmptyState } from "lib/components/state";
 import type { CodeInfo } from "lib/types";
 
-import { CodesTableReadOnly } from "./CodesTableReadOnly";
+import { CodesReadOnlyTable } from "./CodesReadOnlyTable";
 
 interface MySavedCodeContentProps {
   handleSelect: (code: string) => void;
@@ -18,5 +18,5 @@ export const MySavedCodeContent = ({
       withBorder
     />
   ) : (
-    <CodesTableReadOnly onCodeSelect={handleSelect} codes={savedCodes} />
+    <CodesReadOnlyTable onCodeSelect={handleSelect} codes={savedCodes} />
   );
