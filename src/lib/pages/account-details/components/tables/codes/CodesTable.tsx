@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
@@ -6,14 +6,14 @@ import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { TableContainer, TableHeader } from "lib/components/table";
-import { ContractTableRow } from "lib/components/table/contracts/ContractTableRow";
+import { TableContainer } from "lib/components/table";
+import { CodesTableHeader, CodesTableRow } from "lib/components/table/codes";
 import { TableTitle } from "lib/components/table/TableTitle";
 import { ViewMore } from "lib/components/table/ViewMore";
-import { useContractsAdmin } from "lib/pages/account-details/data";
+import { useCodeStored } from "lib/pages/account-details/data";
 import type { HumanAddr, Option } from "lib/types";
 
-interface ContractTableProps {
+interface CodesTableProps {
   walletAddress: HumanAddr;
   scrollComponentId: string;
   totalData: Option<number>;
@@ -21,14 +21,14 @@ interface ContractTableProps {
   onViewMore?: () => void;
 }
 
-const ContractTableBody = observer(
+const CodesTableBody = observer(
   ({
     walletAddress,
     scrollComponentId,
     totalData,
     refetchCount,
     onViewMore,
-  }: ContractTableProps) => {
+  }: CodesTableProps) => {
     const {
       pagesQuantity,
       currentPage,
@@ -44,7 +44,7 @@ const ContractTableBody = observer(
         isDisabled: false,
       },
     });
-    const { contracts, isLoading } = useContractsAdmin(
+    const { codes, isLoading } = useCodeStored(
       walletAddress,
       offset,
       onViewMore ? 5 : pageSize
@@ -62,11 +62,11 @@ const ContractTableBody = observer(
       setCurrentPage(1);
     };
 
-    const templateColumnsStyle =
-      "150px minmax(250px, 1fr) 200px 150px minmax(250px, 300px) 70px";
+    const templateColumns =
+      "max(80px) minmax(320px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
 
     if (isLoading) return <Loading />;
-    if (!contracts?.length)
+    if (!codes?.length)
       return (
         <Flex
           py="64px"
@@ -74,32 +74,21 @@ const ContractTableBody = observer(
           borderY="1px solid"
           borderColor="pebble.700"
         >
-          <EmptyState message="This account does not have any admin access for any contracts." />
+          <EmptyState message="This account did not stored any codes before." />
         </Flex>
       );
     return (
-      <TableContainer overflow="visible">
-        <Grid templateColumns={templateColumnsStyle} minW="min-content">
-          <TableHeader borderTopStyle="none">Contract Address</TableHeader>
-          <TableHeader>Contract Name</TableHeader>
-          <TableHeader>Tags</TableHeader>
-          <TableHeader>Instantiator</TableHeader>
-          <TableHeader>Timestamp</TableHeader>
-          <TableHeader />
-        </Grid>
-        {contracts.map((contractInfo) => (
-          <ContractTableRow
-            key={
-              contractInfo.name +
-              contractInfo.contractAddress +
-              contractInfo.description +
-              contractInfo.tags +
-              contractInfo.lists
-            }
-            contractInfo={contractInfo}
-            templateColumnsStyle={templateColumnsStyle}
-          />
-        ))}
+      <>
+        <TableContainer>
+          <CodesTableHeader templateColumns={templateColumns} />
+          {codes.map((code) => (
+            <CodesTableRow
+              key={code.id + code.uploader + code.name}
+              codeInfo={code}
+              templateColumns={templateColumns}
+            />
+          ))}
+        </TableContainer>
         {totalData &&
           (onViewMore
             ? totalData > 5 && <ViewMore onClick={onViewMore} />
@@ -115,21 +104,21 @@ const ContractTableBody = observer(
                   onPageSizeChange={onPageSizeChange}
                 />
               ))}
-      </TableContainer>
+      </>
     );
   }
 );
 
-export const AdminContractTable = ({
+export const CodesTable = ({
   totalData,
   ...componentProps
-}: ContractTableProps) => (
+}: CodesTableProps) => (
   <Box mt={12} mb={4}>
     <TableTitle
-      title="Contract Admins"
+      title="Stored Codes"
       count={totalData ?? 0}
-      helperText="This account is the admin for following contracts"
+      helperText="This account stored the following codes"
     />
-    <ContractTableBody totalData={totalData} {...componentProps} />
+    <CodesTableBody totalData={totalData} {...componentProps} />
   </Box>
 );

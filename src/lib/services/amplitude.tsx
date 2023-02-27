@@ -78,6 +78,7 @@ export enum AmpEvent {
   USE_QUICK_EDIT_CONTRACT = "Use Quick Edit Contract",
   USE_QUICK_EDIT_CODE = "Use Quick Edit Code",
   USE_OTHER_MODAL = "Use Other Modal",
+  USE_SUBMIT_PROJECT = "Use Submit Project",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
