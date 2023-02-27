@@ -62,7 +62,9 @@ export const resendTx = ({
               Your transaction was successfully resent.
             </Text>
           ),
-          headerIcon: <CustomIcon name="checkCircle" color="success.main" />,
+          headerIcon: (
+            <CustomIcon name="checkCircle" color="success.main" boxSize="5" />
+          ),
         },
         actionVariant: "resend",
       } as TxResultRendering;

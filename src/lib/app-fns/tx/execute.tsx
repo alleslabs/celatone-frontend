@@ -74,8 +74,10 @@ export const executeContractTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Complete",
-          headerIcon: <CustomIcon name="checkCircle" color="success.main" />,
+          header: "Transaction Completed",
+          headerIcon: (
+            <CustomIcon name="checkCircle" color="success.main" boxSize="5" />
+          ),
         },
       } as TxResultRendering;
     }

@@ -43,7 +43,7 @@ const secondaryMenu = [
 export const QuickMenu = () => {
   return (
     <Flex direction="column" gap={4} bg="pebble.900" p="48px">
-      <Heading as="h6" variant="h6">
+      <Heading as="h5" variant="h5">
         Start using Celatone
       </Heading>
       <ConnectWalletAlert

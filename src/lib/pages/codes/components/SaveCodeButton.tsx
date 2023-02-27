@@ -6,7 +6,7 @@ export default () => {
     <SaveNewCodeModal
       buttonProps={{
         variant: "outline-primary",
-        rightIcon: <CustomIcon name="bookmark" color="violet.light" />,
+        leftIcon: <CustomIcon name="bookmark" color="violet.light" />,
         children: "Save New Code",
       }}
     />

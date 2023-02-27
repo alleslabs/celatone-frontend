@@ -42,7 +42,7 @@ export const ContractListCard = ({
         gap="4"
         h="75px"
       >
-        <CustomIcon name={getListIcon(item.name)} />
+        <CustomIcon name={getListIcon(item.name)} boxSize="24px" />
         <Flex flexDirection="column">
           <Flex alignItems="center" gap="2">
             <LinkOverlay

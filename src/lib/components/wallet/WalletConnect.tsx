@@ -11,7 +11,7 @@ export const ConnectWalletButton = ({
   isLoading,
   isDisabled,
   onClickConnectBtn,
-  iconColor,
+  iconColor = "text.main",
   variant,
 }: ConnectWalletType) => {
   return (

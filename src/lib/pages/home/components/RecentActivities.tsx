@@ -20,7 +20,7 @@ export const RecentActivities = observer(() => {
 
   return (
     <Box py={8}>
-      <Heading px={12} as="h6" variant="h6" mb={4}>
+      <Heading px={12} as="h5" variant="h5" mb={4}>
         Recent Queries and Executes on this device
       </Heading>
       {activities.length ? (

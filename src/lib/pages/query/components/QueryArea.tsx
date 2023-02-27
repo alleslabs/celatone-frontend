@@ -148,7 +148,12 @@ export const QueryArea = ({
               onClick={handleQuery}
               isDisabled={jsonValidate(msg) !== null}
               isLoading={isFetching || isRefetching}
-              leftIcon={<CustomIcon name="query" />}
+              leftIcon={
+                <CustomIcon
+                  name="query"
+                  color={jsonValidate(msg) ? "pebble.600" : "text.main"}
+                />
+              }
             >
               Query (Ctrl + Enter)
             </Button>

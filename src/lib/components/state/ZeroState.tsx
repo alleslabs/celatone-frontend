@@ -20,7 +20,7 @@ interface ActionSectionProps {
 const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
   list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? (
     <Button
-      rightIcon={<CustomIcon name="plus" boxSize="3" color="text.main" />}
+      leftIcon={<CustomIcon name="addNew" boxSize="3" color="text.main" />}
       onClick={handleAction}
     >
       Deploy New Contract
@@ -34,7 +34,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
           list={list}
           buttonProps={{
             variant: "outline-primary",
-            rightIcon: <CustomIcon name="bookmark" color="violet.light" />,
+            leftIcon: <CustomIcon name="bookmark" color="violet.light" />,
             children: "Save Contract",
             ml: 2,
           }}

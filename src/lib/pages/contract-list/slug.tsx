@@ -109,8 +109,8 @@ const ContractsByList = observer(() => {
           <Flex gap={2}>
             {isInstantiatedByMe ? (
               <Button
-                rightIcon={
-                  <CustomIcon name="plus" color="text.main" boxSize="12px" />
+                leftIcon={
+                  <CustomIcon name="addNew" color="text.main" boxSize="16px" />
                 }
                 onClick={() => navigate({ pathname: "/deploy" })}
               >
@@ -125,7 +125,7 @@ const ContractsByList = observer(() => {
                 }}
                 buttonProps={{
                   variant: "outline-primary",
-                  rightIcon: (
+                  leftIcon: (
                     <CustomIcon
                       name="bookmark"
                       boxSize="3"

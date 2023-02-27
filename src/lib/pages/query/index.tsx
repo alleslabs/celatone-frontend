@@ -96,7 +96,7 @@ const Query = () => {
       {isFetching && <LoadingOverlay />}
       <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h4" variant="h4">
+        <Heading as="h5" variant="h5">
           Query Contract
         </Heading>
         <Box>

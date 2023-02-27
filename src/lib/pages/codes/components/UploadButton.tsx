@@ -8,7 +8,7 @@ export default () => {
   return (
     <Button
       onClick={() => navigate({ pathname: "/upload" })}
-      rightIcon={<CustomIcon name="plus" color="text.main" boxSize="12px" />}
+      leftIcon={<CustomIcon name="plus" color="text.main" boxSize="12px" />}
     >
       Upload New Code
     </Button>
