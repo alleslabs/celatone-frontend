@@ -105,6 +105,7 @@ export const SelectContractInstantiator = ({
       <Button
         variant={notSelected ? "primary" : "outline-primary"}
         py="6px"
+        size="sm"
         px="16px"
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_MODAL);

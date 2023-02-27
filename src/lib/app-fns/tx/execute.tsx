@@ -52,7 +52,12 @@ export const executeContractTx = ({
         action: Object.keys(msg)[0],
         sender: address,
         contractAddress,
-        msg: encode(JSON.stringify(msg)), // base64
+        msg: encode(
+          JSON.stringify({
+            msg,
+            funds,
+          })
+        ), // base64
         timestamp: getCurrentDate(),
       });
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
