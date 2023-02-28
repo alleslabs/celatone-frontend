@@ -46,16 +46,14 @@ const options: PermissionOption[] = [
 export const FilterByPermission = ({
   setPermissionValue,
   initialSelected,
-}: FilterByPermissionProps) => {
-  return (
-    <Grid columnGap="16px" w="full" mb="16px" maxW="360px">
-      <SelectInput<PermissionFilterValue>
-        formLabel="Filter by Instantiate Permission"
-        options={options}
-        onChange={setPermissionValue}
-        placeholder="Select"
-        initialSelected={initialSelected}
-      />
-    </Grid>
-  );
-};
+}: FilterByPermissionProps) => (
+  <Grid columnGap="16px" w="full" mb="16px" maxW="360px">
+    <SelectInput<PermissionFilterValue>
+      formLabel="Filter by Instantiate Permission"
+      options={options}
+      onChange={setPermissionValue}
+      placeholder="Select"
+      initialSelected={initialSelected}
+    />
+  </Grid>
+);

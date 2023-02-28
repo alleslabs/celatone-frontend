@@ -33,35 +33,33 @@ export const TextAreaInput = ({
   error,
   status,
   ...componentProps
-}: TextAreaProps) => {
-  return (
-    <FormControl
-      isInvalid={!!error || status?.state === "error"}
-      size="md"
-      {...componentProps}
-    >
-      {label && (
-        <FormLabel className="textarea-label" bgColor={labelBgColor}>
-          {label}
-        </FormLabel>
-      )}
-      <Textarea
-        resize="none"
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => setInputState(e.target.value)}
-      />
-      {error ? (
-        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-      ) : (
-        <FormHelperText className="helper-text">
-          {status?.message ? (
-            getResponseMsg(status, helperText)
-          ) : (
-            <Text color="text.dark">{helperText}</Text>
-          )}
-        </FormHelperText>
-      )}
-    </FormControl>
-  );
-};
+}: TextAreaProps) => (
+  <FormControl
+    isInvalid={!!error || status?.state === "error"}
+    size="md"
+    {...componentProps}
+  >
+    {label && (
+      <FormLabel className="textarea-label" bgColor={labelBgColor}>
+        {label}
+      </FormLabel>
+    )}
+    <Textarea
+      resize="none"
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => setInputState(e.target.value)}
+    />
+    {error ? (
+      <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+    ) : (
+      <FormHelperText className="helper-text">
+        {status?.message ? (
+          getResponseMsg(status, helperText)
+        ) : (
+          <Text color="text.dark">{helperText}</Text>
+        )}
+      </FormHelperText>
+    )}
+  </FormControl>
+);
