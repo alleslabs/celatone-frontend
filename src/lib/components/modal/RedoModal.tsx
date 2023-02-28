@@ -32,16 +32,15 @@ export const RedoModal = ({ message }: RedoModalProps) => {
 
   return (
     <>
-      <Flex onClick={onOpen}>
-        <Button
-          leftIcon={<BsArrowCounterclockwise />}
-          variant="outline"
-          iconSpacing="2"
-          size="sm"
-        >
-          Redo
-        </Button>
-      </Flex>
+      <Button
+        leftIcon={<BsArrowCounterclockwise />}
+        variant="outline"
+        iconSpacing="2"
+        size="sm"
+        onClick={onOpen}
+      >
+        Redo
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent w="640px">
