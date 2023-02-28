@@ -12,6 +12,8 @@ import {
   useSimulateFee,
   useInstantiateTx,
   useCelatoneApp,
+  useLCDEndpoint,
+  useValidateAddress,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";
@@ -21,10 +23,9 @@ import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import JsonInput from "lib/components/json/JsonInput";
-import { CodeSelectSection } from "lib/components/modal/select-code";
+import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useLCDEndpoint, useValidateAddress } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,

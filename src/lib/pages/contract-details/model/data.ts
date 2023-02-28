@@ -1,4 +1,4 @@
-import { useCodeStore } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import { useMigrationHistoriesByContractAddressPagination } from "lib/services/contractService";
 import type { ContractAddr, ContractMigrationHistory, Option } from "lib/types";
 

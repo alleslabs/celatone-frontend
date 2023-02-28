@@ -1,8 +1,8 @@
 import { Box, Flex, Icon, IconButton, Image, Tooltip } from "@chakra-ui/react";
 import { MdDoubleArrow } from "react-icons/md";
 
+import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { useMobile } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import type { NavMenuProps } from "./type";

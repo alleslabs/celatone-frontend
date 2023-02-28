@@ -1,9 +1,10 @@
 import { useWallet } from "@cosmos-kit/react";
 import router from "next/router";
 
+import { getAddressTypeByLength } from "lib/app-provider";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
-import { getAddressTypeByLength, useContractStore } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {

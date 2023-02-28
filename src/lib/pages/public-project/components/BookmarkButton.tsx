@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import type { IconType } from "react-icons";
 import { MdBookmark, MdBookmarkBorder, MdCheckCircle } from "react-icons/md";
 
-import { usePublicProjectStore } from "lib/hooks";
+import { usePublicProjectStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 

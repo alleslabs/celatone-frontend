@@ -9,7 +9,7 @@ import {
 } from "react";
 import type { Observable } from "rxjs";
 
-import { TxModal } from "lib/components/modal/tx";
+import { TxModal } from "lib/components/tx";
 import type { TxResultRendering } from "lib/types";
 
 interface TxBroadcast {

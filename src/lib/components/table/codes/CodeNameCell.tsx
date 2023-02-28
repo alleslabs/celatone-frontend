@@ -3,7 +3,7 @@ import { MdCheckCircle } from "react-icons/md";
 
 import { EditableCell } from "../EditableCell";
 import { MAX_CODE_NAME_LENGTH } from "lib/data";
-import { useCodeStore } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeLocalInfo } from "lib/stores/code";
 

@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
-import { useCodeStore } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import type { Option, PublicCode, CodeInfo } from "lib/types";
 
 import { PublicProjectCodeRow } from "./PublicProjectCodeRow";

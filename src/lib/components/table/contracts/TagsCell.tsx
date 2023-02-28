@@ -1,9 +1,10 @@
 import { Flex, Tag, TagLabel, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { EditTags } from "lib/components/modal/EditTags";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import { getTagsDefault } from "lib/utils";
+
+import { EditTags } from "./EditTags";
 
 interface TagsCellProps {
   contractLocalInfo: ContractLocalInfo;

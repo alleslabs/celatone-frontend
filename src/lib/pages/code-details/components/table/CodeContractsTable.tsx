@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ContractsTable, TableTitle } from "lib/components/table";
-import { useContractStore } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import {
   useContractListByCodeIdPagination,
   useContractListCountByCodeId,

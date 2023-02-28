@@ -10,8 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
+import { TxReceiptRender } from "../TxReceiptRender";
 import { useInternalNavigate } from "lib/app-provider";
-import { TxReceiptRender } from "lib/components/tx/receipt";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 

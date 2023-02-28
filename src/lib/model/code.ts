@@ -1,4 +1,5 @@
-import { useChainId, useContractStore } from "lib/hooks";
+import { useChainId } from "lib/app-provider";
+import { useContractStore } from "lib/providers/store";
 import { useCodeInfoByCodeId } from "lib/services/codeService";
 import {
   useContractListByCodeIdPagination,

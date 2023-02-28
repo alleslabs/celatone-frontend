@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { MdMoreHoriz, MdMode, MdDelete } from "react-icons/md";
 
-import { EditListNameModal, RemoveListModal } from "../list";
+import { EditListNameModal, RemoveListModal } from "lib/components/modal";
 import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
 import { dateFromNow, formatSlugName } from "lib/utils";

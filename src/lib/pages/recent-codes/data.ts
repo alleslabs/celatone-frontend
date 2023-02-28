@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 
 import type { PermissionFilterValue } from "lib/hooks";
-import { useCodeStore, usePermissionFilter, useSearchFilter } from "lib/hooks";
+import { usePermissionFilter, useSearchFilter } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import { useCodeListQuery } from "lib/services/codeService";
 import type { CodeInfo } from "lib/types";
 

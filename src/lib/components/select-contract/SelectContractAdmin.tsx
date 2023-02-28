@@ -14,7 +14,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { MdList, MdSwapHoriz } from "react-icons/md";
 
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
-import { useContractStore } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useContractListByAdmin } from "lib/services/contractService";
 import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";

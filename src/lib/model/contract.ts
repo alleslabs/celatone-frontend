@@ -1,14 +1,9 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useChainId, useLCDEndpoint } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import {
-  useChainId,
-  useCodeStore,
-  useContractStore,
-  useLCDEndpoint,
-} from "lib/hooks";
+import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
 import {
   queryContractCw2Info,

@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
-import { useContractStore } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { PublicContract, Option, ContractAddr } from "lib/types";
 

@@ -5,7 +5,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { CodesTable, TableTitle, ViewMore } from "lib/components/table";
-import { useCodeStored } from "lib/pages/account-details/data";
+import { useStoredCodes } from "lib/pages/account-details/data";
 import type { HumanAddr, Option } from "lib/types";
 
 interface StoredCodesTableProps {
@@ -38,7 +38,7 @@ export const StoredCodesTable = ({
       isDisabled: false,
     },
   });
-  const { codes, isLoading } = useCodeStored(
+  const { codes, isLoading } = useStoredCodes(
     walletAddress,
     offset,
     onViewMore ? 5 : pageSize

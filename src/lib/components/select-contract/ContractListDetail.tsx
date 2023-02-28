@@ -3,9 +3,10 @@ import { useWallet } from "@cosmos-kit/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
-import { TagSelection, TextInput } from "lib/components/forms";
+import { TextInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";
 import { DisconnectedState, EmptyState, ZeroState } from "lib/components/state";
+import { TagSelection } from "lib/components/TagSelection";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractLocalInfo, ContractListInfo } from "lib/stores/contract";
 import type { ContractAddr, HumanAddr, LVPair, Option } from "lib/types";

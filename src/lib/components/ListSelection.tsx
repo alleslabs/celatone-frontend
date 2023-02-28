@@ -18,10 +18,12 @@ import type { CSSProperties } from "react";
 import { useState, useRef, forwardRef } from "react";
 import { MdCheck, MdClose, MdAdd } from "react-icons/md";
 
-import { CreateNewListModal } from "lib/components/modal/list";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import type { LVPair } from "lib/types";
 import { formatSlugName, mergeRefs } from "lib/utils";
+
+import { CreateNewListModal } from "./modal/list/CreateNewList";
 
 export interface ListSelectionProps extends InputProps {
   placeholder?: string;

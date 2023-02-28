@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useSimulateFeeQuery } from "../queries";
-import { useDummyWallet } from "lib/hooks";
+import { useSimulateFeeQuery, useDummyWallet } from "lib/app-provider";
 import type { HumanAddr, ContractAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";

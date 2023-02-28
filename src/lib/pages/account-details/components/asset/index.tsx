@@ -3,7 +3,7 @@ import type { Big } from "big.js";
 import big from "big.js";
 
 import { Loading } from "lib/components/Loading";
-import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
+import { UnsupportedTokensModal } from "lib/components/modal";
 import { ViewMore } from "lib/components/table";
 import { TokenCard } from "lib/components/TokenCard";
 import { useUserAssetInfos } from "lib/pages/account-details/data";

@@ -26,26 +26,22 @@ const variantStyle: Record<
   },
 };
 
-const ReceiptRow = ({ title, value, html }: TxReceipt) => {
-  return (
-    <Flex align="center" fontSize="14px">
-      <Text variant="body2" fontWeight={700}>
-        {title}
-      </Text>
-      {html || <Text variant="body2">{value}</Text>}
-    </Flex>
-  );
-};
+const ReceiptRow = ({ title, value, html }: TxReceipt) => (
+  <Flex align="center" fontSize="14px">
+    <Text variant="body2" fontWeight={700}>
+      {title}
+    </Text>
+    {html || <Text variant="body2">{value}</Text>}
+  </Flex>
+);
 
 export const TxReceiptRender = ({
   receipts,
   variant = "packed",
-}: TxReceiptRenderProps) => {
-  return (
-    <Flex direction="column" gap="8px" sx={variantStyle[variant]}>
-      {receipts.map((receipt) => (
-        <ReceiptRow key={receipt.title} {...receipt} />
-      ))}
-    </Flex>
-  );
-};
+}: TxReceiptRenderProps) => (
+  <Flex direction="column" gap="8px" sx={variantStyle[variant]}>
+    {receipts.map((receipt) => (
+      <ReceiptRow key={receipt.title} {...receipt} />
+    ))}
+  </Flex>
+);

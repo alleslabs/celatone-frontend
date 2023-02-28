@@ -19,14 +19,14 @@ import type { AxiosError } from "axios";
 import { useState } from "react";
 import { MdChevronLeft, MdList, MdSwapHoriz } from "react-icons/md";
 
-import { useCelatoneApp } from "lib/app-provider";
-import { DEFAULT_RPC_ERROR } from "lib/data";
 import {
-  useContractStore,
+  useCelatoneApp,
   useLCDEndpoint,
   useValidateAddress,
-} from "lib/hooks";
+} from "lib/app-provider";
+import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryContract } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";

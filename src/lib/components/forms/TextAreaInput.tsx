@@ -12,6 +12,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type { FormStatus } from "./FormStatus";
 import { getResponseMsg } from "./FormStatus";
 
+// TODO: remove
 export interface TextAreaProps extends FormControlProps {
   value: string;
   setInputState: Dispatch<SetStateAction<string>> | ((newVal: string) => void);

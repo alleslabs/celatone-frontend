@@ -3,7 +3,7 @@ import router from "next/router";
 import { useMemo, useState } from "react";
 
 import { ShowMoreButton } from "lib/components/button";
-import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
+import { UnsupportedTokensModal } from "lib/components/modal";
 import { TokenCard } from "lib/components/TokenCard";
 import type { BalanceWithAssetInfo, ContractAddr, Option } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";

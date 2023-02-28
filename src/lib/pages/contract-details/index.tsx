@@ -10,12 +10,12 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useValidateAddress } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
-import { useValidateAddress } from "lib/hooks";
 import {
   useContractData,
   useContractDetailsTableCounts,

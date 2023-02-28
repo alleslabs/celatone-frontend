@@ -1,5 +1,5 @@
 import { RedoButton, ResendButton } from "lib/components/button";
-import { RedoModal } from "lib/components/modal/RedoModal";
+import { RedoModal } from "lib/components/modal";
 import type { Transaction } from "lib/types";
 import { MsgFurtherAction } from "lib/types";
 import { extractMsgType } from "lib/utils";

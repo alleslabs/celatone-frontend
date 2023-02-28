@@ -3,7 +3,7 @@ import { MdCheckCircle } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TxReceiptRender } from "lib/components/tx/receipt";
+import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { InstantiateOffChainForm } from "lib/pages/instantiate/component/InstantiateOffchainForm";
 import type { ContractAddr } from "lib/types";

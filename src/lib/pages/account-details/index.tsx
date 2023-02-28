@@ -10,12 +10,12 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { useValidateAddress } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
-import { useValidateAddress } from "lib/hooks";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";

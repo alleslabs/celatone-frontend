@@ -2,18 +2,16 @@ import { VStack } from "@chakra-ui/react";
 import type { Control, FieldErrorsImpl, FieldPath } from "react-hook-form";
 
 import {
-  ControllerInput,
-  ListSelection,
-  TagSelection,
-  ControllerTextarea,
-} from "lib/components/forms";
-import {
   getMaxContractDescriptionLengthError,
   getMaxContractNameLengthError,
   MAX_CONTRACT_DESCRIPTION_LENGTH,
   MAX_CONTRACT_NAME_LENGTH,
 } from "lib/data";
 import type { LVPair } from "lib/types";
+
+import { ControllerInput, ControllerTextarea } from "./forms";
+import { ListSelection } from "./ListSelection";
+import { TagSelection } from "./TagSelection";
 
 export interface OffchainDetail {
   name: string;

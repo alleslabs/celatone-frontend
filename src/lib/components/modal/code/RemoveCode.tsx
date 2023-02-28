@@ -2,8 +2,8 @@ import { useToast, Icon, Text, chakra, IconButton } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { MdCheckCircle, MdDelete } from "react-icons/md";
 
-import { ActionModal } from "lib/components/modal/ActionModal";
-import { useCodeStore } from "lib/hooks";
+import { ActionModal } from "../ActionModal";
+import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
 

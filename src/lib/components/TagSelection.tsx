@@ -19,7 +19,8 @@ import type { CSSProperties, KeyboardEvent } from "react";
 import { useEffect, useState, useRef, forwardRef } from "react";
 import { MdCheckCircle, MdClose } from "react-icons/md";
 
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { mergeRefs } from "lib/utils";
 
 export interface TagSelectionProps extends InputProps {

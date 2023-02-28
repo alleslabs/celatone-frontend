@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MdBookmark } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { ListSelection } from "lib/components/forms/ListSelection";
+import { ListSelection } from "lib/components/ListSelection";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

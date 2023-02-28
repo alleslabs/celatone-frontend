@@ -2,12 +2,8 @@ import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 import type { PermissionFilterValue } from "lib/hooks";
-import {
-  useUserKey,
-  useCodeStore,
-  usePermissionFilter,
-  useSearchFilter,
-} from "lib/hooks";
+import { useUserKey, usePermissionFilter, useSearchFilter } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import { useCodeListPageQuery } from "lib/services/codeService";
 import type { CodeInfo, HumanAddr } from "lib/types";
 import { InstantiatePermission } from "lib/types";

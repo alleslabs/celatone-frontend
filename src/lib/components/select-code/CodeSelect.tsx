@@ -3,8 +3,8 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import type { FormStatus } from "lib/components/forms";
 import { UploadIcon } from "lib/components/icon/UploadIcon";
-import { useCodeStore } from "lib/hooks/store";
-import { useUserKey } from "lib/hooks/useUserKey";
+import { useUserKey } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 
 import { CodeSelectModalButton } from "./CodeSelectModalButton";
 

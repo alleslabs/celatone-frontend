@@ -13,8 +13,7 @@ import type { ChangeEvent, KeyboardEvent } from "react";
 import { useRef, useEffect, useState } from "react";
 import { MdSearch } from "react-icons/md";
 
-import { useInternalNavigate } from "lib/app-provider";
-import { useValidateAddress } from "lib/hooks";
+import { useInternalNavigate, useValidateAddress } from "lib/app-provider";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
 import { isCodeId, isTxHash } from "lib/utils";
 

@@ -20,9 +20,9 @@ import { FaCoins } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 
 import { ExplorerLink } from "../ExplorerLink";
+import { getAddressTypeByLength } from "lib/app-provider";
+import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
-import type { AddressReturnType } from "lib/hooks";
-import { getAddressTypeByLength } from "lib/hooks";
 import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
 import {
   getTokenType,

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 
-import { useLCDEndpoint } from "lib/hooks";
+import { useLCDEndpoint } from "lib/app-provider";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
