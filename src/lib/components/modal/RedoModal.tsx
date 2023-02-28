@@ -17,7 +17,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import { MdReplay } from "react-icons/md";
 
-import { useRedo } from "lib/hooks/useRedo";
+import { useRedo } from "lib/hooks";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 

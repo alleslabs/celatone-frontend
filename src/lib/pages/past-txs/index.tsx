@@ -14,12 +14,12 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { MdSearch } from "react-icons/md";
 
-import { TxFilterSelection } from "../../components/TxFilterSelection";
-import { useTxQuery, useTxQueryCount } from "../../services/txQuery/useTxQuery";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useTxQuery, useTxQueryCount } from "lib/services/txQuery/useTxQuery";
 import type { HumanAddr } from "lib/types";
 
 import { PastTxsContent } from "./components/PastTxsContent";

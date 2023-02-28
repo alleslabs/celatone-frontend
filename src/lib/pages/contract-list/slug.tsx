@@ -26,8 +26,11 @@ import {
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { EditListNameModal, RemoveListModal } from "lib/components/modal";
-import { SaveNewContractModal } from "lib/components/modal/contract";
+import {
+  EditListNameModal,
+  RemoveListModal,
+  SaveNewContractModal,
+} from "lib/components/modal";
 import { ContractListDetail } from "lib/components/select-contract";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";

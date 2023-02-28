@@ -23,7 +23,7 @@ import { useContractStore } from "lib/providers/store";
 import type { LVPair } from "lib/types";
 import { formatSlugName, mergeRefs } from "lib/utils";
 
-import { CreateNewListModal } from "./modal/list/CreateNewList";
+import { CreateNewListModal } from "./modal/list";
 
 export interface ListSelectionProps extends InputProps {
   placeholder?: string;

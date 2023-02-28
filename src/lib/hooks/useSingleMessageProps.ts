@@ -20,8 +20,7 @@ import type {
   ContractAddr,
   AssetInfo,
 } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
-import { getExecuteMsgTags } from "lib/utils/executeTags";
+import { getFirstQueryParam, getExecuteMsgTags } from "lib/utils";
 
 /**
  * Returns messages variations for MsgInstantiateContract and MsgInstantiateContract2.

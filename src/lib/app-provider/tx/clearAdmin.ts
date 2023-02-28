@@ -2,7 +2,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useFabricateFee } from "../hooks/useFabricateFee";
+import { useFabricateFee } from "../hooks";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
 import { CLEAR_ADMIN_GAS } from "lib/data";
 import type { ContractAddr, HumanAddr } from "lib/types";
