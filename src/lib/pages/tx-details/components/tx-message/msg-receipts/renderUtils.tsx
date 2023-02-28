@@ -6,6 +6,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type { AddressReturnType } from "lib/hooks";
 import type { Addr, Option, TxReceipt, ValidatorAddr } from "lib/types";
+import { camelToTitle } from "lib/utils";
 
 interface CommonReceiptHtmlArgs {
   type: "json" | "explorer";
@@ -79,7 +80,7 @@ export const getGenericValueEntry = (
       valueObj = { value };
   }
 
-  return { title, ...valueObj };
+  return { title: camelToTitle(title), ...valueObj };
 };
 
 // Duplicated Components
