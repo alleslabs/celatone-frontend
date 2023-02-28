@@ -6959,11 +6959,11 @@ export type GetCodeListByIDsQueryQuery = {
   }>;
 };
 
-export type GetCodeInfoByCodeIdQueryVariables = Exact<{
+export type GetCodeDataByCodeIdQueryVariables = Exact<{
   codeId: Scalars["Int"];
 }>;
 
-export type GetCodeInfoByCodeIdQuery = {
+export type GetCodeDataByCodeIdQuery = {
   __typename?: "query_root";
   codes_by_pk?: {
     __typename?: "codes";
@@ -7820,13 +7820,13 @@ export const GetCodeListByIDsQueryDocument = {
   GetCodeListByIDsQueryQuery,
   GetCodeListByIDsQueryQueryVariables
 >;
-export const GetCodeInfoByCodeIdDocument = {
+export const GetCodeDataByCodeIdDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getCodeInfoByCodeId" },
+      name: { kind: "Name", value: "getCodeDataByCodeId" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -7953,8 +7953,8 @@ export const GetCodeInfoByCodeIdDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetCodeInfoByCodeIdQuery,
-  GetCodeInfoByCodeIdQueryVariables
+  GetCodeDataByCodeIdQuery,
+  GetCodeDataByCodeIdQueryVariables
 >;
 export const GetCodeListByWalletAddressPaginationDocument = {
   kind: "Document",

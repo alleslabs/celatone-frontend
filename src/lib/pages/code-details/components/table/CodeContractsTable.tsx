@@ -5,12 +5,8 @@ import { useEffect } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ContractsTable, TableTitle } from "lib/components/table";
-import { useContractStore } from "lib/providers/store";
-import {
-  useContractListByCodeIdPagination,
-  useContractListCountByCodeId,
-} from "lib/services/contractService";
-import type { ContractInfo, Option } from "lib/types";
+import { useCodeContracts } from "lib/model/contract";
+import { useContractListCountByCodeId } from "lib/services/contractService";
 
 import { NoContracts } from "./NoContracts";
 
@@ -20,8 +16,6 @@ interface CodeContractsTableProps {
 
 export const CodeContractsTable = observer(
   ({ codeId }: CodeContractsTableProps) => {
-    const { getContractLocalInfo } = useContractStore();
-
     const { data: totalData, refetch } = useContractListCountByCodeId(codeId);
     const {
       pagesQuantity,
@@ -39,13 +33,11 @@ export const CodeContractsTable = observer(
       },
     });
 
-    const { data: rawCodeContracts, isLoading } =
-      useContractListByCodeIdPagination(codeId, offset, pageSize);
-    const codeContracts: Option<ContractInfo[]> =
-      rawCodeContracts?.map<ContractInfo>((contract) => ({
-        ...contract,
-        ...getContractLocalInfo(contract.contractAddress),
-      }));
+    const { codeContracts, isLoading } = useCodeContracts(
+      codeId,
+      offset,
+      pageSize
+    );
 
     useEffect(() => {
       setCurrentPage(1);

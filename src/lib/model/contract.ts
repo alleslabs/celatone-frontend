@@ -11,6 +11,7 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
+  useContractListByCodeIdPagination,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
@@ -29,6 +30,8 @@ import type {
   ContractAddr,
   HumanAddr,
   ContractData,
+  ContractInfo,
+  Option,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
@@ -201,4 +204,21 @@ export const useContractDetailsTableCounts = (
     refetchTransactions,
     refetchRelatedProposals,
   };
+};
+
+export const useCodeContracts = (
+  codeId: number,
+  offset: number,
+  pageSize: number
+) => {
+  const { getContractLocalInfo } = useContractStore();
+  const { data: rawCodeContracts, isLoading } =
+    useContractListByCodeIdPagination(codeId, offset, pageSize);
+  const codeContracts: Option<ContractInfo[]> =
+    rawCodeContracts?.map<ContractInfo>((contract) => ({
+      ...contract,
+      ...getContractLocalInfo(contract.contractAddress),
+    }));
+
+  return { codeContracts, isLoading };
 };

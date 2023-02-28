@@ -88,7 +88,7 @@ export const useContractsAdmin = (
   };
 };
 
-export const useStoredCodes = (
+export const useAccountCodes = (
   walletAddress: HumanAddr,
   offset: number,
   pageSize: number

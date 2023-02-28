@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { IoList } from "react-icons/io5";
 
-import { useCodeListData } from "lib/pages/codes/data";
+import { useSavedCodes, useStoredCodes } from "lib/model/code";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { MySavedCodeContent } from "./MySavedCodeContent";
@@ -31,7 +31,8 @@ export const CodeSelectModalButton = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const { storedCodes, savedCodes } = useCodeListData();
+  const { storedCodes } = useStoredCodes();
+  const { savedCodes } = useSavedCodes();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
