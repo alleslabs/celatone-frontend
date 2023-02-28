@@ -54,6 +54,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
     queryFn,
     enabled: !!txHash,
     refetchOnWindowFocus: false,
+    retry: false,
   });
 };
 

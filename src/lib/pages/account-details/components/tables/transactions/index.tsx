@@ -89,7 +89,7 @@ const TransactionsTableBody = ({
         borderColor="pebble.700"
       >
         <EmptyState
-          image="https://assets.alleslabs.dev/illustration/search-empty.svg"
+          imageVariant="empty"
           message="No past transaction matches found with your input."
         />
       </Flex>

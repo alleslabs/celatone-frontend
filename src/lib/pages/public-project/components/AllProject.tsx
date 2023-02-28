@@ -56,7 +56,7 @@ export const AllProject = observer(() => {
     return (
       <Flex flexDirection="column" alignItems="center">
         <EmptyState
-          image="https://assets.alleslabs.dev/illustration/search-empty.svg"
+          imageVariant="empty"
           message="We are currently gathering public projects to feature here. If you would like to share your project with the community, please submit your request."
         />
         <Link
@@ -87,7 +87,7 @@ export const AllProject = observer(() => {
       {!filteredPublicProjects.length ? (
         <EmptyState
           message="None of your lists matches this search."
-          image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+          imageVariant="not-found"
         />
       ) : (
         <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={4} w="full">
