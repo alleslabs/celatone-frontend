@@ -7,7 +7,7 @@ import {
   getExplorerTxUrl,
   getProposalUrl,
 } from "lib/app-fns/explorer";
-import type { AddressReturnType } from "lib/hooks";
+import type { AddressReturnType } from "lib/app-provider";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
 

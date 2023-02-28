@@ -21,7 +21,7 @@ import {
   MdPerson,
 } from "react-icons/md";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useGetAddressType } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
@@ -37,7 +37,6 @@ import {
   TableRowNoBorder,
   TagsCell,
 } from "lib/components/table";
-import { useGetAddressType } from "lib/hooks";
 import { useAdminByContractAddresses } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";

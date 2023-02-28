@@ -2,8 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
-import { useGetAddressType } from "lib/hooks";
+import { useCelatoneApp, useGetAddressType } from "lib/app-provider";
 import type {
   TxFilters,
   Message,

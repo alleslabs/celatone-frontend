@@ -1,9 +1,9 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
+import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow, CodeNameCell } from "lib/components/table";
-import { useGetAddressType } from "lib/hooks";
 import type { ContractMigrationHistory } from "lib/types";
 import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";

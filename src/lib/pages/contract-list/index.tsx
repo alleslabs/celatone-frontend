@@ -5,8 +5,9 @@ import { useEffect } from "react";
 import { MdOutlineAdd } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { CreateNewListModal, AllContractLists } from "lib/components/modal";
+import { CreateNewListModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
+import { AllContractLists } from "lib/components/select-contract";
 import { useInstantiatedMockInfoByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

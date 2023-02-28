@@ -2,13 +2,12 @@ import { Flex, Text, Grid, IconButton, Box, chakra } from "@chakra-ui/react";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
 import { TableRow } from "../tableComponents";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherListModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
-import { useGetAddressType } from "lib/hooks";
 import type { ContractInfo } from "lib/types";
 import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
