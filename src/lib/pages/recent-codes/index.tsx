@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { FilterByPermission } from "lib/components/forms/FilterByPermission";
+import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import type { PermissionFilterValue } from "lib/hooks";
 import CodesTable from "lib/pages/codes/components/CodesTable";

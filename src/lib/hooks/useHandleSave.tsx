@@ -1,9 +1,9 @@
 import { useToast } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { useContractStore } from "lib/providers/store";
 import type { Addr, ContractAddr, LVPair, Option } from "lib/types";
 
-import { useContractStore } from "./store";
 import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {

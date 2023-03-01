@@ -3,13 +3,14 @@ import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useExecuteCmds, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
+import { useExecuteCmds } from "lib/hooks";
 import { AmpTrackToExecute } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import {

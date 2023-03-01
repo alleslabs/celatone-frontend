@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, getAddressTypeByLength } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
@@ -19,7 +19,6 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import { TableRowNoBorder } from "lib/components/table";
-import { getAddressTypeByLength } from "lib/hooks";
 
 import type { PublicContractInfo } from "./PublicProjectContractTable";
 

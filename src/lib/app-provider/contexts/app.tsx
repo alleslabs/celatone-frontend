@@ -15,7 +15,7 @@ import {
   useCodeStore,
   useContractStore,
   usePublicProjectStore,
-} from "lib/hooks";
+} from "lib/providers/store";
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
 

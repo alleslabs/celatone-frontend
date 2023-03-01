@@ -4,8 +4,8 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp } from "lib/app-provider";
-import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
+import { useCelatoneApp, useLCDEndpoint, useMobile } from "lib/app-provider";
+import { useContractStore } from "lib/providers/store";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
@@ -16,7 +16,7 @@ import { EditContractDetailsModal, SaveContractDetailsModal } from "./modal";
 import {
   SelectContractAdmin,
   SelectContractInstantiator,
-} from "./modal/select-contract";
+} from "./select-contract";
 
 interface DisplayNameProps {
   notSelected: boolean;

@@ -3,10 +3,20 @@ import { Flex, Text, Image } from "@chakra-ui/react";
 interface EmptyStateProps {
   image?: string;
   message: string;
+  withBorder?: boolean;
 }
 
-export const EmptyState = ({ message, image }: EmptyStateProps) => {
-  return (
+export const EmptyState = ({
+  message,
+  image,
+  withBorder = false,
+}: EmptyStateProps) => (
+  <Flex
+    py="64px"
+    direction="column"
+    borderY={withBorder ? "1px solid" : undefined}
+    borderColor="pebble.700"
+  >
     <Flex alignItems="center" flexDir="column" gap="4" width="full">
       {image && (
         <Image
@@ -19,5 +29,5 @@ export const EmptyState = ({ message, image }: EmptyStateProps) => {
         {message}
       </Text>
     </Flex>
-  );
-};
+  </Flex>
+);

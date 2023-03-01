@@ -2,9 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { Loading } from "lib/components/Loading";
-import { DisconnectedState } from "lib/components/state/DisconnectedState";
-import { EmptyState } from "lib/components/state/EmptyState";
-import type { PastTransaction, Option } from "lib/types";
+import { DisconnectedState, EmptyState } from "lib/components/state";
+import type { Option, Transaction } from "lib/types";
 
 import { PastTxRow } from "./PastTxRow";
 import { PastTxsTableHeader } from "./PastTxsTableHeader";
@@ -14,7 +13,7 @@ interface PastTxsContentProps {
   txDataError: unknown;
   input: string;
   filterSelected: string[];
-  txData: Option<PastTransaction[]>;
+  txData: Option<Transaction[]>;
 }
 export const PastTxsContent = ({
   isLoading,

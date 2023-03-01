@@ -59,8 +59,8 @@ export const getCodeListByIDsQueryDocument = graphql(`
   }
 `);
 
-export const getCodeInfoByCodeId = graphql(`
-  query getCodeInfoByCodeId($codeId: Int!) {
+export const getCodeDataByCodeId = graphql(`
+  query getCodeDataByCodeId($codeId: Int!) {
     codes_by_pk(id: $codeId) {
       id
       account {

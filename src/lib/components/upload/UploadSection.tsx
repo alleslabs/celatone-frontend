@@ -13,7 +13,7 @@ import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ControllerInput } from "lib/components/forms";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
-import { useCodeStore } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";

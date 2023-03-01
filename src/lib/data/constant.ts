@@ -48,7 +48,7 @@ export const getListIcon = (listName: string) => {
     case SAVED_LIST_NAME:
       return "bookmark-solid" as keyof typeof ICONS;
     default:
-      return "contractList" as keyof typeof ICONS;
+      return "contract-list" as keyof typeof ICONS;
   }
 };
 

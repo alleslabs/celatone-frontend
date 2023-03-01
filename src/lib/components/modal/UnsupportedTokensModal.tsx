@@ -15,12 +15,12 @@ import {
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
-import { Copier } from "../Copier";
 import { ExplorerLink } from "../ExplorerLink";
 import type { ICONS } from "../icon/CustomIcon";
 import { CustomIcon } from "../icon/CustomIcon";
-import type { AddressReturnType } from "lib/hooks";
-import { getAddressTypeByLength } from "lib/hooks";
+import { getAddressTypeByLength } from "lib/app-provider";
+import type { AddressReturnType } from "lib/app-provider";
+import { Copier } from "lib/components/copy";
 import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
 import {
   getTokenType,

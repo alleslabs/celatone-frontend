@@ -1,17 +1,18 @@
-import { Button, Flex, Icon } from "@chakra-ui/react";
-import { MdExpandMore } from "react-icons/md";
+import { Button, Flex } from "@chakra-ui/react";
+
+import { CustomIcon } from "../icon/CustomIcon";
 
 interface ViewMoreProps {
   onClick: () => void;
 }
 
 export const ViewMore = ({ onClick }: ViewMoreProps) => (
-  <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
+  <Flex w="full" justifyContent="center" textAlign="center">
     <Button
       size="sm"
       variant="ghost"
       color="text.dark"
-      rightIcon={<Icon as={MdExpandMore} boxSize={4} />}
+      rightIcon={<CustomIcon name="chevron-down" />}
       onClick={onClick}
     >
       View More

@@ -3,9 +3,8 @@ import { observer } from "mobx-react-lite";
 
 import { InstantiateButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
-import { RemoveCodeModal } from "lib/components/modal/code/RemoveCode";
-import { SaveOrEditCodeModal } from "lib/components/modal/code/SaveOrEditCode";
-import { useCodeStore } from "lib/hooks";
+import { RemoveCodeModal, SaveOrEditCodeModal } from "lib/components/modal";
+import { useCodeStore } from "lib/providers/store";
 import type { CodeInfo } from "lib/types";
 
 export const CTASection = observer((codeInfo: CodeInfo) => {

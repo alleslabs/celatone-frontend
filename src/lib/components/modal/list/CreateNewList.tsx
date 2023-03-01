@@ -3,12 +3,13 @@ import { Button, useToast, Box } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
+import { ActionModal } from "../ActionModal";
 import type { FormStatus } from "lib/components/forms";
-import { TextInput } from "lib/components/forms/TextInput";
+import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
-import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { shortenName } from "lib/utils";
 

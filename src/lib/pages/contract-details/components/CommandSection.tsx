@@ -1,12 +1,9 @@
 import { ButtonGroup, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import {
-  useExecuteCmds,
-  useInternalNavigate,
-  useQueryCmds,
-} from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
+import { useExecuteCmds, useQueryCmds } from "lib/hooks";
 import type { ContractAddr } from "lib/types";
 import { encode, getFirstQueryParam, jsonPrettify } from "lib/utils";
 

@@ -4,15 +4,14 @@ import { useEffect, useState } from "react";
 import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
-import { TableRow } from "lib/components/table";
-import { AccordionTx } from "lib/components/table/AccordionTx";
-import type { PastTransaction } from "lib/types";
+import { TableRow, AccordionTx } from "lib/components/table";
+import type { Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { FurtherActionButton } from "./FurtherActionButton";
 
 interface PastTxRowProps {
-  transaction: PastTransaction;
+  transaction: Transaction;
   templateColumnsStyle: string;
 }
 

@@ -17,12 +17,15 @@ import { useEffect } from "react";
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
-import { SaveNewContractModal } from "lib/components/modal/contract";
-import { EditListNameModal, RemoveListModal } from "lib/components/modal/list";
-import { ContractListDetail } from "lib/components/modal/select-contract";
+import {
+  EditListNameModal,
+  RemoveListModal,
+  SaveNewContractModal,
+} from "lib/components/modal";
+import { ContractListDetail } from "lib/components/select-contract";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
-import { useContractStore } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 

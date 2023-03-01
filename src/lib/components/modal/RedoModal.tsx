@@ -15,7 +15,7 @@ import {
 import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon/CustomIcon";
-import { useRedo } from "lib/pages/past-txs/hooks/useRedo";
+import { useRedo } from "lib/hooks";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
@@ -30,16 +30,15 @@ export const RedoModal = ({ message }: RedoModalProps) => {
 
   return (
     <>
-      <Flex onClick={onOpen}>
-        <Button
-          leftIcon={<CustomIcon name="redo" />}
-          variant="outline"
-          iconSpacing="2"
-          size="sm"
-        >
-          Redo
-        </Button>
-      </Flex>
+      <Button
+        leftIcon={<CustomIcon name="redo" />}
+        variant="outline"
+        iconSpacing="2"
+        size="sm"
+        onClick={onOpen}
+      >
+        Redo
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent w="640px">

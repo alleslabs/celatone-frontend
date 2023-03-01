@@ -22,7 +22,7 @@ import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 import JsonInput from "lib/components/json/JsonInput";
-import { useContractStore } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";

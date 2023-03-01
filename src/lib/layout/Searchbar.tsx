@@ -11,9 +11,8 @@ import {
 import type { ChangeEvent, KeyboardEvent } from "react";
 import { useRef, useEffect, useState } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useValidateAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
-import { useValidateAddress } from "lib/hooks";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
 import { isCodeId, isTxHash } from "lib/utils";
 

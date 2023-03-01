@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
-import { useContractStore, usePublicProjectStore } from "lib/hooks";
+import { useContractStore, usePublicProjectStore } from "lib/providers/store";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";
 

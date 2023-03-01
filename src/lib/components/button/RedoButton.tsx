@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon/CustomIcon";
-import { useRedo } from "lib/pages/past-txs/hooks/useRedo";
+import { useRedo } from "lib/hooks/useRedo";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 

@@ -1,21 +1,26 @@
-import { useChainId, useContractStore } from "lib/hooks";
-import { useCodeInfoByCodeId } from "lib/services/codeService";
+import { useWallet } from "@cosmos-kit/react";
+
+import { useChainId } from "lib/app-provider";
+import { useUserKey } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import {
-  useContractListByCodeIdPagination,
-  useContractListCountByCodeId,
-} from "lib/services/contractService";
+  useCodeDataByCodeId,
+  useCodeListByCodeIds,
+  useCodeListByWalletAddress,
+} from "lib/services/codeService";
 import {
   usePublicProjectByCodeId,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   CodeData,
-  ContractInstances,
   PublicDetail,
   Option,
   PublicCodeData,
+  HumanAddr,
+  CodeInfo,
 } from "lib/types";
+import { InstantiatePermission } from "lib/types";
 
 export interface CodeDataState {
   isLoading: boolean;
@@ -28,7 +33,7 @@ export interface CodeDataState {
 }
 
 export const useCodeData = (codeId: number): CodeDataState => {
-  const { data: codeInfo, isLoading } = useCodeInfoByCodeId(codeId);
+  const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug
@@ -47,28 +52,44 @@ export const useCodeData = (codeId: number): CodeDataState => {
   };
 };
 
-export const useCodeContractInstances = (
-  codeId: number,
-  offset: number,
-  pageSize: number
-): ContractInstances => {
-  const { data: contractList } = useContractListByCodeIdPagination(
-    codeId,
-    offset,
-    pageSize
+export const useStoredCodes = () => {
+  const { address } = useWallet();
+  const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
+
+  const { data: rawStoredCodes, isLoading } = useCodeListByWalletAddress(
+    address as HumanAddr
   );
-  const { data: count } = useContractListCountByCodeId(codeId);
-  const { getContractLocalInfo } = useContractStore();
-  const data = contractList?.map((contract) => {
-    const contractLocalInfo = getContractLocalInfo(contract.contractAddress);
+
+  const storedCodes =
+    rawStoredCodes?.map<CodeInfo>((code) => ({
+      ...code,
+      name: getCodeLocalInfo(code.id)?.name,
+      isSaved: isCodeIdSaved(code.id),
+    })) ?? [];
+
+  return { storedCodes, isLoading };
+};
+
+export const useSavedCodes = () => {
+  const userKey = useUserKey();
+  const { lastSavedCodes, lastSavedCodeIds } = useCodeStore();
+
+  const savedCodeIds = lastSavedCodeIds(userKey);
+  const { data: rawSavedCodes, isLoading } = useCodeListByCodeIds(savedCodeIds);
+
+  const savedCodes = lastSavedCodes(userKey).map<CodeInfo>((localSavedCode) => {
+    const rawSavedCode = rawSavedCodes?.find(
+      (savedCode) => savedCode.id === localSavedCode.id
+    );
     return {
-      ...contractLocalInfo,
-      ...contract,
-    } as ContractLocalInfo;
+      ...localSavedCode,
+      contractCount: rawSavedCode?.contractCount,
+      instantiatePermission:
+        rawSavedCode?.instantiatePermission ?? InstantiatePermission.UNKNOWN,
+      permissionAddresses: rawSavedCode?.permissionAddresses ?? [],
+      isSaved: true,
+    };
   });
 
-  return {
-    contractList: data,
-    count,
-  };
+  return { savedCodes, isLoading };
 };

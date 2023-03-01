@@ -40,47 +40,45 @@ export const TextInput = ({
   status,
   maxLength,
   ...componentProps
-}: TextInputProps) => {
+}: TextInputProps) => (
   // Design system size: md = 40px, lg = 56px
-  return (
-    <FormControl
-      isInvalid={!!error || status?.state === "error"}
-      size={size}
-      {...componentProps}
-    >
-      {label && (
-        <FormLabel className={`${size}-label`} backgroundColor={labelBgColor}>
-          {label}
-        </FormLabel>
-      )}
+  <FormControl
+    isInvalid={!!error || status?.state === "error"}
+    size={size}
+    {...componentProps}
+  >
+    {label && (
+      <FormLabel className={`${size}-label`} backgroundColor={labelBgColor}>
+        {label}
+      </FormLabel>
+    )}
 
-      <InputGroup>
-        <Input
-          size={size}
-          placeholder={placeholder}
-          type={type}
-          value={value}
-          pr={status && "36px"}
-          onChange={(e) => setInputState(e.target.value)}
-          maxLength={maxLength}
-        />
-        <InputRightElement h="full">
-          {status && getStatusIcon(status.state, "20px")}
-        </InputRightElement>
-      </InputGroup>
-      <Flex gap={1} alignItems="center" mt={1} flexDir="row">
-        {error ? (
-          <FormErrorMessage className="error-text">{error}</FormErrorMessage>
-        ) : (
-          <FormHelperText className="helper-text">
-            {status?.message ? (
-              getResponseMsg(status, helperText)
-            ) : (
-              <Text color="text.dark">{helperText}</Text>
-            )}
-          </FormHelperText>
-        )}
-      </Flex>
-    </FormControl>
-  );
-};
+    <InputGroup>
+      <Input
+        size={size}
+        placeholder={placeholder}
+        type={type}
+        value={value}
+        pr={status && "36px"}
+        onChange={(e) => setInputState(e.target.value)}
+        maxLength={maxLength}
+      />
+      <InputRightElement h="full">
+        {status && getStatusIcon(status.state, "20px")}
+      </InputRightElement>
+    </InputGroup>
+    <Flex gap={1} alignItems="center" mt={1} flexDir="row">
+      {error ? (
+        <FormErrorMessage className="error-text">{error}</FormErrorMessage>
+      ) : (
+        <FormHelperText className="helper-text">
+          {status?.message ? (
+            getResponseMsg(status, helperText)
+          ) : (
+            <Text color="text.dark">{helperText}</Text>
+          )}
+        </FormHelperText>
+      )}
+    </Flex>
+  </FormControl>
+);

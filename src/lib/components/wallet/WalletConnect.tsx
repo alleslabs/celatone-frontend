@@ -13,21 +13,19 @@ export const ConnectWalletButton = ({
   onClickConnectBtn,
   iconColor = "text.main",
   variant,
-}: ConnectWalletType) => {
-  return (
-    <Button
-      w="170px"
-      isLoading={isLoading}
-      isDisabled={isDisabled}
-      onClick={onClickConnectBtn}
-      variant={variant}
-      gap="1"
-    >
-      <CustomIcon name="connect" color={iconColor} />
-      {buttonText || "Connect"}
-    </Button>
-  );
-};
+}: ConnectWalletType) => (
+  <Button
+    w="170px"
+    isLoading={isLoading}
+    isDisabled={isDisabled}
+    onClick={onClickConnectBtn}
+    variant={variant}
+    gap="1"
+  >
+    <CustomIcon name="connect" color={iconColor} />
+    {buttonText || "Connect"}
+  </Button>
+);
 
 export const Connected = ({
   buttonText,
@@ -41,17 +39,15 @@ export const Connected = ({
   icon?: keyof typeof ICONS;
   variant?: string;
   iconColor?: string;
-}) => {
-  return (
-    <ConnectWalletButton
-      buttonText={buttonText}
-      onClickConnectBtn={onClick}
-      icon={icon}
-      iconColor={iconColor}
-      variant={variant}
-    />
-  );
-};
+}) => (
+  <ConnectWalletButton
+    buttonText={buttonText}
+    onClickConnectBtn={onClick}
+    icon={icon}
+    iconColor={iconColor}
+    variant={variant}
+  />
+);
 
 export const Disconnected = (props: {
   buttonText: string;
@@ -59,9 +55,7 @@ export const Disconnected = (props: {
   onClick: MouseEventHandler<HTMLButtonElement>;
 }) => <Connected {...props} />;
 
-export const Connecting = () => {
-  return <ConnectWalletButton isLoading />;
-};
+export const Connecting = () => <ConnectWalletButton isLoading />;
 
 // For Rejected, NotExist or Error
 export const Others = ({
@@ -70,15 +64,13 @@ export const Others = ({
 }: {
   buttonText: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
-}) => {
-  return (
-    <ConnectWalletButton
-      buttonText={buttonText}
-      isDisabled={false}
-      onClickConnectBtn={onClick}
-    />
-  );
-};
+}) => (
+  <ConnectWalletButton
+    buttonText={buttonText}
+    isDisabled={false}
+    onClickConnectBtn={onClick}
+  />
+);
 
 export const WalletConnectComponent = ({
   walletStatus,

@@ -13,8 +13,8 @@ interface SaveOrEditCodeModalProps {
 }
 
 export const SaveOrEditCodeModal = observer(
-  ({ mode, codeInfo }: SaveOrEditCodeModalProps) => {
-    return mode === "save" ? (
+  ({ mode, codeInfo }: SaveOrEditCodeModalProps) =>
+    mode === "save" ? (
       <SaveCodeDetailsModal
         codeInfo={codeInfo}
         triggerElement={
@@ -35,6 +35,5 @@ export const SaveOrEditCodeModal = observer(
           </Button>
         }
       />
-    );
-  }
+    )
 );

@@ -1,16 +1,9 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 import type { PermissionFilterValue } from "lib/hooks";
-import {
-  useUserKey,
-  useCodeStore,
-  usePermissionFilter,
-  useSearchFilter,
-} from "lib/hooks";
-import { useCodeListPageQuery } from "lib/services/codeService";
-import type { CodeInfo, HumanAddr } from "lib/types";
-import { InstantiatePermission } from "lib/types";
+import { usePermissionFilter, useSearchFilter } from "lib/hooks";
+import { useSavedCodes, useStoredCodes } from "lib/model/code";
+import type { CodeInfo } from "lib/types";
 
 interface CodeListData {
   savedCodes: CodeInfo[];
@@ -26,65 +19,28 @@ export const useCodeListData = (
   keyword?: string,
   permissionValue?: PermissionFilterValue
 ): CodeListData => {
-  const { address } = useWallet();
-  const userKey = useUserKey();
-  const { getCodeLocalInfo, lastSavedCodes, lastSavedCodeIds, isCodeIdSaved } =
-    useCodeStore();
-
   const permissionFilterFn = usePermissionFilter(permissionValue);
   const searchFilterFn = useSearchFilter(keyword);
 
-  const savedCodeIds = lastSavedCodeIds(userKey);
+  const { storedCodes, isLoading: isStoredCodesLoading } = useStoredCodes();
+  const { savedCodes, isLoading: isSavedCodesLoading } = useSavedCodes();
 
-  const [
-    { data: rawStoredCodes = [], isLoading: isStoredCodesLoading },
-    { data: querySavedCodeInfos = [], isLoading: isSavedCodesLoading },
-  ] = useCodeListPageQuery({
-    walletAddr: address as HumanAddr,
-    ids: savedCodeIds,
-  });
-
-  const savedCodes = lastSavedCodes(userKey)?.map<CodeInfo>(
-    (localSavedCode) => {
-      const querySavedCodeInfo = querySavedCodeInfos.find(
-        (savedCode) => savedCode.id === localSavedCode.id
-      );
-      return {
-        ...localSavedCode,
-        contractCount: querySavedCodeInfo?.contractCount,
-        instantiatePermission:
-          querySavedCodeInfo?.instantiatePermission ??
-          InstantiatePermission.UNKNOWN,
-        permissionAddresses: querySavedCodeInfo?.permissionAddresses ?? [],
-        isSaved: true,
-      };
-    }
-  );
-
-  const savedCodesCount = savedCodes.length;
-
-  const storedCodes = rawStoredCodes.map<CodeInfo>((code) => {
-    return {
-      ...code,
-      name: getCodeLocalInfo(code.id)?.name,
-      isSaved: isCodeIdSaved(code.id),
-    };
-  });
-
-  const storedCodesCount = storedCodes.length;
-
-  const [filteredSavedCodes, filteredStoredCodes] = useMemo(() => {
-    return [
+  const [filteredSavedCodes, filteredStoredCodes] = useMemo(
+    () => [
       savedCodes.filter(permissionFilterFn).filter(searchFilterFn),
       storedCodes.filter(permissionFilterFn).filter(searchFilterFn),
-    ];
-  }, [savedCodes, storedCodes, permissionFilterFn, searchFilterFn]);
+    ],
+    [savedCodes, storedCodes, permissionFilterFn, searchFilterFn]
+  );
+
+  const storedCodesCount = storedCodes.length;
+  const savedCodesCount = savedCodes.length;
 
   return {
-    savedCodes: filteredSavedCodes,
     storedCodes: filteredStoredCodes,
-    savedCodesCount,
+    savedCodes: filteredSavedCodes,
     storedCodesCount,
+    savedCodesCount,
     allCodesCount: storedCodesCount + savedCodesCount,
     isStoredCodesLoading,
     isSavedCodesLoading,

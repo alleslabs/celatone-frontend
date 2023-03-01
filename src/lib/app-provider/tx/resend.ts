@@ -8,6 +8,7 @@ import type { HumanAddr } from "lib/types";
 
 export interface ResendStreamParams {
   onTxSucceed?: (txHash: string) => void;
+  onTxFailed?: () => void;
   estimatedFee?: StdFee;
   messages: EncodeObject[];
 }
@@ -16,7 +17,12 @@ export const useResendTx = () => {
   const { address, getCosmWasmClient } = useWallet();
 
   return useCallback(
-    async ({ onTxSucceed, estimatedFee, messages }: ResendStreamParams) => {
+    async ({
+      onTxSucceed,
+      onTxFailed,
+      estimatedFee,
+      messages,
+    }: ResendStreamParams) => {
       const client = await getCosmWasmClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
@@ -25,6 +31,7 @@ export const useResendTx = () => {
         address: address as HumanAddr,
         client,
         onTxSucceed,
+        onTxFailed,
         fee: estimatedFee,
         messages,
       });

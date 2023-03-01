@@ -104,14 +104,3 @@ export interface DetailMigrate {
   msg: object;
   sender: Addr;
 }
-
-export interface TxFilters {
-  isExecute: boolean;
-  isInstantiate: boolean;
-  isUpload: boolean;
-  isIbc: boolean;
-  isSend: boolean;
-  isMigrate: boolean;
-  isUpdateAdmin: boolean;
-  isClearAdmin: boolean;
-}

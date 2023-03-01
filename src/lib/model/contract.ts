@@ -1,14 +1,9 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useChainId, useLCDEndpoint } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import {
-  useChainId,
-  useCodeStore,
-  useContractStore,
-  useLCDEndpoint,
-} from "lib/hooks";
+import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
 import {
   queryContractCw2Info,
@@ -16,6 +11,7 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
+  useContractListByCodeIdPagination,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
@@ -34,6 +30,8 @@ import type {
   ContractAddr,
   HumanAddr,
   ContractData,
+  ContractInfo,
+  Option,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
@@ -206,4 +204,22 @@ export const useContractDetailsTableCounts = (
     refetchTransactions,
     refetchRelatedProposals,
   };
+};
+
+export const useContractsByCodeId = (
+  codeId: number,
+  offset: number,
+  pageSize: number
+) => {
+  const { getContractLocalInfo } = useContractStore();
+  const { data: rawCodeContracts, isLoading } =
+    useContractListByCodeIdPagination(codeId, offset, pageSize);
+  const contracts: Option<ContractInfo[]> = rawCodeContracts?.map<ContractInfo>(
+    (contract) => ({
+      ...contract,
+      ...getContractLocalInfo(contract.contractAddress),
+    })
+  );
+
+  return { contracts, isLoading };
 };

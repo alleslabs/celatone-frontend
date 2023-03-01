@@ -16,20 +16,18 @@ const InputWithIcon = ({
   value,
   size,
   onChange,
-}: InputWithIconProps) => {
-  return (
-    <InputGroup>
-      <Input
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        size={size}
-      />
-      <InputRightElement h="56px" alignItems="center" mr="1">
-        <CustomIcon name="search" />
-      </InputRightElement>
-    </InputGroup>
-  );
-};
+}: InputWithIconProps) => (
+  <InputGroup>
+    <Input
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      size={size}
+    />
+    <InputRightElement h="56px" alignItems="center" mr="1">
+      <CustomIcon name="search" />
+    </InputRightElement>
+  </InputGroup>
+);
 
 export default InputWithIcon;
