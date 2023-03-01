@@ -1,4 +1,12 @@
-import { Box, SimpleGrid, Flex, Button, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  SimpleGrid,
+  Flex,
+  Button,
+  Icon,
+  Link,
+  Text,
+} from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
@@ -8,6 +16,7 @@ import { TextInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { usePublicProjectStore } from "lib/hooks";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { usePublicProjects } from "lib/services/publicProjectService";
 import type { PublicProjectInfo } from "lib/types";
 
@@ -47,13 +56,20 @@ export const AllProject = observer(() => {
     return (
       <Flex flexDirection="column" alignItems="center">
         <EmptyState
-          image="https://assets.alleslabs.dev/illustration/search-empty.svg"
+          imageVariant="empty"
           message="We are currently gathering public projects to feature here. If you would like to share your project with the community, please submit your request."
         />
-        <Button gap={2} mt={8}>
-          <Icon as={BsGithub} />
-          Submit on Github
-        </Button>
+        <Link
+          href="https://github.com/alleslabs/celatone-api"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => AmpTrack(AmpEvent.USE_SUBMIT_PROJECT)}
+        >
+          <Button gap={2} mt={8}>
+            <Icon as={BsGithub} />
+            Submit on Github
+          </Button>
+        </Link>
       </Flex>
     );
 
@@ -71,10 +87,10 @@ export const AllProject = observer(() => {
       {!filteredPublicProjects.length ? (
         <EmptyState
           message="None of your lists matches this search."
-          image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+          imageVariant="not-found"
         />
       ) : (
-        <SimpleGrid columns={{ sm: 1, md: 3, xl: 4 }} spacing={4} w="full">
+        <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={4} w="full">
           {filteredPublicProjects.map((item) => (
             <PublicProjectCard
               key={item.slug}
@@ -84,6 +100,19 @@ export const AllProject = observer(() => {
           ))}
         </SimpleGrid>
       )}
+      <Flex justifyContent="center" gap="2" w="100%" mt="64px">
+        <Text color="text.dark" variant="body2">
+          Want your project here?
+        </Text>
+        <Link
+          href="https://github.com/alleslabs/celatone-api"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => AmpTrack(AmpEvent.USE_SUBMIT_PROJECT)}
+        >
+          Submit on Github
+        </Link>
+      </Flex>
     </Box>
   );
 });

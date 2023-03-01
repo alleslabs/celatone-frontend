@@ -13,7 +13,7 @@ export interface TxErrorRendering {
 
 export interface TxReceipt {
   title: string;
-  value?: string;
+  value?: string | number;
   html?: ReactNode;
 }
 

@@ -12,7 +12,7 @@ const JsonEditor = dynamic(() => import("./JsonEditor"), {
 
 interface JsonInputProps {
   topic?: string;
-  text: string;
+  text?: string;
   setText: (value: string) => void;
   height?: LayoutProps["height"];
 }
@@ -60,7 +60,7 @@ const getResponse = (jsonState: JsonState) => {
   }
 };
 
-const JsonInput = ({ topic, text, setText, height }: JsonInputProps) => {
+const JsonInput = ({ topic, text = "", setText, height }: JsonInputProps) => {
   const [jsonState, setJsonState] = useState<JsonState>({ state: "empty" });
 
   const handleOnChange = (value: string) => {
@@ -85,7 +85,6 @@ const JsonInput = ({ topic, text, setText, height }: JsonInputProps) => {
   return (
     <>
       <Box
-        mt="8px"
         p="16px 12px"
         borderWidth="thin"
         borderColor="pebble.700"

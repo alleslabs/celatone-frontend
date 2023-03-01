@@ -40,6 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#224](https://github.com/alleslabs/celatone-frontend/pull/224) Support search by tx and internal tx link
+- [#226](https://github.com/alleslabs/celatone-frontend/pull/226) Add fully functional transaction details page
+- [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and wireup up json attach funds
+- [#225](https://github.com/alleslabs/celatone-frontend/pull/225) Add assets section in account details page
+- [#220](https://github.com/alleslabs/celatone-frontend/pull/220) Add transactions table for account details page
+- [#222](https://github.com/alleslabs/celatone-frontend/pull/222) Add proposals of an account
+- [#221](https://github.com/alleslabs/celatone-frontend/pull/221) Add codes of an account
+- [#223](https://github.com/alleslabs/celatone-frontend/pull/223) Newer version of token card and format mechanism
 - [#214](https://github.com/alleslabs/celatone-frontend/pull/214) Show code permission helper text in save new code modal
 - [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated and admin contracts of an account
 - [#192](https://github.com/alleslabs/celatone-frontend/pull/192) Add alternative sidebar with only icons
@@ -47,14 +54,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
 - [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
 
-### Bug fixes
+### Improvements
 
--[#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
-
+- [#207](https://github.com/alleslabs/celatone-frontend/pull/207) Add cta to submit public project in list page
 - [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
 
 ### Bug fixes
 
+- [#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
 - [#217](https://github.com/alleslabs/celatone-frontend/pull/217) Fix state reset in Save New Code modal and no permission in migration
 
 ## v1.0.1

@@ -44,7 +44,7 @@ export const AllContractLists = ({
       {filteredContractLists.length === 0 ? (
         <EmptyState
           message="None of your lists matches this search."
-          image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+          imageVariant="not-found"
         />
       ) : (
         <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={4} w="full">

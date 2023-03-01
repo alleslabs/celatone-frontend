@@ -1,4 +1,4 @@
-import type { LayoutProps } from "@chakra-ui/react";
+import type { BoxProps, LayoutProps } from "@chakra-ui/react";
 import { Text, Box } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
@@ -18,6 +18,8 @@ interface JsonReadOnlyProps {
   topic?: string;
   text: string;
   height?: LayoutProps["height"];
+  width?: BoxProps["width"];
+  margin?: BoxProps["margin"];
   canCopy?: boolean;
   canViewFull?: boolean;
   disableResizing?: boolean;
@@ -27,6 +29,8 @@ const JsonReadOnly = ({
   topic,
   text,
   height,
+  width,
+  margin = "8px 0 16px",
   canCopy,
   canViewFull,
   disableResizing,
@@ -40,7 +44,8 @@ const JsonReadOnly = ({
   const zeroHeight = height === 0;
   return (
     <Box
-      m={zeroHeight ? 0 : "8px 0 16px"}
+      w={width}
+      m={zeroHeight ? 0 : margin}
       p={
         zeroHeight
           ? 0

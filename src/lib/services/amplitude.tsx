@@ -1,5 +1,7 @@
 import { track } from "@amplitude/analytics-browser";
 
+import type { AttachFundsType } from "lib/components/fund/types";
+
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
   // CODE
@@ -76,6 +78,7 @@ export enum AmpEvent {
   USE_QUICK_EDIT_CONTRACT = "Use Quick Edit Contract",
   USE_QUICK_EDIT_CODE = "Use Quick Edit Code",
   USE_OTHER_MODAL = "Use Other Modal",
+  USE_SUBMIT_PROJECT = "Use Submit Project",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -113,8 +116,11 @@ export const AmpTrack = (
   event: Exclude<AmpEvent, ActionAmpEvent | SpecialAmpEvent>
 ) => track(event);
 
-export const AmpTrackAction = (event: ActionAmpEvent, funds: number) =>
-  track(event, { funds });
+export const AmpTrackAction = (
+  event: ActionAmpEvent,
+  funds: number,
+  attachFundsOption: AttachFundsType
+) => track(event, { funds, attachFundsOption });
 
 export const AmpTrackToQuery = (contract: boolean, msg: boolean) =>
   track(AmpEvent.TO_QUERY, { contract, msg });

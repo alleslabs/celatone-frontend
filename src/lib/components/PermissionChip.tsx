@@ -28,6 +28,7 @@ export const PermissionChip = ({
   const { address } = useWallet();
 
   const isAllowed =
+    permissionAddresses === (address as HumanAddr) ||
     permissionAddresses.includes(address as HumanAddr) ||
     instantiatePermission === InstantiatePermission.EVERYBODY;
 

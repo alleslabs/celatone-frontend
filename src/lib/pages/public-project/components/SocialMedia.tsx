@@ -43,7 +43,13 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
           onClick={() => AmpTrackWebsite(details.website)}
         />
       )}
-      {details.github && <IconButton href={details.github} icon={FaGithub} />}
+      {details.github && (
+        <IconButton
+          href={details.github}
+          icon={FaGithub}
+          onClick={() => AmpTrackSocial(details.github)}
+        />
+      )}
       {details.socials.length &&
         details.socials.map(
           (social) =>

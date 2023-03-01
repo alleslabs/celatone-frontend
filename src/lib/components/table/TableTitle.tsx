@@ -4,10 +4,16 @@ interface TableTitleProps {
   title: string;
   count: number;
   helperText?: string;
+  mb?: number | string;
 }
 
-export const TableTitle = ({ title, count, helperText }: TableTitleProps) => (
-  <Box mb={6}>
+export const TableTitle = ({
+  title,
+  count,
+  helperText,
+  mb = "6",
+}: TableTitleProps) => (
+  <Box mb={mb}>
     <Flex gap={2} h="29px" alignItems="center">
       <Heading as="h6" variant="h6">
         {title}

@@ -1,3 +1,4 @@
+import type { ButtonProps } from "@chakra-ui/react";
 import {
   Modal,
   ModalHeader,
@@ -13,15 +14,18 @@ import {
   Heading,
   Box,
 } from "@chakra-ui/react";
-import router from "next/router";
+import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
+import { BsQuestionCircleFill } from "react-icons/bs";
+import { FaCoins } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 
 import { ExplorerLink } from "../ExplorerLink";
 import { Copier } from "lib/components/copy";
-import type { BalanceWithAssetInfo, Balance, Token, U } from "lib/types";
+import type { AddressReturnType } from "lib/hooks";
+import { useGetAddressType, getAddressTypeByLength } from "lib/hooks";
+import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
 import {
-  getFirstQueryParam,
   getTokenType,
   getTokenLabel,
   formatUTokenWithPrecision,
@@ -29,21 +33,34 @@ import {
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: BalanceWithAssetInfo[];
+  address?: Addr;
+  buttonProps?: ButtonProps;
 }
 
 interface UnsupportedTokenProps {
   balance: Balance;
 }
 
+const getTokenTypeWithAddress = (
+  type: Balance["type"],
+  addrType: AddressReturnType
+) => {
+  if (type) return getTokenType(type);
+  return addrType === "contract_address"
+    ? getTokenType("cw20")
+    : getTokenType("native");
+};
+
 const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
+  const getAddressType = useGetAddressType();
   // TODO - Move this to utils
   const [tokenLabel, tokenType] = useMemo(() => {
     const label = getTokenLabel(balance.id);
     const type = !balance.id.includes("/")
-      ? getTokenType(balance.type)
+      ? getTokenTypeWithAddress(balance.type, getAddressType(balance.id))
       : getTokenType(balance.id.split("/")[0]);
     return [label, type];
-  }, [balance]);
+  }, [balance, getAddressType]);
 
   return (
     <Flex
@@ -77,19 +94,51 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   );
 };
 
+const unsupportedTokensContent = (addressType: AddressReturnType) => {
+  switch (addressType) {
+    case "contract_address": {
+      return {
+        icon: MdAttachMoney,
+        header: "Contract Address",
+      };
+    }
+    case "user_address": {
+      return {
+        icon: FaCoins,
+        header: "Wallet Address",
+      };
+    }
+    default:
+      return {
+        icon: BsQuestionCircleFill,
+        header: "Invalid Address",
+      };
+  }
+};
+
 export const UnsupportedTokensModal = ({
   unsupportedAssets,
+  address,
+  buttonProps,
 }: UnsupportedTokensModalProps) => {
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
-
+  const { currentChainName } = useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (unsupportedAssets.length === 0) return null;
 
+  const addressType = getAddressTypeByLength(currentChainName, address);
+  const content = unsupportedTokensContent(addressType);
+
   return (
     <>
       <Flex onClick={onOpen}>
-        <Button variant="ghost" color="text.dark" mb={1} fontWeight={500}>
+        <Button
+          variant="ghost"
+          color="text.dark"
+          mb={1}
+          fontWeight={500}
+          {...buttonProps}
+        >
           {`View ${unsupportedAssets.length} Unsupported Assets`}
         </Button>
       </Flex>
@@ -98,7 +147,7 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="700px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <Icon as={MdAttachMoney} boxSize={5} color="pebble.600" />
+              <Icon as={content.icon} boxSize={5} color="pebble.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>
@@ -108,12 +157,14 @@ export const UnsupportedTokensModal = ({
           <ModalCloseButton color="pebble.600" />
           <ModalBody maxH="400px" overflow="overlay" pb={6}>
             <Flex direction="column" gap={5}>
-              <Flex direction="row" gap={4}>
-                <Text variant="body2" fontWeight="700">
-                  Contract Address
-                </Text>
-                <ExplorerLink value={contractAddress} type="contract_address" />
-              </Flex>
+              {address && (
+                <Flex direction="row" gap={4}>
+                  <Text variant="body2" fontWeight="700">
+                    {content.header}
+                  </Text>
+                  <ExplorerLink value={address} type={addressType} />
+                </Flex>
+              )}
               <Flex gap={3} direction="column">
                 {unsupportedAssets.map((asset) => (
                   <UnsupportedToken

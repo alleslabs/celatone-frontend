@@ -17,7 +17,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
       h="70px"
       bottom="0"
       position="sticky"
-      zIndex="sticky"
+      zIndex={2}
     >
       <Flex align="center" justify="space-between" w="540px" h="full" mx="auto">
         <Button
