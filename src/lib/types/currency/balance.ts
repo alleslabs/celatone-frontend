@@ -3,10 +3,10 @@ import type { Option } from "lib/types";
 export interface Balance {
   amount: string;
   id: string;
-  name: Option<string>;
+  name?: Option<string>;
   precision: number;
-  symbol: Option<string>;
-  type: string;
+  symbol?: Option<string>;
+  type?: string;
   price?: number;
 }
 
@@ -21,6 +21,7 @@ export interface AssetInfo {
   slugs: string[];
   symbol: string;
   type: string;
+  price: number;
 }
 
 export interface BalanceWithAssetInfo {

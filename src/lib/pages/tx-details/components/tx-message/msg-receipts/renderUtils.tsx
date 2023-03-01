@@ -5,8 +5,16 @@ import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type { AddressReturnType } from "lib/hooks";
-import type { Addr, Option, TxReceipt, ValidatorAddr } from "lib/types";
+import type {
+  Addr,
+  AssetInfo,
+  Option,
+  TxReceipt,
+  ValidatorAddr,
+} from "lib/types";
 import { camelToTitle } from "lib/utils";
+
+import { CoinComponent } from "./CoinComponent";
 
 interface CommonReceiptHtmlArgs {
   type: "json" | "explorer";
@@ -50,6 +58,11 @@ export const getCommonReceiptHtml = ({
   );
 };
 
+export const getCoinComponent = (
+  amount: Coin | Coin[],
+  assetInfos: Option<{ [key: string]: AssetInfo }>
+) => <CoinComponent amount={amount} assetInfos={assetInfos} />;
+
 export const getGenericValueEntry = (
   entry: [string, string | object],
   getAddressType: (address: string) => AddressReturnType
@@ -83,12 +96,14 @@ export const getGenericValueEntry = (
   return { title: camelToTitle(title), ...valueObj };
 };
 
-// Duplicated Components
-// Coins component
-export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
+// Duplicated Receipt
+export const attachFundsReceipt = (
+  value: Option<Coin[]>,
+  assetInfos: Option<{ [key: string]: AssetInfo }>
+): TxReceipt => ({
   title: "Attached Funds",
-  html: value ? (
-    JSON.stringify(value)
+  html: value?.length ? (
+    getCoinComponent(value, assetInfos)
   ) : (
     <Text variant="body2" color="text.dark">
       No Attached Funds

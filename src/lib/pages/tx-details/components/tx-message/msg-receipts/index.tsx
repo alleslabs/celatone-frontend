@@ -2,12 +2,14 @@
 /* eslint-disable complexity */
 import { Flex } from "@chakra-ui/react";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
+import big from "big.js";
 
 import type { TxMsgData } from "..";
+import { CopyButton } from "lib/components/copy";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
 import type { AddressReturnType } from "lib/hooks";
-import type { TxReceipt, Option } from "lib/types";
+import type { TxReceipt, Option, AssetInfo } from "lib/types";
 import { formatUTC, parseDate } from "lib/utils";
 
 import { voteOption } from "./mapping";
@@ -22,11 +24,13 @@ import {
   proposalIdReceipt,
   validatorAddrReceipt,
   getGenericValueEntry,
+  getCoinComponent,
 } from "./renderUtils";
 
 export const generateReceipts = (
   { type, value, log }: TxMsgData,
-  getAddressType: (address: string) => AddressReturnType
+  getAddressType: (address: string) => AddressReturnType,
+  assetInfos: Option<{ [key: string]: AssetInfo }>
 ): Option<TxReceipt>[] => {
   switch (type) {
     // cosmwasm/wasm
@@ -70,7 +74,23 @@ export const generateReceipts = (
         },
         {
           title: "Wasm Byte Code",
-          value: value.wasmByteCode,
+          html: (
+            <Flex gap={3} align="flex-start">
+              Size:{" "}
+              {big(Buffer.from(value.wasmByteCode).byteLength)
+                .div(1024)
+                .toFixed(1)}{" "}
+              KB
+              <CopyButton
+                value={value.wasmByteCode}
+                variant="ghost-primary"
+                tooltipBgColor="lilac.darker"
+                buttonText="Click to Copy"
+                hasIcon={false}
+                mt={-1}
+              />
+            </Flex>
+          ),
         },
       ];
     case "wasm/MsgInstantiateContract":
@@ -114,7 +134,7 @@ export const generateReceipts = (
           title: "Label",
           value: value.label,
         },
-        attachFundsReceipt(value.funds),
+        attachFundsReceipt(value.funds, assetInfos),
         {
           title: "Instantiate Message",
           html: getCommonReceiptHtml({
@@ -163,7 +183,7 @@ export const generateReceipts = (
           title: "Label",
           value: value.label,
         },
-        attachFundsReceipt(value.funds),
+        attachFundsReceipt(value.funds, assetInfos),
         {
           title: "Instantiate Message",
           html: getCommonReceiptHtml({
@@ -198,7 +218,7 @@ export const generateReceipts = (
             linkType: "contract_address",
           }),
         },
-        attachFundsReceipt(value.funds),
+        attachFundsReceipt(value.funds, assetInfos),
         {
           title: "Execute Message",
           html: getCommonReceiptHtml({
@@ -306,10 +326,9 @@ export const generateReceipts = (
             linkType: getAddressType(value.toAddress),
           }),
         },
-        // Coin component
         {
           title: "Amount",
-          html: value.amount,
+          html: getCoinComponent(value.amount, assetInfos),
         },
       ];
     case "cosmos-sdk/MsgMultiSend":
@@ -444,10 +463,9 @@ export const generateReceipts = (
       return [validatorAddrReceipt(value.validatorAddress)];
     case "cosmos-sdk/MsgFundCommunityPool":
       return [
-        // Coin component
         {
           title: "Amount",
-          html: value.amount,
+          html: getCoinComponent(value.amount, assetInfos),
         },
         {
           title: "Depositor",
@@ -526,8 +544,10 @@ export const generateReceipts = (
     // x/gov
     case "cosmos-sdk/MsgSubmitProposal":
       return [
-        // Coin component
-        { title: "Initial Deposit", html: value.initialDeposit },
+        {
+          title: "Initial Deposit",
+          html: getCoinComponent(value.initialDeposit, assetInfos),
+        },
         {
           title: "Proposer",
           html: getCommonReceiptHtml({
@@ -595,8 +615,7 @@ export const generateReceipts = (
         },
         {
           title: "Amount",
-          // Coin
-          html: value.amount,
+          html: getCoinComponent(value.amount, assetInfos),
         },
       ];
     // x/slashing
@@ -637,8 +656,7 @@ export const generateReceipts = (
         },
         {
           title: "Value",
-          // Coin
-          html: value.value,
+          html: getCoinComponent(value.value, assetInfos),
         },
       ];
     case "cosmos-sdk/MsgEditValidator":
@@ -670,8 +688,7 @@ export const generateReceipts = (
         validatorAddrReceipt(value.validatorAddress),
         {
           title: "Amount",
-          // Coin
-          html: value.amount,
+          html: getCoinComponent(value.amount, assetInfos),
         },
       ];
     case "cosmos-sdk/MsgBeginRedelegate":
@@ -698,8 +715,7 @@ export const generateReceipts = (
         },
         {
           title: "Amount",
-          // Coin
-          html: value.amount,
+          html: getCoinComponent(value.amount, assetInfos),
         },
       ];
     // ibc/applications
@@ -715,9 +731,7 @@ export const generateReceipts = (
         },
         {
           title: "Token",
-          // Coin
-          // html: value.token,
-          value: "",
+          html: getCoinComponent(value.token, assetInfos),
         },
         {
           title: "Sender",
@@ -1296,8 +1310,7 @@ export const generateReceipts = (
         },
         {
           title: "Initial Pool Liquidity",
-          // Coins
-          html: value.initialPoolLiquidity,
+          html: getCoinComponent(value.initialPoolLiquidity, assetInfos),
         },
         {
           title: "Scaling Factors",
@@ -1351,8 +1364,7 @@ export const generateReceipts = (
         },
         {
           title: "Token In Maxs",
-          // Coins
-          html: value.tokenInMaxs,
+          html: getCoinComponent(value.tokenInMaxs, assetInfos),
         },
       ];
     case "osmosis/gamm/exit-pool":
@@ -1375,8 +1387,7 @@ export const generateReceipts = (
         },
         {
           title: "Token Out Mins",
-          // Coins
-          html: value.tokenOutMins,
+          html: getCoinComponent(value.tokenOutMins, assetInfos),
         },
       ];
     case "osmosis/gamm/swap-exact-amount-in":
@@ -1398,8 +1409,7 @@ export const generateReceipts = (
         },
         {
           title: "Token In",
-          // Coin
-          html: value.tokenIn,
+          html: getCoinComponent(value.tokenIn, assetInfos),
         },
         {
           title: "Token Out Min Amount",
@@ -1429,8 +1439,7 @@ export const generateReceipts = (
         },
         {
           title: "Token Out",
-          // Coin
-          html: value.tokenOut,
+          html: getCoinComponent(value.tokenOut, assetInfos),
         },
       ];
     case "osmosis/gamm/join-swap-extern-amount-in":
@@ -1449,8 +1458,7 @@ export const generateReceipts = (
         },
         {
           title: "Token In",
-          // Coin
-          html: value.tokenIn,
+          html: getCoinComponent(value.tokenIn, assetInfos),
         },
         {
           title: "Share Out Min Amount",
@@ -1527,8 +1535,7 @@ export const generateReceipts = (
         },
         {
           title: "Token Out",
-          // Coin
-          html: value.poolId,
+          html: getCoinComponent(value.poolId, assetInfos),
         },
         {
           title: "Share In Max Amount",
@@ -1559,8 +1566,7 @@ export const generateReceipts = (
         },
         {
           title: "Coins",
-          // Coins
-          html: value.coins,
+          html: getCoinComponent(value.coins, assetInfos),
         },
         {
           title: "Start Time",
@@ -1587,8 +1593,7 @@ export const generateReceipts = (
         },
         {
           title: "Rewards",
-          // Coins
-          html: value.rewards,
+          html: getCoinComponent(value.rewards, assetInfos),
         },
       ];
     // osmosis/lockup
@@ -1608,8 +1613,7 @@ export const generateReceipts = (
         },
         {
           title: "Coins",
-          // Coins
-          html: value.coins,
+          html: getCoinComponent(value.coins, assetInfos),
         },
       ];
     case "osmosis/lockup/begin-unlock-tokens":
@@ -1641,8 +1645,7 @@ export const generateReceipts = (
         },
         {
           title: "Coins",
-          // Coins
-          html: value.coins,
+          html: getCoinComponent(value.coins, assetInfos),
         },
       ];
     // ** No example
@@ -1662,7 +1665,6 @@ export const generateReceipts = (
         },
         {
           title: "Duration",
-          // Coins
           value: formatUTC(parseDate(value.duration)),
         },
       ];
@@ -1712,8 +1714,7 @@ export const generateReceipts = (
         },
         {
           title: "Coins",
-          // Coins
-          html: value.coins,
+          html: getCoinComponent(value.coins, assetInfos),
         },
         validatorAddrReceipt(value.valAddr),
       ];
@@ -1761,8 +1762,7 @@ export const generateReceipts = (
         },
         {
           title: "Amount",
-          // Coin
-          html: value.amount,
+          html: getCoinComponent(value.amount, assetInfos),
         },
       ];
     case "osmosis/tokenfactory/change-admin":
