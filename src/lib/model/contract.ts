@@ -206,7 +206,7 @@ export const useContractDetailsTableCounts = (
   };
 };
 
-export const useCodeContracts = (
+export const useContractsByCodeId = (
   codeId: number,
   offset: number,
   pageSize: number
@@ -214,11 +214,12 @@ export const useCodeContracts = (
   const { getContractLocalInfo } = useContractStore();
   const { data: rawCodeContracts, isLoading } =
     useContractListByCodeIdPagination(codeId, offset, pageSize);
-  const codeContracts: Option<ContractInfo[]> =
-    rawCodeContracts?.map<ContractInfo>((contract) => ({
+  const contracts: Option<ContractInfo[]> = rawCodeContracts?.map<ContractInfo>(
+    (contract) => ({
       ...contract,
       ...getContractLocalInfo(contract.contractAddress),
-    }));
+    })
+  );
 
-  return { codeContracts, isLoading };
+  return { contracts, isLoading };
 };

@@ -37,14 +37,14 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
   const proceed = useCallback(async () => {
     AmpTrack(AmpEvent.ACTION_RESEND);
     const formatedMsgs = formatMsgs(messages);
-
     const estimatedGasUsed = await simulate(formatedMsgs);
-    const fee = estimatedGasUsed ? fabricateFee(estimatedGasUsed) : undefined;
 
     const stream = await resendTx({
       onTxSucceed: () => setIsProcessing(false),
       onTxFailed: () => setIsProcessing(false),
-      estimatedFee: fee,
+      estimatedFee: estimatedGasUsed
+        ? fabricateFee(estimatedGasUsed)
+        : undefined,
       messages: formatedMsgs,
     });
     if (stream) broadcast(stream);

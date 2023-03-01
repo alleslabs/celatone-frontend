@@ -7,7 +7,7 @@ import {
   Tag,
   Box,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MdCheck, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
 import { AccordionTx } from "../AccordionTx";
@@ -29,12 +29,8 @@ export const TransactionsTableRow = ({
   showSender,
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
-  const [isAccordion, setIsAccordion] = useState(false);
+  const isAccordion = transaction.messages.length > 1;
   const [showCopyButton, setShowCopyButton] = useState(false);
-
-  useEffect(() => {
-    if (transaction.messages.length > 1) setIsAccordion(true);
-  }, [transaction.messages]);
 
   return (
     <Box w="full" minW="min-content">

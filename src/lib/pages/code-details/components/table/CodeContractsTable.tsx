@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ContractsTable, TableTitle } from "lib/components/table";
-import { useCodeContracts } from "lib/model/contract";
+import { useContractsByCodeId } from "lib/model/contract";
 import { useContractListCountByCodeId } from "lib/services/contractService";
 
 import { NoContracts } from "./NoContracts";
@@ -33,7 +33,7 @@ export const CodeContractsTable = observer(
       },
     });
 
-    const { codeContracts, isLoading } = useCodeContracts(
+    const { contracts, isLoading } = useContractsByCodeId(
       codeId,
       offset,
       pageSize
@@ -54,18 +54,21 @@ export const CodeContractsTable = observer(
       setPageSize(size);
     };
 
-    // FIXME - might be a better way to scroll to table header
     const tableHeaderId = "contractTableHeader";
 
     return (
       <>
-        <TableTitle title="Contract Instances" count={totalData ?? 0} />
+        <TableTitle
+          title="Contract Instances"
+          count={totalData ?? 0}
+          id={tableHeaderId}
+        />
         <ContractsTable
-          contracts={codeContracts}
+          contracts={contracts}
           isLoading={isLoading}
           emptyState={<NoContracts />}
         />
-        {totalData && totalData > 10 && (
+        {!!totalData && totalData > 10 && (
           <Pagination
             currentPage={currentPage}
             pagesQuantity={pagesQuantity}

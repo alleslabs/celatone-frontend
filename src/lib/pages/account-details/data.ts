@@ -33,7 +33,7 @@ interface AccountAssetInfos {
   error: Error;
 }
 
-export const useContractInstances = (
+export const useAccountContracts = (
   walletAddress: HumanAddr,
   offset: number,
   pageSize: number
@@ -58,7 +58,7 @@ export const useContractInstances = (
   };
 };
 
-export const useContractsAdmin = (
+export const useAccountAdminContracts = (
   walletAddress: HumanAddr,
   offset: number,
   pageSize: number

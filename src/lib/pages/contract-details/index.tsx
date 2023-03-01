@@ -29,10 +29,12 @@ import { ContractDesc } from "./components/contract-description";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { MigrationTable } from "./components/tables/migration";
-import { RelatedProposalsTable } from "./components/tables/RelatedProposalsTable";
-import { TxsTable } from "./components/tables/TxsTable";
-import { TokenSection } from "./components/token/TokenSection";
+import {
+  RelatedProposalsTable,
+  TxsTable,
+  MigrationTable,
+} from "./components/tables";
+import { TokenSection } from "./components/TokenSection";
 
 interface ContractDetailsBodyProps {
   contractData: ContractData;

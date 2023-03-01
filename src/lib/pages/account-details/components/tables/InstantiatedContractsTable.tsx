@@ -5,7 +5,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { ContractsTable, TableTitle, ViewMore } from "lib/components/table";
-import { useContractInstances } from "lib/pages/account-details/data";
+import { useAccountContracts } from "lib/pages/account-details/data";
 import type { HumanAddr, Option } from "lib/types";
 
 interface InstantiatedContractsTableProps {
@@ -38,7 +38,7 @@ export const InstantiatedContractsTable = ({
       isDisabled: false,
     },
   });
-  const { contracts, isLoading } = useContractInstances(
+  const { contracts, isLoading } = useAccountContracts(
     walletAddress,
     offset,
     onViewMore ? 5 : pageSize
