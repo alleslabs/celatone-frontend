@@ -34,19 +34,21 @@ export const Copier = ({
       arrowSize={8}
       bg="honeydew.darker"
     >
-      <Flex
-        className={className}
-        display={display}
-        cursor="pointer"
-        marginLeft={ml}
-        onClick={(e) => {
-          AmpTrack(AmpEvent.USE_COPIER);
-          e.stopPropagation();
-          onCopy();
-        }}
-      >
-        <CustomIcon name="copy" />
-      </Flex>
+      <div>
+        <Flex
+          className={className}
+          display={display}
+          cursor="pointer"
+          marginLeft={ml}
+          onClick={(e) => {
+            AmpTrack(AmpEvent.USE_COPIER);
+            e.stopPropagation();
+            onCopy();
+          }}
+        >
+          <CustomIcon name="copy" />
+        </Flex>
+      </div>
     </Tooltip>
   );
 };
