@@ -13,16 +13,16 @@ import type { ReactNode } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
-import { CodeNameCell } from "lib/components/CodeNameCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
-import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
+import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
-import { DisconnectedState } from "lib/components/state/DisconnectedState";
+import { DisconnectedState } from "lib/components/state";
 import {
   TableContainer,
   TableHeaderNoBorder,
   TableRowNoBorder,
+  CodeNameCell,
 } from "lib/components/table";
 import type { CodeInfo } from "lib/types";
 
@@ -55,32 +55,29 @@ const StateContainer = ({ children }: { children: ReactNode }) => (
     borderBottomWidth={1}
     minH="128px"
     justifyContent="center"
+    px={12}
     py={8}
   >
     {children}
   </VStack>
 );
 
-const NotMatched = () => {
-  return (
-    <StateContainer>
-      <Image
-        src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
-        alt="result not found"
-        width="200px"
-      />
-      <Text color="text.dark">No matched codes found.</Text>
-    </StateContainer>
-  );
-};
+const NotMatched = () => (
+  <StateContainer>
+    <Image
+      src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+      alt="result not found"
+      width="200px"
+    />
+    <Text color="text.dark">No matched codes found.</Text>
+  </StateContainer>
+);
 
-const Unconnected = () => {
-  return (
-    <StateContainer>
-      <DisconnectedState text="to see your previously uploaded and stored codes." />
-    </StateContainer>
-  );
-};
+const Unconnected = () => (
+  <StateContainer>
+    <DisconnectedState text="to see your previously uploaded and stored codes." />
+  </StateContainer>
+);
 
 const Empty = ({ type }: OtherTBodyProps) => {
   const renderEmptyText = () => {
@@ -102,24 +99,22 @@ const Empty = ({ type }: OtherTBodyProps) => {
   );
 };
 
-const CodeTableHead = () => {
-  return (
-    <Grid
-      templateColumns={TEMPLATE_COLUMNS}
-      px="48px"
-      sx={{ "& div": { color: "text.dark" } }}
-      borderBottom="1px solid"
-      borderColor="pebble.700"
-      minW="min-content"
-    >
-      <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
-      <TableHeaderNoBorder>Code Name</TableHeaderNoBorder>
-      <TableHeaderNoBorder textAlign="center">Contracts</TableHeaderNoBorder>
-      <TableHeaderNoBorder>Uploader</TableHeaderNoBorder>
-      <TableHeaderNoBorder>Permission</TableHeaderNoBorder>
-    </Grid>
-  );
-};
+const CodeTableHead = () => (
+  <Grid
+    templateColumns={TEMPLATE_COLUMNS}
+    px="48px"
+    sx={{ "& div": { color: "text.dark" } }}
+    borderBottom="1px solid"
+    borderColor="pebble.700"
+    minW="min-content"
+  >
+    <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
+    <TableHeaderNoBorder>Code Name</TableHeaderNoBorder>
+    <TableHeaderNoBorder textAlign="center">Contracts</TableHeaderNoBorder>
+    <TableHeaderNoBorder>Uploader</TableHeaderNoBorder>
+    <TableHeaderNoBorder>Permission</TableHeaderNoBorder>
+  </Grid>
+);
 
 const CodeTableRow = ({ code }: CodesRowProps) => {
   const navigate = useInternalNavigate();
@@ -191,19 +186,17 @@ const CodeTableRow = ({ code }: CodesRowProps) => {
 const NormalRender = ({
   codes,
   tableName,
-}: Pick<CodesTableProps, "codes" | "tableName">) => {
-  return (
-    <TableContainer mb={20} position="relative">
-      <CodeTableHead />
-      {codes.map((code) => (
-        <CodeTableRow
-          key={`row-${tableName}-${code.id}-${code.name}-${code.uploader}`}
-          code={code}
-        />
-      ))}
-    </TableContainer>
-  );
-};
+}: Pick<CodesTableProps, "codes" | "tableName">) => (
+  <TableContainer mb={20} position="relative">
+    <CodeTableHead />
+    {codes.map((code) => (
+      <CodeTableRow
+        key={`row-${tableName}-${code.id}-${code.name}-${code.uploader}`}
+        code={code}
+      />
+    ))}
+  </TableContainer>
+);
 
 function CodesTable({
   type,

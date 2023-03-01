@@ -1,9 +1,9 @@
 import { Icon, useToast } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 
+import { useContractStore } from "lib/providers/store";
 import type { Addr, ContractAddr, LVPair, Option } from "lib/types";
 
-import { useContractStore } from "./store";
 import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {

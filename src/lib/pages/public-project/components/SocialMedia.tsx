@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { MdLanguage } from "react-icons/md";
 
-import { IconButton } from "lib/components/button/IconButton";
+import { IconButton } from "lib/components/button";
 import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 

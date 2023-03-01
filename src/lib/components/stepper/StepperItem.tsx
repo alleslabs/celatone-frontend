@@ -16,24 +16,22 @@ const StepLabel = ({
   step: Step;
   disabled?: boolean;
   currentStep: Step;
-}) => {
-  return (
-    <Flex
-      justify="center"
-      align="center"
-      backgroundColor={disabled ? "text.disabled" : "violet.main"}
-      width="24px"
-      height="24px"
-      borderRadius="50%"
-    >
-      {currentStep > step ? (
-        <Icon as={MdCheck} fontSize="16px" color="pebble.100" />
-      ) : (
-        <Text variant="body3">{step}</Text>
-      )}
-    </Flex>
-  );
-};
+}) => (
+  <Flex
+    justify="center"
+    align="center"
+    backgroundColor={disabled ? "text.disabled" : "violet.main"}
+    width="24px"
+    height="24px"
+    borderRadius="50%"
+  >
+    {currentStep > step ? (
+      <Icon as={MdCheck} fontSize="16px" color="pebble.100" />
+    ) : (
+      <Text variant="body3">{step}</Text>
+    )}
+  </Flex>
+);
 
 export const StepperItem = ({
   mode,

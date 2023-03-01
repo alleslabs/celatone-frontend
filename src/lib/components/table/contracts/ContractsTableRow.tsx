@@ -1,19 +1,19 @@
 import { Flex, Text, Grid, IconButton, Box, chakra } from "@chakra-ui/react";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { TableRow } from "../tableComponents";
+import { useInternalNavigate, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
   AddToOtherListModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
-import { TableRow } from "lib/components/table/tableComponents";
-import { useGetAddressType } from "lib/hooks";
-import { ContractNameCell } from "lib/pages/contract-list/components/table/ContractNameCell";
-import { TagsCell } from "lib/pages/contract-list/components/table/TagsCell";
 import type { ContractInfo } from "lib/types";
 import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+
+import { ContractNameCell } from "./ContractNameCell";
+import { TagsCell } from "./TagsCell";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {

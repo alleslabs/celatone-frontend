@@ -12,7 +12,7 @@ import {
 import { useWallet } from "@cosmos-kit/react";
 import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, getAddressTypeByLength } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
@@ -20,7 +20,6 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import { TableRowNoBorder } from "lib/components/table";
-import { getAddressTypeByLength } from "lib/hooks";
 
 import type { PublicContractInfo } from "./PublicProjectContractTable";
 

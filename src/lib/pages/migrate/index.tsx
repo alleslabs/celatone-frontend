@@ -5,12 +5,15 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useInternalNavigate,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useLCDEndpoint } from "lib/hooks";
 import { AmpTrackToMigrate } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr } from "lib/types";

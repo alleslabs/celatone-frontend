@@ -1,3 +1,2 @@
-export function isPositiveInt(str: string): boolean {
-  return /^\+?([1-9]\d*)$/.test(str);
-}
+export const isPositiveInt = (str: string): boolean =>
+  /^\+?([1-9]\d*)$/.test(str);

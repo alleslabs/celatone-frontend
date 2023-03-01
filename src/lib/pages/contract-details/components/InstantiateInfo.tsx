@@ -1,9 +1,9 @@
 import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
+import { useGetAddressType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import { useGetAddressType } from "lib/hooks";
 import type { ContractData, Option } from "lib/types";
 import { formatUTC, dateFromNow } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";

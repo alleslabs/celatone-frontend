@@ -25,3 +25,4 @@ export * from "./funds";
 export * from "./getAttachFunds";
 export * from "./assetValue";
 export * from "./codePermission";
+export * from "./executeTags";

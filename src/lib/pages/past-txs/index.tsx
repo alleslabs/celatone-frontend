@@ -16,13 +16,13 @@ import { MdSearch } from "react-icons/md";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useTxQuery, useTxQueryCount } from "lib/services/txQuery/useTxQuery";
 import type { HumanAddr } from "lib/types";
 
-import { FilterSelection } from "./components/FilterSelection";
 import { PastTxsContent } from "./components/PastTxsContent";
-import { useTxQuery, useTxQueryCount } from "./query/useTxQuery";
 
 const PastTxs = () => {
   const router = useRouter();
@@ -107,7 +107,7 @@ const PastTxs = () => {
   }, [router.isReady]);
 
   return (
-    <Box>
+    <>
       <Box px="48px" pt="48px">
         <Heading variant="h5" as="h5">
           Past Transactions
@@ -126,7 +126,7 @@ const PastTxs = () => {
                 <Icon as={MdSearch} w="5" h="5" color="pebble.600" />
               </InputRightElement>
             </InputGroup>
-            <FilterSelection
+            <TxFilterSelection
               result={filterSelected}
               setResult={setFilter}
               boxWidth="400px"
@@ -153,7 +153,7 @@ const PastTxs = () => {
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </Box>
+    </>
   );
 };
 

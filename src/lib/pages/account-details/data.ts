@@ -1,4 +1,4 @@
-import { useCodeStore, useContractStore } from "lib/hooks";
+import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountBalances } from "lib/services/accountService";
 import { useAssetInfos } from "lib/services/assetService";
 import { useCodeListByWalletAddressPagination } from "lib/services/codeService";
@@ -33,7 +33,7 @@ interface AccountAssetInfos {
   error: Error;
 }
 
-export const useContractInstances = (
+export const useAccountContracts = (
   walletAddress: HumanAddr,
   offset: number,
   pageSize: number
@@ -58,7 +58,7 @@ export const useContractInstances = (
   };
 };
 
-export const useContractsAdmin = (
+export const useAccountAdminContracts = (
   walletAddress: HumanAddr,
   offset: number,
   pageSize: number
@@ -88,7 +88,7 @@ export const useContractsAdmin = (
   };
 };
 
-export const useCodeStored = (
+export const useAccountCodes = (
   walletAddress: HumanAddr,
   offset: number,
   pageSize: number

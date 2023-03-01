@@ -1,24 +1,29 @@
+import type { BoxProps } from "@chakra-ui/react";
 import { Badge, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-interface TableTitleProps {
+interface TableTitleProps extends BoxProps {
   title: string;
   count: number;
   helperText?: string;
-  mb?: number | string;
 }
 
 export const TableTitle = ({
   title,
   count,
   helperText,
-  mb = "6",
+  mb = 6,
+  ...props
 }: TableTitleProps) => (
-  <Box mb={mb}>
+  <Box mb={mb} {...props}>
     <Flex gap={2} h="29px" alignItems="center">
       <Heading as="h6" variant="h6">
         {title}
       </Heading>
-      <Badge variant="gray" color="text.main">
+      <Badge
+        variant="gray"
+        color="text.main"
+        textColor={count ? "gray.100" : "gray.500"}
+      >
         {count}
       </Badge>
     </Flex>

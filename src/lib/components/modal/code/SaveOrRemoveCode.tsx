@@ -19,10 +19,10 @@ interface SaveOrRemoveCodeModalProps {
   codeInfo: CodeInfo;
 }
 
-export function SaveOrRemoveCodeModal({
+export const SaveOrRemoveCodeModal = ({
   codeInfo,
-}: SaveOrRemoveCodeModalProps) {
-  return codeInfo.isSaved ? (
+}: SaveOrRemoveCodeModalProps) =>
+  codeInfo.isSaved ? (
     <RemoveCodeModal
       codeId={codeInfo.id}
       name={codeInfo.name}
@@ -46,4 +46,3 @@ export function SaveOrRemoveCodeModal({
       }
     />
   );
-}

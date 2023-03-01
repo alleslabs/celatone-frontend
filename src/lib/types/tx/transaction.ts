@@ -22,17 +22,6 @@ export enum MsgFurtherAction {
   NONE = "NONE",
 }
 
-export interface PastTransaction {
-  hash: string;
-  messages: Message[];
-  created: Option<Date>;
-  success: boolean;
-  actionMsgType: ActionMsgType;
-  furtherAction: MsgFurtherAction;
-  isIbc: boolean;
-  isInstantiate: boolean;
-}
-
 export interface Message {
   detail:
     | DetailExecute
@@ -57,21 +46,20 @@ export interface Msg {
   contract: string;
 }
 
-export interface ExecuteTransaction {
+export interface Transaction {
   hash: string;
   messages: Message[];
   sender: Addr;
   height: number;
   created: Option<Date>;
   success: boolean;
-}
-
-export interface AllTransaction extends ExecuteTransaction {
   actionMsgType: ActionMsgType;
+  furtherAction: MsgFurtherAction;
   isIbc: boolean;
+  isInstantiate: boolean;
 }
 
-export interface Filters {
+export interface TxFilters {
   isExecute: boolean;
   isInstantiate: boolean;
   isUpload: boolean;

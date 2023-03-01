@@ -31,8 +31,8 @@ export const usePermissionFilter = (filterValue?: PermissionFilterValue) => {
   );
 };
 
-export const useSearchFilter = (keyword = "") => {
-  return useCallback(
+export const useSearchFilter = (keyword = "") =>
+  useCallback(
     (code: CodeInfo) => {
       const computedKeyword = keyword.trim();
       if (!computedKeyword.length) return true;
@@ -43,4 +43,3 @@ export const useSearchFilter = (keyword = "") => {
     },
     [keyword]
   );
-};

@@ -10,25 +10,25 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { useValidateAddress } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state/InvalidState";
-import { useValidateAddress } from "lib/hooks";
+import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, scrollToTop } from "lib/utils";
 
 import { AssetsSection } from "./components/asset";
 import {
   AdminContractsTable,
-  CodesTable,
   InstantiatedContractsTable,
-  ProposalsTable,
+  OpenedProposalsTable,
+  StoredCodesTable,
+  TxsTable,
 } from "./components/tables";
-import { TransactionsTable } from "./components/tables/transactions";
 
 enum TabIndex {
   Overview,
@@ -59,6 +59,11 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchProposalsCount,
   } = useAccountDetailsTableCounts(accountAddress);
 
+  const handleOnViewMore = (tab: TabIndex) => {
+    setTabIndex(tab);
+    scrollToTop();
+  };
+
   return (
     <>
       <Flex direction="column" gap={1} mt={6} mb={12}>
@@ -83,6 +88,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         <TabList
           borderBottom="1px solid"
           borderColor="pebble.700"
+          overflowY="hidden"
           id={tableHeaderId}
         >
           <CustomTab onClick={() => setTabIndex(TabIndex.Overview)}>
@@ -141,42 +147,42 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <Text>Delegations</Text>
             <AssetsSection
               walletAddress={accountAddress}
-              onViewMore={() => setTabIndex(TabIndex.Assets)}
+              onViewMore={() => handleOnViewMore(TabIndex.Assets)}
             />
-            <TransactionsTable
+            <TxsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.txsCount}
               refetchCount={refetchTxsCount}
-              onViewMore={() => setTabIndex(TabIndex.Txs)}
+              onViewMore={() => handleOnViewMore(TabIndex.Txs)}
             />
-            <CodesTable
+            <StoredCodesTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.codesCount}
               refetchCount={refetchCodesCount}
-              onViewMore={() => setTabIndex(TabIndex.Codes)}
+              onViewMore={() => handleOnViewMore(TabIndex.Codes)}
             />
             <InstantiatedContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
               refetchCount={refetchContractsCount}
-              onViewMore={() => setTabIndex(TabIndex.Contracts)}
+              onViewMore={() => handleOnViewMore(TabIndex.Contracts)}
             />
             <AdminContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount}
               refetchCount={refetchContractsAdminCount}
-              onViewMore={() => setTabIndex(TabIndex.Admins)}
+              onViewMore={() => handleOnViewMore(TabIndex.Admins)}
             />
-            <ProposalsTable
+            <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount}
               refetchCount={refetchProposalsCount}
-              onViewMore={() => setTabIndex(TabIndex.Proposals)}
+              onViewMore={() => handleOnViewMore(TabIndex.Proposals)}
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -187,7 +193,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <AssetsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <TransactionsTable
+            <TxsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.txsCount}
@@ -195,7 +201,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <CodesTable
+            <StoredCodesTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.codesCount}
@@ -219,7 +225,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <ProposalsTable
+            <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount}

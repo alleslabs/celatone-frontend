@@ -1,4 +1,4 @@
-import type { AddressReturnType } from "lib/hooks";
+import type { AddressReturnType } from "lib/app-provider";
 
 export const getAddressTypeText = (addressType: AddressReturnType) => {
   switch (addressType) {

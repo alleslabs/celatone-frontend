@@ -5,11 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { MdBookmark, MdCheckCircle } from "react-icons/md";
 
+import { ActionModal } from "../ActionModal";
+import { useLCDEndpoint } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
-import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
-import { useCodeStore, useLCDEndpoint } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { Addr, HumanAddr } from "lib/types";

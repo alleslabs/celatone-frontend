@@ -11,6 +11,9 @@ import {
   useInternalNavigate,
   useSimulateFeeQuery,
   useUpdateAdminTx,
+  useLCDEndpoint,
+  useGetAddressType,
+  useValidateAddress,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -19,11 +22,6 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import {
-  useLCDEndpoint,
-  useGetAddressType,
-  useValidateAddress,
-} from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,

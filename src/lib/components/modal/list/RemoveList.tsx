@@ -2,9 +2,10 @@ import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, useToast, Icon, Text } from "@chakra-ui/react";
 import { MdDeleteForever, MdCheckCircle } from "react-icons/md";
 
+import { ActionModal } from "../ActionModal";
 import { useInternalNavigate } from "lib/app-provider";
-import { ActionModal } from "lib/components/modal/ActionModal";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { LVPair } from "lib/types";
 import { shortenName } from "lib/utils";

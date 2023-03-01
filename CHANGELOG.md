@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#227](https://github.com/alleslabs/celatone-frontend/pull/227) Refactor directory structure and components e.g. various tables
 - [#207](https://github.com/alleslabs/celatone-frontend/pull/207) Add cta to submit public project in list page
 - [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
 

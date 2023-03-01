@@ -8,13 +8,16 @@ import { useForm } from "react-hook-form";
 import { FiChevronLeft } from "react-icons/fi";
 import { IoIosWarning } from "react-icons/io";
 
-import { useFabricateFee, useSimulateFeeQuery } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useSimulateFeeQuery,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
-import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
-import { useLCDEndpoint } from "lib/hooks";
+import { CodeSelectSection } from "lib/components/select-code";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";

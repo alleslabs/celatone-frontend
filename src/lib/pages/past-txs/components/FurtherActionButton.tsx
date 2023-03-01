@@ -1,12 +1,11 @@
-import { RedoButton } from "lib/components/button/RedoButton";
-import { ResendButton } from "lib/components/button/ResendButton";
-import { RedoModal } from "lib/components/modal/RedoModal";
-import type { PastTransaction } from "lib/types";
+import { RedoButton, ResendButton } from "lib/components/button";
+import { RedoModal } from "lib/components/modal";
+import type { Transaction } from "lib/types";
 import { MsgFurtherAction } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
 interface FurtherActionButtonProps {
-  transaction: PastTransaction;
+  transaction: Transaction;
 }
 
 /**

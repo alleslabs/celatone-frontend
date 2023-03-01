@@ -6,19 +6,19 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { MdBookmark } from "react-icons/md";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { ActionModal } from "../ActionModal";
+import {
+  useCelatoneApp,
+  useLCDEndpoint,
+  useValidateAddress,
+} from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
-import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
-import {
-  useContractStore,
-  useLCDEndpoint,
-  useValidateAddress,
-} from "lib/hooks";
-import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { useHandleContractSave } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { Addr, ContractAddr, LVPair, RpcQueryError } from "lib/types";

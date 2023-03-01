@@ -1,11 +1,11 @@
 /* eslint-disable sonarjs/no-identical-functions */
 import type { UseQueryResult } from "@tanstack/react-query";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import {
-  getCodeInfoByCodeId,
+  getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
   getCodeListByUserQueryDocument,
   getCodeListByWalletAddressPagination,
@@ -45,16 +45,11 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   return useQuery(["all_codes", indexerGraphClient], queryFn);
 };
 
-export const useCodeListPageQuery = ({
-  walletAddr,
-  ids,
-}: {
-  walletAddr: Option<HumanAddr>;
-  ids: Option<number[]>;
-}): [UseQueryResult<CodeInfo[]>, UseQueryResult<CodeInfo[]>] => {
+export const useCodeListByWalletAddress = (
+  walletAddr: Option<HumanAddr>
+): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
-
-  const codeByUserQueryFn = useCallback(async () => {
+  const queryFn = useCallback(async () => {
     if (!walletAddr)
       throw new Error("Wallet address not found (codeByUserQueryFn)");
 
@@ -75,7 +70,21 @@ export const useCodeListPageQuery = ({
       );
   }, [walletAddr, indexerGraphClient]);
 
-  const codeByIdsQueryFn = useCallback(async () => {
+  return useQuery(
+    ["code_list_by_user", walletAddr, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!walletAddr,
+    }
+  );
+};
+
+export const useCodeListByCodeIds = (
+  ids: Option<number[]>
+): UseQueryResult<CodeInfo[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(async () => {
     if (!ids) throw new Error("Code IDs not found (codeByIdsQueryFn)");
 
     return indexerGraphClient
@@ -95,32 +104,22 @@ export const useCodeListPageQuery = ({
       );
   }, [ids, indexerGraphClient]);
 
-  return useQueries({
-    queries: [
-      {
-        queryKey: ["codes_by_user", indexerGraphClient, walletAddr],
-        queryFn: codeByUserQueryFn,
-        enabled: !!walletAddr,
-      },
-      {
-        queryKey: ["codes_by_ids", indexerGraphClient, ids],
-        queryFn: codeByIdsQueryFn,
-        enabled: !!ids,
-      },
-    ],
+  return useQuery(["code_list_by_ids", ids, indexerGraphClient], queryFn, {
+    keepPreviousData: true,
+    enabled: !!ids,
   });
 };
 
-export const useCodeInfoByCodeId = (
+export const useCodeDataByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
-    if (!codeId) throw new Error("Code ID not found (useCodeInfoByCodeId)");
+    if (!codeId) throw new Error("Code ID not found (useCodeDataByCodeId)");
 
     return indexerGraphClient
-      .request(getCodeInfoByCodeId, {
+      .request(getCodeDataByCodeId, {
         codeId,
       })
       .then(({ codes_by_pk }) => {
@@ -147,7 +146,7 @@ export const useCodeInfoByCodeId = (
         };
       });
   }, [codeId, indexerGraphClient]);
-  return useQuery(["code_info_by_id", codeId, indexerGraphClient], queryFn, {
+  return useQuery(["code_data_by_id", codeId, indexerGraphClient], queryFn, {
     keepPreviousData: true,
     enabled: !!codeId,
   });

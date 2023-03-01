@@ -4,8 +4,8 @@ import type { Token } from "lib/types";
 
 import { microfy } from "./formatter/currency";
 
-export const fabricateFunds = (assets: Coin[]): Coin[] => {
-  return assets
+export const fabricateFunds = (assets: Coin[]): Coin[] =>
+  assets
     .filter((asset) => Number(asset.amount) && asset.denom)
     .sort(({ denom: aDenom }, { denom: bDenom }) =>
       aDenom.localeCompare(bDenom)
@@ -14,4 +14,3 @@ export const fabricateFunds = (assets: Coin[]): Coin[] => {
       ...asset,
       amount: microfy(asset.amount as Token).toFixed(0),
     }));
-};

@@ -10,12 +10,12 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { BackButton } from "lib/components/button/BackButton";
+import { useValidateAddress } from "lib/app-provider";
+import { BackButton } from "lib/components/button";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { InvalidState } from "lib/components/state/InvalidState";
-import { useValidateAddress } from "lib/hooks";
+import { InvalidState } from "lib/components/state";
 import {
   useContractData,
   useContractDetailsTableCounts,
@@ -29,10 +29,12 @@ import { ContractDesc } from "./components/contract-description";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { JsonInfo } from "./components/JsonInfo";
-import { MigrationTable } from "./components/tables/migration";
-import { RelatedProposalsTable } from "./components/tables/related-proposals";
-import { TransactionsTable } from "./components/tables/transactions";
-import { TokenSection } from "./components/token/TokenSection";
+import {
+  RelatedProposalsTable,
+  TxsTable,
+  MigrationTable,
+} from "./components/tables";
+import { TokenSection } from "./components/TokenSection";
 
 interface ContractDetailsBodyProps {
   contractData: ContractData;
@@ -104,7 +106,7 @@ const ContractDetailsBody = observer(
           </TabList>
           <TabPanels>
             <TabPanel p={0}>
-              <TransactionsTable
+              <TxsTable
                 contractAddress={contractAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.transactionsCount}
@@ -113,7 +115,7 @@ const ContractDetailsBody = observer(
             </TabPanel>
             {/* Remove execute table for now */}
             {/* <TabPanel p={0}>
-              <ExecuteTable
+              <ExecuteTxsTable
                 contractAddress={contractAddress}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.executeCount}

@@ -5,7 +5,8 @@ import { MdSearch, MdInput } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { dateFromNow } from "lib/utils";
 
 export const RecentActivities = observer(() => {

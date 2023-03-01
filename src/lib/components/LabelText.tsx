@@ -12,27 +12,25 @@ export const LabelText = ({
   children,
   helperText1,
   helperText2,
-}: LabelTextProps) => {
-  return (
-    <Flex direction="column" gap={1}>
-      <Text variant="body2" color="text.dark" fontWeight={500}>
-        {label}
+}: LabelTextProps) => (
+  <Flex direction="column" gap={1}>
+    <Text variant="body2" color="text.dark" fontWeight={500}>
+      {label}
+    </Text>
+    {typeof children === "string" ? (
+      <Text variant="body2">{children}</Text>
+    ) : (
+      children
+    )}
+    {helperText1 && (
+      <Text variant="body3" color="text.dark">
+        {helperText1}
       </Text>
-      {typeof children === "string" ? (
-        <Text variant="body2">{children}</Text>
-      ) : (
-        children
-      )}
-      {helperText1 && (
-        <Text variant="body3" color="text.dark">
-          {helperText1}
-        </Text>
-      )}
-      {helperText2 && (
-        <Text variant="body3" color="text.dark">
-          {helperText2}
-        </Text>
-      )}
-    </Flex>
-  );
-};
+    )}
+    {helperText2 && (
+      <Text variant="body3" color="text.dark">
+        {helperText2}
+      </Text>
+    )}
+  </Flex>
+);

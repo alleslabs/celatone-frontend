@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useState, useEffect } from "react";
 
-import { useMobile } from "lib/hooks";
+import { useMobile } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";

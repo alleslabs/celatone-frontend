@@ -2,7 +2,7 @@ import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { useDummyWallet } from "lib/hooks";
+import { useDummyWallet } from "../hooks";
 import type { ComposedMsg, Gas } from "lib/types";
 
 interface SimulateQueryParams {

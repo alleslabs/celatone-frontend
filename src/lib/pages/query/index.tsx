@@ -5,12 +5,11 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
-import { useLCDEndpoint } from "lib/hooks";
 import { AmpTrackToQuery } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";

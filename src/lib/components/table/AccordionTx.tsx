@@ -1,10 +1,9 @@
 import { SlideFade } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { SingleActionMsg } from "../action-msg/SingleActionMsg";
-import { AccordionStepperItem } from "lib/components/AccordionStepperItem";
-import { RedoButton } from "lib/components/button/RedoButton";
-import { ResendButton } from "lib/components/button/ResendButton";
+import { AccordionStepperItem } from "../AccordionStepperItem";
+import { SingleActionMsg } from "lib/components/action-msg/SingleActionMsg";
+import { RedoButton, ResendButton } from "lib/components/button";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 

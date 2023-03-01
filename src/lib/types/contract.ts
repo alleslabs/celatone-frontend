@@ -31,11 +31,6 @@ export interface ContractInfo extends ContractLocalInfo {
   remark: Option<ContractHistoryRemark>;
 }
 
-export interface ContractInstances {
-  contractList: Option<ContractLocalInfo[]>;
-  count: Option<number>;
-}
-
 export interface ContractMigrationHistory {
   codeId: number;
   codeName?: string;

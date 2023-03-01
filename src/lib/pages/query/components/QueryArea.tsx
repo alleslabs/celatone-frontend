@@ -6,12 +6,14 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
+import { useLCDEndpoint } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useContractStore, useLCDEndpoint, useUserKey } from "lib/hooks";
+import { useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";

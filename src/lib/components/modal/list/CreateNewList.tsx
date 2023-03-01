@@ -4,11 +4,12 @@ import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
+import { ActionModal } from "../ActionModal";
 import type { FormStatus } from "lib/components/forms";
-import { TextInput } from "lib/components/forms/TextInput";
-import { ActionModal } from "lib/components/modal/ActionModal";
+import { TextInput } from "lib/components/forms";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { shortenName } from "lib/utils";
 

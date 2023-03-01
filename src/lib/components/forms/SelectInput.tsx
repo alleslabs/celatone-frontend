@@ -42,24 +42,22 @@ interface SelectItemProps {
   disabled: boolean;
 }
 
-const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => {
-  return (
-    <Flex
-      px={4}
-      py={2}
-      onClick={onSelect}
-      color="text.main"
-      cursor="pointer"
-      gap={2}
-      aria-disabled={disabled}
-      _hover={{ bg: "pebble.800" }}
-      transition="all .25s ease-in-out"
-      _disabled={{ opacity: 0.4, pointerEvents: "none" }}
-    >
-      {children}
-    </Flex>
-  );
-};
+const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
+  <Flex
+    px={4}
+    py={2}
+    onClick={onSelect}
+    color="text.main"
+    cursor="pointer"
+    gap={2}
+    aria-disabled={disabled}
+    _hover={{ bg: "pebble.800" }}
+    transition="all .25s ease-in-out"
+    _disabled={{ opacity: 0.4, pointerEvents: "none" }}
+  >
+    {children}
+  </Flex>
+);
 
 export const SelectInput = <T extends string>({
   formLabel,

@@ -5,10 +5,21 @@ interface EmptyStateProps {
   icon?: IconType;
   image?: string;
   message: string;
+  withBorder?: boolean;
 }
 
-export const EmptyState = ({ icon, message, image }: EmptyStateProps) => {
-  return (
+export const EmptyState = ({
+  icon,
+  message,
+  image,
+  withBorder = false,
+}: EmptyStateProps) => (
+  <Flex
+    py="64px"
+    direction="column"
+    borderY={withBorder ? "1px solid" : undefined}
+    borderColor="pebble.700"
+  >
     <Flex alignItems="center" flexDir="column" gap="4" width="full">
       {icon && <Icon as={icon} color="pebble.600" boxSize="16" />}
       {image && (
@@ -22,5 +33,5 @@ export const EmptyState = ({ icon, message, image }: EmptyStateProps) => {
         {message}
       </Text>
     </Flex>
-  );
-};
+  </Flex>
+);

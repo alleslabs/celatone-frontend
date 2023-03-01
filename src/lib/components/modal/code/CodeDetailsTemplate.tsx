@@ -2,12 +2,13 @@ import { Flex, Icon, Text, useToast } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
-import { ActionModal } from "..";
+import { ActionModal } from "../ActionModal";
+import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { MAX_CODE_NAME_LENGTH } from "lib/data";
-import { useCodeStore, useGetAddressType } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr, CodeInfo } from "lib/types";
 
