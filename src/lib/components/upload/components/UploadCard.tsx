@@ -31,7 +31,7 @@ const getStatusDecorator = (
       };
     case "failed":
       return {
-        icon: <CustomIcon name="alert-solid" color="error.main" />,
+        icon: <CustomIcon name="alert-circle-solid" color="error.main" />,
         statusText: <Text color="error.main">Invalid Wasm file</Text>,
         helperText: error,
       };

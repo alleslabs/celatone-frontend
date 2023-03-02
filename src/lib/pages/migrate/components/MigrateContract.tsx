@@ -180,7 +180,11 @@ export const MigrateContract = ({
       />
       {simulateError && (
         <Flex gap={2} mb={4}>
-          <CustomIcon name="alert-solid" boxSize="3" color="error.main" />
+          <CustomIcon
+            name="alert-circle-solid"
+            boxSize="3"
+            color="error.main"
+          />
           <Text variant="body3" color="error.main">
             {simulateError}
           </Text>

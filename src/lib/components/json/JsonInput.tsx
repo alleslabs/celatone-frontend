@@ -52,7 +52,11 @@ const getResponse = (jsonState: JsonState) => {
         color: "error.main",
         response: (
           <>
-            <CustomIcon name="alert-solid" color="error.light" boxSize="3" />{" "}
+            <CustomIcon
+              name="alert-circle-solid"
+              color="error.light"
+              boxSize="3"
+            />{" "}
             {jsonState.errMsg}
           </>
         ),

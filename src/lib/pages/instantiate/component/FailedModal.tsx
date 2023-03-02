@@ -27,7 +27,11 @@ export const FailedModal = ({ errorLog, onClose }: FailedModalProps) => (
     <ModalContent w="600px">
       <ModalHeader>
         <Flex gap="12px" align="center">
-          <CustomIcon name="alert-solid" color="error.light" boxSize="5" />
+          <CustomIcon
+            name="alert-circle-solid"
+            color="error.light"
+            boxSize="5"
+          />
           <Heading as="h5" variant="h5">
             Failed to instantiate
           </Heading>

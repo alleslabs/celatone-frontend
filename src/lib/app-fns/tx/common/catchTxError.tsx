@@ -49,7 +49,11 @@ export const catchTxError = (
       receiptInfo: {
         ...getReceiptInfo(error),
         headerIcon: (
-          <CustomIcon name="alert-solid" color="error.light" boxSize="5" />
+          <CustomIcon
+            name="alert-circle-solid"
+            color="error.light"
+            boxSize="5"
+          />
         ),
       },
       receipts: getTxHashReceipt(txHash),
