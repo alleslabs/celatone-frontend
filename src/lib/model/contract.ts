@@ -107,14 +107,14 @@ export const useContractData = (
       ["query", "instantiate_info", endpoint, contractAddress],
       async () =>
         queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
-      { enabled: !!currentChainRecord, retry: false }
+      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 
   const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
     useQuery(
       ["query", "contract_cw2_info", endpoint, contractAddress],
       async () => queryContractCw2Info(endpoint, contractAddress),
-      { enabled: !!currentChainRecord, retry: false }
+      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
@@ -126,7 +126,7 @@ export const useContractData = (
           currentChainRecord?.chain.chain_id,
           contractAddress
         ),
-      { enabled: !!currentChainRecord, retry: false }
+      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 
   const contractBalancesWithAssetInfos = contractBalances
