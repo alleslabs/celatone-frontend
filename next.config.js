@@ -11,6 +11,15 @@ const nextConfig = {
   eslint: {
     dirs: ["src"],
   },
+  webpack: (config, { webpack }) => {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __SENTRY_DEBUG__: false,
+      })
+    );
+
+    return config;
+  },
   async rewrites() {
     return [
       {
