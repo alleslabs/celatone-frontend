@@ -16,6 +16,8 @@ export interface CodeInfo extends CodeLocalInfo {
   contractCount: Option<number>;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
+  cw2Contract: Option<string | null>;
+  cw2Version: Option<string | null>;
   isSaved?: boolean;
 }
 
@@ -34,16 +36,6 @@ export interface CodeData {
   proposal: Option<CodeProposal>;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
-}
-
-export interface PublicCodeData {
-  contracts: number;
-  description: string;
-  id: number;
-  instantiatePermission: string;
-  name: string;
-  permissionAddresses: string[];
-  slug: string;
-  uploader: string;
-  verified: boolean;
+  cw2Contract: Option<string | null>;
+  cw2Version: Option<string | null>;
 }

@@ -21,7 +21,7 @@ export const getCodeIdInfo = async (
   id: number
 ): Promise<CodeIdInfoResponse> => {
   const { data } = await axios.get<CodeIdInfoResponse>(
-    `${endpoint}/cosmwasm/wasm/v1/code/${id}`
+    `${endpoint}cosmwasm/wasm/v1/code/${id}`
   );
   return data;
 };

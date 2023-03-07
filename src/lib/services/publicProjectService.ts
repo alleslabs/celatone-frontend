@@ -8,7 +8,6 @@ import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
 import type {
   PublicContract,
   Option,
-  PublicCodeData,
   PublicInfo,
   PublicProjectInfo,
   RawPublicContract,
@@ -32,7 +31,7 @@ const parseCode = (raw: RawPublicCode): PublicCode => ({
   contractCount: raw.contracts,
 });
 
-export const usePublicProjects = () => {
+export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
   const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
@@ -59,7 +58,9 @@ export const usePublicProjects = () => {
   });
 };
 
-export const usePublicProjectBySlug = (slug: Option<string>) => {
+export const usePublicProjectBySlug = (
+  slug: Option<string>
+): UseQueryResult<PublicProjectInfo> => {
   const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
@@ -127,7 +128,7 @@ export const usePublicProjectByContractAddress = (
 
 export const usePublicProjectByCodeId = (
   codeId: Option<number>
-): UseQueryResult<PublicCodeData> => {
+): UseQueryResult<PublicCode> => {
   const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
@@ -137,12 +138,12 @@ export const usePublicProjectByCodeId = (
       throw new Error("No chain selected (usePublicProjectByCodeId)");
 
     return axios
-      .get<PublicCodeData>(
+      .get<RawPublicCode>(
         `${CELATONE_API_ENDPOINT}/codes/${getChainApiPath(
           currentChainRecord.chain.chain_name
         )}/${currentChainRecord.chain.chain_id}/${codeId}`
       )
-      .then(({ data: projectInfo }) => projectInfo);
+      .then(({ data: projectInfo }) => parseCode(projectInfo));
   }, [codeId, currentChainRecord]);
 
   return useQuery(

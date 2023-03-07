@@ -5,6 +5,7 @@ import type {
   HumanAddr,
   InstantiatePermission,
   PermissionAddresses,
+  Option,
 } from "lib/types";
 
 export interface Account {
@@ -23,6 +24,10 @@ export interface RawPublicCode {
   uploader: Addr;
   instantiatePermission: InstantiatePermission;
   permissionAddresses: PermissionAddresses;
+  github: string;
+  verified: boolean;
+  cw2Contract: Option<string | null>;
+  cw2Version: Option<string | null>;
 }
 
 export interface PublicCode extends Omit<RawPublicCode, "contracts"> {
