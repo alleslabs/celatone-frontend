@@ -117,17 +117,11 @@ const ViewAddresses = ({
           p="unset"
           w="fit-content"
           rightIcon={
-            <Flex>
-              {viewAll ? (
-                <CustomIcon name="chevron-up" color="lilac.main" boxSize="3" />
-              ) : (
-                <CustomIcon
-                  name="chevron-down"
-                  color="lilac.main"
-                  boxSize="3"
-                />
-              )}
-            </Flex>
+            <CustomIcon
+              name={viewAll ? "chevron-up" : "chevron-down"}
+              color="lilac.main"
+              boxSize="3"
+            />
           }
         >
           {viewAll ? "See Less" : "View All Addresses"}

@@ -5,14 +5,14 @@ import type { ICONS } from "lib/components/icon/CustomIcon";
 import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
-export const renderSocial = (name: string) => {
+export const renderSocial = (name: string): keyof typeof ICONS => {
   switch (name) {
     case "twitter":
-      return "twitter" as keyof typeof ICONS;
+      return "twitter";
     case "telegram":
-      return "telegram" as keyof typeof ICONS;
+      return "telegram";
     case "discord":
-      return "discord" as keyof typeof ICONS;
+      return "discord";
     default:
       return "info-circle-solid";
   }

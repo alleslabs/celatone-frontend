@@ -9,7 +9,7 @@ import {
   formatUTokenWithPrecision,
 } from "lib/utils";
 
-import { Copier } from "./Copier";
+import { Copier } from "./copy";
 
 interface TokenCardProps {
   userBalance: BalanceWithAssetInfo;

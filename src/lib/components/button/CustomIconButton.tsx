@@ -13,26 +13,24 @@ export const CustomIconButton = ({
   href,
   icon = "website",
   onClick,
-}: CustomIconButtonProps) => {
-  return (
-    <Button
-      variant="ghost"
-      size="xs"
-      px="1"
-      minWidth="32px"
-      minHeight="32px"
-      height="full"
+}: CustomIconButtonProps) => (
+  <Button
+    variant="ghost"
+    size="xs"
+    px="1"
+    minWidth="32px"
+    minHeight="32px"
+    height="full"
+  >
+    <Link
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      display="flex"
+      alignItems="center"
+      onClick={onClick}
     >
-      <Link
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        display="flex"
-        alignItems="center"
-        onClick={onClick}
-      >
-        <CustomIcon name={icon} boxSize="5" />
-      </Link>
-    </Button>
-  );
-};
+      <CustomIcon name={icon} boxSize="5" />
+    </Link>
+  </Button>
+);

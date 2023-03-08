@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import { useLCDEndpoint } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import { CopyButton } from "lib/components/CopyButton";
+import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";

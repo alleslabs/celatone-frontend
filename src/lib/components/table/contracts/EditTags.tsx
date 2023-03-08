@@ -31,9 +31,12 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     <ActionModal
       title="Edit Tags"
       trigger={
-        <Flex cursor="pointer">
-          <CustomIcon name="edit" color="pebble.600" boxSize="3" />
-        </Flex>
+        <CustomIcon
+          cursor="pointer"
+          name="edit"
+          color="pebble.600"
+          boxSize="3"
+        />
       }
       headerContent={
         <Flex pt="6" gap="36px">

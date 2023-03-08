@@ -41,14 +41,14 @@ export const MAX_CODE_NAME_LENGTH = 50;
 export const getMaxCodeNameLengthError = (currentLength: number) =>
   getMaxLengthError("Code name", currentLength, MAX_CODE_NAME_LENGTH);
 
-export const getListIcon = (listName: string) => {
+export const getListIcon = (listName: string): keyof typeof ICONS => {
   switch (listName) {
     case INSTANTIATED_LIST_NAME:
-      return "wallet" as keyof typeof ICONS;
+      return "wallet";
     case SAVED_LIST_NAME:
-      return "bookmark-solid" as keyof typeof ICONS;
+      return "bookmark-solid";
     default:
-      return "contract-list" as keyof typeof ICONS;
+      return "contract-list";
   }
 };
 

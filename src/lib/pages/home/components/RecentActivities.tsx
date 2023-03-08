@@ -46,11 +46,10 @@ export const RecentActivities = observer(() => {
               }
             >
               <Flex alignItems="center" gap={1}>
-                {item.type === "query" ? (
-                  <CustomIcon name="query" color="honeydew.main" />
-                ) : (
-                  <CustomIcon name="execute" color="honeydew.main" />
-                )}
+                <CustomIcon
+                  name={item.type === "query" ? "query" : "execute"}
+                  color="honeydew.main"
+                />
                 <Text variant="body2" color="honeydew.main">
                   {item.type === "query" ? "Query" : "Execute"}
                 </Text>

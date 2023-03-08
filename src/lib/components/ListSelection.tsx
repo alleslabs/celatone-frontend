@@ -225,13 +225,13 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <Flex alignItems="center" justifyContent="space-between">
                       <Text variant="body2">{option.label}</Text>
                       {isOptionSelected(option) && (
-                        <Flex data-label={option.label} mr={2}>
-                          <CustomIcon
-                            name="check"
-                            color="pebble.600"
-                            boxSize="3"
-                          />
-                        </Flex>
+                        <CustomIcon
+                          data-label={option.label}
+                          mr={2}
+                          name="check"
+                          color="pebble.600"
+                          boxSize="3"
+                        />
                       )}
                     </Flex>
                   </ListItem>

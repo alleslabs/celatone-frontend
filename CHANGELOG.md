@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- [#216](https://github.com/alleslabs/celatone-frontend/pull/216) Change icon to alles labs icon set
+
 ### Features
 
 - [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and wireup up json attach funds
@@ -155,7 +157,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#216](https://github.com/alleslabs/celatone-frontend/pull/216) Change icon to alles labs icon set
 - [#204](https://github.com/alleslabs/celatone-frontend/pull/204) Change back button wording and adjust flow
 - [#191](https://github.com/alleslabs/celatone-frontend/pull/191) Add typeface (Poppins) and add new styling for command shortcut
 - [#190](https://github.com/alleslabs/celatone-frontend/pull/190) Setup sentry tunnel in next config

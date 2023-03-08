@@ -81,9 +81,7 @@ export const PublicProjectContractRow = ({
             bg="honeydew.darker"
             arrowSize={8}
           >
-            <Flex cursor="pointer">
-              <CustomIcon name="info-circle" boxSize="12px" />
-            </Flex>
+            <CustomIcon name="info-circle" boxSize="12px" cursor="pointer" />
           </Tooltip>
         )}
       </TableRowNoBorder>

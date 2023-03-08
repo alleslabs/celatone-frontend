@@ -13,7 +13,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import { CopyButton } from "lib/components/CopyButton";
+import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 
 interface FailedModalProps {

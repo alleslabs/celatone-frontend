@@ -84,12 +84,9 @@ export const PastTxRow = ({
           <FurtherActionButton transaction={transaction} />
         </TableRow>
         <TableRow>
-          {isAccordion &&
-            (isOpen ? (
-              <CustomIcon name="chevron-up" />
-            ) : (
-              <CustomIcon name="chevron-down" />
-            ))}
+          {isAccordion && (
+            <CustomIcon name={isOpen ? "chevron-up" : "chevron-down"} />
+          )}
         </TableRow>
       </Grid>
       {isAccordion && (

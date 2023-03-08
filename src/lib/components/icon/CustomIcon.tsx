@@ -1,3 +1,4 @@
+import type { IconProps } from "@chakra-ui/react";
 import { Icon } from "@chakra-ui/react";
 
 const viewboxDefault = "0 0 16 16";
@@ -1236,7 +1237,7 @@ export const ICONS = {
   },
 };
 
-interface CustomIconProps {
+interface CustomIconProps extends IconProps {
   color?: string;
   name: keyof typeof ICONS;
   boxSize?: string;
@@ -1246,12 +1247,14 @@ export const CustomIcon = ({
   color = "pebble.600",
   boxSize = "16px",
   name,
+  ...iconProps
 }: CustomIconProps) => (
   <Icon
     viewBox={ICONS[name].viewBox}
     color={color}
     margin={1}
     boxSize={boxSize}
+    {...iconProps}
   >
     {ICONS[name].svg}
   </Icon>

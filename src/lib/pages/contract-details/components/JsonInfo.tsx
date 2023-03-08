@@ -40,13 +40,10 @@ export const JsonInfo = ({
         <Heading as="h6" variant="h6">
           {header}
         </Heading>
-        <Flex transition="all .25s ease-in-out">
-          {expand ? (
-            <CustomIcon name="chevron-up" />
-          ) : (
-            <CustomIcon name="chevron-down" />
-          )}
-        </Flex>
+        <CustomIcon
+          transition="all .25s ease-in-out"
+          name={expand ? "chevron-up" : "chevron-down"}
+        />
       </Flex>
       <JsonReadOnly
         text={jsonString}

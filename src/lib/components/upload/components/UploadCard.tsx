@@ -74,9 +74,13 @@ export const UploadCard = ({
           </Text>
         </Flex>
         <Flex align="center" gap="16px" ml="auto">
-          <Flex onClick={deleteFile} cursor="pointer">
-            <CustomIcon name="delete" color="text.dark" />
-          </Flex>
+          <CustomIcon
+            name="delete"
+            color="text.dark"
+            onClick={deleteFile}
+            cursor="pointer"
+          />
+
           {StatusIcon}
         </Flex>
       </Flex>

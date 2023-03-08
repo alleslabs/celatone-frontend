@@ -207,9 +207,7 @@ export const TxFilterSelection = observer(
                       <Text>{displayActionValue(option)}</Text>
 
                       {isOptionSelected(option) && (
-                        <Flex data-label={option}>
-                          <CustomIcon name="check" />
-                        </Flex>
+                        <CustomIcon name="check" data-label={option} />
                       )}
                     </Flex>
                   </ListItem>
