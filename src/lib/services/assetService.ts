@@ -1,26 +1,31 @@
 import { useWallet } from "@cosmos-kit/react";
+import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 
-import { getAssetInfo } from "lib/services/asset";
-import type { AssetInfo, Option } from "lib/types";
+import { getAssetInfos } from "lib/services/asset";
+import type { AssetInfo } from "lib/types";
 
-export const useAssetInfos = (): Option<{ [key: string]: AssetInfo }> => {
+export const useAssetInfos = (): UseQueryResult<Record<string, AssetInfo>> => {
   const { currentChainRecord } = useWallet();
 
-  const { data: assets } = useQuery(
+  const queryFn = useCallback(
+    async () =>
+      getAssetInfos(
+        currentChainRecord?.name,
+        currentChainRecord?.chain.chain_id
+      ),
+    [currentChainRecord?.chain.chain_id, currentChainRecord?.name]
+  );
+
+  return useQuery(
     [
       "query",
       "assetInfos",
       currentChainRecord?.name,
       currentChainRecord?.chain.chain_id,
     ],
-    async () =>
-      getAssetInfo(
-        currentChainRecord?.name,
-        currentChainRecord?.chain.chain_id
-      ),
+    queryFn,
     { enabled: !!currentChainRecord }
   );
-
-  return assets?.reduce((acc, asset) => ({ ...acc, [asset.id]: asset }), {});
 };

@@ -599,7 +599,7 @@ export const useSingleActionMsgProps = (
 ): SingleMsgProps => {
   const { currentChainName } = useWallet();
   const { getContractLocalInfo } = useContractStore();
-  const assetInfos = useAssetInfos();
+  const { data: assetInfos } = useAssetInfos();
 
   switch (type) {
     case "MsgExecuteContract":

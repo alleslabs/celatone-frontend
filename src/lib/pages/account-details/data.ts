@@ -1,3 +1,6 @@
+import type { Big } from "big.js";
+import big from "big.js";
+
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountBalances } from "lib/services/accountService";
 import { useAssetInfos } from "lib/services/assetService";
@@ -6,14 +9,33 @@ import {
   useContractListByAdminPagination,
   useContractListByWalletAddressPagination,
 } from "lib/services/contractService";
+import type { RawUnbonding } from "lib/services/delegation";
+import {
+  useCommission,
+  useDelegationRewards,
+  useDelegations,
+  useStakingParams,
+  useUnbondings,
+} from "lib/services/delegationService";
 import type {
+  AssetInfo,
   BalanceWithAssetInfo,
   CodeInfo,
   ContractInfo,
   HumanAddr,
   Option,
+  Token,
+  TokenWithValue,
+  U,
+  USD,
+  ValidatorAddr,
 } from "lib/types";
-import { calAssetValueWithPrecision } from "lib/utils";
+import {
+  calAssetValueWithPrecision,
+  calculateAssetValue,
+  toToken,
+} from "lib/utils";
+import { addrToValoper } from "lib/utils/bech32";
 
 interface AccountContracts {
   contracts: Option<ContractInfo[]>;
@@ -31,6 +53,20 @@ interface AccountAssetInfos {
   isLoading: boolean;
   totalData: Option<number>;
   error: Error;
+}
+
+interface Delegation {
+  validatorAddress: ValidatorAddr;
+  token: TokenWithValue;
+}
+
+interface Unbonding extends Omit<RawUnbonding, "amount"> {
+  token: TokenWithValue;
+}
+
+interface Reward {
+  validatorAddress: ValidatorAddr;
+  tokens: TokenWithValue[];
 }
 
 export const useAccountContracts = (
@@ -120,7 +156,7 @@ export const useUserAssetInfos = (
     isLoading,
     error,
   } = useAccountBalances(walletAddress);
-  const assetInfos = useAssetInfos();
+  const { data: assetInfos } = useAssetInfos();
 
   const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
     (balance): BalanceWithAssetInfo => ({
@@ -150,5 +186,165 @@ export const useUserAssetInfos = (
     isLoading,
     totalData: contractBalancesWithAssetInfos?.length,
     error: error as Error,
+  };
+};
+
+const coinToTokenWithValue = (
+  denom: string,
+  amount: string,
+  assetInfo: Option<AssetInfo>
+): TokenWithValue => {
+  const token: TokenWithValue = {
+    denom,
+    uAmount: big(amount) as U<Token<Big>>,
+    amount: undefined,
+    value: undefined,
+  };
+  if (assetInfo) {
+    token.amount = toToken(amount as U<Token>, assetInfo.precision);
+    token.value = calculateAssetValue(
+      token.amount,
+      assetInfo.price as USD<number>
+    );
+  }
+
+  return token;
+};
+
+const addTotal = (
+  oldTotal: Option<TokenWithValue>,
+  token: TokenWithValue
+): TokenWithValue => {
+  if (!oldTotal) return token;
+
+  return {
+    denom: oldTotal.denom,
+    uAmount: oldTotal.uAmount.add(token.uAmount) as U<Token<Big>>,
+    amount: oldTotal.amount?.add(token.amount ?? big(0)) as Token<Big>,
+    value: oldTotal.value?.add(token.value ?? 0) as USD<Big>,
+  };
+};
+
+export const useUserDelegationInfos = async (walletAddress: HumanAddr) => {
+  const { data: stakingParams, isLoading: isLoadingStakingParams } =
+    useStakingParams();
+  const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
+
+  const { data: rawDelegations, isLoading: isLoadingDelegations } =
+    useDelegations(walletAddress);
+  const { data: rawUnbondings, isLoading: isLoadingUnbondings } =
+    useUnbondings(walletAddress);
+  const { data: rawRewards, isLoading: isLoadingRewards } =
+    useDelegationRewards(walletAddress);
+  const { data: rawCommission, isLoading: isLoadingCommission } = useCommission(
+    addrToValoper(walletAddress)
+  );
+
+  const delegations =
+    assetInfos && rawDelegations
+      ? rawDelegations.map<Delegation>((raw) => ({
+          validatorAddress: raw.validatorAddress,
+          token: coinToTokenWithValue(
+            raw.denom,
+            raw.amount,
+            assetInfos[raw.denom]
+          ),
+        }))
+      : undefined;
+  const totalDelegations: Record<string, TokenWithValue> =
+    delegations?.reduce(
+      (total, delegation) => ({
+        ...total,
+        [delegation.token.denom]: addTotal(
+          total[delegation.token.denom],
+          delegation.token
+        ),
+      }),
+      {} as Record<string, TokenWithValue>
+    ) ?? {};
+
+  const unbondings =
+    stakingParams && assetInfos && rawUnbondings
+      ? rawUnbondings.map<Unbonding>((raw) => ({
+          validatorAddress: raw.validatorAddress,
+          completionTime: raw.completionTime,
+          token: coinToTokenWithValue(
+            stakingParams.bondDenom,
+            raw.amount,
+            assetInfos[stakingParams.bondDenom]
+          ),
+        }))
+      : undefined;
+  const totalUnbondings: Record<string, TokenWithValue> =
+    unbondings?.reduce(
+      (total, unbonding) => ({
+        ...total,
+        [unbonding.token.denom]: addTotal(
+          total[unbonding.token.denom],
+          unbonding.token
+        ),
+      }),
+      {} as Record<string, TokenWithValue>
+    ) ?? {};
+
+  const rewards =
+    assetInfos && rawRewards
+      ? rawRewards.rewards.map<Reward>((raw) => ({
+          validatorAddress: raw.validatorAddress,
+          tokens: raw.reward.map<TokenWithValue>((coin) =>
+            coinToTokenWithValue(
+              coin.denom,
+              coin.amount,
+              assetInfos[coin.denom]
+            )
+          ),
+        }))
+      : undefined;
+  const totalRewards: Record<string, TokenWithValue> =
+    assetInfos && rawRewards
+      ? rawRewards.total.reduce(
+          (total, raw) => ({
+            ...total,
+            [raw.denom]: coinToTokenWithValue(
+              raw.denom,
+              raw.amount,
+              assetInfos[raw.denom]
+            ),
+          }),
+          {} as Record<string, TokenWithValue>
+        )
+      : {};
+
+  const totalCommission: Record<string, TokenWithValue> =
+    assetInfos && rawCommission
+      ? rawCommission.commission.reduce(
+          (commission, raw) => ({
+            ...commission,
+            [raw.denom]: coinToTokenWithValue(
+              raw.denom,
+              raw.amount,
+              assetInfos[raw.denom]
+            ),
+          }),
+          {} as Record<string, TokenWithValue>
+        )
+      : {};
+
+  return {
+    stakingParams,
+    isLoadingStakingParams,
+    assetInfos,
+    isLoadingAssetInfos,
+    totalDelegations,
+    delegations,
+    isLoadingDelegations,
+    totalUnbondings,
+    unbondings,
+    isLoadingUnbondings,
+    totalRewards,
+    rewards,
+    isLoadingRewards,
+    totalCommission,
+    isLoadingCommission,
   };
 };

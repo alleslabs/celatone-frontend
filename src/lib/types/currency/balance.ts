@@ -18,6 +18,7 @@ export interface AssetInfo {
   logo: string;
   name: string;
   precision: number;
+  price: number;
   slugs: string[];
   symbol: string;
   type: string;

@@ -32,8 +32,8 @@ import {
 
 enum TabIndex {
   Overview,
-  Delegations,
   Assets,
+  Delegations,
   Txs,
   Codes,
   Contracts,
@@ -94,16 +94,16 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <CustomTab onClick={() => setTabIndex(TabIndex.Overview)}>
             Overall
           </CustomTab>
-          {/* TODO: add counts for Delegations */}
-          <CustomTab onClick={() => setTabIndex(TabIndex.Delegations)}>
-            Delegations
-          </CustomTab>
           <CustomTab
             count={tableCounts.assetsCount}
             isDisabled={!tableCounts.assetsCount}
             onClick={() => setTabIndex(TabIndex.Assets)}
           >
             Assets
+          </CustomTab>
+          {/* TODO: add counts for Delegations */}
+          <CustomTab onClick={() => setTabIndex(TabIndex.Delegations)}>
+            Delegations
           </CustomTab>
           <CustomTab
             count={tableCounts.txsCount}
@@ -241,6 +241,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 const AccountDetails = () => {
   const router = useRouter();
   const { validateUserAddress } = useValidateAddress();
+  // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
   ) as HumanAddr;
