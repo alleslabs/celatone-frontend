@@ -6,26 +6,26 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate, useSelectChain } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useSelectChain,
+  useCurrentNetwork,
+} from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { getChainNameByNetwork, getNetworkByChainName } from "lib/data";
+import { getChainNameByNetwork } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const Deploy = () => {
-  const { currentChainName } = useWallet();
-  const network = getNetworkByChainName(currentChainName);
+  const { isMainnet } = useCurrentNetwork();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const selectChain = useSelectChain();
-
-  const isMainnet = network === "mainnet";
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);

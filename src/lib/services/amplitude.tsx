@@ -47,6 +47,7 @@ export enum AmpEvent {
   TO_CODE_DETAIL = "To Code Detail",
   TO_PROJECT_DETAIL = "To Public Project Detail",
   TO_NOT_FOUND = "To 404 Not Found",
+  TO_FAUCET = "To Faucet",
   // ACTIONS
   ACTION_UPLOAD = "Act Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -56,6 +57,7 @@ export enum AmpEvent {
   ACTION_ADMIN_UPDATE = "Action Admin Update",
   ACTION_ADMIN_CLEAR = "Action Admin Clear",
   ACTION_RESEND = "Action Resend",
+  ACTION_FAUCET = "Action Faucet",
   // INTERACTS
   USE_SELECT_NETWORK = "Use Select Network",
   USE_CLICK_WALLET = "Use Click Wallet",
