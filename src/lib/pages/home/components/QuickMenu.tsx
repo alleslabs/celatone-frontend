@@ -19,7 +19,8 @@ interface SecondaryMenuType {
   slug: string;
   icon: IconKeys;
 }
-const secondaryMenu = [
+
+const secondaryMenu: SecondaryMenuType[] = [
   {
     title: "Query",
     subtitle: "Query and get contract state data",
@@ -44,7 +45,7 @@ const secondaryMenu = [
     slug: "admin",
     icon: "admin",
   },
-] as SecondaryMenuType[];
+];
 
 export const QuickMenu = () => (
   <Flex direction="column" gap={4} bg="pebble.900" p="48px">

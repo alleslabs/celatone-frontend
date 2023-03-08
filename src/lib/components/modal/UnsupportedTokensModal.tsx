@@ -79,23 +79,25 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   );
 };
 
-const unsupportedTokensContent = (addressType: AddressReturnType) => {
+const unsupportedTokensContent = (
+  addressType: AddressReturnType
+): { icon: IconKeys; header: string } => {
   switch (addressType) {
     case "contract_address": {
       return {
-        icon: "assets-solid" as IconKeys,
+        icon: "assets-solid",
         header: "Contract Address",
       };
     }
     case "user_address": {
       return {
-        icon: "assets-solid" as IconKeys,
+        icon: "assets-solid",
         header: "Wallet Address",
       };
     }
     default:
       return {
-        icon: "question-solid" as IconKeys,
+        icon: "question-solid",
         header: "Invalid Address",
       };
   }

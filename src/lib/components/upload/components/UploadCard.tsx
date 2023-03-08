@@ -79,7 +79,6 @@ export const UploadCard = ({
             onClick={deleteFile}
             cursor="pointer"
           />
-
           {StatusIcon}
         </Flex>
       </Flex>
