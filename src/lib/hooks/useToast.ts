@@ -3,45 +3,27 @@ import type { AlertStatus } from "@chakra-ui/react";
 // TODO: p'peach will look into this issue
 
 // import type { ReactNode } from "react";
-// import {  MdCheckCircle,MdCancel } from "react-icons/md";
-
-// const iconProps = {
-//   boxSize: "6",
-//   display: "flex",
-//   alignItems: "center",
-// };
+// import { CustomIcon } from "../icon";
 
 // const getStatusIcon = (status: AlertStatus) => {
 //   switch (status) {
 //     case "success":
-//       return  ( <Icon as={MdCheckCircle}
-//       color="success.main"
-//       style={iconProps}
-//     />)
+//       return  ( <CustomIcon name="check-circle-solid" color="success.main"/>)
 //     case "error":
-//       return ( <Icon as={MdCancel}
-//       color="error.light"
-//       style={iconProps}
-//     />
+//       return ( <CustomIcon name="close" color="error.light"/>
 // )
 //   }
 // }
 export function useToast() {
   const toast = useChakraToast();
 
-  return (
-    title: string,
-    status: AlertStatus,
-    isClosable: boolean
-    // icon: ReactNode
-  ) => {
+  return (title: string, status: AlertStatus, isClosable: boolean) => {
     toast({
       title,
       status,
       duration: 5000,
       isClosable,
       position: "bottom-right",
-      // icon,
     });
   };
 }

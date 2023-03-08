@@ -1,5 +1,4 @@
-import { MdBookmark, MdInbox, MdLibraryBooks } from "react-icons/md";
-
+import type { IconKeys } from "lib/components/icon";
 import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
 /**
@@ -42,14 +41,14 @@ export const MAX_CODE_NAME_LENGTH = 50;
 export const getMaxCodeNameLengthError = (currentLength: number) =>
   getMaxLengthError("Code name", currentLength, MAX_CODE_NAME_LENGTH);
 
-export const getListIcon = (listName: string) => {
+export const getListIcon = (listName: string): IconKeys => {
   switch (listName) {
     case INSTANTIATED_LIST_NAME:
-      return MdInbox;
+      return "wallet";
     case SAVED_LIST_NAME:
-      return MdBookmark;
+      return "bookmark-solid";
     default:
-      return MdLibraryBooks;
+      return "contract-list";
   }
 };
 

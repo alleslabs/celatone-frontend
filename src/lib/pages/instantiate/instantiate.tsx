@@ -294,7 +294,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           DEPLOY NEW CONTRACT
         </Text>
         <Stepper mode="deploy" currentStep={2} />
-        <Heading as="h4" variant="h4" my="48px">
+        <Heading as="h5" variant="h5" my="48px">
           Instantiate new contract
         </Heading>
         <ConnectWalletAlert

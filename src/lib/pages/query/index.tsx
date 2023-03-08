@@ -1,4 +1,3 @@
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
@@ -8,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
+import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { AmpTrackToQuery } from "lib/services/amplitude";
@@ -95,17 +95,19 @@ const Query = () => {
       {isFetching && <LoadingOverlay />}
       <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h4" variant="h4">
+        <Heading as="h5" variant="h5">
           Query Contract
         </Heading>
         <Box>
           <Button
             variant="ghost-primary"
             size="sm"
+            p="unset"
+            pl="2"
             onClick={goToExecute}
-            rightIcon={<ChevronRightIcon boxSize={4} />}
           >
             Go To Execute
+            <CustomIcon name="chevron-right" color="lilac.main" boxSize="3" />
           </Button>
         </Box>
       </Flex>

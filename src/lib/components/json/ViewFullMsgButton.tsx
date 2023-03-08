@@ -1,5 +1,6 @@
-import { Flex, Text, Icon } from "@chakra-ui/react";
-import { FiChevronDown } from "react-icons/fi";
+import { Flex, Text } from "@chakra-ui/react";
+
+import { CustomIcon } from "../icon";
 
 interface ViewFullMsgButtonProps {
   onClick: () => void;
@@ -31,12 +32,10 @@ export const ViewFullMsgButton = ({
     <Text variant="body3" fontWeight={700} color="text.dark">
       {viewFull ? "View Less" : "View Full Message"}
     </Text>
-    <Icon
-      as={FiChevronDown}
+    <CustomIcon
+      name={viewFull ? "chevron-up" : "chevron-down"}
+      boxSize="3"
       color="text.dark"
-      boxSize={4}
-      transform={viewFull ? "rotate(180deg)" : "rotate(0)"}
-      ml={2}
     />
   </Flex>
 );

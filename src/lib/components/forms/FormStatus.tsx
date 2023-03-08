@@ -1,5 +1,6 @@
-import { Icon, Spinner, Text } from "@chakra-ui/react";
-import { MdCheckCircle, MdOutlineWarning } from "react-icons/md";
+import { Spinner, Text } from "@chakra-ui/react";
+
+import { CustomIcon } from "../icon";
 
 export type ResponseState = "init" | "loading" | "success" | "error";
 
@@ -14,10 +15,20 @@ export const getStatusIcon = (state: ResponseState, boxSize = "1em") => {
     case "loading":
       return <Spinner size="sm" />;
     case "success":
-      return <Icon color="success.main" as={MdCheckCircle} boxSize={boxSize} />;
+      return (
+        <CustomIcon
+          name="check-circle-solid"
+          color="success.main"
+          boxSize={boxSize}
+        />
+      );
     case "error":
       return (
-        <Icon color="error.light" as={MdOutlineWarning} boxSize={boxSize} />
+        <CustomIcon
+          name="alert-circle-solid"
+          color="error.light"
+          boxSize={boxSize}
+        />
       );
     case "init":
     default:

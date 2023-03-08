@@ -2,7 +2,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
 import type { FormStatus } from "lib/components/forms";
-import { UploadIcon } from "lib/components/icon/UploadIcon";
+import { UploadIcon } from "lib/components/icon";
 import { useUserKey } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 

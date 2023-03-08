@@ -1,18 +1,10 @@
-import {
-  Box,
-  SimpleGrid,
-  Flex,
-  Button,
-  Icon,
-  Link,
-  Text,
-} from "@chakra-ui/react";
+import { Box, SimpleGrid, Flex, Button, Link, Text } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
-import { BsGithub } from "react-icons/bs";
 
 import { TextInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { usePublicProjectStore } from "lib/providers/store";
@@ -66,7 +58,7 @@ export const AllProject = observer(() => {
           onClick={() => AmpTrack(AmpEvent.USE_SUBMIT_PROJECT)}
         >
           <Button gap={2} mt={8}>
-            <Icon as={BsGithub} />
+            <CustomIcon name="github" />
             Submit on Github
           </Button>
         </Link>

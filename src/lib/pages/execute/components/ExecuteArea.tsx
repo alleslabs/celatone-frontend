@@ -4,7 +4,6 @@ import { useWallet } from "@cosmos-kit/react";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
-import { MdInput } from "react-icons/md";
 
 import { useFabricateFee, useExecuteContractTx } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
@@ -21,6 +20,7 @@ import {
 } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
+import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
@@ -287,7 +287,16 @@ export const ExecuteArea = ({
             p="6px 16px"
             onClick={proceed}
             isDisabled={!enableExecute || !fee || isFetching}
-            leftIcon={<MdInput />}
+            leftIcon={
+              <CustomIcon
+                name="execute"
+                color={
+                  !enableExecute || !fee || isFetching
+                    ? "pebble.600"
+                    : "text.main"
+                }
+              />
+            }
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >

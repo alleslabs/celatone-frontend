@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import { RiPencilFill } from "react-icons/ri";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { ShowMoreButton } from "lib/components/button";
+import { CustomIcon } from "lib/components/icon";
 import { EditContractDetailsModal } from "lib/components/modal";
 import type { ContractData } from "lib/types";
 import { textLine } from "lib/utils";
@@ -44,7 +44,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
             size="xs"
             color="lilac.main"
             variant="ghost-primary"
-            leftIcon={<RiPencilFill />}
+            leftIcon={<CustomIcon name="edit" color="lilac.main" boxSize="3" />}
           >
             {description ? "Edit" : "Add Description"}
           </Button>
@@ -71,8 +71,8 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
       flex="1"
       role="group"
     >
-      <Flex justify="space-between" align="center" h="30px">
-        <Text variant="body2" fontWeight={500} color="text.dark">
+      <Flex justify="space-between" align="center" h="32px" mb="1">
+        <Text variant="body2" fontWeight={500} color="text.dark" mt="1px">
           Your Contract Description
         </Text>
         <Box display="none" _groupHover={{ display: "flex" }}>

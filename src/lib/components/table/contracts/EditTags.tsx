@@ -1,8 +1,8 @@
-import { Icon, Flex, FormControl, Box, Text } from "@chakra-ui/react";
+import { Flex, FormControl, Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { MdMode } from "react-icons/md";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal";
 import { TagSelection } from "lib/components/TagSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
@@ -31,7 +31,12 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     <ActionModal
       title="Edit Tags"
       trigger={
-        <Icon as={MdMode} color="pebble.600" boxSize="4" cursor="pointer" />
+        <CustomIcon
+          cursor="pointer"
+          name="edit"
+          color="pebble.600"
+          boxSize="3"
+        />
       }
       headerContent={
         <Flex pt="6" gap="36px">

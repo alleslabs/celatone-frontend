@@ -9,7 +9,6 @@ import {
   Input,
   List,
   ListItem,
-  Icon,
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
@@ -17,8 +16,8 @@ import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import type { CSSProperties } from "react";
 import { useState, useRef, forwardRef } from "react";
-import { MdCheck, MdClose } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon";
 import { displayActionValue, mergeRefs } from "lib/utils";
 
 export interface TxFilterSelectionProps extends InputProps {
@@ -136,7 +135,11 @@ export const TxFilterSelection = observer(
                         color="pebble.900"
                       >
                         {displayActionValue(option)}
-                        <Icon as={MdClose} boxSize="4" />
+                        <CustomIcon
+                          name="close"
+                          boxSize="3"
+                          color="pebble.900"
+                        />
                       </Tag>
                     </Flex>
                   ))}
@@ -204,12 +207,7 @@ export const TxFilterSelection = observer(
                       <Text>{displayActionValue(option)}</Text>
 
                       {isOptionSelected(option) && (
-                        <Icon
-                          as={MdCheck}
-                          color="text.dark"
-                          data-label={option}
-                          mr={2}
-                        />
+                        <CustomIcon name="check" data-label={option} />
                       )}
                     </Flex>
                   </ListItem>

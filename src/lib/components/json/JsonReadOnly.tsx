@@ -3,7 +3,7 @@ import { Text, Box } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
-import { CopyButton } from "lib/components/copy";
+import { CopyButton } from "../copy";
 import { jsonValidate } from "lib/utils";
 
 import { ViewFullMsgButton } from "./ViewFullMsgButton";

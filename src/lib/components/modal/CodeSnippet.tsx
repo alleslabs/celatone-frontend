@@ -12,15 +12,14 @@ import {
   TabPanels,
   TabPanel,
   Heading,
-  Icon,
   Box,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import AceEditor from "react-ace";
-import { MdCode } from "react-icons/md";
 
+import { CopyButton } from "../copy";
+import { CustomIcon } from "../icon";
 import { useLCDEndpoint } from "lib/app-provider";
-import { CopyButton } from "lib/components/copy";
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr, Option } from "lib/types";
@@ -195,12 +194,16 @@ execute();
         variant="outline-info"
         size="sm"
         ml="auto"
+        gap="1"
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_SNIPPET);
           onOpen();
         }}
       >
-        <Icon as={MdCode} boxSize={5} mr={1} />
+        <CustomIcon
+          name="code"
+          color={isDisabled ? "honeydew.darker" : "honeydew.main"}
+        />
         Code Snippet
       </Button>
 
@@ -208,12 +211,12 @@ execute();
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
-            <Icon as={MdCode} color="text.dark" fontSize="24px" />
+            <CustomIcon name="code" boxSize="6" />
             <Heading as="h5" variant="h5">
               Code Snippet
             </Heading>
           </ModalHeader>
-          <ModalCloseButton color="text.dark" />
+          <ModalCloseButton color="pebble.600" />
           <ModalBody px={4} maxH="640px" overflow="scroll">
             <Tabs>
               <TabList borderBottom="1px solid" borderColor="pebble.700">

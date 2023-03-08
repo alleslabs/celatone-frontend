@@ -1,6 +1,6 @@
-import { Flex, Button, Icon, Text } from "@chakra-ui/react";
-import { MdOutlineAdd, MdBookmarkBorder, MdSearch } from "react-icons/md";
+import { Flex, Button, Image, Text } from "@chakra-ui/react";
 
+import { CustomIcon } from "../icon";
 import { useInternalNavigate } from "lib/app-provider";
 import { SaveNewContractModal } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
@@ -19,7 +19,10 @@ interface ActionSectionProps {
 
 const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
   list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? (
-    <Button rightIcon={<MdOutlineAdd />} onClick={handleAction}>
+    <Button
+      leftIcon={<CustomIcon name="add-new" boxSize="4" color="text.main" />}
+      onClick={handleAction}
+    >
       Deploy New Contract
     </Button>
   ) : (
@@ -31,7 +34,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
           list={list}
           buttonProps={{
             variant: "outline-primary",
-            rightIcon: <MdBookmarkBorder />,
+            leftIcon: <CustomIcon name="bookmark" color="violet.light" />,
             children: "Save Contract",
             ml: 2,
           }}
@@ -69,7 +72,11 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
       alignContent="center"
     >
       <Flex alignItems="center" flexDir="column" gap="4">
-        <Icon as={MdSearch} color="pebble.600" boxSize="16" />
+        <Image
+          src="https://assets.alleslabs.dev/illustration/search-empty.svg"
+          alt="result not found"
+          width="200px"
+        />
         <Text color="text.dark">{renderText(list.value)}</Text>
         {!isReadOnly && (
           <ActionSection

@@ -3,7 +3,6 @@ import {
   ModalHeader,
   Heading,
   Flex,
-  Icon,
   Box,
   Text,
   ModalOverlay,
@@ -16,13 +15,13 @@ import {
 } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 import { useCallback } from "react";
-import type { IconType } from "react-icons/lib";
-import { MdMode } from "react-icons/md";
 
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 import { AmpTrackUseOtherModal } from "lib/services/amplitude";
 
 export interface ActionModalProps {
-  icon?: IconType;
+  icon?: IconKeys;
   iconColor?: string;
   title: string;
   subtitle?: string;
@@ -41,7 +40,7 @@ export interface ActionModalProps {
   closeOnOverlayClick?: boolean;
 }
 export function ActionModal({
-  icon = MdMode,
+  icon = "edit-solid",
   iconColor = "pebble.600",
   title,
   subtitle,
@@ -94,7 +93,7 @@ export function ActionModal({
           >
             <Box w="full">
               <Flex alignItems="center" gap="3">
-                <Icon as={icon} color={iconColor} boxSize="6" />
+                <CustomIcon name={icon} color={iconColor} boxSize="5" />
                 <Heading as="h5" variant="h5">
                   {title}
                 </Heading>

@@ -1,13 +1,13 @@
 import {
   Modal,
   Flex,
-  Icon,
   Text,
   ModalOverlay,
   ModalContent,
   Heading,
 } from "@chakra-ui/react";
-import { IoIosWarning } from "react-icons/io";
+
+import { CustomIcon } from "../icon";
 
 export const NoMobile = () => (
   <Modal size="sm" isOpen isCentered onClose={() => {}}>
@@ -20,8 +20,11 @@ export const NoMobile = () => (
         padding="8"
         textAlign="center"
       >
-        <Icon as={IoIosWarning} color="error.light" boxSize="50px" />
-
+        <CustomIcon
+          name="info-circle-solid"
+          color="violet.light"
+          boxSize="10"
+        />
         <Heading as="h6" py="4">
           Sorry, we currently do not support mobile use.
         </Heading>

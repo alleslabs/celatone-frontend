@@ -1,7 +1,7 @@
-import { Box, Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
-import { MdAdd, MdDoubleArrow } from "react-icons/md";
+import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
+import { CustomIcon } from "lib/components/icon";
 import { CreateNewListModal } from "lib/components/modal";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
@@ -36,7 +36,14 @@ export const ExpandNavMenu = ({
             <Button
               variant="ghost-info"
               size="xs"
-              leftIcon={<MdDoubleArrow transform="rotate(180)" />}
+              iconSpacing={1}
+              leftIcon={
+                <CustomIcon
+                  name="double-chevron-left"
+                  color="honeydew.main"
+                  boxSize="3"
+                />
+              }
               onClick={() => setIsExpand(false)}
             >
               HIDE
@@ -46,8 +53,11 @@ export const ExpandNavMenu = ({
             <CreateNewListModal
               buttonProps={{
                 variant: "ghost-info",
+                iconSpacing: 1,
                 size: "xs",
-                leftIcon: <MdAdd />,
+                leftIcon: (
+                  <CustomIcon name="plus" color="honeydew.main" boxSize="3" />
+                ),
                 children: "NEW LIST",
                 onClick: () => AmpTrack(AmpEvent.USE_SIDEBAR),
               }}
@@ -68,20 +78,29 @@ export const ExpandNavMenu = ({
               my="1px"
               transition="all .25s ease-in-out"
               alignItems="center"
+              position="relative"
               bgColor={
                 isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
               }
               borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
             >
-              {submenu.icon && (
-                <Icon as={submenu.icon} color="pebble.600" boxSize="4" />
-              )}
+              <Flex
+                opacity={isCurrentPage(submenu.slug) ? 1 : 0}
+                width="3px"
+                height="20px"
+                bgColor="violet.light"
+                position="absolute"
+                top="10px"
+                borderRadius="2px"
+                left="0px"
+              />
+              {submenu.icon && <CustomIcon name={submenu.icon} />}
               {submenu.logo && (
                 <Image
                   src={submenu.logo}
                   borderRadius="full"
                   alt={submenu.slug}
-                  boxSize={4}
+                  boxSize={5}
                 />
               )}
               <Text variant="body2" className="ellipsis">

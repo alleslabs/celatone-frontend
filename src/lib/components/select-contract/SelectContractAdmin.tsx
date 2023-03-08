@@ -7,12 +7,11 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Icon,
   Heading,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { MdList, MdSwapHoriz } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon";
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -66,7 +65,9 @@ export const SelectContractAdmin = ({
           onOpen();
         }}
         leftIcon={
-          !notSelected ? <Icon as={MdSwapHoriz} boxSize="5" /> : undefined
+          !notSelected ? (
+            <CustomIcon name="swap" color="violet.light" />
+          ) : undefined
         }
         disabled={!address}
       >
@@ -77,7 +78,7 @@ export const SelectContractAdmin = ({
         <ModalOverlay />
         <ModalContent h="80%">
           <ModalHeader>
-            <Icon as={MdList} color="text.dark" fontSize="24px" />
+            <CustomIcon name="contract-address-solid" boxSize="5" />
             <Heading as="h5" variant="h5">
               Select contract which you have permission
             </Heading>

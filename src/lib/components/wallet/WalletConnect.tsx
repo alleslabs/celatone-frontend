@@ -1,9 +1,9 @@
-import { Button, Icon } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { WalletStatus } from "@cosmos-kit/core";
 import type { MouseEventHandler, ReactNode } from "react";
-import type { IconType } from "react-icons";
-import { MdLink } from "react-icons/md";
 
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 import type { ConnectWalletType } from "lib/types";
 
 export const ConnectWalletButton = ({
@@ -11,7 +11,7 @@ export const ConnectWalletButton = ({
   isLoading,
   isDisabled,
   onClickConnectBtn,
-  icon,
+  iconColor = "text.main",
   variant,
 }: ConnectWalletType) => (
   <Button
@@ -20,8 +20,9 @@ export const ConnectWalletButton = ({
     isDisabled={isDisabled}
     onClick={onClickConnectBtn}
     variant={variant}
+    gap="1"
   >
-    <Icon as={icon || MdLink} boxSize="4" mr={2} />
+    <CustomIcon name="connect" color={iconColor} />
     {buttonText || "Connect"}
   </Button>
 );
@@ -31,22 +32,26 @@ export const Connected = ({
   onClick,
   icon,
   variant,
+  iconColor,
 }: {
   buttonText: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
-  icon?: IconType;
+  icon?: IconKeys;
   variant?: string;
+  iconColor?: string;
 }) => (
   <ConnectWalletButton
     buttonText={buttonText}
     onClickConnectBtn={onClick}
     icon={icon}
+    iconColor={iconColor}
     variant={variant}
   />
 );
 
 export const Disconnected = (props: {
   buttonText: string;
+  iconColor: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }) => <Connected {...props} />;
 
