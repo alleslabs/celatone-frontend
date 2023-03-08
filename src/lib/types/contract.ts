@@ -39,6 +39,8 @@ export interface ContractMigrationHistory {
   timestamp: Date;
   remark: ContractHistoryRemark;
   uploader: Addr;
+  cw2Contract: Option<string | null>;
+  cw2Version: Option<string | null>;
 }
 
 export interface ContractData {

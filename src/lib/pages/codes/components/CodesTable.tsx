@@ -148,7 +148,10 @@ const CodeTableRow = ({ code }: CodesRowProps) => {
         <CodeNameCell code={code} />
       </TableRowNoBorder>
       <TableRowNoBorder>
-        <Text color={cw2Info ? "text.main" : "text.disabled"}>
+        <Text
+          color={cw2Info ? "text.main" : "text.disabled"}
+          wordBreak="break-all"
+        >
           {cw2Info || "N/A"}
         </Text>
       </TableRowNoBorder>

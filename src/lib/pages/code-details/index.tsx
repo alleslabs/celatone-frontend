@@ -69,6 +69,7 @@ const CodeDetailsBody = observer(
               <Text
                 color={cw2Info ? "text.main" : "text.disabled"}
                 variant="body2"
+                wordBreak="break-all"
               >
                 {cw2Info || "N/A"}
               </Text>

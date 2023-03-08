@@ -55,6 +55,7 @@ export const PublicProjectCodeRow = ({
       <TableRowNoBorder>
         <Text
           color={cw2Info ? "text.main" : "text.disabled"}
+          wordBreak="break-all"
           whiteSpace="pre-wrap"
         >
           {cw2Info || "N/A"}

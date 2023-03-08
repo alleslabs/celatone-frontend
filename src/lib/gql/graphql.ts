@@ -7188,6 +7188,8 @@ export type GetMigrationHistoriesByContractAddressQuery = {
     block: { __typename?: "blocks"; height: number; timestamp: any };
     code: {
       __typename?: "codes";
+      cw2_contract?: string | null;
+      cw2_version?: string | null;
       account: { __typename?: "accounts"; address: string };
     };
   }>;
@@ -9452,6 +9454,14 @@ export const GetMigrationHistoriesByContractAddressDocument = {
                             },
                           ],
                         },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "cw2_contract" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "cw2_version" },
                       },
                     ],
                   },

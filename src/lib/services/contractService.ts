@@ -210,6 +210,8 @@ export const useMigrationHistoriesByContractAddressPagination = (
             timestamp: parseDate(history.block.timestamp),
             remark: history.remark,
             uploader: history.code.account.address as Addr,
+            cw2Contract: history.code.cw2_contract,
+            cw2Version: history.code.cw2_version,
           })
         )
       );
