@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#232](https://github.com/alleslabs/celatone-frontend/pull/232) Add delegation data and section for the account detail page
 - [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and wireup up json attach funds
 - [#225](https://github.com/alleslabs/celatone-frontend/pull/225) Add assets section in account details page
 - [#220](https://github.com/alleslabs/celatone-frontend/pull/220) Add transactions table for account details page
