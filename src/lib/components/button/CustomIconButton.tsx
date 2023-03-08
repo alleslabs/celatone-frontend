@@ -1,11 +1,11 @@
 import { Button, Link } from "@chakra-ui/react";
 
-import type { ICONS } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon/CustomIcon";
 import { CustomIcon } from "../icon/CustomIcon";
 
 interface CustomIconButtonProps {
   href: string;
-  icon?: keyof typeof ICONS;
+  icon?: IconKeys;
   onClick?: () => void;
 }
 

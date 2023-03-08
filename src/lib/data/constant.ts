@@ -1,4 +1,4 @@
-import type { ICONS } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon/CustomIcon";
 import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
 /**
@@ -41,7 +41,7 @@ export const MAX_CODE_NAME_LENGTH = 50;
 export const getMaxCodeNameLengthError = (currentLength: number) =>
   getMaxLengthError("Code name", currentLength, MAX_CODE_NAME_LENGTH);
 
-export const getListIcon = (listName: string): keyof typeof ICONS => {
+export const getListIcon = (listName: string): IconKeys => {
   switch (listName) {
     case INSTANTIATED_LIST_NAME:
       return "wallet";

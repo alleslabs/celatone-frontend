@@ -1,6 +1,6 @@
 import { Grid } from "@chakra-ui/react";
 
-import type { ICONS } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon/CustomIcon";
 import type { PermissionFilterValue } from "lib/hooks";
 
 import { SelectInput } from "./SelectInput";
@@ -9,7 +9,7 @@ interface PermissionOption {
   label: string;
   value: PermissionFilterValue;
   disabled: boolean;
-  icon?: keyof typeof ICONS;
+  icon?: IconKeys;
   iconColor: string;
 }
 

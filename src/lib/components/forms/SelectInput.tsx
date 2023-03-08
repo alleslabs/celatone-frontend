@@ -13,7 +13,7 @@ import {
 import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
-import type { ICONS } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon/CustomIcon";
 import { CustomIcon } from "../icon/CustomIcon";
 import type { Option } from "lib/types";
 
@@ -25,7 +25,7 @@ interface SelectInputProps<T extends string> {
     label: string;
     value: T;
     disabled: boolean;
-    icon?: keyof typeof ICONS;
+    icon?: IconKeys;
     iconColor?: string;
   }[];
   onChange: (newVal: T) => void;

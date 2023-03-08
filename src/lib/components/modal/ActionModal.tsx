@@ -16,12 +16,12 @@ import {
 import type { ReactNode } from "react";
 import { useCallback } from "react";
 
-import type { ICONS } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon/CustomIcon";
 import { CustomIcon } from "../icon/CustomIcon";
 import { AmpTrackUseOtherModal } from "lib/services/amplitude";
 
 export interface ActionModalProps {
-  icon?: keyof typeof ICONS;
+  icon?: IconKeys;
   iconColor?: string;
   title: string;
   subtitle?: string;

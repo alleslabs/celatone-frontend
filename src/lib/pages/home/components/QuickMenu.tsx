@@ -2,7 +2,7 @@ import { Flex, Heading, Box, Text, SimpleGrid } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
-import type { ICONS } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon/CustomIcon";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 
 const cardProps = {
@@ -13,32 +13,38 @@ const cardProps = {
   height: "100%",
 };
 
+interface SecondaryMenuType {
+  title: string;
+  subtitle: string;
+  slug: string;
+  icon: IconKeys;
+}
 const secondaryMenu = [
   {
     title: "Query",
     subtitle: "Query and get contract state data",
     slug: "query",
-    icon: "query" as keyof typeof ICONS,
+    icon: "query",
   },
   {
     title: "Execute",
     subtitle: "Send transactions to contracts",
     slug: "execute",
-    icon: "execute" as keyof typeof ICONS,
+    icon: "execute",
   },
   {
     title: "Migrate",
     subtitle: "Migrate contract to new code ID",
     slug: "migrate",
-    icon: "migrate" as keyof typeof ICONS,
+    icon: "migrate",
   },
   {
     title: "Update Admin",
     subtitle: "Change contract admin",
     slug: "admin",
-    icon: "admin" as keyof typeof ICONS,
+    icon: "admin",
   },
-];
+] as SecondaryMenuType[];
 
 export const QuickMenu = () => (
   <Flex direction="column" gap={4} bg="pebble.900" p="48px">

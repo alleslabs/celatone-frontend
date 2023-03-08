@@ -1,33 +1,39 @@
 import { Flex, Text, Button } from "@chakra-ui/react";
 import Link from "next/link";
 
-import type { ICONS } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon/CustomIcon";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { AmpEvent, AmpTrack, AmpTrackCelatone } from "lib/services/amplitude";
+
+interface SocialMenuType {
+  url: string;
+  icon: IconKeys;
+  slug: string;
+}
 
 const Footer = () => {
   const socialMenu = [
     {
       url: "https://github.com/alleslabs",
-      icon: "github" as keyof typeof ICONS,
+      icon: "github",
       slug: "github",
     },
     {
       url: "https://twitter.com/celatone_",
-      icon: "twitter" as keyof typeof ICONS,
+      icon: "twitter",
       slug: "twitter",
     },
     {
       url: "https://blog.alleslabs.com",
-      icon: "medium" as keyof typeof ICONS,
+      icon: "medium",
       slug: "medium",
     },
     {
       url: "https://t.me/celatone_announcements",
-      icon: "telegram" as keyof typeof ICONS,
+      icon: "telegram",
       slug: "telegram",
     },
-  ];
+  ] as SocialMenuType[];
   return (
     <Flex
       as="footer"

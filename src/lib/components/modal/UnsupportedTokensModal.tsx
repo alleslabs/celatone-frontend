@@ -16,7 +16,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
-import type { ICONS } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon/CustomIcon";
 import { CustomIcon } from "../icon/CustomIcon";
 import { getAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
@@ -83,19 +83,19 @@ const unsupportedTokensContent = (addressType: AddressReturnType) => {
   switch (addressType) {
     case "contract_address": {
       return {
-        icon: "assets-solid" as keyof typeof ICONS,
+        icon: "assets-solid" as IconKeys,
         header: "Contract Address",
       };
     }
     case "user_address": {
       return {
-        icon: "assets-solid" as keyof typeof ICONS,
+        icon: "assets-solid" as IconKeys,
         header: "Wallet Address",
       };
     }
     default:
       return {
-        icon: "question-solid" as keyof typeof ICONS,
+        icon: "question-solid" as IconKeys,
         header: "Invalid Address",
       };
   }

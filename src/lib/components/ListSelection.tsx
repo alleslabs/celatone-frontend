@@ -120,7 +120,6 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       ref: boxRef,
       handler: () => setDisplayOptions(false),
     });
-
     return (
       <Box ref={boxRef} w="full">
         <FormControl>
@@ -213,30 +212,28 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               overflow="scroll"
             >
               {/* option selection section */}
-              {partialResult.map((option) => {
-                return (
-                  <ListItem
-                    key={option.value}
-                    style={listItemProps}
-                    _hover={{ bg: "pebble.700" }}
-                    transition="all .25s ease-in-out"
-                    onClick={() => selectOptionFromList(option)}
-                  >
-                    <Flex alignItems="center" justifyContent="space-between">
-                      <Text variant="body2">{option.label}</Text>
-                      {isOptionSelected(option) && (
-                        <CustomIcon
-                          data-label={option.label}
-                          mr={2}
-                          name="check"
-                          color="pebble.600"
-                          boxSize="3"
-                        />
-                      )}
-                    </Flex>
-                  </ListItem>
-                );
-              })}
+              {partialResult.map((option) => (
+                <ListItem
+                  key={option.value}
+                  style={listItemProps}
+                  _hover={{ bg: "pebble.700" }}
+                  transition="all .25s ease-in-out"
+                  onClick={() => selectOptionFromList(option)}
+                >
+                  <Flex alignItems="center" justifyContent="space-between">
+                    <Text variant="body2">{option.label}</Text>
+                    {isOptionSelected(option) && (
+                      <CustomIcon
+                        data-label={option.label}
+                        mr={2}
+                        name="check"
+                        color="pebble.600"
+                        boxSize="3"
+                      />
+                    )}
+                  </Flex>
+                </ListItem>
+              ))}
               {/* creation section */}
               {canCreateOption && (
                 <CreateNewListModal

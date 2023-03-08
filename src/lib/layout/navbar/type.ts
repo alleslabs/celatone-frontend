@@ -1,9 +1,9 @@
-import type { ICONS } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon/CustomIcon";
 
 export interface SubmenuInfo {
   name: string;
   slug: string;
-  icon?: keyof typeof ICONS;
+  icon?: IconKeys;
   logo?: string;
 }
 

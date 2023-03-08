@@ -1237,10 +1237,10 @@ export const ICONS = {
   },
 };
 
+export type IconKeys = keyof typeof ICONS;
+
 interface CustomIconProps extends IconProps {
-  color?: string;
-  name: keyof typeof ICONS;
-  boxSize?: string;
+  name: IconKeys;
 }
 
 export const CustomIcon = ({

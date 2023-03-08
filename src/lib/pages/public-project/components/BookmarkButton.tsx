@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import type { CSSProperties, MouseEvent } from "react";
 import { useCallback } from "react";
 
-import type { ICONS } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon/CustomIcon";
 import { CustomIcon } from "lib/components/icon/CustomIcon";
 import { usePublicProjectStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -34,7 +34,7 @@ const toastIcon = <CustomIcon name="check-circle-solid" color="success.main" />;
 interface StyledButtonProps {
   hasText: boolean;
   actionText: string;
-  icon: keyof typeof ICONS;
+  icon: IconKeys;
   iconColor: string;
   action: (e: MouseEvent<HTMLButtonElement>) => void;
   variant: string;

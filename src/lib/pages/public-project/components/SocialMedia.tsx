@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
 
 import { CustomIconButton } from "lib/components/button/CustomIconButton";
-import type { ICONS } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon/CustomIcon";
 import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
-export const renderSocial = (name: string): keyof typeof ICONS => {
+export const renderSocial = (name: string): IconKeys => {
   switch (name) {
     case "twitter":
       return "twitter";

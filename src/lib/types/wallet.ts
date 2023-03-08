@@ -1,6 +1,6 @@
 import type { MouseEventHandler, ReactNode } from "react";
 
-import type { ICONS } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon/CustomIcon";
 
 export interface ChooseChainInfo {
   chainName: string;
@@ -23,7 +23,7 @@ export interface ConnectWalletType {
   buttonText?: string;
   isLoading?: boolean;
   isDisabled?: boolean;
-  icon?: keyof typeof ICONS;
+  icon?: IconKeys;
   iconColor?: string;
   variant?: string;
   onClickConnectBtn?: MouseEventHandler<HTMLButtonElement>;
