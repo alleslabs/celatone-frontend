@@ -13,8 +13,8 @@ import {
 import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
-import type { IconKeys } from "../icon/CustomIcon";
-import { CustomIcon } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 import type { Option } from "lib/types";
 
 const ITEM_HEIGHT = 56;

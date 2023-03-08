@@ -12,10 +12,10 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
+import { CustomIcon } from "../icon";
 import { useInternalNavigate, useGetAddressType } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
 import {
   ClearAdminModal,
   AddToOtherListModal,

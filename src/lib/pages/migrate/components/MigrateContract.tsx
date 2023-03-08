@@ -14,7 +14,7 @@ import {
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";

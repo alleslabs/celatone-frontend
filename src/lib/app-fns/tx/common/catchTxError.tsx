@@ -2,7 +2,7 @@ import type { OperatorFunction } from "rxjs";
 import { catchError } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";

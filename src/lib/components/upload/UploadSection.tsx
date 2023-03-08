@@ -3,7 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import {
   useFabricateFee,
   useSimulateFee,

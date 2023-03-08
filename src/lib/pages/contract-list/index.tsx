@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { CreateNewListModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { AllContractLists } from "lib/components/select-contract";

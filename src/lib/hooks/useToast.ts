@@ -3,7 +3,7 @@ import type { AlertStatus } from "@chakra-ui/react";
 // TODO: p'peach will look into this issue
 
 // import type { ReactNode } from "react";
-// import { CustomIcon } from "../icon/CustomIcon";
+// import { CustomIcon } from "../icon";
 
 // const getStatusIcon = (status: AlertStatus) => {
 //   switch (status) {

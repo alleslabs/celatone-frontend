@@ -2,7 +2,7 @@ import { Flex, Heading, Button } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import type { ContractAddr } from "lib/types";

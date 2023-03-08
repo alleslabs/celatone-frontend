@@ -12,7 +12,7 @@ import type { ChangeEvent, KeyboardEvent } from "react";
 import { useRef, useEffect, useState } from "react";
 
 import { useInternalNavigate, useValidateAddress } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
 import { isCodeId, isTxHash } from "lib/utils";
 

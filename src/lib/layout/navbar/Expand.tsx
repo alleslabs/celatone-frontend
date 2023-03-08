@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { CreateNewListModal } from "lib/components/modal";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 

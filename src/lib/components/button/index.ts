@@ -5,3 +5,4 @@ export * from "./InstantiateButton";
 export * from "./RedoButton";
 export * from "./ResendButton";
 export * from "./ShowMoreButton";
+export * from "./CustomIconButton";

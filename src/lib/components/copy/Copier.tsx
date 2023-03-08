@@ -1,6 +1,6 @@
 import type { LayoutProps } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { CopyTemplate } from "./CopyTemplate";

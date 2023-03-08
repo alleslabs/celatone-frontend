@@ -2,7 +2,7 @@ import { Flex, Select, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
 import { Next } from "./Next";

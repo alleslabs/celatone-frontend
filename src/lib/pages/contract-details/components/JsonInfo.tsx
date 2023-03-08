@@ -2,7 +2,7 @@ import { Flex, Heading } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 import { useState } from "react";
 
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 
 interface JsonInfoProps {

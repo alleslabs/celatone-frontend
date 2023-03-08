@@ -21,7 +21,7 @@ import { useContractStore } from "lib/providers/store";
 import type { LVPair } from "lib/types";
 import { formatSlugName, mergeRefs } from "lib/utils";
 
-import { CustomIcon } from "./icon/CustomIcon";
+import { CustomIcon } from "./icon";
 import { CreateNewListModal } from "./modal/list";
 
 export interface ListSelectionProps extends InputProps {

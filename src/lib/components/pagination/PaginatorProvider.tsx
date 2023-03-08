@@ -9,7 +9,7 @@ import {
 import type React from "react";
 import type { FC, SetStateAction, Dispatch } from "react";
 
-import type { IconKeys } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon";
 import { isDecimalNumber } from "lib/utils";
 
 import { INITIAL_VALUES } from "./paginationData";

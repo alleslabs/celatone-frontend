@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { ActionModal } from "../ActionModal";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";

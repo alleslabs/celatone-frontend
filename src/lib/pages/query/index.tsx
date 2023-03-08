@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { AmpTrackToQuery } from "lib/services/amplitude";

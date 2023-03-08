@@ -7,7 +7,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 
 export const NoMobile = () => (
   <Modal size="sm" isOpen isCentered onClose={() => {}}>

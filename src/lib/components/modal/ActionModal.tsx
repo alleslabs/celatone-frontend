@@ -16,8 +16,8 @@ import {
 import type { ReactNode } from "react";
 import { useCallback } from "react";
 
-import type { IconKeys } from "../icon/CustomIcon";
-import { CustomIcon } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 import { AmpTrackUseOtherModal } from "lib/services/amplitude";
 
 export interface ActionModalProps {

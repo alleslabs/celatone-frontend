@@ -2,7 +2,7 @@ import { useToast, Text, chakra, IconButton } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getNameAndDescriptionDefault, shortenName } from "lib/utils";

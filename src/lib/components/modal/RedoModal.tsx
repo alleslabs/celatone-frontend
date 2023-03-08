@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { useRedo } from "lib/hooks";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";

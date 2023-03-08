@@ -17,7 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import {
   useCelatoneApp,
   useLCDEndpoint,

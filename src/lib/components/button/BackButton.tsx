@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 export const BackButton = () => {

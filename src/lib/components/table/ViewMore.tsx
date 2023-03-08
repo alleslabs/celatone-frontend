@@ -1,6 +1,6 @@
 import { Button, Flex } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 
 interface ViewMoreProps {
   onClick: () => void;

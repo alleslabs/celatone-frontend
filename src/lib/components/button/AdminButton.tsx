@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { useInternalNavigate } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";

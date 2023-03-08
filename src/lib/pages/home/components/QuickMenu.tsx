@@ -2,8 +2,8 @@ import { Flex, Heading, Box, Text, SimpleGrid } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
-import type { IconKeys } from "lib/components/icon/CustomIcon";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
+import type { IconKeys } from "lib/components/icon";
 
 const cardProps = {
   width: "100%",

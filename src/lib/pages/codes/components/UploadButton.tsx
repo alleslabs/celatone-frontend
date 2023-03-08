@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 
 export default () => {
   const navigate = useInternalNavigate();

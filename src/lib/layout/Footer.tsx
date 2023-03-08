@@ -1,8 +1,8 @@
 import { Flex, Text, Button } from "@chakra-ui/react";
 import Link from "next/link";
 
-import type { IconKeys } from "lib/components/icon/CustomIcon";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
+import type { IconKeys } from "lib/components/icon";
 import { AmpEvent, AmpTrack, AmpTrackCelatone } from "lib/services/amplitude";
 
 interface SocialMenuType {

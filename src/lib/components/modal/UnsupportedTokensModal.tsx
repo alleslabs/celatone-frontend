@@ -16,8 +16,8 @@ import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
-import type { IconKeys } from "../icon/CustomIcon";
-import { CustomIcon } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 import { getAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";

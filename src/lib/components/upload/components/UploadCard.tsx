@@ -3,8 +3,7 @@ import big from "big.js";
 import type { ReactElement } from "react";
 
 import type { SimulateStatus } from "../types";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
-import { UploadIcon } from "lib/components/icon/UploadIcon";
+import { CustomIcon, UploadIcon } from "lib/components/icon";
 
 interface UploadCardProps {
   file: File;

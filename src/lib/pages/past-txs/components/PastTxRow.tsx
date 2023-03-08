@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { TableRow, AccordionTx } from "lib/components/table";
 import type { Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";

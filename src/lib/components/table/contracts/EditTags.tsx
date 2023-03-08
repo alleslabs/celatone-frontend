@@ -2,7 +2,7 @@ import { Flex, FormControl, Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal";
 import { TagSelection } from "lib/components/TagSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";

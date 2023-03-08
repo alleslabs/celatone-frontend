@@ -11,7 +11,7 @@ import router from "next/router";
 import { useInternalNavigate } from "lib/app-provider";
 import { AdminButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import {
   AddToOtherListModal,
   EditContractDetailsModal,

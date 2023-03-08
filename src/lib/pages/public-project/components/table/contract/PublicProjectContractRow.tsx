@@ -13,7 +13,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useInternalNavigate, getAddressTypeByLength } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import {
   AddToOtherListModal,
   SaveContractDetailsModal,

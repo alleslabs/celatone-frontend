@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
 import { TextInput } from "lib/components/forms";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { usePublicProjectStore } from "lib/providers/store";

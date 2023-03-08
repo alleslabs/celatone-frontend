@@ -1,6 +1,6 @@
 import type { MouseEventHandler, ReactNode } from "react";
 
-import type { IconKeys } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon";
 
 export interface ChooseChainInfo {
   chainName: string;

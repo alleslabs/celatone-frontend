@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import type { CodeInfo } from "lib/types";
 
 import { EditCodeDetailsModal } from "./EditCodeDetails";

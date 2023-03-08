@@ -2,7 +2,7 @@ import type { InputProps } from "@chakra-ui/react";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { CustomIcon } from "./icon/CustomIcon";
+import { CustomIcon } from "./icon";
 
 interface InputWithIconProps {
   placeholder: string;

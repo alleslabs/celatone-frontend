@@ -1,7 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "./icon/CustomIcon";
+import { CustomIcon } from "./icon";
 
 interface ErrorMessageRenderProps extends FlexProps {
   error: string;

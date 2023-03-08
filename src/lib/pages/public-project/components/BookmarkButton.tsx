@@ -3,8 +3,8 @@ import { observer } from "mobx-react-lite";
 import type { CSSProperties, MouseEvent } from "react";
 import { useCallback } from "react";
 
-import type { IconKeys } from "lib/components/icon/CustomIcon";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
+import type { IconKeys } from "lib/components/icon";
 import { usePublicProjectStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";

@@ -3,7 +3,7 @@ import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
 import { Copier } from "../copy";
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Option } from "lib/types";

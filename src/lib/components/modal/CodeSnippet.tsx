@@ -18,7 +18,7 @@ import { useWallet } from "@cosmos-kit/react";
 import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { useLCDEndpoint } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

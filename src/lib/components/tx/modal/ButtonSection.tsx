@@ -5,7 +5,7 @@ import { useCallback } from "react";
 
 import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { ActionVariant, TxReceipt } from "lib/types";
 

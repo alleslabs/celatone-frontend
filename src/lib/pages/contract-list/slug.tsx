@@ -16,7 +16,7 @@ import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import {
   EditListNameModal,
   RemoveListModal,

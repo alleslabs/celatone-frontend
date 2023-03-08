@@ -3,7 +3,7 @@ import { Text, Box, Button, Spinner, Flex } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { jsonPrettify, jsonValidate } from "lib/utils";
 
 const JsonEditor = dynamic(() => import("./JsonEditor"), {
@@ -42,7 +42,7 @@ const getResponse = (jsonState: JsonState) => {
               name="check-circle-solid"
               color="success.main"
               boxSize="3"
-            />{" "}
+            />
             Valid JSON Format
           </>
         ),
@@ -56,7 +56,7 @@ const getResponse = (jsonState: JsonState) => {
               name="alert-circle-solid"
               color="error.light"
               boxSize="3"
-            />{" "}
+            />
             {jsonState.errMsg}
           </>
         ),

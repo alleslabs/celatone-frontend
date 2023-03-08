@@ -17,7 +17,7 @@ import { observer } from "mobx-react-lite";
 import type { CSSProperties } from "react";
 import { useState, useRef, forwardRef } from "react";
 
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { displayActionValue, mergeRefs } from "lib/utils";
 
 export interface TxFilterSelectionProps extends InputProps {

@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 
 interface ViewFullMsgButtonProps {
   onClick: () => void;

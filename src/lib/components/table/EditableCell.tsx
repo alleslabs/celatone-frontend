@@ -10,7 +10,7 @@ import {
 import type { ChangeEvent } from "react";
 import { useRef, useState, useEffect } from "react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 
 interface EditableCellProps {
   initialValue?: string;

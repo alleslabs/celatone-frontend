@@ -1,6 +1,6 @@
 import { Grid } from "@chakra-ui/react";
 
-import type { IconKeys } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon";
 import type { PermissionFilterValue } from "lib/hooks";
 
 import { SelectInput } from "./SelectInput";

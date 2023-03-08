@@ -6,7 +6,7 @@ import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";

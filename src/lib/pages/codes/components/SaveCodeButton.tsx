@@ -1,4 +1,4 @@
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { SaveNewCodeModal } from "lib/components/modal/code/SaveNewCode";
 
 export default () => (

@@ -21,7 +21,7 @@ import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { mergeRefs } from "lib/utils";
 
-import { CustomIcon } from "./icon/CustomIcon";
+import { CustomIcon } from "./icon";
 
 export interface TagSelectionProps extends InputProps {
   placeholder?: string;

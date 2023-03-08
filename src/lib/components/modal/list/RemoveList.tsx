@@ -3,7 +3,7 @@ import { MenuItem, useToast, Text } from "@chakra-ui/react";
 
 import { ActionModal } from "../ActionModal";
 import { useInternalNavigate } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

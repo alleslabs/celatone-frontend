@@ -1,4 +1,4 @@
-import type { IconKeys } from "lib/components/icon/CustomIcon";
+import type { IconKeys } from "lib/components/icon";
 import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
 /**

@@ -13,7 +13,7 @@ import type { MouseEventHandler } from "react";
 
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
-import { CustomIcon } from "./icon/CustomIcon";
+import { CustomIcon } from "./icon";
 
 interface ConnectWalletAlertProps extends AlertProps {
   title?: string;

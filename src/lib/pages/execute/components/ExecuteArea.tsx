@@ -20,7 +20,7 @@ import {
 } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import { useContractStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";

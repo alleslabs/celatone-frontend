@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import { CopyButton } from "lib/components/copy";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 
 interface FailedModalProps {
   errorLog: string;

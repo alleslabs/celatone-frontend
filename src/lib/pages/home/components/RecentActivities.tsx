@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { dateFromNow } from "lib/utils";

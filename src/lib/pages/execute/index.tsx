@@ -7,7 +7,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { useExecuteCmds } from "lib/hooks";

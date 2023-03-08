@@ -1,7 +1,7 @@
 import { Button, Link } from "@chakra-ui/react";
 
-import type { IconKeys } from "../icon/CustomIcon";
-import { CustomIcon } from "../icon/CustomIcon";
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 
 interface CustomIconButtonProps {
   href: string;

@@ -1,6 +1,6 @@
 import { IconButton, useColorMode } from "@chakra-ui/react";
 
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 
 const ThemeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode();

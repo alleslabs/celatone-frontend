@@ -5,7 +5,7 @@ import { ActionModal } from "../ActionModal";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";

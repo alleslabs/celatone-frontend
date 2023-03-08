@@ -11,7 +11,7 @@ import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
-import { CustomIcon } from "./icon/CustomIcon";
+import { CustomIcon } from "./icon";
 import { EditContractDetailsModal, SaveContractDetailsModal } from "./modal";
 import {
   SelectContractAdmin,

@@ -2,7 +2,7 @@ import type { ButtonProps } from "@chakra-ui/react";
 import { Button, Tooltip } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { useInternalNavigate } from "lib/app-provider";
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { InstantiatePermission } from "lib/types";

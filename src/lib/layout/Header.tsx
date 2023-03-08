@@ -11,7 +11,7 @@ import { useWallet } from "@cosmos-kit/react";
 
 import { useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { WalletSection } from "lib/components/Wallet";
 import { getSupportedChainNames } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

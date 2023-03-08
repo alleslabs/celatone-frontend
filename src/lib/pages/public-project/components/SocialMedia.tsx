@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 
-import { CustomIconButton } from "lib/components/button/CustomIconButton";
-import type { IconKeys } from "lib/components/icon/CustomIcon";
+import { CustomIconButton } from "lib/components/button";
+import type { IconKeys } from "lib/components/icon";
 import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 

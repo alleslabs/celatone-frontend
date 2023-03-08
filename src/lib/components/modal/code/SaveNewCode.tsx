@@ -8,7 +8,7 @@ import { ActionModal } from "../ActionModal";
 import { useLCDEndpoint } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

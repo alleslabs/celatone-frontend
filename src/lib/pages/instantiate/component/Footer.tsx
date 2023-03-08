@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 
 interface FooterProps {
   onInstantiate: () => void;

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useInternalNavigate } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useUserKey } from "lib/hooks";

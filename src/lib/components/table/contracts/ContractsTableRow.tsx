@@ -3,7 +3,7 @@ import { Flex, Text, Grid, IconButton, Box, chakra } from "@chakra-ui/react";
 import { TableRow } from "../tableComponents";
 import { useInternalNavigate, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import {
   AddToOtherListModal,
   SaveContractDetailsModal,

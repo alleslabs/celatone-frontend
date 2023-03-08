@@ -12,7 +12,7 @@ import { useEffect } from "react";
 
 import { useInternalNavigate, useSelectChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { getChainNameByNetwork, getNetworkByChainName } from "lib/data";

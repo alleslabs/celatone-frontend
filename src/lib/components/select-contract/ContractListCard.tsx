@@ -11,7 +11,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon/CustomIcon";
+import { CustomIcon } from "../icon";
 import { EditListNameModal, RemoveListModal } from "lib/components/modal";
 import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";

@@ -12,7 +12,7 @@ import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";

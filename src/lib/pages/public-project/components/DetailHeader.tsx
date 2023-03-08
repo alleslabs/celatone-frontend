@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
-import { CustomIcon } from "lib/components/icon/CustomIcon";
+import { CustomIcon } from "lib/components/icon";
 import type { Option, PublicDetail } from "lib/types";
 import { getNameAndDescriptionDefault } from "lib/utils";
 
