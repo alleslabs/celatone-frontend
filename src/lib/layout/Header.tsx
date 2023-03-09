@@ -56,7 +56,8 @@ const Header = () => {
             py="5px"
             borderRadius="8px"
             borderWidth="1px"
-            _hover={{ bg: "pebble.800" }}
+            borderColor="pebble.600"
+            _hover={{ bg: "pebble.700" }}
             transition="all .25s ease-in-out"
             w="170px"
           >

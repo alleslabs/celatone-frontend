@@ -17,13 +17,10 @@ export const FaucetBtn = () => {
 
   return isTestnet ? (
     <Button
-      gap={2}
+      variant="outline-gray"
+      leftIcon={<CustomIcon name="faucet" color="text.dark" />}
       onClick={onClick}
-      borderWidth="1px"
-      borderColor="pebble.600"
-      background="unset"
     >
-      <CustomIcon name="faucet" color="gray.600" boxSize="4" />
       <Text color="text.dark" fontWeight={700}>
         Faucet
       </Text>

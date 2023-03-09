@@ -152,6 +152,7 @@ const Faucet = () => {
       </Text>
       <TextInput
         variant="floating"
+        placeholder="Enter your address"
         value={address}
         setInputState={setAddress}
         status={status}
