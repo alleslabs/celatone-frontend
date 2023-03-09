@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v1.0.2
+
 ### Features
 
 - [#228](https://github.com/alleslabs/celatone-frontend/pull/228) Add Faucet testnet page
