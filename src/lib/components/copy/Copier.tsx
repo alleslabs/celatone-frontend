@@ -31,7 +31,7 @@ export const Copier = ({
         marginLeft={ml}
         onClick={() => AmpTrack(AmpEvent.USE_COPIER)}
         name="copy"
-        boxSize="16px"
+        boxSize="12px"
       />
     }
   />

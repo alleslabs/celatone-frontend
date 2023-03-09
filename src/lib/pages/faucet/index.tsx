@@ -149,7 +149,7 @@ const Faucet = () => {
       <Heading as="h5" variant="h5">
         Testnet OSMO Faucet
       </Heading>
-      <Text variant="body2" color="pebble.600" pt={4} textAlign="center" mb={8}>
+      <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
         The Faucet provides 10.00 testnet OSMO per request for osmo-test-4
         network. Please note that there is a limit of one request per hour.
       </Text>
@@ -167,6 +167,7 @@ const Faucet = () => {
             variant="body3"
             cursor="pointer"
             alignSelf="flex-start"
+            ml="3"
             onClick={() => {
               AmpTrack(AmpEvent.USE_ASSIGN_ME);
               setAddress(walletAddress);

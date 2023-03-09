@@ -40,7 +40,7 @@ const JsonReadOnly = ({
   const zeroHeight = height === 0;
   return (
     <Box
-      m={zeroHeight ? 0 : "8px 0 16px"}
+      m={zeroHeight ? 0 : "0px 0 16px"}
       p={
         zeroHeight
           ? 0

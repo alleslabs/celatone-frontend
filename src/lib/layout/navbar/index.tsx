@@ -32,7 +32,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       if (network) {
         return slug === "/"
           ? pathName === `/${network}`
-          : pathName === `/${network}${slug}`;
+          : pathName.includes(`/${network}${slug}`);
       }
       return pathName === `${slug}`;
     },
