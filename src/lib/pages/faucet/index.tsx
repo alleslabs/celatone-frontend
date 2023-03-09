@@ -39,6 +39,7 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
   warning: "alert-circle-solid",
 };
 
+// todo: handle token symbol by current chain
 const Faucet = () => {
   const { address: walletAddress = "", currentChainName } = useWallet();
   const [address, setAddress] = useState("");
@@ -52,6 +53,7 @@ const Faucet = () => {
   const toast = useToast();
 
   const faucetUrl = process.env.NEXT_PUBLIC_FAUCET_URL;
+  // TODO: navigate to Celatone tx page
   const txLinkUrl = getExplorerTxUrl(currentChainName);
 
   useEffect(() => {
