@@ -9,6 +9,7 @@ import {
 import { useWallet } from "@cosmos-kit/react";
 import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { getExplorerTxUrl } from "lib/app-fns/explorer";
@@ -51,16 +52,16 @@ const Faucet = () => {
   const { isTestnet } = useCurrentNetwork();
   const navigate = useInternalNavigate();
   const toast = useToast();
+  const router = useRouter();
 
   const faucetUrl = process.env.NEXT_PUBLIC_FAUCET_URL;
   // TODO: navigate to Celatone tx page
   const txLinkUrl = getExplorerTxUrl(currentChainName);
 
   useEffect(() => {
-    if (!isTestnet) {
-      navigate({ pathname: "/" });
-    }
-  }, [isTestnet, navigate]);
+    if (!isTestnet) navigate({ pathname: "/" });
+    else if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
+  }, [isTestnet, navigate, router]);
 
   useEffect(() => {
     if (address) {
