@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#224](https://github.com/alleslabs/celatone-frontend/pull/224) Support search by tx and internal tx link
+- [#226](https://github.com/alleslabs/celatone-frontend/pull/226) Add fully functional transaction details page
 - [#254](https://github.com/alleslabs/celatone-frontend/pull/254) Add GiHub link to public code and contract detail pages
 - [#230](https://github.com/alleslabs/celatone-frontend/pull/230) Add cw2info to code table
 

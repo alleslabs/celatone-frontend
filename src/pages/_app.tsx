@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { wallets } from "@cosmos-kit/keplr";
 import { WalletProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

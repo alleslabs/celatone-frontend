@@ -1,11 +1,11 @@
-import type { BoxProps } from "@chakra-ui/react";
+import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import {
   getExplorerBlockUrl,
-  getExplorerTxUrl,
   getProposalUrl,
+  getExplorerValidatorUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/app-provider";
 import { AmpTrackMintscan } from "lib/services/amplitude";
@@ -29,6 +29,7 @@ interface ExplorerLinkProps extends BoxProps {
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
   maxWidth?: string;
+  textVariant?: TextProps["variant"];
 }
 
 const getNavigationUrl = (
@@ -39,13 +40,16 @@ const getNavigationUrl = (
   let url = "";
   switch (type) {
     case "tx_hash":
-      url = getExplorerTxUrl(currentChainName);
+      url = "/tx";
       break;
     case "contract_address":
       url = "/contract";
       break;
     case "user_address":
       url = "/account";
+      break;
+    case "validator_address":
+      url = getExplorerValidatorUrl(currentChainName);
       break;
     case "code_id":
       url = "/code";
@@ -82,6 +86,7 @@ const LinkRender = ({
   textValue,
   isEllipsis,
   maxWidth,
+  textVariant,
 }: {
   type: string;
   isInternal: boolean;
@@ -89,10 +94,11 @@ const LinkRender = ({
   textValue: string;
   isEllipsis: boolean;
   maxWidth: ExplorerLinkProps["maxWidth"];
+  textVariant: TextProps["variant"];
 }) => {
   const textElement = (
     <Text
-      variant="body2"
+      variant={textVariant}
       color="lilac.main"
       transition="all .25s ease-in-out"
       _hover={{ color: "lilac.light" }}
@@ -131,14 +137,16 @@ export const ExplorerLink = ({
   showCopyOnHover = false,
   isReadOnly = false,
   textFormat = "truncate",
-  maxWidth = "150px",
+  maxWidth = "160px",
+  textVariant = "body2",
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address, currentChainName } = useWallet();
   const isInternal =
     type === "code_id" ||
     type === "contract_address" ||
-    type === "user_address";
+    type === "user_address" ||
+    type === "tx_hash";
 
   const [hrefLink, textValue] = [
     getNavigationUrl(type, currentChainName, copyValue || value),
@@ -172,6 +180,7 @@ export const ExplorerLink = ({
             textValue={textValue}
             isEllipsis={textFormat === "ellipsis"}
             maxWidth={maxWidth}
+            textVariant={textVariant}
           />
           <Copier
             type={type}

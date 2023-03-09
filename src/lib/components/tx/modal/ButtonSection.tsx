@@ -3,10 +3,9 @@ import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 
-import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { AmpTrackMintscan } from "lib/services/amplitude";
+import { getNetworkByChainName } from "lib/data";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
 // TODO: refactor props to pass param in txResultRendering instead of receipt
@@ -26,15 +25,14 @@ export const ButtonSection = ({
   const { currentChainName } = useWallet();
 
   const openExplorer = useCallback(() => {
-    AmpTrackMintscan("tx_hash");
     const txHash = receipts.find((r) => r.title === "Tx Hash")?.value;
     window.open(
-      `${getExplorerTxUrl(currentChainName)}/${txHash}`,
+      `/${getNetworkByChainName(currentChainName)}/tx/${txHash}`,
       "_blank",
       "noopener,noreferrer"
     );
     onClose?.();
-  }, [receipts, onClose, currentChainName]);
+  }, [receipts, currentChainName, onClose]);
 
   switch (actionVariant) {
     case "sending":

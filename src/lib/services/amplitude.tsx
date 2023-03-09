@@ -46,6 +46,7 @@ export enum AmpEvent {
   TO_CONTRACT_DETAIL = "To Contract Detail",
   TO_CODE_DETAIL = "To Code Detail",
   TO_PROJECT_DETAIL = "To Public Project Detail",
+  TO_TRANSACTION_DETAIL = "To Transaction Detail",
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
   // ACTIONS

@@ -1,8 +1,12 @@
-import type { UseQueryResult } from "@tanstack/react-query";
+import { useWallet } from "@cosmos-kit/react";
+import type {
+  QueryFunctionContext,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useChainId } from "lib/app-provider";
 import {
   getExecuteTxsByContractAddressPagination,
   getExecuteTxsCountByContractAddress,
@@ -12,12 +16,47 @@ import {
 import { MsgFurtherAction } from "lib/types";
 import type { Addr, ContractAddr, Option, Transaction } from "lib/types";
 import {
+  formatStdFee,
   getActionMsgType,
   parseDateOpt,
   parseTxHash,
   snakeToCamel,
   unwrapAll,
 } from "lib/utils";
+
+import type { TxResponse } from "./tx";
+import { queryTxData } from "./tx";
+
+export interface TxData extends TxResponse {
+  chainId: string;
+  formattedFee: Option<string>;
+}
+
+export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
+  const { currentChainName } = useWallet();
+  const chainId = useChainId();
+  const queryFn = useCallback(
+    async ({ queryKey }: QueryFunctionContext<string[]>) => {
+      const txData = await queryTxData(queryKey[1], queryKey[2], queryKey[3]);
+      return {
+        ...txData,
+        chainId,
+        formattedFee: txData.tx.auth_info.fee?.amount.length
+          ? formatStdFee(txData.tx.auth_info.fee)
+          : undefined,
+      };
+    },
+    [chainId]
+  );
+
+  return useQuery({
+    queryKey: ["tx_data", currentChainName, chainId, txHash] as string[],
+    queryFn,
+    enabled: !!txHash,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+};
 
 export const useExecuteTxsByContractAddressPagination = (
   contractAddress: ContractAddr,

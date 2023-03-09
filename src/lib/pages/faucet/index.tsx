@@ -12,7 +12,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import {
   useCurrentNetwork,
   useInternalNavigate,
@@ -24,6 +23,7 @@ import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { getNetworkByChainName } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 type ResultStatus = "success" | "error" | "warning";
@@ -55,8 +55,6 @@ const Faucet = () => {
   const router = useRouter();
 
   const faucetUrl = process.env.NEXT_PUBLIC_FAUCET_URL;
-  // TODO: navigate to Celatone tx page
-  const txLinkUrl = getExplorerTxUrl(currentChainName);
 
   useEffect(() => {
     if (!isTestnet) navigate({ pathname: "/" });
@@ -198,21 +196,24 @@ const Faucet = () => {
             {result.message || "Something went wrong"}
           </AlertDescription>
           {result.txHash && (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${txLinkUrl}/${result.txHash}`}
+            <Button
+              variant="unstyled"
+              minW="unset"
+              size="sm"
+              _hover={{ background: "success.dark" }}
+              style={{ padding: "4px 12px" }}
+              onClick={() =>
+                window.open(
+                  `/${getNetworkByChainName(currentChainName)}/tx/${
+                    result.txHash
+                  }`,
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              }
             >
-              <Button
-                variant="unstyled"
-                minW="unset"
-                size="sm"
-                _hover={{ background: "success.dark" }}
-                style={{ padding: "4px 12px" }}
-              >
-                View Transaction
-              </Button>
-            </a>
+              View Transaction
+            </Button>
           )}
         </Alert>
       )}

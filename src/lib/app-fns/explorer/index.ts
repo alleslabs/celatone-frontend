@@ -5,23 +5,6 @@ export const explorerMap: Record<string, string> = {
   osmosistestnet: "https://testnet.mintscan.io/osmosis-testnet",
 };
 
-export const getExplorerTxUrl = (chainName: string) => {
-  let pathSuffix = "";
-  switch (chainName) {
-    case "osmosis":
-    case "osmosistestnet":
-      pathSuffix = "txs";
-      break;
-    case "terra2":
-    case "terra2testnet":
-      pathSuffix = "tx";
-      break;
-    default:
-      break;
-  }
-  return `${explorerMap[chainName]}/${pathSuffix}`;
-};
-
 export const getExplorerBlockUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
@@ -48,6 +31,23 @@ export const getProposalUrl = (chainName: string) => {
       return `https://station.terra.money/proposal/phoenix-1`;
     case "terra2testnet":
       return `https://station.terra.money/proposal/pisco-1`;
+    default:
+      break;
+  }
+  return `${explorerMap[chainName]}/${pathSuffix}`;
+};
+
+export const getExplorerValidatorUrl = (chainName: string) => {
+  let pathSuffix = "";
+  switch (chainName) {
+    case "osmosis":
+    case "osmosistestnet":
+      pathSuffix = "validators";
+      break;
+    case "terra2":
+    case "terra2testnet":
+      pathSuffix = "validator";
+      break;
     default:
       break;
   }
