@@ -10,7 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { useValidateAddress } from "lib/app-provider";
+import { useInternalNavigate, useValidateAddress } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -245,9 +245,14 @@ const AccountDetails = () => {
     router.query.accountAddress
   ) as HumanAddr;
 
+  const navigate = useInternalNavigate();
+
   useEffect(() => {
+    // remark: disable account detail and redirect to home page
+    navigate({ pathname: "/" });
+
     if (router.isReady) AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL);
-  }, [router.isReady]);
+  }, [router.isReady, navigate]);
 
   return (
     <PageContainer>
