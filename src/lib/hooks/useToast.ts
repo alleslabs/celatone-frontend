@@ -1,6 +1,6 @@
 import { useToast as useChakraToast } from "@chakra-ui/react";
 import type { AlertStatus } from "@chakra-ui/react";
-// TODO: p'peach will look into this issue
+// TODO: revisit this later
 
 // import type { ReactNode } from "react";
 // import { CustomIcon } from "../icon";
