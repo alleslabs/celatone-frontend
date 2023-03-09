@@ -30,9 +30,16 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const isCurrentPage = useCallback(
     (slug: string) => {
       if (network) {
-        return slug === "/"
-          ? pathName === `/${network}`
-          : pathName.includes(`/${network}${slug}`);
+        switch (slug) {
+          case "/":
+            return pathName === `/${network}`;
+          case "/contract-list":
+            return pathName === `/${network}${slug}`;
+          case "/public-project":
+            return pathName === `/${network}${slug}`;
+          default:
+            return pathName.includes(`/${network}${slug}`);
+        }
       }
       return pathName === `${slug}`;
     },
