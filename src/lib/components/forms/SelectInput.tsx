@@ -1,5 +1,4 @@
 import {
-  Icon,
   Input,
   InputGroup,
   InputRightElement,
@@ -13,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import type { IconType } from "react-icons/lib";
-import { MdArrowDropDown } from "react-icons/md";
 
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 import type { Option } from "lib/types";
 
 const ITEM_HEIGHT = 56;
@@ -26,7 +25,7 @@ interface SelectInputProps<T extends string> {
     label: string;
     value: T;
     disabled: boolean;
-    icon?: IconType;
+    icon?: IconKeys;
     iconColor?: string;
   }[];
   onChange: (newVal: T) => void;
@@ -123,11 +122,10 @@ export const SelectInput = <T extends string>({
         >
           <div className="form-label">{formLabel}</div>
           {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full">
-              <Icon
-                as={selectedOption.icon}
+            <InputLeftElement pointerEvents="none" h="full" ml="1">
+              <CustomIcon
+                name={selectedOption.icon}
                 color={selectedOption.iconColor}
-                fontSize="20px"
               />
             </InputLeftElement>
           )}
@@ -142,7 +140,7 @@ export const SelectInput = <T extends string>({
             pl={selectedOption?.icon ? 9 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <Icon as={MdArrowDropDown} color="pebble.600" fontSize="24px" />
+            <CustomIcon name="chevron-down" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
@@ -174,7 +172,7 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {icon && <Icon as={icon} boxSize={5} color={iconColor} />}
+            {icon && <CustomIcon name={icon} color={iconColor} />}
             {label}
           </SelectItem>
         ))}

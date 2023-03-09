@@ -1,6 +1,5 @@
 import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
@@ -35,15 +34,20 @@ export const WalletSection = () => {
     <WalletConnectComponent
       walletStatus={walletStatus}
       disconnect={
-        <Disconnected buttonText="Connect" onClick={onClickConnect} />
+        <Disconnected
+          buttonText="Connect"
+          onClick={onClickConnect}
+          iconColor="text.main"
+        />
       }
       connecting={<Connecting />}
       connected={
         <Connected
           buttonText={truncate(address)}
-          icon={MdOutlineAccountBalanceWallet}
+          icon="wallet"
           onClick={onClickOpenView}
           variant="outline-info"
+          iconColor="honeydew.main"
         />
       }
       rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}

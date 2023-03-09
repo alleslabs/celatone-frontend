@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { BsArrowCounterclockwise } from "react-icons/bs";
 
+import { CustomIcon } from "../icon";
 import { useRedo } from "lib/hooks/useRedo";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
@@ -16,9 +16,7 @@ export const RedoButton = ({ message }: RedoButtonProps) => {
 
   return (
     <Button
-      leftIcon={<BsArrowCounterclockwise />}
       variant="outline"
-      iconSpacing="2"
       size="sm"
       onClick={(e) =>
         onClickRedo(
@@ -29,6 +27,7 @@ export const RedoButton = ({ message }: RedoButtonProps) => {
         )
       }
     >
+      <CustomIcon name="redo" boxSize="3" />
       Redo
     </Button>
   );

@@ -1,12 +1,12 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, Icon, useToast, Box } from "@chakra-ui/react";
+import { Button, useToast, Box } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
 import { ActionModal } from "../ActionModal";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
@@ -70,15 +70,7 @@ export function CreateNewListModal({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   }, [
     createNewList,
@@ -97,7 +89,7 @@ export function CreateNewListModal({
   return (
     <ActionModal
       title="Create a New List"
-      icon={MdAddCircleOutline}
+      icon="add-new-solid"
       trigger={trigger || <Button {...buttonProps} />}
       mainBtnTitle="Create"
       mainAction={handleCreate}

@@ -1,10 +1,10 @@
-import { Flex, Icon, Button, useToast, Text } from "@chakra-ui/react";
+import { Flex, Button, useToast, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { CSSProperties, MouseEvent } from "react";
 import { useCallback } from "react";
-import type { IconType } from "react-icons";
-import { MdBookmark, MdBookmarkBorder, MdCheckCircle } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon";
+import type { IconKeys } from "lib/components/icon";
 import { usePublicProjectStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
@@ -29,20 +29,12 @@ const buttonIconProps: CSSProperties = {
   borderRadius: "full",
 };
 
-const toastIcon = (
-  <Icon
-    as={MdCheckCircle}
-    color="success.main"
-    boxSize="6"
-    display="flex"
-    alignItems="center"
-  />
-);
+const toastIcon = <CustomIcon name="check-circle-solid" color="success.main" />;
 
 interface StyledButtonProps {
   hasText: boolean;
   actionText: string;
-  icon: IconType;
+  icon: IconKeys;
   iconColor: string;
   action: (e: MouseEvent<HTMLButtonElement>) => void;
   variant: string;
@@ -62,7 +54,7 @@ const StyledButton = ({
     gap={2}
     onClick={action}
   >
-    <Icon as={icon} boxSize={hasText ? 4 : 6} color={iconColor} />
+    <CustomIcon name={icon} color={iconColor} />
     {hasText && <Text>{actionText}</Text>}
   </Button>
 );
@@ -105,7 +97,7 @@ export const BookmarkButton = observer(
           <StyledButton
             variant="outline-primary"
             hasText={hasText}
-            icon={MdBookmark}
+            icon="bookmark-solid"
             iconColor="violet.light"
             actionText="Bookmarked"
             action={(e) => {
@@ -117,7 +109,7 @@ export const BookmarkButton = observer(
           <StyledButton
             variant="outline"
             hasText={hasText}
-            icon={MdBookmarkBorder}
+            icon="bookmark"
             iconColor="pebble.600"
             actionText="Bookmark Project"
             action={(e) => {

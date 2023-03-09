@@ -187,7 +187,7 @@ const UpdateAdmin = () => {
 
   return (
     <WasmPageContainer>
-      <Heading as="h4" variant="h4" mb="24px">
+      <Heading as="h5" variant="h5" mb="24px">
         Update Admin
       </Heading>
       <ConnectWalletAlert

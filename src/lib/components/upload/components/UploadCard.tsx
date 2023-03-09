@@ -1,11 +1,9 @@
-import { Flex, Icon, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 import big from "big.js";
 import type { ReactElement } from "react";
-import { IoIosWarning } from "react-icons/io";
-import { MdCheckCircle, MdDeleteOutline } from "react-icons/md";
 
 import type { SimulateStatus } from "../types";
-import { UploadIcon } from "lib/components/icon/UploadIcon";
+import { CustomIcon, UploadIcon } from "lib/components/icon";
 
 interface UploadCardProps {
   file: File;
@@ -27,12 +25,12 @@ const getStatusDecorator = (
   switch (status) {
     case "completed":
       return {
-        icon: <Icon as={MdCheckCircle} boxSize="6" color="success.main" />,
+        icon: <CustomIcon name="check-circle-solid" color="success.main" />,
         statusText: <Text color="success.main">Valid Wasm file</Text>,
       };
     case "failed":
       return {
-        icon: <Icon as={IoIosWarning} boxSize="6" color="error.main" />,
+        icon: <CustomIcon name="alert-circle-solid" color="error.main" />,
         statusText: <Text color="error.main">Invalid Wasm file</Text>,
         helperText: error,
       };
@@ -75,10 +73,9 @@ export const UploadCard = ({
           </Text>
         </Flex>
         <Flex align="center" gap="16px" ml="auto">
-          <Icon
-            as={MdDeleteOutline}
+          <CustomIcon
+            name="delete"
             color="text.dark"
-            boxSize="6"
             onClick={deleteFile}
             cursor="pointer"
           />

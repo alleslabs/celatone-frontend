@@ -9,20 +9,19 @@ import {
   Input,
   List,
   ListItem,
-  Icon,
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
 import { useState, useRef, forwardRef } from "react";
-import { MdCheck, MdClose, MdAdd } from "react-icons/md";
 
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import type { LVPair } from "lib/types";
 import { formatSlugName, mergeRefs } from "lib/utils";
 
+import { CustomIcon } from "./icon";
 import { CreateNewListModal } from "./modal/list";
 
 export interface ListSelectionProps extends InputProps {
@@ -121,7 +120,6 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       ref: boxRef,
       handler: () => setDisplayOptions(false),
     });
-
     return (
       <Box ref={boxRef} w="full">
         <FormControl>
@@ -157,7 +155,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       borderRadius="full"
                     >
                       {option.label}
-                      <Icon as={MdClose} boxSize="4" color="pebble.900" />
+                      <CustomIcon name="close" color="pebble.900" boxSize="3" />
                     </Tag>
                   </Flex>
                 ))}
@@ -225,11 +223,12 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                   <Flex alignItems="center" justifyContent="space-between">
                     <Text variant="body2">{option.label}</Text>
                     {isOptionSelected(option) && (
-                      <Icon
-                        as={MdCheck}
-                        color="text.dark"
+                      <CustomIcon
                         data-label={option.label}
                         mr={2}
+                        name="check"
+                        color="pebble.600"
+                        boxSize="3"
                       />
                     )}
                   </Flex>
@@ -248,7 +247,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       onClick={() => setEnableOutside(false)}
                     >
                       <Flex alignItems="center" gap={2}>
-                        <Icon as={MdAdd} color="text.dark" />
+                        <CustomIcon name="plus" color="text.dark" boxSize="3" />
                         <Text variant="body2">Create New List </Text>
                       </Flex>
                     </ListItem>

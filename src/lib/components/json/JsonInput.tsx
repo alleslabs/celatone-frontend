@@ -1,9 +1,9 @@
-import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import type { LayoutProps } from "@chakra-ui/react";
 import { Text, Box, Button, Spinner, Flex } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 
+import { CustomIcon } from "../icon";
 import { jsonPrettify, jsonValidate } from "lib/utils";
 
 const JsonEditor = dynamic(() => import("./JsonEditor"), {
@@ -38,7 +38,12 @@ const getResponse = (jsonState: JsonState) => {
         color: "text.main",
         response: (
           <>
-            <CheckCircleIcon textColor="success.main" /> Valid JSON Format
+            <CustomIcon
+              name="check-circle-solid"
+              color="success.main"
+              boxSize="3"
+            />
+            Valid JSON Format
           </>
         ),
       };
@@ -47,7 +52,12 @@ const getResponse = (jsonState: JsonState) => {
         color: "error.main",
         response: (
           <>
-            <WarningIcon /> {jsonState.errMsg}
+            <CustomIcon
+              name="alert-circle-solid"
+              color="error.light"
+              boxSize="3"
+            />
+            {jsonState.errMsg}
           </>
         ),
       };

@@ -1,9 +1,8 @@
-import { Flex, Icon, Select, Text } from "@chakra-ui/react";
+import { Flex, Select, Text } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { TiArrowSortedDown } from "react-icons/ti";
 
+import { CustomIcon } from "../icon";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
 import { Next } from "./Next";
@@ -64,8 +63,7 @@ export const Pagination = ({
           w="70px"
           fontSize="12px"
           focusBorderColor="none"
-          icon={<TiArrowSortedDown />}
-          iconSize="15px"
+          icon={<CustomIcon name="chevron-down" />}
           cursor="pointer"
           onChange={onPageSizeChange}
         >
@@ -78,10 +76,10 @@ export const Pagination = ({
           {`${offsetData} - ${lastDataInPage} of ${totalData}`}
         </Text>
         <Previous variant="unstyled" display="flex">
-          <Icon as={MdKeyboardArrowLeft} w={5} h={5} color="pebble.600" />
+          <CustomIcon name="chevron-left" />
         </Previous>
         <Next variant="unstyled" display="flex">
-          <Icon as={MdKeyboardArrowRight} w={5} h={5} color="pebble.600" />
+          <CustomIcon name="chevron-right" />
         </Next>
       </Flex>
     </Paginator>

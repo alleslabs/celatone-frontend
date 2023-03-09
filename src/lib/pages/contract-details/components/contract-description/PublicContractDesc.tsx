@@ -1,10 +1,10 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import { BiWorld } from "react-icons/bi";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 import { ShowMoreButton } from "lib/components/button";
+import { CustomIcon } from "lib/components/icon";
 import type { ContractData } from "lib/types";
 import { textLine } from "lib/utils";
 
@@ -39,9 +39,9 @@ export const PublicContractDesc = ({
       my={6}
       flex="1"
     >
-      <Flex gap={2} align="center" h="30px">
-        <Icon as={BiWorld} color="text.dark" />
-        <Text variant="body2" fontWeight={500} color="text.dark">
+      <Flex gap={2} alignItems="center" h="32px" mb="1">
+        <CustomIcon name="website" />
+        <Text variant="body2" fontWeight={500} color="text.dark" mt="1px">
           Public Contract Description
         </Text>
       </Flex>

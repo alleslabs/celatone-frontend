@@ -1,14 +1,13 @@
-import { Icon } from "@chakra-ui/react";
 import type {
   MigrateResult,
   SigningCosmWasmClient,
 } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
-import { MdCheckCircle } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr, HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
@@ -76,7 +75,7 @@ export const migrateContractTx = ({
         receiptInfo: {
           header: "Migration Completed",
           headerIcon: (
-            <Icon as={MdCheckCircle} fontSize="24px" color="success.main" />
+            <CustomIcon name="check-circle-solid" color="success.main" />
           ),
         },
         actionVariant: "migrate",

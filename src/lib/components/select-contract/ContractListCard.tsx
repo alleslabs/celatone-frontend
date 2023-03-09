@@ -1,6 +1,5 @@
 import {
   Flex,
-  Icon,
   Button,
   Tag,
   Text,
@@ -10,22 +9,13 @@ import {
   MenuButton,
   MenuList,
   Spacer,
-  chakra,
 } from "@chakra-ui/react";
-import { MdMoreHoriz, MdMode, MdDelete } from "react-icons/md";
 
+import { CustomIcon } from "../icon";
 import { EditListNameModal, RemoveListModal } from "lib/components/modal";
 import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
 import { dateFromNow, formatSlugName } from "lib/utils";
-
-const StyledIcon = chakra(Icon, {
-  baseStyle: {
-    boxSize: "4",
-    display: "flex",
-    alignItems: "center",
-  },
-});
 
 interface ContractListCardProps {
   item: ContractListInfo;
@@ -52,7 +42,7 @@ export const ContractListCard = ({
         gap="4"
         h="75px"
       >
-        <Icon as={getListIcon(item.name)} color="pebble.600" boxSize="6" />
+        <CustomIcon name={getListIcon(item.name)} boxSize="24px" />
         <Flex flexDirection="column">
           <Flex alignItems="center" gap="2">
             <LinkOverlay
@@ -91,20 +81,20 @@ export const ContractListCard = ({
         {!isReadOnly && (
           <Menu>
             <MenuButton m="0" h="full" variant="ghost-gray" as={Button}>
-              <MdMoreHoriz />
+              <CustomIcon name="more" />
             </MenuButton>
             <MenuList>
               <EditListNameModal
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
-                  icon: <StyledIcon as={MdMode} color="pebble.600" />,
+                  icon: <CustomIcon name="edit" />,
                   children: "Edit list name",
                 }}
               />
               <RemoveListModal
                 list={{ label: item.name, value: item.slug }}
                 menuItemProps={{
-                  icon: <StyledIcon as={MdDelete} color="error.light" />,
+                  icon: <CustomIcon name="delete" color="error.light" />,
                   children: "Remove list",
                 }}
               />

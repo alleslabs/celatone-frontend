@@ -1,7 +1,6 @@
 import {
   Flex,
   Button,
-  Icon,
   Menu,
   MenuList,
   MenuButton,
@@ -12,15 +11,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import {
-  MdMoreHoriz,
-  MdMode,
-  MdOutlineBookmark,
-  MdDelete,
-  MdPersonRemove,
-  MdPerson,
-} from "react-icons/md";
 
+import { CustomIcon } from "../icon";
 import { useInternalNavigate, useGetAddressType } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -44,14 +36,6 @@ import type { LVPair } from "lib/types";
 const StyledMenuItem = chakra(MenuItem, {
   baseStyle: {
     fontSize: "14px",
-  },
-});
-
-const StyledIcon = chakra(Icon, {
-  baseStyle: {
-    boxSize: "4",
-    display: "flex",
-    alignItems: "center",
   },
 });
 
@@ -162,18 +146,14 @@ export const ContractListTable = ({
                   </AppLink>
                   <Menu>
                     <MenuButton size="sm" variant="ghost-gray" as={Button}>
-                      <StyledIcon
-                        as={MdMoreHoriz}
-                        color="pebble.600"
-                        boxSize="6"
-                      />
+                      <CustomIcon name="more" boxSize="16px" />
                     </MenuButton>
                     <MenuList>
                       <EditContractDetailsModal
                         contractLocalInfo={item}
                         triggerElement={
                           <StyledMenuItem
-                            icon={<StyledIcon as={MdMode} color="pebble.600" />}
+                            icon={<CustomIcon name="edit" boxSize="16px" />}
                           >
                             Edit details
                           </StyledMenuItem>
@@ -183,19 +163,14 @@ export const ContractListTable = ({
                         contractLocalInfo={item}
                         triggerElement={
                           <StyledMenuItem
-                            icon={
-                              <StyledIcon
-                                as={MdOutlineBookmark}
-                                color="pebble.600"
-                              />
-                            }
+                            icon={<CustomIcon name="bookmark" boxSize="16px" />}
                           >
                             Add or remove from other lists
                           </StyledMenuItem>
                         }
                       />
                       <StyledMenuItem
-                        icon={<StyledIcon as={MdPerson} color="pebble.600" />}
+                        icon={<CustomIcon name="admin" boxSize="16px" />}
                         onClick={() => {
                           navigate({
                             pathname: "/admin",
@@ -211,10 +186,7 @@ export const ContractListTable = ({
                         triggerElement={
                           <StyledMenuItem
                             icon={
-                              <StyledIcon
-                                as={MdPersonRemove}
-                                color="pebble.600"
-                              />
+                              <CustomIcon name="admin-clear" boxSize="16px" />
                             }
                             isDisabled={!isAdmin}
                           >
@@ -230,7 +202,7 @@ export const ContractListTable = ({
                             contractRemovalInfo={contractRemovalInfo}
                             menuItemProps={{
                               icon: (
-                                <StyledIcon as={MdDelete} color="error.light" />
+                                <CustomIcon name="delete" color="error.light" />
                               ),
                               children: "Remove from this list",
                             }}

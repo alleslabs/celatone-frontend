@@ -1,14 +1,9 @@
-import { Flex, Heading, Box, Text, Icon, SimpleGrid } from "@chakra-ui/react";
-import {
-  MdChevronRight,
-  MdSearch,
-  MdInput,
-  MdReadMore,
-  MdPerson,
-} from "react-icons/md";
+import { Flex, Heading, Box, Text, SimpleGrid } from "@chakra-ui/react";
 
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { CustomIcon } from "lib/components/icon";
+import type { IconKeys } from "lib/components/icon";
 
 const cardProps = {
   width: "100%",
@@ -18,36 +13,43 @@ const cardProps = {
   height: "100%",
 };
 
-const secondaryMenu = [
+interface SecondaryMenuType {
+  title: string;
+  subtitle: string;
+  slug: string;
+  icon: IconKeys;
+}
+
+const secondaryMenu: SecondaryMenuType[] = [
   {
     title: "Query",
     subtitle: "Query and get contract state data",
     slug: "query",
-    icon: MdSearch,
+    icon: "query",
   },
   {
     title: "Execute",
     subtitle: "Send transactions to contracts",
     slug: "execute",
-    icon: MdInput,
+    icon: "execute",
   },
   {
     title: "Migrate",
     subtitle: "Migrate contract to new code ID",
     slug: "migrate",
-    icon: MdReadMore,
+    icon: "migrate",
   },
   {
     title: "Update Admin",
     subtitle: "Change contract admin",
     slug: "admin",
-    icon: MdPerson,
+    icon: "admin",
   },
 ];
 
 export const QuickMenu = () => (
   <Flex direction="column" gap={4} bg="pebble.900" p="48px">
-    <Heading as="h6" variant="h6">
+    <Heading as="h5" variant="h5">
       Start using Celatone
     </Heading>
     <ConnectWalletAlert
@@ -72,7 +74,7 @@ export const QuickMenu = () => (
               Upload a new wasm code or instantiate a new contract
             </Text>
           </Flex>
-          <Icon as={MdChevronRight} boxSize={9} />
+          <CustomIcon name="chevron-right" color="text.main" boxSize="24px" />
         </Flex>
       </AppLink>
 
@@ -87,7 +89,7 @@ export const QuickMenu = () => (
               alignItems="center"
             >
               <Flex alignItems="center" gap={3}>
-                <Icon as={item.icon} color="pebble.600" boxSize={9} />
+                <CustomIcon name={item.icon} boxSize="24px" />
                 <Box>
                   <Text variant="body1" fontWeight="800">
                     {item.title}
@@ -97,7 +99,7 @@ export const QuickMenu = () => (
                   </Text>
                 </Box>
               </Flex>
-              <Icon as={MdChevronRight} color="pebble.600" boxSize={9} />
+              <CustomIcon name="chevron-right" boxSize="24px" />
             </Flex>
           </AppLink>
         ))}

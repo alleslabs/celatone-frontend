@@ -1,6 +1,6 @@
-import { CopyIcon } from "@chakra-ui/icons";
 import type { LayoutProps } from "@chakra-ui/react";
 
+import { CustomIcon } from "../icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { CopyTemplate } from "./CopyTemplate";
@@ -24,14 +24,14 @@ export const Copier = ({
     value={value}
     copyLabel={copyLabel}
     triggerElement={
-      <CopyIcon
+      <CustomIcon
         className={className}
         display={display}
-        boxSize="16px"
-        color="text.dark"
         cursor="pointer"
         marginLeft={ml}
         onClick={() => AmpTrack(AmpEvent.USE_COPIER)}
+        name="copy"
+        boxSize="16px"
       />
     }
   />

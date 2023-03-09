@@ -1,8 +1,8 @@
-import { Box, Flex, Icon, IconButton, Image, Tooltip } from "@chakra-ui/react";
-import { MdDoubleArrow } from "react-icons/md";
+import { Box, Flex, IconButton, Image, Tooltip } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import type { NavMenuProps } from "./type";
@@ -47,7 +47,12 @@ export const CollapseNavMenu = ({
                   p={1}
                   mt={2}
                   mx={2}
-                  icon={<MdDoubleArrow />}
+                  icon={
+                    <CustomIcon
+                      name="double-chevron-right"
+                      color="honeydew.main"
+                    />
+                  }
                   onClick={() => setIsExpand(true)}
                 />
               </Tooltip>
@@ -77,9 +82,7 @@ export const CollapseNavMenu = ({
                   }
                   borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
                 >
-                  {submenu.icon && (
-                    <Icon as={submenu.icon} color="pebble.600" boxSize={6} />
-                  )}
+                  {submenu.icon && <CustomIcon name={submenu.icon} />}
                   {submenu.logo && (
                     <Image
                       src={submenu.logo}

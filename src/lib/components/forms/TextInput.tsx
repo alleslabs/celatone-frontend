@@ -10,7 +10,12 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import type { FormControlProps } from "@chakra-ui/react";
-import type { HTMLInputTypeAttribute, Dispatch, SetStateAction } from "react";
+import type {
+  HTMLInputTypeAttribute,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from "react";
 
 import type { FormStatus } from "./FormStatus";
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
@@ -25,6 +30,7 @@ export interface TextInputProps extends FormControlProps {
   type?: HTMLInputTypeAttribute;
   status?: FormStatus;
   maxLength?: number;
+  helperAction?: ReactNode;
 }
 
 export const TextInput = ({
@@ -39,6 +45,7 @@ export const TextInput = ({
   type = "text",
   status,
   maxLength,
+  helperAction,
   ...componentProps
 }: TextInputProps) => (
   // Design system size: md = 40px, lg = 56px
@@ -79,6 +86,7 @@ export const TextInput = ({
           )}
         </FormHelperText>
       )}
+      {helperAction}
     </Flex>
   </FormControl>
 );

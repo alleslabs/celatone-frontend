@@ -1,4 +1,3 @@
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
@@ -8,6 +7,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
+import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { useExecuteCmds } from "lib/hooks";
@@ -87,17 +87,19 @@ const Execute = () => {
       {isFetching && <LoadingOverlay />}
       <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h4" variant="h4">
+        <Heading as="h5" variant="h5">
           Execute Contract
         </Heading>
         <Box>
           <Button
             variant="ghost-primary"
             size="sm"
+            p="unset"
+            pl="2"
             onClick={goToQuery}
-            rightIcon={<ChevronRightIcon boxSize={4} />}
           >
             Go To Query
+            <CustomIcon name="chevron-right" color="lilac.main" boxSize="3" />
           </Button>
         </Box>
       </Flex>

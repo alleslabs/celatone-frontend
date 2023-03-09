@@ -1,10 +1,10 @@
-import { Flex, Heading, Box, Text, Icon } from "@chakra-ui/react";
+import { Flex, Heading, Box, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useMemo } from "react";
-import { MdSearch, MdInput } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { dateFromNow } from "lib/utils";
@@ -21,7 +21,7 @@ export const RecentActivities = observer(() => {
 
   return (
     <Box py={8}>
-      <Heading px={12} as="h6" variant="h6" mb={4}>
+      <Heading px={12} as="h5" variant="h5" mb={4}>
         Recent Queries and Executes on this device
       </Heading>
       {activities.length ? (
@@ -46,10 +46,9 @@ export const RecentActivities = observer(() => {
               }
             >
               <Flex alignItems="center" gap={1}>
-                <Icon
-                  as={item.type === "query" ? MdSearch : MdInput}
+                <CustomIcon
+                  name={item.type === "query" ? "query" : "execute"}
                   color="honeydew.main"
-                  boxSize={4}
                 />
                 <Text variant="body2" color="honeydew.main">
                   {item.type === "query" ? "Query" : "Execute"}

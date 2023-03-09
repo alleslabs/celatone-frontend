@@ -1,6 +1,6 @@
 import { chakra, IconButton } from "@chakra-ui/react";
-import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon";
 import type { CodeInfo } from "lib/types";
 
 import { RemoveCodeModal } from "./RemoveCode";
@@ -28,9 +28,8 @@ export const SaveOrRemoveCodeModal = ({
       name={codeInfo.name}
       trigger={
         <StyledIconButton
-          icon={<MdBookmark />}
+          icon={<CustomIcon name="bookmark-solid" color="violet.light" />}
           variant="ghost-gray"
-          color="lilac.main"
         />
       }
     />
@@ -39,9 +38,8 @@ export const SaveOrRemoveCodeModal = ({
       codeInfo={codeInfo}
       triggerElement={
         <StyledIconButton
-          icon={<MdBookmarkBorder />}
+          icon={<CustomIcon name="bookmark" />}
           variant="ghost-gray"
-          color="pebble.600"
         />
       }
     />
