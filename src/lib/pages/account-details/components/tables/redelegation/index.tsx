@@ -6,7 +6,7 @@ import { RedelegationTableHeader } from "./RedelegationTableHeader";
 import { RedelegationTableRow } from "./RedelegationTableRow";
 
 const TEMPLATE_COLUMNS =
-  "minmax(250px, 1fr) 50px minmax(250px, 1fr) minmax(350px, 1fr) minmax(250px, 1fr)";
+  "minmax(250px, 300px) 50px minmax(250px, 300px) minmax(300px, 1fr) minmax(250px, 1fr)";
 
 interface RedelegationsTableProps {
   redelegations: Redelegation[];
