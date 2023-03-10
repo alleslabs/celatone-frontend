@@ -2,7 +2,7 @@ import type { Coin } from "@cosmjs/stargate";
 
 import { AttachFundsType } from "lib/components/fund/types";
 
-import { fabricateFunds } from "./funds";
+import { fabricateFunds, sortDenoms } from "./funds";
 
 interface AttachFundsParams {
   attachFundsOption: AttachFundsType;
@@ -21,7 +21,7 @@ export const getAttachFunds = ({
     case AttachFundsType.ATTACH_FUNDS_JSON:
       try {
         if (JSON.parse(assetsJsonStr)) {
-          return JSON.parse(assetsJsonStr) as Coin[];
+          return sortDenoms(JSON.parse(assetsJsonStr) as Coin[]);
         }
       } catch {
         return [];
