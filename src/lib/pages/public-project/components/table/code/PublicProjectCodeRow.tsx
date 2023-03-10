@@ -17,12 +17,11 @@ interface CodeTableRowProps {
 }
 
 export const PublicProjectCodeRow = ({
-  publicCodeInfo,
+  publicCodeInfo: { publicInfo, localInfo },
   templateColumn,
 }: CodeTableRowProps) => {
   const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
-  const { publicInfo } = publicCodeInfo;
   const goToCodeDetails = () => {
     navigate({
       pathname: `/code/${publicInfo.id}`,
@@ -58,7 +57,7 @@ export const PublicProjectCodeRow = ({
           wordBreak="break-all"
           whiteSpace="pre-wrap"
         >
-          {cw2Info || "N/A"}
+          {cw2Info ?? "N/A"}
         </Text>
       </TableRowNoBorder>
       <TableRowNoBorder justifyContent="center">
@@ -83,7 +82,7 @@ export const PublicProjectCodeRow = ({
               permissionAddresses={publicInfo.permissionAddresses}
               codeId={publicInfo.id}
             />
-            <SaveOrRemoveCodeModal codeInfo={publicCodeInfo.localInfo} />
+            <SaveOrRemoveCodeModal codeInfo={localInfo} />
           </HStack>
         </Flex>
       </TableRowNoBorder>

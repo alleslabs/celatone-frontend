@@ -71,7 +71,7 @@ const CodeDetailsBody = observer(
                 variant="body2"
                 wordBreak="break-all"
               >
-                {cw2Info || "N/A"}
+                {cw2Info ?? "N/A"}
               </Text>
             </Flex>
           </Flex>

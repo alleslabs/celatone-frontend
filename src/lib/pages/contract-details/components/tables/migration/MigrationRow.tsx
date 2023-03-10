@@ -83,7 +83,7 @@ export const MigrationRow = ({
           color={cw2Info ? "text.main" : "text.disabled"}
           wordBreak="break-all"
         >
-          {cw2Info || "N/A"}
+          {cw2Info ?? "N/A"}
         </Text>
       </TableRow>
       <TableRow>
