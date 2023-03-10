@@ -167,7 +167,6 @@ const Faucet = () => {
             variant="body3"
             cursor="pointer"
             alignSelf="flex-start"
-            ml="3"
             onClick={() => {
               AmpTrack(AmpEvent.USE_ASSIGN_ME);
               setAddress(walletAddress);

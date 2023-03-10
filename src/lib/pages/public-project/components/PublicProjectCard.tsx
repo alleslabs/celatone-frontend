@@ -17,7 +17,7 @@ export const PublicProjectCard = observer(
   ({ item, slug }: PublicProjectCardProps) => {
     const navigate = useInternalNavigate();
     const handleOnClick = () => {
-      navigate({ pathname: `/public-project/${slug}` });
+      navigate({ pathname: `/public-project/[slug]`, query: { slug } });
     };
 
     const [ref, { clampedText }] = useClampText({

@@ -78,15 +78,13 @@ export const TextInput = ({
       {error ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
-        helperText && (
-          <FormHelperText className="helper-text">
-            {status?.message ? (
-              getResponseMsg(status, helperText)
-            ) : (
-              <Text color="text.dark">{helperText}</Text>
-            )}
-          </FormHelperText>
-        )
+        <FormHelperText className="helper-text">
+          {status?.message ? (
+            getResponseMsg(status, helperText)
+          ) : (
+            <Text color="text.dark">{helperText}</Text>
+          )}
+        </FormHelperText>
       )}
       {helperAction}
     </Flex>
