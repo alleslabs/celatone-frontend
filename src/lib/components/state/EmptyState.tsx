@@ -25,7 +25,7 @@ export const EmptyState = ({
           width="200px"
         />
       )}
-      <Text color="text.dark" w="540px" textAlign="center">
+      <Text color="text.dark" textAlign="center">
         {message}
       </Text>
     </Flex>

@@ -1,7 +1,3 @@
-import type { Big } from "big.js";
-
-import type { Option } from "../common";
-
 import type { NominalType } from "./common";
 
 export type U<T = string> = T & { __micro: true };
@@ -17,11 +13,4 @@ export type USD<T = string> = T & NominalType<"usd">;
 export interface ChainGasPrice {
   denom: string;
   gasPrice: U<Token>;
-}
-
-export interface TokenWithValue {
-  denom: string;
-  uAmount: U<Token<Big>>;
-  amount: Option<Token<Big>>;
-  value: Option<USD<Big>>;
 }

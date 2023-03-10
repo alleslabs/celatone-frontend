@@ -5,6 +5,7 @@ import { useWallet } from "@cosmos-kit/react";
 import {
   getExplorerBlockUrl,
   getExplorerTxUrl,
+  getExplorerValidatorUrl,
   getProposalUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/app-provider";
@@ -46,6 +47,9 @@ const getNavigationUrl = (
       break;
     case "user_address":
       url = "/account";
+      break;
+    case "validator_address":
+      url = getExplorerValidatorUrl(currentChainName);
       break;
     case "code_id":
       url = "/code";

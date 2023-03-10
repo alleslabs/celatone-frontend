@@ -1,6 +1,7 @@
 import {
   Flex,
   Heading,
+  Spinner,
   TabList,
   TabPanel,
   TabPanels,
@@ -19,9 +20,10 @@ import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
-import { getFirstQueryParam, scrollToTop } from "lib/utils";
+import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
 
 import { AssetsSection } from "./components/asset";
+import { DelegationsSection } from "./components/delegations";
 import {
   AdminContractsTable,
   InstantiatedContractsTable,
@@ -29,6 +31,7 @@ import {
   StoredCodesTable,
   TxsTable,
 } from "./components/tables";
+import { useAccountTotalValue } from "./data";
 
 enum TabIndex {
   Overview,
@@ -59,6 +62,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchProposalsCount,
   } = useAccountDetailsTableCounts(accountAddress);
 
+  const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
+
   const handleOnViewMore = (tab: TabIndex) => {
     setTabIndex(tab);
     scrollToTop();
@@ -84,11 +89,10 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           />
         </Flex>
       </Flex>
-      <Tabs index={tabIndex}>
+      <Tabs index={tabIndex} overflowY="scroll">
         <TabList
           borderBottom="1px solid"
           borderColor="pebble.700"
-          overflowY="hidden"
           id={tableHeaderId}
         >
           <CustomTab onClick={() => setTabIndex(TabIndex.Overview)}>
@@ -143,11 +147,35 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            {/* TODO: replace with the truncated Delegations table */}
-            <Text>Delegations</Text>
+            <Flex mt={12} direction="column" width="fit-content">
+              <Text variant="body2" fontWeight="500" color="text.dark">
+                Total Account Value
+              </Text>
+              {isLoading ? (
+                <Spinner mt={1} alignSelf="center" size="md" speed="0.65s" />
+              ) : (
+                <Heading
+                  as="h5"
+                  variant="h5"
+                  fontWeight="600"
+                  color={
+                    !totalAccountValue || totalAccountValue.eq(0)
+                      ? "text.dark"
+                      : "text.main"
+                  }
+                >
+                  {totalAccountValue ? formatPrice(totalAccountValue) : "N/A"}
+                </Heading>
+              )}
+            </Flex>
+
             <AssetsSection
               walletAddress={accountAddress}
               onViewMore={() => handleOnViewMore(TabIndex.Assets)}
+            />
+            <DelegationsSection
+              walletAddress={accountAddress}
+              onViewMore={() => handleOnViewMore(TabIndex.Delegations)}
             />
             <TxsTable
               walletAddress={accountAddress}
@@ -186,11 +214,10 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Delegations table */}
-            <Text>Delegations</Text>
+            <AssetsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <AssetsSection walletAddress={accountAddress} />
+            <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable
@@ -240,7 +267,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
 const AccountDetails = () => {
   const router = useRouter();
-  const { validateUserAddress } = useValidateAddress();
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
   // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
@@ -253,7 +280,8 @@ const AccountDetails = () => {
   return (
     <PageContainer>
       <BackButton />
-      {validateUserAddress(accountAddressParam) ? (
+      {validateUserAddress(accountAddressParam) &&
+      validateContractAddress(accountAddressParam) ? (
         <InvalidAccount />
       ) : (
         <AccountDetailsBody accountAddress={accountAddressParam} />

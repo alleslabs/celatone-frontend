@@ -11,7 +11,7 @@ export const TransactionsTableHeader = ({
   showSender: boolean;
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
-    <TableHeader borderTopStyle="none">Transaction Hash</TableHeader>
+    <TableHeader>Transaction Hash</TableHeader>
     <TableHeader />
     <TableHeader>Messages</TableHeader>
     {showSender && <TableHeader>Sender</TableHeader>}

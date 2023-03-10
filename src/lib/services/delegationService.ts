@@ -9,15 +9,17 @@ import type {
   RawCommission,
   RawDelegation,
   RawDelegationRewards,
+  RawRedelegation,
   RawStakingParams,
   RawUnbonding,
 } from "./delegation";
 import {
   getCommission,
-  getDelegationRewards,
-  getUnbondings,
   getDelegations,
+  getDelegationRewards,
+  getRedelegations,
   getStakingParams,
+  getUnbondings,
 } from "./delegation";
 
 export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
@@ -70,6 +72,19 @@ export const useDelegationRewards = (
   );
 
   return useQuery(["query", "delegation_rewards", endpoint, address], queryFn);
+};
+
+export const useRedelegations = (
+  address: Addr
+): UseQueryResult<RawRedelegation[]> => {
+  const endpoint = useLCDEndpoint();
+
+  const queryFn = useCallback(
+    async () => getRedelegations(endpoint, address),
+    [address, endpoint]
+  );
+
+  return useQuery(["query", "redelegations", endpoint, address], queryFn);
 };
 
 export const useCommission = (

@@ -9,7 +9,7 @@ export const CodesTableHeader = ({
   templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
-    <TableHeader borderTopStyle="none">Code ID</TableHeader>
+    <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
     <TableHeader>Contracts</TableHeader>
     <TableHeader>Uploader</TableHeader>

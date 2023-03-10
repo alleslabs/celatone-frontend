@@ -6,6 +6,7 @@ import { useCallback } from "react";
 export type AddressReturnType =
   | "user_address"
   | "contract_address"
+  | "validator_address"
   | "invalid_address";
 
 const addressLengthMap: {
@@ -13,18 +14,22 @@ const addressLengthMap: {
 } = {
   osmosis: {
     43: "user_address",
+    50: "validator_address",
     63: "contract_address",
   },
   osmosistestnet: {
     43: "user_address",
+    50: "validator_address",
     63: "contract_address",
   },
   terra2: {
     44: "user_address",
+    51: "validator_address",
     64: "contract_address",
   },
   terra2testnet: {
     44: "user_address",
+    51: "validator_address",
     64: "contract_address",
   },
 };
@@ -78,6 +83,11 @@ export const useValidateAddress = () => {
     validateUserAddress: useCallback(
       (address: string) =>
         validateAddress(currentChainRecord, address, "user_address"),
+      [currentChainRecord]
+    ),
+    validateValidatorAddress: useCallback(
+      (address: string) =>
+        validateAddress(currentChainRecord, address, "validator_address"),
       [currentChainRecord]
     ),
   };
