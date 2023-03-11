@@ -149,7 +149,7 @@ const Faucet = () => {
       <Heading as="h5" variant="h5">
         Osmosis Testnet Faucet
       </Heading>
-      <Text variant="body2" color="pebble.600" pt={4} textAlign="center" mb={8}>
+      <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
         The faucet provides 10 testnet OSMO per request. Requests are limited to
         once per hour for each receiving address and IP address.
       </Text>

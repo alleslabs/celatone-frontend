@@ -22,12 +22,12 @@ export const TableTitle = ({
       <Badge
         variant="gray"
         color="text.main"
-        textColor={count ? "gray.100" : "gray.500"}
+        textColor={count ? "text.main" : "pebble.500"}
       >
         {count}
       </Badge>
     </Flex>
-    <Text variant="body2" textColor="gray.400">
+    <Text variant="body2" textColor="text.dark">
       {helperText}
     </Text>
   </Box>

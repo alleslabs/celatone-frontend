@@ -66,7 +66,7 @@ export const SelectContractAdmin = ({
         }}
         leftIcon={
           !notSelected ? (
-            <CustomIcon name="swap" color="violet.light" />
+            <CustomIcon name="swap" color="violet.light" boxSize="12px" />
           ) : undefined
         }
         disabled={!address}

@@ -89,9 +89,9 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Box width="full" my="16px" alignItems="center">
+      <Box width="full" mt={4} mb={8} alignItems="center">
         {contractAddress && (
-          <Text variant="body3" mb="8px">
+          <Text variant="body3" mb={2}>
             Message Suggestions:
           </Text>
         )}
@@ -99,7 +99,7 @@ export const QueryArea = ({
           <ButtonGroup
             width="90%"
             flexWrap="wrap"
-            rowGap="8px"
+            rowGap={2}
             sx={{
               "> button": {
                 marginInlineStart: "0 !important",
@@ -120,13 +120,13 @@ export const QueryArea = ({
           </ButtonGroup>
         ) : (
           contractAddress && (
-            <Text my="4px" variant="body2" color="text.dark">
+            <Text my={1} variant="body2" color="text.dark">
               No QueryMsgs suggestion available
             </Text>
           )
         )}
       </Box>
-      <Flex gap="16px">
+      <Flex gap={4}>
         <Box w="full">
           <JsonInput
             topic="Query Msg"
