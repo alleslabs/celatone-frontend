@@ -1,9 +1,7 @@
-import { InfoIcon } from "@chakra-ui/icons";
 import type { TextProps } from "@chakra-ui/react";
 import {
   Flex,
   Text,
-  Icon,
   Input,
   Button,
   Tooltip,
@@ -11,7 +9,8 @@ import {
 } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useRef, useState, useEffect } from "react";
-import { MdMode, MdCheck, MdClose } from "react-icons/md";
+
+import { CustomIcon } from "../icon";
 
 interface EditableCellProps {
   initialValue?: string;
@@ -145,10 +144,10 @@ export const EditableCell = ({
                 }}
               />
               <Button size="sm" onClick={handleSave} variant="ghost-gray">
-                <Icon boxSize={6} as={MdCheck} color="success.main" />
+                <CustomIcon name="check" color="success.main" />
               </Button>
               <Button onClick={handleCancel} size="sm" variant="ghost-gray">
-                <Icon boxSize={6} as={MdClose} color="error.light" />
+                <CustomIcon name="close" color="error.light" />
               </Button>
             </Flex>
             <Text fontSize="body3" color="text.dark" ml={4} mt={2}>
@@ -202,18 +201,21 @@ export const EditableCell = ({
                 bg="honeydew.darker"
                 arrowSize={8}
               >
-                <InfoIcon color="pebble.600" boxSize="14px" cursor="pointer" />
+                <CustomIcon
+                  name="info-circle"
+                  boxSize="12px"
+                  cursor="pointer"
+                />
               </Tooltip>
             )}
             {!!onSave && (
-              <Icon
-                opacity={isHover ? 1 : 0}
-                as={MdMode}
-                color="pebble.600"
-                boxSize="4"
+              <Flex
                 cursor="pointer"
+                opacity={isHover ? 1 : 0}
                 onClick={handleEdit}
-              />
+              >
+                <CustomIcon name="edit" color="pebble.600" boxSize="3" />
+              </Flex>
             )}
           </Flex>
         )}

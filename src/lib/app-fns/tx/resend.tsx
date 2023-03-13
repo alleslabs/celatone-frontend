@@ -1,12 +1,12 @@
-import { Icon, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
-import { MdCloudUpload } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
@@ -65,7 +65,11 @@ export const resendTx = ({
             </Text>
           ),
           headerIcon: (
-            <Icon as={MdCloudUpload} fontSize="24px" color="text.dark" />
+            <CustomIcon
+              name="check-circle-solid"
+              color="success.main"
+              boxSize="5"
+            />
           ),
         },
         actionVariant: "resend",

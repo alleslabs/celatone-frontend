@@ -1,9 +1,9 @@
-import { InfoIcon } from "@chakra-ui/icons";
 import { Tag, Text, Flex, Tooltip } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
-import { Copier } from "lib/components/copy";
+import { Copier } from "../copy";
+import { CustomIcon } from "../icon";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Option } from "lib/types";
@@ -74,7 +74,9 @@ export const SingleMsg = ({
             bg="honeydew.darker"
             maxW="240px"
           >
-            <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
+            <Flex cursor="pointer">
+              <CustomIcon name="info-circle" boxSize="3" />
+            </Flex>
           </Tooltip>
           <Copier
             display={showCopyButton ? "flex" : "none"}

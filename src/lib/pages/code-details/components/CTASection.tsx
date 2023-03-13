@@ -1,17 +1,11 @@
-import { Flex, Button, chakra, Icon } from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { MdCheck } from "react-icons/md";
 
 import { InstantiateButton } from "lib/components/button";
+import { CustomIcon } from "lib/components/icon";
 import { RemoveCodeModal, SaveOrEditCodeModal } from "lib/components/modal";
 import { useCodeStore } from "lib/providers/store";
 import type { CodeInfo } from "lib/types";
-
-const StyledIcon = chakra(Icon, {
-  baseStyle: {
-    boxSize: "18px",
-  },
-});
 
 export const CTASection = observer((codeInfo: CodeInfo) => {
   const { isCodeIdSaved } = useCodeStore();
@@ -33,7 +27,7 @@ export const CTASection = observer((codeInfo: CodeInfo) => {
           trigger={
             <Button
               variant="outline-gray"
-              leftIcon={<StyledIcon as={MdCheck} />}
+              leftIcon={<CustomIcon name="check" />}
             >
               Saved
             </Button>

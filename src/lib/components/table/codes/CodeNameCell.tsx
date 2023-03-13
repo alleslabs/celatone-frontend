@@ -1,7 +1,7 @@
-import { Icon, useToast } from "@chakra-ui/react";
-import { MdCheckCircle } from "react-icons/md";
+import { useToast } from "@chakra-ui/react";
 
 import { EditableCell } from "../EditableCell";
+import { CustomIcon } from "lib/components/icon";
 import { MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -24,15 +24,7 @@ export const CodeNameCell = ({ code }: CodeNameCellProps) => {
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
   return (

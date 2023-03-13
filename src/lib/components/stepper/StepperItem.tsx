@@ -1,5 +1,6 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
-import { MdCheck } from "react-icons/md";
+import { Flex, Text } from "@chakra-ui/react";
+
+import { CustomIcon } from "../icon";
 
 import type { Mode, Step } from "./types";
 
@@ -26,7 +27,7 @@ const StepLabel = ({
     borderRadius="50%"
   >
     {currentStep > step ? (
-      <Icon as={MdCheck} fontSize="16px" color="pebble.100" />
+      <CustomIcon name="check" color="text.main" boxSize="3" />
     ) : (
       <Text variant="body3">{step}</Text>
     )}

@@ -2,7 +2,6 @@ import {
   Modal,
   ModalHeader,
   Flex,
-  Icon,
   Text,
   ModalOverlay,
   ModalContent,
@@ -15,11 +14,10 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
-import { BsQuestionCircleFill } from "react-icons/bs";
-import { FaCoins } from "react-icons/fa";
-import { MdAttachMoney } from "react-icons/md";
 
 import { ExplorerLink } from "../ExplorerLink";
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 import { getAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
@@ -81,23 +79,25 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   );
 };
 
-const unsupportedTokensContent = (addressType: AddressReturnType) => {
+const unsupportedTokensContent = (
+  addressType: AddressReturnType
+): { icon: IconKeys; header: string } => {
   switch (addressType) {
     case "contract_address": {
       return {
-        icon: MdAttachMoney,
+        icon: "assets-solid",
         header: "Contract Address",
       };
     }
     case "user_address": {
       return {
-        icon: FaCoins,
+        icon: "assets-solid",
         header: "Wallet Address",
       };
     }
     default:
       return {
-        icon: BsQuestionCircleFill,
+        icon: "question-solid",
         header: "Invalid Address",
       };
   }
@@ -127,7 +127,7 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="700px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <Icon as={content.icon} boxSize={5} color="pebble.600" />
+              <CustomIcon name={content.icon} boxSize="5" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>

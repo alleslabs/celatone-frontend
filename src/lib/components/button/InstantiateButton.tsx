@@ -1,8 +1,8 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, chakra, Icon, Tooltip } from "@chakra-ui/react";
+import { Button, Tooltip } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { MdHowToVote, MdPerson } from "react-icons/md";
 
+import { CustomIcon } from "../icon";
 import { useInternalNavigate } from "lib/app-provider";
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { InstantiatePermission } from "lib/types";
@@ -12,14 +12,6 @@ interface InstantiateButtonProps extends ButtonProps {
   permissionAddresses: PermissionAddresses;
   codeId: number;
 }
-
-const StyledIcon = chakra(Icon, {
-  baseStyle: {
-    boxSize: "4",
-    display: "flex",
-    alignItems: "center",
-  },
-});
 
 const getInstantiateButtonProps = (
   isAllowed: boolean,
@@ -43,7 +35,12 @@ const getInstantiateButtonProps = (
         ? "You can instantiate without opening proposal"
         : "You need to connect wallet to instantiate contract",
       variant: "outline-primary",
-      icon: <StyledIcon as={MdPerson} />,
+      icon: (
+        <CustomIcon
+          name="instantiate"
+          color={isWalletConnected ? "violet.light" : "pebble.600"}
+        />
+      ),
     };
   }
   return {
@@ -51,7 +48,7 @@ const getInstantiateButtonProps = (
       ? "Instantiate through proposal only (Coming Soon)"
       : "You need to connect wallet to open instantiate proposal",
     variant: "outline-gray",
-    icon: <StyledIcon as={MdHowToVote} />,
+    icon: <CustomIcon name="vote" />,
   };
 };
 

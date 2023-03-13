@@ -40,10 +40,10 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
 };
 
 export const FALLBACK_LCD_ENDPOINT: Record<string, string> = {
-  osmosis: "https://lcd.osmosis.zone",
-  osmosistestnet: "https://lcd-test.osmosis.zone",
-  terra2: "https://phoenix-lcd.terra.dev",
-  terra2testnet: "https://pisco-lcd.terra.dev",
+  osmosis: "https://lcd.osmosis.zone/",
+  osmosistestnet: "https://lcd-test.osmosis.zone/",
+  terra2: "https://phoenix-lcd.terra.dev/",
+  terra2testnet: "https://pisco-lcd.terra.dev/",
 };
 
 export const MAX_FILE_SIZE = 800_000;

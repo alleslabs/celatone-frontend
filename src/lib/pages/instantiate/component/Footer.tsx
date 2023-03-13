@@ -1,6 +1,7 @@
-import { Box, Button, Flex, Icon, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { FiChevronLeft } from "react-icons/fi";
+
+import { CustomIcon } from "lib/components/icon";
 
 interface FooterProps {
   onInstantiate: () => void;
@@ -22,7 +23,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
       <Flex align="center" justify="space-between" w="540px" h="full" mx="auto">
         <Button
           variant="outline-gray"
-          leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
+          leftIcon={<CustomIcon name="chevron-left" />}
           onClick={router.back}
           w="128px"
         >

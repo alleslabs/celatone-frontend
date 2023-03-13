@@ -5,15 +5,14 @@ import {
   MenuList,
   Text,
   MenuItem,
-  Icon,
   Image,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { FiChevronDown } from "react-icons/fi";
-import { MdCheck } from "react-icons/md";
 
 import { useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { FaucetBtn } from "lib/components/button";
+import { CustomIcon } from "lib/components/icon";
 import { WalletSection } from "lib/components/Wallet";
 import { getSupportedChainNames } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -33,7 +32,7 @@ const Header = () => {
       justifyContent="space-between"
       px={6}
       mb={1}
-      gap="48px"
+      gap="24px"
     >
       <AppLink href="/">
         <Image
@@ -48,14 +47,17 @@ const Header = () => {
         />
       </AppLink>
       <Searchbar />
-      <Flex gap={2}>
+      <Flex gap="16px">
+        <FaucetBtn />
         <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
           <MenuButton
-            px={4}
+            pl={4}
+            pr={2}
             py="5px"
             borderRadius="8px"
             borderWidth="1px"
-            _hover={{ bg: "pebble.800" }}
+            borderColor="pebble.600"
+            _hover={{ bg: "pebble.700" }}
             transition="all .25s ease-in-out"
             w="170px"
           >
@@ -73,7 +75,7 @@ const Header = () => {
               >
                 {currentChainRecord?.chain.chain_id}
               </Text>
-              <Icon as={FiChevronDown} />
+              <CustomIcon name="chevron-down" />
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">
@@ -100,7 +102,7 @@ const Header = () => {
                     </Text>
                   </Flex>
                   {chainName === currentChainName && (
-                    <Icon as={MdCheck} boxSize={4} color="pebble.600" />
+                    <CustomIcon name="check" boxSize="3" />
                   )}
                 </Flex>
               </MenuItem>

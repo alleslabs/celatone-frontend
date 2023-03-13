@@ -9,10 +9,9 @@ import {
   ModalCloseButton,
   Text,
   Heading,
-  Icon,
 } from "@chakra-ui/react";
-import { IoList } from "react-icons/io5";
 
+import { CustomIcon } from "../icon";
 import { useSavedCodes, useStoredCodes } from "lib/model/code";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
@@ -63,7 +62,7 @@ export const CodeSelectModalButton = ({
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
-            <Icon as={IoList} color="text.dark" fontSize="24px" />
+            <CustomIcon name="code" boxSize="6" />
             <Heading as="h5" variant="h5">
               Select Code ID
             </Heading>

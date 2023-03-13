@@ -1,4 +1,3 @@
-import { InfoIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -10,11 +9,11 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { MdBookmark, MdBookmarkBorder } from "react-icons/md";
 
 import { useInternalNavigate, getAddressTypeByLength } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import {
   AddToOtherListModal,
   SaveContractDetailsModal,
@@ -82,7 +81,9 @@ export const PublicProjectContractRow = ({
             bg="honeydew.darker"
             arrowSize={8}
           >
-            <InfoIcon color="pebble.600" boxSize="14px" cursor="pointer" />
+            <Flex cursor="pointer">
+              <CustomIcon name="info-circle" boxSize="12px" />
+            </Flex>
           </Tooltip>
         )}
       </TableRowNoBorder>
@@ -99,7 +100,8 @@ export const PublicProjectContractRow = ({
       <TableRowNoBorder justifyContent="end">
         <Flex
           gap={3}
-          justifyContent="flex-end"
+          alignItems="center"
+          justifyContent="center"
           onClick={(e) => e.stopPropagation()}
         >
           <AppLink
@@ -122,9 +124,10 @@ export const PublicProjectContractRow = ({
                 contractLocalInfo={publicContractInfo.localInfo}
                 triggerElement={
                   <StyledIconButton
-                    icon={<MdBookmark />}
+                    icon={
+                      <CustomIcon name="bookmark-solid" color="violet.light" />
+                    }
                     variant="ghost-gray"
-                    color="lilac.light"
                   />
                 }
               />
@@ -133,9 +136,8 @@ export const PublicProjectContractRow = ({
                 contractLocalInfo={publicContractInfo.localInfo}
                 triggerElement={
                   <StyledIconButton
-                    icon={<MdBookmarkBorder />}
+                    icon={<CustomIcon name="bookmark" />}
                     variant="ghost-gray"
-                    color="pebble.600"
                   />
                 }
               />

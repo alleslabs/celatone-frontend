@@ -1,6 +1,6 @@
-import { Icon, useToast } from "@chakra-ui/react";
-import { MdCheckCircle } from "react-icons/md";
+import { useToast } from "@chakra-ui/react";
 
+import { CustomIcon } from "lib/components/icon";
 import { useContractStore } from "lib/providers/store";
 import type { Addr, ContractAddr, LVPair, Option } from "lib/types";
 
@@ -53,15 +53,7 @@ export const useHandleContractSave = ({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
 };

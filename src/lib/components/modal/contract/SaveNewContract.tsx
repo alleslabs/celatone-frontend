@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { MdBookmark } from "react-icons/md";
 
 import { ActionModal } from "../ActionModal";
 import {
@@ -189,7 +188,7 @@ export function SaveNewContractModal({
   return (
     <ActionModal
       title="Save New Contract"
-      icon={MdBookmark}
+      icon="bookmark-solid"
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}

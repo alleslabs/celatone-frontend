@@ -1,22 +1,27 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
+import type { ButtonProps } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
+import { CustomIcon } from "../icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
-export const BackButton = () => {
+export const BackButton = (props: ButtonProps) => {
   const router = useRouter();
+
   return (
     <Button
       variant="ghost-primary"
       size="sm"
       mb="8px"
+      p="unset"
+      pr="2"
       onClick={() => {
         AmpTrack(AmpEvent.USE_BACK_BUTTON);
         router.back();
       }}
-      leftIcon={<ArrowBackIcon boxSize={4} />}
+      {...props}
     >
+      <CustomIcon name="chevron-left" color="lilac.main" boxSize="3" />
       BACK
     </Button>
   );

@@ -1,11 +1,11 @@
 import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, useToast, Icon } from "@chakra-ui/react";
+import { MenuItem, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { MdAddCircleOutline, MdCheckCircle } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
+import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useUserKey } from "lib/hooks";
@@ -62,21 +62,13 @@ export function EditListNameModal({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
   return (
     <ActionModal
       title="Edit list name"
-      icon={MdAddCircleOutline}
+      icon="add-new"
       trigger={<MenuItem {...menuItemProps} />}
       mainBtnTitle="Save"
       mainAction={() => {

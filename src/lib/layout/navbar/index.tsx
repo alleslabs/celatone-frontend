@@ -3,17 +3,6 @@ import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import {
-  MdHome,
-  MdCode,
-  MdMoreHoriz,
-  MdOutlineAdd,
-  MdSearch,
-  MdInput,
-  MdOutlineHistory,
-  MdPublic,
-  MdReadMore,
-} from "react-icons/md";
 
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
 import { useContractStore, usePublicProjectStore } from "lib/providers/store";
@@ -40,12 +29,19 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
 
   const isCurrentPage = useCallback(
     (slug: string) => {
-      if (network) {
-        return slug === "/"
-          ? pathName === `/${network}`
-          : pathName === `/${network}${slug}`;
+      const networkPath = network ? `/${network}` : "";
+      switch (slug) {
+        // handle home page
+        case "/":
+          return pathName === `${networkPath}`;
+        // handle contract list page and public project page
+        case "/contract-list":
+        case "/public-project":
+          return pathName === `${networkPath}${slug}`;
+        // handle page with query param
+        default:
+          return pathName.includes(`${networkPath}${slug}`);
       }
-      return pathName === `${slug}`;
     },
     [network, pathName]
   );
@@ -54,11 +50,11 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     {
       category: "Overview",
       submenu: [
-        { name: "Overview", slug: "/", icon: MdHome },
+        { name: "Overview", slug: "/", icon: "home" },
         {
           name: "Past Transactions",
           slug: "/past-txs",
-          icon: MdOutlineHistory,
+          icon: "history",
         },
       ],
     },
@@ -68,30 +64,30 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         {
           name: "Deploy Contract",
           slug: "/deploy",
-          icon: MdOutlineAdd,
+          icon: "add-new",
         },
         {
           name: "Query",
           slug: "/query",
-          icon: MdSearch,
+          icon: "query",
         },
         {
           name: "Execute",
           slug: "/execute",
-          icon: MdInput,
+          icon: "execute",
         },
         {
           name: "Migrate",
           slug: "/migrate",
-          icon: MdReadMore,
+          icon: "migrate",
         },
       ],
     },
     {
       category: "Codes",
       submenu: [
-        { name: "My Codes", slug: "/codes", icon: MdCode },
-        { name: "Recent Codes", slug: "/recent-codes", icon: MdPublic },
+        { name: "My Codes", slug: "/codes", icon: "code" },
+        { name: "Recent Codes", slug: "/recent-codes", icon: "website" },
       ],
     },
     {
@@ -119,7 +115,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         {
           name: "View All Lists",
           slug: "/contract-list",
-          icon: MdMoreHoriz,
+          icon: "more",
         },
       ],
     },
@@ -137,7 +133,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         {
           name: "View All Projects",
           slug: "/public-project",
-          icon: MdMoreHoriz,
+          icon: "public-project",
         },
       ],
     });

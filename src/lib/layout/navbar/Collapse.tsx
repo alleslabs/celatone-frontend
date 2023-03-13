@@ -1,8 +1,8 @@
-import { Box, Flex, Icon, IconButton, Image, Tooltip } from "@chakra-ui/react";
-import { MdDoubleArrow } from "react-icons/md";
+import { Box, Flex, IconButton, Image, Tooltip } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import type { NavMenuProps } from "./type";
@@ -47,7 +47,12 @@ export const CollapseNavMenu = ({
                   p={1}
                   mt={2}
                   mx={2}
-                  icon={<MdDoubleArrow />}
+                  icon={
+                    <CustomIcon
+                      name="double-chevron-right"
+                      color="honeydew.main"
+                    />
+                  }
                   onClick={() => setIsExpand(true)}
                 />
               </Tooltip>
@@ -72,14 +77,23 @@ export const CollapseNavMenu = ({
                   _hover={{ bg: "pebble.700", borderRadius: "8px" }}
                   transition="all .25s ease-in-out"
                   alignItems="center"
+                  position="relative"
                   bgColor={
                     isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
                   }
                   borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
                 >
-                  {submenu.icon && (
-                    <Icon as={submenu.icon} color="pebble.600" boxSize={6} />
-                  )}
+                  <Flex
+                    opacity={isCurrentPage(submenu.slug) ? 1 : 0}
+                    width="3px"
+                    height="16px"
+                    bgColor="violet.light"
+                    position="absolute"
+                    top="8px"
+                    borderRadius="2px"
+                    left="0px"
+                  />
+                  {submenu.icon && <CustomIcon name={submenu.icon} />}
                   {submenu.logo && (
                     <Image
                       src={submenu.logo}

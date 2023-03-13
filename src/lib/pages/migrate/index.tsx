@@ -142,13 +142,13 @@ const Migrate = () => {
             MIGRATE CONTRACT
           </Text>
           <Stepper mode="migrate" currentStep={1} />
-          <Heading as="h4" variant="h4" textAlign="center" mt="48px">
+          <Heading as="h5" variant="h5" textAlign="center" mt="48px">
             Migrate Contract
           </Heading>
         </Box>
       ) : (
         <Box w="full" mb="48px">
-          <Heading as="h4" variant="h4" textAlign="center" my="12px">
+          <Heading as="h5" variant="h5" textAlign="center" my="12px">
             Migrate Contract
           </Heading>
           <Stepper mode="migrate" currentStep={2} />

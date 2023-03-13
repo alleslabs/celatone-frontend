@@ -1,9 +1,9 @@
-import type { IconType } from "react-icons";
+import type { IconKeys } from "lib/components/icon";
 
 export interface SubmenuInfo {
   name: string;
   slug: string;
-  icon?: IconType;
+  icon?: IconKeys;
   logo?: string;
 }
 

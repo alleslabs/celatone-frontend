@@ -1,14 +1,14 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, Icon, useToast, FormControl } from "@chakra-ui/react";
+import { Button, useToast, FormControl } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { MdBookmark, MdCheckCircle } from "react-icons/md";
 
 import { ActionModal } from "../ActionModal";
 import { useLCDEndpoint } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -109,15 +109,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: (
-        <Icon
-          as={MdCheckCircle}
-          color="success.main"
-          boxSize="6"
-          display="flex"
-          alignItems="center"
-        />
-      ),
+      icon: <CustomIcon name="bookmark" />,
     });
 
     reset();
@@ -180,7 +172,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   return (
     <ActionModal
       title="Save New Code"
-      icon={MdBookmark}
+      icon="bookmark-solid"
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save New Code"
       mainAction={handleSave}

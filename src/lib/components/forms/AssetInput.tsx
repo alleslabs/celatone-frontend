@@ -1,5 +1,6 @@
-import { Button, Grid, Icon } from "@chakra-ui/react";
-import { MdDelete } from "react-icons/md";
+import { Button, Grid } from "@chakra-ui/react";
+
+import { CustomIcon } from "../icon";
 
 import { SelectInput } from "./SelectInput";
 
@@ -43,10 +44,9 @@ export const AssetInput = ({
       disabled={disableDelete}
       onClick={onDelete}
     >
-      <Icon
-        as={MdDelete}
-        fontSize="18px"
-        color={disableDelete ? "pebble.500" : "text.dark"}
+      <CustomIcon
+        name="delete"
+        color={disableDelete ? "pebble.600" : "text.dark"}
       />
     </Button>
   </Grid>
