@@ -11,6 +11,7 @@ export const MigrationHeader = ({
   <Grid templateColumns={templateColumns}>
     <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
+    <TableHeader>CW2 Info</TableHeader>
     <TableHeader>Sender</TableHeader>
     <TableHeader>Block Height</TableHeader>
     <TableHeader>Timestamp</TableHeader>

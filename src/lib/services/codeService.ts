@@ -38,6 +38,8 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
+          cw2Contract: code.cw2_contract,
+          cw2Version: code.cw2_version,
         }))
       );
   }, [indexerGraphClient]);
@@ -66,6 +68,8 @@ export const useCodeListByWalletAddress = (
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
+          cw2Contract: code.cw2_contract,
+          cw2Version: code.cw2_version,
         }))
       );
   }, [walletAddr, indexerGraphClient]);
@@ -100,6 +104,8 @@ export const useCodeListByCodeIds = (
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
+          cw2Contract: code.cw2_contract,
+          cw2Version: code.cw2_version,
         }))
       );
   }, [ids, indexerGraphClient]);
@@ -143,6 +149,8 @@ export const useCodeDataByCodeId = (
           permissionAddresses:
             codes_by_pk.access_config_addresses as PermissionAddresses,
           instantiatePermission: codes_by_pk.access_config_permission,
+          cw2Contract: codes_by_pk.cw2_contract,
+          cw2Version: codes_by_pk.cw2_version,
         };
       });
   }, [codeId, indexerGraphClient]);
@@ -178,6 +186,8 @@ export const useCodeListByWalletAddressPagination = (
             code.access_config_permission as InstantiatePermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
+          cw2Contract: code.cw2_contract,
+          cw2Version: code.cw2_version,
         }))
       );
   }, [indexerGraphClient, offset, pageSize, walletAddress]);

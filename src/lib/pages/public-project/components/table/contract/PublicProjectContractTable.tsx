@@ -83,17 +83,19 @@ export const PublicProjectContractTable = observer(
             withBorder
           />
         ) : (
-          <TableContainer mb={10}>
-            <ContractTableHeader />
-            {publicContracts.map((contract) => (
-              <PublicProjectContractRow
-                key={contract.publicInfo.contractAddress}
-                publicContractInfo={contract}
-                templateColumn={TEMPLATE_COLUMNS}
-              />
-            ))}
+          <>
+            <TableContainer mb={10}>
+              <ContractTableHeader />
+              {publicContracts.map((contract) => (
+                <PublicProjectContractRow
+                  key={contract.publicInfo.contractAddress}
+                  publicContractInfo={contract}
+                  templateColumn={TEMPLATE_COLUMNS}
+                />
+              ))}
+            </TableContainer>
             {onViewMore && <ViewMore onClick={onViewMore} />}
-          </TableContainer>
+          </>
         )}
       </Box>
     );

@@ -1,4 +1,4 @@
-import { HStack, Grid, Text } from "@chakra-ui/react";
+import { HStack, Grid, Text, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { useInternalNavigate, getAddressTypeByLength } from "lib/app-provider";
@@ -7,6 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { TableRowNoBorder } from "lib/components/table";
+import { getCw2Info } from "lib/utils";
 
 import type { PublicCodeInfo } from "./PublicProjectCodeTable";
 
@@ -16,17 +17,18 @@ interface CodeTableRowProps {
 }
 
 export const PublicProjectCodeRow = ({
-  publicCodeInfo,
+  publicCodeInfo: { publicInfo, localInfo },
   templateColumn,
 }: CodeTableRowProps) => {
   const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
-
   const goToCodeDetails = () => {
     navigate({
-      pathname: `/code/${publicCodeInfo.publicInfo.id}`,
+      pathname: `/code/${publicInfo.id}`,
     });
   };
+
+  const cw2Info = getCw2Info(publicInfo.cw2Contract, publicInfo.cw2Version);
 
   return (
     <Grid
@@ -41,46 +43,48 @@ export const PublicProjectCodeRow = ({
     >
       <TableRowNoBorder>
         <ExplorerLink
-          value={publicCodeInfo.publicInfo.id.toString()}
+          value={publicInfo.id.toString()}
           type="code_id"
           canCopyWithHover
         />
       </TableRowNoBorder>
       <TableRowNoBorder>
-        <Text>{publicCodeInfo.publicInfo.name}</Text>
+        <Text>{publicInfo.name}</Text>
+      </TableRowNoBorder>
+      <TableRowNoBorder>
+        <Text
+          color={cw2Info ? "text.main" : "text.disabled"}
+          wordBreak="break-all"
+          whiteSpace="pre-wrap"
+        >
+          {cw2Info ?? "N/A"}
+        </Text>
       </TableRowNoBorder>
       <TableRowNoBorder justifyContent="center">
-        <Text>{publicCodeInfo.publicInfo.contractCount}</Text>
+        <Text>{publicInfo.contractCount}</Text>
       </TableRowNoBorder>
       <TableRowNoBorder>
         <ExplorerLink
-          value={publicCodeInfo.publicInfo.uploader}
-          type={getAddressTypeByLength(
-            currentChainName,
-            publicCodeInfo.publicInfo.uploader
-          )}
+          value={publicInfo.uploader}
+          type={getAddressTypeByLength(currentChainName, publicInfo.uploader)}
           canCopyWithHover
         />
       </TableRowNoBorder>
       <TableRowNoBorder>
-        <PermissionChip
-          instantiatePermission={
-            publicCodeInfo.publicInfo.instantiatePermission
-          }
-          permissionAddresses={publicCodeInfo.publicInfo.permissionAddresses}
-        />
-      </TableRowNoBorder>
-      <TableRowNoBorder justifyContent="end" gap={2}>
-        <HStack onClick={(e) => e.stopPropagation()}>
-          <InstantiateButton
-            instantiatePermission={
-              publicCodeInfo.publicInfo.instantiatePermission
-            }
-            permissionAddresses={publicCodeInfo.publicInfo.permissionAddresses}
-            codeId={publicCodeInfo.publicInfo.id}
+        <Flex justify="space-between" align="center" w="full">
+          <PermissionChip
+            instantiatePermission={publicInfo.instantiatePermission}
+            permissionAddresses={publicInfo.permissionAddresses}
           />
-          <SaveOrRemoveCodeModal codeInfo={publicCodeInfo.localInfo} />
-        </HStack>
+          <HStack onClick={(e) => e.stopPropagation()}>
+            <InstantiateButton
+              instantiatePermission={publicInfo.instantiatePermission}
+              permissionAddresses={publicInfo.permissionAddresses}
+              codeId={publicInfo.id}
+            />
+            <SaveOrRemoveCodeModal codeInfo={localInfo} />
+          </HStack>
+        </Flex>
       </TableRowNoBorder>
     </Grid>
   );

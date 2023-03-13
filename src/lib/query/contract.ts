@@ -161,6 +161,8 @@ export const getMigrationHistoriesByContractAddressPagination = graphql(`
         account {
           address
         }
+        cw2_contract
+        cw2_version
       }
     }
   }

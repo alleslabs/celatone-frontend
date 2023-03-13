@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#230](https://github.com/alleslabs/celatone-frontend/pull/230) Add cw2info to code table
 - [#228](https://github.com/alleslabs/celatone-frontend/pull/228) Add Faucet testnet page
 - [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and wireup up json attach funds
 - [#225](https://github.com/alleslabs/celatone-frontend/pull/225) Add assets section in account details page

@@ -14,6 +14,8 @@ export const getCodeListQueryDocument = graphql(`
       }
       access_config_permission
       access_config_addresses
+      cw2_contract
+      cw2_version
     }
   }
 `);
@@ -37,6 +39,8 @@ export const getCodeListByUserQueryDocument = graphql(`
       }
       access_config_permission
       access_config_addresses
+      cw2_contract
+      cw2_version
     }
   }
 `);
@@ -55,6 +59,8 @@ export const getCodeListByIDsQueryDocument = graphql(`
       }
       access_config_permission
       access_config_addresses
+      cw2_contract
+      cw2_version
     }
   }
 `);
@@ -83,6 +89,8 @@ export const getCodeDataByCodeId = graphql(`
       }
       access_config_permission
       access_config_addresses
+      cw2_contract
+      cw2_version
     }
   }
 `);
@@ -110,6 +118,8 @@ export const getCodeListByWalletAddressPagination = graphql(`
       }
       access_config_permission
       access_config_addresses
+      cw2_contract
+      cw2_version
     }
   }
 `);

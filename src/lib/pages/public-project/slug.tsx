@@ -7,6 +7,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { scrollToTop } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
 import { PublicProjectCodeTable } from "./components/table/code/PublicProjectCodeTable";
@@ -28,6 +29,11 @@ export const ProjectDetail = observer(() => {
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROJECT_DETAIL);
   }, [router.isReady]);
+
+  const handleOnViewMore = (tab: TabIndex) => {
+    setTabIndex(tab);
+    scrollToTop();
+  };
 
   if (isLoading) return <Loading />;
   return (
@@ -61,11 +67,11 @@ export const ProjectDetail = observer(() => {
           <TabPanel p={0}>
             <PublicProjectCodeTable
               codes={publicCodes}
-              onViewMore={() => setTabIndex(TabIndex.Codes)}
+              onViewMore={() => handleOnViewMore(TabIndex.Codes)}
             />
             <PublicProjectContractTable
               contracts={publicContracts}
-              onViewMore={() => setTabIndex(TabIndex.Contracts)}
+              onViewMore={() => handleOnViewMore(TabIndex.Contracts)}
             />
           </TabPanel>
           <TabPanel p={0}>
