@@ -1,6 +1,5 @@
-import { Flex, Radio, Text, Heading } from "@chakra-ui/react";
+import { Flex, Radio, Text, Heading, Spinner } from "@chakra-ui/react";
 
-import { Loading } from "lib/components/Loading";
 import type { TokenWithValue } from "lib/pages/account-details/type";
 import type { Option } from "lib/types";
 import {
@@ -18,14 +17,14 @@ interface RadioCardProps {
 export const RadioCard = ({ value, total, defaultToken }: RadioCardProps) => {
   const token = total?.[defaultToken.denom] ?? defaultToken;
   return (
-    <Radio variant="card" value={value}>
+    <Radio variant="card" value={value} overflowX="hidden">
       <Flex alignItems="center" gap={2} justifyContent="space-between">
         <Flex direction="column" gap={1}>
           <Text variant="body2" textColor="pebble.400" fontWeight="500">
             {value}
           </Text>
           {!total ? (
-            <Loading />
+            <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
           ) : (
             <Flex alignItems="end" gap={1}>
               <Heading variant="h6" as="h6">

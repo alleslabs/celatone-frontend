@@ -89,10 +89,11 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           />
         </Flex>
       </Flex>
-      <Tabs index={tabIndex} overflowY="scroll">
+      <Tabs index={tabIndex}>
         <TabList
           borderBottom="1px solid"
           borderColor="pebble.700"
+          overflowX="scroll"
           id={tableHeaderId}
         >
           <CustomTab onClick={() => setTabIndex(TabIndex.Overview)}>
@@ -152,7 +153,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 Total Account Value
               </Text>
               {isLoading ? (
-                <Spinner mt={1} alignSelf="center" size="md" speed="0.65s" />
+                <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
               ) : (
                 <Heading
                   as="h5"

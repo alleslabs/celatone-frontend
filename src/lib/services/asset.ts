@@ -23,7 +23,9 @@ export const getAssetInfos = async (
 ): Promise<Option<Record<string, AssetInfo>>> => {
   if (!chainName || !chainId) throw new Error("Invalid chain (getAssetInfos)");
   const { data } = await axios.get<AssetInfo[]>(
-    `${CELATONE_API_ENDPOINT}/assets/${getChainApiPath(chainName)}/${chainId}`
+    `${CELATONE_API_ENDPOINT}/assets/${getChainApiPath(
+      chainName
+    )}/${chainId}/prices`
   );
   return data.reduce((acc, asset) => ({ ...acc, [asset.id]: asset }), {});
 };

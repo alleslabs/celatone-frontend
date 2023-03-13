@@ -10,7 +10,7 @@ import type { HumanAddr, Option, Token, U, USD } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
 import { DelegationsBody } from "./DelegationsBody";
-import { RedelegatesSection } from "./RedelegationsSection";
+import { RedelegationsSection } from "./RedelegationsSection";
 import { TotalCard } from "./TotalCard";
 
 interface DelegationsSectionProps {
@@ -88,7 +88,7 @@ export const DelegationsSection = ({
           <Flex justify="space-between" alignItems="center" overflowX="scroll">
             <Flex gap={8}>
               <TotalCard
-                title="Total Bonded Value"
+                title="Total Bonded"
                 message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
                 token={totalBondedBondDenom}
               />
@@ -141,7 +141,7 @@ export const DelegationsSection = ({
           )}
         </>
       ) : (
-        <RedelegatesSection
+        <RedelegationsSection
           stakingParams={stakingParams}
           redelegations={redelegations ?? []}
           onBack={onToggle}

@@ -16,7 +16,7 @@ interface RedelegationsSectionProps {
   onBack: () => void;
 }
 
-export const RedelegatesSection = ({
+export const RedelegationsSection = ({
   stakingParams,
   redelegations,
   onBack,
