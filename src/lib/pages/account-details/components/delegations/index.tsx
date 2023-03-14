@@ -29,7 +29,6 @@ export const DelegationsSection = ({
   onViewMore,
 }: DelegationsSectionProps) => {
   const { isOpen, onToggle } = useDisclosure();
-
   const data = useUserDelegationInfos(walletAddress);
 
   if (!data) return <Loading />;
@@ -77,76 +76,84 @@ export const DelegationsSection = ({
   const redelegationCount = redelegations?.length ?? 0;
 
   return (
-    <Flex direction="column" gap={8} mt={12}>
-      {!isOpen ? (
-        <>
-          {onViewMore && (
-            <Heading variant="h6" as="h6">
-              Delegations
-            </Heading>
-          )}
-          <Flex justify="space-between" alignItems="center" overflowX="scroll">
-            <Flex gap={8}>
+    <Flex mt={12} position="relative" overflowX="hidden" w="full">
+      <Flex
+        direction="column"
+        gap={8}
+        position="relative"
+        w="full"
+        minH="100%"
+        opacity={isOpen ? 0 : 1}
+        left={isOpen ? "-100%" : "0"}
+        transition="all 0.25s"
+      >
+        {onViewMore && (
+          <Heading variant="h6" as="h6">
+            Delegations
+          </Heading>
+        )}
+        <Flex justify="space-between" alignItems="center" overflowX="scroll">
+          <Flex gap={8}>
+            <TotalCard
+              title="Total Bonded"
+              message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
+              token={totalBondedBondDenom}
+            />
+            <TotalCard
+              title="Reward"
+              message={`Total rewards earned from delegated ${bondDenomLabel} across all validators`}
+              token={totalRewardBondDenom}
+            />
+            {isValidator && (
               <TotalCard
-                title="Total Bonded"
-                message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
-                token={totalBondedBondDenom}
+                title="Commission"
+                message="Total commission reward earned by your validator"
+                token={totalCommissionBondDenom}
               />
-              <TotalCard
-                title="Reward"
-                message={`Total rewards earned from delegated ${bondDenomLabel} across all validators`}
-                token={totalRewardBondDenom}
-              />
-              {isValidator && (
-                <TotalCard
-                  title="Commission"
-                  message="Total commission reward earned by your validator"
-                  token={totalCommissionBondDenom}
-                />
-              )}
-            </Flex>
-            {onViewMore ? (
-              <Button
-                variant="ghost-gray"
-                minW="fit-content"
-                rightIcon={<CustomIcon name="chevron-right" />}
-                onClick={onViewMore}
-              >
-                View Delegation Info
-              </Button>
-            ) : (
-              <Button
-                variant="ghost-gray"
-                minW="fit-content"
-                leftIcon={<CustomIcon name="history" color="pebble.400" />}
-                rightIcon={
-                  <CustomIcon name="chevron-right" color="pebble.400" />
-                }
-                isDisabled={!redelegationCount}
-                onClick={onToggle}
-              >
-                See Active Redelegations ({redelegationCount})
-              </Button>
             )}
           </Flex>
-          {!onViewMore && (
-            <DelegationsBody
-              totalDelegations={totalDelegations}
-              delegations={delegations}
-              totalUnbondings={totalUnbondings}
-              unbondings={unbondings}
-              rewards={rewards}
-              defaultToken={defaultToken}
-            />
+          {onViewMore ? (
+            <Button
+              variant="ghost-gray"
+              minW="fit-content"
+              rightIcon={<CustomIcon name="chevron-right" />}
+              onClick={onViewMore}
+            >
+              View Delegation Info
+            </Button>
+          ) : (
+            <Button
+              variant="ghost-gray"
+              minW="fit-content"
+              leftIcon={<CustomIcon name="history" color="pebble.400" />}
+              rightIcon={<CustomIcon name="chevron-right" color="pebble.400" />}
+              isDisabled={!redelegationCount}
+              onClick={onToggle}
+            >
+              See Active Redelegations ({redelegationCount})
+            </Button>
           )}
-        </>
-      ) : (
-        <RedelegationsSection
-          stakingParams={stakingParams}
-          redelegations={redelegations ?? []}
-          onBack={onToggle}
-        />
-      )}
+        </Flex>
+        {!onViewMore && (
+          <DelegationsBody
+            totalDelegations={totalDelegations}
+            delegations={delegations}
+            totalUnbondings={totalUnbondings}
+            unbondings={unbondings}
+            rewards={rewards}
+            defaultToken={defaultToken}
+          />
+        )}
+      </Flex>
+      <RedelegationsSection
+        stakingParams={stakingParams}
+        redelegations={redelegations ?? []}
+        onBack={onToggle}
+        position="absolute"
+        opacity={isOpen ? 1 : 0}
+        left={isOpen ? "0" : "100%"}
+        transition="all 0.25s"
+      />
     </Flex>
   );
 };

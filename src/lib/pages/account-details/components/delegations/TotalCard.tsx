@@ -1,7 +1,6 @@
 import { InfoIcon } from "@chakra-ui/icons";
-import { Flex, Heading, Image, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Heading, Image, Spinner, Text, Tooltip } from "@chakra-ui/react";
 
-import { Loading } from "lib/components/Loading";
 import { NAToken } from "lib/icon";
 import type { TokenWithValue } from "lib/pages/account-details/type";
 import type { Option } from "lib/types";
@@ -20,7 +19,7 @@ interface TotalCardProps {
 export const TotalCard = ({ title, message, token }: TotalCardProps) => (
   <Flex direction="column" minW="233px" gap={1}>
     {!token ? (
-      <Loading />
+      <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
     ) : (
       <>
         <Flex alignItems="center" gap={1}>

@@ -36,7 +36,11 @@ const DelegationsTableBody = ({
       <BondedTableHeader templateColumns={TEMPLATE_COLUMNS} isDelegation />
       {delegations.map((delegation) => (
         <BondedTableRow
-          key={`delegated_${delegation.validator.validatorAddress}_${delegation.validator.moniker}`}
+          key={
+            delegation.validator.validatorAddress +
+            delegation.token.amount +
+            delegation.token.denom
+          }
           bondedInfo={{
             validator: delegation.validator,
             amount: delegation.token,

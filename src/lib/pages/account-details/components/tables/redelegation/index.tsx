@@ -23,7 +23,7 @@ export const RedelegationsTable = ({
           redelegation.srcValidator.validatorAddress +
           redelegation.dstValidator.validatorAddress +
           redelegation.token.amount +
-          redelegation.token.amount +
+          redelegation.token.denom +
           redelegation.completionTime
         }
         redelegation={redelegation}

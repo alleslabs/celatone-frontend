@@ -1,3 +1,4 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Button, Flex } from "@chakra-ui/react";
 
 import { RedelegationsTable } from "../tables";
@@ -10,7 +11,7 @@ import type {
 
 import { NonRedelegatableSection } from "./NonRedelegatableSection";
 
-interface RedelegationsSectionProps {
+interface RedelegationsSectionProps extends FlexProps {
   stakingParams: StakingParams;
   redelegations: Redelegation[];
   onBack: () => void;
@@ -20,8 +21,9 @@ export const RedelegationsSection = ({
   stakingParams,
   redelegations,
   onBack,
+  ...props
 }: RedelegationsSectionProps) => (
-  <Flex direction="column" gap={4}>
+  <Flex direction="column" gap={4} w="full" {...props}>
     <Flex gap={3} alignItems="center">
       <Button variant="ghost-primary" p={0} onClick={onBack}>
         <CustomIcon name="chevron-left" boxSize={6} />

@@ -32,7 +32,12 @@ const UnbondingsTableBody = ({ unbondings }: UnbondingsTableProps) => {
       />
       {unbondings.map((unbonding) => (
         <BondedTableRow
-          key={`unbonding_${unbonding.validator.validatorAddress}_${unbonding.validator.moniker}`}
+          key={
+            unbonding.validator.validatorAddress +
+            unbonding.token.amount +
+            unbonding.token.denom +
+            unbonding.completionTime
+          }
           bondedInfo={{
             validator: unbonding.validator,
             amount: unbonding.token,
