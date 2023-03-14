@@ -58,6 +58,14 @@ const CodeDetailsBody = observer(
                   codeId}
               </Heading>
             </Flex>
+            {publicProject.publicCodeData?.name && (
+              <Flex gap={2}>
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  Public Code Name:
+                </Text>
+                <Text variant="body2">{publicProject.publicCodeData.name}</Text>
+              </Flex>
+            )}
             <Flex gap={2}>
               <Text fontWeight={500} color="text.dark" variant="body2">
                 Code ID:
