@@ -5,8 +5,10 @@ import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { PublicDescription } from "lib/components/PublicDescription";
 import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
@@ -88,6 +90,14 @@ const CodeDetailsBody = observer(
             cw2Version={undefined}
           />
         </Flex>
+        {publicProject.publicCodeData?.description && (
+          <PublicDescription
+            title="Public Code Description"
+            description={publicProject.publicCodeData.description}
+            textLine={2}
+            icon={<CustomIcon name="public-project" ml="0" my="0" />}
+          />
+        )}
         <Divider borderColor="pebble.700" my={12} />
         <CodeInfoSection codeData={codeData} chainId={chainId} />
         <CodeContractsTable codeId={codeId} />
