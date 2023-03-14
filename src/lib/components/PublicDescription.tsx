@@ -37,7 +37,7 @@ export const PublicDescription = ({
       my={6}
       flex="1"
     >
-      <Flex align="center" gap={1} mb="1">
+      <Flex align="center" gap={1} h="32px">
         {icon}
         <Text variant="body2" fontWeight={500} color="text.dark" mt="1px">
           {title}

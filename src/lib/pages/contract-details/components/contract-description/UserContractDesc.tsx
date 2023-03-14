@@ -68,7 +68,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
       flex="1"
       role="group"
     >
-      <Flex justify="space-between" align="center" mb="1">
+      <Flex justify="space-between" align="center" h="32px">
         <Text variant="body2" fontWeight={500} color="text.dark" mt="1px">
           Your Contract Description
         </Text>
