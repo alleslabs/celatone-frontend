@@ -1,8 +1,8 @@
 import type { ChangeEvent } from "react";
 
-import { NoTransactions } from "../NoTransactions";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { EmptyState } from "lib/components/state";
 import { TableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/model/data";
 import type { ContractAddr, Option } from "lib/types";
@@ -59,7 +59,10 @@ export const MigrationTable = ({
 
   if (!migrationHistories?.length)
     return (
-      <NoTransactions displayText="This contract does not have any migration history yet." />
+      <EmptyState
+        message="This contract does not have any migration history yet."
+        withBorder
+      />
     );
 
   const templateColumns =
@@ -81,7 +84,7 @@ export const MigrationTable = ({
           templateColumns={templateColumns}
         />
       ))}
-      {totalData && totalData > 10 && (
+      {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { CustomTab } from "lib/components/CustomTab";
-import { FilterByPermission } from "lib/components/forms/FilterByPermission";
+import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import type { PermissionFilterValue } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

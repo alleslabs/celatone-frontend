@@ -7,15 +7,13 @@ export const PastTxsTableHeader = ({
   templateColumns,
 }: {
   templateColumns: GridProps["templateColumns"];
-}) => {
-  return (
-    <Grid templateColumns={templateColumns}>
-      <TableHeader pl="48px">Transaction Hash</TableHeader>
-      <TableHeader />
-      <TableHeader>Messages</TableHeader>
-      <TableHeader>Timestamp</TableHeader>
-      <TableHeader />
-      <TableHeader />
-    </Grid>
-  );
-};
+}) => (
+  <Grid templateColumns={templateColumns}>
+    <TableHeader pl="48px">Transaction Hash</TableHeader>
+    <TableHeader />
+    <TableHeader>Messages</TableHeader>
+    <TableHeader>Timestamp</TableHeader>
+    <TableHeader />
+    <TableHeader />
+  </Grid>
+);

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import type { Addr } from "lib/types";
+import type { Addr, InstantiatePermission } from "lib/types";
 
 interface CodeIdInfoResponse {
   code_info: {
@@ -8,9 +8,9 @@ interface CodeIdInfoResponse {
     creator: Addr;
     data_hash: string;
     instantiate_permission: {
-      permission: string;
-      address: string;
-      addresses: string[];
+      permission: InstantiatePermission;
+      address: Addr;
+      addresses: Addr[];
     };
   };
   data: string;
@@ -21,7 +21,7 @@ export const getCodeIdInfo = async (
   id: number
 ): Promise<CodeIdInfoResponse> => {
   const { data } = await axios.get<CodeIdInfoResponse>(
-    `${endpoint}/cosmwasm/wasm/v1/code/${id}`
+    `${endpoint}cosmwasm/wasm/v1/code/${id}`
   );
   return data;
 };

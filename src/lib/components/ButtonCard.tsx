@@ -1,7 +1,8 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Heading, Icon, Stack, Text } from "@chakra-ui/react";
+import { Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
-import { MdChevronRight } from "react-icons/md";
+
+import { CustomIcon } from "./icon";
 
 interface ButtonCardProps extends FlexProps {
   title: string;
@@ -51,6 +52,6 @@ export const ButtonCard = ({
         description
       )}
     </Stack>
-    <Icon as={MdChevronRight} color="pebble.600" fontSize="28px" />
+    <CustomIcon name="chevron-right" />
   </Flex>
 );

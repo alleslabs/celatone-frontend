@@ -6,15 +6,13 @@ import {
   List,
   FormControl,
   Text,
-  Icon,
   useOutsideClick,
 } from "@chakra-ui/react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 import { useRef, useEffect, useState } from "react";
-import { MdSearch } from "react-icons/md";
 
-import { useInternalNavigate } from "lib/app-provider";
-import { useValidateAddress } from "lib/hooks";
+import { useInternalNavigate, useValidateAddress } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
 import { isCodeId, isTxHash } from "lib/utils";
 
@@ -42,6 +40,8 @@ const getRoute = (type: SearchResultType) => {
       return "/code";
     case "Contract Address":
       return "/contract";
+    // case "Wallet Address":
+    //   return "/account";
     default:
       return null;
   }
@@ -128,7 +128,7 @@ const Searchbar = () => {
           onKeyDown={handleOnKeyEnter}
         />
         <InputRightElement pointerEvents="none" h="full">
-          <Icon as={MdSearch} w={5} h={5} color="pebble.600" />
+          <CustomIcon name="search" />
         </InputRightElement>
       </InputGroup>
       {displayResults && (
@@ -140,7 +140,7 @@ const Searchbar = () => {
           w="full"
           top="50px"
           maxH="195px"
-          overflow="scroll"
+          overflowY="scroll"
           shadow="dark-lg"
         >
           {!results.length ? (

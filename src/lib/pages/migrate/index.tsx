@@ -5,12 +5,15 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useInternalNavigate,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { useLCDEndpoint } from "lib/hooks";
 import { AmpTrackToMigrate } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractAddr } from "lib/types";
@@ -139,13 +142,13 @@ const Migrate = () => {
             MIGRATE CONTRACT
           </Text>
           <Stepper mode="migrate" currentStep={1} />
-          <Heading as="h4" variant="h4" textAlign="center" mt="48px">
+          <Heading as="h5" variant="h5" textAlign="center" mt="48px">
             Migrate Contract
           </Heading>
         </Box>
       ) : (
         <Box w="full" mb="48px">
-          <Heading as="h4" variant="h4" textAlign="center" my="12px">
+          <Heading as="h5" variant="h5" textAlign="center" my="12px">
             Migrate Contract
           </Heading>
           <Stepper mode="migrate" currentStep={2} />

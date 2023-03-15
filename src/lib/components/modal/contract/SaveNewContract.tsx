@@ -4,21 +4,20 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { MdBookmark } from "react-icons/md";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { ActionModal } from "../ActionModal";
+import {
+  useCelatoneApp,
+  useLCDEndpoint,
+  useValidateAddress,
+} from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
-import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
-import {
-  useContractStore,
-  useLCDEndpoint,
-  useValidateAddress,
-} from "lib/hooks";
-import { useHandleContractSave } from "lib/hooks/useHandleSave";
+import { useHandleContractSave } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { Addr, ContractAddr, LVPair, RpcQueryError } from "lib/types";
@@ -53,22 +52,24 @@ export function SaveNewContractModal({
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 
+  const defaultValues: SaveNewContractDetail = {
+    contractAddress: "",
+    instantiator: "",
+    label: "",
+    name: "",
+    description: "",
+    tags: [],
+    lists: initialList,
+  };
+
   const {
     control,
     setValue,
     watch,
     reset,
-    formState: { errors, defaultValues },
+    formState: { errors },
   } = useForm<SaveNewContractDetail>({
-    defaultValues: {
-      contractAddress: "",
-      instantiator: "",
-      label: "",
-      name: "",
-      description: "",
-      tags: [],
-      lists: initialList,
-    },
+    defaultValues,
     mode: "all",
   });
 
@@ -187,7 +188,7 @@ export function SaveNewContractModal({
   return (
     <ActionModal
       title="Save New Contract"
-      icon={MdBookmark}
+      icon="bookmark-solid"
       trigger={<Button {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}

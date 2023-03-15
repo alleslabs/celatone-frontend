@@ -1,27 +1,20 @@
 import { Flex } from "@chakra-ui/react";
-import {
-  FaTwitter,
-  FaGithub,
-  FaTelegram,
-  FaDiscord,
-  FaInfo,
-} from "react-icons/fa";
-import { MdLanguage } from "react-icons/md";
 
-import { IconButton } from "lib/components/button/IconButton";
+import { CustomIconButton } from "lib/components/button";
+import type { IconKeys } from "lib/components/icon";
 import { AmpTrackSocial, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Option, PublicDetail } from "lib/types";
 
-export const renderSocial = (name: string) => {
+export const renderSocial = (name: string): IconKeys => {
   switch (name) {
     case "twitter":
-      return FaTwitter;
+      return "twitter";
     case "telegram":
-      return FaTelegram;
+      return "telegram";
     case "discord":
-      return FaDiscord;
+      return "discord";
     default:
-      return FaInfo;
+      return "info-circle-solid";
   }
 };
 
@@ -37,18 +30,24 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
       minHeight="32px"
     >
       {details.website && (
-        <IconButton
+        <CustomIconButton
           href={details.website}
-          icon={MdLanguage}
+          icon="website"
           onClick={() => AmpTrackWebsite(details.website)}
         />
       )}
-      {details.github && <IconButton href={details.github} icon={FaGithub} />}
+      {details.github && (
+        <CustomIconButton
+          href={details.github}
+          icon="github"
+          onClick={() => AmpTrackSocial(details.github)}
+        />
+      )}
       {details.socials.length &&
         details.socials.map(
           (social) =>
             social.url !== "" && (
-              <IconButton
+              <CustomIconButton
                 key={social.name}
                 href={social.url}
                 icon={renderSocial(social.name)}

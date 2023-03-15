@@ -1,10 +1,11 @@
 import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, useToast, Icon, Text } from "@chakra-ui/react";
-import { MdDeleteForever, MdCheckCircle } from "react-icons/md";
+import { MenuItem, useToast, Text } from "@chakra-ui/react";
 
+import { ActionModal } from "../ActionModal";
 import { useInternalNavigate } from "lib/app-provider";
-import { ActionModal } from "lib/components/modal/ActionModal";
-import { useContractStore, useUserKey } from "lib/hooks";
+import { CustomIcon } from "lib/components/icon";
+import { useUserKey } from "lib/hooks";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { LVPair } from "lib/types";
 import { shortenName } from "lib/utils";
@@ -32,15 +33,7 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
         duration: 5000,
         isClosable: false,
         position: "bottom-right",
-        icon: (
-          <Icon
-            as={MdCheckCircle}
-            color="success.main"
-            boxSize="6"
-            display="flex"
-            alignItems="center"
-          />
-        ),
+        icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       });
     }, 1000);
   };
@@ -48,7 +41,7 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   return (
     <ActionModal
       title={`Remove ${shortenName(list.label)}?`}
-      icon={MdDeleteForever}
+      icon="delete"
       iconColor="error.light"
       trigger={<MenuItem {...menuItemProps} />}
       mainBtnTitle="Yes, Remove list"

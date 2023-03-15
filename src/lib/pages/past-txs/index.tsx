@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   Heading,
-  Icon,
   Input,
   InputGroup,
   InputRightElement,
@@ -12,16 +11,17 @@ import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { MdSearch } from "react-icons/md";
 
+import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { TxFilterSelection } from "lib/components/TxFilterSelection";
+import { DEFAULT_TX_FILTERS } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useTxQuery, useTxQueryCount } from "lib/services/txQuery/useTxQuery";
 import type { HumanAddr } from "lib/types";
 
-import { FilterSelection } from "./components/FilterSelection";
 import { PastTxsContent } from "./components/PastTxsContent";
-import { useTxQuery, useTxQueryCount } from "./query/useTxQuery";
 
 const PastTxs = () => {
   const router = useRouter();
@@ -30,16 +30,7 @@ const PastTxs = () => {
   const { watch, setValue } = useForm({
     defaultValues: {
       search: "",
-      filters: {
-        isExecute: false,
-        isInstantiate: false,
-        isUpload: false,
-        isIbc: false,
-        isSend: false,
-        isMigrate: false,
-        isUpdateAdmin: false,
-        isClearAdmin: false,
-      },
+      filters: DEFAULT_TX_FILTERS,
     },
     mode: "all",
   });
@@ -115,7 +106,7 @@ const PastTxs = () => {
   }, [router.isReady]);
 
   return (
-    <Box>
+    <>
       <Box px="48px" pt="48px">
         <Heading variant="h5" as="h5">
           Past Transactions
@@ -130,11 +121,11 @@ const PastTxs = () => {
                 placeholder="Search with transaction hash or contract address"
                 h="full"
               />
-              <InputRightElement pointerEvents="none" h="full">
-                <Icon as={MdSearch} w="5" h="5" color="pebble.600" />
+              <InputRightElement pointerEvents="none" h="full" mr="1">
+                <CustomIcon name="search" />
               </InputRightElement>
             </InputGroup>
-            <FilterSelection
+            <TxFilterSelection
               result={filterSelected}
               setResult={setFilter}
               boxWidth="400px"
@@ -161,7 +152,7 @@ const PastTxs = () => {
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </Box>
+    </>
   );
 };
 

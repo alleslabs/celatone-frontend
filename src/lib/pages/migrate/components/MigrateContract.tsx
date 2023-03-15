@@ -1,25 +1,27 @@
-import { Button, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FiChevronLeft } from "react-icons/fi";
-import { IoIosWarning } from "react-icons/io";
 
-import { useFabricateFee, useSimulateFeeQuery } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useSimulateFeeQuery,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
-import { CodeSelectSection } from "lib/components/CodeSelectSection";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
-import { useLCDEndpoint } from "lib/hooks";
+import { CodeSelectSection } from "lib/components/select-code";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
-import { MsgType } from "lib/types";
+import { InstantiatePermission, MsgType } from "lib/types";
 import { composeMsg, jsonValidate } from "lib/utils";
 
 interface MigrateContractProps {
@@ -87,15 +89,16 @@ export const MigrateContract = ({
         const permission = data.code_info.instantiate_permission;
         if (
           address &&
-          (permission.permission === "Everybody" ||
-            permission.addresses.includes(address) ||
+          (permission.permission === InstantiatePermission.EVERYBODY ||
+            permission.addresses.includes(address as HumanAddr) ||
             permission.address === address)
         )
           setStatus({ state: "success" });
         else {
           setStatus({
             state: "error",
-            message: "You can migrate to this code through proposal only",
+            message:
+              "This wallet does not have permission to migrate to this code",
           });
           setSimulateError("");
         }
@@ -177,7 +180,11 @@ export const MigrateContract = ({
       />
       {simulateError && (
         <Flex gap={2} mb={4}>
-          <Icon as={IoIosWarning} boxSize={4} color="error.main" />
+          <CustomIcon
+            name="alert-circle-solid"
+            boxSize="3"
+            color="error.main"
+          />
           <Text variant="body3" color="error.main">
             {simulateError}
           </Text>
@@ -202,7 +209,7 @@ export const MigrateContract = ({
           size="md"
           variant="outline-gray"
           w="128px"
-          leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
+          leftIcon={<CustomIcon name="chevron-left" />}
           onClick={handleBack}
         >
           Previous

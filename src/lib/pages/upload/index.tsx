@@ -21,7 +21,7 @@ const Upload = () => {
         DEPLOY NEW CONTRACT
       </Text>
       <Stepper mode="deploy" currentStep={1} />
-      <Heading as="h4" variant="h4" my="48px">
+      <Heading as="h5" variant="h5" my="48px">
         Upload Wasm file
       </Heading>
       <ConnectWalletAlert

@@ -2,14 +2,14 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { MdOutlineAdd } from "react-icons/md";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { CreateNewListModal } from "lib/components/modal/list";
-import { AllContractLists } from "lib/components/modal/select-contract";
+import { CustomIcon } from "lib/components/icon";
+import { CreateNewListModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
-import { useContractStore } from "lib/hooks";
+import { AllContractLists } from "lib/components/select-contract";
 import { useInstantiatedMockInfoByMe } from "lib/model/contract";
+import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const AllContractListsPage = observer(() => {
@@ -36,7 +36,9 @@ const AllContractListsPage = observer(() => {
           <CreateNewListModal
             buttonProps={{
               variant: "outline-primary",
-              rightIcon: <MdOutlineAdd />,
+              leftIcon: (
+                <CustomIcon name="plus" boxSize="3" color="violet.light" />
+              ),
               children: "Create new list",
             }}
           />

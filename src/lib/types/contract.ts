@@ -31,11 +31,6 @@ export interface ContractInfo extends ContractLocalInfo {
   remark: Option<ContractHistoryRemark>;
 }
 
-export interface ContractInstances {
-  contractList: Option<ContractLocalInfo[]>;
-  count: Option<number>;
-}
-
 export interface ContractMigrationHistory {
   codeId: number;
   codeName?: string;
@@ -44,36 +39,6 @@ export interface ContractMigrationHistory {
   timestamp: Date;
   remark: ContractHistoryRemark;
   uploader: Addr;
-}
-
-export enum ProposalStatus {
-  DEPOSIT_PERIOD = "DepositPeriod",
-  VOTING_PERIOD = "VotingPeriod",
-  PASSED = "Passed",
-  REJECTED = "Rejected",
-  FAILED = "Failed",
-  INACTIVE = "Inactive",
-}
-
-export enum ProposalType {
-  STORE_CODE = "StoreCode",
-  INSTANTIATE_CONTRACT = "InstantiateContract",
-  MIGRATE_CONTRACT = "MigrateContract",
-  UPDATE_ADMIN = "UpdateAdmin",
-  CLEAR_ADMIN = "ClearAdmin",
-  EXECUTE_CONTRACT = "ExecuteContract",
-  SUDO_CONTRACT = "SudoContract",
-}
-
-export interface ContractRelatedProposals {
-  proposalId: number;
-  title: string;
-  status: ProposalStatus;
-  votingEndTime: Date;
-  depositEndTime: Date;
-  resolvedHeight: Option<number | null>;
-  type: ProposalType;
-  proposer: Option<Addr>;
 }
 
 export interface ContractData {

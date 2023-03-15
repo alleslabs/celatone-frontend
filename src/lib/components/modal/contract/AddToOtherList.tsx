@@ -1,11 +1,10 @@
 import { Flex, Text, Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { MdBookmark } from "react-icons/md";
 
+import { ActionModal } from "../ActionModal";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { ListSelection } from "lib/components/forms/ListSelection";
-import { ActionModal } from "lib/components/modal/ActionModal";
+import { ListSelection } from "lib/components/ListSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
@@ -38,7 +37,7 @@ export const AddToOtherListModal = observer(
     return (
       <ActionModal
         title="Add or remove from other lists"
-        icon={MdBookmark}
+        icon="bookmark-solid"
         headerContent={
           <Flex pt="6" gap="36px">
             <Flex direction="column" gap="8px">

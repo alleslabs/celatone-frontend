@@ -3,7 +3,7 @@ import type { DetailedHTMLProps, HTMLAttributes } from "react";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-import { UploadIcon } from "../icon/UploadIcon";
+import { UploadIcon } from "../icon";
 import { MAX_FILE_SIZE } from "lib/data";
 
 interface DropZoneProps

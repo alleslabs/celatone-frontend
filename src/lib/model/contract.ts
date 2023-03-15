@@ -1,14 +1,9 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useChainId, useLCDEndpoint } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import {
-  useChainId,
-  useCodeStore,
-  useContractStore,
-  useLCDEndpoint,
-} from "lib/hooks";
+import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
 import {
   queryContractCw2Info,
@@ -16,17 +11,18 @@ import {
   queryInstantiateInfo,
 } from "lib/services/contract";
 import {
+  useContractListByCodeIdPagination,
   useInstantiatedCountByUserQuery,
   useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
   useMigrationHistoriesCountByContractAddress,
-  useTxsCountByContractAddress,
-  useRelatedProposalsCountByContractAddress,
 } from "lib/services/contractService";
+import { useRelatedProposalsCountByContractAddress } from "lib/services/proposalService";
 import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
+import { useTxsCountByContractAddress } from "lib/services/txService";
 import type { ContractListInfo } from "lib/stores/contract";
 import type {
   Addr,
@@ -34,6 +30,8 @@ import type {
   ContractAddr,
   HumanAddr,
   ContractData,
+  ContractInfo,
+  Option,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
 
@@ -109,14 +107,14 @@ export const useContractData = (
       ["query", "instantiate_info", endpoint, contractAddress],
       async () =>
         queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
-      { enabled: !!currentChainRecord, retry: false }
+      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 
   const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
     useQuery(
       ["query", "contract_cw2_info", endpoint, contractAddress],
       async () => queryContractCw2Info(endpoint, contractAddress),
-      { enabled: !!currentChainRecord, retry: false }
+      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
@@ -128,7 +126,7 @@ export const useContractData = (
           currentChainRecord?.chain.chain_id,
           contractAddress
         ),
-      { enabled: !!currentChainRecord, retry: false }
+      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 
   const contractBalancesWithAssetInfos = contractBalances
@@ -206,4 +204,22 @@ export const useContractDetailsTableCounts = (
     refetchTransactions,
     refetchRelatedProposals,
   };
+};
+
+export const useContractsByCodeId = (
+  codeId: number,
+  offset: number,
+  pageSize: number
+) => {
+  const { getContractLocalInfo } = useContractStore();
+  const { data: rawCodeContracts, isLoading } =
+    useContractListByCodeIdPagination(codeId, offset, pageSize);
+  const contracts: Option<ContractInfo[]> = rawCodeContracts?.map<ContractInfo>(
+    (contract) => ({
+      ...contract,
+      ...getContractLocalInfo(contract.contractAddress),
+    })
+  );
+
+  return { contracts, isLoading };
 };

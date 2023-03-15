@@ -9,7 +9,7 @@ import {
 } from "react";
 import type { Observable } from "rxjs";
 
-import { TxModal } from "lib/components/modal";
+import { TxModal } from "lib/components/tx";
 import type { TxResultRendering } from "lib/types";
 
 interface TxBroadcast {
@@ -60,6 +60,4 @@ export const TxBroadcastProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useTxBroadcast = () => {
-  return useContext(TxBroadcastContext);
-};
+export const useTxBroadcast = () => useContext(TxBroadcastContext);

@@ -1,15 +1,16 @@
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Heading, Button, Box, Flex } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
 
-import { useExecuteCmds, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
+import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
+import { useExecuteCmds } from "lib/hooks";
 import { AmpTrackToExecute } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import {
@@ -20,28 +21,23 @@ import {
 } from "lib/utils";
 
 import { ExecuteArea } from "./components/ExecuteArea";
-import type { ExecutePageState } from "./types";
 
 const Execute = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { control, setValue, watch } = useForm<ExecutePageState>({
-    mode: "all",
-    defaultValues: {
-      contractAddress: "",
-      initialMsg: "",
-      assets: [{ denom: "", amount: "" }],
-    },
-  });
-  const watchContractAddress = watch("contractAddress");
+  const [initialMsg, setInitialMsg] = useState("");
+  const [contractAddress, setContractAddress] = useState("");
+  const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
 
-  const { isFetching, execCmds } = useExecuteCmds(watchContractAddress);
+  const { isFetching, execCmds } = useExecuteCmds(
+    contractAddress as ContractAddr
+  );
 
   const goToQuery = () => {
     navigate({
       pathname: "/query",
       query: {
-        ...(watchContractAddress && { contract: watchContractAddress }),
+        ...(contractAddress && { contract: contractAddress }),
       },
     });
   };
@@ -58,42 +54,52 @@ const Execute = () => {
   );
 
   useEffect(() => {
+    const msgParam = getFirstQueryParam(router.query.msg);
     if (router.isReady) {
       const contractAddressParam = getFirstQueryParam(
         router.query.contract
       ) as ContractAddr;
 
-      const msgParam = getFirstQueryParam(router.query.msg);
-      let decodeMsg = libDecode(msgParam);
-      if (decodeMsg && jsonValidate(decodeMsg) !== null) {
-        onContractSelect(contractAddressParam);
-        decodeMsg = "";
+      if (!msgParam.length) {
+        setInitialMsg("");
+        setInitialFunds([]);
       }
-      const jsonMsg = jsonPrettify(decodeMsg);
 
-      setValue("contractAddress", contractAddressParam);
-      setValue("initialMsg", jsonMsg);
+      const decodeMsg = libDecode(msgParam);
 
+      if (decodeMsg && !jsonValidate(decodeMsg)) {
+        const jsonMsg = JSON.parse(decodeMsg);
+        if (!jsonMsg.msg) {
+          setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg)));
+        } else {
+          setInitialMsg(jsonPrettify(JSON.stringify(jsonMsg.msg)));
+          setInitialFunds(jsonMsg.funds);
+        }
+      }
+
+      setContractAddress(contractAddressParam);
       AmpTrackToExecute(!!contractAddressParam, !!msgParam);
     }
-  }, [router, onContractSelect, setValue]);
+  }, [router, onContractSelect]);
 
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
       <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
-        <Heading as="h4" variant="h4">
+        <Heading as="h5" variant="h5">
           Execute Contract
         </Heading>
         <Box>
           <Button
             variant="ghost-primary"
             size="sm"
+            p="unset"
+            pl="2"
             onClick={goToQuery}
-            rightIcon={<ChevronRightIcon boxSize={4} />}
           >
             Go To Query
+            <CustomIcon name="chevron-right" color="lilac.main" boxSize="3" />
           </Button>
         </Box>
       </Flex>
@@ -101,14 +107,18 @@ const Execute = () => {
         subtitle="You need to connect your wallet to perform this action"
         mb={8}
       />
-
       <ContractSelectSection
         mode="all-lists"
-        contractAddress={watchContractAddress}
+        contractAddress={contractAddress as ContractAddr}
         onContractSelect={onContractSelect}
       />
 
-      <ExecuteArea control={control} cmds={execCmds} setValue={setValue} />
+      <ExecuteArea
+        contractAddress={contractAddress as ContractAddr}
+        initialMsg={initialMsg}
+        initialFunds={initialFunds}
+        cmds={execCmds}
+      />
     </PageContainer>
   );
 };

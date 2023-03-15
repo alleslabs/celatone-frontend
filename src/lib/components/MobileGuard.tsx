@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { useMobile } from "lib/hooks";
+import { useMobile } from "lib/app-provider";
 
 import { NoMobile } from "./modal";
 

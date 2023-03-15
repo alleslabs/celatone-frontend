@@ -1,7 +1,6 @@
 import {
   Button,
   chakra,
-  Icon,
   Menu,
   MenuButton,
   MenuItem,
@@ -9,13 +8,8 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import {
-  MdKeyboardArrowDown,
-  MdPerson,
-  MdPersonRemove,
-  MdReadMore,
-} from "react-icons/md";
 
+import { CustomIcon } from "../icon";
 import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { useInternalNavigate } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
@@ -23,14 +17,6 @@ import type { Addr, ContractAddr, Option } from "lib/types";
 const StyledMenuItem = chakra(MenuItem, {
   baseStyle: {
     fontSize: "14px",
-  },
-});
-
-const StyledIcon = chakra(Icon, {
-  baseStyle: {
-    boxSize: "4",
-    display: "flex",
-    alignItems: "center",
   },
 });
 
@@ -58,14 +44,14 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           variant="outline-gray"
           as={Button}
           isDisabled={!isAdmin}
-          rightIcon={<Icon as={MdKeyboardArrowDown} boxSize="18px" />}
+          rightIcon={<CustomIcon name="chevron-down" />}
         >
           Admin
         </MenuButton>
       </Tooltip>
       <MenuList>
         <StyledMenuItem
-          icon={<StyledIcon as={MdReadMore} color="pebble.600" />}
+          icon={<CustomIcon name="migrate" />}
           onClick={() => {
             navigate({
               pathname: "/migrate",
@@ -76,7 +62,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           Migrate
         </StyledMenuItem>
         <StyledMenuItem
-          icon={<StyledIcon as={MdPerson} color="pebble.600" />}
+          icon={<CustomIcon name="admin" />}
           onClick={() => {
             navigate({
               pathname: "/admin",
@@ -89,9 +75,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
-            <StyledMenuItem
-              icon={<StyledIcon as={MdPersonRemove} color="pebble.600" />}
-            >
+            <StyledMenuItem icon={<CustomIcon name="admin-clear" />}>
               Clear Admin
             </StyledMenuItem>
           }

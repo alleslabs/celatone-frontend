@@ -6,7 +6,7 @@ import { RootStore } from "lib/stores/root";
 let store: RootStore;
 export const StoreContext = createContext<RootStore | undefined>(undefined);
 
-export function useStore() {
+function useStore() {
   const context = useContext(StoreContext);
   if (context === undefined) {
     throw new Error("useStore must be used within StoreProvider");
@@ -33,4 +33,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   return (
     <StoreContext.Provider value={initStore}>{children}</StoreContext.Provider>
   );
+}
+
+export function useCodeStore() {
+  const { codeStore } = useStore();
+  return codeStore;
+}
+
+export function useContractStore() {
+  const { contractStore } = useStore();
+  return contractStore;
+}
+
+export function usePublicProjectStore() {
+  const { publicProjectStore } = useStore();
+  return publicProjectStore;
 }

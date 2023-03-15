@@ -1,20 +1,17 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Heading,
   Text,
   Button,
-  Icon,
   IconButton,
   Image,
 } from "@chakra-ui/react";
 import router from "next/router";
-import { MdBookmark, MdBookmarkBorder, MdInput } from "react-icons/md";
-import { RiPencilFill } from "react-icons/ri";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AdminButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import {
   AddToOtherListModal,
   EditContractDetailsModal,
@@ -60,9 +57,12 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               fontSize="24px"
               variant="none"
               aria-label="save"
-              color={contractLocalInfo.lists ? "violet.light" : "pebble.600"}
               icon={
-                contractLocalInfo.lists ? <MdBookmark /> : <MdBookmarkBorder />
+                contractLocalInfo.lists ? (
+                  <CustomIcon name="bookmark-solid" color="violet.light" />
+                ) : (
+                  <CustomIcon name="bookmark" />
+                )
               }
             />
           }
@@ -83,7 +83,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               variant="none"
               aria-label="save"
               color="pebble.600"
-              icon={<MdBookmarkBorder />}
+              icon={<CustomIcon name="bookmark" />}
             />
           }
         />
@@ -151,14 +151,14 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         />
         <Button
           variant="outline-primary"
-          leftIcon={<SearchIcon />}
+          leftIcon={<CustomIcon name="query" color="violet.light" />}
           onClick={goToQuery}
         >
           Query
         </Button>
         <Button
           variant="outline-primary"
-          leftIcon={<Icon as={MdInput} boxSize="18px" />}
+          leftIcon={<CustomIcon name="execute" color="violet.light" />}
           onClick={goToExecute}
         >
           Execute
@@ -173,7 +173,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
                   variant="none"
                   aria-label="edit"
                   color="pebble.600"
-                  icon={<RiPencilFill />}
+                  icon={<CustomIcon name="edit" />}
                 />
               }
             />

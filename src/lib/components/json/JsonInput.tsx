@@ -1,9 +1,9 @@
-import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 import type { LayoutProps } from "@chakra-ui/react";
 import { Text, Box, Button, Spinner, Flex } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 
+import { CustomIcon } from "../icon";
 import { jsonPrettify, jsonValidate } from "lib/utils";
 
 const JsonEditor = dynamic(() => import("./JsonEditor"), {
@@ -12,7 +12,7 @@ const JsonEditor = dynamic(() => import("./JsonEditor"), {
 
 interface JsonInputProps {
   topic?: string;
-  text: string;
+  text?: string;
   setText: (value: string) => void;
   height?: LayoutProps["height"];
 }
@@ -38,7 +38,12 @@ const getResponse = (jsonState: JsonState) => {
         color: "text.main",
         response: (
           <>
-            <CheckCircleIcon textColor="success.main" /> Valid JSON Format
+            <CustomIcon
+              name="check-circle-solid"
+              color="success.main"
+              boxSize="3"
+            />
+            Valid JSON Format
           </>
         ),
       };
@@ -47,7 +52,12 @@ const getResponse = (jsonState: JsonState) => {
         color: "error.main",
         response: (
           <>
-            <WarningIcon /> {jsonState.errMsg}
+            <CustomIcon
+              name="alert-circle-solid"
+              color="error.light"
+              boxSize="3"
+            />
+            {jsonState.errMsg}
           </>
         ),
       };
@@ -60,7 +70,7 @@ const getResponse = (jsonState: JsonState) => {
   }
 };
 
-const JsonInput = ({ topic, text, setText, height }: JsonInputProps) => {
+const JsonInput = ({ topic, text = "", setText, height }: JsonInputProps) => {
   const [jsonState, setJsonState] = useState<JsonState>({ state: "empty" });
 
   const handleOnChange = (value: string) => {
@@ -85,7 +95,6 @@ const JsonInput = ({ topic, text, setText, height }: JsonInputProps) => {
   return (
     <>
       <Box
-        mt="8px"
         p="16px 12px"
         borderWidth="thin"
         borderColor="pebble.700"

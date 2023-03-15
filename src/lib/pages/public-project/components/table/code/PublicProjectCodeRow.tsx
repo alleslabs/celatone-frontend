@@ -1,13 +1,12 @@
 import { HStack, Grid, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, getAddressTypeByLength } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { SaveOrRemoveCodeModal } from "lib/components/modal/code/SaveOrRemoveCode";
+import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { TableRowNoBorder } from "lib/components/table";
-import { getAddressTypeByLength } from "lib/hooks";
 
 import type { PublicCodeInfo } from "./PublicProjectCodeTable";
 
@@ -35,7 +34,6 @@ export const PublicProjectCodeRow = ({
       transition="all .25s ease-in-out"
       cursor="pointer"
       onClick={goToCodeDetails}
-      px="32px"
       minW="min-content"
       templateColumns={templateColumn}
       borderBottom="1px solid"

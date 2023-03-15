@@ -1,9 +1,9 @@
-import { Button, Flex, Icon } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FiChevronLeft } from "react-icons/fi";
 
+import { CustomIcon } from "../icon";
 import {
   useFabricateFee,
   useSimulateFee,
@@ -13,7 +13,7 @@ import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ControllerInput } from "lib/components/forms";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
-import { useCodeStore } from "lib/hooks";
+import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
@@ -156,7 +156,7 @@ export const UploadSection = ({
           size="md"
           variant="outline-gray"
           w="128px"
-          leftIcon={<Icon as={FiChevronLeft} fontSize="18px" />}
+          leftIcon={<CustomIcon name="chevron-left" />}
           onClick={handleBack}
         >
           Previous

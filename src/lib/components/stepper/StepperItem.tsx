@@ -1,5 +1,6 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
-import { MdCheck } from "react-icons/md";
+import { Flex, Text } from "@chakra-ui/react";
+
+import { CustomIcon } from "../icon";
 
 import type { Mode, Step } from "./types";
 
@@ -16,24 +17,22 @@ const StepLabel = ({
   step: Step;
   disabled?: boolean;
   currentStep: Step;
-}) => {
-  return (
-    <Flex
-      justify="center"
-      align="center"
-      backgroundColor={disabled ? "text.disabled" : "violet.main"}
-      width="24px"
-      height="24px"
-      borderRadius="50%"
-    >
-      {currentStep > step ? (
-        <Icon as={MdCheck} fontSize="16px" color="pebble.100" />
-      ) : (
-        <Text variant="body3">{step}</Text>
-      )}
-    </Flex>
-  );
-};
+}) => (
+  <Flex
+    justify="center"
+    align="center"
+    backgroundColor={disabled ? "text.disabled" : "violet.main"}
+    width="24px"
+    height="24px"
+    borderRadius="50%"
+  >
+    {currentStep > step ? (
+      <CustomIcon name="check" color="text.main" boxSize="3" />
+    ) : (
+      <Text variant="body3">{step}</Text>
+    )}
+  </Flex>
+);
 
 export const StepperItem = ({
   mode,

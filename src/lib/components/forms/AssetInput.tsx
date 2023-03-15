@@ -1,5 +1,6 @@
-import { Button, Grid, Icon } from "@chakra-ui/react";
-import { MdDelete } from "react-icons/md";
+import { Button, Grid } from "@chakra-ui/react";
+
+import { CustomIcon } from "../icon";
 
 import { SelectInput } from "./SelectInput";
 
@@ -25,31 +26,28 @@ export const AssetInput = ({
   amountInput: AmountInput,
   assetOptions,
   initialSelected,
-}: AssetInputProps) => {
-  return (
-    <Grid templateColumns="130px 1fr auto" columnGap="16px" w="full" mb="16px">
-      <SelectInput
-        formLabel="Asset"
-        options={assetOptions}
-        onChange={setCurrencyValue}
-        placeholder="Select"
-        initialSelected={initialSelected}
+}: AssetInputProps) => (
+  <Grid templateColumns="130px 1fr auto" columnGap="16px" w="full" mb="16px">
+    <SelectInput
+      formLabel="Asset"
+      options={assetOptions}
+      onChange={setCurrencyValue}
+      placeholder="Select"
+      initialSelected={initialSelected}
+    />
+    {AmountInput}
+    <Button
+      w="56px"
+      h="56px"
+      variant="outline-gray"
+      size="lg"
+      disabled={disableDelete}
+      onClick={onDelete}
+    >
+      <CustomIcon
+        name="delete"
+        color={disableDelete ? "pebble.600" : "text.dark"}
       />
-      {AmountInput}
-      <Button
-        w="56px"
-        h="56px"
-        variant="outline-gray"
-        size="lg"
-        disabled={disableDelete}
-        onClick={onDelete}
-      >
-        <Icon
-          as={MdDelete}
-          fontSize="18px"
-          color={disableDelete ? "pebble.500" : "text.dark"}
-        />
-      </Button>
-    </Grid>
-  );
-};
+    </Button>
+  </Grid>
+);

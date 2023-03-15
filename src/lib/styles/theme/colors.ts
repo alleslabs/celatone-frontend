@@ -25,16 +25,22 @@ const extendedColors: BasicColor = {
     main: "#FF666E",
     light: "#FF8086",
     dark: "#b43e44",
+    background: "#4C1A1D",
   },
   warning: {
     main: "#FFBB33",
     light: "#FFCC66",
     dark: "#CC8800",
+    background: "#523600",
   },
   success: {
     main: "#42BEA6",
     light: "#67CBB7",
     dark: "#207966",
+    background: "#102E28",
+  },
+  info: {
+    main: "#29B6F6",
   },
   background: {
     main: "#111117",

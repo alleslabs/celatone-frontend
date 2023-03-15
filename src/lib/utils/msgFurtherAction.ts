@@ -1,9 +1,9 @@
-import type { Filters } from "lib/types";
+import type { TxFilters } from "lib/types";
 import { MsgFurtherAction } from "lib/types";
 
 export const getMsgFurtherAction = (
   length: number,
-  filters: Filters,
+  filters: TxFilters,
   isSuccess: boolean
 ) => {
   // Redo: instantiate, execute, check length === 1

@@ -1,6 +1,6 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 
-import { ContractListTable } from "lib/pages/contract-list/components/ContractListTable";
+import { ContractListTable } from "lib/components/select-contract";
 import type { Addr, ContractAddr } from "lib/types";
 import { getCurrentDate } from "lib/utils";
 
@@ -49,29 +49,27 @@ const contracts = [
     created: getCurrentDate(),
   },
 ];
-export const RecentlyViewContracts = () => {
-  return (
-    <Box py={8}>
-      <Heading px={12} as="h6" variant="h6" mb={4}>
-        Recently Viewed Contracts
-      </Heading>
-      {contracts && contracts.length ? (
-        <ContractListTable contracts={contracts} />
-      ) : (
-        <Flex
-          px={12}
-          borderTopWidth={1}
-          borderBottomWidth={1}
-          justifyContent="center"
-          alignItems="center"
-          minH="128px"
-          gap={1}
-        >
-          <Text color="text.dark" variant="body1">
-            Your recently viewed smart contracts will display here
-          </Text>
-        </Flex>
-      )}
-    </Box>
-  );
-};
+export const RecentlyViewContracts = () => (
+  <Box py={8}>
+    <Heading px={12} as="h6" variant="h6" mb={4}>
+      Recently Viewed Contracts
+    </Heading>
+    {contracts && contracts.length ? (
+      <ContractListTable contracts={contracts} />
+    ) : (
+      <Flex
+        px={12}
+        borderTopWidth={1}
+        borderBottomWidth={1}
+        justifyContent="center"
+        alignItems="center"
+        minH="128px"
+        gap={1}
+      >
+        <Text color="text.dark" variant="body1">
+          Your recently viewed smart contracts will display here
+        </Text>
+      </Flex>
+    )}
+  </Box>
+);

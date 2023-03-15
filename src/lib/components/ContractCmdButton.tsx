@@ -7,18 +7,16 @@ interface ContractCmdButtonProps {
 export const ContractCmdButton = ({
   cmd,
   onClickCmd,
-}: ContractCmdButtonProps) => {
-  return (
-    <Button
-      variant="command-button"
-      fontSize="12px"
-      height="24px"
-      px="10px"
-      borderRadius="16px"
-      fontWeight="400"
-      onClick={onClickCmd}
-    >
-      {cmd}
-    </Button>
-  );
-};
+}: ContractCmdButtonProps) => (
+  <Button
+    variant="command-button"
+    fontSize="12px"
+    height="24px"
+    px="10px"
+    borderRadius="16px"
+    fontWeight="400"
+    onClick={onClickCmd}
+  >
+    {cmd}
+  </Button>
+);

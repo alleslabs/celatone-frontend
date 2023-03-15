@@ -37,6 +37,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v1.0.2
+
+### Features
+
+- [#233](https://github.com/alleslabs/celatone-frontend/pull/233) Disable account detail page
+- [#228](https://github.com/alleslabs/celatone-frontend/pull/228) Add Faucet testnet page
+- [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and wireup up json attach funds
+- [#225](https://github.com/alleslabs/celatone-frontend/pull/225) Add assets section in account details page
+- [#220](https://github.com/alleslabs/celatone-frontend/pull/220) Add transactions table for account details page
+- [#222](https://github.com/alleslabs/celatone-frontend/pull/222) Add proposals of an account
+- [#221](https://github.com/alleslabs/celatone-frontend/pull/221) Add codes of an account
+- [#223](https://github.com/alleslabs/celatone-frontend/pull/223) Newer version of token card and format mechanism
+- [#214](https://github.com/alleslabs/celatone-frontend/pull/214) Show code permission helper text in save new code modal
+- [#218](https://github.com/alleslabs/celatone-frontend/pull/218) Add instantiated and admin contracts of an account
+- [#192](https://github.com/alleslabs/celatone-frontend/pull/192) Add alternative sidebar with only icons
+- [#210](https://github.com/alleslabs/celatone-frontend/pull/210) New design for token card, currently support price
+- [#189](https://github.com/alleslabs/celatone-frontend/pull/189) Add skeleton for the account details page
+- [#193](https://github.com/alleslabs/celatone-frontend/pull/193) Get data for account details page
+
+### Improvements
+
+- [#234](https://github.com/alleslabs/celatone-frontend/pull/234) Fix faucet wording
+- [#216](https://github.com/alleslabs/celatone-frontend/pull/216) Change icon to Alles Labs icon set
+- [#227](https://github.com/alleslabs/celatone-frontend/pull/227) Refactor directory structure and components e.g. various tables
+- [#207](https://github.com/alleslabs/celatone-frontend/pull/207) Add cta to submit public project in list page
+- [#206](https://github.com/alleslabs/celatone-frontend/pull/206) Refactor copy functionality into one component
+
+### Bug fixes
+
+- [#238](https://github.com/alleslabs/celatone-frontend/pull/238) Fix incorrect isCurrentPage for overview page
+- [#235](https://github.com/alleslabs/celatone-frontend/pull/235) Fix css bugs and aesthetics improvement
+- [#236](https://github.com/alleslabs/celatone-frontend/pull/236) Add alphabetically sorting to JSON attach funds
+- [#231](https://github.com/alleslabs/celatone-frontend/pull/231) Fix double slash for endpoint, disable calling endpoint when there is no contract addr in contract details page
+- [#229](https://github.com/alleslabs/celatone-frontend/pull/229) Disable Sentry debug to prevent "logger.info is not a function" error
+- [#219](https://github.com/alleslabs/celatone-frontend/pull/219) Fix asset value and price formatter
+- [#217](https://github.com/alleslabs/celatone-frontend/pull/217) Fix state reset in Save New Code modal and no permission in migration
+
 ## v1.0.1
 
 ### Bug fixes

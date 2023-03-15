@@ -1,5 +1,4 @@
 import {
-  Icon,
   Input,
   InputGroup,
   InputRightElement,
@@ -13,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import type { IconType } from "react-icons/lib";
-import { MdArrowDropDown } from "react-icons/md";
 
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
 import type { Option } from "lib/types";
 
 const ITEM_HEIGHT = 56;
@@ -26,13 +25,14 @@ interface SelectInputProps<T extends string> {
     label: string;
     value: T;
     disabled: boolean;
-    icon?: IconType;
+    icon?: IconKeys;
     iconColor?: string;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
   initialSelected: string;
   hasDivider?: boolean;
+  helperTextComponent?: ReactNode;
 }
 
 interface SelectItemProps {
@@ -41,24 +41,22 @@ interface SelectItemProps {
   disabled: boolean;
 }
 
-const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => {
-  return (
-    <Flex
-      px={4}
-      py={2}
-      onClick={onSelect}
-      color="text.main"
-      cursor="pointer"
-      gap={2}
-      aria-disabled={disabled}
-      _hover={{ bg: "pebble.800" }}
-      transition="all .25s ease-in-out"
-      _disabled={{ opacity: 0.4, pointerEvents: "none" }}
-    >
-      {children}
-    </Flex>
-  );
-};
+const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
+  <Flex
+    px={4}
+    py={2}
+    onClick={onSelect}
+    color="text.main"
+    cursor="pointer"
+    gap={2}
+    aria-disabled={disabled}
+    _hover={{ bg: "pebble.800" }}
+    transition="all .25s ease-in-out"
+    _disabled={{ opacity: 0.4, pointerEvents: "none" }}
+  >
+    {children}
+  </Flex>
+);
 
 export const SelectInput = <T extends string>({
   formLabel,
@@ -67,10 +65,11 @@ export const SelectInput = <T extends string>({
   placeholder = "",
   initialSelected,
   hasDivider = false,
+  helperTextComponent,
 }: SelectInputProps<T>) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const [selected, setSelected] = useState(
     () => options.find((item) => item.value === initialSelected)?.label ?? ""
   );
@@ -86,6 +85,16 @@ export const SelectInput = <T extends string>({
       setInputRefWidth(inputRef.current.clientWidth);
     }
   }, [inputRef]);
+
+  useEffect(() => {
+    if (options.every((option) => !option.disabled)) {
+      setSelected(
+        () =>
+          options.find((item) => item.value === initialSelected)?.label ?? ""
+      );
+    }
+  }, [initialSelected, options]);
+
   return (
     <Popover placement="bottom-start" isOpen={isOpen}>
       <PopoverTrigger>
@@ -113,26 +122,25 @@ export const SelectInput = <T extends string>({
         >
           <div className="form-label">{formLabel}</div>
           {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full">
-              <Icon
-                as={selectedOption.icon}
+            <InputLeftElement pointerEvents="none" h="full" ml="1">
+              <CustomIcon
+                name={selectedOption.icon}
                 color={selectedOption.iconColor}
-                fontSize="20px"
               />
             </InputLeftElement>
           )}
           <Input
+            ref={inputRef}
             size="lg"
             textAlign="start"
             type="button"
             value={selected || placeholder}
             fontSize="14px"
             color={selected ? "text.main" : "text.dark"}
-            ref={inputRef}
             pl={selectedOption?.icon ? 9 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <Icon as={MdArrowDropDown} color="pebble.600" fontSize="24px" />
+            <CustomIcon name="chevron-down" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
@@ -164,10 +172,21 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {icon && <Icon as={icon} boxSize={5} color={iconColor} />}
+            {icon && <CustomIcon name={icon} color={iconColor} />}
             {label}
           </SelectItem>
         ))}
+        {helperTextComponent && (
+          <Flex
+            px={4}
+            h={`${ITEM_HEIGHT}px`}
+            align="center"
+            borderTop={!hasDivider ? "1px solid" : "none"}
+            borderTopColor="pebble.700"
+          >
+            {helperTextComponent}
+          </Flex>
+        )}
       </PopoverContent>
     </Popover>
   );

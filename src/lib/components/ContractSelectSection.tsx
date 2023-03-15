@@ -1,22 +1,22 @@
-import { Button, Flex, Icon, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { MdMode, MdOutlineBookmarkBorder } from "react-icons/md";
 
-import { useCelatoneApp } from "lib/app-provider";
-import { useContractStore, useLCDEndpoint, useMobile } from "lib/hooks";
+import { useCelatoneApp, useLCDEndpoint, useMobile } from "lib/app-provider";
+import { useContractStore } from "lib/providers/store";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
+import { CustomIcon } from "./icon";
 import { EditContractDetailsModal, SaveContractDetailsModal } from "./modal";
 import {
   SelectContractAdmin,
   SelectContractInstantiator,
-} from "./modal/select-contract";
+} from "./select-contract";
 
 interface DisplayNameProps {
   notSelected: boolean;
@@ -37,6 +37,32 @@ interface ContractSelectSectionProps {
   contractAddress: ContractAddr;
   onContractSelect: (contract: ContractAddr) => void;
 }
+
+const modeStyle = (mode: string) => {
+  switch (mode) {
+    case "all-lists":
+      return {
+        container: "0px",
+        contractAddrContainer: "70%",
+        contractAddrW: "auto",
+        contractNameContainer: "30%",
+      };
+    case "only-admin":
+      return {
+        container: "12",
+        contractAddrContainer: "40%",
+        contractAddrW: "144px",
+        contractNameContainer: "60%",
+      };
+    default:
+      return {
+        container: "12",
+        contractAddrContainer: "40%",
+        contractAddrW: "auto",
+        contractNameContainer: "60%",
+      };
+  }
+};
 
 const DisplayName = ({
   notSelected,
@@ -74,7 +100,8 @@ const ContractDetailsButton = ({
         <Button
           variant="ghost-gray"
           float="right"
-          leftIcon={<Icon as={MdMode} boxSize="5" />}
+          size="sm"
+          leftIcon={<CustomIcon name="edit" color="text.dark" />}
         >
           Edit
         </Button>
@@ -92,7 +119,10 @@ const ContractDetailsButton = ({
         <Button
           variant="outline-gray"
           float="right"
-          leftIcon={<Icon as={MdOutlineBookmarkBorder} boxSize="5" />}
+          size="sm"
+          leftIcon={
+            <CustomIcon name="bookmark" color="text.dark" boxSize="12px" />
+          }
         >
           Add To List
         </Button>
@@ -162,8 +192,11 @@ export const ContractSelectSection = observer(
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;
+    const style = modeStyle(mode);
+
     return (
       <Flex
+        mb={style.container}
         borderWidth="thin"
         borderColor="pebble.800"
         p="16px"
@@ -173,8 +206,8 @@ export const ContractSelectSection = observer(
         align="center"
         width="full"
       >
-        <Flex gap="24px" width={mode === "all-lists" ? "70%" : "60%"}>
-          <Flex direction="column" width={mode === "all-lists" ? "70%" : "40%"}>
+        <Flex gap={4} width="100%">
+          <Flex direction="column" width={style.contractAddrContainer}>
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -186,6 +219,8 @@ export const ContractSelectSection = observer(
                   isMobile || mode === "only-admin" ? "truncate" : "normal"
                 }
                 maxWidth="none"
+                minWidth={style.contractAddrW}
+                wordBreak="break-all"
               />
             ) : (
               <Text color="text.disabled" variant="body2">
@@ -193,12 +228,7 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex
-            direction="column"
-            width={
-              mode === "all-lists" ? "calc(30% - 24px)" : "calc(60% - 24px)"
-            }
-          >
+          <Flex direction="column" width={style.contractNameContainer}>
             Contract Name
             <DisplayName
               notSelected={notSelected}
@@ -207,28 +237,27 @@ export const ContractSelectSection = observer(
               label={contractState.label}
             />
           </Flex>
-        </Flex>
-
-        <Flex gap="8px">
-          {mode === "all-lists" && contractState.isValid && (
-            <ContractDetailsButton
-              contractAddress={contractAddress}
-              contractLocalInfo={contractLocalInfo}
-              instantiator={contractState.instantiator as Addr}
-              label={contractState.label}
-            />
-          )}
-          {mode === "all-lists" ? (
-            <SelectContractInstantiator
-              notSelected={notSelected}
-              onContractSelect={onContractSelect}
-            />
-          ) : (
-            <SelectContractAdmin
-              notSelected={notSelected}
-              onContractSelect={onContractSelect}
-            />
-          )}
+          <Flex gap="8px" alignItems="center">
+            {mode === "all-lists" && contractState.isValid && (
+              <ContractDetailsButton
+                contractAddress={contractAddress}
+                contractLocalInfo={contractLocalInfo}
+                instantiator={contractState.instantiator as Addr}
+                label={contractState.label}
+              />
+            )}
+            {mode === "all-lists" ? (
+              <SelectContractInstantiator
+                notSelected={notSelected}
+                onContractSelect={onContractSelect}
+              />
+            ) : (
+              <SelectContractAdmin
+                notSelected={notSelected}
+                onContractSelect={onContractSelect}
+              />
+            )}
+          </Flex>
         </Flex>
       </Flex>
     );

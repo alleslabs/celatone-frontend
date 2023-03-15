@@ -2,7 +2,6 @@ import {
   Modal,
   ModalHeader,
   Flex,
-  Icon,
   Text,
   ModalOverlay,
   ModalContent,
@@ -13,22 +12,25 @@ import {
   Heading,
   Box,
 } from "@chakra-ui/react";
-import router from "next/router";
+import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
-import { MdAttachMoney } from "react-icons/md";
 
-import { Copier } from "../Copier";
 import { ExplorerLink } from "../ExplorerLink";
-import type { BalanceWithAssetInfo, Balance, Token } from "lib/types";
+import type { IconKeys } from "../icon";
+import { CustomIcon } from "../icon";
+import { getAddressTypeByLength } from "lib/app-provider";
+import type { AddressReturnType } from "lib/app-provider";
+import { Copier } from "lib/components/copy";
+import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
 import {
-  getFirstQueryParam,
   getTokenType,
   getTokenLabel,
-  formatTokenWithPrecision,
+  formatUTokenWithPrecision,
 } from "lib/utils";
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: BalanceWithAssetInfo[];
+  address: Addr;
 }
 
 interface UnsupportedTokenProps {
@@ -68,20 +70,50 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
         </Text>
       </Flex>
       <Text variant="body2" fontWeight="900">
-        {formatTokenWithPrecision(balance.amount as Token, balance.precision)}
+        {formatUTokenWithPrecision(
+          balance.amount as U<Token>,
+          balance.precision
+        )}
       </Text>
     </Flex>
   );
 };
 
+const unsupportedTokensContent = (
+  addressType: AddressReturnType
+): { icon: IconKeys; header: string } => {
+  switch (addressType) {
+    case "contract_address": {
+      return {
+        icon: "assets-solid",
+        header: "Contract Address",
+      };
+    }
+    case "user_address": {
+      return {
+        icon: "assets-solid",
+        header: "Wallet Address",
+      };
+    }
+    default:
+      return {
+        icon: "question-solid",
+        header: "Invalid Address",
+      };
+  }
+};
+
 export const UnsupportedTokensModal = ({
   unsupportedAssets,
+  address,
 }: UnsupportedTokensModalProps) => {
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
-
+  const { currentChainName } = useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (unsupportedAssets.length === 0) return null;
+
+  const addressType = getAddressTypeByLength(currentChainName, address);
+  const content = unsupportedTokensContent(addressType);
 
   return (
     <>
@@ -95,7 +127,7 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="700px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <Icon as={MdAttachMoney} boxSize={5} color="pebble.600" />
+              <CustomIcon name={content.icon} boxSize="5" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>
@@ -107,9 +139,9 @@ export const UnsupportedTokensModal = ({
             <Flex direction="column" gap={5}>
               <Flex direction="row" gap={4}>
                 <Text variant="body2" fontWeight="700">
-                  Contract Address
+                  {content.header}
                 </Text>
-                <ExplorerLink value={contractAddress} type="contract_address" />
+                <ExplorerLink value={address} type={addressType} />
               </Flex>
               <Flex gap={3} direction="column">
                 {unsupportedAssets.map((asset) => (

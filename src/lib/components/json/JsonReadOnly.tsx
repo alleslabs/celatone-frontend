@@ -3,7 +3,7 @@ import { Text, Box } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
-import { CopyButton } from "../CopyButton";
+import { CopyButton } from "../copy";
 import { jsonValidate } from "lib/utils";
 
 import { ViewFullMsgButton } from "./ViewFullMsgButton";
@@ -40,7 +40,7 @@ const JsonReadOnly = ({
   const zeroHeight = height === 0;
   return (
     <Box
-      m={zeroHeight ? 0 : "8px 0 16px"}
+      m={zeroHeight ? 0 : "0px 0 16px"}
       p={
         zeroHeight
           ? 0

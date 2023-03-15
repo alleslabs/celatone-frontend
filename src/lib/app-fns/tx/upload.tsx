@@ -1,14 +1,13 @@
-import { Icon } from "@chakra-ui/react";
 import type {
   SigningCosmWasmClient,
   UploadResult,
 } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
-import { MdCloudUpload } from "react-icons/md";
 import type { Observable } from "rxjs";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { TxStreamPhase } from "lib/types";
 import type { HumanAddr, TxResultRendering } from "lib/types";
@@ -87,9 +86,7 @@ export const uploadContractTx = ({
               {isMigrate ? "migrate" : "instantiate"} your code now?
             </>
           ),
-          headerIcon: (
-            <Icon as={MdCloudUpload} fontSize="24px" color="text.dark" />
-          ),
+          headerIcon: <CustomIcon name="upload-cloud" boxSize="5" />,
         },
         actionVariant: isMigrate ? "upload-migrate" : "upload",
       } as TxResultRendering;

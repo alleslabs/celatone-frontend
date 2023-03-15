@@ -2,7 +2,6 @@ import {
   Modal,
   ModalHeader,
   Flex,
-  Icon,
   Text,
   ModalOverlay,
   ModalContent,
@@ -14,10 +13,9 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { BsArrowCounterclockwise } from "react-icons/bs";
-import { MdReplay } from "react-icons/md";
 
-import { useRedo } from "lib/pages/past-txs/hooks/useRedo";
+import { CustomIcon } from "../icon";
+import { useRedo } from "lib/hooks";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
@@ -32,22 +30,21 @@ export const RedoModal = ({ message }: RedoModalProps) => {
 
   return (
     <>
-      <Flex onClick={onOpen}>
-        <Button
-          leftIcon={<BsArrowCounterclockwise />}
-          variant="outline"
-          iconSpacing="2"
-          size="sm"
-        >
-          Redo
-        </Button>
-      </Flex>
+      <Button
+        leftIcon={<CustomIcon name="redo" />}
+        variant="outline"
+        iconSpacing="2"
+        size="sm"
+        onClick={onOpen}
+      >
+        Redo
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent w="640px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <Icon as={MdReplay} boxSize={6} color="pebble.600" />
+              <CustomIcon name="redo" boxSize="5" />
               <Heading variant="h5" as="h5">
                 Redo Instantiate
               </Heading>

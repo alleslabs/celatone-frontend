@@ -1,4 +1,4 @@
-import type { AllTransaction, PastTransaction } from "lib/types";
+import type { Transaction } from "lib/types";
 import { ActionMsgType } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
@@ -7,7 +7,7 @@ import { SingleActionMsg } from "./SingleActionMsg";
 import { SingleMsg } from "./SingleMsg";
 
 interface RenderActionMessagesProps {
-  transaction: AllTransaction | PastTransaction;
+  transaction: Transaction;
   showCopyButton: boolean;
 }
 

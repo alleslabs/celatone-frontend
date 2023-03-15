@@ -2,9 +2,11 @@ import { chakra, Flex, GridItem } from "@chakra-ui/react";
 
 export const TableContainer = chakra(Flex, {
   baseStyle: {
+    overflowY: "hidden",
     overflowX: "scroll",
     flexDir: "column",
     w: "full",
+    pb: 6,
   },
 });
 
