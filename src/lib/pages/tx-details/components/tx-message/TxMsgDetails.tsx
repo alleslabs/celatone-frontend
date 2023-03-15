@@ -17,29 +17,25 @@ export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
   const getAddressType = useGetAddressType();
   const assetInfos = useAssetInfos();
   const receipts = generateReceipts(txMsgData, getAddressType, assetInfos)
-    .filter(Boolean)
     .concat(
-      txMsgData.log
-        ? {
-            title: "Event Logs",
-            html: (
-              <Flex direction="column" gap={3} w="full">
-                {txMsgData.log.events.map((event, idx) => (
-                  <EventBox
-                    key={
-                      idx.toString() +
-                      event.type +
-                      JSON.stringify(event.attributes)
-                    }
-                    event={event}
-                    msgIndex={idx}
-                  />
-                ))}
-              </Flex>
-            ),
-          }
-        : []
-    ) as TxReceipt[];
+      txMsgData.log && {
+        title: "Event Logs",
+        html: (
+          <Flex direction="column" gap={3} w="full">
+            {txMsgData.log.events.map((event, idx) => (
+              <EventBox
+                key={
+                  idx.toString() + event.type + JSON.stringify(event.attributes)
+                }
+                event={event}
+                msgIndex={idx}
+              />
+            ))}
+          </Flex>
+        ),
+      }
+    )
+    .filter(Boolean) as TxReceipt[];
 
   return (
     <Flex

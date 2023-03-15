@@ -12,24 +12,26 @@ import type {
   TxReceipt,
   ValidatorAddr,
 } from "lib/types";
-import { camelToTitle } from "lib/utils";
+import { convertToTitle } from "lib/utils";
 
 import { CoinComponent } from "./CoinComponent";
 
-interface CommonReceiptHtmlArgs {
-  type: "json" | "explorer";
-  value: Option<string>;
+type HtmlType = "json" | "explorer";
+
+interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
+  type: T;
+  value: Option<V>;
   linkType?: LinkType;
   fallback?: string;
 }
 
 // Util Functions
-export const getCommonReceiptHtml = ({
+export const getCommonReceiptHtml = <T extends HtmlType>({
   type,
   value,
   linkType = "invalid_address",
   fallback,
-}: CommonReceiptHtmlArgs) => {
+}: CommonReceiptHtmlArgs<T, T extends "json" ? object : string>) => {
   if (!value)
     return (
       <Text variant="body2" color="text.dark">
@@ -37,7 +39,8 @@ export const getCommonReceiptHtml = ({
       </Text>
     );
 
-  return type === "json" ? (
+  // TODO: Find a solution, TS doesn't know that type === 'json' would make typeof value === 'object
+  return type === "json" || typeof value === "object" ? (
     <JsonReadOnly
       text={JSON.stringify(value, null, 2)}
       canViewFull
@@ -74,7 +77,7 @@ export const getGenericValueEntry = (
       valueObj = {
         html: getCommonReceiptHtml({
           type: "json",
-          value: JSON.stringify(value, null, 2),
+          value,
         }),
       };
       break;
@@ -93,7 +96,7 @@ export const getGenericValueEntry = (
       valueObj = { value };
   }
 
-  return { title: camelToTitle(title), ...valueObj };
+  return { title: convertToTitle(title), ...valueObj };
 };
 
 // Duplicated Receipt
@@ -141,7 +144,7 @@ export const proposalIdReceipt = (value: string): TxReceipt => ({
   }),
 });
 
-export const clientStateReceipt = (value: string): TxReceipt => ({
+export const clientStateReceipt = (value: object): TxReceipt => ({
   title: "Client State",
   html: getCommonReceiptHtml({ type: "json", value }),
 });
@@ -151,7 +154,7 @@ export const proofInitReceipt = (value: string): TxReceipt => ({
   value,
 });
 
-export const proofHeightReceipt = (value: string): TxReceipt => ({
+export const proofHeightReceipt = (value: object): TxReceipt => ({
   title: "Proof Height",
   html: getCommonReceiptHtml({ type: "json", value }),
 });

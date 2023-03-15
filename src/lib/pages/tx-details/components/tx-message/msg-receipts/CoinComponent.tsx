@@ -123,7 +123,8 @@ export const CoinComponent = ({
   amount,
   assetInfos,
 }: CoinComponentProps<Coin | Coin[], Option<AssetObject>>) => {
-  if (!assetInfos) return <>{JSON.stringify(amount)}</>;
+  if (!assetInfos || (Array.isArray(amount) && !amount.length))
+    return <>{JSON.stringify(amount)}</>;
   return Array.isArray(amount) ? (
     <MultiCoin amount={amount} assetInfos={assetInfos} />
   ) : (

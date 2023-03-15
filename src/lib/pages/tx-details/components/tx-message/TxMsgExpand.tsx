@@ -1,4 +1,5 @@
 import { Badge, Flex, Icon } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
 import type { IconType } from "react-icons";
@@ -19,7 +20,10 @@ import {
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useAssetInfos } from "lib/services/assetService";
 import type { Addr } from "lib/types";
+import type { VoteOption } from "lib/utils";
+import { formatBalanceWithDenom } from "lib/utils";
 
 import type { TxMsgData } from ".";
 import { voteOption } from "./msg-receipts/mapping";
@@ -36,6 +40,7 @@ export const TxMsgExpand = ({
   onClick,
 }: TxMsgExpandProps) => {
   const getAddressType = useGetAddressType();
+  const assetInfos = useAssetInfos();
   let msgIcon: IconType = MdInfo;
   let content: ReactNode;
   const isIBC = Boolean(
@@ -190,10 +195,19 @@ export const TxMsgExpand = ({
     case "/cosmos.bank.v1beta1.MsgSend":
       {
         const toAddress = body.to_address as Addr;
+        const singleCoin = body.amount.at(0) as Coin;
+        const assetText =
+          body.amount.length > 1
+            ? "assets"
+            : formatBalanceWithDenom({
+                coin: { denom: singleCoin.denom, amount: singleCoin.amount },
+                symbol: assetInfos?.[singleCoin.denom]?.symbol,
+                precision: assetInfos?.[singleCoin.denom]?.precision,
+              });
         msgIcon = MdSend;
         content = (
           <>
-            Send assets to
+            Send {assetText} to
             <ExplorerLink
               type={getAddressType(toAddress)}
               value={toAddress}
@@ -231,7 +245,7 @@ export const TxMsgExpand = ({
         <>
           Vote{" "}
           <span style={{ fontWeight: 700 }}>
-            {voteOption[body.option as keyof typeof voteOption]}
+            {voteOption[body.option as VoteOption]}
           </span>{" "}
           on proposal ID{" "}
           <ExplorerLink

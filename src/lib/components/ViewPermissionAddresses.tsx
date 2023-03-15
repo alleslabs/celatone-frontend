@@ -16,51 +16,40 @@ export const ViewPermissionAddresses = ({
   const getAddressType = useGetAddressType();
   const showAddressses =
     viewAll ||
-    typeof permissionAddresses === "string" ||
     (typeof permissionAddresses === "object" &&
       permissionAddresses.length === 1);
 
   return (
     <>
       {showAddressses &&
-        (typeof permissionAddresses === "string" ? (
-          <ExplorerLink
-            key={permissionAddresses}
-            type={getAddressType(permissionAddresses)}
-            value={permissionAddresses}
-            canCopyWithHover
-          />
-        ) : (
-          permissionAddresses.map((addr) => {
-            return (
-              <ExplorerLink
-                key={addr}
-                type={getAddressType(addr)}
-                value={addr}
-                canCopyWithHover
-              />
-            );
-          })
-        ))}
-      {typeof permissionAddresses === "object" &&
-        permissionAddresses.length > 1 && (
-          <Button
-            variant="ghost-primary"
-            onClick={() => setViewAll((prev) => !prev)}
-            size="sm"
-            p="unset"
-            w="fit-content"
-            rightIcon={
-              <CustomIcon
-                name={viewAll ? "chevron-up" : "chevron-down"}
-                color="lilac.main"
-                boxSize="3"
-              />
-            }
-          >
-            {viewAll ? "See Less" : "View All Addresses"}
-          </Button>
-        )}
+        permissionAddresses.map((addr) => {
+          return (
+            <ExplorerLink
+              key={addr}
+              type={getAddressType(addr)}
+              value={addr}
+              canCopyWithHover
+            />
+          );
+        })}
+      {permissionAddresses.length > 1 && (
+        <Button
+          variant="ghost-primary"
+          onClick={() => setViewAll((prev) => !prev)}
+          size="sm"
+          p="unset"
+          w="fit-content"
+          rightIcon={
+            <CustomIcon
+              name={viewAll ? "chevron-up" : "chevron-down"}
+              color="lilac.main"
+              boxSize="3"
+            />
+          }
+        >
+          {viewAll ? "See Less" : "View All Addresses"}
+        </Button>
+      )}
     </>
   );
 };
