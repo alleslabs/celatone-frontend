@@ -33,7 +33,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       switch (slug) {
         // handle home page
         case "/":
-          return pathName === `${networkPath}`;
+          return pathName === `${networkPath}` || pathName === "/";
         // handle contract list page and public project page
         case "/contract-list":
         case "/public-project":
