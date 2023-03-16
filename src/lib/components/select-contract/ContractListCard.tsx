@@ -26,8 +26,9 @@ export const ContractListCard = ({
   handleListSelect,
   isReadOnly,
 }: ContractListCardProps) => {
-  const showLastUpdated = item.slug !== formatSlugName(INSTANTIATED_LIST_NAME);
-  const isDisabled = isReadOnly && showLastUpdated && !item.contracts.length;
+  const isInstantiatedByMe =
+    item.slug !== formatSlugName(INSTANTIATED_LIST_NAME);
+  const isDisabled = isReadOnly && isInstantiatedByMe && !item.contracts.length;
 
   return (
     <Flex
@@ -59,7 +60,7 @@ export const ContractListCard = ({
             {item.contracts.length}
           </Badge>
         </Flex>
-        {showLastUpdated && (
+        {isInstantiatedByMe && (
           <Text variant="body3" color="text.dark">
             Updated {dateFromNow(item.lastUpdated)}
           </Text>
