@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit
 - [#243](https://github.com/alleslabs/celatone-frontend/pull/243) Fix Json viewer and view more btn
 
 ## v1.0.2
