@@ -7,7 +7,6 @@ import { ShowMoreButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { EditContractDetailsModal } from "lib/components/modal";
 import type { ContractData } from "lib/types";
-import { textLine } from "lib/utils";
 
 interface UserContractDescProps {
   contractData: ContractData;
@@ -20,7 +19,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "No Contract description",
     ellipsis: "...",
-    lines: textLine(!contractData.publicProject.publicInfo?.description),
+    lines: contractData.publicProject.publicInfo?.description ? 4 : 2,
   });
 
   const renderEditContractButton = () => {

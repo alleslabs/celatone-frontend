@@ -3,7 +3,6 @@ import { Flex } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import { PublicDescription } from "lib/components/PublicDescription";
 import type { ContractData } from "lib/types";
-import { textLine } from "lib/utils";
 
 import { UserContractDesc } from "./UserContractDesc";
 
@@ -16,7 +15,7 @@ export const ContractDesc = ({ contractData }: ContractDescProps) => (
       <PublicDescription
         title="Public Contract Description"
         description={contractData.publicProject.publicInfo.description}
-        textLine={textLine(!contractData.contractLocalInfo?.description)}
+        textLine={contractData.contractLocalInfo?.description ? 4 : 2}
         icon={<CustomIcon name="website" ml="0" my="0" />}
       />
     )}
