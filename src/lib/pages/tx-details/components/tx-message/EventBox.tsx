@@ -75,12 +75,9 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           valueComponent = (
             <JsonReadOnly
               text={jsonPrettify(value)}
-              canViewFull
-              disableResizing
               canCopy
-              height="200px"
-              width="full"
-              margin={0}
+              fullWidth
+              isExpandable
             />
           );
         else valueComponent = value;

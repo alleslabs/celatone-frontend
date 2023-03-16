@@ -16,6 +16,7 @@ interface JsonReadOnlyProps {
   text: string;
   canCopy?: boolean;
   isExpandable?: boolean;
+  fullWidth?: boolean;
 }
 
 const THRESHOLD_LINES = 16;
@@ -25,6 +26,7 @@ const JsonReadOnly = ({
   text,
   canCopy,
   isExpandable,
+  fullWidth,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
 
@@ -57,6 +59,7 @@ const JsonReadOnly = ({
         borderColor: isJsonValid && "pebble.600",
         "& .copy-button-box": { display: "block" },
       }}
+      w={fullWidth ? "full" : undefined}
     >
       <Box p="16px 12px">
         <JsonEditor

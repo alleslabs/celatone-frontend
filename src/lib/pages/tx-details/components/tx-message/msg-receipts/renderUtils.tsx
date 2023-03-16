@@ -43,12 +43,9 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
   return type === "json" || typeof value === "object" ? (
     <JsonReadOnly
       text={JSON.stringify(value, null, 2)}
-      canViewFull
-      disableResizing
       canCopy
-      height="200px"
-      width="full"
-      margin={0}
+      fullWidth
+      isExpandable
     />
   ) : (
     <ExplorerLink
