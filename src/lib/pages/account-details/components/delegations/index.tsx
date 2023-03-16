@@ -80,8 +80,8 @@ export const DelegationsSection = ({
       <Flex
         direction="column"
         gap={8}
-        position={isOpen ? "absolute" : "relative"}
         w="full"
+        position={isOpen ? "absolute" : "relative"}
         opacity={isOpen ? 0 : 1}
         left={isOpen ? "-100%" : "0"}
         transition="all 0.25s"
@@ -148,6 +148,7 @@ export const DelegationsSection = ({
         stakingParams={stakingParams}
         redelegations={redelegations ?? []}
         onBack={onToggle}
+        w="full"
         position={isOpen ? "relative" : "absolute"}
         opacity={isOpen ? 1 : 0}
         left={isOpen ? "0" : "100%"}

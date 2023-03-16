@@ -23,7 +23,7 @@ export const RedelegationsSection = ({
   onBack,
   ...props
 }: RedelegationsSectionProps) => (
-  <Flex direction="column" gap={4} w="full" {...props}>
+  <Flex direction="column" gap={4} {...props}>
     <Flex gap={3} alignItems="center">
       <Button variant="ghost-primary" p={0} onClick={onBack}>
         <CustomIcon name="chevron-left" boxSize={6} />
