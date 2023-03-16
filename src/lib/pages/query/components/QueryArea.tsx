@@ -17,7 +17,13 @@ import { useContractStore } from "lib/providers/store";
 import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
-import { encode, getCurrentDate, jsonPrettify, jsonValidate } from "lib/utils";
+import {
+  encode,
+  getCurrentDate,
+  jsonLineCount,
+  jsonPrettify,
+  jsonValidate,
+} from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -128,12 +134,7 @@ export const QueryArea = ({
       </Box>
       <Flex gap={4}>
         <Box w="full">
-          <JsonInput
-            topic="Query Msg"
-            text={msg}
-            setText={setMsg}
-            height="240px"
-          />
+          <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
           <Flex align="center" justify="space-between">
             <Flex gap={2}>
               <CopyButton isDisable={!msg.length} value={msg} />
@@ -163,10 +164,13 @@ export const QueryArea = ({
         </Box>
         <Spacer />
         <Box w="full">
-          <JsonReadOnly topic="Return Output" text={res} height="240px" />
-          <Flex justifyContent="flex-end" gap={2}>
-            <CopyButton isDisable={res.length === 0} value={res} />
-          </Flex>
+          <JsonReadOnly topic="Return Output" text={res} canCopy />
+          {/* If response line count > 100, the copy button is visible. */}
+          {jsonLineCount(res) > 100 && (
+            <Flex justifyContent="flex-end">
+              <CopyButton value={res} />
+            </Flex>
+          )}
         </Box>
       </Flex>
     </Flex>
