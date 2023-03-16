@@ -171,7 +171,7 @@ export const QueryArea = ({
           />
           {/* If response line count > 100, the copy button is visible. */}
           {jsonLineCount(res) > 100 && (
-            <Flex justifyContent="flex-end" mt={2}>
+            <Flex justifyContent="flex-end" mt={4}>
               <CopyButton isDisable={res.length === 0} value={res} />
             </Flex>
           )}
