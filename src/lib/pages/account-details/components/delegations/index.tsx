@@ -76,13 +76,12 @@ export const DelegationsSection = ({
   const redelegationCount = redelegations?.length ?? 0;
 
   return (
-    <Flex mt={12} position="relative" overflowX="hidden" w="full">
+    <Flex mt={12} position="relative" overflow="hidden">
       <Flex
         direction="column"
         gap={8}
-        position="relative"
+        position={isOpen ? "absolute" : "relative"}
         w="full"
-        minH="100%"
         opacity={isOpen ? 0 : 1}
         left={isOpen ? "-100%" : "0"}
         transition="all 0.25s"
@@ -149,7 +148,7 @@ export const DelegationsSection = ({
         stakingParams={stakingParams}
         redelegations={redelegations ?? []}
         onBack={onToggle}
-        position="absolute"
+        position={isOpen ? "relative" : "absolute"}
         opacity={isOpen ? 1 : 0}
         left={isOpen ? "0" : "100%"}
         transition="all 0.25s"
