@@ -47,6 +47,7 @@ const JsonEditor = ({
       }}
       onChange={setValue}
       value={value}
+      editorProps={{ $blockScrolling: true }}
     />
   );
 };
