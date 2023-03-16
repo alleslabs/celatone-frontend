@@ -350,7 +350,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           <JsonInput
             text={watchInitMsg}
             setText={(newVal: string) => setValue("initMsg", newVal)}
-            height="120px"
+            minLines={10}
           />
           <Heading variant="h6" as="h6" my="32px" alignSelf="flex-start">
             Send asset to contract

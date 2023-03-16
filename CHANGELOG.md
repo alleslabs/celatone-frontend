@@ -45,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#237](https://github.com/alleslabs/celatone-frontend/pull/237) Change unsupported tokens layout and style
 
+### Bug fixes
+
+- [#243](https://github.com/alleslabs/celatone-frontend/pull/243) Fix Json viewer and view more btn
+
 ## v1.0.2
 
 ### Features
