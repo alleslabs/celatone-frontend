@@ -43,12 +43,12 @@ const JsonReadOnly = ({
     return Math.max(lineCount, THRESHOLD_LINES);
   }, [isExpandable, text, viewFull]);
 
-  const showExpandButton = useMemo(() => {
-    return isExpandable && jsonLineCount(text) > THRESHOLD_LINES;
-  }, [isExpandable, text]);
+  const showExpandButton =
+    isExpandable && jsonLineCount(text) > THRESHOLD_LINES;
 
   return (
     <Box
+      position="relative"
       borderWidth="thin"
       borderColor={!isJsonValid ? "error.main" : "pebble.700"}
       borderRadius="8px"
@@ -89,7 +89,6 @@ const JsonReadOnly = ({
           top="10px"
           right="10px"
           className="copy-button-box"
-          display="none"
         >
           <CopyButton value={text} />
         </Box>

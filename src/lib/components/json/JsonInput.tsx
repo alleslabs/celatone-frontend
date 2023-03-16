@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useState, useEffect, useMemo } from "react";
 
 import { CustomIcon } from "../icon";
-import { jsonPrettify, jsonValidate } from "lib/utils";
+import { jsonLineCount, jsonPrettify, jsonValidate } from "lib/utils";
 
 const JsonEditor = dynamic(() => import("./JsonEditor"), {
   ssr: false,
@@ -98,7 +98,7 @@ const JsonInput = ({
   const isValidJson = jsonValidate(text) === null;
 
   const showLines = useMemo(() => {
-    const lines = text.split("\n").length;
+    const lines = jsonLineCount(text);
 
     // Limit the number of lines from minLines (default is 16) to 100
     return Math.min(Math.max(lines, minLines), 100);

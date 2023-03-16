@@ -164,11 +164,15 @@ export const QueryArea = ({
         </Box>
         <Spacer />
         <Box w="full">
-          <JsonReadOnly topic="Return Output" text={res} canCopy />
+          <JsonReadOnly
+            topic="Return Output"
+            text={res}
+            canCopy={res.length !== 0}
+          />
           {/* If response line count > 100, the copy button is visible. */}
           {jsonLineCount(res) > 100 && (
-            <Flex justifyContent="flex-end">
-              <CopyButton value={res} />
+            <Flex justifyContent="flex-end" mt={2}>
+              <CopyButton isDisable={res.length === 0} value={res} />
             </Flex>
           )}
         </Box>
