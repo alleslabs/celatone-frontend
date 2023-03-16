@@ -91,7 +91,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     setValue,
     watch,
     handleSubmit,
-    reset,
   } = useForm<InstantiatePageState>({
     mode: "all",
     defaultValues: {
@@ -114,7 +113,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     control: assetsControl,
     setValue: setAssets,
     watch: watchAssets,
-    reset: resetAssets,
   } = useForm<AttachFundsState>({
     mode: "all",
     defaultValues: {
@@ -247,33 +245,24 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       try {
         const msgObject = JSON.parse(decodedMsg) as InstantiateRedoMsg;
 
-        reset({
-          codeId: msgObject.code_id.toString(),
-          label: msgObject.label,
-          adminAddress: msgObject.admin,
-          initMsg: JSON.stringify(msgObject.msg, null, 2),
-        });
+        setValue("codeId", msgObject.code_id.toString());
+        setValue("label", msgObject.label);
+        setValue("adminAddress", msgObject.admin);
+        setValue("initMsg", JSON.stringify(msgObject.msg, null, 2));
 
         if (msgObject.funds.length) {
-          resetAssets({
-            assetsSelect: defaultAsset,
-            assetsJsonStr: jsonPrettify(JSON.stringify(msgObject.funds)),
-            attachFundsOption: AttachFundsType.ATTACH_FUNDS_JSON,
-          });
+          setAssets("assetsSelect", defaultAsset);
+          setAssets(
+            "assetsJsonStr",
+            jsonPrettify(JSON.stringify(msgObject.funds))
+          );
+          setAssets("attachFundsOption", AttachFundsType.ATTACH_FUNDS_JSON);
         }
       } catch {
         // comment just to avoid eslint no-empty
       }
     }
-  }, [
-    assetsJsonStr,
-    codeIdQuery,
-    msgQuery,
-    reset,
-    resetAssets,
-    setAssets,
-    setValue,
-  ]);
+  }, [codeIdQuery, msgQuery, setAssets, setValue]);
 
   useEffect(() => {
     if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
