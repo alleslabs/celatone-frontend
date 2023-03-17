@@ -90,7 +90,7 @@ const Faucet = () => {
       })
       .then(({ data: { txHash } }) => {
         toast({
-          title: "10.00 Testnet OSMO sent from the faucet",
+          title: "10 Testnet OSMO sent from the faucet",
           status: "success",
           duration: 5000,
           isClosable: false,
@@ -111,7 +111,7 @@ const Faucet = () => {
         setResult({
           status: "success",
           message:
-            "10.00 OSMO sent from the faucet. You will need to wait for another hour to request again.",
+            "Sent 10 testnet OSMO from the faucet. You will need to wait for another hour to request again.",
           txHash,
         });
       })
@@ -121,7 +121,7 @@ const Faucet = () => {
             setResult({
               status: "warning",
               message:
-                "There is a limit of one request per hour. If you have already made a request in the past hour, please try again later.",
+                "There is a limit of one request per hour for each receiving address and IP address. Please try again later.",
             });
           } else {
             setResult({
@@ -147,11 +147,11 @@ const Faucet = () => {
     <WasmPageContainer>
       <BackButton alignSelf="flex-start" />
       <Heading as="h5" variant="h5">
-        Testnet OSMO Faucet
+        Osmosis Testnet Faucet
       </Heading>
-      <Text variant="body2" color="pebble.600" pt={4} textAlign="center" mb={8}>
-        The Faucet provides 10.00 testnet OSMO per request for osmo-test-4
-        network. Please note that there is a limit of one request per hour.
+      <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
+        The faucet provides 10 testnet OSMO per request. Requests are limited to
+        once per hour for each receiving address and IP address.
       </Text>
       <TextInput
         variant="floating"
@@ -183,7 +183,7 @@ const Faucet = () => {
         isLoading={isLoading}
         disabled={disabled}
       >
-        Receive 10.00 Testnet OSMO
+        Request 10 testnet OSMO
       </Button>
       {result.status && (
         <Alert mt={8} variant={result.status}>

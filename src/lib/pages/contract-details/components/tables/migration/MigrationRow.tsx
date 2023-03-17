@@ -6,7 +6,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow, CodeNameCell } from "lib/components/table";
 import type { ContractMigrationHistory } from "lib/types";
 import { RemarkOperation } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
 interface MigrationRowProps {
   templateColumns: GridProps["templateColumns"];
@@ -58,6 +58,8 @@ export const MigrationRow = ({
   history,
 }: MigrationRowProps) => {
   const getAddressType = useGetAddressType();
+  const cw2Info = getCw2Info(history.cw2Contract, history.cw2Version);
+
   return (
     <Grid templateColumns={templateColumns}>
       <TableRow>
@@ -75,6 +77,14 @@ export const MigrationRow = ({
             name: history.codeName,
           }}
         />
+      </TableRow>
+      <TableRow>
+        <Text
+          color={cw2Info ? "text.main" : "text.disabled"}
+          wordBreak="break-all"
+        >
+          {cw2Info ?? "N/A"}
+        </Text>
       </TableRow>
       <TableRow>
         <ExplorerLink

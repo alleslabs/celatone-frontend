@@ -1,5 +1,4 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import type { CSSProperties } from "react";
 import { useState } from "react";
 
 import { CustomIcon } from "lib/components/icon";
@@ -8,22 +7,16 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 interface JsonInfoProps {
   header: string;
   jsonString: string;
-  showViewFullButton?: boolean;
-  jsonAreaHeight?: CSSProperties["height"];
   defaultExpand?: boolean;
 }
 
 export const JsonInfo = ({
   header,
   jsonString,
-  showViewFullButton,
-  jsonAreaHeight = "300px",
   defaultExpand = false,
 }: JsonInfoProps) => {
   const [expand, setExpand] = useState(defaultExpand);
-  /**
-   * @todos revist height and expand mechanism later
-   */
+
   return (
     <>
       <Flex
@@ -45,13 +38,11 @@ export const JsonInfo = ({
           name={expand ? "chevron-up" : "chevron-down"}
         />
       </Flex>
-      <JsonReadOnly
-        text={jsonString}
-        height={expand ? jsonAreaHeight : 0}
-        canCopy
-        canViewFull={showViewFullButton && expand}
-        disableResizing
-      />
+      <div
+        style={expand ? { display: "block" } : { height: 0, display: "none" }}
+      >
+        <JsonReadOnly text={jsonString} canCopy isExpandable />
+      </div>
     </>
   );
 };

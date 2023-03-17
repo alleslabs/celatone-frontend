@@ -1,14 +1,11 @@
-import type { LayoutProps } from "@chakra-ui/react";
 import { Text, Box } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
 import { CopyButton } from "../copy";
-import { jsonValidate } from "lib/utils";
+import { jsonLineCount, jsonValidate } from "lib/utils";
 
 import { ViewFullMsgButton } from "./ViewFullMsgButton";
-
-const BUTTON_EXPAND_PADDING = "60px";
 
 const JsonEditor = dynamic(() => import("lib/components/json/JsonEditor"), {
   ssr: false,
@@ -17,19 +14,17 @@ const JsonEditor = dynamic(() => import("lib/components/json/JsonEditor"), {
 interface JsonReadOnlyProps {
   topic?: string;
   text: string;
-  height?: LayoutProps["height"];
   canCopy?: boolean;
-  canViewFull?: boolean;
-  disableResizing?: boolean;
+  isExpandable?: boolean;
 }
+
+const THRESHOLD_LINES = 16;
 
 const JsonReadOnly = ({
   topic,
   text,
-  height,
   canCopy,
-  canViewFull,
-  disableResizing,
+  isExpandable,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
 
@@ -37,33 +32,40 @@ const JsonReadOnly = ({
     return jsonValidate(text) === null || text.length === 0;
   }, [text]);
 
-  const zeroHeight = height === 0;
+  const showLines = useMemo(() => {
+    const lineCount = jsonLineCount(text);
+
+    if (isExpandable) {
+      return viewFull ? lineCount : Math.min(lineCount, THRESHOLD_LINES);
+    }
+
+    // for query response json viewer
+    return Math.max(lineCount, THRESHOLD_LINES);
+  }, [isExpandable, text, viewFull]);
+
+  const showExpandButton =
+    isExpandable && jsonLineCount(text) > THRESHOLD_LINES;
+
   return (
     <Box
-      m={zeroHeight ? 0 : "8px 0 16px"}
-      p={
-        zeroHeight
-          ? 0
-          : `16px 12px ${viewFull ? BUTTON_EXPAND_PADDING : "16px"}`
-      }
-      borderWidth={zeroHeight ? "none" : "thin"}
+      position="relative"
+      borderWidth="thin"
       borderColor={!isJsonValid ? "error.main" : "pebble.700"}
       borderRadius="8px"
-      position="relative"
       transition="all .25s ease-in-out"
       _hover={{
         borderColor: isJsonValid && "pebble.600",
         "& .copy-button-box": { display: "block" },
       }}
     >
-      <JsonEditor
-        value={text}
-        readOnly
-        isValid={isJsonValid}
-        height={height}
-        showFullMsg={viewFull}
-        disableResizing={disableResizing}
-      />
+      <Box p="16px 12px">
+        <JsonEditor
+          value={text}
+          readOnly
+          isValid={isJsonValid}
+          showLines={showLines}
+        />
+      </Box>
       {!!topic && (
         <Text
           top="-10px"
@@ -75,19 +77,18 @@ const JsonReadOnly = ({
           {topic}
         </Text>
       )}
-      {canViewFull && (
+      {showExpandButton && (
         <ViewFullMsgButton
           onClick={() => setViewFull((prev) => !prev)}
           viewFull={viewFull}
         />
       )}
-      {canCopy && !zeroHeight && (
+      {canCopy && (
         <Box
           position="absolute"
           top="10px"
           right="10px"
           className="copy-button-box"
-          display="none"
         >
           <CopyButton value={text} />
         </Box>

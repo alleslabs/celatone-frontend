@@ -120,7 +120,9 @@ const ContractDetailsButton = ({
           variant="outline-gray"
           float="right"
           size="sm"
-          leftIcon={<CustomIcon name="bookmark" color="text.dark" />}
+          leftIcon={
+            <CustomIcon name="bookmark" color="text.dark" boxSize="12px" />
+          }
         >
           Add To List
         </Button>

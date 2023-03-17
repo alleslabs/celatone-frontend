@@ -16,9 +16,9 @@ import type {
   CodeData,
   PublicDetail,
   Option,
-  PublicCodeData,
   HumanAddr,
   CodeInfo,
+  PublicCode,
 } from "lib/types";
 import { InstantiatePermission } from "lib/types";
 
@@ -27,7 +27,7 @@ export interface CodeDataState {
   chainId: string;
   codeData: Option<CodeData>;
   publicProject: {
-    publicCodeData: Option<PublicCodeData>;
+    publicCodeData: Option<PublicCode>;
     publicDetail: Option<PublicDetail>;
   };
 }
@@ -87,6 +87,8 @@ export const useSavedCodes = () => {
       instantiatePermission:
         rawSavedCode?.instantiatePermission ?? InstantiatePermission.UNKNOWN,
       permissionAddresses: rawSavedCode?.permissionAddresses ?? [],
+      cw2Contract: rawSavedCode?.cw2Contract,
+      cw2Version: rawSavedCode?.cw2Version,
       isSaved: true,
     };
   });

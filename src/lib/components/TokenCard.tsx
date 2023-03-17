@@ -29,7 +29,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
     >
       <Flex
         direction="column"
-        h="101px"
+        minH="101px"
         gap={2}
         p={3}
         background="pebble.900"

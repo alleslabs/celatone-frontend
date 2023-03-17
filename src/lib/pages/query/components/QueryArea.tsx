@@ -17,7 +17,13 @@ import { useContractStore } from "lib/providers/store";
 import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, HumanAddr, RpcQueryError } from "lib/types";
-import { encode, getCurrentDate, jsonPrettify, jsonValidate } from "lib/utils";
+import {
+  encode,
+  getCurrentDate,
+  jsonLineCount,
+  jsonPrettify,
+  jsonValidate,
+} from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -89,9 +95,9 @@ export const QueryArea = ({
 
   return (
     <Flex direction="column">
-      <Box width="full" my="16px" alignItems="center">
+      <Box width="full" mt={4} mb={8} alignItems="center">
         {contractAddress && (
-          <Text variant="body3" mb="8px">
+          <Text variant="body3" mb={2}>
             Message Suggestions:
           </Text>
         )}
@@ -99,7 +105,7 @@ export const QueryArea = ({
           <ButtonGroup
             width="90%"
             flexWrap="wrap"
-            rowGap="8px"
+            rowGap={2}
             sx={{
               "> button": {
                 marginInlineStart: "0 !important",
@@ -120,20 +126,15 @@ export const QueryArea = ({
           </ButtonGroup>
         ) : (
           contractAddress && (
-            <Text my="4px" variant="body2" color="text.dark">
+            <Text my={1} variant="body2" color="text.dark">
               No QueryMsgs suggestion available
             </Text>
           )
         )}
       </Box>
-      <Flex gap="16px">
+      <Flex gap={4}>
         <Box w="full">
-          <JsonInput
-            topic="Query Msg"
-            text={msg}
-            setText={setMsg}
-            height="240px"
-          />
+          <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
           <Flex align="center" justify="space-between">
             <Flex gap={2}>
               <CopyButton isDisable={!msg.length} value={msg} />
@@ -163,10 +164,17 @@ export const QueryArea = ({
         </Box>
         <Spacer />
         <Box w="full">
-          <JsonReadOnly topic="Return Output" text={res} height="240px" />
-          <Flex justifyContent="flex-end" gap={2}>
-            <CopyButton isDisable={res.length === 0} value={res} />
-          </Flex>
+          <JsonReadOnly
+            topic="Return Output"
+            text={res}
+            canCopy={res.length !== 0}
+          />
+          {/* If response line count > 100, the copy button is visible. */}
+          {jsonLineCount(res) > 100 && (
+            <Flex justifyContent="flex-end" mt={4}>
+              <CopyButton isDisable={res.length === 0} value={res} />
+            </Flex>
+          )}
         </Box>
       </Flex>
     </Flex>

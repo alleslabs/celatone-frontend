@@ -77,11 +77,22 @@ export const CollapseNavMenu = ({
                   _hover={{ bg: "pebble.700", borderRadius: "8px" }}
                   transition="all .25s ease-in-out"
                   alignItems="center"
+                  position="relative"
                   bgColor={
                     isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
                   }
                   borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
                 >
+                  <Flex
+                    opacity={isCurrentPage(submenu.slug) ? 1 : 0}
+                    width="3px"
+                    height="16px"
+                    bgColor="violet.light"
+                    position="absolute"
+                    top="8px"
+                    borderRadius="2px"
+                    left="0px"
+                  />
                   {submenu.icon && <CustomIcon name={submenu.icon} />}
                   {submenu.logo && (
                     <Image

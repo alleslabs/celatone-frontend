@@ -1439,6 +1439,8 @@ export type Codes = {
   contracts: Array<Contracts>;
   /** An aggregate relationship */
   contracts_aggregate: Contracts_Aggregate;
+  cw2_contract?: Maybe<Scalars["String"]>;
+  cw2_version?: Maybe<Scalars["String"]>;
   id: Scalars["Int"];
   /** An object relationship */
   transaction?: Maybe<Transactions>;
@@ -1599,6 +1601,8 @@ export type Codes_Bool_Exp = {
   contract_instantiated?: InputMaybe<Int_Comparison_Exp>;
   contracts?: InputMaybe<Contracts_Bool_Exp>;
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Bool_Exp>;
+  cw2_contract?: InputMaybe<String_Comparison_Exp>;
+  cw2_version?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   transaction?: InputMaybe<Transactions_Bool_Exp>;
   transaction_id?: InputMaybe<Int_Comparison_Exp>;
@@ -1628,6 +1632,8 @@ export type Codes_Insert_Input = {
   contract_histories?: InputMaybe<Contract_Histories_Arr_Rel_Insert_Input>;
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
   contracts?: InputMaybe<Contracts_Arr_Rel_Insert_Input>;
+  cw2_contract?: InputMaybe<Scalars["String"]>;
+  cw2_version?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction?: InputMaybe<Transactions_Obj_Rel_Insert_Input>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
@@ -1639,6 +1645,8 @@ export type Codes_Max_Fields = {
   __typename?: "codes_max_fields";
   access_config_permission?: Maybe<Scalars["String"]>;
   contract_instantiated?: Maybe<Scalars["Int"]>;
+  cw2_contract?: Maybe<Scalars["String"]>;
+  cw2_version?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["Int"]>;
   transaction_id?: Maybe<Scalars["Int"]>;
   uploader?: Maybe<Scalars["Int"]>;
@@ -1648,6 +1656,8 @@ export type Codes_Max_Fields = {
 export type Codes_Max_Order_By = {
   access_config_permission?: InputMaybe<Order_By>;
   contract_instantiated?: InputMaybe<Order_By>;
+  cw2_contract?: InputMaybe<Order_By>;
+  cw2_version?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   transaction_id?: InputMaybe<Order_By>;
   uploader?: InputMaybe<Order_By>;
@@ -1658,6 +1668,8 @@ export type Codes_Min_Fields = {
   __typename?: "codes_min_fields";
   access_config_permission?: Maybe<Scalars["String"]>;
   contract_instantiated?: Maybe<Scalars["Int"]>;
+  cw2_contract?: Maybe<Scalars["String"]>;
+  cw2_version?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["Int"]>;
   transaction_id?: Maybe<Scalars["Int"]>;
   uploader?: Maybe<Scalars["Int"]>;
@@ -1667,6 +1679,8 @@ export type Codes_Min_Fields = {
 export type Codes_Min_Order_By = {
   access_config_permission?: InputMaybe<Order_By>;
   contract_instantiated?: InputMaybe<Order_By>;
+  cw2_contract?: InputMaybe<Order_By>;
+  cw2_version?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   transaction_id?: InputMaybe<Order_By>;
   uploader?: InputMaybe<Order_By>;
@@ -1704,6 +1718,8 @@ export type Codes_Order_By = {
   contract_histories_aggregate?: InputMaybe<Contract_Histories_Aggregate_Order_By>;
   contract_instantiated?: InputMaybe<Order_By>;
   contracts_aggregate?: InputMaybe<Contracts_Aggregate_Order_By>;
+  cw2_contract?: InputMaybe<Order_By>;
+  cw2_version?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   transaction?: InputMaybe<Transactions_Order_By>;
   transaction_id?: InputMaybe<Order_By>;
@@ -1724,6 +1740,10 @@ export enum Codes_Select_Column {
   /** column name */
   ContractInstantiated = "contract_instantiated",
   /** column name */
+  Cw2Contract = "cw2_contract",
+  /** column name */
+  Cw2Version = "cw2_version",
+  /** column name */
   Id = "id",
   /** column name */
   TransactionId = "transaction_id",
@@ -1736,6 +1756,8 @@ export type Codes_Set_Input = {
   access_config_addresses?: InputMaybe<Scalars["json"]>;
   access_config_permission?: InputMaybe<Scalars["String"]>;
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
+  cw2_contract?: InputMaybe<Scalars["String"]>;
+  cw2_version?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
   uploader?: InputMaybe<Scalars["Int"]>;
@@ -1805,6 +1827,8 @@ export type Codes_Stream_Cursor_Value_Input = {
   access_config_addresses?: InputMaybe<Scalars["json"]>;
   access_config_permission?: InputMaybe<Scalars["String"]>;
   contract_instantiated?: InputMaybe<Scalars["Int"]>;
+  cw2_contract?: InputMaybe<Scalars["String"]>;
+  cw2_version?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
   transaction_id?: InputMaybe<Scalars["Int"]>;
   uploader?: InputMaybe<Scalars["Int"]>;
@@ -1835,6 +1859,10 @@ export enum Codes_Update_Column {
   AccessConfigPermission = "access_config_permission",
   /** column name */
   ContractInstantiated = "contract_instantiated",
+  /** column name */
+  Cw2Contract = "cw2_contract",
+  /** column name */
+  Cw2Version = "cw2_version",
   /** column name */
   Id = "id",
   /** column name */
@@ -6904,6 +6932,8 @@ export type GetCodeListQueryQuery = {
     id: number;
     access_config_permission: string;
     access_config_addresses: any;
+    cw2_contract?: string | null;
+    cw2_version?: string | null;
     contracts_aggregate: {
       __typename?: "contracts_aggregate";
       aggregate?: {
@@ -6926,6 +6956,8 @@ export type GetCodeListByUserQueryQuery = {
     id: number;
     access_config_permission: string;
     access_config_addresses: any;
+    cw2_contract?: string | null;
+    cw2_version?: string | null;
     contracts_aggregate: {
       __typename?: "contracts_aggregate";
       aggregate?: {
@@ -6948,6 +6980,8 @@ export type GetCodeListByIDsQueryQuery = {
     id: number;
     access_config_permission: string;
     access_config_addresses: any;
+    cw2_contract?: string | null;
+    cw2_version?: string | null;
     contracts_aggregate: {
       __typename?: "contracts_aggregate";
       aggregate?: {
@@ -6970,6 +7004,8 @@ export type GetCodeDataByCodeIdQuery = {
     id: number;
     access_config_permission: string;
     access_config_addresses: any;
+    cw2_contract?: string | null;
+    cw2_version?: string | null;
     account: { __typename?: "accounts"; address: string };
     transaction?: {
       __typename?: "transactions";
@@ -6997,6 +7033,8 @@ export type GetCodeListByWalletAddressPaginationQuery = {
     id: number;
     access_config_permission: string;
     access_config_addresses: any;
+    cw2_contract?: string | null;
+    cw2_version?: string | null;
     contracts_aggregate: {
       __typename?: "contracts_aggregate";
       aggregate?: {
@@ -7150,6 +7188,8 @@ export type GetMigrationHistoriesByContractAddressQuery = {
     block: { __typename?: "blocks"; height: number; timestamp: any };
     code: {
       __typename?: "codes";
+      cw2_contract?: string | null;
+      cw2_version?: string | null;
       account: { __typename?: "accounts"; address: string };
     };
   }>;
@@ -7541,6 +7581,11 @@ export const GetCodeListQueryDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "access_config_addresses" },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cw2_contract" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "cw2_version" } },
               ],
             },
           },
@@ -7690,6 +7735,11 @@ export const GetCodeListByUserQueryDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "access_config_addresses" },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cw2_contract" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "cw2_version" } },
               ],
             },
           },
@@ -7809,6 +7859,11 @@ export const GetCodeListByIDsQueryDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "access_config_addresses" },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cw2_contract" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "cw2_version" } },
               ],
             },
           },
@@ -7945,6 +8000,11 @@ export const GetCodeDataByCodeIdDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "access_config_addresses" },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cw2_contract" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "cw2_version" } },
               ],
             },
           },
@@ -8125,6 +8185,11 @@ export const GetCodeListByWalletAddressPaginationDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "access_config_addresses" },
                 },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cw2_contract" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "cw2_version" } },
               ],
             },
           },
@@ -9389,6 +9454,14 @@ export const GetMigrationHistoriesByContractAddressDocument = {
                             },
                           ],
                         },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "cw2_contract" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "cw2_version" },
                       },
                     ],
                   },

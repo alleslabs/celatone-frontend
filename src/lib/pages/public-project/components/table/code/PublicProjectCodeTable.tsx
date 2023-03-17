@@ -22,16 +22,16 @@ interface PublicProjectCodeTableProps {
 }
 
 const TEMPLATE_COLUMNS =
-  "max(80px) minmax(320px, 1fr) max(120px) max(160px) max(160px) max(250px)";
+  "max(80px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
 
 const CodeTableHeader = () => (
   <Grid templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
+    <TableHeader>CW2 Info</TableHeader>
     <TableHeader>Contracts</TableHeader>
     <TableHeader>Uploader</TableHeader>
     <TableHeader>Permission</TableHeader>
-    <TableHeader />
   </Grid>
 );
 
@@ -57,6 +57,8 @@ export const PublicProjectCodeTable = observer(
           permissionAddresses: code.permissionAddresses,
           id: code.id,
           uploader: code.uploader,
+          cw2Contract: code.cw2Contract,
+          cw2Version: code.cw2Version,
           isSaved: isCodeIdSaved(code.id),
           ...getCodeLocalInfo(code.id),
         },
@@ -90,17 +92,19 @@ export const PublicProjectCodeTable = observer(
             withBorder
           />
         ) : (
-          <TableContainer mb={10}>
-            <CodeTableHeader />
-            {publicCodes.map((code) => (
-              <PublicProjectCodeRow
-                key={code.publicInfo.id}
-                publicCodeInfo={code}
-                templateColumn={TEMPLATE_COLUMNS}
-              />
-            ))}
+          <>
+            <TableContainer mb={10}>
+              <CodeTableHeader />
+              {publicCodes.map((code) => (
+                <PublicProjectCodeRow
+                  key={code.publicInfo.id}
+                  publicCodeInfo={code}
+                  templateColumn={TEMPLATE_COLUMNS}
+                />
+              ))}
+            </TableContainer>
             {onViewMore && <ViewMore onClick={onViewMore} />}
-          </TableContainer>
+          </>
         )}
       </Box>
     );

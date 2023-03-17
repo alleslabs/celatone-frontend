@@ -25,6 +25,7 @@ import {
   CodeNameCell,
 } from "lib/components/table";
 import type { CodeInfo } from "lib/types";
+import { getCw2Info } from "lib/utils";
 
 // Types of Table: Recent Codes / My Stored Codes / My Saved Codes
 type TableType = "recent" | "stored" | "saved";
@@ -47,7 +48,7 @@ interface OtherTBodyProps {
 }
 
 const TEMPLATE_COLUMNS =
-  "max(80px) minmax(320px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
+  "max(80px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
 
 const StateContainer = ({ children }: { children: ReactNode }) => (
   <VStack
@@ -110,6 +111,7 @@ const CodeTableHead = () => (
   >
     <TableHeaderNoBorder>Code ID</TableHeaderNoBorder>
     <TableHeaderNoBorder>Code Name</TableHeaderNoBorder>
+    <TableHeaderNoBorder>CW2 Info</TableHeaderNoBorder>
     <TableHeaderNoBorder textAlign="center">Contracts</TableHeaderNoBorder>
     <TableHeaderNoBorder>Uploader</TableHeaderNoBorder>
     <TableHeaderNoBorder>Permission</TableHeaderNoBorder>
@@ -121,6 +123,7 @@ const CodeTableRow = ({ code }: CodesRowProps) => {
   const goToCodeDetails = () => {
     navigate({ pathname: `/code/${code.id}` });
   };
+  const cw2Info = getCw2Info(code.cw2Contract, code.cw2Version);
 
   return (
     <Grid
@@ -143,6 +146,14 @@ const CodeTableRow = ({ code }: CodesRowProps) => {
       </TableRowNoBorder>
       <TableRowNoBorder>
         <CodeNameCell code={code} />
+      </TableRowNoBorder>
+      <TableRowNoBorder>
+        <Text
+          color={cw2Info ? "text.main" : "text.disabled"}
+          wordBreak="break-all"
+        >
+          {cw2Info ?? "N/A"}
+        </Text>
       </TableRowNoBorder>
       <TableRowNoBorder>
         <Text

@@ -79,12 +79,10 @@ const ContractDetailsBody = observer(
                   contractData.instantiateInfo?.raw.contract_info ?? {}
                 )
               )}
-              jsonAreaHeight="230px"
             />
             <JsonInfo
               header="Instantiate Message"
               jsonString={jsonPrettify(contractData.initMsg ?? "")}
-              showViewFullButton
               defaultExpand
             />
           </Flex>

@@ -7,7 +7,6 @@ import { ShowMoreButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { EditContractDetailsModal } from "lib/components/modal";
 import type { ContractData } from "lib/types";
-import { textLine } from "lib/utils";
 
 interface UserContractDescProps {
   contractData: ContractData;
@@ -20,10 +19,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "No Contract description",
     ellipsis: "...",
-    lines: textLine(
-      !contractData.publicProject.publicInfo?.description,
-      showMore
-    ),
+    lines: contractData.publicProject.publicInfo?.description ? 4 : 2,
   });
 
   const renderEditContractButton = () => {
@@ -71,7 +67,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
       flex="1"
       role="group"
     >
-      <Flex justify="space-between" align="center" h="32px" mb="1">
+      <Flex justify="space-between" align="center" h="32px">
         <Text variant="body2" fontWeight={500} color="text.dark" mt="1px">
           Your Contract Description
         </Text>

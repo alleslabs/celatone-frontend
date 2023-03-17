@@ -29,12 +29,19 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
 
   const isCurrentPage = useCallback(
     (slug: string) => {
-      if (network) {
-        return slug === "/"
-          ? pathName === `/${network}`
-          : pathName === `/${network}${slug}`;
+      const networkPath = network ? `/${network}` : "";
+      switch (slug) {
+        // handle home page
+        case "/":
+          return pathName === `${networkPath}` || pathName === "/";
+        // handle contract list page and public project page
+        case "/contract-list":
+        case "/public-project":
+          return pathName === `${networkPath}${slug}`;
+        // handle page with query param
+        default:
+          return pathName.includes(`${networkPath}${slug}`);
       }
-      return pathName === `${slug}`;
     },
     [network, pathName]
   );

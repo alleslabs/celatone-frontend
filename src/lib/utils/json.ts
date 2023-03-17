@@ -16,3 +16,5 @@ export const jsonPrettify = (text: string) => {
     return text;
   }
 };
+
+export const jsonLineCount = (text: string) => text.split(/\n/).length;
