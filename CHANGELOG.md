@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#246](https://github.com/alleslabs/celatone-frontend/pull/246) Show edit button when code name is set, and align button section to top
 - [#239](https://github.com/alleslabs/celatone-frontend/pull/239) Add code description and code name for public code in code details page
 - [#237](https://github.com/alleslabs/celatone-frontend/pull/237) Change unsupported tokens layout and style
 
