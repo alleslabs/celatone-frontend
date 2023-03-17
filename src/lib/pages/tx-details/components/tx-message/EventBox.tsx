@@ -1,12 +1,11 @@
-import { Box, Divider, Flex, Icon } from "@chakra-ui/react";
+import { Box, Divider, Flex } from "@chakra-ui/react";
 import type { Event } from "@cosmjs/stargate";
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
-import { MdList } from "react-icons/md";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { TxReceiptRender } from "lib/components/tx";
 import type { TxReceipt } from "lib/types";
@@ -112,16 +111,22 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         onClick={() => setExpand((prev) => !prev)}
         p={4}
       >
-        <Flex fontSize="14px" gap={2} fontWeight={500}>
-          <Icon as={MdList} boxSize={6} color="pebble.600" />
+        <Flex fontSize="14px" gap={2} fontWeight={500} align="center">
+          <CustomIcon
+            name="contract-list"
+            boxSize={4}
+            color="pebble.600"
+            m={0}
+          />
           {`[${msgIndex}] ${event.type}`}
         </Flex>
-        <Icon
-          as={FiChevronDown}
+        <CustomIcon
+          name="chevron-down"
           color="pebble.600"
-          boxSize={5}
+          boxSize={4}
           transform={expand ? "rotate(180deg)" : "rotate(0)"}
           transition="all .25s ease-in-out"
+          m={0}
         />
       </Flex>
       {expand && (

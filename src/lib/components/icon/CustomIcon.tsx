@@ -564,7 +564,7 @@ export const ICONS = {
     ),
     viewBox: viewBox101616,
   },
-  deligate: {
+  delegate: {
     svg: (
       <path
         fillRule="evenodd"
@@ -707,7 +707,7 @@ export const ICONS = {
     ),
     viewBox: viewboxDefault,
   },
-  external: {
+  launch: {
     svg: (
       <path
         fillRule="evenodd"

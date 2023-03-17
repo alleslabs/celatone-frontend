@@ -1,12 +1,11 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Button, Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { IoIosWarning } from "react-icons/io";
-import { MdCheckCircle, MdLaunch } from "react-icons/md";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import { useChainId } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import type { TxData } from "lib/services/txService";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -39,7 +38,9 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         </Heading>
         <Button
           variant="ghost-gray"
-          rightIcon={<Icon as={MdLaunch} boxSize={5} color="text.dark" />}
+          rightIcon={
+            <CustomIcon name="launch" boxSize={3} color="text.dark" m={0} />
+          }
           onClick={openLcdPage}
         >
           View in JSON
@@ -57,19 +58,25 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         />
       </Flex>
       <Flex gap={2} fontSize="14px" color="text.dark" align="center">
-        <Flex
-          align="center"
-          gap={1}
-          color={isTxFailed ? "error.main" : "success.main"}
-        >
+        <Flex align="center" gap={1}>
           {isTxFailed ? (
             <>
-              <Icon as={IoIosWarning} boxSize={4} />
+              <CustomIcon
+                name="close-circle-solid"
+                boxSize={3}
+                m={0}
+                color="error.main"
+              />
               <p>Failed</p>
             </>
           ) : (
             <>
-              <Icon as={MdCheckCircle} boxSize={4} />
+              <CustomIcon
+                name="check-circle-solid"
+                boxSize={3}
+                m={0}
+                color="success.main"
+              />
               <p>Success</p>
             </>
           )}

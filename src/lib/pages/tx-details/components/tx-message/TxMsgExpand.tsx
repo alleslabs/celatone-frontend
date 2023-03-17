@@ -1,32 +1,18 @@
-import { Badge, Flex, Icon } from "@chakra-ui/react";
+import { Badge, Flex } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
-import type { IconType } from "react-icons";
-import { FiChevronDown } from "react-icons/fi";
-import {
-  MdInfo,
-  MdUpload,
-  MdAdd,
-  MdMessage,
-  MdSend,
-  MdMail,
-  MdOutlineHowToVote,
-  MdDonutLarge,
-  MdFormatIndentIncrease,
-  MdPersonRemove,
-  MdManageAccounts,
-} from "react-icons/md";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import type { IconKeys } from "lib/components/icon";
+import { CustomIcon } from "lib/components/icon";
 import { useAssetInfos } from "lib/services/assetService";
 import type { Addr } from "lib/types";
 import type { VoteOption } from "lib/utils";
-import { formatBalanceWithDenom } from "lib/utils";
+import { formatBalanceWithDenom, voteOption } from "lib/utils";
 
 import type { TxMsgData } from ".";
-import { voteOption } from "./msg-receipts/mapping";
 
 interface TxMsgExpandProps extends TxMsgData {
   isExpand: boolean;
@@ -41,7 +27,7 @@ export const TxMsgExpand = ({
 }: TxMsgExpandProps) => {
   const getAddressType = useGetAddressType();
   const assetInfos = useAssetInfos();
-  let msgIcon: IconType = MdInfo;
+  let msgIcon: IconKeys = "info-circle";
   let content: ReactNode;
   const isIBC = Boolean(
     log?.events?.find((event) => event.type === "send_packet")
@@ -50,7 +36,7 @@ export const TxMsgExpand = ({
 
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode":
-      msgIcon = MdUpload;
+      msgIcon = "upload";
       content = (
         <>
           Upload Wasm
@@ -71,7 +57,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
-      msgIcon = MdAdd;
+      msgIcon = "instantiate";
       content = (
         <>
           Instantiate
@@ -96,7 +82,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
-      msgIcon = MdAdd;
+      msgIcon = "instantiate";
       content = (
         <>
           Instantiate2
@@ -121,7 +107,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
-      msgIcon = MdMessage;
+      msgIcon = "execute";
       content = (
         <>
           Execute
@@ -137,7 +123,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
-      msgIcon = MdFormatIndentIncrease;
+      msgIcon = "migrate";
       content = (
         <>
           Migrate{" "}
@@ -158,7 +144,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
-      msgIcon = MdManageAccounts;
+      msgIcon = "admin-edit";
       content = (
         <>
           Update admin on{" "}
@@ -179,7 +165,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
-      msgIcon = MdPersonRemove;
+      msgIcon = "admin-clear";
       content = (
         <>
           Clear admin on{" "}
@@ -204,7 +190,7 @@ export const TxMsgExpand = ({
                 symbol: assetInfos?.[singleCoin.denom]?.symbol,
                 precision: assetInfos?.[singleCoin.denom]?.precision,
               });
-        msgIcon = MdSend;
+        msgIcon = "send";
         content = (
           <>
             Send {assetText} to
@@ -219,7 +205,7 @@ export const TxMsgExpand = ({
       }
       break;
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
-      msgIcon = MdMail;
+      msgIcon = "submit-proposal";
       content = (
         <>
           Submit Proposal
@@ -240,7 +226,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmos.gov.v1beta1.MsgVote":
-      msgIcon = MdOutlineHowToVote;
+      msgIcon = "vote";
       content = (
         <>
           Vote{" "}
@@ -258,7 +244,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmos.staking.v1beta1.MsgDelegate":
-      msgIcon = MdDonutLarge;
+      msgIcon = "delegate";
       content = (
         <>
           Delegate by{" "}
@@ -308,16 +294,17 @@ export const TxMsgExpand = ({
       }}
     >
       <Flex align="center" gap={2} fontSize="16px" fontWeight={500}>
-        <Icon as={msgIcon} boxSize={6} color="lilac.main" />
+        <CustomIcon name={msgIcon} boxSize={4} color="lilac.main" m={0} />
         {content}
         {isIBC && <Badge variant="honeydew">IBC</Badge>}
       </Flex>
-      <Icon
-        as={FiChevronDown}
+      <CustomIcon
+        name="chevron-down"
         color="pebble.600"
-        boxSize={5}
+        boxSize={4}
         transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
         transition="all .25s ease-in-out"
+        m={0}
       />
     </Flex>
   );
