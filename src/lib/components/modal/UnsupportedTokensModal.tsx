@@ -10,7 +10,7 @@ import {
   ModalBody,
   Button,
   Heading,
-  Box,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
@@ -49,21 +49,46 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
 
   return (
     <Flex
+      _hover={{
+        "& .info": {
+          display: "flex",
+        },
+      }}
       borderRadius="8px"
       bg="pebble.800"
-      justify="space-between"
+      direction="column"
       px={4}
       py={3}
       role="group"
     >
-      <Flex direction="column" maxW="70%">
-        <Flex direction="row" alignItems="center">
+      <Flex
+        direction="row"
+        justifyContent="space-between"
+        w="full"
+        alignItems="center"
+      >
+        <Flex gap={1}>
           <Text variant="body2" className="ellipsis">
             {tokenLabel}
           </Text>
-          <Box _groupHover={{ display: "flex" }} display="none">
-            <Copier value={balance.id} />
-          </Box>
+          <Tooltip
+            hasArrow
+            label={`Token ID: ${balance.id}`}
+            placement="top"
+            bg="honeydew.darker"
+            maxW="500px"
+          >
+            <Flex cursor="pointer" className="info" display="none">
+              <CustomIcon name="info-circle" boxSize="3" />
+            </Flex>
+          </Tooltip>
+          <Copier
+            value={balance.id}
+            copyLabel="Token ID Copied!"
+            ml="1px"
+            display="none"
+            className="info"
+          />
         </Flex>
         <Text variant="body3" color="text.dark">
           {`${tokenType} Token`}
@@ -72,7 +97,8 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
       <Text variant="body2" fontWeight="900">
         {formatUTokenWithPrecision(
           balance.amount as U<Token>,
-          balance.precision
+          balance.precision,
+          false
         )}
       </Text>
     </Flex>
@@ -124,7 +150,7 @@ export const UnsupportedTokensModal = ({
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent w="700px">
+        <ModalContent w="800px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
               <CustomIcon name={content.icon} boxSize="5" />

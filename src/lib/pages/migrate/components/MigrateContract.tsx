@@ -176,7 +176,7 @@ export const MigrateContract = ({
       <JsonInput
         text={migrateMsg}
         setText={(msg: string) => setValue("migrateMsg", msg)}
-        height="120px"
+        minLines={10}
       />
       {simulateError && (
         <Flex gap={2} mb={4}>
