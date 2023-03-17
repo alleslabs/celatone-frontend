@@ -6,6 +6,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
 import type { TokenWithValue } from "lib/pages/account-details/type";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr, Option, Token, U, USD } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
@@ -116,7 +117,10 @@ export const DelegationsSection = ({
               variant="ghost-gray"
               minW="fit-content"
               rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={onViewMore}
+              onClick={() => {
+                AmpTrack(AmpEvent.USE_VIEW_MORE);
+                onViewMore();
+              }}
             >
               View Delegation Info
             </Button>
@@ -127,7 +131,10 @@ export const DelegationsSection = ({
               leftIcon={<CustomIcon name="history" color="pebble.400" />}
               rightIcon={<CustomIcon name="chevron-right" color="pebble.400" />}
               isDisabled={!redelegationCount}
-              onClick={onToggle}
+              onClick={() => {
+                AmpTrack(AmpEvent.USE_SEE_REDELEGATIONS);
+                onToggle();
+              }}
             >
               See Active Redelegations ({redelegationCount})
             </Button>

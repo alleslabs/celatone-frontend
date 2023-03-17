@@ -87,7 +87,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             copyLabel="Token ID Copied!"
             ml="1px"
             display="none"
-            className="info"
+            className="unsupported_asset"
           />
         </Flex>
         <Text variant="body3" color="text.dark">

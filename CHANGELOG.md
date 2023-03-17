@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#245](https://github.com/alleslabs/celatone-frontend/pull/245) Add amplitude for account detail page
 - [#232](https://github.com/alleslabs/celatone-frontend/pull/232) Add delegation data and section for the account detail page
 - [#230](https://github.com/alleslabs/celatone-frontend/pull/230) Add cw2info to code table
 

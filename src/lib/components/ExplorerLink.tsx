@@ -189,7 +189,7 @@ export const ExplorerLink = ({
             value={copyValue || value}
             copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
             ml="8px"
-            className="copy-button"
+            className={type}
             display={canCopyWithHover ? "none" : "flex"}
           />
         </>

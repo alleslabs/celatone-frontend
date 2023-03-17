@@ -82,7 +82,7 @@ export const SingleMsg = ({
             display={showCopyButton ? "flex" : "none"}
             value={token.id}
             ml="4px"
-            className="copy-button"
+            className={token.symbol ? "supported_asset" : "unsupported_asset"}
             copyLabel="Token ID Copied!"
           />
         </Flex>

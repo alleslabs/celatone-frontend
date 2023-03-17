@@ -69,7 +69,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
             copyLabel="Token ID Copied!"
             ml="1px"
             display="none"
-            className="copy-button"
+            className="supported_asset"
           />
         </Flex>
 
