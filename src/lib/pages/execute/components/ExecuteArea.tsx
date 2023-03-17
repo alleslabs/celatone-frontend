@@ -251,12 +251,7 @@ export const ExecuteArea = ({
       )}
       <Flex gap="32px" mt={8} direction={{ sm: "column", lg: "row" }}>
         <Box w={{ sm: "full", lg: "50%" }}>
-          <JsonInput
-            topic="Execute Msg"
-            text={msg}
-            setText={setMsg}
-            height="240px"
-          />
+          <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
           {error && <ErrorMessageRender error={error} mb={4} />}
         </Box>
         <Box w={{ sm: "full", lg: "50%" }}>

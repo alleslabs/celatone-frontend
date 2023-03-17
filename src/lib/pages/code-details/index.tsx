@@ -5,8 +5,10 @@ import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { PublicDescription } from "lib/components/PublicDescription";
 import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
@@ -56,6 +58,14 @@ const CodeDetailsBody = observer(
                   codeId}
               </Heading>
             </Flex>
+            {publicProject.publicCodeData?.name && (
+              <Flex gap={2}>
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  Public Code Name:
+                </Text>
+                <Text variant="body2">{publicProject.publicCodeData.name}</Text>
+              </Flex>
+            )}
             <Flex gap={2}>
               <Text fontWeight={500} color="text.dark" variant="body2">
                 Code ID:
@@ -88,6 +98,14 @@ const CodeDetailsBody = observer(
             cw2Version={undefined}
           />
         </Flex>
+        {publicProject.publicCodeData?.description && (
+          <PublicDescription
+            title="Public Code Description"
+            description={publicProject.publicCodeData.description}
+            textLine={2}
+            icon={<CustomIcon name="website" ml="0" my="0" />}
+          />
+        )}
         <Divider borderColor="pebble.700" my={12} />
         <CodeInfoSection codeData={codeData} chainId={chainId} />
         <CodeContractsTable codeId={codeId} />

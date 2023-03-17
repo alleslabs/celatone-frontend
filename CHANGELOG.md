@@ -40,6 +40,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#230](https://github.com/alleslabs/celatone-frontend/pull/230) Add cw2info to code table
+
+### Improvements
+
+- [#239](https://github.com/alleslabs/celatone-frontend/pull/239) Add code description and code name for public code in code details page
+- [#237](https://github.com/alleslabs/celatone-frontend/pull/237) Change unsupported tokens layout and style
+
+### Bug fixes
+
+- [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit
+- [#243](https://github.com/alleslabs/celatone-frontend/pull/243) Fix Json viewer and view more btn
+
+## v1.0.2
+
+### Features
+
+- [#233](https://github.com/alleslabs/celatone-frontend/pull/233) Disable account detail page
 - [#228](https://github.com/alleslabs/celatone-frontend/pull/228) Add Faucet testnet page
 - [#79](https://github.com/alleslabs/celatone-frontend/pull/79) Add dropdown menu and wireup up json attach funds
 - [#225](https://github.com/alleslabs/celatone-frontend/pull/225) Add assets section in account details page
