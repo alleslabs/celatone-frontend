@@ -10,7 +10,6 @@ export * from "./number";
 export * from "./isDecimalNumber";
 export * from "./extractMsgType";
 export * from "./scroll";
-export * from "./textLine";
 export * from "./date";
 export * from "./validate";
 export * from "./txHash";
