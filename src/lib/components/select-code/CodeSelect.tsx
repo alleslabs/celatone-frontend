@@ -6,7 +6,7 @@ import { UploadIcon } from "lib/components/icon";
 import { useUserKey } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 
-import { CodeSelectModalButton } from "./CodeSelectModalButton";
+import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
 interface CodeSelectProps extends Omit<FlexProps, "onSelect"> {
   onCodeSelect: (code: string) => void;
@@ -58,7 +58,7 @@ export const CodeSelect = ({
             Please select code
           </Text>
         )}
-        <CodeSelectModalButton
+        <CodeSelectDrawerButton
           onCodeSelect={onCodeSelect}
           buttonText={codeId ? "Change Code" : "Select Code"}
         />

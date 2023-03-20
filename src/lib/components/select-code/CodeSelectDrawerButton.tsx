@@ -1,14 +1,14 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
   Button,
   useDisclosure,
-  ModalCloseButton,
   Text,
   Heading,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerCloseButton,
+  DrawerBody,
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
@@ -18,15 +18,15 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { MySavedCodeContent } from "./MySavedCodeContent";
 import { MyStoredCodeContent } from "./MyStoredCodeContent";
 
-interface CodeSelectModalButtonProps {
+interface CodeSelectDrawerButtonProps {
   onCodeSelect: (code: string) => void;
   buttonText: string;
 }
 
-export const CodeSelectModalButton = ({
+export const CodeSelectDrawerButton = ({
   onCodeSelect,
   buttonText,
-}: CodeSelectModalButtonProps) => {
+}: CodeSelectDrawerButtonProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
@@ -58,17 +58,17 @@ export const CodeSelectModalButton = ({
         {buttonText}
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
-        <ModalOverlay />
-        <ModalContent w="840px">
-          <ModalHeader>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+        <DrawerOverlay />
+        <DrawerContent h="80%">
+          <DrawerHeader>
             <CustomIcon name="code" boxSize="6" />
             <Heading as="h5" variant="h5">
               Select Code ID
             </Heading>
-          </ModalHeader>
-          <ModalCloseButton color="text.dark" />
-          <ModalBody px={0} maxH="640px" overflow="scroll">
+          </DrawerHeader>
+          <DrawerCloseButton color="text.dark" />
+          <DrawerBody px={0} overflow="scroll">
             <Heading as="h6" variant="h6" mb="8px" ml="24px">
               My Stored Codes
             </Heading>
@@ -89,9 +89,9 @@ export const CodeSelectModalButton = ({
               savedCodes={savedCodes}
               handleSelect={handleSelect}
             />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
