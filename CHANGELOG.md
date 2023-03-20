@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#240](https://github.com/alleslabs/celatone-frontend/pull/240) Change modals containing tables to drawers for easier exploration
 - [#239](https://github.com/alleslabs/celatone-frontend/pull/239) Add code description and code name for public code in code details page
 - [#237](https://github.com/alleslabs/celatone-frontend/pull/237) Change unsupported tokens layout and style
 
@@ -73,7 +74,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#240](https://github.com/alleslabs/celatone-frontend/pull/240) Change modals containing tables to drawers for easier exploration
 - [#234](https://github.com/alleslabs/celatone-frontend/pull/234) Fix faucet wording
 - [#216](https://github.com/alleslabs/celatone-frontend/pull/216) Change icon to Alles Labs icon set
 - [#227](https://github.com/alleslabs/celatone-frontend/pull/227) Refactor directory structure and components e.g. various tables
