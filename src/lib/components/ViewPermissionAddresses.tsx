@@ -22,22 +22,20 @@ export const ViewPermissionAddresses = ({
   return (
     <>
       {showAddressses &&
-        permissionAddresses.map((addr) => {
-          return (
-            <ExplorerLink
-              key={addr}
-              type={getAddressType(addr)}
-              value={addr}
-              canCopyWithHover
-            />
-          );
-        })}
+        permissionAddresses.map((addr) => (
+          <ExplorerLink
+            key={addr}
+            type={getAddressType(addr)}
+            value={addr}
+            canCopyWithHover
+          />
+        ))}
       {permissionAddresses.length > 1 && (
         <Button
           variant="ghost-primary"
           onClick={() => setViewAll((prev) => !prev)}
           size="sm"
-          p="unset"
+          px="2 !important"
           w="fit-content"
           rightIcon={
             <CustomIcon

@@ -1,11 +1,9 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
-import { useChainId } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { useOpenTxTab } from "lib/hooks";
 import type { TxData } from "lib/services/txService";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -18,18 +16,7 @@ const DotSeparator = () => (
 );
 
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
-  const { currentChainName } = useWallet();
-  const chainId = useChainId();
-  const isTxFailed = Boolean(txData.code);
-  const openLcdPage = () => {
-    window.open(
-      `${CELATONE_API_ENDPOINT}/txs/${getChainApiPath(
-        currentChainName
-      )}/${chainId}/${txData.txhash}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
-  };
+  const openLcdTab = useOpenTxTab("lcd");
   return (
     <Flex direction="column" gap={2} {...flexProps}>
       <Flex justify="space-between" align="center">
@@ -41,7 +28,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
           rightIcon={
             <CustomIcon name="launch" boxSize={3} color="text.dark" m={0} />
           }
-          onClick={openLcdPage}
+          onClick={() => openLcdTab(txData.txhash)}
         >
           View in JSON
         </Button>
@@ -59,7 +46,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
       </Flex>
       <Flex gap={2} fontSize="14px" color="text.dark" align="center">
         <Flex align="center" gap={1}>
-          {isTxFailed ? (
+          {txData.isTxFailed ? (
             <>
               <CustomIcon
                 name="close-circle-solid"

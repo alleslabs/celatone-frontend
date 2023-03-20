@@ -6,6 +6,8 @@ export const getAddressTypeText = (addressType: AddressReturnType) => {
       return "(Contract Address)";
     case "user_address":
       return "(Wallet Address)";
+    case "validator_address":
+      return "(Validator Address)";
     default:
       return "(Invalid Address)";
   }

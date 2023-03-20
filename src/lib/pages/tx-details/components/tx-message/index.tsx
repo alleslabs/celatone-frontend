@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import type { Log } from "@cosmjs/stargate/build/logs";
+import type { logs } from "@cosmjs/stargate";
 import { useState } from "react";
 
 import type { MsgBody } from "lib/services/tx";
@@ -10,7 +10,7 @@ import { TxMsgExpand } from "./TxMsgExpand";
 
 export interface TxMsgData {
   msgBody: MsgBody;
-  log: Option<Log>;
+  log: Option<logs.Log>;
   isSingleMsg?: boolean;
 }
 

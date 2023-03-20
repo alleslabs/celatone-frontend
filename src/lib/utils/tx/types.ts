@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { TypeUrl } from "lib/services/tx";
+import type { TypeUrl } from "lib/data";
 import type {
   Addr,
   ContractAddr,

@@ -30,7 +30,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
   type,
   value,
   linkType = "invalid_address",
-  fallback,
+  fallback = "-",
 }: CommonReceiptHtmlArgs<T, T extends "json" ? object : string>) => {
   if (!value)
     return (
@@ -64,10 +64,9 @@ export const getCoinComponent = (
 ) => <CoinComponent amount={amount} assetInfos={assetInfos} />;
 
 export const getGenericValueEntry = (
-  entry: [string, string | object],
+  [title, value]: [string, string | object],
   getAddressType: (address: string) => AddressReturnType
 ): TxReceipt => {
-  const [title, value] = entry;
   let valueObj: Omit<TxReceipt, "title">;
   switch (typeof value) {
     case "object":
@@ -96,7 +95,6 @@ export const getGenericValueEntry = (
   return { title: convertToTitle(title), ...valueObj };
 };
 
-// Duplicated Receipt
 export const attachFundsReceipt = (
   value: Option<Coin[]>,
   assetInfos: Option<{ [key: string]: AssetInfo }>

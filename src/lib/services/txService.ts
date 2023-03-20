@@ -18,6 +18,7 @@ import type { Addr, ContractAddr, Option, Transaction } from "lib/types";
 import {
   formatStdFee,
   getActionMsgType,
+  isTxHash,
   parseDateOpt,
   parseTxHash,
   snakeToCamel,
@@ -30,13 +31,14 @@ import { queryTxData } from "./tx";
 export interface TxData extends TxResponse {
   chainId: string;
   formattedFee: Option<string>;
+  isTxFailed: boolean;
 }
 
 export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
   const { currentChainName } = useWallet();
   const chainId = useChainId();
   const queryFn = useCallback(
-    async ({ queryKey }: QueryFunctionContext<string[]>) => {
+    async ({ queryKey }: QueryFunctionContext<string[]>): Promise<TxData> => {
       const txData = await queryTxData(queryKey[1], queryKey[2], queryKey[3]);
       return {
         ...txData,
@@ -44,6 +46,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
         formattedFee: txData.tx.auth_info.fee?.amount.length
           ? formatStdFee(txData.tx.auth_info.fee)
           : undefined,
+        isTxFailed: Boolean(txData.code),
       };
     },
     [chainId]
@@ -52,7 +55,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
   return useQuery({
     queryKey: ["tx_data", currentChainName, chainId, txHash] as string[],
     queryFn,
-    enabled: !!txHash,
+    enabled: Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,
     retry: false,
   });

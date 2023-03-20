@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { useGetAddressType } from "lib/app-provider";
+import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
@@ -37,9 +38,10 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         );
         break;
       case key === "code_id":
+      case key === "proposal_id":
         valueComponent = (
           <ExplorerLink
-            type="code_id"
+            type={key as LinkType}
             value={value}
             canCopyWithHover
             textFormat="normal"
@@ -51,17 +53,6 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         valueComponent = (
           <ExplorerLink
             type="contract_address"
-            value={value}
-            canCopyWithHover
-            textFormat="normal"
-            maxWidth="full"
-          />
-        );
-        break;
-      case key === "proposal_id":
-        valueComponent = (
-          <ExplorerLink
-            type="proposal_id"
             value={value}
             canCopyWithHover
             textFormat="normal"

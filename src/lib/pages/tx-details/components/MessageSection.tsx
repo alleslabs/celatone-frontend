@@ -16,11 +16,10 @@ interface MessageSectionProps {
 }
 
 export const MessageSection = ({ txData }: MessageSectionProps) => {
-  const isTxFailed = Boolean(txData.code);
   const msgs = txData.tx.body.messages;
   return (
-    <Flex direction="column" flex={0.98} gap={4}>
-      {isTxFailed && (
+    <Flex direction="column" flex={1} gap={4}>
+      {txData.isTxFailed && (
         <Alert variant="error" mb={2} alignItems="center">
           <AlertIcon />
           <AlertDescription>{txData.raw_log}</AlertDescription>

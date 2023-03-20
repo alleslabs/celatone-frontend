@@ -29,7 +29,6 @@ export const CopyButton = ({
   <CopyTemplate
     value={value}
     copyLabel={copyLabel}
-    tooltipBgColor={tooltipBgColor}
     triggerElement={
       <Button
         isDisabled={isDisable}

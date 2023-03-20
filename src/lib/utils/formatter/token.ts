@@ -90,5 +90,5 @@ export const formatPrice = (value: USD<BigSource>): string => {
 
 export const formatInteger = (n: BigSource): string => {
   const formatter = formatDemimal({ decimalPoints: 0, delimiter: true });
-  return formatter(n, "FormatError");
+  return formatter(n, "Not Available");
 };

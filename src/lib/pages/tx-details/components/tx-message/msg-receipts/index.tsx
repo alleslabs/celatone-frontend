@@ -10,9 +10,8 @@ import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
 import type { TxReceipt, Option, AssetInfo } from "lib/types";
 import type { VoteOption } from "lib/utils";
-import { extractTxDetails, formatUTC, parseDate } from "lib/utils";
+import { voteOption, extractTxDetails, formatUTC, parseDate } from "lib/utils";
 
-import { voteOption } from "./mapping";
 import {
   attachFundsReceipt,
   channelIdReceipt,
@@ -91,7 +90,6 @@ export const generateReceipts = (
               <CopyButton
                 value={details.wasm_byte_code}
                 variant="ghost-primary"
-                tooltipBgColor="lilac.darker"
                 buttonText="Click to Copy"
                 hasIcon={false}
                 mt={-1}

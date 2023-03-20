@@ -17,13 +17,13 @@ const TxDetails = () => {
   const router = useRouter();
   const hashParam = getFirstQueryParam(router.query.txHash);
 
-  const { data: txData, isLoading } = useTxData(hashParam);
+  const { data: txData, isLoading, isFetching } = useTxData(hashParam);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_TRANSACTION_DETAIL);
   }, [router.isReady]);
 
-  if (isLoading) return <Loading />;
+  if ((isLoading && isFetching) || !hashParam) return <Loading />;
 
   return (
     <PageContainer>

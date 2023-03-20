@@ -23,7 +23,7 @@ import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { getNetworkByChainName } from "lib/data";
+import { useOpenTxTab } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 type ResultStatus = "success" | "error" | "warning";
@@ -42,7 +42,7 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
 
 // todo: handle token symbol by current chain
 const Faucet = () => {
-  const { address: walletAddress = "", currentChainName } = useWallet();
+  const { address: walletAddress = "" } = useWallet();
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
@@ -53,6 +53,7 @@ const Faucet = () => {
   const navigate = useInternalNavigate();
   const toast = useToast();
   const router = useRouter();
+  const openTxTab = useOpenTxTab("tx-page");
 
   const faucetUrl = process.env.NEXT_PUBLIC_FAUCET_URL;
 
@@ -202,15 +203,7 @@ const Faucet = () => {
               size="sm"
               _hover={{ background: "success.dark" }}
               style={{ padding: "4px 12px" }}
-              onClick={() =>
-                window.open(
-                  `/${getNetworkByChainName(currentChainName)}/tx/${
-                    result.txHash
-                  }`,
-                  "_blank",
-                  "noopener,noreferrer"
-                )
-              }
+              onClick={() => openTxTab(result.txHash)}
             >
               View Transaction
             </Button>
