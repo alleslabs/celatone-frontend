@@ -1,7 +1,7 @@
 interface NATokenProps {
   size?: string;
 }
-export const NAToken = ({ size = "40" }: NATokenProps) => (
+export const NAToken = ({ size = "20" }: NATokenProps) => (
   <svg
     width={size}
     height={size}
@@ -21,7 +21,7 @@ export const NAToken = ({ size = "40" }: NATokenProps) => (
     </g>
     <defs>
       <clipPath id="clip0_45_8268">
-        <rect width={size} height={size} fill="white" />
+        <rect width="100%" height="100%" fill="white" />
       </clipPath>
     </defs>
   </svg>

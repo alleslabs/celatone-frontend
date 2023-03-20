@@ -40,15 +40,16 @@ export const toToken = (
 
 /**
  * @remarks
- * If token is more than or equal to 1 billion, should add postfix M and format to 2 decimal point
+ * If token is more than or equal to 1 billion, should add suffix B and format to 2 decimal point
  *
  */
 export const formatUTokenWithPrecision = (
   amount: U<Token<BigSource>>,
-  precision: number
+  precision: number,
+  isSuffix = true
 ): string => {
   const token = toToken(amount, precision);
-  if (token.gte(B)) {
+  if (isSuffix && token.gte(B)) {
     return `${formatDemimal({ decimalPoints: 2, delimiter: true })(
       token.div(B),
       "0.00"
