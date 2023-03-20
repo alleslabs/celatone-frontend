@@ -176,7 +176,7 @@ export const ExplorerLink = ({
           <Copier
             type={type}
             value={copyValue || value}
-            display={canCopyWithHover ? "none" : "flex"}
+            display={canCopyWithHover ? "none" : "block"}
             ml="8px"
           />
         </>
