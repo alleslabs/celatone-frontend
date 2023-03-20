@@ -56,6 +56,11 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
       px={4}
       py={3}
       role="group"
+      _hover={{
+        "& .info": {
+          display: "flex",
+        },
+      }}
     >
       <Flex
         direction="row"
