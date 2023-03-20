@@ -49,11 +49,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
 
   return (
     <Flex
-      _hover={{
-        "& .info": {
-          display: "flex",
-        },
-      }}
+      className="copier-wrapper"
       borderRadius="8px"
       bg="pebble.800"
       direction="column"
@@ -83,11 +79,11 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             </Flex>
           </Tooltip>
           <Copier
+            type="unsupported_asset"
             value={balance.id}
             copyLabel="Token ID Copied!"
             ml="1px"
             display="none"
-            className="unsupported_asset"
           />
         </Flex>
         <Text variant="body3" color="text.dark">

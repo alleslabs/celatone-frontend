@@ -25,19 +25,15 @@ const PortIdRender = ({ portId }: { portId: string }) => {
 
   return (
     <Box
+      className="copier-wrapper"
       fontSize="14px"
-      _hover={{
-        "& .ibc-port-copy": {
-          display: "flex",
-        },
-      }}
       transition="all .25s ease-in-out"
     >
       {charArray?.map((line, idx) =>
         idx === charArray.length - 1 ? (
           <Flex align="center" key={line}>
             {line}
-            <Copier value={portId} className="ibc_port" display="none" />
+            <Copier type="ibc_port" value={portId} display="none" />
           </Flex>
         ) : (
           line

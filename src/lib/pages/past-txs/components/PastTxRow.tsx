@@ -21,7 +21,6 @@ export const PastTxRow = ({
 }: PastTxRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const [isAccordion, setIsAccordion] = useState(false);
-  const [showCopyButton, setShowCopyButton] = useState(false);
   useEffect(() => {
     if (transaction.messages.length > 1) setIsAccordion(true);
   }, [transaction.messages]);
@@ -29,11 +28,10 @@ export const PastTxRow = ({
   return (
     <Box w="full" minW="min-content">
       <Grid
+        className="copier-wrapper"
         templateColumns={templateColumnsStyle}
         onClick={isAccordion ? onToggle : undefined}
         _hover={{ background: "pebble.900" }}
-        onMouseEnter={() => setShowCopyButton(true)}
-        onMouseLeave={() => setShowCopyButton(false)}
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
@@ -53,10 +51,7 @@ export const PastTxRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            <RenderActionMessages
-              transaction={transaction}
-              showCopyButton={showCopyButton}
-            />
+            <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
               <Tag borderRadius="full" bg="honeydew.dark" color="pebble.900">
                 IBC
