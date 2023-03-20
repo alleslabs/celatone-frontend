@@ -60,7 +60,7 @@ const InitRender = ({
         <ExplorerLink
           type="tx_hash"
           value={initTxHash.toUpperCase()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </LabelText>
     );
@@ -75,7 +75,7 @@ const InitRender = ({
         <ExplorerLink
           type="proposal_id"
           value={initProposalId.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </LabelText>
     );
@@ -126,7 +126,7 @@ export const InstantiateInfo = ({
         <ExplorerLink
           type="code_id"
           value={instantiateInfo.codeId}
-          canCopyWithHover
+          showCopyOnHover
         />
       </LabelText>
 
@@ -150,7 +150,7 @@ export const InstantiateInfo = ({
           <ExplorerLink
             type={adminType}
             value={instantiateInfo.admin}
-            canCopyWithHover
+            showCopyOnHover
           />
         ) : (
           <Text variant="body2" color="text.dark">
@@ -179,7 +179,7 @@ export const InstantiateInfo = ({
             <ExplorerLink
               type="block_height"
               value={instantiateInfo.createdHeight.toString()}
-              canCopyWithHover
+              showCopyOnHover
             />
           </LabelText>
         ) : (
@@ -193,7 +193,7 @@ export const InstantiateInfo = ({
         <ExplorerLink
           type={instantiatorType}
           value={instantiateInfo.instantiator}
-          canCopyWithHover
+          showCopyOnHover
         />
       </LabelText>
 

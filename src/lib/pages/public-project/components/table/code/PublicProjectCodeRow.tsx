@@ -45,7 +45,7 @@ export const PublicProjectCodeRow = ({
         <ExplorerLink
           value={publicInfo.id.toString()}
           type="code_id"
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRowNoBorder>
       <TableRowNoBorder>
@@ -67,7 +67,7 @@ export const PublicProjectCodeRow = ({
         <ExplorerLink
           value={publicInfo.uploader}
           type={getAddressTypeByLength(currentChainName, publicInfo.uploader)}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRowNoBorder>
       <TableRowNoBorder>

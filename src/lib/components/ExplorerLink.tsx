@@ -25,7 +25,7 @@ interface ExplorerLinkProps extends BoxProps {
   value: string;
   type: LinkType;
   copyValue?: string;
-  canCopyWithHover?: boolean;
+  showCopyOnHover?: boolean;
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
   maxWidth?: string;
@@ -128,7 +128,7 @@ export const ExplorerLink = ({
   value,
   type,
   copyValue,
-  canCopyWithHover = false,
+  showCopyOnHover = false,
   isReadOnly = false,
   textFormat = "truncate",
   maxWidth = "150px",
@@ -176,7 +176,7 @@ export const ExplorerLink = ({
           <Copier
             type={type}
             value={copyValue || value}
-            display={canCopyWithHover ? "none" : "block"}
+            display={showCopyOnHover ? "none" : "block"}
             ml="8px"
           />
         </>

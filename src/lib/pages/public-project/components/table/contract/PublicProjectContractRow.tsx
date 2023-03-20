@@ -68,7 +68,7 @@ export const PublicProjectContractRow = ({
             currentChainName,
             publicContractInfo.publicInfo.contractAddress
           )}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRowNoBorder>
       <TableRowNoBorder gap={1}>
@@ -94,7 +94,7 @@ export const PublicProjectContractRow = ({
             currentChainName,
             publicContractInfo.publicInfo.instantiator
           )}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRowNoBorder>
       <TableRowNoBorder justifyContent="end">

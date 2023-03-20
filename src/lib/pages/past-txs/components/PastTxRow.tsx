@@ -35,7 +35,7 @@ export const PastTxRow = ({
           <ExplorerLink
             value={transaction.hash.toLocaleUpperCase()}
             type="tx_hash"
-            canCopyWithHover
+            showCopyOnHover
           />
         </TableRow>
         <TableRow>

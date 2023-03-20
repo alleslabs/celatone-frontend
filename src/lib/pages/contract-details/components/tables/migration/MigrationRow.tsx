@@ -46,7 +46,7 @@ const RemarkRender = ({
       <ExplorerLink
         type={isGovernance ? "proposal_id" : "tx_hash"}
         value={value.toString()}
-        canCopyWithHover
+        showCopyOnHover
         textFormat={textFormat}
       />
     </Flex>
@@ -66,7 +66,7 @@ export const MigrationRow = ({
         <ExplorerLink
           type="code_id"
           value={history.codeId.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>
@@ -91,14 +91,14 @@ export const MigrationRow = ({
           type={getAddressType(history.sender)}
           value={history.sender}
           textFormat="truncate"
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>
         <ExplorerLink
           type="block_height"
           value={history.height.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>
