@@ -40,7 +40,7 @@ const CodeDetailsBody = observer(
 
     return (
       <>
-        <Flex align="center" justify="space-between" mt={6}>
+        <Flex justify="space-between" mt={6}>
           <Flex direction="column" gap={1}>
             <Flex gap={1}>
               {publicProject.publicDetail?.logo && (
