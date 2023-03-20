@@ -1,1 +1,4 @@
 /* Global Styling here */
+.copier-wrapper:hover .copier {
+  display: block;
+}

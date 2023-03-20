@@ -8,12 +8,10 @@ import { SingleMsg } from "./SingleMsg";
 
 interface RenderActionMessagesProps {
   transaction: Transaction;
-  showCopyButton: boolean;
 }
 
 export const RenderActionMessages = ({
   transaction,
-  showCopyButton,
 }: RenderActionMessagesProps) => {
   if (transaction.actionMsgType === ActionMsgType.SINGLE_ACTION_MSG) {
     return (
@@ -21,7 +19,6 @@ export const RenderActionMessages = ({
         messages={transaction.messages}
         type={extractMsgType(transaction.messages[0].type)}
         success={transaction.success}
-        showCopyButton={showCopyButton}
       />
     );
   }

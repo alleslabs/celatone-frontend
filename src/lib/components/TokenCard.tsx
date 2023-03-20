@@ -30,16 +30,13 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
       textAlign="center"
     >
       <Flex
+        className="copier-wrapper"
         direction="column"
         minH="101px"
         gap={2}
         p={3}
         background="pebble.900"
         borderRadius="8px"
-        _hover={{
-          bgColor: "pebble.800",
-          "& .copy-button": { display: "flex" },
-        }}
       >
         <Flex
           gap={1}
@@ -70,11 +67,11 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
             {price ? formatPrice(price as USD<number>) : "N/A"}
           </Badge>
           <Copier
+            type={price ? "supported_asset" : "unsupported_asset"}
             value={id}
             copyLabel="Token ID Copied!"
-            ml="1px"
             display="none"
-            className="copy-button"
+            ml="1px"
           />
         </Flex>
 

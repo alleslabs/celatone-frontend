@@ -149,6 +149,7 @@ export const ExplorerLink = ({
 
   return (
     <Box
+      className="copier-wrapper"
       display="inline-flex"
       alignItems="center"
       transition="all .25s ease-in-out"
@@ -157,9 +158,6 @@ export const ExplorerLink = ({
           textDecoration: "underline",
           textDecorationColor: "lilac.light",
         }),
-        "& .copy-button": {
-          display: "flex",
-        },
       }}
       {...componentProps}
     >
@@ -176,10 +174,10 @@ export const ExplorerLink = ({
             maxWidth={maxWidth}
           />
           <Copier
+            type={type}
             value={copyValue || value}
-            ml="8px"
-            className="copy-button"
             display={canCopyWithHover ? "none" : "flex"}
+            ml="8px"
           />
         </>
       )}

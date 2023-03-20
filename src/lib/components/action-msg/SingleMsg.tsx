@@ -31,7 +31,6 @@ export interface SingleMsgProps {
   link1?: LinkElement;
   text3?: string;
   link2?: LinkElement;
-  showCopyButton?: boolean;
 }
 
 export const SingleMsg = ({
@@ -44,7 +43,6 @@ export const SingleMsg = ({
   link1,
   text3,
   link2,
-  showCopyButton = false,
 }: SingleMsgProps) => {
   if (!type) return <Text>Message Unavailable</Text>;
   return (
@@ -79,11 +77,11 @@ export const SingleMsg = ({
             </Flex>
           </Tooltip>
           <Copier
-            display={showCopyButton ? "flex" : "none"}
+            type={token.symbol ? "supported_asset" : "unsupported_asset"}
             value={token.id}
-            ml="4px"
-            className="copy-button"
             copyLabel="Token ID Copied!"
+            display="none"
+            ml="4px"
           />
         </Flex>
       ))}
@@ -107,7 +105,7 @@ export const SingleMsg = ({
           value={link1.value}
           copyValue={link1.copyValue}
           type={link1.type}
-          canCopyWithHover={!showCopyButton}
+          canCopyWithHover
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link1.type !== "code_id" ? "truncate" : "normal"}
         />
@@ -120,7 +118,7 @@ export const SingleMsg = ({
           value={link2.value}
           copyValue={link2.copyValue}
           type={link2.type}
-          canCopyWithHover={!showCopyButton}
+          canCopyWithHover
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link2.type !== "code_id" ? "truncate" : "normal"}
         />
