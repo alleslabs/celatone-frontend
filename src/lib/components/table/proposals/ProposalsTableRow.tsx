@@ -74,7 +74,7 @@ const ResolvedHeightRender = ({
         <ExplorerLink
           type="block_height"
           value={resolvedHeight.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       );
   }
@@ -93,7 +93,7 @@ export const ProposalsTableRow = ({
           isReadOnly={isInactive}
           type="proposal_id"
           value={proposal.proposalId.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>{proposal.title}</TableRow>
@@ -121,7 +121,7 @@ export const ProposalsTableRow = ({
           <ExplorerLink
             type={getAddressType(proposal.proposer)}
             value={proposal.proposer}
-            canCopyWithHover
+            showCopyOnHover
           />
         ) : (
           "N/A"

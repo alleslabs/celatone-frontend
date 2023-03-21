@@ -98,7 +98,7 @@ export const ContractListTable = ({
               <ExplorerLink
                 value={item.contractAddress}
                 type="contract_address"
-                canCopyWithHover
+                showCopyOnHover
               />
             </TableRowNoBorder>
             <TableRowNoBorder>
@@ -113,7 +113,7 @@ export const ContractListTable = ({
                   <ExplorerLink
                     value={item.instantiator}
                     type={getAddressType(item.instantiator)}
-                    canCopyWithHover
+                    showCopyOnHover
                   />
                 ) : (
                   <Text variant="body2" color="text.dark">

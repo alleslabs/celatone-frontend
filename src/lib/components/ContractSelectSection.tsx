@@ -213,7 +213,7 @@ export const ContractSelectSection = observer(
               <ExplorerLink
                 value={contractAddress}
                 type="contract_address"
-                canCopyWithHover
+                showCopyOnHover
                 // TODO - Revisit not necessary if disable UI for mobile is implemented
                 textFormat={
                   isMobile || mode === "only-admin" ? "truncate" : "normal"

@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#247](https://github.com/alleslabs/celatone-frontend/pull/247) Refactor hover logic of copier icon
 - [#246](https://github.com/alleslabs/celatone-frontend/pull/246) Show edit button when code name is set, and align button section to top
 - [#240](https://github.com/alleslabs/celatone-frontend/pull/240) Change modals containing tables to drawers for easier exploration
 - [#239](https://github.com/alleslabs/celatone-frontend/pull/239) Add code description and code name for public code in code details page

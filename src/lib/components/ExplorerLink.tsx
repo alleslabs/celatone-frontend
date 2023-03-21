@@ -25,7 +25,7 @@ interface ExplorerLinkProps extends BoxProps {
   value: string;
   type: LinkType;
   copyValue?: string;
-  canCopyWithHover?: boolean;
+  showCopyOnHover?: boolean;
   isReadOnly?: boolean;
   textFormat?: "truncate" | "ellipsis" | "normal";
   maxWidth?: string;
@@ -128,7 +128,7 @@ export const ExplorerLink = ({
   value,
   type,
   copyValue,
-  canCopyWithHover = false,
+  showCopyOnHover = false,
   isReadOnly = false,
   textFormat = "truncate",
   maxWidth = "150px",
@@ -149,6 +149,7 @@ export const ExplorerLink = ({
 
   return (
     <Box
+      className="copier-wrapper"
       display="inline-flex"
       alignItems="center"
       transition="all .25s ease-in-out"
@@ -157,9 +158,6 @@ export const ExplorerLink = ({
           textDecoration: "underline",
           textDecorationColor: "lilac.light",
         }),
-        "& .copy-button": {
-          display: "flex",
-        },
       }}
       {...componentProps}
     >
@@ -176,10 +174,10 @@ export const ExplorerLink = ({
             maxWidth={maxWidth}
           />
           <Copier
+            type={type}
             value={copyValue || value}
+            display={showCopyOnHover ? "none" : "block"}
             ml="8px"
-            className="copy-button"
-            display={canCopyWithHover ? "none" : "flex"}
           />
         </>
       )}
