@@ -82,7 +82,7 @@ const getValueText = (
 const getCopyLabel = (type: LinkType) =>
   type
     .split("_")
-    .map((str) => str.slice(0, 1).toUpperCase() + str.slice(1, str.length))
+    .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
     .join(" ");
 
 const LinkRender = ({

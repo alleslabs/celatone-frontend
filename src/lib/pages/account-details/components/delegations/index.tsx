@@ -19,10 +19,11 @@ interface DelegationsSectionProps {
 }
 
 const getTotalBondDenom = (
-  total: Option<Record<string, TokenWithValue>>,
+  totals: Option<Record<string, TokenWithValue>>[],
   bondDenom: string,
   defaultToken: TokenWithValue
-) => (total ? total[bondDenom] ?? defaultToken : undefined);
+) =>
+  totals.map((total) => (total ? total[bondDenom] ?? defaultToken : undefined));
 
 export const DelegationsSection = ({
   walletAddress,
@@ -57,21 +58,12 @@ export const DelegationsSection = ({
     value: stakingParams.logo ? (big(0) as USD<Big>) : undefined,
   };
 
-  const totalBondedBondDenom = getTotalBondDenom(
-    totalBonded,
-    stakingParams.bondDenom,
-    defaultToken
-  );
-  const totalRewardBondDenom = getTotalBondDenom(
-    totalRewards,
-    stakingParams.bondDenom,
-    defaultToken
-  );
-  const totalCommissionBondDenom = getTotalBondDenom(
-    totalCommission,
-    stakingParams.bondDenom,
-    defaultToken
-  );
+  const [totalBondedBondDenom, totalRewardBondDenom, totalCommissionBondDenom] =
+    getTotalBondDenom(
+      [totalBonded, totalRewards, totalCommission],
+      stakingParams.bondDenom,
+      defaultToken
+    );
 
   const redelegationCount = redelegations?.length ?? 0;
 

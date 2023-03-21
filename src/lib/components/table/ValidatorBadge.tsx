@@ -34,7 +34,7 @@ export const ValidatorBadge = ({ validator }: ValidatorBadgeProps) => {
         copyValue={validator.validatorAddress}
         type="validator_address"
         textFormat="ellipsis"
-        canCopyWithHover
+        showCopyOnHover
       />
     </Flex>
   );

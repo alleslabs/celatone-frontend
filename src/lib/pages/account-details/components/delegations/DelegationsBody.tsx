@@ -25,6 +25,7 @@ export const DelegationsBody = ({
   rewards,
   defaultToken,
 }: DelegationsBodyProps) => {
+  // NOTE: set between "Delegated" and "Unbonding"
   const [value, setValue] = useState("Delegated");
 
   return (
