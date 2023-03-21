@@ -30,7 +30,7 @@ export enum AmpEvent {
   TO_DEPLOY = "To Deploy",
   TO_UPLOAD = "To Upload",
   TO_INSTANTIATE = "To Instantiate",
-  TO_PROPOSAL = "To Proposal", // TODO: use later
+  TO_PROPOSALS = "To Proposals",
   TO_QUERY = "To Query",
   TO_EXECUTE = "To Execute",
   TO_MIGRATE = "To Migrate",
