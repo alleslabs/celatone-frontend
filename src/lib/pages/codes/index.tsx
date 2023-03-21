@@ -17,21 +17,21 @@ import { CustomTab } from "lib/components/CustomTab";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import type { PermissionFilterValue } from "lib/hooks";
+import { useMyCodesData } from "lib/model/code";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import CodesTable from "./components/CodesTable";
 import SaveCodeButton from "./components/SaveCodeButton";
 import UploadButton from "./components/UploadButton";
-import { useCodeListData } from "./data";
 
-interface AllCodeState {
+interface CodeFilterState {
   keyword: string;
   permissionValue: PermissionFilterValue;
 }
 
 const Codes = observer(() => {
   const router = useRouter();
-  const { watch, setValue } = useForm<AllCodeState>({
+  const { watch, setValue } = useForm<CodeFilterState>({
     defaultValues: {
       permissionValue: "all",
       keyword: "",
@@ -47,7 +47,7 @@ const Codes = observer(() => {
     allCodesCount,
     isStoredCodesLoading,
     isSavedCodesLoading,
-  } = useCodeListData(keyword, permissionValue);
+  } = useMyCodesData(keyword, permissionValue);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);

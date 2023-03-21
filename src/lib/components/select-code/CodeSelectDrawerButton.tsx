@@ -1,7 +1,6 @@
 import {
   Button,
   useDisclosure,
-  Text,
   Heading,
   Drawer,
   DrawerOverlay,
@@ -9,14 +8,30 @@ import {
   DrawerHeader,
   DrawerCloseButton,
   DrawerBody,
+  Tabs,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Flex,
 } from "@chakra-ui/react";
+import type { ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
 
+import { CustomTab } from "../CustomTab";
+import { FilterByPermission } from "../forms";
 import { CustomIcon } from "../icon";
-import { useSavedCodes, useStoredCodes } from "lib/model/code";
+import InputWithIcon from "../InputWithIcon";
+import type { PermissionFilterValue } from "lib/hooks";
+import { useMyCodesData } from "lib/model/code";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { MySavedCodeContent } from "./MySavedCodeContent";
 import { MyStoredCodeContent } from "./MyStoredCodeContent";
+
+interface CodeFilterState {
+  keyword: string;
+  permissionValue: PermissionFilterValue;
+}
 
 interface CodeSelectDrawerButtonProps {
   onCodeSelect: (code: string) => void;
@@ -28,15 +43,28 @@ export const CodeSelectDrawerButton = ({
   buttonText,
 }: CodeSelectDrawerButtonProps) => {
   // ------------------------------------------//
-  // ---------------DEPENDENCIES---------------//
-  // ------------------------------------------//
-  const { storedCodes } = useStoredCodes();
-  const { savedCodes } = useSavedCodes();
-
-  // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
+  const { watch, setValue } = useForm<CodeFilterState>({
+    defaultValues: {
+      permissionValue: "all",
+      keyword: "",
+    },
+  });
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { keyword, permissionValue } = watch();
+
+  // ------------------------------------------//
+  // ---------------DEPENDENCIES---------------//
+  // ------------------------------------------//
+  const {
+    storedCodesCount,
+    storedCodes: stored,
+    savedCodesCount,
+    savedCodes: saved,
+    isStoredCodesLoading,
+    isSavedCodesLoading,
+  } = useMyCodesData(keyword, permissionValue);
 
   const handleSelect = (code: string) => {
     onCodeSelect(code);
@@ -61,7 +89,7 @@ export const CodeSelectDrawerButton = ({
       <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay />
         <DrawerContent h="80%">
-          <DrawerHeader>
+          <DrawerHeader borderBottom="1px solid" borderColor="pebble.700">
             <CustomIcon name="code" boxSize="6" />
             <Heading as="h5" variant="h5">
               Select Code ID
@@ -69,26 +97,46 @@ export const CodeSelectDrawerButton = ({
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
           <DrawerBody px={0} overflow="scroll">
-            <Heading as="h6" variant="h6" mb="8px" ml="24px">
-              My Stored Codes
-            </Heading>
-            <MyStoredCodeContent
-              storedCodes={storedCodes}
-              handleSelect={handleSelect}
-            />
-            <Text
-              variant="body1"
-              fontWeight={700}
-              ml="24px"
-              mt="24px"
-              mb="16px"
-            >
-              Saved Codes
-            </Text>
-            <MySavedCodeContent
-              savedCodes={savedCodes}
-              handleSelect={handleSelect}
-            />
+            <Flex gap={2} px={6} py={2}>
+              <InputWithIcon
+                placeholder="Search with code ID or code name"
+                value={keyword}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setValue("keyword", e.target.value)
+                }
+                size="lg"
+              />
+              <FilterByPermission
+                initialSelected="all"
+                setPermissionValue={(newVal: PermissionFilterValue) => {
+                  if (newVal === permissionValue) return;
+                  setValue("permissionValue", newVal);
+                }}
+                labelBgColor="gray.900"
+              />
+            </Flex>
+            <Tabs px={6}>
+              <TabList mb={6} borderBottom="1px" borderColor="pebble.800">
+                <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
+                <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
+              </TabList>
+              <TabPanels>
+                <TabPanel p={0}>
+                  <MyStoredCodeContent
+                    storedCodes={stored}
+                    handleSelect={handleSelect}
+                    isLoading={isStoredCodesLoading}
+                  />
+                </TabPanel>
+                <TabPanel p={0}>
+                  <MySavedCodeContent
+                    savedCodes={saved}
+                    handleSelect={handleSelect}
+                    isLoading={isSavedCodesLoading}
+                  />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
