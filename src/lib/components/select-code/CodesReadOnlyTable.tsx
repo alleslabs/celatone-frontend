@@ -7,7 +7,7 @@ import type { CodeInfo } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
 const TEMPLATE_COLUMNS =
-  "max(80px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) 150px";
+  "max(100px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) 200px";
 
 interface CodesReadOnlyTableRowProps {
   codeInfo: CodeInfo;

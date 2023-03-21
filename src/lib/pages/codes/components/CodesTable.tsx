@@ -48,7 +48,7 @@ interface OtherTBodyProps {
 }
 
 const TEMPLATE_COLUMNS =
-  "max(80px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
+  "max(100px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
 
 const StateContainer = ({ children }: { children: ReactNode }) => (
   <VStack
