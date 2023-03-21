@@ -7,7 +7,7 @@ import type { CodeInfo } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
 const TEMPLATE_COLUMNS =
-  "max(80px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
+  "max(80px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) 150px";
 
 interface CodesReadOnlyTableRowProps {
   codeInfo: CodeInfo;
@@ -26,6 +26,7 @@ const CodesReadOnlyTableRow = ({
       _hover={{ bg: "pebble.800" }}
       onClick={() => onCodeSelect(codeInfo.id.toString())}
       templateColumns={TEMPLATE_COLUMNS}
+      minW="min-content"
     >
       <TableRow>{codeInfo.id}</TableRow>
       <TableRow>
