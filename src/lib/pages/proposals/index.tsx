@@ -23,7 +23,11 @@ const Proposals = observer(() => {
         </Heading>
         <NewProposalButton />
       </Flex>
-      <Grid templateColumns="1fr repeat(3, max(240px))" gap={2} my={8}>
+      <Grid
+        templateColumns="minmax(240px, 1fr) repeat(3, max(240px))"
+        gap={2}
+        my={8}
+      >
         {/* TODO - Wireup search bar */}
         <InputWithIcon
           placeholder="Search with Proposal ID or Proposal Title"
