@@ -31,7 +31,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           <ExplorerLink
             type={addrType}
             value={value}
-            canCopyWithHover
+            showCopyOnHover
             textFormat="normal"
             maxWidth="full"
           />
@@ -43,7 +43,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           <ExplorerLink
             type={key as LinkType}
             value={value}
-            canCopyWithHover
+            showCopyOnHover
             textFormat="normal"
             maxWidth="full"
           />
@@ -54,7 +54,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           <ExplorerLink
             type="contract_address"
             value={value}
-            canCopyWithHover
+            showCopyOnHover
             textFormat="normal"
             maxWidth="full"
           />

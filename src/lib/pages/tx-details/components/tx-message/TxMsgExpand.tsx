@@ -47,7 +47,7 @@ export const TxMsgExpand = ({
               <ExplorerLink
                 type="code_id"
                 value={findAttribute([log], "store_code", "code_id").value}
-                canCopyWithHover
+                showCopyOnHover
                 fontSize="24px"
                 textVariant="body1"
               />
@@ -67,7 +67,7 @@ export const TxMsgExpand = ({
               value={
                 findAttribute([log], "instantiate", "_contract_address").value
               }
-              canCopyWithHover
+              showCopyOnHover
               textVariant="body1"
             />
           )}
@@ -75,7 +75,7 @@ export const TxMsgExpand = ({
           <ExplorerLink
             type="code_id"
             value={body.code_id}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />
         </>
@@ -92,7 +92,7 @@ export const TxMsgExpand = ({
               value={
                 findAttribute([log], "instantiate", "_contract_address").value
               }
-              canCopyWithHover
+              showCopyOnHover
               textVariant="body1"
             />
           )}
@@ -100,7 +100,7 @@ export const TxMsgExpand = ({
           <ExplorerLink
             type="code_id"
             value={body.code_id}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />
         </>
@@ -116,7 +116,7 @@ export const TxMsgExpand = ({
           <ExplorerLink
             type="contract_address"
             value={body.contract}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />
         </>
@@ -130,14 +130,14 @@ export const TxMsgExpand = ({
           <ExplorerLink
             type="contract_address"
             value={body.contract}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />{" "}
           to Code ID{" "}
           <ExplorerLink
             type="code_id"
             value={body.code_id}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />
         </>
@@ -151,14 +151,14 @@ export const TxMsgExpand = ({
           <ExplorerLink
             type="contract_address"
             value={body.contract}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />{" "}
           to{" "}
           <ExplorerLink
             type={getAddressType(body.new_admin)}
             value={body.new_admin}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />
         </>
@@ -172,7 +172,7 @@ export const TxMsgExpand = ({
           <ExplorerLink
             type="contract_address"
             value={body.contract}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />
         </>
@@ -197,7 +197,7 @@ export const TxMsgExpand = ({
             <ExplorerLink
               type={getAddressType(toAddress)}
               value={toAddress}
-              canCopyWithHover
+              showCopyOnHover
               textVariant="body1"
             />
           </>
@@ -217,7 +217,7 @@ export const TxMsgExpand = ({
                 value={
                   findAttribute([log], "submit_proposal", "proposal_id").value
                 }
-                canCopyWithHover
+                showCopyOnHover
                 textVariant="body1"
               />
             </>
@@ -237,7 +237,7 @@ export const TxMsgExpand = ({
           <ExplorerLink
             type="proposal_id"
             value={body.proposal_id}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />
         </>
@@ -251,14 +251,14 @@ export const TxMsgExpand = ({
           <ExplorerLink
             type={getAddressType(body.delegator_address)}
             value={body.delegator_address}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />{" "}
           to{" "}
           <ExplorerLink
             type={getAddressType(body.validator_address)}
             value={body.validator_address}
-            canCopyWithHover
+            showCopyOnHover
             textVariant="body1"
           />
         </>

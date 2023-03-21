@@ -51,7 +51,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
     <ExplorerLink
       type={linkType}
       value={value}
-      canCopyWithHover
+      showCopyOnHover
       textFormat="normal"
       maxWidth="full"
     />

@@ -27,7 +27,7 @@ export const ViewPermissionAddresses = ({
             key={addr}
             type={getAddressType(addr)}
             value={addr}
-            canCopyWithHover
+            showCopyOnHover
           />
         ))}
       {permissionAddresses.length > 1 && (

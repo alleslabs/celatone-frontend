@@ -23,11 +23,7 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => (
   <Container {...flexProps}>
     <LabelText label="Network">{txData.chainId}</LabelText>
     <LabelText label="Block">
-      <ExplorerLink
-        value={txData.height}
-        type="block_height"
-        canCopyWithHover
-      />
+      <ExplorerLink value={txData.height} type="block_height" showCopyOnHover />
     </LabelText>
     <LabelText label="Transaction Fee">
       {txData.formattedFee ?? (
