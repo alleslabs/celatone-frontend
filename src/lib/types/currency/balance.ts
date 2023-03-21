@@ -21,7 +21,7 @@ export interface AssetInfo {
   slugs: string[];
   symbol: string;
   type: string;
-  price: Option<number>;
+  price?: number;
 }
 
 export interface BalanceWithAssetInfo {

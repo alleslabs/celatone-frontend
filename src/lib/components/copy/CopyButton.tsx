@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import type { ButtonProps, TooltipProps } from "@chakra-ui/react";
+import type { ButtonProps } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -12,7 +12,6 @@ interface CopyButtonProps extends ButtonProps {
   copyLabel?: string;
   hasIcon?: boolean;
   buttonText?: string;
-  tooltipBgColor?: TooltipProps["bgColor"];
 }
 
 export const CopyButton = ({
@@ -23,7 +22,6 @@ export const CopyButton = ({
   hasIcon = true,
   variant = "outline-info",
   buttonText = "Copy",
-  tooltipBgColor,
   ...buttonProps
 }: CopyButtonProps) => (
   <CopyTemplate
