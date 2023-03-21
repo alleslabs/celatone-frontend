@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#250](https://github.com/alleslabs/celatone-frontend/pull/250) Add skeleton, route, and amp for proposal list page
 - [#230](https://github.com/alleslabs/celatone-frontend/pull/230) Add cw2info to code table
 
 ### Improvements
