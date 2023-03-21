@@ -1,5 +1,4 @@
 import { Box, Flex, Grid, Tag, Text, useDisclosure } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 
 import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -20,10 +19,7 @@ export const PastTxRow = ({
   templateColumnsStyle,
 }: PastTxRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
-  const [isAccordion, setIsAccordion] = useState(false);
-  useEffect(() => {
-    if (transaction.messages.length > 1) setIsAccordion(true);
-  }, [transaction.messages]);
+  const isAccordion = transaction.messages.length > 1;
 
   return (
     <Box w="full" minW="min-content">
@@ -39,7 +35,7 @@ export const PastTxRow = ({
           <ExplorerLink
             value={transaction.hash.toLocaleUpperCase()}
             type="tx_hash"
-            canCopyWithHover
+            showCopyOnHover
           />
         </TableRow>
         <TableRow>

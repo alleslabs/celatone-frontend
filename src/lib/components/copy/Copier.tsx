@@ -17,7 +17,7 @@ export const Copier = ({
   type,
   value,
   copyLabel,
-  display = "flex",
+  display = "block",
   ml = "8px",
 }: CopierProps) => (
   <CopyTemplate

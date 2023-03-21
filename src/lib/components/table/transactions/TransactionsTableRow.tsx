@@ -36,7 +36,7 @@ export const TransactionsTableRow = ({
           <ExplorerLink
             value={transaction.hash.toLocaleUpperCase()}
             type="tx_hash"
-            canCopyWithHover
+            showCopyOnHover
           />
         </TableRow>
         <TableRow>
@@ -62,7 +62,7 @@ export const TransactionsTableRow = ({
             <ExplorerLink
               value={transaction.sender}
               type="user_address"
-              canCopyWithHover
+              showCopyOnHover
             />
           </TableRow>
         )}

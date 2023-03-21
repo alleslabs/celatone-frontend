@@ -214,16 +214,19 @@ const coinToTokenWithValue = (
     precision: undefined,
     value: undefined,
   };
-  if (assetInfo) {
-    token.logo = assetInfo.logo;
-    token.precision = assetInfo.precision;
-    token.value = calculateAssetValue(
-      toToken(token.amount, assetInfo.precision),
-      assetInfo.price as USD<number>
-    );
-  }
-
-  return token;
+  return assetInfo
+    ? Object.assign<TokenWithValue, Omit<TokenWithValue, "denom" | "amount">>(
+        token,
+        {
+          logo: assetInfo.logo,
+          precision: assetInfo.precision,
+          value: calculateAssetValue(
+            toToken(token.amount, assetInfo.precision),
+            assetInfo.price as USD<number>
+          ),
+        }
+      )
+    : token;
 };
 
 const addTotal = (
@@ -233,10 +236,8 @@ const addTotal = (
   !oldTotal
     ? token
     : {
-        denom: oldTotal.denom,
+        ...oldTotal,
         amount: oldTotal.amount.add(token.amount) as U<Token<Big>>,
-        logo: oldTotal.logo,
-        precision: oldTotal.precision,
         value: oldTotal.value?.add(token.value ?? 0) as USD<Big>,
       };
 
@@ -247,7 +248,7 @@ const calBonded = (
 ) => {
   if (!bondedDenom || !totalDelegations || !totalUnbondings) return undefined;
 
-  return [...Object.keys(totalDelegations)].reduce(
+  return Object.keys(totalDelegations).reduce(
     (total, denom) => ({
       ...total,
       [denom]: addTotal(totalUnbondings[denom], totalDelegations[denom]),

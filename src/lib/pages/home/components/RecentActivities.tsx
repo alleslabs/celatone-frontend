@@ -67,7 +67,7 @@ export const RecentActivities = observer(() => {
                 <ExplorerLink
                   value={item.contractAddress}
                   type="contract_address"
-                  canCopyWithHover
+                  showCopyOnHover
                 />
               </Flex>
               <Flex gap={1}>
@@ -79,7 +79,7 @@ export const RecentActivities = observer(() => {
                     <ExplorerLink
                       value={item.sender}
                       type="user_address"
-                      canCopyWithHover
+                      showCopyOnHover
                     />
                   </>
                 )}

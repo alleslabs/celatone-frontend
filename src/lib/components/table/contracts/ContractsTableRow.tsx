@@ -62,7 +62,7 @@ const InstantiatorRender = ({
           <ExplorerLink
             value={latestUpdater}
             type={updaterType}
-            canCopyWithHover
+            showCopyOnHover
           />
         </Flex>
       );
@@ -71,7 +71,7 @@ const InstantiatorRender = ({
         <ExplorerLink
           value={latestUpdater}
           type={updaterType}
-          canCopyWithHover
+          showCopyOnHover
         />
       );
     default:
@@ -106,7 +106,7 @@ export const ContractsTableRow = ({
         <ExplorerLink
           value={contractInfo.contractAddress}
           type="contract_address"
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
 

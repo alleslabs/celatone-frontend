@@ -78,10 +78,10 @@ export const SingleMsg = ({
           </Tooltip>
           <Copier
             type={token.symbol ? "supported_asset" : "unsupported_asset"}
-            display="none"
             value={token.id}
-            ml="4px"
             copyLabel="Token ID Copied!"
+            display="none"
+            ml="4px"
           />
         </Flex>
       ))}
@@ -105,7 +105,7 @@ export const SingleMsg = ({
           value={link1.value}
           copyValue={link1.copyValue}
           type={link1.type}
-          canCopyWithHover
+          showCopyOnHover
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link1.type !== "code_id" ? "truncate" : "normal"}
         />
@@ -118,7 +118,7 @@ export const SingleMsg = ({
           value={link2.value}
           copyValue={link2.copyValue}
           type={link2.type}
-          canCopyWithHover
+          showCopyOnHover
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link2.type !== "code_id" ? "truncate" : "normal"}
         />

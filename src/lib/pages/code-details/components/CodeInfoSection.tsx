@@ -26,7 +26,7 @@ const getMethodSpecificRender = (
           <ExplorerLink
             type="proposal_id"
             value={proposalId.toString()}
-            canCopyWithHover
+            showCopyOnHover
           />
         </LabelText>
       ),
@@ -36,7 +36,7 @@ const getMethodSpecificRender = (
             <ExplorerLink
               type="block_height"
               value={height.toString()}
-              canCopyWithHover
+              showCopyOnHover
             />
             <Text variant="body3" color="text.dark">
               {formatUTC(created)}
@@ -55,7 +55,7 @@ const getMethodSpecificRender = (
     return {
       methodRender: (
         <LabelText label="Upload Transaction">
-          <ExplorerLink type="tx_hash" value={hash} canCopyWithHover />
+          <ExplorerLink type="tx_hash" value={hash} showCopyOnHover />
         </LabelText>
       ),
       storedBlockRender:
@@ -64,7 +64,7 @@ const getMethodSpecificRender = (
             <ExplorerLink
               type="block_height"
               value={height.toString()}
-              canCopyWithHover
+              showCopyOnHover
             />
             <Text variant="body3" color="text.dark">
               {formatUTC(created)}
@@ -105,7 +105,7 @@ const ViewAddresses = ({
               key={addr}
               type={getAddressType(addr)}
               value={addr}
-              canCopyWithHover
+              showCopyOnHover
             />
           );
         })}
@@ -167,7 +167,7 @@ export const CodeInfoSection = ({
             <ExplorerLink
               type={uploaderType}
               value={uploader}
-              canCopyWithHover
+              showCopyOnHover
             />
             <Text variant="body3" color="text.dark">
               {getAddressTypeText(uploaderType)}

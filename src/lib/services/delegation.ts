@@ -2,7 +2,7 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import big from "big.js";
 
-import type { Addr, Option, ValidatorAddr } from "lib/types";
+import type { Addr, Option, Token, U, ValidatorAddr } from "lib/types";
 import { parseDate, secondsToDays } from "lib/utils";
 
 interface StakingParamsResponse {
@@ -20,8 +20,8 @@ interface StakingParamsResponse {
 interface DelegationResponse {
   delegation_responses: {
     delegation: {
-      delegator_address: string;
-      validator_address: string;
+      delegator_address: Addr;
+      validator_address: ValidatorAddr;
       shares: string;
     };
     balance: Coin;
@@ -30,20 +30,20 @@ interface DelegationResponse {
 
 interface UnbondingResponse {
   unbonding_responses: {
-    delegator_address: string;
-    validator_address: string;
+    delegator_address: Addr;
+    validator_address: ValidatorAddr;
     entries: {
       creation_height: string;
       completion_time: string;
       initial_balance: string;
-      balance: string; // after slashed during unbonding
+      balance: U<Token>; // after slashed during unbonding
     }[];
   }[];
 }
 
 interface DelegationRewardsResponse {
   rewards: {
-    validator_address: string;
+    validator_address: ValidatorAddr;
     reward: Coin[];
   }[];
   total: Coin[];
@@ -63,7 +63,7 @@ interface RedelegationsResponse {
         initial_balance: string;
         share_dst: string;
       };
-      balance: string;
+      balance: U<Token>;
     }[];
   }[];
 }

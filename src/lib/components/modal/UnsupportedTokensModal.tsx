@@ -56,6 +56,11 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
       px={4}
       py={3}
       role="group"
+      _hover={{
+        "& .info": {
+          display: "flex",
+        },
+      }}
     >
       <Flex
         direction="row"
@@ -82,8 +87,8 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             type="unsupported_asset"
             value={balance.id}
             copyLabel="Token ID Copied!"
-            ml="1px"
             display="none"
+            ml="1px"
           />
         </Flex>
         <Text variant="body3" color="text.dark">
