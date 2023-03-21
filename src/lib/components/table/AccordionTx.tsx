@@ -60,7 +60,6 @@ export const AccordionTx = ({
         type={extractMsgType(message.type)}
         success
         singleMsg
-        showCopyButton={false}
       />
       {allowFurtherAction && (
         <SlideFade in={showButton} offsetY="20px">

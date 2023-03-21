@@ -1,6 +1,7 @@
 import { Alert } from "./alert";
 import { Badge } from "./badge";
 import { Button } from "./button";
+import { Drawer } from "./drawer";
 import { Form } from "./form";
 import { Heading } from "./heading";
 import { Input } from "./input";
@@ -16,6 +17,7 @@ import { Tooltip } from "./tooltip";
 
 export const components = {
   Button,
+  Drawer,
   Heading,
   Text,
   Link,

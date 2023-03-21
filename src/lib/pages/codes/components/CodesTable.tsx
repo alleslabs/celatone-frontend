@@ -141,7 +141,7 @@ const CodeTableRow = ({ code }: CodesRowProps) => {
         <ExplorerLink
           type="code_id"
           value={code.id.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRowNoBorder>
       <TableRowNoBorder>
@@ -171,7 +171,7 @@ const CodeTableRow = ({ code }: CodesRowProps) => {
         <ExplorerLink
           value={code.uploader}
           type="user_address"
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRowNoBorder>
       <TableRowNoBorder>

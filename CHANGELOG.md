@@ -44,11 +44,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#247](https://github.com/alleslabs/celatone-frontend/pull/247) Refactor hover logic of copier icon
+- [#246](https://github.com/alleslabs/celatone-frontend/pull/246) Show edit button when code name is set, and align button section to top
+- [#240](https://github.com/alleslabs/celatone-frontend/pull/240) Change modals containing tables to drawers for easier exploration
 - [#239](https://github.com/alleslabs/celatone-frontend/pull/239) Add code description and code name for public code in code details page
 - [#237](https://github.com/alleslabs/celatone-frontend/pull/237) Change unsupported tokens layout and style
 
 ### Bug fixes
 
+- [#248](https://github.com/alleslabs/celatone-frontend/pull/248) Fix table padding bottom for editable cells
 - [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
 - [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit
 - [#243](https://github.com/alleslabs/celatone-frontend/pull/243) Fix Json viewer and view more btn

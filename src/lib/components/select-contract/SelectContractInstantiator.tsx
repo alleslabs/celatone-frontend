@@ -1,17 +1,17 @@
 import {
   useDisclosure,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
   Text,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   Input,
   Flex,
   Divider,
   Heading,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerCloseButton,
+  DrawerBody,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
@@ -119,20 +119,20 @@ export const SelectContractInstantiator = ({
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
-      <Modal isOpen={isOpen} onClose={resetOnClose} size="4xl" isCentered>
-        <ModalOverlay />
-        <ModalContent h="80%">
+      <Drawer isOpen={isOpen} onClose={resetOnClose} placement="bottom">
+        <DrawerOverlay />
+        <DrawerContent h="80%">
           {listSlug.length === 0 || !contractList ? (
             <>
-              <ModalHeader>
+              <DrawerHeader>
                 <CustomIcon name="contract-address-solid" boxSize="5" />
                 <Heading as="h5" variant="h5">
                   Select Contract
                 </Heading>
-              </ModalHeader>
-              <ModalCloseButton />
+              </DrawerHeader>
+              <DrawerCloseButton />
 
-              <ModalBody p="24px" maxH="full" overflowY="scroll">
+              <DrawerBody p="24px" overflowY="scroll">
                 <Heading as="h6" variant="h6" mb="8px">
                   Fill contract address manually
                 </Heading>
@@ -182,11 +182,11 @@ export const SelectContractInstantiator = ({
                   isReadOnly
                   formLabelBgColor="pebble.900"
                 />
-              </ModalBody>
+              </DrawerBody>
             </>
           ) : (
             <>
-              <ModalHeader>
+              <DrawerHeader>
                 <CustomIcon
                   name="chevron-left"
                   boxSize="5"
@@ -196,19 +196,19 @@ export const SelectContractInstantiator = ({
                 <Heading as="h5" variant="h5">
                   {contractList.name}
                 </Heading>
-              </ModalHeader>
-              <ModalCloseButton />
-              <ModalBody maxH="full" overflowY="scroll">
+              </DrawerHeader>
+              <DrawerCloseButton />
+              <DrawerBody maxH="full" overflowY="scroll">
                 <ContractListDetail
                   contractListInfo={contractList}
                   isReadOnly
                   onContractSelect={onSelectThenClose}
                 />
-              </ModalBody>
+              </DrawerBody>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };

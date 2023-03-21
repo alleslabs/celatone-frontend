@@ -1,5 +1,4 @@
-import { TableContainer } from "@chakra-ui/react";
-
+import { TableContainer } from "../tableComponents";
 import { Loading } from "lib/components/Loading";
 import type { CodeInfo, Option } from "lib/types";
 

@@ -6,18 +6,18 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { CopyTemplate } from "./CopyTemplate";
 
 interface CopierProps {
+  type: string;
   value: string;
   copyLabel?: string;
-  className?: string;
   display?: LayoutProps["display"];
   ml?: string;
 }
 
 export const Copier = ({
+  type,
   value,
   copyLabel,
-  className,
-  display = "flex",
+  display = "block",
   ml = "8px",
 }: CopierProps) => (
   <CopyTemplate
@@ -25,7 +25,8 @@ export const Copier = ({
     copyLabel={copyLabel}
     triggerElement={
       <CustomIcon
-        className={className}
+        id={type}
+        className="copier"
         display={display}
         cursor="pointer"
         marginLeft={ml}

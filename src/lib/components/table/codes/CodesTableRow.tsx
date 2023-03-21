@@ -39,7 +39,7 @@ export const CodesTableRow = ({
         <ExplorerLink
           type="code_id"
           value={codeInfo.id.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>
@@ -61,7 +61,7 @@ export const CodesTableRow = ({
         <ExplorerLink
           value={codeInfo.uploader}
           type="user_address"
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>

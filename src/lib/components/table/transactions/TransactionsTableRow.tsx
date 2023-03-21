@@ -1,5 +1,4 @@
 import { Flex, Text, Grid, useDisclosure, Tag, Box } from "@chakra-ui/react";
-import { useState } from "react";
 
 import { AccordionTx } from "../AccordionTx";
 import { TableRow } from "../tableComponents";
@@ -22,24 +21,22 @@ export const TransactionsTableRow = ({
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
-  const [showCopyButton, setShowCopyButton] = useState(false);
 
   return (
     <Box w="full" minW="min-content">
       <Grid
+        className="copier-wrapper"
         templateColumns={templateColumns}
         onClick={isAccordion ? onToggle : undefined}
         _hover={{ background: "pebble.900" }}
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
-        onMouseEnter={() => setShowCopyButton(true)}
-        onMouseLeave={() => setShowCopyButton(false)}
       >
         <TableRow>
           <ExplorerLink
             value={transaction.hash.toLocaleUpperCase()}
             type="tx_hash"
-            canCopyWithHover
+            showCopyOnHover
           />
         </TableRow>
         <TableRow>
@@ -51,10 +48,7 @@ export const TransactionsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            <RenderActionMessages
-              transaction={transaction}
-              showCopyButton={showCopyButton}
-            />
+            <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
               <Tag borderRadius="full" bg="honeydew.dark" color="pebble.900">
                 IBC
@@ -68,7 +62,7 @@ export const TransactionsTableRow = ({
             <ExplorerLink
               value={transaction.sender}
               type="user_address"
-              canCopyWithHover
+              showCopyOnHover
             />
           </TableRow>
         )}
