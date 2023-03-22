@@ -1,7 +1,9 @@
 import { useWallet } from "@cosmos-kit/react";
+import { useMemo } from "react";
 
 import { useChainId } from "lib/app-provider";
-import { useUserKey } from "lib/hooks";
+import type { PermissionFilterValue } from "lib/hooks";
+import { useUserKey, usePermissionFilter, useSearchFilter } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import {
   useCodeDataByCodeId,
@@ -12,6 +14,7 @@ import {
   usePublicProjectByCodeId,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
+import { InstantiatePermission } from "lib/types";
 import type {
   CodeData,
   PublicDetail,
@@ -20,7 +23,6 @@ import type {
   CodeInfo,
   PublicCode,
 } from "lib/types";
-import { InstantiatePermission } from "lib/types";
 
 export interface CodeDataState {
   isLoading: boolean;
@@ -52,7 +54,7 @@ export const useCodeData = (codeId: number): CodeDataState => {
   };
 };
 
-export const useStoredCodes = () => {
+const useStoredCodes = () => {
   const { address } = useWallet();
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
@@ -70,7 +72,7 @@ export const useStoredCodes = () => {
   return { storedCodes, isLoading };
 };
 
-export const useSavedCodes = () => {
+const useSavedCodes = () => {
   const userKey = useUserKey();
   const { lastSavedCodes, lastSavedCodeIds } = useCodeStore();
 
@@ -94,4 +96,46 @@ export const useSavedCodes = () => {
   });
 
   return { savedCodes, isLoading };
+};
+
+interface MyCodesData {
+  savedCodes: CodeInfo[];
+  storedCodes: CodeInfo[];
+  savedCodesCount: number;
+  storedCodesCount: number;
+  allCodesCount: number;
+  isStoredCodesLoading: boolean;
+  isSavedCodesLoading: boolean;
+}
+
+export const useMyCodesData = (
+  keyword: string,
+  permissionValue: PermissionFilterValue
+): MyCodesData => {
+  const permissionFilterFn = usePermissionFilter(permissionValue);
+  const searchFilterFn = useSearchFilter(keyword);
+
+  const { storedCodes, isLoading: isStoredCodesLoading } = useStoredCodes();
+  const { savedCodes, isLoading: isSavedCodesLoading } = useSavedCodes();
+
+  const [filteredSavedCodes, filteredStoredCodes] = useMemo(
+    () => [
+      savedCodes.filter(permissionFilterFn).filter(searchFilterFn),
+      storedCodes.filter(permissionFilterFn).filter(searchFilterFn),
+    ],
+    [savedCodes, storedCodes, permissionFilterFn, searchFilterFn]
+  );
+
+  const storedCodesCount = storedCodes.length;
+  const savedCodesCount = savedCodes.length;
+
+  return {
+    storedCodes: filteredStoredCodes,
+    savedCodes: filteredSavedCodes,
+    storedCodesCount,
+    savedCodesCount,
+    allCodesCount: storedCodesCount + savedCodesCount,
+    isStoredCodesLoading,
+    isSavedCodesLoading,
+  };
 };
