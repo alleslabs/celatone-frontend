@@ -86,7 +86,7 @@ export const PublicProjectContractTable = observer(
                 <PublicProjectContractRow
                   key={contract.publicInfo.contractAddress}
                   publicContractInfo={contract}
-                  templateColumn={TEMPLATE_COLUMNS}
+                  templateColumns={TEMPLATE_COLUMNS}
                 />
               ))}
             </TableContainer>

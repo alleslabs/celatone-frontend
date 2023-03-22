@@ -25,6 +25,7 @@ export const MySavedCodesTable = ({
     isLoading={isLoading}
     emptyState={
       <EmptyState
+        imageVariant={isSearching ? "not-found" : "empty"}
         message={isSearching ? "No matched codes found" : empty}
         withBorder
       />

@@ -1,6 +1,7 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 
-import { ContractListTable } from "lib/components/select-contract";
+import { EmptyState } from "lib/components/state";
+import { ContractsTable } from "lib/components/table";
 import type { Addr, ContractAddr } from "lib/types";
 import { getCurrentDate } from "lib/utils";
 
@@ -16,6 +17,10 @@ const contracts = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed facilisis facilisis risus. Ut volutpat accumsan massa eget consequat, id egestas nulla.",
     label: "label1",
     created: getCurrentDate(),
+    admin: undefined,
+    latestUpdater: undefined,
+    latestUpdated: undefined,
+    remark: undefined,
   },
   {
     contractAddress:
@@ -26,6 +31,10 @@ const contracts = [
     description: "Lorem ipsum dolor id egestas nulla.",
     label: "label2",
     created: getCurrentDate(),
+    admin: undefined,
+    latestUpdater: undefined,
+    latestUpdated: undefined,
+    remark: undefined,
   },
   {
     contractAddress:
@@ -36,6 +45,10 @@ const contracts = [
     description: "",
     label: "label3",
     created: getCurrentDate(),
+    admin: undefined,
+    latestUpdater: undefined,
+    latestUpdated: undefined,
+    remark: undefined,
   },
   {
     contractAddress:
@@ -47,6 +60,10 @@ const contracts = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. id egestas nulla.",
     label: "label4",
     created: getCurrentDate(),
+    admin: undefined,
+    latestUpdater: undefined,
+    latestUpdated: undefined,
+    remark: undefined,
   },
 ];
 export const RecentlyViewContracts = () => (
@@ -55,7 +72,17 @@ export const RecentlyViewContracts = () => (
       Recently Viewed Contracts
     </Heading>
     {contracts && contracts.length ? (
-      <ContractListTable contracts={contracts} />
+      <ContractsTable
+        contracts={contracts}
+        isLoading={false}
+        emptyState={
+          <EmptyState
+            imageVariant="empty"
+            message="No Recently View Contracts"
+          />
+        }
+        onRowSelect={() => {}}
+      />
     ) : (
       <Flex
         px={12}

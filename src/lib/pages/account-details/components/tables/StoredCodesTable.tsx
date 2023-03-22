@@ -82,6 +82,7 @@ export const StoredCodesTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message="This account did not stored any codes before."
             withBorder
           />

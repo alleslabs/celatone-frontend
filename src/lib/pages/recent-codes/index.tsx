@@ -82,6 +82,7 @@ const RecentCodes = observer(() => {
         isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant={isSearching ? "not-found" : "empty"}
             message={
               isSearching
                 ? "No matched codes found"
