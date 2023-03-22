@@ -49,7 +49,7 @@ export const PastTxsContent = ({
     return (
       <Flex my="20" direction="column">
         <EmptyState
-          image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+          imageVariant="not-found"
           message={`
         No past transaction matches found with your input.
         You can search with transaction hash, and contract address.
@@ -63,7 +63,7 @@ export const PastTxsContent = ({
     return (
       <Flex my="20" direction="column">
         <EmptyState
-          image="https://assets.alleslabs.dev/illustration/search-empty.svg"
+          imageVariant="empty"
           message={`
         Past transactions involving with Wasm module
         such as Instantiate, Execute, or Upload Wasm file will display here.

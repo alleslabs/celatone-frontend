@@ -75,11 +75,7 @@ export const PublicProjectContractTable = observer(
         {!publicContracts.length ? (
           <EmptyState
             message="There is currently no contracts related to this project."
-            image={
-              onViewMore
-                ? undefined
-                : "https://assets.alleslabs.dev/illustration/search-not-found.svg"
-            }
+            imageVariant={onViewMore && "not-found"}
             withBorder
           />
         ) : (

@@ -87,7 +87,7 @@ const TxsTableBody = ({
             />
           ) : (
             <EmptyState
-              image="https://assets.alleslabs.dev/illustration/search-empty.svg"
+              imageVariant="empty"
               message="No past transaction matches found with your input."
               withBorder
             />

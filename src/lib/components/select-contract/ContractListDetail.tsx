@@ -31,7 +31,7 @@ const FilteredListDetail = ({
   if (contracts.length === 0)
     return (
       <EmptyState
-        image="https://assets.alleslabs.dev/illustration/search-not-found.svg"
+        imageVariant="not-found"
         message="No contracts match found. 
         Make sure you are searching with contract address, name, or description."
       />
