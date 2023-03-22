@@ -22,7 +22,7 @@ const Container = chakra(Flex, {
 export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => (
   <Container {...flexProps}>
     <LabelText label="Network">{txData.chainId}</LabelText>
-    <LabelText label="Block">
+    <LabelText label="Block Height">
       <ExplorerLink value={txData.height} type="block_height" showCopyOnHover />
     </LabelText>
     <LabelText label="Transaction Fee">
@@ -32,7 +32,7 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => (
         </Text>
       )}
     </LabelText>
-    <LabelText label="Gas Used/Requested">
+    <LabelText label="Gas Used/Wanted">
       {`${formatInteger(txData.gas_used)}/${formatInteger(txData.gas_wanted)}`}
     </LabelText>
     <LabelText label="Memo">
