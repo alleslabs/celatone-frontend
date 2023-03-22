@@ -30,12 +30,7 @@ const CodesReadOnlyTableRow = ({
     >
       <TableRow>{codeInfo.id}</TableRow>
       <TableRow>
-        <Text
-          variant="body2"
-          className="ellipsis"
-          maxW="300px"
-          color="text.dark"
-        >
+        <Text variant="body2" className="ellipsis" color="text.dark">
           {codeInfo.name ?? "Untitled Name"}
         </Text>
       </TableRow>
