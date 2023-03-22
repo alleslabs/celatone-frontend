@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, Grid, Switch } from "@chakra-ui/react";
+import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -23,27 +23,27 @@ const Proposals = observer(() => {
         </Heading>
         <NewProposalButton />
       </Flex>
-      <Grid
-        templateColumns="minmax(240px, 1fr) repeat(3, max(240px))"
-        gap={2}
-        my={8}
-      >
-        {/* TODO - Wireup search bar */}
-        <InputWithIcon
-          placeholder="Search with Proposal ID or Proposal Title"
-          onChange={() => {}}
-          size="lg"
-          value="Value"
-        />
-        {/* TODO - Add filter by status  */}
-        <Flex>Filter by Status</Flex>
-        {/* TODO - Add filter by type */}
-        <Flex>Filter by Type</Flex>
-        <Flex gap={2} alignItems="center" justify="center">
-          <Switch size="md" />
-          <Text>My Proposals</Text>
+      <Flex direction="column" my={8} gap={8}>
+        <Flex justify="space-between">
+          {/* TODO - Wireup search bar */}
+          <InputWithIcon
+            placeholder="Search with Proposal ID or Proposal Title"
+            onChange={() => {}}
+            size="lg"
+            value="Value"
+          />
+          <Flex gap={2} alignItems="center" justify="center" minW="200px">
+            <Switch size="md" />
+            <Text>My Proposals</Text>
+          </Flex>
         </Flex>
-      </Grid>
+        <Flex gap={2}>
+          {/* TODO - Add filter by status  */}
+          <Flex>Filter by Status</Flex>
+          {/* TODO - Add filter by type */}
+          <Flex>Filter by Type</Flex>
+        </Flex>
+      </Flex>
       {/* TODO - add table */}
       <Text>Table</Text>
     </PageContainer>
