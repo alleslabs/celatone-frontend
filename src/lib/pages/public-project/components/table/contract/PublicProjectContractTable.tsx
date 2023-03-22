@@ -75,7 +75,7 @@ export const PublicProjectContractTable = observer(
         {!publicContracts.length ? (
           <EmptyState
             message="There is currently no contracts related to this project."
-            imageVariant={onViewMore && "not-found"}
+            imageVariant={onViewMore && "empty"}
             withBorder
           />
         ) : (

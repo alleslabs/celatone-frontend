@@ -84,7 +84,7 @@ export const PublicProjectCodeTable = observer(
         {!publicCodes.length ? (
           <EmptyState
             message="There is currently no code related to this project."
-            imageVariant={onViewMore && "not-found"}
+            imageVariant={onViewMore && "empty"}
             withBorder
           />
         ) : (
