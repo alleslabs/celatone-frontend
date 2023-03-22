@@ -1,6 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
+import { useCallback } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -15,6 +17,18 @@ interface StoredCodesTableProps {
   refetchCount: () => void;
   onViewMore?: () => void;
 }
+
+const useOnRowSelect = () => {
+  const navigate = useInternalNavigate();
+  return useCallback(
+    (codeId: number) =>
+      navigate({
+        pathname: "/code/[codeId]",
+        query: { codeId },
+      }),
+    [navigate]
+  );
+};
 
 export const StoredCodesTable = ({
   walletAddress,
@@ -72,6 +86,7 @@ export const StoredCodesTable = ({
             withBorder
           />
         }
+        onRowSelect={useOnRowSelect()}
       />
       {!!totalData &&
         (onViewMore

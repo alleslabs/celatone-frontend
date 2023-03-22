@@ -38,6 +38,7 @@ export const TableRow = chakra(GridItem, {
     fontSize: "14px",
     fontWeight: 400,
     p: 4,
+    minH: "75px",
     display: "flex",
     alignItems: "center",
     borderBottom: "1px solid",

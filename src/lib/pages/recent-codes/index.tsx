@@ -2,13 +2,16 @@ import { Heading, Box, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
+import PageContainer from "lib/components/PageContainer";
+import { EmptyState } from "lib/components/state";
+import { CodesTable } from "lib/components/table";
 import type { PermissionFilterValue } from "lib/hooks";
-import CodesTable from "lib/pages/codes/components/CodesTable";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { useRecentCodesData } from "./data";
@@ -17,6 +20,18 @@ interface RecentCodesState {
   keyword: string;
   permissionValue: PermissionFilterValue;
 }
+
+const useOnRowSelect = () => {
+  const navigate = useInternalNavigate();
+  return useCallback(
+    (codeId: number) =>
+      navigate({
+        pathname: "/code/[codeId]",
+        query: { codeId },
+      }),
+    [navigate]
+  );
+};
 
 const RecentCodes = observer(() => {
   const router = useRouter();
@@ -36,9 +51,11 @@ const RecentCodes = observer(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
   }, [router.isReady]);
 
+  const isSearching = !!keyword || permissionValue !== "all";
+
   return (
-    <Box>
-      <Box p="48px">
+    <PageContainer>
+      <Box pb="48px">
         <Heading as="h1" size="lg" mb={4}>
           Recent Codes
         </Heading>
@@ -61,13 +78,21 @@ const RecentCodes = observer(() => {
         </Flex>
       </Box>
       <CodesTable
-        isLoading={isLoading}
-        type="recent"
-        tableName="Recent Codes"
         codes={recentCodes}
-        isSearching={!!keyword}
+        isLoading={isLoading}
+        emptyState={
+          <EmptyState
+            message={
+              isSearching
+                ? "No matched codes found"
+                : "Most recent 100 code IDs will display here."
+            }
+            withBorder
+          />
+        }
+        onRowSelect={useOnRowSelect()}
       />
-    </Box>
+    </PageContainer>
   );
 });
 

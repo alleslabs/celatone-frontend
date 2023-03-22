@@ -9,9 +9,10 @@ import type { CodeLocalInfo } from "lib/stores/code";
 
 interface CodeNameCellProps {
   code: CodeLocalInfo;
+  isReadOnly?: boolean;
 }
 
-export const CodeNameCell = ({ code }: CodeNameCellProps) => {
+export const CodeNameCell = ({ code, isReadOnly }: CodeNameCellProps) => {
   const toast = useToast();
   const { updateCodeInfo } = useCodeStore();
 
@@ -33,6 +34,7 @@ export const CodeNameCell = ({ code }: CodeNameCellProps) => {
       defaultValue="Untitled Name"
       maxLength={MAX_CODE_NAME_LENGTH}
       onSave={onSave}
+      isReadOnly={isReadOnly}
     />
   );
 };
