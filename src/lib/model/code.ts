@@ -109,8 +109,8 @@ interface MyCodesData {
 }
 
 export const useMyCodesData = (
-  keyword?: string,
-  permissionValue?: PermissionFilterValue
+  keyword: string,
+  permissionValue: PermissionFilterValue
 ): MyCodesData => {
   const permissionFilterFn = usePermissionFilter(permissionValue);
   const searchFilterFn = useSearchFilter(keyword);
