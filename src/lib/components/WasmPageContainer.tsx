@@ -3,13 +3,17 @@ import type { ReactNode } from "react";
 
 type WasmPageContainerProps = {
   children: ReactNode;
+  width?: string;
 };
 
-const WasmPageContainer = ({ children }: WasmPageContainerProps) => (
+const WasmPageContainer = ({
+  children,
+  width = "540px",
+}: WasmPageContainerProps) => (
   <Flex
     as="main"
     align="center"
-    width="540px"
+    width={width}
     mx="auto"
     py="48px"
     direction="column"

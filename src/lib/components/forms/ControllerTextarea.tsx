@@ -31,6 +31,8 @@ export const ControllerTextarea = <T extends FieldValues>({
   helperText,
   placeholder = " ",
   error,
+
+  height = "112px",
   rules = {},
   ...componentProps
 }: ControllerTextareaProps<T>) => {
@@ -55,6 +57,7 @@ export const ControllerTextarea = <T extends FieldValues>({
         placeholder={placeholder}
         value={watcher}
         onChange={field.onChange}
+        height={height}
       />
       {isError ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
