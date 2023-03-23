@@ -1,7 +1,7 @@
 import { CustomIcon } from "lib/components/icon";
 import { SaveNewCodeModal } from "lib/components/modal/code/SaveNewCode";
 
-export default () => (
+export const SaveCodeButton = () => (
   <SaveNewCodeModal
     buttonProps={{
       variant: "outline-primary",

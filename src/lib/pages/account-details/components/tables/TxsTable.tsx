@@ -82,12 +82,13 @@ const TxsTableBody = ({
         emptyState={
           !filterSelected.length ? (
             <EmptyState
+              imageVariant="empty"
               message="This account did not submit any transactions before."
               withBorder
             />
           ) : (
             <EmptyState
-              imageVariant="empty"
+              imageVariant="not-found"
               message="No past transaction matches found with your input."
               withBorder
             />

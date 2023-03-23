@@ -21,12 +21,10 @@ import { CustomTab } from "../CustomTab";
 import { FilterByPermission } from "../forms";
 import { CustomIcon } from "../icon";
 import InputWithIcon from "../InputWithIcon";
+import { MySavedCodesTable, MyStoredCodesTable } from "../table";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-
-import { MySavedCodeContent } from "./MySavedCodeContent";
-import { MyStoredCodeContent } from "./MyStoredCodeContent";
 
 interface CodeFilterState {
   keyword: string;
@@ -66,10 +64,12 @@ export const CodeSelectDrawerButton = ({
     isSavedCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
 
-  const handleSelect = (code: string) => {
-    onCodeSelect(code);
+  const handleSelect = (codeId: number) => {
+    onCodeSelect(codeId.toString());
     onClose();
   };
+
+  const isSearching = !!keyword || permissionValue !== "all";
 
   return (
     <>
@@ -122,17 +122,24 @@ export const CodeSelectDrawerButton = ({
               </TabList>
               <TabPanels>
                 <TabPanel p={0}>
-                  <MyStoredCodeContent
-                    storedCodes={stored}
-                    handleSelect={handleSelect}
+                  <MyStoredCodesTable
+                    codes={stored}
                     isLoading={isStoredCodesLoading}
+                    onRowSelect={handleSelect}
+                    emptyMessage="You don’t have any stored codes in this device."
+                    disconnectedMessage="to see your stored code."
+                    isSearching={isSearching}
+                    isReadOnly
                   />
                 </TabPanel>
                 <TabPanel p={0}>
-                  <MySavedCodeContent
-                    savedCodes={saved}
-                    handleSelect={handleSelect}
+                  <MySavedCodesTable
+                    codes={saved}
                     isLoading={isSavedCodesLoading}
+                    onRowSelect={handleSelect}
+                    emptyMessage="You don’t have any saved codes in this device."
+                    isSearching={isSearching}
+                    isReadOnly
                   />
                 </TabPanel>
               </TabPanels>
