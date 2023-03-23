@@ -11,7 +11,7 @@ interface CodesTableWithWalletProps {
   isLoading: boolean;
   emptyState: JSX.Element;
   onRowSelect: (codeId: number) => void;
-  disconnected: string;
+  disconnectedMessage: string;
   isReadOnly?: boolean;
 }
 
@@ -20,7 +20,7 @@ export const CodesTableWithWallet = ({
   isLoading,
   emptyState,
   onRowSelect,
-  disconnected,
+  disconnectedMessage,
   isReadOnly = false,
 }: CodesTableWithWalletProps) => {
   const { address } = useWallet();
@@ -31,7 +31,7 @@ export const CodesTableWithWallet = ({
       borderY="1px solid"
       borderColor="pebble.700"
     >
-      <DisconnectedState text={disconnected} />
+      <DisconnectedState text={disconnectedMessage} />
     </Flex>
   ) : (
     <CodesTable

@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useCallback } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
@@ -9,18 +8,6 @@ import { EmptyState } from "lib/components/state";
 import { ContractsTable, TableTitle, ViewMore } from "lib/components/table";
 import { useAccountAdminContracts } from "lib/pages/account-details/data";
 import type { ContractAddr, HumanAddr, Option } from "lib/types";
-
-const useOnRowSelect = () => {
-  const navigate = useInternalNavigate();
-  return useCallback(
-    (contract: ContractAddr) =>
-      navigate({
-        pathname: "/contract/[contract]",
-        query: { contract },
-      }),
-    [navigate]
-  );
-};
 
 interface AdminContractsTableProps {
   walletAddress: HumanAddr;
@@ -37,6 +24,13 @@ export const AdminContractsTable = ({
   refetchCount,
   onViewMore,
 }: AdminContractsTableProps) => {
+  const navigate = useInternalNavigate();
+  const onRowSelect = (contract: ContractAddr) =>
+    navigate({
+      pathname: "/contract/[contract]",
+      query: { contract },
+    });
+
   const {
     pagesQuantity,
     currentPage,
@@ -87,7 +81,7 @@ export const AdminContractsTable = ({
             withBorder
           />
         }
-        onRowSelect={useOnRowSelect()}
+        onRowSelect={onRowSelect}
       />
       {!!totalData &&
         (onViewMore

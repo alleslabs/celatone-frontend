@@ -126,8 +126,8 @@ export const CodeSelectDrawerButton = ({
                     codes={stored}
                     isLoading={isStoredCodesLoading}
                     onRowSelect={handleSelect}
-                    empty="You don’t have any stored codes in this device."
-                    disconnected="to see your stored code."
+                    emptyMessage="You don’t have any stored codes in this device."
+                    disconnectedMessage="to see your stored code."
                     isSearching={isSearching}
                     isReadOnly
                   />
@@ -137,7 +137,7 @@ export const CodeSelectDrawerButton = ({
                     codes={saved}
                     isLoading={isSavedCodesLoading}
                     onRowSelect={handleSelect}
-                    empty="You don’t have any saved codes in this device."
+                    emptyMessage="You don’t have any saved codes in this device."
                     isSearching={isSearching}
                     isReadOnly
                   />

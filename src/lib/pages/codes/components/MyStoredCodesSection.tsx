@@ -9,7 +9,7 @@ interface MyStoredCodesSectionProps {
   codes: CodeInfo[];
   isLoading: boolean;
   onRowSelect: (codeId: number) => void;
-  disconnected: string;
+  disconnectedMessage: string;
   isSearching: boolean;
 }
 
@@ -17,7 +17,7 @@ export const MyStoredCodesSection = ({
   codes,
   isLoading,
   onRowSelect,
-  disconnected,
+  disconnectedMessage,
   isSearching,
 }: MyStoredCodesSectionProps) => (
   <Box mb={8}>
@@ -31,8 +31,8 @@ export const MyStoredCodesSection = ({
       codes={codes}
       isLoading={isLoading}
       onRowSelect={onRowSelect}
-      empty="Your uploaded Wasm files will display as My Stored Codes."
-      disconnected={disconnected}
+      emptyMessage="Your uploaded Wasm files will display as My Stored Codes."
+      disconnectedMessage={disconnectedMessage}
       isSearching={isSearching}
     />
   </Box>

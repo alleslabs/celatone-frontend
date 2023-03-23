@@ -43,7 +43,7 @@ const StyledIconButton = chakra(IconButton, {
 });
 
 export interface CTAInfo {
-  contractRemovalInfo: Option<LVPair>;
+  removingContractList: Option<LVPair>;
 }
 
 interface ContractsTableRowCTAProps {
@@ -134,12 +134,12 @@ export const ContractsTableRowCTA = ({
                 </StyledMenuItem>
               }
             />
-            {!!withCTA.contractRemovalInfo && (
+            {!!withCTA.removingContractList && (
               <>
                 <MenuDivider />
                 <RemoveContractModal
                   contractLocalInfo={contractInfo}
-                  contractRemovalInfo={withCTA.contractRemovalInfo}
+                  contractRemovalInfo={withCTA.removingContractList}
                   menuItemProps={{
                     icon: <CustomIcon name="delete" color="error.light" />,
                     children: "Remove from this list",

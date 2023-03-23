@@ -12,7 +12,10 @@ interface CodeNameCellProps {
   isReadOnly?: boolean;
 }
 
-export const CodeNameCell = ({ code, isReadOnly }: CodeNameCellProps) => {
+export const CodeNameCell = ({
+  code,
+  isReadOnly = false,
+}: CodeNameCellProps) => {
   const toast = useToast();
   const { updateCodeInfo } = useCodeStore();
 

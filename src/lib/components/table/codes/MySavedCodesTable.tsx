@@ -7,7 +7,7 @@ interface MySavedCodesTableProps {
   codes: CodeInfo[];
   isLoading: boolean;
   onRowSelect: (codeId: number) => void;
-  empty: string;
+  emptyMessage: string;
   isSearching: boolean;
   isReadOnly?: boolean;
 }
@@ -16,7 +16,7 @@ export const MySavedCodesTable = ({
   codes,
   isLoading,
   onRowSelect,
-  empty,
+  emptyMessage,
   isSearching,
   isReadOnly = false,
 }: MySavedCodesTableProps) => (
@@ -26,7 +26,7 @@ export const MySavedCodesTable = ({
     emptyState={
       <EmptyState
         imageVariant={isSearching ? "not-found" : "empty"}
-        message={isSearching ? "No matched codes found" : empty}
+        message={isSearching ? "No matched codes found" : emptyMessage}
         withBorder
       />
     }

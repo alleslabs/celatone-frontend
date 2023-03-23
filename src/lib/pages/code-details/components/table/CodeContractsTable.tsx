@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
@@ -12,24 +12,19 @@ import type { ContractAddr } from "lib/types";
 
 import { NoContracts } from "./NoContracts";
 
-const useOnRowSelect = () => {
-  const navigate = useInternalNavigate();
-  return useCallback(
-    (contract: ContractAddr) =>
-      navigate({
-        pathname: "/contract/[contract]",
-        query: { contract },
-      }),
-    [navigate]
-  );
-};
-
 interface CodeContractsTableProps {
   codeId: number;
 }
 
 export const CodeContractsTable = observer(
   ({ codeId }: CodeContractsTableProps) => {
+    const navigate = useInternalNavigate();
+    const onRowSelect = (contract: ContractAddr) =>
+      navigate({
+        pathname: "/contract/[contract]",
+        query: { contract },
+      });
+
     const { data: totalData, refetch } = useContractListCountByCodeId(codeId);
     const {
       pagesQuantity,
@@ -81,7 +76,7 @@ export const CodeContractsTable = observer(
           contracts={contracts}
           isLoading={isLoading}
           emptyState={<NoContracts />}
-          onRowSelect={useOnRowSelect()}
+          onRowSelect={onRowSelect}
         />
         {!!totalData && totalData > 10 && (
           <Pagination

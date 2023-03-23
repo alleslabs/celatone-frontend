@@ -9,7 +9,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useInternalNavigate } from "lib/app-provider";
@@ -29,20 +29,15 @@ interface CodeFilterState {
   permissionValue: PermissionFilterValue;
 }
 
-const useOnRowSelect = () => {
-  const navigate = useInternalNavigate();
-  return useCallback(
-    (codeId: number) =>
-      navigate({
-        pathname: "/code/[codeId]",
-        query: { codeId },
-      }),
-    [navigate]
-  );
-};
-
 const Codes = observer(() => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
+  const onRowSelect = (codeId: number) =>
+    navigate({
+      pathname: "/code/[codeId]",
+      query: { codeId },
+    });
+
   const { watch, setValue } = useForm<CodeFilterState>({
     defaultValues: {
       permissionValue: "all",
@@ -61,7 +56,6 @@ const Codes = observer(() => {
     isSavedCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
 
-  const onRowSelect = useOnRowSelect();
   const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
@@ -102,7 +96,7 @@ const Codes = observer(() => {
               codes={stored}
               isLoading={isStoredCodesLoading}
               onRowSelect={onRowSelect}
-              disconnected="to see your previously uploaded and stored codes."
+              disconnectedMessage="to see your previously uploaded and stored codes."
               isSearching={isSearching}
             />
             <MySavedCodesSection
@@ -117,7 +111,7 @@ const Codes = observer(() => {
               codes={stored}
               isLoading={isStoredCodesLoading}
               onRowSelect={onRowSelect}
-              disconnected="to see your previously uploaded and stored codes."
+              disconnectedMessage="to see your previously uploaded and stored codes."
               isSearching={isSearching}
             />
           </TabPanel>

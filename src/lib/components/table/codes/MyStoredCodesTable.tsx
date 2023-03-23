@@ -7,8 +7,8 @@ interface MyStoredCodesTableProps {
   codes: CodeInfo[];
   isLoading: boolean;
   onRowSelect: (codeId: number) => void;
-  empty: string;
-  disconnected: string;
+  emptyMessage: string;
+  disconnectedMessage: string;
   isSearching: boolean;
   isReadOnly?: boolean;
 }
@@ -17,8 +17,8 @@ export const MyStoredCodesTable = ({
   codes,
   isLoading,
   onRowSelect,
-  empty,
-  disconnected,
+  emptyMessage,
+  disconnectedMessage,
   isSearching,
   isReadOnly = false,
 }: MyStoredCodesTableProps) => (
@@ -28,12 +28,12 @@ export const MyStoredCodesTable = ({
     emptyState={
       <EmptyState
         imageVariant={isSearching ? "not-found" : "empty"}
-        message={isSearching ? "No matched codes found" : empty}
+        message={isSearching ? "No matched codes found" : emptyMessage}
         withBorder
       />
     }
     onRowSelect={onRowSelect}
-    disconnected={disconnected}
+    disconnectedMessage={disconnectedMessage}
     isReadOnly={isReadOnly}
   />
 );

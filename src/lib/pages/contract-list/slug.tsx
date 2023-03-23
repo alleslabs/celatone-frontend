@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -46,14 +46,11 @@ const ContractsByList = observer(() => {
     ? instantiatedListInfo
     : getContractLists().find((item) => item.slug === listSlug);
 
-  const onContractSelect = useCallback(
-    (contract: ContractAddr) =>
-      navigate({
-        pathname: "/contract/[contract]",
-        query: { contract },
-      }),
-    [navigate]
-  );
+  const onContractSelect = (contract: ContractAddr) =>
+    navigate({
+      pathname: "/contract/[contract]",
+      query: { contract },
+    });
 
   useEffect(() => {
     // TODO: find a better approach?

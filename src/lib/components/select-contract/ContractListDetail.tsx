@@ -65,7 +65,7 @@ const ContractListContent = ({
         isReadOnly
           ? undefined
           : {
-              contractRemovalInfo: contractListInfo.isContractRemovable
+              removingContractList: contractListInfo.isContractRemovable
                 ? { label: contractListInfo.name, value: contractListInfo.slug }
                 : undefined,
             }
