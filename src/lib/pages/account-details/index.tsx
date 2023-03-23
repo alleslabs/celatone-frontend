@@ -18,7 +18,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
 
@@ -64,7 +64,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
 
-  const handleOnViewMore = (tab: TabIndex) => {
+  const handleTabChange = (tab: TabIndex) => {
+    AmpTrackUseTab(TabIndex[tab]);
     setTabIndex(tab);
     scrollToTop();
   };
@@ -96,52 +97,52 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           overflowX="scroll"
           id={tableHeaderId}
         >
-          <CustomTab onClick={() => setTabIndex(TabIndex.Overview)}>
+          <CustomTab onClick={() => handleTabChange(TabIndex.Overview)}>
             Overall
           </CustomTab>
           <CustomTab
             count={tableCounts.assetsCount}
             isDisabled={!tableCounts.assetsCount}
-            onClick={() => setTabIndex(TabIndex.Assets)}
+            onClick={() => handleTabChange(TabIndex.Assets)}
           >
             Assets
           </CustomTab>
           {/* TODO: add counts for Delegations */}
-          <CustomTab onClick={() => setTabIndex(TabIndex.Delegations)}>
+          <CustomTab onClick={() => handleTabChange(TabIndex.Delegations)}>
             Delegations
           </CustomTab>
           <CustomTab
             count={tableCounts.txsCount}
             isDisabled={!tableCounts.txsCount}
-            onClick={() => setTabIndex(TabIndex.Txs)}
+            onClick={() => handleTabChange(TabIndex.Txs)}
           >
             Transactions
           </CustomTab>
           <CustomTab
             count={tableCounts.codesCount}
             isDisabled={!tableCounts.codesCount}
-            onClick={() => setTabIndex(TabIndex.Codes)}
+            onClick={() => handleTabChange(TabIndex.Codes)}
           >
             Codes
           </CustomTab>
           <CustomTab
             count={tableCounts.contractsCount}
             isDisabled={!tableCounts.contractsCount}
-            onClick={() => setTabIndex(TabIndex.Contracts)}
+            onClick={() => handleTabChange(TabIndex.Contracts)}
           >
             Contracts
           </CustomTab>
           <CustomTab
             count={tableCounts.contractsAdminCount}
             isDisabled={!tableCounts.contractsAdminCount}
-            onClick={() => setTabIndex(TabIndex.Admins)}
+            onClick={() => handleTabChange(TabIndex.Admins)}
           >
             Admins
           </CustomTab>
           <CustomTab
             count={tableCounts.proposalsCount}
             isDisabled={!tableCounts.proposalsCount}
-            onClick={() => setTabIndex(TabIndex.Proposals)}
+            onClick={() => handleTabChange(TabIndex.Proposals)}
           >
             Proposals
           </CustomTab>
@@ -172,46 +173,46 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
             <AssetsSection
               walletAddress={accountAddress}
-              onViewMore={() => handleOnViewMore(TabIndex.Assets)}
+              onViewMore={() => handleTabChange(TabIndex.Assets)}
             />
             <DelegationsSection
               walletAddress={accountAddress}
-              onViewMore={() => handleOnViewMore(TabIndex.Delegations)}
+              onViewMore={() => handleTabChange(TabIndex.Delegations)}
             />
             <TxsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.txsCount}
               refetchCount={refetchTxsCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Txs)}
+              onViewMore={() => handleTabChange(TabIndex.Txs)}
             />
             <StoredCodesTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.codesCount}
               refetchCount={refetchCodesCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Codes)}
+              onViewMore={() => handleTabChange(TabIndex.Codes)}
             />
             <InstantiatedContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
               refetchCount={refetchContractsCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Contracts)}
+              onViewMore={() => handleTabChange(TabIndex.Contracts)}
             />
             <AdminContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount}
               refetchCount={refetchContractsAdminCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Admins)}
+              onViewMore={() => handleTabChange(TabIndex.Admins)}
             />
             <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount}
               refetchCount={refetchProposalsCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Proposals)}
+              onViewMore={() => handleTabChange(TabIndex.Proposals)}
             />
           </TabPanel>
           <TabPanel p={0}>

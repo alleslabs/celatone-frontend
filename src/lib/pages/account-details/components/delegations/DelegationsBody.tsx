@@ -4,6 +4,7 @@ import { useState } from "react";
 import { DelegationsTable, UnbondingsTable } from "../tables";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
 import type { TokenWithValue } from "lib/pages/account-details/type";
+import { AmpTrackUseRadio } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 
 import { RadioCard } from "./RadioCard";
@@ -30,7 +31,14 @@ export const DelegationsBody = ({
 
   return (
     <Flex direction="column" gap={8}>
-      <RadioGroup onChange={setValue} value={value} overflowX="scroll">
+      <RadioGroup
+        onChange={(newValue) => {
+          AmpTrackUseRadio(newValue.toLocaleLowerCase());
+          setValue(newValue);
+        }}
+        value={value}
+        overflowX="scroll"
+      >
         <Stack direction="row">
           <RadioCard
             value="Delegated"
