@@ -61,6 +61,7 @@ export const TxsTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message="This contract does not have any transactions"
             withBorder
           />

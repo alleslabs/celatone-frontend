@@ -1,35 +1,33 @@
-import { Flex, Text, Grid, HStack } from "@chakra-ui/react";
+import { Text, Grid, HStack } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import { useInternalNavigate } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
 import type { CodeInfo } from "lib/types";
+import { getCw2Info } from "lib/utils";
 
 import { CodeNameCell } from "./CodeNameCell";
 
 interface CodesTableRowProps {
   codeInfo: CodeInfo;
   templateColumns: string;
+  onRowSelect: (codeId: number) => void;
+  isReadOnly: boolean;
 }
 
 export const CodesTableRow = ({
   codeInfo,
   templateColumns,
+  onRowSelect,
+  isReadOnly,
 }: CodesTableRowProps) => {
-  const navigate = useInternalNavigate();
-
+  const cw2Info = getCw2Info(codeInfo.cw2Contract, codeInfo.cw2Version);
   return (
     <Grid
       templateColumns={templateColumns}
-      onClick={() =>
-        navigate({
-          pathname: "/code/[codeId]",
-          query: { codeId: codeInfo.id },
-        })
-      }
+      onClick={() => onRowSelect(codeInfo.id)}
       _hover={{ bg: "pebble.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
@@ -43,16 +41,22 @@ export const CodesTableRow = ({
         />
       </TableRow>
       <TableRow>
-        <CodeNameCell code={codeInfo} />
+        <CodeNameCell code={codeInfo} isReadOnly={isReadOnly} />
       </TableRow>
       <TableRow>
+        <Text
+          color={cw2Info ? "text.main" : "text.disabled"}
+          wordBreak="break-all"
+        >
+          {cw2Info ?? "N/A"}
+        </Text>
+      </TableRow>
+      <TableRow justifyContent="center">
         <Text
           variant="body2"
           onClick={(e) => e.stopPropagation()}
           cursor="text"
-          w="fit-content"
-          m="auto"
-          px={2}
+          color={codeInfo.contractCount ? "text.main" : "text.disabled"}
         >
           {codeInfo.contractCount ?? "N/A"}
         </Text>
@@ -62,14 +66,17 @@ export const CodesTableRow = ({
           value={codeInfo.uploader}
           type="user_address"
           showCopyOnHover
+          isReadOnly={isReadOnly}
         />
       </TableRow>
       <TableRow>
-        <Flex justify="space-between" align="center" w="full">
-          <PermissionChip
-            instantiatePermission={codeInfo.instantiatePermission}
-            permissionAddresses={codeInfo.permissionAddresses}
-          />
+        <PermissionChip
+          instantiatePermission={codeInfo.instantiatePermission}
+          permissionAddresses={codeInfo.permissionAddresses}
+        />
+      </TableRow>
+      {!isReadOnly && (
+        <TableRow px={0}>
           <HStack onClick={(e) => e.stopPropagation()}>
             <InstantiateButton
               instantiatePermission={codeInfo.instantiatePermission}
@@ -78,8 +85,8 @@ export const CodesTableRow = ({
             />
             <SaveOrRemoveCodeModal codeInfo={codeInfo} />
           </HStack>
-        </Flex>
-      </TableRow>
+        </TableRow>
+      )}
     </Grid>
   );
 };

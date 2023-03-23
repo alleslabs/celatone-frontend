@@ -45,6 +45,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#251](https://github.com/alleslabs/celatone-frontend/pull/251) Refactor Code and Contract tables into general components
+- [#252](https://github.com/alleslabs/celatone-frontend/pull/252) Refactor Empty State image source logic
+- [#249](https://github.com/alleslabs/celatone-frontend/pull/249) Change code table format in select code draw and add CW2 info
 - [#247](https://github.com/alleslabs/celatone-frontend/pull/247) Refactor hover logic of copier icon
 - [#246](https://github.com/alleslabs/celatone-frontend/pull/246) Show edit button when code name is set, and align button section to top
 - [#240](https://github.com/alleslabs/celatone-frontend/pull/240) Change modals containing tables to drawers for easier exploration
@@ -53,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#253](https://github.com/alleslabs/celatone-frontend/pull/253) Fix public code logo shown when switching from mainnet to testnet
 - [#248](https://github.com/alleslabs/celatone-frontend/pull/248) Fix table padding bottom for editable cells
 - [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
 - [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit

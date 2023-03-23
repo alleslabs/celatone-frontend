@@ -9,27 +9,37 @@ interface CodesTableProps {
   codes: Option<CodeInfo[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
+  onRowSelect: (codeId: number) => void;
+  isReadOnly?: boolean;
 }
 
 export const CodesTable = ({
   codes,
   isLoading,
   emptyState,
+  onRowSelect,
+  isReadOnly = false,
 }: CodesTableProps) => {
   if (isLoading) return <Loading />;
   if (!codes?.length) return emptyState;
 
-  const templateColumns =
-    "max(80px) minmax(320px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
+  const templateColumns = isReadOnly
+    ? "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px"
+    : "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px 180px";
 
   return (
     <TableContainer>
-      <CodesTableHeader templateColumns={templateColumns} />
+      <CodesTableHeader
+        templateColumns={templateColumns}
+        isReadOnly={isReadOnly}
+      />
       {codes.map((code) => (
         <CodesTableRow
           key={code.id + code.uploader + code.name}
           codeInfo={code}
           templateColumns={templateColumns}
+          onRowSelect={onRowSelect}
+          isReadOnly={isReadOnly}
         />
       ))}
     </TableContainer>

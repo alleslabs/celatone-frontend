@@ -5,14 +5,18 @@ import { TableHeader } from "../tableComponents";
 
 export const CodesTableHeader = ({
   templateColumns,
+  isReadOnly,
 }: {
   templateColumns: GridProps["templateColumns"];
+  isReadOnly: boolean;
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
-    <TableHeader>Contracts</TableHeader>
+    <TableHeader>CW2 Info</TableHeader>
+    <TableHeader textAlign="center">Contracts</TableHeader>
     <TableHeader>Uploader</TableHeader>
     <TableHeader>Permission</TableHeader>
+    {!isReadOnly && <TableHeader />}
   </Grid>
 );

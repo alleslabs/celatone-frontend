@@ -16,6 +16,7 @@ interface PermissionOption {
 interface FilterByPermissionProps {
   setPermissionValue: (newVal: PermissionFilterValue) => void;
   initialSelected: string;
+  labelBgColor?: string;
 }
 
 const options: PermissionOption[] = [
@@ -45,6 +46,7 @@ const options: PermissionOption[] = [
 export const FilterByPermission = ({
   setPermissionValue,
   initialSelected,
+  labelBgColor = "background.main",
 }: FilterByPermissionProps) => (
   <Grid columnGap="16px" w="full" mb="16px" maxW="360px">
     <SelectInput<PermissionFilterValue>
@@ -53,6 +55,7 @@ export const FilterByPermission = ({
       onChange={setPermissionValue}
       placeholder="Select"
       initialSelected={initialSelected}
+      labelBgColor={labelBgColor}
     />
   </Grid>
 );

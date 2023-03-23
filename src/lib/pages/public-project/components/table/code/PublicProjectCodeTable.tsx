@@ -22,16 +22,17 @@ interface PublicProjectCodeTableProps {
 }
 
 const TEMPLATE_COLUMNS =
-  "max(80px) minmax(300px, 1fr) minmax(220px, 1fr) max(120px) max(160px) minmax(320px, 0.75fr)";
+  "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px 180px";
 
 const CodeTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS}>
+  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
     <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
     <TableHeader>CW2 Info</TableHeader>
-    <TableHeader>Contracts</TableHeader>
+    <TableHeader textAlign="center">Contracts</TableHeader>
     <TableHeader>Uploader</TableHeader>
     <TableHeader>Permission</TableHeader>
+    <TableHeader />
   </Grid>
 );
 
@@ -84,11 +85,7 @@ export const PublicProjectCodeTable = observer(
         {!publicCodes.length ? (
           <EmptyState
             message="There is currently no code related to this project."
-            image={
-              onViewMore
-                ? undefined
-                : "https://assets.alleslabs.dev/illustration/search-not-found.svg"
-            }
+            imageVariant={onViewMore && "empty"}
             withBorder
           />
         ) : (
@@ -99,7 +96,7 @@ export const PublicProjectCodeTable = observer(
                 <PublicProjectCodeRow
                   key={code.publicInfo.id}
                   publicCodeInfo={code}
-                  templateColumn={TEMPLATE_COLUMNS}
+                  templateColumns={TEMPLATE_COLUMNS}
                 />
               ))}
             </TableContainer>

@@ -18,13 +18,13 @@ import {
   AddToOtherListModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
-import { TableRowNoBorder } from "lib/components/table";
+import { TableRow } from "lib/components/table";
 
 import type { PublicContractInfo } from "./PublicProjectContractTable";
 
 interface ContractTableRowProps {
   publicContractInfo: PublicContractInfo;
-  templateColumn: string;
+  templateColumns: string;
 }
 
 // TODO - Revisit this style (exist in multiple places)
@@ -39,7 +39,7 @@ const StyledIconButton = chakra(IconButton, {
 
 export const PublicProjectContractRow = ({
   publicContractInfo,
-  templateColumn,
+  templateColumns,
 }: ContractTableRowProps) => {
   const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
@@ -52,16 +52,14 @@ export const PublicProjectContractRow = ({
 
   return (
     <Grid
+      templateColumns={templateColumns}
+      onClick={goToContractDetails}
       _hover={{ bg: "pebble.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
-      onClick={goToContractDetails}
       minW="min-content"
-      templateColumns={templateColumn}
-      borderBottom="1px solid"
-      borderColor="pebble.700"
     >
-      <TableRowNoBorder>
+      <TableRow>
         <ExplorerLink
           value={publicContractInfo.publicInfo.contractAddress}
           type={getAddressTypeByLength(
@@ -70,8 +68,8 @@ export const PublicProjectContractRow = ({
           )}
           showCopyOnHover
         />
-      </TableRowNoBorder>
-      <TableRowNoBorder gap={1}>
+      </TableRow>
+      <TableRow gap={1}>
         <Text>{publicContractInfo.publicInfo.name}</Text>
         {publicContractInfo.publicInfo.description && (
           <Tooltip
@@ -86,8 +84,8 @@ export const PublicProjectContractRow = ({
             </Flex>
           </Tooltip>
         )}
-      </TableRowNoBorder>
-      <TableRowNoBorder>
+      </TableRow>
+      <TableRow>
         <ExplorerLink
           value={publicContractInfo.publicInfo.instantiator}
           type={getAddressTypeByLength(
@@ -96,8 +94,8 @@ export const PublicProjectContractRow = ({
           )}
           showCopyOnHover
         />
-      </TableRowNoBorder>
-      <TableRowNoBorder justifyContent="end">
+      </TableRow>
+      <TableRow justifyContent="end">
         <Flex
           gap={3}
           alignItems="center"
@@ -144,7 +142,7 @@ export const PublicProjectContractRow = ({
             )}
           </Box>
         </Flex>
-      </TableRowNoBorder>
+      </TableRow>
     </Grid>
   );
 };
