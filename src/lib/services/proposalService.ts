@@ -4,6 +4,8 @@ import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import {
+  getProposalList,
+  getProposalListCount,
   getProposalsByWalletAddressPagination,
   getProposalsCountByWalletAddress,
   getRelatedProposalsByContractAddressPagination,
@@ -18,7 +20,9 @@ import type {
   Addr,
   Proposal,
 } from "lib/types";
-import { parseDate } from "lib/utils";
+import { isExpedited, parseDate } from "lib/utils";
+
+import { useProposalListExpression } from "./expression";
 
 export const useRelatedProposalsByContractAddressPagination = (
   contractAddress: ContractAddr,
@@ -44,6 +48,11 @@ export const useRelatedProposalsByContractAddressPagination = (
           resolvedHeight: proposal.resolved_height,
           type: proposal.proposal.type as ProposalType,
           proposer: proposal.proposal.account?.address as Addr,
+          // TODO - Get expedited flag from graphql
+          isExpedited: isExpedited(
+            proposal.proposal.voting_time,
+            proposal.proposal.voting_end_time
+          ),
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
@@ -119,6 +128,11 @@ export const useProposalsByWalletAddressPagination = (
             proposal.contract_proposals.at(0)?.resolved_height,
           type: proposal.type as ProposalType,
           proposer: walletAddress,
+          // TODO - Get expedited flag from graphql
+          isExpedited: isExpedited(
+            proposal.voting_time,
+            proposal.voting_end_time
+          ),
         }))
       );
   }, [indexerGraphClient, offset, pageSize, walletAddress]);
@@ -157,5 +171,83 @@ export const useProposalsCountByWalletAddress = (
       keepPreviousData: true,
       enabled: !!walletAddress,
     }
+  );
+};
+
+export const useProposalList = (
+  offset: number,
+  pageSize: number,
+  statuses: ProposalStatus[],
+  types: ProposalType[],
+  search: string,
+  isMyProposal: boolean
+): UseQueryResult<Proposal[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const expression = useProposalListExpression(
+    statuses,
+    types,
+    search,
+    isMyProposal
+  );
+
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getProposalList, {
+          expression,
+          offset,
+          pageSize,
+        })
+        .then(({ proposals }) =>
+          proposals.map<Proposal>((proposal) => ({
+            proposalId: proposal.id,
+            title: proposal.title,
+            status: proposal.status as ProposalStatus,
+            votingEndTime: parseDate(proposal.voting_end_time),
+            depositEndTime: parseDate(proposal.deposit_end_time),
+            resolvedHeight: proposal.resolved_height,
+            type: proposal.type as ProposalType,
+            proposer: proposal.account?.address as Addr,
+            // TODO - Get expedited flag from graphql
+            isExpedited: isExpedited(
+              proposal.voting_time,
+              proposal.voting_end_time
+            ),
+          }))
+        ),
+    [indexerGraphClient, offset, pageSize, expression]
+  );
+  return useQuery(
+    ["proposal_list", indexerGraphClient, expression, offset, pageSize],
+    queryFn
+  );
+};
+
+export const useProposalListCount = (
+  statuses: ProposalStatus[],
+  types: ProposalType[],
+  search: string,
+  isMyProposal: boolean
+): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const expression = useProposalListExpression(
+    statuses,
+    types,
+    search,
+    isMyProposal
+  );
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getProposalListCount, { expression })
+        .then(
+          ({ proposals_aggregate }) => proposals_aggregate?.aggregate?.count
+        ),
+    [indexerGraphClient, expression]
+  );
+
+  return useQuery(
+    ["proposal_list_count", indexerGraphClient, expression],
+    queryFn
   );
 };
