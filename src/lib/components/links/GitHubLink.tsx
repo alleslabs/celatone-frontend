@@ -18,7 +18,7 @@ export const GitHubLink = ({ github }: GitHubLinkProps) => {
         href={github}
         onClick={() => AmpTrackSocial(github)}
         target="_blank"
-        rel="noreferrer"
+        rel="noreferrer noopener"
         style={{ display: "flex" }}
       >
         <Text color="lilac.main" variant="body2" wordBreak="break-all">
