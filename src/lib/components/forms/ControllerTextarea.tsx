@@ -31,6 +31,7 @@ export const ControllerTextarea = <T extends FieldValues>({
   helperText,
   placeholder = " ",
   error,
+  height,
   rules = {},
   ...componentProps
 }: ControllerTextareaProps<T>) => {
@@ -52,6 +53,7 @@ export const ControllerTextarea = <T extends FieldValues>({
       )}
       <Textarea
         resize="none"
+        height={height}
         placeholder={placeholder}
         value={watcher}
         onChange={field.onChange}
