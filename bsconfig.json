@@ -1,0 +1,22 @@
+{
+    "name": "celatone-frontend",
+    "sources": [
+        {
+          "dir": "src/rescript",
+          "subdirs": true
+        }
+    ],
+    "reanalyze": {
+      "analysis": ["dce", "exception"]
+    },
+    "gentypeconfig": {
+        "language": "typescript",
+        "shims": {},
+        "generatedFileExtension": ".gen.tsx",
+        "module": "es6",
+        "debug": {
+          "all": false,
+          "basic": false
+        }
+    }
+}
