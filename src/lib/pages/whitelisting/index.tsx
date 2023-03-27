@@ -25,11 +25,12 @@ import {
   SelectInput,
 } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { ProposalFooter } from "lib/components/ProposalFooter";
 import type { SimulateStatus } from "lib/components/upload/types";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr } from "lib/types";
+
+import { Footer } from "./components/Footer";
 
 interface WhiteListState {
   title: string;
@@ -70,8 +71,8 @@ const Whitelisting = observer(() => {
   return (
     <>
       <WasmPageContainer width="100%">
-        <Flex gap={2}>
-          {/* <Box flex="1" /> */}
+        <Flex gap={2} width="100%">
+          <Box flex="1" />
           <Flex flex="10" position="relative">
             <Box flex="6">
               <Heading as="h5" variant="h5">
@@ -278,10 +279,10 @@ const Whitelisting = observer(() => {
               </Flex>
             </Box>
           </Flex>
-          {/* <Box flex="1" /> */}
+          <Box flex="1" />
         </Flex>
       </WasmPageContainer>
-      <ProposalFooter loading={false} />
+      <Footer loading={false} />
     </>
   );
 });
