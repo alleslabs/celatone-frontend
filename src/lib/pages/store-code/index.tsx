@@ -139,7 +139,7 @@ const StoreCode = observer(() => {
                   If the proposal is passed, the stored code can be instantiated
                   to a contract by your selected option
                 </Text>
-                <Flex pt={6}>
+                <Box pt={6}>
                   <RadioGroup
                     onChange={(
                       nextVal:
@@ -151,101 +151,132 @@ const StoreCode = observer(() => {
                       setpermission(nextVal);
                     }}
                     value={permission}
-                    w="100%"
                   >
                     <Box>
                       <Radio value="everybody" py={2} width="100%" size="lg">
-                        Anyone can instantiate (Everybody)
+                        <Text
+                          fontWeight={
+                            permission === "everybody" ? "600" : "400"
+                          }
+                        >
+                          Anyone can instantiate (Everybody)
+                        </Text>
                       </Radio>
                       <Radio value="nobody" py={2} width="100%" size="lg">
-                        Instantiate through governance only (Nobody)
+                        <Text
+                          fontWeight={permission === "nobody" ? "600" : "400"}
+                        >
+                          Instantiate through governance only (Nobody)
+                        </Text>
                       </Radio>
-                      <Radio value="only-address" py={2} width="100%" size="lg">
-                        Only a designated address only can instantiate
-                        (OnlyAddress)
-                      </Radio>
-                      {permission === "only-address" && (
-                        <Flex py={6}>
-                          <ControllerInput
-                            name="onlyAddress"
-                            control={control}
-                            placeholder="ex. cltn1ff1asdf7988aw49efa4vw9846789"
-                            label="Designated Address"
-                            variant="floating"
-                            helperText="You can assign both wallet or contract address."
-                            rules={{ required: "onlyAddress is required" }}
-                            helperAction={
-                              <Text
-                                color="honeydew.main"
-                                fontWeight="600"
-                                variant="body3"
-                                cursor="pointer"
-                                alignSelf="flex-start"
-                                onClick={() => {
-                                  AmpTrack(AmpEvent.USE_ASSIGN_ME);
-                                  setValue("onlyAddress", walletAddress);
-                                }}
-                              >
-                                Assign me
-                              </Text>
-                            }
-                          />
-                        </Flex>
-                      )}
-                      <Radio
-                        value="any-of-addresses"
-                        py={2}
-                        width="100%"
-                        size="lg"
-                      >
-                        Only a set of addresses can instantiate (AnyOfAddresses)
-                      </Radio>
-                      {permission === "any-of-addresses" && (
-                        <Box>
-                          {fields.map((field, idx) => (
-                            <Flex gap={2} my={6} width="100%">
-                              <ControllerInput
-                                name={`addresses.${idx}.address`}
-                                control={control}
-                                label="Address"
-                                placeholder="ex. cltn1ff1asdf7988aw49efa4vw9846789"
-                                variant="floating"
-                              />
-                              <Button
-                                w="56px"
-                                h="56px"
-                                variant="outline-gray"
-                                size="lg"
-                                disabled={fields.length <= 1}
-                                onClick={() => remove(idx)}
-                              >
-                                <CustomIcon
-                                  name="delete"
-                                  color={
-                                    fields.length <= 1
-                                      ? "pebble.600"
-                                      : "text.dark"
-                                  }
-                                />
-                              </Button>
-                            </Flex>
-                          ))}
-                          <Button
-                            variant="outline-primary"
-                            mt={3}
-                            mx="auto"
-                            onClick={() => append({ address: "" as Addr })}
-                            leftIcon={
-                              <CustomIcon name="plus" color="violet.light" />
+                      <Box>
+                        <Radio
+                          value="only-address"
+                          py={2}
+                          width="100%"
+                          size="lg"
+                        >
+                          <Text
+                            fontWeight={
+                              permission === "only-address" ? "600" : "400"
                             }
                           >
-                            Add More Address
-                          </Button>
-                        </Box>
-                      )}
+                            Only a designated address only can instantiate
+                            (OnlyAddress)
+                          </Text>
+                        </Radio>
+                        {permission === "only-address" && (
+                          <Box py={6}>
+                            <ControllerInput
+                              name="onlyAddress"
+                              control={control}
+                              placeholder="ex. cltn1ff1asdf7988aw49efa4vw9846789"
+                              label="Designated Address"
+                              variant="floating"
+                              helperText="You can assign both wallet or contract address."
+                              rules={{ required: "onlyAddress is required" }}
+                              helperAction={
+                                <Text
+                                  color="honeydew.main"
+                                  fontWeight="600"
+                                  variant="body3"
+                                  cursor="pointer"
+                                  alignSelf="flex-start"
+                                  onClick={() => {
+                                    AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                                    setValue("onlyAddress", walletAddress);
+                                  }}
+                                >
+                                  Assign me
+                                </Text>
+                              }
+                            />
+                          </Box>
+                        )}
+                      </Box>
+                      <Box>
+                        <Radio
+                          value="any-of-addresses"
+                          py={2}
+                          width="100%"
+                          size="lg"
+                        >
+                          <Text
+                            fontWeight={
+                              permission === "any-of-addresses" ? "600" : "400"
+                            }
+                          >
+                            Only a set of addresses can instantiate
+                            (AnyOfAddresses)
+                          </Text>
+                        </Radio>
+                        {permission === "any-of-addresses" && (
+                          <Box>
+                            {fields.map((field, idx) => (
+                              <Flex gap={2} my={6} width="100%">
+                                <ControllerInput
+                                  name={`addresses.${idx}.address`}
+                                  control={control}
+                                  label="Address"
+                                  placeholder="ex. cltn1ff1asdf7988aw49efa4vw9846789"
+                                  variant="floating"
+                                />
+                                <Button
+                                  w="56px"
+                                  h="56px"
+                                  variant="outline-gray"
+                                  size="lg"
+                                  disabled={fields.length <= 1}
+                                  onClick={() => remove(idx)}
+                                >
+                                  <CustomIcon
+                                    name="delete"
+                                    color={
+                                      fields.length <= 1
+                                        ? "pebble.600"
+                                        : "text.dark"
+                                    }
+                                  />
+                                </Button>
+                              </Flex>
+                            ))}
+                            <Button
+                              variant="outline-primary"
+                              mt={3}
+                              mx="auto"
+                              onClick={() => append({ address: "" as Addr })}
+                              leftIcon={
+                                <CustomIcon name="plus" color="violet.light" />
+                              }
+                            >
+                              Add More Address
+                            </Button>
+                          </Box>
+                        )}
+                      </Box>
                     </Box>
                   </RadioGroup>
-                </Flex>
+                </Box>
 
                 <Heading as="h6" variant="h6" pt={12}>
                   Initial Deposit

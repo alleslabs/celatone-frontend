@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useMobile } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
+import Announcement from "./Announcement";
 import Footer from "./Footer";
 import Header from "./Header";
 import Navbar from "./navbar";
@@ -25,14 +26,17 @@ const Layout = ({ children }: LayoutProps) => {
   }, [router.asPath]);
   return (
     <Grid
-      templateAreas={`"header header"
+      templateAreas={`"announce announce" "header header"
     "nav main"`}
-      gridTemplateRows="70px 1fr"
+      gridTemplateRows="40px 70px 1fr"
       gridTemplateColumns={isExpand ? "224px 1fr" : "48px 1fr"}
       h="100vh"
       overflowX="hidden"
       bg="background.main"
     >
+      <GridItem bg="violet.darker" area="announce">
+        <Announcement />
+      </GridItem>
       <GridItem bg="pebble.900" area="header" mb="1">
         <Header />
       </GridItem>
