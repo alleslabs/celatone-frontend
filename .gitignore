@@ -50,3 +50,6 @@ next.config.original.js
 .sentryclirc
 next.config.original.js
 next.config.wizardcopy.js
+
+# Rescript
+/lib

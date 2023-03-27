@@ -1,5 +1,5 @@
 {
-  "src/**/*.{js,jsx,ts,tsx}": [
+  "src/**/*.{js,jsx,ts,tsx} !(src/rescript/**/*.gen.tsx)": [
     "eslint --fix --max-warnings=0",
     "prettier --write"
   ],
