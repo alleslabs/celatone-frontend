@@ -28,5 +28,5 @@ export interface Proposal {
   resolvedHeight: Option<number | null>;
   type: ProposalType;
   proposer: Option<Addr>;
-  isExpedited: boolean;
+  isExpedited: Option<boolean | null>;
 }

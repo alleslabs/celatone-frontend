@@ -20,7 +20,7 @@ import type {
   Addr,
   Proposal,
 } from "lib/types";
-import { isExpedited, parseDate } from "lib/utils";
+import { parseDate } from "lib/utils";
 
 import { useProposalListExpression } from "./expression";
 
@@ -48,11 +48,7 @@ export const useRelatedProposalsByContractAddressPagination = (
           resolvedHeight: proposal.resolved_height,
           type: proposal.proposal.type as ProposalType,
           proposer: proposal.proposal.account?.address as Addr,
-          // TODO - Get expedited flag from graphql
-          isExpedited: isExpedited(
-            proposal.proposal.voting_time,
-            proposal.proposal.voting_end_time
-          ),
+          isExpedited: proposal.proposal.is_expedited,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
@@ -128,11 +124,7 @@ export const useProposalsByWalletAddressPagination = (
             proposal.contract_proposals.at(0)?.resolved_height,
           type: proposal.type as ProposalType,
           proposer: walletAddress,
-          // TODO - Get expedited flag from graphql
-          isExpedited: isExpedited(
-            proposal.voting_time,
-            proposal.voting_end_time
-          ),
+          isExpedited: proposal.is_expedited,
         }))
       );
   }, [indexerGraphClient, offset, pageSize, walletAddress]);
@@ -208,11 +200,7 @@ export const useProposalList = (
             resolvedHeight: proposal.resolved_height,
             type: proposal.type as ProposalType,
             proposer: proposal.account?.address as Addr,
-            // TODO - Get expedited flag from graphql
-            isExpedited: isExpedited(
-              proposal.voting_time,
-              proposal.voting_end_time
-            ),
+            isExpedited: proposal.is_expedited,
           }))
         ),
     [indexerGraphClient, offset, pageSize, expression]

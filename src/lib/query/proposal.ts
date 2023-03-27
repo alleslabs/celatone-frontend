@@ -15,13 +15,13 @@ export const getRelatedProposalsByContractAddressPagination = graphql(`
       proposal {
         title
         status
-        voting_time
         voting_end_time
         deposit_end_time
         type
         account {
           address
         }
+        is_expedited
       }
       proposal_id
       resolved_height
@@ -55,11 +55,11 @@ export const getProposalsByWalletAddressPagination = graphql(`
     ) {
       title
       status
-      voting_time
       voting_end_time
       deposit_end_time
       type
       id
+      is_expedited
       contract_proposals {
         resolved_height
       }
@@ -98,10 +98,10 @@ export const getProposalList = graphql(`
       id
       title
       voting_end_time
-      voting_time
       deposit_end_time
       resolved_height
       status
+      is_expedited
       account {
         address
       }

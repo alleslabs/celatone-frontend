@@ -5492,6 +5492,7 @@ export type Proposals = {
   deposit_end_time: Scalars["timestamp"];
   description: Scalars["String"];
   id: Scalars["Int"];
+  is_expedited?: Maybe<Scalars["Boolean"]>;
   proposal_route: Scalars["String"];
   proposer_id?: Maybe<Scalars["Int"]>;
   resolved_height?: Maybe<Scalars["Int"]>;
@@ -5552,7 +5553,23 @@ export type Proposals_Aggregate = {
 };
 
 export type Proposals_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Proposals_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Proposals_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<Proposals_Aggregate_Bool_Exp_Count>;
+};
+
+export type Proposals_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Proposals_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Proposals_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Proposals_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type Proposals_Aggregate_Bool_Exp_Count = {
@@ -5636,6 +5653,7 @@ export type Proposals_Bool_Exp = {
   deposit_end_time?: InputMaybe<Timestamp_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
+  is_expedited?: InputMaybe<Boolean_Comparison_Exp>;
   proposal_route?: InputMaybe<String_Comparison_Exp>;
   proposer_id?: InputMaybe<Int_Comparison_Exp>;
   resolved_height?: InputMaybe<Int_Comparison_Exp>;
@@ -5670,6 +5688,7 @@ export type Proposals_Insert_Input = {
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_expedited?: InputMaybe<Scalars["Boolean"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
   resolved_height?: InputMaybe<Scalars["Int"]>;
@@ -5780,6 +5799,7 @@ export type Proposals_Order_By = {
   deposit_end_time?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  is_expedited?: InputMaybe<Order_By>;
   proposal_route?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
   resolved_height?: InputMaybe<Order_By>;
@@ -5807,6 +5827,8 @@ export enum Proposals_Select_Column {
   /** column name */
   Id = "id",
   /** column name */
+  IsExpedited = "is_expedited",
+  /** column name */
   ProposalRoute = "proposal_route",
   /** column name */
   ProposerId = "proposer_id",
@@ -5826,12 +5848,25 @@ export enum Proposals_Select_Column {
   VotingTime = "voting_time",
 }
 
+/** select "proposals_aggregate_bool_exp_bool_and_arguments_columns" columns of table "proposals" */
+export enum Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsExpedited = "is_expedited",
+}
+
+/** select "proposals_aggregate_bool_exp_bool_or_arguments_columns" columns of table "proposals" */
+export enum Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsExpedited = "is_expedited",
+}
+
 /** input type for updating data in table "proposals" */
 export type Proposals_Set_Input = {
   content?: InputMaybe<Scalars["json"]>;
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_expedited?: InputMaybe<Scalars["Boolean"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
   resolved_height?: InputMaybe<Scalars["Int"]>;
@@ -5902,6 +5937,7 @@ export type Proposals_Stream_Cursor_Value_Input = {
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_expedited?: InputMaybe<Scalars["Boolean"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
   resolved_height?: InputMaybe<Scalars["Int"]>;
@@ -5938,6 +5974,8 @@ export enum Proposals_Update_Column {
   Description = "description",
   /** column name */
   Id = "id",
+  /** column name */
+  IsExpedited = "is_expedited",
   /** column name */
   ProposalRoute = "proposal_route",
   /** column name */
@@ -8918,10 +8956,10 @@ export type GetRelatedProposalsByContractAddressPaginationQuery = {
       __typename?: "proposals";
       title: string;
       status: any;
-      voting_time: any;
       voting_end_time: any;
       deposit_end_time: any;
       type: string;
+      is_expedited?: boolean | null;
       account?: { __typename?: "accounts"; address: string } | null;
     };
   }>;
@@ -8954,11 +8992,11 @@ export type GetProposalsByWalletAddressPaginationQuery = {
     __typename?: "proposals";
     title: string;
     status: any;
-    voting_time: any;
     voting_end_time: any;
     deposit_end_time: any;
     type: string;
     id: number;
+    is_expedited?: boolean | null;
     contract_proposals: Array<{
       __typename?: "contract_proposals";
       resolved_height?: number | null;
@@ -8999,10 +9037,10 @@ export type GetProposalListQuery = {
     id: number;
     title: string;
     voting_end_time: any;
-    voting_time: any;
     deposit_end_time: any;
     resolved_height?: number | null;
     status: any;
+    is_expedited?: boolean | null;
     account?: { __typename?: "accounts"; address: string } | null;
   }>;
 };
@@ -12051,10 +12089,6 @@ export const GetRelatedProposalsByContractAddressPaginationDocument = {
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "voting_time" },
-                      },
-                      {
-                        kind: "Field",
                         name: { kind: "Name", value: "voting_end_time" },
                       },
                       {
@@ -12074,6 +12108,10 @@ export const GetRelatedProposalsByContractAddressPaginationDocument = {
                             },
                           ],
                         },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_expedited" },
                       },
                     ],
                   },
@@ -12316,7 +12354,6 @@ export const GetProposalsByWalletAddressPaginationDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "title" } },
                 { kind: "Field", name: { kind: "Name", value: "status" } },
-                { kind: "Field", name: { kind: "Name", value: "voting_time" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "voting_end_time" },
@@ -12327,6 +12364,10 @@ export const GetProposalsByWalletAddressPaginationDocument = {
                 },
                 { kind: "Field", name: { kind: "Name", value: "type" } },
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_expedited" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "contract_proposals" },
@@ -12555,7 +12596,6 @@ export const GetProposalListDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "voting_end_time" },
                 },
-                { kind: "Field", name: { kind: "Name", value: "voting_time" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "deposit_end_time" },
@@ -12565,6 +12605,10 @@ export const GetProposalListDocument = {
                   name: { kind: "Name", value: "resolved_height" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "status" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_expedited" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "account" },
