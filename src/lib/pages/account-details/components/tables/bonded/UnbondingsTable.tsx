@@ -12,11 +12,15 @@ import { TEMPLATE_COLUMNS } from "./constant";
 
 interface UnbondingsTableProps {
   unbondings: Option<Unbonding[]>;
+  isLoading: boolean;
 }
 
-const UnbondingsTableBody = ({ unbondings }: UnbondingsTableProps) => {
-  if (!unbondings) return <Loading />;
-  if (!unbondings.length)
+const UnbondingsTableBody = ({
+  unbondings,
+  isLoading,
+}: UnbondingsTableProps) => {
+  if (isLoading) return <Loading />;
+  if (!unbondings?.length)
     return (
       <EmptyState
         message="This account does not have any assets that is currently unbonding."
@@ -50,9 +54,12 @@ const UnbondingsTableBody = ({ unbondings }: UnbondingsTableProps) => {
   );
 };
 
-export const UnbondingsTable = ({ unbondings }: UnbondingsTableProps) => (
+export const UnbondingsTable = ({
+  unbondings,
+  isLoading,
+}: UnbondingsTableProps) => (
   <Box>
     <TableTitle title="Unbonding" count={unbondings?.length ?? 0} mb={2} />
-    <UnbondingsTableBody unbondings={unbondings} />
+    <UnbondingsTableBody unbondings={unbondings} isLoading={isLoading} />
   </Box>
 );

@@ -12,9 +12,15 @@ interface RadioCardProps {
   value: string;
   total: Option<Record<string, TokenWithValue>>;
   defaultToken: TokenWithValue;
+  isLoading: boolean;
 }
 
-export const RadioCard = ({ value, total, defaultToken }: RadioCardProps) => {
+export const RadioCard = ({
+  value,
+  total,
+  defaultToken,
+  isLoading,
+}: RadioCardProps) => {
   const token = total?.[defaultToken.denom] ?? defaultToken;
   return (
     <Radio variant="card" value={value} overflowX="hidden">
@@ -23,7 +29,7 @@ export const RadioCard = ({ value, total, defaultToken }: RadioCardProps) => {
           <Text variant="body2" textColor="pebble.400" fontWeight="500">
             {value}
           </Text>
-          {!total ? (
+          {isLoading ? (
             <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
           ) : (
             <Flex alignItems="end" gap={1}>

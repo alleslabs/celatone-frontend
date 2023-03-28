@@ -14,11 +14,17 @@ interface TotalCardProps {
   title: string;
   message: string;
   token: Option<TokenWithValue>;
+  isLoading: boolean;
 }
 
-export const TotalCard = ({ title, message, token }: TotalCardProps) => (
+export const TotalCard = ({
+  title,
+  message,
+  token,
+  isLoading,
+}: TotalCardProps) => (
   <Flex direction="column" minW="233px" gap={1}>
-    {!token ? (
+    {isLoading ? (
       <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
     ) : (
       <>
@@ -35,23 +41,29 @@ export const TotalCard = ({ title, message, token }: TotalCardProps) => (
             <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
           </Tooltip>
         </Flex>
-        <Flex alignItems="center" gap={1}>
+        {!token ? (
           <Heading variant="h6" as="h6">
-            {formatUTokenWithPrecision(token.amount, token.precision || 0)}
+            N/A
           </Heading>
-          <Text variant="body1" textColor="text.main">
-            {getTokenLabel(token.denom)}
-          </Text>
-          <Image
-            boxSize={6}
-            src={token.logo}
-            alt={getTokenLabel(token.denom)}
-            fallback={<NAToken />}
-            fallbackStrategy="onError"
-          />
-        </Flex>
+        ) : (
+          <Flex alignItems="center" gap={1}>
+            <Heading variant="h6" as="h6">
+              {formatUTokenWithPrecision(token.amount, token.precision || 0)}
+            </Heading>
+            <Text variant="body1" textColor="text.main">
+              {getTokenLabel(token.denom)}
+            </Text>
+            <Image
+              boxSize={6}
+              src={token.logo}
+              alt={getTokenLabel(token.denom)}
+              fallback={<NAToken />}
+              fallbackStrategy="onError"
+            />
+          </Flex>
+        )}
         <Text variant="body2" textColor="text.dark">
-          ({token.value ? formatPrice(token.value) : "-"})
+          ({token?.value ? formatPrice(token.value) : "-"})
         </Text>
       </>
     )}

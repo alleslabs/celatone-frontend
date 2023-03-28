@@ -3,6 +3,7 @@ import { Button, Flex } from "@chakra-ui/react";
 
 import { RedelegationsTable } from "../tables";
 import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
 import { TableTitle } from "lib/components/table";
 import type {
   Redelegation,
@@ -14,12 +15,14 @@ import { NonRedelegatableSection } from "./NonRedelegatableSection";
 interface RedelegationsSectionProps extends FlexProps {
   stakingParams: StakingParams;
   redelegations: Redelegation[];
+  isLoading: boolean;
   onBack: () => void;
 }
 
 export const RedelegationsSection = ({
   stakingParams,
   redelegations,
+  isLoading,
   onBack,
   ...props
 }: RedelegationsSectionProps) => (
@@ -35,7 +38,13 @@ export const RedelegationsSection = ({
         mb={0}
       />
     </Flex>
-    <NonRedelegatableSection redelegations={redelegations} />
-    <RedelegationsTable redelegations={redelegations} />
+    {isLoading ? (
+      <Loading />
+    ) : (
+      <>
+        <NonRedelegatableSection redelegations={redelegations} />
+        <RedelegationsTable redelegations={redelegations} />
+      </>
+    )}
   </Flex>
 );

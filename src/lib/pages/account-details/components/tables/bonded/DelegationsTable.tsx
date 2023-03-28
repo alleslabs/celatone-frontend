@@ -15,15 +15,17 @@ interface DelegationsTableProps {
   delegations: Option<Delegation[]>;
   rewards: Option<Record<string, TokenWithValue[]>>;
   defaultToken: TokenWithValue;
+  isLoading: boolean;
 }
 
 const DelegationsTableBody = ({
   delegations,
   rewards,
   defaultToken,
+  isLoading,
 }: DelegationsTableProps) => {
-  if (!delegations || !rewards) return <Loading />;
-  if (!delegations.length)
+  if (isLoading) return <Loading />;
+  if (!delegations?.length)
     return (
       <EmptyState
         message="This account did not delegate their assets to any validators."
@@ -45,7 +47,7 @@ const DelegationsTableBody = ({
             validator: delegation.validator,
             amount: delegation.token,
             reward:
-              rewards[delegation.validator.validatorAddress]?.find(
+              rewards?.[delegation.validator.validatorAddress]?.find(
                 (token) => token.denom === defaultToken.denom
               ) ?? defaultToken,
           }}
@@ -60,6 +62,7 @@ export const DelegationsTable = ({
   delegations,
   rewards,
   defaultToken,
+  isLoading,
 }: DelegationsTableProps) => (
   <Box>
     <TableTitle title="Delegated to" count={delegations?.length ?? 0} mb={2} />
@@ -67,6 +70,7 @@ export const DelegationsTable = ({
       delegations={delegations}
       rewards={rewards}
       defaultToken={defaultToken}
+      isLoading={isLoading}
     />
   </Box>
 );

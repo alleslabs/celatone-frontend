@@ -31,23 +31,27 @@ export const DelegationsSection = ({
   onViewMore,
 }: DelegationsSectionProps) => {
   const { isOpen, onToggle } = useDisclosure();
-  const data = useUserDelegationInfos(walletAddress);
-
-  if (!data) return <Loading />;
-
   const {
     stakingParams,
     isValidator,
     totalBonded,
+    isLoadingTotalBonded,
     totalDelegations,
     delegations,
+    isLoadingDelegations,
     totalUnbondings,
     unbondings,
+    isLoadingUnbondings,
     totalRewards,
     rewards,
+    isLoadingRewards,
     redelegations,
+    isLoadingRedelegations,
     totalCommission,
-  } = data;
+    isLoadingTotalCommission,
+  } = useUserDelegationInfos(walletAddress);
+
+  if (!stakingParams) return <Loading />;
 
   const bondDenomLabel = getTokenLabel(stakingParams.bondDenom);
   // TODO: support more than one Asset?
@@ -90,17 +94,20 @@ export const DelegationsSection = ({
               title="Total Bonded"
               message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
               token={totalBondedBondDenom}
+              isLoading={isLoadingTotalBonded}
             />
             <TotalCard
               title="Reward"
               message={`Total rewards earned from delegated ${bondDenomLabel} across all validators`}
               token={totalRewardBondDenom}
+              isLoading={isLoadingRewards}
             />
             {isValidator && (
               <TotalCard
                 title="Commission"
                 message="Total commission reward earned by your validator"
                 token={totalCommissionBondDenom}
+                isLoading={isLoadingTotalCommission}
               />
             )}
           </Flex>
@@ -139,6 +146,8 @@ export const DelegationsSection = ({
             totalUnbondings={totalUnbondings}
             unbondings={unbondings}
             rewards={rewards}
+            isLoadingDelegations={isLoadingDelegations}
+            isLoadingUnbondings={isLoadingUnbondings}
             defaultToken={defaultToken}
           />
         )}
@@ -146,6 +155,7 @@ export const DelegationsSection = ({
       <RedelegationsSection
         stakingParams={stakingParams}
         redelegations={redelegations ?? []}
+        isLoading={isLoadingRedelegations}
         onBack={onToggle}
         w="full"
         position={isOpen ? "relative" : "absolute"}
