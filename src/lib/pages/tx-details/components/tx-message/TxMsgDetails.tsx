@@ -2,7 +2,6 @@ import { Flex } from "@chakra-ui/react";
 
 import { useGetAddressType } from "lib/app-provider";
 import { TxReceiptRender } from "lib/components/tx";
-import { useAssetInfos } from "lib/services/assetService";
 import type { TxReceipt } from "lib/types";
 
 import type { TxMsgData } from ".";
@@ -13,9 +12,12 @@ interface TxMsgDetailsProps extends TxMsgData {
   isExpand: boolean;
 }
 
-export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
+export const TxMsgDetails = ({
+  isExpand,
+  assetInfos,
+  ...txMsgData
+}: TxMsgDetailsProps) => {
   const getAddressType = useGetAddressType();
-  const assetInfos = useAssetInfos();
   const receipts = generateReceipts(txMsgData, getAddressType, assetInfos)
     .concat(
       txMsgData.log && {

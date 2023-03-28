@@ -27,7 +27,7 @@ import {
 } from "./renderUtils";
 
 export const generateReceipts = (
-  { msgBody, log }: TxMsgData,
+  { msgBody, log }: Omit<TxMsgData, "assetInfos">,
   getAddressType: (address: string) => AddressReturnType,
   assetInfos: Option<{ [key: string]: AssetInfo }>
 ): Option<TxReceipt | null | false>[] => {

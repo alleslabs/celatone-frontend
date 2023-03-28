@@ -7,6 +7,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useAssetInfos } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -17,13 +18,19 @@ const TxDetails = () => {
   const router = useRouter();
   const hashParam = getFirstQueryParam(router.query.txHash);
 
-  const { data: txData, isLoading, isFetching } = useTxData(hashParam);
+  const {
+    data: txData,
+    isLoading: txLoading,
+    isFetching: txFetching,
+  } = useTxData(hashParam);
+  const { assetInfos, isLoading: assetLoading } = useAssetInfos();
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_TRANSACTION_DETAIL);
   }, [router.isReady]);
 
-  if ((isLoading && isFetching) || !hashParam) return <Loading />;
+  if ((txLoading && txFetching) || assetLoading || !hashParam)
+    return <Loading />;
 
   return (
     <PageContainer>
@@ -32,8 +39,8 @@ const TxDetails = () => {
         <>
           <TxHeader mt={2} txData={txData} />
           <Flex my={12} justify="space-between">
-            <TxInfo txData={txData} />
-            <MessageSection txData={txData} />
+            <TxInfo txData={txData} assetInfos={assetInfos} />
+            <MessageSection txData={txData} assetInfos={assetInfos} />
           </Flex>
         </>
       ) : (

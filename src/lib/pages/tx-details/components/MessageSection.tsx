@@ -7,15 +7,17 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import type { AssetInfosReturn } from "lib/services/assetService";
 import type { TxData } from "lib/services/txService";
 
 import { TxMessage } from "./tx-message";
 
 interface MessageSectionProps {
   txData: TxData;
+  assetInfos: AssetInfosReturn;
 }
 
-export const MessageSection = ({ txData }: MessageSectionProps) => {
+export const MessageSection = ({ txData, assetInfos }: MessageSectionProps) => {
   const msgs = txData.tx.body.messages;
   return (
     <Flex direction="column" flex={1} gap={4}>
@@ -41,6 +43,7 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
             msgBody={msg}
             log={msgLog}
             isSingleMsg={msgs.length === 1}
+            assetInfos={assetInfos}
           />
         );
       })}

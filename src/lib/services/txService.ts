@@ -16,7 +16,6 @@ import {
 import { MsgFurtherAction } from "lib/types";
 import type { Addr, ContractAddr, Option, Transaction } from "lib/types";
 import {
-  formatStdFee,
   getActionMsgType,
   isTxHash,
   parseDateOpt,
@@ -30,7 +29,6 @@ import { queryTxData } from "./tx";
 
 export interface TxData extends TxResponse {
   chainId: string;
-  formattedFee: Option<string>;
   isTxFailed: boolean;
 }
 
@@ -43,9 +41,6 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
       return {
         ...txData,
         chainId,
-        formattedFee: txData.tx.auth_info.fee?.amount.length
-          ? formatStdFee(txData.tx.auth_info.fee)
-          : undefined,
         isTxFailed: Boolean(txData.code),
       };
     },

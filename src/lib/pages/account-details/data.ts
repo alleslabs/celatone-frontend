@@ -120,7 +120,7 @@ export const useUserAssetInfos = (
     isLoading,
     error,
   } = useAccountBalances(walletAddress);
-  const assetInfos = useAssetInfos();
+  const { assetInfos } = useAssetInfos();
 
   const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
     (balance): BalanceWithAssetInfo => ({

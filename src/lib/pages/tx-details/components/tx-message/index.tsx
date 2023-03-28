@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import type { logs } from "@cosmjs/stargate";
 import { useState } from "react";
 
+import type { AssetInfosReturn } from "lib/services/assetService";
 import type { MsgBody } from "lib/services/tx";
 import type { Option } from "lib/types";
 
@@ -12,6 +13,7 @@ export interface TxMsgData {
   msgBody: MsgBody;
   log: Option<logs.Log>;
   isSingleMsg?: boolean;
+  assetInfos: AssetInfosReturn;
 }
 
 export const TxMessage = ({ isSingleMsg, ...txMsgData }: TxMsgData) => {

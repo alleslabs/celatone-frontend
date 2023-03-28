@@ -7,7 +7,6 @@ import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
-import { useAssetInfos } from "lib/services/assetService";
 import type { Addr } from "lib/types";
 import type { VoteOption } from "lib/utils";
 import { formatBalanceWithDenom, voteOption } from "lib/utils";
@@ -23,10 +22,10 @@ export const TxMsgExpand = ({
   msgBody,
   log,
   isExpand,
+  assetInfos,
   onClick,
 }: TxMsgExpandProps) => {
   const getAddressType = useGetAddressType();
-  const assetInfos = useAssetInfos();
   let msgIcon: IconKeys = "info-circle";
   let content: ReactNode;
   const isIBC = Boolean(
@@ -182,13 +181,14 @@ export const TxMsgExpand = ({
       {
         const toAddress = body.to_address as Addr;
         const singleCoin = body.amount.at(0) as Coin;
+        const assetInfo = assetInfos?.[singleCoin.denom];
         const assetText =
           body.amount.length > 1
             ? "assets"
             : formatBalanceWithDenom({
-                coin: { denom: singleCoin.denom, amount: singleCoin.amount },
-                symbol: assetInfos?.[singleCoin.denom]?.symbol,
-                precision: assetInfos?.[singleCoin.denom]?.precision,
+                coin: singleCoin,
+                symbol: assetInfo?.symbol,
+                precision: assetInfo?.precision,
               });
         msgIcon = "send";
         content = (
