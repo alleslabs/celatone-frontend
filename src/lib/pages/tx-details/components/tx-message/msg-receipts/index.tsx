@@ -1186,7 +1186,7 @@ export const generateReceipts = (
         channelIdReceipt(details.channel_id),
         {
           title: "Proof Ack",
-          value: details.proofAck,
+          value: details.proof_ack,
         },
         proofHeightReceipt(details.proof_height),
         {
@@ -1865,6 +1865,27 @@ export const generateReceipts = (
         },
       ];
     }
+    case "/osmosis.superfluid.MsgSuperfluidUndelegateAndUnbondLock": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Lock ID",
+          value: details.lock_id,
+        },
+        {
+          title: "Coin",
+          html: getCoinComponent(details.coin, assetInfos),
+        },
+      ];
+    }
     // osmosis/tokenfactory
     case "/osmosis.tokenfactory.v1beta1.MsgCreateDenom": {
       const details = extractTxDetails(type, body, log);
@@ -1944,6 +1965,195 @@ export const generateReceipts = (
             type: "json",
             value: details.metadata,
           }),
+        },
+      ];
+    }
+    // osmosis/protorev
+    case "/osmosis.protorev.v1beta1.MsgSetHotRoutes": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Hot Routes",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.hot_routes,
+          }),
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetBaseDenoms": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Hot Routes",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.base_denoms,
+          }),
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetDeveloperAccount": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Developer Account",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.developer_account,
+            linkType: getAddressType(details.developer_account),
+          }),
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetPoolWeights": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Pool Weights",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.pool_weights,
+          }),
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerTx": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Max Pool Points Per Tx",
+          value: details.max_pool_points_per_tx,
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerBlock": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Max Pool Points Per Block",
+          value: details.max_pool_points_per_block,
+        },
+      ];
+    }
+    // osmosis/valsetpref
+    case "/osmosis.valsetpref.v1beta1.MsgDelegateToValidatorSet":
+    case "/osmosis.valsetpref.v1beta1.MsgUndelegateFromValidatorSet": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Delegator",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.delegator,
+            linkType: getAddressType(details.delegator),
+          }),
+        },
+        {
+          title: "Coin",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.coin,
+          }),
+        },
+      ];
+    }
+    case "/osmosis.valsetpref.v1beta1.MsgRedelegateValidatorSet":
+    case "/osmosis.valsetpref.v1beta1.MsgSetValidatorSetPreference": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Delegator",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.delegator,
+            linkType: getAddressType(details.delegator),
+          }),
+        },
+        {
+          title: "Preferences",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.preferences,
+          }),
+        },
+      ];
+    }
+    case "/osmosis.valsetpref.v1beta1.MsgWithdrawDelegationRewards": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Delegator",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.delegator,
+            linkType: getAddressType(details.delegator),
+          }),
+        },
+      ];
+    }
+    case "/osmosis.valsetpref.v1beta1.MsgDelegateBondedTokens": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Delegator",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.delegator,
+            linkType: getAddressType(details.delegator),
+          }),
+        },
+        {
+          title: "Lock ID",
+          value: details.lockID,
         },
       ];
     }

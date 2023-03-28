@@ -11,8 +11,11 @@ import type {
 
 import type { VoteOption } from "./mapping";
 
-export interface MsgUnknownDetails {
+export interface MsgBaseDetails {
   type: string;
+}
+
+export interface MsgUnknownDetails extends MsgBaseDetails {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
@@ -24,14 +27,14 @@ interface InstantiatePermissionResponse {
 }
 
 // cosmwasm/wasm
-export interface MsgStoreCodeDetails extends MsgUnknownDetails {
+export interface MsgStoreCodeDetails extends MsgBaseDetails {
   code_id: Option<string>;
   sender: Addr;
   wasm_byte_code: string; // base64
   instantiate_permission: InstantiatePermissionResponse | null;
 }
 
-export interface MsgInstantiateDetails extends MsgUnknownDetails {
+export interface MsgInstantiateDetails extends MsgBaseDetails {
   contract_address: Option<ContractAddr>;
   sender: Addr;
   admin: Addr;
@@ -46,132 +49,137 @@ export interface MsgInstantiate2Details extends MsgInstantiateDetails {
   fix_msg: boolean;
 }
 
-export interface MsgExecuteDetails extends MsgUnknownDetails {
+export interface MsgExecuteDetails extends MsgBaseDetails {
   sender: Addr;
   contract: ContractAddr;
   msg: object;
   funds: Coin[];
 }
 
-export interface MsgMigrateDetails extends MsgUnknownDetails {
+export interface MsgMigrateDetails extends MsgBaseDetails {
   sender: Addr;
   contract: ContractAddr;
   code_id: string;
   msg: object;
 }
 
-export interface MsgUpdateAdminDetails extends MsgUnknownDetails {
+export interface MsgUpdateAdminDetails extends MsgBaseDetails {
   sender: Addr;
   new_admin: Addr;
   contract: ContractAddr;
 }
 
-export interface MsgClearAdminDetails extends MsgUnknownDetails {
+export interface MsgClearAdminDetails extends MsgBaseDetails {
   sender: Addr;
   contract: ContractAddr;
 }
 
 // x/authz
-export interface MsgGrantDetails extends MsgUnknownDetails {
+export interface MsgGrantDetails extends MsgBaseDetails {
   granter: Addr;
   grantee: Addr;
   grant: object;
 }
-export interface MsgRevokeDetails extends MsgUnknownDetails {
+export interface MsgRevokeDetails extends MsgBaseDetails {
   granter: Addr;
   grantee: Addr;
   msg_type_url: string;
 }
-export interface MsgExecDetails extends MsgUnknownDetails {
+export interface MsgExecDetails extends MsgBaseDetails {
   grantee: Addr;
   msgs: object[];
   msg_type_url: string;
 }
 
 // x/bank
-export interface MsgSendDetails extends MsgUnknownDetails {
+export interface MsgSendDetails extends MsgBaseDetails {
   from_address: Addr;
   to_address: Addr;
   amount: Coin[];
 }
-export interface MsgMultiSendDetails extends MsgUnknownDetails {
+export interface MsgMultiSendDetails extends MsgBaseDetails {
   inputs: object;
   outputs: object;
 }
 
 // x/crisis
-export interface MsgVerifyInvariantDetails extends MsgUnknownDetails {
+export interface MsgVerifyInvariantDetails extends MsgBaseDetails {
   sender: Addr;
   invariant_module_name: string;
   invariant_route: string;
 }
 
 // x/distribution
-export interface MsgSetWithdrawAddressDetails extends MsgUnknownDetails {
+export interface MsgSetWithdrawAddressDetails extends MsgBaseDetails {
   delegator_address: Addr;
   withdraw_address: Addr;
 }
-export interface MsgWithdrawDelegatorRewardDetails extends MsgUnknownDetails {
+export interface MsgWithdrawDelegatorRewardDetails extends MsgBaseDetails {
   delegator_address: Addr;
   validator_address: ValidatorAddr;
 }
-export interface MsgWithdrawValidatorCommissionDetails
-  extends MsgUnknownDetails {
+export interface MsgWithdrawValidatorCommissionDetails extends MsgBaseDetails {
   validator_address: ValidatorAddr;
 }
-export interface MsgFundCommunityPoolDetails extends MsgUnknownDetails {
+export interface MsgFundCommunityPoolDetails extends MsgBaseDetails {
   amount: Coin[];
   depositor: Addr;
 }
 
 // x/evidence
-export interface MsgSubmitEvidenceDetails extends MsgUnknownDetails {
+export interface MsgSubmitEvidenceDetails extends MsgBaseDetails {
   submitter: Addr;
   evidence: object;
 }
 
 // x/feegrant
-export interface MsgGrantAllowanceDetails extends MsgUnknownDetails {
+export interface MsgGrantAllowanceDetails extends MsgBaseDetails {
   granter: Addr;
   grantee: Addr;
   allowance: object;
 }
-export interface MsgRevokeAllowanceDetails extends MsgUnknownDetails {
+export interface MsgRevokeAllowanceDetails extends MsgBaseDetails {
   granter: Addr;
   grantee: Addr;
 }
 
 // x/gov
-export interface MsgSubmitProposalDetails extends MsgUnknownDetails {
+export interface MsgSubmitProposalDetails extends MsgBaseDetails {
   initial_deposit: Coin[];
   proposer: Addr;
   proposal_id: Option<string>;
   proposal_type: Option<string>;
-  title: string;
+  content: {
+    "@type": string;
+    description: string;
+    subject_client_id: string;
+    substitute_client_id: string;
+    title: string;
+  };
 }
-export interface MsgVoteDetails extends MsgUnknownDetails {
+export interface MsgVoteDetails extends MsgBaseDetails {
   proposal_id: string;
   voter: Addr;
   option: VoteOption;
 }
-export interface MsgVoteWeightedDetails extends MsgUnknownDetails {
+export interface MsgVoteWeightedDetails extends MsgBaseDetails {
   proposal_id: string;
   voter: Addr;
   options: { option: VoteOption; weight: string }[];
 }
-export interface MsgDepositDetails extends MsgUnknownDetails {
+export interface MsgDepositDetails extends MsgBaseDetails {
   proposal_id: string;
   depositor: Addr;
   amount: Coin[];
 }
 
 // x/slashing
-export interface MsgUnjailDetails extends MsgUnknownDetails {
+export interface MsgUnjailDetails extends MsgBaseDetails {
   validator_addr: ValidatorAddr;
 }
 
 // x/staking
-export interface MsgCreateValidatorDetails extends MsgUnknownDetails {
+export interface MsgCreateValidatorDetails extends MsgBaseDetails {
   description: object;
   commission: object;
   min_self_delegation: string;
@@ -180,31 +188,31 @@ export interface MsgCreateValidatorDetails extends MsgUnknownDetails {
   pubkey: object;
   value: Coin;
 }
-export interface MsgEditValidatorDetails extends MsgUnknownDetails {
+export interface MsgEditValidatorDetails extends MsgBaseDetails {
   description: object;
   validator_address: ValidatorAddr;
   commission_rate: string;
   min_self_delegation: string;
 }
-export interface MsgDelegateDetails extends MsgUnknownDetails {
+export interface MsgDelegateDetails extends MsgBaseDetails {
   delegator_address: Addr;
   validator_address: ValidatorAddr;
   amount: Coin;
 }
-export interface MsgBeginRedelegateDetails extends MsgUnknownDetails {
+export interface MsgBeginRedelegateDetails extends MsgBaseDetails {
   delegator_address: Addr;
   validator_src_address: ValidatorAddr;
   validator_dst_address: ValidatorAddr;
   amount: Coin;
 }
-export interface MsgUndelegateDetails extends MsgUnknownDetails {
+export interface MsgUndelegateDetails extends MsgBaseDetails {
   delegator_address: Addr;
   validator_address: ValidatorAddr;
   amount: Coin;
 }
 
 // ibc/applications
-export interface MsgTransferDetails extends MsgUnknownDetails {
+export interface MsgTransferDetails extends MsgBaseDetails {
   source_port: string;
   source_channel: string;
   token: Coin;
@@ -216,17 +224,17 @@ export interface MsgTransferDetails extends MsgUnknownDetails {
 }
 
 // ibc/core
-export interface MsgCreateClientDetails extends MsgUnknownDetails {
+export interface MsgCreateClientDetails extends MsgBaseDetails {
   client_state: object;
   consensus_state: object;
   signer: Addr;
 }
-export interface MsgUpdateClientDetails extends MsgUnknownDetails {
+export interface MsgUpdateClientDetails extends MsgBaseDetails {
   client_id: string;
   header: object;
   signer: Addr;
 }
-export interface MsgUpgradeClientDetails extends MsgUnknownDetails {
+export interface MsgUpgradeClientDetails extends MsgBaseDetails {
   client_id: string;
   client_state: object;
   consensus_state: object;
@@ -234,19 +242,19 @@ export interface MsgUpgradeClientDetails extends MsgUnknownDetails {
   proof_upgrade_consensus_state: string;
   signer: Addr;
 }
-export interface MsgSubmitMisbehaviourDetails extends MsgUnknownDetails {
+export interface MsgSubmitMisbehaviourDetails extends MsgBaseDetails {
   client_id: string;
   misbehaviour: object;
   signer: Addr;
 }
-export interface MsgConnectionOpenInitDetails extends MsgUnknownDetails {
+export interface MsgConnectionOpenInitDetails extends MsgBaseDetails {
   client_id: string;
   counterparty: object;
   version: object;
   delay_period: number;
   signer: Addr;
 }
-export interface MsgConnectionOpenTryDetails extends MsgUnknownDetails {
+export interface MsgConnectionOpenTryDetails extends MsgBaseDetails {
   client_id: string;
   previous_connection_id: string;
   client_state: object;
@@ -260,7 +268,7 @@ export interface MsgConnectionOpenTryDetails extends MsgUnknownDetails {
   consensus_height: object;
   signer: Addr;
 }
-export interface MsgConnectionOpenAckDetails extends MsgUnknownDetails {
+export interface MsgConnectionOpenAckDetails extends MsgBaseDetails {
   connection_id: string;
   counterparty_connection_id: string;
   version: object;
@@ -272,18 +280,18 @@ export interface MsgConnectionOpenAckDetails extends MsgUnknownDetails {
   consensus_height: object;
   signer: Addr;
 }
-export interface MsgConnectionOpenConfirmDetails extends MsgUnknownDetails {
+export interface MsgConnectionOpenConfirmDetails extends MsgBaseDetails {
   connection_id: string;
   proof_ack: string;
   proof_height: object;
   signer: Addr;
 }
-export interface MsgChannelOpenInitDetails extends MsgUnknownDetails {
+export interface MsgChannelOpenInitDetails extends MsgBaseDetails {
   port_id: string;
   channel: object;
   signer: Addr;
 }
-export interface MsgChannelOpenTryDetails extends MsgUnknownDetails {
+export interface MsgChannelOpenTryDetails extends MsgBaseDetails {
   port_id: string;
   previous_channel_id: string;
   channel: object;
@@ -292,7 +300,7 @@ export interface MsgChannelOpenTryDetails extends MsgUnknownDetails {
   proof_height: object;
   signer: Addr;
 }
-export interface MsgChannelOpenAckDetails extends MsgUnknownDetails {
+export interface MsgChannelOpenAckDetails extends MsgBaseDetails {
   port_id: string;
   channel_id: string;
   counterparty_channel_id: string;
@@ -301,39 +309,39 @@ export interface MsgChannelOpenAckDetails extends MsgUnknownDetails {
   proof_height: object;
   signer: Addr;
 }
-export interface MsgChannelOpenConfirmDetails extends MsgUnknownDetails {
+export interface MsgChannelOpenConfirmDetails extends MsgBaseDetails {
   port_id: string;
   channel_id: string;
   proof_ack: string;
   proof_height: object;
   signer: Addr;
 }
-export interface MsgChannelCloseInitDetails extends MsgUnknownDetails {
+export interface MsgChannelCloseInitDetails extends MsgBaseDetails {
   port_id: string;
   channel_id: string;
   signer: Addr;
 }
-export interface MsgChannelCloseConfirmDetails extends MsgUnknownDetails {
+export interface MsgChannelCloseConfirmDetails extends MsgBaseDetails {
   port_id: string;
   channel_id: string;
   proof_init: string;
   proof_height: object;
   signer: Addr;
 }
-export interface MsgRecvPacketDetails extends MsgUnknownDetails {
+export interface MsgRecvPacketDetails extends MsgBaseDetails {
   packet: object;
   proof_commitment: string;
   proof_height: object;
   signer: Addr;
 }
-export interface MsgTimeoutDetails extends MsgUnknownDetails {
+export interface MsgTimeoutDetails extends MsgBaseDetails {
   packet: object;
   proof_unreceived: string;
   proof_height: object;
   next_sequence_recv: number;
   signer: Addr;
 }
-export interface MsgTimeoutOnCloseDetails extends MsgUnknownDetails {
+export interface MsgTimeoutOnCloseDetails extends MsgBaseDetails {
   packet: object;
   proof_unreceived: string;
   proof_close: string;
@@ -341,7 +349,7 @@ export interface MsgTimeoutOnCloseDetails extends MsgUnknownDetails {
   next_sequence_recv: number;
   signer: Addr;
 }
-export interface MsgAcknowledgementDetails extends MsgUnknownDetails {
+export interface MsgAcknowledgementDetails extends MsgBaseDetails {
   packet: object;
   acknowledgement: string;
   proof_acked: string;
@@ -350,13 +358,13 @@ export interface MsgAcknowledgementDetails extends MsgUnknownDetails {
 }
 
 // osmosis/gamm
-export interface MsgCreateBalancerPoolDetails extends MsgUnknownDetails {
+export interface MsgCreateBalancerPoolDetails extends MsgBaseDetails {
   sender: Addr;
   pool_params: object;
   pool_assets: object;
   future_pool_governor: string;
 }
-export interface MsgCreateStableswapPoolDetails extends MsgUnknownDetails {
+export interface MsgCreateStableswapPoolDetails extends MsgBaseDetails {
   sender: Addr;
   pool_params: object;
   initial_pool_liquidity: Coin[];
@@ -365,56 +373,56 @@ export interface MsgCreateStableswapPoolDetails extends MsgUnknownDetails {
   scaling_factor_controller: string;
 }
 export interface MsgStableSwapAdjustScalingFactorsDetails
-  extends MsgUnknownDetails {
+  extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   scaling_factors: string[];
 }
-export interface MsgJoinPoolDetails extends MsgUnknownDetails {
+export interface MsgJoinPoolDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   share_out_amount: string;
   token_in_maxs: Coin[];
 }
-export interface MsgExitPoolDetails extends MsgUnknownDetails {
+export interface MsgExitPoolDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   share_in_amount: string;
   token_out_mins: Coin[];
 }
-export interface MsgSwapExactAmountInDetails extends MsgUnknownDetails {
+export interface MsgSwapExactAmountInDetails extends MsgBaseDetails {
   sender: Addr;
   routes: object;
   token_in: Coin;
   token_out_min_amount: string;
 }
-export interface MsgSwapExactAmountOutDetails extends MsgUnknownDetails {
+export interface MsgSwapExactAmountOutDetails extends MsgBaseDetails {
   sender: Addr;
   routes: object;
   token_in_max_amount: string;
   token_out: Coin;
 }
-export interface MsgJoinSwapExternAmountInDetails extends MsgUnknownDetails {
+export interface MsgJoinSwapExternAmountInDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   token_in: Coin;
   share_out_min_amount: string;
 }
-export interface MsgJoinSwapShareAmountOutDetails extends MsgUnknownDetails {
+export interface MsgJoinSwapShareAmountOutDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   token_in_denom: string;
   share_out_amount: string;
   token_in_max_amount: string;
 }
-export interface MsgExitSwapShareAmountInDetails extends MsgUnknownDetails {
+export interface MsgExitSwapShareAmountInDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   token_out_denom: string;
   share_in_amount: string;
   token_out_min_amount: string;
 }
-export interface MsgExitSwapExternAmountOutDetails extends MsgUnknownDetails {
+export interface MsgExitSwapExternAmountOutDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   token_out: Coin;
@@ -422,7 +430,7 @@ export interface MsgExitSwapExternAmountOutDetails extends MsgUnknownDetails {
 }
 
 // osmosis/incentives
-export interface MsgCreateGaugeDetails extends MsgUnknownDetails {
+export interface MsgCreateGaugeDetails extends MsgBaseDetails {
   is_perpetual: boolean;
   owner: Addr;
   distribute_to: object;
@@ -430,82 +438,139 @@ export interface MsgCreateGaugeDetails extends MsgUnknownDetails {
   start_time: string;
   num_epochs_paid_over: string;
 }
-export interface MsgAddToGaugeDetails extends MsgUnknownDetails {
+export interface MsgAddToGaugeDetails extends MsgBaseDetails {
   owner: Addr;
   gauge_id: string;
   rewards: Coin[];
 }
 
 // osmosis/lockup
-export interface MsgLockTokensDetails extends MsgUnknownDetails {
+export interface MsgLockTokensDetails extends MsgBaseDetails {
   owner: Addr;
   duration: string;
   coins: Coin[];
 }
-export interface MsgBeginUnlockingAllDetails extends MsgUnknownDetails {
+export interface MsgBeginUnlockingAllDetails extends MsgBaseDetails {
   owner: Addr;
 }
-export interface MsgBeginUnlockingDetails extends MsgUnknownDetails {
+export interface MsgBeginUnlockingDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
   coins: Coin[];
 }
-export interface MsgExtendLockupDetails extends MsgUnknownDetails {
+export interface MsgExtendLockupDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
   duration: string;
 }
-export interface MsgForceUnlockDetails extends MsgUnknownDetails {
+export interface MsgForceUnlockDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
   coins: Coin[];
 }
 
 // osmosis/superfluid
-export interface MsgSuperfluidDelegateDetails extends MsgUnknownDetails {
+export interface MsgSuperfluidDelegateDetails extends MsgBaseDetails {
   sender: Addr;
   lock_id: string;
   val_addr: ValidatorAddr;
 }
-export interface MsgSuperfluidUndelegateDetails extends MsgUnknownDetails {
+export interface MsgSuperfluidUndelegateDetails extends MsgBaseDetails {
   sender: Addr;
   lock_id: string;
 }
-export interface MsgSuperfluidUnbondLockDetails extends MsgUnknownDetails {
+export interface MsgSuperfluidUnbondLockDetails extends MsgBaseDetails {
   sender: Addr;
   lock_id: string;
 }
-export interface MsgLockAndSuperfluidDelegateDetails extends MsgUnknownDetails {
+export interface MsgLockAndSuperfluidDelegateDetails extends MsgBaseDetails {
   sender: Addr;
   coins: Coin[];
   val_addr: ValidatorAddr;
 }
-export interface MsgUnPoolWhitelistedPoolDetails extends MsgUnknownDetails {
+export interface MsgUnPoolWhitelistedPoolDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
 }
+export interface MsgSuperfluidUndelegateAndUnbondLockDetails
+  extends MsgBaseDetails {
+  sender: Addr;
+  lock_id: string;
+  coin: Coin;
+}
 
 // osmosis/tokenfactory
-export interface MsgCreateDenomDetails extends MsgUnknownDetails {
+export interface MsgCreateDenomDetails extends MsgBaseDetails {
   sender: Addr;
   subdenom: string;
 }
-export interface MsgMintDetails extends MsgUnknownDetails {
+export interface MsgMintDetails extends MsgBaseDetails {
   sender: Addr;
   amount: Coin;
 }
-export interface MsgBurnDetails extends MsgUnknownDetails {
+export interface MsgBurnDetails extends MsgBaseDetails {
   sender: Addr;
   amount: Coin;
 }
-export interface MsgChangeAdminDetails extends MsgUnknownDetails {
+export interface MsgChangeAdminDetails extends MsgBaseDetails {
   sender: Addr;
   denom: string;
   new_admin: Addr;
 }
-export interface MsgSetDenomMetadataDetails extends MsgUnknownDetails {
+export interface MsgSetDenomMetadataDetails extends MsgBaseDetails {
   sender: Addr;
   metadata: object;
+}
+
+// osmosis/protorev
+export interface MsgSetHotRoutesDetails extends MsgBaseDetails {
+  admin: Addr;
+  hot_routes: object[];
+}
+export interface MsgSetBaseDenomsDetails extends MsgBaseDetails {
+  admin: Addr;
+  base_denoms: object[];
+}
+export interface MsgSetDeveloperAccountDetails extends MsgBaseDetails {
+  admin: Addr;
+  developer_account: Addr;
+}
+export interface MsgSetPoolWeightsDetails extends MsgBaseDetails {
+  admin: Addr;
+  pool_weights: object;
+}
+export interface MsgSetMaxPoolPointsPerTxDetails extends MsgBaseDetails {
+  admin: Addr;
+  max_pool_points_per_tx: string;
+}
+export interface MsgSetMaxPoolPointsPerBlockDetails extends MsgBaseDetails {
+  admin: Addr;
+  max_pool_points_per_block: string;
+}
+
+// osmosis/valset-pref
+export interface MsgDelegateToValidatorSetDetails extends MsgBaseDetails {
+  delegator: Addr;
+  coin: Coin;
+}
+export interface MsgUndelegateFromValidatorSetDetails extends MsgBaseDetails {
+  delegator: Addr;
+  coin: Coin;
+}
+export interface MsgRedelegateValidatorSetDetails extends MsgBaseDetails {
+  delegator: Addr;
+  preferences: object[];
+}
+export interface MsgWithdrawDelegationRewardsDetails extends MsgBaseDetails {
+  delegator: Addr;
+}
+export interface MsgDelegateBondedTokensDetails extends MsgBaseDetails {
+  delegator: Addr;
+  lockID: string;
+}
+export interface MsgSetValidatorSetPreferenceDetails extends MsgBaseDetails {
+  delegator: Addr;
+  preferences: object[];
 }
 
 export type MsgReturnType<T extends TypeUrl> =
@@ -653,6 +718,8 @@ export type MsgReturnType<T extends TypeUrl> =
     ? MsgLockAndSuperfluidDelegateDetails
     : T extends "/osmosis.superfluid.MsgUnPoolWhitelistedPool"
     ? MsgUnPoolWhitelistedPoolDetails
+    : T extends "/osmosis.superfluid.MsgSuperfluidUndelegateAndUnbondLock"
+    ? MsgSuperfluidUndelegateAndUnbondLockDetails
     : T extends "/osmosis.tokenfactory.v1beta1.MsgCreateDenom"
     ? MsgCreateDenomDetails
     : T extends "/osmosis.tokenfactory.v1beta1.MsgMint"
@@ -663,4 +730,28 @@ export type MsgReturnType<T extends TypeUrl> =
     ? MsgChangeAdminDetails
     : T extends "/osmosis.tokenfactory.v1beta1.MsgSetDenomMetadata"
     ? MsgSetDenomMetadataDetails
-    : MsgUnknownDetails;
+    : T extends "/osmosis.protorev.v1beta1.MsgSetHotRoutes"
+    ? MsgSetHotRoutesDetails
+    : T extends "/osmosis.protorev.v1beta1.MsgSetBaseDenoms"
+    ? MsgSetBaseDenomsDetails
+    : T extends "/osmosis.protorev.v1beta1.MsgSetDeveloperAccount"
+    ? MsgSetDeveloperAccountDetails
+    : T extends "/osmosis.protorev.v1beta1.MsgSetPoolWeights"
+    ? MsgSetPoolWeightsDetails
+    : T extends "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerTx"
+    ? MsgSetMaxPoolPointsPerTxDetails
+    : T extends "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerBlock"
+    ? MsgSetMaxPoolPointsPerBlockDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgDelegateToValidatorSet"
+    ? MsgDelegateToValidatorSetDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgUndelegateFromValidatorSet"
+    ? MsgUndelegateFromValidatorSetDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgRedelegateValidatorSet"
+    ? MsgRedelegateValidatorSetDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgWithdrawDelegationRewards"
+    ? MsgWithdrawDelegationRewardsDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgDelegateBondedTokens"
+    ? MsgDelegateBondedTokensDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgSetValidatorSetPreference"
+    ? MsgSetValidatorSetPreferenceDetails
+    : MsgBaseDetails;
