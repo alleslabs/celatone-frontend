@@ -48,7 +48,7 @@ export const useRelatedProposalsByContractAddressPagination = (
           resolvedHeight: proposal.resolved_height,
           type: proposal.proposal.type as ProposalType,
           proposer: proposal.proposal.account?.address as Addr,
-          isExpedited: proposal.proposal.is_expedited,
+          isExpedited: !!proposal.proposal.is_expedited,
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
@@ -124,7 +124,7 @@ export const useProposalsByWalletAddressPagination = (
             proposal.contract_proposals.at(0)?.resolved_height,
           type: proposal.type as ProposalType,
           proposer: walletAddress,
-          isExpedited: proposal.is_expedited,
+          isExpedited: !!proposal.is_expedited,
         }))
       );
   }, [indexerGraphClient, offset, pageSize, walletAddress]);
@@ -172,14 +172,14 @@ export const useProposalList = (
   statuses: ProposalStatus[],
   types: ProposalType[],
   search: string,
-  isMyProposal: boolean
+  proposer: Option<Addr>
 ): UseQueryResult<Proposal[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useProposalListExpression(
     statuses,
     types,
     search,
-    isMyProposal
+    proposer
   );
 
   const queryFn = useCallback(
@@ -200,7 +200,7 @@ export const useProposalList = (
             resolvedHeight: proposal.resolved_height,
             type: proposal.type as ProposalType,
             proposer: proposal.account?.address as Addr,
-            isExpedited: proposal.is_expedited,
+            isExpedited: !!proposal.is_expedited,
           }))
         ),
     [indexerGraphClient, offset, pageSize, expression]
@@ -215,14 +215,14 @@ export const useProposalListCount = (
   statuses: ProposalStatus[],
   types: ProposalType[],
   search: string,
-  isMyProposal: boolean
+  proposer: Option<Addr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useProposalListExpression(
     statuses,
     types,
     search,
-    isMyProposal
+    proposer
   );
   const queryFn = useCallback(
     async () =>

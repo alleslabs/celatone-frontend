@@ -1,24 +1,26 @@
-import { useWallet } from "@cosmos-kit/react";
+import { useMemo } from "react";
 
-import type { ProposalStatus, ProposalType } from "lib/types";
+import type { Addr, ProposalStatus, ProposalType, Option } from "lib/types";
 
 export const useProposalListExpression = (
   statuses: ProposalStatus[],
   types: ProposalType[],
   search: string,
-  isMyProposal: boolean
+  proposer: Option<Addr>
 ) => {
-  const { address } = useWallet();
   const parseSearch = parseInt(search, 10);
-  return {
-    account: { address: isMyProposal && address ? { _eq: address } : {} },
-    status: statuses.length ? { _in: statuses } : {},
-    type: types.length ? { _in: types } : {},
-    _or: [
-      {
-        title: search ? { _regex: search } : {},
-      },
-      { id: parseSearch ? { _eq: parseSearch } : {} },
-    ],
-  };
+  return useMemo(
+    () => ({
+      account: { address: proposer ? { _eq: proposer } : {} },
+      status: statuses.length ? { _in: statuses } : {},
+      type: types.length ? { _in: types } : {},
+      _or: [
+        {
+          title: search ? { _regex: search } : {},
+        },
+        { id: parseSearch ? { _eq: parseSearch } : {} },
+      ],
+    }),
+    [parseSearch, proposer, search, statuses, types]
+  );
 };
