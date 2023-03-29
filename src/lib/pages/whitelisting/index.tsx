@@ -9,6 +9,7 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
+import { useWallet } from "@cosmos-kit/react";
 import big from "big.js";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -16,6 +17,8 @@ import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { useNativeTokensInfo, useSimulateFee } from "lib/app-provider";
+import { AddressInput } from "lib/components/AddressInput";
+import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import {
@@ -119,13 +122,14 @@ const Whitelisting = observer(() => {
       simulateError: "",
     },
   });
-
+  const { title, addresses } = watch();
   const initialDepositWatch = watch("initialDeposit");
   const { fields, append, remove } = useFieldArray({
     control,
     name: "addresses",
   });
-  const { title } = watch();
+
+  const { address: walletAddress = "" } = useWallet();
   const { estimatedFee } = watch();
   const nativeTokensInfo = useNativeTokensInfo();
   const { variant, description, icon } = getAlert(initialDepositWatch.amount);
@@ -205,13 +209,40 @@ const Whitelisting = observer(() => {
                   upload and store code without opening proposal
                 </Text>
                 {fields.map((field, idx) => (
-                  <Flex gap={2} my={6}>
-                    <ControllerInput
+                  <Flex gap={2} my={6} width="100%">
+                    <AddressInput
                       name={`addresses.${idx}.address`}
                       control={control}
                       label="Address"
-                      placeholder="ex. cltn1ff1asdf7988aw49efa4vw9846789"
+                      placeholder="ex.cltn1ff1asdf7988aw49efa4vw9846789"
                       variant="floating"
+                      error={
+                        addresses[idx].address &&
+                        addresses.find(
+                          (x, i) =>
+                            i < idx && x.address === addresses[idx].address
+                        ) &&
+                        "You already input this address"
+                      }
+                      helperAction={
+                        <AssignMe
+                          onClick={
+                            walletAddress &&
+                            !addresses.find((x) => x.address === walletAddress)
+                              ? () => {
+                                  AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                                  setValue(
+                                    `addresses.${idx}.address`,
+                                    walletAddress as Addr
+                                  );
+                                }
+                              : undefined
+                          }
+                          isDisable={
+                            !!addresses.find((x) => x.address === walletAddress)
+                          }
+                        />
+                      }
                     />
                     <Button
                       w="56px"
