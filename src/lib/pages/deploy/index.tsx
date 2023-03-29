@@ -9,23 +9,18 @@ import {
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import {
-  useInternalNavigate,
-  useSelectChain,
-  useCurrentNetwork,
-} from "lib/app-provider";
+import { useInternalNavigate, useCurrentNetwork } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
 import { Stepper } from "lib/components/stepper";
+import { SwitchToTestnet } from "lib/components/SwitchToTestnet";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { getChainNameByNetwork } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const Deploy = () => {
   const { isMainnet } = useCurrentNetwork();
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const selectChain = useSelectChain();
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
@@ -62,14 +57,7 @@ const Deploy = () => {
               <Text color="text.disabled">
                 Currently available on testnet only.
               </Text>
-              <Text
-                color="honeydew.main"
-                _hover={{ textDecoration: "underline" }}
-                cursor="pointer"
-                onClick={() => selectChain(getChainNameByNetwork("testnet"))}
-              >
-                Switch to testnet
-              </Text>
+              <SwitchToTestnet />
             </Flex>
           ) : (
             "Store a new Wasm file on-chain"

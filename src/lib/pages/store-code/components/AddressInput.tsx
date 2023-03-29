@@ -33,6 +33,7 @@ export const AddressInput = <T extends FieldValues>({
   label,
   labelBgColor = "background.main",
   helperText,
+  placeholder = "ex.cltn1ff1asdf7988aw49efa4vw9846789",
   error,
   size = "lg",
   rules = {},
@@ -43,7 +44,7 @@ export const AddressInput = <T extends FieldValues>({
   const validateAddress = useCallback(
     (input: string) =>
       input && !!validateContractAddress(input) && !!validateUserAddress(input)
-        ? "Invalid Address."
+        ? "Invalid address or not exists."
         : undefined,
     [validateContractAddress, validateUserAddress]
   );
@@ -60,7 +61,7 @@ export const AddressInput = <T extends FieldValues>({
       name={name}
       control={control}
       label={label}
-      placeholder="ex.cltn1ff1asdf7988aw49efa4vw9846789"
+      placeholder={placeholder}
       type="text"
       variant="floating"
       status={status}
