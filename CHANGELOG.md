@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#258](https://github.com/alleslabs/celatone-frontend/pull/258) Fix address type render for contract admin address
 - [#253](https://github.com/alleslabs/celatone-frontend/pull/253) Fix public code logo shown when switching from mainnet to testnet
 - [#248](https://github.com/alleslabs/celatone-frontend/pull/248) Fix table padding bottom for editable cells
 - [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
