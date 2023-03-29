@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { BackButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { GitHubLink } from "lib/components/links";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { PublicDescription } from "lib/components/PublicDescription";
@@ -84,6 +85,9 @@ const CodeDetailsBody = observer(
                 {cw2Info ?? "N/A"}
               </Text>
             </Flex>
+            {publicProject.publicCodeData?.github && (
+              <GitHubLink github={publicProject.publicCodeData.github} />
+            )}
           </Flex>
           <CTASection
             id={codeId}
