@@ -1,5 +1,15 @@
-import { Flex, Heading, Text, Grid, GridItem, Button } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  Text,
+  Grid,
+  GridItem,
+  Button,
+  Alert,
+  AlertDescription,
+} from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
+import big from "big.js";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -17,6 +27,10 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import type { SimulateStatus } from "lib/components/upload/types";
+import {
+  getMaxProposalTitleLengthError,
+  MAX_PROPOSAL_TITLE_LENGTH,
+} from "lib/data/proposalWhitelist";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr } from "lib/types";
 
@@ -31,10 +45,70 @@ interface WhiteListState {
   simulateStatus: SimulateStatus;
   simulateError: string;
 }
+
+const mockUpDepositAmount = 1000.0;
+const getAlert = (amount: string) => {
+  const enteredAmount = amount || 0;
+  if (big(enteredAmount).lt(mockUpDepositAmount)) {
+    return {
+      variant: "warning",
+      description: `${big(mockUpDepositAmount)
+        .sub(enteredAmount)
+        .toFixed(
+          2
+        )} more KOYN is required to enter the voting period. If you proceed with this amount without further deposit after 7 days, The chain will remove your proposal with no fund return.`,
+      icon: (
+        <CustomIcon
+          name="alert-circle-solid"
+          color="warning.main"
+          boxSize="4"
+        />
+      ),
+    };
+  }
+  if (big(enteredAmount).eq(mockUpDepositAmount)) {
+    return {
+      variant: "honeydew",
+      description:
+        "The proposal will proceed to voting period immediately after created.",
+      icon: (
+        <CustomIcon
+          name="info-circle-solid"
+          color="honeydew.main"
+          boxSize="4"
+        />
+      ),
+    };
+  }
+  if (big(mockUpDepositAmount).lt(enteredAmount)) {
+    return {
+      variant: "warning",
+      description: `You’re depositing more than the minimum requirement, the proposal will proceed to voting immediately after creation. To prevent fund loss if rejected, deposit equal to the minimum requirement.
+`,
+      icon: (
+        <CustomIcon
+          name="alert-circle-solid"
+          color="warning.main"
+          boxSize="4"
+        />
+      ),
+    };
+  }
+  return {
+    variant: "",
+    description: "",
+    icon: null,
+  };
+};
 const Whitelisting = observer(() => {
   const { loading } = useSimulateFee();
   const router = useRouter();
-  const { control, watch, setValue } = useForm<WhiteListState>({
+  const {
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<WhiteListState>({
     defaultValues: {
       title: "",
       description: "",
@@ -45,15 +119,16 @@ const Whitelisting = observer(() => {
       simulateError: "",
     },
   });
+
   const initialDepositWatch = watch("initialDeposit");
   const { fields, append, remove } = useFieldArray({
     control,
     name: "addresses",
   });
-
+  const { title } = watch();
   const { estimatedFee } = watch();
   const nativeTokensInfo = useNativeTokensInfo();
-
+  const { variant, description, icon } = getAlert(initialDepositWatch.amount);
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSALS);
   }, [router.isReady]);
@@ -96,9 +171,17 @@ const Whitelisting = observer(() => {
                     control={control}
                     placeholder="ex. Store code for ..."
                     label="Proposal Title"
-                    variant="floating"
-                    rules={{ required: "Label is required" }}
                     labelBgColor="pebble.900"
+                    variant="floating"
+                    rules={{
+                      required: "Proposal Title is required",
+                      maxLength: MAX_PROPOSAL_TITLE_LENGTH,
+                    }}
+                    error={
+                      errors.title &&
+                      (errors.title.message ||
+                        getMaxProposalTitleLengthError(title.length))
+                    }
                   />
                   <ControllerTextarea
                     name="description"
@@ -107,10 +190,11 @@ const Whitelisting = observer(() => {
                     label="Proposal Description"
                     placeholder="Usually details information such as the team behind the contract, what the contract does, the benefits the contract will have to the chain/ecosystem, and the compiled code checksum or commit hash for the code on GitHub etc."
                     variant="floating"
-                    // rules={{
-                    //   maxLength: MAX_CONTRACT_DESCRIPTION_LENGTH,
-                    // }}
                     labelBgColor="pebble.900"
+                    rules={{
+                      required: "Proposal Description is required",
+                    }}
+                    error={errors.description && errors.description.message}
                   />
                 </Flex>
                 <Heading as="h6" variant="h6" pt={12}>
@@ -160,7 +244,7 @@ const Whitelisting = observer(() => {
                   Minimum deposit required to start 7-day voting period:
                   1,000.000 KOYN
                 </Text>
-                <Flex pt={6} gap={4}>
+                <Flex py={6} gap={4}>
                   <Flex flex="1">
                     <SelectInput
                       formLabel="Asset"
@@ -181,11 +265,35 @@ const Whitelisting = observer(() => {
                       name="initialDeposit.amount"
                       control={control}
                       label="Amount"
+                      placeholder="0.00"
                       variant="floating"
                       type="number"
+                      helperAction={
+                        <Text
+                          textAlign="right"
+                          mr={3}
+                          fontWeight="600"
+                          cursor="pointer"
+                          variant="body3"
+                          minW={16}
+                          color="honeydew.main"
+                          onClick={() =>
+                            setValue(
+                              "initialDeposit.amount",
+                              big(mockUpDepositAmount).toFixed(2)
+                            )
+                          }
+                        >
+                          Fill {big(mockUpDepositAmount).toFixed(2)} KOYN
+                        </Text>
+                      }
                     />
                   </Flex>
                 </Flex>
+                <Alert variant={variant} gap="2" w="inherit">
+                  {icon}
+                  <AlertDescription>{description}</AlertDescription>
+                </Alert>
                 <Flex
                   mt={12}
                   fontSize="14px"
