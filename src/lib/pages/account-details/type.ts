@@ -25,6 +25,7 @@ export interface NonRedelegatable {
 export interface UserDelegationsData {
   stakingParams: Option<StakingParams>;
   isValidator: Option<boolean>;
+  isLoading: Option<boolean>;
   totalBonded: Option<Record<string, TokenWithValue>>;
   isLoadingTotalBonded: boolean;
   totalDelegations: Option<Record<string, TokenWithValue>>;

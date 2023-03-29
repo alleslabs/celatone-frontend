@@ -278,6 +278,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const data: UserDelegationsData = {
     stakingParams: undefined,
     isValidator: undefined,
+    isLoading,
     totalBonded: undefined,
     isLoadingTotalBonded:
       isLoading || isLoadingRawDelegations || isLoadingRawUnbondings,
@@ -417,9 +418,26 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
   if (isLoading || !data)
     return { totalAccountValue: undefined, isLoading: true };
 
-  const { stakingParams, totalBonded, totalRewards, totalCommission } = data;
-  if (!stakingParams || !totalBonded || !totalRewards || !totalCommission)
+  const {
+    stakingParams,
+    isLoading: isLoadingStakingParams,
+    totalBonded,
+    isLoadingTotalBonded,
+    totalRewards,
+    isLoadingRewards,
+    totalCommission,
+    isLoadingTotalCommission,
+  } = data;
+  if (
+    isLoadingStakingParams ||
+    isLoadingTotalBonded ||
+    isLoadingRewards ||
+    isLoadingTotalCommission
+  )
     return { totalAccountValue: undefined, isLoading: true };
+
+  if (!stakingParams || !totalBonded || !totalRewards || !totalCommission)
+    return { totalAccountValue: undefined, isLoading: false };
 
   const defaultValue = big(0) as USD<Big>;
 

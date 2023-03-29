@@ -4,6 +4,7 @@ import big from "big.js";
 
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
+import { EmptyState } from "lib/components/state";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
 import type { TokenWithValue } from "lib/pages/account-details/type";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -34,6 +35,7 @@ export const DelegationsSection = ({
   const {
     stakingParams,
     isValidator,
+    isLoading,
     totalBonded,
     isLoadingTotalBonded,
     totalDelegations,
@@ -51,7 +53,9 @@ export const DelegationsSection = ({
     isLoadingTotalCommission,
   } = useUserDelegationInfos(walletAddress);
 
-  if (!stakingParams) return <Loading />;
+  if (isLoading) return <Loading />;
+  if (!stakingParams)
+    return <EmptyState message="Error fetching delegation data" withBorder />;
 
   const bondDenomLabel = getTokenLabel(stakingParams.bondDenom);
   // TODO: support more than one Asset?
