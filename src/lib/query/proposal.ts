@@ -21,6 +21,7 @@ export const getRelatedProposalsByContractAddressPagination = graphql(`
         account {
           address
         }
+        is_expedited
       }
       proposal_id
       resolved_height
@@ -58,6 +59,7 @@ export const getProposalsByWalletAddressPagination = graphql(`
       deposit_end_time
       type
       id
+      is_expedited
       contract_proposals {
         resolved_height
       }
@@ -73,6 +75,43 @@ export const getProposalsCountByWalletAddress = graphql(`
     proposals_aggregate(
       where: { account: { address: { _eq: $walletAddress } } }
     ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
+export const getProposalList = graphql(`
+  query getProposalList(
+    $expression: proposals_bool_exp
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    proposals(
+      where: $expression
+      order_by: { id: desc }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      type
+      id
+      title
+      voting_end_time
+      deposit_end_time
+      resolved_height
+      status
+      is_expedited
+      account {
+        address
+      }
+    }
+  }
+`);
+
+export const getProposalListCount = graphql(`
+  query getProposalListCount($expression: proposals_bool_exp) {
+    proposals_aggregate(where: $expression) {
       aggregate {
         count
       }
