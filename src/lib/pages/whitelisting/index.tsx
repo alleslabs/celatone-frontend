@@ -1,15 +1,4 @@
-import {
-  Flex,
-  Heading,
-  Text,
-  Box,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionIcon,
-  AccordionPanel,
-  Button,
-} from "@chakra-ui/react";
+import { Flex, Heading, Text, Grid, GridItem, Button } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -25,8 +14,9 @@ import {
   SelectInput,
 } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import PageContainer from "lib/components/PageContainer";
+import { StickySidebar } from "lib/components/StickySidebar";
 import type { SimulateStatus } from "lib/components/upload/types";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr } from "lib/types";
 
@@ -70,11 +60,11 @@ const Whitelisting = observer(() => {
 
   return (
     <>
-      <WasmPageContainer width="100%">
-        <Flex gap={2} width="100%">
-          <Box flex="1" />
-          <Flex flex="10" position="relative">
-            <Box flex="6">
+      <PageContainer>
+        <Flex width="100%">
+          <Grid templateColumns="1fr 6fr 4fr 1fr" gap={4} w="100%">
+            <GridItem w="100%" />
+            <GridItem w="100%">
               <Heading as="h5" variant="h5">
                 Create Proposal to Whitelisting
               </Heading>
@@ -212,76 +202,34 @@ const Whitelisting = observer(() => {
                   />
                 </Flex>
               </form>
-            </Box>
-            <Box flex="4" px={8} mt={36} position="relative">
-              <Flex position="fixed" width="100%">
-                <Accordion allowToggle width={96} defaultIndex={[0]}>
-                  <AccordionItem>
-                    <h2>
-                      <AccordionButton>
-                        <Box as="span" flex="1" py={2} textAlign="left">
-                          <Text
-                            variant="body2"
-                            fontWeight="600"
-                            color="text.main"
-                          >
-                            What is whitelisted address?
-                          </Text>
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>
-                    <AccordionPanel pb={4}>
-                      <Text variant="body2" color="text.dark" pb={4}>
-                        Osmosis Mainnet is permissioned chain, which means you
-                        will need to submit proposal to store code <br />
-                        <br />
-                        However, there is a way to bypass this process by adding
-                        your wallet address or other designated addresses to an
-                        allow list.
-                        <br />
-                        <br />
-                        Once your address is on this list, you will be able to
-                        store code on the network without having to submit a
-                        proposal every time.
-                      </Text>
-                      <Button
-                        size="md"
-                        p="0"
-                        variant="ghost-primary"
-                        rightIcon={
-                          <CustomIcon
-                            name="chevron-right"
-                            color="lilac.main"
-                            boxSize={3}
-                          />
-                        }
-                      >
-                        Switch to testnet
-                      </Button>
-                      <Button
-                        size="md"
-                        p="0"
-                        variant="ghost-primary"
-                        rightIcon={
-                          <CustomIcon
-                            name="chevron-right"
-                            color="lilac.main"
-                            boxSize={3}
-                          />
-                        }
-                      >
-                        Submit proposal to store code
-                      </Button>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
-              </Flex>
-            </Box>
-          </Flex>
-          <Box flex="1" />
+            </GridItem>
+            <GridItem w="100%">
+              <StickySidebar
+                marginTop="32"
+                title=" What is whitelisted address?"
+                description={
+                  <span>
+                    Osmosis Mainnet is permissioned chain, which means you will
+                    need to submit proposal to store code <br />
+                    <br />
+                    However, there is a way to bypass this process by adding
+                    your wallet address or other designated addresses to an
+                    allow list.
+                    <br />
+                    <br />
+                    Once your address is on this list, you will be able to store
+                    code on the network without having to submit a proposal
+                    every time.
+                  </span>
+                }
+                testnetSwitch
+                action
+              />
+            </GridItem>
+            <GridItem w="100%" />
+          </Grid>
         </Flex>
-      </WasmPageContainer>
+      </PageContainer>
       <Footer loading={false} />
     </>
   );
