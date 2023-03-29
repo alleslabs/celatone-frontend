@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
+import { AddressInput } from "../../components/AddressInput";
 import { useNativeTokensInfo, useSimulateFee } from "lib/app-provider";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -38,7 +39,6 @@ import {
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr } from "lib/types";
 
-import { AddressInput } from "./components/AddressInput";
 import { Footer } from "./components/Footer";
 import { UploadFile } from "./components/UploadFile";
 
