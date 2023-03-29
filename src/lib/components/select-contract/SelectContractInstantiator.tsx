@@ -57,10 +57,8 @@ export const SelectContractInstantiator = ({
   const { getContractLists } = useContractStore();
 
   // TODO - Revisit false case
-  const contractLists = [
-    useInstantiatedByMe(true).instantiatedListInfo,
-    ...getContractLists(),
-  ];
+  const { instantiatedListInfo, isLoading } = useInstantiatedByMe(true);
+  const contractLists = [instantiatedListInfo, ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
   const endpoint = useLCDEndpoint();
@@ -201,6 +199,7 @@ export const SelectContractInstantiator = ({
               <DrawerBody maxH="full" overflowY="scroll">
                 <ContractListDetail
                   contractListInfo={contractList}
+                  isLoading={isLoading}
                   isReadOnly
                   onContractSelect={onSelectThenClose}
                 />

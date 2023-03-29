@@ -58,6 +58,7 @@ export const ExecuteTxsTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message="This contract does not have any execute transactions yet."
             withBorder
           />

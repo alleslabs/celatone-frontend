@@ -31,7 +31,7 @@ export const PastTxRow = ({
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
-        <TableRow pl="48px">
+        <TableRow>
           <ExplorerLink
             value={transaction.hash.toLocaleUpperCase()}
             type="tx_hash"
