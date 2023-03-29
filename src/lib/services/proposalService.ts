@@ -119,9 +119,7 @@ export const useProposalsByWalletAddressPagination = (
           status: proposal.status as ProposalStatus,
           votingEndTime: parseDate(proposal.voting_end_time),
           depositEndTime: parseDate(proposal.deposit_end_time),
-          resolvedHeight:
-            proposal.code_proposals.at(0)?.resolved_height ||
-            proposal.contract_proposals.at(0)?.resolved_height,
+          resolvedHeight: proposal.resolved_height,
           type: proposal.type as ProposalType,
           proposer: walletAddress,
           isExpedited: Boolean(proposal.is_expedited),
