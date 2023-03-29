@@ -43,9 +43,15 @@ export const ControllerTextarea = <T extends FieldValues>({
   const { field } = useController({ name, control, rules });
 
   const isError = !!error;
-
+  const isRequired = "required" in rules;
   return (
-    <FormControl size="md" isInvalid={isError} {...componentProps} {...field}>
+    <FormControl
+      size="md"
+      isInvalid={isError}
+      isRequired={isRequired}
+      {...componentProps}
+      {...field}
+    >
       {label && (
         <FormLabel className="textarea-label" bgColor={labelBgColor}>
           {label}

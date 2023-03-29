@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
-import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -30,16 +29,21 @@ import {
 import { CustomIcon } from "lib/components/icon";
 import type { SimulateStatus } from "lib/components/upload/types";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import {
+  getMaxProposalTitleLengthError,
+  MAX_PROPOSAL_TITLE_LENGTH,
+} from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr } from "lib/types";
 
+import { AddressInput } from "./components/AddressInput";
 import { Footer } from "./components/Footer";
 import { UploadFile } from "./components/UploadFile";
 
 interface WhiteListState {
   title: string;
   description: string;
-  creator: Addr;
+  creator: string;
   onlyAddress: string;
   addresses: { address: Addr }[];
   initialDeposit: Coin;
@@ -47,10 +51,15 @@ interface WhiteListState {
   simulateStatus: SimulateStatus;
   simulateError: string;
 }
-const StoreCode = observer(() => {
+const StoreCode = () => {
   const { loading } = useSimulateFee();
   const router = useRouter();
-  const { control, watch, setValue } = useForm<WhiteListState>({
+  const {
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<WhiteListState>({
     defaultValues: {
       title: "",
       description: "",
@@ -62,7 +71,14 @@ const StoreCode = observer(() => {
       simulateStatus: "pending",
       simulateError: "",
     },
+    mode: "all",
   });
+  const {
+    title,
+    // creator: watchCreatorAddress,
+    // onlyAddress: watchDesignatedAddress,
+    addresses,
+  } = watch();
   const initialDepositWatch = watch("initialDeposit");
   const { address: walletAddress = "" } = useWallet();
   const { fields, append, remove } = useFieldArray({
@@ -110,7 +126,15 @@ const StoreCode = observer(() => {
                     placeholder="ex. Store code for ..."
                     label="Proposal Title"
                     variant="floating"
-                    rules={{ required: "title is required" }}
+                    rules={{
+                      required: "Proposal Title is required",
+                      maxLength: MAX_PROPOSAL_TITLE_LENGTH,
+                    }}
+                    error={
+                      errors.title &&
+                      (errors.title.message ||
+                        getMaxProposalTitleLengthError(title.length))
+                    }
                   />
                   <ControllerTextarea
                     name="description"
@@ -119,7 +143,10 @@ const StoreCode = observer(() => {
                     label="Proposal Description"
                     placeholder="Usually details information such as the team behind the contract, what the contract does, the benefits the contract will have to the chain/ecosystem, and the compiled code checksum or commit hash for the code on GitHub etc."
                     variant="floating"
-                    rules={{ required: "Proposal Descriptio is required" }}
+                    rules={{
+                      required: "Proposal Description is required",
+                    }}
+                    error={errors.description && errors.description.message}
                   />
                   <ControllerInput
                     name="creator"
@@ -128,7 +155,25 @@ const StoreCode = observer(() => {
                     label="Run as"
                     variant="floating"
                     helperText="This address will be stored as code creator"
-                    rules={{ required: "creator is required" }}
+                    rules={{ required: "Creator is required" }}
+                    // error={
+                    //   validateAddress(watchCreatorAddress) ||
+                    //   (errors.creator && errors.creator.message)
+                    // }
+                    helperAction={
+                      <Text
+                        color="honeydew.main"
+                        fontWeight="600"
+                        variant="body3"
+                        cursor="pointer"
+                        onClick={() => {
+                          AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                          setValue("creator", walletAddress);
+                        }}
+                      >
+                        Assign me
+                      </Text>
+                    }
                   />
                 </Flex>
                 <UploadFile />
@@ -141,6 +186,7 @@ const StoreCode = observer(() => {
                 </Text>
                 <Box pt={6}>
                   <RadioGroup
+                    name="instantiatePermission"
                     onChange={(
                       nextVal:
                         | "everybody"
@@ -194,7 +240,14 @@ const StoreCode = observer(() => {
                               label="Designated Address"
                               variant="floating"
                               helperText="You can assign both wallet or contract address."
-                              rules={{ required: "onlyAddress is required" }}
+                              rules={{
+                                required: "Designated Address is required",
+                              }}
+                              // error={
+                              //   validateAddress(watchDesignatedAddress) ||
+                              //   (errors.onlyAddress &&
+                              //     errors.onlyAddress.message)
+                              // }
                               helperAction={
                                 <Text
                                   color="honeydew.main"
@@ -234,12 +287,21 @@ const StoreCode = observer(() => {
                           <Box>
                             {fields.map((field, idx) => (
                               <Flex gap={2} my={6} width="100%">
-                                <ControllerInput
+                                <AddressInput
                                   name={`addresses.${idx}.address`}
                                   control={control}
                                   label="Address"
-                                  placeholder="ex. cltn1ff1asdf7988aw49efa4vw9846789"
+                                  placeholder="ex.cltn1ff1asdf7988aw49efa4vw9846789"
                                   variant="floating"
+                                  error={
+                                    addresses.find(
+                                      (x, i) =>
+                                        i < idx &&
+                                        x.address === addresses[idx].address
+                                    )
+                                      ? "You already input this address"
+                                      : undefined
+                                  }
                                 />
                                 <Button
                                   w="56px"
@@ -277,7 +339,6 @@ const StoreCode = observer(() => {
                     </Box>
                   </RadioGroup>
                 </Box>
-
                 <Heading as="h6" variant="h6" pt={12}>
                   Initial Deposit
                 </Heading>
@@ -388,6 +449,6 @@ const StoreCode = observer(() => {
       />
     </>
   );
-});
+};
 
 export default StoreCode;
