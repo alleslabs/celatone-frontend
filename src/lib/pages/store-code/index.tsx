@@ -317,7 +317,10 @@ const StoreCode = () => {
                                     helperAction={
                                       <AssignMe
                                         onClick={
-                                          walletAddress
+                                          walletAddress &&
+                                          !addresses.find(
+                                            (x) => x.address === walletAddress
+                                          )
                                             ? () => {
                                                 AmpTrack(
                                                   AmpEvent.USE_ASSIGN_ME
