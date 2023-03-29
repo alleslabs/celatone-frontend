@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#257](https://github.com/alleslabs/celatone-frontend/pull/257) Fix proposal resolved height query, resolved height rendering, and move ResolvedHeight and VotingEndTime to their own file
 - [#248](https://github.com/alleslabs/celatone-frontend/pull/248) Fix table padding bottom for editable cells
 - [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
 - [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit
