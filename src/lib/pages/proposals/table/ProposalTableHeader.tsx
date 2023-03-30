@@ -1,0 +1,24 @@
+import type { GridProps } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
+
+import { TableHeader, TableHeaderFreeze } from "lib/components/table";
+
+export const ProposalTableHeader = ({
+  templateColumns,
+}: {
+  templateColumns: GridProps["templateColumns"];
+}) => {
+  const columnsWidth = templateColumns?.toString().split(" ");
+  return (
+    <Grid templateColumns={templateColumns} minW="min-content">
+      <TableHeaderFreeze left="0">Proposal ID</TableHeaderFreeze>
+      <TableHeaderFreeze left={columnsWidth && columnsWidth[0]}>
+        Proposal Title/Type
+      </TableHeaderFreeze>
+      <TableHeader textAlign="center">Status</TableHeader>
+      <TableHeader>Vote Finish On</TableHeader>
+      <TableHeader>Resolved Block Height </TableHeader>
+      <TableHeader>Proposed By </TableHeader>
+    </Grid>
+  );
+};

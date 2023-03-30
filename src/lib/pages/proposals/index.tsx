@@ -1,19 +1,71 @@
 import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
+import { useChainId } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { Pagination } from "lib/components/pagination";
+import { usePaginator } from "lib/components/pagination/usePaginator";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import {
+  useProposalList,
+  useProposalListCount,
+} from "lib/services/proposalService";
 
-const Proposals = observer(() => {
+import { PorposalTable } from "./table/ProposalTable";
+
+const Proposals = () => {
+  const chainId = useChainId();
   const router = useRouter();
+  const { data: countProposals = 0 } = useProposalListCount(
+    [],
+    [],
+    "",
+    undefined
+  );
+  const {
+    pagesQuantity,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
+  } = usePaginator({
+    total: countProposals,
+    initialState: {
+      pageSize: 10,
+      currentPage: 1,
+      isDisabled: false,
+    },
+  });
+  const { data: proposals, isLoading } = useProposalList(
+    offset,
+    pageSize,
+    [],
+    [],
+    "",
+    undefined
+  );
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSALS);
   }, [router.isReady]);
+
+  useEffect(() => {
+    setPageSize(10);
+    setCurrentPage(1);
+  }, [chainId, setCurrentPage, setPageSize]);
+
+  const onPageChange = (nextPage: number) => setCurrentPage(nextPage);
+
+  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const size = Number(e.target.value);
+    setPageSize(size);
+    setCurrentPage(1);
+  };
 
   return (
     <PageContainer>
@@ -45,9 +97,20 @@ const Proposals = observer(() => {
         </Flex>
       </Flex>
       {/* TODO - add table */}
-      <Text>Table</Text>
+      <PorposalTable proposals={proposals} isLoading={isLoading} />
+      {countProposals > 10 && (
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={countProposals}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </PageContainer>
   );
-});
+};
 
 export default Proposals;
