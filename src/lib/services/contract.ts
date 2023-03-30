@@ -42,6 +42,7 @@ interface PublicInfoResponse {
   name: string;
   address: ContractAddr;
   description: string;
+  github: string;
 }
 
 export interface InstantiateInfo {
