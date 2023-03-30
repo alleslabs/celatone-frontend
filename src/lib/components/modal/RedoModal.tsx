@@ -77,11 +77,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
               justifyContent="end"
               gap="4"
             >
-              <Button
-                cursor="pointer"
-                variant="ghost-primary"
-                onClick={onClose}
-              >
+              <Button cursor="pointer" variant="ghost-lilac" onClick={onClose}>
                 Cancel
               </Button>
               <Button

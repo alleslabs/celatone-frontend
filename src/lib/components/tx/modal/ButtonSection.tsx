@@ -43,7 +43,7 @@ export const ButtonSection = ({
       return (
         <>
           <Button
-            variant="ghost-primary"
+            variant="ghost-lilac"
             onClick={() => {
               navigate({ pathname: "/codes" });
               onClose?.();
@@ -89,7 +89,7 @@ export const ButtonSection = ({
     case "update-admin":
       return (
         <>
-          <Button variant="ghost-primary" onClick={openExplorer}>
+          <Button variant="ghost-lilac" onClick={openExplorer}>
             See Transaction
           </Button>
           <Button

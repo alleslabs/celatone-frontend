@@ -8,6 +8,7 @@ const violetLight = "violet.light";
 const honeydewBg = "honeydew.background";
 const honeydewDarker = "honeydew.darker";
 const borderDefualt = "1px solid";
+const violetBg = "violet.background";
 
 const generateStyle = ({
   basic,
@@ -67,7 +68,7 @@ export const Button: ComponentStyleConfig = {
     primary: generateStyle({
       basic: { background: "violet.main", color: "text.main" },
       disabled: {
-        background: "violet.background",
+        background: violetBg,
         color: pebble600,
       },
       hoverBg: "violet.dark",
@@ -93,7 +94,7 @@ export const Button: ComponentStyleConfig = {
         borderColor: pebble700,
         color: pebble600,
       },
-      hoverBg: "violet.background",
+      hoverBg: violetBg,
       activeBg: "transparent",
     }),
     "outline-gray": generateStyle({
@@ -137,6 +138,16 @@ export const Button: ComponentStyleConfig = {
       activeBg: "transparent",
     }),
     "ghost-primary": generateStyle({
+      basic: {
+        color: "violet.light",
+      },
+      disabled: {
+        color: violetBg,
+      },
+      hoverBg: violetBg,
+      activeBg: "transparent",
+    }),
+    "ghost-lilac": generateStyle({
       basic: {
         color: "lilac.main",
       },

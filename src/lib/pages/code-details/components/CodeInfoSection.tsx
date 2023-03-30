@@ -111,7 +111,7 @@ const ViewAddresses = ({
         })}
       {permissionAddresses.length > 1 && (
         <Button
-          variant="ghost-primary"
+          variant="ghost-lilac"
           onClick={() => setViewAll((prev) => !prev)}
           size="sm"
           p="unset"

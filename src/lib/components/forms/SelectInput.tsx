@@ -8,6 +8,7 @@ import {
   useDisclosure,
   useOutsideClick,
   Flex,
+  Image,
   InputLeftElement,
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
@@ -27,6 +28,7 @@ interface SelectInputProps<T extends string> {
     disabled: boolean;
     icon?: IconKeys;
     iconColor?: string;
+    image?: string;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
@@ -125,6 +127,7 @@ export const SelectInput = <T extends string>({
           <div className="form-label">{formLabel}</div>
           {selectedOption?.icon && (
             <InputLeftElement pointerEvents="none" h="full" ml="1">
+              <Image boxSize={6} src={selectedOption.image} />
               <CustomIcon
                 name={selectedOption.icon}
                 color={selectedOption.iconColor}
@@ -164,7 +167,7 @@ export const SelectInput = <T extends string>({
           },
         }}
       >
-        {options.map(({ label, value, disabled, icon, iconColor }) => (
+        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
           <SelectItem
             key={value}
             onSelect={() => {
@@ -174,6 +177,7 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
+            {image && <Image boxSize={6} src={image} />}
             {icon && <CustomIcon name={icon} color={iconColor} />}
             {label}
           </SelectItem>

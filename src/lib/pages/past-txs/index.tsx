@@ -110,7 +110,6 @@ const PastTxs = () => {
       <Heading variant="h5" as="h5">
         Past Transactions
       </Heading>
-
       <Flex mt="48px">
         <Flex grow="2" gap="4">
           <InputGroup>
