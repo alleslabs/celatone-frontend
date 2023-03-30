@@ -8997,14 +8997,7 @@ export type GetProposalsByWalletAddressPaginationQuery = {
     type: string;
     id: number;
     is_expedited?: boolean | null;
-    contract_proposals: Array<{
-      __typename?: "contract_proposals";
-      resolved_height?: number | null;
-    }>;
-    code_proposals: Array<{
-      __typename?: "code_proposals";
-      resolved_height?: number | null;
-    }>;
+    resolved_height?: number | null;
   }>;
 };
 
@@ -12370,29 +12363,7 @@ export const GetProposalsByWalletAddressPaginationDocument = {
                 },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "contract_proposals" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "resolved_height" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "code_proposals" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "resolved_height" },
-                      },
-                    ],
-                  },
+                  name: { kind: "Name", value: "resolved_height" },
                 },
               ],
             },

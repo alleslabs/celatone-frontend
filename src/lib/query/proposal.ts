@@ -60,12 +60,7 @@ export const getProposalsByWalletAddressPagination = graphql(`
       type
       id
       is_expedited
-      contract_proposals {
-        resolved_height
-      }
-      code_proposals {
-        resolved_height
-      }
+      resolved_height
     }
   }
 `);
