@@ -45,7 +45,6 @@ export const TxMsgDetails = ({
       gap={6}
       pt={4}
       height={isExpand ? "full" : 0}
-      opacity={isExpand ? 1 : 0}
       overflow="hidden"
       transition="all .25s ease-in-out"
     >
