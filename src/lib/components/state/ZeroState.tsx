@@ -1,4 +1,4 @@
-import { Flex, Button, Image, Text } from "@chakra-ui/react";
+import { Flex, Button, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
 import { useInternalNavigate } from "lib/app-provider";
@@ -6,6 +6,8 @@ import { SaveNewContractModal } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
 import type { LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
+
+import { StateImage } from "./StateImage";
 
 interface ZeroStateProps {
   list: LVPair;
@@ -72,11 +74,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
       alignContent="center"
     >
       <Flex alignItems="center" flexDir="column" gap="4">
-        <Image
-          src="https://assets.alleslabs.dev/illustration/search-empty.svg"
-          alt="result not found"
-          width="200px"
-        />
+        <StateImage imageVariant="empty" />
         <Text color="text.dark">{renderText(list.value)}</Text>
         {!isReadOnly && (
           <ActionSection

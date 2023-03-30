@@ -9,7 +9,7 @@ export const PastTxsTableHeader = ({
   templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid templateColumns={templateColumns}>
-    <TableHeader pl="48px">Transaction Hash</TableHeader>
+    <TableHeader>Transaction Hash</TableHeader>
     <TableHeader />
     <TableHeader>Messages</TableHeader>
     <TableHeader>Timestamp</TableHeader>

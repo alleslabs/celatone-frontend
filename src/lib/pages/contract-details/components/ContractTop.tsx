@@ -12,6 +12,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { AdminButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { GitHubLink } from "lib/components/links";
 import {
   AddToOtherListModal,
   EditContractDetailsModal,
@@ -142,6 +143,9 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               {publicProject.publicInfo?.name}
             </Text>
           </Flex>
+        )}
+        {publicProject.publicInfo?.github && (
+          <GitHubLink github={publicProject.publicInfo?.github} />
         )}
       </Flex>
       <Flex gap={4}>

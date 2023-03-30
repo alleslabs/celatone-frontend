@@ -1,12 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { ContractsTable, TableTitle, ViewMore } from "lib/components/table";
 import { useAccountContracts } from "lib/pages/account-details/data";
-import type { HumanAddr, Option } from "lib/types";
+import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 interface InstantiatedContractsTableProps {
   walletAddress: HumanAddr;
@@ -23,6 +24,13 @@ export const InstantiatedContractsTable = ({
   refetchCount,
   onViewMore,
 }: InstantiatedContractsTableProps) => {
+  const navigate = useInternalNavigate();
+  const onRowSelect = (contract: ContractAddr) =>
+    navigate({
+      pathname: "/contract/[contract]",
+      query: { contract },
+    });
+
   const {
     pagesQuantity,
     currentPage,
@@ -68,10 +76,12 @@ export const InstantiatedContractsTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message="This account did not instantiate any contracts before."
             withBorder
           />
         }
+        onRowSelect={onRowSelect}
       />
       {!!totalData &&
         (onViewMore
