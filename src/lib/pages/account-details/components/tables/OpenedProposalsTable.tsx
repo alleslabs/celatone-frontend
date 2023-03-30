@@ -63,6 +63,7 @@ export const OpenedProposalsTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message="This account did not open any proposals before."
             withBorder
           />

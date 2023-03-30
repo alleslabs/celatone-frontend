@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Heading,
   Input,
@@ -13,6 +12,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import { CustomIcon } from "lib/components/icon";
+import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
@@ -106,34 +106,32 @@ const PastTxs = () => {
   }, [router.isReady]);
 
   return (
-    <>
-      <Box px="48px" pt="48px">
-        <Heading variant="h5" as="h5">
-          Past Transactions
-        </Heading>
+    <PageContainer>
+      <Heading variant="h5" as="h5">
+        Past Transactions
+      </Heading>
 
-        <Flex mt="48px">
-          <Flex grow="2" gap="4">
-            <InputGroup>
-              <Input
-                value={pastTxsState.search}
-                onChange={(e) => setValue("search", e.target.value)}
-                placeholder="Search with transaction hash or contract address"
-                h="full"
-              />
-              <InputRightElement pointerEvents="none" h="full" mr="1">
-                <CustomIcon name="search" />
-              </InputRightElement>
-            </InputGroup>
-            <TxFilterSelection
-              result={filterSelected}
-              setResult={setFilter}
-              boxWidth="400px"
-              placeholder="All"
+      <Flex mt="48px">
+        <Flex grow="2" gap="4">
+          <InputGroup>
+            <Input
+              value={pastTxsState.search}
+              onChange={(e) => setValue("search", e.target.value)}
+              placeholder="Search with transaction hash or contract address"
+              h="full"
             />
-          </Flex>
+            <InputRightElement pointerEvents="none" h="full" mr="1">
+              <CustomIcon name="search" />
+            </InputRightElement>
+          </InputGroup>
+          <TxFilterSelection
+            result={filterSelected}
+            setResult={setFilter}
+            boxWidth="400px"
+            placeholder="All"
+          />
         </Flex>
-      </Box>
+      </Flex>
       <PastTxsContent
         isLoading={isLoading}
         txDataError={txDataError}
@@ -152,7 +150,7 @@ const PastTxs = () => {
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </>
+    </PageContainer>
   );
 };
 

@@ -75,11 +75,7 @@ export const PublicProjectContractTable = observer(
         {!publicContracts.length ? (
           <EmptyState
             message="There is currently no contracts related to this project."
-            image={
-              onViewMore
-                ? undefined
-                : "https://assets.alleslabs.dev/illustration/search-not-found.svg"
-            }
+            imageVariant={onViewMore && "empty"}
             withBorder
           />
         ) : (
@@ -90,7 +86,7 @@ export const PublicProjectContractTable = observer(
                 <PublicProjectContractRow
                   key={contract.publicInfo.contractAddress}
                   publicContractInfo={contract}
-                  templateColumn={TEMPLATE_COLUMNS}
+                  templateColumns={TEMPLATE_COLUMNS}
                 />
               ))}
             </TableContainer>

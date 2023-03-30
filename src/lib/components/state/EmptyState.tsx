@@ -1,14 +1,19 @@
-import { Flex, Text, Image } from "@chakra-ui/react";
+import { Flex, Text, Heading } from "@chakra-ui/react";
+
+import type { ImageVariant } from "./StateImage";
+import { StateImage } from "./StateImage";
 
 interface EmptyStateProps {
-  image?: string;
+  imageVariant?: ImageVariant;
   message: string;
+  heading?: string;
   withBorder?: boolean;
 }
 
 export const EmptyState = ({
   message,
-  image,
+  imageVariant,
+  heading,
   withBorder = false,
 }: EmptyStateProps) => (
   <Flex
@@ -18,12 +23,11 @@ export const EmptyState = ({
     borderColor="pebble.700"
   >
     <Flex alignItems="center" flexDir="column" gap="4" width="full">
-      {image && (
-        <Image
-          src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
-          alt="result not found"
-          width="200px"
-        />
+      {imageVariant && <StateImage imageVariant={imageVariant} />}
+      {heading && (
+        <Heading as="h5" variant="h5">
+          {heading}
+        </Heading>
       )}
       <Text color="text.dark" w="540px" textAlign="center">
         {message}

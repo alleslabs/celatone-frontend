@@ -35,7 +35,9 @@ export const SelectContractAdmin = ({
   const { address } = useWallet();
   const { getContractLocalInfo } = useContractStore();
 
-  const { data: contracts = [] } = useContractListByAdmin(address as HumanAddr);
+  const { data: contracts = [], isLoading } = useContractListByAdmin(
+    address as HumanAddr
+  );
   const contractList: ContractListInfo = {
     name: ADMIN_SPECIAL_SLUG,
     slug: ADMIN_SPECIAL_SLUG,
@@ -87,6 +89,7 @@ export const SelectContractAdmin = ({
           <DrawerBody overflowY="scroll">
             <ContractListDetail
               contractListInfo={contractList}
+              isLoading={isLoading}
               isReadOnly
               onContractSelect={onSelectThenClose}
             />

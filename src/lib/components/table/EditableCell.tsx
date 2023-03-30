@@ -210,7 +210,7 @@ export const EditableCell = ({
                 </p>
               </Tooltip>
             )}
-            {!!onSave && (
+            {!!onSave && !isReadOnly && (
               <Flex
                 cursor="pointer"
                 opacity={isHover ? 1 : 0}
