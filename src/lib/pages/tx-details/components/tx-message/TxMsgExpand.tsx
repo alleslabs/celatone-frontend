@@ -26,12 +26,12 @@ export const TxMsgExpand = ({
   onClick,
 }: TxMsgExpandProps) => {
   const getAddressType = useGetAddressType();
+  const { "@type": type, ...body } = msgBody;
+  const isIBC =
+    Boolean(log?.events?.find((event) => event.type === "send_packet")) ||
+    type.startsWith("/ibc");
   let msgIcon: IconKeys = "info-circle";
   let content: ReactNode;
-  const isIBC = Boolean(
-    log?.events?.find((event) => event.type === "send_packet")
-  );
-  const { "@type": type, ...body } = msgBody;
 
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode":
