@@ -1,15 +1,9 @@
 import { Flex, Image } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { ExplorerLink } from "../ExplorerLink";
+import { getChainApiPath } from "env";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ValidatorInfo } from "lib/types";
-
-const validatorMap: Record<string, string> = {
-  osmosis:
-    "https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/osmosis/moniker",
-  terra2:
-    "https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/terra/moniker",
-};
 
 interface ValidatorBadgeProps {
   validator: ValidatorInfo;
@@ -22,7 +16,9 @@ export const ValidatorBadge = ({ validator }: ValidatorBadgeProps) => {
     <Flex alignItems="center" gap={2}>
       <Image
         boxSize={10}
-        src={`${validatorMap[currentChainName]}/${validator.validatorAddress}.png`}
+        src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${getChainApiPath(
+          currentChainName
+        )}/${validator.validatorAddress}.png`}
         alt={validator.moniker}
         fallbackSrc={`https://ui-avatars.com/api/?name=${
           validator.moniker ?? ""

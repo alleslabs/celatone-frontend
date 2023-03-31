@@ -30,9 +30,7 @@ export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
     [endpoint]
   );
 
-  return useQuery(["query", "staking_denom", endpoint], queryFn, {
-    keepPreviousData: true,
-  });
+  return useQuery(["query", "staking_params", endpoint], queryFn);
 };
 
 export const useDelegations = (
@@ -58,7 +56,7 @@ export const useUnbondings = (
     [address, endpoint]
   );
 
-  return useQuery(["query", "unbonding", endpoint, address], queryFn);
+  return useQuery(["query", "unbondings", endpoint, address], queryFn);
 };
 
 export const useDelegationRewards = (

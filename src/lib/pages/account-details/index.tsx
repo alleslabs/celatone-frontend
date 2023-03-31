@@ -107,7 +107,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           >
             Assets
           </CustomTab>
-          {/* TODO: add counts for Delegations */}
           <CustomTab onClick={() => handleTabChange(TabIndex.Delegations)}>
             Delegations
           </CustomTab>

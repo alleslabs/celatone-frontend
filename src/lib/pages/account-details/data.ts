@@ -300,7 +300,8 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   if (rawStakingParams && assetInfos && validators) {
     const stakingParams = {
       ...rawStakingParams,
-      ...assetInfos[rawStakingParams.bondDenom],
+      logo: assetInfos[rawStakingParams.bondDenom].logo,
+      precision: assetInfos[rawStakingParams.bondDenom].precision,
     };
     data.stakingParams = stakingParams;
 
@@ -311,8 +312,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     data.delegations = rawDelegations?.map<Delegation>((raw) => ({
       validator: {
         validatorAddress: raw.validatorAddress,
-        moniker:
-          validators[raw.validatorAddress]?.moniker ?? raw.validatorAddress,
+        moniker: validators[raw.validatorAddress]?.moniker,
       },
       token: coinToTokenWithValue(raw.denom, raw.amount, assetInfos[raw.denom]),
     }));
@@ -330,8 +330,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     data.unbondings = rawUnbondings?.map<Unbonding>((raw) => ({
       validator: {
         validatorAddress: raw.validatorAddress,
-        moniker:
-          validators[raw.validatorAddress]?.moniker ?? raw.validatorAddress,
+        moniker: validators[raw.validatorAddress]?.moniker,
       },
       completionTime: raw.completionTime,
       token: coinToTokenWithValue(
@@ -376,15 +375,11 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       ...raw,
       srcValidator: {
         validatorAddress: raw.srcValidatorAddress,
-        moniker:
-          validators[raw.srcValidatorAddress]?.moniker ??
-          raw.srcValidatorAddress,
+        moniker: validators[raw.srcValidatorAddress]?.moniker,
       },
       dstValidator: {
         validatorAddress: raw.dstValidatorAddress,
-        moniker:
-          validators[raw.dstValidatorAddress]?.moniker ??
-          raw.srcValidatorAddress,
+        moniker: validators[raw.dstValidatorAddress]?.moniker,
       },
       completionTime: raw.completionTime,
       token: coinToTokenWithValue(
