@@ -22,6 +22,7 @@ export const PorposalTable = ({ proposals, isLoading }: PorposalTableProps) => {
       <EmptyState
         message="There are no proposals in this network."
         imageVariant="empty"
+        withBorder
       />
     );
 

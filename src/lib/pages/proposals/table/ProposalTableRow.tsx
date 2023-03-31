@@ -33,12 +33,18 @@ export const ProposalTableRow = ({
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
 
+  const hoverBg = () => {
+    if (proposal.isExpedited && isDepositOrVoting) return "violet.background";
+    if (!isInactive) return "pebble.900";
+    return undefined;
+  };
+
   return (
     <Grid
       templateColumns={templateColumns}
       minW="min-content"
       cursor={!isInactive ? "pointer" : "default"}
-      _hover={!isInactive ? { "> div": { bgColor: "pebble.900" } } : undefined}
+      _hover={{ "> div": { bgColor: hoverBg } }}
       onClick={() =>
         !isInactive ??
         window.open(
