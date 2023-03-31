@@ -37,9 +37,10 @@ export const ProposalTableRow = ({
     <Grid
       templateColumns={templateColumns}
       minW="min-content"
-      cursor="pointer"
-      _hover={{ "> div": { bgColor: "pebble.900" } }}
+      cursor={!isInactive ? "pointer" : "default"}
+      _hover={!isInactive ? { "> div": { bgColor: "pebble.900" } } : undefined}
       onClick={() =>
+        !isInactive ??
         window.open(
           `${getProposalUrl(
             currentChainName

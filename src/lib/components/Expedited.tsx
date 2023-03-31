@@ -28,7 +28,7 @@ export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => (
         name="expedited"
         boxSize="4"
         ml="0"
-        color={isActiveExpedited ? "honeydew.main" : "white"}
+        color={isActiveExpedited ? "honeydew.main" : "pebble.400"}
       />
       <Text
         variant="body3"
