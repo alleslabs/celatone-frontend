@@ -3,14 +3,12 @@ import { useRef, useState } from "react";
 
 import { DotSeparator } from "lib/components/DotSeperator";
 import { Expedited } from "lib/components/Expedited";
-import type { Option } from "lib/types";
 
 interface ProposalTextCellProps {
   title: string;
   type: string;
   isExpedited: boolean;
   isDepositOrVoting: boolean;
-  columnsWidth: Option<string>;
 }
 
 export const ProposalTextCell = ({
@@ -18,7 +16,6 @@ export const ProposalTextCell = ({
   type,
   isExpedited,
   isDepositOrVoting,
-  columnsWidth,
 }: ProposalTextCellProps) => {
   const [isHoverText, setIsHoverText] = useState(false);
   const titleRef = useRef<HTMLParagraphElement>(null);
@@ -41,7 +38,7 @@ export const ProposalTextCell = ({
       borderRadius="8px"
       bgColor={showName ? "pebble.800" : "undefined"}
       px={4}
-      maxW={showName ? undefined : columnsWidth}
+      maxW={showName ? undefined : "full"}
       onMouseOver={() => setIsHoverText(true)}
       onMouseOut={() => setIsHoverText(false)}
     >
@@ -49,7 +46,7 @@ export const ProposalTextCell = ({
         ref={titleRef}
         variant="body2"
         whiteSpace="nowrap"
-        maxW={showName ? undefined : columnsWidth}
+        maxW={showName ? undefined : "full"}
         className={showName ? undefined : "ellipsis"}
       >
         {title}
@@ -67,7 +64,7 @@ export const ProposalTextCell = ({
           variant="body3"
           color="text.dark"
           whiteSpace="nowrap"
-          maxW={showName ? undefined : columnsWidth}
+          maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
         >
           {type}

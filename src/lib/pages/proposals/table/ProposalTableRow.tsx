@@ -1,4 +1,4 @@
-import type { GridProps } from "@chakra-ui/react";
+import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
@@ -14,13 +14,15 @@ import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 interface ProposalRowProps {
-  templateColumns: GridProps["templateColumns"];
   proposal: Proposal;
+  templateColumns: GridProps["templateColumns"];
+  boxShadow: DividerProps["boxShadow"];
 }
 
 export const ProposalTableRow = ({
-  templateColumns,
   proposal,
+  templateColumns,
+  boxShadow,
 }: ProposalRowProps) => {
   const { currentChainName } = useWallet();
 
@@ -55,13 +57,15 @@ export const ProposalTableRow = ({
           showCopyOnHover
         />
       </TableRowFreeze>
-      <TableRowFreeze left={columnsWidth && columnsWidth[0]}>
+      <TableRowFreeze
+        left={columnsWidth && columnsWidth[0]}
+        boxShadow={boxShadow}
+      >
         <ProposalTextCell
           title={proposal.title}
           type={proposal.type}
           isExpedited={proposal.isExpedited}
           isDepositOrVoting={isDepositOrVoting}
-          columnsWidth={columnsWidth && columnsWidth[1]}
         />
       </TableRowFreeze>
       <TableRow justifyContent="center">

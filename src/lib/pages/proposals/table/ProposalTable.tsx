@@ -11,7 +11,9 @@ interface PorposalTableProps {
   isLoading: boolean;
 }
 
-const TEMPLATE_COLUMNS = "100px 360px 150px 330px 180px 160px";
+const TEMPLATE_COLUMNS =
+  "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px 160px";
+const BOX_SHADOW = "16px 0 32px -7px #272734";
 
 export const PorposalTable = ({ proposals, isLoading }: PorposalTableProps) => {
   if (isLoading) return <Loading />;
@@ -25,12 +27,16 @@ export const PorposalTable = ({ proposals, isLoading }: PorposalTableProps) => {
 
   return (
     <TableContainer>
-      <ProposalTableHeader templateColumns={TEMPLATE_COLUMNS} />
+      <ProposalTableHeader
+        boxShadow={BOX_SHADOW}
+        templateColumns={TEMPLATE_COLUMNS}
+      />
       {proposals.map((proposal) => (
         <ProposalTableRow
           key={proposal.proposalId}
           proposal={proposal}
           templateColumns={TEMPLATE_COLUMNS}
+          boxShadow={BOX_SHADOW}
         />
       ))}
     </TableContainer>
