@@ -1,9 +1,10 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Flex, Box, Grid, Text } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 
+import { ProposalTextCell } from "../components/ProposalTextCell";
+import { getProposalUrl } from "lib/app-fns/explorer";
 import { useGetAddressType } from "lib/app-provider";
-import { DotSeparator } from "lib/components/DotSeperator";
-import { Expedited } from "lib/components/Expedited";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow, TableRowFreeze } from "lib/components/table";
 import { ResolvedHeight } from "lib/components/table/proposals/ResolvedHeight";
@@ -21,6 +22,8 @@ export const ProposalTableRow = ({
   templateColumns,
   proposal,
 }: ProposalRowProps) => {
+  const { currentChainName } = useWallet();
+
   const getAddressType = useGetAddressType();
   const columnsWidth = templateColumns?.toString().split(" ");
   const isInactive = proposal.status === ProposalStatus.INACTIVE;
@@ -29,7 +32,21 @@ export const ProposalTableRow = ({
     proposal.status === ProposalStatus.VOTING_PERIOD;
 
   return (
-    <Grid templateColumns={templateColumns} minW="min-content">
+    <Grid
+      templateColumns={templateColumns}
+      minW="min-content"
+      cursor="pointer"
+      _hover={{ "> div": { bgColor: "pebble.900" } }}
+      onClick={() =>
+        window.open(
+          `${getProposalUrl(
+            currentChainName
+          )}/${proposal.proposalId.toString()}`,
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
+    >
       <TableRowFreeze left="0">
         <ExplorerLink
           isReadOnly={isInactive}
@@ -39,20 +56,13 @@ export const ProposalTableRow = ({
         />
       </TableRowFreeze>
       <TableRowFreeze left={columnsWidth && columnsWidth[0]}>
-        <Box>
-          <Text variant="body2">{proposal.title}</Text>
-          <Flex gap={1} align="center">
-            {proposal.isExpedited && (
-              <>
-                <Expedited isActiveExpedited={isDepositOrVoting} />
-                <DotSeparator />
-              </>
-            )}
-            <Text variant="body3" color="text.dark">
-              {proposal.type}
-            </Text>
-          </Flex>
-        </Box>
+        <ProposalTextCell
+          title={proposal.title}
+          type={proposal.type}
+          isExpedited={proposal.isExpedited}
+          isDepositOrVoting={isDepositOrVoting}
+          columnsWidth={columnsWidth && columnsWidth[1]}
+        />
       </TableRowFreeze>
       <TableRow justifyContent="center">
         <StatusChip status={proposal.status} />
