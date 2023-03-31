@@ -38,7 +38,7 @@ export const generateReceipts = (
     case "/cosmwasm.wasm.v1.MsgStoreCode": {
       const details = extractTxDetails(type, body, log);
       return [
-        !!details.code_id && {
+        log && {
           title: "Stored Code ID",
           html: getCommonReceiptHtml({
             type: "explorer",
@@ -102,7 +102,7 @@ export const generateReceipts = (
     case "/cosmwasm.wasm.v1.MsgInstantiateContract": {
       const details = extractTxDetails(type, body, log);
       return [
-        details.contract_address && {
+        log && {
           title: "Contract Instance",
           html: getCommonReceiptHtml({
             type: "explorer",
@@ -153,7 +153,7 @@ export const generateReceipts = (
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2": {
       const details = extractTxDetails(type, body, log);
       return [
-        details.contract_address && {
+        log && {
           title: "Contract Instance",
           html: getCommonReceiptHtml({
             type: "explorer",
@@ -597,8 +597,8 @@ export const generateReceipts = (
             linkType: getAddressType(details.proposer),
           }),
         },
-        !!details.proposal_id && proposalIdReceipt(details.proposal_id),
-        !!details.proposal_type && {
+        log && proposalIdReceipt(details.proposal_id),
+        log && {
           title: "Proposal Type",
           value: details.proposal_type,
         },

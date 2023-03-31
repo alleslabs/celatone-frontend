@@ -20,7 +20,7 @@ type HtmlType = "json" | "explorer";
 
 interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
   type: T;
-  value: Option<V>;
+  value: Option<V> | null;
   linkType?: LinkType;
   fallback?: string;
 }
@@ -30,16 +30,23 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
   type,
   value,
   linkType = "invalid_address",
-  fallback = "-",
+  fallback = "N/A",
 }: CommonReceiptHtmlArgs<T, T extends "json" ? object : string>) => {
-  if (!value)
+  if (value === undefined)
     return (
-      <Text variant="body2" color="text.dark">
-        {fallback}
+      <Text variant="body2" color="warning.dark">
+        Data not found
       </Text>
     );
 
-  // TODO: Find a solution, TS doesn't know that type === 'json' would make typeof value === 'object
+  if (!value)
+    return (
+      <Text variant="body2" color={value === null ? "pebble.600" : "text.dark"}>
+        {value === null ? String(value) : fallback}
+      </Text>
+    );
+
+  // TODO: Find a solution, TS doesn't know that type === "json" would make typeof value === "object"
   return type === "json" || typeof value === "object" ? (
     <JsonReadOnly
       text={JSON.stringify(value, null, 2)}
@@ -130,7 +137,7 @@ export const validatorAddrReceipt = (value: ValidatorAddr): TxReceipt => ({
   }),
 });
 
-export const proposalIdReceipt = (value: string): TxReceipt => ({
+export const proposalIdReceipt = (value: Option<string>): TxReceipt => ({
   title: "Proposal ID",
   html: getCommonReceiptHtml({
     type: "explorer",

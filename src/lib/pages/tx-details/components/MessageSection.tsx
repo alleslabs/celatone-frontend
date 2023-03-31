@@ -7,14 +7,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import type { AssetInfosReturn } from "lib/services/assetService";
+import type { AssetInfosOpt } from "lib/services/assetService";
 import type { TxData } from "lib/services/txService";
 
 import { TxMessage } from "./tx-message";
 
 interface MessageSectionProps {
   txData: TxData;
-  assetInfos: AssetInfosReturn;
+  assetInfos: AssetInfosOpt;
 }
 
 export const MessageSection = ({ txData, assetInfos }: MessageSectionProps) => {

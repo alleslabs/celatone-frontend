@@ -3,13 +3,13 @@ import { Text, chakra, Flex } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { AssetInfosReturn } from "lib/services/assetService";
+import type { AssetInfosOpt } from "lib/services/assetService";
 import type { TxData } from "lib/services/txService";
 import { formatBalanceWithDenom, formatInteger } from "lib/utils";
 
 interface TxInfoProps extends FlexProps {
   txData: TxData;
-  assetInfos: AssetInfosReturn;
+  assetInfos: AssetInfosOpt;
 }
 
 const Container = chakra(Flex, {

@@ -93,5 +93,5 @@ export const queryTxData = async (
   return {
     ...data.tx_response,
     timestamp: parseDateOpt(data.tx_response.timestamp),
-  } as TxResponse;
+  };
 };

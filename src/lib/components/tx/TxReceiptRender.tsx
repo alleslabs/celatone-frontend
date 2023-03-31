@@ -49,8 +49,12 @@ const ReceiptRow = ({ title, value, html }: TxReceipt) => (
   <Flex fontSize="14px" w="full">
     <Text variant="body2">{title}</Text>
     {html || (
-      <Text variant="body2" wordBreak="break-word">
-        {value}
+      <Text
+        variant="body2"
+        wordBreak="break-word"
+        color={value === null ? "pebble.600" : "initial"}
+      >
+        {value === null ? String(value) : value}
       </Text>
     )}
   </Flex>
