@@ -30,39 +30,48 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
   type,
   value,
   linkType = "invalid_address",
-  fallback = "N/A",
+  fallback,
 }: CommonReceiptHtmlArgs<T, T extends "json" ? object : string>) => {
-  if (value === undefined)
-    return (
-      <Text variant="body2" color="warning.dark">
-        Data not found
-      </Text>
-    );
-
-  if (!value)
-    return (
-      <Text variant="body2" color={value === null ? "pebble.600" : "text.dark"}>
-        {value === null ? String(value) : fallback}
-      </Text>
-    );
-
-  // TODO: Find a solution, TS doesn't know that type === "json" would make typeof value === "object"
-  return type === "json" || typeof value === "object" ? (
-    <JsonReadOnly
-      text={JSON.stringify(value, null, 2)}
-      canCopy
-      fullWidth
-      isExpandable
-    />
-  ) : (
-    <ExplorerLink
-      type={linkType}
-      value={value}
-      showCopyOnHover
-      textFormat="normal"
-      maxWidth="full"
-    />
-  );
+  switch (true) {
+    case value === null:
+      return (
+        <Text variant="body2" color="pebble.600">
+          null
+        </Text>
+      );
+    case !value && fallback:
+      return (
+        <Text variant="body2" color="text.dark">
+          {fallback}
+        </Text>
+      );
+    case !value:
+      return (
+        <Text variant="body2" color="warning.dark">
+          Data not found
+        </Text>
+      );
+    // TODO: Find a solution, TS doesn't know that type === "json" would make typeof value === "object"
+    case type === "json" || typeof value === "object":
+      return (
+        <JsonReadOnly
+          text={JSON.stringify(value, null, 2)}
+          canCopy
+          fullWidth
+          isExpandable
+        />
+      );
+    default:
+      return (
+        <ExplorerLink
+          type={linkType}
+          value={value as string}
+          showCopyOnHover
+          textFormat="normal"
+          maxWidth="full"
+        />
+      );
+  }
 };
 
 export const getCoinComponent = (
