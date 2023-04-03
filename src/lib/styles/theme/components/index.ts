@@ -1,3 +1,4 @@
+import { Accordion } from "./accordion";
 import { Alert } from "./alert";
 import { Badge } from "./badge";
 import { Button } from "./button";
@@ -17,6 +18,7 @@ import { Textarea } from "./textarea";
 import { Tooltip } from "./tooltip";
 
 export const components = {
+  Accordion,
   Button,
   Drawer,
   Heading,

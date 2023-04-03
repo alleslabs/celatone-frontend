@@ -61,8 +61,8 @@ export const formatUTokenWithPrecision = (
   );
 };
 
-const d2Formatter = formatDemimal({ decimalPoints: 2, delimiter: true });
-const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
+export const d2Formatter = formatDemimal({ decimalPoints: 2, delimiter: true });
+export const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 
 /**
  * @remarks

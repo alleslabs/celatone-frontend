@@ -18,6 +18,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 
+import { MockUpPoolList } from "./components/constant";
 import type { PoolTypeFilterValue } from "./components/FilterByPoolType";
 import { FilterByPoolType } from "./components/FilterByPoolType";
 import { PoolList } from "./components/PoolList";
@@ -78,15 +79,25 @@ export const PoolIndex = () => {
       </Flex>
       <Tabs>
         <TabList my={8} borderBottom="1px" borderColor="pebble.800">
-          <CustomTab count={0}>Pools</CustomTab>
-          <CustomTab count={0}>Pools with unsupported tokens</CustomTab>
+          <CustomTab
+            count={MockUpPoolList.filter((x) => x.is_supported).length}
+          >
+            Pools
+          </CustomTab>
+          <CustomTab
+            count={MockUpPoolList.filter((x) => !x.is_supported).length}
+          >
+            Pools with unsupported tokens
+          </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <PoolList />
+            <PoolList pools={MockUpPoolList.filter((x) => x.is_supported)} />
           </TabPanel>
           <TabPanel p={0}>
-            <UnsupportedPoolList />
+            <UnsupportedPoolList
+              pools={MockUpPoolList.filter((x) => !x.is_supported)}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -10,12 +10,17 @@ import { useState } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import { ToggleWithName } from "lib/components/ToggleWithName";
+import type { PoolDetail } from "lib/types/pool";
 
 import { PoolCard } from "./PoolCard";
 
-export const PoolList = () => {
+interface PoolListProp {
+  pools: PoolDetail[];
+}
+export const PoolList = ({ pools }: PoolListProp) => {
   const [showNewest, setShowNewest] = useState(true);
   const [toggle, setToggle] = useState("percent-value");
+
   const options = [
     {
       label: "%Value",
@@ -26,15 +31,16 @@ export const PoolList = () => {
       value: "amount",
     },
   ];
+
   return (
     <>
       <Flex alignItems="center" justifyContent="space-between">
-        <Flex gap={2} h="29px" alignItems="center">
+        <Flex gap={2} alignItems="center">
           <Heading as="h6" variant="h6">
             Pools
           </Heading>
           <Badge variant="gray" color="text.main" textColor="text.main">
-            12
+            {pools.length}
           </Badge>
         </Flex>
         <Flex gap={4}>
@@ -76,8 +82,15 @@ export const PoolList = () => {
           </Flex>
         </Flex>
       </Flex>
-      <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={4} w="full">
-        <PoolCard /> <PoolCard /> <PoolCard /> <PoolCard />
+      <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={4} w="full" mt={4}>
+        {pools.map((item) => (
+          <PoolCard
+            key={item.pool_id}
+            item={item}
+            poolId={item.pool_id}
+            mode={toggle}
+          />
+        ))}
       </SimpleGrid>
     </>
   );
