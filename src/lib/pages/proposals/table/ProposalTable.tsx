@@ -17,7 +17,7 @@ const BOX_SHADOW = "16px 0 32px -7px #272734";
 
 export const ProposalTable = ({ proposals, isLoading }: ProposalTableProps) => {
   if (isLoading) return <Loading />;
-  if (!proposals?.length)
+  if (!proposals)
     return (
       <EmptyState
         message="There are no proposals in this network."
@@ -25,7 +25,14 @@ export const ProposalTable = ({ proposals, isLoading }: ProposalTableProps) => {
         withBorder
       />
     );
-
+  if (!proposals.length)
+    return (
+      <EmptyState
+        message="No matches found. Please double-check your input and select correct network."
+        imageVariant="not-found"
+        withBorder
+      />
+    );
   return (
     <TableContainer>
       <ProposalTableHeader
