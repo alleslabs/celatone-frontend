@@ -26,9 +26,7 @@ const tableHeaderBaseStyle = {
 };
 
 export const TableHeader = chakra(GridItem, {
-  baseStyle: {
-    ...tableHeaderBaseStyle,
-  },
+  baseStyle: tableHeaderBaseStyle,
 });
 
 export const TableHeaderFreeze = chakra(GridItem, {
@@ -51,9 +49,7 @@ const tableRowBaseStyle = {
 };
 
 export const TableRow = chakra(GridItem, {
-  baseStyle: {
-    ...tableRowBaseStyle,
-  },
+  baseStyle: tableRowBaseStyle,
 });
 
 export const TableRowFreeze = chakra(GridItem, {

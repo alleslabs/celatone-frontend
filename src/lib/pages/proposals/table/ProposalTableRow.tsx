@@ -10,7 +10,7 @@ import { TableRow, TableRowFreeze } from "lib/components/table";
 import { ResolvedHeight } from "lib/components/table/proposals/ResolvedHeight";
 import { StatusChip } from "lib/components/table/proposals/StatusChip";
 import { VotingEndTime } from "lib/components/table/proposals/VotingEndTime";
-import type { Proposal } from "lib/types";
+import type { Proposal, Option } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 interface ProposalRowProps {
@@ -33,7 +33,7 @@ export const ProposalTableRow = ({
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
 
-  const hoverBg = () => {
+  const hoverBg = (): Option<string> => {
     if (proposal.isExpedited && isDepositOrVoting) return "violet.background";
     if (!isInactive) return "pebble.900";
     return undefined;

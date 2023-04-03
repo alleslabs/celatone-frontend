@@ -15,7 +15,7 @@ import {
   useProposalListCount,
 } from "lib/services/proposalService";
 
-import { PorposalTable } from "./table/ProposalTable";
+import { ProposalTable } from "./table/ProposalTable";
 
 const Proposals = () => {
   const chainId = useChainId();
@@ -96,8 +96,7 @@ const Proposals = () => {
           <Flex>Filter by Type</Flex>
         </Flex>
       </Flex>
-      {/* TODO - add table */}
-      <PorposalTable proposals={proposals} isLoading={isLoading} />
+      <ProposalTable proposals={proposals} isLoading={isLoading} />
       {countProposals > 10 && (
         <Pagination
           currentPage={currentPage}

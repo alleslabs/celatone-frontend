@@ -6,7 +6,7 @@ import type { Option, Proposal } from "lib/types";
 import { ProposalTableHeader } from "./ProposalTableHeader";
 import { ProposalTableRow } from "./ProposalTableRow";
 
-interface PorposalTableProps {
+interface ProposalTableProps {
   proposals: Option<Proposal[]>;
   isLoading: boolean;
 }
@@ -15,7 +15,7 @@ const TEMPLATE_COLUMNS =
   "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px 160px";
 const BOX_SHADOW = "16px 0 32px -7px #272734";
 
-export const PorposalTable = ({ proposals, isLoading }: PorposalTableProps) => {
+export const ProposalTable = ({ proposals, isLoading }: ProposalTableProps) => {
   if (isLoading) return <Loading />;
   if (!proposals?.length)
     return (
