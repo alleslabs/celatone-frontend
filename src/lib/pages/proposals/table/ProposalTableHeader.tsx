@@ -10,6 +10,7 @@ export const ProposalTableHeader = ({
   templateColumns: GridProps["templateColumns"];
   boxShadow: DividerProps["boxShadow"];
 }) => {
+  // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
   return (
     <Grid templateColumns={templateColumns} minW="min-content">

@@ -27,6 +27,7 @@ export const ProposalTableRow = ({
   const { currentChainName } = useWallet();
 
   const getAddressType = useGetAddressType();
+  // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
   const isInactive = proposal.status === ProposalStatus.INACTIVE;
   const isDepositOrVoting =
@@ -35,18 +36,17 @@ export const ProposalTableRow = ({
 
   const hoverBg = (): Option<string> => {
     if (proposal.isExpedited && isDepositOrVoting) return "violet.background";
-    if (!isInactive) return "pebble.900";
-    return undefined;
+    return isInactive ? undefined : "pebble.900";
   };
 
   return (
     <Grid
       templateColumns={templateColumns}
       minW="min-content"
-      cursor={!isInactive ? "pointer" : "default"}
+      cursor={isInactive ? "default" : "pointer"}
       _hover={{ "> div": { bgColor: hoverBg } }}
       onClick={() =>
-        !isInactive ??
+        !isInactive ||
         window.open(
           `${getProposalUrl(
             currentChainName
