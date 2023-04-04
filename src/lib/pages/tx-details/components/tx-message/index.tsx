@@ -25,6 +25,7 @@ export const TxMessage = ({ isSingleMsg, ...txMsgData }: TxMsgData) => {
         onClick={() => {
           setExpand((prev) => !prev);
         }}
+        isSingleMsg={isSingleMsg}
         {...txMsgData}
       />
       <TxMsgDetails isExpand={expand} {...txMsgData} />

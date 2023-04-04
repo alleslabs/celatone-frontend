@@ -15,6 +15,10 @@ export const Badge: ComponentStyleConfig = {
       background: "pebble.700",
       color: "text.dark",
     },
+    oreo: {
+      background: "pebble.700",
+      color: "text.main",
+    },
     honeydew: { background: "honeydew.dark", color: "background.main" },
   },
 };

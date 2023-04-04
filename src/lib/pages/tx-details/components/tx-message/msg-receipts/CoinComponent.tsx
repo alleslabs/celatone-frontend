@@ -113,6 +113,7 @@ const SingleCoin = ({
         assetInfo,
       }}
       amptrackSection="tx_msg_receipts_assets"
+      w="50%"
     />
   ) : (
     <UnsupportedTokensModal
