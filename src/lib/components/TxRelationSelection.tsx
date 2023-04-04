@@ -1,4 +1,4 @@
-import type { LayoutProps } from "@chakra-ui/react";
+import type { BoxProps } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 
 import type { Option } from "lib/types";
@@ -11,7 +11,7 @@ enum RelationType {
   RELATED = "RELATED",
 }
 
-const RelationOptions = [
+const relationOptions = [
   {
     label: "All",
     value: RelationType.ALL,
@@ -29,19 +29,18 @@ const RelationOptions = [
   },
 ];
 
-interface TxRelationSelectionProps {
+interface TxRelationSelectionProps extends BoxProps {
   setValue: (value: Option<boolean>) => void;
-  boxWidth?: LayoutProps["width"];
 }
 
 export const TxRelationSelection = ({
   setValue,
-  boxWidth = "full",
+  ...props
 }: TxRelationSelectionProps) => (
-  <Box width={boxWidth}>
+  <Box {...props}>
     <SelectInput
       formLabel="Filter by Relations"
-      options={RelationOptions}
+      options={relationOptions}
       onChange={(value: RelationType) =>
         setValue(
           value === RelationType.ALL

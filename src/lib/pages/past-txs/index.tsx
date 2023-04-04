@@ -118,30 +118,31 @@ const PastTxs = () => {
         Past Transactions
       </Heading>
 
-      <Flex mt="48px">
-        <Flex grow="2" gap="4">
-          <InputGroup>
-            <Input
-              value={pastTxsState.search}
-              onChange={(e) => setValue("search", e.target.value)}
-              placeholder="Search with transaction hash or contract address"
-              h="full"
-            />
-            <InputRightElement pointerEvents="none" h="full" mr="1">
-              <CustomIcon name="search" />
-            </InputRightElement>
-          </InputGroup>
-          <Flex gap={1} minW="50%">
-            <TxRelationSelection
-              setValue={(value: Option<boolean>) => setValue("relation", value)}
-              boxWidth="230px"
-            />
-            <TxFilterSelection
-              result={filterSelected}
-              setResult={setFilter}
-              placeholder="All"
-            />
-          </Flex>
+      <Flex mt="48px" gap={1}>
+        <InputGroup>
+          <Input
+            value={pastTxsState.search}
+            onChange={(e) => setValue("search", e.target.value)}
+            placeholder="Search with transaction hash or contract address"
+            h="full"
+          />
+          <InputRightElement pointerEvents="none" h="full" mr="1">
+            <CustomIcon name="search" />
+          </InputRightElement>
+        </InputGroup>
+
+        <Flex gap={1} w="full">
+          <TxRelationSelection
+            setValue={(value: Option<boolean>) => setValue("relation", value)}
+            w="50%"
+            minW="130px"
+          />
+          <TxFilterSelection
+            result={filterSelected}
+            setResult={setFilter}
+            minW="150px"
+            placeholder="All"
+          />
         </Flex>
       </Flex>
       <TransactionsTableWithWallet

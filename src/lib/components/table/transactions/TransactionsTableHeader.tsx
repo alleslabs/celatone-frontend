@@ -18,7 +18,6 @@ export const TransactionsTableHeader = ({
     <TableHeader>Messages</TableHeader>
     {showRelations && <TableHeader>Relations</TableHeader>}
     <TableHeader>Sender</TableHeader>
-    <TableHeader>Block Height</TableHeader>
     <TableHeader>Timestamp</TableHeader>
     {showAction && <TableHeader />}
     <TableHeader />

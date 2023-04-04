@@ -25,7 +25,7 @@ export const TransactionsTable = ({
 
   const templateColumns = `150px 40px minmax(360px, 1fr) ${
     showRelations ? "100px " : ""
-  }max(160px) 120px max(220px) ${showAction ? "100px " : ""}60px`;
+  }max(150px) max(220px) ${showAction ? "100px " : ""}60px`;
 
   return (
     <TableContainer>

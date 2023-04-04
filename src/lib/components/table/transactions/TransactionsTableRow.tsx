@@ -77,14 +77,6 @@ export const TransactionsTableRow = ({
         </TableRow>
 
         <TableRow>
-          <ExplorerLink
-            value={transaction.height.toString()}
-            type="block_height"
-            showCopyOnHover
-          />
-        </TableRow>
-
-        <TableRow>
           <Flex direction="column" gap={1}>
             {transaction.created ? (
               <>

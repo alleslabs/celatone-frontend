@@ -133,14 +133,16 @@ export const TxsTable = (txsTableProps: TxsTableProps) => {
       <Flex direction="row" justify="space-between" alignItems="center">
         <TableTitle title="Transactions" count={totalData ?? 0} mb={0} />
         {!onViewMore && (
-          <Flex gap={1} minW="50%">
+          <Flex gap={1} w="50%">
             <TxRelationSelection
               setValue={(value: Option<boolean>) => setRelation(value)}
-              boxWidth="230px"
+              w="50%"
+              minW="130px"
             />
             <TxFilterSelection
               result={filterSelected}
               setResult={handleSetFilters}
+              minW="150px"
               placeholder="All"
             />
           </Flex>
