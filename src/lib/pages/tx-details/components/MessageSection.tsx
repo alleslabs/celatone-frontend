@@ -31,7 +31,7 @@ export const MessageSection = ({ txData, assetInfos }: MessageSectionProps) => {
         <Heading as="h6" variant="h6">
           Messages
         </Heading>
-        <Badge variant="gray" textAlign="center">
+        <Badge variant="oreo" textAlign="center">
           {msgs.length}
         </Badge>
       </Flex>

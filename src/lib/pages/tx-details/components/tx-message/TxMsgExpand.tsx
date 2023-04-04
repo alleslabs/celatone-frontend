@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { Badge, Flex } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
@@ -23,6 +24,7 @@ export const TxMsgExpand = ({
   msgBody,
   log,
   isExpand,
+  isSingleMsg,
   assetInfos,
   onClick,
 }: TxMsgExpandProps) => {
@@ -221,7 +223,7 @@ export const TxMsgExpand = ({
       msgIcon = "submit-proposal";
       content = (
         <>
-          Submit Proposal
+          Submit Proposal {body.is_expedited && " Expedited "}
           {log && (
             <>
               <p>ID</p>
@@ -300,8 +302,9 @@ export const TxMsgExpand = ({
       onClick={() => {
         AmpTrack(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
-          ibc: isIBC,
           msg: type,
+          ibc: isIBC,
+          isSingleMsg,
         });
         onClick();
       }}

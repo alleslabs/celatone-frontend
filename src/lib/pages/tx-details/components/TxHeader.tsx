@@ -50,7 +50,11 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         />
       </Flex>
       <Flex gap={2} fontSize="14px" color="text.dark" align="center">
-        <Flex align="center" gap={1}>
+        <Flex
+          align="center"
+          gap={1}
+          color={txData.isTxFailed ? "error.main" : "success.main"}
+        >
           {txData.isTxFailed ? (
             <>
               <CustomIcon

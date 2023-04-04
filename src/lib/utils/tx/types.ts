@@ -156,6 +156,7 @@ export interface MsgSubmitProposalDetails extends MsgBaseDetails {
     substitute_client_id: string;
     title: string;
   };
+  is_expedited?: boolean;
 }
 export interface MsgVoteDetails extends MsgBaseDetails {
   proposal_id: string;

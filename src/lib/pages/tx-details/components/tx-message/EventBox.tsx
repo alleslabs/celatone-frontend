@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import type { Event } from "@cosmjs/stargate";
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { useGetAddressType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
@@ -21,14 +21,7 @@ interface EventBoxProps {
 export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
   const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(true);
-  const [boxHeight, setBoxHeight] = useState<number>(0);
   const stackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (stackRef.current) {
-      setBoxHeight(stackRef.current.clientHeight);
-    }
-  }, [stackRef]);
 
   const receipts = event.attributes.map<TxReceipt>(({ key, value }) => {
     const addrType = getAddressType(value);
@@ -142,7 +135,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
       </Flex>
       <Box
         overflow="hidden"
-        h={expand ? boxHeight : 0}
+        h={expand ? stackRef.current?.clientHeight : 0}
         transition="all .25s ease-in-out"
       >
         <Flex direction="column" p={4} pt={0} ref={stackRef}>

@@ -419,7 +419,7 @@ export const generateReceipts = (
           }),
         },
         {
-          title: "MsgTypeUrl",
+          title: "Msg Type Url",
           value: details.msg_type_url,
         },
       ];
@@ -603,6 +603,10 @@ export const generateReceipts = (
         log && {
           title: "Proposal Type",
           value: details.proposal_type,
+        },
+        {
+          title: "Is Expedited",
+          value: String(details.is_expedited ?? false),
         },
         { title: "Title", value: details.content.title },
       ];
@@ -1411,7 +1415,10 @@ export const generateReceipts = (
         },
         {
           title: "Scaling Factors",
-          value: JSON.stringify(details.scaling_factors),
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.scaling_factors,
+          }),
         },
         {
           title: "Future Pool Governor",
@@ -1440,7 +1447,10 @@ export const generateReceipts = (
         },
         {
           title: "Scaling Factors",
-          value: JSON.stringify(details.scaling_factors),
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.scaling_factors,
+          }),
         },
       ];
     }
