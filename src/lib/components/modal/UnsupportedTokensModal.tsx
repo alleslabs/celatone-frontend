@@ -22,6 +22,7 @@ import { CustomIcon } from "../icon";
 import { useGetAddressType, getAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
+import { AmpTrackUnsupportedToken } from "lib/services/amplitude";
 import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
 import {
   getTokenType,
@@ -33,6 +34,7 @@ interface UnsupportedTokensModalProps {
   unsupportedAssets: BalanceWithAssetInfo[];
   address?: Addr;
   buttonProps?: ButtonProps;
+  amptrackSection?: string;
 }
 
 interface UnsupportedTokenProps {
@@ -102,6 +104,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             copyLabel="Token ID Copied!"
             display="none"
             ml="1px"
+            amptrackSection="unsupported_token_copy"
           />
         </Flex>
         <Text variant="body3" color="text.dark">
@@ -147,6 +150,7 @@ export const UnsupportedTokensModal = ({
   unsupportedAssets,
   address,
   buttonProps,
+  amptrackSection,
 }: UnsupportedTokensModalProps) => {
   const { currentChainName } = useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -158,7 +162,12 @@ export const UnsupportedTokensModal = ({
 
   return (
     <>
-      <Flex onClick={onOpen}>
+      <Flex
+        onClick={() => {
+          AmpTrackUnsupportedToken(amptrackSection);
+          onOpen();
+        }}
+      >
         <Button
           variant="ghost"
           color="text.dark"

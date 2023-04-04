@@ -4,6 +4,7 @@ import { Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
+import { AmpTrackViewJson } from "lib/services/amplitude";
 import type { TxData } from "lib/services/txService";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -28,7 +29,10 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
           rightIcon={
             <CustomIcon name="launch" boxSize={3} color="text.dark" m={0} />
           }
-          onClick={() => openLcdTab(txData.txhash)}
+          onClick={() => {
+            AmpTrackViewJson("tx_page_transaction_hash");
+            openLcdTab(txData.txhash);
+          }}
         >
           View in JSON
         </Button>
@@ -42,6 +46,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
           type="tx_hash"
           textFormat="normal"
           maxWidth="full"
+          ampCopierSection="tx_header"
         />
       </Flex>
       <Flex gap={2} fontSize="14px" color="text.dark" align="center">

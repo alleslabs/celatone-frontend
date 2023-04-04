@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { useGetAddressType } from "lib/app-provider";
+import { AmpTrackExpand } from "lib/services/amplitude";
 import type { PermissionAddresses } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
@@ -9,8 +10,10 @@ import { CustomIcon } from "./icon";
 
 export const ViewPermissionAddresses = ({
   permissionAddresses,
+  amptrackSection,
 }: {
   permissionAddresses: PermissionAddresses;
+  amptrackSection: string;
 }) => {
   const [viewAll, setViewAll] = useState(false);
   const getAddressType = useGetAddressType();
@@ -33,7 +36,14 @@ export const ViewPermissionAddresses = ({
       {permissionAddresses.length > 1 && (
         <Button
           variant="ghost-primary"
-          onClick={() => setViewAll((prev) => !prev)}
+          onClick={() => {
+            AmpTrackExpand(
+              viewAll ? "collapse" : "expand",
+              "permission_address",
+              amptrackSection
+            );
+            setViewAll((prev) => !prev);
+          }}
           size="sm"
           px="2 !important"
           w="fit-content"

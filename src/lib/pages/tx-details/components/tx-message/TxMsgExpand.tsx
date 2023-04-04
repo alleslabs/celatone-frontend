@@ -7,6 +7,7 @@ import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr } from "lib/types";
 import type { VoteOption } from "lib/utils";
 import { formatBalanceWithDenom, voteOption } from "lib/utils";
@@ -49,6 +50,7 @@ export const TxMsgExpand = ({
                 showCopyOnHover
                 fontSize="24px"
                 textVariant="body1"
+                ampCopierSection="tx_page_message_header_code"
               />
             </>
           )}
@@ -68,6 +70,7 @@ export const TxMsgExpand = ({
               }
               showCopyOnHover
               textVariant="body1"
+              ampCopierSection="tx_page_message_header_contract"
             />
           )}
           <p>from</p>
@@ -76,6 +79,7 @@ export const TxMsgExpand = ({
             value={body.code_id}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_code"
           />
         </>
       );
@@ -93,6 +97,7 @@ export const TxMsgExpand = ({
               }
               showCopyOnHover
               textVariant="body1"
+              ampCopierSection="tx_page_message_header_contract"
             />
           )}
           <p>from</p>
@@ -101,6 +106,7 @@ export const TxMsgExpand = ({
             value={body.code_id}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_code"
           />
         </>
       );
@@ -117,6 +123,7 @@ export const TxMsgExpand = ({
             value={body.contract}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_contract"
           />
         </>
       );
@@ -131,6 +138,7 @@ export const TxMsgExpand = ({
             value={body.contract}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_contract"
           />{" "}
           to Code ID{" "}
           <ExplorerLink
@@ -138,6 +146,7 @@ export const TxMsgExpand = ({
             value={body.code_id}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_code"
           />
         </>
       );
@@ -152,6 +161,7 @@ export const TxMsgExpand = ({
             value={body.contract}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_contract"
           />{" "}
           to{" "}
           <ExplorerLink
@@ -159,6 +169,7 @@ export const TxMsgExpand = ({
             value={body.new_admin}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_admin"
           />
         </>
       );
@@ -173,6 +184,7 @@ export const TxMsgExpand = ({
             value={body.contract}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_contract"
           />
         </>
       );
@@ -199,6 +211,7 @@ export const TxMsgExpand = ({
               value={toAddress}
               showCopyOnHover
               textVariant="body1"
+              ampCopierSection="tx_page_message_header_send_address"
             />
           </>
         );
@@ -219,6 +232,7 @@ export const TxMsgExpand = ({
                 }
                 showCopyOnHover
                 textVariant="body1"
+                ampCopierSection="tx_page_message_header_proposal"
               />
             </>
           )}
@@ -239,6 +253,7 @@ export const TxMsgExpand = ({
             value={body.proposal_id}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_proposal"
           />
         </>
       );
@@ -253,6 +268,7 @@ export const TxMsgExpand = ({
             value={body.delegator_address}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_delegator"
           />{" "}
           to{" "}
           <ExplorerLink
@@ -260,6 +276,7 @@ export const TxMsgExpand = ({
             value={body.validator_address}
             showCopyOnHover
             textVariant="body1"
+            ampCopierSection="tx_page_message_header_validator"
           />
         </>
       );
@@ -280,7 +297,14 @@ export const TxMsgExpand = ({
       borderRadius="8px"
       transition="all .25s ease-in-out"
       cursor="pointer"
-      onClick={onClick}
+      onClick={() => {
+        AmpTrack(AmpEvent.USE_TX_MSG_EXPAND, {
+          action: isExpand ? "collapse" : "expand",
+          ibc: isIBC,
+          msg: type,
+        });
+        onClick();
+      }}
       _hover={{ backgroundColor: "pebble.800" }}
       _after={{
         content: '""',

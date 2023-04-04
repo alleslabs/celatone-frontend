@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
 import { TokenCard } from "lib/components/TokenCard";
+import { AmpTrackExpand } from "lib/services/amplitude";
 import type { AssetInfo, Option } from "lib/types";
 
 type AssetObject = { [key: string]: AssetInfo };
@@ -49,6 +50,7 @@ const MultiCoin = ({
                   },
                   assetInfo,
                 }}
+                amptrackSection="tx_msg_receipts_assets"
               />
             );
           })}
@@ -60,7 +62,14 @@ const MultiCoin = ({
             showMoreText="View All Assets"
             showLessText="View Less Assets"
             toggleShowMore={showMore}
-            setToggleShowMore={() => setShowMore(!showMore)}
+            setToggleShowMore={() => {
+              AmpTrackExpand(
+                showMore ? "collapse" : "expand",
+                "assets",
+                "tx_page"
+              );
+              setShowMore(!showMore);
+            }}
           />
         )}
         {unsupportedCoins && (
@@ -77,6 +86,7 @@ const MultiCoin = ({
               };
             })}
             buttonProps={{ fontSize: "12px", mb: 0 }}
+            amptrackSection="tx_msg_receipts_unsupported_assets"
           />
         )}
       </Flex>
@@ -102,6 +112,7 @@ const SingleCoin = ({
         },
         assetInfo,
       }}
+      amptrackSection="tx_msg_receipts_assets"
     />
   ) : (
     <UnsupportedTokensModal
@@ -115,6 +126,7 @@ const SingleCoin = ({
           assetInfo,
         },
       ]}
+      amptrackSection="tx_msg_receipts_unsupported_assets"
     />
   );
 };

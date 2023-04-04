@@ -4,7 +4,7 @@ import {
   AlertIcon,
   Badge,
   Flex,
-  Text,
+  Heading,
 } from "@chakra-ui/react";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
@@ -28,9 +28,9 @@ export const MessageSection = ({ txData, assetInfos }: MessageSectionProps) => {
         </Alert>
       )}
       <Flex align="center" gap={2}>
-        <Text variant="body1" fontSize="18px" fontWeight={500}>
+        <Heading as="h6" variant="h6">
           Messages
-        </Text>
+        </Heading>
         <Badge variant="gray" textAlign="center">
           {msgs.length}
         </Badge>

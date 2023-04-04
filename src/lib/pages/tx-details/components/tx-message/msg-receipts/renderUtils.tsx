@@ -59,6 +59,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
           canCopy
           fullWidth
           isExpandable
+          amptrackSection="tx_page_msg_receipts"
         />
       );
     default:
@@ -69,6 +70,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
           showCopyOnHover
           textFormat="normal"
           maxWidth="full"
+          ampCopierSection="tx_msg_receipts"
         />
       );
   }

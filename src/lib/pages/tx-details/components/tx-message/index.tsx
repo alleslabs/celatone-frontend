@@ -22,7 +22,9 @@ export const TxMessage = ({ isSingleMsg, ...txMsgData }: TxMsgData) => {
     <Flex direction="column">
       <TxMsgExpand
         isExpand={expand}
-        onClick={() => setExpand((prev) => !prev)}
+        onClick={() => {
+          setExpand((prev) => !prev);
+        }}
         {...txMsgData}
       />
       <TxMsgDetails isExpand={expand} {...txMsgData} />

@@ -26,8 +26,18 @@ const TxDetails = () => {
   const { assetInfos, isLoading: assetLoading } = useAssetInfos();
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_TRANSACTION_DETAIL);
-  }, [router.isReady]);
+    if (router.isReady && !(txLoading && txFetching)) {
+      const mapTxFailed = {
+        true: "fail",
+        false: "success",
+        undefined: "not_found",
+      };
+      AmpTrack(AmpEvent.TO_TRANSACTION_DETAIL, {
+        tx_status:
+          mapTxFailed[String(txData?.isTxFailed) as keyof typeof mapTxFailed],
+      });
+    }
+  }, [router.isReady, txData, txLoading, txFetching]);
 
   if ((txLoading && txFetching) || assetLoading || !hashParam)
     return <Loading />;

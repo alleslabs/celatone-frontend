@@ -9,6 +9,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { TxReceiptRender } from "lib/components/tx";
+import { AmpTrackExpand } from "lib/services/amplitude";
 import type { TxReceipt } from "lib/types";
 import { jsonPrettify, jsonValidate } from "lib/utils";
 
@@ -42,6 +43,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             showCopyOnHover
             textFormat="normal"
             maxWidth="full"
+            ampCopierSection="tx_page_event_logs"
           />
         );
         break;
@@ -54,6 +56,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             showCopyOnHover
             textFormat="normal"
             maxWidth="full"
+            ampCopierSection="tx_page_event_logs"
           />
         );
         break;
@@ -65,6 +68,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             showCopyOnHover
             textFormat="normal"
             maxWidth="full"
+            ampCopierSection="tx_page_event_logs"
           />
         );
         break;
@@ -76,6 +80,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
               canCopy
               fullWidth
               isExpandable
+              amptrackSection="tx_page_event_logs"
             />
           );
         else valueComponent = value;
@@ -107,7 +112,14 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         align="center"
         justify="space-between"
         cursor="pointer"
-        onClick={() => setExpand((prev) => !prev)}
+        onClick={() => {
+          AmpTrackExpand(
+            expand ? "collapse" : "expand",
+            "event_box",
+            "tx_page"
+          );
+          setExpand((prev) => !prev);
+        }}
         p={4}
       >
         <Flex fontSize="14px" gap={2} fontWeight={500} align="center">

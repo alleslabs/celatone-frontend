@@ -32,6 +32,7 @@ export const TxInfo = ({ txData, assetInfos, ...flexProps }: TxInfoProps) => {
           value={txData.height}
           type="block_height"
           showCopyOnHover
+          ampCopierSection="tx_page_block_height"
         />
       </LabelText>
       <LabelText label="Transaction Fee">

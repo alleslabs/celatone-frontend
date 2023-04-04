@@ -13,9 +13,10 @@ import { Copier } from "./copy";
 
 interface TokenCardProps {
   userBalance: BalanceWithAssetInfo;
+  amptrackSection?: string;
 }
 
-export const TokenCard = ({ userBalance }: TokenCardProps) => {
+export const TokenCard = ({ userBalance, amptrackSection }: TokenCardProps) => {
   const [logoError, setLogoError] = useState(false);
   const { symbol, price, amount, precision, id } = userBalance.balance;
 
@@ -72,6 +73,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
             copyLabel="Token ID Copied!"
             display="none"
             ml="1px"
+            amptrackSection={amptrackSection}
           />
         </Flex>
 

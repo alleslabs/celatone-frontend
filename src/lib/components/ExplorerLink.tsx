@@ -30,6 +30,7 @@ interface ExplorerLinkProps extends BoxProps {
   textFormat?: "truncate" | "ellipsis" | "normal";
   maxWidth?: string;
   textVariant?: TextProps["variant"];
+  ampCopierSection?: string;
 }
 
 const getNavigationUrl = (
@@ -139,6 +140,7 @@ export const ExplorerLink = ({
   textFormat = "truncate",
   maxWidth = "160px",
   textVariant = "body2",
+  ampCopierSection,
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address, currentChainName } = useWallet();
@@ -187,6 +189,7 @@ export const ExplorerLink = ({
             value={copyValue || value}
             display={showCopyOnHover ? "none" : "block"}
             ml="8px"
+            amptrackSection={ampCopierSection}
           />
         </>
       )}

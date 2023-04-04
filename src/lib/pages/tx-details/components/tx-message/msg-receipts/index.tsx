@@ -74,6 +74,7 @@ export const generateReceipts = (
                     ? [details.instantiate_permission.address]
                     : details.instantiate_permission.addresses
                 }
+                amptrackSection="tx_msg_receipts"
               />
             </Flex>
           ),
@@ -93,6 +94,7 @@ export const generateReceipts = (
                 buttonText="Click to Copy"
                 hasIcon={false}
                 mt={-1}
+                amptrackSection="tx_msg_receipts_wasm_byte_code"
               />
             </Flex>
           ),
@@ -1789,7 +1791,7 @@ export const generateReceipts = (
         },
         {
           title: "Duration",
-          value: formatUTC(parseDate(details.duration)),
+          value: details.duration,
         },
       ];
     }
@@ -2099,10 +2101,7 @@ export const generateReceipts = (
         },
         {
           title: "Coin",
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.coin,
-          }),
+          html: getCoinComponent(details.coin, assetInfos),
         },
       ];
     }

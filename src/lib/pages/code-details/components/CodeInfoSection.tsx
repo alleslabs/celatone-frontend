@@ -140,6 +140,7 @@ export const CodeInfoSection = ({
             />
             <ViewPermissionAddresses
               permissionAddresses={permissionAddresses}
+              amptrackSection="code_details"
             />
           </Flex>
         </LabelText>
