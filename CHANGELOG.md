@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#260](https://github.com/alleslabs/celatone-frontend/pull/260) Add proposal list table to proposal list page
 - [#255](https://github.com/alleslabs/celatone-frontend/pull/255) Get data for proposal list page
 - [#250](https://github.com/alleslabs/celatone-frontend/pull/250) Add skeleton, route, and amp for proposal list page
 - [#254](https://github.com/alleslabs/celatone-frontend/pull/254) Add GiHub link to public code and contract detail pages

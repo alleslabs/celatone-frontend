@@ -34,8 +34,11 @@ const getBgColor = (
   }
 };
 
-export const StatusChip = ({ status }: { status: Proposal["status"] }) => (
-  <StyledTag bgColor={getBgColor(status)}>
-    {status === ProposalStatus.INACTIVE ? "DepositFailed" : status}
-  </StyledTag>
-);
+export const StatusChip = ({ status }: { status: Proposal["status"] }) => {
+  const formatStatus = status.replace(/([A-Z])/g, " $1").trim();
+  return (
+    <StyledTag bgColor={getBgColor(status)}>
+      {status === ProposalStatus.INACTIVE ? "Deposit Failed" : formatStatus}
+    </StyledTag>
+  );
+};
