@@ -71,29 +71,27 @@ export const AttachFund = ({
   control,
   setValue,
   attachFundsOption,
-}: AttachFundProps) => {
-  return (
-    <>
-      <Flex mb="20px">
-        <SelectInput
-          formLabel="Attach Funds"
-          options={attachFundsOptions}
-          onChange={(value: AttachFundsType) =>
-            setValue(ATTACH_FUNDS_OPTION, value)
-          }
-          initialSelected={attachFundsOption}
-          helperTextComponent={
-            <Text variant="body3" color="text.dark">
-              Only the input values in your selected{" "}
-              <span style={{ fontWeight: 700 }}>
-                &#x2018;Attach funds&#x2019;
-              </span>{" "}
-              option will be used.
-            </Text>
-          }
-        />
-      </Flex>
-      <AttachFundContent control={control} setValue={setValue} />
-    </>
-  );
-};
+}: AttachFundProps) => (
+  <>
+    <Flex mb="20px">
+      <SelectInput
+        formLabel="Attach Funds"
+        options={attachFundsOptions}
+        onChange={(value: AttachFundsType) =>
+          setValue(ATTACH_FUNDS_OPTION, value)
+        }
+        initialSelected={attachFundsOption}
+        helperTextComponent={
+          <Text variant="body3" color="text.dark">
+            Only the input values in your selected{" "}
+            <span style={{ fontWeight: 700 }}>
+              &#x2018;Attach funds&#x2019;
+            </span>{" "}
+            option will be used.
+          </Text>
+        }
+      />
+    </Flex>
+    <AttachFundContent control={control} setValue={setValue} />
+  </>
+);

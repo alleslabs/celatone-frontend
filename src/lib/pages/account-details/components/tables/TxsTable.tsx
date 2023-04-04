@@ -6,14 +6,11 @@ import { useState } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import {
-  TableTitle,
-  TransactionsNoSenderTable,
-  ViewMore,
-} from "lib/components/table";
+import { TableTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
+import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useTxQuery } from "lib/services/txQuery/useTxQuery";
+import { useTxsByAddressPagination } from "lib/services/txService";
 import type { HumanAddr, Option, TxFilters } from "lib/types";
 
 interface TxsTableProps {
@@ -27,6 +24,7 @@ interface TxsTableProps {
 interface TxsTableBodyProps extends TxsTableProps {
   filters: TxFilters;
   filterSelected: string[];
+  relation: Option<boolean>;
 }
 
 const TxsTableBody = ({
@@ -37,6 +35,7 @@ const TxsTableBody = ({
   onViewMore,
   filters,
   filterSelected,
+  relation,
 }: TxsTableBodyProps) => {
   const {
     pagesQuantity,
@@ -54,12 +53,13 @@ const TxsTableBody = ({
     },
   });
 
-  const { data: transactions, isLoading } = useTxQuery(
+  const { data: transactions, isLoading } = useTxsByAddressPagination(
     walletAddress,
     "",
     filters,
-    onViewMore ? 5 : pageSize,
-    offset
+    relation,
+    offset,
+    onViewMore ? 5 : pageSize
   );
 
   const onPageChange = (nextPage: number) => {
@@ -76,7 +76,7 @@ const TxsTableBody = ({
 
   return (
     <>
-      <TransactionsNoSenderTable
+      <TransactionsTable
         transactions={transactions}
         isLoading={isLoading}
         emptyState={
@@ -94,6 +94,7 @@ const TxsTableBody = ({
             />
           )
         }
+        showRelations
       />
       {!!totalData &&
         (onViewMore
@@ -115,6 +116,7 @@ const TxsTableBody = ({
 };
 
 export const TxsTable = (txsTableProps: TxsTableProps) => {
+  const [relation, setRelation] = useState<Option<boolean>>(undefined);
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
 
   const handleSetFilters = (filter: string, bool: boolean) => {
@@ -131,18 +133,24 @@ export const TxsTable = (txsTableProps: TxsTableProps) => {
       <Flex direction="row" justify="space-between" alignItems="center">
         <TableTitle title="Transactions" count={totalData ?? 0} mb={0} />
         {!onViewMore && (
-          <TxFilterSelection
-            result={filterSelected}
-            setResult={handleSetFilters}
-            boxWidth="400px"
-            placeholder="All"
-          />
+          <Flex gap={1} minW="50%">
+            <TxRelationSelection
+              setValue={(value: Option<boolean>) => setRelation(value)}
+              boxWidth="230px"
+            />
+            <TxFilterSelection
+              result={filterSelected}
+              setResult={handleSetFilters}
+              placeholder="All"
+            />
+          </Flex>
         )}
       </Flex>
       <TxsTableBody
         {...txsTableProps}
         filters={filters}
         filterSelected={filterSelected}
+        relation={relation}
       />
     </Box>
   );

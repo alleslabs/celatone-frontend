@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { useFabricateFee, useResendTx, useSimulateFee } from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { Message } from "lib/types";
+import type { Message, Msg } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
 
 interface ResendButtonProps {
@@ -14,13 +14,14 @@ interface ResendButtonProps {
 
 const formatMsgs = (messages: Message[]) =>
   messages.reduce((acc: EncodeObject[], msg: Message) => {
+    const detail = msg.detail as Msg;
     acc.push({
       typeUrl: msg.type,
-      value: !msg.msg.msg
-        ? msg.msg
+      value: !detail.msg
+        ? detail
         : {
-            ...msg.msg,
-            msg: encode(JSON.stringify(camelToSnake(msg.msg.msg))),
+            ...detail,
+            msg: encode(JSON.stringify(camelToSnake(detail.msg))),
           },
     });
     return acc;

@@ -15,32 +15,42 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { EmptyState } from "lib/components/state";
+import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
+import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { useTxQuery, useTxQueryCount } from "lib/services/txQuery/useTxQuery";
-import type { HumanAddr } from "lib/types";
+import {
+  useTxsByAddressPagination,
+  useTxsCountByAddress,
+} from "lib/services/txService";
+import type { HumanAddr, Option } from "lib/types";
 
-import { PastTxsContent } from "./components/PastTxsContent";
+import type { PastTxsState } from "./types";
 
 const PastTxs = () => {
   const router = useRouter();
   const { address } = useWallet();
 
+  const defaultValues: PastTxsState = {
+    search: "",
+    filters: DEFAULT_TX_FILTERS,
+    relation: undefined,
+  };
+
   const { watch, setValue } = useForm({
-    defaultValues: {
-      search: "",
-      filters: DEFAULT_TX_FILTERS,
-    },
+    defaultValues,
     mode: "all",
   });
 
   const pastTxsState = watch();
 
-  const { data: countTxs = 0 } = useTxQueryCount(
-    address,
+  const { data: countTxs = 0 } = useTxsCountByAddress(
+    address as HumanAddr,
     pastTxsState.search,
-    pastTxsState.filters
+    pastTxsState.filters,
+    pastTxsState.relation
   );
 
   const {
@@ -59,16 +69,13 @@ const PastTxs = () => {
     },
   });
 
-  const {
-    data: txData,
-    error: txDataError,
-    isLoading,
-  } = useTxQuery(
+  const { data: txs, isLoading } = useTxsByAddressPagination(
     address as HumanAddr,
     pastTxsState.search,
     pastTxsState.filters,
-    pageSize,
-    offset
+    pastTxsState.relation,
+    offset,
+    pageSize
   );
 
   const setFilter = (filter: string, bool: boolean) => {
@@ -124,20 +131,41 @@ const PastTxs = () => {
               <CustomIcon name="search" />
             </InputRightElement>
           </InputGroup>
-          <TxFilterSelection
-            result={filterSelected}
-            setResult={setFilter}
-            boxWidth="400px"
-            placeholder="All"
-          />
+          <Flex gap={1} minW="50%">
+            <TxRelationSelection
+              setValue={(value: Option<boolean>) => setValue("relation", value)}
+              boxWidth="230px"
+            />
+            <TxFilterSelection
+              result={filterSelected}
+              setResult={setFilter}
+              placeholder="All"
+            />
+          </Flex>
         </Flex>
       </Flex>
-      <PastTxsContent
+      <TransactionsTableWithWallet
+        transactions={txs}
         isLoading={isLoading}
-        txDataError={txDataError}
-        input={pastTxsState.search}
-        filterSelected={filterSelected}
-        txData={txData}
+        emptyState={
+          pastTxsState.search !== "" || filterSelected.length !== 0 ? (
+            <EmptyState
+              imageVariant="not-found"
+              message={`
+      No past transaction matches found with your input.
+      You can search with transaction hash, and contract address.
+      `}
+            />
+          ) : (
+            <EmptyState
+              imageVariant="empty"
+              message={`
+    Past transactions involving with Wasm module
+    such as Instantiate, Execute, or Upload Wasm file will display here.
+    `}
+            />
+          )
+        }
       />
       {countTxs > 10 && (
         <Pagination

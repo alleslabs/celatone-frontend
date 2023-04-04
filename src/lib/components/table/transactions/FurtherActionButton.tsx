@@ -20,6 +20,11 @@ interface FurtherActionButtonProps {
 export const FurtherActionButton = ({
   transaction,
 }: FurtherActionButtonProps) => {
+  const isExec = transaction.messages.reduce(
+    (found, msg) => found || extractMsgType(msg.type) === "MsgExec",
+    false
+  );
+
   const isInstantiate2 =
     transaction.isInstantiate &&
     transaction.messages.some(
@@ -28,7 +33,8 @@ export const FurtherActionButton = ({
 
   if (
     transaction.furtherAction === MsgFurtherAction.RESEND &&
-    !isInstantiate2
+    !isInstantiate2 &&
+    !isExec
   ) {
     return <ResendButton messages={transaction.messages} />;
   }
@@ -37,7 +43,7 @@ export const FurtherActionButton = ({
     return <RedoModal message={transaction.messages[0]} />;
   }
 
-  if (transaction.furtherAction === MsgFurtherAction.REDO) {
+  if (transaction.furtherAction === MsgFurtherAction.REDO && !isExec) {
     return <RedoButton message={transaction.messages[0]} />;
   }
 

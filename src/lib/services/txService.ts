@@ -4,203 +4,131 @@ import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import {
-  getExecuteTxsByContractAddressPagination,
-  getExecuteTxsCountByContractAddress,
-  getTxsByContractAddressPagination,
-  getTxsCountByContractAddress,
-} from "lib/query";
-import { MsgFurtherAction } from "lib/types";
-import type { Addr, ContractAddr, Option, Transaction } from "lib/types";
+  GetTxsByAddressPaginationDocument,
+  GetTxsCountByAddressDocument,
+} from "lib/gql/graphql";
+import type { Addr, Option, Transaction, TxFilters } from "lib/types";
 import {
   getActionMsgType,
+  getMsgFurtherAction,
   parseDateOpt,
   parseTxHash,
   snakeToCamel,
-  unwrapAll,
 } from "lib/utils";
 
-export const useExecuteTxsByContractAddressPagination = (
-  contractAddress: ContractAddr,
+import { useTxExpression } from "./expression";
+
+export const useTxsByAddressPagination = (
+  address: Option<Addr>,
+  search: string,
+  filters: TxFilters,
+  relation: Option<boolean>,
   offset: number,
   pageSize: number
 ): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const expression = useTxExpression(address, search, filters, relation);
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
-      .request(getExecuteTxsByContractAddressPagination, {
-        contractAddress,
+      .request(GetTxsByAddressPaginationDocument, {
+        expression,
         offset,
         pageSize,
       })
-      .then(({ contract_transactions_view }) =>
+      .then(({ account_transactions }) =>
         /**
          * @remarks because contract_transactions_view is view table, all fields can be undefined by type
          */
-        contract_transactions_view.map((transaction) => ({
-          hash: parseTxHash(transaction.hash),
-          messages: snakeToCamel(transaction.messages),
-          sender: transaction.sender as Addr,
-          height: transaction.height,
-          created: parseDateOpt(transaction.timestamp),
-          success: transaction.success,
+        account_transactions.map((tx) => ({
+          hash: parseTxHash(tx.transaction.hash),
+          messages: snakeToCamel(tx.transaction.messages),
+          sender: tx.transaction.account.address as Addr,
+          isSigner: tx.is_signer,
+          height: tx.block.height,
+          created: parseDateOpt(tx.block.timestamp),
+          success: tx.transaction.success,
           actionMsgType: getActionMsgType([
             /* these value must not be null */
-            unwrapAll(transaction.is_execute),
-            unwrapAll(transaction.is_instantiate),
-            unwrapAll(transaction.is_send),
-            unwrapAll(transaction.is_store_code),
-            unwrapAll(transaction.is_migrate),
-            unwrapAll(transaction.is_update_admin),
-            unwrapAll(transaction.is_clear_admin),
+            tx.transaction.is_execute,
+            tx.transaction.is_instantiate,
+            tx.transaction.is_send,
+            tx.transaction.is_store_code,
+            tx.transaction.is_migrate,
+            tx.transaction.is_update_admin,
+            tx.transaction.is_clear_admin,
           ]),
-          furtherAction: MsgFurtherAction.NONE,
-          isIbc: transaction.is_ibc,
-          isInstantiate: transaction.is_instantiate,
+          furtherAction: getMsgFurtherAction(
+            tx.transaction.messages.length,
+            {
+              isExecute: tx.transaction.is_execute,
+              isInstantiate: tx.transaction.is_instantiate,
+              isSend: tx.transaction.is_send,
+              isUpload: tx.transaction.is_store_code,
+              isMigrate: tx.transaction.is_migrate,
+              isUpdateAdmin: tx.transaction.is_update_admin,
+              isClearAdmin: tx.transaction.is_clear_admin,
+              isIbc: tx.transaction.is_ibc,
+            },
+            tx.transaction.success,
+            tx.is_signer
+          ),
+          isIbc: tx.transaction.is_ibc,
+          isInstantiate: tx.transaction.is_instantiate,
         }))
       );
-  }, [contractAddress, offset, pageSize, indexerGraphClient]);
+  }, [expression, indexerGraphClient, offset, pageSize]);
 
   return useQuery(
     [
-      "execute_transactions_by_contract_addr_pagination",
-      contractAddress,
+      "transactions_by_address_pagination",
+      address,
+      search,
+      filters,
+      relation,
       offset,
       pageSize,
       indexerGraphClient,
     ],
     queryFn,
     {
-      keepPreviousData: true,
-      enabled: !!contractAddress,
+      enabled: !!address,
     }
   );
 };
 
-export const useExecuteTxsCountByContractAddress = (
-  contractAddress: ContractAddr
+export const useTxsCountByAddress = (
+  address: Option<Addr>,
+  search: string,
+  filters: TxFilters,
+  relation: Option<boolean>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const expression = useTxExpression(address, search, filters, relation);
 
   const queryFn = useCallback(async () => {
-    if (!contractAddress)
-      throw new Error(
-        "Contract address not found (useExecuteTxsCountByContractAddress)"
-      );
-
     return indexerGraphClient
-      .request(getExecuteTxsCountByContractAddress, {
-        contractAddress,
+      .request(GetTxsCountByAddressDocument, {
+        expression,
       })
       .then(
-        ({ contract_transactions_aggregate }) =>
-          contract_transactions_aggregate?.aggregate?.count
+        ({ account_transactions_aggregate }) =>
+          account_transactions_aggregate.aggregate?.count
       );
-  }, [contractAddress, indexerGraphClient]);
+  }, [expression, indexerGraphClient]);
 
   return useQuery(
     [
-      "execute_transactions_count_by_contract_addr",
-      contractAddress,
+      "transactions_count_by_address",
+      address,
+      search,
+      filters,
+      relation,
       indexerGraphClient,
     ],
     queryFn,
     {
-      keepPreviousData: true,
-      enabled: !!contractAddress,
-    }
-  );
-};
-
-export const useTxsByContractAddressPagination = (
-  contractAddress: ContractAddr,
-  offset: number,
-  pageSize: number
-): UseQueryResult<Transaction[]> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getTxsByContractAddressPagination, {
-        contractAddress,
-        offset,
-        pageSize,
-      })
-      .then(({ contract_transactions_view }) =>
-        /**
-         * @remarks because contract_transactions_view is view table, all fields can be undefined by type
-         */
-        contract_transactions_view.map((contractTx) => ({
-          hash: parseTxHash(contractTx.hash),
-          messages: snakeToCamel(contractTx.messages),
-          sender: contractTx.sender as Addr,
-          height: contractTx.height,
-          created: parseDateOpt(contractTx.timestamp),
-          success: contractTx.success,
-          actionMsgType: getActionMsgType([
-            /* these value must not be null */
-            unwrapAll(contractTx.is_execute),
-            unwrapAll(contractTx.is_instantiate),
-            unwrapAll(contractTx.is_send),
-            unwrapAll(contractTx.is_store_code),
-            unwrapAll(contractTx.is_migrate),
-            unwrapAll(contractTx.is_update_admin),
-            unwrapAll(contractTx.is_clear_admin),
-          ]),
-          furtherAction: MsgFurtherAction.NONE,
-          isIbc: contractTx.is_ibc,
-          isInstantiate: contractTx.is_instantiate,
-        }))
-      );
-  }, [contractAddress, offset, pageSize, indexerGraphClient]);
-
-  return useQuery(
-    [
-      "transactions_by_contract_addr_pagination",
-      contractAddress,
-      offset,
-      pageSize,
-      indexerGraphClient,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!contractAddress,
-    }
-  );
-};
-
-export const useTxsCountByContractAddress = (
-  contractAddress: ContractAddr
-): UseQueryResult<Option<number>> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    if (!contractAddress)
-      throw new Error(
-        "Contract address not found (useTxsCountByContractAddress)"
-      );
-
-    return indexerGraphClient
-      .request(getTxsCountByContractAddress, {
-        contractAddress,
-      })
-      .then(
-        ({ contract_transactions_aggregate }) =>
-          contract_transactions_aggregate.aggregate?.count
-      );
-  }, [contractAddress, indexerGraphClient]);
-
-  return useQuery(
-    [
-      "transactions_count_by_contract_addr",
-      contractAddress,
-      indexerGraphClient,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!contractAddress,
+      enabled: !!address,
     }
   );
 };

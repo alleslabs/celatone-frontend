@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#261](https://github.com/alleslabs/celatone-frontend/pull/261) Add Relation and Block Height columns to transaction tables and refactor transaction table components
 - [#254](https://github.com/alleslabs/celatone-frontend/pull/254) Add GiHub link to public code and contract detail pages
 - [#230](https://github.com/alleslabs/celatone-frontend/pull/230) Add cw2info to code table
 

@@ -9,28 +9,38 @@ interface TransactionsTableProps {
   transactions: Option<Transaction[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
+  showRelations: boolean;
+  showAction?: boolean;
 }
 
 export const TransactionsTable = ({
   transactions,
   isLoading,
   emptyState,
+  showRelations,
+  showAction = false,
 }: TransactionsTableProps) => {
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
 
-  const templateColumns =
-    "180px 70px minmax(360px, 1fr) max(170px) max(250px) max(70px)";
+  const templateColumns = `150px 40px minmax(360px, 1fr) ${
+    showRelations ? "100px " : ""
+  }max(160px) 120px max(220px) ${showAction ? "100px " : ""}60px`;
 
   return (
     <TableContainer>
-      <TransactionsTableHeader templateColumns={templateColumns} showSender />
+      <TransactionsTableHeader
+        templateColumns={templateColumns}
+        showRelations={showRelations}
+        showAction={showAction}
+      />
       {transactions.map((transaction) => (
         <TransactionsTableRow
           key={transaction.hash}
           transaction={transaction}
           templateColumns={templateColumns}
-          showSender
+          showRelations={showRelations}
+          showAction={showAction}
         />
       ))}
     </TableContainer>

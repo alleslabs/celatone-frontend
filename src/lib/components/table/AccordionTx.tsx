@@ -40,7 +40,9 @@ export const AccordionTx = ({
   const [showButton, setShowButton] = useState(false);
   return (
     <TableRow
+      minH="0"
       h="40px"
+      p={0}
       borderBottom="none"
       pl={ACCORDION_LEFT_SPACING}
       gap={3}
