@@ -44,13 +44,9 @@ export const getAddressTypeByLength = (
     ? addressLengthMap[chainName]?.[address.length] ?? "invalid_address"
     : "invalid_address";
 
-export const useGetAddressType = () => {
-  const { currentChainName } = useWallet();
-  return useCallback(
-    (address: Option<string>): AddressReturnType =>
-      getAddressTypeByLength(currentChainName, address),
-    [currentChainName]
-  );
+const getPrefix = (basePrefix: string, addressType: AddressReturnType) => {
+  if (addressType === "validator_address") return `${basePrefix}valoper`;
+  return basePrefix;
 };
 
 const validateAddress = (
@@ -60,8 +56,10 @@ const validateAddress = (
 ) => {
   if (!currentChainRecord) return "Invalid network";
 
-  if (!address.startsWith(currentChainRecord.chain.bech32_prefix))
-    return `Invalid prefix (expected "${currentChainRecord.chain.bech32_prefix}")`;
+  const prefix = getPrefix(currentChainRecord.chain.bech32_prefix, addressType);
+
+  if (!address.startsWith(prefix))
+    return `Invalid prefix (expected "${prefix}")`;
 
   if (getAddressTypeByLength(currentChainRecord.name, address) !== addressType)
     return "Invalid address length";
@@ -72,6 +70,23 @@ const validateAddress = (
     return (e as Error).message;
   }
   return null;
+};
+
+export const useGetAddressType = () => {
+  const { currentChainName, currentChainRecord } = useWallet();
+  return useCallback(
+    (address: Option<string>): AddressReturnType => {
+      const addressType = getAddressTypeByLength(currentChainName, address);
+      if (
+        !address ||
+        addressType === "invalid_address" ||
+        validateAddress(currentChainRecord, address, addressType)
+      )
+        return "invalid_address";
+      return addressType;
+    },
+    [currentChainName, currentChainRecord]
+  );
 };
 
 // TODO: refactor
@@ -87,6 +102,11 @@ export const useValidateAddress = () => {
     validateUserAddress: useCallback(
       (address: string) =>
         validateAddress(currentChainRecord, address, "user_address"),
+      [currentChainRecord]
+    ),
+    validateValidatorAddress: useCallback(
+      (address: string) =>
+        validateAddress(currentChainRecord, address, "validator_address"),
       [currentChainRecord]
     ),
   };

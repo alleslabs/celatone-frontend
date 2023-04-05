@@ -115,7 +115,11 @@ type SpecialAmpEvent =
   | AmpEvent.MINTSCAN
   | AmpEvent.WEBSITE
   | AmpEvent.SOCIAL
-  | AmpEvent.CELATONE;
+  | AmpEvent.CELATONE
+  | AmpEvent.USE_VIEW_JSON
+  | AmpEvent.USE_UNSUPPORTED_ASSETS
+  | AmpEvent.USE_COPIER
+  | AmpEvent.USE_EXPAND;
 
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
