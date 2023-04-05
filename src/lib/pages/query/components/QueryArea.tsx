@@ -137,7 +137,11 @@ export const QueryArea = ({
           <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
           <Flex align="center" justify="space-between">
             <Flex gap={2}>
-              <CopyButton isDisable={!msg.length} value={msg} />
+              <CopyButton
+                isDisable={!msg.length}
+                value={msg}
+                amptrackSection="query_msg"
+              />
               <CodeSnippet
                 type="query"
                 contractAddress={contractAddress}
@@ -172,7 +176,11 @@ export const QueryArea = ({
           {/* If response line count > 100, the copy button is visible. */}
           {jsonLineCount(res) > 100 && (
             <Flex justifyContent="flex-end" mt={4}>
-              <CopyButton isDisable={res.length === 0} value={res} />
+              <CopyButton
+                isDisable={res.length === 0}
+                value={res}
+                amptrackSection="query_response"
+              />
             </Flex>
           )}
         </Box>

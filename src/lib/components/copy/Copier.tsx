@@ -1,7 +1,7 @@
 import type { LayoutProps } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { AmpTrackCopier } from "lib/services/amplitude";
 
 import { CopyTemplate } from "./CopyTemplate";
 
@@ -11,6 +11,7 @@ interface CopierProps {
   copyLabel?: string;
   display?: LayoutProps["display"];
   ml?: string;
+  amptrackSection?: string;
 }
 
 export const Copier = ({
@@ -19,6 +20,7 @@ export const Copier = ({
   copyLabel,
   display = "block",
   ml = "8px",
+  amptrackSection,
 }: CopierProps) => (
   <CopyTemplate
     value={value}
@@ -30,7 +32,7 @@ export const Copier = ({
         display={display}
         cursor="pointer"
         marginLeft={ml}
-        onClick={() => AmpTrack(AmpEvent.USE_COPIER)}
+        onClick={() => AmpTrackCopier(amptrackSection, type)}
         name="copy"
         boxSize="12px"
       />

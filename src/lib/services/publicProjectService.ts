@@ -67,27 +67,23 @@ export const usePublicProjectBySlug = (
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
     if (!currentChainRecord)
       throw new Error("No chain selected (usePublicProjectBySlug)");
-    return (
-      axios
-        .get<RawPublicProjectInfo>(
-          `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
-            currentChainRecord.chain.chain_name
-          )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
-        )
-        // eslint-disable-next-line sonarjs/no-identical-functions
-        .then<PublicProjectInfo>(({ data: project }) => ({
-          ...project,
-          codes: project.codes.map(parseCode),
-          contracts: project.contracts.map(parseContract),
-        }))
-    );
+    return axios
+      .get<RawPublicProjectInfo>(
+        `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
+          currentChainRecord.chain.chain_name
+        )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
+      )
+      .then<PublicProjectInfo>(({ data: publicProject }) => ({
+        ...publicProject,
+        codes: publicProject.codes.map(parseCode),
+        contracts: publicProject.contracts.map(parseContract),
+      }));
   }, [currentChainRecord, slug]);
 
   return useQuery(
     ["public_project_by_slug", slug, currentChainRecord],
     queryFn,
     {
-      keepPreviousData: true,
       enabled: !!slug,
     }
   );

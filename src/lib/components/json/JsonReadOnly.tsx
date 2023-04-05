@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
 import { CopyButton } from "../copy";
+import { AmpTrackExpand } from "lib/services/amplitude";
 import { jsonLineCount, jsonValidate } from "lib/utils";
 
 import { ViewFullMsgButton } from "./ViewFullMsgButton";
@@ -16,6 +17,8 @@ interface JsonReadOnlyProps {
   text: string;
   canCopy?: boolean;
   isExpandable?: boolean;
+  fullWidth?: boolean;
+  amptrackSection?: string;
 }
 
 const THRESHOLD_LINES = 16;
@@ -25,6 +28,8 @@ const JsonReadOnly = ({
   text,
   canCopy,
   isExpandable,
+  fullWidth,
+  amptrackSection,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
 
@@ -57,6 +62,7 @@ const JsonReadOnly = ({
         borderColor: isJsonValid && "pebble.600",
         "& .copy-button-box": { display: "block" },
       }}
+      w={fullWidth ? "full" : undefined}
     >
       <Box p="16px 12px">
         <JsonEditor
@@ -79,7 +85,14 @@ const JsonReadOnly = ({
       )}
       {showExpandButton && (
         <ViewFullMsgButton
-          onClick={() => setViewFull((prev) => !prev)}
+          onClick={() => {
+            AmpTrackExpand(
+              viewFull ? "collapse" : "expand",
+              "json",
+              amptrackSection
+            );
+            setViewFull((prev) => !prev);
+          }}
           viewFull={viewFull}
         />
       )}
@@ -90,7 +103,7 @@ const JsonReadOnly = ({
           right="10px"
           className="copy-button-box"
         >
-          <CopyButton value={text} />
+          <CopyButton value={text} amptrackSection={amptrackSection} />
         </Box>
       )}
     </Box>

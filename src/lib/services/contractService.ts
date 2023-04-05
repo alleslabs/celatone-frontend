@@ -154,35 +154,35 @@ export const useInstantiateDetailByContractQuery = (
 };
 
 export const useAdminByContractAddresses = (
-  contractAddresses: Option<ContractAddr[]>
+  contractAddresses: ContractAddr[]
 ): UseQueryResult<Dict<ContractAddr, Addr>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
-  const queryFn = useCallback(async () => {
-    if (!contractAddresses)
-      throw new Error("No contract selected (useAdminByContractAddresses)");
-
-    return indexerGraphClient
-      .request(getAdminByContractAddressesQueryDocument, {
-        contractAddresses,
-      })
-      .then(({ contracts }) =>
-        contracts.reduce<Dict<ContractAddr, Addr>>(
-          (prev, contract) => ({
-            ...prev,
-            [contract.address as ContractAddr]: contract.admin?.address as Addr,
-          }),
-          {}
-        )
-      );
-  }, [contractAddresses, indexerGraphClient]);
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getAdminByContractAddressesQueryDocument, {
+          contractAddresses,
+        })
+        .then(({ contracts }) =>
+          contracts.reduce<Dict<ContractAddr, Addr>>(
+            (prev, contract) => ({
+              ...prev,
+              [contract.address as ContractAddr]: contract.admin
+                ?.address as Addr,
+            }),
+            {}
+          )
+        ),
+    [contractAddresses, indexerGraphClient]
+  );
 
   return useQuery(
     ["admin_by_contracts", contractAddresses, indexerGraphClient],
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!contractAddresses,
+      enabled: contractAddresses.length > 0,
     }
   );
 };

@@ -7,7 +7,6 @@ import {
   MenuList,
   Breadcrumb,
   BreadcrumbItem,
-  Box,
   Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
@@ -22,11 +21,13 @@ import {
   RemoveListModal,
   SaveNewContractModal,
 } from "lib/components/modal";
+import PageContainer from "lib/components/PageContainer";
 import { ContractListDetail } from "lib/components/select-contract";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { ContractAddr } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 const ContractsByList = observer(() => {
@@ -44,6 +45,12 @@ const ContractsByList = observer(() => {
   const contractListInfo = isInstantiatedByMe
     ? instantiatedListInfo
     : getContractLists().find((item) => item.slug === listSlug);
+
+  const onContractSelect = (contract: ContractAddr) =>
+    navigate({
+      pathname: "/contract/[contract]",
+      query: { contract },
+    });
 
   useEffect(() => {
     // TODO: find a better approach?
@@ -72,111 +79,110 @@ const ContractsByList = observer(() => {
   if (!contractListInfo) return null;
 
   return (
-    <>
-      <Box p="48px" pb="0">
-        <Breadcrumb
-          w="full"
-          spacing="4px"
-          separator={<CustomIcon name="chevron-right" boxSize="3" />}
+    <PageContainer>
+      <Breadcrumb
+        w="full"
+        spacing="4px"
+        separator={<CustomIcon name="chevron-right" boxSize="3" />}
+      >
+        <BreadcrumbItem
+          _hover={{ opacity: 0.8 }}
+          transition="all 0.25s ease-in-out"
         >
-          <BreadcrumbItem
-            _hover={{ opacity: 0.8 }}
-            transition="all 0.25s ease-in-out"
+          <AppLink color="text.dark" href="/contract-list">
+            Contract Lists
+          </AppLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
+          <Text
+            variant="body2"
+            className="ellipsis"
+            width="250px"
+            fontWeight="600"
+            color="text.dark"
           >
-            <AppLink color="text.dark" href="/contract-list">
-              Contract Lists
-            </AppLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <Text
-              variant="body2"
-              className="ellipsis"
-              width="250px"
-              fontWeight="600"
-              color="text.dark"
-            >
-              {contractListInfo.name}
-            </Text>
-          </BreadcrumbItem>
-        </Breadcrumb>
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          w="full"
-          mt={2}
-          gap={5}
-        >
-          <Heading as="h5" variant="h5" className="ellipsis">
             {contractListInfo.name}
-          </Heading>
-          <Flex gap={2}>
-            {isInstantiatedByMe ? (
-              <Button
-                leftIcon={
-                  <CustomIcon name="add-new" color="text.main" boxSize="16px" />
-                }
-                onClick={() => navigate({ pathname: "/deploy" })}
-              >
-                Deploy New Contract
-              </Button>
-            ) : (
-              <SaveNewContractModal
-                key={listSlug}
-                list={{
-                  label: contractListInfo.name,
-                  value: contractListInfo.slug,
-                }}
-                buttonProps={{
-                  variant: "outline-primary",
-                  leftIcon: (
-                    <CustomIcon
-                      name="bookmark"
-                      boxSize="3"
-                      color="violet.light"
-                    />
-                  ),
-                  children: "Save Contract",
-                }}
-              />
-            )}
-            {contractListInfo.isInfoEditable && (
-              <Menu>
-                <MenuButton h="full" variant="ghost-gray" as={Button}>
-                  <CustomIcon name="more" />
-                </MenuButton>
-                <MenuList>
-                  <EditListNameModal
-                    list={{
-                      label: contractListInfo.name,
-                      value: contractListInfo.slug,
-                    }}
-                    menuItemProps={{
-                      icon: <CustomIcon name="edit" />,
-                      children: "Edit list name",
-                    }}
-                    reroute
+          </Text>
+        </BreadcrumbItem>
+      </Breadcrumb>
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        w="full"
+        mt={2}
+        gap={5}
+      >
+        <Heading as="h5" variant="h5" className="ellipsis">
+          {contractListInfo.name}
+        </Heading>
+        <Flex gap={2}>
+          {isInstantiatedByMe ? (
+            <Button
+              leftIcon={
+                <CustomIcon name="add-new" color="text.main" boxSize="16px" />
+              }
+              onClick={() => navigate({ pathname: "/deploy" })}
+            >
+              Deploy New Contract
+            </Button>
+          ) : (
+            <SaveNewContractModal
+              key={listSlug}
+              list={{
+                label: contractListInfo.name,
+                value: contractListInfo.slug,
+              }}
+              buttonProps={{
+                variant: "outline-primary",
+                leftIcon: (
+                  <CustomIcon
+                    name="bookmark"
+                    boxSize="3"
+                    color="violet.light"
                   />
-                  <RemoveListModal
-                    list={{
-                      label: contractListInfo.name,
-                      value: contractListInfo.slug,
-                    }}
-                    menuItemProps={{
-                      icon: <CustomIcon name="delete" color="error.light" />,
-                      children: "Remove list",
-                    }}
-                  />
-                </MenuList>
-              </Menu>
-            )}
-          </Flex>
+                ),
+                children: "Save Contract",
+              }}
+            />
+          )}
+          {contractListInfo.isInfoEditable && (
+            <Menu>
+              <MenuButton h="full" variant="ghost-gray" as={Button}>
+                <CustomIcon name="more" />
+              </MenuButton>
+              <MenuList>
+                <EditListNameModal
+                  list={{
+                    label: contractListInfo.name,
+                    value: contractListInfo.slug,
+                  }}
+                  menuItemProps={{
+                    icon: <CustomIcon name="edit" />,
+                    children: "Edit list name",
+                  }}
+                  reroute
+                />
+                <RemoveListModal
+                  list={{
+                    label: contractListInfo.name,
+                    value: contractListInfo.slug,
+                  }}
+                  menuItemProps={{
+                    icon: <CustomIcon name="delete" color="error.light" />,
+                    children: "Remove list",
+                  }}
+                />
+              </MenuList>
+            </Menu>
+          )}
         </Flex>
-      </Box>
+      </Flex>
       <ContractListDetail
         contractListInfo={contractListInfo}
         isLoading={isInstantiatedByMe ? isLoading : false}
+        onContractSelect={onContractSelect}
       />
-    </>
+    </PageContainer>
   );
 });
 

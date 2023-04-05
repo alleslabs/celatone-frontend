@@ -85,4 +85,5 @@ export interface PublicInfo {
   name: string;
   contractAddress: ContractAddr;
   description: string;
+  github: string;
 }

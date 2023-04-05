@@ -10,8 +10,9 @@ import { getFirstQueryParam } from "lib/utils";
 
 interface TokenSectionProps {
   balances: Option<BalanceWithAssetInfo[]>;
+  amptrackPage?: string;
 }
-export const TokenSection = ({ balances }: TokenSectionProps) => {
+export const TokenSection = ({ balances, amptrackPage }: TokenSectionProps) => {
   const [showMore, setShowMore] = useState(false);
   const contractAddress = getFirstQueryParam(router.query.contractAddress);
 
@@ -64,6 +65,7 @@ export const TokenSection = ({ balances }: TokenSectionProps) => {
         <UnsupportedTokensModal
           unsupportedAssets={unsupportedAssets}
           address={contractAddress as ContractAddr}
+          amptrackSection={amptrackPage}
         />
       </Flex>
       {renderContext()}

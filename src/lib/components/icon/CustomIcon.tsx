@@ -564,7 +564,7 @@ export const ICONS = {
     ),
     viewBox: viewBox101616,
   },
-  deligate: {
+  delegate: {
     svg: (
       <path
         fillRule="evenodd"
@@ -707,7 +707,7 @@ export const ICONS = {
     ),
     viewBox: viewboxDefault,
   },
-  external: {
+  launch: {
     svg: (
       <path
         fillRule="evenodd"
@@ -1105,7 +1105,7 @@ export const ICONS = {
         fill="currentColor"
       />
     ),
-    viewBox: "0.5 -2.5 16 16",
+    viewBox: "0.5 -2.5 18 18",
   },
   "submit-proposal-solid": {
     svg: (
@@ -1116,7 +1116,7 @@ export const ICONS = {
         fill="currentColor"
       />
     ),
-    viewBox: "0.5 -2.5 16 16",
+    viewBox: "0.5 -2.5 18 18",
   },
   swap: {
     svg: (
