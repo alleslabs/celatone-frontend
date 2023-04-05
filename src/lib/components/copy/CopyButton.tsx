@@ -6,11 +6,13 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { CopyTemplate } from "./CopyTemplate";
 
-interface CopyButtonProps {
+interface CopyButtonProps extends ButtonProps {
   isDisable?: boolean;
   value: string;
-  size?: ButtonProps["size"];
   copyLabel?: string;
+  hasIcon?: boolean;
+  buttonText?: string;
+  amptrackSection?: string;
 }
 
 export const CopyButton = ({
@@ -18,6 +20,11 @@ export const CopyButton = ({
   value,
   size = "sm",
   copyLabel,
+  hasIcon = true,
+  variant = "outline-info",
+  buttonText = "Copy",
+  amptrackSection,
+  ...buttonProps
 }: CopyButtonProps) => (
   <CopyTemplate
     value={value}
@@ -25,19 +32,24 @@ export const CopyButton = ({
     triggerElement={
       <Button
         isDisabled={isDisable}
-        variant="outline-info"
+        variant={variant}
         size={size}
         float="right"
-        onClick={() => AmpTrack(AmpEvent.USE_COPY_BUTTON)}
-        leftIcon={
-          <CustomIcon
-            name="copy"
-            color={isDisable ? "honeydew.darker" : "honeydew.main"}
-            boxSize="4"
-          />
+        onClick={() =>
+          AmpTrack(AmpEvent.USE_COPY_BUTTON, { section: amptrackSection })
         }
+        leftIcon={
+          hasIcon ? (
+            <CustomIcon
+              name="copy"
+              color={isDisable ? "honeydew.darker" : "honeydew.main"}
+              boxSize="4"
+            />
+          ) : undefined
+        }
+        {...buttonProps}
       >
-        Copy
+        {buttonText}
       </Button>
     }
   />

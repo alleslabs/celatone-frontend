@@ -96,7 +96,7 @@ export const useContractData = (
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
   const endpoint = useLCDEndpoint();
-  const assetInfos = useAssetInfos();
+  const { assetInfos } = useAssetInfos();
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
