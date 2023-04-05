@@ -87,7 +87,7 @@ export const queryTxData = async (
   const { data } = await axios.get(
     `${CELATONE_API_ENDPOINT}/txs/${getChainApiPath(
       chainName
-    )}/${chainId}/${txHash}`
+    )}/${chainId}/${txHash.toUpperCase()}`
   );
 
   return {
