@@ -28,7 +28,7 @@ const getBgColor = (
       return "success.dark";
     case ProposalStatus.VOTING_PERIOD:
       return "violet.dark";
-    case ProposalStatus.INACTIVE:
+    case ProposalStatus.DEPOSIT_FAILED:
     default:
       return "pebble.700";
   }
@@ -36,9 +36,5 @@ const getBgColor = (
 
 export const StatusChip = ({ status }: { status: Proposal["status"] }) => {
   const formatStatus = status.replace(/([A-Z])/g, " $1").trim();
-  return (
-    <StyledTag bgColor={getBgColor(status)}>
-      {status === ProposalStatus.INACTIVE ? "Deposit Failed" : formatStatus}
-    </StyledTag>
-  );
+  return <StyledTag bgColor={getBgColor(status)}>{formatStatus}</StyledTag>;
 };
