@@ -46,7 +46,7 @@ export const ProposalTableRow = ({
       cursor={isInactive ? "default" : "pointer"}
       _hover={{ "> div": { bgColor: hoverBg } }}
       onClick={() =>
-        !isInactive ||
+        isInactive ||
         window.open(
           `${getProposalUrl(
             currentChainName
