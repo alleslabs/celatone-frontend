@@ -116,7 +116,7 @@ export const InstantiateInfo = ({
   }
 
   const instantiatorType = getAddressType(instantiateInfo.instantiator);
-  const adminType = getAddressType(instantiateInfo.admin ?? "");
+  const adminType = getAddressType(instantiateInfo.admin);
 
   return (
     <Container>
@@ -142,24 +142,24 @@ export const InstantiateInfo = ({
         )}
       </LabelText>
 
-      <LabelText
-        label="Admin Address"
-        helperText1={
-          instantiateInfo.admin ? getAddressTypeText(adminType) : undefined
-        }
-      >
-        {instantiateInfo.admin ? (
+      {instantiateInfo.admin ? (
+        <LabelText
+          label="Admin Address"
+          helperText1={getAddressTypeText(adminType)}
+        >
           <ExplorerLink
             type={adminType}
             value={instantiateInfo.admin}
             showCopyOnHover
           />
-        ) : (
+        </LabelText>
+      ) : (
+        <LabelText label="Admin Address">
           <Text variant="body2" color="text.dark">
             No Admin
           </Text>
-        )}
-      </LabelText>
+        </LabelText>
+      )}
 
       <Divider border="1px solid" borderColor="pebble.700" />
 

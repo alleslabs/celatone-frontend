@@ -16,6 +16,7 @@ const generateVariantStyle = (
       borderColor = `${variant}.dark`;
       break;
     case "honeydew":
+    case "error":
     default:
       mainColor = `${variant}.main`;
       borderColor = `${variant}.main`;
