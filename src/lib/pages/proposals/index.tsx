@@ -25,7 +25,7 @@ const Proposals = () => {
   const { address } = useWallet();
   const [search, setSearch] = useState("");
   const [proposer, setProposer] = useState<Option<Addr>>(undefined);
-  const [isSelected, setIsSelected] = useState(true);
+  const [isSelected, setIsSelected] = useState(false);
 
   const { data: countProposals = 0 } = useProposalListCount(
     [],

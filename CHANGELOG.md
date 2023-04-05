@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#263](https://github.com/alleslabs/celatone-frontend/pull/263) Wireup search bar and my proposal switch in proposal list page
 - [#260](https://github.com/alleslabs/celatone-frontend/pull/260) Add proposal list table to proposal list page
 - [#255](https://github.com/alleslabs/celatone-frontend/pull/255) Get data for proposal list page
 - [#250](https://github.com/alleslabs/celatone-frontend/pull/250) Add skeleton, route, and amp for proposal list page
