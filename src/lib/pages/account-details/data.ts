@@ -372,7 +372,6 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     );
 
     data.redelegations = rawRedelegations?.map<Redelegation>((raw) => ({
-      ...raw,
       srcValidator: {
         validatorAddress: raw.srcValidatorAddress,
         moniker: validators[raw.srcValidatorAddress]?.moniker,
