@@ -1,6 +1,7 @@
 import { track } from "@amplitude/analytics-browser";
 
 import type { AttachFundsType } from "lib/components/fund/types";
+import type { Option } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -46,6 +47,7 @@ export enum AmpEvent {
   TO_CONTRACT_DETAIL = "To Contract Detail",
   TO_CODE_DETAIL = "To Code Detail",
   TO_PROJECT_DETAIL = "To Public Project Detail",
+  TO_TRANSACTION_DETAIL = "To Transaction Detail",
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
   // ACTIONS
@@ -86,6 +88,10 @@ export enum AmpEvent {
   USE_UNSUPPORTED_ASSETS_MODAL = "Use Unsupported Assets Modal",
   USE_OTHER_MODAL = "Use Other Modal",
   USE_SUBMIT_PROJECT = "Use Submit Project",
+  USE_VIEW_JSON = "Use View Json",
+  USE_UNSUPPORTED_ASSETS = "Use Unsupported Assets",
+  USE_TX_MSG_EXPAND = "Use Transaction Message Expand",
+  USE_EXPAND = "Use General Expand",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -117,14 +123,20 @@ type SpecialAmpEvent =
   | AmpEvent.MINTSCAN
   | AmpEvent.WEBSITE
   | AmpEvent.SOCIAL
-  | AmpEvent.CELATONE;
+  | AmpEvent.CELATONE
+  | AmpEvent.USE_VIEW_JSON
+  | AmpEvent.USE_UNSUPPORTED_ASSETS
+  | AmpEvent.USE_COPIER
+  | AmpEvent.USE_EXPAND;
 
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
 
 export const AmpTrack = (
-  event: Exclude<AmpEvent, ActionAmpEvent | SpecialAmpEvent>
-) => track(event);
+  event: Exclude<AmpEvent, ActionAmpEvent | SpecialAmpEvent>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  properties?: Record<string, any>
+) => track(event, properties);
 
 export const AmpTrackAction = (
   event: ActionAmpEvent,
@@ -155,9 +167,6 @@ export const AmpTrackUseTab = (tab: string) => track(AmpEvent.USE_TAB, { tab });
 export const AmpTrackUseRadio = (radio: string) =>
   track(AmpEvent.USE_RADIO, { radio });
 
-export const AmpTrackCopier = (type: string) =>
-  track(AmpEvent.USE_COPIER, { type });
-
 export const AmpTrackUseOtherModal = (title: string) =>
   track(AmpEvent.USE_OTHER_MODAL, { title });
 
@@ -171,3 +180,18 @@ export const AmpTrackSocial = (url: string) => track(AmpEvent.SOCIAL, { url });
 
 export const AmpTrackCelatone = (url: string) =>
   track(AmpEvent.CELATONE, { url });
+
+export const AmpTrackViewJson = (page: string) =>
+  track(AmpEvent.USE_VIEW_JSON, { page });
+
+export const AmpTrackUnsupportedToken = (page: Option<string>) =>
+  track(AmpEvent.USE_UNSUPPORTED_ASSETS, { page });
+
+export const AmpTrackCopier = (section: Option<string>, type: string) =>
+  track(AmpEvent.USE_COPIER, { section, type });
+
+export const AmpTrackExpand = (
+  action: "expand" | "collapse",
+  component: "assets" | "json" | "permission_address" | "event_box",
+  section: Option<string>
+) => track(AmpEvent.USE_EXPAND, { action, component, section });

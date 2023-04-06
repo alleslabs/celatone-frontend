@@ -5,23 +5,6 @@ export const explorerMap: Record<string, string> = {
   terra2testnet: "https://terrasco.pe/testnet",
 };
 
-export const getExplorerTxUrl = (chainName: string) => {
-  let pathSuffix = "";
-  switch (chainName) {
-    case "osmosis":
-    case "osmosistestnet":
-      pathSuffix = "txs";
-      break;
-    case "terra2":
-    case "terra2testnet":
-      pathSuffix = "tx";
-      break;
-    default:
-      break;
-  }
-  return `${explorerMap[chainName]}/${pathSuffix}`;
-};
-
 export const getExplorerBlockUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
@@ -31,6 +14,23 @@ export const getExplorerBlockUrl = (chainName: string) => {
     case "terra2testnet":
       pathSuffix = "blocks";
       break;
+    default:
+      break;
+  }
+  return `${explorerMap[chainName]}/${pathSuffix}`;
+};
+
+export const getProposalUrl = (chainName: string) => {
+  let pathSuffix = "";
+  switch (chainName) {
+    case "osmosis":
+    case "osmosistestnet":
+      pathSuffix = "proposals";
+      break;
+    case "terra2":
+      return "https://station.terra.money/proposal/phoenix-1";
+    case "terra2testnet":
+      return "https://station.terra.money/proposal/pisco-1";
     default:
       break;
   }
@@ -48,23 +48,6 @@ export const getExplorerValidatorUrl = (chainName: string) => {
     case "terra2testnet":
       pathSuffix = "validator";
       break;
-    default:
-      break;
-  }
-  return `${explorerMap[chainName]}/${pathSuffix}`;
-};
-
-export const getProposalUrl = (chainName: string) => {
-  let pathSuffix = "";
-  switch (chainName) {
-    case "osmosis":
-    case "osmosistestnet":
-      pathSuffix = "proposals";
-      break;
-    case "terra2":
-      return `https://station.terra.money/proposal/phoenix-1`;
-    case "terra2testnet":
-      return `https://station.terra.money/proposal/pisco-1`;
     default:
       break;
   }

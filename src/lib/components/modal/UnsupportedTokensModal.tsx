@@ -1,3 +1,4 @@
+import type { ButtonProps } from "@chakra-ui/react";
 import {
   Modal,
   ModalHeader,
@@ -18,9 +19,10 @@ import { useMemo } from "react";
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import { getAddressTypeByLength } from "lib/app-provider";
+import { useGetAddressType, getAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
+import { AmpTrackUnsupportedToken } from "lib/services/amplitude";
 import type { BalanceWithAssetInfo, Balance, Token, U, Addr } from "lib/types";
 import {
   getTokenType,
@@ -30,22 +32,35 @@ import {
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: BalanceWithAssetInfo[];
-  address: Addr;
+  address?: Addr;
+  buttonProps?: ButtonProps;
+  amptrackSection?: string;
 }
 
 interface UnsupportedTokenProps {
   balance: Balance;
 }
 
+const getTokenTypeWithAddress = (
+  type: Balance["type"],
+  addrType: AddressReturnType
+) => {
+  if (type) return getTokenType(type);
+  return addrType === "contract_address"
+    ? getTokenType("cw20")
+    : getTokenType("native");
+};
+
 const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
+  const getAddressType = useGetAddressType();
   // TODO - Move this to utils
   const [tokenLabel, tokenType] = useMemo(() => {
     const label = getTokenLabel(balance.id);
     const type = !balance.id.includes("/")
-      ? getTokenType(balance.type)
+      ? getTokenTypeWithAddress(balance.type, getAddressType(balance.id))
       : getTokenType(balance.id.split("/")[0]);
     return [label, type];
-  }, [balance]);
+  }, [balance, getAddressType]);
 
   return (
     <Flex
@@ -89,6 +104,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             copyLabel="Token ID Copied!"
             display="none"
             ml="1px"
+            amptrackSection="unsupported_token_copy"
           />
         </Flex>
         <Text variant="body3" color="text.dark">
@@ -133,6 +149,8 @@ const unsupportedTokensContent = (
 export const UnsupportedTokensModal = ({
   unsupportedAssets,
   address,
+  buttonProps,
+  amptrackSection,
 }: UnsupportedTokensModalProps) => {
   const { currentChainName } = useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -144,8 +162,19 @@ export const UnsupportedTokensModal = ({
 
   return (
     <>
-      <Flex onClick={onOpen}>
-        <Button variant="ghost" color="text.dark" mb={1} fontWeight={500}>
+      <Flex
+        onClick={() => {
+          AmpTrackUnsupportedToken(amptrackSection);
+          onOpen();
+        }}
+      >
+        <Button
+          variant="ghost"
+          color="text.dark"
+          mb={1}
+          fontWeight={500}
+          {...buttonProps}
+        >
           {`View ${unsupportedAssets.length} Unsupported Assets`}
         </Button>
       </Flex>
@@ -164,12 +193,14 @@ export const UnsupportedTokensModal = ({
           <ModalCloseButton color="pebble.600" />
           <ModalBody maxH="400px" overflow="overlay" pb={6}>
             <Flex direction="column" gap={5}>
-              <Flex direction="row" gap={4}>
-                <Text variant="body2" fontWeight="700">
-                  {content.header}
-                </Text>
-                <ExplorerLink value={address} type={addressType} />
-              </Flex>
+              {address && (
+                <Flex direction="row" gap={4}>
+                  <Text variant="body2" fontWeight="700">
+                    {content.header}
+                  </Text>
+                  <ExplorerLink value={address} type={addressType} />
+                </Flex>
+              )}
               <Flex gap={3} direction="column">
                 {unsupportedAssets.map((asset) => (
                   <UnsupportedToken

@@ -3,6 +3,8 @@ import type { ChainRecord } from "@cosmos-kit/core";
 import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
+import type { Option } from "lib/types";
+
 export type AddressReturnType =
   | "user_address"
   | "contract_address"
@@ -36,17 +38,15 @@ const addressLengthMap: {
 
 export const getAddressTypeByLength = (
   chainName: string,
-  address: string
+  address: Option<string>
 ): AddressReturnType =>
-  addressLengthMap[chainName]?.[address.length] ?? "invalid_address";
+  address
+    ? addressLengthMap[chainName]?.[address.length] ?? "invalid_address"
+    : "invalid_address";
 
-export const useGetAddressType = () => {
-  const { currentChainName } = useWallet();
-  return useCallback(
-    (address: string): AddressReturnType =>
-      getAddressTypeByLength(currentChainName, address),
-    [currentChainName]
-  );
+const getPrefix = (basePrefix: string, addressType: AddressReturnType) => {
+  if (addressType === "validator_address") return `${basePrefix}valoper`;
+  return basePrefix;
 };
 
 const validateAddress = (
@@ -56,8 +56,10 @@ const validateAddress = (
 ) => {
   if (!currentChainRecord) return "Invalid network";
 
-  if (!address.startsWith(currentChainRecord.chain.bech32_prefix))
-    return `Invalid prefix (expected "${currentChainRecord.chain.bech32_prefix}")`;
+  const prefix = getPrefix(currentChainRecord.chain.bech32_prefix, addressType);
+
+  if (!address.startsWith(prefix))
+    return `Invalid prefix (expected "${prefix}")`;
 
   if (getAddressTypeByLength(currentChainRecord.name, address) !== addressType)
     return "Invalid address length";
@@ -68,6 +70,23 @@ const validateAddress = (
     return (e as Error).message;
   }
   return null;
+};
+
+export const useGetAddressType = () => {
+  const { currentChainName, currentChainRecord } = useWallet();
+  return useCallback(
+    (address: Option<string>): AddressReturnType => {
+      const addressType = getAddressTypeByLength(currentChainName, address);
+      if (
+        !address ||
+        addressType === "invalid_address" ||
+        validateAddress(currentChainRecord, address, addressType)
+      )
+        return "invalid_address";
+      return addressType;
+    },
+    [currentChainName, currentChainRecord]
+  );
 };
 
 // TODO: refactor
