@@ -6,7 +6,7 @@ export enum ProposalStatus {
   PASSED = "Passed",
   REJECTED = "Rejected",
   FAILED = "Failed",
-  DEPOSIT_FAILED = "DepositFailed",
+  INACTIVE = "Inactive",
 }
 
 export enum ProposalType {

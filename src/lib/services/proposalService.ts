@@ -21,7 +21,6 @@ import type {
   Proposal,
 } from "lib/types";
 import { parseDate } from "lib/utils";
-import { parseProposalStatus } from "lib/utils/proposal";
 
 import { useProposalListExpression } from "./expression";
 
@@ -43,7 +42,7 @@ export const useRelatedProposalsByContractAddressPagination = (
         contract_proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.proposal_id,
           title: proposal.proposal.title,
-          status: parseProposalStatus(proposal.proposal.status),
+          status: proposal.proposal.status as ProposalStatus,
           votingEndTime: parseDate(proposal.proposal.voting_end_time),
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.resolved_height,
@@ -117,7 +116,7 @@ export const useProposalsByWalletAddressPagination = (
         proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.id,
           title: proposal.title,
-          status: parseProposalStatus(proposal.status),
+          status: proposal.status as ProposalStatus,
           votingEndTime: parseDate(proposal.voting_end_time),
           depositEndTime: parseDate(proposal.deposit_end_time),
           resolvedHeight: proposal.resolved_height,
@@ -193,7 +192,7 @@ export const useProposalList = (
           proposals.map<Proposal>((proposal) => ({
             proposalId: proposal.id,
             title: proposal.title,
-            status: parseProposalStatus(proposal.status),
+            status: proposal.status as ProposalStatus,
             votingEndTime: parseDate(proposal.voting_end_time),
             depositEndTime: parseDate(proposal.deposit_end_time),
             resolvedHeight: proposal.resolved_height,

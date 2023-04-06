@@ -21,7 +21,7 @@ export const ProposalsTableRow = ({
   templateColumns,
 }: ProposalsTableRowProps) => {
   const getAddressType = useGetAddressType();
-  const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
+  const isInactive = proposal.status === ProposalStatus.INACTIVE;
   const isDepositOrVoting =
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
@@ -29,7 +29,7 @@ export const ProposalsTableRow = ({
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <ExplorerLink
-          isReadOnly={isDepositFailed}
+          isReadOnly={isInactive}
           type="proposal_id"
           value={proposal.proposalId.toString()}
           showCopyOnHover
@@ -50,7 +50,7 @@ export const ProposalsTableRow = ({
         <ResolvedHeight
           resolvedHeight={proposal.resolvedHeight}
           isDepositOrVoting={isDepositOrVoting}
-          isDepositFailed={isDepositFailed}
+          isInactive={isInactive}
         />
       </TableRow>
       <TableRow>
