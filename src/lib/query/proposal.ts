@@ -113,3 +113,11 @@ export const getProposalListCount = graphql(`
     }
   }
 `);
+
+export const getProposalTypes = graphql(`
+  query getProposalTypes {
+    proposals(distinct_on: type) {
+      type
+    }
+  }
+`);

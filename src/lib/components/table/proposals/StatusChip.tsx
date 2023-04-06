@@ -1,6 +1,7 @@
 import { chakra, Tag } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
+import { CustomIcon } from "lib/components/icon";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
@@ -28,17 +29,26 @@ const getBgColor = (
       return "success.dark";
     case ProposalStatus.VOTING_PERIOD:
       return "violet.dark";
-    case ProposalStatus.INACTIVE:
+    case ProposalStatus.DEPOSIT_FAILED:
     default:
       return "pebble.700";
   }
 };
 
-export const StatusChip = ({ status }: { status: Proposal["status"] }) => {
+export const StatusChip = ({
+  status,
+  isCloseBtn = false,
+}: {
+  status: Proposal["status"];
+  isCloseBtn?: boolean;
+}) => {
   const formatStatus = status.replace(/([A-Z])/g, " $1").trim();
   return (
     <StyledTag bgColor={getBgColor(status)}>
-      {status === ProposalStatus.INACTIVE ? "Deposit Failed" : formatStatus}
+      {formatStatus}
+      {isCloseBtn && (
+        <CustomIcon name="close" boxSize="3" color="text.main" mr={0} />
+      )}
     </StyledTag>
   );
 };

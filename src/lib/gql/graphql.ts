@@ -9053,6 +9053,13 @@ export type GetProposalListCountQuery = {
   };
 };
 
+export type GetProposalTypesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetProposalTypesQuery = {
+  __typename?: "query_root";
+  proposals: Array<{ __typename?: "proposals"; type: string }>;
+};
+
 export type GetExecuteTxsByContractAddressPaginationQueryVariables = Exact<{
   contractAddress: Scalars["String"];
   offset: Scalars["Int"];
@@ -12663,6 +12670,41 @@ export const GetProposalListCountDocument = {
 } as unknown as DocumentNode<
   GetProposalListCountQuery,
   GetProposalListCountQueryVariables
+>;
+export const GetProposalTypesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getProposalTypes" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "proposals" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "distinct_on" },
+                value: { kind: "EnumValue", value: "type" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProposalTypesQuery,
+  GetProposalTypesQueryVariables
 >;
 export const GetExecuteTxsByContractAddressPaginationDocument = {
   kind: "Document",

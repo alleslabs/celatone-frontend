@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
-import type { Addr, ProposalStatus, ProposalType, Option } from "lib/types";
+import type { Addr, ProposalType, Option } from "lib/types";
+import { ProposalStatus } from "lib/types";
 
 export const useProposalListExpression = (
   statuses: ProposalStatus[],
@@ -9,10 +10,13 @@ export const useProposalListExpression = (
   proposer: Option<Addr>
 ) => {
   const parseSearch = parseInt(search, 10);
+  const parseStatuses = statuses.map((status) =>
+    status === ProposalStatus.DEPOSIT_FAILED ? "Inactive" : status
+  );
   return useMemo(
     () => ({
       account: { address: proposer ? { _eq: proposer } : {} },
-      status: statuses.length ? { _in: statuses } : {},
+      status: statuses.length ? { _in: parseStatuses } : {},
       type: types.length ? { _in: types } : {},
       _or: [
         {
@@ -21,6 +25,6 @@ export const useProposalListExpression = (
         { id: parseSearch ? { _eq: parseSearch } : {} },
       ],
     }),
-    [parseSearch, proposer, search, statuses, types]
+    [parseSearch, parseStatuses, proposer, search, statuses.length, types]
   );
 };

@@ -29,24 +29,24 @@ export const ProposalTableRow = ({
   const getAddressType = useGetAddressType();
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
-  const isInactive = proposal.status === ProposalStatus.INACTIVE;
+  const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
   const isDepositOrVoting =
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposal.status === ProposalStatus.VOTING_PERIOD;
 
   const hoverBg = (): Option<string> => {
     if (proposal.isExpedited && isDepositOrVoting) return "violet.background";
-    return isInactive ? undefined : "pebble.900";
+    return isDepositFailed ? undefined : "pebble.900";
   };
 
   return (
     <Grid
       templateColumns={templateColumns}
       minW="min-content"
-      cursor={isInactive ? "default" : "pointer"}
+      cursor={isDepositFailed ? "default" : "pointer"}
       _hover={{ "> div": { bgColor: hoverBg } }}
       onClick={() =>
-        !isInactive ||
+        !isDepositFailed &&
         window.open(
           `${getProposalUrl(
             currentChainName
@@ -58,7 +58,7 @@ export const ProposalTableRow = ({
     >
       <TableRowFreeze left="0">
         <ExplorerLink
-          isReadOnly={isInactive}
+          isReadOnly={isDepositFailed}
           type="proposal_id"
           value={proposal.proposalId.toString()}
           showCopyOnHover
@@ -88,7 +88,7 @@ export const ProposalTableRow = ({
       <TableRow>
         <ResolvedHeight
           resolvedHeight={proposal.resolvedHeight}
-          isInactive={isInactive}
+          isDepositFailed={isDepositFailed}
           isDepositOrVoting={isDepositOrVoting}
         />
       </TableRow>

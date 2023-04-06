@@ -1,7 +1,7 @@
 import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { useChainId } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
@@ -13,16 +13,24 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useProposalList,
   useProposalListCount,
+  useProposalTypes,
 } from "lib/services/proposalService";
+import type { ProposalStatus, ProposalType } from "lib/types";
 
+import { ProposalStatusFilter } from "./components/ProposalStatusFilter";
+import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 import { ProposalTable } from "./table/ProposalTable";
 
 const Proposals = () => {
   const chainId = useChainId();
   const router = useRouter();
+  const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
+  const [types, setTypes] = useState<ProposalType[]>([]);
+  const { data: proposalTypes } = useProposalTypes();
+
   const { data: countProposals = 0 } = useProposalListCount(
-    [],
-    [],
+    statuses,
+    types,
     "",
     undefined
   );
@@ -44,8 +52,8 @@ const Proposals = () => {
   const { data: proposals, isLoading } = useProposalList(
     offset,
     pageSize,
-    [],
-    [],
+    statuses,
+    types,
     "",
     undefined
   );
@@ -89,11 +97,22 @@ const Proposals = () => {
             <Text>My Proposals</Text>
           </Flex>
         </Flex>
-        <Flex gap={2}>
-          {/* TODO - Add filter by status  */}
-          <Flex>Filter by Status</Flex>
-          {/* TODO - Add filter by type */}
-          <Flex>Filter by Type</Flex>
+        <Flex gap={2} pb={3}>
+          <ProposalStatusFilter
+            label="Filter by Status"
+            result={statuses}
+            setResult={setStatuses}
+            placeholder="All Status"
+          />
+          {proposalTypes && (
+            <ProposalTypeFilter
+              label="Filter by Type"
+              result={types}
+              setResult={setTypes}
+              proposalTypes={proposalTypes}
+              placeholder="All Type"
+            />
+          )}
         </Flex>
       </Flex>
       <ProposalTable proposals={proposals} isLoading={isLoading} />
