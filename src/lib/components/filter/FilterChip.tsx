@@ -3,16 +3,13 @@ import type { ReactNode } from "react";
 
 interface FilterChipProps {
   chipComponent: ReactNode;
-  selectOption: () => void;
+  onSelect: () => void;
 }
 
-export const FilterChip = ({
-  chipComponent,
-  selectOption,
-}: FilterChipProps) => (
+export const FilterChip = ({ chipComponent, onSelect }: FilterChipProps) => (
   <Flex
     display="inline-block"
-    onClick={selectOption}
+    onClick={onSelect}
     w="max-content"
     cursor="pointer"
   >

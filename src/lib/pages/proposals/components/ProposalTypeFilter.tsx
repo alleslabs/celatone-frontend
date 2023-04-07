@@ -97,9 +97,10 @@ export const ProposalTypeFilter = forwardRef<
           label={label}
           inputRef={inputRef}
           ref={ref}
+          isDropdown={isDropdown}
           filterDropdown={filterDropdown}
           setDropdownValue={() => setDropdownValue(proposalTypes)}
-          setIsDropdown={() => setIsDropdown(true)}
+          setIsDropdown={setIsDropdown}
           chipContainerComponent={
             <Flex alignItems="center" pl={2} gap={2}>
               {result.map((option) => (
@@ -121,7 +122,7 @@ export const ProposalTypeFilter = forwardRef<
                       />
                     </Tag>
                   }
-                  selectOption={() => selectOption(option)}
+                  onSelect={() => selectOption(option)}
                 />
               ))}
             </Flex>
@@ -129,12 +130,13 @@ export const ProposalTypeFilter = forwardRef<
         />
         {isDropdown && (
           <DropdownContainer maxH="450px">
+            {!dropdownValue.length && <Flex p={2}>No filter matched</Flex>}
             {cosmosTypes.map((cosmosType) => (
               <FilterDropdownItem
                 key={cosmosType}
                 filterDropdownComponent={cosmosType}
                 isOptionSelected={isOptionSelected(cosmosType)}
-                selectOption={() => selectOption(cosmosType)}
+                onSelect={() => selectOption(cosmosType)}
               />
             ))}
             {cosmosTypes.length && <Divider borderColor="pebble.700" />}
@@ -144,7 +146,7 @@ export const ProposalTypeFilter = forwardRef<
                 key={generalType}
                 filterDropdownComponent={generalType}
                 isOptionSelected={isOptionSelected(generalType)}
-                selectOption={() => selectOption(generalType)}
+                onSelect={() => selectOption(generalType)}
               />
             ))}
           </DropdownContainer>

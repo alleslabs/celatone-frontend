@@ -13,19 +13,19 @@ const listItemProps: CSSProperties = {
 interface FilterDropdownItemProps {
   isOptionSelected: boolean;
   filterDropdownComponent: ReactNode;
-  selectOption: () => void;
+  onSelect: () => void;
 }
 
 export const FilterDropdownItem = ({
   isOptionSelected,
   filterDropdownComponent,
-  selectOption,
+  onSelect,
 }: FilterDropdownItemProps) => (
   <ListItem
     style={listItemProps}
     _hover={{ bg: "pebble.800" }}
     transition="all .25s ease-in-out"
-    onClick={selectOption}
+    onClick={onSelect}
   >
     <Flex alignItems="center" justifyContent="space-between">
       {filterDropdownComponent}

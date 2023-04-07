@@ -78,16 +78,17 @@ export const ProposalStatusFilter = forwardRef<
           label={label}
           inputRef={inputRef}
           ref={ref}
+          isDropdown={isDropdown}
           filterDropdown={filterDropdown}
           setDropdownValue={() => setDropdownValue(OPTIONS)}
-          setIsDropdown={() => setIsDropdown(true)}
+          setIsDropdown={setIsDropdown}
           chipContainerComponent={
             <Flex alignItems="center" pl={2} gap={2}>
               {result.map((option: ProposalStatus) => (
                 <FilterChip
                   key={option}
-                  chipComponent={<StatusChip status={option} isCloseBtn />}
-                  selectOption={() => selectOption(option)}
+                  chipComponent={<StatusChip status={option} hasCloseBtn />}
+                  onSelect={() => selectOption(option)}
                 />
               ))}
             </Flex>
@@ -96,13 +97,15 @@ export const ProposalStatusFilter = forwardRef<
 
         {isDropdown && (
           <DropdownContainer>
+            {!dropdownValue.length && <Flex p={2}>No filter matched</Flex>}
+
             {/* option selection section */}
             {dropdownValue.map((option) => (
               <FilterDropdownItem
                 key={option}
                 filterDropdownComponent={<StatusChip status={option} />}
                 isOptionSelected={isOptionSelected(option)}
-                selectOption={() => selectOption(option)}
+                onSelect={() => selectOption(option)}
               />
             ))}
           </DropdownContainer>

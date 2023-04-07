@@ -37,16 +37,16 @@ const getBgColor = (
 
 export const StatusChip = ({
   status,
-  isCloseBtn = false,
+  hasCloseBtn = false,
 }: {
   status: Proposal["status"];
-  isCloseBtn?: boolean;
+  hasCloseBtn?: boolean;
 }) => {
   const formatStatus = status.replace(/([A-Z])/g, " $1").trim();
   return (
     <StyledTag bgColor={getBgColor(status)}>
       {formatStatus}
-      {isCloseBtn && (
+      {hasCloseBtn && (
         <CustomIcon name="close" boxSize="3" color="text.main" mr={0} />
       )}
     </StyledTag>

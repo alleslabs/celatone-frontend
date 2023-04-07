@@ -1,5 +1,5 @@
 import { Flex, FormLabel, Input } from "@chakra-ui/react";
-import type { ForwardedRef, RefObject } from "react";
+import type { Dispatch, ForwardedRef, RefObject, SetStateAction } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import type { ProposalStatus, ProposalType } from "lib/types";
@@ -8,19 +8,21 @@ import { mergeRefs } from "lib/utils";
 type Result = ProposalType | ProposalStatus;
 
 interface FilterInputProps {
-  placeholder?: string;
-  label?: string;
   result: Result[];
+  isDropdown: boolean;
+  chipContainerComponent: JSX.Element;
   inputRef: RefObject<HTMLInputElement>;
   ref: ForwardedRef<HTMLInputElement>;
+  setIsDropdown: Dispatch<SetStateAction<boolean>>;
+  placeholder?: string;
+  label?: string;
   filterDropdown: (value: string) => void;
   setDropdownValue: () => void;
-  setIsDropdown: () => void;
-  chipContainerComponent: JSX.Element;
 }
 export const FilterInput = ({
   placeholder,
   result,
+  isDropdown,
   label,
   inputRef,
   ref,
@@ -41,7 +43,7 @@ export const FilterInput = ({
       alignItems="center"
       onClick={() => {
         setDropdownValue();
-        setIsDropdown();
+        setIsDropdown(!isDropdown);
       }}
     >
       {chipContainerComponent}
@@ -57,7 +59,7 @@ export const FilterInput = ({
         style={{ border: 0, maxHeight: "54px" }}
       />
       <CustomIcon
-        name="chevron-down"
+        name={isDropdown ? "chevron-up" : "chevron-down"}
         position="absolute"
         mr="0.5px"
         px={3}
