@@ -21,8 +21,7 @@ import type {
   Addr,
   Proposal,
 } from "lib/types";
-import { parseDate } from "lib/utils";
-import { parseProposalStatus } from "lib/utils/proposal";
+import { parseDate, parseProposalStatus } from "lib/utils";
 
 import { useProposalListExpression } from "./expression";
 

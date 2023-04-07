@@ -14,7 +14,6 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useProposalList,
   useProposalListCount,
-  useProposalTypes,
 } from "lib/services/proposalService";
 import type { ProposalStatus, ProposalType, Addr, Option } from "lib/types";
 
@@ -27,7 +26,6 @@ const Proposals = () => {
   const router = useRouter();
   const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
   const [types, setTypes] = useState<ProposalType[]>([]);
-  const { data: proposalTypes } = useProposalTypes();
 
   const { address } = useWallet();
   const [search, setSearch] = useState("");
@@ -145,15 +143,12 @@ const Proposals = () => {
             setResult={setStatuses}
             placeholder="All Status"
           />
-          {proposalTypes && (
-            <ProposalTypeFilter
-              label="Filter by Type"
-              result={types}
-              setResult={setTypes}
-              proposalTypes={proposalTypes}
-              placeholder="All Type"
-            />
-          )}
+          <ProposalTypeFilter
+            label="Filter by Type"
+            result={types}
+            setResult={setTypes}
+            placeholder="All Type"
+          />
         </Flex>
       </Flex>
       <ProposalTable proposals={proposals} isLoading={isLoading} />

@@ -15,6 +15,7 @@ import { DropdownContainer } from "lib/components/filter/FilterComponents";
 import { FilterDropdownItem } from "lib/components/filter/FilterDropdownItem";
 import { FilterInput } from "lib/components/filter/FilterInput";
 import { CustomIcon } from "lib/components/icon";
+import { useProposalTypes } from "lib/services/proposalService";
 import type { ProposalType } from "lib/types";
 import { ProposalTypeCosmos } from "lib/types";
 
@@ -23,7 +24,6 @@ export interface ProposalTypeFilterProps extends InputProps {
   minW?: string;
   label?: string;
   placeholder?: string;
-  proposalTypes: ProposalType[];
   setResult: Dispatch<SetStateAction<ProposalType[]>>;
 }
 
@@ -38,16 +38,23 @@ export const ProposalTypeFilter = forwardRef<
       result,
       minW = "50%",
       setResult,
-      proposalTypes,
       placeholder,
       label,
     }: ProposalTypeFilterProps,
     ref
   ) => {
+    const { data: proposalTypes } = useProposalTypes();
     const [dropdownValue, setDropdownValue] = useState<ProposalType[]>([]);
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
+
+    useOutsideClick({
+      ref: boxRef,
+      handler: () => setIsDropdown(false),
+    });
+
+    if (!proposalTypes) return null;
 
     const filterDropdown = (value: string) => {
       setIsDropdown(true);
@@ -73,11 +80,6 @@ export const ProposalTypeFilter = forwardRef<
         setResult((prevState) => [...prevState, option]);
       }
     };
-
-    useOutsideClick({
-      ref: boxRef,
-      handler: () => setIsDropdown(false),
-    });
 
     const [cosmosTypes, generalTypes] = dropdownValue.reduce(
       ([cosmosTypesPrev, generalTypesPrev], curr: ProposalType) =>
