@@ -13,18 +13,19 @@ export const useProposalListExpression = (
   const parseStatuses = statuses.map((status) =>
     status === ProposalStatus.DEPOSIT_FAILED ? "Inactive" : status
   );
-  return useMemo(
-    () => ({
-      account: { address: proposer ? { _eq: proposer } : {} },
-      status: statuses.length ? { _in: parseStatuses } : {},
-      type: types.length ? { _in: types } : {},
+
+  return useMemo(() => {
+    const account = proposer ? { account: { address: { _eq: proposer } } } : {};
+    const status = statuses.length ? { status: { _in: parseStatuses } } : {};
+    const type = types.length ? { type: { _in: types } } : {};
+    const or = {
       _or: [
         {
           title: search ? { _iregex: search } : {},
         },
         ...(parseSearch ? [{ id: { _eq: parseSearch } }] : []),
       ],
-    }),
-    [parseSearch, parseStatuses, proposer, search, statuses.length, types]
-  );
+    };
+    return { ...account, ...status, ...type, ...or };
+  }, [parseSearch, parseStatuses, proposer, search, statuses.length, types]);
 };
