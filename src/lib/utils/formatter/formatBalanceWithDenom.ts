@@ -9,15 +9,19 @@ interface FormatBalanceWithDenom {
   coin: Coin;
   symbol?: string;
   precision?: number;
+  decimalPoints?: number;
 }
 
 export const formatBalanceWithDenom = ({
   coin,
   symbol,
   precision,
+  decimalPoints,
 }: FormatBalanceWithDenom) => {
   return `${formatUTokenWithPrecision(
     coin.amount as U<Token>,
-    precision || 0
+    precision || 0,
+    false,
+    decimalPoints
   )} ${getTokenLabel(symbol || coin.denom)}`;
 };

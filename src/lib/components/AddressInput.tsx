@@ -4,7 +4,7 @@ import type {
   Control,
   FieldPath,
   FieldValues,
-  UseControllerProps,
+  RegisterOptions,
 } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 
@@ -16,7 +16,7 @@ interface AddressInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
-  rules?: UseControllerProps["rules"];
+  validation?: RegisterOptions["validate"];
   maxLength?: number;
   helperAction?: ReactNode;
 }
@@ -36,7 +36,7 @@ export const AddressInput = <T extends FieldValues>({
   placeholder = "ex.cltn1ff1asdf7988aw49efa4vw9846789",
   error,
   size = "lg",
-  rules = {},
+  validation = {},
   maxLength,
   helperAction,
 }: AddressInputProps<T>) => {
@@ -68,7 +68,10 @@ export const AddressInput = <T extends FieldValues>({
       labelBgColor={labelBgColor}
       helperText={helperText}
       size={size}
-      rules={rules}
+      rules={{
+        required: "Address is empty",
+        validate: { validateAddress, ...validation },
+      }}
       maxLength={maxLength}
       helperAction={helperAction}
     />

@@ -35,7 +35,7 @@ import {
 } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr } from "lib/types";
-import { InstantiatePermission, MsgType } from "lib/types";
+import { AccessConfigPermission, MsgType } from "lib/types";
 import {
   composeMsg,
   getAttachFunds,
@@ -153,7 +153,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         const permission = data.code_info.instantiate_permission;
         if (
           address &&
-          (permission.permission === InstantiatePermission.EVERYBODY ||
+          (permission.permission === AccessConfigPermission.EVERYBODY ||
             permission.addresses.includes(address as HumanAddr) ||
             permission.address === address)
         )

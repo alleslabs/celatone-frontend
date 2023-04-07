@@ -1,3 +1,4 @@
+import type { BoxProps } from "@chakra-ui/react";
 import {
   Accordion,
   AccordionButton,
@@ -13,13 +14,13 @@ import type { ReactElement } from "react";
 import { CustomIcon } from "./icon";
 import { SwitchToTestnet } from "./SwitchToTestnet";
 
-interface StickySidebarProps {
+interface StickySidebarProps extends BoxProps {
   title?: string;
   description?: ReactElement;
   testnetSwitch?: boolean;
   action?: boolean;
-  marginTop?: string;
 }
+
 export const StickySidebar = ({
   title = " Why do I need to submit proposal?",
   description = (
@@ -36,10 +37,10 @@ export const StickySidebar = ({
   ),
   testnetSwitch = true,
   action = false,
-  marginTop = "36",
+  ...boxProps
 }: StickySidebarProps) => {
   return (
-    <Box flex="4" px={8} mt={marginTop} position="relative">
+    <Box flex="4" px={8} position="relative" {...boxProps}>
       <Flex position="fixed" width="100%">
         <Accordion allowToggle width={96} defaultIndex={[0]}>
           <AccordionItem>

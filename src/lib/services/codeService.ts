@@ -16,7 +16,7 @@ import type {
   CodeInfo,
   CodeData,
   Option,
-  InstantiatePermission,
+  AccessConfigPermission,
   PermissionAddresses,
   Addr,
   HumanAddr,
@@ -35,7 +35,7 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
           uploader: code.account.uploader as Addr,
           contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
-            code.access_config_permission as InstantiatePermission,
+            code.access_config_permission as AccessConfigPermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
           cw2Contract: code.cw2_contract,
@@ -65,7 +65,7 @@ export const useCodeListByWalletAddress = (
           uploader: code.account.uploader as Addr,
           contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
-            code.access_config_permission as InstantiatePermission,
+            code.access_config_permission as AccessConfigPermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
           cw2Contract: code.cw2_contract,
@@ -101,7 +101,7 @@ export const useCodeListByCodeIds = (
           uploader: code.account.uploader as Addr,
           contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
-            code.access_config_permission as InstantiatePermission,
+            code.access_config_permission as AccessConfigPermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
           cw2Contract: code.cw2_contract,
@@ -183,7 +183,7 @@ export const useCodeListByWalletAddressPagination = (
           uploader: code.account.uploader as Addr,
           contractCount: code.contracts_aggregate.aggregate?.count,
           instantiatePermission:
-            code.access_config_permission as InstantiatePermission,
+            code.access_config_permission as AccessConfigPermission,
           permissionAddresses:
             code.access_config_addresses as PermissionAddresses,
           cw2Contract: code.cw2_contract,

@@ -4,7 +4,7 @@ import type { TypeUrl } from "lib/data";
 import type {
   Addr,
   ContractAddr,
-  InstantiatePermission,
+  AccessConfigPermission,
   Option,
   ValidatorAddr,
 } from "lib/types";
@@ -21,7 +21,7 @@ export interface MsgUnknownDetails extends MsgBaseDetails {
 }
 
 interface InstantiatePermissionResponse {
-  permission: InstantiatePermission;
+  permission: AccessConfigPermission;
   address: Addr;
   addresses: Addr[];
 }

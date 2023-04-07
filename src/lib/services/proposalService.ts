@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
 import {
   getProposalsByWalletAddressPagination,
   getProposalsCountByWalletAddress,
@@ -17,8 +17,18 @@ import type {
   ProposalType,
   Addr,
   Proposal,
+  U,
+  Token,
 } from "lib/types";
-import { parseDate } from "lib/utils";
+import {
+  demicrofy,
+  formatBalanceWithDenom,
+  getTokenLabel,
+  parseDate,
+} from "lib/utils";
+
+import type { DepositParams, UploadAccess } from "./proposal";
+import { fetchGovDepositParams, fetchGovUploadAccessParams } from "./proposal";
 
 export const useRelatedProposalsByContractAddressPagination = (
   contractAddress: ContractAddr,
@@ -158,4 +168,56 @@ export const useProposalsCountByWalletAddress = (
       enabled: !!walletAddress,
     }
   );
+};
+
+interface DepositParamsReturn extends Omit<DepositParams, "min_deposit"> {
+  min_deposit: {
+    amount: string;
+    denom: string;
+    formattedAmount: string;
+    formattedDenom: string;
+    formattedToken: string;
+  };
+}
+
+export const useGovParams = (): UseQueryResult<{
+  depositParams: DepositParamsReturn;
+  uploadAccess: UploadAccess;
+}> => {
+  const lcdEndpoint = useLCDEndpoint();
+  const queryFn = useCallback(() => {
+    return Promise.all([
+      fetchGovDepositParams(lcdEndpoint),
+      fetchGovUploadAccessParams(lcdEndpoint),
+    ]).then<{
+      depositParams: DepositParamsReturn;
+      uploadAccess: UploadAccess;
+    }>((params) => {
+      const minDepositParam = params[0].min_deposit[0];
+      const [minDepositAmount, minDepositDenom] = [
+        demicrofy(minDepositParam.amount as U<Token>).toFixed(),
+        getTokenLabel(minDepositParam.denom),
+      ];
+      return {
+        depositParams: {
+          ...params[0],
+          min_deposit: {
+            ...minDepositParam,
+            formattedAmount: minDepositAmount,
+            formattedDenom: minDepositDenom,
+            formattedToken: formatBalanceWithDenom({
+              coin: minDepositParam,
+              precision: 6,
+              decimalPoints: 2,
+            }),
+          },
+        },
+        uploadAccess: params[1],
+      };
+    });
+  }, [lcdEndpoint]);
+
+  return useQuery(["gov_params", lcdEndpoint], queryFn, {
+    keepPreviousData: true,
+  });
 };
