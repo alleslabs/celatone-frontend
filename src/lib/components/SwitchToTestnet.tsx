@@ -1,41 +1,41 @@
-import { Text } from "@chakra-ui/react";
+import type { FlexProps } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import type { ReactElement } from "react";
 
 import { useSelectChain } from "lib/app-provider";
 import { getChainNameByNetwork } from "lib/data";
 
-interface SwitchToTestnetProps {
-  size?: string;
-  color?: string;
+interface SwitchToTestnetProps extends FlexProps {
   colorHover?: string;
   bgHover?: string;
-  padding?: string;
   icon?: ReactElement;
 }
+
 export const SwitchToTestnet = ({
-  size = "md",
-  padding = "0",
   color = "honeydew.main",
   colorHover = "honeydew.light",
   bgHover,
   icon,
+  ...flexProps
 }: SwitchToTestnetProps) => {
   const selectChain = useSelectChain();
   return (
-    <Text
-      size={size}
+    <Flex
+      align="center"
+      gap={2}
       cursor="pointer"
-      p={padding}
       borderRadius={8}
-      pl="2"
-      width="fit-content"
       transition="all 0.25s ease-in-out"
       color={color}
-      _hover={{ color: colorHover, bgColor: bgHover }}
       onClick={() => selectChain(getChainNameByNetwork("testnet"))}
+      w="fit-content"
+      _hover={{ color: colorHover, bgColor: bgHover }}
+      {...flexProps}
     >
-      Switch to testnet
+      <Text color="inherit" variant="body3" fontWeight={700}>
+        Switch To Testnet
+      </Text>
       {icon}
-    </Text>
+    </Flex>
   );
 };

@@ -21,7 +21,7 @@ const variantStyle: Record<
     },
   },
   packed: {
-    w: "50%",
+    w: "60%",
     "> div": {
       alignItems: "center",
     },

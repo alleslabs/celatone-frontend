@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#268](https://github.com/alleslabs/celatone-frontend/pull/268) Wireup create proposal to whitelisting
+- [#266](https://github.com/alleslabs/celatone-frontend/pull/250) Add proposal whitelisting page
 - [#286](https://github.com/alleslabs/celatone-frontend/pull/286) Add block proposer
 - [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Searching can now be determined by chain
 - [#273](https://github.com/alleslabs/celatone-frontend/pull/273) Add subheader and network overview
