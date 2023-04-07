@@ -10,12 +10,14 @@ import {
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import big from "big.js";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { useFabricateFee, useSimulateFeeQuery } from "lib/app-provider";
+import { useSubmitProposalTx } from "lib/app-provider/tx/submitProposal";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -29,13 +31,13 @@ import {
   getMaxProposalTitleLengthError,
   MAX_PROPOSAL_TITLE_LENGTH,
 } from "lib/data/proposalWhitelist";
+import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import { MsgType } from "lib/types";
-import { composeMsg } from "lib/utils";
+import { composeSubmitWhitelistProposalMsg, d2Formatter } from "lib/utils";
 
-import { AssetBox } from "./components";
+import { AssetBox, Footer } from "./components";
 import { getAlert } from "./utils";
 
 interface WhiteListState {
@@ -46,11 +48,9 @@ interface WhiteListState {
 }
 
 const defaultValues: WhiteListState = {
-  title: "Whitelisting Test",
-  description: "This is to test whitelist.",
-  addresses: [
-    { address: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as Addr },
-  ],
+  title: "",
+  description: "",
+  addresses: [{ address: "" as Addr }],
   initialDeposit: { denom: "", amount: "" } as Coin,
 };
 
@@ -59,6 +59,8 @@ const Whitelisting = observer(() => {
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
+  const submitProposalTx = useSubmitProposalTx();
+  const { broadcast } = useTxBroadcast();
   const {
     control,
     watch,
@@ -72,7 +74,7 @@ const Whitelisting = observer(() => {
 
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState<string>();
-
+  const [processing, setProcessing] = useState(false);
   const { title, description, addresses, initialDeposit } = watch();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -101,30 +103,19 @@ const Whitelisting = observer(() => {
       Object.keys(formErrors),
     ]
   );
+
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: enabledTx,
     messages: [
-      composeMsg(MsgType.SUBMIT_PROPOSAL, {
-        content: {
-          typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
-          value: Buffer.from(
-            JSON.stringify({
-              title,
-              description,
-              changes: {
-                subspace: "wasm",
-                key: "uploadAccess",
-                value: JSON.stringify({
-                  ...govParams?.uploadAccess,
-                  addresses:
-                    govParams?.uploadAccess.addresses?.concat(addressesArray),
-                }),
-              },
-            })
-          ),
-        },
-        initialDeposit: [initialDeposit],
-        proposer: walletAddress,
+      composeSubmitWhitelistProposalMsg({
+        title,
+        description,
+        changesValue: JSON.stringify({
+          ...govParams?.uploadAccess,
+          addresses: govParams?.uploadAccess.addresses?.concat(addressesArray),
+        }),
+        initialDeposit,
+        proposer: walletAddress as Addr,
       }),
     ],
     onSuccess: (fee) => {
@@ -149,6 +140,49 @@ const Whitelisting = observer(() => {
     minDeposit?.formattedDenom
   );
 
+  const proceed = useCallback(async () => {
+    const msg = composeSubmitWhitelistProposalMsg({
+      title,
+      description,
+      changesValue: JSON.stringify({
+        ...govParams?.uploadAccess,
+        addresses: govParams?.uploadAccess.addresses?.concat(addressesArray),
+      }),
+      initialDeposit,
+      proposer: walletAddress as Addr,
+    });
+    const stream = await submitProposalTx({
+      estimatedFee,
+      messages: [msg],
+      whitelistNumber: addressesArray.length,
+      amountToVote: big(minDeposit?.formattedAmount || 0).lt(
+        initialDeposit.amount
+      )
+        ? null
+        : `${d2Formatter(
+            big(minDeposit?.formattedAmount || 0).minus(initialDeposit.amount),
+            "NaN"
+          )} ${minDeposit?.formattedDenom}`,
+      onTxSucceed: () => setProcessing(false),
+      onTxFailed: () => setProcessing(false),
+    });
+    if (stream) {
+      setProcessing(true);
+      broadcast(stream);
+    }
+  }, [
+    addressesArray,
+    description,
+    title,
+    estimatedFee,
+    govParams,
+    initialDeposit,
+    walletAddress,
+    minDeposit,
+    broadcast,
+    submitProposalTx,
+  ]);
+
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSALS);
   }, [router.isReady]);
@@ -157,7 +191,7 @@ const Whitelisting = observer(() => {
     if (minDeposit)
       reset({
         ...defaultValues,
-        initialDeposit: { denom: minDeposit.denom, amount: "10" },
+        initialDeposit: { denom: minDeposit.denom, amount: "" },
       });
   }, [minDeposit, reset]);
 
@@ -173,7 +207,7 @@ const Whitelisting = observer(() => {
             <Heading as="h5" variant="h5">
               Create Proposal to Whitelisting
             </Heading>
-            <Text color="text.dark" mt={4}>
+            <Text color="text.dark" mt={4} fontWeight={500} variant="body2">
               Allowed address will be able to upload and stored code without
               opening proposal
             </Text>
@@ -229,7 +263,7 @@ const Whitelisting = observer(() => {
               <Heading as="h6" variant="h6" mt={12}>
                 Addresses to be allowed to store code
               </Heading>
-              <Text color="text.dark" my={2}>
+              <Text color="text.dark" my={2} fontWeight={500} variant="body2">
                 If the proposal is passed, these addresses will be allowed to
                 upload and store code without opening proposal
               </Text>
@@ -297,7 +331,7 @@ const Whitelisting = observer(() => {
               <Heading as="h6" variant="h6" mt={12}>
                 Initial Deposit
               </Heading>
-              <Text color="text.dark" mt={2}>
+              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
                 Minimum deposit required to start 7-day voting period:{" "}
                 {minDeposit?.formattedToken}
               </Text>
@@ -381,7 +415,11 @@ const Whitelisting = observer(() => {
           <GridItem area="postspace" />
         </Grid>
       </PageContainer>
-      {/* <Footer disabled={isSimulating || !enabledTx || !estimatedFee} /> */}
+      <Footer
+        disabled={isSimulating || !enabledTx || !estimatedFee}
+        onSubmit={proceed}
+        loading={processing}
+      />
     </>
   );
 });

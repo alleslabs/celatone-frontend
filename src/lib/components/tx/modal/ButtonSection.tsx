@@ -105,6 +105,40 @@ export const ButtonSection = ({
           Close
         </Button>
       );
+    case "proposal":
+      return (
+        <>
+          <Button
+            variant="ghost-primary"
+            onClick={() => {
+              // TODO!!: Revisit path
+              navigate({ pathname: "/proposal" });
+              onClose?.();
+            }}
+          >
+            View Proposal
+            <CustomIcon name="launch" color="lilac.main" boxSize={3} ml={2} />
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              // TODO!!: Revisit path
+              navigate({
+                pathname: "/proposals",
+              });
+              onClose?.();
+            }}
+          >
+            See in Proposal List
+            <CustomIcon
+              name="chevron-right"
+              color="text.main"
+              boxSize={3}
+              ml={2}
+            />
+          </Button>
+        </>
+      );
     default:
       return (
         <>
