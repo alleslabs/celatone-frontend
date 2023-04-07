@@ -99,7 +99,6 @@ export const ProposalTypeFilter = forwardRef<
           ref={ref}
           isDropdown={isDropdown}
           filterDropdown={filterDropdown}
-          setDropdownValue={() => setDropdownValue(proposalTypes)}
           setIsDropdown={setIsDropdown}
           chipContainerComponent={
             <Flex alignItems="center" pl={2} gap={2}>

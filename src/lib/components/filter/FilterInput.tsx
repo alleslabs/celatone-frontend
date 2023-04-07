@@ -17,7 +17,6 @@ interface FilterInputProps {
   placeholder?: string;
   label?: string;
   filterDropdown: (value: string) => void;
-  setDropdownValue: () => void;
 }
 export const FilterInput = ({
   placeholder,
@@ -27,7 +26,6 @@ export const FilterInput = ({
   inputRef,
   ref,
   filterDropdown,
-  setDropdownValue,
   setIsDropdown,
   chipContainerComponent,
 }: FilterInputProps) => (
@@ -41,10 +39,6 @@ export const FilterInput = ({
       borderColor="pebble.700"
       overflowX="scroll"
       alignItems="center"
-      onClick={() => {
-        setDropdownValue();
-        setIsDropdown(!isDropdown);
-      }}
     >
       {chipContainerComponent}
       <Input
@@ -53,10 +47,12 @@ export const FilterInput = ({
         size="lg"
         minW="150px"
         placeholder={result.length ? "" : placeholder}
-        onChange={(e) => filterDropdown(e.currentTarget.value)}
         ref={mergeRefs([inputRef, ref])}
         maxLength={36}
         style={{ border: 0, maxHeight: "54px" }}
+        onFocus={(e) => filterDropdown(e.currentTarget.value)}
+        onChange={(e) => filterDropdown(e.currentTarget.value)}
+        onClick={() => setIsDropdown(true)}
       />
       <CustomIcon
         name={isDropdown ? "chevron-up" : "chevron-down"}
@@ -67,6 +63,7 @@ export const FilterInput = ({
         right="0px"
         minH="full"
         backgroundColor="background.main"
+        onClick={() => setIsDropdown(!isDropdown)}
       />
     </Flex>
 
