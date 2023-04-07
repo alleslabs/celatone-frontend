@@ -1,7 +1,8 @@
-import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
+import { Flex, Heading, Text, Switch, Tooltip } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { useChainId } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
@@ -14,17 +15,23 @@ import {
   useProposalList,
   useProposalListCount,
 } from "lib/services/proposalService";
+import type { Addr, Option } from "lib/types";
 
 import { ProposalTable } from "./table/ProposalTable";
 
 const Proposals = () => {
   const chainId = useChainId();
   const router = useRouter();
+  const { address } = useWallet();
+  const [search, setSearch] = useState("");
+  const [proposer, setProposer] = useState<Option<Addr>>(undefined);
+  const [isSelected, setIsSelected] = useState(false);
+
   const { data: countProposals = 0 } = useProposalListCount(
     [],
     [],
-    "",
-    undefined
+    search,
+    proposer
   );
   const {
     pagesQuantity,
@@ -46,8 +53,8 @@ const Proposals = () => {
     pageSize,
     [],
     [],
-    "",
-    undefined
+    search,
+    proposer
   );
 
   useEffect(() => {
@@ -58,6 +65,11 @@ const Proposals = () => {
     setPageSize(10);
     setCurrentPage(1);
   }, [chainId, setCurrentPage, setPageSize]);
+
+  useEffect(() => {
+    setIsSelected(false);
+    setProposer(undefined);
+  }, [chainId, address]);
 
   const onPageChange = (nextPage: number) => setCurrentPage(nextPage);
 
@@ -76,18 +88,48 @@ const Proposals = () => {
         <NewProposalButton />
       </Flex>
       <Flex direction="column" my={8} gap={8}>
-        <Flex justify="space-between">
-          {/* TODO - Wireup search bar */}
+        <Flex justify="space-between" align="center">
           <InputWithIcon
             placeholder="Search with Proposal ID or Proposal Title"
-            onChange={() => {}}
+            onChange={(e) => setSearch(e.target.value)}
             size="lg"
-            value="Value"
+            value={search}
           />
-          <Flex gap={2} alignItems="center" justify="center" minW="200px">
-            <Switch size="md" />
-            <Text>My Proposals</Text>
-          </Flex>
+          <Tooltip
+            isDisabled={!!address}
+            hasArrow
+            label="You need to connect wallet to see your proposals"
+            placement="top"
+            bg="honeydew.darker"
+            maxW="240px"
+            whiteSpace="pre-line"
+            textAlign="center"
+          >
+            <div>
+              <Switch
+                alignItems="center"
+                justifyContent="center"
+                h="fit-content"
+                minW="200px"
+                display="flex"
+                size="md"
+                isChecked={isSelected}
+                disabled={!address}
+                onChange={(e) => {
+                  if (e.target.checked && address) {
+                    setProposer(address as Addr);
+                  } else {
+                    setProposer(undefined);
+                  }
+                  setIsSelected(e.target.checked);
+                }}
+              >
+                <Text cursor={address ? "pointer" : "default"}>
+                  My Proposals
+                </Text>
+              </Switch>
+            </div>
+          </Tooltip>
         </Flex>
         <Flex gap={2}>
           {/* TODO - Add filter by status  */}

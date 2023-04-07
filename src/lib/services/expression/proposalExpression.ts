@@ -16,9 +16,9 @@ export const useProposalListExpression = (
       type: types.length ? { _in: types } : {},
       _or: [
         {
-          title: search ? { _regex: search } : {},
+          title: search ? { _iregex: search } : {},
         },
-        { id: parseSearch ? { _eq: parseSearch } : {} },
+        ...(parseSearch ? [{ id: { _eq: parseSearch } }] : []),
       ],
     }),
     [parseSearch, proposer, search, statuses, types]
