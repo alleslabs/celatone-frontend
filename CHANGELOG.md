@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#278](https://github.com/alleslabs/celatone-frontend/pull/278) Fully wired block details page
 - [#272](https://github.com/alleslabs/celatone-frontend/pull/272) Add blocks page and table component
 - [#271](https://github.com/alleslabs/celatone-frontend/pull/271) Create transaction list page
 - [#245](https://github.com/alleslabs/celatone-frontend/pull/245) Add amplitude for account detail page

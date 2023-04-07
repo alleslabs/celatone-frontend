@@ -5,21 +5,6 @@ export const explorerMap: Record<string, string> = {
   terra2testnet: "https://terrasco.pe/testnet",
 };
 
-export const getExplorerBlockUrl = (chainName: string) => {
-  let pathSuffix = "";
-  switch (chainName) {
-    case "osmosis":
-    case "osmosistestnet":
-    case "terra2":
-    case "terra2testnet":
-      pathSuffix = "blocks";
-      break;
-    default:
-      break;
-  }
-  return `${explorerMap[chainName]}/${pathSuffix}`;
-};
-
 export const getProposalUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
