@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import type { Addr, Option, TxFilters } from "lib/types";
+import { isTxHash } from "lib/utils";
 
 const actions = {
   isExecute: "is_execute",
@@ -28,8 +29,8 @@ const generateActionsFilter = (filters: TxFilters) =>
 const generateSearch = (search: string) =>
   search
     ? [
-        { hash: { _eq: `\\\\${search}` } },
-        { contracts: { address: { _eq: search } } },
+        { hash: { _eq: isTxHash(search) ? `\\x${search}` : "" } },
+        { contract_transactions: { contract: { address: { _eq: search } } } },
       ]
     : [{}];
 
@@ -45,7 +46,7 @@ export const useTxExpression = (
       is_signer: relation === undefined ? {} : { _eq: relation },
       transaction: {
         ...generateActionsFilter(filters),
-        _and: [{ _or: generateSearch(search) }],
+        _or: generateSearch(search.toLocaleLowerCase()),
       },
     }),
     [address, filters, relation, search]
