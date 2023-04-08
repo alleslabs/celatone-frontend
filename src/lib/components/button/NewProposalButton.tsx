@@ -35,7 +35,7 @@ export const NewProposalButton = () => {
           // TODO - Change navigation path
           onClick={() => {
             navigate({
-              pathname: "/proposals",
+              pathname: "/proposal-storecode",
             });
           }}
         >
@@ -46,11 +46,22 @@ export const NewProposalButton = () => {
           onClick={() => {
             // TODO - Change navigation path
             navigate({
-              pathname: "",
+              pathname: "/proposal-instantiate",
             });
           }}
         >
           To Instantiate Contract
+        </StyledMenuItem>
+        <StyledMenuItem
+          icon={<CustomIcon name="admin" />}
+          onClick={() => {
+            // TODO - Change navigation path
+            navigate({
+              pathname: "/proposal-whitelisting",
+            });
+          }}
+        >
+          To Whitelisting
         </StyledMenuItem>
       </MenuList>
     </Menu>
