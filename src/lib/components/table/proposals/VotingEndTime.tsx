@@ -13,7 +13,7 @@ export const VotingEndTime = ({
   depositEndTime: Proposal["depositEndTime"];
   status: Proposal["status"];
 }) => {
-  if (status === ProposalStatus.INACTIVE) {
+  if (status === ProposalStatus.DEPOSIT_FAILED) {
     return <Text color="text.dark">N/A</Text>;
   }
 

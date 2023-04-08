@@ -53,6 +53,8 @@ const documents = {
     types.GetProposalListDocument,
   "\n  query getProposalListCount($expression: proposals_bool_exp) {\n    proposals_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetProposalListCountDocument,
+  "\n  query getProposalTypes {\n    proposals(distinct_on: type) {\n      type\n    }\n  }\n":
+    types.GetProposalTypesDocument,
   "\n  query getExecuteTxsByContractAddressPagination(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_transactions_view(\n      where: {\n        contract_address: { _eq: $contractAddress }\n        is_execute: { _eq: true }\n      }\n      order_by: { timestamp: desc }\n      limit: $pageSize\n      offset: $offset\n    ) {\n      hash\n      messages\n      success\n      sender\n      height\n      timestamp\n      is_execute\n      is_ibc\n      is_instantiate\n      is_send\n      is_store_code\n      is_migrate\n      is_update_admin\n      is_clear_admin\n    }\n  }\n":
     types.GetExecuteTxsByContractAddressPaginationDocument,
   "\n  query getExecuteTxsCountByContractAddress($contractAddress: String!) {\n    contract_transactions_aggregate(\n      where: {\n        contract: { address: { _eq: $contractAddress } }\n        transaction: { is_execute: { _eq: true } }\n      }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
@@ -138,6 +140,9 @@ export function graphql(
 export function graphql(
   source: "\n  query getProposalListCount($expression: proposals_bool_exp) {\n    proposals_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getProposalListCount($expression: proposals_bool_exp) {\n    proposals_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getProposalTypes {\n    proposals(distinct_on: type) {\n      type\n    }\n  }\n"
+): typeof documents["\n  query getProposalTypes {\n    proposals(distinct_on: type) {\n      type\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getExecuteTxsByContractAddressPagination(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_transactions_view(\n      where: {\n        contract_address: { _eq: $contractAddress }\n        is_execute: { _eq: true }\n      }\n      order_by: { timestamp: desc }\n      limit: $pageSize\n      offset: $offset\n    ) {\n      hash\n      messages\n      success\n      sender\n      height\n      timestamp\n      is_execute\n      is_ibc\n      is_instantiate\n      is_send\n      is_store_code\n      is_migrate\n      is_update_admin\n      is_clear_admin\n    }\n  }\n"
 ): typeof documents["\n  query getExecuteTxsByContractAddressPagination(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_transactions_view(\n      where: {\n        contract_address: { _eq: $contractAddress }\n        is_execute: { _eq: true }\n      }\n      order_by: { timestamp: desc }\n      limit: $pageSize\n      offset: $offset\n    ) {\n      hash\n      messages\n      success\n      sender\n      height\n      timestamp\n      is_execute\n      is_ibc\n      is_instantiate\n      is_send\n      is_store_code\n      is_migrate\n      is_update_admin\n      is_clear_admin\n    }\n  }\n"];

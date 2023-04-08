@@ -6,15 +6,16 @@ import type { ProposalsTableRowProps } from "./ProposalsTableRow";
 
 export const ResolvedHeight = ({
   resolvedHeight,
-  isInactive,
+  isDepositFailed,
   isDepositOrVoting,
 }: {
   resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
-  isInactive: boolean;
+  isDepositFailed: boolean;
   isDepositOrVoting: boolean;
 }) => {
   if (isDepositOrVoting) return <Text color="text.dark">Pending</Text>;
-  if (!resolvedHeight || isInactive) return <Text color="text.dark">N/A</Text>;
+  if (!resolvedHeight || isDepositFailed)
+    return <Text color="text.dark">N/A</Text>;
   return (
     <ExplorerLink
       type="block_height"

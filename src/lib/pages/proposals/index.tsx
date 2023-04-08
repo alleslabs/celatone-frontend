@@ -15,21 +15,26 @@ import {
   useProposalList,
   useProposalListCount,
 } from "lib/services/proposalService";
-import type { Addr, Option } from "lib/types";
+import type { ProposalStatus, ProposalType, Addr, Option } from "lib/types";
 
+import { ProposalStatusFilter } from "./components/ProposalStatusFilter";
+import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 import { ProposalTable } from "./table/ProposalTable";
 
 const Proposals = () => {
   const chainId = useChainId();
   const router = useRouter();
+  const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
+  const [types, setTypes] = useState<ProposalType[]>([]);
+
   const { address } = useWallet();
   const [search, setSearch] = useState("");
-  const [proposer, setProposer] = useState<Option<Addr>>(undefined);
+  const [proposer, setProposer] = useState<Option<Addr>>();
   const [isSelected, setIsSelected] = useState(false);
 
   const { data: countProposals = 0 } = useProposalListCount(
-    [],
-    [],
+    statuses,
+    types,
     search,
     proposer
   );
@@ -51,8 +56,8 @@ const Proposals = () => {
   const { data: proposals, isLoading } = useProposalList(
     offset,
     pageSize,
-    [],
-    [],
+    statuses,
+    types,
     search,
     proposer
   );
@@ -131,11 +136,19 @@ const Proposals = () => {
             </div>
           </Tooltip>
         </Flex>
-        <Flex gap={2}>
-          {/* TODO - Add filter by status  */}
-          <Flex>Filter by Status</Flex>
-          {/* TODO - Add filter by type */}
-          <Flex>Filter by Type</Flex>
+        <Flex gap={2} pb={3}>
+          <ProposalStatusFilter
+            label="Filter by Status"
+            result={statuses}
+            setResult={setStatuses}
+            placeholder="All Status"
+          />
+          <ProposalTypeFilter
+            label="Filter by Type"
+            result={types}
+            setResult={setTypes}
+            placeholder="All Type"
+          />
         </Flex>
       </Flex>
       <ProposalTable proposals={proposals} isLoading={isLoading} />

@@ -8,6 +8,7 @@ import {
   getProposalListCount,
   getProposalsByWalletAddressPagination,
   getProposalsCountByWalletAddress,
+  getProposalTypes,
   getRelatedProposalsByContractAddressPagination,
   getRelatedProposalsCountByContractAddress,
 } from "lib/query";
@@ -20,7 +21,7 @@ import type {
   Addr,
   Proposal,
 } from "lib/types";
-import { parseDate } from "lib/utils";
+import { parseDate, parseProposalStatus } from "lib/utils";
 
 import { useProposalListExpression } from "./expression";
 
@@ -42,7 +43,7 @@ export const useRelatedProposalsByContractAddressPagination = (
         contract_proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.proposal_id,
           title: proposal.proposal.title,
-          status: proposal.proposal.status as ProposalStatus,
+          status: parseProposalStatus(proposal.proposal.status),
           votingEndTime: parseDate(proposal.proposal.voting_end_time),
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.resolved_height,
@@ -116,7 +117,7 @@ export const useProposalsByWalletAddressPagination = (
         proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.id,
           title: proposal.title,
-          status: proposal.status as ProposalStatus,
+          status: parseProposalStatus(proposal.status),
           votingEndTime: parseDate(proposal.voting_end_time),
           depositEndTime: parseDate(proposal.deposit_end_time),
           resolvedHeight: proposal.resolved_height,
@@ -192,7 +193,7 @@ export const useProposalList = (
           proposals.map<Proposal>((proposal) => ({
             proposalId: proposal.id,
             title: proposal.title,
-            status: proposal.status as ProposalStatus,
+            status: parseProposalStatus(proposal.status),
             votingEndTime: parseDate(proposal.voting_end_time),
             depositEndTime: parseDate(proposal.deposit_end_time),
             resolvedHeight: proposal.resolved_height,
@@ -236,4 +237,18 @@ export const useProposalListCount = (
     ["proposal_list_count", indexerGraphClient, expression],
     queryFn
   );
+};
+
+export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getProposalTypes)
+        .then(({ proposals }) =>
+          proposals.map((proposal) => proposal.type).sort()
+        ),
+    [indexerGraphClient]
+  );
+  return useQuery(["proposal_types", indexerGraphClient], queryFn);
 };
