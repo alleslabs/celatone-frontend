@@ -4,9 +4,9 @@ import { useWallet } from "@cosmos-kit/react";
 
 import { ProposalTextCell } from "../components/ProposalTextCell";
 import { getProposalUrl } from "lib/app-fns/explorer";
-import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow, TableRowFreeze } from "lib/components/table";
+import { Proposer } from "lib/components/table/proposals/Proposer";
 import { ResolvedHeight } from "lib/components/table/proposals/ResolvedHeight";
 import { StatusChip } from "lib/components/table/proposals/StatusChip";
 import { VotingEndTime } from "lib/components/table/proposals/VotingEndTime";
@@ -26,7 +26,6 @@ export const ProposalTableRow = ({
 }: ProposalRowProps) => {
   const { currentChainName } = useWallet();
 
-  const getAddressType = useGetAddressType();
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
   const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
@@ -93,15 +92,7 @@ export const ProposalTableRow = ({
         />
       </TableRow>
       <TableRow>
-        {proposal.proposer ? (
-          <ExplorerLink
-            type={getAddressType(proposal.proposer)}
-            value={proposal.proposer}
-            showCopyOnHover
-          />
-        ) : (
-          "N/A"
-        )}
+        <Proposer proposer={proposal.proposer} />
       </TableRow>
     </Grid>
   );

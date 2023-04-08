@@ -2,8 +2,8 @@ import type { GridProps } from "@chakra-ui/react";
 import { Grid, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { Proposer } from "lib/components/table/proposals/Proposer";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
@@ -20,7 +20,6 @@ export const ProposalsTableRow = ({
   proposal,
   templateColumns,
 }: ProposalsTableRowProps) => {
-  const getAddressType = useGetAddressType();
   const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
   const isDepositOrVoting =
     proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
@@ -57,15 +56,7 @@ export const ProposalsTableRow = ({
         <Text color="text.dark">{proposal.type}</Text>
       </TableRow>
       <TableRow>
-        {proposal.proposer ? (
-          <ExplorerLink
-            type={getAddressType(proposal.proposer)}
-            value={proposal.proposer}
-            showCopyOnHover
-          />
-        ) : (
-          "N/A"
-        )}
+        <Proposer proposer={proposal.proposer} />
       </TableRow>
     </Grid>
   );
