@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import type { Event } from "@cosmjs/stargate";
 import type { ReactNode } from "react";
-import { useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useGetAddressType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
@@ -21,7 +21,13 @@ interface EventBoxProps {
 export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
   const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(true);
-  const stackRef = useRef<HTMLDivElement>(null);
+  const [receiptHeight, setReceiptHeight] = useState(0);
+
+  const measuredRef = useCallback((node: HTMLDivElement | null) => {
+    if (node !== null) {
+      setReceiptHeight(node.clientHeight);
+    }
+  }, []);
 
   const receipts = event.attributes.map<TxReceipt>(({ key, value }) => {
     const addrType = getAddressType(value);
@@ -135,10 +141,10 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
       </Flex>
       <Box
         overflow="hidden"
-        h={expand ? stackRef.current?.clientHeight : 0}
+        h={expand ? `${receiptHeight}px` : 0}
         transition="all .25s ease-in-out"
       >
-        <Flex direction="column" p={4} pt={0} ref={stackRef}>
+        <Flex direction="column" p={4} pt={0} ref={measuredRef}>
           <Box mb={4} h="1px" bgColor="pebble.700" />
           <TxReceiptRender
             keyPrefix={msgIndex.toString() + event.type}
