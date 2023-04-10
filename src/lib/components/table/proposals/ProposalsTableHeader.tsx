@@ -12,7 +12,7 @@ export const ProposalsTableHeader = ({
     <TableHeader>Proposal ID</TableHeader>
     <TableHeader>Proposal Title</TableHeader>
     <TableHeader textAlign="center">Status</TableHeader>
-    <TableHeader>Vote Finish on</TableHeader>
+    <TableHeader>Voting ends</TableHeader>
     <TableHeader>Resolved Block Height</TableHeader>
     <TableHeader>Type</TableHeader>
     <TableHeader>Proposer</TableHeader>
