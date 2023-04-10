@@ -41,7 +41,7 @@ export const NewProposalButton = () => {
         >
           To Store Code
         </StyledMenuItem>
-        <StyledMenuItem
+        {/* <StyledMenuItem
           icon={<CustomIcon name="contract-address" />}
           onClick={() => {
             // TODO - Change navigation path
@@ -51,7 +51,7 @@ export const NewProposalButton = () => {
           }}
         >
           To Instantiate Contract
-        </StyledMenuItem>
+        </StyledMenuItem> */}
         <StyledMenuItem
           icon={<CustomIcon name="admin" />}
           onClick={() => {
