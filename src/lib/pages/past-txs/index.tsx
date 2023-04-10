@@ -25,9 +25,13 @@ import {
   useTxsByAddressPagination,
   useTxsCountByAddress,
 } from "lib/services/txService";
-import type { HumanAddr, Option } from "lib/types";
+import type { HumanAddr, Option, TxFilters } from "lib/types";
 
-import type { PastTxsState } from "./types";
+interface PastTxsState {
+  search: string;
+  filters: TxFilters;
+  isSigner: Option<boolean>;
+}
 
 const PastTxs = () => {
   const router = useRouter();
@@ -133,7 +137,7 @@ const PastTxs = () => {
 
         <Flex gap={1}>
           <TxRelationSelection
-            setValue={(value: Option<boolean>) => setValue("isSigner", value)}
+            setValue={(value) => setValue("isSigner", value)}
             w="165px"
           />
           <TxFilterSelection
@@ -148,7 +152,7 @@ const PastTxs = () => {
         transactions={txs}
         isLoading={isLoading}
         emptyState={
-          pastTxsState.search !== "" || filterSelected.length !== 0 ? (
+          !pastTxsState.search.trim().length || !filterSelected.length ? (
             <EmptyState
               imageVariant="not-found"
               message={`
