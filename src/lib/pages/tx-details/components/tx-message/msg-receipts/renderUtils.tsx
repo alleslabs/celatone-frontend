@@ -55,11 +55,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
     case type === "json" || typeof value === "object":
       return (
         <JsonReadOnly
-          text={JSON.stringify(
-            value,
-            null,
-            Array.isArray(value) ? undefined : 2
-          )}
+          text={JSON.stringify(value, null, 2)}
           canCopy
           fullWidth
           isExpandable

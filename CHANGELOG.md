@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
 - [#264](https://github.com/alleslabs/celatone-frontend/pull/264) Fix txhash uppercase query
 - [#258](https://github.com/alleslabs/celatone-frontend/pull/258) Fix address type render for contract admin address
 - [#253](https://github.com/alleslabs/celatone-frontend/pull/253) Fix public code logo shown when switching from mainnet to testnet
