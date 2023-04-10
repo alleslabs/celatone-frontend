@@ -38,16 +38,16 @@ export const useTxExpression = (
   address: Option<Addr>,
   search: string,
   filters: TxFilters,
-  relation: Option<boolean>
+  isSigner: Option<boolean>
 ) =>
   useMemo(
     () => ({
       account: { address: address ? { _eq: address } : {} },
-      is_signer: relation === undefined ? {} : { _eq: relation },
+      is_signer: isSigner === undefined ? {} : { _eq: isSigner },
       transaction: {
         ...generateActionsFilter(filters),
         _or: generateSearch(search.toLocaleLowerCase()),
       },
     }),
-    [address, filters, relation, search]
+    [address, filters, isSigner, search]
   );

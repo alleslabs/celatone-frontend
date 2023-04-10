@@ -109,7 +109,7 @@ export const TransactionsTableRow = ({
             <AccordionTx
               key={index.toString() + msg.type}
               message={msg}
-              allowFurtherAction={false}
+              allowFurtherAction={showAction}
             />
           ))}
         </Grid>

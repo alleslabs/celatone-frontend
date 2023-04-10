@@ -16,6 +16,7 @@ interface FurtherActionButtonProps {
  * Resend should not occurs for instantiate2
  * Redo modal if the message is instantiate2
  *
+ * Both actions should not occur for MsgExec
  */
 export const FurtherActionButton = ({
   transaction,
@@ -24,6 +25,7 @@ export const FurtherActionButton = ({
     (found, msg) => found || extractMsgType(msg.type) === "MsgExec",
     false
   );
+  if (isExec) return null;
 
   const isInstantiate2 =
     transaction.isInstantiate &&
@@ -33,8 +35,7 @@ export const FurtherActionButton = ({
 
   if (
     transaction.furtherAction === MsgFurtherAction.RESEND &&
-    !isInstantiate2 &&
-    !isExec
+    !isInstantiate2
   ) {
     return <ResendButton messages={transaction.messages} />;
   }
@@ -43,7 +44,7 @@ export const FurtherActionButton = ({
     return <RedoModal message={transaction.messages[0]} />;
   }
 
-  if (transaction.furtherAction === MsgFurtherAction.REDO && !isExec) {
+  if (transaction.furtherAction === MsgFurtherAction.REDO) {
     return <RedoButton message={transaction.messages[0]} />;
   }
 

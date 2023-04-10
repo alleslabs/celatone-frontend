@@ -24,7 +24,7 @@ interface TxsTableProps {
 interface TxsTableBodyProps extends TxsTableProps {
   filters: TxFilters;
   filterSelected: string[];
-  relation: Option<boolean>;
+  isSigner: Option<boolean>;
 }
 
 const TxsTableBody = ({
@@ -35,7 +35,7 @@ const TxsTableBody = ({
   onViewMore,
   filters,
   filterSelected,
-  relation,
+  isSigner,
 }: TxsTableBodyProps) => {
   const {
     pagesQuantity,
@@ -57,7 +57,7 @@ const TxsTableBody = ({
     walletAddress,
     "",
     filters,
-    relation,
+    isSigner,
     offset,
     onViewMore ? 5 : pageSize
   );
@@ -116,7 +116,7 @@ const TxsTableBody = ({
 };
 
 export const TxsTable = (txsTableProps: TxsTableProps) => {
-  const [relation, setRelation] = useState<Option<boolean>>(undefined);
+  const [isSigner, setIsSigner] = useState<Option<boolean>>(undefined);
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
 
   const handleSetFilters = (filter: string, bool: boolean) => {
@@ -133,16 +133,15 @@ export const TxsTable = (txsTableProps: TxsTableProps) => {
       <Flex direction="row" justify="space-between" alignItems="center">
         <TableTitle title="Transactions" count={totalData ?? 0} mb={0} />
         {!onViewMore && (
-          <Flex gap={1} w="50%">
+          <Flex gap={1}>
             <TxRelationSelection
-              setValue={(value: Option<boolean>) => setRelation(value)}
-              w="50%"
-              minW="130px"
+              setValue={(value: Option<boolean>) => setIsSigner(value)}
+              w="165px"
             />
             <TxFilterSelection
               result={filterSelected}
               setResult={handleSetFilters}
-              minW="150px"
+              boxWidth="285px"
               placeholder="All"
             />
           </Flex>
@@ -152,7 +151,7 @@ export const TxsTable = (txsTableProps: TxsTableProps) => {
         {...txsTableProps}
         filters={filters}
         filterSelected={filterSelected}
-        relation={relation}
+        isSigner={isSigner}
       />
     </Box>
   );

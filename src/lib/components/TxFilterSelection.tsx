@@ -85,7 +85,13 @@ export const TxFilterSelection = forwardRef<
 
     const filterOptions = (value: string) => {
       setDisplayOptions(true);
-      setPartialResult(value ? matchSorter(options, value) : options);
+      setPartialResult(
+        value
+          ? matchSorter(options, value, {
+              threshold: matchSorter.rankings.CONTAINS,
+            })
+          : options
+      );
     };
 
     const isOptionSelected = (option: string) =>

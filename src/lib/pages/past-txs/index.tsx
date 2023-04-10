@@ -36,7 +36,7 @@ const PastTxs = () => {
   const defaultValues: PastTxsState = {
     search: "",
     filters: DEFAULT_TX_FILTERS,
-    relation: undefined,
+    isSigner: undefined,
   };
 
   const { watch, setValue } = useForm({
@@ -50,7 +50,7 @@ const PastTxs = () => {
     address as HumanAddr,
     pastTxsState.search,
     pastTxsState.filters,
-    pastTxsState.relation
+    pastTxsState.isSigner
   );
 
   const {
@@ -73,7 +73,7 @@ const PastTxs = () => {
     address as HumanAddr,
     pastTxsState.search,
     pastTxsState.filters,
-    pastTxsState.relation,
+    pastTxsState.isSigner,
     offset,
     pageSize
   );
@@ -131,16 +131,15 @@ const PastTxs = () => {
           </InputRightElement>
         </InputGroup>
 
-        <Flex gap={1} w="full">
+        <Flex gap={1}>
           <TxRelationSelection
-            setValue={(value: Option<boolean>) => setValue("relation", value)}
-            w="50%"
-            minW="130px"
+            setValue={(value: Option<boolean>) => setValue("isSigner", value)}
+            w="165px"
           />
           <TxFilterSelection
             result={filterSelected}
             setResult={setFilter}
-            minW="150px"
+            boxWidth="285px"
             placeholder="All"
           />
         </Flex>
@@ -161,8 +160,7 @@ const PastTxs = () => {
             <EmptyState
               imageVariant="empty"
               message={`
-    Past transactions involving with Wasm module
-    such as Instantiate, Execute, or Upload Wasm file will display here.
+    Past transactions will display here.
     `}
             />
           )

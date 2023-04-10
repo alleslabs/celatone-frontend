@@ -22,7 +22,7 @@ export const TransactionsTableWithWallet = ({
     <Flex direction="column" py="48px" borderColor="pebble.700">
       <DisconnectedState
         text="to see your past transactions."
-        helperText="Past transactions involving the Wasm module (storing wasm codes, contract interactions, etc.) will display here."
+        helperText="Past transactions will display here."
       />
     </Flex>
   ) : (
