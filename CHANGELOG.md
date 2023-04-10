@@ -39,6 +39,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#265](https://github.com/alleslabs/celatone-frontend/pull/265) Add filter by status and type to proposal list page, and change Inactive proposal status to DepositFailed
+- [#263](https://github.com/alleslabs/celatone-frontend/pull/263) Wireup search bar and my proposal switch in proposal list page
+- [#260](https://github.com/alleslabs/celatone-frontend/pull/260) Add proposal list table to proposal list page
+- [#255](https://github.com/alleslabs/celatone-frontend/pull/255) Get data for proposal list page
+- [#250](https://github.com/alleslabs/celatone-frontend/pull/250) Add skeleton, route, and amp for proposal list page
 - [#262](https://github.com/alleslabs/celatone-frontend/pull/262) Add amplitude tracking for tx page components
 - [#224](https://github.com/alleslabs/celatone-frontend/pull/224) Support search by tx and internal tx link
 - [#226](https://github.com/alleslabs/celatone-frontend/pull/226) Add fully functional transaction details page
@@ -58,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#257](https://github.com/alleslabs/celatone-frontend/pull/257) Fix proposal resolved height query, resolved height rendering, and move ResolvedHeight and VotingEndTime to their own file
 - [#264](https://github.com/alleslabs/celatone-frontend/pull/264) Fix txhash uppercase query
 - [#258](https://github.com/alleslabs/celatone-frontend/pull/258) Fix address type render for contract admin address
 - [#253](https://github.com/alleslabs/celatone-frontend/pull/253) Fix public code logo shown when switching from mainnet to testnet

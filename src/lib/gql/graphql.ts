@@ -794,7 +794,27 @@ export type Blocks = {
   contract_proposals_aggregate: Contract_Proposals_Aggregate;
   hash: Scalars["bytea"];
   height: Scalars["Int"];
+  /** An array relationship */
+  profit_by_denoms: Array<Profit_By_Denoms>;
+  /** An aggregate relationship */
+  profit_by_denoms_aggregate: Profit_By_Denoms_Aggregate;
+  /** An array relationship */
+  profit_by_routes: Array<Profit_By_Routes>;
+  /** An aggregate relationship */
+  profit_by_routes_aggregate: Profit_By_Routes_Aggregate;
+  /** An array relationship */
+  proposals: Array<Proposals>;
+  /** An aggregate relationship */
+  proposals_aggregate: Proposals_Aggregate;
   timestamp: Scalars["timestamp"];
+  /** An array relationship */
+  trade_by_routes: Array<Trade_By_Routes>;
+  /** An aggregate relationship */
+  trade_by_routes_aggregate: Trade_By_Routes_Aggregate;
+  /** An array relationship */
+  trades: Array<Trades>;
+  /** An aggregate relationship */
+  trades_aggregate: Trades_Aggregate;
   /** An array relationship */
   transactions: Array<Transactions>;
   /** An aggregate relationship */
@@ -853,6 +873,96 @@ export type BlocksContract_Proposals_AggregateArgs = {
   offset?: InputMaybe<Scalars["Int"]>;
   order_by?: InputMaybe<Array<Contract_Proposals_Order_By>>;
   where?: InputMaybe<Contract_Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksProfit_By_DenomsArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Denoms_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Denoms_Order_By>>;
+  where?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksProfit_By_Denoms_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Denoms_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Denoms_Order_By>>;
+  where?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksProfit_By_RoutesArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Routes_Order_By>>;
+  where?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksProfit_By_Routes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Routes_Order_By>>;
+  where?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksProposalsArgs = {
+  distinct_on?: InputMaybe<Array<Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Proposals_Order_By>>;
+  where?: InputMaybe<Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksProposals_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Proposals_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Proposals_Order_By>>;
+  where?: InputMaybe<Proposals_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksTrade_By_RoutesArgs = {
+  distinct_on?: InputMaybe<Array<Trade_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trade_By_Routes_Order_By>>;
+  where?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksTrade_By_Routes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Trade_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trade_By_Routes_Order_By>>;
+  where?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksTradesArgs = {
+  distinct_on?: InputMaybe<Array<Trades_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trades_Order_By>>;
+  where?: InputMaybe<Trades_Bool_Exp>;
+};
+
+/** columns and relationships of "blocks" */
+export type BlocksTrades_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Trades_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trades_Order_By>>;
+  where?: InputMaybe<Trades_Bool_Exp>;
 };
 
 /** columns and relationships of "blocks" */
@@ -921,7 +1031,17 @@ export type Blocks_Bool_Exp = {
   contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Bool_Exp>;
   hash?: InputMaybe<Bytea_Comparison_Exp>;
   height?: InputMaybe<Int_Comparison_Exp>;
+  profit_by_denoms?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+  profit_by_denoms_aggregate?: InputMaybe<Profit_By_Denoms_Aggregate_Bool_Exp>;
+  profit_by_routes?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+  profit_by_routes_aggregate?: InputMaybe<Profit_By_Routes_Aggregate_Bool_Exp>;
+  proposals?: InputMaybe<Proposals_Bool_Exp>;
+  proposals_aggregate?: InputMaybe<Proposals_Aggregate_Bool_Exp>;
   timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
+  trade_by_routes?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+  trade_by_routes_aggregate?: InputMaybe<Trade_By_Routes_Aggregate_Bool_Exp>;
+  trades?: InputMaybe<Trades_Bool_Exp>;
+  trades_aggregate?: InputMaybe<Trades_Aggregate_Bool_Exp>;
   transactions?: InputMaybe<Transactions_Bool_Exp>;
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Bool_Exp>;
 };
@@ -944,7 +1064,12 @@ export type Blocks_Insert_Input = {
   contract_proposals?: InputMaybe<Contract_Proposals_Arr_Rel_Insert_Input>;
   hash?: InputMaybe<Scalars["bytea"]>;
   height?: InputMaybe<Scalars["Int"]>;
+  profit_by_denoms?: InputMaybe<Profit_By_Denoms_Arr_Rel_Insert_Input>;
+  profit_by_routes?: InputMaybe<Profit_By_Routes_Arr_Rel_Insert_Input>;
+  proposals?: InputMaybe<Proposals_Arr_Rel_Insert_Input>;
   timestamp?: InputMaybe<Scalars["timestamp"]>;
+  trade_by_routes?: InputMaybe<Trade_By_Routes_Arr_Rel_Insert_Input>;
+  trades?: InputMaybe<Trades_Arr_Rel_Insert_Input>;
   transactions?: InputMaybe<Transactions_Arr_Rel_Insert_Input>;
 };
 
@@ -992,7 +1117,12 @@ export type Blocks_Order_By = {
   contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Order_By>;
   hash?: InputMaybe<Order_By>;
   height?: InputMaybe<Order_By>;
+  profit_by_denoms_aggregate?: InputMaybe<Profit_By_Denoms_Aggregate_Order_By>;
+  profit_by_routes_aggregate?: InputMaybe<Profit_By_Routes_Aggregate_Order_By>;
+  proposals_aggregate?: InputMaybe<Proposals_Aggregate_Order_By>;
   timestamp?: InputMaybe<Order_By>;
+  trade_by_routes_aggregate?: InputMaybe<Trade_By_Routes_Aggregate_Order_By>;
+  trades_aggregate?: InputMaybe<Trades_Aggregate_Order_By>;
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Order_By>;
 };
 
@@ -4010,6 +4140,10 @@ export type Mutation_Root = {
   delete_contracts?: Maybe<Contracts_Mutation_Response>;
   /** delete single row from the table: "contracts" */
   delete_contracts_by_pk?: Maybe<Contracts>;
+  /** delete data from the table: "profit_by_denoms" */
+  delete_profit_by_denoms?: Maybe<Profit_By_Denoms_Mutation_Response>;
+  /** delete data from the table: "profit_by_routes" */
+  delete_profit_by_routes?: Maybe<Profit_By_Routes_Mutation_Response>;
   /** delete data from the table: "proposals" */
   delete_proposals?: Maybe<Proposals_Mutation_Response>;
   /** delete single row from the table: "proposals" */
@@ -4018,6 +4152,10 @@ export type Mutation_Root = {
   delete_tracking?: Maybe<Tracking_Mutation_Response>;
   /** delete single row from the table: "tracking" */
   delete_tracking_by_pk?: Maybe<Tracking>;
+  /** delete data from the table: "trade_by_routes" */
+  delete_trade_by_routes?: Maybe<Trade_By_Routes_Mutation_Response>;
+  /** delete data from the table: "trades" */
+  delete_trades?: Maybe<Trades_Mutation_Response>;
   /** delete data from the table: "transactions" */
   delete_transactions?: Maybe<Transactions_Mutation_Response>;
   /** delete single row from the table: "transactions" */
@@ -4062,6 +4200,14 @@ export type Mutation_Root = {
   insert_contracts?: Maybe<Contracts_Mutation_Response>;
   /** insert a single row into the table: "contracts" */
   insert_contracts_one?: Maybe<Contracts>;
+  /** insert data into the table: "profit_by_denoms" */
+  insert_profit_by_denoms?: Maybe<Profit_By_Denoms_Mutation_Response>;
+  /** insert a single row into the table: "profit_by_denoms" */
+  insert_profit_by_denoms_one?: Maybe<Profit_By_Denoms>;
+  /** insert data into the table: "profit_by_routes" */
+  insert_profit_by_routes?: Maybe<Profit_By_Routes_Mutation_Response>;
+  /** insert a single row into the table: "profit_by_routes" */
+  insert_profit_by_routes_one?: Maybe<Profit_By_Routes>;
   /** insert data into the table: "proposals" */
   insert_proposals?: Maybe<Proposals_Mutation_Response>;
   /** insert a single row into the table: "proposals" */
@@ -4070,6 +4216,14 @@ export type Mutation_Root = {
   insert_tracking?: Maybe<Tracking_Mutation_Response>;
   /** insert a single row into the table: "tracking" */
   insert_tracking_one?: Maybe<Tracking>;
+  /** insert data into the table: "trade_by_routes" */
+  insert_trade_by_routes?: Maybe<Trade_By_Routes_Mutation_Response>;
+  /** insert a single row into the table: "trade_by_routes" */
+  insert_trade_by_routes_one?: Maybe<Trade_By_Routes>;
+  /** insert data into the table: "trades" */
+  insert_trades?: Maybe<Trades_Mutation_Response>;
+  /** insert a single row into the table: "trades" */
+  insert_trades_one?: Maybe<Trades>;
   /** insert data into the table: "transactions" */
   insert_transactions?: Maybe<Transactions_Mutation_Response>;
   /** insert a single row into the table: "transactions" */
@@ -4136,6 +4290,18 @@ export type Mutation_Root = {
   update_contracts_by_pk?: Maybe<Contracts>;
   /** update multiples rows of table: "contracts" */
   update_contracts_many?: Maybe<Array<Maybe<Contracts_Mutation_Response>>>;
+  /** update data of the table: "profit_by_denoms" */
+  update_profit_by_denoms?: Maybe<Profit_By_Denoms_Mutation_Response>;
+  /** update multiples rows of table: "profit_by_denoms" */
+  update_profit_by_denoms_many?: Maybe<
+    Array<Maybe<Profit_By_Denoms_Mutation_Response>>
+  >;
+  /** update data of the table: "profit_by_routes" */
+  update_profit_by_routes?: Maybe<Profit_By_Routes_Mutation_Response>;
+  /** update multiples rows of table: "profit_by_routes" */
+  update_profit_by_routes_many?: Maybe<
+    Array<Maybe<Profit_By_Routes_Mutation_Response>>
+  >;
   /** update data of the table: "proposals" */
   update_proposals?: Maybe<Proposals_Mutation_Response>;
   /** update single row of the table: "proposals" */
@@ -4148,6 +4314,16 @@ export type Mutation_Root = {
   update_tracking_by_pk?: Maybe<Tracking>;
   /** update multiples rows of table: "tracking" */
   update_tracking_many?: Maybe<Array<Maybe<Tracking_Mutation_Response>>>;
+  /** update data of the table: "trade_by_routes" */
+  update_trade_by_routes?: Maybe<Trade_By_Routes_Mutation_Response>;
+  /** update multiples rows of table: "trade_by_routes" */
+  update_trade_by_routes_many?: Maybe<
+    Array<Maybe<Trade_By_Routes_Mutation_Response>>
+  >;
+  /** update data of the table: "trades" */
+  update_trades?: Maybe<Trades_Mutation_Response>;
+  /** update multiples rows of table: "trades" */
+  update_trades_many?: Maybe<Array<Maybe<Trades_Mutation_Response>>>;
   /** update data of the table: "transactions" */
   update_transactions?: Maybe<Transactions_Mutation_Response>;
   /** update single row of the table: "transactions" */
@@ -4235,6 +4411,16 @@ export type Mutation_RootDelete_Contracts_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootDelete_Profit_By_DenomsArgs = {
+  where: Profit_By_Denoms_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Profit_By_RoutesArgs = {
+  where: Profit_By_Routes_Bool_Exp;
+};
+
+/** mutation root */
 export type Mutation_RootDelete_ProposalsArgs = {
   where: Proposals_Bool_Exp;
 };
@@ -4252,6 +4438,16 @@ export type Mutation_RootDelete_TrackingArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Tracking_By_PkArgs = {
   chain_id: Scalars["String"];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Trade_By_RoutesArgs = {
+  where: Trade_By_Routes_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_TradesArgs = {
+  where: Trades_Bool_Exp;
 };
 
 /** mutation root */
@@ -4375,6 +4571,26 @@ export type Mutation_RootInsert_Contracts_OneArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootInsert_Profit_By_DenomsArgs = {
+  objects: Array<Profit_By_Denoms_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Profit_By_Denoms_OneArgs = {
+  object: Profit_By_Denoms_Insert_Input;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Profit_By_RoutesArgs = {
+  objects: Array<Profit_By_Routes_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Profit_By_Routes_OneArgs = {
+  object: Profit_By_Routes_Insert_Input;
+};
+
+/** mutation root */
 export type Mutation_RootInsert_ProposalsArgs = {
   objects: Array<Proposals_Insert_Input>;
   on_conflict?: InputMaybe<Proposals_On_Conflict>;
@@ -4396,6 +4612,26 @@ export type Mutation_RootInsert_TrackingArgs = {
 export type Mutation_RootInsert_Tracking_OneArgs = {
   object: Tracking_Insert_Input;
   on_conflict?: InputMaybe<Tracking_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Trade_By_RoutesArgs = {
+  objects: Array<Trade_By_Routes_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Trade_By_Routes_OneArgs = {
+  object: Trade_By_Routes_Insert_Input;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_TradesArgs = {
+  objects: Array<Trades_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Trades_OneArgs = {
+  object: Trades_Insert_Input;
 };
 
 /** mutation root */
@@ -4566,6 +4802,30 @@ export type Mutation_RootUpdate_Contracts_ManyArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Profit_By_DenomsArgs = {
+  _inc?: InputMaybe<Profit_By_Denoms_Inc_Input>;
+  _set?: InputMaybe<Profit_By_Denoms_Set_Input>;
+  where: Profit_By_Denoms_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Profit_By_Denoms_ManyArgs = {
+  updates: Array<Profit_By_Denoms_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Profit_By_RoutesArgs = {
+  _inc?: InputMaybe<Profit_By_Routes_Inc_Input>;
+  _set?: InputMaybe<Profit_By_Routes_Set_Input>;
+  where: Profit_By_Routes_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Profit_By_Routes_ManyArgs = {
+  updates: Array<Profit_By_Routes_Updates>;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_ProposalsArgs = {
   _inc?: InputMaybe<Proposals_Inc_Input>;
   _set?: InputMaybe<Proposals_Set_Input>;
@@ -4604,6 +4864,30 @@ export type Mutation_RootUpdate_Tracking_ManyArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootUpdate_Trade_By_RoutesArgs = {
+  _inc?: InputMaybe<Trade_By_Routes_Inc_Input>;
+  _set?: InputMaybe<Trade_By_Routes_Set_Input>;
+  where: Trade_By_Routes_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Trade_By_Routes_ManyArgs = {
+  updates: Array<Trade_By_Routes_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_TradesArgs = {
+  _inc?: InputMaybe<Trades_Inc_Input>;
+  _set?: InputMaybe<Trades_Set_Input>;
+  where: Trades_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Trades_ManyArgs = {
+  updates: Array<Trades_Updates>;
+};
+
+/** mutation root */
 export type Mutation_RootUpdate_TransactionsArgs = {
   _inc?: InputMaybe<Transactions_Inc_Input>;
   _set?: InputMaybe<Transactions_Set_Input>;
@@ -4638,11 +4922,564 @@ export enum Order_By {
   DescNullsLast = "desc_nulls_last",
 }
 
+/** columns and relationships of "profit_by_denoms" */
+export type Profit_By_Denoms = {
+  __typename?: "profit_by_denoms";
+  amount: Scalars["String"];
+  /** An object relationship */
+  block: Blocks;
+  block_height: Scalars["Int"];
+  denom: Scalars["String"];
+};
+
+/** aggregated selection of "profit_by_denoms" */
+export type Profit_By_Denoms_Aggregate = {
+  __typename?: "profit_by_denoms_aggregate";
+  aggregate?: Maybe<Profit_By_Denoms_Aggregate_Fields>;
+  nodes: Array<Profit_By_Denoms>;
+};
+
+export type Profit_By_Denoms_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Profit_By_Denoms_Aggregate_Bool_Exp_Count>;
+};
+
+export type Profit_By_Denoms_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Profit_By_Denoms_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "profit_by_denoms" */
+export type Profit_By_Denoms_Aggregate_Fields = {
+  __typename?: "profit_by_denoms_aggregate_fields";
+  avg?: Maybe<Profit_By_Denoms_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Profit_By_Denoms_Max_Fields>;
+  min?: Maybe<Profit_By_Denoms_Min_Fields>;
+  stddev?: Maybe<Profit_By_Denoms_Stddev_Fields>;
+  stddev_pop?: Maybe<Profit_By_Denoms_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Profit_By_Denoms_Stddev_Samp_Fields>;
+  sum?: Maybe<Profit_By_Denoms_Sum_Fields>;
+  var_pop?: Maybe<Profit_By_Denoms_Var_Pop_Fields>;
+  var_samp?: Maybe<Profit_By_Denoms_Var_Samp_Fields>;
+  variance?: Maybe<Profit_By_Denoms_Variance_Fields>;
+};
+
+/** aggregate fields of "profit_by_denoms" */
+export type Profit_By_Denoms_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Profit_By_Denoms_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "profit_by_denoms" */
+export type Profit_By_Denoms_Aggregate_Order_By = {
+  avg?: InputMaybe<Profit_By_Denoms_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Profit_By_Denoms_Max_Order_By>;
+  min?: InputMaybe<Profit_By_Denoms_Min_Order_By>;
+  stddev?: InputMaybe<Profit_By_Denoms_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Profit_By_Denoms_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Profit_By_Denoms_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Profit_By_Denoms_Sum_Order_By>;
+  var_pop?: InputMaybe<Profit_By_Denoms_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Profit_By_Denoms_Var_Samp_Order_By>;
+  variance?: InputMaybe<Profit_By_Denoms_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "profit_by_denoms" */
+export type Profit_By_Denoms_Arr_Rel_Insert_Input = {
+  data: Array<Profit_By_Denoms_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Profit_By_Denoms_Avg_Fields = {
+  __typename?: "profit_by_denoms_avg_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Avg_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "profit_by_denoms". All fields are combined with a logical 'AND'. */
+export type Profit_By_Denoms_Bool_Exp = {
+  _and?: InputMaybe<Array<Profit_By_Denoms_Bool_Exp>>;
+  _not?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+  _or?: InputMaybe<Array<Profit_By_Denoms_Bool_Exp>>;
+  amount?: InputMaybe<String_Comparison_Exp>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  block_height?: InputMaybe<Int_Comparison_Exp>;
+  denom?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "profit_by_denoms" */
+export type Profit_By_Denoms_Inc_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "profit_by_denoms" */
+export type Profit_By_Denoms_Insert_Input = {
+  amount?: InputMaybe<Scalars["String"]>;
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate max on columns */
+export type Profit_By_Denoms_Max_Fields = {
+  __typename?: "profit_by_denoms_max_fields";
+  amount?: Maybe<Scalars["String"]>;
+  block_height?: Maybe<Scalars["Int"]>;
+  denom?: Maybe<Scalars["String"]>;
+};
+
+/** order by max() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Max_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  denom?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Profit_By_Denoms_Min_Fields = {
+  __typename?: "profit_by_denoms_min_fields";
+  amount?: Maybe<Scalars["String"]>;
+  block_height?: Maybe<Scalars["Int"]>;
+  denom?: Maybe<Scalars["String"]>;
+};
+
+/** order by min() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Min_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  denom?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "profit_by_denoms" */
+export type Profit_By_Denoms_Mutation_Response = {
+  __typename?: "profit_by_denoms_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Profit_By_Denoms>;
+};
+
+/** Ordering options when selecting data from "profit_by_denoms". */
+export type Profit_By_Denoms_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  block?: InputMaybe<Blocks_Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  denom?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "profit_by_denoms" */
+export enum Profit_By_Denoms_Select_Column {
+  /** column name */
+  Amount = "amount",
+  /** column name */
+  BlockHeight = "block_height",
+  /** column name */
+  Denom = "denom",
+}
+
+/** input type for updating data in table "profit_by_denoms" */
+export type Profit_By_Denoms_Set_Input = {
+  amount?: InputMaybe<Scalars["String"]>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate stddev on columns */
+export type Profit_By_Denoms_Stddev_Fields = {
+  __typename?: "profit_by_denoms_stddev_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Stddev_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Profit_By_Denoms_Stddev_Pop_Fields = {
+  __typename?: "profit_by_denoms_stddev_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Stddev_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Profit_By_Denoms_Stddev_Samp_Fields = {
+  __typename?: "profit_by_denoms_stddev_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Stddev_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "profit_by_denoms" */
+export type Profit_By_Denoms_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Profit_By_Denoms_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Profit_By_Denoms_Stream_Cursor_Value_Input = {
+  amount?: InputMaybe<Scalars["String"]>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate sum on columns */
+export type Profit_By_Denoms_Sum_Fields = {
+  __typename?: "profit_by_denoms_sum_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Sum_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+export type Profit_By_Denoms_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Profit_By_Denoms_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Profit_By_Denoms_Set_Input>;
+  where: Profit_By_Denoms_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Profit_By_Denoms_Var_Pop_Fields = {
+  __typename?: "profit_by_denoms_var_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Var_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Profit_By_Denoms_Var_Samp_Fields = {
+  __typename?: "profit_by_denoms_var_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Var_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Profit_By_Denoms_Variance_Fields = {
+  __typename?: "profit_by_denoms_variance_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "profit_by_denoms" */
+export type Profit_By_Denoms_Variance_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "profit_by_routes" */
+export type Profit_By_Routes = {
+  __typename?: "profit_by_routes";
+  amount: Scalars["String"];
+  /** An object relationship */
+  block: Blocks;
+  block_height: Scalars["Int"];
+  denom: Scalars["String"];
+  route: Scalars["json"];
+};
+
+/** columns and relationships of "profit_by_routes" */
+export type Profit_By_RoutesRouteArgs = {
+  path?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregated selection of "profit_by_routes" */
+export type Profit_By_Routes_Aggregate = {
+  __typename?: "profit_by_routes_aggregate";
+  aggregate?: Maybe<Profit_By_Routes_Aggregate_Fields>;
+  nodes: Array<Profit_By_Routes>;
+};
+
+export type Profit_By_Routes_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Profit_By_Routes_Aggregate_Bool_Exp_Count>;
+};
+
+export type Profit_By_Routes_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Profit_By_Routes_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "profit_by_routes" */
+export type Profit_By_Routes_Aggregate_Fields = {
+  __typename?: "profit_by_routes_aggregate_fields";
+  avg?: Maybe<Profit_By_Routes_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Profit_By_Routes_Max_Fields>;
+  min?: Maybe<Profit_By_Routes_Min_Fields>;
+  stddev?: Maybe<Profit_By_Routes_Stddev_Fields>;
+  stddev_pop?: Maybe<Profit_By_Routes_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Profit_By_Routes_Stddev_Samp_Fields>;
+  sum?: Maybe<Profit_By_Routes_Sum_Fields>;
+  var_pop?: Maybe<Profit_By_Routes_Var_Pop_Fields>;
+  var_samp?: Maybe<Profit_By_Routes_Var_Samp_Fields>;
+  variance?: Maybe<Profit_By_Routes_Variance_Fields>;
+};
+
+/** aggregate fields of "profit_by_routes" */
+export type Profit_By_Routes_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Profit_By_Routes_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "profit_by_routes" */
+export type Profit_By_Routes_Aggregate_Order_By = {
+  avg?: InputMaybe<Profit_By_Routes_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Profit_By_Routes_Max_Order_By>;
+  min?: InputMaybe<Profit_By_Routes_Min_Order_By>;
+  stddev?: InputMaybe<Profit_By_Routes_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Profit_By_Routes_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Profit_By_Routes_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Profit_By_Routes_Sum_Order_By>;
+  var_pop?: InputMaybe<Profit_By_Routes_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Profit_By_Routes_Var_Samp_Order_By>;
+  variance?: InputMaybe<Profit_By_Routes_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "profit_by_routes" */
+export type Profit_By_Routes_Arr_Rel_Insert_Input = {
+  data: Array<Profit_By_Routes_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Profit_By_Routes_Avg_Fields = {
+  __typename?: "profit_by_routes_avg_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Avg_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "profit_by_routes". All fields are combined with a logical 'AND'. */
+export type Profit_By_Routes_Bool_Exp = {
+  _and?: InputMaybe<Array<Profit_By_Routes_Bool_Exp>>;
+  _not?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+  _or?: InputMaybe<Array<Profit_By_Routes_Bool_Exp>>;
+  amount?: InputMaybe<String_Comparison_Exp>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  block_height?: InputMaybe<Int_Comparison_Exp>;
+  denom?: InputMaybe<String_Comparison_Exp>;
+  route?: InputMaybe<Json_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "profit_by_routes" */
+export type Profit_By_Routes_Inc_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "profit_by_routes" */
+export type Profit_By_Routes_Insert_Input = {
+  amount?: InputMaybe<Scalars["String"]>;
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+  route?: InputMaybe<Scalars["json"]>;
+};
+
+/** aggregate max on columns */
+export type Profit_By_Routes_Max_Fields = {
+  __typename?: "profit_by_routes_max_fields";
+  amount?: Maybe<Scalars["String"]>;
+  block_height?: Maybe<Scalars["Int"]>;
+  denom?: Maybe<Scalars["String"]>;
+};
+
+/** order by max() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Max_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  denom?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Profit_By_Routes_Min_Fields = {
+  __typename?: "profit_by_routes_min_fields";
+  amount?: Maybe<Scalars["String"]>;
+  block_height?: Maybe<Scalars["Int"]>;
+  denom?: Maybe<Scalars["String"]>;
+};
+
+/** order by min() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Min_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  denom?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "profit_by_routes" */
+export type Profit_By_Routes_Mutation_Response = {
+  __typename?: "profit_by_routes_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Profit_By_Routes>;
+};
+
+/** Ordering options when selecting data from "profit_by_routes". */
+export type Profit_By_Routes_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  block?: InputMaybe<Blocks_Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  denom?: InputMaybe<Order_By>;
+  route?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "profit_by_routes" */
+export enum Profit_By_Routes_Select_Column {
+  /** column name */
+  Amount = "amount",
+  /** column name */
+  BlockHeight = "block_height",
+  /** column name */
+  Denom = "denom",
+  /** column name */
+  Route = "route",
+}
+
+/** input type for updating data in table "profit_by_routes" */
+export type Profit_By_Routes_Set_Input = {
+  amount?: InputMaybe<Scalars["String"]>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+  route?: InputMaybe<Scalars["json"]>;
+};
+
+/** aggregate stddev on columns */
+export type Profit_By_Routes_Stddev_Fields = {
+  __typename?: "profit_by_routes_stddev_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Stddev_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Profit_By_Routes_Stddev_Pop_Fields = {
+  __typename?: "profit_by_routes_stddev_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Stddev_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Profit_By_Routes_Stddev_Samp_Fields = {
+  __typename?: "profit_by_routes_stddev_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Stddev_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "profit_by_routes" */
+export type Profit_By_Routes_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Profit_By_Routes_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Profit_By_Routes_Stream_Cursor_Value_Input = {
+  amount?: InputMaybe<Scalars["String"]>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+  route?: InputMaybe<Scalars["json"]>;
+};
+
+/** aggregate sum on columns */
+export type Profit_By_Routes_Sum_Fields = {
+  __typename?: "profit_by_routes_sum_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Sum_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+export type Profit_By_Routes_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Profit_By_Routes_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Profit_By_Routes_Set_Input>;
+  where: Profit_By_Routes_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Profit_By_Routes_Var_Pop_Fields = {
+  __typename?: "profit_by_routes_var_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Var_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Profit_By_Routes_Var_Samp_Fields = {
+  __typename?: "profit_by_routes_var_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Var_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Profit_By_Routes_Variance_Fields = {
+  __typename?: "profit_by_routes_variance_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "profit_by_routes" */
+export type Profit_By_Routes_Variance_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+};
+
 /** columns and relationships of "proposals" */
 export type Proposals = {
   __typename?: "proposals";
   /** An object relationship */
   account?: Maybe<Accounts>;
+  /** An object relationship */
+  block?: Maybe<Blocks>;
   /** An array relationship */
   code_proposals: Array<Code_Proposals>;
   /** An aggregate relationship */
@@ -4655,8 +5492,10 @@ export type Proposals = {
   deposit_end_time: Scalars["timestamp"];
   description: Scalars["String"];
   id: Scalars["Int"];
+  is_expedited?: Maybe<Scalars["Boolean"]>;
   proposal_route: Scalars["String"];
   proposer_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
   status: Scalars["proposalstatus"];
   submit_time: Scalars["timestamp"];
   title: Scalars["String"];
@@ -4714,7 +5553,23 @@ export type Proposals_Aggregate = {
 };
 
 export type Proposals_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Proposals_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Proposals_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<Proposals_Aggregate_Bool_Exp_Count>;
+};
+
+export type Proposals_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Proposals_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Proposals_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Proposals_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type Proposals_Aggregate_Bool_Exp_Count = {
@@ -4773,12 +5628,14 @@ export type Proposals_Avg_Fields = {
   __typename?: "proposals_avg_fields";
   id?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
 };
 
 /** order by avg() on columns of table "proposals" */
 export type Proposals_Avg_Order_By = {
   id?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "proposals". All fields are combined with a logical 'AND'. */
@@ -4787,6 +5644,7 @@ export type Proposals_Bool_Exp = {
   _not?: InputMaybe<Proposals_Bool_Exp>;
   _or?: InputMaybe<Array<Proposals_Bool_Exp>>;
   account?: InputMaybe<Accounts_Bool_Exp>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
   code_proposals?: InputMaybe<Code_Proposals_Bool_Exp>;
   code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Bool_Exp>;
   content?: InputMaybe<Json_Comparison_Exp>;
@@ -4795,8 +5653,10 @@ export type Proposals_Bool_Exp = {
   deposit_end_time?: InputMaybe<Timestamp_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
+  is_expedited?: InputMaybe<Boolean_Comparison_Exp>;
   proposal_route?: InputMaybe<String_Comparison_Exp>;
   proposer_id?: InputMaybe<Int_Comparison_Exp>;
+  resolved_height?: InputMaybe<Int_Comparison_Exp>;
   status?: InputMaybe<Proposalstatus_Comparison_Exp>;
   submit_time?: InputMaybe<Timestamp_Comparison_Exp>;
   title?: InputMaybe<String_Comparison_Exp>;
@@ -4815,19 +5675,23 @@ export enum Proposals_Constraint {
 export type Proposals_Inc_Input = {
   id?: InputMaybe<Scalars["Int"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
 };
 
 /** input type for inserting data into table "proposals" */
 export type Proposals_Insert_Input = {
   account?: InputMaybe<Accounts_Obj_Rel_Insert_Input>;
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
   code_proposals?: InputMaybe<Code_Proposals_Arr_Rel_Insert_Input>;
   content?: InputMaybe<Scalars["json"]>;
   contract_proposals?: InputMaybe<Contract_Proposals_Arr_Rel_Insert_Input>;
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_expedited?: InputMaybe<Scalars["Boolean"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
   status?: InputMaybe<Scalars["proposalstatus"]>;
   submit_time?: InputMaybe<Scalars["timestamp"]>;
   title?: InputMaybe<Scalars["String"]>;
@@ -4844,6 +5708,7 @@ export type Proposals_Max_Fields = {
   id?: Maybe<Scalars["Int"]>;
   proposal_route?: Maybe<Scalars["String"]>;
   proposer_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
   status?: Maybe<Scalars["proposalstatus"]>;
   submit_time?: Maybe<Scalars["timestamp"]>;
   title?: Maybe<Scalars["String"]>;
@@ -4859,6 +5724,7 @@ export type Proposals_Max_Order_By = {
   id?: InputMaybe<Order_By>;
   proposal_route?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   submit_time?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
@@ -4875,6 +5741,7 @@ export type Proposals_Min_Fields = {
   id?: Maybe<Scalars["Int"]>;
   proposal_route?: Maybe<Scalars["String"]>;
   proposer_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
   status?: Maybe<Scalars["proposalstatus"]>;
   submit_time?: Maybe<Scalars["timestamp"]>;
   title?: Maybe<Scalars["String"]>;
@@ -4890,6 +5757,7 @@ export type Proposals_Min_Order_By = {
   id?: InputMaybe<Order_By>;
   proposal_route?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   submit_time?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
@@ -4924,14 +5792,17 @@ export type Proposals_On_Conflict = {
 /** Ordering options when selecting data from "proposals". */
 export type Proposals_Order_By = {
   account?: InputMaybe<Accounts_Order_By>;
+  block?: InputMaybe<Blocks_Order_By>;
   code_proposals_aggregate?: InputMaybe<Code_Proposals_Aggregate_Order_By>;
   content?: InputMaybe<Order_By>;
   contract_proposals_aggregate?: InputMaybe<Contract_Proposals_Aggregate_Order_By>;
   deposit_end_time?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  is_expedited?: InputMaybe<Order_By>;
   proposal_route?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   submit_time?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
@@ -4956,9 +5827,13 @@ export enum Proposals_Select_Column {
   /** column name */
   Id = "id",
   /** column name */
+  IsExpedited = "is_expedited",
+  /** column name */
   ProposalRoute = "proposal_route",
   /** column name */
   ProposerId = "proposer_id",
+  /** column name */
+  ResolvedHeight = "resolved_height",
   /** column name */
   Status = "status",
   /** column name */
@@ -4973,14 +5848,28 @@ export enum Proposals_Select_Column {
   VotingTime = "voting_time",
 }
 
+/** select "proposals_aggregate_bool_exp_bool_and_arguments_columns" columns of table "proposals" */
+export enum Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsExpedited = "is_expedited",
+}
+
+/** select "proposals_aggregate_bool_exp_bool_or_arguments_columns" columns of table "proposals" */
+export enum Proposals_Select_Column_Proposals_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsExpedited = "is_expedited",
+}
+
 /** input type for updating data in table "proposals" */
 export type Proposals_Set_Input = {
   content?: InputMaybe<Scalars["json"]>;
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_expedited?: InputMaybe<Scalars["Boolean"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
   status?: InputMaybe<Scalars["proposalstatus"]>;
   submit_time?: InputMaybe<Scalars["timestamp"]>;
   title?: InputMaybe<Scalars["String"]>;
@@ -4994,12 +5883,14 @@ export type Proposals_Stddev_Fields = {
   __typename?: "proposals_stddev_fields";
   id?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev() on columns of table "proposals" */
 export type Proposals_Stddev_Order_By = {
   id?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -5007,12 +5898,14 @@ export type Proposals_Stddev_Pop_Fields = {
   __typename?: "proposals_stddev_pop_fields";
   id?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_pop() on columns of table "proposals" */
 export type Proposals_Stddev_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -5020,12 +5913,14 @@ export type Proposals_Stddev_Samp_Fields = {
   __typename?: "proposals_stddev_samp_fields";
   id?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_samp() on columns of table "proposals" */
 export type Proposals_Stddev_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "proposals" */
@@ -5042,8 +5937,10 @@ export type Proposals_Stream_Cursor_Value_Input = {
   deposit_end_time?: InputMaybe<Scalars["timestamp"]>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  is_expedited?: InputMaybe<Scalars["Boolean"]>;
   proposal_route?: InputMaybe<Scalars["String"]>;
   proposer_id?: InputMaybe<Scalars["Int"]>;
+  resolved_height?: InputMaybe<Scalars["Int"]>;
   status?: InputMaybe<Scalars["proposalstatus"]>;
   submit_time?: InputMaybe<Scalars["timestamp"]>;
   title?: InputMaybe<Scalars["String"]>;
@@ -5057,12 +5954,14 @@ export type Proposals_Sum_Fields = {
   __typename?: "proposals_sum_fields";
   id?: Maybe<Scalars["Int"]>;
   proposer_id?: Maybe<Scalars["Int"]>;
+  resolved_height?: Maybe<Scalars["Int"]>;
 };
 
 /** order by sum() on columns of table "proposals" */
 export type Proposals_Sum_Order_By = {
   id?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "proposals" */
@@ -5076,9 +5975,13 @@ export enum Proposals_Update_Column {
   /** column name */
   Id = "id",
   /** column name */
+  IsExpedited = "is_expedited",
+  /** column name */
   ProposalRoute = "proposal_route",
   /** column name */
   ProposerId = "proposer_id",
+  /** column name */
+  ResolvedHeight = "resolved_height",
   /** column name */
   Status = "status",
   /** column name */
@@ -5106,12 +6009,14 @@ export type Proposals_Var_Pop_Fields = {
   __typename?: "proposals_var_pop_fields";
   id?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_pop() on columns of table "proposals" */
 export type Proposals_Var_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -5119,12 +6024,14 @@ export type Proposals_Var_Samp_Fields = {
   __typename?: "proposals_var_samp_fields";
   id?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_samp() on columns of table "proposals" */
 export type Proposals_Var_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -5132,12 +6039,14 @@ export type Proposals_Variance_Fields = {
   __typename?: "proposals_variance_fields";
   id?: Maybe<Scalars["Float"]>;
   proposer_id?: Maybe<Scalars["Float"]>;
+  resolved_height?: Maybe<Scalars["Float"]>;
 };
 
 /** order by variance() on columns of table "proposals" */
 export type Proposals_Variance_Order_By = {
   id?: InputMaybe<Order_By>;
   proposer_id?: InputMaybe<Order_By>;
+  resolved_height?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "proposalstatus". All fields are combined with logical 'AND'. */
@@ -5210,6 +6119,14 @@ export type Query_Root = {
   /** fetch data from the table: "contracts" using primary key columns */
   contracts_by_pk?: Maybe<Contracts>;
   /** An array relationship */
+  profit_by_denoms: Array<Profit_By_Denoms>;
+  /** An aggregate relationship */
+  profit_by_denoms_aggregate: Profit_By_Denoms_Aggregate;
+  /** An array relationship */
+  profit_by_routes: Array<Profit_By_Routes>;
+  /** An aggregate relationship */
+  profit_by_routes_aggregate: Profit_By_Routes_Aggregate;
+  /** An array relationship */
   proposals: Array<Proposals>;
   /** An aggregate relationship */
   proposals_aggregate: Proposals_Aggregate;
@@ -5221,6 +6138,14 @@ export type Query_Root = {
   tracking_aggregate: Tracking_Aggregate;
   /** fetch data from the table: "tracking" using primary key columns */
   tracking_by_pk?: Maybe<Tracking>;
+  /** An array relationship */
+  trade_by_routes: Array<Trade_By_Routes>;
+  /** An aggregate relationship */
+  trade_by_routes_aggregate: Trade_By_Routes_Aggregate;
+  /** An array relationship */
+  trades: Array<Trades>;
+  /** An aggregate relationship */
+  trades_aggregate: Trades_Aggregate;
   /** An array relationship */
   transactions: Array<Transactions>;
   /** An aggregate relationship */
@@ -5426,6 +6351,38 @@ export type Query_RootContracts_By_PkArgs = {
   address: Scalars["String"];
 };
 
+export type Query_RootProfit_By_DenomsArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Denoms_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Denoms_Order_By>>;
+  where?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+};
+
+export type Query_RootProfit_By_Denoms_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Denoms_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Denoms_Order_By>>;
+  where?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+};
+
+export type Query_RootProfit_By_RoutesArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Routes_Order_By>>;
+  where?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+};
+
+export type Query_RootProfit_By_Routes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Routes_Order_By>>;
+  where?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+};
+
 export type Query_RootProposalsArgs = {
   distinct_on?: InputMaybe<Array<Proposals_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -5464,6 +6421,38 @@ export type Query_RootTracking_AggregateArgs = {
 
 export type Query_RootTracking_By_PkArgs = {
   chain_id: Scalars["String"];
+};
+
+export type Query_RootTrade_By_RoutesArgs = {
+  distinct_on?: InputMaybe<Array<Trade_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trade_By_Routes_Order_By>>;
+  where?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+};
+
+export type Query_RootTrade_By_Routes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Trade_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trade_By_Routes_Order_By>>;
+  where?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+};
+
+export type Query_RootTradesArgs = {
+  distinct_on?: InputMaybe<Array<Trades_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trades_Order_By>>;
+  where?: InputMaybe<Trades_Bool_Exp>;
+};
+
+export type Query_RootTrades_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Trades_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trades_Order_By>>;
+  where?: InputMaybe<Trades_Bool_Exp>;
 };
 
 export type Query_RootTransactionsArgs = {
@@ -5565,6 +6554,18 @@ export type Subscription_Root = {
   /** fetch data from the table in a streaming manner: "contracts" */
   contracts_stream: Array<Contracts>;
   /** An array relationship */
+  profit_by_denoms: Array<Profit_By_Denoms>;
+  /** An aggregate relationship */
+  profit_by_denoms_aggregate: Profit_By_Denoms_Aggregate;
+  /** fetch data from the table in a streaming manner: "profit_by_denoms" */
+  profit_by_denoms_stream: Array<Profit_By_Denoms>;
+  /** An array relationship */
+  profit_by_routes: Array<Profit_By_Routes>;
+  /** An aggregate relationship */
+  profit_by_routes_aggregate: Profit_By_Routes_Aggregate;
+  /** fetch data from the table in a streaming manner: "profit_by_routes" */
+  profit_by_routes_stream: Array<Profit_By_Routes>;
+  /** An array relationship */
   proposals: Array<Proposals>;
   /** An aggregate relationship */
   proposals_aggregate: Proposals_Aggregate;
@@ -5580,6 +6581,18 @@ export type Subscription_Root = {
   tracking_by_pk?: Maybe<Tracking>;
   /** fetch data from the table in a streaming manner: "tracking" */
   tracking_stream: Array<Tracking>;
+  /** An array relationship */
+  trade_by_routes: Array<Trade_By_Routes>;
+  /** An aggregate relationship */
+  trade_by_routes_aggregate: Trade_By_Routes_Aggregate;
+  /** fetch data from the table in a streaming manner: "trade_by_routes" */
+  trade_by_routes_stream: Array<Trade_By_Routes>;
+  /** An array relationship */
+  trades: Array<Trades>;
+  /** An aggregate relationship */
+  trades_aggregate: Trades_Aggregate;
+  /** fetch data from the table in a streaming manner: "trades" */
+  trades_stream: Array<Trades>;
   /** An array relationship */
   transactions: Array<Transactions>;
   /** An aggregate relationship */
@@ -5853,6 +6866,50 @@ export type Subscription_RootContracts_StreamArgs = {
   where?: InputMaybe<Contracts_Bool_Exp>;
 };
 
+export type Subscription_RootProfit_By_DenomsArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Denoms_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Denoms_Order_By>>;
+  where?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+};
+
+export type Subscription_RootProfit_By_Denoms_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Denoms_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Denoms_Order_By>>;
+  where?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+};
+
+export type Subscription_RootProfit_By_Denoms_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Profit_By_Denoms_Stream_Cursor_Input>>;
+  where?: InputMaybe<Profit_By_Denoms_Bool_Exp>;
+};
+
+export type Subscription_RootProfit_By_RoutesArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Routes_Order_By>>;
+  where?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+};
+
+export type Subscription_RootProfit_By_Routes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Profit_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Profit_By_Routes_Order_By>>;
+  where?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+};
+
+export type Subscription_RootProfit_By_Routes_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Profit_By_Routes_Stream_Cursor_Input>>;
+  where?: InputMaybe<Profit_By_Routes_Bool_Exp>;
+};
+
 export type Subscription_RootProposalsArgs = {
   distinct_on?: InputMaybe<Array<Proposals_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -5903,6 +6960,50 @@ export type Subscription_RootTracking_StreamArgs = {
   batch_size: Scalars["Int"];
   cursor: Array<InputMaybe<Tracking_Stream_Cursor_Input>>;
   where?: InputMaybe<Tracking_Bool_Exp>;
+};
+
+export type Subscription_RootTrade_By_RoutesArgs = {
+  distinct_on?: InputMaybe<Array<Trade_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trade_By_Routes_Order_By>>;
+  where?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+};
+
+export type Subscription_RootTrade_By_Routes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Trade_By_Routes_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trade_By_Routes_Order_By>>;
+  where?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+};
+
+export type Subscription_RootTrade_By_Routes_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Trade_By_Routes_Stream_Cursor_Input>>;
+  where?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+};
+
+export type Subscription_RootTradesArgs = {
+  distinct_on?: InputMaybe<Array<Trades_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trades_Order_By>>;
+  where?: InputMaybe<Trades_Bool_Exp>;
+};
+
+export type Subscription_RootTrades_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Trades_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Trades_Order_By>>;
+  where?: InputMaybe<Trades_Bool_Exp>;
+};
+
+export type Subscription_RootTrades_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Trades_Stream_Cursor_Input>>;
+  where?: InputMaybe<Trades_Bool_Exp>;
 };
 
 export type Subscription_RootTransactionsArgs = {
@@ -6182,6 +7283,567 @@ export type Tracking_Variance_Fields = {
   __typename?: "tracking_variance_fields";
   kafka_offset?: Maybe<Scalars["Float"]>;
   replay_offset?: Maybe<Scalars["Float"]>;
+};
+
+/** columns and relationships of "trade_by_routes" */
+export type Trade_By_Routes = {
+  __typename?: "trade_by_routes";
+  /** An object relationship */
+  block: Blocks;
+  block_height: Scalars["Int"];
+  count: Scalars["Int"];
+  route: Scalars["json"];
+};
+
+/** columns and relationships of "trade_by_routes" */
+export type Trade_By_RoutesRouteArgs = {
+  path?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregated selection of "trade_by_routes" */
+export type Trade_By_Routes_Aggregate = {
+  __typename?: "trade_by_routes_aggregate";
+  aggregate?: Maybe<Trade_By_Routes_Aggregate_Fields>;
+  nodes: Array<Trade_By_Routes>;
+};
+
+export type Trade_By_Routes_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Trade_By_Routes_Aggregate_Bool_Exp_Count>;
+};
+
+export type Trade_By_Routes_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Trade_By_Routes_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "trade_by_routes" */
+export type Trade_By_Routes_Aggregate_Fields = {
+  __typename?: "trade_by_routes_aggregate_fields";
+  avg?: Maybe<Trade_By_Routes_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Trade_By_Routes_Max_Fields>;
+  min?: Maybe<Trade_By_Routes_Min_Fields>;
+  stddev?: Maybe<Trade_By_Routes_Stddev_Fields>;
+  stddev_pop?: Maybe<Trade_By_Routes_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Trade_By_Routes_Stddev_Samp_Fields>;
+  sum?: Maybe<Trade_By_Routes_Sum_Fields>;
+  var_pop?: Maybe<Trade_By_Routes_Var_Pop_Fields>;
+  var_samp?: Maybe<Trade_By_Routes_Var_Samp_Fields>;
+  variance?: Maybe<Trade_By_Routes_Variance_Fields>;
+};
+
+/** aggregate fields of "trade_by_routes" */
+export type Trade_By_Routes_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Trade_By_Routes_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "trade_by_routes" */
+export type Trade_By_Routes_Aggregate_Order_By = {
+  avg?: InputMaybe<Trade_By_Routes_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Trade_By_Routes_Max_Order_By>;
+  min?: InputMaybe<Trade_By_Routes_Min_Order_By>;
+  stddev?: InputMaybe<Trade_By_Routes_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Trade_By_Routes_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Trade_By_Routes_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Trade_By_Routes_Sum_Order_By>;
+  var_pop?: InputMaybe<Trade_By_Routes_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Trade_By_Routes_Var_Samp_Order_By>;
+  variance?: InputMaybe<Trade_By_Routes_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "trade_by_routes" */
+export type Trade_By_Routes_Arr_Rel_Insert_Input = {
+  data: Array<Trade_By_Routes_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Trade_By_Routes_Avg_Fields = {
+  __typename?: "trade_by_routes_avg_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Avg_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "trade_by_routes". All fields are combined with a logical 'AND'. */
+export type Trade_By_Routes_Bool_Exp = {
+  _and?: InputMaybe<Array<Trade_By_Routes_Bool_Exp>>;
+  _not?: InputMaybe<Trade_By_Routes_Bool_Exp>;
+  _or?: InputMaybe<Array<Trade_By_Routes_Bool_Exp>>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  block_height?: InputMaybe<Int_Comparison_Exp>;
+  count?: InputMaybe<Int_Comparison_Exp>;
+  route?: InputMaybe<Json_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "trade_by_routes" */
+export type Trade_By_Routes_Inc_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  count?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "trade_by_routes" */
+export type Trade_By_Routes_Insert_Input = {
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  count?: InputMaybe<Scalars["Int"]>;
+  route?: InputMaybe<Scalars["json"]>;
+};
+
+/** aggregate max on columns */
+export type Trade_By_Routes_Max_Fields = {
+  __typename?: "trade_by_routes_max_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  count?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Max_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Trade_By_Routes_Min_Fields = {
+  __typename?: "trade_by_routes_min_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  count?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Min_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "trade_by_routes" */
+export type Trade_By_Routes_Mutation_Response = {
+  __typename?: "trade_by_routes_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Trade_By_Routes>;
+};
+
+/** Ordering options when selecting data from "trade_by_routes". */
+export type Trade_By_Routes_Order_By = {
+  block?: InputMaybe<Blocks_Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  route?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "trade_by_routes" */
+export enum Trade_By_Routes_Select_Column {
+  /** column name */
+  BlockHeight = "block_height",
+  /** column name */
+  Count = "count",
+  /** column name */
+  Route = "route",
+}
+
+/** input type for updating data in table "trade_by_routes" */
+export type Trade_By_Routes_Set_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  count?: InputMaybe<Scalars["Int"]>;
+  route?: InputMaybe<Scalars["json"]>;
+};
+
+/** aggregate stddev on columns */
+export type Trade_By_Routes_Stddev_Fields = {
+  __typename?: "trade_by_routes_stddev_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Stddev_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Trade_By_Routes_Stddev_Pop_Fields = {
+  __typename?: "trade_by_routes_stddev_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Stddev_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Trade_By_Routes_Stddev_Samp_Fields = {
+  __typename?: "trade_by_routes_stddev_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Stddev_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "trade_by_routes" */
+export type Trade_By_Routes_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Trade_By_Routes_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Trade_By_Routes_Stream_Cursor_Value_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  count?: InputMaybe<Scalars["Int"]>;
+  route?: InputMaybe<Scalars["json"]>;
+};
+
+/** aggregate sum on columns */
+export type Trade_By_Routes_Sum_Fields = {
+  __typename?: "trade_by_routes_sum_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  count?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Sum_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+export type Trade_By_Routes_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Trade_By_Routes_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Trade_By_Routes_Set_Input>;
+  where: Trade_By_Routes_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Trade_By_Routes_Var_Pop_Fields = {
+  __typename?: "trade_by_routes_var_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Var_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Trade_By_Routes_Var_Samp_Fields = {
+  __typename?: "trade_by_routes_var_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Var_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Trade_By_Routes_Variance_Fields = {
+  __typename?: "trade_by_routes_variance_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "trade_by_routes" */
+export type Trade_By_Routes_Variance_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "trades" */
+export type Trades = {
+  __typename?: "trades";
+  /** An object relationship */
+  block: Blocks;
+  block_height: Scalars["Int"];
+  count: Scalars["Int"];
+};
+
+/** aggregated selection of "trades" */
+export type Trades_Aggregate = {
+  __typename?: "trades_aggregate";
+  aggregate?: Maybe<Trades_Aggregate_Fields>;
+  nodes: Array<Trades>;
+};
+
+export type Trades_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Trades_Aggregate_Bool_Exp_Count>;
+};
+
+export type Trades_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Trades_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Trades_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "trades" */
+export type Trades_Aggregate_Fields = {
+  __typename?: "trades_aggregate_fields";
+  avg?: Maybe<Trades_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Trades_Max_Fields>;
+  min?: Maybe<Trades_Min_Fields>;
+  stddev?: Maybe<Trades_Stddev_Fields>;
+  stddev_pop?: Maybe<Trades_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Trades_Stddev_Samp_Fields>;
+  sum?: Maybe<Trades_Sum_Fields>;
+  var_pop?: Maybe<Trades_Var_Pop_Fields>;
+  var_samp?: Maybe<Trades_Var_Samp_Fields>;
+  variance?: Maybe<Trades_Variance_Fields>;
+};
+
+/** aggregate fields of "trades" */
+export type Trades_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Trades_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "trades" */
+export type Trades_Aggregate_Order_By = {
+  avg?: InputMaybe<Trades_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Trades_Max_Order_By>;
+  min?: InputMaybe<Trades_Min_Order_By>;
+  stddev?: InputMaybe<Trades_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Trades_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Trades_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Trades_Sum_Order_By>;
+  var_pop?: InputMaybe<Trades_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Trades_Var_Samp_Order_By>;
+  variance?: InputMaybe<Trades_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "trades" */
+export type Trades_Arr_Rel_Insert_Input = {
+  data: Array<Trades_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Trades_Avg_Fields = {
+  __typename?: "trades_avg_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "trades" */
+export type Trades_Avg_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "trades". All fields are combined with a logical 'AND'. */
+export type Trades_Bool_Exp = {
+  _and?: InputMaybe<Array<Trades_Bool_Exp>>;
+  _not?: InputMaybe<Trades_Bool_Exp>;
+  _or?: InputMaybe<Array<Trades_Bool_Exp>>;
+  block?: InputMaybe<Blocks_Bool_Exp>;
+  block_height?: InputMaybe<Int_Comparison_Exp>;
+  count?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "trades" */
+export type Trades_Inc_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  count?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "trades" */
+export type Trades_Insert_Input = {
+  block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
+  block_height?: InputMaybe<Scalars["Int"]>;
+  count?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate max on columns */
+export type Trades_Max_Fields = {
+  __typename?: "trades_max_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  count?: Maybe<Scalars["Int"]>;
+};
+
+/** order by max() on columns of table "trades" */
+export type Trades_Max_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Trades_Min_Fields = {
+  __typename?: "trades_min_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  count?: Maybe<Scalars["Int"]>;
+};
+
+/** order by min() on columns of table "trades" */
+export type Trades_Min_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "trades" */
+export type Trades_Mutation_Response = {
+  __typename?: "trades_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Trades>;
+};
+
+/** Ordering options when selecting data from "trades". */
+export type Trades_Order_By = {
+  block?: InputMaybe<Blocks_Order_By>;
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "trades" */
+export enum Trades_Select_Column {
+  /** column name */
+  BlockHeight = "block_height",
+  /** column name */
+  Count = "count",
+}
+
+/** input type for updating data in table "trades" */
+export type Trades_Set_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  count?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate stddev on columns */
+export type Trades_Stddev_Fields = {
+  __typename?: "trades_stddev_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "trades" */
+export type Trades_Stddev_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Trades_Stddev_Pop_Fields = {
+  __typename?: "trades_stddev_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "trades" */
+export type Trades_Stddev_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Trades_Stddev_Samp_Fields = {
+  __typename?: "trades_stddev_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "trades" */
+export type Trades_Stddev_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "trades" */
+export type Trades_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Trades_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Trades_Stream_Cursor_Value_Input = {
+  block_height?: InputMaybe<Scalars["Int"]>;
+  count?: InputMaybe<Scalars["Int"]>;
+};
+
+/** aggregate sum on columns */
+export type Trades_Sum_Fields = {
+  __typename?: "trades_sum_fields";
+  block_height?: Maybe<Scalars["Int"]>;
+  count?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "trades" */
+export type Trades_Sum_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+export type Trades_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Trades_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Trades_Set_Input>;
+  where: Trades_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Trades_Var_Pop_Fields = {
+  __typename?: "trades_var_pop_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "trades" */
+export type Trades_Var_Pop_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Trades_Var_Samp_Fields = {
+  __typename?: "trades_var_samp_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "trades" */
+export type Trades_Var_Samp_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Trades_Variance_Fields = {
+  __typename?: "trades_variance_fields";
+  block_height?: Maybe<Scalars["Float"]>;
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "trades" */
+export type Trades_Variance_Order_By = {
+  block_height?: InputMaybe<Order_By>;
+  count?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "transactions" */
@@ -7297,6 +8959,7 @@ export type GetRelatedProposalsByContractAddressPaginationQuery = {
       voting_end_time: any;
       deposit_end_time: any;
       type: string;
+      is_expedited?: boolean | null;
       account?: { __typename?: "accounts"; address: string } | null;
     };
   }>;
@@ -7333,14 +8996,8 @@ export type GetProposalsByWalletAddressPaginationQuery = {
     deposit_end_time: any;
     type: string;
     id: number;
-    contract_proposals: Array<{
-      __typename?: "contract_proposals";
-      resolved_height?: number | null;
-    }>;
-    code_proposals: Array<{
-      __typename?: "code_proposals";
-      resolved_height?: number | null;
-    }>;
+    is_expedited?: boolean | null;
+    resolved_height?: number | null;
   }>;
 };
 
@@ -7357,6 +9014,50 @@ export type GetProposalsCountByWalletAddressQuery = {
       count: number;
     } | null;
   };
+};
+
+export type GetProposalListQueryVariables = Exact<{
+  expression?: InputMaybe<Proposals_Bool_Exp>;
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetProposalListQuery = {
+  __typename?: "query_root";
+  proposals: Array<{
+    __typename?: "proposals";
+    type: string;
+    id: number;
+    title: string;
+    voting_end_time: any;
+    deposit_end_time: any;
+    resolved_height?: number | null;
+    status: any;
+    is_expedited?: boolean | null;
+    account?: { __typename?: "accounts"; address: string } | null;
+  }>;
+};
+
+export type GetProposalListCountQueryVariables = Exact<{
+  expression?: InputMaybe<Proposals_Bool_Exp>;
+}>;
+
+export type GetProposalListCountQuery = {
+  __typename?: "query_root";
+  proposals_aggregate: {
+    __typename?: "proposals_aggregate";
+    aggregate?: {
+      __typename?: "proposals_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetProposalTypesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetProposalTypesQuery = {
+  __typename?: "query_root";
+  proposals: Array<{ __typename?: "proposals"; type: string }>;
 };
 
 export type GetExecuteTxsByContractAddressPaginationQueryVariables = Exact<{
@@ -10408,6 +12109,10 @@ export const GetRelatedProposalsByContractAddressPaginationDocument = {
                           ],
                         },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_expedited" },
+                      },
                     ],
                   },
                 },
@@ -10661,29 +12366,11 @@ export const GetProposalsByWalletAddressPaginationDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "contract_proposals" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "resolved_height" },
-                      },
-                    ],
-                  },
+                  name: { kind: "Name", value: "is_expedited" },
                 },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "code_proposals" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "resolved_height" },
-                      },
-                    ],
-                  },
+                  name: { kind: "Name", value: "resolved_height" },
                 },
               ],
             },
@@ -10788,6 +12475,236 @@ export const GetProposalsCountByWalletAddressDocument = {
 } as unknown as DocumentNode<
   GetProposalsCountByWalletAddressQuery,
   GetProposalsCountByWalletAddressQueryVariables
+>;
+export const GetProposalListDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getProposalList" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "proposals_bool_exp" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "proposals" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "voting_end_time" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "deposit_end_time" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "resolved_height" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "status" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_expedited" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProposalListQuery,
+  GetProposalListQueryVariables
+>;
+export const GetProposalListCountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getProposalListCount" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "proposals_bool_exp" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "proposals_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProposalListCountQuery,
+  GetProposalListCountQueryVariables
+>;
+export const GetProposalTypesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getProposalTypes" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "proposals" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "distinct_on" },
+                value: { kind: "EnumValue", value: "type" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProposalTypesQuery,
+  GetProposalTypesQueryVariables
 >;
 export const GetExecuteTxsByContractAddressPaginationDocument = {
   kind: "Document",
