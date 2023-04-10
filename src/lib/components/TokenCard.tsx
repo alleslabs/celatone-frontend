@@ -1,3 +1,4 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Badge, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -11,11 +12,16 @@ import {
 
 import { Copier } from "./copy";
 
-interface TokenCardProps {
+interface TokenCardProps extends FlexProps {
   userBalance: BalanceWithAssetInfo;
+  amptrackSection?: string;
 }
 
-export const TokenCard = ({ userBalance }: TokenCardProps) => {
+export const TokenCard = ({
+  userBalance,
+  amptrackSection,
+  ...cardProps
+}: TokenCardProps) => {
   const [logoError, setLogoError] = useState(false);
   const { symbol, price, amount, precision, id } = userBalance.balance;
 
@@ -37,6 +43,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
         p={3}
         background="pebble.900"
         borderRadius="8px"
+        {...cardProps}
       >
         <Flex
           gap={1}
@@ -72,6 +79,7 @@ export const TokenCard = ({ userBalance }: TokenCardProps) => {
             copyLabel="Token ID Copied!"
             display="none"
             ml="1px"
+            amptrackSection={amptrackSection}
           />
         </Flex>
 

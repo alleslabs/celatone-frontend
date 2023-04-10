@@ -3,13 +3,15 @@ import axios from "axios";
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import type { AssetInfo, Option } from "lib/types";
 
-export const getAssetInfo = async (
+export const getAssetInfos = async (
   chainName: Option<string>,
   chainId: Option<string>
 ): Promise<Option<AssetInfo[]>> => {
-  if (!chainName || !chainId) throw new Error("Invalid chain (getAssetInfo)");
+  if (!chainName || !chainId) throw new Error("Invalid chain (getAssetInfos)");
   const { data } = await axios.get(
-    `${CELATONE_API_ENDPOINT}/assets/${getChainApiPath(chainName)}/${chainId}`
+    `${CELATONE_API_ENDPOINT}/assets/${getChainApiPath(
+      chainName
+    )}/${chainId}/prices`
   );
   return data;
 };

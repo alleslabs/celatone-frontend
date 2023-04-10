@@ -44,6 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#260](https://github.com/alleslabs/celatone-frontend/pull/260) Add proposal list table to proposal list page
 - [#255](https://github.com/alleslabs/celatone-frontend/pull/255) Get data for proposal list page
 - [#250](https://github.com/alleslabs/celatone-frontend/pull/250) Add skeleton, route, and amp for proposal list page
+- [#262](https://github.com/alleslabs/celatone-frontend/pull/262) Add amplitude tracking for tx page components
+- [#224](https://github.com/alleslabs/celatone-frontend/pull/224) Support search by tx and internal tx link
+- [#226](https://github.com/alleslabs/celatone-frontend/pull/226) Add fully functional transaction details page
 - [#254](https://github.com/alleslabs/celatone-frontend/pull/254) Add GiHub link to public code and contract detail pages
 - [#230](https://github.com/alleslabs/celatone-frontend/pull/230) Add cw2info to code table
 
@@ -61,6 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#257](https://github.com/alleslabs/celatone-frontend/pull/257) Fix proposal resolved height query, resolved height rendering, and move ResolvedHeight and VotingEndTime to their own file
+- [#264](https://github.com/alleslabs/celatone-frontend/pull/264) Fix txhash uppercase query
+- [#258](https://github.com/alleslabs/celatone-frontend/pull/258) Fix address type render for contract admin address
 - [#253](https://github.com/alleslabs/celatone-frontend/pull/253) Fix public code logo shown when switching from mainnet to testnet
 - [#248](https://github.com/alleslabs/celatone-frontend/pull/248) Fix table padding bottom for editable cells
 - [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
