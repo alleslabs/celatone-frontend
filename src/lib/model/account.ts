@@ -7,7 +7,7 @@ import {
   useInstantiatedCountByUserQuery,
 } from "lib/services/contractService";
 import { useProposalsCountByWalletAddress } from "lib/services/proposalService";
-import { useTxQueryCount } from "lib/services/txQuery/useTxQuery";
+import { useTxsCountByAddress } from "lib/services/txService";
 import type { HumanAddr } from "lib/types";
 
 /**
@@ -23,10 +23,11 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
     useInstantiatedCountByUserQuery(walletAddress);
   const { data: proposalsCount, refetch: refetchProposalsCount } =
     useProposalsCountByWalletAddress(walletAddress);
-  const { data: txsCount, refetch: refetchTxsCount } = useTxQueryCount(
+  const { data: txsCount, refetch: refetchTxsCount } = useTxsCountByAddress(
     walletAddress,
     "",
-    DEFAULT_TX_FILTERS
+    DEFAULT_TX_FILTERS,
+    undefined
   );
 
   const { totalData: assetsCount } = useUserAssetInfos(walletAddress);

@@ -16,7 +16,7 @@ import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
 import { useRedo } from "lib/hooks";
-import type { Message } from "lib/types";
+import type { Message, Msg } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
 interface RedoModalProps {
@@ -89,7 +89,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
                   onClickRedo(
                     e,
                     extractMsgType(message.type),
-                    message.msg,
+                    message.detail as Msg,
                     currentChainName
                   )
                 }

@@ -16,10 +16,17 @@ interface FurtherActionButtonProps {
  * Resend should not occurs for instantiate2
  * Redo modal if the message is instantiate2
  *
+ * Both actions should not occur for MsgExec
  */
 export const FurtherActionButton = ({
   transaction,
 }: FurtherActionButtonProps) => {
+  const isExec = transaction.messages.reduce(
+    (found, msg) => found || extractMsgType(msg.type) === "MsgExec",
+    false
+  );
+  if (isExec) return null;
+
   const isInstantiate2 =
     transaction.isInstantiate &&
     transaction.messages.some(

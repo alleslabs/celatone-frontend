@@ -8,16 +8,21 @@ import { CustomIcon } from "lib/components/icon";
 import type { Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
+import { FurtherActionButton } from "./FurtherActionButton";
+import { RelationChip } from "./RelationChip";
+
 interface TransactionsTableRowProps {
   transaction: Transaction;
   templateColumns: string;
-  showSender: boolean;
+  showRelations: boolean;
+  showAction: boolean;
 }
 
 export const TransactionsTableRow = ({
   transaction,
   templateColumns,
-  showSender,
+  showRelations,
+  showAction,
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
@@ -57,15 +62,19 @@ export const TransactionsTableRow = ({
           </Flex>
         </TableRow>
 
-        {showSender && (
+        {showRelations && (
           <TableRow>
-            <ExplorerLink
-              value={transaction.sender}
-              type="user_address"
-              showCopyOnHover
-            />
+            <RelationChip isSigner={transaction.isSigner} />
           </TableRow>
         )}
+
+        <TableRow>
+          <ExplorerLink
+            value={transaction.sender}
+            type="user_address"
+            showCopyOnHover
+          />
+        </TableRow>
 
         <TableRow>
           <Flex direction="column" gap={1}>
@@ -82,6 +91,12 @@ export const TransactionsTableRow = ({
           </Flex>
         </TableRow>
 
+        {showAction && (
+          <TableRow>
+            <FurtherActionButton transaction={transaction} />
+          </TableRow>
+        )}
+
         <TableRow>
           {isAccordion && (
             <CustomIcon name={isOpen ? "chevron-up" : "chevron-down"} />
@@ -94,7 +109,7 @@ export const TransactionsTableRow = ({
             <AccordionTx
               key={index.toString() + msg.type}
               message={msg}
-              allowFurtherAction={false}
+              allowFurtherAction={showAction}
             />
           ))}
         </Grid>

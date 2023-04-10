@@ -1,15 +1,5 @@
 import type { Addr, Option } from "lib/types";
 
-import type {
-  DetailClearAdmin,
-  DetailExecute,
-  DetailInstantiate,
-  DetailMigrate,
-  DetailSend,
-  DetailUpdateAdmin,
-  DetailUpload,
-} from "./msg";
-
 export enum ActionMsgType {
   SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
   MULTIPLE_ACTION_MSG = "MULTIPLE_ACTION_MSG",
@@ -23,17 +13,8 @@ export enum MsgFurtherAction {
 }
 
 export interface Message {
-  detail:
-    | DetailExecute
-    | DetailInstantiate
-    | DetailUpload
-    | DetailSend
-    | DetailUpdateAdmin
-    | DetailClearAdmin
-    | DetailMigrate;
-
+  detail: object;
   logs: Logs;
-  msg: Msg;
   type: string;
 }
 
@@ -50,6 +31,7 @@ export interface Transaction {
   hash: string;
   messages: Message[];
   sender: Addr;
+  isSigner: boolean;
   height: number;
   created: Option<Date>;
   success: boolean;

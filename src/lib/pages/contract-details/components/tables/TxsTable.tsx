@@ -4,7 +4,8 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
-import { useTxsByContractAddressPagination } from "lib/services/txService";
+import { DEFAULT_TX_FILTERS } from "lib/data";
+import { useTxsByAddressPagination } from "lib/services/txService";
 import type { ContractAddr, Option } from "lib/types";
 
 interface TxsTableProps {
@@ -36,8 +37,11 @@ export const TxsTable = ({
     },
   });
 
-  const { data: transactions, isLoading } = useTxsByContractAddressPagination(
+  const { data: transactions, isLoading } = useTxsByAddressPagination(
     contractAddress,
+    "",
+    DEFAULT_TX_FILTERS,
+    undefined,
     offset,
     pageSize
   );
@@ -66,6 +70,7 @@ export const TxsTable = ({
             withBorder
           />
         }
+        showRelations={false}
       />
       {!!totalData && totalData > 10 && (
         <Pagination

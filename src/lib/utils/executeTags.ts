@@ -1,4 +1,4 @@
-import type { Message } from "lib/types";
+import type { DetailExecute, Message } from "lib/types";
 
 /**
  * Returns execute tags to be displayed.
@@ -20,8 +20,10 @@ export const getExecuteMsgTags = (
   );
   const tags = [];
   for (let i = 0; i < max; i += 1) {
-    if (executeMessages[i])
-      tags.push(Object.keys(executeMessages[i].msg.msg)[0]);
+    if (executeMessages[i]) {
+      const msg = executeMessages[i].detail as DetailExecute;
+      tags.push(Object.keys(msg.msg)[0]);
+    }
   }
 
   return executeMessages.length > tags.length
