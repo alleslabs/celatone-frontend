@@ -5,7 +5,7 @@ export const Loading = () => (
     borderY="1px solid"
     borderColor="pebble.700"
     width="full"
-    py={12}
+    py="60px"
     my={12}
     flexDirection="column"
     alignItems="center"

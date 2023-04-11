@@ -1,2 +1,2 @@
-export * from "./TransactionsNoSenderTable";
 export * from "./TransactionsTable";
+export * from "./TransactionsTableWithWallet";

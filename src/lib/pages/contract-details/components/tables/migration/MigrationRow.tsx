@@ -96,8 +96,8 @@ export const MigrationRow = ({
       </TableRow>
       <TableRow>
         <ExplorerLink
-          type="block_height"
           value={history.height.toString()}
+          type="block_height"
           showCopyOnHover
         />
       </TableRow>
