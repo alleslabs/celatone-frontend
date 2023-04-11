@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
 - [#257](https://github.com/alleslabs/celatone-frontend/pull/257) Fix proposal resolved height query, resolved height rendering, and move ResolvedHeight and VotingEndTime to their own file
 - [#264](https://github.com/alleslabs/celatone-frontend/pull/264) Fix txhash uppercase query
 - [#258](https://github.com/alleslabs/celatone-frontend/pull/258) Fix address type render for contract admin address
