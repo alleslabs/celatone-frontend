@@ -46,3 +46,42 @@ export const getTxsCountByAddress = graphql(`
     }
   }
 `);
+
+export const getTxList = graphql(`
+  query getTxList($offset: Int!, $pageSize: Int!) {
+    transactions(
+      order_by: { block_height: desc }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      block {
+        height
+        timestamp
+      }
+      account {
+        address
+      }
+      hash
+      success
+      messages
+      is_clear_admin
+      is_execute
+      is_ibc
+      is_instantiate
+      is_migrate
+      is_send
+      is_store_code
+      is_update_admin
+    }
+  }
+`);
+
+export const getTxListCount = graphql(`
+  query getTxListCount {
+    transactions_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`);

@@ -7,7 +7,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useCelatoneApp, useChainId } from "lib/app-provider";
-import { getTxsByAddressPagination, getTxsCountByAddress } from "lib/query";
+import {
+  getTxsByAddressPagination,
+  getTxsCountByAddress,
+  getTxList,
+  getTxListCount,
+} from "lib/query";
 import type { Addr, Option, Transaction, TxFilters } from "lib/types";
 import {
   getActionMsgType,
@@ -160,4 +165,76 @@ export const useTxsCountByAddress = (
       enabled: !!address,
     }
   );
+};
+
+export const useTxList = (
+  offset: number,
+  pageSize: number
+): UseQueryResult<Transaction[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getTxList, {
+          offset,
+          pageSize,
+        })
+        .then(({ transactions }) =>
+          transactions.map((transaction) => ({
+            hash: parseTxHash(transaction.hash),
+            messages: snakeToCamel(transaction.messages),
+            sender: transaction.account.address as Addr,
+            isSigner: false,
+            height: transaction.block.height,
+            created: parseDateOpt(transaction.block.timestamp),
+            success: transaction.success,
+            actionMsgType: getActionMsgType([
+              transaction.is_execute,
+              transaction.is_instantiate,
+              transaction.is_send,
+              transaction.is_store_code,
+              transaction.is_migrate,
+              transaction.is_update_admin,
+              transaction.is_clear_admin,
+            ]),
+            furtherAction: getMsgFurtherAction(
+              transaction.messages.length,
+              {
+                isExecute: transaction.is_execute,
+                isInstantiate: transaction.is_instantiate,
+                isSend: transaction.is_send,
+                isUpload: transaction.is_store_code,
+                isMigrate: transaction.is_migrate,
+                isUpdateAdmin: transaction.is_update_admin,
+                isClearAdmin: transaction.is_clear_admin,
+                isIbc: transaction.is_ibc,
+              },
+              transaction.success,
+              false
+            ),
+            isIbc: transaction.is_ibc,
+            isInstantiate: transaction.is_instantiate,
+          }))
+        ),
+    [indexerGraphClient, offset, pageSize]
+  );
+
+  return useQuery(
+    ["transaction_list", offset, pageSize, indexerGraphClient],
+    queryFn
+  );
+};
+
+export const useTxListCount = (): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getTxListCount)
+      .then(
+        ({ transactions_aggregate }) => transactions_aggregate.aggregate?.count
+      );
+  }, [indexerGraphClient]);
+
+  return useQuery(["transaction_list_count", indexerGraphClient], queryFn);
 };
