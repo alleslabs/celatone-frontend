@@ -10,6 +10,7 @@ import { Menu } from "./menu";
 import { Modal } from "./modal";
 import { Radio } from "./radio";
 import { Select } from "./select";
+import { Switch } from "./switch";
 import { Table } from "./table";
 import { Text } from "./text";
 import { Textarea } from "./textarea";
@@ -32,4 +33,5 @@ export const components = {
   Tooltip,
   Textarea,
   Table,
+  Switch,
 };
