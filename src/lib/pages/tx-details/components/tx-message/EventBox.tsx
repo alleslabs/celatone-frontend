@@ -25,7 +25,9 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
 
   const measuredRef = useCallback((node: HTMLDivElement | null) => {
     if (node !== null) {
-      setReceiptHeight(node.clientHeight);
+      setTimeout(() => {
+        setReceiptHeight(node.clientHeight);
+      }, 100);
     }
   }, []);
 
