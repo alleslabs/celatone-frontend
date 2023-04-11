@@ -1,88 +1,45 @@
 import { graphql } from "lib/gql";
 
-export const getExecuteTxsByContractAddressPagination = graphql(`
-  query getExecuteTxsByContractAddressPagination(
-    $contractAddress: String!
+export const getTxsByAddressPagination = graphql(`
+  query getTxsByAddressPagination(
+    $expression: account_transactions_bool_exp
     $offset: Int!
     $pageSize: Int!
   ) {
-    contract_transactions_view(
-      where: {
-        contract_address: { _eq: $contractAddress }
-        is_execute: { _eq: true }
-      }
-      order_by: { timestamp: desc }
-      limit: $pageSize
-      offset: $offset
-    ) {
-      hash
-      messages
-      success
-      sender
-      height
-      timestamp
-      is_execute
-      is_ibc
-      is_instantiate
-      is_send
-      is_store_code
-      is_migrate
-      is_update_admin
-      is_clear_admin
-    }
-  }
-`);
-
-export const getExecuteTxsCountByContractAddress = graphql(`
-  query getExecuteTxsCountByContractAddress($contractAddress: String!) {
-    contract_transactions_aggregate(
-      where: {
-        contract: { address: { _eq: $contractAddress } }
-        transaction: { is_execute: { _eq: true } }
-      }
-    ) {
-      aggregate {
-        count
-      }
-    }
-  }
-`);
-
-export const getTxsByContractAddressPagination = graphql(`
-  query getTxsByContractAddress(
-    $contractAddress: String!
-    $offset: Int!
-    $pageSize: Int!
-  ) {
-    contract_transactions_view(
-      where: { contract_address: { _eq: $contractAddress } }
-      order_by: { timestamp: desc }
+    account_transactions(
+      where: $expression
+      order_by: { block_height: desc }
       offset: $offset
       limit: $pageSize
     ) {
-      hash
-      success
-      messages
-      sender
-      height
-      timestamp
-      is_execute
-      is_ibc
-      is_instantiate
-      is_send
-      is_store_code
-      is_migrate
-      is_update_admin
-      is_clear_admin
+      block {
+        height
+        timestamp
+      }
+      transaction {
+        account {
+          address
+        }
+        hash
+        success
+        messages
+        is_clear_admin
+        is_execute
+        is_ibc
+        is_instantiate
+        is_migrate
+        is_send
+        is_store_code
+        is_update_admin
+      }
+      is_signer
     }
   }
 `);
 
-export const getTxsCountByContractAddress = graphql(`
-  query getTxsCountByContractAddress($contractAddress: String!) {
-    contract_transactions_aggregate(
-      where: { contract: { address: { _eq: $contractAddress } } }
-    ) {
+export const getTxsCountByAddress = graphql(`
+  query getTxsCountByAddress($expression: account_transactions_bool_exp) {
+    account_transactions_aggregate(where: $expression) {
       aggregate {
         count
       }

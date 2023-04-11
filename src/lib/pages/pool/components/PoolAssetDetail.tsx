@@ -16,7 +16,7 @@ interface PoolAssetDetailProps {
   assets: PoolLiquidity[];
 }
 export const PoolAssetDetail = ({ assets }: PoolAssetDetailProps) => {
-  const assetInfos = useAssetInfos();
+  const { assetInfos } = useAssetInfos();
 
   if (!assetInfos) return <Loading />;
 
@@ -68,7 +68,7 @@ export const PoolAssetDetail = ({ assets }: PoolAssetDetailProps) => {
             <Text color="lilac.main" variant="body2">
               Read more
             </Text>
-            <CustomIcon name="external" color="lilac.main" boxSize="3" />
+            <CustomIcon name="launch" color="lilac.main" boxSize="3" />
           </Flex>
         </Link>
       </Flex>

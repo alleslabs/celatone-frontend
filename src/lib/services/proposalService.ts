@@ -4,8 +4,11 @@ import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import {
+  getProposalList,
+  getProposalListCount,
   getProposalsByWalletAddressPagination,
   getProposalsCountByWalletAddress,
+  getProposalTypes,
   getRelatedProposalsByContractAddressPagination,
   getRelatedProposalsCountByContractAddress,
 } from "lib/query";
@@ -18,7 +21,9 @@ import type {
   Addr,
   Proposal,
 } from "lib/types";
-import { parseDate } from "lib/utils";
+import { parseDate, parseProposalStatus } from "lib/utils";
+
+import { useProposalListExpression } from "./expression";
 
 export const useRelatedProposalsByContractAddressPagination = (
   contractAddress: ContractAddr,
@@ -38,12 +43,13 @@ export const useRelatedProposalsByContractAddressPagination = (
         contract_proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.proposal_id,
           title: proposal.proposal.title,
-          status: proposal.proposal.status as ProposalStatus,
+          status: parseProposalStatus(proposal.proposal.status),
           votingEndTime: parseDate(proposal.proposal.voting_end_time),
           depositEndTime: parseDate(proposal.proposal.deposit_end_time),
           resolvedHeight: proposal.resolved_height,
           type: proposal.proposal.type as ProposalType,
           proposer: proposal.proposal.account?.address as Addr,
+          isExpedited: Boolean(proposal.proposal.is_expedited),
         }))
       );
   }, [contractAddress, offset, pageSize, indexerGraphClient]);
@@ -111,14 +117,13 @@ export const useProposalsByWalletAddressPagination = (
         proposals.map<Proposal>((proposal) => ({
           proposalId: proposal.id,
           title: proposal.title,
-          status: proposal.status as ProposalStatus,
+          status: parseProposalStatus(proposal.status),
           votingEndTime: parseDate(proposal.voting_end_time),
           depositEndTime: parseDate(proposal.deposit_end_time),
-          resolvedHeight:
-            proposal.code_proposals.at(0)?.resolved_height ||
-            proposal.contract_proposals.at(0)?.resolved_height,
+          resolvedHeight: proposal.resolved_height,
           type: proposal.type as ProposalType,
           proposer: walletAddress,
+          isExpedited: Boolean(proposal.is_expedited),
         }))
       );
   }, [indexerGraphClient, offset, pageSize, walletAddress]);
@@ -158,4 +163,92 @@ export const useProposalsCountByWalletAddress = (
       enabled: !!walletAddress,
     }
   );
+};
+
+export const useProposalList = (
+  offset: number,
+  pageSize: number,
+  statuses: ProposalStatus[],
+  types: ProposalType[],
+  search: string,
+  proposer: Option<Addr>
+): UseQueryResult<Proposal[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const expression = useProposalListExpression(
+    statuses,
+    types,
+    search,
+    proposer
+  );
+
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getProposalList, {
+          expression,
+          offset,
+          pageSize,
+        })
+        .then(({ proposals }) =>
+          proposals.map<Proposal>((proposal) => ({
+            proposalId: proposal.id,
+            title: proposal.title,
+            status: parseProposalStatus(proposal.status),
+            votingEndTime: parseDate(proposal.voting_end_time),
+            depositEndTime: parseDate(proposal.deposit_end_time),
+            resolvedHeight: proposal.resolved_height,
+            type: proposal.type as ProposalType,
+            proposer: proposal.account?.address as Addr,
+            isExpedited: Boolean(proposal.is_expedited),
+          }))
+        ),
+    [indexerGraphClient, offset, pageSize, expression]
+  );
+  return useQuery(
+    ["proposal_list", indexerGraphClient, expression, offset, pageSize],
+    queryFn
+  );
+};
+
+export const useProposalListCount = (
+  statuses: ProposalStatus[],
+  types: ProposalType[],
+  search: string,
+  proposer: Option<Addr>
+): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const expression = useProposalListExpression(
+    statuses,
+    types,
+    search,
+    proposer
+  );
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getProposalListCount, { expression })
+        .then(
+          ({ proposals_aggregate }) => proposals_aggregate?.aggregate?.count
+        ),
+    [indexerGraphClient, expression]
+  );
+
+  return useQuery(
+    ["proposal_list_count", indexerGraphClient, expression],
+    queryFn
+  );
+};
+
+export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getProposalTypes)
+        .then(({ proposals }) =>
+          proposals.map((proposal) => proposal.type).sort()
+        ),
+    [indexerGraphClient]
+  );
+  return useQuery(["proposal_types", indexerGraphClient], queryFn);
 };

@@ -41,7 +41,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
   const handleOnClick = () => {
     navigate({ pathname: `/pool/[poolId]`, query: { poolId } });
   };
-  const assetInfos = useAssetInfos();
+  const { assetInfos } = useAssetInfos();
 
   return (
     <AccordionItem
@@ -76,7 +76,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                           variant="none"
                           aria-label="external"
                           _hover={{ backgroundColor: pebble700 }}
-                          icon={<CustomIcon name="external" />}
+                          icon={<CustomIcon name="launch" />}
                         />
                       </Link>
                     </Tooltip>
@@ -152,7 +152,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                     size="sm"
                     variant="outline-primary"
                     rightIcon={
-                      <CustomIcon name="external" color="outline-primary" />
+                      <CustomIcon name="launch" color="outline-primary" />
                     }
                   >
                     View in Osmosis

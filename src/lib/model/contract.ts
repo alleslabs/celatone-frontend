@@ -2,7 +2,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCelatoneApp, useChainId, useLCDEndpoint } from "lib/app-provider";
-import { INSTANTIATED_LIST_NAME } from "lib/data";
+import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
 import {
@@ -22,7 +22,7 @@ import {
   usePublicProjectByContractAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import { useTxsCountByContractAddress } from "lib/services/txService";
+import { useTxsCountByAddress } from "lib/services/txService";
 import type { ContractListInfo } from "lib/stores/contract";
 import type {
   Addr,
@@ -96,7 +96,7 @@ export const useContractData = (
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
   const endpoint = useLCDEndpoint();
-  const assetInfos = useAssetInfos();
+  const { assetInfos } = useAssetInfos();
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
@@ -183,23 +183,19 @@ export const useContractData = (
 export const useContractDetailsTableCounts = (
   contractAddress: ContractAddr
 ) => {
-  // const { data: executeCount, refetch: refetchExecute } =
-  //   useExecuteTxsCountByContractAddress(contractAddress);
   const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
   const { data: transactionsCount, refetch: refetchTransactions } =
-    useTxsCountByContractAddress(contractAddress);
+    useTxsCountByAddress(contractAddress, "", DEFAULT_TX_FILTERS, undefined);
   const { data: relatedProposalsCount, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
 
   return {
     tableCounts: {
-      // executeCount,
       migrationCount,
       transactionsCount,
       relatedProposalsCount,
     },
-    // refetchExecute,
     refetchMigration,
     refetchTransactions,
     refetchRelatedProposals,

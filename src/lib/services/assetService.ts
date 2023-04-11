@@ -4,10 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { getAssetInfos } from "lib/services/asset";
 import type { AssetInfo, Option } from "lib/types";
 
-export const useAssetInfos = (): Option<{ [key: string]: AssetInfo }> => {
+export type AssetInfosOpt = Option<{ [key: string]: AssetInfo }>;
+
+export const useAssetInfos = (): {
+  assetInfos: AssetInfosOpt;
+  isLoading: boolean;
+} => {
   const { currentChainRecord } = useWallet();
 
-  const { data: assets } = useQuery(
+  const { data: assets, isLoading } = useQuery(
     [
       "query",
       "assetInfos",
@@ -22,5 +27,11 @@ export const useAssetInfos = (): Option<{ [key: string]: AssetInfo }> => {
     { enabled: !!currentChainRecord }
   );
 
-  return assets?.reduce((acc, asset) => ({ ...acc, [asset.id]: asset }), {});
+  return {
+    assetInfos: assets?.reduce(
+      (acc, asset) => ({ ...acc, [asset.id]: asset }),
+      {}
+    ),
+    isLoading,
+  };
 };

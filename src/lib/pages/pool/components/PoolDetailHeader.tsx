@@ -79,7 +79,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
           <Button
             variant="ghost-gray"
             rightIcon={
-              <CustomIcon name="external" boxSize={3} color="pebble.400" />
+              <CustomIcon name="launch" boxSize={3} color="pebble.400" />
             }
           >
             View in JSON
@@ -87,7 +87,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
           <Button
             variant="outline-primary"
             rightIcon={
-              <CustomIcon name="external" boxSize={3} color="violet.light" />
+              <CustomIcon name="launch" boxSize={3} color="violet.light" />
             }
           >
             View in Osmosis

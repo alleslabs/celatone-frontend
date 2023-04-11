@@ -6,7 +6,7 @@ type PageContainerProps = {
 };
 
 const PageContainer = ({ children }: PageContainerProps) => (
-  <Box as="main" p="48px" overflowX="hidden">
+  <Box as="main" p="48px" overflowX="hidden" minH="inherit">
     {children}
   </Box>
 );

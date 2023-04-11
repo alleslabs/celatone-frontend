@@ -39,7 +39,7 @@ export const PoolCard = ({
   const handleOnClick = () => {
     navigate({ pathname: `/pool/[poolId]`, query: { poolId } });
   };
-  const assetInfos = useAssetInfos();
+  const { assetInfos } = useAssetInfos();
 
   if (!assetInfos)
     return (
@@ -99,7 +99,7 @@ export const PoolCard = ({
                 aria-label="external"
                 _hover={{ backgroundColor: pebble700 }}
                 color="pebble.600"
-                icon={<CustomIcon name="external" />}
+                icon={<CustomIcon name="launch" />}
               />
             </Link>
           </Tooltip>

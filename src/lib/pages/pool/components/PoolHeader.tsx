@@ -18,7 +18,7 @@ export const PoolHeader = ({
   poolType,
   poolLiquidity,
 }: PoolHeaderProps) => {
-  const assetInfos = useAssetInfos();
+  const { assetInfos } = useAssetInfos();
 
   return (
     <Flex justifyContent="space-between" w="full">

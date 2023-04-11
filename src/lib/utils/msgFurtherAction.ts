@@ -4,14 +4,20 @@ import { MsgFurtherAction } from "lib/types";
 export const getMsgFurtherAction = (
   length: number,
   filters: TxFilters,
-  isSuccess: boolean
+  isSuccess: boolean,
+  isSigner: boolean
 ) => {
   // Redo: instantiate, execute, check length === 1
-  if (length === 1 && (filters.isExecute || filters.isInstantiate)) {
+  if (
+    isSigner &&
+    length === 1 &&
+    (filters.isExecute || filters.isInstantiate)
+  ) {
     return MsgFurtherAction.REDO;
   }
   // Resend: messages with execute, instantiate, or send with success transaction
   if (
+    isSigner &&
     !filters.isClearAdmin &&
     !filters.isUpload &&
     !filters.isIbc &&

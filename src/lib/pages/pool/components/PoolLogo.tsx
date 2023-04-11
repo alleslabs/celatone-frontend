@@ -9,7 +9,7 @@ interface PoolLogoProps {
   poolLiquidity: PoolDetail["pool_liquidity"];
 }
 export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
-  const assetInfos = useAssetInfos();
+  const { assetInfos } = useAssetInfos();
 
   return (
     <Flex
