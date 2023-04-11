@@ -7,6 +7,7 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import type { PoolDetail } from "lib/types/pool";
@@ -17,6 +18,7 @@ interface UnsupportedPoolListProp {
   pools: PoolDetail[];
 }
 export const UnsupportedPoolList = ({ pools }: UnsupportedPoolListProp) => {
+  const [showNewest, setShowNewest] = useState(true);
   return (
     <>
       <Flex alignItems="center" justifyContent="space-between" h="32px">
@@ -33,10 +35,27 @@ export const UnsupportedPoolList = ({ pools }: UnsupportedPoolListProp) => {
             <Text variant="body2" color="text.dark">
               Sort Pool ID:
             </Text>
-            <Button variant="outline-gray" size="sm" pr="1">
-              Newest First
-              <CustomIcon name="arrow-down" color="text.dark" />
-            </Button>
+            {showNewest ? (
+              <Button
+                variant="outline-gray"
+                size="sm"
+                pr="1"
+                onClick={() => setShowNewest(!showNewest)}
+              >
+                Newest First
+                <CustomIcon name="arrow-down" color="text.dark" />
+              </Button>
+            ) : (
+              <Button
+                variant="outline-gray"
+                size="sm"
+                pr="1"
+                onClick={() => setShowNewest(!showNewest)}
+              >
+                Oldest First
+                <CustomIcon name="arrow-up" color="text.dark" />
+              </Button>
+            )}
           </Flex>
           <Flex gap="2" alignItems="center">
             <Button variant="outline-gray" size="sm">

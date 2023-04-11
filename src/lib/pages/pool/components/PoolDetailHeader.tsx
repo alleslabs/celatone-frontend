@@ -14,14 +14,16 @@ import {
   Heading,
   useDisclosure,
   chakra,
+  Tooltip,
 } from "@chakra-ui/react";
 import Big from "big.js";
 
 import { BackButton } from "lib/components/button";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type { PoolDetail } from "lib/types/pool";
-import { jsonPrettify } from "lib/utils";
+import { jsonPrettify, truncate } from "lib/utils";
 import { formatPercentValue } from "lib/utils/formatter/formatPercentValue";
 
 import { PoolHeader } from "./PoolHeader";
@@ -105,7 +107,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
         borderRadius="8px"
         px={4}
         py={3}
-        gap={16}
+        gap={12}
         mt={6}
       >
         <Flex flexDirection="column" gap={1}>
@@ -115,13 +117,54 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
           </StyledTextContent>
         </Flex>
         <Flex flexDirection="column" gap={1}>
-          <StyledTextLabel> Swap Fee</StyledTextLabel>
+          <StyledTextLabel> Created Height</StyledTextLabel>
+          <StyledTextContent color="lilac.main">
+            {pool.create_tx_id}
+          </StyledTextContent>
+        </Flex>
+        <Flex flexDirection="column" gap={1}>
+          <StyledTextLabel> Pool Created by</StyledTextLabel>
+          <StyledTextContent color="lilac.main">
+            <ExplorerLink
+              type="user_address"
+              value={truncate(pool.account.address)}
+            />
+          </StyledTextContent>
+        </Flex>
+        <Flex flexDirection="column" gap={1}>
+          <Flex alignItems="center" gap={1}>
+            <StyledTextLabel>Swap Fee</StyledTextLabel>
+            <Tooltip
+              hasArrow
+              label="The fee charged for making a swap in a pool, defined by the pool creator, and paid by traders in the form of a percentage the input swap asset amount"
+              placement="top"
+              bg="honeydew.darker"
+              arrowSize={8}
+            >
+              <Flex cursor="pointer">
+                <CustomIcon name="info-circle" boxSize="12px" />
+              </Flex>
+            </Tooltip>
+          </Flex>
           <StyledTextContent>
             {formatPercentValue(Big(pool.swap_fee).times(100))}
           </StyledTextContent>
         </Flex>
         <Flex flexDirection="column" gap={1}>
-          <StyledTextLabel> Exit Fee</StyledTextLabel>
+          <Flex alignItems="center" gap={1}>
+            <StyledTextLabel>Exit Fee</StyledTextLabel>
+            <Tooltip
+              hasArrow
+              label="The fee charged when withdrawing from a pool, defined by the pool creator, and paid by the withdrawer in the form of LP tokens"
+              placement="top"
+              bg="honeydew.darker"
+              arrowSize={8}
+            >
+              <Flex cursor="pointer">
+                <CustomIcon name="info-circle" boxSize="12px" />
+              </Flex>
+            </Tooltip>
+          </Flex>
           <StyledTextContent>
             {formatPercentValue(Big(pool.exit_fee).times(100))}
           </StyledTextContent>

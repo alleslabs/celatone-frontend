@@ -9,3 +9,4 @@ export * from "./contract";
 export * from "./projects";
 export * from "./addrs";
 export * from "./proposal";
+export * from "./pool";

@@ -1,10 +1,5 @@
 import type { Option } from "lib/types";
 
-// export enum PoolType {
-//   BALANCER = "Balancer",
-//   STABLE_SWAP = "Stable Swap",
-// }
-
 export interface PoolLiquidity {
   denom: string;
   amount: string;
@@ -23,8 +18,14 @@ export interface SmoothWeightChangeParams {
   start_time: string;
   duration: string;
 }
+export interface PoolAccount {
+  address: string;
+  id: number;
+}
 export interface PoolDetail {
   pool_id: number;
+  create_tx_id: number;
+  account: PoolAccount;
   pool_liquidity: PoolLiquidity[];
   pool_type: string;
   is_superfluid: boolean;

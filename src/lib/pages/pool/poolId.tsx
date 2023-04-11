@@ -1,4 +1,3 @@
-// import { Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { useInternalNavigate } from "lib/app-provider";
@@ -8,6 +7,7 @@ import PageContainer from "lib/components/PageContainer";
 import { MockUpPoolList } from "./components/constant";
 import { PoolAssetDetail } from "./components/PoolAssetDetail";
 import { PoolDetailHeader } from "./components/PoolDetailHeader";
+import { PoolRelatedTxs } from "./components/PoolRelatedTxs";
 
 export const PoolId = () => {
   const router = useRouter();
@@ -21,6 +21,7 @@ export const PoolId = () => {
     <PageContainer>
       <PoolDetailHeader pool={pool} />
       <PoolAssetDetail assets={pool.pool_liquidity} />
+      <PoolRelatedTxs />
     </PageContainer>
   );
 };

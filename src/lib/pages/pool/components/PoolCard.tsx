@@ -1,10 +1,16 @@
-import { Box, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  IconButton,
+  Skeleton,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import big, { Big } from "big.js";
 import Link from "next/link";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import type { USD } from "lib/types";
 import type { PoolDetail } from "lib/types/pool";
@@ -35,7 +41,10 @@ export const PoolCard = ({
   };
   const assetInfos = useAssetInfos();
 
-  if (!assetInfos) return <Loading />;
+  if (!assetInfos)
+    return (
+      <Skeleton height="175px" startColor="pebble.900" endColor="pebble.800" />
+    );
 
   const liquidity = item.pool_liquidity.reduce((total, asset) => {
     const assetInfo = assetInfos[asset.denom];

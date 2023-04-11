@@ -6,6 +6,11 @@ export const UndefinedTokenList = [
 export const MockUpPoolList = [
   {
     pool_id: 31,
+    create_tx_id: 1231354,
+    account: {
+      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
+      id: 291362,
+    },
     pool_liquidity: [
       {
         denom:
@@ -100,16 +105,20 @@ export const MockUpPoolList = [
   },
   {
     pool_id: 231,
+    create_tx_id: 1231354,
+    account: {
+      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
+      id: 291362,
+    },
     pool_liquidity: [
       {
-        denom:
-          "ibc/ACA4C8A815A053CC027DB90D15915ADA31939FA331CE745862CDD00A2904FA17",
-        amount: "3053",
+        denom: "uion",
+        amount: "268435456000000",
       },
       {
         denom:
-          "ibc/F89E34457F34F306592D4EFB8692406D49D4E2B5C70F725F127862E22CE6BDCD",
-        amount: "127",
+          "ibc/ACA4C8A815A053CC027DB90D15915ADA31939FA331CE745862CDD00A2904FA17",
+        amount: "268435456000000",
       },
       {
         denom: "uosmo",
@@ -167,6 +176,11 @@ export const MockUpPoolList = [
   },
   {
     pool_id: 932,
+    create_tx_id: 1231354,
+    account: {
+      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
+      id: 291362,
+    },
     pool_liquidity: [
       {
         denom: "uion",
@@ -195,6 +209,11 @@ export const MockUpPoolList = [
   },
   {
     pool_id: 872,
+    create_tx_id: 1231354,
+    account: {
+      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
+      id: 291362,
+    },
     pool_liquidity: [
       {
         denom:
@@ -229,6 +248,11 @@ export const MockUpPoolList = [
   },
   {
     pool_id: 21,
+    create_tx_id: 1231354,
+    account: {
+      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
+      id: 291362,
+    },
     pool_liquidity: [
       {
         denom:
@@ -290,6 +314,11 @@ export const MockUpPoolList = [
   },
   {
     pool_id: 221,
+    create_tx_id: 1231354,
+    account: {
+      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
+      id: 291362,
+    },
     pool_liquidity: [
       {
         denom:
@@ -357,6 +386,11 @@ export const MockUpPoolList = [
   },
   {
     pool_id: 941,
+    create_tx_id: 1231354,
+    account: {
+      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
+      id: 291362,
+    },
     pool_liquidity: [
       {
         denom:
@@ -387,6 +421,11 @@ export const MockUpPoolList = [
   },
   {
     pool_id: 372,
+    create_tx_id: 1231354,
+    account: {
+      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
+      id: 291362,
+    },
     pool_liquidity: [
       {
         denom:
