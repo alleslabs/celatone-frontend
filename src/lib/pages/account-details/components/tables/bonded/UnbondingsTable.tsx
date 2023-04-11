@@ -1,4 +1,4 @@
-import { Box, TableContainer } from "@chakra-ui/react";
+import { TableContainer } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -58,8 +58,8 @@ export const UnbondingsTable = ({
   unbondings,
   isLoading,
 }: UnbondingsTableProps) => (
-  <Box>
+  <div>
     <TableTitle title="Unbonding" count={unbondings?.length ?? 0} mb={2} />
     <UnbondingsTableBody unbondings={unbondings} isLoading={isLoading} />
-  </Box>
+  </div>
 );

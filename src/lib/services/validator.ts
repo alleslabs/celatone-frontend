@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import type { Option, ValidatorAddr } from "lib/types";
+import type { ValidatorAddr } from "lib/types";
 
 interface ValidatorsResponse {
   validators: {
@@ -42,11 +42,11 @@ export interface RawValidator {
 
 export const getValidators = async (
   endpoint: string
-): Promise<Option<Record<string, RawValidator>>> => {
+): Promise<Record<string, RawValidator>> => {
   const { data } = await axios.get<ValidatorsResponse>(
     `${endpoint}/cosmos/staking/v1beta1/validators?pagination.limit=500`
   );
-  return data.validators.reduce(
+  return data.validators.reduce<Record<string, RawValidator>>(
     (all, validator) => ({
       ...all,
       [validator.operator_address]: {
@@ -55,6 +55,6 @@ export const getValidators = async (
         identity: validator.description.identity,
       },
     }),
-    {} as Record<string, RawValidator>
+    {}
   );
 };

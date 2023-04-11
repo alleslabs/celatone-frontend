@@ -43,7 +43,7 @@ export const Radio: ComponentStyleConfig = {
       container: {
         minW: "fit-content",
         w: "full",
-        px: "23px",
+        px: "24px",
         py: "12px",
         border: "2px solid",
         borderRadius: "12px",

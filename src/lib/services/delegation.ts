@@ -2,7 +2,7 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 import big from "big.js";
 
-import type { Addr, Option, Token, U, ValidatorAddr } from "lib/types";
+import type { Addr, Token, U, ValidatorAddr } from "lib/types";
 import { parseDate, secondsToDays } from "lib/utils";
 
 interface StakingParamsResponse {
@@ -115,7 +115,7 @@ export interface RawCommission {
 
 export const getStakingParams = async (
   endpoint: string
-): Promise<Option<RawStakingParams>> => {
+): Promise<RawStakingParams> => {
   const { data } = await axios.get<StakingParamsResponse>(
     `${endpoint}/cosmos/staking/v1beta1/params`
   );
@@ -129,7 +129,7 @@ export const getStakingParams = async (
 export const getDelegations = async (
   endpoint: string,
   address: Addr
-): Promise<Option<RawDelegation[]>> => {
+): Promise<RawDelegation[]> => {
   const { data } = await axios.get<DelegationResponse>(
     `${endpoint}/cosmos/staking/v1beta1/delegations/${address}`
   );
@@ -140,18 +140,18 @@ export const getDelegations = async (
       denom: delegation.balance.denom,
       amount: delegation.balance.amount,
     }))
-    .sort((a, b) => big(b.amount).sub(big(a.amount)).toNumber());
+    .sort((a, b) => big(b.amount).cmp(a.amount));
 };
 
 export const getUnbondings = async (
   endpoint: string,
   address: Addr
-): Promise<Option<RawUnbonding[]>> => {
+): Promise<RawUnbonding[]> => {
   const { data } = await axios.get<UnbondingResponse>(
     `${endpoint}/cosmos/staking/v1beta1/delegators/${address}/unbonding_delegations`
   );
   return data.unbonding_responses
-    .reduce(
+    .reduce<RawUnbonding[]>(
       (prev, validator) =>
         prev.concat(
           ...validator.entries.map((entry) => ({
@@ -160,7 +160,7 @@ export const getUnbondings = async (
             amount: entry.balance,
           }))
         ),
-      [] as RawUnbonding[]
+      []
     )
     .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime());
 };
@@ -168,7 +168,7 @@ export const getUnbondings = async (
 export const getDelegationRewards = async (
   endpoint: string,
   address: Addr
-): Promise<Option<RawDelegationRewards>> => {
+): Promise<RawDelegationRewards> => {
   const { data } = await axios.get<DelegationRewardsResponse>(
     `${endpoint}/cosmos/distribution/v1beta1/delegators/${address}/rewards`
   );
@@ -184,12 +184,12 @@ export const getDelegationRewards = async (
 export const getRedelegations = async (
   endpoint: string,
   address: Addr
-): Promise<Option<RawRedelegation[]>> => {
+): Promise<RawRedelegation[]> => {
   const { data } = await axios.get<RedelegationsResponse>(
     `${endpoint}/cosmos/staking/v1beta1/delegators/${address}/redelegations`
   );
   return data.redelegation_responses
-    .reduce(
+    .reduce<RawRedelegation[]>(
       (prev, redelegate) =>
         prev.concat(
           ...redelegate.entries.map((entry) => ({
@@ -199,7 +199,7 @@ export const getRedelegations = async (
             amount: entry.balance,
           }))
         ),
-      [] as RawRedelegation[]
+      []
     )
     .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime());
 };
@@ -207,7 +207,7 @@ export const getRedelegations = async (
 export const getCommission = async (
   endpoint: string,
   address: ValidatorAddr
-): Promise<Option<RawCommission>> => {
+): Promise<RawCommission> => {
   const { data } = await axios.get<CommissionResponse>(
     `${endpoint}/cosmos/distribution/v1beta1/validators/${address}/commission`
   );

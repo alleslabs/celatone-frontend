@@ -9,6 +9,7 @@ export const getAssetInfo = async (
   denom: string
 ): Promise<Option<AssetInfo>> => {
   if (!chainName || !chainId) throw new Error("Invalid chain (getAssetInfo)");
+  if (!denom.trim().length) throw new Error("Empty denom");
   const { data } = await axios.get(
     `${CELATONE_API_ENDPOINT}/assets/${getChainApiPath(
       chainName

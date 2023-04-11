@@ -1,6 +1,7 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { TableRow, ValidatorBadge } from "lib/components/table";
+import { TableRow } from "lib/components/table";
+import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { NonRedelegatable } from "lib/pages/account-details/type";
 import { dateFromNow, formatUTC } from "lib/utils";
 

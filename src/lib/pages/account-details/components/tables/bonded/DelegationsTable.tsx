@@ -1,4 +1,4 @@
-import { Box, TableContainer } from "@chakra-ui/react";
+import { TableContainer } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -64,7 +64,7 @@ export const DelegationsTable = ({
   defaultToken,
   isLoading,
 }: DelegationsTableProps) => (
-  <Box>
+  <div>
     <TableTitle title="Delegated to" count={delegations?.length ?? 0} mb={2} />
     <DelegationsTableBody
       delegations={delegations}
@@ -72,5 +72,5 @@ export const DelegationsTable = ({
       defaultToken={defaultToken}
       isLoading={isLoading}
     />
-  </Box>
+  </div>
 );

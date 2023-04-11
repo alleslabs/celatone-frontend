@@ -9,7 +9,7 @@ import {
   useContractListByAdminPagination,
   useContractListByWalletAddressPagination,
 } from "lib/services/contractService";
-import type { RawStakingParams, RawUnbonding } from "lib/services/delegation";
+import type { RawStakingParams } from "lib/services/delegation";
 import {
   useCommission,
   useDelegationRewards,
@@ -36,8 +36,8 @@ import {
   calculateAssetValue,
   calTotalValue,
   toToken,
+  addrToValoper,
 } from "lib/utils";
-import { addrToValoper } from "lib/utils/bech32";
 
 import type { TokenWithValue, UserDelegationsData } from "./type";
 
@@ -69,9 +69,9 @@ export interface Delegation {
   token: TokenWithValue;
 }
 
-export interface Unbonding
-  extends Omit<RawUnbonding, "validatorAddress" | "amount"> {
+export interface Unbonding {
   validator: ValidatorInfo;
+  completionTime: Date;
   token: TokenWithValue;
 }
 
@@ -247,12 +247,12 @@ const calBonded = (
 ) => {
   if (!totalDelegations || !totalUnbondings) return undefined;
 
-  return Object.keys(totalDelegations).reduce(
+  return Object.keys(totalDelegations).reduce<Record<string, TokenWithValue>>(
     (total, denom) => ({
       ...total,
       [denom]: addTotal(totalUnbondings[denom], totalDelegations[denom]),
     }),
-    {} as Record<string, TokenWithValue>
+    {}
   );
 };
 
@@ -280,21 +280,20 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     isValidator: undefined,
     isLoading,
     totalBonded: undefined,
-    isLoadingTotalBonded:
-      isLoading || isLoadingRawDelegations || isLoadingRawUnbondings,
+    isLoadingTotalBonded: isLoadingRawDelegations || isLoadingRawUnbondings,
     totalDelegations: undefined,
     delegations: undefined,
-    isLoadingDelegations: isLoading || isLoadingRawDelegations,
+    isLoadingDelegations: isLoadingRawDelegations,
     totalUnbondings: undefined,
     unbondings: undefined,
-    isLoadingUnbondings: isLoading || isLoadingRawUnbondings,
+    isLoadingUnbondings: isLoadingRawUnbondings,
     totalRewards: undefined,
     rewards: undefined,
-    isLoadingRewards: isLoading || isLoadingRawRewards,
+    isLoadingRewards: isLoadingRawRewards,
     redelegations: undefined,
-    isLoadingRedelegations: isLoading || isLoadingRawRedelegations,
+    isLoadingRedelegations: isLoadingRawRedelegations,
     totalCommission: undefined,
-    isLoadingTotalCommission: isLoading || isLoadingRawCommission,
+    isLoadingTotalCommission: isLoadingRawCommission,
   };
 
   if (rawStakingParams && assetInfos && validators) {
@@ -316,7 +315,9 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       },
       token: coinToTokenWithValue(raw.denom, raw.amount, assetInfos[raw.denom]),
     }));
-    data.totalDelegations = data.delegations?.reduce(
+    data.totalDelegations = data.delegations?.reduce<
+      Record<string, TokenWithValue>
+    >(
       (total, delegation) => ({
         ...total,
         [delegation.token.denom]: addTotal(
@@ -324,7 +325,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
           delegation.token
         ),
       }),
-      {} as Record<string, TokenWithValue>
+      {}
     );
 
     data.unbondings = rawUnbondings?.map<Unbonding>((raw) => ({
@@ -339,7 +340,9 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
         assetInfos[rawStakingParams.bondDenom]
       ),
     }));
-    data.totalUnbondings = data.unbondings?.reduce(
+    data.totalUnbondings = data.unbondings?.reduce<
+      Record<string, TokenWithValue>
+    >(
       (total, unbonding) => ({
         ...total,
         [unbonding.token.denom]: addTotal(
@@ -347,19 +350,21 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
           unbonding.token
         ),
       }),
-      {} as Record<string, TokenWithValue>
+      {}
     );
 
-    data.rewards = rawRewards?.rewards.reduce(
+    data.rewards = rawRewards?.rewards.reduce<Record<string, TokenWithValue[]>>(
       (prev, raw) => ({
         ...prev,
         [raw.validatorAddress]: raw.reward.map<TokenWithValue>((coin) =>
           coinToTokenWithValue(coin.denom, coin.amount, assetInfos[coin.denom])
         ),
       }),
-      {} as Record<string, TokenWithValue[]>
+      {}
     );
-    data.totalRewards = rawRewards?.total.reduce(
+    data.totalRewards = rawRewards?.total.reduce<
+      Record<string, TokenWithValue>
+    >(
       (total, raw) => ({
         ...total,
         [raw.denom]: coinToTokenWithValue(
@@ -368,7 +373,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
           assetInfos[raw.denom]
         ),
       }),
-      {} as Record<string, TokenWithValue>
+      {}
     );
 
     data.redelegations = rawRedelegations?.map<Redelegation>((raw) => ({
@@ -388,7 +393,9 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       ),
     }));
 
-    data.totalCommission = rawCommission?.commission.reduce(
+    data.totalCommission = rawCommission?.commission.reduce<
+      Record<string, TokenWithValue>
+    >(
       (commission, raw) => ({
         ...commission,
         [raw.denom]: coinToTokenWithValue(
@@ -397,7 +404,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
           assetInfos[raw.denom]
         ),
       }),
-      {} as Record<string, TokenWithValue>
+      {}
     );
 
     data.totalBonded = calBonded(data.totalDelegations, data.totalUnbondings);
