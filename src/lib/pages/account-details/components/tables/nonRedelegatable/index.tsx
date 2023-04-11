@@ -18,7 +18,7 @@ export const NonRedelegatablesTable = ({
     <NonRedelegatableTableHeader templateColumns={TEMPLATE_COLUMNS} />
     {nonRedelegatables.map((nonRedelegatable) => (
       <NonRedelegatableTableRow
-        key={`nonredelegatable_${nonRedelegatable.validator.validatorAddress}_${nonRedelegatable.validator.moniker}`}
+        key={`nonredelegatable_${nonRedelegatable.dstValidator.validatorAddress}_${nonRedelegatable.dstValidator.moniker}`}
         nonRedelegatable={nonRedelegatable}
         templateColumns={TEMPLATE_COLUMNS}
       />

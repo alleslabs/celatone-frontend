@@ -20,7 +20,7 @@ export const NonRedelegatableTableRow = ({
     minW="min-content"
   >
     <TableRow>
-      <ValidatorBadge validator={nonRedelegatable.validator} />
+      <ValidatorBadge validator={nonRedelegatable.dstValidator} />
     </TableRow>
 
     <TableRow>

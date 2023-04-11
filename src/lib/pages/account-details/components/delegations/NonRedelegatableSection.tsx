@@ -12,20 +12,20 @@ export const NonRedelegatableSection = ({
   redelegations,
 }: NonRedelegatableSectionProps) => {
   const nonRedelegatables = redelegations
-    .reduceRight((prev, redelegation) => {
+    .reduceRight<NonRedelegatable[]>((prev, redelegation) => {
       if (
         prev.find(
           (value) =>
-            value.validator.validatorAddress ===
+            value.dstValidator.validatorAddress ===
             redelegation.dstValidator.validatorAddress
         )
       )
         return prev;
       return prev.concat({
-        validator: redelegation.dstValidator,
+        dstValidator: redelegation.dstValidator,
         completionTime: redelegation.completionTime,
       });
-    }, [] as NonRedelegatable[])
+    }, [])
     .reverse();
 
   return (

@@ -18,7 +18,7 @@ export interface TokenWithValue {
 }
 
 export interface NonRedelegatable {
-  validator: ValidatorInfo;
+  dstValidator: ValidatorInfo;
   completionTime: Date;
 }
 

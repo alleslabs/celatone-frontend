@@ -207,26 +207,19 @@ const coinToTokenWithValue = (
   amount: string,
   assetInfo: Option<AssetInfo>
 ): TokenWithValue => {
-  const token: TokenWithValue = {
+  const tokenAmount = big(amount) as U<Token<Big>>;
+  return {
     denom,
-    amount: big(amount) as U<Token<Big>>,
-    logo: undefined,
-    precision: undefined,
-    value: undefined,
+    amount: tokenAmount,
+    logo: assetInfo?.logo,
+    precision: assetInfo?.precision,
+    value: assetInfo
+      ? calculateAssetValue(
+          toToken(tokenAmount, assetInfo.precision),
+          assetInfo.price as USD<number>
+        )
+      : undefined,
   };
-  return assetInfo
-    ? Object.assign<TokenWithValue, Omit<TokenWithValue, "denom" | "amount">>(
-        token,
-        {
-          logo: assetInfo.logo,
-          precision: assetInfo.precision,
-          value: calculateAssetValue(
-            toToken(token.amount, assetInfo.precision),
-            assetInfo.price as USD<number>
-          ),
-        }
-      )
-    : token;
 };
 
 const addTotal = (
@@ -415,10 +408,6 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
 
 export const useAccountTotalValue = (walletAddress: HumanAddr) => {
   const { supportedAssets, isLoading } = useUserAssetInfos(walletAddress);
-  const data = useUserDelegationInfos(walletAddress);
-  if (isLoading || !data)
-    return { totalAccountValue: undefined, isLoading: true };
-
   const {
     stakingParams,
     isLoading: isLoadingStakingParams,
@@ -428,8 +417,11 @@ export const useAccountTotalValue = (walletAddress: HumanAddr) => {
     isLoadingRewards,
     totalCommission,
     isLoadingTotalCommission,
-  } = data;
+  } = useUserDelegationInfos(walletAddress);
+
   if (
+    isLoading ||
+    isLoadingStakingParams ||
     isLoadingStakingParams ||
     isLoadingTotalBonded ||
     isLoadingRewards ||
