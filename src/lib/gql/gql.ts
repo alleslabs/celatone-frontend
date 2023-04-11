@@ -59,10 +59,10 @@ const documents = {
     types.GetTxsByAddressPaginationDocument,
   "\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetTxsCountByAddressDocument,
-  "\n  query getTxList($offset: Int!, $pageSize: Int!) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_clear_admin\n      is_execute\n      is_ibc\n      is_instantiate\n      is_migrate\n      is_send\n      is_store_code\n      is_update_admin\n    }\n  }\n":
-    types.GetTxListDocument,
-  "\n  query getTxListCount {\n    transactions_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n":
-    types.GetTxListCountDocument,
+  "\n  query getTxs($offset: Int!, $pageSize: Int!) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_clear_admin\n      is_execute\n      is_ibc\n      is_instantiate\n      is_migrate\n      is_send\n      is_store_code\n      is_update_admin\n    }\n  }\n":
+    types.GetTxsDocument,
+  "\n  query getTxsCount {\n    transactions_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n":
+    types.GetTxsCountDocument,
 };
 
 export function graphql(
@@ -150,11 +150,11 @@ export function graphql(
   source: "\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 export function graphql(
-  source: "\n  query getTxList($offset: Int!, $pageSize: Int!) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_clear_admin\n      is_execute\n      is_ibc\n      is_instantiate\n      is_migrate\n      is_send\n      is_store_code\n      is_update_admin\n    }\n  }\n"
-): typeof documents["\n  query getTxList($offset: Int!, $pageSize: Int!) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_clear_admin\n      is_execute\n      is_ibc\n      is_instantiate\n      is_migrate\n      is_send\n      is_store_code\n      is_update_admin\n    }\n  }\n"];
+  source: "\n  query getTxs($offset: Int!, $pageSize: Int!) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_clear_admin\n      is_execute\n      is_ibc\n      is_instantiate\n      is_migrate\n      is_send\n      is_store_code\n      is_update_admin\n    }\n  }\n"
+): typeof documents["\n  query getTxs($offset: Int!, $pageSize: Int!) {\n    transactions(\n      order_by: { block_height: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      block {\n        height\n        timestamp\n      }\n      account {\n        address\n      }\n      hash\n      success\n      messages\n      is_clear_admin\n      is_execute\n      is_ibc\n      is_instantiate\n      is_migrate\n      is_send\n      is_store_code\n      is_update_admin\n    }\n  }\n"];
 export function graphql(
-  source: "\n  query getTxListCount {\n    transactions_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n"
-): typeof documents["\n  query getTxListCount {\n    transactions_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
+  source: "\n  query getTxsCount {\n    transactions_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n"
+): typeof documents["\n  query getTxsCount {\n    transactions_aggregate {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
 export function graphql(source: string) {

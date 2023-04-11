@@ -8,11 +8,11 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
-import { useTxList, useTxListCount } from "lib/services/txService";
+import { useTxs, useTxsCount } from "lib/services/txService";
 
-const TxList = () => {
+const Txs = () => {
   const chainId = useChainId();
-  const { data: countTxs = 0 } = useTxListCount();
+  const { data: countTxs = 0 } = useTxsCount();
 
   const {
     pagesQuantity,
@@ -30,7 +30,7 @@ const TxList = () => {
     },
   });
 
-  const { data: txs, isLoading } = useTxList(offset, pageSize);
+  const { data: txs, isLoading } = useTxs(offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
     setCurrentPage(nextPage);
@@ -85,4 +85,4 @@ const TxList = () => {
   );
 };
 
-export default TxList;
+export default Txs;

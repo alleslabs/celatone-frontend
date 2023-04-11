@@ -11459,12 +11459,12 @@ export type GetTxsCountByAddressQuery = {
   };
 };
 
-export type GetTxListQueryVariables = Exact<{
+export type GetTxsQueryVariables = Exact<{
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
 
-export type GetTxListQuery = {
+export type GetTxsQuery = {
   __typename?: "query_root";
   transactions: Array<{
     __typename?: "transactions";
@@ -11484,9 +11484,9 @@ export type GetTxListQuery = {
   }>;
 };
 
-export type GetTxListCountQueryVariables = Exact<{ [key: string]: never }>;
+export type GetTxsCountQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetTxListCountQuery = {
+export type GetTxsCountQuery = {
   __typename?: "query_root";
   transactions_aggregate: {
     __typename?: "transactions_aggregate";
@@ -15302,13 +15302,13 @@ export const GetTxsCountByAddressDocument = {
   GetTxsCountByAddressQuery,
   GetTxsCountByAddressQueryVariables
 >;
-export const GetTxListDocument = {
+export const GetTxsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getTxList" },
+      name: { kind: "Name", value: "getTxs" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -15434,14 +15434,14 @@ export const GetTxListDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetTxListQuery, GetTxListQueryVariables>;
-export const GetTxListCountDocument = {
+} as unknown as DocumentNode<GetTxsQuery, GetTxsQueryVariables>;
+export const GetTxsCountDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getTxListCount" },
+      name: { kind: "Name", value: "getTxsCount" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -15468,4 +15468,4 @@ export const GetTxListCountDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetTxListCountQuery, GetTxListCountQueryVariables>;
+} as unknown as DocumentNode<GetTxsCountQuery, GetTxsCountQueryVariables>;

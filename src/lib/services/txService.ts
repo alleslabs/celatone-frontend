@@ -10,8 +10,8 @@ import { useCelatoneApp, useChainId } from "lib/app-provider";
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
-  getTxList,
-  getTxListCount,
+  getTxs,
+  getTxsCount,
 } from "lib/query";
 import type { Addr, Option, Transaction, TxFilters } from "lib/types";
 import {
@@ -167,7 +167,7 @@ export const useTxsCountByAddress = (
   );
 };
 
-export const useTxList = (
+export const useTxs = (
   offset: number,
   pageSize: number
 ): UseQueryResult<Transaction[]> => {
@@ -176,7 +176,7 @@ export const useTxList = (
   const queryFn = useCallback(
     async () =>
       indexerGraphClient
-        .request(getTxList, {
+        .request(getTxs, {
           offset,
           pageSize,
         })
@@ -226,11 +226,11 @@ export const useTxList = (
   );
 };
 
-export const useTxListCount = (): UseQueryResult<Option<number>> => {
+export const useTxsCount = (): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(async () => {
     return indexerGraphClient
-      .request(getTxListCount)
+      .request(getTxsCount)
       .then(
         ({ transactions_aggregate }) => transactions_aggregate.aggregate?.count
       );

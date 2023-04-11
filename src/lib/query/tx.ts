@@ -47,8 +47,8 @@ export const getTxsCountByAddress = graphql(`
   }
 `);
 
-export const getTxList = graphql(`
-  query getTxList($offset: Int!, $pageSize: Int!) {
+export const getTxs = graphql(`
+  query getTxs($offset: Int!, $pageSize: Int!) {
     transactions(
       order_by: { block_height: desc }
       offset: $offset
@@ -76,8 +76,8 @@ export const getTxList = graphql(`
   }
 `);
 
-export const getTxListCount = graphql(`
-  query getTxListCount {
+export const getTxsCount = graphql(`
+  query getTxsCount {
     transactions_aggregate {
       aggregate {
         count
