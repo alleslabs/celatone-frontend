@@ -9,6 +9,7 @@ import { scrollToTop } from "lib/utils";
 import Footer from "./Footer";
 import Header from "./Header";
 import Navbar from "./navbar";
+import SubHeader from "./SubHeader";
 
 type LayoutProps = {
   children: ReactNode;
@@ -25,9 +26,9 @@ const Layout = ({ children }: LayoutProps) => {
   }, [router.asPath]);
   return (
     <Grid
-      templateAreas={`"header header"
+      templateAreas={`"header header""subheader subheader"
     "nav main"`}
-      gridTemplateRows="70px 1fr"
+      gridTemplateRows="70px 48px 1fr"
       gridTemplateColumns={isExpand ? "224px 1fr" : "48px 1fr"}
       h="100vh"
       overflowX="hidden"
@@ -35,6 +36,9 @@ const Layout = ({ children }: LayoutProps) => {
     >
       <GridItem bg="pebble.900" area="header" mb="1">
         <Header />
+      </GridItem>
+      <GridItem bg="pebble.900" area="subheader" mb="1">
+        <SubHeader />
       </GridItem>
       <GridItem bg="pebble.900" area="nav" overflowY="auto">
         <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
