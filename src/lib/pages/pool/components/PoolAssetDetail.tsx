@@ -7,15 +7,23 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import type { USD } from "lib/types";
-import type { PoolLiquidity } from "lib/types/pool";
+import type { PoolDetail, PoolLiquidity } from "lib/types/pool";
 import { calAssetValueWithPrecision, formatPrice } from "lib/utils";
 
 import { PoolAssetsTable } from "./table/PoolAssetsTable";
 
 interface PoolAssetDetailProps {
   assets: PoolLiquidity[];
+  pool_type: PoolDetail["pool_type"];
+  // weight?: Option<PoolWeight[] | null>;
+  // scaling_factors?: Option<string[] | null>;
 }
-export const PoolAssetDetail = ({ assets }: PoolAssetDetailProps) => {
+export const PoolAssetDetail = ({
+  assets,
+  pool_type,
+}: // weight,
+// scaling_factors,
+PoolAssetDetailProps) => {
   const { assetInfos } = useAssetInfos();
 
   if (!assetInfos) return <Loading />;
@@ -54,7 +62,11 @@ export const PoolAssetDetail = ({ assets }: PoolAssetDetailProps) => {
           </Text>
         </Flex>
       </Flex>
-      <PoolAssetsTable />
+      <PoolAssetsTable
+        assets={assets}
+        pool_type={pool_type}
+        total_liquidity={liquidity}
+      />
       <Flex gap="2" alignItems="center">
         <Text variant="body2" color="text.dark">
           What is asset weights and allocations?

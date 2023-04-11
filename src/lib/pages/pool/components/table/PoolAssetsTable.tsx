@@ -1,32 +1,48 @@
-// import { Loading } from "lib/components/Loading";
-import { TableContainer } from "lib/components/table/tableComponents";
-// import type { Option, Proposal } from "lib/types";
+import type { Big } from "big.js";
 
+import { TableContainer } from "lib/components/table/tableComponents";
+import type { PoolDetail, PoolLiquidity, USD } from "lib/types";
+
+// import type { Option, Proposal } from "lib/types";
 import { PoolAssetsTableHeader } from "./PoolAssetsTableHeader";
+import { PoolAssetsTableRow } from "./PoolAssetsTableRow";
 // import { PoolAssetsTableRow } from "./PoolAssetsTableRow";
 
-// interface ProposalsTableProps {
-//   proposals: Option<Proposal[]>;
-//   isLoading: boolean;
-//   emptyState: JSX.Element;
-// }
+interface PoolAssetsTableProps {
+  assets: PoolLiquidity[];
+  pool_type: PoolDetail["pool_type"];
+  // weight?: Option<PoolWeight[] | null>;
+  // scaling_factors?: Option<string[] | null>;
+  total_liquidity: USD<Big>;
+}
 
-export const PoolAssetsTable = () => {
+export const PoolAssetsTable = ({
+  assets,
+  pool_type,
+  // weight,
+  // scaling_factors,
+  total_liquidity,
+}: PoolAssetsTableProps) => {
   // if (isLoading) return <Loading />;
   // if (!proposals?.length) return emptyState;
 
-  const templateColumns = "minmax(300px, 1fr) 120px 120px minmax(300px, 1fr)";
+  const templateColumns = "minmax(300px, 1fr) 144px 144px minmax(300px, 1fr)";
 
   return (
     <TableContainer>
-      <PoolAssetsTableHeader templateColumns={templateColumns} />
-      {/* {proposals.map((proposal) => (
+      <PoolAssetsTableHeader
+        templateColumns={templateColumns}
+        pool_type={pool_type}
+      />
+      {assets.map((asset) => (
         <PoolAssetsTableRow
-          key={proposal.proposalId}
-          proposal={proposal}
+          asset={asset}
+          total_liquidity={total_liquidity}
+          pool_type={pool_type}
+          key={asset.denom}
           templateColumns={templateColumns}
         />
-      ))} */}
+      ))}
     </TableContainer>
   );
 };
