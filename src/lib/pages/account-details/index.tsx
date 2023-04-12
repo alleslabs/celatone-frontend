@@ -1,6 +1,7 @@
 import {
   Flex,
   Heading,
+  Spinner,
   TabList,
   TabPanel,
   TabPanels,
@@ -17,11 +18,12 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
-import { getFirstQueryParam, scrollToTop } from "lib/utils";
+import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
 
 import { AssetsSection } from "./components/asset";
+import { DelegationsSection } from "./components/delegations";
 import {
   AdminContractsTable,
   InstantiatedContractsTable,
@@ -29,11 +31,12 @@ import {
   StoredCodesTable,
   TxsTable,
 } from "./components/tables";
+import { useAccountTotalValue } from "./data";
 
 enum TabIndex {
   Overview,
-  Delegations,
   Assets,
+  Delegations,
   Txs,
   Codes,
   Contracts,
@@ -59,7 +62,10 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchProposalsCount,
   } = useAccountDetailsTableCounts(accountAddress);
 
-  const handleOnViewMore = (tab: TabIndex) => {
+  const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
+
+  const handleTabChange = (tab: TabIndex) => {
+    AmpTrackUseTab(TabIndex[tab]);
     setTabIndex(tab);
     scrollToTop();
   };
@@ -88,109 +94,131 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         <TabList
           borderBottom="1px solid"
           borderColor="pebble.700"
-          overflowY="hidden"
+          overflowX="scroll"
           id={tableHeaderId}
         >
-          <CustomTab onClick={() => setTabIndex(TabIndex.Overview)}>
+          <CustomTab onClick={() => handleTabChange(TabIndex.Overview)}>
             Overall
-          </CustomTab>
-          {/* TODO: add counts for Delegations */}
-          <CustomTab onClick={() => setTabIndex(TabIndex.Delegations)}>
-            Delegations
           </CustomTab>
           <CustomTab
             count={tableCounts.assetsCount}
             isDisabled={!tableCounts.assetsCount}
-            onClick={() => setTabIndex(TabIndex.Assets)}
+            onClick={() => handleTabChange(TabIndex.Assets)}
           >
             Assets
+          </CustomTab>
+          <CustomTab onClick={() => handleTabChange(TabIndex.Delegations)}>
+            Delegations
           </CustomTab>
           <CustomTab
             count={tableCounts.txsCount}
             isDisabled={!tableCounts.txsCount}
-            onClick={() => setTabIndex(TabIndex.Txs)}
+            onClick={() => handleTabChange(TabIndex.Txs)}
           >
             Transactions
           </CustomTab>
           <CustomTab
             count={tableCounts.codesCount}
             isDisabled={!tableCounts.codesCount}
-            onClick={() => setTabIndex(TabIndex.Codes)}
+            onClick={() => handleTabChange(TabIndex.Codes)}
           >
             Codes
           </CustomTab>
           <CustomTab
             count={tableCounts.contractsCount}
             isDisabled={!tableCounts.contractsCount}
-            onClick={() => setTabIndex(TabIndex.Contracts)}
+            onClick={() => handleTabChange(TabIndex.Contracts)}
           >
             Contracts
           </CustomTab>
           <CustomTab
             count={tableCounts.contractsAdminCount}
             isDisabled={!tableCounts.contractsAdminCount}
-            onClick={() => setTabIndex(TabIndex.Admins)}
+            onClick={() => handleTabChange(TabIndex.Admins)}
           >
             Admins
           </CustomTab>
           <CustomTab
             count={tableCounts.proposalsCount}
             isDisabled={!tableCounts.proposalsCount}
-            onClick={() => setTabIndex(TabIndex.Proposals)}
+            onClick={() => handleTabChange(TabIndex.Proposals)}
           >
             Proposals
           </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            {/* TODO: replace with the truncated Delegations table */}
-            <Text>Delegations</Text>
+            <Flex mt={12} direction="column" width="fit-content">
+              <Text variant="body2" fontWeight="500" color="text.dark">
+                Total Account Value
+              </Text>
+              {isLoading ? (
+                <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
+              ) : (
+                <Heading
+                  as="h5"
+                  variant="h5"
+                  fontWeight="600"
+                  color={
+                    !totalAccountValue || totalAccountValue.eq(0)
+                      ? "text.dark"
+                      : "text.main"
+                  }
+                >
+                  {totalAccountValue ? formatPrice(totalAccountValue) : "N/A"}
+                </Heading>
+              )}
+            </Flex>
+
             <AssetsSection
               walletAddress={accountAddress}
-              onViewMore={() => handleOnViewMore(TabIndex.Assets)}
+              onViewMore={() => handleTabChange(TabIndex.Assets)}
+            />
+            <DelegationsSection
+              walletAddress={accountAddress}
+              onViewMore={() => handleTabChange(TabIndex.Delegations)}
             />
             <TxsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.txsCount}
               refetchCount={refetchTxsCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Txs)}
+              onViewMore={() => handleTabChange(TabIndex.Txs)}
             />
             <StoredCodesTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.codesCount}
               refetchCount={refetchCodesCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Codes)}
+              onViewMore={() => handleTabChange(TabIndex.Codes)}
             />
             <InstantiatedContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsCount}
               refetchCount={refetchContractsCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Contracts)}
+              onViewMore={() => handleTabChange(TabIndex.Contracts)}
             />
             <AdminContractsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.contractsAdminCount}
               refetchCount={refetchContractsAdminCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Admins)}
+              onViewMore={() => handleTabChange(TabIndex.Admins)}
             />
             <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.proposalsCount}
               refetchCount={refetchProposalsCount}
-              onViewMore={() => handleOnViewMore(TabIndex.Proposals)}
+              onViewMore={() => handleTabChange(TabIndex.Proposals)}
             />
           </TabPanel>
           <TabPanel p={0}>
-            {/* TODO: replace with the full Delegations table */}
-            <Text>Delegations</Text>
+            <AssetsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <AssetsSection walletAddress={accountAddress} />
+            <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
             <TxsTable
@@ -240,7 +268,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
 const AccountDetails = () => {
   const router = useRouter();
-  const { validateUserAddress } = useValidateAddress();
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
   ) as HumanAddr;
@@ -252,7 +281,8 @@ const AccountDetails = () => {
   return (
     <PageContainer>
       <BackButton />
-      {validateUserAddress(accountAddressParam) ? (
+      {validateUserAddress(accountAddressParam) &&
+      validateContractAddress(accountAddressParam) ? (
         <InvalidAccount />
       ) : (
         <AccountDetailsBody accountAddress={accountAddressParam} />

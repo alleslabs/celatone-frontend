@@ -1,10 +1,10 @@
 import axios from "axios";
 
 import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
-import type { Balance, HumanAddr, Option } from "lib/types";
+import type { Addr, Balance, Option } from "lib/types";
 
 export const getAccountBalanceInfo = async (
-  walletAddr: HumanAddr,
+  walletAddr: Addr,
   chainName: Option<string>,
   chainId: Option<string>
 ): Promise<Balance[]> => {
