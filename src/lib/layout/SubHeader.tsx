@@ -15,9 +15,9 @@ interface SubHeaderMenuInfo {
 const SubHeader = () => {
   const subHeaderMenu: SubHeaderMenuInfo[] = [
     { name: "Overview", slug: "/", icon: "home" },
-    { name: "Transactions", slug: "/tx", icon: "file" },
-    { name: "Blocks", slug: "/block", icon: "block" },
-    { name: "Validators", slug: "/validator", icon: "admin" },
+    { name: "Transactions", slug: "/txs", icon: "file" },
+    { name: "Blocks", slug: "/blocks", icon: "block" },
+    { name: "Validators", slug: "/validators", icon: "admin" },
   ];
   const { address } = useWallet();
   const router = useRouter();
@@ -45,6 +45,7 @@ const SubHeader = () => {
   const activeColor = "violet.light";
 
   const myPageSlug = `/account/${address}`;
+
   return (
     <Flex px={6} alignItems="center" h="full" justifyContent="space-between">
       <Flex h="full">

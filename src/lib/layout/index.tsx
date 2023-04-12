@@ -26,8 +26,7 @@ const Layout = ({ children }: LayoutProps) => {
   }, [router.asPath]);
   return (
     <Grid
-      templateAreas={`"header header""subheader subheader"
-    "nav main"`}
+      templateAreas={`"header header""subheader subheader""nav main"`}
       gridTemplateRows="70px 48px 1fr"
       gridTemplateColumns={isExpand ? "224px 1fr" : "48px 1fr"}
       h="100vh"
