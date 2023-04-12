@@ -18,7 +18,6 @@ import {
   getActionMsgType,
   getMsgFurtherAction,
   isTxHash,
-  parseDateOpt,
   parseTxHash,
   snakeToCamel,
 } from "lib/utils";
@@ -81,7 +80,7 @@ export const useTxsByAddressPagination = (
           sender: transaction.transaction.account.address as Addr,
           isSigner: transaction.is_signer,
           height: transaction.block.height,
-          created: parseDateOpt(transaction.block.timestamp),
+          created: transaction.block.timestamp,
           success: transaction.transaction.success,
           actionMsgType: getActionMsgType([
             transaction.transaction.is_execute,
@@ -187,7 +186,7 @@ export const useTxs = (
             sender: transaction.account.address as Addr,
             isSigner: false,
             height: transaction.block.height,
-            created: parseDateOpt(transaction.block.timestamp),
+            created: transaction.block.timestamp,
             success: transaction.success,
             actionMsgType: getActionMsgType([
               transaction.is_execute,
