@@ -1,5 +1,5 @@
-import type { BigSource } from "big.js";
-import big, { Big } from "big.js";
+import type { BigSource, Big } from "big.js";
+import big from "big.js";
 
 import type { Balance, BalanceWithAssetInfo, Token, U, USD } from "lib/types";
 
@@ -24,5 +24,5 @@ export const calTotalValue = (assets: BalanceWithAssetInfo[]): USD<Big> =>
   assets.reduce(
     (acc: USD<Big>, curr: BalanceWithAssetInfo) =>
       acc.add(calAssetValueWithPrecision(curr.balance)) as USD<Big>,
-    Big(0) as USD<Big>
+    big(0) as USD<Big>
   );

@@ -1,6 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Badge, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
-import { useState } from "react";
 
 import { NAToken } from "lib/icon";
 import type { BalanceWithAssetInfo, Token, U, USD } from "lib/types";
@@ -22,7 +21,6 @@ export const TokenCard = ({
   amptrackSection,
   ...cardProps
 }: TokenCardProps) => {
-  const [logoError, setLogoError] = useState(false);
   const { symbol, price, amount, precision, id } = userBalance.balance;
 
   return (
@@ -52,16 +50,13 @@ export const TokenCard = ({
           borderBottomColor="pebble.700"
           pb={2}
         >
-          {!logoError ? (
-            <Image
-              boxSize={6}
-              src={userBalance.assetInfo?.logo}
-              alt={symbol}
-              onError={() => setLogoError(true)}
-            />
-          ) : (
-            <NAToken />
-          )}
+          <Image
+            boxSize={6}
+            src={userBalance.assetInfo?.logo}
+            alt={symbol}
+            fallback={<NAToken />}
+            fallbackStrategy="onError"
+          />
           <Text
             variant="body2"
             className="ellipsis"

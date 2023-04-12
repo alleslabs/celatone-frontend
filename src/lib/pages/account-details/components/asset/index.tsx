@@ -10,7 +10,7 @@ import { useUserAssetInfos } from "lib/pages/account-details/data";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
 import { calTotalValue, formatPrice } from "lib/utils";
 
-import { UserAssetInfoCard } from "./UserAssetInfo";
+import { UserAssetInfoCard } from "./UserAssetInfoCard";
 
 interface AssetsSectionProps {
   walletAddress: HumanAddr;
@@ -72,7 +72,7 @@ export const AssetsSection = ({
               totalValue && supportedAssets ? formatPrice(totalValue) : "N/A"
             }
             isZeroValue={totalValue.eq(0) || !supportedAssets}
-            helperText="Total Value"
+            helperText="Total Asset Value"
           />
           <UserAssetInfoCard
             value={supportedAssets ? supportedAssets.length.toString() : "N/A"}
