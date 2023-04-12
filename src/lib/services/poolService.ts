@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
+import type { Order_By } from "lib/gql/graphql";
 import { getPoolByPoolId, getPoolList, getPoolListCount } from "lib/query";
 import type { Pool, PoolDetail } from "lib/types";
 
@@ -12,6 +13,7 @@ export const usePoolListByIsSupported = (
   isSupported: boolean,
   isSuperfluidOnly: boolean,
   search: string,
+  order: Order_By,
   offset: number,
   pageSize: number
 ): UseQueryResult<Pool[]> => {
@@ -22,6 +24,7 @@ export const usePoolListByIsSupported = (
     return indexerGraphClient
       .request(getPoolList, {
         expression,
+        order,
         offset,
         pageSize,
       })
@@ -33,7 +36,7 @@ export const usePoolListByIsSupported = (
           poolLiquidity: pool.liquidity,
         }))
       );
-  }, [expression, indexerGraphClient, offset, pageSize]);
+  }, [expression, order, offset, pageSize, indexerGraphClient]);
 
   return useQuery(
     [

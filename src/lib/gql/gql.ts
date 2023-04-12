@@ -41,7 +41,7 @@ const documents = {
     types.GetContractListByAdminPaginationDocument,
   "\n  query getContractListCountByAdmin($walletAddress: String!) {\n    contracts_aggregate(\n      where: { account: { address: { _eq: $walletAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetContractListCountByAdminDocument,
-  "\n  query getPoolList(\n    $expression: pools_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: asc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n":
+  "\n  query getPoolList(\n    $expression: pools_bool_exp\n    $order: order_by\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: $order }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n":
     types.GetPoolListDocument,
   "\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetPoolListCountDocument,
@@ -129,8 +129,8 @@ export function graphql(
   source: "\n  query getContractListCountByAdmin($walletAddress: String!) {\n    contracts_aggregate(\n      where: { account: { address: { _eq: $walletAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getContractListCountByAdmin($walletAddress: String!) {\n    contracts_aggregate(\n      where: { account: { address: { _eq: $walletAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 export function graphql(
-  source: "\n  query getPoolList(\n    $expression: pools_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: asc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n"
-): typeof documents["\n  query getPoolList(\n    $expression: pools_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: asc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n"];
+  source: "\n  query getPoolList(\n    $expression: pools_bool_exp\n    $order: order_by\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: $order }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n"
+): typeof documents["\n  query getPoolList(\n    $expression: pools_bool_exp\n    $order: order_by\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: $order }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];

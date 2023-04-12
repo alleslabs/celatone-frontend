@@ -3,12 +3,13 @@ import { graphql } from "lib/gql";
 export const getPoolList = graphql(`
   query getPoolList(
     $expression: pools_bool_exp
+    $order: order_by
     $offset: Int!
     $pageSize: Int!
   ) {
     pools(
       where: $expression
-      order_by: { id: asc }
+      order_by: { id: $order }
       offset: $offset
       limit: $pageSize
     ) {

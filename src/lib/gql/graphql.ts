@@ -11295,6 +11295,7 @@ export type GetContractListCountByAdminQuery = {
 
 export type GetPoolListQueryVariables = Exact<{
   expression?: InputMaybe<Pools_Bool_Exp>;
+  order?: InputMaybe<Order_By>;
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
 }>;
@@ -14379,6 +14380,17 @@ export const GetPoolListDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "order" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "order_by" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "offset" },
           },
           type: {
@@ -14422,7 +14434,10 @@ export const GetPoolListDocument = {
                     {
                       kind: "ObjectField",
                       name: { kind: "Name", value: "id" },
-                      value: { kind: "EnumValue", value: "asc" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "order" },
+                      },
                     },
                   ],
                 },

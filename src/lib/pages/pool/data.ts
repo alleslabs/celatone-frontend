@@ -1,5 +1,6 @@
 import big from "big.js";
 
+import type { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
 import {
   usePoolByPoolId,
@@ -19,6 +20,7 @@ export const usePools = (
   isSupported: boolean,
   isSuperfluidOnly: boolean,
   search: string,
+  order: Order_By,
   offset: number,
   pageSize: number
 ): { pools: Option<PoolCardData[]>; isLoading: boolean } => {
@@ -28,6 +30,7 @@ export const usePools = (
       isSupported,
       isSuperfluidOnly,
       search,
+      order,
       offset,
       pageSize
     );
