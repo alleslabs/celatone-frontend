@@ -14,6 +14,7 @@ import {
   getTxsCount,
 } from "lib/query";
 import type { Addr, Option, Transaction, TxFilters } from "lib/types";
+import { MsgFurtherAction } from "lib/types";
 import {
   getActionMsgType,
   getMsgFurtherAction,
@@ -197,21 +198,7 @@ export const useTxs = (
               transaction.is_update_admin,
               transaction.is_clear_admin,
             ]),
-            furtherAction: getMsgFurtherAction(
-              transaction.messages.length,
-              {
-                isExecute: transaction.is_execute,
-                isInstantiate: transaction.is_instantiate,
-                isSend: transaction.is_send,
-                isUpload: transaction.is_store_code,
-                isMigrate: transaction.is_migrate,
-                isUpdateAdmin: transaction.is_update_admin,
-                isClearAdmin: transaction.is_clear_admin,
-                isIbc: transaction.is_ibc,
-              },
-              transaction.success,
-              false
-            ),
+            furtherAction: MsgFurtherAction.NONE,
             isIbc: transaction.is_ibc,
             isInstantiate: transaction.is_instantiate,
           }))
