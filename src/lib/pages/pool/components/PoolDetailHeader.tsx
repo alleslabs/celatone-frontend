@@ -16,8 +16,10 @@ import {
   chakra,
   Tooltip,
 } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import Big from "big.js";
 
+import { getAddressTypeByLength } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -32,11 +34,11 @@ interface PoolDetailHeaderProp {
   pool: PoolDetail;
 }
 const unwrapScalingFactor = ({
-  scaling_factors,
-  scaling_factor_controller,
+  scalingFactors,
+  scalingFactorController,
 }: PoolDetail) => ({
-  scaling_factors,
-  scaling_factor_controller,
+  scalingFactors,
+  scalingFactorController,
 });
 
 const StyledTextLabel = chakra(Text, {
@@ -55,6 +57,7 @@ const StyledTextContent = chakra(Text, {
   },
 });
 export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
+  const { currentChainName } = useWallet();
   const {
     isOpen: isModalWeightOpen,
     onClose: onModalWeightClose,
@@ -65,15 +68,16 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
     onClose: onModalScalingClose,
     onOpen: onModalScalingOpen,
   } = useDisclosure();
+
   return (
     <>
       <BackButton />
       <Flex mt={4} justifyContent="space-between" alignItems="flex-start">
         <PoolHeader
-          poolId={pool.pool_id}
-          isSuperFluid={pool.is_superfluid}
-          poolType={pool.pool_type}
-          poolLiquidity={pool.pool_liquidity}
+          poolId={pool.id}
+          isSuperFluid={pool.isSuperfluid}
+          poolType={pool.type}
+          poolLiquidity={pool.poolLiquidity}
         />
         <Flex gap={2} alignItems="flex-start">
           <Button
@@ -112,22 +116,20 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
       >
         <Flex flexDirection="column" gap={1}>
           <StyledTextLabel> Pool ID</StyledTextLabel>
-          <StyledTextContent color="lilac.main">
-            {pool.pool_id}
-          </StyledTextContent>
+          <StyledTextContent color="lilac.main">{pool.id}</StyledTextContent>
         </Flex>
         <Flex flexDirection="column" gap={1}>
           <StyledTextLabel> Created Height</StyledTextLabel>
           <StyledTextContent color="lilac.main">
-            {pool.create_tx_id}
+            {pool.blockHeight}
           </StyledTextContent>
         </Flex>
         <Flex flexDirection="column" gap={1}>
           <StyledTextLabel> Pool Created by</StyledTextLabel>
           <StyledTextContent color="lilac.main">
             <ExplorerLink
-              type="user_address"
-              value={truncate(pool.account.address)}
+              type={getAddressTypeByLength(currentChainName, pool.creator)}
+              value={truncate(pool.creator)}
             />
           </StyledTextContent>
         </Flex>
@@ -147,7 +149,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
             </Tooltip>
           </Flex>
           <StyledTextContent>
-            {formatPercentValue(Big(pool.swap_fee).times(100))}
+            {formatPercentValue(Big(pool.swapFee).times(100))}
           </StyledTextContent>
         </Flex>
         <Flex flexDirection="column" gap={1}>
@@ -166,7 +168,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
             </Tooltip>
           </Flex>
           <StyledTextContent>
-            {formatPercentValue(Big(pool.exit_fee).times(100))}
+            {formatPercentValue(Big(pool.exitFee).times(100))}
           </StyledTextContent>
         </Flex>
         <Flex flexDirection="column" gap={1}>
@@ -178,10 +180,10 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
             color="text.main"
             w="fit-content"
           >
-            {pool.future_pool_governor}
+            {pool.futurePoolGovernor}
           </Tag>
         </Flex>
-        {pool.smooth_weight_change_params && (
+        {pool.smoothWeightChangeParams && (
           <Flex flexDirection="column" gap={1}>
             <StyledTextLabel> Smooth weight change params</StyledTextLabel>
             <StyledTextContent
@@ -218,7 +220,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
                   >
                     <JsonReadOnly
                       text={jsonPrettify(
-                        JSON.stringify(pool.smooth_weight_change_params)
+                        JSON.stringify(pool.smoothWeightChangeParams)
                       )}
                       canCopy
                       showLines={16}
@@ -229,7 +231,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
             </Modal>
           </Flex>
         )}
-        {pool.scaling_factors && (
+        {pool.scalingFactors && (
           <Flex flexDirection="column" gap={1}>
             <StyledTextLabel>Scaling Factor</StyledTextLabel>
             <StyledTextContent

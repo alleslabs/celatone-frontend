@@ -6,7 +6,7 @@ import type { PoolDetail } from "lib/types/pool";
 import { UndefinedTokenList } from "./constant";
 
 interface PoolLogoProps {
-  poolLiquidity: PoolDetail["pool_liquidity"];
+  poolLiquidity: PoolDetail["poolLiquidity"];
 }
 export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
   const { assetInfos } = useAssetInfos();

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { Addr, Option, TxFilters } from "lib/types";
+import type { Addr, Option, PoolTxFilter, TxFilters } from "lib/types";
 import { isTxHash } from "lib/utils";
 
 const actions = {
@@ -50,4 +50,16 @@ export const useTxExpression = (
       },
     }),
     [address, filters, isSigner, search]
+  );
+
+export const usePoolTxExpression = (
+  poolId: Option<number>,
+  type: Option<PoolTxFilter>
+) =>
+  useMemo(
+    () => ({
+      pool_id: poolId ? { _eq: poolId } : {},
+      ...(type ? { [type]: { _eq: true } } : {}),
+    }),
+    [poolId, type]
   );

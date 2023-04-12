@@ -67,11 +67,7 @@ export const UnsupportedPoolList = ({ pools }: UnsupportedPoolListProp) => {
       <SimpleGrid columns={1} spacing={4} w="full">
         <Accordion allowMultiple>
           {pools.map((item) => (
-            <UnsupportedPoolCard
-              key={item.pool_id}
-              item={item}
-              poolId={item.pool_id}
-            />
+            <UnsupportedPoolCard key={item.id} item={item} poolId={item.id} />
           ))}
         </Accordion>
       </SimpleGrid>

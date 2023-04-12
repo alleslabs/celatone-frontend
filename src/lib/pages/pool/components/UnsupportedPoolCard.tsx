@@ -59,9 +59,9 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                 <Flex alignItems="center" justifyContent="space-between">
                   <PoolHeader
                     poolId={poolId}
-                    isSuperFluid={item.is_superfluid}
-                    poolType={item.pool_type}
-                    poolLiquidity={item.pool_liquidity}
+                    isSuperFluid={item.isSuperfluid}
+                    poolType={item.type}
+                    poolLiquidity={item.poolLiquidity}
                   />
                   <Flex w="128px">
                     <Tooltip
@@ -128,7 +128,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
               </Text>
               <Flex gap={4} flexDirection="column">
                 <Flex gap={2} flexDirection="column">
-                  {item.pool_liquidity.map((asset, i) => (
+                  {item.poolLiquidity.map((asset, i) => (
                     <Flex gap={3}>
                       <Image
                         boxSize={6}

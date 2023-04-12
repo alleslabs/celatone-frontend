@@ -1,17 +1,16 @@
+import type { Addr, ContractAddr, PoolDetail } from "lib/types";
+
 export const UndefinedTokenList = [
   "https://assets.alleslabs.dev/webapp-assets/asset/undefined-violet.svg",
   "https://assets.alleslabs.dev/webapp-assets/asset/undefined-white.svg",
   "https://assets.alleslabs.dev/webapp-assets/asset/undefined-violet-light.svg",
 ];
-export const MockUpPoolList = [
+export const MockUpPoolList: PoolDetail[] = [
   {
-    pool_id: 31,
-    create_tx_id: 1231354,
-    account: {
-      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
-      id: 291362,
-    },
-    pool_liquidity: [
+    id: 31,
+    blockHeight: 1231354,
+    creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
+    poolLiquidity: [
       {
         denom:
           "ibc/D38FD4C586C397DDAAB715C654DAEE3C3C40462CD410254AC7576208E947605B",
@@ -31,13 +30,13 @@ export const MockUpPoolList = [
         amount: "2850",
       },
     ],
-    pool_type: "Balancer",
-    is_superfluid: false,
-    is_supported: true,
-    swap_fee: "0.03000000000000000",
-    exit_fee: "0.0020000000000000",
-    future_pool_governor: "24h",
-    smooth_weight_change_params: {
+    type: "Balancer",
+    isSuperfluid: false,
+    isSupported: true,
+    swapFee: 0.03,
+    exitFee: 0.0,
+    futurePoolGovernor: "24h",
+    smoothWeightChangeParams: {
       start_time: "2023-03-09T16:35:41Z",
       duration: "1209600s",
       initial_pool_weights: [
@@ -75,8 +74,8 @@ export const MockUpPoolList = [
         },
       ],
     },
-    scaling_factors: null,
-    scaling_factor_controller: null,
+    scalingFactors: null,
+    scalingFactorController: null,
     weight: [
       {
         denom:
@@ -97,20 +96,14 @@ export const MockUpPoolList = [
         weight: "268435456000000",
       },
     ],
-    address: "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn",
-    total_shares: {
-      denom: "gamm/pool/983",
-      amount: "100000000000000000000",
-    },
+    poolAddress:
+      "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn" as ContractAddr,
   },
   {
-    pool_id: 231,
-    create_tx_id: 1231354,
-    account: {
-      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
-      id: 291362,
-    },
-    pool_liquidity: [
+    id: 231,
+    blockHeight: 1231354,
+    creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
+    poolLiquidity: [
       {
         denom: "uion",
         amount: "268435456000000",
@@ -134,15 +127,15 @@ export const MockUpPoolList = [
         amount: "1000",
       },
     ],
-    pool_type: "Balancer",
-    is_superfluid: true,
-    is_supported: true,
-    swap_fee: "0.0300000000000000",
-    exit_fee: "0.000000000001",
-    future_pool_governor: "24h",
-    smooth_weight_change_params: null,
-    scaling_factors: null,
-    scaling_factor_controller: null,
+    type: "Balancer",
+    isSuperfluid: true,
+    isSupported: true,
+    swapFee: 0.03,
+    exitFee: 0.000000000001,
+    futurePoolGovernor: "24h",
+    smoothWeightChangeParams: null,
+    scalingFactors: null,
+    scalingFactorController: null,
     weight: [
       {
         denom:
@@ -168,20 +161,14 @@ export const MockUpPoolList = [
         weight: "268435456000000",
       },
     ],
-    address: "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn",
-    total_shares: {
-      denom: "gamm/pool/343",
-      amount: "100000000000000000000",
-    },
+    poolAddress:
+      "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn" as ContractAddr,
   },
   {
-    pool_id: 932,
-    create_tx_id: 1231354,
-    account: {
-      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
-      id: 291362,
-    },
-    pool_liquidity: [
+    id: 932,
+    blockHeight: 1231354,
+    creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
+    poolLiquidity: [
       {
         denom: "uion",
         amount: "81386211729",
@@ -191,30 +178,24 @@ export const MockUpPoolList = [
         amount: "99224517983",
       },
     ],
-    pool_type: "Stableswap",
-    is_superfluid: true,
-    is_supported: true,
-    swap_fee: "0.00040000000000000",
-    exit_fee: "0.00000000000000000",
-    future_pool_governor: "24h",
-    smooth_weight_change_params: null,
-    scaling_factors: ["1", "1"],
-    scaling_factor_controller: "",
+    type: "Stableswap",
+    isSuperfluid: true,
+    isSupported: true,
+    swapFee: 0.0004,
+    exitFee: 0.0,
+    futurePoolGovernor: "24h",
+    smoothWeightChangeParams: null,
+    scalingFactors: ["1", "1"],
+    scalingFactorController: "",
     weight: null,
-    address: "osmo1kxnekx4q8yem6wvp5t9ggqvhuxaqw7san00x5qdazp3fe597f8hsqft4nq",
-    total_shares: {
-      denom: "gamm/pool/383",
-      amount: "100000000000000000000",
-    },
+    poolAddress:
+      "osmo1kxnekx4q8yem6wvp5t9ggqvhuxaqw7san00x5qdazp3fe597f8hsqft4nq" as ContractAddr,
   },
   {
-    pool_id: 872,
-    create_tx_id: 1231354,
-    account: {
-      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
-      id: 291362,
-    },
-    pool_liquidity: [
+    id: 872,
+    blockHeight: 1231354,
+    creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
+    poolLiquidity: [
       {
         denom:
           "ibc/FF3065989E34457F342D4EFB8692406D49D4E2B5C70F725F127862E22CE6BDCD",
@@ -230,30 +211,24 @@ export const MockUpPoolList = [
         amount: "17983992245",
       },
     ],
-    pool_type: "Stableswap",
-    is_superfluid: false,
-    is_supported: true,
-    swap_fee: "0.0004000000000000",
-    exit_fee: "0.0000000000000000",
-    future_pool_governor: "24h",
-    smooth_weight_change_params: null,
-    scaling_factors: ["1", "1", "1"],
-    scaling_factor_controller: "",
+    type: "Stableswap",
+    isSuperfluid: false,
+    isSupported: true,
+    swapFee: 0.0004,
+    exitFee: 0.0,
+    futurePoolGovernor: "24h",
+    smoothWeightChangeParams: null,
+    scalingFactors: ["1", "1", "1"],
+    scalingFactorController: "",
     weight: null,
-    address: "osmo1kxnekx4q8yem6wvp5t9ggqvhuxaqw7san00x5qdazp3fe597f8hsqft4nq",
-    total_shares: {
-      denom: "gamm/pool/483",
-      amount: "100000000000000000000",
-    },
+    poolAddress:
+      "osmo1kxnekx4q8yem6wvp5t9ggqvhuxaqw7san00x5qdazp3fe597f8hsqft4nq" as ContractAddr,
   },
   {
-    pool_id: 21,
-    create_tx_id: 1231354,
-    account: {
-      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
-      id: 291362,
-    },
-    pool_liquidity: [
+    id: 21,
+    blockHeight: 1231354,
+    creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
+    poolLiquidity: [
       {
         denom:
           "ibc/62CD410254AC7576208E947605BD38FD4C586C397DDAAB715C654DAEE3C3C404",
@@ -275,15 +250,15 @@ export const MockUpPoolList = [
         amount: "2825",
       },
     ],
-    pool_type: "Balancer",
-    is_superfluid: false,
-    is_supported: false,
-    swap_fee: "0.030000000000000000",
-    exit_fee: "0.0000000000000000",
-    future_pool_governor: "24h",
-    smooth_weight_change_params: null,
-    scaling_factors: null,
-    scaling_factor_controller: null,
+    type: "Balancer",
+    isSuperfluid: false,
+    isSupported: false,
+    swapFee: 0.03,
+    exitFee: 0.0,
+    futurePoolGovernor: "24h",
+    smoothWeightChangeParams: null,
+    scalingFactors: null,
+    scalingFactorController: null,
     weight: [
       {
         denom:
@@ -306,20 +281,14 @@ export const MockUpPoolList = [
         weight: "268435456000000",
       },
     ],
-    address: "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn",
-    total_shares: {
-      denom: "gamm/pool/983",
-      amount: "100000000000000000000",
-    },
+    poolAddress:
+      "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn" as ContractAddr,
   },
   {
-    pool_id: 221,
-    create_tx_id: 1231354,
-    account: {
-      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
-      id: 291362,
-    },
-    pool_liquidity: [
+    id: 221,
+    blockHeight: 1231354,
+    creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
+    poolLiquidity: [
       {
         denom:
           "ibc/ACA4C90D15915ADA31939FA331CE745862CDD00A2904FA178A815A053CC027DB",
@@ -344,15 +313,15 @@ export const MockUpPoolList = [
         amount: "1000",
       },
     ],
-    pool_type: "Balancer",
-    is_superfluid: true,
-    is_supported: false,
-    swap_fee: "0.030000000000000000",
-    exit_fee: "0.000000000001",
-    future_pool_governor: "24h",
-    smooth_weight_change_params: null,
-    scaling_factors: null,
-    scaling_factor_controller: null,
+    type: "Balancer",
+    isSuperfluid: true,
+    isSupported: false,
+    swapFee: 0.03,
+    exitFee: 0.000000000001,
+    futurePoolGovernor: "24h",
+    smoothWeightChangeParams: null,
+    scalingFactors: null,
+    scalingFactorController: null,
     weight: [
       {
         denom:
@@ -378,20 +347,14 @@ export const MockUpPoolList = [
         weight: "268435456000000",
       },
     ],
-    address: "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn",
-    total_shares: {
-      denom: "gamm/pool/383",
-      amount: "100000000000000000000",
-    },
+    poolAddress:
+      "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn" as ContractAddr,
   },
   {
-    pool_id: 941,
-    create_tx_id: 1231354,
-    account: {
-      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
-      id: 291362,
-    },
-    pool_liquidity: [
+    id: 941,
+    blockHeight: 1231354,
+    creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
+    poolLiquidity: [
       {
         denom:
           "ibc/6CC201E27D659B4A9837B46A328BC4B1A0596A1AB34E5C0E452CD7146BC7188F",
@@ -403,30 +366,24 @@ export const MockUpPoolList = [
         amount: "99224517983",
       },
     ],
-    pool_type: "Stableswap",
-    is_superfluid: true,
-    is_supported: false,
-    swap_fee: "0.000400000000000000",
-    exit_fee: "0.000000000000000000",
-    future_pool_governor: "24h",
-    smooth_weight_change_params: null,
-    scaling_factors: ["1", "1"],
-    scaling_factor_controller: "",
+    type: "Stableswap",
+    isSuperfluid: true,
+    isSupported: false,
+    swapFee: 0.0004,
+    exitFee: 0.0,
+    futurePoolGovernor: "24h",
+    smoothWeightChangeParams: null,
+    scalingFactors: ["1", "1"],
+    scalingFactorController: "",
     weight: null,
-    address: "osmo1kxnekx4q8yem6wvp5t9ggqvhuxaqw7san00x5qdazp3fe597f8hsqft4nq",
-    total_shares: {
-      denom: "gamm/pool/783",
-      amount: "100000000000000000000",
-    },
+    poolAddress:
+      "osmo1kxnekx4q8yem6wvp5t9ggqvhuxaqw7san00x5qdazp3fe597f8hsqft4nq" as ContractAddr,
   },
   {
-    pool_id: 372,
-    create_tx_id: 1231354,
-    account: {
-      address: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx",
-      id: 291362,
-    },
-    pool_liquidity: [
+    id: 372,
+    blockHeight: 1231354,
+    creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
+    poolLiquidity: [
       {
         denom:
           "ibc/42D4EFB8692406FF3065989E34457F3D49D4E2B5C70F725F127862E22CE6BDCD",
@@ -442,20 +399,17 @@ export const MockUpPoolList = [
         amount: "17983992245",
       },
     ],
-    pool_type: "Stableswap",
-    is_superfluid: false,
-    is_supported: false,
-    swap_fee: "0.000400000000000000",
-    exit_fee: "0.000000000000000000",
-    future_pool_governor: "24h",
-    smooth_weight_change_params: null,
-    scaling_factors: ["1", "1", "1"],
-    scaling_factor_controller: "",
+    type: "Stableswap",
+    isSuperfluid: false,
+    isSupported: false,
+    swapFee: 0.0004,
+    exitFee: 0.0,
+    futurePoolGovernor: "24h",
+    smoothWeightChangeParams: null,
+    scalingFactors: ["1", "1", "1"],
+    scalingFactorController: "",
     weight: null,
-    address: "osmo1kxnekx4q8yem6wvp5t9ggqvhuxaqw7san00x5qdazp3fe597f8hsqft4nq",
-    total_shares: {
-      denom: "gamm/pool/783",
-      amount: "100000000000000000000",
-    },
+    poolAddress:
+      "osmo1kxnekx4q8yem6wvp5t9ggqvhuxaqw7san00x5qdazp3fe597f8hsqft4nq" as ContractAddr,
   },
 ];

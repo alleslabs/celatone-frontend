@@ -41,6 +41,12 @@ const documents = {
     types.GetContractListByAdminPaginationDocument,
   "\n  query getContractListCountByAdmin($walletAddress: String!) {\n    contracts_aggregate(\n      where: { account: { address: { _eq: $walletAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetContractListCountByAdminDocument,
+  "\n  query getPoolList(\n    $expression: pools_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: asc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n":
+    types.GetPoolListDocument,
+  "\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
+    types.GetPoolListCountDocument,
+  "\n  query getPoolByPoolId($poolId: Int!) {\n    pools_by_pk(id: $poolId) {\n      id\n      type\n      is_superfluid\n      is_supported\n      liquidity\n      transaction {\n        block_height\n      }\n      account {\n        address\n      }\n      address\n      swap_fee\n      exit_fee\n      future_pool_governor\n      weight\n      smooth_weight_change_params\n      scaling_factors\n      scaling_factor_controller\n    }\n  }\n":
+    types.GetPoolByPoolIdDocument,
   "\n  query getRelatedProposalsByContractAddressPagination(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_proposals(\n      where: { contract: { address: { _eq: $contractAddress } } }\n      order_by: { proposal_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      proposal {\n        title\n        status\n        voting_end_time\n        deposit_end_time\n        type\n        account {\n          address\n        }\n        is_expedited\n      }\n      proposal_id\n      resolved_height\n    }\n  }\n":
     types.GetRelatedProposalsByContractAddressPaginationDocument,
   "\n  query getRelatedProposalsCountByContractAddress($contractAddress: String!) {\n    contract_proposals_aggregate(\n      where: { contract: { address: { _eq: $contractAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
@@ -59,6 +65,10 @@ const documents = {
     types.GetTxsByAddressPaginationDocument,
   "\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetTxsCountByAddressDocument,
+  "\n  query getTxsByPoolIdPagination(\n    $expression: pool_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pool_transactions(where: $expression, offset: $offset, limit: $pageSize) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_ibc\n      }\n    }\n  }\n":
+    types.GetTxsByPoolIdPaginationDocument,
+  "\n  query getTxsCountByPoolId($expression: pool_transactions_bool_exp) {\n    pool_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
+    types.GetTxsCountByPoolIdDocument,
 };
 
 export function graphql(
@@ -119,6 +129,15 @@ export function graphql(
   source: "\n  query getContractListCountByAdmin($walletAddress: String!) {\n    contracts_aggregate(\n      where: { account: { address: { _eq: $walletAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getContractListCountByAdmin($walletAddress: String!) {\n    contracts_aggregate(\n      where: { account: { address: { _eq: $walletAddress } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 export function graphql(
+  source: "\n  query getPoolList(\n    $expression: pools_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: asc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n"
+): typeof documents["\n  query getPoolList(\n    $expression: pools_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools(\n      where: $expression\n      order_by: { id: asc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
+): typeof documents["\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getPoolByPoolId($poolId: Int!) {\n    pools_by_pk(id: $poolId) {\n      id\n      type\n      is_superfluid\n      is_supported\n      liquidity\n      transaction {\n        block_height\n      }\n      account {\n        address\n      }\n      address\n      swap_fee\n      exit_fee\n      future_pool_governor\n      weight\n      smooth_weight_change_params\n      scaling_factors\n      scaling_factor_controller\n    }\n  }\n"
+): typeof documents["\n  query getPoolByPoolId($poolId: Int!) {\n    pools_by_pk(id: $poolId) {\n      id\n      type\n      is_superfluid\n      is_supported\n      liquidity\n      transaction {\n        block_height\n      }\n      account {\n        address\n      }\n      address\n      swap_fee\n      exit_fee\n      future_pool_governor\n      weight\n      smooth_weight_change_params\n      scaling_factors\n      scaling_factor_controller\n    }\n  }\n"];
+export function graphql(
   source: "\n  query getRelatedProposalsByContractAddressPagination(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_proposals(\n      where: { contract: { address: { _eq: $contractAddress } } }\n      order_by: { proposal_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      proposal {\n        title\n        status\n        voting_end_time\n        deposit_end_time\n        type\n        account {\n          address\n        }\n        is_expedited\n      }\n      proposal_id\n      resolved_height\n    }\n  }\n"
 ): typeof documents["\n  query getRelatedProposalsByContractAddressPagination(\n    $contractAddress: String!\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    contract_proposals(\n      where: { contract: { address: { _eq: $contractAddress } } }\n      order_by: { proposal_id: desc }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      proposal {\n        title\n        status\n        voting_end_time\n        deposit_end_time\n        type\n        account {\n          address\n        }\n        is_expedited\n      }\n      proposal_id\n      resolved_height\n    }\n  }\n"];
 export function graphql(
@@ -145,6 +164,12 @@ export function graphql(
 export function graphql(
   source: "\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getTxsCountByAddress($expression: account_transactions_bool_exp) {\n    account_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getTxsByPoolIdPagination(\n    $expression: pool_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pool_transactions(where: $expression, offset: $offset, limit: $pageSize) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_ibc\n      }\n    }\n  }\n"
+): typeof documents["\n  query getTxsByPoolIdPagination(\n    $expression: pool_transactions_bool_exp\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pool_transactions(where: $expression, offset: $offset, limit: $pageSize) {\n      block {\n        height\n        timestamp\n      }\n      transaction {\n        account {\n          address\n        }\n        hash\n        success\n        messages\n        is_ibc\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getTxsCountByPoolId($expression: pool_transactions_bool_exp) {\n    pool_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
+): typeof documents["\n  query getTxsCountByPoolId($expression: pool_transactions_bool_exp) {\n    pool_transactions_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
 export function graphql(source: string) {

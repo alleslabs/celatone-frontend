@@ -46,7 +46,7 @@ export const PoolCard = ({
       <Skeleton height="175px" startColor="pebble.900" endColor="pebble.800" />
     );
 
-  const liquidity = item.pool_liquidity.reduce((total, asset) => {
+  const liquidity = item.poolLiquidity.reduce((total, asset) => {
     const assetInfo = assetInfos[asset.denom];
     return total.add(
       assetInfo
@@ -79,10 +79,10 @@ export const PoolCard = ({
     >
       <Flex>
         <PoolHeader
-          poolId={item.pool_id}
-          isSuperFluid={item.is_superfluid}
-          poolType={item.pool_type}
-          poolLiquidity={item.pool_liquidity}
+          poolId={item.id}
+          isSuperFluid={item.isSuperfluid}
+          poolType={item.type}
+          poolLiquidity={item.poolLiquidity}
         />
         <Flex w="72px" justifyContent="flex-end">
           <Tooltip
@@ -144,7 +144,7 @@ export const PoolCard = ({
           },
         }}
       >
-        {item.pool_liquidity.map((asset) => (
+        {item.poolLiquidity.map((asset) => (
           <Flex
             bg="pebble.800"
             px={3}

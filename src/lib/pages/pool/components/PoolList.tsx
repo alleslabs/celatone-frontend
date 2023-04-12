@@ -84,12 +84,7 @@ export const PoolList = ({ pools }: PoolListProp) => {
       </Flex>
       <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={4} w="full" mt={4}>
         {pools.map((item) => (
-          <PoolCard
-            key={item.pool_id}
-            item={item}
-            poolId={item.pool_id}
-            mode={toggle}
-          />
+          <PoolCard key={item.id} item={item} poolId={item.id} mode={toggle} />
         ))}
       </SimpleGrid>
     </>

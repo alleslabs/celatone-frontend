@@ -15,12 +15,12 @@ export const PoolId = () => {
 
   if (!router.query.poolId) return <Loading />;
   const query = router.query.poolId;
-  const pool = MockUpPoolList.find((x) => x.pool_id === +query);
+  const pool = MockUpPoolList.find((x) => x.id === +query);
   if (!pool) return navigate({ pathname: `/pool` });
   return (
     <PageContainer>
       <PoolDetailHeader pool={pool} />
-      <PoolAssetDetail assets={pool.pool_liquidity} />
+      <PoolAssetDetail assets={pool.poolLiquidity} />
       <PoolRelatedTxs />
     </PageContainer>
   );

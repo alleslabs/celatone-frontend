@@ -1,4 +1,5 @@
 import { Flex, Heading, Badge, Text, Box } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 import type { Big } from "big.js";
 import big from "big.js";
 import Link from "next/link";
@@ -7,13 +8,12 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import type { USD } from "lib/types";
-import type { PoolLiquidity } from "lib/types/pool";
 import { calAssetValueWithPrecision, formatPrice } from "lib/utils";
 
 import { PoolAssetsTable } from "./table/PoolAssetsTable";
 
 interface PoolAssetDetailProps {
-  assets: PoolLiquidity[];
+  assets: Coin[];
 }
 export const PoolAssetDetail = ({ assets }: PoolAssetDetailProps) => {
   const { assetInfos } = useAssetInfos();

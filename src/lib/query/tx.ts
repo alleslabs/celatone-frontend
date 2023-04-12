@@ -46,3 +46,37 @@ export const getTxsCountByAddress = graphql(`
     }
   }
 `);
+
+export const getTxsByPoolIdPagination = graphql(`
+  query getTxsByPoolIdPagination(
+    $expression: pool_transactions_bool_exp
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    pool_transactions(where: $expression, offset: $offset, limit: $pageSize) {
+      block {
+        height
+        timestamp
+      }
+      transaction {
+        account {
+          address
+        }
+        hash
+        success
+        messages
+        is_ibc
+      }
+    }
+  }
+`);
+
+export const getTxsCountByPoolId = graphql(`
+  query getTxsCountByPoolId($expression: pool_transactions_bool_exp) {
+    pool_transactions_aggregate(where: $expression) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
