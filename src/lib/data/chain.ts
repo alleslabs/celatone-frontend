@@ -1,6 +1,8 @@
 import { SELECTED_CHAIN } from "env";
 import type { Option } from "lib/types";
 
+export type SupportedChain = "osmosis" | "terra" | "mitosis";
+
 interface Chain {
   mainnet: string;
   testnet: string;
@@ -19,7 +21,7 @@ export const OSMOSIS_CHAINS: Chain = {
   testnet: "osmosistestnet",
 };
 
-export const getSupportedChainNames = (): string[] => {
+export const getSupportedChainNames = (): SupportedChain[] => {
   switch (SELECTED_CHAIN) {
     case "terra":
       return Object.values(TERRA_CHAINS);
@@ -71,4 +73,25 @@ export const getNetworkByChainName = (chainName: string): Network => {
     );
 
   return network;
+};
+
+interface ChainConfig {
+  isWasm: boolean;
+}
+
+const CHAIN_CONFIG: Record<SupportedChain, ChainConfig> = {
+  osmosis: {
+    isWasm: true,
+  },
+  terra: {
+    isWasm: true,
+  },
+  mitosis: {
+    isWasm: false,
+  },
+};
+
+export const getChainConfig = () => {
+  if (!SELECTED_CHAIN) throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
+  return CHAIN_CONFIG[SELECTED_CHAIN];
 };
