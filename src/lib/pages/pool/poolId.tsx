@@ -20,7 +20,12 @@ export const PoolId = () => {
   return (
     <PageContainer>
       <PoolDetailHeader pool={pool} />
-      <PoolAssetDetail assets={pool.poolLiquidity} />
+      <PoolAssetDetail
+        assets={pool.poolLiquidity}
+        pool_type={pool.type}
+        // weight={pool.weight}
+        // scaling_factors={pool.scaling_factors}
+      />
       <PoolRelatedTxs />
     </PageContainer>
   );

@@ -1,8 +1,8 @@
 export const explorerMap: Record<string, string> = {
   osmosis: "https://www.mintscan.io/osmosis",
-  terra2: "https://finder.terra.money/mainnet",
-  terra2testnet: "https://finder.terra.money/testnet",
   osmosistestnet: "https://testnet.mintscan.io/osmosis-testnet",
+  terra2: "https://terrasco.pe/mainnet",
+  terra2testnet: "https://terrasco.pe/testnet",
 };
 
 export const getExplorerBlockUrl = (chainName: string) => {
