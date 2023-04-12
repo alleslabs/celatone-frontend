@@ -80,6 +80,12 @@ const getValueText = (
   return isTruncate ? truncate(value) : value;
 };
 
+const getCopyLabel = (type: LinkType) =>
+  type
+    .split("_")
+    .map((str) => str.charAt(0).toUpperCase() + str.slice(1))
+    .join(" ");
+
 const LinkRender = ({
   type,
   isInternal,
@@ -187,6 +193,7 @@ export const ExplorerLink = ({
           <Copier
             type={type}
             value={copyValue || value}
+            copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
             display={showCopyOnHover ? "none" : "block"}
             ml="8px"
             amptrackSection={ampCopierSection}

@@ -21,6 +21,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       letterSpacing="0.4px"
       variant="ghost"
       color="text.dark"
+      mb={0}
       sx={{
         "&[aria-selected=true]": {
           color: "violet.light",
