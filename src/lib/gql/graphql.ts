@@ -15703,6 +15703,20 @@ export const GetTxsByPoolIdPaginationDocument = {
               },
               {
                 kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
                 name: { kind: "Name", value: "offset" },
                 value: {
                   kind: "Variable",

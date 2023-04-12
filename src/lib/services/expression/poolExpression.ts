@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 
+import { isPositiveInt } from "lib/utils";
+
 export const usePoolExpression = (
   isSupported: boolean,
   isSuperfluidOnly: boolean,
@@ -9,7 +11,7 @@ export const usePoolExpression = (
     () => ({
       is_supported: { _eq: isSupported },
       is_superfluid: isSuperfluidOnly ? { _eq: true } : {},
-      id: search.trim().length ? { _eq: Number(search) } : {},
+      id: isPositiveInt(search) ? { _eq: Number(search) } : {},
     }),
     [isSuperfluidOnly, isSupported, search]
   );

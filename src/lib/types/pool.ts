@@ -1,20 +1,24 @@
 import type { Coin } from "@cosmjs/stargate";
+import type { Big } from "big.js";
 
-import type { Addr, ContractAddr, Option } from "lib/types";
+import type { Addr, ContractAddr, Option, TokenWithValue } from "lib/types";
 
-interface PoolWeight {
+export interface PoolWeight<T extends string | Big> {
   denom: string;
-  weight: string;
+  weight: T;
 }
 
-export interface Pool {
+export interface Pool<TLiquidity extends Coin | TokenWithValue = Coin> {
   id: number;
   type: string;
   isSuperfluid: boolean;
-  poolLiquidity: Coin[];
+  poolLiquidity: TLiquidity[];
 }
 
-export interface PoolDetail extends Pool {
+export interface PoolDetail<
+  TWeight extends string | Big = string,
+  TLiquidity extends Coin | TokenWithValue = Coin
+> extends Pool<TLiquidity> {
   isSupported: boolean;
   blockHeight: Option<number>;
   creator: Option<Addr>;
@@ -22,8 +26,8 @@ export interface PoolDetail extends Pool {
   swapFee: number;
   exitFee: number;
   futurePoolGovernor: string | null;
-  smoothWeightChangeParams: Option<object | null>;
-  scalingFactors: Option<string[] | null>;
-  scalingFactorController: Option<string | null>;
-  weight: Option<PoolWeight[] | null>;
+  smoothWeightChangeParams: object | null;
+  scalingFactors: string[] | null;
+  scalingFactorController: string | null;
+  weight: PoolWeight<TWeight>[] | null;
 }

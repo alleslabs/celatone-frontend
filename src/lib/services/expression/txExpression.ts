@@ -54,12 +54,12 @@ export const useTxExpression = (
 
 export const usePoolTxExpression = (
   poolId: Option<number>,
-  type: Option<PoolTxFilter>
+  type: PoolTxFilter
 ) =>
   useMemo(
     () => ({
       pool_id: poolId ? { _eq: poolId } : {},
-      ...(type ? { [type]: { _eq: true } } : {}),
+      ...(type !== "is_all" ? { [type]: { _eq: true } } : {}),
     }),
     [poolId, type]
   );

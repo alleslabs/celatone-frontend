@@ -29,7 +29,7 @@ export const usePoolListByIsSupported = (
         pageSize,
       })
       .then(({ pools }) =>
-        pools.map((pool) => ({
+        pools.map<Pool>((pool) => ({
           id: pool.id,
           type: pool.type,
           isSuperfluid: pool.is_superfluid,
@@ -43,6 +43,8 @@ export const usePoolListByIsSupported = (
       "pool_list_by_is_supported",
       isSupported,
       isSuperfluidOnly,
+      search,
+      order,
       offset,
       pageSize,
       indexerGraphClient,

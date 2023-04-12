@@ -52,4 +52,9 @@ export interface TxFilters {
   isClearAdmin: boolean;
 }
 
-export type PoolTxFilter = "is_swap" | "is_lp" | "is_bond" | "is_superfluid";
+export type PoolTxFilter =
+  | "is_all"
+  | "is_swap"
+  | "is_lp"
+  | "is_bond"
+  | "is_superfluid";

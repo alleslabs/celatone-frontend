@@ -53,7 +53,12 @@ export const getTxsByPoolIdPagination = graphql(`
     $offset: Int!
     $pageSize: Int!
   ) {
-    pool_transactions(where: $expression, offset: $offset, limit: $pageSize) {
+    pool_transactions(
+      where: $expression
+      order_by: { block_height: desc }
+      offset: $offset
+      limit: $pageSize
+    ) {
       block {
         height
         timestamp

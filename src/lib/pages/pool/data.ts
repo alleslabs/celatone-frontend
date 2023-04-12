@@ -1,3 +1,4 @@
+import type { Big } from "big.js";
 import big from "big.js";
 
 import type { Order_By } from "lib/gql/graphql";
@@ -6,10 +7,14 @@ import {
   usePoolByPoolId,
   usePoolListByIsSupported,
 } from "lib/services/poolService";
-import type { Option, TokenWithValue } from "lib/types";
+import type {
+  Option,
+  Pool,
+  PoolDetail,
+  PoolWeight,
+  TokenWithValue,
+} from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
-
-import type { PoolCardData, PoolData, PoolWeight } from "./type";
 
 export const usePools = (
   isSupported: boolean,
@@ -18,7 +23,7 @@ export const usePools = (
   order: Order_By,
   offset: number,
   pageSize: number
-): { pools: Option<PoolCardData[]>; isLoading: boolean } => {
+): { pools: Option<Pool<TokenWithValue>[]>; isLoading: boolean } => {
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
   const { data: poolList, isLoading: isLoadingPoolList } =
     usePoolListByIsSupported(
@@ -36,7 +41,7 @@ export const usePools = (
       isLoading: isLoadingAssetInfos || isLoadingPoolList,
     };
 
-  const data = poolList.map<PoolCardData>((pool) => ({
+  const data = poolList.map<Pool<TokenWithValue>>((pool) => ({
     id: pool.id,
     type: pool.type,
     isSuperfluid: pool.isSuperfluid,
@@ -53,7 +58,7 @@ export const usePools = (
 
 export const usePool = (
   poolId: number
-): { pool: Option<PoolData>; isLoading: boolean } => {
+): { pool: Option<PoolDetail<Big, TokenWithValue>>; isLoading: boolean } => {
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
   const { data: pool, isLoading: isLoadingPoolInfo } = usePoolByPoolId(poolId);
 
@@ -78,10 +83,11 @@ export const usePool = (
       swapFee: pool.swapFee,
       exitFee: pool.exitFee,
       futurePoolGovernor: pool.futurePoolGovernor,
-      weight: pool.weight?.map<PoolWeight>((weight) => ({
-        denom: weight.denom,
-        weight: big(weight.weight),
-      })),
+      weight:
+        pool.weight?.map<PoolWeight<Big>>((weight) => ({
+          denom: weight.denom,
+          weight: big(weight.weight),
+        })) ?? null,
       smoothWeightChangeParams: pool.smoothWeightChangeParams,
       scalingFactors: pool.scalingFactors,
       scalingFactorController: pool.scalingFactorController,

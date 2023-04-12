@@ -25,6 +25,7 @@ import {
   getActionMsgType,
   getMsgFurtherAction,
   isTxHash,
+  parseDate,
   parseDateOpt,
   parseTxHash,
   snakeToCamel,
@@ -176,7 +177,7 @@ export const useTxsCountByAddress = (
 
 export const useTxsByPoolIdPagination = (
   poolId: Option<number>,
-  type: Option<PoolTxFilter>,
+  type: PoolTxFilter,
   offset: number,
   pageSize: number
 ): UseQueryResult<Transaction[]> => {
@@ -197,7 +198,7 @@ export const useTxsByPoolIdPagination = (
           sender: transaction.transaction.account.address as Addr,
           isSigner: true,
           height: transaction.block.height,
-          created: parseDateOpt(transaction.block.timestamp),
+          created: parseDate(transaction.block.timestamp),
           success: transaction.transaction.success,
           actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
           furtherAction: MsgFurtherAction.NONE,
@@ -208,7 +209,14 @@ export const useTxsByPoolIdPagination = (
   }, [expression, indexerGraphClient, offset, pageSize]);
 
   return useQuery(
-    ["transactions_by_pool_id", poolId, offset, pageSize, indexerGraphClient],
+    [
+      "transactions_by_pool_id",
+      poolId,
+      type,
+      offset,
+      pageSize,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       enabled: !!poolId,
@@ -218,7 +226,7 @@ export const useTxsByPoolIdPagination = (
 
 export const useTxsCountByPoolId = (
   poolId: Option<number>,
-  type: Option<PoolTxFilter>
+  type: PoolTxFilter
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = usePoolTxExpression(poolId, type);
@@ -235,7 +243,7 @@ export const useTxsCountByPoolId = (
   }, [expression, indexerGraphClient]);
 
   return useQuery(
-    ["transactions_count_by_pool_id", poolId, indexerGraphClient],
+    ["transactions_count_by_pool_id", poolId, type, indexerGraphClient],
     queryFn,
     {
       enabled: !!poolId,
