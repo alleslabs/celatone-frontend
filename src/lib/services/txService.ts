@@ -9,9 +9,11 @@ import { useCallback } from "react";
 import { useCelatoneApp, useChainId } from "lib/app-provider";
 import {
   getTxsByAddressPagination,
-  getTxsByPoolIdPagination,
   getTxsCountByAddress,
+  getTxs,
+  getTxsCount,
   getTxsCountByPoolId,
+  getTxsByPoolIdPagination,
 } from "lib/query";
 import type {
   Addr,
@@ -20,13 +22,12 @@ import type {
   Transaction,
   TxFilters,
 } from "lib/types";
-import { MsgFurtherAction, ActionMsgType } from "lib/types";
+import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
   getActionMsgType,
   getMsgFurtherAction,
   isTxHash,
   parseDate,
-  parseDateOpt,
   parseTxHash,
   snakeToCamel,
 } from "lib/utils";
@@ -75,51 +76,53 @@ export const useTxsByAddressPagination = (
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useTxExpression(address, search, filters, isSigner);
 
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getTxsByAddressPagination, {
-        expression,
-        offset,
-        pageSize,
-      })
-      .then(({ account_transactions }) =>
-        account_transactions.map((transaction) => ({
-          hash: parseTxHash(transaction.transaction.hash),
-          messages: snakeToCamel(transaction.transaction.messages),
-          sender: transaction.transaction.account.address as Addr,
-          isSigner: transaction.is_signer,
-          height: transaction.block.height,
-          created: parseDateOpt(transaction.block.timestamp),
-          success: transaction.transaction.success,
-          actionMsgType: getActionMsgType([
-            transaction.transaction.is_execute,
-            transaction.transaction.is_instantiate,
-            transaction.transaction.is_send,
-            transaction.transaction.is_store_code,
-            transaction.transaction.is_migrate,
-            transaction.transaction.is_update_admin,
-            transaction.transaction.is_clear_admin,
-          ]),
-          furtherAction: getMsgFurtherAction(
-            transaction.transaction.messages.length,
-            {
-              isExecute: transaction.transaction.is_execute,
-              isInstantiate: transaction.transaction.is_instantiate,
-              isSend: transaction.transaction.is_send,
-              isUpload: transaction.transaction.is_store_code,
-              isMigrate: transaction.transaction.is_migrate,
-              isUpdateAdmin: transaction.transaction.is_update_admin,
-              isClearAdmin: transaction.transaction.is_clear_admin,
-              isIbc: transaction.transaction.is_ibc,
-            },
-            transaction.transaction.success,
-            transaction.is_signer
-          ),
-          isIbc: transaction.transaction.is_ibc,
-          isInstantiate: transaction.transaction.is_instantiate,
-        }))
-      );
-  }, [expression, indexerGraphClient, offset, pageSize]);
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getTxsByAddressPagination, {
+          expression,
+          offset,
+          pageSize,
+        })
+        .then(({ account_transactions }) =>
+          account_transactions.map((transaction) => ({
+            hash: parseTxHash(transaction.transaction.hash),
+            messages: snakeToCamel(transaction.transaction.messages),
+            sender: transaction.transaction.account.address as Addr,
+            isSigner: transaction.is_signer,
+            height: transaction.block.height,
+            created: parseDate(transaction.block.timestamp),
+            success: transaction.transaction.success,
+            actionMsgType: getActionMsgType([
+              transaction.transaction.is_execute,
+              transaction.transaction.is_instantiate,
+              transaction.transaction.is_send,
+              transaction.transaction.is_store_code,
+              transaction.transaction.is_migrate,
+              transaction.transaction.is_update_admin,
+              transaction.transaction.is_clear_admin,
+            ]),
+            furtherAction: getMsgFurtherAction(
+              transaction.transaction.messages.length,
+              {
+                isExecute: transaction.transaction.is_execute,
+                isInstantiate: transaction.transaction.is_instantiate,
+                isSend: transaction.transaction.is_send,
+                isUpload: transaction.transaction.is_store_code,
+                isMigrate: transaction.transaction.is_migrate,
+                isUpdateAdmin: transaction.transaction.is_update_admin,
+                isClearAdmin: transaction.transaction.is_clear_admin,
+                isIbc: transaction.transaction.is_ibc,
+              },
+              transaction.transaction.success,
+              transaction.is_signer
+            ),
+            isIbc: transaction.transaction.is_ibc,
+            isInstantiate: transaction.transaction.is_instantiate,
+          }))
+        ),
+    [expression, indexerGraphClient, offset, pageSize]
+  );
 
   return useQuery(
     [
@@ -148,16 +151,18 @@ export const useTxsCountByAddress = (
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useTxExpression(address, search, filters, isSigner);
 
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getTxsCountByAddress, {
-        expression,
-      })
-      .then(
-        ({ account_transactions_aggregate }) =>
-          account_transactions_aggregate.aggregate?.count
-      );
-  }, [expression, indexerGraphClient]);
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getTxsCountByAddress, {
+          expression,
+        })
+        .then(
+          ({ account_transactions_aggregate }) =>
+            account_transactions_aggregate.aggregate?.count
+        ),
+    [expression, indexerGraphClient]
+  );
 
   return useQuery(
     [
@@ -249,4 +254,65 @@ export const useTxsCountByPoolId = (
       enabled: !!poolId,
     }
   );
+};
+
+export const useTxs = (
+  offset: number,
+  pageSize: number
+): UseQueryResult<Transaction[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getTxs, {
+          offset,
+          pageSize,
+        })
+        .then(({ transactions }) =>
+          transactions.map((transaction) => ({
+            hash: parseTxHash(transaction.hash),
+            messages: snakeToCamel(transaction.messages),
+            sender: transaction.account.address as Addr,
+            isSigner: false,
+            height: transaction.block.height,
+            created: parseDate(transaction.block.timestamp),
+            success: transaction.success,
+            actionMsgType: getActionMsgType([
+              transaction.is_execute,
+              transaction.is_instantiate,
+              transaction.is_send,
+              transaction.is_store_code,
+              transaction.is_migrate,
+              transaction.is_update_admin,
+              transaction.is_clear_admin,
+            ]),
+            furtherAction: MsgFurtherAction.NONE,
+            isIbc: transaction.is_ibc,
+            isInstantiate: transaction.is_instantiate,
+          }))
+        ),
+    [indexerGraphClient, offset, pageSize]
+  );
+
+  return useQuery(
+    ["transaction_list", offset, pageSize, indexerGraphClient],
+    queryFn
+  );
+};
+
+export const useTxsCount = (): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getTxsCount)
+        .then(
+          ({ transactions_aggregate }) =>
+            transactions_aggregate.aggregate?.count
+        ),
+    [indexerGraphClient]
+  );
+
+  return useQuery(["transaction_list_count", indexerGraphClient], queryFn);
 };

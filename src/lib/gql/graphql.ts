@@ -11552,6 +11552,44 @@ export type GetTxsCountByPoolIdQuery = {
   };
 };
 
+export type GetTxsQueryVariables = Exact<{
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetTxsQuery = {
+  __typename?: "query_root";
+  transactions: Array<{
+    __typename?: "transactions";
+    hash: any;
+    success: boolean;
+    messages: any;
+    is_clear_admin: boolean;
+    is_execute: boolean;
+    is_ibc: boolean;
+    is_instantiate: boolean;
+    is_migrate: boolean;
+    is_send: boolean;
+    is_store_code: boolean;
+    is_update_admin: boolean;
+    block: { __typename?: "blocks"; height: number; timestamp: any };
+    account: { __typename?: "accounts"; address: string };
+  }>;
+};
+
+export type GetTxsCountQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTxsCountQuery = {
+  __typename?: "query_root";
+  transactions_aggregate: {
+    __typename?: "transactions_aggregate";
+    aggregate?: {
+      __typename?: "transactions_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
 export const GetBlockTimestampByHeightQueryDocument = {
   kind: "Document",
   definitions: [
@@ -15858,3 +15896,170 @@ export const GetTxsCountByPoolIdDocument = {
   GetTxsCountByPoolIdQuery,
   GetTxsCountByPoolIdQueryVariables
 >;
+export const GetTxsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getTxs" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "block" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_clear_admin" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
+                { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_instantiate" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
+                { kind: "Field", name: { kind: "Name", value: "is_send" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_store_code" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_update_admin" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetTxsQuery, GetTxsQueryVariables>;
+export const GetTxsCountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getTxsCount" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "transactions_aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetTxsCountQuery, GetTxsCountQueryVariables>;
