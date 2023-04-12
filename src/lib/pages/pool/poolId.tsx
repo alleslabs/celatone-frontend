@@ -15,14 +15,14 @@ export const PoolId = () => {
 
   if (!router.query.poolId) return <Loading />;
   const query = router.query.poolId;
-  const pool = MockUpPoolList.find((x) => x.pool_id === +query);
+  const pool = MockUpPoolList.find((x) => x.id === +query);
   if (!pool) return navigate({ pathname: `/pool` });
   return (
     <PageContainer>
       <PoolDetailHeader pool={pool} />
       <PoolAssetDetail
-        assets={pool.pool_liquidity}
-        pool_type={pool.pool_type}
+        assets={pool.poolLiquidity}
+        pool_type={pool.type}
         // weight={pool.weight}
         // scaling_factors={pool.scaling_factors}
       />

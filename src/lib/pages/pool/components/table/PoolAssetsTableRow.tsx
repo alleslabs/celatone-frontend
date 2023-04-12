@@ -1,12 +1,13 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Skeleton, Grid, Image, Text } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 import big from "big.js";
 import type { BigSource, Big } from "big.js";
 
 import { UndefinedTokenList } from "../constant";
 import { TableRow } from "lib/components/table/tableComponents";
 import { useAssetInfos } from "lib/services/assetService";
-import type { Token, U, PoolLiquidity, USD, PoolDetail } from "lib/types";
+import type { Token, U, USD, PoolDetail } from "lib/types";
 import {
   calculateAssetValue,
   d2Formatter,
@@ -17,8 +18,8 @@ import {
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {
-  pool_type: PoolDetail["pool_type"];
-  asset: PoolLiquidity;
+  pool_type: PoolDetail["type"];
+  asset: Coin;
   templateColumns: GridProps["templateColumns"];
   total_liquidity: USD<Big>;
 }

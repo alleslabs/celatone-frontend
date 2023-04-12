@@ -1,7 +1,7 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 
 import { NAToken } from "lib/icon";
-import type { TokenWithValue } from "lib/pages/account-details/type";
+import type { TokenWithValue } from "lib/types";
 import {
   formatPrice,
   formatUTokenWithPrecision,

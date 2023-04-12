@@ -1,7 +1,8 @@
+import type { Coin } from "@cosmjs/stargate";
 import type { Big } from "big.js";
 
 import { TableContainer } from "lib/components/table/tableComponents";
-import type { PoolDetail, PoolLiquidity, USD } from "lib/types";
+import type { PoolDetail, USD } from "lib/types";
 
 // import type { Option, Proposal } from "lib/types";
 import { PoolAssetsTableHeader } from "./PoolAssetsTableHeader";
@@ -9,8 +10,8 @@ import { PoolAssetsTableRow } from "./PoolAssetsTableRow";
 // import { PoolAssetsTableRow } from "./PoolAssetsTableRow";
 
 interface PoolAssetsTableProps {
-  assets: PoolLiquidity[];
-  pool_type: PoolDetail["pool_type"];
+  assets: Coin[];
+  pool_type: PoolDetail["type"];
   // weight?: Option<PoolWeight[] | null>;
   // scaling_factors?: Option<string[] | null>;
   total_liquidity: USD<Big>;

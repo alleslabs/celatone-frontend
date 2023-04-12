@@ -79,24 +79,22 @@ export const PoolIndex = () => {
       </Flex>
       <Tabs>
         <TabList my={8} borderBottom="1px" borderColor="pebble.800">
-          <CustomTab
-            count={MockUpPoolList.filter((x) => x.is_supported).length}
-          >
+          <CustomTab count={MockUpPoolList.filter((x) => x.isSupported).length}>
             Pools
           </CustomTab>
           <CustomTab
-            count={MockUpPoolList.filter((x) => !x.is_supported).length}
+            count={MockUpPoolList.filter((x) => !x.isSupported).length}
           >
             Pools with unsupported tokens
           </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <PoolList pools={MockUpPoolList.filter((x) => x.is_supported)} />
+            <PoolList pools={MockUpPoolList.filter((x) => x.isSupported)} />
           </TabPanel>
           <TabPanel p={0}>
             <UnsupportedPoolList
-              pools={MockUpPoolList.filter((x) => !x.is_supported)}
+              pools={MockUpPoolList.filter((x) => !x.isSupported)}
             />
           </TabPanel>
         </TabPanels>

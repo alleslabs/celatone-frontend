@@ -3,9 +3,8 @@ import { useState } from "react";
 
 import { DelegationsTable, UnbondingsTable } from "../tables";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
-import type { TokenWithValue } from "lib/pages/account-details/type";
 import { AmpTrackUseRadio } from "lib/services/amplitude";
-import type { Option } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
 
 import { RadioCard } from "./RadioCard";
 

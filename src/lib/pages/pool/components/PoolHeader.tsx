@@ -7,11 +7,12 @@ import { getTokenLabel } from "lib/utils";
 import { PoolLogo } from "./PoolLogo";
 
 interface PoolHeaderProps {
-  poolId: PoolDetail["pool_id"];
-  isSuperFluid: PoolDetail["is_superfluid"];
-  poolType: PoolDetail["pool_type"];
-  poolLiquidity: PoolDetail["pool_liquidity"];
+  poolId: PoolDetail["id"];
+  isSuperFluid: PoolDetail["isSuperfluid"];
+  poolType: PoolDetail["type"];
+  poolLiquidity: PoolDetail["poolLiquidity"];
 }
+
 export const PoolHeader = ({
   poolId,
   isSuperFluid,

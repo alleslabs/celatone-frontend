@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Add Pool navigation and pool detail data
 - [#270](https://github.com/alleslabs/celatone-frontend/pull/270) Add Pool navigation and detail page
 - [#245](https://github.com/alleslabs/celatone-frontend/pull/245) Add amplitude for account detail page
 - [#232](https://github.com/alleslabs/celatone-frontend/pull/232) Add delegation data and section for the account detail page

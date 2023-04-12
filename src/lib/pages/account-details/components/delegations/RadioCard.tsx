@@ -1,7 +1,6 @@
 import { Flex, Radio, Text, Heading, Spinner } from "@chakra-ui/react";
 
-import type { TokenWithValue } from "lib/pages/account-details/type";
-import type { Option } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
 import {
   formatPrice,
   formatUTokenWithPrecision,

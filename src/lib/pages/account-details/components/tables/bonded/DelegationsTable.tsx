@@ -4,8 +4,7 @@ import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { TableTitle } from "lib/components/table";
 import type { Delegation } from "lib/pages/account-details/data";
-import type { TokenWithValue } from "lib/pages/account-details/type";
-import type { Option } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
 
 import { BondedTableHeader } from "./BondedTableHeader";
 import { BondedTableRow } from "./BondedTableRow";

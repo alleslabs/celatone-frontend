@@ -5,7 +5,7 @@ import { TableHeader } from "lib/components/table/tableComponents";
 import type { PoolDetail } from "lib/types";
 
 interface PoolHeaderProps {
-  pool_type: PoolDetail["pool_type"];
+  pool_type: PoolDetail["type"];
   templateColumns: GridProps["templateColumns"];
 }
 
