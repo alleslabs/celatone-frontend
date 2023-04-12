@@ -3,8 +3,7 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import { TokenCell } from "../TokenCell";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { TokenWithValue } from "lib/pages/account-details/type";
-import type { ValidatorInfo } from "lib/types";
+import type { TokenWithValue, ValidatorInfo } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface BondedInfo {

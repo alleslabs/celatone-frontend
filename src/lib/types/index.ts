@@ -11,3 +11,4 @@ export * from "./addrs";
 export * from "./proposal";
 export * from "./pool";
 export * from "./validator";
+export * from "./asset";

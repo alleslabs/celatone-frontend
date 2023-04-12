@@ -1,45 +1,6 @@
 import type { Big } from "big.js";
-import big from "big.js";
 
-import type {
-  Addr,
-  AssetInfo,
-  ContractAddr,
-  Option,
-  Token,
-  U,
-  USD,
-} from "lib/types";
-import { calculateAssetValue, toToken } from "lib/utils";
-
-export const coinToTokenWithValue = (
-  denom: string,
-  amount: string,
-  assetInfo: Option<AssetInfo>
-): TokenWithValue => {
-  const tokenAmount = big(amount) as U<Token<Big>>;
-  return {
-    denom,
-    amount: tokenAmount,
-    logo: assetInfo?.logo,
-    precision: assetInfo?.precision,
-    value: assetInfo
-      ? calculateAssetValue(
-          toToken(tokenAmount, assetInfo.precision),
-          assetInfo.price as USD<number>
-        )
-      : undefined,
-  };
-};
-
-// TODO: combine with the type in delegation
-export interface TokenWithValue {
-  denom: string;
-  amount: U<Token<Big>>;
-  logo: Option<string>;
-  precision: Option<number>;
-  value: Option<USD<Big>>;
-}
+import type { Addr, ContractAddr, Option, TokenWithValue } from "lib/types";
 
 export interface PoolWeight {
   denom: string;

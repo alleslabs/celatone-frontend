@@ -2,8 +2,7 @@ import { InfoIcon } from "@chakra-ui/icons";
 import { Flex, Heading, Image, Spinner, Text, Tooltip } from "@chakra-ui/react";
 
 import { NAToken } from "lib/icon";
-import type { TokenWithValue } from "lib/pages/account-details/type";
-import type { Option } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
 import {
   formatPrice,
   formatUTokenWithPrecision,

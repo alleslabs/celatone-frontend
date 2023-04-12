@@ -1,6 +1,4 @@
-import type Big from "big.js";
-
-import type { Option, Token, U, USD, ValidatorInfo } from "lib/types";
+import type { Option, TokenWithValue, ValidatorInfo } from "lib/types";
 
 import type {
   Delegation,
@@ -8,14 +6,6 @@ import type {
   StakingParams,
   Unbonding,
 } from "./data";
-
-export interface TokenWithValue {
-  denom: string;
-  amount: U<Token<Big>>;
-  logo: Option<string>;
-  precision: Option<number>;
-  value: Option<USD<Big>>;
-}
 
 export interface NonRedelegatable {
   dstValidator: ValidatorInfo;

@@ -6,15 +6,10 @@ import {
   usePoolByPoolId,
   usePoolListByIsSupported,
 } from "lib/services/poolService";
-import type { Option } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
+import { coinToTokenWithValue } from "lib/utils";
 
-import { coinToTokenWithValue } from "./type";
-import type {
-  PoolCardData,
-  PoolData,
-  PoolWeight,
-  TokenWithValue,
-} from "./type";
+import type { PoolCardData, PoolData, PoolWeight } from "./type";
 
 export const usePools = (
   isSupported: boolean,
