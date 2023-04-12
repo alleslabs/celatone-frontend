@@ -24,3 +24,8 @@ export const formatUTC = (date: Date) =>
   dayjs.utc(date).format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
 
 export const dateFromNow = (date: Date) => dayjs.utc(date).fromNow();
+
+export const secondsToDays = (sec: string) => {
+  const days = Math.floor(Number(sec) / 86400);
+  return `${days} day`.concat(days > 1 ? "s" : "");
+};

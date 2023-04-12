@@ -264,7 +264,11 @@ export const ExecuteArea = ({
       </Flex>
       <Flex alignItems="center" justify="space-between">
         <Flex gap={2}>
-          <CopyButton isDisable={!msg.length} value={msg} />
+          <CopyButton
+            isDisable={!msg.length}
+            value={msg}
+            amptrackSection="execute_msg"
+          />
           <CodeSnippet
             type="execute"
             contractAddress={contractAddress}

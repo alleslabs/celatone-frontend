@@ -15,9 +15,8 @@ export const formatBalanceWithDenom = ({
   coin,
   symbol,
   precision,
-}: FormatBalanceWithDenom) => {
-  return `${formatUTokenWithPrecision(
+}: FormatBalanceWithDenom) =>
+  `${formatUTokenWithPrecision(
     coin.amount as U<Token>,
     precision || 0
   )} ${getTokenLabel(symbol || coin.denom)}`;
-};

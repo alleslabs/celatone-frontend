@@ -64,6 +64,7 @@ export const Pagination = ({
           fontSize="12px"
           focusBorderColor="none"
           cursor="pointer"
+          value={pageSize}
           onChange={onPageSizeChange}
         >
           <option value="10">10</option>

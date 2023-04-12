@@ -251,7 +251,10 @@ execute();
                         }}
                       />
                       <Box position="absolute" top={4} right={4}>
-                        <CopyButton value={item.snippet} />
+                        <CopyButton
+                          value={item.snippet}
+                          amptrackSection="code_snippet"
+                        />
                       </Box>
                     </Box>
                   </TabPanel>

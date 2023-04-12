@@ -15,32 +15,46 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { EmptyState } from "lib/components/state";
+import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
+import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { useTxQuery, useTxQueryCount } from "lib/services/txQuery/useTxQuery";
-import type { HumanAddr } from "lib/types";
+import {
+  useTxsByAddressPagination,
+  useTxsCountByAddress,
+} from "lib/services/txService";
+import type { HumanAddr, Option, TxFilters } from "lib/types";
 
-import { PastTxsContent } from "./components/PastTxsContent";
+interface PastTxsState {
+  search: string;
+  filters: TxFilters;
+  isSigner: Option<boolean>;
+}
 
 const PastTxs = () => {
   const router = useRouter();
   const { address } = useWallet();
 
+  const defaultValues: PastTxsState = {
+    search: "",
+    filters: DEFAULT_TX_FILTERS,
+    isSigner: undefined,
+  };
+
   const { watch, setValue } = useForm({
-    defaultValues: {
-      search: "",
-      filters: DEFAULT_TX_FILTERS,
-    },
+    defaultValues,
     mode: "all",
   });
 
   const pastTxsState = watch();
 
-  const { data: countTxs = 0 } = useTxQueryCount(
-    address,
+  const { data: countTxs = 0 } = useTxsCountByAddress(
+    address as HumanAddr,
     pastTxsState.search,
-    pastTxsState.filters
+    pastTxsState.filters,
+    pastTxsState.isSigner
   );
 
   const {
@@ -59,16 +73,13 @@ const PastTxs = () => {
     },
   });
 
-  const {
-    data: txData,
-    error: txDataError,
-    isLoading,
-  } = useTxQuery(
+  const { data: txs, isLoading } = useTxsByAddressPagination(
     address as HumanAddr,
     pastTxsState.search,
     pastTxsState.filters,
-    pageSize,
-    offset
+    pastTxsState.isSigner,
+    offset,
+    pageSize
   );
 
   const setFilter = (filter: string, bool: boolean) => {
@@ -111,33 +122,53 @@ const PastTxs = () => {
         Past Transactions
       </Heading>
 
-      <Flex mt="48px">
-        <Flex grow="2" gap="4">
-          <InputGroup>
-            <Input
-              value={pastTxsState.search}
-              onChange={(e) => setValue("search", e.target.value)}
-              placeholder="Search with transaction hash or contract address"
-              h="full"
-            />
-            <InputRightElement pointerEvents="none" h="full" mr="1">
-              <CustomIcon name="search" />
-            </InputRightElement>
-          </InputGroup>
+      <Flex mt="48px" gap={1}>
+        <InputGroup>
+          <Input
+            value={pastTxsState.search}
+            onChange={(e) => setValue("search", e.target.value)}
+            placeholder="Search with transaction hash or contract address"
+            h="full"
+          />
+          <InputRightElement pointerEvents="none" h="full" mr="1">
+            <CustomIcon name="search" />
+          </InputRightElement>
+        </InputGroup>
+
+        <Flex gap={1}>
+          <TxRelationSelection
+            setValue={(value) => setValue("isSigner", value)}
+            w="165px"
+          />
           <TxFilterSelection
             result={filterSelected}
             setResult={setFilter}
-            boxWidth="400px"
+            boxWidth="285px"
             placeholder="All"
           />
         </Flex>
       </Flex>
-      <PastTxsContent
+      <TransactionsTableWithWallet
+        transactions={txs}
         isLoading={isLoading}
-        txDataError={txDataError}
-        input={pastTxsState.search}
-        filterSelected={filterSelected}
-        txData={txData}
+        emptyState={
+          !pastTxsState.search.trim().length || !filterSelected.length ? (
+            <EmptyState
+              imageVariant="not-found"
+              message={`
+      No past transaction matches found with your input.
+      You can search with transaction hash, and contract address.
+      `}
+            />
+          ) : (
+            <EmptyState
+              imageVariant="empty"
+              message={`
+    Past transactions will display here.
+    `}
+            />
+          )
+        }
       />
       {countTxs > 10 && (
         <Pagination
