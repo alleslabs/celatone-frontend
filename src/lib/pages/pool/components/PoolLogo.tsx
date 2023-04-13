@@ -1,9 +1,8 @@
 import { Flex, Image } from "@chakra-ui/react";
 
+import { UndefinedTokenList } from "../constant";
 import { useAssetInfos } from "lib/services/assetService";
 import type { PoolDetail } from "lib/types/pool";
-
-import { UndefinedTokenList } from "./constant";
 
 interface PoolLogoProps {
   poolLiquidity: PoolDetail["poolLiquidity"];

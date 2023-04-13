@@ -11,6 +11,7 @@ import type {
   Option,
   Pool,
   PoolDetail,
+  PoolTypeFilter,
   PoolWeight,
   TokenWithValue,
 } from "lib/types";
@@ -18,16 +19,18 @@ import { coinToTokenWithValue } from "lib/utils";
 
 export const usePools = (
   isSupported: boolean,
+  poolType: PoolTypeFilter,
   isSuperfluidOnly: boolean,
   search: string,
   order: Order_By,
   offset: number,
   pageSize: number
-): { pools: Option<Pool<TokenWithValue>[]>; isLoading: boolean } => {
+): { pools: Option<Pool[]>; isLoading: boolean } => {
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
   const { data: poolList, isLoading: isLoadingPoolList } =
     usePoolListByIsSupported(
       isSupported,
+      poolType,
       isSuperfluidOnly,
       search,
       order,
@@ -41,7 +44,7 @@ export const usePools = (
       isLoading: isLoadingAssetInfos || isLoadingPoolList,
     };
 
-  const data = poolList.map<Pool<TokenWithValue>>((pool) => ({
+  const data = poolList.map<Pool>((pool) => ({
     id: pool.id,
     type: pool.type,
     isSuperfluid: pool.isSuperfluid,
@@ -84,7 +87,7 @@ export const usePool = (
       exitFee: pool.exitFee,
       futurePoolGovernor: pool.futurePoolGovernor,
       weight:
-        pool.weight?.map<PoolWeight<Big>>((weight) => ({
+        pool.weight?.map<PoolWeight>((weight) => ({
           denom: weight.denom,
           weight: big(weight.weight),
         })) ?? null,

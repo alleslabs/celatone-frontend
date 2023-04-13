@@ -1,18 +1,17 @@
 import { Grid } from "@chakra-ui/react";
 
 import { SelectInput } from "lib/components/forms";
-
-export type PoolTypeFilterValue = "all" | "balancer" | "stableswap";
+import type { PoolTypeFilter } from "lib/types";
 
 interface PoolTypeOption {
   label: string;
-  value: PoolTypeFilterValue;
+  value: PoolTypeFilter;
   image?: string;
   disabled: boolean;
 }
 
 interface FilterByPoolTypeProps {
-  setPoolTypeValue: (newVal: PoolTypeFilterValue) => void;
+  setPoolTypeValue: (newVal: PoolTypeFilter) => void;
   initialSelected: string;
   labelBgColor?: string;
 }
@@ -44,7 +43,7 @@ export const FilterByPoolType = ({
   labelBgColor = "background.main",
 }: FilterByPoolTypeProps) => (
   <Grid columnGap="16px" w="full" maxW="360px">
-    <SelectInput<PoolTypeFilterValue>
+    <SelectInput<PoolTypeFilter>
       formLabel="Filter by Pool Type"
       options={options}
       onChange={setPoolTypeValue}

@@ -12,17 +12,16 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
+import { UndefinedTokenList } from "../../constant";
+import { PoolHeader } from "../PoolHeader";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useAssetInfos } from "lib/services/assetService";
-import type { PoolDetail } from "lib/types/pool";
+import type { Pool } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
-import { UndefinedTokenList } from "./constant";
-import { PoolHeader } from "./PoolHeader";
-
 interface PoolCardProps {
-  item: PoolDetail;
+  item: Pool;
   poolId: number;
 }
 const StyledIconButton = chakra(IconButton, {

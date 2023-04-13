@@ -1,34 +1,21 @@
-import {
-  Box,
-  Flex,
-  IconButton,
-  Skeleton,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
-import big, { Big } from "big.js";
+import { Box, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
+import type { Big } from "big.js";
+import big from "big.js";
 import Link from "next/link";
 
+import { PoolHeader } from "../PoolHeader";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useAssetInfos } from "lib/services/assetService";
-import type { USD } from "lib/types";
-import type { PoolDetail } from "lib/types/pool";
-import {
-  calAssetValueWithPrecision,
-  formatPrice,
-  getTokenLabel,
-} from "lib/utils";
-import { formatPercentValue } from "lib/utils/formatter/formatPercentValue";
+import type { USD, Pool } from "lib/types";
+import { formatPrice, getTokenLabel } from "lib/utils";
 
-import { PoolHeader } from "./PoolHeader";
+const pebble700 = "pebble.700";
 
 interface PoolCardProps {
-  item: PoolDetail;
+  item: Pool;
   poolId: number;
   mode: string;
 }
-const pebble700 = "pebble.700";
 
 export const PoolCard = ({
   item,
@@ -39,26 +26,11 @@ export const PoolCard = ({
   const handleOnClick = () => {
     navigate({ pathname: `/pool/[poolId]`, query: { poolId } });
   };
-  const { assetInfos } = useAssetInfos();
 
-  if (!assetInfos)
-    return (
-      <Skeleton height="175px" startColor="pebble.900" endColor="pebble.800" />
-    );
-
-  const liquidity = item.poolLiquidity.reduce((total, asset) => {
-    const assetInfo = assetInfos[asset.denom];
-    return total.add(
-      assetInfo
-        ? calAssetValueWithPrecision({
-            amount: asset.amount,
-            id: assetInfo.id,
-            price: assetInfo.price,
-            precision: assetInfo.precision,
-          })
-        : (big(0) as USD<Big>)
-    ) as USD<Big>;
-  }, big(0) as USD<Big>);
+  const liquidity = item.poolLiquidity.reduce(
+    (total, asset) => total.add(asset.value ?? big(0)) as USD<Big>,
+    big(0) as USD<Big>
+  );
 
   return (
     <Flex
@@ -154,23 +126,11 @@ export const PoolCard = ({
           >
             <Box>
               <Text variant="body3" color="text.dark" fontWeight="600">
-                {assetInfos?.[asset.denom]?.symbol ||
-                  getTokenLabel(asset.denom)}
+                {getTokenLabel(asset.denom)}
               </Text>
               <Text variant="body3" color="text.main">
                 {mode === "percent-value"
-                  ? `${formatPercentValue(
-                      Big(
-                        calAssetValueWithPrecision({
-                          amount: asset.amount,
-                          id: assetInfos?.[asset.denom]?.id || "",
-                          price: assetInfos?.[asset.denom]?.price,
-                          precision: assetInfos?.[asset.denom]?.precision || 0,
-                        })
-                      )
-                        .div(liquidity)
-                        .times(100)
-                    )}`
+                  ? `${(asset.value ?? big(0)).div(liquidity).times(100)}`
                   : `${asset.amount}`}
               </Text>
             </Box>

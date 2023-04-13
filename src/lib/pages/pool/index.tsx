@@ -17,27 +17,36 @@ import { useForm } from "react-hook-form";
 import { CustomTab } from "lib/components/CustomTab";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
+import { usePoolListCountByIsSupported } from "lib/services/poolService";
+import type { PoolTypeFilter } from "lib/types";
 
-import { MockUpPoolList } from "./components/constant";
-import type { PoolTypeFilterValue } from "./components/FilterByPoolType";
 import { FilterByPoolType } from "./components/FilterByPoolType";
-import { PoolList } from "./components/PoolList";
-import { UnsupportedPoolList } from "./components/UnsupportedPoolList";
+import { SupportedSection } from "./components/supportedSection";
+import { UnsupportedSection } from "./components/unsupportedSection";
 
 interface PoolFilterState {
   keyword: string;
-  poolTypeValue: PoolTypeFilterValue;
+  poolTypeValue: PoolTypeFilter;
+  isSuperfluidOnly: boolean;
 }
 
-export type PoolToggleValue = "percent-value" | "amount";
 export const PoolIndex = () => {
+  const { data: supportedPoolCount, refetch: refetchSupportedPoolCount } =
+    usePoolListCountByIsSupported(true, "all", false, "");
+  const { data: unsupportedPoolCount, refetch: refetchUnsupportedPoolCount } =
+    usePoolListCountByIsSupported(false, "all", false, "");
+
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
       poolTypeValue: "all",
       keyword: "",
+      isSuperfluidOnly: true,
     },
   });
-  const { keyword, poolTypeValue } = watch();
+  const { keyword, poolTypeValue, isSuperfluidOnly } = watch();
+
+  const sectionHeaderId = "poolListTab";
+
   return (
     <PageContainer>
       <Heading variant="h5" as="h5">
@@ -55,14 +64,18 @@ export const PoolIndex = () => {
           />
           <FilterByPoolType
             initialSelected="all"
-            setPoolTypeValue={(newVal: PoolTypeFilterValue) => {
+            setPoolTypeValue={(newVal: PoolTypeFilter) => {
               if (newVal === poolTypeValue) return;
               setValue("poolTypeValue", newVal);
             }}
           />
           <Flex minW="250px">
             <FormControl display="flex" alignItems="center" gap={2}>
-              <Switch size="md" />
+              <Switch
+                size="md"
+                defaultChecked={isSuperfluidOnly}
+                onChange={(e) => setValue("isSuperfluidOnly", e.target.checked)}
+              />
               <FormLabel mb="0" cursor="pointer">
                 <Text display="flex" gap={2} alignItems="center">
                   Show only
@@ -79,22 +92,30 @@ export const PoolIndex = () => {
       </Flex>
       <Tabs>
         <TabList my={8} borderBottom="1px" borderColor="pebble.800">
-          <CustomTab count={MockUpPoolList.filter((x) => x.isSupported).length}>
-            Pools
-          </CustomTab>
-          <CustomTab
-            count={MockUpPoolList.filter((x) => !x.isSupported).length}
-          >
+          <CustomTab count={supportedPoolCount ?? 0}>Pools</CustomTab>
+          <CustomTab count={unsupportedPoolCount ?? 0}>
             Pools with unsupported tokens
           </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <PoolList pools={MockUpPoolList.filter((x) => x.isSupported)} />
+            <SupportedSection
+              poolType={poolTypeValue}
+              isSuperfluidOnly={isSuperfluidOnly}
+              search={keyword}
+              totalData={supportedPoolCount ?? 0}
+              refetchCount={refetchSupportedPoolCount}
+              scrollComponentId={sectionHeaderId}
+            />
           </TabPanel>
           <TabPanel p={0}>
-            <UnsupportedPoolList
-              pools={MockUpPoolList.filter((x) => !x.isSupported)}
+            <UnsupportedSection
+              poolType={poolTypeValue}
+              isSuperfluidOnly={isSuperfluidOnly}
+              search={keyword}
+              totalData={unsupportedPoolCount ?? 0}
+              refetchCount={refetchUnsupportedPoolCount}
+              scrollComponentId={sectionHeaderId}
             />
           </TabPanel>
         </TabPanels>
