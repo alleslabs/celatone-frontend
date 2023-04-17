@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { Addr, ContractAddr, HumanAddr } from "../addrs";
+import type { Addr, ContractAddr } from "../addrs";
 
 export enum MsgType {
   STORE_CODE = "STORE_CODE",
@@ -15,12 +15,13 @@ export enum AccessType {
   ACCESS_TYPE_NOBODY = 1,
   ACCESS_TYPE_ONLY_ADDRESS = 2,
   ACCESS_TYPE_EVERYBODY = 3,
+  ACCESS_TYPE_ANY_OF_ADDRESSES = 4,
   UNRECOGNIZED = -1,
 }
 
 export interface AccessConfig {
   permission: AccessType;
-  address: HumanAddr;
+  addresses: Addr[];
 }
 
 export interface MsgStoreCode {

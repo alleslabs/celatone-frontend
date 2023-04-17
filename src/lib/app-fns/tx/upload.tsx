@@ -1,8 +1,5 @@
-import type {
-  SigningCosmWasmClient,
-  UploadResult,
-} from "@cosmjs/cosmwasm-stargate";
-import type { StdFee } from "@cosmjs/stargate";
+import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import type { DeliverTxResponse, logs, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
@@ -10,7 +7,8 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { TxStreamPhase } from "lib/types";
-import type { HumanAddr, TxResultRendering } from "lib/types";
+import type { HumanAddr, TxResultRendering, ComposedMsg } from "lib/types";
+import { findAttr } from "lib/utils";
 import { formatUFee } from "lib/utils/formatter/denom";
 
 import { catchTxError } from "./common/catchTxError";
@@ -19,8 +17,8 @@ import { sendingTx } from "./common/sending";
 
 interface UploadTxParams {
   address: HumanAddr;
-  codeDesc: string;
-  wasmCode: Uint8Array;
+  codeName: string;
+  messages: ComposedMsg[];
   wasmFileName: string;
   fee: StdFee;
   memo?: string;
@@ -31,8 +29,8 @@ interface UploadTxParams {
 
 export const uploadContractTx = ({
   address,
-  codeDesc,
-  wasmCode,
+  codeName,
+  messages,
   wasmFileName,
   fee,
   memo,
@@ -42,12 +40,20 @@ export const uploadContractTx = ({
 }: UploadTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
-    postTx<UploadResult>({
-      postFn: () => client.upload(address, wasmCode, fee, memo),
+    postTx<DeliverTxResponse>({
+      postFn: () => client.signAndBroadcast(address, messages, fee, memo),
     }),
     ({ value: txInfo }) => {
       AmpTrack(AmpEvent.TX_SUCCEED);
-      onTxSucceed?.(txInfo.codeId);
+      const mimicLog: logs.Log = {
+        msg_index: 0,
+        log: "",
+        events: txInfo.events,
+      };
+
+      const codeId = findAttr(mimicLog, "store_code", "code_id") || "0";
+
+      onTxSucceed?.(parseInt(codeId, 10));
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
       return {
@@ -56,10 +62,10 @@ export const uploadContractTx = ({
         receipts: [
           {
             title: "Code ID",
-            value: txInfo.codeId,
+            value: codeId,
             html: (
               <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <ExplorerLink type="code_id" value={txInfo.codeId.toString()} />
+                <ExplorerLink type="code_id" value={codeId} />
               </div>
             ),
           },
@@ -80,7 +86,7 @@ export const uploadContractTx = ({
           description: (
             <>
               <span style={{ fontWeight: 700 }}>
-                ‘{codeDesc || `${wasmFileName}(${txInfo.codeId})`}’
+                ‘{codeName || `${wasmFileName}(${codeId})`}’
               </span>{" "}
               is has been uploaded. Would you like to{" "}
               {isMigrate ? "migrate" : "instantiate"} your code now?

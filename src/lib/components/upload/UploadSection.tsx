@@ -1,27 +1,33 @@
 import { Button, Flex } from "@chakra-ui/react";
+import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { CustomIcon } from "../icon";
+import { DropZone } from "../dropzone";
+import { ControllerInput } from "../forms";
 import {
   useFabricateFee,
   useSimulateFee,
   useUploadContractTx,
 } from "lib/app-provider";
-import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import { ControllerInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon";
 import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { HumanAddr } from "lib/types";
-import { MsgType } from "lib/types";
-import { composeMsg } from "lib/utils";
+import type {
+  Addr,
+  HumanAddr,
+  SimulateStatus,
+  UploadSectionState,
+} from "lib/types";
+import { AccessType } from "lib/types";
+import { composeStoreCodeMsg } from "lib/utils";
 
+import { InstantiatePermissionRadio } from "./components/InstantiatePermissionRadio";
 import { UploadCard } from "./components/UploadCard";
-import type { UploadSectionState } from "./types";
 
 interface UploadSectionProps {
   handleBack: () => void;
@@ -37,26 +43,31 @@ export const UploadSection = ({
   const { address } = useWallet();
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();
+  const postUploadTx = useUploadContractTx(isMigrate);
+
+  const [estimatedFee, setEstimatedFee] = useState<StdFee>();
+  const [simulateStatus, setSimulateStatus] =
+    useState<SimulateStatus>("pending");
+  const [simulateError, setSimulateError] = useState("");
 
   const {
     control,
-    watch,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<UploadSectionState>({
     defaultValues: {
       wasmFile: undefined,
-      codeDesc: "",
-      estimatedFee: undefined,
-      simulateStatus: "pending",
-      simulateError: "",
+      codeName: "",
+      permission: AccessType.ACCESS_TYPE_EVERYBODY,
+      addresses: [{ address: "" as Addr }],
     },
     mode: "all",
   });
-  const { wasmFile, codeDesc, estimatedFee, simulateStatus, simulateError } =
-    watch();
 
-  const postUploadTx = useUploadContractTx(isMigrate);
+  const { wasmFile, codeName, addresses, permission } = watch();
+
+  const addressesString = JSON.stringify(addresses);
 
   const proceed = useCallback(async () => {
     if (address) {
@@ -64,13 +75,15 @@ export const UploadSection = ({
       const stream = await postUploadTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),
-        codeDesc,
+        addresses: addresses.map((addr) => addr.address),
+        permission,
+        codeName,
         estimatedFee,
         onTxSucceed: (codeId: number) => {
           updateCodeInfo(
             codeId,
             address as HumanAddr,
-            codeDesc || `${wasmFile?.name}(${codeId})`
+            codeName || `${wasmFile?.name}(${codeId})`
           );
         },
       });
@@ -78,40 +91,57 @@ export const UploadSection = ({
       if (stream) broadcast(stream);
     }
   }, [
+    address,
     postUploadTx,
     wasmFile,
-    codeDesc,
+    addresses,
+    permission,
+    codeName,
     estimatedFee,
     broadcast,
     updateCodeInfo,
-    address,
   ]);
 
   useEffect(() => {
     (async () => {
       if (wasmFile) {
-        setValue("simulateStatus", "pending");
-        setValue("simulateError", "");
-        const msg = composeMsg(MsgType.STORE_CODE, {
+        setSimulateStatus("pending");
+        setSimulateError("");
+        const msg = composeStoreCodeMsg({
           sender: address as HumanAddr,
           wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
+          permission,
+          addresses: addresses.map((addr) => addr.address),
         });
         try {
           const estimatedGasUsed = await simulate([msg]);
           if (estimatedGasUsed) {
-            setValue("estimatedFee", fabricateFee(estimatedGasUsed));
-            setValue("simulateStatus", "completed");
+            setEstimatedFee(fabricateFee(estimatedGasUsed));
+            setSimulateStatus("completed");
           }
         } catch (err) {
-          setValue("simulateStatus", "failed");
-          setValue("simulateError", (err as Error).message);
+          setSimulateStatus("failed");
+          setSimulateError((err as Error).message);
         }
       }
     })();
-  }, [wasmFile, address, simulate, fabricateFee, setValue]);
+  }, [
+    wasmFile,
+    address,
+    simulate,
+    fabricateFee,
+    setValue,
+    permission,
+    addressesString,
+    addresses,
+  ]);
 
   const isDisabled =
-    !estimatedFee || !wasmFile || !!errors.codeDesc || !address;
+    !estimatedFee ||
+    !wasmFile ||
+    !address ||
+    !!errors.codeName ||
+    !!errors.addresses;
   return (
     <>
       {wasmFile ? (
@@ -119,7 +149,7 @@ export const UploadSection = ({
           file={wasmFile}
           deleteFile={() => {
             setValue("wasmFile", undefined);
-            setValue("estimatedFee", undefined);
+            setEstimatedFee(undefined);
           }}
           simulateStatus={simulateStatus}
           simulateError={simulateError}
@@ -128,7 +158,7 @@ export const UploadSection = ({
         <DropZone setFile={(file) => setValue("wasmFile", file)} />
       )}
       <ControllerInput
-        name="codeDesc"
+        name="codeName"
         control={control}
         label="Code Name (Optional)"
         placeholder="Untitled Name"
@@ -136,11 +166,13 @@ export const UploadSection = ({
         rules={{
           maxLength: MAX_CODE_NAME_LENGTH,
         }}
-        error={errors.codeDesc && getMaxCodeNameLengthError(codeDesc.length)}
+        error={errors.codeName && getMaxCodeNameLengthError(codeName.length)}
         variant="floating"
         my="32px"
       />
+      <InstantiatePermissionRadio control={control} setValue={setValue} />
       <Flex
+        mt={10}
         fontSize="14px"
         color="text.dark"
         alignSelf="flex-start"

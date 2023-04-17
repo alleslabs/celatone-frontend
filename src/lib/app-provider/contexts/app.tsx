@@ -19,41 +19,51 @@ import {
 import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
 
-interface AppProviderProps<AppContractAddress, Constants extends AppConstants> {
+interface AppProviderProps<
+  AppContractAddress,
+  AppHumanAddress,
+  Constants extends AppConstants
+> {
   children: ReactNode;
 
   fallbackGasPrice: Record<string, ChainGasPrice>;
 
   appContractAddressMap: (currentChainName: string) => AppContractAddress;
 
+  appHumanAddressMap: (currentChainName: string) => AppHumanAddress;
+
   constants: Constants;
 }
 
 interface AppContextInterface<
   ContractAddress,
+  HumanAddress,
   Constants extends AppConstants = AppConstants
 > {
   chainGasPrice: ChainGasPrice;
   appContractAddress: ContractAddress;
+  appHumanAddress: HumanAddress;
   constants: Constants;
   indexerGraphClient: GraphQLClient;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const AppContext = createContext<AppContextInterface<any, any>>({
+const AppContext = createContext<AppContextInterface<any, any, any>>({
   chainGasPrice: { denom: "", gasPrice: "0" as U<Token> },
   appContractAddress: {},
+  appHumanAddress: {},
   constants: { gasAdjustment: 0 },
   indexerGraphClient: new GraphQLClient(""),
 });
 
 export const AppProvider = observer(
-  <ContractAddress, Constants extends AppConstants>({
+  <ContractAddress, HumanAddress, Constants extends AppConstants>({
     children,
     fallbackGasPrice,
     appContractAddressMap,
+    appHumanAddressMap,
     constants,
-  }: AppProviderProps<ContractAddress, Constants>) => {
+  }: AppProviderProps<ContractAddress, HumanAddress, Constants>) => {
     const { currentChainName, currentChainRecord } = useWallet();
     const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
     const { setContractUserKey, isContractUserKeyExist } = useContractStore();
@@ -81,10 +91,13 @@ export const AppProvider = observer(
       };
     }, [currentChainName]);
 
-    const states = useMemo<AppContextInterface<ContractAddress, Constants>>(
+    const states = useMemo<
+      AppContextInterface<ContractAddress, HumanAddress, Constants>
+    >(
       () => ({
         chainGasPrice,
         appContractAddress: appContractAddressMap(currentChainName),
+        appHumanAddress: appHumanAddressMap(currentChainName),
         constants,
         ...chainBoundStates,
       }),
@@ -92,6 +105,7 @@ export const AppProvider = observer(
         chainGasPrice,
         appContractAddressMap,
         currentChainName,
+        appHumanAddressMap,
         constants,
         chainBoundStates,
       ]
@@ -127,7 +141,8 @@ export const AppProvider = observer(
 
 export const useApp = <
   ContractAddress,
+  HumanAddress,
   Constants extends AppConstants
->(): AppContextInterface<ContractAddress, Constants> => {
+>(): AppContextInterface<ContractAddress, HumanAddress, Constants> => {
   return useContext(AppContext);
 };

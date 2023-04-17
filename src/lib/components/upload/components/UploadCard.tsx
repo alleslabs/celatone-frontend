@@ -2,8 +2,8 @@ import { Flex, Spinner, Text } from "@chakra-ui/react";
 import big from "big.js";
 import type { ReactElement } from "react";
 
-import type { SimulateStatus } from "../types";
 import { CustomIcon, UploadIcon } from "lib/components/icon";
+import type { SimulateStatus } from "lib/types";
 
 interface UploadCardProps {
   file: File;
