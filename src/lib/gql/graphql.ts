@@ -8215,6 +8215,10 @@ export type Query_Root = {
   proposals_aggregate: Proposals_Aggregate;
   /** fetch data from the table: "proposals" using primary key columns */
   proposals_by_pk?: Maybe<Proposals>;
+  /** execute function "search_pools_with_denom" which returns "pools" */
+  search_pools_with_denom: Array<Pools>;
+  /** execute function "search_pools_with_denom" and query aggregates on result of table type "pools" */
+  search_pools_with_denom_aggregate: Pools_Aggregate;
   /** fetch data from the table: "tracking" */
   tracking: Array<Tracking>;
   /** fetch aggregated fields from the table: "tracking" */
@@ -8554,6 +8558,24 @@ export type Query_RootProposals_By_PkArgs = {
   id: Scalars["Int"];
 };
 
+export type Query_RootSearch_Pools_With_DenomArgs = {
+  args: Search_Pools_With_Denom_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Query_RootSearch_Pools_With_Denom_AggregateArgs = {
+  args: Search_Pools_With_Denom_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
 export type Query_RootTrackingArgs = {
   distinct_on?: InputMaybe<Array<Tracking_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -8625,6 +8647,10 @@ export type Query_RootTransactions_AggregateArgs = {
 export type Query_RootTransactions_By_PkArgs = {
   block_height: Scalars["Int"];
   hash: Scalars["bytea"];
+};
+
+export type Search_Pools_With_Denom_Args = {
+  denom?: InputMaybe<Scalars["String"]>;
 };
 
 export type Subscription_Root = {
@@ -8751,6 +8777,10 @@ export type Subscription_Root = {
   proposals_by_pk?: Maybe<Proposals>;
   /** fetch data from the table in a streaming manner: "proposals" */
   proposals_stream: Array<Proposals>;
+  /** execute function "search_pools_with_denom" which returns "pools" */
+  search_pools_with_denom: Array<Pools>;
+  /** execute function "search_pools_with_denom" and query aggregates on result of table type "pools" */
+  search_pools_with_denom_aggregate: Pools_Aggregate;
   /** fetch data from the table: "tracking" */
   tracking: Array<Tracking>;
   /** fetch aggregated fields from the table: "tracking" */
@@ -9204,6 +9234,24 @@ export type Subscription_RootProposals_StreamArgs = {
   batch_size: Scalars["Int"];
   cursor: Array<InputMaybe<Proposals_Stream_Cursor_Input>>;
   where?: InputMaybe<Proposals_Bool_Exp>;
+};
+
+export type Subscription_RootSearch_Pools_With_DenomArgs = {
+  args: Search_Pools_With_Denom_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Subscription_RootSearch_Pools_With_Denom_AggregateArgs = {
+  args: Search_Pools_With_Denom_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
 };
 
 export type Subscription_RootTrackingArgs = {
@@ -10939,6 +10987,35 @@ export type GetBlockTimestampByHeightQueryQuery = {
   blocks_by_pk?: { __typename?: "blocks"; timestamp: any } | null;
 };
 
+export type GetBlockListQueryQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+}>;
+
+export type GetBlockListQueryQuery = {
+  __typename?: "query_root";
+  blocks: Array<{
+    __typename?: "blocks";
+    hash: any;
+    height: number;
+    timestamp: any;
+    transactions_aggregate: {
+      __typename?: "transactions_aggregate";
+      aggregate?: {
+        __typename?: "transactions_aggregate_fields";
+        count: number;
+      } | null;
+    };
+  }>;
+};
+
+export type GetBlockCountQueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetBlockCountQueryQuery = {
+  __typename?: "query_root";
+  blocks: Array<{ __typename?: "blocks"; height: number }>;
+};
+
 export type GetCodeListQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCodeListQueryQuery = {
@@ -11547,6 +11624,163 @@ export const GetBlockTimestampByHeightQueryDocument = {
 } as unknown as DocumentNode<
   GetBlockTimestampByHeightQueryQuery,
   GetBlockTimestampByHeightQueryQueryVariables
+>;
+export const GetBlockListQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockListQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transactions_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "count" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockListQueryQuery,
+  GetBlockListQueryQueryVariables
+>;
+export const GetBlockCountQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockCountQuery" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockCountQueryQuery,
+  GetBlockCountQueryQueryVariables
 >;
 export const GetCodeListQueryDocument = {
   kind: "Document",
