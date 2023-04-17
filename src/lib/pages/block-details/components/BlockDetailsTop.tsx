@@ -11,7 +11,8 @@ import { useLCDEndpoint } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
-import type { BlockDetails } from "lib/types/block";
+import { openNewTab } from "lib/hooks";
+import type { BlockDetails } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
@@ -30,11 +31,10 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const block = Number(blockData.height);
   const lcdEndpoint = useLCDEndpoint();
   const openLcdPage = () =>
-    window.open(
-      `${lcdEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`,
-      "_blank",
-      "noopener,noreferrer"
+    openNewTab(
+      `${lcdEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
     );
+
   return (
     <Flex
       justify="space-between"

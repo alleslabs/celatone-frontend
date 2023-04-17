@@ -17,32 +17,36 @@ export const useBlocklistQuery = (
 ): UseQueryResult<BlockInfo[]> => {
   const chainId = useChainId();
   const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getBlockListQueryDocument, { limit, offset })
-      .then(({ blocks }) =>
-        blocks.map<BlockInfo>(
-          ({ hash, height, timestamp, transactions_aggregate }) => ({
-            network: chainId,
-            hash: parseTxHash(hash),
-            height,
-            timestamp: parseDate(timestamp),
-            txCount: transactions_aggregate.aggregate?.count ?? 0,
-          })
-        )
-      );
-  }, [indexerGraphClient, chainId, limit, offset]);
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getBlockListQueryDocument, { limit, offset })
+        .then(({ blocks }) =>
+          blocks.map<BlockInfo>(
+            ({ hash, height, timestamp, transactions_aggregate }) => ({
+              network: chainId,
+              hash: parseTxHash(hash),
+              height,
+              timestamp: parseDate(timestamp),
+              txCount: transactions_aggregate.aggregate?.count ?? 0,
+            })
+          )
+        ),
+    [indexerGraphClient, chainId, limit, offset]
+  );
 
   return useQuery(["blocks", indexerGraphClient, limit, offset], queryFn);
 };
 
 export const useBlockCountQuery = (): UseQueryResult<number> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getBlockCountQueryDocument)
-      .then(({ blocks }) => blocks[0]?.height ?? 0);
-  }, [indexerGraphClient]);
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getBlockCountQueryDocument)
+        .then(({ blocks }) => blocks[0]?.height ?? 0),
+    [indexerGraphClient]
+  );
 
   return useQuery(["block_count", indexerGraphClient], queryFn);
 };
@@ -52,24 +56,26 @@ export const useBlockDetailsQuery = (
 ): UseQueryResult<BlockDetails | null> => {
   const chainId = useChainId();
   const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getBlockDetailsByHeightQueryDocument, { height })
-      .then<BlockDetails | null>(({ blocks_by_pk }) =>
-        blocks_by_pk
-          ? {
-              network: chainId,
-              hash: parseTxHash(blocks_by_pk.hash),
-              height: blocks_by_pk.height,
-              timestamp: parseDate(blocks_by_pk.timestamp),
-              gasUsed:
-                blocks_by_pk.transactions_aggregate.aggregate?.sum?.gas_used,
-              gasLimit:
-                blocks_by_pk.transactions_aggregate.aggregate?.sum?.gas_limit,
-            }
-          : null
-      );
-  }, [indexerGraphClient, chainId, height]);
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getBlockDetailsByHeightQueryDocument, { height })
+        .then<BlockDetails | null>(({ blocks_by_pk }) =>
+          blocks_by_pk
+            ? {
+                network: chainId,
+                hash: parseTxHash(blocks_by_pk.hash),
+                height: blocks_by_pk.height,
+                timestamp: parseDate(blocks_by_pk.timestamp),
+                gasUsed:
+                  blocks_by_pk.transactions_aggregate.aggregate?.sum?.gas_used,
+                gasLimit:
+                  blocks_by_pk.transactions_aggregate.aggregate?.sum?.gas_limit,
+              }
+            : null
+        ),
+    [indexerGraphClient, chainId, height]
+  );
 
   return useQuery(["block_details", indexerGraphClient, height], queryFn, {
     keepPreviousData: true,
