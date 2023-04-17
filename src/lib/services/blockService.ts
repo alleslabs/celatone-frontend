@@ -38,7 +38,7 @@ export const useBlockCountQuery = (): UseQueryResult<number> => {
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getBlockCountQueryDocument)
-      .then(({ blocks }) => blocks.at(0)?.height ?? 0);
+      .then(({ blocks }) => blocks[0]?.height ?? 0);
   }, [indexerGraphClient]);
 
   return useQuery(["block_count", indexerGraphClient], queryFn);
