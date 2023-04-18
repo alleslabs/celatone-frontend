@@ -1,32 +1,24 @@
-import { Flex, Text, Grid, useDisclosure, Tag, Box } from "@chakra-ui/react";
+import { Flex, Grid, useDisclosure, Tag, Box } from "@chakra-ui/react";
 
-import { AccordionTx } from "../AccordionTx";
-import { TableRow } from "../tableComponents";
+import { useGetAddressType } from "lib/app-provider";
 import { RenderActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { Transaction } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { AccordionTx, TableRow } from "lib/components/table";
+import type { BlockTransaction } from "lib/types";
 
-import { FurtherActionButton } from "./FurtherActionButton";
-import { RelationChip } from "./RelationChip";
-
-interface TransactionsTableRowProps {
-  transaction: Transaction;
+interface BlockTxTableRowProps {
+  transaction: BlockTransaction;
   templateColumns: string;
-  showRelations: boolean;
-  showAction: boolean;
 }
 
-export const TransactionsTableRow = ({
+export const BlockTxTableRow = ({
   transaction,
   templateColumns,
-  showRelations,
-  showAction,
-}: TransactionsTableRowProps) => {
+}: BlockTxTableRowProps) => {
+  const getAddressType = useGetAddressType();
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
-
   return (
     <Box w="full" minW="min-content">
       <Grid
@@ -62,34 +54,13 @@ export const TransactionsTableRow = ({
           </Flex>
         </TableRow>
 
-        {showRelations && (
-          <TableRow>
-            <RelationChip isSigner={transaction.isSigner} />
-          </TableRow>
-        )}
-
         <TableRow>
           <ExplorerLink
             value={transaction.sender}
-            type="user_address"
+            type={getAddressType(transaction.sender)}
             showCopyOnHover
           />
         </TableRow>
-
-        <TableRow>
-          <Flex direction="column" gap={1}>
-            <Text variant="body3">{formatUTC(transaction.created)}</Text>
-            <Text variant="body3" color="text.dark">
-              {`(${dateFromNow(transaction.created)})`}
-            </Text>
-          </Flex>
-        </TableRow>
-
-        {showAction && (
-          <TableRow>
-            <FurtherActionButton transaction={transaction} />
-          </TableRow>
-        )}
 
         <TableRow>
           {isAccordion && (
@@ -97,13 +68,15 @@ export const TransactionsTableRow = ({
           )}
         </TableRow>
       </Grid>
+
       {isAccordion && (
         <Grid w="full" py={4} hidden={!isOpen}>
           {transaction.messages.map((msg, index) => (
             <AccordionTx
               key={index.toString() + msg.type}
               message={msg}
-              allowFurtherAction={showAction}
+              allowFurtherAction={false}
+              accordionSpacing="211px"
             />
           ))}
         </Grid>

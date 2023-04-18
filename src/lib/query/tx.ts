@@ -46,3 +46,82 @@ export const getTxsCountByAddress = graphql(`
     }
   }
 `);
+
+export const getTxs = graphql(`
+  query getTxs($offset: Int!, $pageSize: Int!) {
+    transactions(
+      order_by: { block_height: desc }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      block {
+        height
+        timestamp
+      }
+      account {
+        address
+      }
+      hash
+      success
+      messages
+      is_clear_admin
+      is_execute
+      is_ibc
+      is_instantiate
+      is_migrate
+      is_send
+      is_store_code
+      is_update_admin
+    }
+  }
+`);
+
+export const getTxsCount = graphql(`
+  query getTxsCount {
+    transactions_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
+export const getBlockTransactionsByHeightQueryDocument = graphql(`
+  query getBlockTransactionsByHeightQuery(
+    $limit: Int!
+    $offset: Int!
+    $height: Int!
+  ) {
+    transactions(
+      limit: $limit
+      offset: $offset
+      where: { block_height: { _eq: $height } }
+      order_by: { id: asc }
+    ) {
+      hash
+      success
+      messages
+      account {
+        address
+      }
+      is_clear_admin
+      is_execute
+      is_ibc
+      is_instantiate
+      is_migrate
+      is_send
+      is_store_code
+      is_update_admin
+    }
+  }
+`);
+
+export const getBlockTransactionCountByHeightQueryDocument = graphql(`
+  query getBlockTransactionCountByHeightQuery($height: Int!) {
+    transactions_aggregate(where: { block_height: { _eq: $height } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
