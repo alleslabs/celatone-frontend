@@ -45,6 +45,7 @@ export const coinToTokenWithValue = (
   return {
     denom,
     amount: tokenAmount,
+    symbol: assetInfo?.symbol,
     logo: assetInfo?.logo,
     precision: assetInfo?.precision,
     value: assetInfo
