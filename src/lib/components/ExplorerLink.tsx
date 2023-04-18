@@ -4,7 +4,7 @@ import { useWallet } from "@cosmos-kit/react";
 
 import {
   getExplorerBlockUrl,
-  getProposalUrl,
+  getExplorerProposalUrl,
   getExplorerValidatorUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/app-provider";
@@ -59,7 +59,7 @@ const getNavigationUrl = (
       url = getExplorerBlockUrl(currentChainName);
       break;
     case "proposal_id":
-      url = getProposalUrl(currentChainName);
+      url = getExplorerProposalUrl(currentChainName);
       break;
     case "invalid_address":
       return "";

@@ -20,7 +20,7 @@ export const getExplorerBlockUrl = (chainName: string) => {
   return `${explorerMap[chainName]}/${pathSuffix}`;
 };
 
-export const getProposalUrl = (chainName: string) => {
+export const getExplorerProposalUrl = (chainName: string) => {
   let pathSuffix = "";
   switch (chainName) {
     case "osmosis":

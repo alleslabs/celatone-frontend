@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 interface FooterProps {
   onSubmit: () => void;
   disabled: boolean;
-  loading: boolean;
+  isLoading: boolean;
 }
 
 export const Footer = ({
   onSubmit,
   disabled,
-  loading = false,
+  isLoading = false,
 }: FooterProps) => {
   const router = useRouter();
   return (
@@ -35,9 +35,9 @@ export const Footer = ({
             variant="primary"
             onClick={onSubmit}
             disabled={disabled}
-            isDisabled={loading}
+            isDisabled={isLoading}
           >
-            {loading ? (
+            {isLoading ? (
               <Spinner size="md" color="pebble.600" />
             ) : (
               "Submit Proposal"

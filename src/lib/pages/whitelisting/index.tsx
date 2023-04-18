@@ -16,8 +16,11 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import { useFabricateFee, useSimulateFeeQuery } from "lib/app-provider";
-import { useSubmitProposalTx } from "lib/app-provider/tx/submitProposal";
+import {
+  useFabricateFee,
+  useSimulateFeeQuery,
+  useSubmitProposalTx,
+} from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -104,9 +107,8 @@ const Whitelisting = observer(() => {
     ]
   );
 
-  const { isFetching: isSimulating } = useSimulateFeeQuery({
-    enabled: enabledTx,
-    messages: [
+  const submitWhitelistProposalMsg = useMemo(
+    () =>
       composeSubmitWhitelistProposalMsg({
         title,
         description,
@@ -117,7 +119,19 @@ const Whitelisting = observer(() => {
         initialDeposit,
         proposer: walletAddress as Addr,
       }),
-    ],
+    [
+      addressesArray,
+      description,
+      govParams?.uploadAccess,
+      initialDeposit,
+      title,
+      walletAddress,
+    ]
+  );
+
+  const { isFetching: isSimulating } = useSimulateFeeQuery({
+    enabled: enabledTx,
+    messages: [submitWhitelistProposalMsg],
     onSuccess: (fee) => {
       if (fee) {
         setSimulateError(undefined);
@@ -141,19 +155,9 @@ const Whitelisting = observer(() => {
   );
 
   const proceed = useCallback(async () => {
-    const msg = composeSubmitWhitelistProposalMsg({
-      title,
-      description,
-      changesValue: JSON.stringify({
-        ...govParams?.uploadAccess,
-        addresses: govParams?.uploadAccess.addresses?.concat(addressesArray),
-      }),
-      initialDeposit,
-      proposer: walletAddress as Addr,
-    });
     const stream = await submitProposalTx({
       estimatedFee,
-      messages: [msg],
+      messages: [submitWhitelistProposalMsg],
       whitelistNumber: addressesArray.length,
       amountToVote: big(minDeposit?.formattedAmount || 0).lt(
         initialDeposit.amount
@@ -171,13 +175,10 @@ const Whitelisting = observer(() => {
       broadcast(stream);
     }
   }, [
-    addressesArray,
-    description,
-    title,
+    addressesArray.length,
+    submitWhitelistProposalMsg,
     estimatedFee,
-    govParams,
-    initialDeposit,
-    walletAddress,
+    initialDeposit.amount,
     minDeposit,
     broadcast,
     submitProposalTx,
@@ -418,7 +419,7 @@ const Whitelisting = observer(() => {
       <Footer
         disabled={isSimulating || !enabledTx || !estimatedFee}
         onSubmit={proceed}
-        loading={processing}
+        isLoading={processing}
       />
     </>
   );
