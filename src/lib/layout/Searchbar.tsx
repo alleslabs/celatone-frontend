@@ -80,6 +80,7 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
   );
 };
 
+// TODO - Implement all search for Wasm chain
 const Searchbar = () => {
   const navigate = useInternalNavigate();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
