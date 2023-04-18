@@ -13,7 +13,7 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
   return (
     <Flex
       css={{
-        ">:not(:first-child)": {
+        ">:not(:first-of-type)": {
           marginLeft: "-12px",
         },
       }}
@@ -25,6 +25,7 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
         <>
           {poolLiquidity.slice(0, 2).map((item, i) => (
             <Image
+              key={item.denom}
               boxSize={10}
               src={
                 assetInfos?.[item.denom]?.logo ||
@@ -47,10 +48,10 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
       ) : (
         poolLiquidity.map((asset, i) => (
           <Image
+            key={asset.denom}
             boxSize={10}
             src={
-              assetInfos?.[asset.denom]?.logo ||
-              UndefinedTokenList[i % UndefinedTokenList.length]
+              asset.logo || UndefinedTokenList[i % UndefinedTokenList.length]
             }
             zIndex={i * -1 + 2}
           />

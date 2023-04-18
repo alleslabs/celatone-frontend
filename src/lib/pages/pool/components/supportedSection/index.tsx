@@ -1,14 +1,33 @@
-import { Badge, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Image,
+  Switch,
+  Text,
+} from "@chakra-ui/react";
+import { matchSorter } from "match-sorter";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
+import { SuperfluidIcon } from "../../constant";
 import { usePools } from "../../data";
+import type { PoolFilterState } from "../../types";
+import { FilterByPoolType } from "../FilterByPoolType";
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ToggleWithName } from "lib/components/ToggleWithName";
 import { Order_By } from "lib/gql/graphql";
+import { useAssetInfos } from "lib/services/assetService";
+import { usePoolListCountByIsSupported } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
+import { isPositiveInt } from "lib/utils";
 
 import { SupportedPoolList } from "./SupportedPoolList";
 
@@ -22,23 +41,44 @@ const OPTIONS = [
     value: "amount",
   },
 ];
+
 interface SupportedSectionProp {
-  poolType: PoolTypeFilter;
-  isSuperfluidOnly: boolean;
-  search: string;
-  totalData: number;
-  refetchCount: () => void;
   scrollComponentId: string;
 }
 
 export const SupportedSection = ({
-  poolType,
-  isSuperfluidOnly,
-  search,
-  totalData,
-  refetchCount,
   scrollComponentId,
 }: SupportedSectionProp) => {
+  const { assetInfos } = useAssetInfos();
+
+  const { watch, setValue } = useForm<PoolFilterState>({
+    defaultValues: {
+      poolTypeValue: "all",
+      keyword: "",
+      isSuperfluidOnly: false,
+    },
+  });
+  const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
+  const search = useMemo(
+    () =>
+      !keyword || isPositiveInt(keyword) || !assetInfos
+        ? keyword
+        : `{${matchSorter(Object.values(assetInfos), keyword, {
+            keys: ["id", "symbol"],
+          })
+            .map((assetInfo) => `"${assetInfo.id}"`)
+            .join(",")}}`,
+    [assetInfos, keyword]
+  );
+
+  const { data: totalData = 0, refetch: refetchCount } =
+    usePoolListCountByIsSupported(
+      true,
+      poolTypeValue,
+      isSuperfluidOnly,
+      search
+    );
+
   const [showNewest, setShowNewest] = useState(true);
   const [toggle, setToggle] = useState("percent-value");
 
@@ -72,7 +112,7 @@ export const SupportedSection = ({
 
   const { pools, isLoading } = usePools(
     true,
-    poolType,
+    poolTypeValue,
     isSuperfluidOnly,
     search,
     showNewest ? Order_By.Desc : Order_By.Asc,
@@ -82,6 +122,41 @@ export const SupportedSection = ({
 
   return (
     <>
+      <Flex alignItems="center" mb={12}>
+        <Flex grow="2" gap={4}>
+          <InputWithIcon
+            placeholder="Search with Pool ID, Symbol or Token ID"
+            value={keyword}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setValue("keyword", e.target.value)
+            }
+            size="lg"
+          />
+          <FilterByPoolType
+            initialSelected="all"
+            setPoolTypeValue={(newVal: PoolTypeFilter) => {
+              if (newVal === poolTypeValue) return;
+              setValue("poolTypeValue", newVal);
+            }}
+          />
+          <Flex minW="250px">
+            <FormControl display="flex" alignItems="center" gap={2}>
+              <Switch
+                size="md"
+                defaultChecked={isSuperfluidOnly}
+                onChange={(e) => setValue("isSuperfluidOnly", e.target.checked)}
+              />
+              <FormLabel mb="0" cursor="pointer">
+                <Text display="flex" gap={2} alignItems="center">
+                  Show only
+                  <Image boxSize={4} src={SuperfluidIcon} />
+                  Superfluid
+                </Text>
+              </FormLabel>
+            </FormControl>
+          </Flex>
+        </Flex>
+      </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Flex gap={2} alignItems="center">
           <Heading as="h6" variant="h6">

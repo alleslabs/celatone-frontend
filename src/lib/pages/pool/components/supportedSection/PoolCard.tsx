@@ -8,6 +8,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { USD, Pool } from "lib/types";
 import { formatPrice, getTokenLabel } from "lib/utils";
+import { formatPercentValue } from "lib/utils/formatter/formatPercentValue";
 
 const pebble700 = "pebble.700";
 
@@ -118,6 +119,7 @@ export const PoolCard = ({
       >
         {item.poolLiquidity.map((asset) => (
           <Flex
+            key={asset.denom}
             bg="pebble.800"
             px={3}
             py={1}
@@ -126,11 +128,13 @@ export const PoolCard = ({
           >
             <Box>
               <Text variant="body3" color="text.dark" fontWeight="600">
-                {getTokenLabel(asset.denom)}
+                {asset.symbol || getTokenLabel(asset.denom)}
               </Text>
               <Text variant="body3" color="text.main">
                 {mode === "percent-value"
-                  ? `${(asset.value ?? big(0)).div(liquidity).times(100)}`
+                  ? `${formatPercentValue(
+                      (asset.value ?? big(0)).div(liquidity).times(100)
+                    )}`
                   : `${asset.amount}`}
               </Text>
             </Box>

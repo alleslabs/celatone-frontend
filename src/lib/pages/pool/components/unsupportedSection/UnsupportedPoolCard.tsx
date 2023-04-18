@@ -16,7 +16,6 @@ import { UndefinedTokenList } from "../../constant";
 import { PoolHeader } from "../PoolHeader";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useAssetInfos } from "lib/services/assetService";
 import type { Pool } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
@@ -40,7 +39,6 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
   const handleOnClick = () => {
     navigate({ pathname: `/pool/[poolId]`, query: { poolId } });
   };
-  const { assetInfos } = useAssetInfos();
 
   return (
     <AccordionItem
@@ -52,69 +50,67 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
     >
       {({ isExpanded }) => (
         <>
-          <h2>
-            <AccordionButton>
-              <Flex gap={4} flexDirection="column" p={4} w="full">
-                <Flex alignItems="center" justifyContent="space-between">
-                  <PoolHeader
-                    poolId={poolId}
-                    isSuperFluid={item.isSuperfluid}
-                    poolType={item.type}
-                    poolLiquidity={item.poolLiquidity}
-                  />
-                  <Flex w="128px">
-                    <Tooltip
-                      hasArrow
-                      label="See in osmosis.zone"
-                      placement="top"
-                      bg="honeydew.darker"
-                      maxW="240px"
-                    >
-                      <Link href="/">
-                        <StyledIconButton
-                          variant="none"
-                          aria-label="external"
-                          _hover={{ backgroundColor: pebble700 }}
-                          icon={<CustomIcon name="launch" />}
-                        />
-                      </Link>
-                    </Tooltip>
-                    <Tooltip
-                      hasArrow
-                      label="Pin to top"
-                      placement="top"
-                      bg="honeydew.darker"
-                      maxW="240px"
-                    >
-                      <Flex>
-                        <StyledIconButton
-                          _hover={{ backgroundColor: pebble700 }}
-                          variant="none"
-                          aria-label="save"
-                          icon={<CustomIcon name="bookmark" />}
-                        />
-                      </Flex>
-                    </Tooltip>
-                    {isExpanded ? (
+          <AccordionButton>
+            <Flex gap={4} flexDirection="column" p={4} w="full">
+              <Flex alignItems="center" justifyContent="space-between">
+                <PoolHeader
+                  poolId={poolId}
+                  isSuperFluid={item.isSuperfluid}
+                  poolType={item.type}
+                  poolLiquidity={item.poolLiquidity}
+                />
+                <Flex w="128px">
+                  <Tooltip
+                    hasArrow
+                    label="See in osmosis.zone"
+                    placement="top"
+                    bg="honeydew.darker"
+                    maxW="240px"
+                  >
+                    <Link href="/">
                       <StyledIconButton
                         variant="none"
                         aria-label="external"
                         _hover={{ backgroundColor: pebble700 }}
-                        icon={<CustomIcon name="chevron-up" />}
+                        icon={<CustomIcon name="launch" />}
                       />
-                    ) : (
+                    </Link>
+                  </Tooltip>
+                  <Tooltip
+                    hasArrow
+                    label="Pin to top"
+                    placement="top"
+                    bg="honeydew.darker"
+                    maxW="240px"
+                  >
+                    <Flex>
                       <StyledIconButton
-                        variant="none"
-                        aria-label="external"
                         _hover={{ backgroundColor: pebble700 }}
-                        icon={<CustomIcon name="chevron-down" />}
+                        variant="none"
+                        aria-label="save"
+                        icon={<CustomIcon name="bookmark" />}
                       />
-                    )}
-                  </Flex>
+                    </Flex>
+                  </Tooltip>
+                  {isExpanded ? (
+                    <StyledIconButton
+                      variant="none"
+                      aria-label="external"
+                      _hover={{ backgroundColor: pebble700 }}
+                      icon={<CustomIcon name="chevron-up" />}
+                    />
+                  ) : (
+                    <StyledIconButton
+                      variant="none"
+                      aria-label="external"
+                      _hover={{ backgroundColor: pebble700 }}
+                      icon={<CustomIcon name="chevron-down" />}
+                    />
+                  )}
                 </Flex>
               </Flex>
-            </AccordionButton>
-          </h2>
+            </Flex>
+          </AccordionButton>
           <AccordionPanel pb={4}>
             <Flex>
               <Text
@@ -128,18 +124,15 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
               <Flex gap={4} flexDirection="column">
                 <Flex gap={2} flexDirection="column">
                   {item.poolLiquidity.map((asset, i) => (
-                    <Flex gap={3}>
+                    <Flex key={asset.denom} gap={3}>
                       <Image
                         boxSize={6}
                         src={
-                          assetInfos?.[asset.denom]?.logo ||
+                          asset.logo ||
                           UndefinedTokenList[i % UndefinedTokenList.length]
                         }
                       />
-                      <Flex>
-                        {assetInfos?.[asset.denom]?.symbol ||
-                          getTokenLabel(asset.denom)}
-                      </Flex>
+                      <Flex>{asset.symbol || getTokenLabel(asset.denom)}</Flex>
                     </Flex>
                   ))}
                 </Flex>

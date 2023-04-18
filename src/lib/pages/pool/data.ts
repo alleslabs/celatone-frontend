@@ -38,24 +38,18 @@ export const usePools = (
       pageSize
     );
 
-  if (!assetInfos || !poolList)
-    return {
-      pools: undefined,
-      isLoading: isLoadingAssetInfos || isLoadingPoolList,
-    };
-
-  const data = poolList.map<Pool>((pool) => ({
+  const data = poolList?.map<Pool>((pool) => ({
     id: pool.id,
     type: pool.type,
     isSuperfluid: pool.isSuperfluid,
     poolLiquidity: pool.poolLiquidity.map<TokenWithValue>((coin) =>
-      coinToTokenWithValue(coin.denom, coin.amount, assetInfos[coin.denom])
+      coinToTokenWithValue(coin.denom, coin.amount, assetInfos?.[coin.denom])
     ),
   }));
 
   return {
     pools: data,
-    isLoading: false,
+    isLoading: isLoadingAssetInfos || isLoadingPoolList,
   };
 };
 

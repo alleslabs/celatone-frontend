@@ -1,32 +1,49 @@
-import { Badge, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Image,
+  Switch,
+  Text,
+} from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
+import { SuperfluidIcon } from "../../constant";
 import { usePools } from "../../data";
+import type { PoolFilterState } from "../../types";
+import { FilterByPoolType } from "../FilterByPoolType";
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { Order_By } from "lib/gql/graphql";
-import type { PoolTypeFilter } from "lib/types/pool";
+import { usePoolListCountByIsSupported } from "lib/services/poolService";
+import type { PoolTypeFilter } from "lib/types";
 
 import { UnsupportedPoolList } from "./UnsupportedPoolList";
 
 interface UnsupportedSectionProp {
-  poolType: PoolTypeFilter;
-  isSuperfluidOnly: boolean;
-  search: string;
-  totalData: number;
-  refetchCount: () => void;
   scrollComponentId: string;
 }
 export const UnsupportedSection = ({
-  poolType,
-  isSuperfluidOnly,
-  search,
-  totalData,
-  refetchCount,
   scrollComponentId,
 }: UnsupportedSectionProp) => {
+  const { watch, setValue } = useForm<PoolFilterState>({
+    defaultValues: {
+      poolTypeValue: "all",
+      keyword: "",
+      isSuperfluidOnly: false,
+    },
+  });
+  const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
+  const { data: totalData = 0, refetch: refetchCount } =
+    usePoolListCountByIsSupported(false, "all", false, "");
+
   const [showNewest, setShowNewest] = useState(true);
 
   const {
@@ -59,9 +76,9 @@ export const UnsupportedSection = ({
 
   const { pools, isLoading } = usePools(
     false,
-    poolType,
+    poolTypeValue,
     isSuperfluidOnly,
-    search,
+    keyword,
     showNewest ? Order_By.Desc : Order_By.Asc,
     offset,
     pageSize
@@ -69,6 +86,41 @@ export const UnsupportedSection = ({
 
   return (
     <>
+      <Flex alignItems="center" mb={12}>
+        <Flex grow="2" gap={4}>
+          <InputWithIcon
+            placeholder="Search with Pool ID or Token ID"
+            value={keyword}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setValue("keyword", e.target.value)
+            }
+            size="lg"
+          />
+          <FilterByPoolType
+            initialSelected="all"
+            setPoolTypeValue={(newVal: PoolTypeFilter) => {
+              if (newVal === poolTypeValue) return;
+              setValue("poolTypeValue", newVal);
+            }}
+          />
+          <Flex minW="250px">
+            <FormControl display="flex" alignItems="center" gap={2}>
+              <Switch
+                size="md"
+                defaultChecked={isSuperfluidOnly}
+                onChange={(e) => setValue("isSuperfluidOnly", e.target.checked)}
+              />
+              <FormLabel mb="0" cursor="pointer">
+                <Text display="flex" gap={2} alignItems="center">
+                  Show only
+                  <Image boxSize={4} src={SuperfluidIcon} />
+                  Superfluid
+                </Text>
+              </FormLabel>
+            </FormControl>
+          </Flex>
+        </Flex>
+      </Flex>
       <Flex alignItems="center" justifyContent="space-between" h="32px">
         <Flex gap={2} alignItems="center">
           <Heading as="h6" variant="h6">

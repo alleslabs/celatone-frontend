@@ -5,8 +5,15 @@ import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import type { Order_By } from "lib/gql/graphql";
-import { getPoolByPoolId, getPoolList, getPoolListCount } from "lib/query";
+import {
+  getPoolByPoolId,
+  getPoolList,
+  getPoolListByDenoms,
+  getPoolListByDenomsCount,
+  getPoolListCount,
+} from "lib/query";
 import type { Pool, PoolDetail, PoolTypeFilter } from "lib/types";
+import { isPositiveInt } from "lib/utils";
 
 import { usePoolExpression } from "./expression/poolExpression";
 
@@ -28,22 +35,30 @@ export const usePoolListByIsSupported = (
   );
 
   const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getPoolList, {
-        expression,
-        order,
-        offset,
-        pageSize,
-      })
-      .then(({ pools }) =>
-        pools.map<Pool<Coin>>((pool) => ({
-          id: pool.id,
-          type: pool.type,
-          isSuperfluid: pool.is_superfluid,
-          poolLiquidity: pool.liquidity,
-        }))
-      );
-  }, [expression, order, offset, pageSize, indexerGraphClient]);
+    const request =
+      !search || isPositiveInt(search)
+        ? indexerGraphClient.request(getPoolList, {
+            expression,
+            order,
+            offset,
+            pageSize,
+          })
+        : indexerGraphClient.request(getPoolListByDenoms, {
+            denoms: search,
+            expression,
+            order,
+            offset,
+            pageSize,
+          });
+    return request.then(({ pools }) =>
+      pools.map<Pool<Coin>>((pool) => ({
+        id: pool.id,
+        type: pool.type,
+        isSuperfluid: pool.is_superfluid,
+        poolLiquidity: pool.liquidity,
+      }))
+    );
+  }, [expression, indexerGraphClient, offset, order, pageSize, search]);
 
   return useQuery(
     [
@@ -75,12 +90,20 @@ export const usePoolListCountByIsSupported = (
   );
 
   const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getPoolListCount, {
-        expression,
-      })
-      .then(({ pools_aggregate }) => pools_aggregate.aggregate?.count);
-  }, [expression, indexerGraphClient]);
+    const request =
+      !search || isPositiveInt(search)
+        ? indexerGraphClient.request(getPoolListCount, {
+            expression,
+          })
+        : indexerGraphClient.request(getPoolListByDenomsCount, {
+            denoms: search,
+            expression,
+          });
+
+    return request.then(
+      ({ pools_aggregate }) => pools_aggregate.aggregate?.count
+    );
+  }, [expression, indexerGraphClient, search]);
 
   return useQuery(
     [

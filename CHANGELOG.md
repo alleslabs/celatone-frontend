@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#277](https://github.com/alleslabs/celatone-frontend/pull/277) Wire up data for pool navigation page
 - [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Add Pool navigation and pool detail data
 - [#270](https://github.com/alleslabs/celatone-frontend/pull/270) Add Pool navigation and detail page
 - [#271](https://github.com/alleslabs/celatone-frontend/pull/271) Create transaction list page
