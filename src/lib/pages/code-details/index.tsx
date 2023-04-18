@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { Loading } from "lib/components/Loading";
@@ -71,7 +71,11 @@ const CodeDetailsBody = observer(
               <Text fontWeight={500} color="text.dark" variant="body2">
                 Code ID:
               </Text>
-              <ExplorerLink type="code_id" value={codeId.toString()} />
+              <CopyLink
+                value={codeId.toString()}
+                amptrackSection="code_top"
+                type="code_id"
+              />
             </Flex>
             <Flex gap={2}>
               <Text fontWeight={500} color="text.dark" variant="body2">
