@@ -65,7 +65,11 @@ export const PoolCard = ({
             bg="honeydew.darker"
             maxW="240px"
           >
-            <Link href="/">
+            <Link
+              href={`app.osmosis.zone/pool/${item.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <IconButton
                 fontSize="24px"
                 variant="none"

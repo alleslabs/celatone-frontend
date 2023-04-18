@@ -67,7 +67,11 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                     bg="honeydew.darker"
                     maxW="240px"
                   >
-                    <Link href="/">
+                    <Link
+                      href={`app.osmosis.zone/pool/${item.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <StyledIconButton
                         variant="none"
                         aria-label="external"
