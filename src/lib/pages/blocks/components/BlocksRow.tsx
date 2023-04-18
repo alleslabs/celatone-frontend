@@ -17,7 +17,7 @@ export const BlocksRow = ({ templateColumns, blockData }: BlocksRowProps) => {
       <TableRow>
         <ExplorerLink
           type="block_height"
-          value={blockData.height}
+          value={blockData.height.toString()}
           showCopyOnHover
         >
           {blockData.height}

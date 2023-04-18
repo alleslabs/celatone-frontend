@@ -30,3 +30,21 @@ export const getBlockCountQueryDocument = graphql(`
     }
   }
 `);
+
+export const getBlockDetailsByHeightQueryDocument = graphql(`
+  query getBlockDetailsByHeight($height: Int!) {
+    blocks_by_pk(height: $height) {
+      hash
+      height
+      timestamp
+      transactions_aggregate {
+        aggregate {
+          sum {
+            gas_used
+            gas_limit
+          }
+        }
+      }
+    }
+  }
+`);

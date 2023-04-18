@@ -2,11 +2,7 @@ import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import {
-  getExplorerBlockUrl,
-  getProposalUrl,
-  getExplorerValidatorUrl,
-} from "lib/app-fns/explorer";
+import { getProposalUrl, getExplorerValidatorUrl } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/app-provider";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
@@ -56,7 +52,7 @@ const getNavigationUrl = (
       url = "/code";
       break;
     case "block_height":
-      url = getExplorerBlockUrl(currentChainName);
+      url = "/block";
       break;
     case "proposal_id":
       url = getProposalUrl(currentChainName);
@@ -154,7 +150,8 @@ export const ExplorerLink = ({
     type === "code_id" ||
     type === "contract_address" ||
     type === "user_address" ||
-    type === "tx_hash";
+    type === "tx_hash" ||
+    type === "block_height";
 
   const [hrefLink, textValue] = [
     getNavigationUrl(type, currentChainName, copyValue || value),
