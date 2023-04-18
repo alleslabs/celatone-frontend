@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#281](https://github.com/alleslabs/celatone-frontend/pull/281) Change Osmosis mainnet GraphQL
 - [#251](https://github.com/alleslabs/celatone-frontend/pull/251) Refactor Code and Contract tables into general components
 - [#252](https://github.com/alleslabs/celatone-frontend/pull/252) Refactor Empty State image source logic
 - [#249](https://github.com/alleslabs/celatone-frontend/pull/249) Change code table format in select code draw and add CW2 info
@@ -69,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#280](https://github.com/alleslabs/celatone-frontend/pull/280) Fix begin unlocking optional coins field causing crash
 - [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
 - [#257](https://github.com/alleslabs/celatone-frontend/pull/257) Fix proposal resolved height query, resolved height rendering, and move ResolvedHeight and VotingEndTime to their own file
 - [#264](https://github.com/alleslabs/celatone-frontend/pull/264) Fix txhash uppercase query

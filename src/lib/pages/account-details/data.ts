@@ -58,6 +58,7 @@ interface AccountAssetInfos {
 }
 
 export interface StakingParams extends RawStakingParams {
+  symbol: Option<string>;
   logo: Option<string>;
   precision: Option<number>;
 }
@@ -261,6 +262,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   if (rawStakingParams && assetInfos && validators) {
     const stakingParams = {
       ...rawStakingParams,
+      symbol: assetInfos[rawStakingParams.bondDenom].symbol,
       logo: assetInfos[rawStakingParams.bondDenom].logo,
       precision: assetInfos[rawStakingParams.bondDenom].precision,
     };
