@@ -20,26 +20,24 @@ import {
 } from "lib/services/delegationService";
 import { useValidators } from "lib/services/validatorService";
 import type {
-  AssetInfo,
   BalanceWithAssetInfo,
   CodeInfo,
   ContractInfo,
   HumanAddr,
   Option,
-  Token,
-  U,
+  TokenWithValue,
   USD,
   ValidatorInfo,
 } from "lib/types";
 import {
   calAssetValueWithPrecision,
-  calculateAssetValue,
   calTotalValue,
-  toToken,
   addrToValoper,
+  addTokenWithValue,
+  coinToTokenWithValue,
 } from "lib/utils";
 
-import type { TokenWithValue, UserDelegationsData } from "./type";
+import type { UserDelegationsData } from "./type";
 
 interface AccountContracts {
   contracts: Option<ContractInfo[]>;
@@ -60,6 +58,7 @@ interface AccountAssetInfos {
 }
 
 export interface StakingParams extends RawStakingParams {
+  symbol: Option<string>;
   logo: Option<string>;
   precision: Option<number>;
 }
@@ -202,38 +201,6 @@ export const useUserAssetInfos = (
   };
 };
 
-const coinToTokenWithValue = (
-  denom: string,
-  amount: string,
-  assetInfo: Option<AssetInfo>
-): TokenWithValue => {
-  const tokenAmount = big(amount) as U<Token<Big>>;
-  return {
-    denom,
-    amount: tokenAmount,
-    logo: assetInfo?.logo,
-    precision: assetInfo?.precision,
-    value: assetInfo
-      ? calculateAssetValue(
-          toToken(tokenAmount, assetInfo.precision),
-          assetInfo.price as USD<number>
-        )
-      : undefined,
-  };
-};
-
-const addTotal = (
-  oldTotal: Option<TokenWithValue>,
-  token: TokenWithValue
-): TokenWithValue =>
-  !oldTotal
-    ? token
-    : {
-        ...oldTotal,
-        amount: oldTotal.amount.add(token.amount) as U<Token<Big>>,
-        value: oldTotal.value?.add(token.value ?? 0) as USD<Big>,
-      };
-
 const calBonded = (
   totalDelegations: Option<Record<string, TokenWithValue>>,
   totalUnbondings: Option<Record<string, TokenWithValue>>
@@ -243,7 +210,10 @@ const calBonded = (
   return Object.keys(totalDelegations).reduce<Record<string, TokenWithValue>>(
     (total, denom) => ({
       ...total,
-      [denom]: addTotal(totalUnbondings[denom], totalDelegations[denom]),
+      [denom]: addTokenWithValue(
+        totalUnbondings[denom],
+        totalDelegations[denom]
+      ),
     }),
     {}
   );
@@ -292,6 +262,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   if (rawStakingParams && assetInfos && validators) {
     const stakingParams = {
       ...rawStakingParams,
+      symbol: assetInfos[rawStakingParams.bondDenom].symbol,
       logo: assetInfos[rawStakingParams.bondDenom].logo,
       precision: assetInfos[rawStakingParams.bondDenom].precision,
     };
@@ -313,7 +284,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     >(
       (total, delegation) => ({
         ...total,
-        [delegation.token.denom]: addTotal(
+        [delegation.token.denom]: addTokenWithValue(
           total[delegation.token.denom],
           delegation.token
         ),
@@ -338,7 +309,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
     >(
       (total, unbonding) => ({
         ...total,
-        [unbonding.token.denom]: addTotal(
+        [unbonding.token.denom]: addTokenWithValue(
           total[unbonding.token.denom],
           unbonding.token
         ),
