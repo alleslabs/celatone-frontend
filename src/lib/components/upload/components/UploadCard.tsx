@@ -26,18 +26,24 @@ const getStatusDecorator = (
     case "completed":
       return {
         icon: <CustomIcon name="check-circle-solid" color="success.main" />,
-        statusText: <Text color="success.main">Valid Wasm file</Text>,
+        statusText: <Text color="success.main"> • Valid Wasm file</Text>,
       };
     case "failed":
       return {
         icon: <CustomIcon name="alert-circle-solid" color="error.main" />,
-        statusText: <Text color="error.main">Invalid Wasm file</Text>,
+        statusText: <Text color="error.main"> • Invalid Wasm file</Text>,
         helperText: error,
       };
-    default:
+    case "pending":
       return {
         icon: <Spinner color="violet.light" w="40px" h="40px" />,
-        statusText: "Loading",
+        statusText: " • Loading",
+      };
+
+    default:
+      return {
+        icon: null,
+        statusText: "",
       };
   }
 };
@@ -69,7 +75,7 @@ export const UploadCard = ({
         <Flex direction="column">
           <Text variant="body1">{file.name}</Text>
           <Text variant="body2" color="text.dark" display="flex" gap="4px">
-            {big(file.size).div(1000).toFixed(0)} KB • {statusText}
+            {big(file.size).div(1000).toFixed(0)} KB {statusText}
           </Text>
         </Flex>
         <Flex align="center" gap="16px" ml="auto">

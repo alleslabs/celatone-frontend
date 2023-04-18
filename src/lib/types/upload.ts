@@ -1,6 +1,6 @@
 import type { AccessType, Addr } from "lib/types";
 
-export type SimulateStatus = "pending" | "completed" | "failed";
+export type SimulateStatus = "pending" | "completed" | "failed" | "default";
 
 export interface UploadSectionState {
   wasmFile?: File;

@@ -47,7 +47,7 @@ export const UploadSection = ({
 
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateStatus, setSimulateStatus] =
-    useState<SimulateStatus>("pending");
+    useState<SimulateStatus>("default");
   const [simulateError, setSimulateError] = useState("");
 
   const {
@@ -102,26 +102,37 @@ export const UploadSection = ({
     updateCodeInfo,
   ]);
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   useEffect(() => {
     (async () => {
-      if (wasmFile) {
-        setSimulateStatus("pending");
-        setSimulateError("");
-        const msg = composeStoreCodeMsg({
-          sender: address as HumanAddr,
-          wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
-          permission,
-          addresses: addresses.map((addr) => addr.address),
-        });
-        try {
-          const estimatedGasUsed = await simulate([msg]);
-          if (estimatedGasUsed) {
-            setEstimatedFee(fabricateFee(estimatedGasUsed));
-            setSimulateStatus("completed");
+      if (wasmFile && address) {
+        // Should not simulate when permission is any of addresses and address input is not filled
+        if (
+          permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
+          !addresses.some((addr) => addr.address !== "")
+        ) {
+          setSimulateStatus("default");
+          setSimulateError("");
+          setEstimatedFee(undefined);
+        } else {
+          setSimulateStatus("pending");
+          setSimulateError("");
+          const msg = composeStoreCodeMsg({
+            sender: address as HumanAddr,
+            wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
+            permission,
+            addresses: addresses.map((addr) => addr.address),
+          });
+          try {
+            const estimatedGasUsed = await simulate([msg]);
+            if (estimatedGasUsed) {
+              setEstimatedFee(fabricateFee(estimatedGasUsed));
+              setSimulateStatus("completed");
+            }
+          } catch (err) {
+            setSimulateStatus("failed");
+            setSimulateError((err as Error).message);
           }
-        } catch (err) {
-          setSimulateStatus("failed");
-          setSimulateError((err as Error).message);
         }
       }
     })();
