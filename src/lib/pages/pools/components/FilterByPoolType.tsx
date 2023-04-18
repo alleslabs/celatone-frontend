@@ -1,5 +1,6 @@
 import { Grid } from "@chakra-ui/react";
 
+import { BalancerIcon, StableswapIcon } from "../constant";
 import { SelectInput } from "lib/components/forms";
 import type { PoolTypeFilter } from "lib/types";
 
@@ -25,14 +26,13 @@ const options: PoolTypeOption[] = [
   {
     label: "Balancer Pools",
     value: "balancer",
-    image: "https://assets.alleslabs.dev/webapp-assets/pool/pool-balancer.svg",
+    image: BalancerIcon,
     disabled: false,
   },
   {
     label: "StableSwap Pools",
     value: "stableswap",
-    image:
-      "https://assets.alleslabs.dev/webapp-assets/pool/pool-stableswap.svg",
+    image: StableswapIcon,
     disabled: false,
   },
 ];

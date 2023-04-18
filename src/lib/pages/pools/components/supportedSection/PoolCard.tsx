@@ -25,7 +25,7 @@ export const PoolCard = ({
 }: PoolCardProps) => {
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
-    navigate({ pathname: `/pool/[poolId]`, query: { poolId } });
+    navigate({ pathname: `/pools/[poolId]`, query: { poolId } });
   };
 
   const liquidity = item.poolLiquidity.reduce(

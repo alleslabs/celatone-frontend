@@ -37,7 +37,7 @@ const pebble700 = "pebble.700";
 export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
-    navigate({ pathname: `/pool/[poolId]`, query: { poolId } });
+    navigate({ pathname: `/pools/[poolId]`, query: { poolId } });
   };
 
   return (
