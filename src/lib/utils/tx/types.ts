@@ -457,7 +457,7 @@ export interface MsgBeginUnlockingAllDetails extends MsgBaseDetails {
 export interface MsgBeginUnlockingDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
-  coins: Coin[];
+  coins?: Coin[];
 }
 export interface MsgExtendLockupDetails extends MsgBaseDetails {
   owner: Addr;
@@ -467,7 +467,7 @@ export interface MsgExtendLockupDetails extends MsgBaseDetails {
 export interface MsgForceUnlockDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
-  coins: Coin[];
+  coins?: Coin[];
 }
 
 // osmosis/superfluid
