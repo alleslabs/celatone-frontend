@@ -13,7 +13,7 @@ interface SubHeaderMenuInfo {
 }
 const SubHeader = () => {
   const subHeaderMenu: SubHeaderMenuInfo[] = [
-    { name: "Overview", slug: "/", icon: "home" },
+    { name: "Overview", slug: "/network-overview", icon: "home" },
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
     { name: "Validators", slug: "/validators", icon: "admin" },
