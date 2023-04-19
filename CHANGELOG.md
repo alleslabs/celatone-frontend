@@ -40,7 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#268](https://github.com/alleslabs/celatone-frontend/pull/268) Wireup create proposal to whitelisting
-
 - [#266](https://github.com/alleslabs/celatone-frontend/pull/250) Add proposal whitelisting page
 - [#250](https://github.com/alleslabs/celatone-frontend/pull/250) Add skeleton, route, and amp for proposal list page
 - [#262](https://github.com/alleslabs/celatone-frontend/pull/262) Add amplitude tracking for tx page components

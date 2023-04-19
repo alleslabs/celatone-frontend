@@ -155,16 +155,16 @@ const Whitelisting = observer(() => {
   );
 
   const proceed = useCallback(async () => {
+    const minDepositAmount = big(minDeposit?.formattedAmount || 0);
     const stream = await submitProposalTx({
       estimatedFee,
       messages: [submitWhitelistProposalMsg],
       whitelistNumber: addressesArray.length,
-      amountToVote: big(minDeposit?.formattedAmount || 0).lt(
-        initialDeposit.amount
-      )
+      amountToVote: minDepositAmount.lte(initialDeposit.amount)
         ? null
-        : `${d2Formatter(
-            big(minDeposit?.formattedAmount || 0).minus(initialDeposit.amount),
+        : // TODO: Refactor this logic into utils?
+          `${d2Formatter(
+            minDepositAmount.minus(initialDeposit.amount),
             "NaN"
           )} ${minDeposit?.formattedDenom}`,
       onTxSucceed: () => setProcessing(false),
