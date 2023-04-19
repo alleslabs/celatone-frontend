@@ -1,9 +1,8 @@
 import { Flex, Image } from "@chakra-ui/react";
 
+import { getUndefinedTokenIcon } from "../utils";
 import { useAssetInfos } from "lib/services/assetService";
 import type { PoolDetail } from "lib/types/pool";
-
-import { UndefinedTokenList } from "./constant";
 
 interface PoolLogoProps {
   poolLiquidity: PoolDetail["poolLiquidity"];
@@ -29,7 +28,7 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
               boxSize={10}
               src={
                 assetInfos?.[item.denom]?.logo ||
-                UndefinedTokenList[i % UndefinedTokenList.length]
+                getUndefinedTokenIcon(item.denom)
               }
               zIndex={i * -1 + 2}
             />
@@ -51,7 +50,7 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
             boxSize={10}
             src={
               assetInfos?.[asset.denom]?.logo ||
-              UndefinedTokenList[i % UndefinedTokenList.length]
+              getUndefinedTokenIcon(asset.denom)
             }
             zIndex={i * -1 + 2}
           />

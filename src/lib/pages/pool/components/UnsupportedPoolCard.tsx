@@ -12,13 +12,13 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
+import { getUndefinedTokenIcon } from "../utils";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useAssetInfos } from "lib/services/assetService";
 import type { PoolDetail } from "lib/types/pool";
 import { getTokenLabel } from "lib/utils";
 
-import { UndefinedTokenList } from "./constant";
 import { PoolHeader } from "./PoolHeader";
 
 interface PoolCardProps {
@@ -128,13 +128,13 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
               </Text>
               <Flex gap={4} flexDirection="column">
                 <Flex gap={2} flexDirection="column">
-                  {item.poolLiquidity.map((asset, i) => (
+                  {item.poolLiquidity.map((asset) => (
                     <Flex gap={3}>
                       <Image
                         boxSize={6}
                         src={
                           assetInfos?.[asset.denom]?.logo ||
-                          UndefinedTokenList[i % UndefinedTokenList.length]
+                          getUndefinedTokenIcon(asset.denom)
                         }
                       />
                       <Flex>
