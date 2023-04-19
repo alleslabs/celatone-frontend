@@ -108,7 +108,12 @@ export const NetworkOverview = () => {
           Network Overview
         </Heading>
         {isLoadingLatestBlockInfo ? (
-          <Spinner size="sm" speed="0.65s" />
+          <Flex>
+            <Spinner size="sm" speed="0.65s" />
+            <Text variant="body2" color="text.dark" ml={2}>
+              Loading latest data for you ...
+            </Text>
+          </Flex>
         ) : (
           <Text
             variant="body2"
