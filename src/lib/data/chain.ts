@@ -81,7 +81,7 @@ interface ChainConfig {
 
 const CHAIN_CONFIG: Record<SupportedChain, ChainConfig> = {
   osmosis: {
-    isWasm: false,
+    isWasm: true,
   },
   terra: {
     isWasm: true,
