@@ -134,7 +134,7 @@ export const NetworkOverview = () => {
         <CardInfo
           title={txInfo.title}
           tooltip={txInfo.tooltip}
-          value={txsCount?.toString() ?? "N/A"}
+          value={txsCount?.toLocaleString() ?? "N/A"}
           isLoading={isLoadingTxsCount}
           navigate={toTxs}
         />
