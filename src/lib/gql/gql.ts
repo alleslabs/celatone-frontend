@@ -7,10 +7,10 @@ const documents = {
     types.GetBlockTimestampByHeightQueryDocument,
   "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n    }\n  }\n":
     types.GetBlockListQueryDocument,
-  "\n  query getBlockCountQuery {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n    }\n  }\n":
-    types.GetBlockCountQueryDocument,
   "\n  query getBlockDetailsByHeight($height: Int!) {\n    blocks_by_pk(height: $height) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          sum {\n            gas_used\n            gas_limit\n          }\n        }\n      }\n    }\n  }\n":
     types.GetBlockDetailsByHeightDocument,
+  "\n  query getLatestBlockInfo {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n      timestamp\n    }\n  }\n":
+    types.GetLatestBlockInfoDocument,
   "\n  query getCodeListQuery {\n    codes(limit: 100, offset: 0, order_by: { id: desc }) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n":
     types.GetCodeListQueryDocument,
   "\n  query getCodeListByUserQuery($walletAddr: String!) {\n    codes(\n      where: { account: { address: { _eq: $walletAddr } } }\n      limit: 100\n      offset: 0\n      order_by: { id: desc }\n    ) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n":
@@ -82,11 +82,11 @@ export function graphql(
   source: "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n    }\n  }\n"];
 export function graphql(
-  source: "\n  query getBlockCountQuery {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n    }\n  }\n"
-): typeof documents["\n  query getBlockCountQuery {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n    }\n  }\n"];
-export function graphql(
   source: "\n  query getBlockDetailsByHeight($height: Int!) {\n    blocks_by_pk(height: $height) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          sum {\n            gas_used\n            gas_limit\n          }\n        }\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getBlockDetailsByHeight($height: Int!) {\n    blocks_by_pk(height: $height) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          sum {\n            gas_used\n            gas_limit\n          }\n        }\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getLatestBlockInfo {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n      timestamp\n    }\n  }\n"
+): typeof documents["\n  query getLatestBlockInfo {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n      timestamp\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getCodeListQuery {\n    codes(limit: 100, offset: 0, order_by: { id: desc }) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n"
 ): typeof documents["\n  query getCodeListQuery {\n    codes(limit: 100, offset: 0, order_by: { id: desc }) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n"];

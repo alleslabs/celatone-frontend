@@ -12,3 +12,8 @@ export interface BlockDetails extends Omit<BlockInfo, "txCount"> {
   gasUsed: Option<number | null>;
   gasLimit: Option<number | null>;
 }
+
+export interface LatestBlock {
+  height: Option<number>;
+  timestamp: Option<Date>;
+}
