@@ -14,14 +14,7 @@ export const formatDemimal =
     delimiter: boolean;
   }) =>
   (n: BigSource, fallbackValue: string): string => {
-    const num = big(
-      big(n)
-        .mul(10 ** decimalPoints)
-        .toFixed()
-        .split(".")[0]
-    )
-      .div(10 ** decimalPoints)
-      .toFixed(decimalPoints);
+    const num = big(n).toFixed(decimalPoints, big.roundHalfUp);
     if (num === "NaN") return fallbackValue;
 
     const [i, d] = num.split(".");
