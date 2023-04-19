@@ -1,11 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useRouter } from "next/router";
-import { useCallback } from "react";
 
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
+import { useIsCurrentPage } from "lib/hooks/useIsCurrentPage";
 
 interface SubHeaderMenuInfo {
   name: string;
@@ -20,27 +19,7 @@ const SubHeader = () => {
     { name: "Validators", slug: "/validators", icon: "admin" },
   ];
   const { address } = useWallet();
-  const router = useRouter();
-  const { network } = router.query;
-  const pathName = router.asPath;
-  const isCurrentPage = useCallback(
-    (slug: string) => {
-      const networkPath = network ? `/${network}` : "";
-      switch (slug) {
-        // handle home page
-        case "/":
-          return pathName === `${networkPath}` || pathName === "/";
-        // handle contract list page and public project page
-        case "/contract-list":
-        case "/public-project":
-          return pathName === `${networkPath}${slug}`;
-        // handle page with query param
-        default:
-          return pathName.includes(`${networkPath}${slug}`);
-      }
-    },
-    [network, pathName]
-  );
+  const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "violet.light";
 
