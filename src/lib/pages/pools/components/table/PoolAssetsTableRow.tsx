@@ -2,7 +2,7 @@ import type { GridProps } from "@chakra-ui/react";
 import { Flex, Skeleton, Grid, Image, Text } from "@chakra-ui/react";
 import type { Big } from "big.js";
 
-import { UndefinedTokenList } from "../../constant";
+import { getUndefinedTokenIcon } from "../../utils";
 import { TableRow } from "lib/components/table/tableComponents";
 import { useAssetInfos } from "lib/services/assetService";
 import type { USD, PoolDetail, TokenWithValue } from "lib/types";
@@ -37,10 +37,13 @@ export const PoolAssetsTableRow = ({
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <Flex alignItems="center" gap={2}>
-          <Image boxSize={7} src={assetInfo.logo || UndefinedTokenList[0]} />
+          <Image
+            boxSize={7}
+            src={asset.logo || getUndefinedTokenIcon(asset.denom)}
+          />
           <Flex flexDirection="column">
             <Text variant="body2" fontWeight="600" color="text.main">
-              {assetInfo?.symbol || getTokenLabel(asset.denom)}
+              {asset.symbol || getTokenLabel(asset.denom)}
             </Text>
             <Text variant="body3" color="text.dark">
               {formatPrice(assetInfo.price as USD<number>)}
@@ -63,8 +66,6 @@ export const PoolAssetsTableRow = ({
       <TableRow>
         <Flex justifyContent="right" w="full">
           {d2Formatter(total_liquidity, "0.00")}
-          {/* {big(total_liquidity).div(1000)} */}
-          {/* {formatPrice(total_liquidity)} */}
         </Flex>
       </TableRow>
       <TableRow>
