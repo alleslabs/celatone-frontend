@@ -65,6 +65,9 @@ export enum AmpEvent {
   USE_CLICK_WALLET = "Use Click Wallet",
   USE_MAIN_SEARCH = "Use Main Search",
   USE_SIDEBAR = "Use Sidebar",
+  USE_TAB = "Use Tab",
+  USE_RADIO = "Use Radio",
+  USE_VIEW_MORE = "Use View More",
   USE_CODE_SELECT = "Use Code Select",
   USE_CODE_MODAL = "Use Code Modal",
   USE_CODE_FILL = "Use Code Fill",
@@ -76,11 +79,13 @@ export enum AmpEvent {
   USE_CONTRACT_SNIPPET = "Use Contract Snippet",
   USE_CMD_QUERY = "Use Command Query",
   USE_CMD_EXECUTE = "Use Command Execute",
+  USE_SEE_REDELEGATIONS = "Use See Redelegations",
   USE_BACK_BUTTON = "Use Back Button",
   USE_COPY_BUTTON = "Use Copy Button",
   USE_COPIER = "Use Copier",
   USE_QUICK_EDIT_CONTRACT = "Use Quick Edit Contract",
   USE_QUICK_EDIT_CODE = "Use Quick Edit Code",
+  USE_UNSUPPORTED_ASSETS_MODAL = "Use Unsupported Assets Modal",
   USE_OTHER_MODAL = "Use Other Modal",
   USE_SUBMIT_PROJECT = "Use Submit Project",
   USE_VIEW_JSON = "Use View Json",
@@ -111,6 +116,9 @@ type SpecialAmpEvent =
   | AmpEvent.TO_MIGRATE
   | AmpEvent.TO_ADMIN_UPDATE
   | AmpEvent.USE_MAIN_SEARCH
+  | AmpEvent.USE_TAB
+  | AmpEvent.USE_RADIO
+  | AmpEvent.USE_COPIER
   | AmpEvent.USE_OTHER_MODAL
   | AmpEvent.MINTSCAN
   | AmpEvent.WEBSITE
@@ -153,6 +161,11 @@ export const AmpTrackToAdminUpdate = (contract: boolean) =>
 
 export const AmpTrackUseMainSearch = (isClick: boolean) =>
   track(AmpEvent.USE_MAIN_SEARCH, { isClick });
+
+export const AmpTrackUseTab = (tab: string) => track(AmpEvent.USE_TAB, { tab });
+
+export const AmpTrackUseRadio = (radio: string) =>
+  track(AmpEvent.USE_RADIO, { radio });
 
 export const AmpTrackUseOtherModal = (title: string) =>
   track(AmpEvent.USE_OTHER_MODAL, { title });

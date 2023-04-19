@@ -40,6 +40,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Searching can now be determined by chain
+- [#273](https://github.com/alleslabs/celatone-frontend/pull/273) Add subheader and network overview
+- [#278](https://github.com/alleslabs/celatone-frontend/pull/278) Fully wired block details page
+- [#272](https://github.com/alleslabs/celatone-frontend/pull/272) Add blocks page and table component
+- [#271](https://github.com/alleslabs/celatone-frontend/pull/271) Create transaction list page
+- [#245](https://github.com/alleslabs/celatone-frontend/pull/245) Add amplitude for account detail page
+- [#232](https://github.com/alleslabs/celatone-frontend/pull/232) Add delegation data and section for the account detail page
 - [#261](https://github.com/alleslabs/celatone-frontend/pull/261) Add Relation column to transaction tables and refactor transaction table components
 - [#265](https://github.com/alleslabs/celatone-frontend/pull/265) Add filter by status and type to proposal list page, and change Inactive proposal status to DepositFailed
 - [#263](https://github.com/alleslabs/celatone-frontend/pull/263) Wireup search bar and my proposal switch in proposal list page
@@ -54,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#285](https://github.com/alleslabs/celatone-frontend/pull/285) Add data fetching error state, and empty state to blocks page
 - [#251](https://github.com/alleslabs/celatone-frontend/pull/251) Refactor Code and Contract tables into general components
 - [#252](https://github.com/alleslabs/celatone-frontend/pull/252) Refactor Empty State image source logic
 - [#249](https://github.com/alleslabs/celatone-frontend/pull/249) Change code table format in select code draw and add CW2 info

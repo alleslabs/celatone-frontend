@@ -18,6 +18,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  _varchar: any;
   accounttype: any;
   bytea: any;
   json: any;
@@ -4669,6 +4670,12 @@ export type End_Block_Events_Variance_Order_By = {
   block_height?: InputMaybe<Order_By>;
 };
 
+export type Get_Top_Pool_Assets_Args = {
+  is_superfluid_flag?: InputMaybe<Scalars["Boolean"]>;
+  limit_arg?: InputMaybe<Scalars["Int"]>;
+  pool_type_arg?: InputMaybe<Scalars["pooltype"]>;
+};
+
 /** Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'. */
 export type Json_Comparison_Exp = {
   _eq?: InputMaybe<Scalars["json"]>;
@@ -5028,6 +5035,8 @@ export type Mutation_Root = {
   delete_proposals?: Maybe<Proposals_Mutation_Response>;
   /** delete single row from the table: "proposals" */
   delete_proposals_by_pk?: Maybe<Proposals>;
+  /** delete data from the table: "top_assets_result" */
+  delete_top_assets_result?: Maybe<Top_Assets_Result_Mutation_Response>;
   /** delete data from the table: "tracking" */
   delete_tracking?: Maybe<Tracking_Mutation_Response>;
   /** delete single row from the table: "tracking" */
@@ -5112,6 +5121,10 @@ export type Mutation_Root = {
   insert_proposals?: Maybe<Proposals_Mutation_Response>;
   /** insert a single row into the table: "proposals" */
   insert_proposals_one?: Maybe<Proposals>;
+  /** insert data into the table: "top_assets_result" */
+  insert_top_assets_result?: Maybe<Top_Assets_Result_Mutation_Response>;
+  /** insert a single row into the table: "top_assets_result" */
+  insert_top_assets_result_one?: Maybe<Top_Assets_Result>;
   /** insert data into the table: "tracking" */
   insert_tracking?: Maybe<Tracking_Mutation_Response>;
   /** insert a single row into the table: "tracking" */
@@ -5238,6 +5251,12 @@ export type Mutation_Root = {
   update_proposals_by_pk?: Maybe<Proposals>;
   /** update multiples rows of table: "proposals" */
   update_proposals_many?: Maybe<Array<Maybe<Proposals_Mutation_Response>>>;
+  /** update data of the table: "top_assets_result" */
+  update_top_assets_result?: Maybe<Top_Assets_Result_Mutation_Response>;
+  /** update multiples rows of table: "top_assets_result" */
+  update_top_assets_result_many?: Maybe<
+    Array<Maybe<Top_Assets_Result_Mutation_Response>>
+  >;
   /** update data of the table: "tracking" */
   update_tracking?: Maybe<Tracking_Mutation_Response>;
   /** update single row of the table: "tracking" */
@@ -5388,6 +5407,11 @@ export type Mutation_RootDelete_ProposalsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Proposals_By_PkArgs = {
   id: Scalars["Int"];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Top_Assets_ResultArgs = {
+  where: Top_Assets_Result_Bool_Exp;
 };
 
 /** mutation root */
@@ -5613,6 +5637,16 @@ export type Mutation_RootInsert_ProposalsArgs = {
 export type Mutation_RootInsert_Proposals_OneArgs = {
   object: Proposals_Insert_Input;
   on_conflict?: InputMaybe<Proposals_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Top_Assets_ResultArgs = {
+  objects: Array<Top_Assets_Result_Insert_Input>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Top_Assets_Result_OneArgs = {
+  object: Top_Assets_Result_Insert_Input;
 };
 
 /** mutation root */
@@ -5922,6 +5956,18 @@ export type Mutation_RootUpdate_Proposals_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Proposals_ManyArgs = {
   updates: Array<Proposals_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Top_Assets_ResultArgs = {
+  _inc?: InputMaybe<Top_Assets_Result_Inc_Input>;
+  _set?: InputMaybe<Top_Assets_Result_Set_Input>;
+  where: Top_Assets_Result_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Top_Assets_Result_ManyArgs = {
+  updates: Array<Top_Assets_Result_Updates>;
 };
 
 /** mutation root */
@@ -8187,6 +8233,10 @@ export type Query_Root = {
   end_block_events: Array<End_Block_Events>;
   /** An aggregate relationship */
   end_block_events_aggregate: End_Block_Events_Aggregate;
+  /** execute function "get_top_pool_assets" which returns "top_assets_result" */
+  get_top_pool_assets: Array<Top_Assets_Result>;
+  /** execute function "get_top_pool_assets" and query aggregates on result of table type "top_assets_result" */
+  get_top_pool_assets_aggregate: Top_Assets_Result_Aggregate;
   /** An array relationship */
   lcd_tx_results: Array<Lcd_Tx_Results>;
   /** An aggregate relationship */
@@ -8215,6 +8265,18 @@ export type Query_Root = {
   proposals_aggregate: Proposals_Aggregate;
   /** fetch data from the table: "proposals" using primary key columns */
   proposals_by_pk?: Maybe<Proposals>;
+  /** execute function "search_pools_with_denom" which returns "pools" */
+  search_pools_with_denom: Array<Pools>;
+  /** execute function "search_pools_with_denom" and query aggregates on result of table type "pools" */
+  search_pools_with_denom_aggregate: Pools_Aggregate;
+  /** execute function "search_pools_with_denoms" which returns "pools" */
+  search_pools_with_denoms: Array<Pools>;
+  /** execute function "search_pools_with_denoms" and query aggregates on result of table type "pools" */
+  search_pools_with_denoms_aggregate: Pools_Aggregate;
+  /** fetch data from the table: "top_assets_result" */
+  top_assets_result: Array<Top_Assets_Result>;
+  /** fetch aggregated fields from the table: "top_assets_result" */
+  top_assets_result_aggregate: Top_Assets_Result_Aggregate;
   /** fetch data from the table: "tracking" */
   tracking: Array<Tracking>;
   /** fetch aggregated fields from the table: "tracking" */
@@ -8450,6 +8512,24 @@ export type Query_RootEnd_Block_Events_AggregateArgs = {
   where?: InputMaybe<End_Block_Events_Bool_Exp>;
 };
 
+export type Query_RootGet_Top_Pool_AssetsArgs = {
+  args: Get_Top_Pool_Assets_Args;
+  distinct_on?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Top_Assets_Result_Order_By>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
+export type Query_RootGet_Top_Pool_Assets_AggregateArgs = {
+  args: Get_Top_Pool_Assets_Args;
+  distinct_on?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Top_Assets_Result_Order_By>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
 export type Query_RootLcd_Tx_ResultsArgs = {
   distinct_on?: InputMaybe<Array<Lcd_Tx_Results_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -8554,6 +8634,58 @@ export type Query_RootProposals_By_PkArgs = {
   id: Scalars["Int"];
 };
 
+export type Query_RootSearch_Pools_With_DenomArgs = {
+  args: Search_Pools_With_Denom_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Query_RootSearch_Pools_With_Denom_AggregateArgs = {
+  args: Search_Pools_With_Denom_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Query_RootSearch_Pools_With_DenomsArgs = {
+  args: Search_Pools_With_Denoms_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Query_RootSearch_Pools_With_Denoms_AggregateArgs = {
+  args: Search_Pools_With_Denoms_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Query_RootTop_Assets_ResultArgs = {
+  distinct_on?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Top_Assets_Result_Order_By>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
+export type Query_RootTop_Assets_Result_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Top_Assets_Result_Order_By>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
 export type Query_RootTrackingArgs = {
   distinct_on?: InputMaybe<Array<Tracking_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -8625,6 +8757,14 @@ export type Query_RootTransactions_AggregateArgs = {
 export type Query_RootTransactions_By_PkArgs = {
   block_height: Scalars["Int"];
   hash: Scalars["bytea"];
+};
+
+export type Search_Pools_With_Denom_Args = {
+  denom?: InputMaybe<Scalars["String"]>;
+};
+
+export type Search_Pools_With_Denoms_Args = {
+  denoms?: InputMaybe<Scalars["_varchar"]>;
 };
 
 export type Subscription_Root = {
@@ -8711,6 +8851,10 @@ export type Subscription_Root = {
   end_block_events_aggregate: End_Block_Events_Aggregate;
   /** fetch data from the table in a streaming manner: "end_block_events" */
   end_block_events_stream: Array<End_Block_Events>;
+  /** execute function "get_top_pool_assets" which returns "top_assets_result" */
+  get_top_pool_assets: Array<Top_Assets_Result>;
+  /** execute function "get_top_pool_assets" and query aggregates on result of table type "top_assets_result" */
+  get_top_pool_assets_aggregate: Top_Assets_Result_Aggregate;
   /** An array relationship */
   lcd_tx_results: Array<Lcd_Tx_Results>;
   /** An aggregate relationship */
@@ -8751,6 +8895,20 @@ export type Subscription_Root = {
   proposals_by_pk?: Maybe<Proposals>;
   /** fetch data from the table in a streaming manner: "proposals" */
   proposals_stream: Array<Proposals>;
+  /** execute function "search_pools_with_denom" which returns "pools" */
+  search_pools_with_denom: Array<Pools>;
+  /** execute function "search_pools_with_denom" and query aggregates on result of table type "pools" */
+  search_pools_with_denom_aggregate: Pools_Aggregate;
+  /** execute function "search_pools_with_denoms" which returns "pools" */
+  search_pools_with_denoms: Array<Pools>;
+  /** execute function "search_pools_with_denoms" and query aggregates on result of table type "pools" */
+  search_pools_with_denoms_aggregate: Pools_Aggregate;
+  /** fetch data from the table: "top_assets_result" */
+  top_assets_result: Array<Top_Assets_Result>;
+  /** fetch aggregated fields from the table: "top_assets_result" */
+  top_assets_result_aggregate: Top_Assets_Result_Aggregate;
+  /** fetch data from the table in a streaming manner: "top_assets_result" */
+  top_assets_result_stream: Array<Top_Assets_Result>;
   /** fetch data from the table: "tracking" */
   tracking: Array<Tracking>;
   /** fetch aggregated fields from the table: "tracking" */
@@ -9066,6 +9224,24 @@ export type Subscription_RootEnd_Block_Events_StreamArgs = {
   where?: InputMaybe<End_Block_Events_Bool_Exp>;
 };
 
+export type Subscription_RootGet_Top_Pool_AssetsArgs = {
+  args: Get_Top_Pool_Assets_Args;
+  distinct_on?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Top_Assets_Result_Order_By>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
+export type Subscription_RootGet_Top_Pool_Assets_AggregateArgs = {
+  args: Get_Top_Pool_Assets_Args;
+  distinct_on?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Top_Assets_Result_Order_By>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
 export type Subscription_RootLcd_Tx_ResultsArgs = {
   distinct_on?: InputMaybe<Array<Lcd_Tx_Results_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -9206,6 +9382,64 @@ export type Subscription_RootProposals_StreamArgs = {
   where?: InputMaybe<Proposals_Bool_Exp>;
 };
 
+export type Subscription_RootSearch_Pools_With_DenomArgs = {
+  args: Search_Pools_With_Denom_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Subscription_RootSearch_Pools_With_Denom_AggregateArgs = {
+  args: Search_Pools_With_Denom_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Subscription_RootSearch_Pools_With_DenomsArgs = {
+  args: Search_Pools_With_Denoms_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Subscription_RootSearch_Pools_With_Denoms_AggregateArgs = {
+  args: Search_Pools_With_Denoms_Args;
+  distinct_on?: InputMaybe<Array<Pools_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Pools_Order_By>>;
+  where?: InputMaybe<Pools_Bool_Exp>;
+};
+
+export type Subscription_RootTop_Assets_ResultArgs = {
+  distinct_on?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Top_Assets_Result_Order_By>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
+export type Subscription_RootTop_Assets_Result_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Top_Assets_Result_Order_By>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
+export type Subscription_RootTop_Assets_Result_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Top_Assets_Result_Stream_Cursor_Input>>;
+  where?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+};
+
 export type Subscription_RootTrackingArgs = {
   distinct_on?: InputMaybe<Array<Tracking_Select_Column>>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -9314,6 +9548,175 @@ export type Timestamp_Comparison_Exp = {
   _lte?: InputMaybe<Scalars["timestamp"]>;
   _neq?: InputMaybe<Scalars["timestamp"]>;
   _nin?: InputMaybe<Array<Scalars["timestamp"]>>;
+};
+
+/** columns and relationships of "top_assets_result" */
+export type Top_Assets_Result = {
+  __typename?: "top_assets_result";
+  count?: Maybe<Scalars["Int"]>;
+  denom?: Maybe<Scalars["String"]>;
+};
+
+export type Top_Assets_Result_Aggregate = {
+  __typename?: "top_assets_result_aggregate";
+  aggregate?: Maybe<Top_Assets_Result_Aggregate_Fields>;
+  nodes: Array<Top_Assets_Result>;
+};
+
+/** aggregate fields of "top_assets_result" */
+export type Top_Assets_Result_Aggregate_Fields = {
+  __typename?: "top_assets_result_aggregate_fields";
+  avg?: Maybe<Top_Assets_Result_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Top_Assets_Result_Max_Fields>;
+  min?: Maybe<Top_Assets_Result_Min_Fields>;
+  stddev?: Maybe<Top_Assets_Result_Stddev_Fields>;
+  stddev_pop?: Maybe<Top_Assets_Result_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Top_Assets_Result_Stddev_Samp_Fields>;
+  sum?: Maybe<Top_Assets_Result_Sum_Fields>;
+  var_pop?: Maybe<Top_Assets_Result_Var_Pop_Fields>;
+  var_samp?: Maybe<Top_Assets_Result_Var_Samp_Fields>;
+  variance?: Maybe<Top_Assets_Result_Variance_Fields>;
+};
+
+/** aggregate fields of "top_assets_result" */
+export type Top_Assets_Result_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Top_Assets_Result_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** aggregate avg on columns */
+export type Top_Assets_Result_Avg_Fields = {
+  __typename?: "top_assets_result_avg_fields";
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** Boolean expression to filter rows from the table "top_assets_result". All fields are combined with a logical 'AND'. */
+export type Top_Assets_Result_Bool_Exp = {
+  _and?: InputMaybe<Array<Top_Assets_Result_Bool_Exp>>;
+  _not?: InputMaybe<Top_Assets_Result_Bool_Exp>;
+  _or?: InputMaybe<Array<Top_Assets_Result_Bool_Exp>>;
+  count?: InputMaybe<Int_Comparison_Exp>;
+  denom?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "top_assets_result" */
+export type Top_Assets_Result_Inc_Input = {
+  count?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "top_assets_result" */
+export type Top_Assets_Result_Insert_Input = {
+  count?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate max on columns */
+export type Top_Assets_Result_Max_Fields = {
+  __typename?: "top_assets_result_max_fields";
+  count?: Maybe<Scalars["Int"]>;
+  denom?: Maybe<Scalars["String"]>;
+};
+
+/** aggregate min on columns */
+export type Top_Assets_Result_Min_Fields = {
+  __typename?: "top_assets_result_min_fields";
+  count?: Maybe<Scalars["Int"]>;
+  denom?: Maybe<Scalars["String"]>;
+};
+
+/** response of any mutation on the table "top_assets_result" */
+export type Top_Assets_Result_Mutation_Response = {
+  __typename?: "top_assets_result_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Top_Assets_Result>;
+};
+
+/** Ordering options when selecting data from "top_assets_result". */
+export type Top_Assets_Result_Order_By = {
+  count?: InputMaybe<Order_By>;
+  denom?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "top_assets_result" */
+export enum Top_Assets_Result_Select_Column {
+  /** column name */
+  Count = "count",
+  /** column name */
+  Denom = "denom",
+}
+
+/** input type for updating data in table "top_assets_result" */
+export type Top_Assets_Result_Set_Input = {
+  count?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate stddev on columns */
+export type Top_Assets_Result_Stddev_Fields = {
+  __typename?: "top_assets_result_stddev_fields";
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Top_Assets_Result_Stddev_Pop_Fields = {
+  __typename?: "top_assets_result_stddev_pop_fields";
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Top_Assets_Result_Stddev_Samp_Fields = {
+  __typename?: "top_assets_result_stddev_samp_fields";
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** Streaming cursor of the table "top_assets_result" */
+export type Top_Assets_Result_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Top_Assets_Result_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Top_Assets_Result_Stream_Cursor_Value_Input = {
+  count?: InputMaybe<Scalars["Int"]>;
+  denom?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate sum on columns */
+export type Top_Assets_Result_Sum_Fields = {
+  __typename?: "top_assets_result_sum_fields";
+  count?: Maybe<Scalars["Int"]>;
+};
+
+export type Top_Assets_Result_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Top_Assets_Result_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Top_Assets_Result_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Top_Assets_Result_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Top_Assets_Result_Var_Pop_Fields = {
+  __typename?: "top_assets_result_var_pop_fields";
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate var_samp on columns */
+export type Top_Assets_Result_Var_Samp_Fields = {
+  __typename?: "top_assets_result_var_samp_fields";
+  count?: Maybe<Scalars["Float"]>;
+};
+
+/** aggregate variance on columns */
+export type Top_Assets_Result_Variance_Fields = {
+  __typename?: "top_assets_result_variance_fields";
+  count?: Maybe<Scalars["Float"]>;
 };
 
 /** columns and relationships of "tracking" */
@@ -10939,6 +11342,60 @@ export type GetBlockTimestampByHeightQueryQuery = {
   blocks_by_pk?: { __typename?: "blocks"; timestamp: any } | null;
 };
 
+export type GetBlockListQueryQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+}>;
+
+export type GetBlockListQueryQuery = {
+  __typename?: "query_root";
+  blocks: Array<{
+    __typename?: "blocks";
+    hash: any;
+    height: number;
+    timestamp: any;
+    transactions_aggregate: {
+      __typename?: "transactions_aggregate";
+      aggregate?: {
+        __typename?: "transactions_aggregate_fields";
+        count: number;
+      } | null;
+    };
+  }>;
+};
+
+export type GetBlockDetailsByHeightQueryVariables = Exact<{
+  height: Scalars["Int"];
+}>;
+
+export type GetBlockDetailsByHeightQuery = {
+  __typename?: "query_root";
+  blocks_by_pk?: {
+    __typename?: "blocks";
+    hash: any;
+    height: number;
+    timestamp: any;
+    transactions_aggregate: {
+      __typename?: "transactions_aggregate";
+      aggregate?: {
+        __typename?: "transactions_aggregate_fields";
+        sum?: {
+          __typename?: "transactions_sum_fields";
+          gas_used?: number | null;
+          gas_limit?: number | null;
+        } | null;
+      } | null;
+    };
+  } | null;
+};
+
+export type GetLatestBlockInfoQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetLatestBlockInfoQuery = {
+  __typename?: "query_root";
+  blocks: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
+};
+
 export type GetCodeListQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCodeListQueryQuery = {
@@ -11459,6 +11916,84 @@ export type GetTxsCountByAddressQuery = {
   };
 };
 
+export type GetTxsQueryVariables = Exact<{
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetTxsQuery = {
+  __typename?: "query_root";
+  transactions: Array<{
+    __typename?: "transactions";
+    hash: any;
+    success: boolean;
+    messages: any;
+    is_clear_admin: boolean;
+    is_execute: boolean;
+    is_ibc: boolean;
+    is_instantiate: boolean;
+    is_migrate: boolean;
+    is_send: boolean;
+    is_store_code: boolean;
+    is_update_admin: boolean;
+    block: { __typename?: "blocks"; height: number; timestamp: any };
+    account: { __typename?: "accounts"; address: string };
+  }>;
+};
+
+export type GetTxsCountQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTxsCountQuery = {
+  __typename?: "query_root";
+  transactions_aggregate: {
+    __typename?: "transactions_aggregate";
+    aggregate?: {
+      __typename?: "transactions_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
+export type GetBlockTransactionsByHeightQueryQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  height: Scalars["Int"];
+}>;
+
+export type GetBlockTransactionsByHeightQueryQuery = {
+  __typename?: "query_root";
+  transactions: Array<{
+    __typename?: "transactions";
+    hash: any;
+    success: boolean;
+    messages: any;
+    is_clear_admin: boolean;
+    is_execute: boolean;
+    is_ibc: boolean;
+    is_instantiate: boolean;
+    is_migrate: boolean;
+    is_send: boolean;
+    is_store_code: boolean;
+    is_update_admin: boolean;
+    account: { __typename?: "accounts"; address: string };
+  }>;
+};
+
+export type GetBlockTransactionCountByHeightQueryQueryVariables = Exact<{
+  height: Scalars["Int"];
+}>;
+
+export type GetBlockTransactionCountByHeightQueryQuery = {
+  __typename?: "query_root";
+  transactions_aggregate: {
+    __typename?: "transactions_aggregate";
+    aggregate?: {
+      __typename?: "transactions_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
 export const GetBlockTimestampByHeightQueryDocument = {
   kind: "Document",
   definitions: [
@@ -11509,6 +12044,252 @@ export const GetBlockTimestampByHeightQueryDocument = {
 } as unknown as DocumentNode<
   GetBlockTimestampByHeightQueryQuery,
   GetBlockTimestampByHeightQueryQueryVariables
+>;
+export const GetBlockListQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockListQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transactions_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "count" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockListQueryQuery,
+  GetBlockListQueryQueryVariables
+>;
+export const GetBlockDetailsByHeightDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockDetailsByHeight" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "height" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "height" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "height" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transactions_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "sum" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "gas_used" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "gas_limit" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockDetailsByHeightQuery,
+  GetBlockDetailsByHeightQueryVariables
+>;
+export const GetLatestBlockInfoDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getLatestBlockInfo" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetLatestBlockInfoQuery,
+  GetLatestBlockInfoQueryVariables
 >;
 export const GetCodeListQueryDocument = {
   kind: "Document",
@@ -15263,4 +16044,405 @@ export const GetTxsCountByAddressDocument = {
 } as unknown as DocumentNode<
   GetTxsCountByAddressQuery,
   GetTxsCountByAddressQueryVariables
+>;
+export const GetTxsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getTxs" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "block" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_clear_admin" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
+                { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_instantiate" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
+                { kind: "Field", name: { kind: "Name", value: "is_send" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_store_code" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_update_admin" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetTxsQuery, GetTxsQueryVariables>;
+export const GetTxsCountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getTxsCount" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "transactions_aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetTxsCountQuery, GetTxsCountQueryVariables>;
+export const GetBlockTransactionsByHeightQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTransactionsByHeightQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "height" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "height" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_clear_admin" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
+                { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_instantiate" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
+                { kind: "Field", name: { kind: "Name", value: "is_send" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_store_code" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_update_admin" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockTransactionsByHeightQueryQuery,
+  GetBlockTransactionsByHeightQueryQueryVariables
+>;
+export const GetBlockTransactionCountByHeightQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTransactionCountByHeightQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "height" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "transactions_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "height" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockTransactionCountByHeightQueryQuery,
+  GetBlockTransactionCountByHeightQueryQueryVariables
 >;

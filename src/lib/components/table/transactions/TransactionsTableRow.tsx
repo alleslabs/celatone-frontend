@@ -78,16 +78,10 @@ export const TransactionsTableRow = ({
 
         <TableRow>
           <Flex direction="column" gap={1}>
-            {transaction.created ? (
-              <>
-                <Text variant="body3">{formatUTC(transaction.created)}</Text>
-                <Text variant="body3" color="text.dark">
-                  {`(${dateFromNow(transaction.created)})`}
-                </Text>
-              </>
-            ) : (
-              <Text variant="body3">N/A</Text>
-            )}
+            <Text variant="body3">{formatUTC(transaction.created)}</Text>
+            <Text variant="body3" color="text.dark">
+              {`(${dateFromNow(transaction.created)})`}
+            </Text>
           </Flex>
         </TableRow>
 
