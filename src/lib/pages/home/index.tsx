@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 // import { PastTransaction } from "./components/PastTransaction";
-import { NetworkOverview } from "./components/NetworkOverview";
 import { QuickMenu } from "./components/QuickMenu";
 import { RecentActivities } from "./components/RecentActivities";
 
@@ -17,7 +16,6 @@ const Home = () => {
 
   return (
     <Box mx="1">
-      <NetworkOverview />
       <QuickMenu />
       <RecentActivities />
       {/* <PastTransaction /> */}
