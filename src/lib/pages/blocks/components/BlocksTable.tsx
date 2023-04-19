@@ -3,6 +3,7 @@ import type { ChangeEvent } from "react";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { EmptyState } from "lib/components/state";
 import { TableContainer } from "lib/components/table";
 import {
   useBlockCountQuery,
@@ -38,7 +39,11 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     },
   });
 
-  const { data: blocksData, isLoading } = useBlocklistQuery(pageSize, offset);
+  const {
+    data: blocksData,
+    isLoading,
+    error,
+  } = useBlocklistQuery(pageSize, offset);
 
   const onPageChange = (nextPage: number) => {
     refetchCount();
@@ -52,7 +57,24 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     setCurrentPage(1);
   };
 
-  if (isLoading || !blocksData || !blockCount) return <Loading />;
+  if (isLoading) return <Loading />;
+  if (error)
+    return (
+      <EmptyState
+        imageVariant="not-found"
+        message="There is an error during fetching recent blocks."
+        withBorder
+      />
+    );
+
+  if (!blocksData || !blockCount)
+    return (
+      <EmptyState
+        imageVariant="empty"
+        message="This network does not have any blocks."
+        withBorder
+      />
+    );
 
   return (
     <TableContainer>
