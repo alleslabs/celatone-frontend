@@ -4,7 +4,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
-import { useIsCurrentPage } from "lib/hooks/useIsCurrentPage";
+import { useIsCurrentPage } from "lib/hooks";
 
 interface SubHeaderMenuInfo {
   name: string;

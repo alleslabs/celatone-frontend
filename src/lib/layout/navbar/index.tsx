@@ -3,7 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 
 import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
-import { useIsCurrentPage } from "lib/hooks/useIsCurrentPage";
+import { useIsCurrentPage } from "lib/hooks";
 import { useContractStore, usePublicProjectStore } from "lib/providers/store";
 import { cmpContractListInfo } from "lib/stores/contract";
 import { formatSlugName } from "lib/utils";

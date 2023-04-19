@@ -90,7 +90,7 @@ export const useLatestBlockInfo = (): UseQueryResult<LatestBlock> => {
     async () =>
       indexerGraphClient
         .request(getLatestBlockInfoQueryDocument)
-        .then(({ blocks }) => ({
+        .then<LatestBlock>(({ blocks }) => ({
           height: blocks[0].height,
           timestamp: parseDateOpt(blocks[0].timestamp),
         })),
