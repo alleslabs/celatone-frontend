@@ -81,7 +81,7 @@ interface ChainConfig {
 
 const CHAIN_CONFIG: Record<SupportedChain, ChainConfig> = {
   osmosis: {
-    isWasm: true,
+    isWasm: false,
   },
   terra: {
     isWasm: true,
@@ -92,7 +92,8 @@ const CHAIN_CONFIG: Record<SupportedChain, ChainConfig> = {
 };
 
 export const getChainConfig = () => {
-  if (!SELECTED_CHAIN) throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
+  if (!SELECTED_CHAIN)
+    throw new Error(`${SELECTED_CHAIN} - environment variable not found`);
   if (!CHAIN_CONFIG[SELECTED_CHAIN])
     throw new Error(`Chain not found in chain config`);
   return CHAIN_CONFIG[SELECTED_CHAIN];
