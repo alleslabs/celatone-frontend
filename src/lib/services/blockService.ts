@@ -4,10 +4,9 @@ import { useCallback } from "react";
 
 import { useCelatoneApp, useChainId } from "lib/app-provider";
 import {
-  getBlockCountQueryDocument,
+  getLatestBlockInfoQueryDocument,
   getBlockDetailsByHeightQueryDocument,
   getBlockListQueryDocument,
-  getLatestBlockInfo,
 } from "lib/query";
 import type { BlockDetails, BlockInfo, LatestBlock } from "lib/types";
 import { parseDate, parseDateOpt, parseTxHash } from "lib/utils";
@@ -44,7 +43,7 @@ export const useBlockCountQuery = (): UseQueryResult<number> => {
   const queryFn = useCallback(
     async () =>
       indexerGraphClient
-        .request(getBlockCountQueryDocument)
+        .request(getLatestBlockInfoQueryDocument)
         .then(({ blocks }) => blocks[0]?.height ?? 0),
     [indexerGraphClient]
   );
@@ -87,14 +86,16 @@ export const useBlockDetailsQuery = (
 
 export const useLatestBlockInfo = (): UseQueryResult<LatestBlock> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getLatestBlockInfo)
-      .then(({ blocks }) => ({
-        height: blocks[0].height,
-        timestamp: parseDateOpt(blocks[0].timestamp),
-      }));
-  }, [indexerGraphClient]);
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getLatestBlockInfoQueryDocument)
+        .then(({ blocks }) => ({
+          height: blocks[0].height,
+          timestamp: parseDateOpt(blocks[0].timestamp),
+        })),
+    [indexerGraphClient]
+  );
 
-  return useQuery(["block_info", indexerGraphClient], queryFn);
+  return useQuery(["latest_block_info", indexerGraphClient], queryFn);
 };

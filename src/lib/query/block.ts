@@ -23,14 +23,6 @@ export const getBlockListQueryDocument = graphql(`
   }
 `);
 
-export const getBlockCountQueryDocument = graphql(`
-  query getBlockCountQuery {
-    blocks(limit: 1, order_by: { height: desc }) {
-      height
-    }
-  }
-`);
-
 export const getBlockDetailsByHeightQueryDocument = graphql(`
   query getBlockDetailsByHeight($height: Int!) {
     blocks_by_pk(height: $height) {
@@ -49,7 +41,7 @@ export const getBlockDetailsByHeightQueryDocument = graphql(`
   }
 `);
 
-export const getLatestBlockInfo = graphql(`
+export const getLatestBlockInfoQueryDocument = graphql(`
   query getLatestBlockInfo {
     blocks(limit: 1, order_by: { height: desc }) {
       height

@@ -11364,13 +11364,6 @@ export type GetBlockListQueryQuery = {
   }>;
 };
 
-export type GetBlockCountQueryQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetBlockCountQueryQuery = {
-  __typename?: "query_root";
-  blocks: Array<{ __typename?: "blocks"; height: number }>;
-};
-
 export type GetBlockDetailsByHeightQueryVariables = Exact<{
   height: Scalars["Int"];
 }>;
@@ -12159,55 +12152,6 @@ export const GetBlockListQueryDocument = {
 } as unknown as DocumentNode<
   GetBlockListQueryQuery,
   GetBlockListQueryQueryVariables
->;
-export const GetBlockCountQueryDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getBlockCountQuery" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "blocks" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "1" },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "height" },
-                      value: { kind: "EnumValue", value: "desc" },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "height" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetBlockCountQueryQuery,
-  GetBlockCountQueryQueryVariables
 >;
 export const GetBlockDetailsByHeightDocument = {
   kind: "Document",

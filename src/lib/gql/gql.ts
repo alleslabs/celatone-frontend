@@ -7,8 +7,6 @@ const documents = {
     types.GetBlockTimestampByHeightQueryDocument,
   "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n    }\n  }\n":
     types.GetBlockListQueryDocument,
-  "\n  query getBlockCountQuery {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n    }\n  }\n":
-    types.GetBlockCountQueryDocument,
   "\n  query getBlockDetailsByHeight($height: Int!) {\n    blocks_by_pk(height: $height) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          sum {\n            gas_used\n            gas_limit\n          }\n        }\n      }\n    }\n  }\n":
     types.GetBlockDetailsByHeightDocument,
   "\n  query getLatestBlockInfo {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n      timestamp\n    }\n  }\n":
@@ -83,9 +81,6 @@ export function graphql(
 export function graphql(
   source: "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n    }\n  }\n"];
-export function graphql(
-  source: "\n  query getBlockCountQuery {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n    }\n  }\n"
-): typeof documents["\n  query getBlockCountQuery {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getBlockDetailsByHeight($height: Int!) {\n    blocks_by_pk(height: $height) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          sum {\n            gas_used\n            gas_limit\n          }\n        }\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getBlockDetailsByHeight($height: Int!) {\n    blocks_by_pk(height: $height) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          sum {\n            gas_used\n            gas_limit\n          }\n        }\n      }\n    }\n  }\n"];
