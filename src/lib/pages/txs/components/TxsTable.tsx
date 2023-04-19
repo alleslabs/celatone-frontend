@@ -32,7 +32,7 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
     },
   });
 
-  const { data: txs, isLoading } = useTxs(offset, pageSize);
+  const { data: txs, isLoading, error } = useTxs(offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
     setCurrentPage(nextPage);
@@ -48,6 +48,15 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
     if (!isViewMore) setPageSize(10);
     setCurrentPage(1);
   }, [chainId, isViewMore, setCurrentPage, setPageSize]);
+  // TODO - Might consider adding this state in all transaction table
+  if (error)
+    return (
+      <EmptyState
+        withBorder
+        imageVariant="not-found"
+        message="There is an error during fetching transactions."
+      />
+    );
   return (
     <>
       <TransactionsTable

@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#284](https://github.com/alleslabs/celatone-frontend/pull/284) Add data fetching error state to txs page
 - [#281](https://github.com/alleslabs/celatone-frontend/pull/281) Change Osmosis mainnet GraphQL
 - [#251](https://github.com/alleslabs/celatone-frontend/pull/251) Refactor Code and Contract tables into general components
 - [#252](https://github.com/alleslabs/celatone-frontend/pull/252) Refactor Empty State image source logic
