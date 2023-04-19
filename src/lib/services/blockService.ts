@@ -7,9 +7,10 @@ import {
   getBlockCountQueryDocument,
   getBlockDetailsByHeightQueryDocument,
   getBlockListQueryDocument,
+  getLatestBlockInfo,
 } from "lib/query";
-import type { BlockDetails, BlockInfo } from "lib/types";
-import { parseDate, parseTxHash } from "lib/utils";
+import type { BlockDetails, BlockInfo, LatestBlock } from "lib/types";
+import { parseDate, parseDateOpt, parseTxHash } from "lib/utils";
 
 export const useBlocklistQuery = (
   limit: number,
@@ -82,4 +83,18 @@ export const useBlockDetailsQuery = (
     retry: false,
     refetchOnWindowFocus: false,
   });
+};
+
+export const useLatestBlockInfo = (): UseQueryResult<LatestBlock> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getLatestBlockInfo)
+      .then(({ blocks }) => ({
+        height: blocks[0].height,
+        timestamp: parseDateOpt(blocks[0].timestamp),
+      }));
+  }, [indexerGraphClient]);
+
+  return useQuery(["block_info", indexerGraphClient], queryFn);
 };
