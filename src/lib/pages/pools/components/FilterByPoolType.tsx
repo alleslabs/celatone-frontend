@@ -1,6 +1,6 @@
 import { Grid } from "@chakra-ui/react";
 
-import { BalancerIcon, StableswapIcon } from "../constant";
+import { BALANCER_ICON, STABLESWAP_ICON } from "../constant";
 import { SelectInput } from "lib/components/forms";
 import type { PoolTypeFilter } from "lib/types";
 
@@ -26,13 +26,13 @@ const options: PoolTypeOption[] = [
   {
     label: "Balancer Pools",
     value: "Balancer",
-    image: BalancerIcon,
+    image: BALANCER_ICON,
     disabled: false,
   },
   {
     label: "StableSwap Pools",
     value: "Stableswap",
-    image: StableswapIcon,
+    image: STABLESWAP_ICON,
     disabled: false,
   },
 ];

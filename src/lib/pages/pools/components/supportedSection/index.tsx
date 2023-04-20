@@ -14,7 +14,7 @@ import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { SuperfluidIcon } from "../../constant";
+import { SUPERFLUID_ICON } from "../../constant";
 import { usePools } from "../../data";
 import type { PoolFilterState } from "../../types";
 import { FilterByPoolType } from "../FilterByPoolType";
@@ -154,7 +154,7 @@ export const SupportedSection = ({
               <FormLabel mb="0" cursor="pointer">
                 <Text display="flex" gap={2} alignItems="center">
                   Show only
-                  <Image boxSize={4} src={SuperfluidIcon} />
+                  <Image boxSize={4} src={SUPERFLUID_ICON} />
                   Superfluid
                 </Text>
               </FormLabel>

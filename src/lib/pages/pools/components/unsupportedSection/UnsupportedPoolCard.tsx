@@ -20,7 +20,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import type { Pool } from "lib/types";
-import { formatDemimal } from "lib/utils";
+import { formatUTokenWithPrecision } from "lib/utils";
 
 interface PoolCardProps {
   item: Pool;
@@ -128,9 +128,9 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                         src={asset.logo || getUndefinedTokenIcon(asset.denom)}
                       />
                       <Text variant="body2" color="text.main" fontWeight="bold">
-                        {formatDemimal({ decimalPoints: 0, delimiter: true })(
+                        {formatUTokenWithPrecision(
                           asset.amount,
-                          "0"
+                          asset.precision || 0
                         )}
                       </Text>
                       <Flex>{asset.symbol || asset.denom}</Flex>

@@ -1,6 +1,6 @@
 import { Flex, Heading, Text, Box, Image } from "@chakra-ui/react";
 
-import { BalancerIcon, StableswapIcon, SuperfluidIcon } from "../constant";
+import { BALANCER_ICON, STABLESWAP_ICON, SUPERFLUID_ICON } from "../constant";
 import type { PoolDetail } from "lib/types/pool";
 import { getTokenLabel } from "lib/utils";
 
@@ -75,7 +75,9 @@ export const PoolHeader = ({
               <Flex alignItems="center" gap={1}>
                 <Image
                   boxSize={4}
-                  src={poolType === "Balancer" ? BalancerIcon : StableswapIcon}
+                  src={
+                    poolType === "Balancer" ? BALANCER_ICON : STABLESWAP_ICON
+                  }
                 />
                 <Text variant="body2" color="text.dark">
                   {poolType === "Balancer"
@@ -94,7 +96,7 @@ export const PoolHeader = ({
                 h="6px"
               />
               <Flex alignItems="center" gap={1}>
-                <Image boxSize={4} src={SuperfluidIcon} />
+                <Image boxSize={4} src={SUPERFLUID_ICON} />
                 <Text variant="body2" color="text.dark">
                   Superfluid
                 </Text>
