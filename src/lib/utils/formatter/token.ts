@@ -4,8 +4,10 @@ import big from "big.js";
 import type { Token, U, USD } from "lib/types";
 
 const B = 1_000_000_000;
+const M = 1_000_000;
+const K = 1_000;
 
-export const formatDemimal =
+export const formatDecimal =
   ({
     decimalPoints,
     delimiter,
@@ -35,9 +37,13 @@ export const formatDemimal =
     return (ii === "0" && num[0] === "-" ? "-" : "") + ii + dd;
   };
 
+export const d2Formatter = formatDecimal({ decimalPoints: 2, delimiter: true });
+export const d6Formatter = formatDecimal({ decimalPoints: 6, delimiter: true });
+
 export const toToken = (
   uAmount: U<Token<BigSource>>,
   precision: number
+  // TODO: try toFixed(precision) here after having unit test?
 ): Token<Big> => big(uAmount).div(big(10).pow(precision)) as Token<Big>;
 
 /**
@@ -51,20 +57,16 @@ export const formatUTokenWithPrecision = (
   isSuffix = true
 ): string => {
   const token = toToken(amount, precision);
-  if (isSuffix && token.gte(B)) {
-    return `${formatDemimal({ decimalPoints: 2, delimiter: true })(
-      token.div(B),
-      "0.00"
-    )}B`;
+  if (isSuffix) {
+    if (token.gte(B)) return `${d2Formatter(token.div(B), "0.00")}B`;
+    if (token.gte(M)) return `${d2Formatter(token.div(M), "0.00")}M`;
+    if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
   }
-  return formatDemimal({ decimalPoints: precision, delimiter: true })(
+  return formatDecimal({ decimalPoints: precision, delimiter: true })(
     token,
     "0.00"
   );
 };
-
-export const d2Formatter = formatDemimal({ decimalPoints: 2, delimiter: true });
-export const d6Formatter = formatDemimal({ decimalPoints: 6, delimiter: true });
 
 /**
  * @remarks
@@ -91,6 +93,6 @@ export const formatPrice = (value: USD<BigSource>): string => {
 };
 
 export const formatInteger = (n: BigSource): string => {
-  const formatter = formatDemimal({ decimalPoints: 0, delimiter: true });
+  const formatter = formatDecimal({ decimalPoints: 0, delimiter: true });
   return formatter(n, "Not Available");
 };
