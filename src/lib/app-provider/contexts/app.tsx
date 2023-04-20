@@ -29,7 +29,6 @@ interface AppProviderProps<
   fallbackGasPrice: Record<string, ChainGasPrice>;
 
   appContractAddressMap: (currentChainName: string) => AppContractAddress;
-
   appHumanAddressMap: (currentChainName: string) => AppHumanAddress;
 
   constants: Constants;

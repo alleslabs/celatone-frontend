@@ -49,7 +49,6 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
   }
 };
 
-// TODO - change example value
 export const CELATONE_APP_HUMAN_ADDRESS = (
   chainName: string
 ): CelatoneHumanAddress => {
@@ -57,14 +56,12 @@ export const CELATONE_APP_HUMAN_ADDRESS = (
     case "osmosis":
     case "osmosistestnet":
       return {
-        example:
-          "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as HumanAddr,
+        example: "osmo14wk9zecqam9jsac7xwtf8e349ckquzzlx9k8c3" as HumanAddr,
       };
     case "terra2":
     case "terra2testnet":
       return {
-        example:
-          "terra1k5arpcpusfrtnucr5q8f5uh5twghh3q360hv4j6fe0hvzn7x8skqempu76" as HumanAddr,
+        example: "terra1dtdqq3sn8c6y6sjvtf4340aycv2g6x6pp5tkln" as HumanAddr,
       };
     default:
       return {

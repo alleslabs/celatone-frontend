@@ -8,6 +8,7 @@ export interface CelatoneContractAddress {
 export interface CelatoneHumanAddress {
   example: HumanAddr;
 }
+
 export interface CelatoneConstants extends AppConstants {
   maxFileSize: number;
 }

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#287](https://github.com/alleslabs/celatone-frontend/pull/287) Add app default human address for each chain
 - [#271](https://github.com/alleslabs/celatone-frontend/pull/271) Create transaction list page
 - [#245](https://github.com/alleslabs/celatone-frontend/pull/245) Add amplitude for account detail page
 - [#232](https://github.com/alleslabs/celatone-frontend/pull/232) Add delegation data and section for the account detail page
@@ -56,6 +57,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#292](https://github.com/alleslabs/celatone-frontend/pull/292) Handle format token with M and show only 2 decimal points when more than 1,000
+- [#284](https://github.com/alleslabs/celatone-frontend/pull/284) Add data fetching error state to txs page
+- [#281](https://github.com/alleslabs/celatone-frontend/pull/281) Change Osmosis mainnet GraphQL
 - [#251](https://github.com/alleslabs/celatone-frontend/pull/251) Refactor Code and Contract tables into general components
 - [#252](https://github.com/alleslabs/celatone-frontend/pull/252) Refactor Empty State image source logic
 - [#249](https://github.com/alleslabs/celatone-frontend/pull/249) Change code table format in select code draw and add CW2 info
@@ -67,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#280](https://github.com/alleslabs/celatone-frontend/pull/280) Fix begin unlocking optional coins field causing crash
 - [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
 - [#257](https://github.com/alleslabs/celatone-frontend/pull/257) Fix proposal resolved height query, resolved height rendering, and move ResolvedHeight and VotingEndTime to their own file
 - [#264](https://github.com/alleslabs/celatone-frontend/pull/264) Fix txhash uppercase query
