@@ -21,12 +21,20 @@ export const OSMOSIS_CHAINS: Chain = {
   testnet: "osmosistestnet",
 };
 
+// TODO: Remove this when mitosis is ready
+export const MITOSIS_CHAINS: Chain = {
+  mainnet: "osmosis",
+  testnet: "osmosistestnet",
+};
+
 export const getSupportedChainNames = (): SupportedChain[] => {
   switch (SELECTED_CHAIN) {
     case "terra":
       return Object.values(TERRA_CHAINS);
     case "osmosis":
       return Object.values(OSMOSIS_CHAINS);
+    case "mitosis":
+      return Object.values(MITOSIS_CHAINS);
     default:
       throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
   }
@@ -44,6 +52,8 @@ export const getChainNameByNetwork = (network: Network): string => {
       return TERRA_CHAINS[network] ?? TERRA_CHAINS.mainnet;
     case "osmosis":
       return OSMOSIS_CHAINS[network] ?? OSMOSIS_CHAINS.mainnet;
+    case "mitosis":
+      return MITOSIS_CHAINS[network] ?? MITOSIS_CHAINS.mainnet;
     default:
       throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
   }
@@ -61,6 +71,11 @@ export const getNetworkByChainName = (chainName: string): Network => {
     case "osmosis":
       network = (Object.keys(OSMOSIS_CHAINS) as Network[]).find(
         (each) => OSMOSIS_CHAINS[each as keyof Chain] === chainName
+      );
+      break;
+    case "mitosis":
+      network = (Object.keys(MITOSIS_CHAINS) as Network[]).find(
+        (each) => MITOSIS_CHAINS[each as keyof Chain] === chainName
       );
       break;
     default:
