@@ -232,10 +232,7 @@ export const useTxsCount = (): UseQueryResult<Option<number>> => {
     async () =>
       indexerGraphClient
         .request(getTxsCount)
-        .then(
-          ({ transactions_aggregate }) =>
-            transactions_aggregate.aggregate?.count
-        ),
+        .then(({ transactions }) => transactions[0]?.id),
     [indexerGraphClient]
   );
 
