@@ -11,39 +11,55 @@ interface ValidatorBadgeProps {
   badgeSize?: ImageProps["boxSize"];
 }
 
+const FallbackRender = ({
+  badgeSize,
+}: {
+  badgeSize: ValidatorBadgeProps["badgeSize"];
+}) => (
+  <>
+    <Image
+      boxSize={badgeSize}
+      src="https://raw.githubusercontent.com/alleslabs/assets/main/webapp-assets/asset/na-token.svg"
+      alt="N/A"
+      borderRadius="50%"
+    />
+    <Text variant="body2" color="text.disabled">
+      N/A
+    </Text>
+  </>
+);
+
 export const ValidatorBadge = ({
   validator,
   badgeSize = 10,
 }: ValidatorBadgeProps) => {
   const { currentChainName } = useWallet();
-
-  if (!validator)
-    return (
-      <Text variant="body2" color="text.disabled">
-        N/A
-      </Text>
-    );
-
   return (
     <Flex alignItems="center" gap={2}>
-      <Image
-        boxSize={badgeSize}
-        src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${getChainApiPath(
-          currentChainName
-        )}/${validator.validatorAddress}.png`}
-        alt={validator.moniker}
-        fallbackSrc={`https://ui-avatars.com/api/?name=${
-          validator.moniker ?? ""
-        }&background=9793F3&color=fff`}
-        borderRadius="50%"
-      />
-      <ExplorerLink
-        value={validator.moniker ?? validator.validatorAddress}
-        copyValue={validator.validatorAddress}
-        type="validator_address"
-        textFormat="ellipsis"
-        showCopyOnHover
-      />
+      {validator ? (
+        <>
+          <Image
+            boxSize={badgeSize}
+            src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${getChainApiPath(
+              currentChainName
+            )}/${validator.validatorAddress}.png`}
+            alt={validator.moniker}
+            fallbackSrc={`https://ui-avatars.com/api/?name=${
+              validator.moniker ?? ""
+            }&background=9793F3&color=fff`}
+            borderRadius="50%"
+          />
+          <ExplorerLink
+            value={validator.moniker ?? validator.validatorAddress}
+            copyValue={validator.validatorAddress}
+            type="validator_address"
+            textFormat="ellipsis"
+            showCopyOnHover
+          />
+        </>
+      ) : (
+        <FallbackRender badgeSize={badgeSize} />
+      )}
     </Flex>
   );
 };
