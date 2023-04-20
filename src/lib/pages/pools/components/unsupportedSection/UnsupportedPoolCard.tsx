@@ -46,7 +46,6 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
 
   return (
     <AccordionItem
-      className="copier-wrapper"
       mt={4}
       bg="pebble.900"
       _hover={{ bg: "pebble.800" }}
@@ -118,7 +117,12 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
               <Flex gap={4} flexDirection="column">
                 <Flex gap={2} flexDirection="column">
                   {item.poolLiquidity.map((asset) => (
-                    <Flex key={asset.denom} gap={3} alignItems="center">
+                    <Flex
+                      className="copier-wrapper"
+                      key={asset.denom}
+                      gap={3}
+                      alignItems="center"
+                    >
                       <Image
                         boxSize={6}
                         src={asset.logo || getUndefinedTokenIcon(asset.denom)}
