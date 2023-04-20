@@ -4,7 +4,11 @@ import big from "big.js";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import type { Option, Token, U, USD } from "lib/types";
-import { getTokenLabel, formatPercentValue } from "lib/utils";
+import {
+  getTokenLabel,
+  formatPercentValue,
+  formatUTokenWithPrecision,
+} from "lib/utils";
 
 interface AllocationBadgeProps {
   denom?: string;
@@ -49,7 +53,7 @@ export const AllocationBadge = ({
       <Text variant="body3" color="text.main">
         {mode === "percent-value"
           ? `${formatPercentValue((value ?? big(0)).div(liquidity).times(100))}`
-          : `${amount}`}
+          : `${formatUTokenWithPrecision(amount, 0)}`}
       </Text>
     </Box>
   </Flex>

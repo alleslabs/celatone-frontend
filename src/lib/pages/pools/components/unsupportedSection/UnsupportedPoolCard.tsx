@@ -17,8 +17,10 @@ import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
 import { getPoolUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
+import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import type { Pool } from "lib/types";
+import { formatDemimal } from "lib/utils";
 
 interface PoolCardProps {
   item: Pool;
@@ -44,6 +46,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
 
   return (
     <AccordionItem
+      className="copier-wrapper"
       mt={4}
       bg="pebble.900"
       _hover={{ bg: "pebble.800" }}
@@ -115,12 +118,27 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
               <Flex gap={4} flexDirection="column">
                 <Flex gap={2} flexDirection="column">
                   {item.poolLiquidity.map((asset) => (
-                    <Flex key={asset.denom} gap={3}>
+                    <Flex key={asset.denom} gap={3} alignItems="center">
                       <Image
                         boxSize={6}
                         src={asset.logo || getUndefinedTokenIcon(asset.denom)}
                       />
+                      <Text variant="body2" color="text.main" fontWeight="bold">
+                        {formatDemimal({ decimalPoints: 0, delimiter: true })(
+                          asset.amount,
+                          "0"
+                        )}
+                      </Text>
                       <Flex>{asset.symbol || asset.denom}</Flex>
+                      <Copier
+                        type={
+                          asset.symbol ? "supported_asset" : "unsupported_asset"
+                        }
+                        value={asset.denom}
+                        copyLabel="Token ID Copied!"
+                        display="none"
+                        ml="1px"
+                      />
                     </Flex>
                   ))}
                 </Flex>
