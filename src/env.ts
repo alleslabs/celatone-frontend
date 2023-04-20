@@ -1,6 +1,16 @@
 import type { SupportedChain } from "lib/data";
-import type { ContractAddr, ChainGasPrice, Token, U } from "lib/types";
-import type { CelatoneConstants, CelatoneContractAddress } from "types";
+import type {
+  ContractAddr,
+  ChainGasPrice,
+  Token,
+  U,
+  HumanAddr,
+} from "lib/types";
+import type {
+  CelatoneConstants,
+  CelatoneContractAddress,
+  CelatoneHumanAddress,
+} from "types";
 
 export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
   osmosistestnet: {
@@ -36,6 +46,27 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
     default:
       return {
         example: "" as ContractAddr,
+      };
+  }
+};
+
+export const CELATONE_APP_HUMAN_ADDRESS = (
+  chainName: string
+): CelatoneHumanAddress => {
+  switch (chainName) {
+    case "osmosis":
+    case "osmosistestnet":
+      return {
+        example: "osmo14wk9zecqam9jsac7xwtf8e349ckquzzlx9k8c3" as HumanAddr,
+      };
+    case "terra2":
+    case "terra2testnet":
+      return {
+        example: "terra1dtdqq3sn8c6y6sjvtf4340aycv2g6x6pp5tkln" as HumanAddr,
+      };
+    default:
+      return {
+        example: "" as HumanAddr,
       };
   }
 };

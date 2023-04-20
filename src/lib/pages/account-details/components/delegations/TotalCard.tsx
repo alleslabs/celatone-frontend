@@ -2,8 +2,7 @@ import { InfoIcon } from "@chakra-ui/icons";
 import { Flex, Heading, Image, Spinner, Text, Tooltip } from "@chakra-ui/react";
 
 import { NAToken } from "lib/icon";
-import type { TokenWithValue } from "lib/pages/account-details/type";
-import type { Option } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
 import {
   formatPrice,
   formatUTokenWithPrecision,
@@ -51,12 +50,12 @@ export const TotalCard = ({
               {formatUTokenWithPrecision(token.amount, token.precision || 0)}
             </Heading>
             <Text variant="body1" textColor="text.main">
-              {getTokenLabel(token.denom)}
+              {token.symbol ?? getTokenLabel(token.denom)}
             </Text>
             <Image
               boxSize={6}
               src={token.logo}
-              alt={getTokenLabel(token.denom)}
+              alt={token.symbol ?? getTokenLabel(token.denom)}
               fallback={<NAToken />}
               fallbackStrategy="onError"
             />

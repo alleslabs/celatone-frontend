@@ -1,7 +1,6 @@
 import { Flex, Radio, Text, Heading, Spinner } from "@chakra-ui/react";
 
-import type { TokenWithValue } from "lib/pages/account-details/type";
-import type { Option } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
 import {
   formatPrice,
   formatUTokenWithPrecision,
@@ -37,7 +36,7 @@ export const RadioCard = ({
                 {formatUTokenWithPrecision(token.amount, token.precision || 0)}
               </Heading>
               <Text variant="body2" textColor="text.main">
-                {getTokenLabel(token.denom)}
+                {token.symbol ?? getTokenLabel(token.denom)}
               </Text>
             </Flex>
           )}
