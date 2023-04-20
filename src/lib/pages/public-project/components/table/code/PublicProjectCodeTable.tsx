@@ -90,7 +90,7 @@ export const PublicProjectCodeTable = observer(
           />
         ) : (
           <>
-            <TableContainer mb={10}>
+            <TableContainer mb={4}>
               <CodeTableHeader />
               {publicCodes.map((code) => (
                 <PublicProjectCodeRow
@@ -100,7 +100,9 @@ export const PublicProjectCodeTable = observer(
                 />
               ))}
             </TableContainer>
-            {onViewMore && <ViewMore onClick={onViewMore} />}
+            {codes.length > 5 && onViewMore && (
+              <ViewMore onClick={onViewMore} />
+            )}
           </>
         )}
       </Box>

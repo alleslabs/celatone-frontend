@@ -56,8 +56,8 @@ export const OpenedProposalsTable = ({
     setCurrentPage(1);
   };
   return (
-    <Box mt={12} mb={4}>
-      <TableTitle title="Opened Proposals" count={totalData ?? 0} />
+    <Box mt={8}>
+      <TableTitle title="Opened Proposals" count={totalData ?? 0} mb={2} />
       <ProposalsTable
         proposals={proposals}
         isLoading={isLoading}

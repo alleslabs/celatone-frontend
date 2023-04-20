@@ -65,10 +65,11 @@ export const StoredCodesTable = ({
   };
 
   return (
-    <Box mt={12} mb={4}>
+    <Box mt={8}>
       <TableTitle
         title="Stored Codes"
         count={totalData ?? 0}
+        mb={2}
         helperText="This account stored the following codes"
       />
       <CodesTable

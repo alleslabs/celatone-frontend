@@ -129,9 +129,9 @@ export const TxsTable = (txsTableProps: TxsTableProps) => {
 
   const { totalData, onViewMore } = txsTableProps;
   return (
-    <Box mt={12} mb={4}>
+    <Box mt={8} mb={4}>
       <Flex direction="row" justify="space-between" alignItems="center">
-        <TableTitle title="Transactions" count={totalData ?? 0} mb={0} />
+        <TableTitle title="Transactions" count={totalData ?? 0} mb={2} />
         {!onViewMore && (
           <Flex gap={1}>
             <TxRelationSelection

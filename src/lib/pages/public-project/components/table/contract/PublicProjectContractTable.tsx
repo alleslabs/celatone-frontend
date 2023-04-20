@@ -80,7 +80,7 @@ export const PublicProjectContractTable = observer(
           />
         ) : (
           <>
-            <TableContainer mb={10}>
+            <TableContainer mb={4}>
               <ContractTableHeader />
               {publicContracts.map((contract) => (
                 <PublicProjectContractRow
@@ -90,7 +90,9 @@ export const PublicProjectContractTable = observer(
                 />
               ))}
             </TableContainer>
-            {onViewMore && <ViewMore onClick={onViewMore} />}
+            {contracts.length > 5 && onViewMore && (
+              <ViewMore onClick={onViewMore} />
+            )}
           </>
         )}
       </Box>

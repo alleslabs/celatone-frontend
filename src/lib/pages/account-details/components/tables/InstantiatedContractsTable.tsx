@@ -65,10 +65,11 @@ export const InstantiatedContractsTable = ({
   };
 
   return (
-    <Box mt={12} mb={4}>
+    <Box mt={8}>
       <TableTitle
         title="Contract Instances"
         count={totalData ?? 0}
+        mb={2}
         helperText="This account instantiated the following contracts"
       />
       <ContractsTable
