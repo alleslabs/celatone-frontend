@@ -77,14 +77,16 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     );
 
   return (
-    <TableContainer>
-      <BlocksHeader
-        templateColumns={TEMPLATE_COLUMNS}
-        scrollComponentId={scrollComponentId}
-      />
-      {blocksData.map((block) => (
-        <BlocksRow templateColumns={TEMPLATE_COLUMNS} blockData={block} />
-      ))}
+    <>
+      <TableContainer>
+        <BlocksHeader
+          templateColumns={TEMPLATE_COLUMNS}
+          scrollComponentId={scrollComponentId}
+        />
+        {blocksData.map((block) => (
+          <BlocksRow templateColumns={TEMPLATE_COLUMNS} blockData={block} />
+        ))}
+      </TableContainer>
       {!isViewMore && blockCount > 10 && (
         <Pagination
           currentPage={currentPage}
@@ -97,6 +99,6 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </TableContainer>
+    </>
   );
 };

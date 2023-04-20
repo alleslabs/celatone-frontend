@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Searching can now be determined by chain
 - [#273](https://github.com/alleslabs/celatone-frontend/pull/273) Add subheader and network overview
 - [#278](https://github.com/alleslabs/celatone-frontend/pull/278) Fully wired block details page
 - [#272](https://github.com/alleslabs/celatone-frontend/pull/272) Add blocks page and table component

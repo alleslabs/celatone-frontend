@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Spinner, Text, Tooltip } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
@@ -81,7 +82,7 @@ const CardInfo = ({
   </Flex>
 );
 
-export const NetworkOverview = () => {
+const NetworkOverview = () => {
   const navigate = useInternalNavigate();
 
   const {
@@ -102,8 +103,8 @@ export const NetworkOverview = () => {
     });
 
   return (
-    <Flex direction="column" gap={4} p="48px">
-      <Flex justifyContent="space-between">
+    <PageContainer>
+      <Flex justifyContent="space-between" mb={5}>
         <Heading as="h4" variant="h4">
           Network Overview
         </Heading>
@@ -164,6 +165,8 @@ export const NetworkOverview = () => {
           <ViewMore onClick={toBlocks} />
         )}
       </Box>
-    </Flex>
+    </PageContainer>
   );
 };
+
+export default NetworkOverview;
