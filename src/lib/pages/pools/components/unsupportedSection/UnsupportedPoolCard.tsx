@@ -63,7 +63,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                   poolType={item.type}
                   poolLiquidity={item.poolLiquidity}
                 />
-                <Flex w="128px">
+                <Flex>
                   <Tooltip
                     hasArrow
                     label="See in osmosis.zone"

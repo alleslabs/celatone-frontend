@@ -107,6 +107,7 @@ export const PoolCard = ({
               denom={asset.denom}
               logo={asset.logo}
               symbol={asset.symbol}
+              precision={asset.precision}
               amount={asset.amount}
               value={asset.value}
               liquidity={liquidity}
@@ -119,6 +120,9 @@ export const PoolCard = ({
               denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
               logo={is4Assets ? item.poolLiquidity[3].logo : undefined}
               symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
+              precision={
+                is4Assets ? item.poolLiquidity[3].precision : undefined
+              }
               amount={
                 item.poolLiquidity
                   .slice(3)

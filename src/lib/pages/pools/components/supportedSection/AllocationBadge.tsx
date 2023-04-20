@@ -14,6 +14,7 @@ interface AllocationBadgeProps {
   denom?: string;
   logo?: string;
   symbol?: string;
+  precision?: number;
   amount: U<Token<Big>>;
   value: Option<USD<Big>>;
   liquidity: USD<Big>;
@@ -24,6 +25,7 @@ export const AllocationBadge = ({
   denom,
   logo,
   symbol,
+  precision,
   amount,
   value,
   liquidity,
@@ -53,7 +55,7 @@ export const AllocationBadge = ({
       <Text variant="body3" color="text.main">
         {mode === "percent-value"
           ? `${formatPercentValue((value ?? big(0)).div(liquidity).times(100))}`
-          : `${formatUTokenWithPrecision(amount, 0)}`}
+          : `${formatUTokenWithPrecision(amount, precision || 0)}`}
       </Text>
     </Box>
   </Flex>
