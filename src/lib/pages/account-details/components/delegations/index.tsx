@@ -87,7 +87,7 @@ export const DelegationsSection = ({
     <Flex mt={8} pb={8} position="relative" overflow="hidden" width="full">
       <Flex
         direction="column"
-        gap={8}
+        gap={4}
         w="full"
         position={isOpen ? "absolute" : "relative"}
         opacity={isOpen ? 0 : 1}
