@@ -36,6 +36,7 @@ export const PoolCard = ({
     (total, asset) => total.add(asset.value ?? big(0)) as USD<Big>,
     big(0) as USD<Big>
   );
+  const is4Assets = item.poolLiquidity.length === 4;
 
   return (
     <Flex
@@ -111,41 +112,31 @@ export const PoolCard = ({
               mode={mode}
             />
           ))}
-          {item.poolLiquidity.length >= 4 &&
-            (item.poolLiquidity.length === 4 ? (
-              <AllocationBadge
-                key={item.poolLiquidity[3].denom}
-                denom={item.poolLiquidity[3].denom}
-                logo={item.poolLiquidity[3].logo}
-                symbol={item.poolLiquidity[3].symbol}
-                amount={item.poolLiquidity[3].amount}
-                value={item.poolLiquidity[3].value}
-                liquidity={liquidity}
-                mode={mode}
-              />
-            ) : (
-              <AllocationBadge
-                key="OTHERS"
-                amount={
-                  item.poolLiquidity
-                    .slice(3)
-                    .reduce(
-                      (prev, asset) => prev.add(asset.amount),
-                      big(0)
-                    ) as U<Token<Big>>
-                }
-                value={
-                  item.poolLiquidity
-                    .slice(3)
-                    .reduce(
-                      (prev, asset) => prev.add(asset.value ?? big(0)),
-                      big(0)
-                    ) as USD<Big>
-                }
-                liquidity={liquidity}
-                mode={mode}
-              />
-            ))}
+          {item.poolLiquidity.length >= 4 && (
+            <AllocationBadge
+              key="OTHERS"
+              denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
+              logo={is4Assets ? item.poolLiquidity[3].logo : undefined}
+              symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
+              amount={
+                item.poolLiquidity
+                  .slice(3)
+                  .reduce((prev, asset) => prev.add(asset.amount), big(0)) as U<
+                  Token<Big>
+                >
+              }
+              value={
+                item.poolLiquidity
+                  .slice(3)
+                  .reduce(
+                    (prev, asset) => prev.add(asset.value ?? big(0)),
+                    big(0)
+                  ) as USD<Big>
+              }
+              liquidity={liquidity}
+              mode={mode}
+            />
+          )}
         </>
       </SimpleGrid>
     </Flex>
