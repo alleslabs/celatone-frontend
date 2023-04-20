@@ -9,6 +9,7 @@ import { ControllerInput } from "../forms";
 import {
   useFabricateFee,
   useSimulateFee,
+  useSimulateFeeForStoreCode,
   useUploadContractTx,
 } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -24,7 +25,6 @@ import type {
   UploadSectionState,
 } from "lib/types";
 import { AccessType } from "lib/types";
-import { composeStoreCodeMsg } from "lib/utils";
 
 import { InstantiatePermissionRadio } from "./components/InstantiatePermissionRadio";
 import { UploadCard } from "./components/UploadCard";
@@ -67,7 +67,43 @@ export const UploadSection = ({
 
   const { wasmFile, codeName, addresses, permission } = watch();
 
-  const addressesString = JSON.stringify(addresses);
+  const setDefaultBehavior = () => {
+    setSimulateStatus("default");
+    setSimulateError("");
+    setEstimatedFee(undefined);
+  };
+
+  // Should not simulate when permission is any of addresses and address input is not filled
+  const isAnyAddrWithoutInput =
+    permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
+    !addresses.some((addr) => addr.address !== "");
+
+  const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
+    enabled: Boolean(wasmFile && address && !isAnyAddrWithoutInput),
+    wasmFile,
+    permission,
+    addresses,
+    onSuccess: (fee) => {
+      if (wasmFile && address) {
+        if (isAnyAddrWithoutInput) {
+          setDefaultBehavior();
+        }
+        if (fee) {
+          setSimulateStatus("completed");
+          setEstimatedFee(fabricateFee(fee));
+        }
+      }
+    },
+    onError: (e) => {
+      if (isAnyAddrWithoutInput) {
+        setDefaultBehavior();
+      } else {
+        setSimulateStatus("failed");
+        setSimulateError(e.message);
+        setEstimatedFee(undefined);
+      }
+    },
+  });
 
   const proceed = useCallback(async () => {
     if (address) {
@@ -102,37 +138,15 @@ export const UploadSection = ({
     updateCodeInfo,
   ]);
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   useEffect(() => {
     (async () => {
       if (wasmFile && address) {
-        // Should not simulate when permission is any of addresses and address input is not filled
-        if (
-          permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
-          !addresses.some((addr) => addr.address !== "")
-        ) {
-          setSimulateStatus("default");
-          setSimulateError("");
+        if (isAnyAddrWithoutInput) {
+          setDefaultBehavior();
+        } else if (isSimulating) {
           setEstimatedFee(undefined);
-        } else {
           setSimulateStatus("pending");
           setSimulateError("");
-          const msg = composeStoreCodeMsg({
-            sender: address as HumanAddr,
-            wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
-            permission,
-            addresses: addresses.map((addr) => addr.address),
-          });
-          try {
-            const estimatedGasUsed = await simulate([msg]);
-            if (estimatedGasUsed) {
-              setEstimatedFee(fabricateFee(estimatedGasUsed));
-              setSimulateStatus("completed");
-            }
-          } catch (err) {
-            setSimulateStatus("failed");
-            setSimulateError((err as Error).message);
-          }
         }
       }
     })();
@@ -143,16 +157,11 @@ export const UploadSection = ({
     fabricateFee,
     setValue,
     permission,
-    addressesString,
     addresses,
+    isSimulating,
+    isAnyAddrWithoutInput,
   ]);
 
-  const isDisabled =
-    !estimatedFee ||
-    !wasmFile ||
-    !address ||
-    !!errors.codeName ||
-    !!errors.addresses;
   return (
     <>
       {wasmFile ? (
@@ -208,7 +217,9 @@ export const UploadSection = ({
           size="md"
           variant="primary"
           w="128px"
-          disabled={isDisabled}
+          disabled={
+            isSimulating || isAnyAddrWithoutInput || Boolean(simulateError)
+          }
           onClick={proceed}
         >
           Upload
