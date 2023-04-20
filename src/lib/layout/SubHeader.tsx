@@ -16,7 +16,7 @@ const SubHeader = () => {
     { name: "Overview", slug: "/", icon: "home" },
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
-    { name: "Validators", slug: "/validators", icon: "admin" },
+    // { name: "Validators", slug: "/validators", icon: "admin" },
   ];
   const { address } = useWallet();
   const isCurrentPage = useIsCurrentPage();
