@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#291](https://github.com/alleslabs/celatone-frontend/pull/291) Update tx count query
 - [#285](https://github.com/alleslabs/celatone-frontend/pull/285) Add data fetching error state, and empty state to blocks page
 - [#284](https://github.com/alleslabs/celatone-frontend/pull/284) Add data fetching error state to txs page
 - [#281](https://github.com/alleslabs/celatone-frontend/pull/281) Change Osmosis mainnet GraphQL
