@@ -65,12 +65,11 @@ export const AdminContractsTable = ({
   };
 
   return (
-    <Box mt={8}>
+    <Box mt={12} mb={4}>
       <TableTitle
         title="Contract Admins"
         count={totalData ?? 0}
         helperText="This account is the admin for following contracts"
-        mb={2}
       />
       <ContractsTable
         contracts={contracts}
