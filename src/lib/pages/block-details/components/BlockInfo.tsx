@@ -1,6 +1,7 @@
-import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 
 import { LabelText } from "lib/components/LabelText";
+import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { BlockDetails } from "lib/types/block";
 import { formatInteger } from "lib/utils";
 
@@ -17,17 +18,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
       <Flex gap="64px">
         <LabelText label="Network">{blockData.network}</LabelText>
         <LabelText label="Proposed by">
-          {/* TODO: Gather this */}
-          <Flex gap={1}>
-            <Image
-              boxSize={6}
-              borderRadius="full"
-              src="https://ui-avatars.com/api/?name=Honey+toast&background=5942F3&color=fff"
-            />
-            <Text color="lilac.main" variant="body2">
-              Honeytoast
-            </Text>
-          </Flex>
+          <ValidatorBadge validator={blockData.proposer} badgeSize={6} />
         </LabelText>
         <LabelText label="Gas (Used/Wanted)">
           {`${blockData.gasUsed ? formatInteger(blockData.gasUsed) : 0} / ${

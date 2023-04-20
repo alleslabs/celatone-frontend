@@ -3,6 +3,7 @@ import { Flex, Text, Grid } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
+import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { BlockInfo } from "lib/types/block";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
@@ -24,8 +25,9 @@ export const BlocksRow = ({ templateColumns, blockData }: BlocksRowProps) => {
         </ExplorerLink>
       </TableRow>
       <TableRow>{truncate(blockData.hash.toUpperCase())}</TableRow>
-      {/* TODO: Wireup Proposer */}
-      <TableRow>mitovaloper325KJNUFNU12N4J1KBTDXD</TableRow>
+      <TableRow>
+        <ValidatorBadge validator={blockData.proposer} />
+      </TableRow>
       <TableRow justifyContent="center">{blockData.txCount}</TableRow>
       <TableRow>
         <Flex direction="column">
