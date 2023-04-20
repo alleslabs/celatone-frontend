@@ -1,4 +1,5 @@
 import type { Option } from "./common";
+import type { ValidatorInfo } from "./validator";
 
 export interface BlockInfo {
   network: string;
@@ -6,6 +7,7 @@ export interface BlockInfo {
   height: number;
   timestamp: Date;
   txCount: number;
+  proposer: ValidatorInfo | null;
 }
 
 export interface BlockDetails extends Omit<BlockInfo, "txCount"> {

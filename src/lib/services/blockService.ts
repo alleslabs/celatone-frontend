@@ -8,7 +8,12 @@ import {
   getBlockDetailsByHeightQueryDocument,
   getBlockListQueryDocument,
 } from "lib/query";
-import type { BlockDetails, BlockInfo, LatestBlock } from "lib/types";
+import type {
+  BlockDetails,
+  BlockInfo,
+  LatestBlock,
+  ValidatorAddr,
+} from "lib/types";
 import { parseDate, parseDateOpt, parseTxHash } from "lib/utils";
 
 export const useBlocklistQuery = (
@@ -23,12 +28,25 @@ export const useBlocklistQuery = (
         .request(getBlockListQueryDocument, { limit, offset })
         .then(({ blocks }) =>
           blocks.map<BlockInfo>(
-            ({ hash, height, timestamp, transactions_aggregate }) => ({
+            ({
+              hash,
+              height,
+              timestamp,
+              transactions_aggregate,
+              validator,
+            }) => ({
               network: chainId,
               hash: parseTxHash(hash),
               height,
               timestamp: parseDate(timestamp),
               txCount: transactions_aggregate.aggregate?.count ?? 0,
+              proposer: validator
+                ? {
+                    moniker: validator.moniker,
+                    validatorAddress:
+                      validator.operator_address as ValidatorAddr,
+                  }
+                : null,
             })
           )
         ),
@@ -71,6 +89,13 @@ export const useBlockDetailsQuery = (
                   blocks_by_pk.transactions_aggregate.aggregate?.sum?.gas_used,
                 gasLimit:
                   blocks_by_pk.transactions_aggregate.aggregate?.sum?.gas_limit,
+                proposer: blocks_by_pk.validator
+                  ? {
+                      moniker: blocks_by_pk.validator.moniker,
+                      validatorAddress: blocks_by_pk.validator
+                        .operator_address as ValidatorAddr,
+                    }
+                  : null,
               }
             : null
         ),
