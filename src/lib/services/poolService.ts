@@ -110,6 +110,7 @@ export const usePoolListCountByIsSupported = (
     [
       "pool_list_count_by_is_supported",
       isSupported,
+      poolType,
       isSuperfluidOnly,
       search,
       indexerGraphClient,

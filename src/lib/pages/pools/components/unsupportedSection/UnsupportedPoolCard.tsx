@@ -71,6 +71,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                   >
                     <Link
                       href={`${getPoolUrl(currentChainName)}/${item.id}`}
+                      onClick={(e) => e.stopPropagation()}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

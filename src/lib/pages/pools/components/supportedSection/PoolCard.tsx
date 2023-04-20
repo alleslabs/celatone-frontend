@@ -74,6 +74,7 @@ export const PoolCard = ({
         >
           <Link
             href={`${getPoolUrl(currentChainName)}/${item.id}`}
+            onClick={(e) => e.stopPropagation()}
             target="_blank"
             rel="noopener noreferrer"
           >

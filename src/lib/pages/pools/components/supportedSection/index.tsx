@@ -127,14 +127,16 @@ export const SupportedSection = ({
           <InputWithIcon
             placeholder="Search with Pool ID, Symbol or Token ID"
             value={keyword}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setValue("keyword", e.target.value)
-            }
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setCurrentPage(1);
+              setValue("keyword", e.target.value);
+            }}
             size="lg"
           />
           <FilterByPoolType
             initialSelected="All"
             setPoolTypeValue={(newVal: PoolTypeFilter) => {
+              setCurrentPage(1);
               if (newVal === poolTypeValue) return;
               setValue("poolTypeValue", newVal);
             }}
@@ -144,7 +146,10 @@ export const SupportedSection = ({
               <Switch
                 size="md"
                 defaultChecked={isSuperfluidOnly}
-                onChange={(e) => setValue("isSuperfluidOnly", e.target.checked)}
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setValue("isSuperfluidOnly", e.target.checked);
+                }}
               />
               <FormLabel mb="0" cursor="pointer">
                 <Text display="flex" gap={2} alignItems="center">

@@ -23,34 +23,29 @@ export const PoolHeader = ({
     <Flex alignItems="center" gap={4}>
       <PoolLogo poolLiquidity={poolLiquidity} />
       <Box>
-        <Flex gap={1}>
-          <Flex
-            gap={1}
-            css={{
-              "div:last-child > #separator": {
-                display: "none",
-              },
-            }}
-          >
-            {poolLiquidity.slice(0, 4).map((item) => (
-              <Flex key={item.denom} gap={1}>
-                <Heading as="h6" fontWeight="600" variant="h6">
-                  {item.symbol || getTokenLabel(item.denom)}
-                </Heading>
-                <Heading
-                  as="h6"
-                  id="separator"
-                  fontWeight="600"
-                  variant="h6"
-                  color="honeydew.main"
-                >
-                  /
-                </Heading>
-              </Flex>
-            ))}
-          </Flex>
+        <Flex gap={1} flexWrap="wrap">
+          <Heading as="h6" fontWeight="600" variant="h6">
+            {poolLiquidity[0].symbol || getTokenLabel(poolLiquidity[0].denom)}
+          </Heading>
+          {poolLiquidity.slice(1, 4).map((item) => (
+            <Flex key={item.denom} gap={1}>
+              <Heading
+                as="h6"
+                id="separator"
+                fontWeight="600"
+                variant="h6"
+                color="honeydew.main"
+              >
+                /
+              </Heading>
+              <Heading as="h6" fontWeight="600" variant="h6">
+                {item.symbol || getTokenLabel(item.denom)}
+              </Heading>
+            </Flex>
+          ))}
+
           {poolLiquidity.length > 4 && (
-            <>
+            <Flex gap={1}>
               <Heading
                 as="h6"
                 fontWeight="600"
@@ -62,7 +57,7 @@ export const PoolHeader = ({
               <Heading as="h6" fontWeight="600" variant="h6">
                 + {poolLiquidity.length - 4}
               </Heading>
-            </>
+            </Flex>
           )}
         </Flex>
         <Flex alignItems="center" gap={2} mt={1}>
