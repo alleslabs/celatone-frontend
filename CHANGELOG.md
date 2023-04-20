@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#279](https://github.com/alleslabs/celatone-frontend/pull/279) Add instantiate permission to msg store code and upgrade cosmjs to version 0.30.1
 - [#287](https://github.com/alleslabs/celatone-frontend/pull/287) Add app default human address for each chain
 - [#271](https://github.com/alleslabs/celatone-frontend/pull/271) Create transaction list page
 - [#245](https://github.com/alleslabs/celatone-frontend/pull/245) Add amplitude for account detail page
