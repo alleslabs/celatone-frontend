@@ -1,14 +1,17 @@
-import { Box, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, IconButton, SimpleGrid, Text, Tooltip } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import type { Big } from "big.js";
 import big from "big.js";
 import Link from "next/link";
 
 import { PoolHeader } from "../PoolHeader";
+import { getPoolUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import type { USD, Pool } from "lib/types";
-import { formatPrice, getTokenLabel } from "lib/utils";
-import { formatPercentValue } from "lib/utils/formatter/formatPercentValue";
+import type { USD, Pool, Token, U } from "lib/types";
+import { formatPrice } from "lib/utils";
+
+import { AllocationBadge } from "./AllocationBadge";
 
 const pebble700 = "pebble.700";
 
@@ -23,6 +26,7 @@ export const PoolCard = ({
   poolId,
   mode = "percent-value",
 }: PoolCardProps) => {
+  const { currentChainName } = useWallet();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     navigate({ pathname: `/pools/[poolId]`, query: { poolId } });
@@ -45,7 +49,10 @@ export const PoolCard = ({
       cursor="pointer"
       sx={{
         _hover: {
-          "> div:last-child > div": { backgroundColor: pebble700 },
+          "> div:last-child > div": {
+            borderColor: "pebble.600",
+            backgroundColor: pebble700,
+          },
           backgroundColor: "pebble.800",
         },
       }}
@@ -57,48 +64,28 @@ export const PoolCard = ({
           poolType={item.type}
           poolLiquidity={item.poolLiquidity}
         />
-        <Flex w="72px" justifyContent="flex-end">
-          <Tooltip
-            hasArrow
-            label="See in osmosis.zone"
-            placement="top"
-            bg="honeydew.darker"
-            maxW="240px"
+        <Tooltip
+          hasArrow
+          label="See in osmosis.zone"
+          placement="top"
+          bg="honeydew.darker"
+          maxW="240px"
+        >
+          <Link
+            href={`${getPoolUrl(currentChainName)}/${item.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <Link
-              href={`https://app.osmosis.zone/pool/${item.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <IconButton
-                fontSize="24px"
-                variant="none"
-                aria-label="external"
-                _hover={{ backgroundColor: pebble700 }}
-                color="pebble.600"
-                icon={<CustomIcon name="launch" />}
-              />
-            </Link>
-          </Tooltip>
-          <Tooltip
-            hasArrow
-            label="Pin to top"
-            placement="top"
-            bg="honeydew.darker"
-            maxW="240px"
-          >
-            <Flex>
-              <IconButton
-                fontSize="24px"
-                _hover={{ backgroundColor: pebble700 }}
-                variant="none"
-                aria-label="save"
-                color="pebble.600"
-                icon={<CustomIcon name="bookmark" />}
-              />
-            </Flex>
-          </Tooltip>
-        </Flex>
+            <IconButton
+              fontSize="24px"
+              variant="none"
+              aria-label="external"
+              _hover={{ backgroundColor: pebble700 }}
+              color="pebble.600"
+              icon={<CustomIcon name="launch" />}
+            />
+          </Link>
+        </Tooltip>
       </Flex>
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
@@ -110,41 +97,57 @@ export const PoolCard = ({
           {formatPrice(liquidity)}
         </Text>
       </Flex>
-      <Flex
-        gap="2px"
-        css={{
-          "div:first-of-type": {
-            borderRadius: "4px 0px 0px 4px",
-          },
-          "div:last-child": {
-            borderRadius: "0px 4px 4px 0px",
-          },
-        }}
-      >
-        {item.poolLiquidity.map((asset) => (
-          <Flex
-            key={asset.denom}
-            bg="pebble.800"
-            px={3}
-            py={1}
-            w="full"
-            transition="all .25s ease-in-out"
-          >
-            <Box>
-              <Text variant="body3" color="text.dark" fontWeight="600">
-                {asset.symbol || getTokenLabel(asset.denom)}
-              </Text>
-              <Text variant="body3" color="text.main">
-                {mode === "percent-value"
-                  ? `${formatPercentValue(
-                      (asset.value ?? big(0)).div(liquidity).times(100)
-                    )}`
-                  : `${asset.amount}`}
-              </Text>
-            </Box>
-          </Flex>
-        ))}
-      </Flex>
+      <SimpleGrid columns={4} gap={2}>
+        <>
+          {item.poolLiquidity.slice(0, 3).map((asset) => (
+            <AllocationBadge
+              key={asset.denom}
+              denom={asset.denom}
+              logo={asset.logo}
+              symbol={asset.symbol}
+              amount={asset.amount}
+              value={asset.value}
+              liquidity={liquidity}
+              mode={mode}
+            />
+          ))}
+          {item.poolLiquidity.length >= 4 &&
+            (item.poolLiquidity.length === 4 ? (
+              <AllocationBadge
+                key={item.poolLiquidity[3].denom}
+                denom={item.poolLiquidity[3].denom}
+                logo={item.poolLiquidity[3].logo}
+                symbol={item.poolLiquidity[3].symbol}
+                amount={item.poolLiquidity[3].amount}
+                value={item.poolLiquidity[3].value}
+                liquidity={liquidity}
+                mode={mode}
+              />
+            ) : (
+              <AllocationBadge
+                key="OTHERS"
+                amount={
+                  item.poolLiquidity
+                    .slice(3)
+                    .reduce(
+                      (prev, asset) => prev.add(asset.amount),
+                      big(0)
+                    ) as U<Token<Big>>
+                }
+                value={
+                  item.poolLiquidity
+                    .slice(3)
+                    .reduce(
+                      (prev, asset) => prev.add(asset.value ?? big(0)),
+                      big(0)
+                    ) as USD<Big>
+                }
+                liquidity={liquidity}
+                mode={mode}
+              />
+            ))}
+        </>
+      </SimpleGrid>
     </Flex>
   );
 };

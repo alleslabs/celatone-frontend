@@ -53,7 +53,7 @@ export const SupportedSection = ({
 
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
-      poolTypeValue: "all",
+      poolTypeValue: "All",
       keyword: "",
       isSuperfluidOnly: false,
     },
@@ -133,7 +133,7 @@ export const SupportedSection = ({
             size="lg"
           />
           <FilterByPoolType
-            initialSelected="all"
+            initialSelected="All"
             setPoolTypeValue={(newVal: PoolTypeFilter) => {
               if (newVal === poolTypeValue) return;
               setValue("poolTypeValue", newVal);

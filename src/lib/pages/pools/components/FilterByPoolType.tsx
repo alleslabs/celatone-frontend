@@ -20,18 +20,18 @@ interface FilterByPoolTypeProps {
 const options: PoolTypeOption[] = [
   {
     label: "All Pools",
-    value: "all",
+    value: "All",
     disabled: false,
   },
   {
     label: "Balancer Pools",
-    value: "balancer",
+    value: "Balancer",
     image: BalancerIcon,
     disabled: false,
   },
   {
     label: "StableSwap Pools",
-    value: "stableswap",
+    value: "Stableswap",
     image: StableswapIcon,
     disabled: false,
   },

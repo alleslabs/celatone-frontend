@@ -35,14 +35,14 @@ export const UnsupportedSection = ({
 }: UnsupportedSectionProp) => {
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
-      poolTypeValue: "all",
+      poolTypeValue: "All",
       keyword: "",
       isSuperfluidOnly: false,
     },
   });
   const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
   const { data: totalData = 0, refetch: refetchCount } =
-    usePoolListCountByIsSupported(false, "all", false, "");
+    usePoolListCountByIsSupported(false, "All", false, "");
 
   const [showNewest, setShowNewest] = useState(true);
 
@@ -97,7 +97,7 @@ export const UnsupportedSection = ({
             size="lg"
           />
           <FilterByPoolType
-            initialSelected="all"
+            initialSelected="All"
             setPoolTypeValue={(newVal: PoolTypeFilter) => {
               if (newVal === poolTypeValue) return;
               setValue("poolTypeValue", newVal);

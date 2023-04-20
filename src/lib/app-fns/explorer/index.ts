@@ -53,3 +53,14 @@ export const getExplorerValidatorUrl = (chainName: string) => {
   }
   return `${explorerMap[chainName]}/${pathSuffix}`;
 };
+
+export const getPoolUrl = (chainName: string) => {
+  switch (chainName) {
+    case "osmosis":
+      return "https://app.osmosis.zone/pool";
+    case "osmosistestnet":
+      return "https://tesnet.osmosis.zone/pool";
+    default:
+      return "";
+  }
+};

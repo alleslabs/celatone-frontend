@@ -25,16 +25,17 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
               key={item.denom}
               boxSize={10}
               src={item.logo || getUndefinedTokenIcon(item.denom)}
-              zIndex={i * -1 + 2}
+              zIndex={2 - i}
             />
           ))}
           <Flex
-            width={10}
-            height={10}
+            minW={10}
+            minH={10}
             borderRadius="full"
             backgroundColor="pebble.700"
             alignItems="center"
             justifyContent="center"
+            marginLeft="-12px"
           >
             +{poolLiquidity.length - 2}
           </Flex>
@@ -45,7 +46,7 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
             key={asset.denom}
             boxSize={10}
             src={asset.logo || getUndefinedTokenIcon(asset.denom)}
-            zIndex={i * -1 + 2}
+            zIndex={2 - i}
           />
         ))
       )}

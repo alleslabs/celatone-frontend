@@ -18,9 +18,9 @@ export const PoolIndex = () => {
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
 
   const { data: supportedPoolCount, isLoading: isLoadingSupported } =
-    usePoolListCountByIsSupported(true, "all", false, "");
+    usePoolListCountByIsSupported(true, "All", false, "");
   const { data: unsupportedPoolCount, isLoading: isLoadingUnsupported } =
-    usePoolListCountByIsSupported(false, "all", false, "");
+    usePoolListCountByIsSupported(false, "All", false, "");
 
   const sectionHeaderId = "poolListTab";
 

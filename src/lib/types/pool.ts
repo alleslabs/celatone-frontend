@@ -3,7 +3,7 @@ import type { Big } from "big.js";
 
 import type { Addr, ContractAddr, Option, TokenWithValue } from "lib/types";
 
-export type PoolTypeFilter = "all" | "balancer" | "stableswap";
+export type PoolTypeFilter = "All" | "Balancer" | "Stableswap";
 
 export interface PoolWeight<T extends string | Big = Big> {
   denom: string;

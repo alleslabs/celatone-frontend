@@ -12,7 +12,7 @@ export const usePoolExpression = (
   useMemo(
     () => ({
       is_supported: { _eq: isSupported },
-      type: poolType !== "all" ? { _eq: poolType } : {},
+      type: poolType !== "All" ? { _eq: `${poolType}` } : {},
       is_superfluid: isSuperfluidOnly ? { _eq: true } : {},
       id: isPositiveInt(search) ? { _eq: Number(search) } : {},
     }),

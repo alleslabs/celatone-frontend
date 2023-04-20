@@ -64,6 +64,7 @@ export const usePoolListByIsSupported = (
     [
       "pool_list_by_is_supported",
       isSupported,
+      poolType,
       isSuperfluidOnly,
       search,
       order,

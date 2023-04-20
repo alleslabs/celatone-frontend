@@ -10,14 +10,15 @@ import {
   Image,
   Button,
 } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
+import { getPoolUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { Pool } from "lib/types";
-import { getTokenLabel } from "lib/utils";
 
 interface PoolCardProps {
   item: Pool;
@@ -35,6 +36,7 @@ const StyledIconButton = chakra(IconButton, {
 const pebble700 = "pebble.700";
 
 export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
+  const { currentChainName } = useWallet();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     navigate({ pathname: `/pools/[poolId]`, query: { poolId } });
@@ -68,7 +70,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                     maxW="240px"
                   >
                     <Link
-                      href={`https://app.osmosis.zone/pool/${item.id}`}
+                      href={`${getPoolUrl(currentChainName)}/${item.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -79,22 +81,6 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                         icon={<CustomIcon name="launch" />}
                       />
                     </Link>
-                  </Tooltip>
-                  <Tooltip
-                    hasArrow
-                    label="Pin to top"
-                    placement="top"
-                    bg="honeydew.darker"
-                    maxW="240px"
-                  >
-                    <Flex>
-                      <StyledIconButton
-                        _hover={{ backgroundColor: pebble700 }}
-                        variant="none"
-                        aria-label="save"
-                        icon={<CustomIcon name="bookmark" />}
-                      />
-                    </Flex>
                   </Tooltip>
                   {isExpanded ? (
                     <StyledIconButton
@@ -133,7 +119,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                         boxSize={6}
                         src={asset.logo || getUndefinedTokenIcon(asset.denom)}
                       />
-                      <Flex>{asset.symbol || getTokenLabel(asset.denom)}</Flex>
+                      <Flex>{asset.symbol || asset.denom}</Flex>
                     </Flex>
                   ))}
                 </Flex>
@@ -142,6 +128,13 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                     View Pool Details
                   </Button>
                   <Button
+                    onClick={() =>
+                      window.open(
+                        `${getPoolUrl(currentChainName)}/${item.id}`,
+                        "_blank",
+                        "noopener,noreferrer"
+                      )
+                    }
                     size="sm"
                     variant="outline-primary"
                     rightIcon={
