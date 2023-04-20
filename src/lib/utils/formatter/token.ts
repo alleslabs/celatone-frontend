@@ -35,6 +35,9 @@ export const formatDecimal =
     return (ii === "0" && num[0] === "-" ? "-" : "") + ii + dd;
   };
 
+const d2Formatter = formatDecimal({ decimalPoints: 2, delimiter: true });
+const d6Formatter = formatDecimal({ decimalPoints: 6, delimiter: true });
+
 export const toToken = (
   uAmount: U<Token<BigSource>>,
   precision: number
@@ -52,30 +55,15 @@ export const formatUTokenWithPrecision = (
 ): string => {
   const token = toToken(amount, precision);
   if (isSuffix) {
-    if (token.gte(B))
-      return `${formatDecimal({ decimalPoints: 2, delimiter: true })(
-        token.div(B),
-        "0.00"
-      )}B`;
-    if (token.gte(M))
-      return `${formatDecimal({ decimalPoints: 2, delimiter: true })(
-        token.div(M),
-        "0.00"
-      )}M`;
-    if (token.gte(K))
-      return `${formatDecimal({ decimalPoints: 2, delimiter: true })(
-        token,
-        "0.00"
-      )}`;
+    if (token.gte(B)) return `${d2Formatter(token.div(B), "0.00")}B`;
+    if (token.gte(M)) return `${d2Formatter(token.div(M), "0.00")}M`;
+    if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
   }
   return formatDecimal({ decimalPoints: precision, delimiter: true })(
     token,
     "0.00"
   );
 };
-
-const d2Formatter = formatDecimal({ decimalPoints: 2, delimiter: true });
-const d6Formatter = formatDecimal({ decimalPoints: 6, delimiter: true });
 
 /**
  * @remarks
