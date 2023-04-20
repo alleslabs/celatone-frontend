@@ -78,10 +78,8 @@ export const getTxs = graphql(`
 
 export const getTxsCount = graphql(`
   query getTxsCount {
-    transactions_aggregate {
-      aggregate {
-        count
-      }
+    transactions(limit: 1, order_by: { id: desc }) {
+      id
     }
   }
 `);

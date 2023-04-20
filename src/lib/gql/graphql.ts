@@ -12720,13 +12720,7 @@ export type GetTxsCountQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetTxsCountQuery = {
   __typename?: "query_root";
-  transactions_aggregate: {
-    __typename?: "transactions_aggregate";
-    aggregate?: {
-      __typename?: "transactions_aggregate_fields";
-      count: number;
-    } | null;
-  };
+  transactions: Array<{ __typename?: "transactions"; id: number }>;
 };
 
 export type GetBlockTransactionsByHeightQueryQueryVariables = Exact<{
@@ -16999,20 +16993,32 @@ export const GetTxsCountDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "transactions_aggregate" },
+            name: { kind: "Name", value: "transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "count" } },
-                    ],
-                  },
-                },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
               ],
             },
           },
