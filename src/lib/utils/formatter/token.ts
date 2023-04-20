@@ -41,6 +41,7 @@ const d6Formatter = formatDecimal({ decimalPoints: 6, delimiter: true });
 export const toToken = (
   uAmount: U<Token<BigSource>>,
   precision: number
+  // TODO: try toFixed(precision) here after having unit test?
 ): Token<Big> => big(uAmount).div(big(10).pow(precision)) as Token<Big>;
 
 /**
