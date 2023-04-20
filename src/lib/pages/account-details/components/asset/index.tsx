@@ -64,7 +64,7 @@ export const AssetsSection = ({
   if (isLoading) return <Loading />;
 
   return (
-    <Flex direction="column" gap={4} mt={12} mb={4}>
+    <Flex direction="column" gap={4} mt={8} pb={8} width="full">
       <Flex justify="space-between" width="full" align="center">
         <Flex gap="50px">
           <UserAssetInfoCard
