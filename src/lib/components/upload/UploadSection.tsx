@@ -11,6 +11,7 @@ import {
   useSimulateFee,
   useSimulateFeeForStoreCode,
   useUploadContractTx,
+  useValidateAddress,
 } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
@@ -44,6 +45,7 @@ export const UploadSection = ({
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();
   const postUploadTx = useUploadContractTx(isMigrate);
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateStatus, setSimulateStatus] =
@@ -73,10 +75,16 @@ export const UploadSection = ({
     setEstimatedFee(undefined);
   };
 
-  // Should not simulate when permission is any of addresses and address input is not filled
+  const isAddressesError = addresses.some((addr) =>
+    Boolean(
+      validateUserAddress(addr.address) && validateContractAddress(addr.address)
+    )
+  );
+
+  // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
   const isAnyAddrWithoutInput =
     permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
-    !addresses.some((addr) => addr.address !== "");
+    (!addresses.some((addr) => addr.address !== "") || isAddressesError);
 
   const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
     enabled: Boolean(wasmFile && address && !isAnyAddrWithoutInput),
