@@ -142,7 +142,7 @@ const NetworkOverview = () => {
         <CardInfo
           title={blockInfo.title}
           tooltip={blockInfo.tooltip}
-          value={latestBlockInfo?.height?.toString() ?? "N/A"}
+          value={latestBlockInfo?.height?.toLocaleString() ?? "N/A"}
           isLoading={isLoadingLatestBlockInfo}
           navigate={toBlocks}
         />

@@ -74,7 +74,7 @@ export const Pagination = ({
           <CustomIcon name="chevron-down" />
         </Select>
         <Text variant="body3" mx="30px">
-          {`${offsetData} - ${lastDataInPage} of ${totalData}`}
+          {`${offsetData.toLocaleString()} - ${lastDataInPage.toLocaleString()} of ${totalData.toLocaleString()}`}
         </Text>
         <Previous variant="unstyled" display="flex">
           <CustomIcon name="chevron-left" />
