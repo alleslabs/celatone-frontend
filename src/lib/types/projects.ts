@@ -3,7 +3,7 @@ import type {
   AssetInfo,
   ContractAddr,
   HumanAddr,
-  InstantiatePermission,
+  AccessConfigPermission,
   PermissionAddresses,
   Option,
 } from "lib/types";
@@ -23,7 +23,7 @@ export interface RawPublicCode {
   slug: string;
   contracts: number;
   uploader: Addr;
-  instantiatePermission: InstantiatePermission;
+  instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
   github: string;
   verified: boolean;

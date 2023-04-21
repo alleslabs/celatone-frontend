@@ -72,7 +72,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   return (
     <>
-      <Flex direction="column" gap={1} mt={6} mb={12}>
+      <Flex direction="column" gap={1} mt={6} mb={6}>
         <Flex gap={1}>
           <Heading as="h5" variant="h5">
             Account Details
@@ -148,7 +148,13 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <Flex mt={12} direction="column" width="fit-content">
+            <Flex
+              mt={8}
+              pb={8}
+              direction="column"
+              borderBottom="1px solid"
+              borderBottomColor="pebble.700"
+            >
               <Text variant="body2" fontWeight="500" color="text.dark">
                 Total Account Value
               </Text>
@@ -169,14 +175,18 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 </Heading>
               )}
             </Flex>
-            <AssetsSection
-              walletAddress={accountAddress}
-              onViewMore={() => handleTabChange(TabIndex.Assets)}
-            />
-            <DelegationsSection
-              walletAddress={accountAddress}
-              onViewMore={() => handleTabChange(TabIndex.Delegations)}
-            />
+            <Flex borderBottom="1px solid" borderBottomColor="pebble.700">
+              <AssetsSection
+                walletAddress={accountAddress}
+                onViewMore={() => handleTabChange(TabIndex.Assets)}
+              />
+            </Flex>
+            <Flex borderBottom="1px solid" borderBottomColor="pebble.700">
+              <DelegationsSection
+                walletAddress={accountAddress}
+                onViewMore={() => handleTabChange(TabIndex.Delegations)}
+              />
+            </Flex>
             <TxsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
