@@ -1,6 +1,6 @@
 import { Text, Box, Radio, RadioGroup, Button } from "@chakra-ui/react";
 import type { Control, UseFormSetValue } from "react-hook-form";
-import { useFieldArray, useWatch } from "react-hook-form";
+import { useController, useFieldArray, useWatch } from "react-hook-form";
 
 import { CustomIcon } from "lib/components/icon";
 import type { Addr, UploadSectionState } from "lib/types";
@@ -37,6 +37,13 @@ export const InstantiatePermissionRadio = ({
   const [permission, addresses] = useWatch({
     control,
     name: ["permission", "addresses"],
+  });
+
+  const {
+    formState: { errors },
+  } = useController({
+    control,
+    name: "addresses",
   });
 
   return (
@@ -78,6 +85,7 @@ export const InstantiatePermissionRadio = ({
                   setValue={(value: Addr) =>
                     setValue(`addresses.${idx}.address`, value)
                   }
+                  error={errors.addresses?.[idx]?.address?.message}
                 />
               ))}
               <Button

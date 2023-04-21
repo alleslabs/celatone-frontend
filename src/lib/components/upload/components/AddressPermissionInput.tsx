@@ -79,13 +79,17 @@ export const AddressPermissionInput = <T extends FieldValues>({
         status={status}
         placeholder={`ex. ${exampleHumanAddress}`}
         variant="floating"
+        rules={{
+          required: "Address is empty",
+        }}
         error={
-          addresses[index]?.address &&
-          addresses.find(
-            ({ address }, i) =>
-              i < index && address === addresses[index]?.address
-          ) &&
-          "You already input this address"
+          (addresses[index]?.address &&
+            addresses.find(
+              ({ address }, i) =>
+                i < index && address === addresses[index]?.address
+            ) &&
+            "You already input this address") ||
+          error
         }
         helperAction={
           <AssignMe
