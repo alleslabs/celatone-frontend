@@ -78,7 +78,45 @@ export const getTxs = graphql(`
 
 export const getTxsCount = graphql(`
   query getTxsCount {
-    transactions_aggregate {
+    transactions(limit: 1, order_by: { id: desc }) {
+      id
+    }
+  }
+`);
+
+export const getBlockTransactionsByHeightQueryDocument = graphql(`
+  query getBlockTransactionsByHeightQuery(
+    $limit: Int!
+    $offset: Int!
+    $height: Int!
+  ) {
+    transactions(
+      limit: $limit
+      offset: $offset
+      where: { block_height: { _eq: $height } }
+      order_by: { id: asc }
+    ) {
+      hash
+      success
+      messages
+      account {
+        address
+      }
+      is_clear_admin
+      is_execute
+      is_ibc
+      is_instantiate
+      is_migrate
+      is_send
+      is_store_code
+      is_update_admin
+    }
+  }
+`);
+
+export const getBlockTransactionCountByHeightQueryDocument = graphql(`
+  query getBlockTransactionCountByHeightQuery($height: Int!) {
+    transactions_aggregate(where: { block_height: { _eq: $height } }) {
       aggregate {
         count
       }

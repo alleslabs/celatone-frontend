@@ -1,3 +1,4 @@
+import type { SupportedChain } from "lib/data";
 import type {
   ContractAddr,
   ChainGasPrice,
@@ -86,7 +87,8 @@ export const CELATONE_CONSTANTS: CelatoneConstants = {
 
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
 
-export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN;
+export const SELECTED_CHAIN = process.env
+  .NEXT_PUBLIC_SELECTED_CHAIN as SupportedChain;
 
 export const CELATONE_API_ENDPOINT = "https://celatone-api.alleslabs.dev";
 
