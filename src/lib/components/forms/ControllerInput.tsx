@@ -86,7 +86,7 @@ export const ControllerInput = <T extends FieldValues>({
           {status && getStatusIcon(status.state)}
         </InputRightElement>
       </InputGroup>
-      <Flex gap={1} alignItems="center" mt={1}>
+      <Flex gap={1} alignItems="center" mt={1} justifyContent="space-between">
         {isError ? (
           <FormErrorMessage className="error-text">{error}</FormErrorMessage>
         ) : (

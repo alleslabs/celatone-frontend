@@ -15,7 +15,7 @@ import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { InstantiatePermission } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 import { getCw2Info, getFirstQueryParam, isCodeId } from "lib/utils";
 
 import { CodeInfoSection } from "./components/CodeInfoSection";
@@ -94,7 +94,7 @@ const CodeDetailsBody = observer(
             uploader={localCodeInfo?.uploader ?? codeData.uploader}
             name={localCodeInfo?.name}
             instantiatePermission={
-              codeData.instantiatePermission ?? InstantiatePermission.UNKNOWN
+              codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
             }
             permissionAddresses={codeData.permissionAddresses ?? []}
             contractCount={undefined}

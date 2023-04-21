@@ -14,7 +14,6 @@ import {
   usePublicProjectByCodeId,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
-import { InstantiatePermission } from "lib/types";
 import type {
   CodeData,
   PublicDetail,
@@ -23,6 +22,7 @@ import type {
   CodeInfo,
   PublicCode,
 } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 
 export interface CodeDataState {
   isLoading: boolean;
@@ -87,7 +87,7 @@ const useSavedCodes = () => {
       ...localSavedCode,
       contractCount: rawSavedCode?.contractCount,
       instantiatePermission:
-        rawSavedCode?.instantiatePermission ?? InstantiatePermission.UNKNOWN,
+        rawSavedCode?.instantiatePermission ?? AccessConfigPermission.UNKNOWN,
       permissionAddresses: rawSavedCode?.permissionAddresses ?? [],
       cw2Contract: rawSavedCode?.cw2Contract,
       cw2Version: rawSavedCode?.cw2Version,

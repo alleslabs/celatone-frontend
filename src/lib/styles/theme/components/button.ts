@@ -8,6 +8,7 @@ const violetLight = "violet.light";
 const honeydewBg = "honeydew.background";
 const honeydewDarker = "honeydew.darker";
 const borderDefualt = "1px solid";
+const errorDark = "error.dark";
 
 const generateStyle = ({
   basic,
@@ -76,10 +77,10 @@ export const Button: ComponentStyleConfig = {
     error: generateStyle({
       basic: { background: "error.main", color: "black" },
       disabled: {
-        background: "error.dark",
+        background: errorDark,
         color: "black",
       },
-      hoverBg: "error.dark",
+      hoverBg: errorDark,
       activeBg: "error.light",
     }),
     "outline-primary": generateStyle({
@@ -164,6 +165,12 @@ export const Button: ComponentStyleConfig = {
         color: "pebble.500",
       },
       hoverBg: pebble700,
+      activeBg: "transparent",
+    }),
+    "ghost-error": generateStyle({
+      basic: { color: "error.main" },
+      disabled: { color: "error.light" },
+      hoverBg: errorDark,
       activeBg: "transparent",
     }),
     unstyled: {

@@ -2,7 +2,10 @@ import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { getProposalUrl, getExplorerValidatorUrl } from "lib/app-fns/explorer";
+import {
+  getExplorerProposalUrl,
+  getExplorerValidatorUrl,
+} from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/app-provider";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
@@ -55,7 +58,7 @@ const getNavigationUrl = (
       url = "/block";
       break;
     case "proposal_id":
-      url = getProposalUrl(currentChainName);
+      url = getExplorerProposalUrl(currentChainName);
       break;
     case "invalid_address":
       return "";
