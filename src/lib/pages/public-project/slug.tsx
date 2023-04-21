@@ -1,5 +1,4 @@
 import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -22,7 +21,7 @@ enum TabIndex {
   Accounts,
 }
 
-export const ProjectDetail = observer(() => {
+export const ProjectDetail = () => {
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
   const {
@@ -110,4 +109,4 @@ export const ProjectDetail = observer(() => {
       </Tabs>
     </PageContainer>
   );
-});
+};
