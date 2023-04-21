@@ -15,16 +15,15 @@ export const PublicProjectAccountRow = ({
   templateColumns,
 }: AccountTableRowProps) => {
   const navigate = useInternalNavigate();
-  const goToAccountDetail = () => {
+  const goToDetail = () => {
     navigate({
-      pathname: `/account/${accountInfo.address}`,
+      pathname: `/${accountInfo.type}/${accountInfo.address}`,
     });
   };
-
   return (
     <Grid
       templateColumns={templateColumns}
-      onClick={goToAccountDetail}
+      onClick={goToDetail}
       _hover={{ bg: "pebble.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
@@ -33,7 +32,9 @@ export const PublicProjectAccountRow = ({
       <TableRow>
         <ExplorerLink
           value={accountInfo.address.toString()}
-          type="user_address"
+          type={
+            accountInfo.type === "account" ? "user_address" : "contract_address"
+          }
           showCopyOnHover
         />
       </TableRow>

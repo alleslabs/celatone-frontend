@@ -13,6 +13,7 @@ export interface Account {
   description: string;
   name: string;
   slug: string;
+  type: string;
 }
 
 export interface RawPublicCode {
