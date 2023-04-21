@@ -14,12 +14,10 @@ import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import type { Network } from "lib/data";
 
 import { CustomIcon } from "./icon";
-import { SwitchToTestnet } from "./SwitchToTestnet";
 
 export interface SidebarMetadata {
   title: string;
   description: React.ReactElement;
-  testnetSwitch?: boolean;
   toStoreCode?: boolean;
 }
 
@@ -35,8 +33,8 @@ export const StickySidebar = ({
 }: StickySidebarProps) => {
   const navigate = useInternalNavigate();
   const { network } = useCurrentNetwork();
-  const { title, description, testnetSwitch, toStoreCode } = metadata[network];
-  const hasAction = testnetSwitch || toStoreCode;
+  const { title, description, toStoreCode } = metadata[network];
+  const hasAction = toStoreCode;
   return (
     <Box flex="4" px={8} position="relative" {...boxProps}>
       <Flex position="fixed" width="full">
@@ -62,22 +60,6 @@ export const StickySidebar = ({
               <Text variant="body2" color="text.dark" mb={hasAction ? 3 : 0}>
                 {description}
               </Text>
-              {testnetSwitch && (
-                <SwitchToTestnet
-                  color="lilac.main"
-                  colorHover="lilac.light"
-                  bgHover="lilac.background"
-                  p={1}
-                  icon={
-                    <CustomIcon
-                      name="chevron-right"
-                      color="lilac.main"
-                      boxSize="3"
-                      m={0}
-                    />
-                  }
-                />
-              )}
               {toStoreCode && (
                 <Flex
                   align="center"

@@ -17,7 +17,6 @@ export const SIDEBAR_DETAILS: SidebarDetails = {
         network without having to submit a proposal every time.
       </span>
     ),
-    testnetSwitch: true,
     toStoreCode: true,
   },
   testnet: {

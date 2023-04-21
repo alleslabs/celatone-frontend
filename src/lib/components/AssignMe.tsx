@@ -8,7 +8,7 @@ interface AssginMeProps {
 }
 
 export const AssignMe = ({ onClick, isDisable = false }: AssginMeProps) => {
-  const { address: walletAddress = "" } = useWallet();
+  const { address: walletAddress } = useWallet();
   const enabled = Boolean(!isDisable && walletAddress);
   return (
     <Text

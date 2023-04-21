@@ -15,9 +15,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
+import { TestnetAlert } from "../components/TestnetAlert";
 import { SIDEBAR_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
+  useCurrentNetwork,
   useFabricateFee,
   useSimulateFeeQuery,
   useSubmitProposalTx,
@@ -80,6 +82,7 @@ const ProposalToWhitelist = () => {
     control,
     name: "addresses",
   });
+  const { isTestnet } = useCurrentNetwork();
 
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
@@ -192,13 +195,27 @@ const ProposalToWhitelist = () => {
     <>
       <PageContainer>
         <Grid
-          templateAreas={`"prespace main sidebar postspace"`}
+          templateAreas={`"prespace alert alert postspace" "prespace main sidebar postspace"`}
           templateColumns="1fr 6fr 4fr 1fr"
+          sx={
+            isTestnet
+              ? {
+                  "> div:not(.testnet-alert)": {
+                    opacity: 0.5,
+                    pointerEvents: "none",
+                  },
+                }
+              : undefined
+          }
         >
-          <GridItem area="prespace" />
+          {isTestnet && (
+            <GridItem area="alert" className="testnet-alert" mb={10}>
+              <TestnetAlert />
+            </GridItem>
+          )}
           <GridItem area="main">
             <Heading as="h5" variant="h5">
-              Create Proposal to Whitelisting
+              Create Proposal to Whitelist
             </Heading>
             <Text color="text.dark" mt={4} fontWeight={500} variant="body2">
               Allowed addresses will be able to upload and stored code without
@@ -244,7 +261,7 @@ const ProposalToWhitelist = () => {
                   control={control}
                   height="160px"
                   label="Proposal Description"
-                  placeholder="Please describe your proposal for whitelisting. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
+                  placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
                   variant="floating"
                   labelBgColor="pebble.900"
                   rules={{
@@ -385,7 +402,6 @@ const ProposalToWhitelist = () => {
           <GridItem area="sidebar">
             <StickySidebar marginTop="128px" metadata={SIDEBAR_DETAILS} />
           </GridItem>
-          <GridItem area="postspace" />
         </Grid>
       </PageContainer>
       <Footer

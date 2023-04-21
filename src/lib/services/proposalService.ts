@@ -265,9 +265,9 @@ export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
 
 interface DepositParamsReturn extends Omit<DepositParams, "min_deposit"> {
   min_deposit: {
-    amount: string;
+    amount: U<Token>;
     denom: string;
-    formattedAmount: string;
+    formattedAmount: Token;
     formattedDenom: string;
     formattedToken: string;
   };
@@ -296,7 +296,8 @@ export const useGovParams = (): UseQueryResult<{
           ...params[0],
           min_deposit: {
             ...minDepositParam,
-            formattedAmount: minDepositAmount,
+            amount: minDepositParam.amount as U<Token>,
+            formattedAmount: minDepositAmount as Token,
             formattedDenom: minDepositDenom,
             formattedToken: formatBalanceWithDenom({
               coin: minDepositParam,

@@ -20,10 +20,10 @@ export const getAlert = (
   minDepositAmount: Option<string>,
   denom: Option<string>
 ): AlertProps => {
-  const enteredAmount = amount || 0;
+  const enteredAmount = big(amount || 0);
   if (!minDepositAmount) return defaultAlertProps;
 
-  if (big(enteredAmount).lt(minDepositAmount)) {
+  if (enteredAmount.lt(minDepositAmount)) {
     return {
       variant: "warning",
       description: `${d2Formatter(
@@ -39,7 +39,7 @@ export const getAlert = (
       ),
     };
   }
-  if (big(enteredAmount).eq(minDepositAmount)) {
+  if (enteredAmount.eq(minDepositAmount)) {
     return {
       variant: "honeydew",
       description:

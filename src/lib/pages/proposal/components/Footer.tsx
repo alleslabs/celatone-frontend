@@ -27,7 +27,7 @@ export const Footer = ({
     >
       <GridItem area="main">
         <Flex flex="5" align="center" justify="space-between" h="full" w="full">
-          <Button variant="outline-gray" onClick={router.back}>
+          <Button variant="outline-primary" onClick={router.back}>
             Cancel
           </Button>
           <Button

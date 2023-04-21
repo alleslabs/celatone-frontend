@@ -11,6 +11,7 @@ import { useWatch } from "react-hook-form";
 import { useCelatoneApp, useValidateAddress } from "lib/app-provider";
 import type { FormStatus, TextInputProps } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
+import type { Option } from "lib/types";
 
 interface AddressInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {
@@ -21,7 +22,7 @@ interface AddressInputProps<T extends FieldValues>
   helperAction?: ReactNode;
 }
 
-const getAddressStatus = (input: string, error?: string): FormStatus => {
+const getAddressStatus = (input: string, error: Option<string>): FormStatus => {
   if (error) return { state: "error", message: error };
   if (!input) return { state: "init" };
   return { state: "success", message: "Valid Address" };
