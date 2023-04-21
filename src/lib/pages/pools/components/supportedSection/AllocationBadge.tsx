@@ -30,33 +30,43 @@ export const AllocationBadge = ({
   value,
   liquidity,
   mode,
-}: AllocationBadgeProps) => (
-  <Flex
-    bg="pebble.800"
-    px={3}
-    py={1}
-    border="1px solid"
-    borderColor="pebble.700"
-    borderRadius="8px"
-    transition="all .25s ease-in-out"
-    alignItems="center"
-    gap={2}
-  >
-    {denom && <Image boxSize={4} src={logo || getUndefinedTokenIcon(denom)} />}
-    <Box w="full" minW="50px">
-      <Text
-        variant="body3"
-        className="ellipsis"
-        color="text.dark"
-        fontWeight="600"
-      >
-        {denom ? symbol || getTokenLabel(denom) : "OTHERS"}
-      </Text>
-      <Text variant="body3" color="text.main">
-        {mode === "percent-value"
-          ? `${formatPercentValue((value ?? big(0)).div(liquidity).times(100))}`
-          : `${formatUTokenWithPrecision(amount, precision || 0)}`}
-      </Text>
-    </Box>
-  </Flex>
-);
+}: AllocationBadgeProps) => {
+  const formattedValue = formatPercentValue(
+    (value ?? big(0)).div(liquidity).times(100)
+  );
+  const formattedAmount = denom
+    ? formatUTokenWithPrecision(amount, precision || 0)
+    : "-";
+  return (
+    <Flex
+      bg="pebble.800"
+      px={3}
+      py={1}
+      border="1px solid"
+      borderColor="pebble.700"
+      borderRadius="8px"
+      transition="all .25s ease-in-out"
+      alignItems="center"
+      gap={2}
+    >
+      {denom && (
+        <Image boxSize={4} src={logo || getUndefinedTokenIcon(denom)} />
+      )}
+      <Box w="full" minW="50px">
+        <Text
+          variant="body3"
+          className="ellipsis"
+          color="text.dark"
+          fontWeight="600"
+        >
+          {denom ? symbol || getTokenLabel(denom) : "OTHERS"}
+        </Text>
+        <Text variant="body3" color="text.main">
+          {mode === "percent-value"
+            ? `${formattedValue}`
+            : `${formattedAmount}`}
+        </Text>
+      </Box>
+    </Flex>
+  );
+};
