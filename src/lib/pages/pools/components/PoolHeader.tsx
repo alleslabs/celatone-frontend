@@ -27,7 +27,7 @@ export const PoolHeader = ({
           <Heading as="h6" fontWeight="600" variant="h6">
             {poolLiquidity[0].symbol || getTokenLabel(poolLiquidity[0].denom)}
           </Heading>
-          {poolLiquidity.slice(1, 4).map((item) => (
+          {poolLiquidity.slice(1, 3).map((item) => (
             <Flex key={item.denom} gap={1}>
               <Heading
                 as="h6"
@@ -43,8 +43,7 @@ export const PoolHeader = ({
               </Heading>
             </Flex>
           ))}
-
-          {poolLiquidity.length > 4 && (
+          {poolLiquidity.length >= 4 && (
             <Flex gap={1}>
               <Heading
                 as="h6"
@@ -55,7 +54,10 @@ export const PoolHeader = ({
                 /
               </Heading>
               <Heading as="h6" fontWeight="600" variant="h6">
-                + {poolLiquidity.length - 4}
+                {poolLiquidity.length === 4
+                  ? poolLiquidity[3].symbol ||
+                    getTokenLabel(poolLiquidity[3].denom)
+                  : `+${poolLiquidity.length - 3}`}
               </Heading>
             </Flex>
           )}
