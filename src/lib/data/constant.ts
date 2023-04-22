@@ -18,7 +18,9 @@ export const getMaxLengthError = (
   currentLength: number,
   maxLength: number
 ) => {
-  return `${field} is too long. (${currentLength}/${maxLength})`;
+  return currentLength > maxLength
+    ? `${field} is too long. (${currentLength}/${maxLength})`
+    : undefined;
 };
 
 export const MAX_LIST_NAME_LENGTH = 50;
@@ -73,6 +75,7 @@ export const typeUrlDict = {
   [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
   [MsgType.MIGRATE]: "/cosmwasm.wasm.v1.MsgMigrateContract",
   [MsgType.UPDATE_ADMIN]: "/cosmwasm.wasm.v1.MsgUpdateAdmin",
+  [MsgType.SUBMIT_PROPOSAL]: "/cosmos.gov.v1beta1.MsgSubmitProposal",
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";

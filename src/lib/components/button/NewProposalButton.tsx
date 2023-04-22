@@ -7,7 +7,8 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { TooltipComponent } from "../TooltipComponent";
+import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
 const StyledMenuItem = chakra(MenuItem, {
@@ -18,6 +19,7 @@ const StyledMenuItem = chakra(MenuItem, {
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
+  const { isTestnet } = useCurrentNetwork();
 
   return (
     <Menu>
@@ -30,7 +32,7 @@ export const NewProposalButton = () => {
         Create New Proposal
       </MenuButton>
       <MenuList>
-        <StyledMenuItem
+        {/* <StyledMenuItem
           icon={<CustomIcon name="code" />}
           // TODO - Change navigation path
           onClick={() => {
@@ -40,7 +42,7 @@ export const NewProposalButton = () => {
           }}
         >
           To Store Code
-        </StyledMenuItem>
+        </StyledMenuItem> */}
         {/* <StyledMenuItem
           icon={<CustomIcon name="contract-address" />}
           onClick={() => {
@@ -52,17 +54,21 @@ export const NewProposalButton = () => {
         >
           To Instantiate Contract
         </StyledMenuItem> */}
-        <StyledMenuItem
-          icon={<CustomIcon name="admin" />}
-          onClick={() => {
-            // TODO - Change navigation path
-            navigate({
-              pathname: "/proposal-whitelisting",
-            });
-          }}
+        <TooltipComponent
+          label={isTestnet ? "Not available in testnet" : undefined}
         >
-          To Whitelisting
-        </StyledMenuItem>
+          <StyledMenuItem
+            isDisabled={isTestnet}
+            icon={<CustomIcon name="admin" />}
+            onClick={() => {
+              navigate({
+                pathname: "/proposal/whitelist",
+              });
+            }}
+          >
+            To Whitelist
+          </StyledMenuItem>
+        </TooltipComponent>
       </MenuList>
     </Menu>
   );

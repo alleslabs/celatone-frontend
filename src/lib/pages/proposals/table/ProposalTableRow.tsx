@@ -3,7 +3,7 @@ import { Grid } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { ProposalTextCell } from "../components/ProposalTextCell";
-import { getProposalUrl } from "lib/app-fns/explorer";
+import { getExplorerProposalUrl } from "lib/app-fns/explorer";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow, TableRowFreeze } from "lib/components/table";
 import { Proposer } from "lib/components/table/proposals/Proposer";
@@ -47,7 +47,7 @@ export const ProposalTableRow = ({
       onClick={() =>
         !isDepositFailed &&
         window.open(
-          `${getProposalUrl(
+          `${getExplorerProposalUrl(
             currentChainName
           )}/${proposal.proposalId.toString()}`,
           "_blank",

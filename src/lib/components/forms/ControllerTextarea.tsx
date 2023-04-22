@@ -31,7 +31,7 @@ export const ControllerTextarea = <T extends FieldValues>({
   helperText,
   placeholder = " ",
   error,
-  height,
+  height = "112px",
   rules = {},
   ...componentProps
 }: ControllerTextareaProps<T>) => {
@@ -39,16 +39,13 @@ export const ControllerTextarea = <T extends FieldValues>({
     name,
     control,
   });
-
   const { field } = useController({ name, control, rules });
-
-  const isError = !!error;
-  const isRequired = "required" in rules;
+  const isError = Boolean(error);
   return (
     <FormControl
       size="md"
       isInvalid={isError}
-      isRequired={isRequired}
+      sx={{ "> div": { marginTop: "1 !important" } }}
       {...componentProps}
       {...field}
     >

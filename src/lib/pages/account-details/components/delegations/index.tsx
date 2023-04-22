@@ -6,9 +6,15 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
-import type { TokenWithValue } from "lib/pages/account-details/type";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { HumanAddr, Option, Token, U, USD } from "lib/types";
+import type {
+  HumanAddr,
+  Option,
+  Token,
+  TokenWithValue,
+  U,
+  USD,
+} from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
 import { DelegationsBody } from "./DelegationsBody";
@@ -62,6 +68,7 @@ export const DelegationsSection = ({
   const defaultToken: TokenWithValue = {
     denom: stakingParams.bondDenom,
     amount: big(0) as U<Token<Big>>,
+    symbol: stakingParams.symbol,
     logo: stakingParams.logo,
     precision: stakingParams.precision,
     value: stakingParams.logo ? (big(0) as USD<Big>) : undefined,
@@ -77,10 +84,10 @@ export const DelegationsSection = ({
   const redelegationCount = redelegations?.length ?? 0;
 
   return (
-    <Flex mt={12} position="relative" overflow="hidden">
+    <Flex mt={8} pb={8} position="relative" overflow="hidden" width="full">
       <Flex
         direction="column"
-        gap={8}
+        gap={4}
         w="full"
         position={isOpen ? "absolute" : "relative"}
         opacity={isOpen ? 0 : 1}

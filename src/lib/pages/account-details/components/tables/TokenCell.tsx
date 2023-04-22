@@ -1,7 +1,7 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 
 import { NAToken } from "lib/icon";
-import type { TokenWithValue } from "lib/pages/account-details/type";
+import type { TokenWithValue } from "lib/types";
 import {
   formatPrice,
   formatUTokenWithPrecision,
@@ -17,7 +17,7 @@ export const TokenCell = ({ token }: TokenCellProps) => (
     <Image
       boxSize={6}
       src={token.logo}
-      alt={getTokenLabel(token.denom)}
+      alt={token.symbol ?? getTokenLabel(token.denom)}
       fallback={<NAToken />}
       fallbackStrategy="onError"
     />
@@ -26,7 +26,9 @@ export const TokenCell = ({ token }: TokenCellProps) => (
         <Text variant="body2" fontWeight="700">
           {formatUTokenWithPrecision(token.amount, token.precision || 0)}
         </Text>
-        <Text variant="body2">{getTokenLabel(token.denom)}</Text>
+        <Text variant="body2">
+          {token.symbol ?? getTokenLabel(token.denom)}
+        </Text>
       </Flex>
       <Text variant="body3" textColor="text.dark">
         ({token.value ? formatPrice(token.value) : "-"})

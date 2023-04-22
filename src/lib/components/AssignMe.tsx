@@ -8,17 +8,18 @@ interface AssginMeProps {
 }
 
 export const AssignMe = ({ onClick, isDisable = false }: AssginMeProps) => {
-  const { address: walletAddress = "" } = useWallet();
+  const { address: walletAddress } = useWallet();
+  const enabled = Boolean(!isDisable && walletAddress);
   return (
     <Text
       textAlign="right"
       mr={3}
-      color={!isDisable && walletAddress ? "honeydew.main" : "pebble.500"}
+      color={enabled ? "honeydew.main" : "pebble.500"}
       fontWeight="600"
       variant="body3"
-      cursor={!isDisable && walletAddress ? "pointer" : "not-allowed"}
+      cursor={enabled ? "pointer" : "not-allowed"}
       minW={16}
-      onClick={onClick}
+      onClick={enabled ? onClick : undefined}
     >
       Assign me
     </Text>

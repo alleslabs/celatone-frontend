@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { AddressInput } from "../../components/AddressInput";
+import { SIDEBAR_DETAILS } from "../proposal/constants";
 import { useNativeTokensInfo, useSimulateFee } from "lib/app-provider";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -222,9 +223,10 @@ const StoreCode = () => {
                       placeholder="ex.cltn1ff1asdf7988aw49efa4vw9846789"
                       variant="floating"
                       helperText="This address will be stored as code creator."
-                      rules={{
-                        required: "Creator is required",
-                      }}
+                      // TODO - Add this rule
+                      // rules={{
+                      //   required: "Creator is required",
+                      // }}
                       error={errors.creator && errors.creator.message}
                       helperAction={
                         <AssignMe
@@ -457,7 +459,8 @@ const StoreCode = () => {
               </Box>
             </GridItem>
             <GridItem w="100%">
-              <StickySidebar />
+              {/* TODO - Change text */}
+              <StickySidebar marginTop="128px" metadata={SIDEBAR_DETAILS} />
             </GridItem>
             <GridItem w="100%" />
           </Grid>

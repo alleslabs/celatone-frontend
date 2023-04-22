@@ -4,7 +4,7 @@ import type { TypeUrl } from "lib/data";
 import type {
   Addr,
   ContractAddr,
-  InstantiatePermission,
+  AccessConfigPermission,
   Option,
   ValidatorAddr,
 } from "lib/types";
@@ -21,7 +21,7 @@ export interface MsgUnknownDetails extends MsgBaseDetails {
 }
 
 interface InstantiatePermissionResponse {
-  permission: InstantiatePermission;
+  permission: AccessConfigPermission;
   address: Addr;
   addresses: Addr[];
 }
@@ -457,7 +457,7 @@ export interface MsgBeginUnlockingAllDetails extends MsgBaseDetails {
 export interface MsgBeginUnlockingDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
-  coins: Coin[];
+  coins?: Coin[];
 }
 export interface MsgExtendLockupDetails extends MsgBaseDetails {
   owner: Addr;
@@ -467,7 +467,7 @@ export interface MsgExtendLockupDetails extends MsgBaseDetails {
 export interface MsgForceUnlockDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
-  coins: Coin[];
+  coins?: Coin[];
 }
 
 // osmosis/superfluid

@@ -1,4 +1,4 @@
-import type { Addr, Option } from "lib/types";
+import type { Addr } from "lib/types";
 
 export enum ActionMsgType {
   SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
@@ -33,13 +33,24 @@ export interface Transaction {
   sender: Addr;
   isSigner: boolean;
   height: number;
-  created: Option<Date>;
+  created: Date;
   success: boolean;
   actionMsgType: ActionMsgType;
   furtherAction: MsgFurtherAction;
   isIbc: boolean;
   isInstantiate: boolean;
 }
+
+export type BlockTransaction = Pick<
+  Transaction,
+  | "hash"
+  | "messages"
+  | "success"
+  | "sender"
+  | "actionMsgType"
+  | "isIbc"
+  | "isInstantiate"
+>;
 
 export interface TxFilters {
   isExecute: boolean;

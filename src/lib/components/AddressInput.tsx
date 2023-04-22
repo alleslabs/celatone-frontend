@@ -4,24 +4,25 @@ import type {
   Control,
   FieldPath,
   FieldValues,
-  UseControllerProps,
+  RegisterOptions,
 } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 
-import { useValidateAddress } from "lib/app-provider";
+import { useCelatoneApp, useValidateAddress } from "lib/app-provider";
 import type { FormStatus, TextInputProps } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
+import type { Option } from "lib/types";
 
 interface AddressInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
-  rules?: UseControllerProps["rules"];
+  validation?: RegisterOptions["validate"];
   maxLength?: number;
   helperAction?: ReactNode;
 }
 
-const getAddressStatus = (input: string, error?: string): FormStatus => {
+const getAddressStatus = (input: string, error: Option<string>): FormStatus => {
   if (error) return { state: "error", message: error };
   if (!input) return { state: "init" };
   return { state: "success", message: "Valid Address" };
@@ -33,13 +34,16 @@ export const AddressInput = <T extends FieldValues>({
   label,
   labelBgColor = "background.main",
   helperText,
-  placeholder = "ex.cltn1ff1asdf7988aw49efa4vw9846789",
+  placeholder,
   error,
   size = "lg",
-  rules = {},
+  validation = {},
   maxLength,
   helperAction,
 }: AddressInputProps<T>) => {
+  const {
+    appHumanAddress: { example: exampleAddr },
+  } = useCelatoneApp();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const validateAddress = useCallback(
     (input: string) =>
@@ -61,14 +65,17 @@ export const AddressInput = <T extends FieldValues>({
       name={name}
       control={control}
       label={label}
-      placeholder={placeholder}
+      placeholder={placeholder ?? exampleAddr}
       type="text"
       variant="floating"
       status={status}
       labelBgColor={labelBgColor}
       helperText={helperText}
       size={size}
-      rules={rules}
+      rules={{
+        required: "Address is empty",
+        validate: { validateAddress, ...validation },
+      }}
       maxLength={maxLength}
       helperAction={helperAction}
     />

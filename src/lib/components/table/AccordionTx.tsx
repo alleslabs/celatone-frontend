@@ -1,3 +1,4 @@
+import type { GridItemProps } from "@chakra-ui/react";
 import { SlideFade } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -12,13 +13,12 @@ import { TableRow } from "./tableComponents";
 interface AccordionTxProps {
   message: Message;
   allowFurtherAction: boolean;
+  accordionSpacing?: GridItemProps["pl"];
 }
 
 interface RenderButtonProps {
   message: Message;
 }
-
-const ACCORDION_LEFT_SPACING = "266px";
 
 const RenderButton = ({ message }: RenderButtonProps) => {
   if (
@@ -36,6 +36,7 @@ const RenderButton = ({ message }: RenderButtonProps) => {
 export const AccordionTx = ({
   message,
   allowFurtherAction,
+  accordionSpacing = "206px",
 }: AccordionTxProps) => {
   const [showButton, setShowButton] = useState(false);
   return (
@@ -43,7 +44,7 @@ export const AccordionTx = ({
       minH={0}
       h="40px"
       borderBottom="none"
-      pl={ACCORDION_LEFT_SPACING}
+      pl={accordionSpacing}
       gap={3}
       _hover={{ background: "pebble.800" }}
       transition="all .25s ease-in-out"
