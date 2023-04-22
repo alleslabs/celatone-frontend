@@ -11,4 +11,5 @@ export * from "./addrs";
 export * from "./proposal";
 export * from "./validator";
 export * from "./upload";
+export * from "./block";
 export * from "./asset";

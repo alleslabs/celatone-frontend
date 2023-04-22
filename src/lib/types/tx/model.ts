@@ -30,7 +30,8 @@ export type ActionVariant =
   | "migrate"
   | "rejected"
   | "resend"
-  | "update-admin";
+  | "update-admin"
+  | "proposal";
 
 export interface TxResultRendering<T = unknown> {
   /**

@@ -3,7 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import type { CSSProperties } from "react";
 
 import type { HumanAddr, PermissionAddresses } from "lib/types";
-import { InstantiatePermission } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 import { getPermissionHelper } from "lib/utils";
 
 const StyledTag = chakra(Tag, {
@@ -17,7 +17,7 @@ const StyledTag = chakra(Tag, {
 });
 
 interface PermissionChipProps {
-  instantiatePermission: InstantiatePermission;
+  instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
 }
 
@@ -29,7 +29,7 @@ export const PermissionChip = ({
 
   const isAllowed =
     permissionAddresses.includes(address as HumanAddr) ||
-    instantiatePermission === InstantiatePermission.EVERYBODY;
+    instantiatePermission === AccessConfigPermission.EVERYBODY;
 
   const tagBgColor: CSSProperties["backgroundColor"] = isAllowed
     ? "honeydew.darker"

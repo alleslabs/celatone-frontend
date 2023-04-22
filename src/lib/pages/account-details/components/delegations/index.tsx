@@ -84,10 +84,10 @@ export const DelegationsSection = ({
   const redelegationCount = redelegations?.length ?? 0;
 
   return (
-    <Flex mt={12} position="relative" overflow="hidden">
+    <Flex mt={8} pb={8} position="relative" overflow="hidden" width="full">
       <Flex
         direction="column"
-        gap={8}
+        gap={4}
         w="full"
         position={isOpen ? "absolute" : "relative"}
         opacity={isOpen ? 0 : 1}

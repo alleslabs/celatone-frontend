@@ -1,4 +1,5 @@
 import type { Coin } from "@cosmjs/stargate";
+import type { MsgSubmitProposal } from "cosmjs-types/cosmos/gov/v1beta1/tx";
 
 import type { Addr, ContractAddr } from "../addrs";
 
@@ -8,6 +9,7 @@ export enum MsgType {
   EXECUTE = "EXECUTE",
   MIGRATE = "MIGRATE",
   UPDATE_ADMIN = "UPDATE_ADMIN",
+  SUBMIT_PROPOSAL = "SUBMIT_PROPOSAL",
 }
 
 export enum AccessType {
@@ -63,7 +65,8 @@ export type TxMessage =
   | MsgInstantiateContract
   | MsgExecuteContract
   | MsgMigrateContract
-  | MsgUpdateAdmin;
+  | MsgUpdateAdmin
+  | MsgSubmitProposal;
 
 export interface ComposedMsg {
   typeUrl: string;

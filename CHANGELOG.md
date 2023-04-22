@@ -40,6 +40,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#279](https://github.com/alleslabs/celatone-frontend/pull/279) Add instantiate permission to msg store code and upgrade cosmjs to version 0.30.1
+- [#268](https://github.com/alleslabs/celatone-frontend/pull/268) Wireup create proposal to whitelisting
+- [#266](https://github.com/alleslabs/celatone-frontend/pull/250) Add proposal whitelisting page
+- [#286](https://github.com/alleslabs/celatone-frontend/pull/286) Add block proposer
+- [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Searching can now be determined by chain
+- [#273](https://github.com/alleslabs/celatone-frontend/pull/273) Add subheader and network overview
+- [#278](https://github.com/alleslabs/celatone-frontend/pull/278) Fully wired block details page
+- [#272](https://github.com/alleslabs/celatone-frontend/pull/272) Add blocks page and table component
 - [#287](https://github.com/alleslabs/celatone-frontend/pull/287) Add app default human address for each chain
 - [#271](https://github.com/alleslabs/celatone-frontend/pull/271) Create transaction list page
 - [#245](https://github.com/alleslabs/celatone-frontend/pull/245) Add amplitude for account detail page
@@ -58,6 +65,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link
+- [#293](https://github.com/alleslabs/celatone-frontend/pull/293) Add comma separator to pagination and total blocks
+- [#291](https://github.com/alleslabs/celatone-frontend/pull/291) Update tx count query
+- [#285](https://github.com/alleslabs/celatone-frontend/pull/285) Add data fetching error state, and empty state to blocks page
 - [#292](https://github.com/alleslabs/celatone-frontend/pull/292) Handle format token with M and show only 2 decimal points when more than 1,000
 - [#284](https://github.com/alleslabs/celatone-frontend/pull/284) Add data fetching error state to txs page
 - [#281](https://github.com/alleslabs/celatone-frontend/pull/281) Change Osmosis mainnet GraphQL
@@ -72,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#290](https://github.com/alleslabs/celatone-frontend/pull/290) Fix spacing and styling in account detail
 - [#280](https://github.com/alleslabs/celatone-frontend/pull/280) Fix begin unlocking optional coins field causing crash
 - [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
 - [#257](https://github.com/alleslabs/celatone-frontend/pull/257) Fix proposal resolved height query, resolved height rendering, and move ResolvedHeight and VotingEndTime to their own file

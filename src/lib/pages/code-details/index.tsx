@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { Loading } from "lib/components/Loading";
@@ -15,7 +15,7 @@ import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { InstantiatePermission } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 import { getCw2Info, getFirstQueryParam, isCodeId } from "lib/utils";
 
 import { CodeInfoSection } from "./components/CodeInfoSection";
@@ -71,7 +71,11 @@ const CodeDetailsBody = observer(
               <Text fontWeight={500} color="text.dark" variant="body2">
                 Code ID:
               </Text>
-              <ExplorerLink type="code_id" value={codeId.toString()} />
+              <CopyLink
+                value={codeId.toString()}
+                amptrackSection="code_top"
+                type="code_id"
+              />
             </Flex>
             <Flex gap={2}>
               <Text fontWeight={500} color="text.dark" variant="body2">
@@ -94,7 +98,7 @@ const CodeDetailsBody = observer(
             uploader={localCodeInfo?.uploader ?? codeData.uploader}
             name={localCodeInfo?.name}
             instantiatePermission={
-              codeData.instantiatePermission ?? InstantiatePermission.UNKNOWN
+              codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
             }
             permissionAddresses={codeData.permissionAddresses ?? []}
             contractCount={undefined}
