@@ -14,8 +14,8 @@ export const PoolId = () => {
   const navigate = useInternalNavigate();
 
   if (!router.query.poolId) return <Loading />;
-  const query = router.query.poolId;
-  const pool = MockUpPoolList.find((x) => x.id === +query);
+  const poolIdParam = router.query.poolId;
+  const pool = MockUpPoolList.find((x) => x.id === +poolIdParam);
   if (!pool) return navigate({ pathname: `/pool` });
   return (
     <PageContainer>
@@ -26,7 +26,7 @@ export const PoolId = () => {
         // weight={pool.weight}
         // scaling_factors={pool.scaling_factors}
       />
-      <PoolRelatedTxs />
+      <PoolRelatedTxs poolId={Number(poolIdParam)} />
     </PageContainer>
   );
 };

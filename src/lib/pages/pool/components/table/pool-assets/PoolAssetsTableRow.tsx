@@ -4,8 +4,8 @@ import type { Coin } from "@cosmjs/stargate";
 import big from "big.js";
 import type { BigSource, Big } from "big.js";
 
-import { getUndefinedTokenIcon } from "../../utils";
 import { TableRow } from "lib/components/table/tableComponents";
+import { getUndefinedTokenIcon } from "lib/pages/pool/utils";
 import { useAssetInfos } from "lib/services/assetService";
 import type { Token, U, USD, PoolDetail } from "lib/types";
 import {
@@ -36,24 +36,26 @@ export const PoolAssetsTableRow = ({
       <Skeleton height="75px" startColor="pebble.900" endColor="pebble.800" />
     );
   const assetInfo = assetInfos[asset.denom];
-  const assetValue = calculateAssetValue(
-    toToken(big(asset.amount) as U<Token<BigSource>>, assetInfo.precision),
-    assetInfo.price as USD<number>
-  );
+  const assetValue = assetInfo
+    ? calculateAssetValue(
+        toToken(big(asset.amount) as U<Token<BigSource>>, assetInfo.precision),
+        assetInfo.price as USD<number>
+      )
+    : (0 as USD<number>);
   return (
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <Flex alignItems="center" gap={2}>
           <Image
             boxSize={7}
-            src={assetInfo.logo || getUndefinedTokenIcon(assetInfo.id)}
+            src={assetInfo?.logo || getUndefinedTokenIcon(asset.denom)}
           />
           <Flex flexDirection="column">
             <Text variant="body2" fontWeight="600" color="text.main">
               {assetInfo?.symbol || getTokenLabel(asset.denom)}
             </Text>
             <Text variant="body3" color="text.dark">
-              {formatPrice(assetInfo.price as USD<number>)}
+              {assetInfo ? formatPrice(assetInfo.price as USD<number>) : "-"}
             </Text>
           </Flex>
         </Flex>
@@ -80,11 +82,13 @@ export const PoolAssetsTableRow = ({
       <TableRow>
         <Flex alignItems="flex-end" w="full" flexDirection="column">
           <Text variant="body2" fontWeight="600" color="text.main">
-            {formatUTokenWithPrecision(
-              asset.amount as U<Token>,
-              assetInfo.precision,
-              false
-            )}
+            {assetInfo
+              ? formatUTokenWithPrecision(
+                  asset.amount as U<Token>,
+                  assetInfo.precision,
+                  false
+                )
+              : (asset.amount as U<Token>)}
           </Text>
           <Text variant="body3" color="text.dark">
             {formatPrice(assetValue)}

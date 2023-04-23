@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#294](https://github.com/alleslabs/celatone-frontend/pull/294) Add Pool related txs table with blank states
 - [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Add Pool navigation and pool detail data
 - [#270](https://github.com/alleslabs/celatone-frontend/pull/270) Add Pool navigation and detail page
 - [#268](https://github.com/alleslabs/celatone-frontend/pull/268) Wireup create proposal to whitelisting

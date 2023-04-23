@@ -11,7 +11,7 @@ import type { USD } from "lib/types";
 import type { PoolDetail } from "lib/types/pool";
 import { calAssetValueWithPrecision, formatPrice } from "lib/utils";
 
-import { PoolAssetsTable } from "./table/PoolAssetsTable";
+import { PoolAssetsTable } from "./table/pool-assets/PoolAssetsTable";
 
 interface PoolAssetDetailProps {
   assets: Coin[];

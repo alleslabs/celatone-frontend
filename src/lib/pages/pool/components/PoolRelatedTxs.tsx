@@ -9,8 +9,24 @@ import {
 } from "@chakra-ui/react";
 
 import { CustomTab } from "lib/components/CustomTab";
+import { useTxsCountByPoolId } from "lib/services/txService";
 
-export const PoolRelatedTxs = () => {
+import { PoolRelatedTxsTable } from "./table/pool-txs";
+
+interface PoolRelatedTxsProps {
+  poolId: number;
+}
+
+export const PoolRelatedTxs = ({ poolId }: PoolRelatedTxsProps) => {
+  const { data: countAllTxs = 0 } = useTxsCountByPoolId(poolId, "is_all");
+  const { data: countSwapTxs = 0 } = useTxsCountByPoolId(poolId, "is_swap");
+  const { data: countLpTxs = 0 } = useTxsCountByPoolId(poolId, "is_lp");
+  const { data: countBondTxs = 0 } = useTxsCountByPoolId(poolId, "is_bond");
+  const { data: countSuperfluidTxs = 0 } = useTxsCountByPoolId(
+    poolId,
+    "is_superfluid"
+  );
+
   return (
     <Box>
       <Flex mt={12} gap={2} alignItems="center">
@@ -20,37 +36,47 @@ export const PoolRelatedTxs = () => {
       </Flex>
       <Tabs>
         <TabList mt={4} borderBottom="1px" borderColor="pebble.800">
-          <CustomTab count={0}>All</CustomTab>
-          <CustomTab count={0}>Swap</CustomTab>
-          <CustomTab count={0}>LP</CustomTab>
-          <CustomTab count={0}>Bonding</CustomTab>
-          <CustomTab count={0}>Superfluid</CustomTab>
+          <CustomTab count={countAllTxs}>All</CustomTab>
+          <CustomTab count={countSwapTxs}>Swap</CustomTab>
+          <CustomTab count={countLpTxs}>LP</CustomTab>
+          <CustomTab count={countBondTxs}>Bonding</CustomTab>
+          <CustomTab count={countSuperfluidTxs}>Superfluid</CustomTab>
         </TabList>
         <TabPanels>
-          <TabPanel p={0}>All</TabPanel>
           <TabPanel p={0}>
-            Swappppppp Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Delectus beatae esse doloremque eaque dolores magni harum pariatur,
-            corporis aliquid at quam quod fuga fugit sit a ipsam culpa tempora
-            voluptate?
+            <PoolRelatedTxsTable
+              poolId={poolId}
+              countTxs={countAllTxs}
+              type="is_all"
+            />
           </TabPanel>
           <TabPanel p={0}>
-            LPLPLPLPLPLLPLP Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Delectus beatae esse doloremque eaque dolores magni harum
-            pariatur, corporis aliquid at quam quod fuga fugit sit a ipsam culpa
-            tempora voluptate?
+            <PoolRelatedTxsTable
+              poolId={poolId}
+              countTxs={countSwapTxs}
+              type="is_swap"
+            />
           </TabPanel>
           <TabPanel p={0}>
-            BondingBondingBonding Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Delectus beatae esse doloremque eaque dolores
-            magni harum pariatur, corporis aliquid at quam quod fuga fugit sit a
-            ipsam culpa tempora voluptate?
+            <PoolRelatedTxsTable
+              poolId={poolId}
+              countTxs={countLpTxs}
+              type="is_lp"
+            />
           </TabPanel>
           <TabPanel p={0}>
-            SuperfluidSuperfluid Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Delectus beatae esse doloremque eaque dolores
-            magni harum pariatur, corporis aliquid at quam quod fuga fugit sit a
-            ipsam culpa tempora voluptate?
+            <PoolRelatedTxsTable
+              poolId={poolId}
+              countTxs={countBondTxs}
+              type="is_bond"
+            />
+          </TabPanel>
+          <TabPanel p={0}>
+            <PoolRelatedTxsTable
+              poolId={poolId}
+              countTxs={countSuperfluidTxs}
+              type="is_superfluid"
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
