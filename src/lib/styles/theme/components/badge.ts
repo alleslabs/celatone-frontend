@@ -20,5 +20,9 @@ export const Badge: ComponentStyleConfig = {
       color: "text.main",
     },
     honeydew: { background: "honeydew.dark", color: "background.main" },
+    lilac: {
+      background: "lilac.main",
+      color: "background.main",
+    },
   },
 };

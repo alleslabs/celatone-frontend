@@ -39,14 +39,14 @@ export const PoolTxsTableRow = ({
       >
         <TableRow>
           {txHash && (
-            <Flex gap={1}>
+            <Flex>
               <ExplorerLink
                 value={txHash.toLocaleUpperCase()}
                 type="tx_hash"
                 showCopyOnHover
               />
               {msgCount > 1 && (
-                <Badge variant="violet" ml="6px" color="text.main">
+                <Badge variant="lilac" ml="6px">
                   {msgCount}
                 </Badge>
               )}

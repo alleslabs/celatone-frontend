@@ -20,7 +20,7 @@ export const PoolTxsTable = ({
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
 
-  const templateColumns = "150px minmax(360px, 1fr) max(150px) max(220px) 60px";
+  const templateColumns = "200px minmax(360px, 1fr) max(150px) max(220px) 60px";
 
   return (
     <TableContainer>
