@@ -508,6 +508,10 @@ export type Accounts = {
   /** An aggregate relationship */
   transactions_aggregate: Transactions_Aggregate;
   type?: Maybe<Scalars["accounttype"]>;
+  /** An array relationship */
+  validators: Array<Validators>;
+  /** An aggregate relationship */
+  validators_aggregate: Validators_Aggregate;
 };
 
 /** columns and relationships of "accounts" */
@@ -654,6 +658,24 @@ export type AccountsTransactions_AggregateArgs = {
   where?: InputMaybe<Transactions_Bool_Exp>;
 };
 
+/** columns and relationships of "accounts" */
+export type AccountsValidatorsArgs = {
+  distinct_on?: InputMaybe<Array<Validators_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Validators_Order_By>>;
+  where?: InputMaybe<Validators_Bool_Exp>;
+};
+
+/** columns and relationships of "accounts" */
+export type AccountsValidators_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Validators_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Validators_Order_By>>;
+  where?: InputMaybe<Validators_Bool_Exp>;
+};
+
 /** aggregated selection of "accounts" */
 export type Accounts_Aggregate = {
   __typename?: "accounts_aggregate";
@@ -714,6 +736,8 @@ export type Accounts_Bool_Exp = {
   transactions?: InputMaybe<Transactions_Bool_Exp>;
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Bool_Exp>;
   type?: InputMaybe<Accounttype_Comparison_Exp>;
+  validators?: InputMaybe<Validators_Bool_Exp>;
+  validators_aggregate?: InputMaybe<Validators_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "accounts" */
@@ -743,6 +767,7 @@ export type Accounts_Insert_Input = {
   proposals?: InputMaybe<Proposals_Arr_Rel_Insert_Input>;
   transactions?: InputMaybe<Transactions_Arr_Rel_Insert_Input>;
   type?: InputMaybe<Scalars["accounttype"]>;
+  validators?: InputMaybe<Validators_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -800,6 +825,7 @@ export type Accounts_Order_By = {
   proposals_aggregate?: InputMaybe<Proposals_Aggregate_Order_By>;
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Order_By>;
   type?: InputMaybe<Order_By>;
+  validators_aggregate?: InputMaybe<Validators_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: accounts */
@@ -1227,6 +1253,7 @@ export type Blocks = {
   proposals: Array<Proposals>;
   /** An aggregate relationship */
   proposals_aggregate: Proposals_Aggregate;
+  proposer?: Maybe<Scalars["String"]>;
   timestamp: Scalars["timestamp"];
   /** An array relationship */
   trade_by_routes: Array<Trade_By_Routes>;
@@ -1240,6 +1267,8 @@ export type Blocks = {
   transactions: Array<Transactions>;
   /** An aggregate relationship */
   transactions_aggregate: Transactions_Aggregate;
+  /** An object relationship */
+  validator?: Maybe<Validators>;
 };
 
 /** columns and relationships of "blocks" */
@@ -1501,6 +1530,17 @@ export type Blocks_Aggregate = {
   nodes: Array<Blocks>;
 };
 
+export type Blocks_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Blocks_Aggregate_Bool_Exp_Count>;
+};
+
+export type Blocks_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Blocks_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Blocks_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "blocks" */
 export type Blocks_Aggregate_Fields = {
   __typename?: "blocks_aggregate_fields";
@@ -1523,10 +1563,37 @@ export type Blocks_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars["Boolean"]>;
 };
 
+/** order by aggregate values of table "blocks" */
+export type Blocks_Aggregate_Order_By = {
+  avg?: InputMaybe<Blocks_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Blocks_Max_Order_By>;
+  min?: InputMaybe<Blocks_Min_Order_By>;
+  stddev?: InputMaybe<Blocks_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Blocks_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Blocks_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Blocks_Sum_Order_By>;
+  var_pop?: InputMaybe<Blocks_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Blocks_Var_Samp_Order_By>;
+  variance?: InputMaybe<Blocks_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "blocks" */
+export type Blocks_Arr_Rel_Insert_Input = {
+  data: Array<Blocks_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Blocks_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Blocks_Avg_Fields = {
   __typename?: "blocks_avg_fields";
   height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "blocks" */
+export type Blocks_Avg_Order_By = {
+  height?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "blocks". All fields are combined with a logical 'AND'. */
@@ -1558,6 +1625,7 @@ export type Blocks_Bool_Exp = {
   profit_by_routes_aggregate?: InputMaybe<Profit_By_Routes_Aggregate_Bool_Exp>;
   proposals?: InputMaybe<Proposals_Bool_Exp>;
   proposals_aggregate?: InputMaybe<Proposals_Aggregate_Bool_Exp>;
+  proposer?: InputMaybe<String_Comparison_Exp>;
   timestamp?: InputMaybe<Timestamp_Comparison_Exp>;
   trade_by_routes?: InputMaybe<Trade_By_Routes_Bool_Exp>;
   trade_by_routes_aggregate?: InputMaybe<Trade_By_Routes_Aggregate_Bool_Exp>;
@@ -1565,6 +1633,7 @@ export type Blocks_Bool_Exp = {
   trades_aggregate?: InputMaybe<Trades_Aggregate_Bool_Exp>;
   transactions?: InputMaybe<Transactions_Bool_Exp>;
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Bool_Exp>;
+  validator?: InputMaybe<Validators_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "blocks" */
@@ -1593,24 +1662,42 @@ export type Blocks_Insert_Input = {
   profit_by_denoms?: InputMaybe<Profit_By_Denoms_Arr_Rel_Insert_Input>;
   profit_by_routes?: InputMaybe<Profit_By_Routes_Arr_Rel_Insert_Input>;
   proposals?: InputMaybe<Proposals_Arr_Rel_Insert_Input>;
+  proposer?: InputMaybe<Scalars["String"]>;
   timestamp?: InputMaybe<Scalars["timestamp"]>;
   trade_by_routes?: InputMaybe<Trade_By_Routes_Arr_Rel_Insert_Input>;
   trades?: InputMaybe<Trades_Arr_Rel_Insert_Input>;
   transactions?: InputMaybe<Transactions_Arr_Rel_Insert_Input>;
+  validator?: InputMaybe<Validators_Obj_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
 export type Blocks_Max_Fields = {
   __typename?: "blocks_max_fields";
   height?: Maybe<Scalars["Int"]>;
+  proposer?: Maybe<Scalars["String"]>;
   timestamp?: Maybe<Scalars["timestamp"]>;
+};
+
+/** order by max() on columns of table "blocks" */
+export type Blocks_Max_Order_By = {
+  height?: InputMaybe<Order_By>;
+  proposer?: InputMaybe<Order_By>;
+  timestamp?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Blocks_Min_Fields = {
   __typename?: "blocks_min_fields";
   height?: Maybe<Scalars["Int"]>;
+  proposer?: Maybe<Scalars["String"]>;
   timestamp?: Maybe<Scalars["timestamp"]>;
+};
+
+/** order by min() on columns of table "blocks" */
+export type Blocks_Min_Order_By = {
+  height?: InputMaybe<Order_By>;
+  proposer?: InputMaybe<Order_By>;
+  timestamp?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "blocks" */
@@ -1651,10 +1738,12 @@ export type Blocks_Order_By = {
   profit_by_denoms_aggregate?: InputMaybe<Profit_By_Denoms_Aggregate_Order_By>;
   profit_by_routes_aggregate?: InputMaybe<Profit_By_Routes_Aggregate_Order_By>;
   proposals_aggregate?: InputMaybe<Proposals_Aggregate_Order_By>;
+  proposer?: InputMaybe<Order_By>;
   timestamp?: InputMaybe<Order_By>;
   trade_by_routes_aggregate?: InputMaybe<Trade_By_Routes_Aggregate_Order_By>;
   trades_aggregate?: InputMaybe<Trades_Aggregate_Order_By>;
   transactions_aggregate?: InputMaybe<Transactions_Aggregate_Order_By>;
+  validator?: InputMaybe<Validators_Order_By>;
 };
 
 /** primary key columns input for table: blocks */
@@ -1669,6 +1758,8 @@ export enum Blocks_Select_Column {
   /** column name */
   Height = "height",
   /** column name */
+  Proposer = "proposer",
+  /** column name */
   Timestamp = "timestamp",
 }
 
@@ -1676,6 +1767,7 @@ export enum Blocks_Select_Column {
 export type Blocks_Set_Input = {
   hash?: InputMaybe<Scalars["bytea"]>;
   height?: InputMaybe<Scalars["Int"]>;
+  proposer?: InputMaybe<Scalars["String"]>;
   timestamp?: InputMaybe<Scalars["timestamp"]>;
 };
 
@@ -1685,16 +1777,31 @@ export type Blocks_Stddev_Fields = {
   height?: Maybe<Scalars["Float"]>;
 };
 
+/** order by stddev() on columns of table "blocks" */
+export type Blocks_Stddev_Order_By = {
+  height?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type Blocks_Stddev_Pop_Fields = {
   __typename?: "blocks_stddev_pop_fields";
   height?: Maybe<Scalars["Float"]>;
 };
 
+/** order by stddev_pop() on columns of table "blocks" */
+export type Blocks_Stddev_Pop_Order_By = {
+  height?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_samp on columns */
 export type Blocks_Stddev_Samp_Fields = {
   __typename?: "blocks_stddev_samp_fields";
   height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "blocks" */
+export type Blocks_Stddev_Samp_Order_By = {
+  height?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "blocks" */
@@ -1709,6 +1816,7 @@ export type Blocks_Stream_Cursor_Input = {
 export type Blocks_Stream_Cursor_Value_Input = {
   hash?: InputMaybe<Scalars["bytea"]>;
   height?: InputMaybe<Scalars["Int"]>;
+  proposer?: InputMaybe<Scalars["String"]>;
   timestamp?: InputMaybe<Scalars["timestamp"]>;
 };
 
@@ -1718,12 +1826,19 @@ export type Blocks_Sum_Fields = {
   height?: Maybe<Scalars["Int"]>;
 };
 
+/** order by sum() on columns of table "blocks" */
+export type Blocks_Sum_Order_By = {
+  height?: InputMaybe<Order_By>;
+};
+
 /** update columns of table "blocks" */
 export enum Blocks_Update_Column {
   /** column name */
   Hash = "hash",
   /** column name */
   Height = "height",
+  /** column name */
+  Proposer = "proposer",
   /** column name */
   Timestamp = "timestamp",
 }
@@ -1743,16 +1858,31 @@ export type Blocks_Var_Pop_Fields = {
   height?: Maybe<Scalars["Float"]>;
 };
 
+/** order by var_pop() on columns of table "blocks" */
+export type Blocks_Var_Pop_Order_By = {
+  height?: InputMaybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type Blocks_Var_Samp_Fields = {
   __typename?: "blocks_var_samp_fields";
   height?: Maybe<Scalars["Float"]>;
 };
 
+/** order by var_samp() on columns of table "blocks" */
+export type Blocks_Var_Samp_Order_By = {
+  height?: InputMaybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type Blocks_Variance_Fields = {
   __typename?: "blocks_variance_fields";
   height?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "blocks" */
+export type Blocks_Variance_Order_By = {
+  height?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'. */
@@ -5049,6 +5179,10 @@ export type Mutation_Root = {
   delete_transactions?: Maybe<Transactions_Mutation_Response>;
   /** delete single row from the table: "transactions" */
   delete_transactions_by_pk?: Maybe<Transactions>;
+  /** delete data from the table: "validators" */
+  delete_validators?: Maybe<Validators_Mutation_Response>;
+  /** delete single row from the table: "validators" */
+  delete_validators_by_pk?: Maybe<Validators>;
   /** insert data into the table: "account_transactions" */
   insert_account_transactions?: Maybe<Account_Transactions_Mutation_Response>;
   /** insert a single row into the table: "account_transactions" */
@@ -5141,6 +5275,10 @@ export type Mutation_Root = {
   insert_transactions?: Maybe<Transactions_Mutation_Response>;
   /** insert a single row into the table: "transactions" */
   insert_transactions_one?: Maybe<Transactions>;
+  /** insert data into the table: "validators" */
+  insert_validators?: Maybe<Validators_Mutation_Response>;
+  /** insert a single row into the table: "validators" */
+  insert_validators_one?: Maybe<Validators>;
   /** update data of the table: "account_transactions" */
   update_account_transactions?: Maybe<Account_Transactions_Mutation_Response>;
   /** update single row of the table: "account_transactions" */
@@ -5281,6 +5419,12 @@ export type Mutation_Root = {
   update_transactions_many?: Maybe<
     Array<Maybe<Transactions_Mutation_Response>>
   >;
+  /** update data of the table: "validators" */
+  update_validators?: Maybe<Validators_Mutation_Response>;
+  /** update single row of the table: "validators" */
+  update_validators_by_pk?: Maybe<Validators>;
+  /** update multiples rows of table: "validators" */
+  update_validators_many?: Maybe<Array<Maybe<Validators_Mutation_Response>>>;
 };
 
 /** mutation root */
@@ -5443,6 +5587,16 @@ export type Mutation_RootDelete_TransactionsArgs = {
 export type Mutation_RootDelete_Transactions_By_PkArgs = {
   block_height: Scalars["Int"];
   hash: Scalars["bytea"];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_ValidatorsArgs = {
+  where: Validators_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Validators_By_PkArgs = {
+  operator_address: Scalars["String"];
 };
 
 /** mutation root */
@@ -5691,6 +5845,18 @@ export type Mutation_RootInsert_TransactionsArgs = {
 export type Mutation_RootInsert_Transactions_OneArgs = {
   object: Transactions_Insert_Input;
   on_conflict?: InputMaybe<Transactions_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_ValidatorsArgs = {
+  objects: Array<Validators_Insert_Input>;
+  on_conflict?: InputMaybe<Validators_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Validators_OneArgs = {
+  object: Validators_Insert_Input;
+  on_conflict?: InputMaybe<Validators_On_Conflict>;
 };
 
 /** mutation root */
@@ -6030,6 +6196,25 @@ export type Mutation_RootUpdate_Transactions_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Transactions_ManyArgs = {
   updates: Array<Transactions_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_ValidatorsArgs = {
+  _inc?: InputMaybe<Validators_Inc_Input>;
+  _set?: InputMaybe<Validators_Set_Input>;
+  where: Validators_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Validators_By_PkArgs = {
+  _inc?: InputMaybe<Validators_Inc_Input>;
+  _set?: InputMaybe<Validators_Set_Input>;
+  pk_columns: Validators_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Validators_ManyArgs = {
+  updates: Array<Validators_Updates>;
 };
 
 /** column ordering options */
@@ -8191,9 +8376,9 @@ export type Query_Root = {
   begin_block_events: Array<Begin_Block_Events>;
   /** An aggregate relationship */
   begin_block_events_aggregate: Begin_Block_Events_Aggregate;
-  /** fetch data from the table: "blocks" */
+  /** An array relationship */
   blocks: Array<Blocks>;
-  /** fetch aggregated fields from the table: "blocks" */
+  /** An aggregate relationship */
   blocks_aggregate: Blocks_Aggregate;
   /** fetch data from the table: "blocks" using primary key columns */
   blocks_by_pk?: Maybe<Blocks>;
@@ -8297,6 +8482,12 @@ export type Query_Root = {
   transactions_aggregate: Transactions_Aggregate;
   /** fetch data from the table: "transactions" using primary key columns */
   transactions_by_pk?: Maybe<Transactions>;
+  /** An array relationship */
+  validators: Array<Validators>;
+  /** An aggregate relationship */
+  validators_aggregate: Validators_Aggregate;
+  /** fetch data from the table: "validators" using primary key columns */
+  validators_by_pk?: Maybe<Validators>;
 };
 
 export type Query_RootAccount_TransactionsArgs = {
@@ -8759,6 +8950,26 @@ export type Query_RootTransactions_By_PkArgs = {
   hash: Scalars["bytea"];
 };
 
+export type Query_RootValidatorsArgs = {
+  distinct_on?: InputMaybe<Array<Validators_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Validators_Order_By>>;
+  where?: InputMaybe<Validators_Bool_Exp>;
+};
+
+export type Query_RootValidators_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Validators_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Validators_Order_By>>;
+  where?: InputMaybe<Validators_Bool_Exp>;
+};
+
+export type Query_RootValidators_By_PkArgs = {
+  operator_address: Scalars["String"];
+};
+
 export type Search_Pools_With_Denom_Args = {
   denom?: InputMaybe<Scalars["String"]>;
 };
@@ -8791,9 +9002,9 @@ export type Subscription_Root = {
   begin_block_events_aggregate: Begin_Block_Events_Aggregate;
   /** fetch data from the table in a streaming manner: "begin_block_events" */
   begin_block_events_stream: Array<Begin_Block_Events>;
-  /** fetch data from the table: "blocks" */
+  /** An array relationship */
   blocks: Array<Blocks>;
-  /** fetch aggregated fields from the table: "blocks" */
+  /** An aggregate relationship */
   blocks_aggregate: Blocks_Aggregate;
   /** fetch data from the table: "blocks" using primary key columns */
   blocks_by_pk?: Maybe<Blocks>;
@@ -8937,6 +9148,14 @@ export type Subscription_Root = {
   transactions_by_pk?: Maybe<Transactions>;
   /** fetch data from the table in a streaming manner: "transactions" */
   transactions_stream: Array<Transactions>;
+  /** An array relationship */
+  validators: Array<Validators>;
+  /** An aggregate relationship */
+  validators_aggregate: Validators_Aggregate;
+  /** fetch data from the table: "validators" using primary key columns */
+  validators_by_pk?: Maybe<Validators>;
+  /** fetch data from the table in a streaming manner: "validators" */
+  validators_stream: Array<Validators>;
 };
 
 export type Subscription_RootAccount_TransactionsArgs = {
@@ -9535,6 +9754,32 @@ export type Subscription_RootTransactions_StreamArgs = {
   batch_size: Scalars["Int"];
   cursor: Array<InputMaybe<Transactions_Stream_Cursor_Input>>;
   where?: InputMaybe<Transactions_Bool_Exp>;
+};
+
+export type Subscription_RootValidatorsArgs = {
+  distinct_on?: InputMaybe<Array<Validators_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Validators_Order_By>>;
+  where?: InputMaybe<Validators_Bool_Exp>;
+};
+
+export type Subscription_RootValidators_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Validators_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Validators_Order_By>>;
+  where?: InputMaybe<Validators_Bool_Exp>;
+};
+
+export type Subscription_RootValidators_By_PkArgs = {
+  operator_address: Scalars["String"];
+};
+
+export type Subscription_RootValidators_StreamArgs = {
+  batch_size: Scalars["Int"];
+  cursor: Array<InputMaybe<Validators_Stream_Cursor_Input>>;
+  where?: InputMaybe<Validators_Bool_Exp>;
 };
 
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
@@ -11333,6 +11578,526 @@ export type Transactions_Variance_Order_By = {
   sender?: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "validators" */
+export type Validators = {
+  __typename?: "validators";
+  /** An object relationship */
+  account: Accounts;
+  account_id: Scalars["Int"];
+  /** An array relationship */
+  blocks: Array<Blocks>;
+  /** An aggregate relationship */
+  blocks_aggregate: Blocks_Aggregate;
+  commission_max_change: Scalars["String"];
+  commission_max_rate: Scalars["String"];
+  commission_rate: Scalars["String"];
+  consensus_address: Scalars["String"];
+  details: Scalars["String"];
+  id: Scalars["Int"];
+  identity: Scalars["String"];
+  jailed: Scalars["Boolean"];
+  min_self_delegation: Scalars["String"];
+  moniker: Scalars["String"];
+  operator_address: Scalars["String"];
+  website: Scalars["String"];
+};
+
+/** columns and relationships of "validators" */
+export type ValidatorsBlocksArgs = {
+  distinct_on?: InputMaybe<Array<Blocks_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Blocks_Order_By>>;
+  where?: InputMaybe<Blocks_Bool_Exp>;
+};
+
+/** columns and relationships of "validators" */
+export type ValidatorsBlocks_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Blocks_Select_Column>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  order_by?: InputMaybe<Array<Blocks_Order_By>>;
+  where?: InputMaybe<Blocks_Bool_Exp>;
+};
+
+/** aggregated selection of "validators" */
+export type Validators_Aggregate = {
+  __typename?: "validators_aggregate";
+  aggregate?: Maybe<Validators_Aggregate_Fields>;
+  nodes: Array<Validators>;
+};
+
+export type Validators_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Validators_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Validators_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Validators_Aggregate_Bool_Exp_Count>;
+};
+
+export type Validators_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Validators_Select_Column_Validators_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Validators_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Validators_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Validators_Select_Column_Validators_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Validators_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Validators_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Validators_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+  filter?: InputMaybe<Validators_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "validators" */
+export type Validators_Aggregate_Fields = {
+  __typename?: "validators_aggregate_fields";
+  avg?: Maybe<Validators_Avg_Fields>;
+  count: Scalars["Int"];
+  max?: Maybe<Validators_Max_Fields>;
+  min?: Maybe<Validators_Min_Fields>;
+  stddev?: Maybe<Validators_Stddev_Fields>;
+  stddev_pop?: Maybe<Validators_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Validators_Stddev_Samp_Fields>;
+  sum?: Maybe<Validators_Sum_Fields>;
+  var_pop?: Maybe<Validators_Var_Pop_Fields>;
+  var_samp?: Maybe<Validators_Var_Samp_Fields>;
+  variance?: Maybe<Validators_Variance_Fields>;
+};
+
+/** aggregate fields of "validators" */
+export type Validators_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Validators_Select_Column>>;
+  distinct?: InputMaybe<Scalars["Boolean"]>;
+};
+
+/** order by aggregate values of table "validators" */
+export type Validators_Aggregate_Order_By = {
+  avg?: InputMaybe<Validators_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Validators_Max_Order_By>;
+  min?: InputMaybe<Validators_Min_Order_By>;
+  stddev?: InputMaybe<Validators_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Validators_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Validators_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Validators_Sum_Order_By>;
+  var_pop?: InputMaybe<Validators_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Validators_Var_Samp_Order_By>;
+  variance?: InputMaybe<Validators_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "validators" */
+export type Validators_Arr_Rel_Insert_Input = {
+  data: Array<Validators_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Validators_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Validators_Avg_Fields = {
+  __typename?: "validators_avg_fields";
+  account_id?: Maybe<Scalars["Float"]>;
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by avg() on columns of table "validators" */
+export type Validators_Avg_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "validators". All fields are combined with a logical 'AND'. */
+export type Validators_Bool_Exp = {
+  _and?: InputMaybe<Array<Validators_Bool_Exp>>;
+  _not?: InputMaybe<Validators_Bool_Exp>;
+  _or?: InputMaybe<Array<Validators_Bool_Exp>>;
+  account?: InputMaybe<Accounts_Bool_Exp>;
+  account_id?: InputMaybe<Int_Comparison_Exp>;
+  blocks?: InputMaybe<Blocks_Bool_Exp>;
+  blocks_aggregate?: InputMaybe<Blocks_Aggregate_Bool_Exp>;
+  commission_max_change?: InputMaybe<String_Comparison_Exp>;
+  commission_max_rate?: InputMaybe<String_Comparison_Exp>;
+  commission_rate?: InputMaybe<String_Comparison_Exp>;
+  consensus_address?: InputMaybe<String_Comparison_Exp>;
+  details?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  identity?: InputMaybe<String_Comparison_Exp>;
+  jailed?: InputMaybe<Boolean_Comparison_Exp>;
+  min_self_delegation?: InputMaybe<String_Comparison_Exp>;
+  moniker?: InputMaybe<String_Comparison_Exp>;
+  operator_address?: InputMaybe<String_Comparison_Exp>;
+  website?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "validators" */
+export enum Validators_Constraint {
+  /** unique or primary key constraint on columns "account_id" */
+  ValidatorsAccountIdKey = "validators_account_id_key",
+  /** unique or primary key constraint on columns "consensus_address" */
+  ValidatorsConsensusAddressKey = "validators_consensus_address_key",
+  /** unique or primary key constraint on columns "id" */
+  ValidatorsIdKey = "validators_id_key",
+  /** unique or primary key constraint on columns "operator_address" */
+  ValidatorsPkey = "validators_pkey",
+}
+
+/** input type for incrementing numeric columns in table "validators" */
+export type Validators_Inc_Input = {
+  account_id?: InputMaybe<Scalars["Int"]>;
+  id?: InputMaybe<Scalars["Int"]>;
+};
+
+/** input type for inserting data into table "validators" */
+export type Validators_Insert_Input = {
+  account?: InputMaybe<Accounts_Obj_Rel_Insert_Input>;
+  account_id?: InputMaybe<Scalars["Int"]>;
+  blocks?: InputMaybe<Blocks_Arr_Rel_Insert_Input>;
+  commission_max_change?: InputMaybe<Scalars["String"]>;
+  commission_max_rate?: InputMaybe<Scalars["String"]>;
+  commission_rate?: InputMaybe<Scalars["String"]>;
+  consensus_address?: InputMaybe<Scalars["String"]>;
+  details?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["Int"]>;
+  identity?: InputMaybe<Scalars["String"]>;
+  jailed?: InputMaybe<Scalars["Boolean"]>;
+  min_self_delegation?: InputMaybe<Scalars["String"]>;
+  moniker?: InputMaybe<Scalars["String"]>;
+  operator_address?: InputMaybe<Scalars["String"]>;
+  website?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate max on columns */
+export type Validators_Max_Fields = {
+  __typename?: "validators_max_fields";
+  account_id?: Maybe<Scalars["Int"]>;
+  commission_max_change?: Maybe<Scalars["String"]>;
+  commission_max_rate?: Maybe<Scalars["String"]>;
+  commission_rate?: Maybe<Scalars["String"]>;
+  consensus_address?: Maybe<Scalars["String"]>;
+  details?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]>;
+  identity?: Maybe<Scalars["String"]>;
+  min_self_delegation?: Maybe<Scalars["String"]>;
+  moniker?: Maybe<Scalars["String"]>;
+  operator_address?: Maybe<Scalars["String"]>;
+  website?: Maybe<Scalars["String"]>;
+};
+
+/** order by max() on columns of table "validators" */
+export type Validators_Max_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  commission_max_change?: InputMaybe<Order_By>;
+  commission_max_rate?: InputMaybe<Order_By>;
+  commission_rate?: InputMaybe<Order_By>;
+  consensus_address?: InputMaybe<Order_By>;
+  details?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  identity?: InputMaybe<Order_By>;
+  min_self_delegation?: InputMaybe<Order_By>;
+  moniker?: InputMaybe<Order_By>;
+  operator_address?: InputMaybe<Order_By>;
+  website?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Validators_Min_Fields = {
+  __typename?: "validators_min_fields";
+  account_id?: Maybe<Scalars["Int"]>;
+  commission_max_change?: Maybe<Scalars["String"]>;
+  commission_max_rate?: Maybe<Scalars["String"]>;
+  commission_rate?: Maybe<Scalars["String"]>;
+  consensus_address?: Maybe<Scalars["String"]>;
+  details?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]>;
+  identity?: Maybe<Scalars["String"]>;
+  min_self_delegation?: Maybe<Scalars["String"]>;
+  moniker?: Maybe<Scalars["String"]>;
+  operator_address?: Maybe<Scalars["String"]>;
+  website?: Maybe<Scalars["String"]>;
+};
+
+/** order by min() on columns of table "validators" */
+export type Validators_Min_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  commission_max_change?: InputMaybe<Order_By>;
+  commission_max_rate?: InputMaybe<Order_By>;
+  commission_rate?: InputMaybe<Order_By>;
+  consensus_address?: InputMaybe<Order_By>;
+  details?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  identity?: InputMaybe<Order_By>;
+  min_self_delegation?: InputMaybe<Order_By>;
+  moniker?: InputMaybe<Order_By>;
+  operator_address?: InputMaybe<Order_By>;
+  website?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "validators" */
+export type Validators_Mutation_Response = {
+  __typename?: "validators_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Validators>;
+};
+
+/** input type for inserting object relation for remote table "validators" */
+export type Validators_Obj_Rel_Insert_Input = {
+  data: Validators_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Validators_On_Conflict>;
+};
+
+/** on_conflict condition type for table "validators" */
+export type Validators_On_Conflict = {
+  constraint: Validators_Constraint;
+  update_columns?: Array<Validators_Update_Column>;
+  where?: InputMaybe<Validators_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "validators". */
+export type Validators_Order_By = {
+  account?: InputMaybe<Accounts_Order_By>;
+  account_id?: InputMaybe<Order_By>;
+  blocks_aggregate?: InputMaybe<Blocks_Aggregate_Order_By>;
+  commission_max_change?: InputMaybe<Order_By>;
+  commission_max_rate?: InputMaybe<Order_By>;
+  commission_rate?: InputMaybe<Order_By>;
+  consensus_address?: InputMaybe<Order_By>;
+  details?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  identity?: InputMaybe<Order_By>;
+  jailed?: InputMaybe<Order_By>;
+  min_self_delegation?: InputMaybe<Order_By>;
+  moniker?: InputMaybe<Order_By>;
+  operator_address?: InputMaybe<Order_By>;
+  website?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: validators */
+export type Validators_Pk_Columns_Input = {
+  operator_address: Scalars["String"];
+};
+
+/** select columns of table "validators" */
+export enum Validators_Select_Column {
+  /** column name */
+  AccountId = "account_id",
+  /** column name */
+  CommissionMaxChange = "commission_max_change",
+  /** column name */
+  CommissionMaxRate = "commission_max_rate",
+  /** column name */
+  CommissionRate = "commission_rate",
+  /** column name */
+  ConsensusAddress = "consensus_address",
+  /** column name */
+  Details = "details",
+  /** column name */
+  Id = "id",
+  /** column name */
+  Identity = "identity",
+  /** column name */
+  Jailed = "jailed",
+  /** column name */
+  MinSelfDelegation = "min_self_delegation",
+  /** column name */
+  Moniker = "moniker",
+  /** column name */
+  OperatorAddress = "operator_address",
+  /** column name */
+  Website = "website",
+}
+
+/** select "validators_aggregate_bool_exp_bool_and_arguments_columns" columns of table "validators" */
+export enum Validators_Select_Column_Validators_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Jailed = "jailed",
+}
+
+/** select "validators_aggregate_bool_exp_bool_or_arguments_columns" columns of table "validators" */
+export enum Validators_Select_Column_Validators_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Jailed = "jailed",
+}
+
+/** input type for updating data in table "validators" */
+export type Validators_Set_Input = {
+  account_id?: InputMaybe<Scalars["Int"]>;
+  commission_max_change?: InputMaybe<Scalars["String"]>;
+  commission_max_rate?: InputMaybe<Scalars["String"]>;
+  commission_rate?: InputMaybe<Scalars["String"]>;
+  consensus_address?: InputMaybe<Scalars["String"]>;
+  details?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["Int"]>;
+  identity?: InputMaybe<Scalars["String"]>;
+  jailed?: InputMaybe<Scalars["Boolean"]>;
+  min_self_delegation?: InputMaybe<Scalars["String"]>;
+  moniker?: InputMaybe<Scalars["String"]>;
+  operator_address?: InputMaybe<Scalars["String"]>;
+  website?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate stddev on columns */
+export type Validators_Stddev_Fields = {
+  __typename?: "validators_stddev_fields";
+  account_id?: Maybe<Scalars["Float"]>;
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev() on columns of table "validators" */
+export type Validators_Stddev_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Validators_Stddev_Pop_Fields = {
+  __typename?: "validators_stddev_pop_fields";
+  account_id?: Maybe<Scalars["Float"]>;
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_pop() on columns of table "validators" */
+export type Validators_Stddev_Pop_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Validators_Stddev_Samp_Fields = {
+  __typename?: "validators_stddev_samp_fields";
+  account_id?: Maybe<Scalars["Float"]>;
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by stddev_samp() on columns of table "validators" */
+export type Validators_Stddev_Samp_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "validators" */
+export type Validators_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Validators_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Validators_Stream_Cursor_Value_Input = {
+  account_id?: InputMaybe<Scalars["Int"]>;
+  commission_max_change?: InputMaybe<Scalars["String"]>;
+  commission_max_rate?: InputMaybe<Scalars["String"]>;
+  commission_rate?: InputMaybe<Scalars["String"]>;
+  consensus_address?: InputMaybe<Scalars["String"]>;
+  details?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["Int"]>;
+  identity?: InputMaybe<Scalars["String"]>;
+  jailed?: InputMaybe<Scalars["Boolean"]>;
+  min_self_delegation?: InputMaybe<Scalars["String"]>;
+  moniker?: InputMaybe<Scalars["String"]>;
+  operator_address?: InputMaybe<Scalars["String"]>;
+  website?: InputMaybe<Scalars["String"]>;
+};
+
+/** aggregate sum on columns */
+export type Validators_Sum_Fields = {
+  __typename?: "validators_sum_fields";
+  account_id?: Maybe<Scalars["Int"]>;
+  id?: Maybe<Scalars["Int"]>;
+};
+
+/** order by sum() on columns of table "validators" */
+export type Validators_Sum_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "validators" */
+export enum Validators_Update_Column {
+  /** column name */
+  AccountId = "account_id",
+  /** column name */
+  CommissionMaxChange = "commission_max_change",
+  /** column name */
+  CommissionMaxRate = "commission_max_rate",
+  /** column name */
+  CommissionRate = "commission_rate",
+  /** column name */
+  ConsensusAddress = "consensus_address",
+  /** column name */
+  Details = "details",
+  /** column name */
+  Id = "id",
+  /** column name */
+  Identity = "identity",
+  /** column name */
+  Jailed = "jailed",
+  /** column name */
+  MinSelfDelegation = "min_self_delegation",
+  /** column name */
+  Moniker = "moniker",
+  /** column name */
+  OperatorAddress = "operator_address",
+  /** column name */
+  Website = "website",
+}
+
+export type Validators_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Validators_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Validators_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Validators_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Validators_Var_Pop_Fields = {
+  __typename?: "validators_var_pop_fields";
+  account_id?: Maybe<Scalars["Float"]>;
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_pop() on columns of table "validators" */
+export type Validators_Var_Pop_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Validators_Var_Samp_Fields = {
+  __typename?: "validators_var_samp_fields";
+  account_id?: Maybe<Scalars["Float"]>;
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by var_samp() on columns of table "validators" */
+export type Validators_Var_Samp_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Validators_Variance_Fields = {
+  __typename?: "validators_variance_fields";
+  account_id?: Maybe<Scalars["Float"]>;
+  id?: Maybe<Scalars["Float"]>;
+};
+
+/** order by variance() on columns of table "validators" */
+export type Validators_Variance_Order_By = {
+  account_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
 export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
   height: Scalars["Int"];
 }>;
@@ -11340,6 +12105,70 @@ export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
 export type GetBlockTimestampByHeightQueryQuery = {
   __typename?: "query_root";
   blocks_by_pk?: { __typename?: "blocks"; timestamp: any } | null;
+};
+
+export type GetBlockListQueryQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+}>;
+
+export type GetBlockListQueryQuery = {
+  __typename?: "query_root";
+  blocks: Array<{
+    __typename?: "blocks";
+    hash: any;
+    height: number;
+    timestamp: any;
+    transactions_aggregate: {
+      __typename?: "transactions_aggregate";
+      aggregate?: {
+        __typename?: "transactions_aggregate_fields";
+        count: number;
+      } | null;
+    };
+    validator?: {
+      __typename?: "validators";
+      moniker: string;
+      operator_address: string;
+    } | null;
+  }>;
+};
+
+export type GetBlockDetailsByHeightQueryVariables = Exact<{
+  height: Scalars["Int"];
+}>;
+
+export type GetBlockDetailsByHeightQuery = {
+  __typename?: "query_root";
+  blocks_by_pk?: {
+    __typename?: "blocks";
+    hash: any;
+    height: number;
+    timestamp: any;
+    transactions_aggregate: {
+      __typename?: "transactions_aggregate";
+      aggregate?: {
+        __typename?: "transactions_aggregate_fields";
+        sum?: {
+          __typename?: "transactions_sum_fields";
+          gas_used?: number | null;
+          gas_limit?: number | null;
+        } | null;
+      } | null;
+    };
+    validator?: {
+      __typename?: "validators";
+      moniker: string;
+      operator_address: string;
+    } | null;
+  } | null;
+};
+
+export type GetLatestBlockInfoQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetLatestBlockInfoQuery = {
+  __typename?: "query_root";
+  blocks: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
 };
 
 export type GetCodeListQueryQueryVariables = Exact<{ [key: string]: never }>;
@@ -12016,6 +12845,40 @@ export type GetTxsCountQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetTxsCountQuery = {
   __typename?: "query_root";
+  transactions: Array<{ __typename?: "transactions"; id: number }>;
+};
+
+export type GetBlockTransactionsByHeightQueryQueryVariables = Exact<{
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+  height: Scalars["Int"];
+}>;
+
+export type GetBlockTransactionsByHeightQueryQuery = {
+  __typename?: "query_root";
+  transactions: Array<{
+    __typename?: "transactions";
+    hash: any;
+    success: boolean;
+    messages: any;
+    is_clear_admin: boolean;
+    is_execute: boolean;
+    is_ibc: boolean;
+    is_instantiate: boolean;
+    is_migrate: boolean;
+    is_send: boolean;
+    is_store_code: boolean;
+    is_update_admin: boolean;
+    account: { __typename?: "accounts"; address: string };
+  }>;
+};
+
+export type GetBlockTransactionCountByHeightQueryQueryVariables = Exact<{
+  height: Scalars["Int"];
+}>;
+
+export type GetBlockTransactionCountByHeightQueryQuery = {
+  __typename?: "query_root";
   transactions_aggregate: {
     __typename?: "transactions_aggregate";
     aggregate?: {
@@ -12075,6 +12938,286 @@ export const GetBlockTimestampByHeightQueryDocument = {
 } as unknown as DocumentNode<
   GetBlockTimestampByHeightQueryQuery,
   GetBlockTimestampByHeightQueryQueryVariables
+>;
+export const GetBlockListQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockListQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transactions_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "count" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "validator" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "moniker" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "operator_address" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockListQueryQuery,
+  GetBlockListQueryQueryVariables
+>;
+export const GetBlockDetailsByHeightDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockDetailsByHeight" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "height" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "height" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "height" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transactions_aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "sum" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "gas_used" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "gas_limit" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "validator" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "moniker" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "operator_address" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockDetailsByHeightQuery,
+  GetBlockDetailsByHeightQueryVariables
+>;
+export const GetLatestBlockInfoDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getLatestBlockInfo" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetLatestBlockInfoQuery,
+  GetLatestBlockInfoQueryVariables
 >;
 export const GetCodeListQueryDocument = {
   kind: "Document",
@@ -16717,7 +17860,250 @@ export const GetTxsCountDocument = {
         selections: [
           {
             kind: "Field",
+            name: { kind: "Name", value: "transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetTxsCountQuery, GetTxsCountQueryVariables>;
+export const GetBlockTransactionsByHeightQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTransactionsByHeightQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "height" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "height" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_clear_admin" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_execute" } },
+                { kind: "Field", name: { kind: "Name", value: "is_ibc" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_instantiate" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "is_migrate" } },
+                { kind: "Field", name: { kind: "Name", value: "is_send" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_store_code" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_update_admin" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetBlockTransactionsByHeightQueryQuery,
+  GetBlockTransactionsByHeightQueryQueryVariables
+>;
+export const GetBlockTransactionCountByHeightQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTransactionCountByHeightQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "height" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
             name: { kind: "Name", value: "transactions_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "height" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -16738,4 +18124,7 @@ export const GetTxsCountDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetTxsCountQuery, GetTxsCountQueryVariables>;
+} as unknown as DocumentNode<
+  GetBlockTransactionCountByHeightQueryQuery,
+  GetBlockTransactionCountByHeightQueryQueryVariables
+>;

@@ -14,6 +14,8 @@ import {
   getTxsCount,
   getTxsCountByPoolId,
   getTxsByPoolIdPagination,
+  getBlockTransactionCountByHeightQueryDocument,
+  getBlockTransactionsByHeightQueryDocument,
 } from "lib/query";
 import type {
   Addr,
@@ -21,6 +23,8 @@ import type {
   PoolTxFilter,
   Transaction,
   TxFilters,
+  BlockTransaction,
+  Message,
 } from "lib/types";
 import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
@@ -307,12 +311,90 @@ export const useTxsCount = (): UseQueryResult<Option<number>> => {
     async () =>
       indexerGraphClient
         .request(getTxsCount)
-        .then(
-          ({ transactions_aggregate }) =>
-            transactions_aggregate.aggregate?.count
-        ),
+        .then(({ transactions }) => transactions[0]?.id),
     [indexerGraphClient]
   );
 
   return useQuery(["transaction_list_count", indexerGraphClient], queryFn);
+};
+
+export const useTxsByBlockHeightPagination = (
+  height: number,
+  limit: number,
+  offset: number
+): UseQueryResult<BlockTransaction[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getBlockTransactionsByHeightQueryDocument, {
+          limit,
+          offset,
+          height,
+        })
+        .then(({ transactions }) =>
+          transactions.map<BlockTransaction>((tx) => ({
+            hash: parseTxHash(tx.hash),
+            messages: snakeToCamel(tx.messages) as Message[],
+            sender: tx.account.address as Addr,
+            success: tx.success,
+            actionMsgType: getActionMsgType([
+              tx.is_execute,
+              tx.is_instantiate,
+              tx.is_send,
+              tx.is_store_code,
+              tx.is_migrate,
+              tx.is_update_admin,
+              tx.is_clear_admin,
+            ]),
+            isIbc: tx.is_ibc,
+            isInstantiate: tx.is_instantiate,
+          }))
+        ),
+    [height, limit, offset, indexerGraphClient]
+  );
+
+  return useQuery(
+    [
+      "transactions_by_block_height_pagination",
+      indexerGraphClient,
+      limit,
+      offset,
+      height,
+    ],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!height,
+    }
+  );
+};
+
+export const useTxsCountByBlockHeight = (
+  height: number
+): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getBlockTransactionCountByHeightQueryDocument, {
+          height,
+        })
+        .then(
+          ({ transactions_aggregate }) =>
+            transactions_aggregate.aggregate?.count
+        ),
+    [height, indexerGraphClient]
+  );
+
+  return useQuery(
+    ["transactions_count_by_block_height", indexerGraphClient, height],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!height,
+    }
+  );
 };

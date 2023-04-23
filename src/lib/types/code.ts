@@ -1,7 +1,7 @@
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { Option, Addr } from "lib/types";
 
-export enum InstantiatePermission {
+export enum AccessConfigPermission {
   EVERYBODY = "Everybody",
   ANY_OF_ADDRESSES = "AnyOfAddresses",
   NOBODY = "Nobody",
@@ -14,7 +14,7 @@ export type PermissionAddresses = Addr[];
 
 export interface CodeInfo extends CodeLocalInfo {
   contractCount: Option<number>;
-  instantiatePermission: InstantiatePermission;
+  instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
   cw2Contract: Option<string | null>;
   cw2Version: Option<string | null>;
@@ -34,7 +34,7 @@ export interface CodeData {
   height: Option<number>;
   created: Option<Date>;
   proposal: Option<CodeProposal>;
-  instantiatePermission: InstantiatePermission;
+  instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
   cw2Contract: Option<string | null>;
   cw2Version: Option<string | null>;
