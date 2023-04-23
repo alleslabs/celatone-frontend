@@ -54,7 +54,8 @@ export const toToken = (
 export const formatUTokenWithPrecision = (
   amount: U<Token<BigSource>>,
   precision: number,
-  isSuffix = true
+  isSuffix = true,
+  decimalPoints?: number
 ): string => {
   const token = toToken(amount, precision);
   if (isSuffix) {
@@ -62,10 +63,10 @@ export const formatUTokenWithPrecision = (
     if (token.gte(M)) return `${d2Formatter(token.div(M), "0.00")}M`;
     if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
   }
-  return formatDecimal({ decimalPoints: precision, delimiter: true })(
-    token,
-    "0.00"
-  );
+  return formatDecimal({
+    decimalPoints: decimalPoints || precision,
+    delimiter: true,
+  })(token, "0.00");
 };
 
 /**

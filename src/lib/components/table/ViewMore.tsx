@@ -13,7 +13,7 @@ export const ViewMore = ({ onClick }: ViewMoreProps) => (
       size="sm"
       variant="ghost"
       color="text.dark"
-      rightIcon={<CustomIcon name="chevron-down" />}
+      rightIcon={<CustomIcon name="chevron-right" boxSize="13px" />}
       onClick={() => {
         AmpTrack(AmpEvent.USE_VIEW_MORE);
         onClick();

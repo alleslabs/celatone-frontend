@@ -6,6 +6,9 @@ import { useChainId } from "lib/app-provider";
 import { getNetworkByChainName } from "lib/data";
 import type { Option } from "lib/types";
 
+export const openNewTab = (url: string) =>
+  window.open(url, "_blank", "noopener,noreferrer");
+
 export const useOpenTxTab = (type: "lcd" | "tx-page") => {
   const { currentChainName } = useWallet();
   const chainId = useChainId();
@@ -18,7 +21,7 @@ export const useOpenTxTab = (type: "lcd" | "tx-page") => {
 
   return useCallback(
     (txHash: Option<string>) => {
-      window.open(`${baseUrl}/${txHash}`, "_blank", "noopener,noreferrer");
+      openNewTab(`${baseUrl}/${txHash}`);
     },
     [baseUrl]
   );

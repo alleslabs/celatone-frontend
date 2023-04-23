@@ -4,7 +4,7 @@ import big from "big.js";
 
 import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal";
-import { ViewMore } from "lib/components/table";
+import { TableTitle, ViewMore } from "lib/components/table";
 import { TokenCard } from "lib/components/TokenCard";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
@@ -64,7 +64,16 @@ export const AssetsSection = ({
   if (isLoading) return <Loading />;
 
   return (
-    <Flex direction="column" gap={4} mt={12} mb={4}>
+    <Flex direction="column" gap={4} mt={8} pb={8} width="full">
+      {onViewMore && (
+        <TableTitle
+          title="Assets"
+          count={
+            (supportedAssets?.length || 0) + (unsupportedAssets?.length || 0)
+          }
+          mb={0}
+        />
+      )}
       <Flex justify="space-between" width="full" align="center">
         <Flex gap="50px">
           <UserAssetInfoCard

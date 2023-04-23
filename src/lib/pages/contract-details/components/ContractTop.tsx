@@ -10,7 +10,7 @@ import router from "next/router";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AdminButton } from "lib/components/button";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import {
@@ -119,11 +119,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           >
             Contract Address:
           </Text>
-          <ExplorerLink
-            type="contract_address"
+          <CopyLink
             value={contractAddress}
-            textFormat="normal"
-            maxWidth="none"
+            amptrackSection="contract_top"
+            type="contract_address"
           />
         </Flex>
         <Flex gap={2}>
