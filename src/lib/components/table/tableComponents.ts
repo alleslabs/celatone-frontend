@@ -52,6 +52,14 @@ export const TableRow = chakra(GridItem, {
   baseStyle: tableRowBaseStyle,
 });
 
+export const TableNoBorderRow = chakra(GridItem, {
+  baseStyle: {
+    ...tableRowBaseStyle,
+    borderBottom: undefined,
+    borderColor: undefined,
+  },
+});
+
 export const TableRowFreeze = chakra(GridItem, {
   baseStyle: {
     ...tableRowBaseStyle,

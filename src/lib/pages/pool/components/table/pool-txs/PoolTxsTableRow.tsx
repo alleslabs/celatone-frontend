@@ -2,7 +2,7 @@ import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { TableRow } from "lib/components/table";
+import { TableNoBorderRow } from "lib/components/table";
 import type { Addr, Message } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -28,16 +28,21 @@ export const PoolTxsTableRow = ({
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box w="full" minW="min-content">
+    <Box
+      w="full"
+      minW="min-content"
+      borderY="0.5px solid"
+      borderColor="pebble.700"
+      _hover={{ background: "pebble.900" }}
+    >
       <Grid
         className="copier-wrapper"
         templateColumns={templateColumns}
         onClick={onToggle}
-        _hover={{ background: "pebble.900" }}
         transition="all .25s ease-in-out"
         cursor="pointer"
       >
-        <TableRow>
+        <TableNoBorderRow>
           {txHash && (
             <Flex>
               <ExplorerLink
@@ -52,16 +57,16 @@ export const PoolTxsTableRow = ({
               )}
             </Flex>
           )}
-        </TableRow>
-        <TableRow>
+        </TableNoBorderRow>
+        <TableNoBorderRow>
           <PoolTxsAction msg={message} />
-        </TableRow>
+        </TableNoBorderRow>
 
-        <TableRow>
+        <TableNoBorderRow>
           <ExplorerLink value={sender} type="user_address" showCopyOnHover />
-        </TableRow>
+        </TableNoBorderRow>
 
-        <TableRow>
+        <TableNoBorderRow>
           {created && (
             <Flex direction="column" gap={1}>
               <Text variant="body3">{formatUTC(created)}</Text>
@@ -70,11 +75,11 @@ export const PoolTxsTableRow = ({
               </Text>
             </Flex>
           )}
-        </TableRow>
+        </TableNoBorderRow>
 
-        <TableRow>
+        <TableNoBorderRow>
           <CustomIcon name={isOpen ? "chevron-up" : "chevron-down"} />
-        </TableRow>
+        </TableNoBorderRow>
       </Grid>
       <Grid w="full" py={4} hidden={!isOpen}>
         <PoolTxsDetail msg={message} />
