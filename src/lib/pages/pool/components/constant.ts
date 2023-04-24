@@ -100,7 +100,7 @@ export const MockUpPoolList: PoolDetail[] = [
       "osmo1jkxwvg4dua49hsfymvfl9s2wenmguqrq3dl0ttms047w6zv2n5sqh4svnn" as ContractAddr,
   },
   {
-    id: 231,
+    id: 1,
     blockHeight: 1231354,
     creator: "osmo18z3mjlsy6vz0accnyu2c7lafzhe9l786q03ehx" as Addr,
     poolLiquidity: [

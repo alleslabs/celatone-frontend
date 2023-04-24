@@ -54,6 +54,7 @@ export const PoolRelatedTxsTable = ({
   if (error)
     return (
       <EmptyState
+        withBorder
         imageVariant="not-found"
         message="There is an error during fetching transactions."
       />
@@ -65,20 +66,23 @@ export const PoolRelatedTxsTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
+            withBorder
             imageVariant="empty"
             message="There are no transactions in this network."
           />
         }
       />
-      <Pagination
-        currentPage={currentPage}
-        pagesQuantity={pagesQuantity}
-        offset={offset}
-        totalData={countTxs}
-        pageSize={pageSize}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-      />
+      {countTxs > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={countTxs}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </>
   );
 };
