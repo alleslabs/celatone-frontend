@@ -35,7 +35,7 @@ export const UnsupportedPoolList = ({
       <Accordion
         allowMultiple
         index={expandedIndex}
-        onChange={(index: number[]) => setExpandedIndex(index)}
+        onChange={(index) => setExpandedIndex(index as number[])}
       >
         {pools.map((item) => (
           <UnsupportedPoolCard key={item.id} item={item} poolId={item.id} />

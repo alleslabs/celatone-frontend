@@ -66,6 +66,7 @@ export const UnsupportedSection = ({
   const onPageChange = (nextPage: number) => {
     refetchCount();
     setCurrentPage(nextPage);
+    setExpandedIndex([]);
   };
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -73,6 +74,7 @@ export const UnsupportedSection = ({
     refetchCount();
     setPageSize(size);
     setCurrentPage(1);
+    setExpandedIndex([]);
   };
 
   const { pools, isLoading } = usePools(
