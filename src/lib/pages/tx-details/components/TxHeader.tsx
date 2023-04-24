@@ -1,7 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
 import { AmpTrackViewJson } from "lib/services/amplitude";
@@ -41,12 +41,10 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         <Text variant="body2" fontWeight={500} color="text.dark">
           Transaction Hash:
         </Text>
-        <ExplorerLink
+        <CopyLink
           value={txData.txhash}
+          amptrackSection="tx_header"
           type="tx_hash"
-          textFormat="normal"
-          maxWidth="full"
-          ampCopierSection="tx_header"
         />
       </Flex>
       <Flex gap={2} fontSize="14px" color="text.dark" align="center">

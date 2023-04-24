@@ -64,14 +64,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-<<<<<<< HEAD
+
 - [#289](https://github.com/alleslabs/celatone-frontend/pull/289) Add public accounts to public projects
-=======
+- [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link
 - [#293](https://github.com/alleslabs/celatone-frontend/pull/293) Add comma separator to pagination and total blocks
 - [#291](https://github.com/alleslabs/celatone-frontend/pull/291) Update tx count query
 - [#285](https://github.com/alleslabs/celatone-frontend/pull/285) Add data fetching error state, and empty state to blocks page
 - [#292](https://github.com/alleslabs/celatone-frontend/pull/292) Handle format token with M and show only 2 decimal points when more than 1,000
->>>>>>> develop
 - [#284](https://github.com/alleslabs/celatone-frontend/pull/284) Add data fetching error state to txs page
 - [#281](https://github.com/alleslabs/celatone-frontend/pull/281) Change Osmosis mainnet GraphQL
 - [#251](https://github.com/alleslabs/celatone-frontend/pull/251) Refactor Code and Contract tables into general components

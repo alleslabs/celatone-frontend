@@ -13,8 +13,8 @@ import { useEffect, useState } from "react";
 
 import { useValidateAddress } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
@@ -82,11 +82,10 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <Text fontWeight={500} color="text.dark" variant="body2">
             Wallet Address:
           </Text>
-          <ExplorerLink
-            type="user_address"
+          <CopyLink
             value={accountAddress}
-            textFormat="normal"
-            maxWidth="full"
+            amptrackSection="account_top"
+            type="user_address"
           />
         </Flex>
       </Flex>
