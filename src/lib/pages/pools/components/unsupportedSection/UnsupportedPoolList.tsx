@@ -9,15 +9,15 @@ import { UnsupportedPoolCard } from "./UnsupportedPoolCard";
 interface UnsupportedPoolListProps {
   pools: Option<Pool[]>;
   isLoading: boolean;
-  expandedIndex: number[];
-  updateExpandedIndex: (index: number[]) => void;
+  expandedIndexes: number[];
+  updateExpandedIndexes: (index: number[]) => void;
 }
 
 export const UnsupportedPoolList = ({
   pools,
   isLoading,
-  expandedIndex,
-  updateExpandedIndex,
+  expandedIndexes,
+  updateExpandedIndexes,
 }: UnsupportedPoolListProps) => {
   if (isLoading) return <Loading />;
   if (!pools?.length)
@@ -33,8 +33,8 @@ export const UnsupportedPoolList = ({
     <SimpleGrid columns={1} spacing={4} w="full">
       <Accordion
         allowMultiple
-        index={expandedIndex}
-        onChange={updateExpandedIndex}
+        index={expandedIndexes}
+        onChange={updateExpandedIndexes}
       >
         {pools.map((item) => (
           <UnsupportedPoolCard key={item.id} item={item} poolId={item.id} />
