@@ -185,7 +185,9 @@ export const ExplorerLink = ({
       {...componentProps}
     >
       {readOnly ? (
-        <Text variant="body2">{textValue}</Text>
+        <Text variant="body2" color="text.disabled">
+          {textValue}
+        </Text>
       ) : (
         <>
           <LinkRender
