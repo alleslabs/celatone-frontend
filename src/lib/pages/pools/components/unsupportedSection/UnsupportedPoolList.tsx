@@ -1,5 +1,4 @@
 import { Accordion, SimpleGrid } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
 
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -11,14 +10,14 @@ interface UnsupportedPoolListProps {
   pools: Option<Pool[]>;
   isLoading: boolean;
   expandedIndex: number[];
-  setExpandedIndex: Dispatch<SetStateAction<number[]>>;
+  updateExpandedIndex: (index: number[]) => void;
 }
 
 export const UnsupportedPoolList = ({
   pools,
   isLoading,
   expandedIndex,
-  setExpandedIndex,
+  updateExpandedIndex,
 }: UnsupportedPoolListProps) => {
   if (isLoading) return <Loading />;
   if (!pools?.length)
@@ -35,7 +34,7 @@ export const UnsupportedPoolList = ({
       <Accordion
         allowMultiple
         index={expandedIndex}
-        onChange={(index) => setExpandedIndex(index as number[])}
+        onChange={updateExpandedIndex}
       >
         {pools.map((item) => (
           <UnsupportedPoolCard key={item.id} item={item} poolId={item.id} />

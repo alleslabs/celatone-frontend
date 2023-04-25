@@ -47,6 +47,10 @@ export const UnsupportedSection = ({
   const [showNewest, setShowNewest] = useState(true);
   const [expandedIndex, setExpandedIndex] = useState<number[]>([]);
 
+  const updateExpandedIndex = (indexes: number[]) => {
+    setExpandedIndex(indexes);
+  };
+
   const {
     pagesQuantity,
     currentPage,
@@ -66,7 +70,7 @@ export const UnsupportedSection = ({
   const onPageChange = (nextPage: number) => {
     refetchCount();
     setCurrentPage(nextPage);
-    setExpandedIndex([]);
+    updateExpandedIndex([]);
   };
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -74,7 +78,7 @@ export const UnsupportedSection = ({
     refetchCount();
     setPageSize(size);
     setCurrentPage(1);
-    setExpandedIndex([]);
+    updateExpandedIndex([]);
   };
 
   const { pools, isLoading } = usePools(
@@ -180,7 +184,7 @@ export const UnsupportedSection = ({
         pools={pools}
         isLoading={isLoading}
         expandedIndex={expandedIndex}
-        setExpandedIndex={setExpandedIndex}
+        updateExpandedIndex={updateExpandedIndex}
       />
       <Pagination
         currentPage={currentPage}
