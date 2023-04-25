@@ -50,6 +50,12 @@ export const UnsupportedSection = ({
 
   const [showNewest, setShowNewest] = useState(true);
 
+  const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
+
+  const updateExpandedIndexes = (indexes: number[]) => {
+    setExpandedIndexes(indexes);
+  };
+
   const {
     pagesQuantity,
     currentPage,
@@ -69,6 +75,7 @@ export const UnsupportedSection = ({
   const onPageChange = (nextPage: number) => {
     refetchCount();
     setCurrentPage(nextPage);
+    updateExpandedIndexes([]);
   };
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -76,6 +83,7 @@ export const UnsupportedSection = ({
     refetchCount();
     setPageSize(size);
     setCurrentPage(1);
+    updateExpandedIndexes([]);
   };
 
   const { pools, isLoading } = usePools(
@@ -162,13 +170,27 @@ export const UnsupportedSection = ({
             )}
           </Flex>
           <Flex gap="2" alignItems="center">
-            <Button variant="outline-gray" size="sm">
-              Expand All
+            <Button
+              variant="outline-gray"
+              w="94px"
+              size="sm"
+              onClick={() =>
+                setExpandedIndexes((prev) =>
+                  prev.length ? [] : Array.from(Array(pageSize).keys())
+                )
+              }
+            >
+              {expandedIndexes.length ? "Collapse All" : "Expand All"}
             </Button>
           </Flex>
         </Flex>
       </Flex>
-      <UnsupportedPoolList pools={pools} isLoading={isLoading} />
+      <UnsupportedPoolList
+        pools={pools}
+        isLoading={isLoading}
+        expandedIndexes={expandedIndexes}
+        updateExpandedIndexes={updateExpandedIndexes}
+      />
       <Pagination
         currentPage={currentPage}
         pagesQuantity={pagesQuantity}

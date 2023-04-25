@@ -22,7 +22,7 @@ import { CustomIcon } from "lib/components/icon";
 import type { Pool } from "lib/types";
 import { formatUTokenWithPrecision } from "lib/utils";
 
-interface PoolCardProps {
+interface UnsupportedPoolCardProps {
   item: Pool;
 }
 const StyledIconButton = chakra(IconButton, {
@@ -36,7 +36,7 @@ const StyledIconButton = chakra(IconButton, {
 
 const hoverBgColor = "pebble.700";
 
-export const UnsupportedPoolCard = ({ item }: PoolCardProps) => {
+export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
   const { currentChainName } = useWallet();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
@@ -124,7 +124,7 @@ export const UnsupportedPoolCard = ({ item }: PoolCardProps) => {
                     >
                       <Image
                         boxSize={6}
-                        src={asset.logo || getUndefinedTokenIcon(asset.denom)}
+                        src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                       />
                       <Text variant="body2" color="text.main" fontWeight="bold">
                         {formatUTokenWithPrecision(
