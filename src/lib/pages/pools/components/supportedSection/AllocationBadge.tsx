@@ -35,7 +35,7 @@ export const AllocationBadge = ({
     (value ?? big(0)).div(liquidity).times(100)
   );
   const formattedAmount = denom
-    ? formatUTokenWithPrecision(amount, precision || 0)
+    ? formatUTokenWithPrecision(amount, precision ?? 0)
     : "-";
   return (
     <Flex
@@ -50,7 +50,7 @@ export const AllocationBadge = ({
       gap={2}
     >
       {denom && (
-        <Image boxSize={4} src={logo || getUndefinedTokenIcon(denom)} />
+        <Image boxSize={4} src={logo ?? getUndefinedTokenIcon(denom)} />
       )}
       <Box w="full" minW="50px">
         <Text
@@ -59,7 +59,7 @@ export const AllocationBadge = ({
           color="text.dark"
           fontWeight="600"
         >
-          {denom ? symbol || getTokenLabel(denom) : "OTHERS"}
+          {denom ? symbol ?? getTokenLabel(denom) : "OTHERS"}
         </Text>
         <Text variant="body3" color="text.main">
           {mode === "percent-value"

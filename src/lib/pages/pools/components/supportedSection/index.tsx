@@ -25,7 +25,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ToggleWithName } from "lib/components/ToggleWithName";
 import { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
-import { usePoolListCountByIsSupported } from "lib/services/poolService";
+import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
@@ -65,19 +65,19 @@ export const SupportedSection = ({
         ? keyword
         : `{${matchSorter(Object.values(assetInfos), keyword, {
             keys: ["id", "symbol"],
+            threshold: matchSorter.rankings.CONTAINS,
           })
             .map((assetInfo) => `"${assetInfo.id}"`)
             .join(",")}}`,
     [assetInfos, keyword]
   );
 
-  const { data: totalData = 0, refetch: refetchCount } =
-    usePoolListCountByIsSupported(
-      true,
-      poolTypeValue,
-      isSuperfluidOnly,
-      search
-    );
+  const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
+    isSupported: true,
+    poolType: poolTypeValue,
+    isSuperfluidOnly,
+    search,
+  });
 
   const [showNewest, setShowNewest] = useState(true);
   const [toggle, setToggle] = useState("percent-value");

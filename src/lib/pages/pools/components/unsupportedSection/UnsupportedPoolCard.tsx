@@ -24,7 +24,6 @@ import { formatUTokenWithPrecision } from "lib/utils";
 
 interface PoolCardProps {
   item: Pool;
-  poolId: number;
 }
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
@@ -35,13 +34,13 @@ const StyledIconButton = chakra(IconButton, {
   },
 });
 
-const pebble700 = "pebble.700";
+const hoverBgColor = "pebble.700";
 
-export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
+export const UnsupportedPoolCard = ({ item }: PoolCardProps) => {
   const { currentChainName } = useWallet();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
-    navigate({ pathname: `/pools/[poolId]`, query: { poolId } });
+    navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
   };
 
   return (
@@ -58,7 +57,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
             <Flex gap={4} flexDirection="column" p={4} w="full">
               <Flex alignItems="center" justifyContent="space-between">
                 <PoolHeader
-                  poolId={poolId}
+                  poolId={item.id}
                   isSuperFluid={item.isSuperfluid}
                   poolType={item.type}
                   poolLiquidity={item.poolLiquidity}
@@ -80,7 +79,7 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                       <StyledIconButton
                         variant="none"
                         aria-label="external"
-                        _hover={{ backgroundColor: pebble700 }}
+                        _hover={{ backgroundColor: hoverBgColor }}
                         icon={<CustomIcon name="launch" />}
                       />
                     </Link>
@@ -89,14 +88,14 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                     <StyledIconButton
                       variant="none"
                       aria-label="external"
-                      _hover={{ backgroundColor: pebble700 }}
+                      _hover={{ backgroundColor: hoverBgColor }}
                       icon={<CustomIcon name="chevron-up" />}
                     />
                   ) : (
                     <StyledIconButton
                       variant="none"
                       aria-label="external"
-                      _hover={{ backgroundColor: pebble700 }}
+                      _hover={{ backgroundColor: hoverBgColor }}
                       icon={<CustomIcon name="chevron-down" />}
                     />
                   )}
@@ -130,10 +129,10 @@ export const UnsupportedPoolCard = ({ item, poolId }: PoolCardProps) => {
                       <Text variant="body2" color="text.main" fontWeight="bold">
                         {formatUTokenWithPrecision(
                           asset.amount,
-                          asset.precision || 0
+                          asset.precision ?? 0
                         )}
                       </Text>
-                      <Flex>{asset.symbol || asset.denom}</Flex>
+                      <Flex>{asset.symbol ?? asset.denom}</Flex>
                       <Copier
                         type={
                           asset.symbol ? "supported_asset" : "unsupported_asset"

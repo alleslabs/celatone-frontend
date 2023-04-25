@@ -30,7 +30,7 @@ export const SupportedPoolList = ({
   return (
     <SimpleGrid columns={{ md: 1, lg: 2 }} spacing={4} mt={4}>
       {pools.map((item) => (
-        <PoolCard key={item.id} item={item} poolId={item.id} mode={mode} />
+        <PoolCard key={item.id} item={item} mode={mode} />
       ))}
     </SimpleGrid>
   );
