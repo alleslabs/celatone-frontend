@@ -17,15 +17,23 @@ import { isPositiveInt } from "lib/utils";
 
 import { usePoolExpression } from "./expression/poolExpression";
 
-export const usePoolListByIsSupported = (
-  isSupported: boolean,
-  poolType: PoolTypeFilter,
-  isSuperfluidOnly: boolean,
-  search: string,
-  order: Order_By,
-  offset: number,
-  pageSize: number
-): UseQueryResult<Pool<Coin>[]> => {
+export const usePoolListQuery = ({
+  isSupported,
+  poolType,
+  isSuperfluidOnly,
+  search,
+  order,
+  offset,
+  pageSize,
+}: {
+  isSupported: boolean;
+  poolType: PoolTypeFilter;
+  isSuperfluidOnly: boolean;
+  search: string;
+  order: Order_By;
+  offset: number;
+  pageSize: number;
+}): UseQueryResult<Pool<Coin>[]> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = usePoolExpression(
     isSupported,
@@ -76,12 +84,17 @@ export const usePoolListByIsSupported = (
   );
 };
 
-export const usePoolListCountByIsSupported = (
-  isSupported: boolean,
-  poolType: PoolTypeFilter,
-  isSuperfluidOnly: boolean,
-  search: string
-): UseQueryResult<number> => {
+export const usePoolListCountQuery = ({
+  isSupported,
+  poolType,
+  isSuperfluidOnly,
+  search,
+}: {
+  isSupported: boolean;
+  poolType: PoolTypeFilter;
+  isSuperfluidOnly: boolean;
+  search: string;
+}): UseQueryResult<number> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = usePoolExpression(
     isSupported,

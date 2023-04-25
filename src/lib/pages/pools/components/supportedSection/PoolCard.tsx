@@ -13,23 +13,18 @@ import { formatPrice } from "lib/utils";
 
 import { AllocationBadge } from "./AllocationBadge";
 
-const pebble700 = "pebble.700";
+const hoverBgColor = "pebble.700";
 
 interface PoolCardProps {
   item: Pool;
-  poolId: number;
   mode: string;
 }
 
-export const PoolCard = ({
-  item,
-  poolId,
-  mode = "percent-value",
-}: PoolCardProps) => {
+export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
   const { currentChainName } = useWallet();
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
-    navigate({ pathname: `/pools/[poolId]`, query: { poolId } });
+    navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
   };
 
   const liquidity = item.poolLiquidity.reduce(
@@ -52,7 +47,7 @@ export const PoolCard = ({
         _hover: {
           "> div:last-child > div": {
             borderColor: "pebble.600",
-            backgroundColor: pebble700,
+            backgroundColor: hoverBgColor,
           },
           backgroundColor: "pebble.800",
         },
@@ -82,7 +77,7 @@ export const PoolCard = ({
               fontSize="24px"
               variant="none"
               aria-label="external"
-              _hover={{ backgroundColor: pebble700 }}
+              _hover={{ backgroundColor: hoverBgColor }}
               color="pebble.600"
               icon={<CustomIcon name="launch" />}
             />

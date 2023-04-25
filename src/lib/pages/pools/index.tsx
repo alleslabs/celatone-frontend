@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { CustomTab } from "lib/components/CustomTab";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
-import { usePoolListCountByIsSupported } from "lib/services/poolService";
+import { usePoolListCountQuery } from "lib/services/poolService";
 
 import { SupportedSection } from "./components/supportedSection";
 import { UnsupportedSection } from "./components/unsupportedSection";
@@ -18,9 +18,19 @@ export const PoolIndex = () => {
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
 
   const { data: supportedPoolCount, isLoading: isLoadingSupported } =
-    usePoolListCountByIsSupported(true, "All", false, "");
+    usePoolListCountQuery({
+      isSupported: true,
+      poolType: "All",
+      isSuperfluidOnly: false,
+      search: "",
+    });
   const { data: unsupportedPoolCount, isLoading: isLoadingUnsupported } =
-    usePoolListCountByIsSupported(false, "All", false, "");
+    usePoolListCountQuery({
+      isSupported: false,
+      poolType: "All",
+      isSuperfluidOnly: false,
+      search: "",
+    });
 
   const sectionHeaderId = "poolListTab";
 

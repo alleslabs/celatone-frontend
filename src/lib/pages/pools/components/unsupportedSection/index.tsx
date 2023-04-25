@@ -22,7 +22,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { Order_By } from "lib/gql/graphql";
-import { usePoolListCountByIsSupported } from "lib/services/poolService";
+import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
 
 import { UnsupportedPoolList } from "./UnsupportedPoolList";
@@ -41,8 +41,12 @@ export const UnsupportedSection = ({
     },
   });
   const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
-  const { data: totalData = 0, refetch: refetchCount } =
-    usePoolListCountByIsSupported(false, "All", false, "");
+  const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
+    isSupported: false,
+    poolType: "All",
+    isSuperfluidOnly: false,
+    search: "",
+  });
 
   const [showNewest, setShowNewest] = useState(true);
 

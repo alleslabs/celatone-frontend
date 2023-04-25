@@ -3,10 +3,7 @@ import big from "big.js";
 
 import type { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
-import {
-  usePoolByPoolId,
-  usePoolListByIsSupported,
-} from "lib/services/poolService";
+import { usePoolByPoolId, usePoolListQuery } from "lib/services/poolService";
 import type {
   Option,
   Pool,
@@ -27,16 +24,15 @@ export const usePools = (
   pageSize: number
 ): { pools: Option<Pool[]>; isLoading: boolean } => {
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
-  const { data: poolList, isLoading: isLoadingPoolList } =
-    usePoolListByIsSupported(
-      isSupported,
-      poolType,
-      isSuperfluidOnly,
-      search,
-      order,
-      offset,
-      pageSize
-    );
+  const { data: poolList, isLoading: isLoadingPoolList } = usePoolListQuery({
+    isSupported,
+    poolType,
+    isSuperfluidOnly,
+    search,
+    order,
+    offset,
+    pageSize,
+  });
 
   const data = poolList?.map<Pool>((pool) => ({
     id: pool.id,

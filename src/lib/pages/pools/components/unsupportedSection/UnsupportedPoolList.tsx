@@ -37,7 +37,7 @@ export const UnsupportedPoolList = ({
         onChange={updateExpandedIndexes}
       >
         {pools.map((item) => (
-          <UnsupportedPoolCard key={item.id} item={item} poolId={item.id} />
+          <UnsupportedPoolCard key={item.id} item={item} />
         ))}
       </Accordion>
     </SimpleGrid>

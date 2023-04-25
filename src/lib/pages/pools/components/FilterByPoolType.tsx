@@ -47,7 +47,6 @@ export const FilterByPoolType = ({
       formLabel="Filter by Pool Type"
       options={options}
       onChange={setPoolTypeValue}
-      placeholder="Select"
       initialSelected={initialSelected}
       labelBgColor={labelBgColor}
     />
