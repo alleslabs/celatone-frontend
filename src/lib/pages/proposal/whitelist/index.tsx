@@ -41,7 +41,11 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import { composeSubmitWhitelistProposalMsg, d2Formatter } from "lib/utils";
+import {
+  composeSubmitWhitelistProposalMsg,
+  d2Formatter,
+  formatSeconds,
+} from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -149,6 +153,7 @@ const ProposalToWhitelist = () => {
     icon,
   } = getAlert(
     initialDeposit.amount,
+    govParams?.depositParams.initialDeposit,
     minDeposit?.formattedAmount,
     minDeposit?.formattedDenom
   );
@@ -341,8 +346,15 @@ const ProposalToWhitelist = () => {
                 Initial Deposit
               </Heading>
               <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start 7-day voting period:{" "}
-                {minDeposit?.formattedToken}
+                Minimum deposit required to start{" "}
+                {formatSeconds(govParams?.depositParams.max_deposit_period)}{" "}
+                deposit period: {govParams?.depositParams.initialDeposit}{" "}
+                {minDeposit?.formattedDenom}
+              </Text>
+              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
+                Minimum deposit required to start{" "}
+                {formatSeconds(govParams?.votingParams.voting_period)} voting
+                period: {minDeposit?.formattedToken}
               </Text>
               <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                 <AssetBox baseDenom={initialDeposit.denom} />

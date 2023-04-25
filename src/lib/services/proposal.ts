@@ -17,6 +17,24 @@ export const fetchGovDepositParams = (
     .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
     .then(({ data }) => data.deposit_params);
 
+interface ProposalVotingPeriod {
+  proposal_type: string;
+  voting_period: string;
+}
+
+export interface VotingParams {
+  voting_period: string;
+  proposal_voting_periods: ProposalVotingPeriod[];
+  expedited_voting_period: string;
+}
+
+export const fetchGovVotingParams = (
+  lcdEndpoint: string
+): Promise<VotingParams> =>
+  axios
+    .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
+    .then(({ data }) => data.voting_params);
+
 export interface UploadAccess {
   permission: AccessConfigPermission;
   addresses?: Addr[];

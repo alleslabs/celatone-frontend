@@ -1,5 +1,6 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import big from "big.js";
 import { useCallback } from "react";
 
 import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
@@ -32,8 +33,12 @@ import {
 } from "lib/utils";
 
 import { useProposalListExpression } from "./expression";
-import type { DepositParams, UploadAccess } from "./proposal";
-import { fetchGovDepositParams, fetchGovUploadAccessParams } from "./proposal";
+import type { DepositParams, UploadAccess, VotingParams } from "./proposal";
+import {
+  fetchGovVotingParams,
+  fetchGovDepositParams,
+  fetchGovUploadAccessParams,
+} from "./proposal";
 
 export const useRelatedProposalsByContractAddressPagination = (
   contractAddress: ContractAddr,
@@ -271,20 +276,24 @@ interface DepositParamsReturn extends Omit<DepositParams, "min_deposit"> {
     formattedDenom: string;
     formattedToken: string;
   };
+  initialDeposit: Token;
 }
 
 export const useGovParams = (): UseQueryResult<{
   depositParams: DepositParamsReturn;
   uploadAccess: UploadAccess;
+  votingParams: VotingParams;
 }> => {
   const lcdEndpoint = useLCDEndpoint();
   const queryFn = useCallback(() => {
     return Promise.all([
       fetchGovDepositParams(lcdEndpoint),
       fetchGovUploadAccessParams(lcdEndpoint),
+      fetchGovVotingParams(lcdEndpoint),
     ]).then<{
       depositParams: DepositParamsReturn;
       uploadAccess: UploadAccess;
+      votingParams: VotingParams;
     }>((params) => {
       const minDepositParam = params[0].min_deposit[0];
       const [minDepositAmount, minDepositDenom] = [
@@ -305,8 +314,12 @@ export const useGovParams = (): UseQueryResult<{
               decimalPoints: 2,
             }),
           },
+          initialDeposit: big(params[0].min_initial_deposit_ratio)
+            .times(minDepositAmount)
+            .toFixed(2) as Token,
         },
         uploadAccess: params[1],
+        votingParams: params[2],
       };
     });
   }, [lcdEndpoint]);
