@@ -30,6 +30,7 @@ interface ExplorerLinkProps extends BoxProps {
   maxWidth?: string;
   textVariant?: TextProps["variant"];
   ampCopierSection?: string;
+  openNewTab?: boolean;
 }
 
 const getNavigationUrl = (
@@ -146,15 +147,17 @@ export const ExplorerLink = ({
   maxWidth = "160px",
   textVariant = "body2",
   ampCopierSection,
+  openNewTab,
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address, currentChainName } = useWallet();
   const isInternal =
-    type === "code_id" ||
-    type === "contract_address" ||
-    type === "user_address" ||
-    type === "tx_hash" ||
-    type === "block_height";
+    (type === "code_id" ||
+      type === "contract_address" ||
+      type === "user_address" ||
+      type === "tx_hash" ||
+      type === "block_height") &&
+    !openNewTab;
 
   const [hrefLink, textValue] = [
     getNavigationUrl(type, currentChainName, copyValue || value),
