@@ -91,7 +91,7 @@ export const useSimulateFeeForStoreCode = ({
     const client = await getCosmWasmClient();
 
     if (!client || !address || !wasmFile) {
-      return undefined;
+      throw new Error("Fail to get client, address, or wasmFile");
     }
 
     const submitWhitelistProposalMsg = async () => {

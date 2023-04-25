@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useEffect, useState } from "react";
@@ -19,16 +19,12 @@ import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type {
-  Addr,
-  HumanAddr,
-  SimulateStatus,
-  UploadSectionState,
-} from "lib/types";
+import type { Addr, HumanAddr, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";
 
-import { InstantiatePermissionRadio } from "./components/InstantiatePermissionRadio";
-import { UploadCard } from "./components/UploadCard";
+import { InstantiatePermissionRadio } from "./InstantiatePermissionRadio";
+import { SimulateMessageRender } from "./SimulateMessageRender";
+import { UploadCard } from "./UploadCard";
 
 interface UploadSectionProps {
   handleBack: () => void;
@@ -48,9 +44,9 @@ export const UploadSection = ({
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
-  const [simulateStatus, setSimulateStatus] =
-    useState<SimulateStatus>("default");
-  const [simulateError, setSimulateError] = useState("");
+  const [simulateError, setSimulateError] = useState<string>();
+
+  const simulateSuccessText = "Valid Wasm file and instantiate permission";
 
   const {
     control,
@@ -70,8 +66,7 @@ export const UploadSection = ({
   const { wasmFile, codeName, addresses, permission } = watch();
 
   const setDefaultBehavior = () => {
-    setSimulateStatus("default");
-    setSimulateError("");
+    setSimulateError(undefined);
     setEstimatedFee(undefined);
   };
 
@@ -97,7 +92,7 @@ export const UploadSection = ({
           setDefaultBehavior();
         }
         if (fee) {
-          setSimulateStatus("completed");
+          setSimulateError(simulateSuccessText);
           setEstimatedFee(fabricateFee(fee));
         }
       }
@@ -106,7 +101,6 @@ export const UploadSection = ({
       if (isAnyAddrWithoutInput) {
         setDefaultBehavior();
       } else {
-        setSimulateStatus("failed");
         setSimulateError(e.message);
         setEstimatedFee(undefined);
       }
@@ -148,14 +142,8 @@ export const UploadSection = ({
 
   useEffect(() => {
     (async () => {
-      if (wasmFile && address) {
-        if (isAnyAddrWithoutInput) {
-          setDefaultBehavior();
-        } else if (isSimulating) {
-          setEstimatedFee(undefined);
-          setSimulateStatus("pending");
-          setSimulateError("");
-        }
+      if (wasmFile && address && isAnyAddrWithoutInput) {
+        setDefaultBehavior();
       }
     })();
   }, [
@@ -179,8 +167,6 @@ export const UploadSection = ({
             setValue("wasmFile", undefined);
             setEstimatedFee(undefined);
           }}
-          simulateStatus={simulateStatus}
-          simulateError={simulateError}
         />
       ) : (
         <DropZone setFile={(file) => setValue("wasmFile", file)} />
@@ -199,18 +185,33 @@ export const UploadSection = ({
         my="32px"
       />
       <InstantiatePermissionRadio control={control} setValue={setValue} />
-      <Flex
-        mt={10}
-        fontSize="14px"
-        color="text.dark"
-        alignSelf="flex-start"
-        alignItems="center"
-        display="flex"
-        gap="4px"
-      >
-        <p>Transaction Fee:</p>
-        <EstimatedFeeRender estimatedFee={estimatedFee} loading={loading} />
-      </Flex>
+
+      <Box mt={10} width="full">
+        {(simulateError || isSimulating) && (
+          <SimulateMessageRender
+            value={
+              isSimulating
+                ? "Checking Wasm and permission validity"
+                : simulateError
+            }
+            isLoading={isSimulating}
+            mb={2}
+            isSuccess={simulateError === simulateSuccessText}
+          />
+        )}
+
+        <Flex
+          fontSize="14px"
+          color="text.dark"
+          alignSelf="flex-start"
+          alignItems="center"
+          display="flex"
+        >
+          <p>Transaction Fee:</p>
+          <EstimatedFeeRender estimatedFee={estimatedFee} loading={loading} />
+        </Flex>
+      </Box>
+
       <Flex justify="space-between" w="100%" mt="32px">
         <Button
           size="md"
