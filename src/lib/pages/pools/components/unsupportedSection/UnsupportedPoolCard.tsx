@@ -57,58 +57,56 @@ export const UnsupportedPoolCard = ({
     >
       {({ isExpanded }) => (
         <>
-          <h2>
-            <AccordionButton>
-              <Flex gap={4} flexDirection="column" p={4} w="full">
-                <Flex alignItems="center" justifyContent="space-between">
-                  <PoolHeader
-                    poolId={poolId}
-                    isSuperFluid={item.isSuperfluid}
-                    poolType={item.type}
-                    poolLiquidity={item.poolLiquidity}
-                  />
-                  <Flex>
-                    <Tooltip
-                      hasArrow
-                      label="See in osmosis.zone"
-                      placement="top"
-                      bg="honeydew.darker"
-                      maxW="240px"
+          <AccordionButton>
+            <Flex gap={4} flexDirection="column" p={4} w="full">
+              <Flex alignItems="center" justifyContent="space-between">
+                <PoolHeader
+                  poolId={poolId}
+                  isSuperFluid={item.isSuperfluid}
+                  poolType={item.type}
+                  poolLiquidity={item.poolLiquidity}
+                />
+                <Flex>
+                  <Tooltip
+                    hasArrow
+                    label="See in osmosis.zone"
+                    placement="top"
+                    bg="honeydew.darker"
+                    maxW="240px"
+                  >
+                    <Link
+                      href={`${getPoolUrl(currentChainName)}/${item.id}`}
+                      onClick={(e) => e.stopPropagation()}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <Link
-                        href={`${getPoolUrl(currentChainName)}/${item.id}`}
-                        onClick={(e) => e.stopPropagation()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <StyledIconButton
-                          variant="none"
-                          aria-label="external"
-                          _hover={{ backgroundColor: pebble700 }}
-                          icon={<CustomIcon name="launch" />}
-                        />
-                      </Link>
-                    </Tooltip>
-                    {isExpanded ? (
                       <StyledIconButton
                         variant="none"
                         aria-label="external"
                         _hover={{ backgroundColor: pebble700 }}
-                        icon={<CustomIcon name="chevron-up" />}
+                        icon={<CustomIcon name="launch" />}
                       />
-                    ) : (
-                      <StyledIconButton
-                        variant="none"
-                        aria-label="external"
-                        _hover={{ backgroundColor: pebble700 }}
-                        icon={<CustomIcon name="chevron-down" />}
-                      />
-                    )}
-                  </Flex>
+                    </Link>
+                  </Tooltip>
+                  {isExpanded ? (
+                    <StyledIconButton
+                      variant="none"
+                      aria-label="external"
+                      _hover={{ backgroundColor: pebble700 }}
+                      icon={<CustomIcon name="chevron-up" />}
+                    />
+                  ) : (
+                    <StyledIconButton
+                      variant="none"
+                      aria-label="external"
+                      _hover={{ backgroundColor: pebble700 }}
+                      icon={<CustomIcon name="chevron-down" />}
+                    />
+                  )}
                 </Flex>
               </Flex>
-            </AccordionButton>
-          </h2>
+            </Flex>
+          </AccordionButton>
           <AccordionPanel pb={4}>
             <Flex>
               <Text
