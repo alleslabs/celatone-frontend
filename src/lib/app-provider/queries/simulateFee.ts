@@ -72,7 +72,7 @@ interface SimulateQueryParamsForStoreCode {
   enabled: boolean;
   wasmFile: Option<File>;
   permission: AccessType;
-  addresses: Record<"address", Addr>[];
+  addresses: Addr[];
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -94,15 +94,15 @@ export const useSimulateFeeForStoreCode = ({
     const client = await getCosmWasmClient();
     if (!client) throw new Error("Fail to get client");
 
-    const submitWhitelistProposalMsg = async () => {
+    const submitStoreCodeProposalMsg = async () => {
       return composeStoreCodeMsg({
         sender: address as HumanAddr,
         wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
         permission,
-        addresses: addresses.map((addr) => addr.address),
+        addresses,
       });
     };
-    const craftMsg = await submitWhitelistProposalMsg();
+    const craftMsg = await submitStoreCodeProposalMsg();
     return (await client.simulate(address, [craftMsg], undefined)) as Gas;
   };
   return useQuery({

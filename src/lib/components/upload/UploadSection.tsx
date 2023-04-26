@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
@@ -71,22 +71,25 @@ export const UploadSection = ({
     setEstimatedFee(undefined);
   };
 
-  const isAddressesError = addresses.some((addr) =>
-    Boolean(
-      validateUserAddress(addr.address) && validateContractAddress(addr.address)
-    )
-  );
-
   // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
-  const isAnyAddrWithoutInput =
-    permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
-    (!addresses.some((addr) => addr.address !== "") || isAddressesError);
+  const isAnyAddrWithoutInput = useMemo(
+    () =>
+      permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
+      (!addresses.some((addr) => addr.address !== "") ||
+        addresses.some((addr) =>
+          Boolean(
+            validateUserAddress(addr.address) &&
+              validateContractAddress(addr.address)
+          )
+        )),
+    [addresses, permission, validateContractAddress, validateUserAddress]
+  );
 
   const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
     enabled: Boolean(wasmFile && address && !isAnyAddrWithoutInput),
     wasmFile,
     permission,
-    addresses,
+    addresses: addresses.map((addr) => addr.address),
     onSuccess: (fee) => {
       if (wasmFile && address) {
         if (isAnyAddrWithoutInput) {

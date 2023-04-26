@@ -51,7 +51,7 @@ export const uploadContractTx = ({
         events: txInfo.events,
       };
 
-      const codeId = findAttr(mimicLog, "store_code", "code_id") || "0";
+      const codeId = findAttr(mimicLog, "store_code", "code_id") ?? "0";
 
       onTxSucceed?.(parseInt(codeId, 10));
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
