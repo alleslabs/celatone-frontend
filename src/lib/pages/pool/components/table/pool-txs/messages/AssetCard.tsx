@@ -43,7 +43,7 @@ export const AssetCard = ({
         minH="101px"
         gap={2}
         p={3}
-        background="pebble.900"
+        background="pebble.800"
         borderRadius="8px"
         {...cardProps}
       >
@@ -93,14 +93,12 @@ export const AssetCard = ({
           </Text>
           {assetInfo && (
             <Text variant="body3" color="text.dark">
-              `($
               {formatPrice(
                 calculateAssetValue(
                   toToken(amount as U<Token>, assetInfo.precision),
                   assetInfo.price as USD<number>
                 )
               )}
-              )`
             </Text>
           )}
         </Flex>

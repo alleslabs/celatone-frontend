@@ -33,7 +33,7 @@ export const MsgSwapExactAmountInDetail = ({
         showCopyOnHover
       />
     </Flex>
-    <Flex direction="column">
+    <Flex direction="column" gap={6}>
       <PoolSwap txHash={txHash} msgIndex={msgIndex} assetInfos={assetInfos} />
       <PoolRoute routes={msg.routes} assetInfos={assetInfos} />
     </Flex>

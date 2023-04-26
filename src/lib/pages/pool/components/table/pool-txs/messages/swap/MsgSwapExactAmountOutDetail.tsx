@@ -31,8 +31,8 @@ export const MsgSwapExactAmountOutDetail = ({
   }));
 
   return (
-    <Flex alignItems="start" gap={12} flex={1}>
-      <Flex direction="column" flex={0.1}>
+    <Flex alignItems="start" gap={12}>
+      <Flex direction="column">
         <Text variant="body2" textColor="pebble.500" fontWeight={500}>
           Block height
         </Text>
@@ -42,7 +42,7 @@ export const MsgSwapExactAmountOutDetail = ({
           showCopyOnHover
         />
       </Flex>
-      <Flex direction="column" flex={0.9}>
+      <Flex direction="column" gap={6}>
         <PoolSwap txHash={txHash} msgIndex={msgIndex} assetInfos={assetInfos} />
         <PoolRoute routes={routes} assetInfos={assetInfos} />
       </Flex>

@@ -29,14 +29,16 @@ export const PoolSwap = ({
       <EmptyState message="There is an error during fetching message detail." />
     );
 
-  const inAmount = swapEvent.attributes[3].value.match(/\d+/g)?.[0] ?? "";
-  const inDenom = swapEvent.attributes[3].value.slice(inAmount.length);
+  const inAsset = swapEvent.attributes.at(3)?.value ?? "";
+  const inAmount = inAsset.match(/[0-9]+/g)?.[0] ?? "";
+  const inDenom = inAsset.slice(inAmount.length);
 
-  const outAmount = swapEvent.attributes[-1].value.match(/\d+/g)?.[0] ?? "";
-  const outDenom = swapEvent.attributes[-1].value.slice(inAmount.length);
+  const outAsset = swapEvent.attributes.at(-1)?.value ?? "";
+  const outAmount = outAsset.match(/[0-9]+/g)?.[0] ?? "";
+  const outDenom = outAsset.slice(outAmount.length);
 
   return (
-    <Flex gap={4}>
+    <Flex gap={4} alignItems="center">
       <Box>
         <Text variant="body2" textColor="pebble.500" fontWeight={500}>
           From
@@ -47,7 +49,7 @@ export const PoolSwap = ({
           assetInfo={assetInfos?.[inDenom]}
         />
       </Box>
-      <CustomIcon name="arrow-right" boxSize={6} />
+      <CustomIcon name="arrow-right" boxSize={6} color="honeydew.main" />
       <Box>
         <Text variant="body2" textColor="pebble.500" fontWeight={500}>
           To
@@ -55,7 +57,7 @@ export const PoolSwap = ({
         <AssetCard
           amount={outAmount}
           denom={outDenom}
-          assetInfo={assetInfos?.[outAmount]}
+          assetInfo={assetInfos?.[outDenom]}
         />
       </Box>
     </Flex>

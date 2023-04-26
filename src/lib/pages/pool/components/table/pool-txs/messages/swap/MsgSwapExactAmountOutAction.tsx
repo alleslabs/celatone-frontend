@@ -38,7 +38,7 @@ export const MsgSwapExactAmountOutAction = ({
           </Flex>
         </Tooltip>
         <Copier
-          type={outAssetInfo?.symbol ? "supported_asset" : "unsupported_asset"}
+          type={inAssetInfo?.symbol ? "supported_asset" : "unsupported_asset"}
           value={tokenInDenom}
           copyLabel="Token ID Copied!"
           display="none"
@@ -48,8 +48,8 @@ export const MsgSwapExactAmountOutAction = ({
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       <MsgToken
         coin={msg.tokenOut}
-        symbol={inAssetInfo?.symbol}
-        precision={inAssetInfo?.precision}
+        symbol={outAssetInfo?.symbol}
+        precision={outAssetInfo?.precision}
       />
     </Flex>
   );
