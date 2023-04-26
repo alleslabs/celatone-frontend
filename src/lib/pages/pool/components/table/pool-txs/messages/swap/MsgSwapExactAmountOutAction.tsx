@@ -20,7 +20,7 @@ export const MsgSwapExactAmountOutAction = ({
   const inAssetInfo = assetInfos?.[tokenInDenom];
   const outAssetInfo = assetInfos?.[msg.tokenOut.denom];
   return (
-    <Flex gap={1} alignItems="center">
+    <Flex gap={1} alignItems="center" flexWrap="wrap">
       Swap
       <Flex role="group" align="center" gap={1}>
         <Text fontWeight="medium">

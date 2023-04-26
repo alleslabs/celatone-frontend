@@ -20,7 +20,7 @@ export const MsgSwapExactAmountInAction = ({
   const tokenOutDenom = msg.routes.at(-1)?.tokenOutDenom ?? "";
   const outAssetInfo = assetInfos?.[tokenOutDenom];
   return (
-    <Flex gap={1} alignItems="center">
+    <Flex gap={1} alignItems="center" flexWrap="wrap">
       Swap
       <MsgToken
         coin={msg.tokenIn}

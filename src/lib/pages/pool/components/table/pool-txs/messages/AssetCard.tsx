@@ -43,6 +43,7 @@ export const AssetCard = ({
         minH="101px"
         gap={2}
         p={3}
+        w="250px"
         background="pebble.800"
         borderRadius="8px"
         {...cardProps}
@@ -61,12 +62,7 @@ export const AssetCard = ({
             fallback={<NAToken />}
             fallbackStrategy="onError"
           />
-          <Text
-            variant="body2"
-            className="ellipsis"
-            maxW="91"
-            fontWeight="bold"
-          >
+          <Text variant="body2" className="ellipsis" fontWeight="bold">
             {symbol}
           </Text>
           {assetInfo && (
@@ -88,7 +84,8 @@ export const AssetCard = ({
           <Text fontWeight="700" variant="body2">
             {formatUTokenWithPrecision(
               amount as U<Token>,
-              assetInfo?.precision ?? 0
+              assetInfo?.precision ?? 0,
+              false
             )}
           </Text>
           {assetInfo && (
