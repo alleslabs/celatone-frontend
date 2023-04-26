@@ -16,6 +16,7 @@ export const ToggleWithName = ({
   <Flex p="1" borderRadius={4} border="1px" borderColor="pebble.700">
     {options.map((item) => (
       <Button
+        key={item.value}
         borderRadius={4}
         size="sm"
         height="22px"

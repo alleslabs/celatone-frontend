@@ -1,47 +1,78 @@
+import type { Coin } from "@cosmjs/stargate";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import type { Order_By } from "lib/gql/graphql";
-import { getPoolByPoolId, getPoolList, getPoolListCount } from "lib/query";
-import type { Pool, PoolDetail } from "lib/types";
+import {
+  getPoolByPoolId,
+  getPoolList,
+  getPoolListByDenoms,
+  getPoolListByDenomsCount,
+  getPoolListCount,
+} from "lib/query";
+import type { Pool, PoolDetail, PoolTypeFilter } from "lib/types";
+import { isPositiveInt } from "lib/utils";
 
 import { usePoolExpression } from "./expression/poolExpression";
 
-export const usePoolListByIsSupported = (
-  isSupported: boolean,
-  isSuperfluidOnly: boolean,
-  search: string,
-  order: Order_By,
-  offset: number,
-  pageSize: number
-): UseQueryResult<Pool[]> => {
+export const usePoolListQuery = ({
+  isSupported,
+  poolType,
+  isSuperfluidOnly,
+  search,
+  order,
+  offset,
+  pageSize,
+}: {
+  isSupported: boolean;
+  poolType: PoolTypeFilter;
+  isSuperfluidOnly: boolean;
+  search: string;
+  order: Order_By;
+  offset: number;
+  pageSize: number;
+}): UseQueryResult<Pool<Coin>[]> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const expression = usePoolExpression(isSupported, isSuperfluidOnly, search);
+  const expression = usePoolExpression(
+    isSupported,
+    poolType,
+    isSuperfluidOnly,
+    search
+  );
 
   const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getPoolList, {
-        expression,
-        order,
-        offset,
-        pageSize,
-      })
-      .then(({ pools }) =>
-        pools.map<Pool>((pool) => ({
-          id: pool.id,
-          type: pool.type,
-          isSuperfluid: pool.is_superfluid,
-          poolLiquidity: pool.liquidity,
-        }))
-      );
-  }, [expression, order, offset, pageSize, indexerGraphClient]);
+    const request =
+      !search || isPositiveInt(search)
+        ? indexerGraphClient.request(getPoolList, {
+            expression,
+            order,
+            offset,
+            pageSize,
+          })
+        : indexerGraphClient.request(getPoolListByDenoms, {
+            denoms: search,
+            expression,
+            order,
+            offset,
+            pageSize,
+          });
+    return request.then(({ pools }) =>
+      pools.map<Pool<Coin>>((pool) => ({
+        id: pool.id,
+        type: pool.type,
+        isSuperfluid: pool.is_superfluid,
+        poolLiquidity: pool.liquidity,
+      }))
+    );
+  }, [expression, indexerGraphClient, offset, order, pageSize, search]);
 
   return useQuery(
     [
-      "pool_list_by_is_supported",
+      "pool_list_query",
       isSupported,
+      poolType,
       isSuperfluidOnly,
       search,
       order,
@@ -53,26 +84,46 @@ export const usePoolListByIsSupported = (
   );
 };
 
-export const usePoolListCountByIsSupported = (
-  isSupported: boolean,
-  isSuperfluidOnly: boolean,
-  search: string
-): UseQueryResult<number> => {
+export const usePoolListCountQuery = ({
+  isSupported,
+  poolType,
+  isSuperfluidOnly,
+  search,
+}: {
+  isSupported: boolean;
+  poolType: PoolTypeFilter;
+  isSuperfluidOnly: boolean;
+  search: string;
+}): UseQueryResult<number> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const expression = usePoolExpression(isSupported, isSuperfluidOnly, search);
+  const expression = usePoolExpression(
+    isSupported,
+    poolType,
+    isSuperfluidOnly,
+    search
+  );
 
   const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getPoolListCount, {
-        expression,
-      })
-      .then(({ pools_aggregate }) => pools_aggregate.aggregate?.count);
-  }, [expression, indexerGraphClient]);
+    const request =
+      !search || isPositiveInt(search)
+        ? indexerGraphClient.request(getPoolListCount, {
+            expression,
+          })
+        : indexerGraphClient.request(getPoolListByDenomsCount, {
+            denoms: search,
+            expression,
+          });
+
+    return request.then(
+      ({ pools_aggregate }) => pools_aggregate.aggregate?.count
+    );
+  }, [expression, indexerGraphClient, search]);
 
   return useQuery(
     [
-      "pool_list_count_by_is_supported",
+      "pool_list_count_query",
       isSupported,
+      poolType,
       isSuperfluidOnly,
       search,
       indexerGraphClient,
@@ -81,7 +132,9 @@ export const usePoolListCountByIsSupported = (
   );
 };
 
-export const usePoolByPoolId = (poolId: number): UseQueryResult<PoolDetail> => {
+export const usePoolByPoolId = (
+  poolId: number
+): UseQueryResult<PoolDetail<string, Coin>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -107,7 +160,7 @@ export const usePoolByPoolId = (poolId: number): UseQueryResult<PoolDetail> => {
               smoothWeightChangeParams: pools_by_pk.smooth_weight_change_params,
               scalingFactors: pools_by_pk.scaling_factors,
               scalingFactorController: pools_by_pk.scaling_factor_controller,
-            } as PoolDetail)
+            } as PoolDetail<string, Coin>)
           : undefined
       );
   }, [poolId, indexerGraphClient]);

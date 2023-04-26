@@ -1,18 +1,18 @@
 import { Grid } from "@chakra-ui/react";
 
+import { BALANCER_ICON, STABLESWAP_ICON } from "../constant";
 import { SelectInput } from "lib/components/forms";
-
-export type PoolTypeFilterValue = "all" | "balancer" | "stableswap";
+import type { PoolTypeFilter } from "lib/types";
 
 interface PoolTypeOption {
   label: string;
-  value: PoolTypeFilterValue;
+  value: PoolTypeFilter;
   image?: string;
   disabled: boolean;
 }
 
 interface FilterByPoolTypeProps {
-  setPoolTypeValue: (newVal: PoolTypeFilterValue) => void;
+  setPoolTypeValue: (newVal: PoolTypeFilter) => void;
   initialSelected: string;
   labelBgColor?: string;
 }
@@ -20,20 +20,19 @@ interface FilterByPoolTypeProps {
 const options: PoolTypeOption[] = [
   {
     label: "All Pools",
-    value: "all",
+    value: "All",
     disabled: false,
   },
   {
     label: "Balancer Pools",
-    value: "balancer",
-    image: "https://assets.alleslabs.dev/webapp-assets/pool/pool-balancer.svg",
+    value: "Balancer",
+    image: BALANCER_ICON,
     disabled: false,
   },
   {
     label: "StableSwap Pools",
-    value: "stableswap",
-    image:
-      "https://assets.alleslabs.dev/webapp-assets/pool/pool-stableswap.svg",
+    value: "Stableswap",
+    image: STABLESWAP_ICON,
     disabled: false,
   },
 ];
@@ -44,11 +43,10 @@ export const FilterByPoolType = ({
   labelBgColor = "background.main",
 }: FilterByPoolTypeProps) => (
   <Grid columnGap="16px" w="full" maxW="360px">
-    <SelectInput<PoolTypeFilterValue>
+    <SelectInput<PoolTypeFilter>
       formLabel="Filter by Pool Type"
       options={options}
       onChange={setPoolTypeValue}
-      placeholder="Select"
       initialSelected={initialSelected}
       labelBgColor={labelBgColor}
     />

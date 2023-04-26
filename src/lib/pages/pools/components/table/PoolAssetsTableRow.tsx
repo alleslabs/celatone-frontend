@@ -1,25 +1,21 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Flex, Skeleton, Grid, Image, Text } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
-import big from "big.js";
-import type { BigSource, Big } from "big.js";
+import type { Big } from "big.js";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { TableRow } from "lib/components/table/tableComponents";
 import { useAssetInfos } from "lib/services/assetService";
-import type { Token, U, USD, PoolDetail } from "lib/types";
+import type { USD, PoolDetail, TokenWithValue } from "lib/types";
 import {
-  calculateAssetValue,
   d2Formatter,
   formatPrice,
   formatUTokenWithPrecision,
   getTokenLabel,
-  toToken,
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {
   pool_type: PoolDetail["type"];
-  asset: Coin;
+  asset: TokenWithValue;
   templateColumns: GridProps["templateColumns"];
   total_liquidity: USD<Big>;
 }
@@ -36,21 +32,18 @@ export const PoolAssetsTableRow = ({
       <Skeleton height="75px" startColor="pebble.900" endColor="pebble.800" />
     );
   const assetInfo = assetInfos[asset.denom];
-  const assetValue = calculateAssetValue(
-    toToken(big(asset.amount) as U<Token<BigSource>>, assetInfo.precision),
-    assetInfo.price as USD<number>
-  );
+
   return (
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <Flex alignItems="center" gap={2}>
           <Image
             boxSize={7}
-            src={assetInfo.logo || getUndefinedTokenIcon(assetInfo.id)}
+            src={asset.logo || getUndefinedTokenIcon(asset.denom)}
           />
           <Flex flexDirection="column">
             <Text variant="body2" fontWeight="600" color="text.main">
-              {assetInfo?.symbol || getTokenLabel(asset.denom)}
+              {asset.symbol || getTokenLabel(asset.denom)}
             </Text>
             <Text variant="body3" color="text.dark">
               {formatPrice(assetInfo.price as USD<number>)}
@@ -73,21 +66,19 @@ export const PoolAssetsTableRow = ({
       <TableRow>
         <Flex justifyContent="right" w="full">
           {d2Formatter(total_liquidity, "0.00")}
-          {/* {big(total_liquidity).div(1000)} */}
-          {/* {formatPrice(total_liquidity)} */}
         </Flex>
       </TableRow>
       <TableRow>
         <Flex alignItems="flex-end" w="full" flexDirection="column">
           <Text variant="body2" fontWeight="600" color="text.main">
             {formatUTokenWithPrecision(
-              asset.amount as U<Token>,
+              asset.amount,
               assetInfo.precision,
               false
             )}
           </Text>
           <Text variant="body3" color="text.dark">
-            {formatPrice(assetValue)}
+            {asset.value?.toString() ?? 0}
           </Text>
         </Flex>
       </TableRow>

@@ -5,5 +5,6 @@ export * from "./convertTitle";
 export * from "./camelToSnake";
 export * from "./snakeToCamel";
 export * from "./formatBalanceWithDenom";
+export * from "./formatPercentValue";
 export * from "./tokenType";
 export * from "./token";

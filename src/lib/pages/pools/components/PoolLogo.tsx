@@ -1,19 +1,16 @@
 import { Flex, Image } from "@chakra-ui/react";
 
 import { getUndefinedTokenIcon } from "../utils";
-import { useAssetInfos } from "lib/services/assetService";
 import type { PoolDetail } from "lib/types/pool";
 
 interface PoolLogoProps {
   poolLiquidity: PoolDetail["poolLiquidity"];
 }
 export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
-  const { assetInfos } = useAssetInfos();
-
   return (
     <Flex
       css={{
-        ">:not(:first-child)": {
+        ">:not(:first-of-type)": {
           marginLeft: "-12px",
         },
       }}
@@ -25,21 +22,20 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
         <>
           {poolLiquidity.slice(0, 2).map((item, i) => (
             <Image
+              key={item.denom}
               boxSize={10}
-              src={
-                assetInfos?.[item.denom]?.logo ||
-                getUndefinedTokenIcon(item.denom)
-              }
-              zIndex={i * -1 + 2}
+              src={item.logo ?? getUndefinedTokenIcon(item.denom)}
+              zIndex={2 - i}
             />
           ))}
           <Flex
-            width={10}
-            height={10}
+            minW={10}
+            minH={10}
             borderRadius="full"
             backgroundColor="pebble.700"
             alignItems="center"
             justifyContent="center"
+            marginLeft="-12px"
           >
             +{poolLiquidity.length - 2}
           </Flex>
@@ -47,12 +43,10 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
       ) : (
         poolLiquidity.map((asset, i) => (
           <Image
+            key={asset.denom}
             boxSize={10}
-            src={
-              assetInfos?.[asset.denom]?.logo ||
-              getUndefinedTokenIcon(asset.denom)
-            }
-            zIndex={i * -1 + 2}
+            src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
+            zIndex={2 - i}
           />
         ))
       )}

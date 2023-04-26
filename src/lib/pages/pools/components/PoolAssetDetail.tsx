@@ -1,5 +1,4 @@
 import { Flex, Heading, Badge, Text, Box } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
 import type { Big } from "big.js";
 import big from "big.js";
 import Link from "next/link";
@@ -7,14 +6,14 @@ import Link from "next/link";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
-import type { USD } from "lib/types";
+import type { TokenWithValue, USD } from "lib/types";
 import type { PoolDetail } from "lib/types/pool";
-import { calAssetValueWithPrecision, formatPrice } from "lib/utils";
+import { formatPrice } from "lib/utils";
 
 import { PoolAssetsTable } from "./table/PoolAssetsTable";
 
 interface PoolAssetDetailProps {
-  assets: Coin[];
+  assets: TokenWithValue[];
   pool_type: PoolDetail["type"];
   // weight?: Option<PoolWeight[] | null>;
   // scaling_factors?: Option<string[] | null>;
@@ -29,19 +28,10 @@ PoolAssetDetailProps) => {
 
   if (!assetInfos) return <Loading />;
 
-  const liquidity = assets.reduce((total, asset) => {
-    const assetInfo = assetInfos[asset.denom];
-    return total.add(
-      assetInfo
-        ? calAssetValueWithPrecision({
-            amount: asset.amount,
-            id: assetInfo.id,
-            price: assetInfo.price,
-            precision: assetInfo.precision,
-          })
-        : (big(0) as USD<Big>)
-    ) as USD<Big>;
-  }, big(0) as USD<Big>);
+  const liquidity = assets.reduce(
+    (total, asset) => total.add(asset.value ?? big(0)) as USD<Big>,
+    big(0) as USD<Big>
+  );
 
   return (
     <Box>
