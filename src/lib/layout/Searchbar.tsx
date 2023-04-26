@@ -92,8 +92,8 @@ const Searchbar = () => {
   const boxRef = useRef<HTMLDivElement>(null);
   const chainConfig = getChainConfig();
 
-  let placeholder = "Search by Wallet Address / Contract Address / Tx Hash / ";
-  placeholder += chainConfig.isWasm ? "Code ID" : "Block";
+  let placeholder = "Search by Wallet Address / Tx Hash / ";
+  placeholder += chainConfig.isWasm ? "Code ID / Contract Address" : "Block";
 
   useEffect(() => {
     const res: SearchResultType[] = [];
