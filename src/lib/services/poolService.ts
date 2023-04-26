@@ -1,10 +1,16 @@
+import type { Coin } from "@cosmjs/stargate";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import type { Order_By } from "lib/gql/graphql";
-import { getPoolByPoolId, getPoolList, getPoolListCount } from "lib/query";
+import {
+  getPoolByPoolId,
+  getPoolList,
+  getPoolListCount,
+  getPoolsByPoolIds,
+} from "lib/query";
 import type { Pool, PoolDetail } from "lib/types";
 
 import { usePoolExpression } from "./expression/poolExpression";
@@ -113,4 +119,30 @@ export const usePoolByPoolId = (poolId: number): UseQueryResult<PoolDetail> => {
   }, [poolId, indexerGraphClient]);
 
   return useQuery(["pool_by_pool_id", poolId, indexerGraphClient], queryFn);
+};
+
+export const usePoolAssetsbyPoolIds = (
+  poolIds: number[]
+): UseQueryResult<Record<number, string[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getPoolsByPoolIds, {
+        poolIds,
+      })
+      .then(({ pools }) =>
+        pools.reduce(
+          (prev, pool) => ({
+            ...prev,
+            [pool.id]: (pool.liquidity as Coin[]).map(
+              (liquidity) => liquidity.denom
+            ),
+          }),
+          {} as Record<number, string[]>
+        )
+      );
+  }, [poolIds, indexerGraphClient]);
+
+  return useQuery(["pools_by_pool_ids", poolIds, indexerGraphClient], queryFn);
 };

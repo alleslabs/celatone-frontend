@@ -1,8 +1,12 @@
 import { Flex, Spinner, Text } from "@chakra-ui/react";
 
-export const Loading = () => (
+interface LoadingProps {
+  withBorder?: boolean;
+}
+
+export const Loading = ({ withBorder = true }: LoadingProps) => (
   <Flex
-    borderY="1px solid"
+    borderY={withBorder ? "1px solid" : undefined}
     borderColor="pebble.700"
     width="full"
     py="60px"

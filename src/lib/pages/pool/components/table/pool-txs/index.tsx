@@ -3,6 +3,7 @@ import type { ChangeEvent } from "react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
+import { useAssetInfos } from "lib/services/assetService";
 import { useTxsByPoolIdPagination } from "lib/services/txService";
 import type { PoolTxFilter } from "lib/types";
 
@@ -19,6 +20,8 @@ export const PoolRelatedTxsTable = ({
   countTxs,
   type,
 }: PoolRelatedTxsTableProps) => {
+  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
+
   const {
     pagesQuantity,
     currentPage,
@@ -63,7 +66,8 @@ export const PoolRelatedTxsTable = ({
     <>
       <PoolTxsTable
         transactions={txs}
-        isLoading={isLoading}
+        assetInfos={assetInfos}
+        isLoading={isLoadingAssetInfos || isLoading}
         emptyState={
           <EmptyState
             withBorder

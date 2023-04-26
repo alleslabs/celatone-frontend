@@ -55,7 +55,7 @@ export const getTxsByPoolIdPagination = graphql(`
   ) {
     pool_transactions(
       where: $expression
-      order_by: { block_height: desc }
+      order_by: { block_height: desc, transaction_id: desc }
       offset: $offset
       limit: $pageSize
     ) {

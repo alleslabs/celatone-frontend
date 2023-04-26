@@ -2,3 +2,10 @@
 .copier-wrapper:hover .copier {
   display: block;
 }
+
+.accordion-stepper-wrapper:not(:first-of-type) div#before-stepper {
+  visibility: visible;
+}
+.accordion-stepper-wrapper:not(:last-of-type) div#after-stepper {
+  visibility: visible;
+}

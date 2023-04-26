@@ -1,60 +1,59 @@
-import { Flex, Image } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 
 import { getUndefinedTokenIcon } from "../utils";
-import { useAssetInfos } from "lib/services/assetService";
-import type { PoolDetail } from "lib/types/pool";
+import type { AssetInfo, Option } from "lib/types";
 
 interface PoolLogoProps {
-  poolLiquidity: PoolDetail["poolLiquidity"];
+  assets: string[];
+  assetInfos: Option<Record<string, AssetInfo>>;
+  logoSize?: number;
+  marginLeft?: number;
+  textVariant?: string;
 }
-export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
-  const { assetInfos } = useAssetInfos();
+
+export const PoolLogo = ({
+  assets,
+  assetInfos,
+  logoSize = 10,
+  marginLeft = -12,
+  textVariant = "body2",
+}: PoolLogoProps) => {
+  const renderLogo = (denom: string, i: number) => (
+    <Image
+      key={denom}
+      boxSize={logoSize}
+      src={assetInfos?.[denom]?.logo || getUndefinedTokenIcon(denom)}
+      zIndex={i * -1 + 2}
+    />
+  );
 
   return (
     <Flex
       css={{
         ">:not(:first-child)": {
-          marginLeft: "-12px",
+          marginLeft,
         },
       }}
       width="96px"
       alignItems="center"
       justifyContent="center"
     >
-      {poolLiquidity.length > 3 ? (
+      {assets.length > 3 ? (
         <>
-          {poolLiquidity.slice(0, 2).map((item, i) => (
-            <Image
-              boxSize={10}
-              src={
-                assetInfos?.[item.denom]?.logo ||
-                getUndefinedTokenIcon(item.denom)
-              }
-              zIndex={i * -1 + 2}
-            />
-          ))}
+          {assets.slice(0, 2).map(renderLogo)}
           <Flex
-            width={10}
-            height={10}
+            width={logoSize}
+            height={logoSize}
             borderRadius="full"
             backgroundColor="pebble.700"
             alignItems="center"
             justifyContent="center"
           >
-            +{poolLiquidity.length - 2}
+            <Text variant={textVariant}> +{assets.length - 2}</Text>
           </Flex>
         </>
       ) : (
-        poolLiquidity.map((asset, i) => (
-          <Image
-            boxSize={10}
-            src={
-              assetInfos?.[asset.denom]?.logo ||
-              getUndefinedTokenIcon(asset.denom)
-            }
-            zIndex={i * -1 + 2}
-          />
-        ))
+        assets.map(renderLogo)
       )}
     </Flex>
   );

@@ -56,3 +56,12 @@ export const getPoolByPoolId = graphql(`
     }
   }
 `);
+
+export const getPoolsByPoolIds = graphql(`
+  query getPoolsByPoolIds($poolIds: [Int!]!) {
+    pools(where: { id: { _in: $poolIds } }) {
+      id
+      liquidity
+    }
+  }
+`);

@@ -59,6 +59,7 @@ export const usePoolTxExpression = (
   useMemo(
     () => ({
       pool_id: poolId ? { _eq: poolId } : {},
+      transaction: { is_ibc: { _eq: false } },
       ...(type !== "is_all" ? { [type]: { _eq: true } } : {}),
     }),
     [poolId, type]

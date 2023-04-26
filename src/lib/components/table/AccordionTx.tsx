@@ -41,6 +41,7 @@ export const AccordionTx = ({
   const [showButton, setShowButton] = useState(false);
   return (
     <TableRow
+      className="accordion-stepper-wrapper"
       minH={0}
       h="40px"
       borderBottom="none"
@@ -48,11 +49,6 @@ export const AccordionTx = ({
       gap={3}
       _hover={{ background: "pebble.800" }}
       transition="all .25s ease-in-out"
-      css={{
-        "&:not(:first-of-type) div#before-stepper": {
-          visibility: "visible",
-        },
-      }}
       onMouseEnter={() => setShowButton(true)}
       onMouseLeave={() => setShowButton(false)}
     >

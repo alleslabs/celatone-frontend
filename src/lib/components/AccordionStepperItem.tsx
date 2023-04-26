@@ -5,7 +5,7 @@ export const AccordionStepperItem = () => (
     <Flex
       id="before-stepper"
       w="1px"
-      h="31px"
+      h="28px"
       right="45%"
       bottom="9px"
       background="pebble.600"
@@ -20,8 +20,17 @@ export const AccordionStepperItem = () => (
       w="10px"
       borderColor="pebble.600"
       borderWidth="1px"
-      position="relative"
-      zIndex={1}
+    />
+    <Flex
+      id="after-stepper"
+      w="1px"
+      h="28px"
+      right="45%"
+      top="9px"
+      background="pebble.600"
+      position="absolute"
+      visibility="hidden"
+      zIndex={0}
     />
   </Flex>
 );

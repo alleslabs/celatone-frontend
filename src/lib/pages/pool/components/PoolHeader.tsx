@@ -24,7 +24,10 @@ export const PoolHeader = ({
   return (
     <Flex justifyContent="space-between" w="full">
       <Flex alignItems="center" gap={4}>
-        <PoolLogo poolLiquidity={poolLiquidity} />
+        <PoolLogo
+          assets={poolLiquidity.map((item) => item.denom)}
+          assetInfos={assetInfos}
+        />
         <Box>
           <Flex gap={1}>
             <Flex

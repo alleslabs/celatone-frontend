@@ -3,29 +3,45 @@ import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
+import type { AssetInfosOpt } from "lib/services/assetService";
 import type { Addr, Message } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { PoolTxsAction, PoolTxsDetail } from "./messages";
 
 interface PoolTxsTableRowProps {
-  txHash?: string;
+  isFirstRow: boolean;
+  txHash: string;
+  success: boolean;
   msgCount: number;
   message: Message;
   sender: Addr;
-  created?: Date;
+  created: Date;
+  msgIndex: number;
+  blockHeight: number;
+  assetInfos: AssetInfosOpt;
   templateColumns: string;
 }
 
 export const PoolTxsTableRow = ({
+  isFirstRow,
   txHash,
+  success,
   msgCount,
   message,
   sender,
   created,
+  msgIndex,
+  blockHeight,
+  assetInfos,
   templateColumns,
 }: PoolTxsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
+  const msgDetailTemplateColumns = templateColumns
+    .split(" ")
+    .slice(0, 2)
+    .concat("1fr")
+    .join(" ");
 
   return (
     <Box
@@ -43,7 +59,7 @@ export const PoolTxsTableRow = ({
         cursor="pointer"
       >
         <TableNoBorderRow>
-          {txHash && (
+          {isFirstRow && (
             <Flex>
               <ExplorerLink
                 value={txHash.toLocaleUpperCase()}
@@ -59,7 +75,15 @@ export const PoolTxsTableRow = ({
           )}
         </TableNoBorderRow>
         <TableNoBorderRow>
-          <PoolTxsAction msg={message} />
+          {isFirstRow &&
+            (success ? (
+              <CustomIcon name="check" color="success.main" />
+            ) : (
+              <CustomIcon name="close" color="error.main" />
+            ))}
+        </TableNoBorderRow>
+        <TableNoBorderRow>
+          <PoolTxsAction msg={message} assetInfos={assetInfos} />
         </TableNoBorderRow>
 
         <TableNoBorderRow>
@@ -67,7 +91,7 @@ export const PoolTxsTableRow = ({
         </TableNoBorderRow>
 
         <TableNoBorderRow>
-          {created && (
+          {isFirstRow && (
             <Flex direction="column" gap={1}>
               <Text variant="body3">{formatUTC(created)}</Text>
               <Text variant="body3" color="text.dark">
@@ -77,13 +101,32 @@ export const PoolTxsTableRow = ({
           )}
         </TableNoBorderRow>
 
-        <TableNoBorderRow>
-          <CustomIcon name={isOpen ? "chevron-up" : "chevron-down"} />
-        </TableNoBorderRow>
+        {success && (
+          <TableNoBorderRow>
+            <CustomIcon name={isOpen ? "chevron-up" : "chevron-down"} />
+          </TableNoBorderRow>
+        )}
       </Grid>
-      <Grid w="full" py={4} hidden={!isOpen}>
-        <PoolTxsDetail msg={message} />
-      </Grid>
+      {success && (
+        <Grid
+          w="full"
+          py={4}
+          hidden={!isOpen}
+          templateColumns={msgDetailTemplateColumns}
+        >
+          <TableNoBorderRow py={0} />
+          <TableNoBorderRow py={0} />
+          <TableNoBorderRow py={0}>
+            <PoolTxsDetail
+              txHash={txHash}
+              blockHeight={blockHeight}
+              msgIndex={msgIndex}
+              msg={message}
+              assetInfos={assetInfos}
+            />
+          </TableNoBorderRow>
+        </Grid>
+      )}
     </Box>
   );
 };
