@@ -308,7 +308,7 @@ const ProposalToWhitelist = () => {
                             `addresses.${idx}.address`,
                             walletAddress as Addr
                           );
-                          trigger("addresses");
+                          trigger(`addresses.${idx}.address`);
                         }}
                         isDisable={
                           addresses.findIndex(
