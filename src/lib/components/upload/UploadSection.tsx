@@ -19,7 +19,12 @@ import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { Addr, HumanAddr, UploadSectionState } from "lib/types";
+import type {
+  Addr,
+  HumanAddr,
+  SimulateStatus,
+  UploadSectionState,
+} from "lib/types";
 import { AccessType } from "lib/types";
 
 import { InstantiatePermissionRadio } from "./InstantiatePermissionRadio";
@@ -44,9 +49,10 @@ export const UploadSection = ({
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
-  const [simulateError, setSimulateError] = useState<string>();
-
-  const simulateSuccessText = "Valid Wasm file and instantiate permission";
+  const [simulateStatus, setSimulateStatus] = useState<SimulateStatus>({
+    status: "default",
+    message: "",
+  });
 
   const {
     control,
@@ -67,7 +73,7 @@ export const UploadSection = ({
   const { wasmFile, codeName, addresses, permission } = watch();
 
   const setDefaultBehavior = () => {
-    setSimulateError(undefined);
+    setSimulateStatus({ status: "default", message: "" });
     setEstimatedFee(undefined);
   };
 
@@ -75,7 +81,7 @@ export const UploadSection = ({
   const isAnyAddrWithoutInput = useMemo(
     () =>
       permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
-      (!addresses.some((addr) => addr.address !== "") ||
+      (!addresses.some((addr) => addr.address.trim().length !== 0) ||
         addresses.some((addr) =>
           Boolean(
             validateUserAddress(addr.address) &&
@@ -96,7 +102,10 @@ export const UploadSection = ({
           setDefaultBehavior();
         }
         if (fee) {
-          setSimulateError(simulateSuccessText);
+          setSimulateStatus({
+            status: "succeeded",
+            message: "Valid Wasm file and instantiate permission",
+          });
           setEstimatedFee(fabricateFee(fee));
         }
       }
@@ -105,7 +114,7 @@ export const UploadSection = ({
       if (isAnyAddrWithoutInput) {
         setDefaultBehavior();
       } else {
-        setSimulateError(e.message);
+        setSimulateStatus({ status: "failed", message: e.message });
         setEstimatedFee(undefined);
       }
     },
@@ -195,16 +204,16 @@ export const UploadSection = ({
       />
 
       <Box mt={10} width="full">
-        {(simulateError || isSimulating) && (
+        {(simulateStatus.status !== "default" || isSimulating) && (
           <SimulateMessageRender
             value={
               isSimulating
                 ? "Checking Wasm and permission validity"
-                : simulateError
+                : simulateStatus.message
             }
             isLoading={isSimulating}
             mb={2}
-            isSuccess={simulateError === simulateSuccessText}
+            isSuccess={simulateStatus.status === "succeeded"}
           />
         )}
 
@@ -235,7 +244,9 @@ export const UploadSection = ({
           variant="primary"
           w="128px"
           disabled={
-            isSimulating || isAnyAddrWithoutInput || Boolean(simulateError)
+            isSimulating ||
+            isAnyAddrWithoutInput ||
+            simulateStatus.status !== "succeeded"
           }
           onClick={proceed}
         >
