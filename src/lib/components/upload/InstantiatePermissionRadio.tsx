@@ -1,16 +1,19 @@
-import { Text, Box, Radio, RadioGroup, Button } from "@chakra-ui/react";
-import type { Control, UseFormSetValue } from "react-hook-form";
+import { Text, Box, Radio, RadioGroup, Button, Flex } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
+import type { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 
+import { AddressInput } from "../AddressInput";
+import { AssignMe } from "../AssignMe";
 import { CustomIcon } from "lib/components/icon";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";
-
-import { AddressPermissionInput } from "./AddressPermissionInput";
 
 interface InstantiatePermissionRadioProps {
   control: Control<UploadSectionState>;
   setValue: UseFormSetValue<UploadSectionState>;
+  trigger: UseFormTrigger<UploadSectionState>;
 }
 
 interface PermissionRadioProps {
@@ -28,7 +31,10 @@ const PermissionRadio = ({ isSelected, value, text }: PermissionRadioProps) => (
 export const InstantiatePermissionRadio = ({
   control,
   setValue,
+  trigger,
 }: InstantiatePermissionRadioProps) => {
+  const { address: walletAddress } = useWallet();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "addresses",
@@ -74,19 +80,54 @@ export const InstantiatePermissionRadio = ({
           />
           {permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES && (
             <Box>
-              {fields.map((_, idx) => (
-                <AddressPermissionInput
-                  index={idx}
-                  control={control}
-                  fields={fields}
-                  addresses={addresses}
-                  remove={remove}
-                  name={`addresses.${idx}.address`}
-                  setValue={(value: Addr) =>
-                    setValue(`addresses.${idx}.address`, value)
-                  }
-                  error={errors.addresses?.[idx]?.address?.message}
-                />
+              {fields.map((field, idx) => (
+                <Flex gap={2} my={6} key={field.id}>
+                  <AddressInput
+                    name={`addresses.${idx}.address`}
+                    control={control}
+                    label="Address"
+                    variant="floating"
+                    error={
+                      (addresses[idx]?.address &&
+                        addresses.find(
+                          ({ address }, i) =>
+                            i < idx && address === addresses[idx]?.address
+                        ) &&
+                        "You already input this address") ||
+                      errors.addresses?.[idx]?.address?.message
+                    }
+                    helperAction={
+                      <AssignMe
+                        onClick={() => {
+                          AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                          setValue(
+                            `addresses.${idx}.address`,
+                            walletAddress as Addr
+                          );
+                          trigger(`addresses.${idx}.address`);
+                        }}
+                        isDisable={
+                          addresses.findIndex(
+                            (x) => x.address === walletAddress
+                          ) > -1
+                        }
+                      />
+                    }
+                  />
+                  <Button
+                    w="56px"
+                    h="56px"
+                    variant="outline-gray"
+                    size="lg"
+                    disabled={fields.length <= 1}
+                    onClick={() => remove(idx)}
+                  >
+                    <CustomIcon
+                      name="delete"
+                      color={fields.length <= 1 ? "pebble.600" : "text.dark"}
+                    />
+                  </Button>
+                </Flex>
               ))}
               <Button
                 variant="outline-primary"

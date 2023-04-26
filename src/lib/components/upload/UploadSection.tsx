@@ -53,6 +53,7 @@ export const UploadSection = ({
     setValue,
     watch,
     formState: { errors },
+    trigger,
   } = useForm<UploadSectionState>({
     defaultValues: {
       wasmFile: undefined,
@@ -184,7 +185,11 @@ export const UploadSection = ({
         variant="floating"
         my="32px"
       />
-      <InstantiatePermissionRadio control={control} setValue={setValue} />
+      <InstantiatePermissionRadio
+        control={control}
+        setValue={setValue}
+        trigger={trigger}
+      />
 
       <Box mt={10} width="full">
         {(simulateError || isSimulating) && (
