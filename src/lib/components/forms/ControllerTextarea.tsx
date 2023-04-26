@@ -41,10 +41,12 @@ export const ControllerTextarea = <T extends FieldValues>({
   });
   const { field } = useController({ name, control, rules });
   const isError = Boolean(error);
+  const isRequired = "required" in rules;
   return (
     <FormControl
       size="md"
       isInvalid={isError}
+      isRequired={isRequired}
       sx={{ "> div": { marginTop: "1 !important" } }}
       {...componentProps}
       {...field}
