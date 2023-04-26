@@ -88,11 +88,11 @@ export const useSimulateFeeForStoreCode = ({
   const { address, getCosmWasmClient, currentChainName } = useWallet();
 
   const simulateFn = async () => {
-    const client = await getCosmWasmClient();
+    if (!address) throw new Error("Please check your wallet connection.");
+    if (!wasmFile) throw new Error("Fail to get Wasm file");
 
-    if (!client || !address || !wasmFile) {
-      throw new Error("Fail to get client, address, or wasmFile");
-    }
+    const client = await getCosmWasmClient();
+    if (!client) throw new Error("Fail to get client");
 
     const submitWhitelistProposalMsg = async () => {
       return composeStoreCodeMsg({
