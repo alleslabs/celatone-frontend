@@ -24,7 +24,7 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
             <Image
               key={item.denom}
               boxSize={10}
-              src={item.logo || getUndefinedTokenIcon(item.denom)}
+              src={item.logo ?? getUndefinedTokenIcon(item.denom)}
               zIndex={2 - i}
             />
           ))}
@@ -45,7 +45,7 @@ export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
           <Image
             key={asset.denom}
             boxSize={10}
-            src={asset.logo || getUndefinedTokenIcon(asset.denom)}
+            src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
             zIndex={2 - i}
           />
         ))

@@ -70,7 +70,7 @@ export const usePoolListQuery = ({
 
   return useQuery(
     [
-      "pool_list_by_is_supported",
+      "pool_list_query",
       isSupported,
       poolType,
       isSuperfluidOnly,
@@ -121,7 +121,7 @@ export const usePoolListCountQuery = ({
 
   return useQuery(
     [
-      "pool_list_count_by_is_supported",
+      "pool_list_count_query",
       isSupported,
       poolType,
       isSuperfluidOnly,
