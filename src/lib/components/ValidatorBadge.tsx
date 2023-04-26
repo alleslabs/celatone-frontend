@@ -42,7 +42,7 @@ export const ValidatorBadge = ({
             boxSize={badgeSize}
             src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${getChainApiPath(
               currentChainName
-            )}/${validator.validatorAddress}.png`}
+            )}/moniker/${validator.validatorAddress}.png`}
             alt={validator.moniker}
             fallbackSrc={`https://ui-avatars.com/api/?name=${
               validator.moniker ?? ""

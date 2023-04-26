@@ -93,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
 - [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit
 - [#243](https://github.com/alleslabs/celatone-frontend/pull/243) Fix Json viewer and view more btn
+- [#299](https://github.com/alleslabs/celatone-frontend/pull/299) Fix validator identity url
 
 ## v1.0.2
 
