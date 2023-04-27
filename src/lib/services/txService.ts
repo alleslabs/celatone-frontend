@@ -15,6 +15,7 @@ import {
   getBlockTransactionCountByHeightQueryDocument,
   getBlockTransactionsByHeightQueryDocument,
 } from "lib/query";
+import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   Addr,
   Option,
@@ -86,9 +87,11 @@ export const useTxsByAddressPagination = (
           pageSize,
         })
         .then(({ account_transactions }) =>
-          account_transactions.map((transaction) => ({
+          account_transactions.map<Transaction>((transaction) => ({
             hash: parseTxHash(transaction.transaction.hash),
-            messages: snakeToCamel(transaction.transaction.messages),
+            messages: snakeToCamel(
+              transaction.transaction.messages
+            ) as Message[],
             sender: transaction.transaction.account.address as Addr,
             isSigner: transaction.is_signer,
             height: transaction.block.height,
@@ -124,7 +127,6 @@ export const useTxsByAddressPagination = (
         ),
     [expression, indexerGraphClient, offset, pageSize]
   );
-
   return useQuery(
     [
       "transactions_by_address_pagination",
@@ -136,9 +138,11 @@ export const useTxsByAddressPagination = (
       pageSize,
       indexerGraphClient,
     ],
-    queryFn,
+    createQueryFnWithTimeout(queryFn),
     {
       enabled: !!address,
+      retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };

@@ -24,6 +24,10 @@ export const useAccountBalances = (
         currentChainRecord?.name,
         currentChainRecord?.chain.chain_id
       ),
-    { enabled: !!currentChainRecord || !!walletAddress }
+    {
+      enabled: !!currentChainRecord || !!walletAddress,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };

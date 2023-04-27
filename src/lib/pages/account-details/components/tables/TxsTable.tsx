@@ -2,8 +2,10 @@ import { Box, Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
+import { ErrorFetching } from "../common";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import type { EmptyStateProps } from "lib/components/state";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
@@ -13,7 +15,7 @@ import {
   useTxsByAddressPagination,
   useTxsCountByAddress,
 } from "lib/services/txService";
-import type { HumanAddr, Option, TxFilters } from "lib/types";
+import type { HumanAddr, Option, Transaction, TxFilters } from "lib/types";
 
 interface TxsTableProps {
   walletAddress: HumanAddr;
@@ -22,6 +24,23 @@ interface TxsTableProps {
   refetchCount: () => void;
   onViewMore?: () => void;
 }
+
+const getEmptyStateProps = (
+  filterSelected: string[],
+  transactions: Option<Transaction[]>
+): EmptyStateProps => {
+  if (filterSelected.length) {
+    return { message: "No past transaction matches found with your input." };
+  }
+  if (!transactions) {
+    return {
+      message: <ErrorFetching />,
+    };
+  }
+  return {
+    message: "This account did not submit any transactions before.",
+  };
+};
 
 export const TxsTable = ({
   walletAddress,
@@ -114,19 +133,10 @@ export const TxsTable = ({
         transactions={transactions}
         isLoading={isLoading}
         emptyState={
-          !filterSelected.length ? (
-            <EmptyState
-              imageVariant="empty"
-              message="This account did not submit any transactions before."
-              withBorder
-            />
-          ) : (
-            <EmptyState
-              imageVariant="not-found"
-              message="No past transaction matches found with your input."
-              withBorder
-            />
-          )
+          <EmptyState
+            withBorder
+            {...getEmptyStateProps(filterSelected, transactions)}
+          />
         }
         showRelations
       />
