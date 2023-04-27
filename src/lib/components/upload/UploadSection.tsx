@@ -8,7 +8,6 @@ import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
 import {
   useFabricateFee,
-  useSimulateFee,
   useSimulateFeeForStoreCode,
   useUploadContractTx,
   useValidateAddress,
@@ -40,7 +39,6 @@ export const UploadSection = ({
   handleBack,
   isMigrate = false,
 }: UploadSectionProps) => {
-  const { simulate, loading } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { address } = useWallet();
   const { broadcast } = useTxBroadcast();
@@ -78,7 +76,7 @@ export const UploadSection = ({
   };
 
   // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
-  const isAnyAddrWithoutInput = useMemo(
+  const shouldNotSimulate = useMemo(
     () =>
       permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
       (!addresses.some((addr) => addr.address.trim().length !== 0) ||
@@ -92,13 +90,13 @@ export const UploadSection = ({
   );
 
   const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
-    enabled: Boolean(wasmFile && address && !isAnyAddrWithoutInput),
+    enabled: Boolean(wasmFile && address && !shouldNotSimulate),
     wasmFile,
     permission,
     addresses: addresses.map((addr) => addr.address),
     onSuccess: (fee) => {
       if (wasmFile && address) {
-        if (isAnyAddrWithoutInput) {
+        if (shouldNotSimulate) {
           setDefaultBehavior();
         }
         if (fee) {
@@ -111,7 +109,7 @@ export const UploadSection = ({
       }
     },
     onError: (e) => {
-      if (isAnyAddrWithoutInput) {
+      if (shouldNotSimulate) {
         setDefaultBehavior();
       } else {
         setSimulateStatus({ status: "failed", message: e.message });
@@ -154,22 +152,15 @@ export const UploadSection = ({
   ]);
 
   useEffect(() => {
-    (async () => {
-      if (wasmFile && address && isAnyAddrWithoutInput) {
-        setDefaultBehavior();
-      }
-    })();
-  }, [
-    wasmFile,
-    address,
-    simulate,
-    fabricateFee,
-    setValue,
-    permission,
-    addresses,
-    isSimulating,
-    isAnyAddrWithoutInput,
-  ]);
+    if (!wasmFile) {
+      setDefaultBehavior();
+      setValue("addresses", [{ address: "" as Addr }]);
+    }
+  }, [setValue, wasmFile]);
+
+  useEffect(() => {
+    if (wasmFile && address && shouldNotSimulate) setDefaultBehavior();
+  }, [wasmFile, address, shouldNotSimulate, permission, setValue]);
 
   return (
     <>
@@ -225,7 +216,10 @@ export const UploadSection = ({
           display="flex"
         >
           <p>Transaction Fee:</p>
-          <EstimatedFeeRender estimatedFee={estimatedFee} loading={loading} />
+          <EstimatedFeeRender
+            estimatedFee={estimatedFee}
+            loading={isSimulating}
+          />
         </Flex>
       </Box>
 
@@ -245,7 +239,7 @@ export const UploadSection = ({
           w="128px"
           disabled={
             isSimulating ||
-            isAnyAddrWithoutInput ||
+            shouldNotSimulate ||
             simulateStatus.status !== "succeeded"
           }
           onClick={proceed}
