@@ -92,7 +92,6 @@ export const UploadSection = ({
       permission,
       validateContractAddress,
       validateUserAddress,
-      // TODO - Remove this later
       // eslint-disable-next-line react-hooks/exhaustive-deps
       JSON.stringify(addresses),
     ]
@@ -158,6 +157,8 @@ export const UploadSection = ({
     estimatedFee,
     broadcast,
     updateCodeInfo,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(addresses),
   ]);
 
   useEffect(() => {
