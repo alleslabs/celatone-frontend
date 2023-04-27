@@ -32,16 +32,14 @@ import {
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
-import type { SimulateStatus } from "lib/components/upload/types";
 import {
   getMaxProposalTitleLengthError,
   MAX_PROPOSAL_TITLE_LENGTH,
 } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { Addr } from "lib/types";
+import type { Addr, SimulateStatus } from "lib/types";
 
 import { Footer } from "./components/Footer";
-import { UploadFile } from "./components/UploadFile";
 
 interface WhiteListState {
   title: string;
@@ -127,7 +125,7 @@ const StoreCode = () => {
       addresses: [{ address: "" as Addr }],
       initialDeposit: { denom: "", amount: "" } as Coin,
       estimatedFee: undefined,
-      simulateStatus: "pending",
+      simulateStatus: { status: "default", message: "" },
       simulateError: "",
     },
     mode: "all",
@@ -243,7 +241,6 @@ const StoreCode = () => {
                       }
                     />
                   </Flex>
-                  <UploadFile />
                   <Heading as="h6" variant="h6" pt={12}>
                     Instantiate Permission
                   </Heading>
