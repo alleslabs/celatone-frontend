@@ -79,14 +79,23 @@ export const UploadSection = ({
   const shouldNotSimulate = useMemo(
     () =>
       permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
-      (!addresses.some((addr) => addr.address.trim().length !== 0) ||
+      (addresses.some((addr) => addr.address.trim().length === 0) ||
         addresses.some((addr) =>
           Boolean(
             validateUserAddress(addr.address) &&
               validateContractAddress(addr.address)
           )
         )),
-    [addresses, permission, validateContractAddress, validateUserAddress]
+
+    [
+      addresses,
+      permission,
+      validateContractAddress,
+      validateUserAddress,
+      // TODO - Remove this later
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      JSON.stringify(addresses),
+    ]
   );
 
   const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
@@ -215,7 +224,7 @@ export const UploadSection = ({
           alignItems="center"
           display="flex"
         >
-          <p>Transaction Fee:</p>
+          Transaction Fee:{" "}
           <EstimatedFeeRender
             estimatedFee={estimatedFee}
             loading={isSimulating}
