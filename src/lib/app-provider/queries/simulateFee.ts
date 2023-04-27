@@ -3,7 +3,15 @@ import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useDummyWallet } from "../hooks";
-import type { ComposedMsg, Gas } from "lib/types";
+import type {
+  AccessType,
+  Addr,
+  ComposedMsg,
+  Gas,
+  HumanAddr,
+  Option,
+} from "lib/types";
+import { composeStoreCodeMsg } from "lib/utils";
 
 interface SimulateQueryParams {
   enabled: boolean;
@@ -52,6 +60,61 @@ export const useSimulateFeeQuery = ({
     queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
     enabled,
     keepPreviousData: true,
+    retry: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    onSuccess,
+    onError,
+  });
+};
+
+interface SimulateQueryParamsForStoreCode {
+  enabled: boolean;
+  wasmFile: Option<File>;
+  permission: AccessType;
+  addresses: Addr[];
+  onSuccess?: (gas: Gas<number> | undefined) => void;
+  onError?: (err: Error) => void;
+}
+
+export const useSimulateFeeForStoreCode = ({
+  enabled,
+  wasmFile,
+  permission,
+  addresses,
+  onSuccess,
+  onError,
+}: SimulateQueryParamsForStoreCode) => {
+  const { address, getCosmWasmClient, currentChainName } = useWallet();
+
+  const simulateFn = async () => {
+    if (!address) throw new Error("Please check your wallet connection.");
+    if (!wasmFile) throw new Error("Fail to get Wasm file");
+
+    const client = await getCosmWasmClient();
+    if (!client) throw new Error("Fail to get client");
+
+    const submitStoreCodeProposalMsg = async () => {
+      return composeStoreCodeMsg({
+        sender: address as HumanAddr,
+        wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
+        permission,
+        addresses,
+      });
+    };
+    const craftMsg = await submitStoreCodeProposalMsg();
+    return (await client.simulate(address, [craftMsg], undefined)) as Gas;
+  };
+  return useQuery({
+    queryKey: [
+      "simulate_fee_store_code",
+      currentChainName,
+      wasmFile,
+      permission,
+      addresses,
+    ],
+    queryFn: async () => simulateFn(),
+    enabled,
     retry: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

@@ -3,8 +3,14 @@ import { ParameterChangeProposal } from "cosmjs-types/cosmos/params/v1beta1/para
 
 import { microfy } from "../formatter";
 import { typeUrlDict } from "lib/data";
+import type {
+  ComposedMsg,
+  TxMessage,
+  AccessType,
+  Addr,
+  Token,
+} from "lib/types";
 import { MsgType } from "lib/types";
-import type { ComposedMsg, TxMessage, Addr, Token } from "lib/types";
 
 export const composeMsg = (msgType: MsgType, msg: TxMessage): ComposedMsg => {
   const typeUrl = typeUrlDict[msgType];
@@ -13,6 +19,28 @@ export const composeMsg = (msgType: MsgType, msg: TxMessage): ComposedMsg => {
     value: msg,
   };
 };
+
+interface StoreCodeMsgArgs {
+  sender: Addr;
+  wasmByteCode: Uint8Array;
+  permission: AccessType;
+  addresses: Addr[];
+}
+
+export const composeStoreCodeMsg = ({
+  sender,
+  wasmByteCode,
+  permission,
+  addresses,
+}: StoreCodeMsgArgs) =>
+  composeMsg(MsgType.STORE_CODE, {
+    sender,
+    wasmByteCode,
+    instantiatePermission: {
+      permission,
+      addresses,
+    },
+  });
 
 interface WhitelistProposalMsgArgs {
   title: string;
