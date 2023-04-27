@@ -1,7 +1,6 @@
-// TODO - Refactor: move common component out of pasttx
 import { Box, Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -10,7 +9,10 @@ import { TableTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useTxsByAddressPagination } from "lib/services/txService";
+import {
+  useTxsByAddressPagination,
+  useTxsCountByAddress,
+} from "lib/services/txService";
 import type { HumanAddr, Option, TxFilters } from "lib/types";
 
 interface TxsTableProps {
@@ -21,22 +23,23 @@ interface TxsTableProps {
   onViewMore?: () => void;
 }
 
-interface TxsTableBodyProps extends TxsTableProps {
-  filters: TxFilters;
-  filterSelected: string[];
-  isSigner: Option<boolean>;
-}
-
-const TxsTableBody = ({
+export const TxsTable = ({
   walletAddress,
   scrollComponentId,
   totalData,
   refetchCount,
   onViewMore,
-  filters,
-  filterSelected,
-  isSigner,
-}: TxsTableBodyProps) => {
+}: TxsTableProps) => {
+  const [isSigner, setIsSigner] = useState<Option<boolean>>(undefined);
+  const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
+
+  const { data: txsCount = 0 } = useTxsCountByAddress(
+    walletAddress,
+    "",
+    filters,
+    isSigner
+  );
+
   const {
     pagesQuantity,
     currentPage,
@@ -45,13 +48,21 @@ const TxsTableBody = ({
     setPageSize,
     offset,
   } = usePaginator({
-    total: totalData,
+    total: txsCount,
     initialState: {
       pageSize: 10,
       currentPage: 1,
       isDisabled: false,
     },
   });
+
+  const handleSetFilters = (filter: string, bool: boolean) => {
+    setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
+  };
+
+  const filterSelected = Object.keys(filters).filter(
+    (key) => filters[key as keyof typeof filters]
+  );
 
   const { data: transactions, isLoading } = useTxsByAddressPagination(
     walletAddress,
@@ -74,8 +85,31 @@ const TxsTableBody = ({
     setCurrentPage(1);
   };
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, isSigner, setCurrentPage]);
+
   return (
-    <>
+    <Box mt={8}>
+      <Flex direction="row" justify="space-between" alignItems="center">
+        <TableTitle title="Transactions" count={txsCount} mb={2} />
+        {!onViewMore && (
+          <Flex gap={1}>
+            <TxRelationSelection
+              setValue={(value: Option<boolean>) => {
+                setIsSigner(value);
+              }}
+              w="200px"
+            />
+            <TxFilterSelection
+              result={filterSelected}
+              setResult={handleSetFilters}
+              boxWidth="285px"
+              placeholder="All"
+            />
+          </Flex>
+        )}
+      </Flex>
       <TransactionsTable
         transactions={transactions}
         isLoading={isLoading}
@@ -97,6 +131,7 @@ const TxsTableBody = ({
         showRelations
       />
       {!!totalData &&
+        Boolean(transactions?.length) &&
         (onViewMore
           ? totalData > 5 && <ViewMore onClick={onViewMore} />
           : totalData > 10 && (
@@ -104,55 +139,13 @@ const TxsTableBody = ({
                 currentPage={currentPage}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={totalData}
+                totalData={txsCount}
                 scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
                 onPageChange={onPageChange}
                 onPageSizeChange={onPageSizeChange}
               />
             ))}
-    </>
-  );
-};
-
-export const TxsTable = (txsTableProps: TxsTableProps) => {
-  const [isSigner, setIsSigner] = useState<Option<boolean>>(undefined);
-  const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
-
-  const handleSetFilters = (filter: string, bool: boolean) => {
-    setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
-  };
-
-  const filterSelected = Object.keys(filters).filter(
-    (key) => filters[key as keyof typeof filters]
-  );
-
-  const { totalData, onViewMore } = txsTableProps;
-  return (
-    <Box mt={8}>
-      <Flex direction="row" justify="space-between" alignItems="center">
-        <TableTitle title="Transactions" count={totalData ?? 0} mb={2} />
-        {!onViewMore && (
-          <Flex gap={1}>
-            <TxRelationSelection
-              setValue={(value: Option<boolean>) => setIsSigner(value)}
-              w="165px"
-            />
-            <TxFilterSelection
-              result={filterSelected}
-              setResult={handleSetFilters}
-              boxWidth="285px"
-              placeholder="All"
-            />
-          </Flex>
-        )}
-      </Flex>
-      <TxsTableBody
-        {...txsTableProps}
-        filters={filters}
-        filterSelected={filterSelected}
-        isSigner={isSigner}
-      />
     </Box>
   );
 };
