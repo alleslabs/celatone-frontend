@@ -82,6 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#303](https://github.com/alleslabs/celatone-frontend/pull/303) Fix pagination problem when using filter
 - [#290](https://github.com/alleslabs/celatone-frontend/pull/290) Fix spacing and styling in account detail
 - [#280](https://github.com/alleslabs/celatone-frontend/pull/280) Fix begin unlocking optional coins field causing crash
 - [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
