@@ -42,7 +42,7 @@ const AssetSectionContent = ({
       {supportedAssets
         .slice(0, onViewMore ? MaxAssetsShow : undefined)
         .map((asset) => (
-          <TokenCard userBalance={asset} key={asset.balance.id} />
+          <TokenCard userBalance={asset} key={asset.balance.id} minW="full" />
         ))}
     </Grid>
   ) : (

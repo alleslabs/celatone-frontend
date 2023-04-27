@@ -172,6 +172,7 @@ export const UnsupportedTokensModal = ({
           variant="ghost"
           color="text.dark"
           mb={1}
+          fontSize="12px"
           fontWeight={500}
           {...buttonProps}
         >
