@@ -1,8 +1,9 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Alert, AlertDescription, Box, Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
 import { ErrorFetching } from "../common";
+import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import type { EmptyStateProps } from "lib/components/state";
@@ -50,13 +51,12 @@ export const TxsTable = ({
   const [isSigner, setIsSigner] = useState<Option<boolean>>();
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
 
-  const { data: txsCount = 0, refetch: refetchTxsCount } = useTxsCountByAddress(
-    walletAddress,
-    accountId,
-    "",
-    filters,
-    isSigner
-  );
+  const {
+    data: txsCount = 0,
+    refetch: refetchTxsCount,
+    isLoading: txsCountLoading,
+    failureReason,
+  } = useTxsCountByAddress(walletAddress, accountId, "", filters, isSigner);
 
   const {
     pagesQuantity,
@@ -75,6 +75,7 @@ export const TxsTable = ({
   });
 
   const handleSetFilters = (filter: string, bool: boolean) => {
+    setPageSize(10);
     setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
   };
 
@@ -108,15 +109,23 @@ export const TxsTable = ({
     setCurrentPage(1);
   }, [filters, isSigner, setCurrentPage]);
 
+  useEffect(() => {
+    if (failureReason) setPageSize(50);
+  }, [failureReason, setPageSize]);
+
   return (
     <Box mt={8}>
       <Flex direction="row" justify="space-between" alignItems="center">
-        <TableTitle title="Transactions" count={txsCount} mb={2} />
+        <TableTitle
+          title="Transactions"
+          count={failureReason ? "N/A" : txsCount}
+          mb={2}
+        />
         {!onViewMore && (
-          <Flex gap={1}>
+          <Flex gap={4}>
             <TxRelationSelection
               setValue={(value: Option<boolean>) => {
-                // setPageSize(10);
+                setPageSize(10);
                 setIsSigner(value);
               }}
               w="200px"
@@ -130,9 +139,25 @@ export const TxsTable = ({
           </Flex>
         )}
       </Flex>
+      {Boolean(failureReason) && transactions?.length && (
+        <Alert my={6} variant="error" gap={4}>
+          <CustomIcon
+            name="alert-circle-solid"
+            boxSize={4}
+            color="error.main"
+          />
+          <AlertDescription>
+            This account has a high volume of transactions. Kindly note that{" "}
+            <span style={{ fontWeight: 700 }}>
+              we are only able to display up to 50 recent filtered transactions
+            </span>{" "}
+            at the time due to the large number of transactions.
+          </AlertDescription>
+        </Alert>
+      )}
       <TransactionsTable
         transactions={transactions}
-        isLoading={isLoading}
+        isLoading={isLoading || txsCountLoading}
         emptyState={
           <EmptyState
             withBorder
