@@ -1,5 +1,4 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
 
 import { LabelText } from "lib/components/LabelText";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
@@ -11,12 +10,6 @@ interface BlockInfoProps {
 }
 
 export const BlockInfo = ({ blockData }: BlockInfoProps) => {
-  const [proposerWidth, setProposerWidth] = useState<number>();
-  const measuredRef = useCallback((node: HTMLDivElement | null) => {
-    if (node !== null) {
-      setProposerWidth(node.scrollWidth);
-    }
-  }, []);
   return (
     <Box mb={12}>
       <Heading as="h6" variant="h6" mb={6}>
@@ -24,17 +17,13 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
       </Heading>
       <Flex gap="64px">
         <LabelText label="Network">{blockData.network}</LabelText>
-        <LabelText
-          label="Proposed by"
-          ref={measuredRef}
-          w={proposerWidth ? `${proposerWidth}px` : undefined}
-        >
-          <ValidatorBadge validator={blockData.proposer} badgeSize={6} />
-        </LabelText>
         <LabelText label="Gas (Used/Wanted)">
           {`${blockData.gasUsed ? formatInteger(blockData.gasUsed) : 0} / ${
             blockData.gasLimit ? formatInteger(blockData.gasLimit) : 0
           }`}
+        </LabelText>
+        <LabelText label="Proposed by">
+          <ValidatorBadge validator={blockData.proposer} badgeSize={6} />
         </LabelText>
       </Flex>
     </Box>
