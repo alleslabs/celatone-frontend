@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#304](https://github.com/alleslabs/celatone-frontend/pull/304) Remove suffix for token card
 - [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link
 - [#293](https://github.com/alleslabs/celatone-frontend/pull/293) Add comma separator to pagination and total blocks
 - [#291](https://github.com/alleslabs/celatone-frontend/pull/291) Update tx count query
@@ -82,6 +83,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#297](https://github.com/alleslabs/celatone-frontend/pull/297) Fix open new tab on tx modal link clicked
+- [#303](https://github.com/alleslabs/celatone-frontend/pull/303) Fix pagination problem when using filter
+- [#301](https://github.com/alleslabs/celatone-frontend/pull/301) Fix whitelist revalidation trigger
+- [#305](https://github.com/alleslabs/celatone-frontend/pull/305) Fix UI avatar for validator not shown when encounter special chars
+- [#302](https://github.com/alleslabs/celatone-frontend/pull/302) Fix token card width, text size for unsupported token button in account details page and tx count color when equal to zero
+- [#300](https://github.com/alleslabs/celatone-frontend/pull/300) Fix search bar's placeholder text and remove separator in latest block height
 - [#290](https://github.com/alleslabs/celatone-frontend/pull/290) Fix spacing and styling in account detail
 - [#280](https://github.com/alleslabs/celatone-frontend/pull/280) Fix begin unlocking optional coins field causing crash
 - [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
@@ -93,6 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
 - [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit
 - [#243](https://github.com/alleslabs/celatone-frontend/pull/243) Fix Json viewer and view more btn
+- [#299](https://github.com/alleslabs/celatone-frontend/pull/299) Fix validator identity url
 
 ## v1.0.2
 
