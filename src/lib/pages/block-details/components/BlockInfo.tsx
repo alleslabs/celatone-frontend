@@ -14,7 +14,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
   const [proposerWidth, setProposerWidth] = useState<number>();
   const measuredRef = useCallback((node: HTMLDivElement | null) => {
     if (node !== null) {
-      setProposerWidth(node.clientWidth);
+      setProposerWidth(node.scrollWidth);
     }
   }, []);
   return (

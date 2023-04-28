@@ -47,16 +47,22 @@ export const useTxExpression = ({
   filters: TxFilters;
   isSigner: Option<boolean>;
 }) =>
-  useMemo(
-    () => ({
+  useMemo(() => {
+    const hasFilter = Object.values(filters).some((filter: boolean) => filter);
+    return {
       ...(accountId
         ? { account_id: { _eq: accountId } }
         : { account: { address: address ? { _eq: address } : {} } }),
-      is_signer: isSigner === undefined ? {} : { _eq: isSigner },
-      transaction: {
-        ...generateActionsFilter(filters),
-        _or: generateSearch(search.toLocaleLowerCase()),
-      },
-    }),
-    [address, accountId, filters, isSigner, search]
-  );
+      ...(isSigner === undefined ? {} : { is_signer: { _eq: isSigner } }),
+      ...(hasFilter || search
+        ? {
+            transaction: {
+              ...(hasFilter ? generateActionsFilter(filters) : {}),
+              ...(search
+                ? { _or: generateSearch(search.toLocaleLowerCase()) }
+                : {}),
+            },
+          }
+        : {}),
+    };
+  }, [address, accountId, filters, isSigner, search]);
