@@ -8,13 +8,16 @@ import {
 } from "lib/services/contractService";
 import { useProposalsCountByWalletAddress } from "lib/services/proposalService";
 import { useTxsCountByAddress } from "lib/services/txService";
-import type { HumanAddr } from "lib/types";
+import type { HumanAddr, Option } from "lib/types";
 
 /**
  * @remark
  * Counts for stored codes, contract admin, contract instances, transactions, and opened proposals tables
  */
-export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
+export const useAccountDetailsTableCounts = (
+  walletAddress: HumanAddr,
+  accountId: Option<number>
+) => {
   const { data: codesCount, refetch: refetchCodesCount } =
     useCodeListCountByWalletAddress(walletAddress);
   const { data: contractsAdminCount, refetch: refetchContractsAdminCount } =
@@ -24,7 +27,8 @@ export const useAccountDetailsTableCounts = (walletAddress: HumanAddr) => {
   const { data: proposalsCount, refetch: refetchProposalsCount } =
     useProposalsCountByWalletAddress(walletAddress);
   const { data: txsCount, refetch: refetchTxsCount } = useTxsCountByAddress(
-    walletAddress,
+    undefined,
+    accountId,
     "",
     DEFAULT_TX_FILTERS,
     undefined

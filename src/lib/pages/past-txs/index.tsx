@@ -20,6 +20,7 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
+import { useAccountId } from "lib/services/accountService";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useTxsByAddressPagination,
@@ -50,8 +51,10 @@ const PastTxs = () => {
 
   const pastTxsState = watch();
 
+  const { data: accountId } = useAccountId(address as HumanAddr);
   const { data: countTxs = 0 } = useTxsCountByAddress(
-    address as HumanAddr,
+    undefined,
+    accountId,
     pastTxsState.search,
     pastTxsState.filters,
     pastTxsState.isSigner
@@ -74,7 +77,8 @@ const PastTxs = () => {
   });
 
   const { data: txs, isLoading } = useTxsByAddressPagination(
-    address as HumanAddr,
+    undefined,
+    accountId,
     pastTxsState.search,
     pastTxsState.filters,
     pastTxsState.isSigner,

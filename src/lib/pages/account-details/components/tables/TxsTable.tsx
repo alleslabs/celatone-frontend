@@ -19,9 +19,8 @@ import type { HumanAddr, Option, Transaction, TxFilters } from "lib/types";
 
 interface TxsTableProps {
   walletAddress: HumanAddr;
+  accountId?: Option<number>;
   scrollComponentId: string;
-  totalData: Option<number>;
-  refetchCount: () => void;
   onViewMore?: () => void;
 }
 
@@ -44,16 +43,16 @@ const getEmptyStateProps = (
 
 export const TxsTable = ({
   walletAddress,
+  accountId,
   scrollComponentId,
-  totalData,
-  refetchCount,
   onViewMore,
 }: TxsTableProps) => {
   const [isSigner, setIsSigner] = useState<Option<boolean>>();
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
 
-  const { data: txsCount = 0 } = useTxsCountByAddress(
+  const { data: txsCount = 0, refetch: refetchTxsCount } = useTxsCountByAddress(
     walletAddress,
+    accountId,
     "",
     filters,
     isSigner
@@ -84,7 +83,8 @@ export const TxsTable = ({
   );
 
   const { data: transactions, isLoading } = useTxsByAddressPagination(
-    walletAddress,
+    undefined,
+    accountId,
     "",
     filters,
     isSigner,
@@ -93,13 +93,13 @@ export const TxsTable = ({
   );
 
   const onPageChange = (nextPage: number) => {
-    refetchCount();
+    refetchTxsCount();
     setCurrentPage(nextPage);
   };
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const size = Number(e.target.value);
-    refetchCount();
+    refetchTxsCount();
     setPageSize(size);
     setCurrentPage(1);
   };
@@ -140,11 +140,11 @@ export const TxsTable = ({
         }
         showRelations
       />
-      {!!totalData &&
+      {!!txsCount &&
         Boolean(transactions?.length) &&
         (onViewMore
-          ? totalData > 5 && <ViewMore onClick={onViewMore} />
-          : totalData > 10 && (
+          ? txsCount > 5 && <ViewMore onClick={onViewMore} />
+          : txsCount > 10 && (
               <Pagination
                 currentPage={currentPage}
                 pagesQuantity={pagesQuantity}

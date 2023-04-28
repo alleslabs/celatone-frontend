@@ -34,20 +34,29 @@ const generateSearch = (search: string) =>
       ]
     : [{}];
 
-export const useTxExpression = (
-  address: Option<Addr>,
-  search: string,
-  filters: TxFilters,
-  isSigner: Option<boolean>
-) =>
+export const useTxExpression = ({
+  address,
+  accountId,
+  search,
+  filters,
+  isSigner,
+}: {
+  address?: Option<Addr>;
+  accountId?: Option<number>;
+  search: string;
+  filters: TxFilters;
+  isSigner: Option<boolean>;
+}) =>
   useMemo(
     () => ({
-      account: { address: address ? { _eq: address } : {} },
+      ...(accountId
+        ? { account_id: { _eq: accountId } }
+        : { account: { address: address ? { _eq: address } : {} } }),
       is_signer: isSigner === undefined ? {} : { _eq: isSigner },
       transaction: {
         ...generateActionsFilter(filters),
         _or: generateSearch(search.toLocaleLowerCase()),
       },
     }),
-    [address, filters, isSigner, search]
+    [address, accountId, filters, isSigner, search]
   );

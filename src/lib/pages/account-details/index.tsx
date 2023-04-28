@@ -32,6 +32,7 @@ import {
   TxsTable,
 } from "./components/tables";
 import { useAccountTotalValue } from "./data";
+import { useAccountId } from "lib/services/accountService";
 
 enum TabIndex {
   Overview,
@@ -53,6 +54,7 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
   const tableHeaderId = "accountDetailsTab";
+  const { data: accountId } = useAccountId(accountAddress);
   const {
     tableCounts,
     refetchCodesCount,
@@ -60,7 +62,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchContractsCount,
     refetchTxsCount,
     refetchProposalsCount,
-  } = useAccountDetailsTableCounts(accountAddress);
+  } = useAccountDetailsTableCounts(accountAddress, accountId);
 
   const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
 
@@ -190,7 +192,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
               totalData={tableCounts.txsCount}
-              refetchCount={refetchTxsCount}
               onViewMore={() => handleTabChange(TabIndex.Txs)}
             />
             <StoredCodesTable

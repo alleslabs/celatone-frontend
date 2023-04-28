@@ -3,6 +3,8 @@ import * as types from "./graphql";
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 
 const documents = {
+  "\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n":
+    types.GetAccountIdByAddressQueryDocumentDocument,
   "\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n":
     types.GetBlockTimestampByHeightQueryDocument,
   "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n      validator {\n        moniker\n        operator_address\n      }\n    }\n  }\n":
@@ -75,6 +77,9 @@ const documents = {
     types.GetBlockTransactionCountByHeightQueryDocument,
 };
 
+export function graphql(
+  source: "\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n"
+): typeof documents["\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n"
 ): typeof documents["\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n"];

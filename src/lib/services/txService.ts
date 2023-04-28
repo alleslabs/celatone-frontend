@@ -69,6 +69,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
 
 export const useTxsByAddressPagination = (
   address: Option<Addr>,
+  accountId: Option<number>,
   search: string,
   filters: TxFilters,
   isSigner: Option<boolean>,
@@ -76,7 +77,13 @@ export const useTxsByAddressPagination = (
   pageSize: number
 ): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const expression = useTxExpression(address, search, filters, isSigner);
+  const expression = useTxExpression({
+    address,
+    accountId,
+    search,
+    filters,
+    isSigner,
+  });
 
   const queryFn = useCallback(
     async () =>
@@ -140,7 +147,7 @@ export const useTxsByAddressPagination = (
     ],
     createQueryFnWithTimeout(queryFn),
     {
-      enabled: !!address,
+      enabled: !!address || !!accountId,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -149,12 +156,19 @@ export const useTxsByAddressPagination = (
 
 export const useTxsCountByAddress = (
   address: Option<Addr>,
+  accountId: Option<number>,
   search: string,
   filters: TxFilters,
   isSigner: Option<boolean>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const expression = useTxExpression(address, search, filters, isSigner);
+  const expression = useTxExpression({
+    address,
+    accountId,
+    search,
+    filters,
+    isSigner,
+  });
 
   const queryFn = useCallback(
     async () =>
@@ -180,7 +194,9 @@ export const useTxsCountByAddress = (
     ],
     queryFn,
     {
-      enabled: !!address,
+      enabled: !!address || !!accountId,
+      retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
