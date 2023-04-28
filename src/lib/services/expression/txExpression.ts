@@ -52,7 +52,7 @@ export const useTxExpression = ({
     return {
       ...(accountId
         ? { account_id: { _eq: accountId } }
-        : { account: { address: address ? { _eq: address } : {} } }),
+        : { ...(address ? { account: { address: { _eq: address } } } : {}) }),
       ...(isSigner === undefined ? {} : { is_signer: { _eq: isSigner } }),
       ...(hasFilter || search
         ? {

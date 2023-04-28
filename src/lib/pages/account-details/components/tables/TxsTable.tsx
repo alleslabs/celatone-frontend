@@ -116,6 +116,7 @@ export const TxsTable = ({
           <Flex gap={1}>
             <TxRelationSelection
               setValue={(value: Option<boolean>) => {
+                // setPageSize(10);
                 setIsSigner(value);
               }}
               w="200px"

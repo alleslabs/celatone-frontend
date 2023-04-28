@@ -18,6 +18,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
+import { useAccountId } from "lib/services/accountService";
 import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
@@ -32,7 +33,6 @@ import {
   TxsTable,
 } from "./components/tables";
 import { useAccountTotalValue } from "./data";
-import { useAccountId } from "lib/services/accountService";
 
 enum TabIndex {
   Overview,
@@ -60,7 +60,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
-    refetchTxsCount,
     refetchProposalsCount,
   } = useAccountDetailsTableCounts(accountAddress, accountId);
 
@@ -190,8 +189,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             </Flex>
             <TxsTable
               walletAddress={accountAddress}
+              accountId={accountId}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.txsCount}
               onViewMore={() => handleTabChange(TabIndex.Txs)}
             />
             <StoredCodesTable
@@ -232,9 +231,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             <TxsTable
               walletAddress={accountAddress}
+              accountId={accountId}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.txsCount}
-              refetchCount={refetchTxsCount}
             />
           </TabPanel>
           <TabPanel p={0}>
