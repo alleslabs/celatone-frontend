@@ -7,7 +7,9 @@ import {
   getExplorerValidatorUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/app-provider";
+import { useCurrentNetwork } from "lib/app-provider/hooks/useCurrentNetwork";
 import { AmpTrackMintscan } from "lib/services/amplitude";
+import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AppLink } from "./AppLink";
@@ -94,6 +96,7 @@ const LinkRender = ({
   isEllipsis,
   maxWidth,
   textVariant,
+  openNewTab,
 }: {
   type: string;
   isInternal: boolean;
@@ -102,7 +105,9 @@ const LinkRender = ({
   isEllipsis: boolean;
   maxWidth: ExplorerLinkProps["maxWidth"];
   textVariant: TextProps["variant"];
+  openNewTab: Option<boolean>;
 }) => {
+  const { network } = useCurrentNetwork();
   const textElement = (
     <Text
       variant={textVariant}
@@ -117,13 +122,13 @@ const LinkRender = ({
     </Text>
   );
 
-  return isInternal ? (
+  return isInternal && !openNewTab ? (
     <AppLink href={hrefLink} passHref onClick={(e) => e.stopPropagation()}>
       {textElement}
     </AppLink>
   ) : (
     <a
-      href={hrefLink}
+      href={isInternal ? `/${network}${hrefLink}` : hrefLink}
       target="_blank"
       rel="noopener noreferrer"
       data-peer
@@ -152,12 +157,11 @@ export const ExplorerLink = ({
 }: ExplorerLinkProps) => {
   const { address, currentChainName } = useWallet();
   const isInternal =
-    (type === "code_id" ||
-      type === "contract_address" ||
-      type === "user_address" ||
-      type === "tx_hash" ||
-      type === "block_height") &&
-    !openNewTab;
+    type === "code_id" ||
+    type === "contract_address" ||
+    type === "user_address" ||
+    type === "tx_hash" ||
+    type === "block_height";
 
   const [hrefLink, textValue] = [
     getNavigationUrl(type, currentChainName, copyValue || value),
@@ -192,6 +196,7 @@ export const ExplorerLink = ({
             isEllipsis={textFormat === "ellipsis"}
             maxWidth={maxWidth}
             textVariant={textVariant}
+            openNewTab={openNewTab}
           />
           <Copier
             type={type}
