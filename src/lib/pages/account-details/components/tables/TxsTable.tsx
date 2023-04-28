@@ -30,7 +30,7 @@ export const TxsTable = ({
   refetchCount,
   onViewMore,
 }: TxsTableProps) => {
-  const [isSigner, setIsSigner] = useState<Option<boolean>>(undefined);
+  const [isSigner, setIsSigner] = useState<Option<boolean>>();
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
 
   const { data: txsCount = 0 } = useTxsCountByAddress(
