@@ -169,7 +169,7 @@ export const UnsupportedTokensModal = ({
         }}
       >
         <Button
-          variant="ghost"
+          variant="ghost-gray"
           color="text.dark"
           mb={1}
           fontSize="12px"

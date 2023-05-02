@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#309](https://github.com/alleslabs/celatone-frontend/pull/309) Add public account name and description in account detail page
+- [#308](https://github.com/alleslabs/celatone-frontend/pull/308) Adjust view more button to full width and fix empty state layout in contract history
 - [#304](https://github.com/alleslabs/celatone-frontend/pull/304) Remove suffix for token card
 - [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link
 - [#293](https://github.com/alleslabs/celatone-frontend/pull/293) Add comma separator to pagination and total blocks
@@ -84,6 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#307](https://github.com/alleslabs/celatone-frontend/pull/307) Remove minor ui in account detail
 - [#297](https://github.com/alleslabs/celatone-frontend/pull/297) Fix open new tab on tx modal link clicked
 - [#303](https://github.com/alleslabs/celatone-frontend/pull/303) Fix pagination problem when using filter
 - [#301](https://github.com/alleslabs/celatone-frontend/pull/301) Fix whitelist revalidation trigger

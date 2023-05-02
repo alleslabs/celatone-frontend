@@ -164,7 +164,7 @@ export const Button: ComponentStyleConfig = {
       disabled: {
         color: "pebble.500",
       },
-      hoverBg: pebble700,
+      hoverBg: "pebble.800",
       activeBg: "transparent",
     }),
     "ghost-error": generateStyle({
