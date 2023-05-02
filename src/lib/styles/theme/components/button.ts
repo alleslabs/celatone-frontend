@@ -5,6 +5,9 @@ type Dict = Record<string, string>;
 const pebble600 = "pebble.600";
 const pebble700 = "pebble.700";
 const violetLight = "violet.light";
+const violetDark = "violet.dark";
+const violetBg = "violet.background";
+// const violetMain = "violet.main";
 const honeydewBg = "honeydew.background";
 const honeydewMain = "honeydew.main";
 const honeydewDarker = "honeydew.darker";
@@ -74,11 +77,11 @@ export const Button: ComponentStyleConfig = {
         "> svg": "text.main",
       },
       disabled: {
-        background: "violet.background",
+        background: violetBg,
         color: pebble600,
         "> svg": pebble600,
       },
-      hoverBg: "violet.dark",
+      hoverBg: violetDark,
       activeBg: violetLight,
     }),
     error: generateStyle({
@@ -104,7 +107,7 @@ export const Button: ComponentStyleConfig = {
         color: pebble600,
         "> svg": pebble600,
       },
-      hoverBg: "violet.background",
+      hoverBg: violetBg,
       activeBg: "transparent",
     }),
     "outline-gray": generateStyle({
@@ -153,6 +156,18 @@ export const Button: ComponentStyleConfig = {
     }),
     "ghost-primary": generateStyle({
       basic: {
+        color: violetLight,
+        "> svg": violetLight,
+      },
+      disabled: {
+        color: violetDark,
+        "> svg": violetDark,
+      },
+      hoverBg: violetBg,
+      activeBg: "transparent",
+    }),
+    "ghost-lilac": generateStyle({
+      basic: {
         color: "lilac.main",
         "> svg": "lilac.main",
       },
@@ -166,9 +181,11 @@ export const Button: ComponentStyleConfig = {
     "ghost-info": generateStyle({
       basic: {
         color: honeydewMain,
+        "> svg": honeydewMain,
       },
       disabled: {
         color: honeydewBg,
+        "> svg": honeydewBg,
       },
       hoverBg: honeydewBg,
       activeBg: "transparent",
@@ -176,9 +193,11 @@ export const Button: ComponentStyleConfig = {
     "ghost-gray": generateStyle({
       basic: {
         color: "pebble.400",
+        "> svg": "pebble.400",
       },
       disabled: {
         color: "pebble.500",
+        "> svg": "pebble.500",
       },
       hoverBg: "pebble.800",
       activeBg: "transparent",

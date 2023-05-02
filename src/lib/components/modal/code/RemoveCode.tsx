@@ -29,7 +29,6 @@ export function RemoveCodeModal({
     <StyledIconButton
       icon={<CustomIcon name="delete" />}
       variant="ghost-gray"
-      color="pebble.600"
     />
   ),
 }: RemoveCodeModalProps) {

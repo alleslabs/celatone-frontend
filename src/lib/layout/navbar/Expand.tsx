@@ -37,13 +37,7 @@ export const ExpandNavMenu = ({
               variant="ghost-info"
               size="xs"
               iconSpacing={1}
-              leftIcon={
-                <CustomIcon
-                  name="double-chevron-left"
-                  color="honeydew.main"
-                  boxSize="3"
-                />
-              }
+              leftIcon={<CustomIcon name="double-chevron-left" boxSize="3" />}
               onClick={() => setIsExpand(false)}
             >
               HIDE
@@ -55,9 +49,7 @@ export const ExpandNavMenu = ({
                 variant: "ghost-info",
                 iconSpacing: 1,
                 size: "xs",
-                leftIcon: (
-                  <CustomIcon name="plus" color="honeydew.main" boxSize="3" />
-                ),
+                leftIcon: <CustomIcon name="plus" boxSize="3" />,
                 children: "NEW LIST",
                 onClick: () => AmpTrack(AmpEvent.USE_SIDEBAR),
               }}

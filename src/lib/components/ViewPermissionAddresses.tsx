@@ -35,7 +35,7 @@ export const ViewPermissionAddresses = ({
         ))}
       {permissionAddresses.length > 1 && (
         <Button
-          variant="ghost-primary"
+          variant="ghost-lilac"
           onClick={() => {
             AmpTrackExpand(
               viewAll ? "collapse" : "expand",

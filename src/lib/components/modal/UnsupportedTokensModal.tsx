@@ -168,14 +168,7 @@ export const UnsupportedTokensModal = ({
           onOpen();
         }}
       >
-        <Button
-          variant="ghost-gray"
-          color="text.dark"
-          mb={1}
-          fontSize="12px"
-          fontWeight={500}
-          {...buttonProps}
-        >
+        <Button variant="ghost-gray" mb={1} size="sm" {...buttonProps}>
           {`View ${unsupportedAssets.length} Unsupported Assets`}
         </Button>
       </Flex>

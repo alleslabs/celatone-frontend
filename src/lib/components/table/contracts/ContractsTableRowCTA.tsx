@@ -184,10 +184,8 @@ export const ContractsTableRowCTA = ({
               contractLocalInfo={contractInfo}
               triggerElement={
                 <StyledIconButton
-                  icon={
-                    <CustomIcon name="bookmark-solid" color="violet.light" />
-                  }
-                  variant="ghost-gray"
+                  icon={<CustomIcon name="bookmark-solid" />}
+                  variant="ghost-primary"
                 />
               }
             />

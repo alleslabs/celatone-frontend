@@ -15,7 +15,6 @@ export const ViewMore = ({ onClick }: ViewMoreProps) => (
       borderRadius="0"
       minH="64px"
       variant="ghost-gray"
-      color="text.dark"
       gap={2}
       onClick={() => {
         AmpTrack(AmpEvent.USE_VIEW_MORE);
@@ -23,7 +22,7 @@ export const ViewMore = ({ onClick }: ViewMoreProps) => (
       }}
     >
       View More
-      <CustomIcon name="chevron-right" boxSize="12px" color="text.dark" />
+      <CustomIcon name="chevron-right" boxSize="12px" />
     </Button>
   </Flex>
 );

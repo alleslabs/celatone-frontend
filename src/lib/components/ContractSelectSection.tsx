@@ -101,7 +101,7 @@ const ContractDetailsButton = ({
           variant="ghost-gray"
           float="right"
           size="sm"
-          leftIcon={<CustomIcon name="edit" color="text.dark" />}
+          leftIcon={<CustomIcon name="edit" />}
         >
           Edit
         </Button>

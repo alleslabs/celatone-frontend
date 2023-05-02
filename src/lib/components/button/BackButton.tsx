@@ -10,7 +10,7 @@ export const BackButton = (props: ButtonProps) => {
 
   return (
     <Button
-      variant="ghost-primary"
+      variant="ghost-lilac"
       size="sm"
       mb="8px"
       p="unset"

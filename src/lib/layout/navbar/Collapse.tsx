@@ -47,12 +47,7 @@ export const CollapseNavMenu = ({
                   p={1}
                   mt={2}
                   mx={2}
-                  icon={
-                    <CustomIcon
-                      name="double-chevron-right"
-                      color="honeydew.main"
-                    />
-                  }
+                  icon={<CustomIcon name="double-chevron-right" />}
                   onClick={() => setIsExpand(true)}
                 />
               </Tooltip>
