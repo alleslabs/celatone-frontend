@@ -29,7 +29,6 @@ export const PublicProjectAccountTable = ({
   onViewMore,
 }: PublicProjectAccountTableProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
-
   const filteredAccounts = useMemo(() => {
     return onViewMore
       ? accounts.slice(0, 5)
@@ -52,7 +51,7 @@ export const PublicProjectAccountTable = ({
           mb={6}
         />
       )}
-      {!accounts.length ? (
+      {!filteredAccounts.length ? (
         <EmptyState
           message="There is currently no accounts related to this project."
           imageVariant={onViewMore && "empty"}
