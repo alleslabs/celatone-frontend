@@ -9,6 +9,7 @@ import {
 
 import { useLCDEndpoint } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
 import { openNewTab } from "lib/hooks";
@@ -34,7 +35,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
     openNewTab(
       `${lcdEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
     );
-
+  const disablePrevious = block <= 1;
   return (
     <Flex
       justify="space-between"
@@ -55,9 +56,11 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
           <Text variant="body2" color="text.dark">
             Block Hash:
           </Text>
-          <Text variant="body2" color="lilac.main">
-            {blockData.hash.toUpperCase()}
-          </Text>
+          <CopyLink
+            value={blockData.hash.toUpperCase()}
+            amptrackSection="block_details_top"
+            type="block_hash"
+          />
         </Flex>
         <Flex gap={2} alignItems="center">
           <Flex gap={1} alignItems="center">
@@ -73,12 +76,14 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
         </Flex>
       </Flex>
       <Flex gap={2}>
-        <AppLink href={`/block/${block - 1}`}>
-          <StyledIconButton
-            icon={<CustomIcon name="chevron-left" />}
-            variant="ghost-gray"
-          />
-        </AppLink>
+        {!disablePrevious && (
+          <AppLink href={`/block/${block - 1}`}>
+            <StyledIconButton
+              icon={<CustomIcon name="chevron-left" />}
+              variant="ghost-gray"
+            />
+          </AppLink>
+        )}
         <AppLink href={`/block/${block + 1}`}>
           <StyledIconButton
             icon={<CustomIcon name="chevron-right" />}

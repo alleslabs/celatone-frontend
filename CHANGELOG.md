@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#310](https://github.com/alleslabs/celatone-frontend/pull/310) Add amplitude for landing on the following pages - blocks, block detail, txs, network overview
 - [#268](https://github.com/alleslabs/celatone-frontend/pull/268) Wireup create proposal to whitelisting
 - [#266](https://github.com/alleslabs/celatone-frontend/pull/250) Add proposal whitelisting page
 - [#286](https://github.com/alleslabs/celatone-frontend/pull/286) Add block proposer
@@ -64,7 +65,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+<<<<<<< HEAD
 - [#309](https://github.com/alleslabs/celatone-frontend/pull/309) Add public account name and description in account detail page
+=======
+- [#289](https://github.com/alleslabs/celatone-frontend/pull/289) Add public accounts to public projects
+>>>>>>> develop
 - [#308](https://github.com/alleslabs/celatone-frontend/pull/308) Adjust view more button to full width and fix empty state layout in contract history
 - [#304](https://github.com/alleslabs/celatone-frontend/pull/304) Remove suffix for token card
 - [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link
@@ -85,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#306](https://github.com/alleslabs/celatone-frontend/pull/306) Fix react query function timeout and retries, minor ui bugs
 - [#307](https://github.com/alleslabs/celatone-frontend/pull/307) Remove minor ui in account detail
 - [#297](https://github.com/alleslabs/celatone-frontend/pull/297) Fix open new tab on tx modal link clicked
 - [#303](https://github.com/alleslabs/celatone-frontend/pull/303) Fix pagination problem when using filter

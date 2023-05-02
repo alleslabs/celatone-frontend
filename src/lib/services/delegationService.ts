@@ -30,7 +30,10 @@ export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
     [endpoint]
   );
 
-  return useQuery(["query", "staking_params", endpoint], queryFn);
+  return useQuery(["query", "staking_params", endpoint], queryFn, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useDelegations = (
@@ -43,7 +46,10 @@ export const useDelegations = (
     [address, endpoint]
   );
 
-  return useQuery(["query", "delegations", endpoint, address], queryFn);
+  return useQuery(["query", "delegations", endpoint, address], queryFn, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useUnbondings = (
@@ -56,7 +62,10 @@ export const useUnbondings = (
     [address, endpoint]
   );
 
-  return useQuery(["query", "unbondings", endpoint, address], queryFn);
+  return useQuery(["query", "unbondings", endpoint, address], queryFn, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useDelegationRewards = (
@@ -69,7 +78,10 @@ export const useDelegationRewards = (
     [address, endpoint]
   );
 
-  return useQuery(["query", "delegation_rewards", endpoint, address], queryFn);
+  return useQuery(["query", "delegation_rewards", endpoint, address], queryFn, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useRedelegations = (
@@ -82,7 +94,10 @@ export const useRedelegations = (
     [address, endpoint]
   );
 
-  return useQuery(["query", "redelegations", endpoint, address], queryFn);
+  return useQuery(["query", "redelegations", endpoint, address], queryFn, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useCommission = (
@@ -95,5 +110,8 @@ export const useCommission = (
     [address, endpoint]
   );
 
-  return useQuery(["query", "commission", endpoint, address], queryFn);
+  return useQuery(["query", "commission", endpoint, address], queryFn, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 };

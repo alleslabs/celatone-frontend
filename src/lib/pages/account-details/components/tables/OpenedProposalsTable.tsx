@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -63,8 +64,13 @@ export const OpenedProposalsTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
-            imageVariant="empty"
-            message="This account did not open any proposals before."
+            message={
+              !proposals ? (
+                <ErrorFetching />
+              ) : (
+                "This account did not open any proposals before."
+              )
+            }
             withBorder
           />
         }

@@ -20,6 +20,7 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
+import { useAccountId } from "lib/services/accountService";
 import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import {
   usePublicProjectByAccountAddress,
@@ -61,6 +62,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const tableHeaderId = "accountDetailsTab";
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
+  const { data: accountId } = useAccountId(accountAddress);
 
   const publicDetail = publicInfoBySlug?.details;
 
@@ -69,9 +71,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
-    refetchTxsCount,
     refetchProposalsCount,
-  } = useAccountDetailsTableCounts(accountAddress);
+  } = useAccountDetailsTableCounts(accountAddress, accountId);
 
   const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
 
@@ -233,9 +234,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             </Flex>
             <TxsTable
               walletAddress={accountAddress}
+              accountId={accountId}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.txsCount}
-              refetchCount={refetchTxsCount}
               onViewMore={() => handleTabChange(TabIndex.Txs)}
             />
             <StoredCodesTable
@@ -276,9 +276,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             <TxsTable
               walletAddress={accountAddress}
+              accountId={accountId}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.txsCount}
-              refetchCount={refetchTxsCount}
             />
           </TabPanel>
           <TabPanel p={0}>
