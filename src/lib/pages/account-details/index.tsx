@@ -82,7 +82,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     scrollToTop();
   };
 
-  const displayName = publicInfo?.name || "Account Details";
+  const displayName = publicInfo?.name ?? "Account Details";
 
   return (
     <>
