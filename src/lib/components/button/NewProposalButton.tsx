@@ -27,7 +27,7 @@ export const NewProposalButton = () => {
         variant="primary"
         color="text.main"
         as={Button}
-        rightIcon={<CustomIcon name="chevron-down" color="text.main" />}
+        rightIcon={<CustomIcon name="chevron-down" />}
       >
         Create New Proposal
       </MenuButton>

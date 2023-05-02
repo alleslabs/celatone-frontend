@@ -1,7 +1,6 @@
 import {
   Flex,
   Heading,
-  Spinner,
   TabList,
   TabPanel,
   TabPanels,
@@ -15,6 +14,7 @@ import { useValidateAddress } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
@@ -158,7 +158,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 Total Account Value
               </Text>
               {isLoading ? (
-                <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
+                <Loading />
               ) : (
                 <Heading
                   as="h5"

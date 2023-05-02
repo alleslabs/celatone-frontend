@@ -134,13 +134,7 @@ const ContractsByList = observer(() => {
               }}
               buttonProps={{
                 variant: "outline-primary",
-                leftIcon: (
-                  <CustomIcon
-                    name="bookmark"
-                    boxSize="3"
-                    color="violet.light"
-                  />
-                ),
+                leftIcon: <CustomIcon name="bookmark" boxSize="3" />,
                 children: "Save Contract",
               }}
             />

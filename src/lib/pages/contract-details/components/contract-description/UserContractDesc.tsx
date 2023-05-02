@@ -40,7 +40,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
             size="xs"
             color="lilac.main"
             variant="ghost-primary"
-            leftIcon={<CustomIcon name="edit" color="lilac.main" boxSize="3" />}
+            leftIcon={<CustomIcon name="edit" boxSize="3" />}
           >
             {description ? "Edit" : "Add Description"}
           </Button>

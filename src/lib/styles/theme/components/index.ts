@@ -10,6 +10,7 @@ import { Menu } from "./menu";
 import { Modal } from "./modal";
 import { Radio } from "./radio";
 import { Select } from "./select";
+import { Spinner } from "./spinner";
 import { Switch } from "./switch";
 import { Table } from "./table";
 import { Text } from "./text";
@@ -34,4 +35,5 @@ export const components = {
   Textarea,
   Table,
   Switch,
+  Spinner,
 };

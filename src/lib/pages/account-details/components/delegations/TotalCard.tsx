@@ -24,7 +24,7 @@ export const TotalCard = ({
 }: TotalCardProps) => (
   <Flex direction="column" minW="233px" gap={1}>
     {isLoading ? (
-      <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
+      <Spinner mt={2} alignSelf="center" size="xl" />
     ) : (
       <>
         <Flex alignItems="center" gap={1}>

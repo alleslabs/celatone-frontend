@@ -68,7 +68,7 @@ export const ButtonSection = ({
             }}
           >
             Proceed to instantiate
-            <CustomIcon name="instantiate" color="text.main" boxSize="3" />
+            <CustomIcon name="instantiate" boxSize="3" />
           </Button>
         </>
       );
@@ -78,7 +78,6 @@ export const ButtonSection = ({
           variant="primary"
           onClick={() => {
             const codeId = receipts.find((r) => r.title === "Code ID")?.value;
-
             navigate({
               pathname: "/migrate",
               query: { contract: router.query.contract, "code-id": codeId },
@@ -87,7 +86,7 @@ export const ButtonSection = ({
           }}
         >
           Proceed to Migrate
-          <CustomIcon name="migrate" color="text.main" boxSize="3" />
+          <CustomIcon name="migrate" boxSize="3" />
         </Button>
       );
     case "migrate":
@@ -104,7 +103,7 @@ export const ButtonSection = ({
             }
           >
             View Contract Details
-            <CustomIcon name="chevron-right" color="text.main" boxSize="3" />
+            <CustomIcon name="chevron-right" boxSize="3" />
           </Button>
         </>
       );
@@ -124,7 +123,7 @@ export const ButtonSection = ({
             onClick={openProposalExplorer}
           >
             View Proposal
-            <CustomIcon name="launch" color="lilac.main" boxSize={3} ml={2} />
+            <CustomIcon name="launch" boxSize={3} ml={2} />
           </Button>
           <Button
             variant="primary"
@@ -136,12 +135,7 @@ export const ButtonSection = ({
             }}
           >
             See in Proposal List
-            <CustomIcon
-              name="chevron-right"
-              color="text.main"
-              boxSize={3}
-              ml={2}
-            />
+            <CustomIcon name="chevron-right" boxSize={3} ml={2} />
           </Button>
         </>
       );

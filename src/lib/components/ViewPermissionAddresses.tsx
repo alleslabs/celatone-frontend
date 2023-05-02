@@ -50,7 +50,6 @@ export const ViewPermissionAddresses = ({
           rightIcon={
             <CustomIcon
               name={viewAll ? "chevron-up" : "chevron-down"}
-              color="lilac.main"
               boxSize="3"
             />
           }

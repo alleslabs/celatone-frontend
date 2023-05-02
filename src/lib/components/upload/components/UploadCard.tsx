@@ -36,7 +36,7 @@ const getStatusDecorator = (
       };
     default:
       return {
-        icon: <Spinner color="violet.light" w="40px" h="40px" />,
+        icon: <Spinner size="md" variant="primary" />,
         statusText: "Loading",
       };
   }

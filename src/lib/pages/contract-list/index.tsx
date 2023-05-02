@@ -36,9 +36,7 @@ const AllContractListsPage = observer(() => {
           <CreateNewListModal
             buttonProps={{
               variant: "outline-primary",
-              leftIcon: (
-                <CustomIcon name="plus" boxSize="3" color="violet.light" />
-              ),
+              leftIcon: <CustomIcon name="plus" boxSize="3" />,
               children: "Create new list",
             }}
           />

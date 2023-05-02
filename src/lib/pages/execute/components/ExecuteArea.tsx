@@ -286,16 +286,7 @@ export const ExecuteArea = ({
             p="6px 16px"
             onClick={proceed}
             isDisabled={!enableExecute || !fee || isFetching}
-            leftIcon={
-              <CustomIcon
-                name="execute"
-                color={
-                  !enableExecute || !fee || isFetching
-                    ? "pebble.600"
-                    : "text.main"
-                }
-              />
-            }
+            leftIcon={<CustomIcon name="execute" />}
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >

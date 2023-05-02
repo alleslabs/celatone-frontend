@@ -1266,7 +1266,7 @@ interface CustomIconProps extends IconProps {
 }
 
 export const CustomIcon = ({
-  color = "pebble.600",
+  color,
   boxSize = "16px",
   name,
   ...iconProps

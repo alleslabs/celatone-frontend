@@ -71,7 +71,7 @@ const CardInfo = ({
         </Tooltip>
       </Flex>
       {isLoading ? (
-        <Spinner size="md" speed="0.65s" />
+        <Spinner size="md" />
       ) : (
         <Heading as="h5" variant="h5">
           {value}
@@ -110,7 +110,7 @@ const NetworkOverview = () => {
         </Heading>
         {isLoadingLatestBlockInfo ? (
           <Flex>
-            <Spinner size="sm" speed="0.65s" />
+            <Spinner size="md" />
             <Text variant="body2" color="text.dark" ml={2}>
               Loading latest data for you ...
             </Text>

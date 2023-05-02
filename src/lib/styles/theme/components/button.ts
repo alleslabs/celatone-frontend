@@ -6,9 +6,11 @@ const pebble600 = "pebble.600";
 const pebble700 = "pebble.700";
 const violetLight = "violet.light";
 const honeydewBg = "honeydew.background";
+const honeydewMain = "honeydew.main";
 const honeydewDarker = "honeydew.darker";
 const borderDefualt = "1px solid";
 const errorDark = "error.dark";
+const lilacBg = "lilac.background";
 
 const generateStyle = ({
   basic,
@@ -66,10 +68,15 @@ export const Button: ComponentStyleConfig = {
   },
   variants: {
     primary: generateStyle({
-      basic: { background: "violet.main", color: "text.main" },
+      basic: {
+        background: "violet.main",
+        color: "text.main",
+        "> svg": "text.main",
+      },
       disabled: {
         background: "violet.background",
         color: pebble600,
+        "> svg": pebble600,
       },
       hoverBg: "violet.dark",
       activeBg: violetLight,
@@ -88,11 +95,14 @@ export const Button: ComponentStyleConfig = {
         border: borderDefualt,
         borderColor: violetLight,
         color: violetLight,
+        "> div": violetLight,
+        "> svg": violetLight,
       },
       disabled: {
         border: borderDefualt,
         borderColor: pebble700,
         color: pebble600,
+        "> svg": pebble600,
       },
       hoverBg: "violet.background",
       activeBg: "transparent",
@@ -101,12 +111,14 @@ export const Button: ComponentStyleConfig = {
       basic: {
         border: borderDefualt,
         borderColor: pebble600,
-        color: "pebble.400",
+        color: "text.dark",
+        "> svg": "text.dark",
       },
       disabled: {
         border: borderDefualt,
         borderColor: pebble700,
         color: pebble600,
+        "> svg": pebble600,
       },
       hoverBg: pebble700,
       activeBg: "transparent",
@@ -115,11 +127,13 @@ export const Button: ComponentStyleConfig = {
       basic: {
         border: borderDefualt,
         borderColor: honeydewBg,
-        color: "honeydew.main",
+        color: honeydewMain,
+        "> svg": honeydewMain,
       },
       disabled: {
         border: honeydewDarker,
         color: honeydewDarker,
+        "> svg": honeydewDarker,
       },
       hoverBg: honeydewBg,
       activeBg: "transparent",
@@ -140,16 +154,18 @@ export const Button: ComponentStyleConfig = {
     "ghost-primary": generateStyle({
       basic: {
         color: "lilac.main",
+        "> svg": "lilac.main",
       },
       disabled: {
-        color: "lilac.background",
+        color: lilacBg,
+        "> svg": lilacBg,
       },
-      hoverBg: "lilac.background",
+      hoverBg: lilacBg,
       activeBg: "transparent",
     }),
     "ghost-info": generateStyle({
       basic: {
-        color: "honeydew.main",
+        color: honeydewMain,
       },
       disabled: {
         color: honeydewBg,

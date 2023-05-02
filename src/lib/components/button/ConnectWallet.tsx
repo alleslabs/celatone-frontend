@@ -1,4 +1,4 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
 
@@ -16,8 +16,8 @@ export const ConnectWalletBtn = () => {
 
   return (
     <Button variant="outline-primary" gap={2} onClick={onClickConnect}>
-      <Text color="violet.light">Connect Wallet</Text>
-      <CustomIcon name="connect" color="violet.light" />
+      Connect Wallet
+      <CustomIcon name="connect" />
     </Button>
   );
 };
