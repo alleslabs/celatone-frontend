@@ -86,7 +86,13 @@ const PastTxs = () => {
     pageSize
   );
 
+  const resetPagination = () => {
+    setPageSize(10);
+    setCurrentPage(1);
+  };
+
   const setFilter = (filter: string, bool: boolean) => {
+    resetPagination();
     setValue("filters", { ...pastTxsState.filters, [filter]: bool });
   };
 
@@ -113,10 +119,6 @@ const PastTxs = () => {
   }, [pastTxsState]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [pastTxsState.filters, pastTxsState.search, setCurrentPage]);
-
-  useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PAST_TXS);
   }, [router.isReady]);
 
@@ -130,7 +132,10 @@ const PastTxs = () => {
         <InputGroup>
           <Input
             value={pastTxsState.search}
-            onChange={(e) => setValue("search", e.target.value)}
+            onChange={(e) => {
+              setCurrentPage(1);
+              setValue("search", e.target.value);
+            }}
             placeholder="Search with transaction hash or contract address"
             h="full"
           />
@@ -141,7 +146,10 @@ const PastTxs = () => {
 
         <Flex gap={1}>
           <TxRelationSelection
-            setValue={(value) => setValue("isSigner", value)}
+            setValue={(value) => {
+              resetPagination();
+              setValue("isSigner", value);
+            }}
             w="165px"
           />
           <TxFilterSelection

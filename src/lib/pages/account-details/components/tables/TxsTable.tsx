@@ -74,8 +74,13 @@ export const TxsTable = ({
     },
   });
 
-  const handleSetFilters = (filter: string, bool: boolean) => {
+  const resetPagination = () => {
     setPageSize(10);
+    setCurrentPage(1);
+  };
+
+  const handleSetFilters = (filter: string, bool: boolean) => {
+    resetPagination();
     setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
   };
 
@@ -106,10 +111,6 @@ export const TxsTable = ({
   };
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [filters, isSigner, setCurrentPage]);
-
-  useEffect(() => {
     if (failureReason) setPageSize(50);
   }, [failureReason, setPageSize]);
 
@@ -125,7 +126,7 @@ export const TxsTable = ({
           <Flex gap={4}>
             <TxRelationSelection
               setValue={(value: Option<boolean>) => {
-                setPageSize(10);
+                resetPagination();
                 setIsSigner(value);
               }}
               w="200px"
