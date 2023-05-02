@@ -120,7 +120,8 @@ export const PROPOSAL_STORE_CODE_TEXT = {
   sourcePlaceholder: "URL to the code",
   sourceLabel: "Source",
   sourceRequired: "Source is required",
-  sourceError: "Please provide URL in format: https://github.com/example/url/",
+  sourceHelperText:
+    "Please provide absolute or path-absolute URL (ex. https://github.com/example/url/)",
   permissionTitle: "Instantiate Permission",
   permissionDescription:
     "If the proposal is passed, the stored code can be instantiated to a contract by your selected option",

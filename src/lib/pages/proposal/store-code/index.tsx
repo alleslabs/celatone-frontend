@@ -114,7 +114,6 @@ const StoreCodeProposal = () => {
     control: uploadSectionControl,
     watch: uploadSectionWatch,
     setValue: uploadSectionSetValue,
-    formState: { errors: uploadSectionErrors },
     trigger: uploadSectionTrigger,
   } = useForm<UploadSectionState>({
     defaultValues: {
@@ -143,9 +142,7 @@ const StoreCodeProposal = () => {
     minDeposit?.formattedDenom
   );
 
-  const formErrorsKey = Object.keys(errors).concat(
-    Object.keys(uploadSectionErrors)
-  );
+  const formErrorsKey = Object.keys(errors);
 
   // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
   const shouldNotSimulateForAnyOfAddr = useMemo(
@@ -308,7 +305,7 @@ const StoreCodeProposal = () => {
       <PageContainer>
         <Grid
           templateAreas={`"prespace main sidebar postspace"`}
-          templateColumns="1fr 6fr 4fr 1fr"
+          templateColumns="1fr 45% 4fr 1fr"
           gap={4}
         >
           <GridItem area="main">
@@ -415,6 +412,7 @@ const StoreCodeProposal = () => {
                   borderColor="pebble.700"
                   bg="pebble.800"
                   h="56px"
+                  overflowX="auto"
                 >
                   <Text
                     position="absolute"
@@ -471,14 +469,15 @@ const StoreCodeProposal = () => {
                   label={PROPOSAL_STORE_CODE_TEXT.sourceLabel}
                   labelBgColor="background.main"
                   variant="floating"
+                  helperText={PROPOSAL_STORE_CODE_TEXT.sourceHelperText}
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.sourceRequired,
                     pattern: /^(?!:)[a-zA-Z0-9+.-]+:/,
                   }}
                   error={
-                    // Source should start with a valid scheme
+                    // Source should be absolute url or absolute path
                     source && !source.match(/^(?!:)[a-zA-Z0-9+.-]+:/)
-                      ? PROPOSAL_STORE_CODE_TEXT.sourceError
+                      ? PROPOSAL_STORE_CODE_TEXT.sourceHelperText
                       : errors.source?.message
                   }
                 />
