@@ -3,7 +3,7 @@ import type { Router } from "next/router";
 import type { ParsedUrlQueryInput } from "node:querystring";
 import { useCallback } from "react";
 
-interface NavigationArgs {
+export interface NavigationArgs {
   pathname: string;
   query?: ParsedUrlQueryInput;
   options?: Parameters<Pick<Router, "push">["push"]>[2];

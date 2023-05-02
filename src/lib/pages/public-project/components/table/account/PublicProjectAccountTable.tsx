@@ -16,7 +16,7 @@ interface PublicProjectAccountTableProps {
 
 const TEMPLATE_COLUMNS = "160px 320px minmax(250px, 1fr)";
 
-const CodeTableHeader = () => (
+const AccountTableHeader = () => (
   <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
     <TableHeader>Address</TableHeader>
     <TableHeader>Account Name</TableHeader>
@@ -61,7 +61,7 @@ export const PublicProjectAccountTable = ({
       ) : (
         <>
           <TableContainer mb={4}>
-            <CodeTableHeader />
+            <AccountTableHeader />
             {filteredAccounts.map((account) => (
               <PublicProjectAccountRow
                 key={account.address}

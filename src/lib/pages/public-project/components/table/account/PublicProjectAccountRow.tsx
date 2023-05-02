@@ -1,5 +1,6 @@
 import { Grid, Text } from "@chakra-ui/react";
 
+import type { NavigationArgs } from "lib/app-provider";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
@@ -10,16 +11,34 @@ interface AccountTableRowProps {
   templateColumns: string;
 }
 
+const getNavigationArgs = (accountInfo: Account): NavigationArgs => {
+  switch (accountInfo.type) {
+    case "account":
+      return {
+        pathname: "/account/[accountAddress]",
+        query: { accountAddress: accountInfo.address },
+      };
+    case "contract":
+      return {
+        pathname: "/contract/[accountAddress]",
+        query: { accountAddress: accountInfo.address },
+      };
+    default:
+      return {
+        pathname: "",
+      };
+  }
+};
+
 export const PublicProjectAccountRow = ({
   accountInfo,
   templateColumns,
 }: AccountTableRowProps) => {
   const navigate = useInternalNavigate();
   const goToDetail = () => {
-    navigate({
-      pathname: `/${accountInfo.type}/${accountInfo.address}`,
-    });
+    navigate(getNavigationArgs(accountInfo));
   };
+
   return (
     <Grid
       templateColumns={templateColumns}
@@ -38,9 +57,7 @@ export const PublicProjectAccountRow = ({
           showCopyOnHover
         />
       </TableRow>
-      <TableRow>
-        <Text>{accountInfo.name}</Text>
-      </TableRow>
+      <TableRow>{accountInfo.name}</TableRow>
       <TableRow>
         <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
           {accountInfo.description || "N/A"}
