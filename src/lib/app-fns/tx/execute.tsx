@@ -70,7 +70,11 @@ export const executeContractTx = ({
             title: "Tx Hash",
             value: txInfo.transactionHash,
             html: (
-              <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
+              <ExplorerLink
+                type="tx_hash"
+                value={txInfo.transactionHash}
+                openNewTab
+              />
             ),
           },
           {

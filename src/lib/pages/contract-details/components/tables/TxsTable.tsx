@@ -67,7 +67,6 @@ export const TxsTable = ({
           <EmptyState
             imageVariant="empty"
             message="This contract does not have any transactions"
-            withBorder
           />
         }
         showRelations={false}

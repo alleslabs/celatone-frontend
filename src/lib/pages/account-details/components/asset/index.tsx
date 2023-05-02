@@ -42,7 +42,7 @@ const AssetSectionContent = ({
       {supportedAssets
         .slice(0, onViewMore ? MaxAssetsShow : undefined)
         .map((asset) => (
-          <TokenCard userBalance={asset} key={asset.balance.id} />
+          <TokenCard userBalance={asset} key={asset.balance.id} minW="full" />
         ))}
     </Grid>
   ) : (
@@ -64,7 +64,7 @@ export const AssetsSection = ({
   if (isLoading) return <Loading />;
 
   return (
-    <Flex direction="column" gap={4} mt={8} pb={8} width="full">
+    <Flex direction="column" gap={4} my={8} width="full">
       {onViewMore && (
         <TableTitle
           title="Assets"
@@ -82,11 +82,6 @@ export const AssetsSection = ({
             }
             isZeroValue={totalValue.eq(0) || !supportedAssets}
             helperText="Total Asset Value"
-          />
-          <UserAssetInfoCard
-            value={supportedAssets ? supportedAssets.length.toString() : "N/A"}
-            isZeroValue={!supportedAssets?.length}
-            helperText="Holding Supported Assets"
           />
         </Flex>
         {unsupportedAssets && (

@@ -90,7 +90,7 @@ export const PublicProjectCodeTable = observer(
           />
         ) : (
           <>
-            <TableContainer mb={4}>
+            <TableContainer>
               <CodeTableHeader />
               {publicCodes.map((code) => (
                 <PublicProjectCodeRow

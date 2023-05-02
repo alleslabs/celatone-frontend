@@ -80,7 +80,7 @@ export const PublicProjectContractTable = observer(
           />
         ) : (
           <>
-            <TableContainer mb={4}>
+            <TableContainer>
               <ContractTableHeader />
               {publicContracts.map((contract) => (
                 <PublicProjectContractRow

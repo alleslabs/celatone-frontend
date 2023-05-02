@@ -84,7 +84,7 @@ export const DelegationsSection = ({
   const redelegationCount = redelegations?.length ?? 0;
 
   return (
-    <Flex mt={8} pb={8} position="relative" overflow="hidden" width="full">
+    <Flex my={8} position="relative" overflow="hidden" width="full">
       <Flex
         direction="column"
         gap={4}

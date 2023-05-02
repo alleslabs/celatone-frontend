@@ -5,6 +5,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { getChainApiPath } from "env";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ValidatorInfo } from "lib/types";
+import { removeSpecialChars } from "lib/utils";
 
 interface ValidatorBadgeProps {
   validator: ValidatorInfo | null;
@@ -42,11 +43,11 @@ export const ValidatorBadge = ({
             boxSize={badgeSize}
             src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${getChainApiPath(
               currentChainName
-            )}/${validator.validatorAddress}.png`}
+            )}/moniker/${validator.validatorAddress}.png`}
             alt={validator.moniker}
-            fallbackSrc={`https://ui-avatars.com/api/?name=${
+            fallbackSrc={`https://ui-avatars.com/api/?name=${removeSpecialChars(
               validator.moniker ?? ""
-            }&background=9793F3&color=fff`}
+            )}&background=9793F3&color=fff`}
             borderRadius="50%"
           />
           <ExplorerLink

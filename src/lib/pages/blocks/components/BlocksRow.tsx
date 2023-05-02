@@ -28,7 +28,12 @@ export const BlocksRow = ({ templateColumns, blockData }: BlocksRowProps) => {
       <TableRow>
         <ValidatorBadge validator={blockData.proposer} />
       </TableRow>
-      <TableRow justifyContent="center">{blockData.txCount}</TableRow>
+      <TableRow
+        justifyContent="center"
+        color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+      >
+        {blockData.txCount}
+      </TableRow>
       <TableRow>
         <Flex direction="column">
           <Text variant="body2" color="text.dark" mb="2px">
