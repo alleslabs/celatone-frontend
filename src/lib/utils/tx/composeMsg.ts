@@ -1,5 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 import { ParameterChangeProposal } from "cosmjs-types/cosmos/params/v1beta1/params";
+import { StoreCodeProposal } from "cosmjs-types/cosmwasm/wasm/v1/proposal";
 
 import { microfy } from "../formatter";
 import { typeUrlDict } from "lib/data";
@@ -39,6 +40,7 @@ export const composeStoreCodeMsg = ({
     instantiatePermission: {
       permission,
       addresses,
+      address: "" as Addr,
     },
   });
 
@@ -82,3 +84,63 @@ export const composeSubmitWhitelistProposalMsg = ({
     ],
     proposer,
   });
+
+interface StoreCodeProposalMsgArgs {
+  proposer: string;
+  title: string;
+  description: string;
+  runAs: string;
+  wasmByteCode: Uint8Array;
+  permission: AccessType;
+  addresses: Addr[];
+  unpinCode: boolean;
+  source: string;
+  builder: string;
+  codeHash: Uint8Array;
+  initialDeposit: Coin;
+}
+
+export const composeStoreCodeProposalMsg = ({
+  proposer,
+  title,
+  description,
+  runAs,
+  wasmByteCode,
+  permission,
+  addresses,
+  unpinCode,
+  source,
+  builder,
+  codeHash,
+  initialDeposit,
+}: StoreCodeProposalMsgArgs): ComposedMsg => {
+  return composeMsg(MsgType.SUBMIT_PROPOSAL, {
+    content: {
+      typeUrl: "/cosmwasm.wasm.v1.StoreCodeProposal",
+      value: Uint8Array.from(
+        StoreCodeProposal.encode({
+          title: title.trim(),
+          description: description.trim(),
+          runAs,
+          wasmByteCode,
+          instantiatePermission: {
+            permission,
+            addresses,
+            address: "" as Addr,
+          },
+          unpinCode,
+          source,
+          builder,
+          codeHash,
+        }).finish()
+      ),
+    },
+    initialDeposit: [
+      {
+        ...initialDeposit,
+        amount: microfy((initialDeposit.amount || 0) as Token).toFixed(0),
+      },
+    ],
+    proposer,
+  });
+};

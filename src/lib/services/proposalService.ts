@@ -263,14 +263,15 @@ export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
   return useQuery(["proposal_types", indexerGraphClient], queryFn);
 };
 
+export interface MinDeposit {
+  amount: U<Token>;
+  denom: string;
+  formattedAmount: Token;
+  formattedDenom: string;
+  formattedToken: string;
+}
 interface DepositParamsReturn extends Omit<DepositParams, "min_deposit"> {
-  min_deposit: {
-    amount: U<Token>;
-    denom: string;
-    formattedAmount: Token;
-    formattedDenom: string;
-    formattedToken: string;
-  };
+  min_deposit: MinDeposit;
 }
 
 export const useGovParams = (): UseQueryResult<{

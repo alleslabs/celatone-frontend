@@ -1,3 +1,3 @@
-import StoreCode from "lib/pages/store-code";
+import StoreCodeProposal from "pages/proposal/store-code";
 
-export default StoreCode;
+export default StoreCodeProposal;
