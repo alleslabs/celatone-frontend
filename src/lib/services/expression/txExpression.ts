@@ -49,12 +49,17 @@ export const useTxExpression = ({
 }) =>
   useMemo(() => {
     const hasFilter = Object.values(filters).some((filter: boolean) => filter);
-    return {
-      ...(accountId
-        ? { account_id: { _eq: accountId } }
-        : { ...(address ? { account: { address: { _eq: address } } } : {}) }),
-      ...(isSigner === undefined ? {} : { is_signer: { _eq: isSigner } }),
-      ...(hasFilter || search
+    const accountIdExp = accountId ? { account_id: { _eq: accountId } } : {};
+    const addressExp = address
+      ? { account: { address: { _eq: address } } }
+      : {};
+    const applyAccountExp = Object.keys(accountIdExp).length
+      ? accountIdExp
+      : addressExp;
+    const isSignerExp =
+      isSigner === undefined ? {} : { is_signer: { _eq: isSigner } };
+    const filterExp =
+      hasFilter || search
         ? {
             transaction: {
               ...(hasFilter ? generateActionsFilter(filters) : {}),
@@ -63,6 +68,10 @@ export const useTxExpression = ({
                 : {}),
             },
           }
-        : {}),
+        : {};
+    return {
+      ...applyAccountExp,
+      ...isSignerExp,
+      ...filterExp,
     };
   }, [address, accountId, filters, isSigner, search]);

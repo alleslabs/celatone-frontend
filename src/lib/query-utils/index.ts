@@ -1,5 +1,5 @@
 export const createQueryFnWithTimeout =
-  <T>(queryFn: () => Promise<T>, ms: number = 6 * 60 * 1000) =>
+  <T>(queryFn: () => Promise<T>, ms: number = 6 * 1000) =>
   () =>
     Promise.race([
       queryFn(),

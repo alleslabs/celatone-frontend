@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { ErrorFetching } from "../common";
+import { ErrorFetching } from "../ErrorFetching";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";

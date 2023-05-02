@@ -2,7 +2,7 @@ import { Alert, AlertDescription, Box, Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
-import { ErrorFetching } from "../common";
+import { ErrorFetching } from "../ErrorFetching";
 import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";

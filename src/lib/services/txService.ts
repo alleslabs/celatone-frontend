@@ -138,6 +138,7 @@ export const useTxsByAddressPagination = (
     [
       "transactions_by_address_pagination",
       address,
+      accountId,
       search,
       filters,
       isSigner,
