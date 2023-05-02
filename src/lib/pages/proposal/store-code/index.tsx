@@ -403,29 +403,32 @@ const StoreCodeProposal = () => {
                 )}
 
                 {/* Code hash  */}
-                <Flex
-                  border="1px"
-                  borderRadius="5px"
-                  position="relative"
-                  px={3}
-                  py={4}
-                  borderColor="pebble.700"
-                  bg="pebble.800"
-                  h="56px"
-                  overflowX="auto"
-                >
+                <Flex position="relative" left={3}>
                   <Text
                     position="absolute"
-                    variant="body2"
+                    variant="body3"
                     color="text.dark"
                     px="1px"
                     top="-10px"
+                    zIndex="999"
                   >
                     {PROPOSAL_STORE_CODE_TEXT.codeHashHeader}
                   </Text>
-                  <Text>{codeHash}</Text>
+                  <Flex
+                    border="1px"
+                    borderRadius="5px"
+                    px={3}
+                    py={4}
+                    borderColor="pebble.700"
+                    bg="pebble.800"
+                    h="56px"
+                    w="full"
+                    overflowX="auto"
+                    overflowY="hidden"
+                  >
+                    <Text>{codeHash}</Text>
+                  </Flex>
                 </Flex>
-
                 {/* Unpin code  */}
                 <Flex direction="row" alignItems="center" gap={1}>
                   <Checkbox
