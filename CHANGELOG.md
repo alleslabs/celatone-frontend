@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#309](https://github.com/alleslabs/celatone-frontend/pull/309) Add public account name and description in account detail page
 - [#304](https://github.com/alleslabs/celatone-frontend/pull/304) Remove suffix for token card
 - [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link
 - [#293](https://github.com/alleslabs/celatone-frontend/pull/293) Add comma separator to pagination and total blocks
