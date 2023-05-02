@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#289](https://github.com/alleslabs/celatone-frontend/pull/289) Add public accounts to public projects
 - [#308](https://github.com/alleslabs/celatone-frontend/pull/308) Adjust view more button to full width and fix empty state layout in contract history
 - [#304](https://github.com/alleslabs/celatone-frontend/pull/304) Remove suffix for token card
 - [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link

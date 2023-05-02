@@ -100,7 +100,9 @@ export const PublicProjectCodeTable = observer(
                 />
               ))}
             </TableContainer>
-            {onViewMore && <ViewMore onClick={onViewMore} />}
+            {codes.length > 5 && onViewMore && (
+              <ViewMore onClick={onViewMore} />
+            )}
           </>
         )}
       </Box>

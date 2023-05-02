@@ -90,7 +90,9 @@ export const PublicProjectContractTable = observer(
                 />
               ))}
             </TableContainer>
-            {onViewMore && <ViewMore onClick={onViewMore} />}
+            {contracts.length > 5 && onViewMore && (
+              <ViewMore onClick={onViewMore} />
+            )}
           </>
         )}
       </Box>
