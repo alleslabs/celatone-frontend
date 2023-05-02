@@ -13,7 +13,11 @@ export const BlocksHeader = ({
   scrollComponentId,
 }: BlocksHeaderProps) => {
   return (
-    <Grid templateColumns={templateColumns} id={scrollComponentId}>
+    <Grid
+      templateColumns={templateColumns}
+      id={scrollComponentId}
+      sx={{ "> div": { color: "text.dark" } }}
+    >
       <TableHeader>Block Height</TableHeader>
       <TableHeader>Block Hash</TableHeader>
       <TableHeader>Proposed by</TableHeader>
