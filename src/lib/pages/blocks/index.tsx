@@ -1,10 +1,18 @@
 import { Heading, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import PageContainer from "lib/components/PageContainer";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { BlocksTable } from "./components/BlocksTable";
 
 const BlocksPage = () => {
+  const router = useRouter();
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_BLOCKS);
+  }, [router.isReady]);
+
   return (
     <PageContainer>
       <Heading as="h5" variant="h5">
