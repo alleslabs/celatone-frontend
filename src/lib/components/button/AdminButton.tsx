@@ -1,11 +1,4 @@
-import {
-  Button,
-  chakra,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
@@ -13,12 +6,6 @@ import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { Tooltip } from "../TooltipComponent";
 import { useInternalNavigate } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
-
-const StyledMenuItem = chakra(MenuItem, {
-  baseStyle: {
-    fontSize: "14px",
-  },
-});
 
 interface AdminButtonProps {
   contractAddress: ContractAddr;
@@ -46,7 +33,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         </MenuButton>
       </Tooltip>
       <MenuList>
-        <StyledMenuItem
+        <MenuItem
           icon={<CustomIcon name="migrate" />}
           onClick={() => {
             navigate({
@@ -56,8 +43,8 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           }}
         >
           Migrate
-        </StyledMenuItem>
-        <StyledMenuItem
+        </MenuItem>
+        <MenuItem
           icon={<CustomIcon name="admin" />}
           onClick={() => {
             navigate({
@@ -67,13 +54,13 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           }}
         >
           Update Admin
-        </StyledMenuItem>
+        </MenuItem>
         <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
-            <StyledMenuItem icon={<CustomIcon name="admin-clear" />}>
+            <MenuItem icon={<CustomIcon name="admin-clear" />}>
               Clear Admin
-            </StyledMenuItem>
+            </MenuItem>
           }
         />
       </MenuList>

@@ -27,12 +27,6 @@ import {
 import type { ContractInfo, LVPair, Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-const StyledMenuItem = chakra(MenuItem, {
-  baseStyle: {
-    fontSize: "14px",
-  },
-});
-
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
     display: "flex",
@@ -87,31 +81,32 @@ export const ContractsTableRowCTA = ({
 
       <TableRow>
         <Menu>
-          <MenuButton size="sm" variant="ghost-gray" as={Button}>
+          <MenuButton
+            size="sm"
+            variant="ghost-gray"
+            as={Button}
+            onClick={(e) => e.stopPropagation()}
+          >
             <CustomIcon name="more" boxSize="16px" />
           </MenuButton>
           <MenuList>
             <EditContractDetailsModal
               contractLocalInfo={contractInfo}
               triggerElement={
-                <StyledMenuItem
-                  icon={<CustomIcon name="edit" boxSize="16px" />}
-                >
+                <MenuItem icon={<CustomIcon name="edit" boxSize="16px" />}>
                   Edit details
-                </StyledMenuItem>
+                </MenuItem>
               }
             />
             <AddToOtherListModal
               contractLocalInfo={contractInfo}
               triggerElement={
-                <StyledMenuItem
-                  icon={<CustomIcon name="bookmark" boxSize="16px" />}
-                >
+                <MenuItem icon={<CustomIcon name="bookmark" boxSize="16px" />}>
                   Add or remove from other lists
-                </StyledMenuItem>
+                </MenuItem>
               }
             />
-            <StyledMenuItem
+            <MenuItem
               icon={<CustomIcon name="admin" boxSize="16px" />}
               onClick={() => {
                 navigate({
@@ -122,16 +117,16 @@ export const ContractsTableRowCTA = ({
               isDisabled={!isAdmin}
             >
               Update Admin
-            </StyledMenuItem>
+            </MenuItem>
             <ClearAdminModal
               contractAddress={contractInfo.contractAddress}
               triggerElement={
-                <StyledMenuItem
+                <MenuItem
                   icon={<CustomIcon name="admin-clear" boxSize="16px" />}
                   isDisabled={!isAdmin}
                 >
                   Clear Admin
-                </StyledMenuItem>
+                </MenuItem>
               }
             />
             {!!withCTA.removingContractList && (

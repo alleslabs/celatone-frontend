@@ -1,21 +1,8 @@
-import {
-  Button,
-  chakra,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 import { Tooltip } from "../TooltipComponent";
 import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-
-const StyledMenuItem = chakra(MenuItem, {
-  baseStyle: {
-    fontSize: "14px",
-  },
-});
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
@@ -25,14 +12,13 @@ export const NewProposalButton = () => {
     <Menu>
       <MenuButton
         variant="primary"
-        color="text.main"
         as={Button}
         rightIcon={<CustomIcon name="chevron-down" />}
       >
         Create New Proposal
       </MenuButton>
       <MenuList>
-        {/* <StyledMenuItem
+        {/* <MenuItem
           icon={<CustomIcon name="code" />}
           // TODO - Change navigation path
           onClick={() => {
@@ -42,8 +28,8 @@ export const NewProposalButton = () => {
           }}
         >
           To Store Code
-        </StyledMenuItem> */}
-        {/* <StyledMenuItem
+        </MenuItem> */}
+        {/* <MenuItem
           icon={<CustomIcon name="contract-address" />}
           onClick={() => {
             // TODO - Change navigation path
@@ -53,9 +39,12 @@ export const NewProposalButton = () => {
           }}
         >
           To Instantiate Contract
-        </StyledMenuItem> */}
-        <Tooltip label={isTestnet ? "Not available in testnet" : undefined}>
-          <StyledMenuItem
+        </MenuItem> */}
+        <Tooltip
+          label={isTestnet ? "Not available in testnet" : undefined}
+          placement="left"
+        >
+          <MenuItem
             isDisabled={isTestnet}
             icon={<CustomIcon name="admin" />}
             onClick={() => {
@@ -65,7 +54,7 @@ export const NewProposalButton = () => {
             }}
           >
             To Whitelist
-          </StyledMenuItem>
+          </MenuItem>
         </Tooltip>
       </MenuList>
     </Menu>

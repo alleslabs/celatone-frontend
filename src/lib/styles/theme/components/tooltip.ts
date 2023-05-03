@@ -13,7 +13,6 @@ export const Tooltip: ComponentStyleConfig = {
     fontSize: "14px",
     maxW: "280px",
     bg: "honeydew.darker",
-    placement: "top",
     [$arrowBg.variable]: "colors.honeydew.darker",
   },
 };

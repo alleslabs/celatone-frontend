@@ -7,7 +7,6 @@ const pebble700 = "pebble.700";
 const violetLight = "violet.light";
 const violetDark = "violet.dark";
 const violetBg = "violet.background";
-// const violetMain = "violet.main";
 const honeydewBg = "honeydew.background";
 const honeydewMain = "honeydew.main";
 const honeydewDarker = "honeydew.darker";
@@ -83,6 +82,18 @@ export const Button: ComponentStyleConfig = {
       },
       hoverBg: violetDark,
       activeBg: violetLight,
+    }),
+    "gray-solid": generateStyle({
+      basic: {
+        background: "pebble.800",
+        color: "text.main",
+      },
+      disabled: {
+        background: "pebble.900",
+        color: "pebble.900",
+      },
+      hoverBg: pebble700,
+      activeBg: pebble700,
     }),
     error: generateStyle({
       basic: { background: "error.main", color: "black" },
