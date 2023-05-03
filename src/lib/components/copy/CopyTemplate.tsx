@@ -1,5 +1,7 @@
-import { Box, Tooltip, useClipboard } from "@chakra-ui/react";
+import { Box, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
+
+import { Tooltip } from "../TooltipComponent";
 
 interface CopyTemplateProps {
   value: string;
@@ -16,13 +18,7 @@ export const CopyTemplate = ({
   useEffect(() => setValue(value), [value, setValue]);
 
   return (
-    <Tooltip
-      hasArrow
-      isOpen={hasCopied}
-      label={copyLabel}
-      placement="top"
-      arrowSize={8}
-    >
+    <Tooltip isOpen={hasCopied} label={copyLabel}>
       <Box
         onClick={(e) => {
           onCopy();

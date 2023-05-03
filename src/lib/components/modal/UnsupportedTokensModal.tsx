@@ -11,7 +11,6 @@ import {
   ModalBody,
   Button,
   Heading,
-  Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
@@ -19,6 +18,7 @@ import { useMemo } from "react";
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../TooltipComponent";
 import { useGetAddressType, getAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
@@ -87,12 +87,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
           <Text variant="body2" className="ellipsis">
             {tokenLabel}
           </Text>
-          <Tooltip
-            hasArrow
-            label={`Token ID: ${balance.id}`}
-            placement="top"
-            maxW="500px"
-          >
+          <Tooltip label={`Token ID: ${balance.id}`} maxW="500px">
             <Flex cursor="pointer" className="info" display="none">
               <CustomIcon name="info-circle" boxSize="3" />
             </Flex>

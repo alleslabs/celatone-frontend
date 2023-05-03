@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spinner, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -6,6 +6,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
+import { Tooltip } from "lib/components/TooltipComponent";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -61,7 +62,7 @@ const CardInfo = ({
         <Text variant="body2" color="text.dark">
           {title}
         </Text>
-        <Tooltip hasArrow label={tooltip} placement="top" arrowSize={8}>
+        <Tooltip label={tooltip}>
           <Flex cursor="pointer">
             <CustomIcon name="info-circle-solid" boxSize="3" />
           </Flex>

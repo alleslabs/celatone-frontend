@@ -7,7 +7,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 
-import { TooltipComponent } from "../TooltipComponent";
+import { Tooltip } from "../TooltipComponent";
 import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
@@ -54,9 +54,7 @@ export const NewProposalButton = () => {
         >
           To Instantiate Contract
         </StyledMenuItem> */}
-        <TooltipComponent
-          label={isTestnet ? "Not available in testnet" : undefined}
-        >
+        <Tooltip label={isTestnet ? "Not available in testnet" : undefined}>
           <StyledMenuItem
             isDisabled={isTestnet}
             icon={<CustomIcon name="admin" />}
@@ -68,7 +66,7 @@ export const NewProposalButton = () => {
           >
             To Whitelist
           </StyledMenuItem>
-        </TooltipComponent>
+        </Tooltip>
       </MenuList>
     </Menu>
   );

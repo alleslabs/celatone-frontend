@@ -5,12 +5,12 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
 import { ClearAdminModal } from "../modal/contract/ClearAdmin";
+import { Tooltip } from "../TooltipComponent";
 import { useInternalNavigate } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
@@ -33,10 +33,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
   return (
     <Menu>
       <Tooltip
-        hasArrow
         label="You don't have admin access to this contract."
-        placement="top"
-        arrowSize={8}
         isDisabled={isAdmin}
       >
         <MenuButton

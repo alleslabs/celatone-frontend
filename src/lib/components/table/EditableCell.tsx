@@ -1,16 +1,10 @@
 import type { TextProps } from "@chakra-ui/react";
-import {
-  Flex,
-  Text,
-  Input,
-  Button,
-  Tooltip,
-  useOutsideClick,
-} from "@chakra-ui/react";
+import { Flex, Text, Input, Button, useOutsideClick } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useRef, useState, useEffect } from "react";
 
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../TooltipComponent";
 
 interface EditableCellProps {
   initialValue?: string;
@@ -194,7 +188,7 @@ export const EditableCell = ({
               </Text>
             )}
             {!!tooltip && (
-              <Tooltip hasArrow label={tooltip} placement="top" arrowSize={8}>
+              <Tooltip hasArrow label={tooltip}>
                 <p>
                   <CustomIcon
                     name="info-circle"

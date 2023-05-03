@@ -1,8 +1,9 @@
-import { Box, Flex, IconButton, Image, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/TooltipComponent";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import type { NavMenuProps } from "./type";
@@ -32,7 +33,7 @@ export const CollapseNavMenu = ({
         >
           <Flex justifyContent="space-between" alignItems="center">
             {!isMobile && item.category === "Overview" && (
-              <Tooltip label="Expand" hasArrow placement="right">
+              <Tooltip label="Expand" placement="right">
                 <IconButton
                   aria-label="overview"
                   variant="ghost-info"
@@ -54,7 +55,7 @@ export const CollapseNavMenu = ({
               key={submenu.slug}
               onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
             >
-              <Tooltip label={submenu.name} hasArrow placement="right">
+              <Tooltip label={submenu.name} placement="right">
                 <Flex
                   cursor="pointer"
                   p={1}

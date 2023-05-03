@@ -1,10 +1,12 @@
-import { chakra, Tag, Tooltip } from "@chakra-ui/react";
+import { chakra, Tag } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { CSSProperties } from "react";
 
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getPermissionHelper } from "lib/utils";
+
+import { Tooltip } from "./TooltipComponent";
 
 const StyledTag = chakra(Tag, {
   baseStyle: {
@@ -42,7 +44,7 @@ export const PermissionChip = ({
   );
 
   return (
-    <Tooltip hasArrow label={message} placement="top">
+    <Tooltip label={message}>
       <StyledTag bgColor={tagBgColor}>{instantiatePermission}</StyledTag>
     </Tooltip>
   );

@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Badge, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+import { Badge, Flex, Image, Text } from "@chakra-ui/react";
 
 import { NAToken } from "lib/icon";
 import type { BalanceWithAssetInfo, Token, U, USD } from "lib/types";
@@ -10,6 +10,7 @@ import {
 } from "lib/utils";
 
 import { Copier } from "./copy";
+import { Tooltip } from "./TooltipComponent";
 
 interface TokenCardProps extends FlexProps {
   userBalance: BalanceWithAssetInfo;
@@ -25,9 +26,7 @@ export const TokenCard = ({
 
   return (
     <Tooltip
-      hasArrow
       label={`Token ID: ${id}`}
-      placement="top"
       maxW="240px"
       whiteSpace="pre-line"
       textAlign="center"

@@ -1,6 +1,7 @@
-import { Flex, Tooltip, Text, Highlight } from "@chakra-ui/react";
+import { Flex, Text, Highlight } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
+import { Tooltip } from "./TooltipComponent";
 
 const ExpeditedText = (
   <Text variant="body3">
@@ -18,7 +19,7 @@ interface ExpeditedProps {
   isActiveExpedited: boolean;
 }
 export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => (
-  <Tooltip hasArrow label={ExpeditedText} placement="top" arrowSize={8}>
+  <Tooltip label={ExpeditedText}>
     <Flex align="center">
       <CustomIcon
         name="expedited"

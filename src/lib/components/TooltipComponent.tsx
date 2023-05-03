@@ -1,13 +1,13 @@
 import type { TooltipProps } from "@chakra-ui/react";
-import { Tooltip } from "@chakra-ui/react";
+import { Tooltip as ChakraTooltip } from "@chakra-ui/react";
 
-export const TooltipComponent = ({
-  placement,
+export const Tooltip = ({
+  placement = "top",
   ...tooltipProps
 }: TooltipProps) => (
-  <Tooltip
+  <ChakraTooltip
     hasArrow
-    placement={placement ?? "top"}
+    placement={placement}
     arrowSize={8}
     {...tooltipProps}
   />

@@ -1,5 +1,7 @@
-import { Tag, Tooltip, chakra } from "@chakra-ui/react";
+import { Tag, chakra } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
+
+import { Tooltip } from "lib/components/TooltipComponent";
 
 const StyledTag = chakra(Tag, {
   baseStyle: {
@@ -24,7 +26,7 @@ export const RelationChip = ({ isSigner }: RelationChipProps) => {
     : "pebble.700";
 
   return (
-    <Tooltip hasArrow label={message} placement="top">
+    <Tooltip label={message}>
       <StyledTag bgColor={tagBgColor}>
         {isSigner ? "Signer" : "Related"}
       </StyledTag>

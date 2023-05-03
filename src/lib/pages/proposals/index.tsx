@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, Switch, Tooltip } from "@chakra-ui/react";
+import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
@@ -10,6 +10,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { Tooltip } from "lib/components/TooltipComponent";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useProposalList,
@@ -102,9 +103,7 @@ const Proposals = () => {
           />
           <Tooltip
             isDisabled={!!address}
-            hasArrow
             label="You need to connect your wallet to see your proposals"
-            placement="top"
             maxW="240px"
             whiteSpace="pre-line"
             textAlign="center"
