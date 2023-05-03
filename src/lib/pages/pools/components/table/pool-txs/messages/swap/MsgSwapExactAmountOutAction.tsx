@@ -24,7 +24,7 @@ export const MsgSwapExactAmountOutAction = ({
       Swap
       <Flex role="group" align="center" gap={1}>
         <Text fontWeight="medium">
-          {getTokenLabel(inAssetInfo?.symbol || tokenInDenom)}
+          {getTokenLabel(inAssetInfo?.symbol ?? tokenInDenom)}
         </Text>
         <Tooltip
           hasArrow

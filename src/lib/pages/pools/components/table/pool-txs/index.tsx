@@ -13,12 +13,14 @@ interface PoolRelatedTxsTableProps {
   poolId: number;
   countTxs: number;
   type: PoolTxFilter;
+  scrollComponentId: string;
 }
 
 export const PoolRelatedTxsTable = ({
   poolId,
   countTxs,
   type,
+  scrollComponentId,
 }: PoolRelatedTxsTableProps) => {
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
 
@@ -83,6 +85,7 @@ export const PoolRelatedTxsTable = ({
           offset={offset}
           totalData={countTxs}
           pageSize={pageSize}
+          scrollComponentId={scrollComponentId}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />

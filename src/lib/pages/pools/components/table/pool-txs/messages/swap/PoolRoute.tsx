@@ -25,10 +25,7 @@ export const PoolRoute = ({ routes, assetInfos }: PoolRouteProps) => {
   if (isLoading) return <Loading />;
   if (!poolAssets)
     return (
-      <EmptyState
-        imageVariant="not-found"
-        message="There is an error during fetching pool detail."
-      />
+      <EmptyState message="There is an error during fetching pool detail." />
     );
   return (
     <Flex direction="column">

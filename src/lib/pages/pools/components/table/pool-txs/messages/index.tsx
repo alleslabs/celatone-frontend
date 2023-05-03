@@ -20,6 +20,7 @@ export const PoolTxsAction = ({
   const { type } = msg;
   switch (type) {
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn":
       return (
         <MsgSwapExactAmountInAction
           msg={msg.detail as MsgSwapExactAmountIn}
@@ -27,6 +28,7 @@ export const PoolTxsAction = ({
         />
       );
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut":
       return (
         <MsgSwapExactAmountOutAction
           msg={msg.detail as MsgSwapExactAmountOut}
@@ -56,6 +58,7 @@ export const PoolTxsDetail = ({
   const { type } = msg;
   switch (type) {
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn":
       return (
         <MsgSwapExactAmountInDetail
           txHash={txHash}
@@ -66,6 +69,7 @@ export const PoolTxsDetail = ({
         />
       );
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut":
       return (
         <MsgSwapExactAmountOutDetail
           txHash={txHash}

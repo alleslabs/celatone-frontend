@@ -30,7 +30,7 @@ export const MsgSwapExactAmountInAction = ({
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       <Flex role="group" align="center" gap={1}>
         <Text fontWeight="medium">
-          {getTokenLabel(outAssetInfo?.symbol || tokenOutDenom)}
+          {getTokenLabel(outAssetInfo?.symbol ?? tokenOutDenom)}
         </Text>
         <Tooltip
           hasArrow
