@@ -403,14 +403,14 @@ const StoreCodeProposal = () => {
                 )}
 
                 {/* Code hash  */}
-                <Flex position="relative" left={3}>
+                <Flex position="relative">
                   <Text
                     position="absolute"
                     variant="body3"
                     color="text.dark"
                     px="1px"
                     top="-10px"
-                    zIndex="999"
+                    left={3}
                   >
                     {PROPOSAL_STORE_CODE_TEXT.codeHashHeader}
                   </Text>
