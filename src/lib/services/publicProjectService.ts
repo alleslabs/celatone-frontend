@@ -153,3 +153,34 @@ export const usePublicProjectByCodeId = (
     }
   );
 };
+
+export const usePublicProjectByAccountAddress = (
+  accountAddress: Option<string>
+): UseQueryResult<PublicInfo> => {
+  const { currentChainRecord } = useWallet();
+  const queryFn = useCallback(async () => {
+    if (!accountAddress)
+      throw new Error(
+        "Wallet address not found (usePublicProjectByAccountAddress)"
+      );
+    if (!currentChainRecord)
+      throw new Error("No chain selected (usePublicProjectByAccountAddress)");
+    return axios
+      .get<PublicInfo>(
+        `${CELATONE_API_ENDPOINT}/accounts/${getChainApiPath(
+          currentChainRecord.chain.chain_name
+        )}/${currentChainRecord.chain.chain_id}/${accountAddress}`
+      )
+      .then(({ data: projectInfo }) => projectInfo);
+  }, [accountAddress, currentChainRecord]);
+  return useQuery(
+    ["public_project_by_account_address", accountAddress, currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!accountAddress,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+};

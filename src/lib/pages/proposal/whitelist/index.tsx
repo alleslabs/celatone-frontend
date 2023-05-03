@@ -69,6 +69,7 @@ const ProposalToWhitelist = () => {
     setValue,
     reset,
     formState: { errors: formErrors },
+    trigger,
   } = useForm<WhiteListState>({
     defaultValues,
     mode: "all",
@@ -294,7 +295,9 @@ const ProposalToWhitelist = () => {
                       whitelisted: () =>
                         govParams?.uploadAccess.addresses?.includes(
                           addresses[idx].address
-                        ) && "This address is already included in whitelist",
+                        )
+                          ? "This address is already included in whitelist"
+                          : undefined,
                     }}
                     error={formErrors.addresses?.[idx]?.address?.message}
                     helperAction={
@@ -305,6 +308,7 @@ const ProposalToWhitelist = () => {
                             `addresses.${idx}.address`,
                             walletAddress as Addr
                           );
+                          trigger(`addresses.${idx}.address`);
                         }}
                         isDisable={
                           addresses.findIndex(

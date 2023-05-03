@@ -3,6 +3,8 @@ import * as types from "./graphql";
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 
 const documents = {
+  "\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n":
+    types.GetAccountIdByAddressQueryDocumentDocument,
   "\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n":
     types.GetBlockTimestampByHeightQueryDocument,
   "\n  query getBlockListQuery($limit: Int!, $offset: Int!) {\n    blocks(limit: $limit, offset: $offset, order_by: { height: desc }) {\n      hash\n      height\n      timestamp\n      transactions_aggregate {\n        aggregate {\n          count\n        }\n      }\n      validator {\n        moniker\n        operator_address\n      }\n    }\n  }\n":
@@ -51,6 +53,10 @@ const documents = {
     types.GetPoolListDocument,
   "\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetPoolListCountDocument,
+  "\n  query getPoolListByDenoms(\n    $denoms: _varchar\n    $expression: pools_bool_exp\n    $order: order_by\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools: search_pools_with_denoms(\n      args: { denoms: $denoms }\n      where: $expression\n      order_by: { id: $order }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n":
+    types.GetPoolListByDenomsDocument,
+  "\n  query getPoolListByDenomsCount(\n    $denoms: _varchar\n    $expression: pools_bool_exp\n  ) {\n    pools_aggregate: search_pools_with_denoms_aggregate(\n      args: { denoms: $denoms }\n      where: $expression\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
+    types.GetPoolListByDenomsCountDocument,
   "\n  query getPoolByPoolId($poolId: Int!) {\n    pools_by_pk(id: $poolId) {\n      id\n      type\n      is_superfluid\n      is_supported\n      liquidity\n      transaction {\n        block_height\n      }\n      account {\n        address\n      }\n      address\n      swap_fee\n      exit_fee\n      future_pool_governor\n      weight\n      smooth_weight_change_params\n      scaling_factors\n      scaling_factor_controller\n    }\n  }\n":
     types.GetPoolByPoolIdDocument,
   "\n  query getPoolsByPoolIds($poolIds: [Int!]!) {\n    pools(where: { id: { _in: $poolIds } }) {\n      id\n      liquidity\n    }\n  }\n":
@@ -87,6 +93,9 @@ const documents = {
     types.GetBlockTransactionCountByHeightQueryDocument,
 };
 
+export function graphql(
+  source: "\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n"
+): typeof documents["\n  query getAccountIdByAddressQueryDocument($address: String!) {\n    accounts_by_pk(address: $address) {\n      id\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n"
 ): typeof documents["\n  query getBlockTimestampByHeightQuery($height: Int!) {\n    blocks_by_pk(height: $height) {\n      timestamp\n    }\n  }\n"];
@@ -159,6 +168,12 @@ export function graphql(
 export function graphql(
   source: "\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getPoolListCount($expression: pools_bool_exp) {\n    pools_aggregate(where: $expression) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getPoolListByDenoms(\n    $denoms: _varchar\n    $expression: pools_bool_exp\n    $order: order_by\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools: search_pools_with_denoms(\n      args: { denoms: $denoms }\n      where: $expression\n      order_by: { id: $order }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n"
+): typeof documents["\n  query getPoolListByDenoms(\n    $denoms: _varchar\n    $expression: pools_bool_exp\n    $order: order_by\n    $offset: Int!\n    $pageSize: Int!\n  ) {\n    pools: search_pools_with_denoms(\n      args: { denoms: $denoms }\n      where: $expression\n      order_by: { id: $order }\n      offset: $offset\n      limit: $pageSize\n    ) {\n      id\n      type\n      is_superfluid\n      liquidity\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getPoolListByDenomsCount(\n    $denoms: _varchar\n    $expression: pools_bool_exp\n  ) {\n    pools_aggregate: search_pools_with_denoms_aggregate(\n      args: { denoms: $denoms }\n      where: $expression\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
+): typeof documents["\n  query getPoolListByDenomsCount(\n    $denoms: _varchar\n    $expression: pools_bool_exp\n  ) {\n    pools_aggregate: search_pools_with_denoms_aggregate(\n      args: { denoms: $denoms }\n      where: $expression\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getPoolByPoolId($poolId: Int!) {\n    pools_by_pk(id: $poolId) {\n      id\n      type\n      is_superfluid\n      is_supported\n      liquidity\n      transaction {\n        block_height\n      }\n      account {\n        address\n      }\n      address\n      swap_fee\n      exit_fee\n      future_pool_governor\n      weight\n      smooth_weight_change_params\n      scaling_factors\n      scaling_factor_controller\n    }\n  }\n"
 ): typeof documents["\n  query getPoolByPoolId($poolId: Int!) {\n    pools_by_pk(id: $poolId) {\n      id\n      type\n      is_superfluid\n      is_supported\n      liquidity\n      transaction {\n        block_height\n      }\n      account {\n        address\n      }\n      address\n      swap_fee\n      exit_fee\n      future_pool_governor\n      weight\n      smooth_weight_change_params\n      scaling_factors\n      scaling_factor_controller\n    }\n  }\n"];

@@ -11738,8 +11738,6 @@ export type Validators_Bool_Exp = {
 export enum Validators_Constraint {
   /** unique or primary key constraint on columns "account_id" */
   ValidatorsAccountIdKey = "validators_account_id_key",
-  /** unique or primary key constraint on columns "consensus_address" */
-  ValidatorsConsensusAddressKey = "validators_consensus_address_key",
   /** unique or primary key constraint on columns "id" */
   ValidatorsIdKey = "validators_id_key",
   /** unique or primary key constraint on columns "operator_address" */
@@ -12096,6 +12094,15 @@ export type Validators_Variance_Fields = {
 export type Validators_Variance_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+};
+
+export type GetAccountIdByAddressQueryDocumentQueryVariables = Exact<{
+  address: Scalars["String"];
+}>;
+
+export type GetAccountIdByAddressQueryDocumentQuery = {
+  __typename?: "query_root";
+  accounts_by_pk?: { __typename?: "accounts"; id: number } | null;
 };
 
 export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
@@ -12555,6 +12562,38 @@ export type GetPoolListCountQuery = {
   };
 };
 
+export type GetPoolListByDenomsQueryVariables = Exact<{
+  denoms?: InputMaybe<Scalars["_varchar"]>;
+  expression?: InputMaybe<Pools_Bool_Exp>;
+  order?: InputMaybe<Order_By>;
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetPoolListByDenomsQuery = {
+  __typename?: "query_root";
+  pools: Array<{
+    __typename?: "pools";
+    id: number;
+    type: any;
+    is_superfluid: boolean;
+    liquidity: any;
+  }>;
+};
+
+export type GetPoolListByDenomsCountQueryVariables = Exact<{
+  denoms?: InputMaybe<Scalars["_varchar"]>;
+  expression?: InputMaybe<Pools_Bool_Exp>;
+}>;
+
+export type GetPoolListByDenomsCountQuery = {
+  __typename?: "query_root";
+  pools_aggregate: {
+    __typename?: "pools_aggregate";
+    aggregate?: { __typename?: "pools_aggregate_fields"; count: number } | null;
+  };
+};
+
 export type GetPoolByPoolIdQueryVariables = Exact<{
   poolId: Scalars["Int"];
 }>;
@@ -12865,6 +12904,60 @@ export type GetBlockTransactionCountByHeightQueryQuery = {
   };
 };
 
+export const GetAccountIdByAddressQueryDocumentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getAccountIdByAddressQueryDocument" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "accounts_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetAccountIdByAddressQueryDocumentQuery,
+  GetAccountIdByAddressQueryDocumentQueryVariables
+>;
 export const GetBlockTimestampByHeightQueryDocument = {
   kind: "Document",
   definitions: [
@@ -16129,6 +16222,247 @@ export const GetPoolListCountDocument = {
 } as unknown as DocumentNode<
   GetPoolListCountQuery,
   GetPoolListCountQueryVariables
+>;
+export const GetPoolListByDenomsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolListByDenoms" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "denoms" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "_varchar" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "pools_bool_exp" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "order" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "order_by" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "pools" },
+            name: { kind: "Name", value: "search_pools_with_denoms" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "args" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "denoms" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "denoms" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "order" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_superfluid" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "liquidity" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPoolListByDenomsQuery,
+  GetPoolListByDenomsQueryVariables
+>;
+export const GetPoolListByDenomsCountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolListByDenomsCount" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "denoms" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "_varchar" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "pools_bool_exp" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "pools_aggregate" },
+            name: { kind: "Name", value: "search_pools_with_denoms_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "args" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "denoms" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "denoms" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPoolListByDenomsCountQuery,
+  GetPoolListByDenomsCountQueryVariables
 >;
 export const GetPoolByPoolIdDocument = {
   kind: "Document",

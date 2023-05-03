@@ -3,12 +3,16 @@ import type { Big } from "big.js";
 
 import type { Addr, ContractAddr, Option, TokenWithValue } from "lib/types";
 
-export interface PoolWeight<T extends string | Big> {
+export type PoolTypeFilter = "All" | "Balancer" | "Stableswap";
+
+export interface PoolWeight<T extends string | Big = Big> {
   denom: string;
   weight: T;
 }
 
-export interface Pool<TLiquidity extends Coin | TokenWithValue = Coin> {
+export interface Pool<
+  TLiquidity extends Coin | TokenWithValue = TokenWithValue
+> {
   id: number;
   type: string;
   isSuperfluid: boolean;
@@ -16,8 +20,8 @@ export interface Pool<TLiquidity extends Coin | TokenWithValue = Coin> {
 }
 
 export interface PoolDetail<
-  TWeight extends string | Big = string,
-  TLiquidity extends Coin | TokenWithValue = Coin
+  TWeight extends string | Big = Big,
+  TLiquidity extends Coin | TokenWithValue = TokenWithValue
 > extends Pool<TLiquidity> {
   isSupported: boolean;
   blockHeight: Option<number>;
