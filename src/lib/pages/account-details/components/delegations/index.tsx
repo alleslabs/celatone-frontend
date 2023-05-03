@@ -61,7 +61,7 @@ export const DelegationsSection = ({
 
   if (isLoading) return <Loading />;
   if (!stakingParams)
-    return <EmptyState message="Error fetching delegation data" withBorder />;
+    return <EmptyState message="Error fetching delegation data" />;
 
   const bondDenomLabel = getTokenLabel(stakingParams.bondDenom);
   // TODO: support more than one Asset?

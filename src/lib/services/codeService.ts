@@ -12,6 +12,7 @@ import {
   getCodeListCountByWalletAddress,
   getCodeListQueryDocument,
 } from "lib/query";
+import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   CodeInfo,
   CodeData,
@@ -200,8 +201,8 @@ export const useCodeListByWalletAddressPagination = (
       pageSize,
       walletAddress,
     ],
-    queryFn,
-    { enabled: !!walletAddress }
+    createQueryFnWithTimeout(queryFn),
+    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
   );
 };
 

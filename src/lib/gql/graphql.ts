@@ -11738,8 +11738,6 @@ export type Validators_Bool_Exp = {
 export enum Validators_Constraint {
   /** unique or primary key constraint on columns "account_id" */
   ValidatorsAccountIdKey = "validators_account_id_key",
-  /** unique or primary key constraint on columns "consensus_address" */
-  ValidatorsConsensusAddressKey = "validators_consensus_address_key",
   /** unique or primary key constraint on columns "id" */
   ValidatorsIdKey = "validators_id_key",
   /** unique or primary key constraint on columns "operator_address" */
@@ -12096,6 +12094,15 @@ export type Validators_Variance_Fields = {
 export type Validators_Variance_Order_By = {
   account_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+};
+
+export type GetAccountIdByAddressQueryDocumentQueryVariables = Exact<{
+  address: Scalars["String"];
+}>;
+
+export type GetAccountIdByAddressQueryDocumentQuery = {
+  __typename?: "query_root";
+  accounts_by_pk?: { __typename?: "accounts"; id: number } | null;
 };
 
 export type GetBlockTimestampByHeightQueryQueryVariables = Exact<{
@@ -12763,6 +12770,60 @@ export type GetBlockTransactionCountByHeightQueryQuery = {
   };
 };
 
+export const GetAccountIdByAddressQueryDocumentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getAccountIdByAddressQueryDocument" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "accounts_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetAccountIdByAddressQueryDocumentQuery,
+  GetAccountIdByAddressQueryDocumentQueryVariables
+>;
 export const GetBlockTimestampByHeightQueryDocument = {
   kind: "Document",
   definitions: [

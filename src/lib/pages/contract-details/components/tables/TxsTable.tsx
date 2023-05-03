@@ -39,6 +39,7 @@ export const TxsTable = ({
 
   const { data: transactions, isLoading } = useTxsByAddressPagination(
     contractAddress,
+    undefined,
     "",
     DEFAULT_TX_FILTERS,
     undefined,

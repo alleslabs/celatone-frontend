@@ -165,7 +165,7 @@ export const ContractsTableRowCTA = ({
               <Text variant="body2">
                 {formatUTC(contractInfo.latestUpdated)}
               </Text>
-              <Text variant="body2" color="text.dark">
+              <Text variant="body3" color="text.dark">
                 {`(${dateFromNow(contractInfo.latestUpdated)})`}
               </Text>
             </>

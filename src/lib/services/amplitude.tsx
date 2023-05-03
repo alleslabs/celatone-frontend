@@ -27,6 +27,10 @@ export enum AmpEvent {
   PUBLIC_REMOVE = "Public Project Remove",
   // NAVIGATE
   TO_OVERVIEW = "To Overview",
+  TO_NETWORK_OVERVIEW = "To Network Overview",
+  TO_BLOCKS = "To Blocks",
+  TO_BLOCK_DETAIL = "To Block Detail",
+  TO_TXS = "To Txs",
   TO_PAST_TXS = "To Past Txs",
   TO_DEPLOY = "To Deploy",
   TO_UPLOAD = "To Upload",
