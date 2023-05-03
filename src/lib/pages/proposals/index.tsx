@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useState, useEffect } from "react";
 
-import { useChainId } from "lib/app-provider";
+import { useChainId, useInternalNavigate } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -62,9 +62,14 @@ const Proposals = () => {
     proposer
   );
 
+  const navigate = useInternalNavigate();
+
   useEffect(() => {
+    // remark: disable proposal and redirect to home page
+    navigate({ pathname: "/" });
+
     if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSALS);
-  }, [router.isReady]);
+  }, [router.isReady, navigate]);
 
   useEffect(() => {
     setPageSize(10);

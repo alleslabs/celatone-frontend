@@ -21,6 +21,7 @@ import { getAlert } from "../utils";
 import {
   useCurrentNetwork,
   useFabricateFee,
+  useInternalNavigate,
   useSimulateFeeQuery,
   useSubmitProposalTx,
 } from "lib/app-provider";
@@ -84,6 +85,7 @@ const ProposalToWhitelist = () => {
     name: "addresses",
   });
   const { isTestnet } = useCurrentNetwork();
+  const navigate = useInternalNavigate();
 
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
@@ -183,6 +185,11 @@ const ProposalToWhitelist = () => {
     broadcast,
     submitProposalTx,
   ]);
+
+  useEffect(() => {
+    // remark: disable proposal whitelist and redirect to home page
+    navigate({ pathname: "/" });
+  }, [navigate]);
 
   useEffect(() => {
     if (minDeposit)
