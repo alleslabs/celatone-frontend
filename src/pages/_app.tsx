@@ -38,7 +38,6 @@ configurePersistable({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
-
   const availableChainsEndpoints = Object.values(CHAIN_CONFIGS).reduce<{
     [chainName: string]: { rpc: string[]; rest: string[] };
   }>(

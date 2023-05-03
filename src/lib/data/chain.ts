@@ -27,19 +27,6 @@ export const MITOSIS_CHAINS: Chain = {
   testnet: "osmosistestnet",
 };
 
-export const getSupportedChainNames = (): SupportedChain[] => {
-  switch (SELECTED_CHAIN) {
-    case "terra":
-      return Object.values(TERRA_CHAINS);
-    case "osmosis":
-      return Object.values(OSMOSIS_CHAINS);
-    case "mitosis":
-      return Object.values(MITOSIS_CHAINS);
-    default:
-      throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
-  }
-};
-
 /**
  *
  * @param network network name from router.query.network
