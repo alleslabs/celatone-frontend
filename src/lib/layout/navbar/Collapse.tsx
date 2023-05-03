@@ -32,12 +32,7 @@ export const CollapseNavMenu = ({
         >
           <Flex justifyContent="space-between" alignItems="center">
             {!isMobile && item.category === "Overview" && (
-              <Tooltip
-                label="Expand"
-                hasArrow
-                placement="right"
-                bg="honeydew.darker"
-              >
+              <Tooltip label="Expand" hasArrow placement="right">
                 <IconButton
                   aria-label="overview"
                   variant="ghost-info"
@@ -59,12 +54,7 @@ export const CollapseNavMenu = ({
               key={submenu.slug}
               onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
             >
-              <Tooltip
-                label={submenu.name}
-                hasArrow
-                placement="right"
-                bg="honeydew.darker"
-              >
+              <Tooltip label={submenu.name} hasArrow placement="right">
                 <Flex
                   cursor="pointer"
                   p={1}

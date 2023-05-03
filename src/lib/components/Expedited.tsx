@@ -18,13 +18,7 @@ interface ExpeditedProps {
   isActiveExpedited: boolean;
 }
 export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => (
-  <Tooltip
-    hasArrow
-    label={ExpeditedText}
-    placement="top"
-    bg="honeydew.darker"
-    arrowSize={8}
-  >
+  <Tooltip hasArrow label={ExpeditedText} placement="top" arrowSize={8}>
     <Flex align="center">
       <CustomIcon
         name="expedited"

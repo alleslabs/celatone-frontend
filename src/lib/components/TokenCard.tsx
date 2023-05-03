@@ -28,7 +28,6 @@ export const TokenCard = ({
       hasArrow
       label={`Token ID: ${id}`}
       placement="top"
-      bg="honeydew.darker"
       maxW="240px"
       whiteSpace="pre-line"
       textAlign="center"

@@ -69,7 +69,6 @@ export const SingleMsg = ({
             hasArrow
             label={`Token ID: ${token.id}`}
             placement="top"
-            bg="honeydew.darker"
             maxW="240px"
           >
             <Flex cursor="pointer">

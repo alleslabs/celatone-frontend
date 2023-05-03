@@ -31,12 +31,7 @@ export const TotalCard = ({
           <Text variant="body2" fontWeight="500" textColor="text.dark">
             {title}
           </Text>
-          <Tooltip
-            hasArrow
-            placement="top"
-            label={message}
-            bg="honeydew.darker"
-          >
+          <Tooltip hasArrow placement="top" label={message}>
             <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
           </Tooltip>
         </Flex>

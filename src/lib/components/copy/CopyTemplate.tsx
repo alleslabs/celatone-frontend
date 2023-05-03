@@ -22,7 +22,6 @@ export const CopyTemplate = ({
       label={copyLabel}
       placement="top"
       arrowSize={8}
-      bgColor="honeydew.darker"
     >
       <Box
         onClick={(e) => {

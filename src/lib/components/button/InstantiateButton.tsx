@@ -81,13 +81,7 @@ export const InstantiateButton = ({
   );
 
   return (
-    <Tooltip
-      hasArrow
-      label={tooltipLabel}
-      placement="top"
-      arrowSize={8}
-      bg="honeydew.darker"
-    >
+    <Tooltip hasArrow label={tooltipLabel} placement="top" arrowSize={8}>
       <Button
         // Change to isDisabled when create proposal flow is done
         disabled={!isAllowed || !isWalletConnected}

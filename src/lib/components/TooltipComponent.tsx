@@ -8,7 +8,6 @@ export const TooltipComponent = ({
   <Tooltip
     hasArrow
     placement={placement ?? "top"}
-    bg="honeydew.darker"
     arrowSize={8}
     {...tooltipProps}
   />

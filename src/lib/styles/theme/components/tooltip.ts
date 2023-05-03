@@ -10,6 +10,7 @@ const styles: StyleConfig = {
     fontWeight: 400,
     fontSize: "14px",
     maxW: "280px",
+    backgroundColor: "#1EEBDA",
   },
 };
 

@@ -42,7 +42,7 @@ export const PermissionChip = ({
   );
 
   return (
-    <Tooltip hasArrow label={message} placement="top" bg="honeydew.darker">
+    <Tooltip hasArrow label={message} placement="top">
       <StyledTag bgColor={tagBgColor}>{instantiatePermission}</StyledTag>
     </Tooltip>
   );

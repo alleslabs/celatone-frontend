@@ -105,7 +105,6 @@ const Proposals = () => {
             hasArrow
             label="You need to connect your wallet to see your proposals"
             placement="top"
-            bg="honeydew.darker"
             maxW="240px"
             whiteSpace="pre-line"
             textAlign="center"

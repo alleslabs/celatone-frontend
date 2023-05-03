@@ -194,13 +194,7 @@ export const EditableCell = ({
               </Text>
             )}
             {!!tooltip && (
-              <Tooltip
-                hasArrow
-                label={tooltip}
-                placement="top"
-                bg="honeydew.darker"
-                arrowSize={8}
-              >
+              <Tooltip hasArrow label={tooltip} placement="top" arrowSize={8}>
                 <p>
                   <CustomIcon
                     name="info-circle"

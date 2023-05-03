@@ -23,7 +23,6 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
       label={hasCopied ? "Copied!" : "Click to copy"}
       placement="top"
       arrowSize={8}
-      bgColor="honeydew.darker"
       closeOnClick={false}
     >
       <Flex

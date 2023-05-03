@@ -91,7 +91,6 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             hasArrow
             label={`Token ID: ${balance.id}`}
             placement="top"
-            bg="honeydew.darker"
             maxW="500px"
           >
             <Flex cursor="pointer" className="info" display="none">

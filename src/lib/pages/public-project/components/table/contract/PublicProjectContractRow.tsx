@@ -76,7 +76,6 @@ export const PublicProjectContractRow = ({
             hasArrow
             label={publicContractInfo.publicInfo.description}
             placement="top"
-            bg="honeydew.darker"
             arrowSize={8}
           >
             <Flex cursor="pointer">
