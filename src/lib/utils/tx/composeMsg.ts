@@ -10,6 +10,7 @@ import type {
   AccessType,
   Addr,
   Token,
+  HumanAddr,
 } from "lib/types";
 import { MsgType } from "lib/types";
 
@@ -78,7 +79,7 @@ export const composeSubmitWhitelistProposalMsg = ({
     },
     initialDeposit: [
       {
-        ...initialDeposit,
+        denom: initialDeposit.denom,
         amount: microfy((initialDeposit.amount || 0) as Token).toFixed(0),
       },
     ],
@@ -86,10 +87,10 @@ export const composeSubmitWhitelistProposalMsg = ({
   });
 
 interface StoreCodeProposalMsgArgs {
-  proposer: string;
+  proposer: HumanAddr;
   title: string;
   description: string;
-  runAs: string;
+  runAs: Addr;
   wasmByteCode: Uint8Array;
   permission: AccessType;
   addresses: Addr[];
@@ -137,7 +138,7 @@ export const composeStoreCodeProposalMsg = ({
     },
     initialDeposit: [
       {
-        ...initialDeposit,
+        denom: initialDeposit.denom,
         amount: microfy((initialDeposit.amount || 0) as Token).toFixed(0),
       },
     ],

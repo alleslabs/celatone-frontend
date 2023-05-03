@@ -171,7 +171,7 @@ export const useSimulateFeeForProposalStoreCode = ({
         proposer: address as HumanAddr,
         title,
         description,
-        runAs,
+        runAs: runAs as Addr,
         wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
         permission,
         addresses,

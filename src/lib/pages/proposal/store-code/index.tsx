@@ -254,7 +254,7 @@ const StoreCodeProposal = () => {
         proposer: walletAddress as HumanAddr,
         title,
         description: proposalDesc,
-        runAs,
+        runAs: runAs as Addr,
         wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
         permission,
         addresses: addresses.map((addr) => addr.address),
@@ -367,7 +367,7 @@ const StoreCodeProposal = () => {
                   placeholder={`ex. ${exampleHumanAddress}`}
                   variant="floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.runAsHelperText}
-                  reequiredText={PROPOSAL_STORE_CODE_TEXT.runAsRequired}
+                  requiredText={PROPOSAL_STORE_CODE_TEXT.runAsRequired}
                   error={errors.runAs?.message}
                   helperAction={
                     <AssignMe

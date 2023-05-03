@@ -9,7 +9,7 @@ import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { capitalizedFirst, findAttr, formatUFee } from "lib/utils";
+import { capitalize, findAttr, formatUFee } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -165,7 +165,7 @@ export const submitStoreCodeProposalTx = ({
           description: `${wasmFileName} is uploaded and pending ${
             amountToVote
               ? ` minimum deposit of ${amountToVote} to trigger voting period.`
-              : ` ${capitalizedFirst(chainName)} governance voting.`
+              : ` ${capitalize(chainName)} governance voting.`
           }`,
           headerIcon: (
             <CustomIcon

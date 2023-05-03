@@ -1,6 +1,6 @@
 import { truncate } from "../truncate";
 
-import { capitalizedFirst } from "./text";
+import { capitalize } from "./text";
 
 export const getTokenType = (type: string) => {
   switch (type.toLowerCase()) {
@@ -8,7 +8,7 @@ export const getTokenType = (type: string) => {
     case "cw20":
       return type.toUpperCase();
     default:
-      return capitalizedFirst(type);
+      return capitalize(type);
   }
 };
 
