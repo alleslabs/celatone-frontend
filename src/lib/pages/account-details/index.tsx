@@ -209,7 +209,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 <Heading
                   as="h5"
                   variant="h5"
-                  fontWeight="600"
                   color={
                     !totalAccountValue || totalAccountValue.eq(0)
                       ? "text.dark"

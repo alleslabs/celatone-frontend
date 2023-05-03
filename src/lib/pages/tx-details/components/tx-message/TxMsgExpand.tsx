@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { Badge, Flex } from "@chakra-ui/react";
+import { Flex, Tag } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
@@ -323,7 +323,7 @@ export const TxMsgExpand = ({
       <Flex align="center" gap={2} fontSize="16px" fontWeight={500}>
         <CustomIcon name={msgIcon} boxSize={4} color="lilac.main" m={0} />
         {content}
-        {isIBC && <Badge variant="honeydew">IBC</Badge>}
+        {isIBC && <Tag variant="honeydewDark">IBC</Tag>}
       </Flex>
       <CustomIcon
         name="chevron-down"

@@ -64,7 +64,7 @@ const Codes = observer(() => {
 
   return (
     <PageContainer>
-      <Heading as="h1" size="lg" color="white" pb={8}>
+      <Heading as="h1" size="lg" color="text.main" pb={8}>
         My Codes
       </Heading>
       <Tabs>

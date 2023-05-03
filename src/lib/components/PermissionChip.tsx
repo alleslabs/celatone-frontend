@@ -1,22 +1,11 @@
-import { chakra, Tag } from "@chakra-ui/react";
+import { Flex, Tag } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import type { CSSProperties } from "react";
 
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getPermissionHelper } from "lib/utils";
 
 import { Tooltip } from "./TooltipComponent";
-
-const StyledTag = chakra(Tag, {
-  baseStyle: {
-    borderRadius: "16px",
-    fontSize: "12px",
-    fontWeight: 400,
-    color: "text.main",
-    w: "fit-content",
-  },
-});
 
 interface PermissionChipProps {
   instantiatePermission: AccessConfigPermission;
@@ -33,10 +22,6 @@ export const PermissionChip = ({
     permissionAddresses.includes(address as HumanAddr) ||
     instantiatePermission === AccessConfigPermission.EVERYBODY;
 
-  const tagBgColor: CSSProperties["backgroundColor"] = isAllowed
-    ? "honeydew.darker"
-    : "pebble.700";
-
   const { message } = getPermissionHelper(
     address as HumanAddr,
     instantiatePermission,
@@ -45,7 +30,11 @@ export const PermissionChip = ({
 
   return (
     <Tooltip label={message}>
-      <StyledTag bgColor={tagBgColor}>{instantiatePermission}</StyledTag>
+      <Flex>
+        <Tag size="md" variant={isAllowed ? "honeydewDarker" : "gray"}>
+          {instantiatePermission}
+        </Tag>
+      </Flex>
     </Tooltip>
   );
 };

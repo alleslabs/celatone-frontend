@@ -56,9 +56,7 @@ export const ContractListCard = ({
           >
             {item.name}
           </Text>
-          <Badge variant="gray" color="text.main">
-            {item.contracts.length}
-          </Badge>
+          <Badge>{item.contracts.length}</Badge>
         </Flex>
         {isInstantiatedByMe && (
           <Text variant="body3" color="text.dark">

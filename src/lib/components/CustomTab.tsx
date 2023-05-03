@@ -34,11 +34,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       {tabProps.children}
 
       {count !== undefined && (
-        <Badge
-          variant={isSelected ? "violet" : "gray"}
-          ml="6px"
-          color="text.main"
-        >
+        <Badge variant={isSelected ? "violet" : "gray"} ml="6px">
           {count}
         </Badge>
       )}

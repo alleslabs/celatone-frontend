@@ -55,7 +55,7 @@ export const TransactionsTableRow = ({
           <Flex gap={1} flexWrap="wrap">
             <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
-              <Tag borderRadius="full" bg="honeydew.dark" color="pebble.900">
+              <Tag variant="honeydewDark" size="sm">
                 IBC
               </Tag>
             )}

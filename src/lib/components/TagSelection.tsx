@@ -41,16 +41,6 @@ const listItemProps: CSSProperties = {
   padding: "8px",
   cursor: "pointer",
 };
-const tagItemProps: CSSProperties = {
-  borderRadius: "24px",
-  cursor: "pointer",
-  whiteSpace: "nowrap",
-  alignItems: "center",
-  display: "flex",
-  textTransform: "none",
-  gap: "4px",
-  marginRight: "8px",
-};
 
 export const TagSelection = observer(
   forwardRef<HTMLInputElement, TagSelectionProps>(
@@ -59,7 +49,6 @@ export const TagSelection = observer(
         result,
         setResult,
         placeholder,
-        badgeBgColor = "honeydew.darker",
         helperText,
         labelBgColor = "background.main",
         label = "Tags",
@@ -164,16 +153,13 @@ export const TagSelection = observer(
                       key={option}
                     >
                       <Tag
-                        style={tagItemProps}
-                        size="md"
-                        bgColor={badgeBgColor}
+                        variant="honeydewDarker"
+                        gap={1}
+                        mr={1}
+                        cursor="pointer"
                       >
                         {option}
-                        <CustomIcon
-                          name="close"
-                          color="text.dark"
-                          boxSize="3"
-                        />
+                        <CustomIcon name="close" boxSize="3" />
                       </Tag>
                     </Flex>
                   ))}
@@ -257,11 +243,7 @@ export const TagSelection = observer(
                     onClick={() => selectOptionFromList(option)}
                   >
                     <Flex alignItems="center" justifyContent="space-between">
-                      <Tag
-                        style={tagItemProps}
-                        size="sm"
-                        bgColor={badgeBgColor}
-                      >
+                      <Tag variant="honeydewDarker" gap={1} mr={1}>
                         {option}
                       </Tag>
                       {isOptionSelected(option) && (
@@ -287,11 +269,7 @@ export const TagSelection = observer(
                   >
                     <Flex alignItems="center" gap={2}>
                       <Text variant="body2">Create </Text>
-                      <Tag
-                        style={tagItemProps}
-                        size="sm"
-                        bgColor={badgeBgColor}
-                      >
+                      <Tag variant="honeydewDarker" gap={1} mr={1}>
                         {inputValue}
                       </Tag>
                     </Flex>

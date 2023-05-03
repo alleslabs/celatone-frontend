@@ -129,7 +129,7 @@ export const SelectContractInstantiator = ({
               <DrawerCloseButton />
 
               <DrawerBody p="24px" overflowY="scroll">
-                <Heading as="h6" variant="h6" mb="8px">
+                <Heading as="h6" variant="h6" mb={4}>
                   Fill contract address manually
                 </Heading>
                 <Flex gap="8px" alignItems="center">
@@ -169,7 +169,7 @@ export const SelectContractInstantiator = ({
                   <Divider borderColor="pebble.700" />
                 </Flex>
 
-                <Heading as="h6" variant="h6" mb={6}>
+                <Heading as="h6" variant="h6" mb={4}>
                   Select from your Contract List
                 </Heading>
                 <AllContractLists

@@ -106,19 +106,9 @@ export const ProposalTypeFilter = forwardRef<
                 <FilterChip
                   key={option}
                   chipComponent={
-                    <Tag
-                      fontSize="12px"
-                      borderRadius="full"
-                      bg="honeydew.darker"
-                      color="text.main"
-                    >
+                    <Tag variant="honeydewDarker">
                       {option}
-                      <CustomIcon
-                        name="close"
-                        boxSize="3"
-                        color="text.main"
-                        mr={0}
-                      />
+                      <CustomIcon name="close" boxSize="3" mr={0} />
                     </Tag>
                   }
                   onSelect={() => selectOption(option)}
