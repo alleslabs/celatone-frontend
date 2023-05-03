@@ -87,10 +87,15 @@ export const ContractsTableRowCTA = ({
 
       <TableRow>
         <Menu>
-          <MenuButton size="sm" variant="ghost-gray" as={Button}>
+          <MenuButton
+            size="sm"
+            variant="ghost-gray"
+            as={Button}
+            onClick={(e) => e.stopPropagation()}
+          >
             <CustomIcon name="more" boxSize="16px" />
           </MenuButton>
-          <MenuList>
+          <MenuList onClick={(e) => e.stopPropagation()}>
             <EditContractDetailsModal
               contractLocalInfo={contractInfo}
               triggerElement={
