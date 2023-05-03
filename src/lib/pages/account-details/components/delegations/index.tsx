@@ -61,7 +61,7 @@ export const DelegationsSection = ({
 
   if (isLoading) return <Loading />;
   if (!stakingParams)
-    return <EmptyState message="Error fetching delegation data" withBorder />;
+    return <EmptyState message="Error fetching delegation data" />;
 
   const bondDenomLabel = getTokenLabel(stakingParams.bondDenom);
   // TODO: support more than one Asset?
@@ -84,7 +84,7 @@ export const DelegationsSection = ({
   const redelegationCount = redelegations?.length ?? 0;
 
   return (
-    <Flex mt={8} pb={8} position="relative" overflow="hidden" width="full">
+    <Flex my={8} position="relative" overflow="hidden" width="full">
       <Flex
         direction="column"
         gap={4}

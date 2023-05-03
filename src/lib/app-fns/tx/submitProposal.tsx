@@ -57,13 +57,19 @@ export const submitWhitelistProposalTx = ({
           {
             title: "Proposal ID",
             value: proposalId,
-            html: <ExplorerLink type="proposal_id" value={proposalId} />,
+            html: (
+              <ExplorerLink type="proposal_id" value={proposalId} openNewTab />
+            ),
           },
           {
             title: "Tx Hash",
             value: txInfo.transactionHash,
             html: (
-              <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
+              <ExplorerLink
+                type="tx_hash"
+                value={txInfo.transactionHash}
+                openNewTab
+              />
             ),
           },
           {

@@ -6,7 +6,7 @@ export const TableContainer = chakra(Flex, {
     overflowX: "scroll",
     flexDir: "column",
     w: "full",
-    pb: 6,
+    pb: 0,
   },
 });
 

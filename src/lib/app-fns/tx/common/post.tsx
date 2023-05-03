@@ -33,7 +33,11 @@ export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
             {
               title: "Tx Hash",
               html: (
-                <ExplorerLink type="tx_hash" value={txResult.transactionHash} />
+                <ExplorerLink
+                  type="tx_hash"
+                  value={txResult.transactionHash}
+                  openNewTab
+                />
               ),
             },
             {

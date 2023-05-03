@@ -20,6 +20,7 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
+import { useAccountId } from "lib/services/accountService";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useTxsByAddressPagination,
@@ -50,8 +51,10 @@ const PastTxs = () => {
 
   const pastTxsState = watch();
 
+  const { data: accountId } = useAccountId(address as HumanAddr);
   const { data: countTxs = 0 } = useTxsCountByAddress(
-    address as HumanAddr,
+    undefined,
+    accountId,
     pastTxsState.search,
     pastTxsState.filters,
     pastTxsState.isSigner
@@ -74,7 +77,8 @@ const PastTxs = () => {
   });
 
   const { data: txs, isLoading } = useTxsByAddressPagination(
-    address as HumanAddr,
+    undefined,
+    accountId,
     pastTxsState.search,
     pastTxsState.filters,
     pastTxsState.isSigner,
@@ -82,7 +86,13 @@ const PastTxs = () => {
     pageSize
   );
 
+  const resetPagination = () => {
+    setPageSize(10);
+    setCurrentPage(1);
+  };
+
   const setFilter = (filter: string, bool: boolean) => {
+    resetPagination();
     setValue("filters", { ...pastTxsState.filters, [filter]: bool });
   };
 
@@ -109,10 +119,6 @@ const PastTxs = () => {
   }, [pastTxsState]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [pastTxsState.filters, pastTxsState.search, setCurrentPage]);
-
-  useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PAST_TXS);
   }, [router.isReady]);
 
@@ -126,7 +132,10 @@ const PastTxs = () => {
         <InputGroup>
           <Input
             value={pastTxsState.search}
-            onChange={(e) => setValue("search", e.target.value)}
+            onChange={(e) => {
+              setCurrentPage(1);
+              setValue("search", e.target.value);
+            }}
             placeholder="Search with transaction hash or contract address"
             h="full"
           />
@@ -137,7 +146,10 @@ const PastTxs = () => {
 
         <Flex gap={1}>
           <TxRelationSelection
-            setValue={(value) => setValue("isSigner", value)}
+            setValue={(value) => {
+              resetPagination();
+              setValue("isSigner", value);
+            }}
             w="165px"
           />
           <TxFilterSelection

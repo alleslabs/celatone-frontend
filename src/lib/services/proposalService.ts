@@ -12,6 +12,7 @@ import {
   getRelatedProposalsByContractAddressPagination,
   getRelatedProposalsCountByContractAddress,
 } from "lib/query";
+import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   ContractAddr,
   HumanAddr,
@@ -146,9 +147,11 @@ export const useProposalsByWalletAddressPagination = (
       offset,
       pageSize,
     ],
-    queryFn,
+    createQueryFnWithTimeout(queryFn),
     {
       enabled: !!walletAddress,
+      retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };

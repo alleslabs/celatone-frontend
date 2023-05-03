@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -77,8 +78,13 @@ export const AdminContractsTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
-            imageVariant="empty"
-            message="This account does not have any admin access for any contracts."
+            message={
+              !contracts ? (
+                <ErrorFetching />
+              ) : (
+                "This account does not have any admin access for any contracts."
+              )
+            }
             withBorder
           />
         }

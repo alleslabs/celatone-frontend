@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
 import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -77,8 +78,13 @@ export const StoredCodesTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
-            imageVariant="empty"
-            message="This account did not stored any codes before."
+            message={
+              !codes ? (
+                <ErrorFetching />
+              ) : (
+                "This account did not stored any codes before."
+              )
+            }
             withBorder
           />
         }

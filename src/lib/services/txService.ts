@@ -15,6 +15,7 @@ import {
   getBlockTransactionCountByHeightQueryDocument,
   getBlockTransactionsByHeightQueryDocument,
 } from "lib/query";
+import { createQueryFnWithTimeout } from "lib/query-utils";
 import type {
   Addr,
   Option,
@@ -68,6 +69,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
 
 export const useTxsByAddressPagination = (
   address: Option<Addr>,
+  accountId: Option<number>,
   search: string,
   filters: TxFilters,
   isSigner: Option<boolean>,
@@ -75,7 +77,13 @@ export const useTxsByAddressPagination = (
   pageSize: number
 ): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const expression = useTxExpression(address, search, filters, isSigner);
+  const expression = useTxExpression({
+    address,
+    accountId,
+    search,
+    filters,
+    isSigner,
+  });
 
   const queryFn = useCallback(
     async () =>
@@ -86,9 +94,11 @@ export const useTxsByAddressPagination = (
           pageSize,
         })
         .then(({ account_transactions }) =>
-          account_transactions.map((transaction) => ({
+          account_transactions.map<Transaction>((transaction) => ({
             hash: parseTxHash(transaction.transaction.hash),
-            messages: snakeToCamel(transaction.transaction.messages),
+            messages: snakeToCamel(
+              transaction.transaction.messages
+            ) as Message[],
             sender: transaction.transaction.account.address as Addr,
             isSigner: transaction.is_signer,
             height: transaction.block.height,
@@ -124,11 +134,11 @@ export const useTxsByAddressPagination = (
         ),
     [expression, indexerGraphClient, offset, pageSize]
   );
-
   return useQuery(
     [
       "transactions_by_address_pagination",
       address,
+      accountId,
       search,
       filters,
       isSigner,
@@ -136,21 +146,30 @@ export const useTxsByAddressPagination = (
       pageSize,
       indexerGraphClient,
     ],
-    queryFn,
+    createQueryFnWithTimeout(queryFn),
     {
-      enabled: !!address,
+      enabled: !!address || !!accountId,
+      retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
 
 export const useTxsCountByAddress = (
   address: Option<Addr>,
+  accountId: Option<number>,
   search: string,
   filters: TxFilters,
   isSigner: Option<boolean>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
-  const expression = useTxExpression(address, search, filters, isSigner);
+  const expression = useTxExpression({
+    address,
+    accountId,
+    search,
+    filters,
+    isSigner,
+  });
 
   const queryFn = useCallback(
     async () =>
@@ -176,7 +195,9 @@ export const useTxsCountByAddress = (
     ],
     queryFn,
     {
-      enabled: !!address,
+      enabled: !!address || !!accountId,
+      retry: 0,
+      refetchOnWindowFocus: false,
     }
   );
 };
