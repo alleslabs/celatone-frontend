@@ -60,7 +60,7 @@ import { composeStoreCodeProposalMsg, getAmountToVote } from "lib/utils";
 interface StoreCodeProposalState {
   title: string;
   proposalDesc: string;
-  runAs: string;
+  runAs: Addr;
   initialDeposit: Coin;
   unpinCode: boolean;
   builder: string;
@@ -71,7 +71,7 @@ interface StoreCodeProposalState {
 const defaultValues: StoreCodeProposalState = {
   title: "",
   proposalDesc: "",
-  runAs: "",
+  runAs: "" as Addr,
   initialDeposit: { denom: "", amount: "" } as Coin,
   unpinCode: false,
   builder: "",
@@ -283,6 +283,8 @@ const StoreCodeProposal = () => {
     return null;
   }, [
     addresses,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(addresses),
     broadcast,
     builder,
     codeHash,
@@ -375,7 +377,7 @@ const StoreCodeProposal = () => {
                         walletAddress
                           ? () => {
                               AmpTrack(AmpEvent.USE_ASSIGN_ME);
-                              setValue("runAs", walletAddress);
+                              setValue("runAs", walletAddress as HumanAddr);
                               trigger("runAs");
                             }
                           : undefined
@@ -429,6 +431,7 @@ const StoreCodeProposal = () => {
                     <Text>{codeHash}</Text>
                   </Flex>
                 </Flex>
+
                 {/* Unpin code  */}
                 <Flex direction="row" alignItems="center" gap={1}>
                   <Checkbox

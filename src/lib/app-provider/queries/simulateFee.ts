@@ -128,7 +128,7 @@ interface SimulateQueryParamsForProposalStoreCode {
   enabled: boolean;
   title: string;
   description: string;
-  runAs: string;
+  runAs: Addr;
   initialDeposit: Coin;
   unpinCode: boolean;
   builder: string;
