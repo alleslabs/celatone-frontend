@@ -7,6 +7,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  Image,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,10 +16,16 @@ import { useValidateAddress } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
+import { useAccountId } from "lib/services/accountService";
 import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
+import {
+  usePublicProjectByAccountAddress,
+  usePublicProjectBySlug,
+} from "lib/services/publicProjectService";
 import type { HumanAddr } from "lib/types";
 import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
 
@@ -53,14 +60,19 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
   const tableHeaderId = "accountDetailsTab";
+  const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
+  const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
+  const { data: accountId } = useAccountId(accountAddress);
+
+  const publicDetail = publicInfoBySlug?.details;
+
   const {
     tableCounts,
     refetchCodesCount,
     refetchContractsAdminCount,
     refetchContractsCount,
-    refetchTxsCount,
     refetchProposalsCount,
-  } = useAccountDetailsTableCounts(accountAddress);
+  } = useAccountDetailsTableCounts(accountAddress, accountId);
 
   const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
 
@@ -70,12 +82,23 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     scrollToTop();
   };
 
+  const displayName = publicInfo?.name ?? "Account Details";
+
   return (
     <>
       <Flex direction="column" gap={1} mt={6} mb={6}>
         <Flex gap={1}>
+          {publicDetail?.logo && (
+            <Image
+              src={publicDetail.logo}
+              borderRadius="full"
+              alt={publicDetail.name}
+              width={7}
+              height={7}
+            />
+          )}
           <Heading as="h5" variant="h5">
-            Account Details
+            {displayName}
           </Heading>
         </Flex>
         <Flex gap={2}>
@@ -89,6 +112,29 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           />
         </Flex>
       </Flex>
+      {publicInfo?.description && (
+        <Flex
+          direction="column"
+          bg="pebble.900"
+          maxW="100%"
+          borderRadius="8px"
+          py={4}
+          px={5}
+          my={6}
+          flex="1"
+        >
+          <Flex align="center" gap={1} h="32px">
+            <CustomIcon name="website" ml="0" my="0" />
+            <Text variant="body2" fontWeight={500} color="text.dark">
+              Public Account Description
+            </Text>
+          </Flex>
+          <Text variant="body2" color="text.main" mb="1">
+            {publicInfo?.description}
+          </Text>
+        </Flex>
+      )}
+
       <Tabs index={tabIndex}>
         <TabList
           borderBottom="1px solid"
@@ -188,9 +234,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             </Flex>
             <TxsTable
               walletAddress={accountAddress}
+              accountId={accountId}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.txsCount}
-              refetchCount={refetchTxsCount}
               onViewMore={() => handleTabChange(TabIndex.Txs)}
             />
             <StoredCodesTable
@@ -231,9 +276,8 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           <TabPanel p={0}>
             <TxsTable
               walletAddress={accountAddress}
+              accountId={accountId}
               scrollComponentId={tableHeaderId}
-              totalData={tableCounts.txsCount}
-              refetchCount={refetchTxsCount}
             />
           </TabPanel>
           <TabPanel p={0}>

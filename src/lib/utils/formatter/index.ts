@@ -8,3 +8,4 @@ export * from "./formatBalanceWithDenom";
 export * from "./formatPercentValue";
 export * from "./tokenType";
 export * from "./token";
+export * from "./text";

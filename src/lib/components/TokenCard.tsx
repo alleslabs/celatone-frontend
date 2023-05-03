@@ -80,7 +80,7 @@ export const TokenCard = ({
 
         <Flex direction="column">
           <Text fontWeight="700" variant="body2">
-            {formatUTokenWithPrecision(amount as U<Token>, precision)}
+            {formatUTokenWithPrecision(amount as U<Token>, precision, false)}
           </Text>
           <Text variant="body3" color="text.dark">
             {price

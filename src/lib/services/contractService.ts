@@ -17,6 +17,7 @@ import {
   getMigrationHistoriesByContractAddressPagination,
   getMigrationHistoriesCountByContractAddress,
 } from "lib/query";
+import { createQueryFnWithTimeout } from "lib/query-utils";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
@@ -371,8 +372,8 @@ export const useContractListByWalletAddressPagination = (
       pageSize,
       walletAddress,
     ],
-    queryFn,
-    { enabled: !!walletAddress }
+    createQueryFnWithTimeout(queryFn),
+    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -417,8 +418,8 @@ export const useContractListByAdminPagination = (
       pageSize,
       walletAddress,
     ],
-    queryFn,
-    { enabled: !!walletAddress }
+    createQueryFnWithTimeout(queryFn),
+    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -439,7 +440,7 @@ export const useContractListCountByAdmin = (
 
   return useQuery(
     ["contract_list_count_by_admin", walletAddress, indexerGraphClient],
-    queryFn,
+    createQueryFnWithTimeout(queryFn),
     {
       keepPreviousData: true,
       enabled: !!walletAddress,

@@ -15,7 +15,7 @@ export const CustomIconButton = ({
   onClick,
 }: CustomIconButtonProps) => (
   <Button
-    variant="ghost"
+    variant="ghost-gray"
     size="xs"
     px="1"
     minWidth="32px"

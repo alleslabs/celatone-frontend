@@ -23,7 +23,7 @@ const getTxHashReceipt = (txHash?: string) =>
         {
           title: "Tx Hash",
           value: txHash,
-          html: <ExplorerLink type="tx_hash" value={txHash} />,
+          html: <ExplorerLink type="tx_hash" value={txHash} openNewTab />,
         },
       ]
     : [];
