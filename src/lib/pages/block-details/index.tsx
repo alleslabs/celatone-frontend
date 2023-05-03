@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useBlockDetailsQuery } from "lib/services/blockService";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -19,6 +21,10 @@ const BlockDetail = () => {
   const { data: blockData, isLoading } = useBlockDetailsQuery(
     Number(heightParam)
   );
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_BLOCK_DETAIL);
+  }, [router.isReady]);
 
   if (isLoading) return <Loading />;
 

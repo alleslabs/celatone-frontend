@@ -6,12 +6,14 @@ import type {
   PublicContract,
   PublicDetail,
   Option,
+  Account,
 } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 interface PublicDataState {
   publicCodes: PublicCode[];
   publicContracts: PublicContract[];
+  publicAccounts: Account[];
   projectDetail: Option<PublicDetail>;
   slug: string;
   isLoading: boolean;
@@ -26,6 +28,7 @@ export const usePublicData = (): PublicDataState => {
   return {
     publicCodes: projectInfo?.codes || [],
     publicContracts: projectInfo?.contracts || [],
+    publicAccounts: projectInfo?.accounts || [],
     projectDetail: projectInfo?.details,
     slug: projectSlug,
     isLoading,

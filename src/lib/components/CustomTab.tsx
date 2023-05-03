@@ -19,7 +19,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       fontWeight="700"
       lineHeight="24px"
       letterSpacing="0.4px"
-      variant="ghost"
+      variant="ghost-gray"
       color="text.dark"
       mb={0}
       sx={{

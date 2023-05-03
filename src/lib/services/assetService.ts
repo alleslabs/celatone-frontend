@@ -24,7 +24,7 @@ export const useAssetInfos = (): {
         currentChainRecord?.name,
         currentChainRecord?.chain.chain_id
       ),
-    { enabled: !!currentChainRecord }
+    { enabled: !!currentChainRecord, retry: 1, refetchOnWindowFocus: false }
   );
 
   return {

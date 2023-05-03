@@ -65,7 +65,7 @@ export const uploadContractTx = ({
             value: codeId,
             html: (
               <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <ExplorerLink type="code_id" value={codeId} />
+                <ExplorerLink type="code_id" value={codeId} openNewTab />
               </div>
             ),
           },
@@ -73,7 +73,11 @@ export const uploadContractTx = ({
             title: "Tx Hash",
             value: txInfo.transactionHash,
             html: (
-              <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
+              <ExplorerLink
+                type="tx_hash"
+                value={txInfo.transactionHash}
+                openNewTab
+              />
             ),
           },
           {

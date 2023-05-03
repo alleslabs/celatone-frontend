@@ -40,6 +40,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#279](https://github.com/alleslabs/celatone-frontend/pull/279) Add instantiate permission to msg store code, change error display design, and upgrade cosmjs to version 0.30.1
+
+### Improvements
+
+### Bug fixes
+
+## v1.0.3
+
+### Features
+
+- [#310](https://github.com/alleslabs/celatone-frontend/pull/310) Add amplitude for landing on the following pages - blocks, block detail, txs, network overview
 - [#268](https://github.com/alleslabs/celatone-frontend/pull/268) Wireup create proposal to whitelisting
 - [#266](https://github.com/alleslabs/celatone-frontend/pull/250) Add proposal whitelisting page
 - [#286](https://github.com/alleslabs/celatone-frontend/pull/286) Add block proposer
@@ -65,6 +75,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#309](https://github.com/alleslabs/celatone-frontend/pull/309) Add public account name and description in account detail page
+- [#289](https://github.com/alleslabs/celatone-frontend/pull/289) Add public accounts to public projects
+- [#308](https://github.com/alleslabs/celatone-frontend/pull/308) Adjust view more button to full width and fix empty state layout in contract history
+- [#304](https://github.com/alleslabs/celatone-frontend/pull/304) Remove suffix for token card
 - [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link
 - [#293](https://github.com/alleslabs/celatone-frontend/pull/293) Add comma separator to pagination and total blocks
 - [#291](https://github.com/alleslabs/celatone-frontend/pull/291) Update tx count query
@@ -83,6 +97,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#306](https://github.com/alleslabs/celatone-frontend/pull/306) Fix react query function timeout and retries, minor ui bugs
+- [#307](https://github.com/alleslabs/celatone-frontend/pull/307) Remove minor ui in account detail
+- [#297](https://github.com/alleslabs/celatone-frontend/pull/297) Fix open new tab on tx modal link clicked
+- [#303](https://github.com/alleslabs/celatone-frontend/pull/303) Fix pagination problem when using filter
+- [#301](https://github.com/alleslabs/celatone-frontend/pull/301) Fix whitelist revalidation trigger
+- [#305](https://github.com/alleslabs/celatone-frontend/pull/305) Fix UI avatar for validator not shown when encounter special chars
+- [#302](https://github.com/alleslabs/celatone-frontend/pull/302) Fix token card width, text size for unsupported token button in account details page and tx count color when equal to zero
+- [#300](https://github.com/alleslabs/celatone-frontend/pull/300) Fix search bar's placeholder text and remove separator in latest block height
 - [#290](https://github.com/alleslabs/celatone-frontend/pull/290) Fix spacing and styling in account detail
 - [#280](https://github.com/alleslabs/celatone-frontend/pull/280) Fix begin unlocking optional coins field causing crash
 - [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
@@ -94,6 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
 - [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit
 - [#243](https://github.com/alleslabs/celatone-frontend/pull/243) Fix Json viewer and view more btn
+- [#299](https://github.com/alleslabs/celatone-frontend/pull/299) Fix validator identity url
 
 ## v1.0.2
 
