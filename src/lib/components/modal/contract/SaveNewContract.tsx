@@ -47,7 +47,9 @@ export function SaveNewContractModal({
   const { validateContractAddress } = useValidateAddress();
 
   const {
-    appContractAddress: { example: exampleContractAddress },
+    chainConfig: {
+      exampleAddresses: { contract: exampleContractAddress },
+    },
   } = useCelatoneApp();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
@@ -189,7 +191,7 @@ export function SaveNewContractModal({
     <ActionModal
       title="Save New Contract"
       icon="bookmark-solid"
-      trigger={<Button {...buttonProps} />}
+      trigger={<Button as="button" {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}
       disabledMain={

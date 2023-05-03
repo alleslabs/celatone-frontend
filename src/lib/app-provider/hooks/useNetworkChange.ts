@@ -1,35 +1,36 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import { getChainNameByNetwork } from "lib/data";
-import type { Network } from "lib/data";
 import { getFirstQueryParam } from "lib/utils";
 
-export const useNetworkChange = () => {
+export const useNetworkChange = (
+  availableChainIds: string[],
+  handleOnChainIdChange: (newChainId: string) => void
+) => {
   const router = useRouter();
-  const { currentChainName, setCurrentChain } = useWallet();
   const networkRef = useRef<string>();
 
+  const defaultChainId = availableChainIds[0] ?? "";
   useEffect(() => {
     if (router.isReady) {
       let networkRoute = getFirstQueryParam(
         router.query.network,
-        "mainnet"
-      ) as Network;
+        defaultChainId
+      );
 
-      if (
-        networkRoute !== "mainnet" &&
-        networkRoute !== "testnet" &&
-        networkRoute !== "localnet"
-      )
-        networkRoute = "mainnet";
+      if (availableChainIds.every((chainId) => chainId !== networkRoute))
+        networkRoute = defaultChainId;
 
       if (networkRoute !== networkRef.current) {
         networkRef.current = networkRoute;
-        const chainName = getChainNameByNetwork(networkRoute);
-        if (currentChainName !== chainName) setCurrentChain(chainName);
+        handleOnChainIdChange(networkRoute);
       }
     }
-  }, [router, currentChainName, setCurrentChain]);
+  }, [
+    availableChainIds,
+    defaultChainId,
+    handleOnChainIdChange,
+    router.isReady,
+    router.query.network,
+  ]);
 };

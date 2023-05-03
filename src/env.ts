@@ -12,6 +12,9 @@ import type {
   CelatoneHumanAddress,
 } from "types";
 
+export const SUPPORTED_CHAIN_IDS: string[] =
+  process.env.NEXT_PUBLIC_SUPPORTED_CHAIN_IDS?.split(",") ?? [""];
+
 export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
   osmosistestnet: {
     denom: "uosmo",

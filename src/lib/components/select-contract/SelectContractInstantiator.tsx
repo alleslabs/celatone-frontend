@@ -43,7 +43,9 @@ export const SelectContractInstantiator = ({
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
   const {
-    appContractAddress: { example: exampleContractAddress },
+    chainConfig: {
+      exampleAddresses: { contract: exampleContractAddress },
+    },
   } = useCelatoneApp();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");

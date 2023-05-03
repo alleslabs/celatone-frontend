@@ -3,6 +3,9 @@ import type { Router } from "next/router";
 import type { ParsedUrlQueryInput } from "node:querystring";
 import { useCallback } from "react";
 
+import { SUPPORTED_CHAIN_IDS } from "env";
+import { getFirstQueryParam } from "lib/utils";
+
 interface NavigationArgs {
   pathname: string;
   query?: ParsedUrlQueryInput;
@@ -12,6 +15,7 @@ interface NavigationArgs {
 
 export const useInternalNavigate = () => {
   const router = useRouter();
+  const defaultChainId = SUPPORTED_CHAIN_IDS[0] ?? "";
 
   return useCallback(
     ({
@@ -25,7 +29,11 @@ export const useInternalNavigate = () => {
         {
           pathname: `/[network]${pathname}`,
           query: {
-            network: router.query.network === "testnet" ? "testnet" : "mainnet",
+            network: SUPPORTED_CHAIN_IDS.includes(
+              getFirstQueryParam(router.query.network)
+            )
+              ? router.query.network
+              : defaultChainId,
             ...query,
           },
         },
@@ -33,6 +41,6 @@ export const useInternalNavigate = () => {
         options
       );
     },
-    [router]
+    [defaultChainId, router]
   );
 };
