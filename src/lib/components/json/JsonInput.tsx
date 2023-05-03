@@ -1,10 +1,9 @@
-import type { LayoutProps } from "@chakra-ui/react";
 import { Text, Box, Button, Spinner, Flex } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import { CustomIcon } from "../icon";
-import { jsonPrettify, jsonValidate } from "lib/utils";
+import { jsonLineCount, jsonPrettify, jsonValidate } from "lib/utils";
 
 const JsonEditor = dynamic(() => import("./JsonEditor"), {
   ssr: false,
@@ -14,7 +13,7 @@ interface JsonInputProps {
   topic?: string;
   text?: string;
   setText: (value: string) => void;
-  height?: LayoutProps["height"];
+  minLines?: number;
 }
 
 interface JsonState {
@@ -70,7 +69,12 @@ const getResponse = (jsonState: JsonState) => {
   }
 };
 
-const JsonInput = ({ topic, text = "", setText, height }: JsonInputProps) => {
+const JsonInput = ({
+  topic,
+  text = "",
+  setText,
+  minLines = 16,
+}: JsonInputProps) => {
   const [jsonState, setJsonState] = useState<JsonState>({ state: "empty" });
 
   const handleOnChange = (value: string) => {
@@ -92,6 +96,14 @@ const JsonInput = ({ topic, text = "", setText, height }: JsonInputProps) => {
 
   const { color, response } = getResponse(jsonState);
   const isValidJson = jsonValidate(text) === null;
+
+  const showLines = useMemo(() => {
+    const lines = jsonLineCount(text);
+
+    // Limit the number of lines from minLines (default is 16) to 100
+    return Math.min(Math.max(lines, minLines), 100);
+  }, [text, minLines]);
+
   return (
     <>
       <Box
@@ -109,7 +121,7 @@ const JsonInput = ({ topic, text = "", setText, height }: JsonInputProps) => {
           value={text}
           setValue={handleOnChange}
           isValid={isValidJson}
-          height={height}
+          showLines={showLines}
         />
         {topic && (
           <Text

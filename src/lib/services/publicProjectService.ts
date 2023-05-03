@@ -8,7 +8,6 @@ import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
 import type {
   PublicContract,
   Option,
-  PublicCodeData,
   PublicInfo,
   PublicProjectInfo,
   RawPublicContract,
@@ -32,7 +31,7 @@ const parseCode = (raw: RawPublicCode): PublicCode => ({
   contractCount: raw.contracts,
 });
 
-export const usePublicProjects = () => {
+export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
   const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
@@ -59,34 +58,32 @@ export const usePublicProjects = () => {
   });
 };
 
-export const usePublicProjectBySlug = (slug: Option<string>) => {
+export const usePublicProjectBySlug = (
+  slug: Option<string>
+): UseQueryResult<PublicProjectInfo> => {
   const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
     if (!currentChainRecord)
       throw new Error("No chain selected (usePublicProjectBySlug)");
-    return (
-      axios
-        .get<RawPublicProjectInfo>(
-          `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
-            currentChainRecord.chain.chain_name
-          )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
-        )
-        // eslint-disable-next-line sonarjs/no-identical-functions
-        .then<PublicProjectInfo>(({ data: project }) => ({
-          ...project,
-          codes: project.codes.map(parseCode),
-          contracts: project.contracts.map(parseContract),
-        }))
-    );
+    return axios
+      .get<RawPublicProjectInfo>(
+        `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
+          currentChainRecord.chain.chain_name
+        )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
+      )
+      .then<PublicProjectInfo>(({ data: publicProject }) => ({
+        ...publicProject,
+        codes: publicProject.codes.map(parseCode),
+        contracts: publicProject.contracts.map(parseContract),
+      }));
   }, [currentChainRecord, slug]);
 
   return useQuery(
     ["public_project_by_slug", slug, currentChainRecord],
     queryFn,
     {
-      keepPreviousData: true,
       enabled: !!slug,
     }
   );
@@ -127,7 +124,7 @@ export const usePublicProjectByContractAddress = (
 
 export const usePublicProjectByCodeId = (
   codeId: Option<number>
-): UseQueryResult<PublicCodeData> => {
+): UseQueryResult<PublicCode> => {
   const { currentChainRecord } = useWallet();
 
   const queryFn = useCallback(async () => {
@@ -137,12 +134,12 @@ export const usePublicProjectByCodeId = (
       throw new Error("No chain selected (usePublicProjectByCodeId)");
 
     return axios
-      .get<PublicCodeData>(
+      .get<RawPublicCode>(
         `${CELATONE_API_ENDPOINT}/codes/${getChainApiPath(
           currentChainRecord.chain.chain_name
         )}/${currentChainRecord.chain.chain_id}/${codeId}`
       )
-      .then(({ data: projectInfo }) => projectInfo);
+      .then(({ data: projectInfo }) => parseCode(projectInfo));
   }, [codeId, currentChainRecord]);
 
   return useQuery(
@@ -151,6 +148,37 @@ export const usePublicProjectByCodeId = (
     {
       keepPreviousData: true,
       enabled: !!codeId,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const usePublicProjectByAccountAddress = (
+  accountAddress: Option<string>
+): UseQueryResult<PublicInfo> => {
+  const { currentChainRecord } = useWallet();
+  const queryFn = useCallback(async () => {
+    if (!accountAddress)
+      throw new Error(
+        "Wallet address not found (usePublicProjectByAccountAddress)"
+      );
+    if (!currentChainRecord)
+      throw new Error("No chain selected (usePublicProjectByAccountAddress)");
+    return axios
+      .get<PublicInfo>(
+        `${CELATONE_API_ENDPOINT}/accounts/${getChainApiPath(
+          currentChainRecord.chain.chain_name
+        )}/${currentChainRecord.chain.chain_id}/${accountAddress}`
+      )
+      .then(({ data: projectInfo }) => projectInfo);
+  }, [accountAddress, currentChainRecord]);
+  return useQuery(
+    ["public_project_by_account_address", accountAddress, currentChainRecord],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!accountAddress,
       retry: false,
       refetchOnWindowFocus: false,
     }

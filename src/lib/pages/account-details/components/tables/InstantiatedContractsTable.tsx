@@ -1,12 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
+import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { ContractsTable, TableTitle, ViewMore } from "lib/components/table";
 import { useAccountContracts } from "lib/pages/account-details/data";
-import type { HumanAddr, Option } from "lib/types";
+import type { ContractAddr, HumanAddr, Option } from "lib/types";
 
 interface InstantiatedContractsTableProps {
   walletAddress: HumanAddr;
@@ -23,6 +25,13 @@ export const InstantiatedContractsTable = ({
   refetchCount,
   onViewMore,
 }: InstantiatedContractsTableProps) => {
+  const navigate = useInternalNavigate();
+  const onRowSelect = (contract: ContractAddr) =>
+    navigate({
+      pathname: "/contract/[contract]",
+      query: { contract },
+    });
+
   const {
     pagesQuantity,
     currentPage,
@@ -57,21 +66,29 @@ export const InstantiatedContractsTable = ({
   };
 
   return (
-    <Box mt={12} mb={4}>
+    <Box mt={8}>
       <TableTitle
         title="Contract Instances"
         count={totalData ?? 0}
         helperText="This account instantiated the following contracts"
+        mb={2}
       />
       <ContractsTable
         contracts={contracts}
         isLoading={isLoading}
         emptyState={
           <EmptyState
-            message="This account did not instantiate any contracts before."
+            message={
+              !contracts ? (
+                <ErrorFetching />
+              ) : (
+                "This account did not instantiate any contracts before."
+              )
+            }
             withBorder
           />
         }
+        onRowSelect={onRowSelect}
       />
       {!!totalData &&
         (onViewMore

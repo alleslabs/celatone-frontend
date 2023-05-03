@@ -1,5 +1,4 @@
 import { Flex, Text, Grid, useDisclosure, Tag, Box } from "@chakra-ui/react";
-import { useState } from "react";
 
 import { AccordionTx } from "../AccordionTx";
 import { TableRow } from "../tableComponents";
@@ -9,37 +8,40 @@ import { CustomIcon } from "lib/components/icon";
 import type { Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
+import { FurtherActionButton } from "./FurtherActionButton";
+import { RelationChip } from "./RelationChip";
+
 interface TransactionsTableRowProps {
   transaction: Transaction;
   templateColumns: string;
-  showSender: boolean;
+  showRelations: boolean;
+  showAction: boolean;
 }
 
 export const TransactionsTableRow = ({
   transaction,
   templateColumns,
-  showSender,
+  showRelations,
+  showAction,
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
-  const [showCopyButton, setShowCopyButton] = useState(false);
 
   return (
     <Box w="full" minW="min-content">
       <Grid
+        className="copier-wrapper"
         templateColumns={templateColumns}
         onClick={isAccordion ? onToggle : undefined}
         _hover={{ background: "pebble.900" }}
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
-        onMouseEnter={() => setShowCopyButton(true)}
-        onMouseLeave={() => setShowCopyButton(false)}
       >
         <TableRow>
           <ExplorerLink
             value={transaction.hash.toLocaleUpperCase()}
             type="tx_hash"
-            canCopyWithHover
+            showCopyOnHover
           />
         </TableRow>
         <TableRow>
@@ -51,10 +53,7 @@ export const TransactionsTableRow = ({
         </TableRow>
         <TableRow>
           <Flex gap={1} flexWrap="wrap">
-            <RenderActionMessages
-              transaction={transaction}
-              showCopyButton={showCopyButton}
-            />
+            <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
               <Tag borderRadius="full" bg="honeydew.dark" color="pebble.900">
                 IBC
@@ -63,30 +62,34 @@ export const TransactionsTableRow = ({
           </Flex>
         </TableRow>
 
-        {showSender && (
+        {showRelations && (
           <TableRow>
-            <ExplorerLink
-              value={transaction.sender}
-              type="user_address"
-              canCopyWithHover
-            />
+            <RelationChip isSigner={transaction.isSigner} />
           </TableRow>
         )}
 
         <TableRow>
+          <ExplorerLink
+            value={transaction.sender}
+            type="user_address"
+            showCopyOnHover
+          />
+        </TableRow>
+
+        <TableRow>
           <Flex direction="column" gap={1}>
-            {transaction.created ? (
-              <>
-                <Text variant="body3">{formatUTC(transaction.created)}</Text>
-                <Text variant="body3" color="text.dark">
-                  {`(${dateFromNow(transaction.created)})`}
-                </Text>
-              </>
-            ) : (
-              <Text variant="body3">N/A</Text>
-            )}
+            <Text variant="body3">{formatUTC(transaction.created)}</Text>
+            <Text variant="body3" color="text.dark">
+              {`(${dateFromNow(transaction.created)})`}
+            </Text>
           </Flex>
         </TableRow>
+
+        {showAction && (
+          <TableRow>
+            <FurtherActionButton transaction={transaction} />
+          </TableRow>
+        )}
 
         <TableRow>
           {isAccordion && (
@@ -100,7 +103,7 @@ export const TransactionsTableRow = ({
             <AccordionTx
               key={index.toString() + msg.type}
               message={msg}
-              allowFurtherAction={false}
+              allowFurtherAction={showAction}
             />
           ))}
         </Grid>

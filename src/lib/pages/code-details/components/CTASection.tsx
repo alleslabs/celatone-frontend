@@ -8,12 +8,14 @@ import { useCodeStore } from "lib/providers/store";
 import type { CodeInfo } from "lib/types";
 
 export const CTASection = observer((codeInfo: CodeInfo) => {
-  const { isCodeIdSaved } = useCodeStore();
+  const { isCodeIdSaved, getCodeLocalInfo } = useCodeStore();
   const isSaved = isCodeIdSaved(codeInfo.id);
 
   return (
     <Flex gap={4}>
-      {isSaved && <SaveOrEditCodeModal mode="edit" codeInfo={codeInfo} />}
+      {(getCodeLocalInfo(codeInfo.id)?.name || isSaved) && (
+        <SaveOrEditCodeModal mode="edit" codeInfo={codeInfo} />
+      )}
       <InstantiateButton
         instantiatePermission={codeInfo.instantiatePermission}
         permissionAddresses={codeInfo.permissionAddresses}

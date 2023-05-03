@@ -1,13 +1,13 @@
 import {
   useDisclosure,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   Heading,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerCloseButton,
+  DrawerBody,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
@@ -35,7 +35,9 @@ export const SelectContractAdmin = ({
   const { address } = useWallet();
   const { getContractLocalInfo } = useContractStore();
 
-  const { data: contracts = [] } = useContractListByAdmin(address as HumanAddr);
+  const { data: contracts = [], isLoading } = useContractListByAdmin(
+    address as HumanAddr
+  );
   const contractList: ContractListInfo = {
     name: ADMIN_SPECIAL_SLUG,
     slug: ADMIN_SPECIAL_SLUG,
@@ -74,25 +76,26 @@ export const SelectContractAdmin = ({
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="4xl" isCentered>
-        <ModalOverlay />
-        <ModalContent h="80%">
-          <ModalHeader>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+        <DrawerOverlay />
+        <DrawerContent h="80%">
+          <DrawerHeader>
             <CustomIcon name="contract-address-solid" boxSize="5" />
             <Heading as="h5" variant="h5">
               Select contract which you have permission
             </Heading>
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody maxH="full" overflowY="scroll">
+          </DrawerHeader>
+          <DrawerCloseButton />
+          <DrawerBody overflowY="scroll">
             <ContractListDetail
               contractListInfo={contractList}
+              isLoading={isLoading}
               isReadOnly
               onContractSelect={onSelectThenClose}
             />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };

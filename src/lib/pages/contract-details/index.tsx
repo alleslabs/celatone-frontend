@@ -79,12 +79,10 @@ const ContractDetailsBody = observer(
                   contractData.instantiateInfo?.raw.contract_info ?? {}
                 )
               )}
-              jsonAreaHeight="230px"
             />
             <JsonInfo
               header="Instantiate Message"
               jsonString={jsonPrettify(contractData.initMsg ?? "")}
-              showViewFullButton
               defaultExpand
             />
           </Flex>
@@ -113,15 +111,6 @@ const ContractDetailsBody = observer(
                 refetchCount={refetchTransactions}
               />
             </TabPanel>
-            {/* Remove execute table for now */}
-            {/* <TabPanel p={0}>
-              <ExecuteTxsTable
-                contractAddress={contractAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.executeCount}
-                refetchCount={refetchExecute}
-              />
-            </TabPanel> */}
             <TabPanel p={0}>
               <MigrationTable
                 contractAddress={contractAddress}

@@ -62,8 +62,8 @@ export const RelatedProposalsTable = ({
         isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message="This contract does not have related proposals yet."
-            withBorder
           />
         }
       />

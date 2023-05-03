@@ -17,6 +17,7 @@ import {
   getMigrationHistoriesByContractAddressPagination,
   getMigrationHistoriesCountByContractAddress,
 } from "lib/query";
+import { createQueryFnWithTimeout } from "lib/query-utils";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   ContractAddr,
@@ -154,35 +155,35 @@ export const useInstantiateDetailByContractQuery = (
 };
 
 export const useAdminByContractAddresses = (
-  contractAddresses: Option<ContractAddr[]>
+  contractAddresses: ContractAddr[]
 ): UseQueryResult<Dict<ContractAddr, Addr>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
-  const queryFn = useCallback(async () => {
-    if (!contractAddresses)
-      throw new Error("No contract selected (useAdminByContractAddresses)");
-
-    return indexerGraphClient
-      .request(getAdminByContractAddressesQueryDocument, {
-        contractAddresses,
-      })
-      .then(({ contracts }) =>
-        contracts.reduce<Dict<ContractAddr, Addr>>(
-          (prev, contract) => ({
-            ...prev,
-            [contract.address as ContractAddr]: contract.admin?.address as Addr,
-          }),
-          {}
-        )
-      );
-  }, [contractAddresses, indexerGraphClient]);
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getAdminByContractAddressesQueryDocument, {
+          contractAddresses,
+        })
+        .then(({ contracts }) =>
+          contracts.reduce<Dict<ContractAddr, Addr>>(
+            (prev, contract) => ({
+              ...prev,
+              [contract.address as ContractAddr]: contract.admin
+                ?.address as Addr,
+            }),
+            {}
+          )
+        ),
+    [contractAddresses, indexerGraphClient]
+  );
 
   return useQuery(
     ["admin_by_contracts", contractAddresses, indexerGraphClient],
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!contractAddresses,
+      enabled: contractAddresses.length > 0,
     }
   );
 };
@@ -210,6 +211,8 @@ export const useMigrationHistoriesByContractAddressPagination = (
             timestamp: parseDate(history.block.timestamp),
             remark: history.remark,
             uploader: history.code.account.address as Addr,
+            cw2Contract: history.code.cw2_contract,
+            cw2Version: history.code.cw2_version,
           })
         )
       );
@@ -369,8 +372,8 @@ export const useContractListByWalletAddressPagination = (
       pageSize,
       walletAddress,
     ],
-    queryFn,
-    { enabled: !!walletAddress }
+    createQueryFnWithTimeout(queryFn),
+    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -415,8 +418,8 @@ export const useContractListByAdminPagination = (
       pageSize,
       walletAddress,
     ],
-    queryFn,
-    { enabled: !!walletAddress }
+    createQueryFnWithTimeout(queryFn),
+    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -437,7 +440,7 @@ export const useContractListCountByAdmin = (
 
   return useQuery(
     ["contract_list_count_by_admin", walletAddress, indexerGraphClient],
-    queryFn,
+    createQueryFnWithTimeout(queryFn),
     {
       keepPreviousData: true,
       enabled: !!walletAddress,

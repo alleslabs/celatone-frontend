@@ -13,7 +13,7 @@ export interface TxErrorRendering {
 
 export interface TxReceipt {
   title: string;
-  value?: string;
+  value?: string | number | null;
   html?: ReactNode;
 }
 
@@ -30,7 +30,8 @@ export type ActionVariant =
   | "migrate"
   | "rejected"
   | "resend"
-  | "update-admin";
+  | "update-admin"
+  | "proposal";
 
 export interface TxResultRendering<T = unknown> {
   /**

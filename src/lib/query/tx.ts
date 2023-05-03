@@ -1,46 +1,45 @@
 import { graphql } from "lib/gql";
 
-export const getExecuteTxsByContractAddressPagination = graphql(`
-  query getExecuteTxsByContractAddressPagination(
-    $contractAddress: String!
+export const getTxsByAddressPagination = graphql(`
+  query getTxsByAddressPagination(
+    $expression: account_transactions_bool_exp
     $offset: Int!
     $pageSize: Int!
   ) {
-    contract_transactions_view(
-      where: {
-        contract_address: { _eq: $contractAddress }
-        is_execute: { _eq: true }
-      }
-      order_by: { timestamp: desc }
-      limit: $pageSize
+    account_transactions(
+      where: $expression
+      order_by: { block_height: desc }
       offset: $offset
+      limit: $pageSize
     ) {
-      hash
-      messages
-      success
-      sender
-      height
-      timestamp
-      is_execute
-      is_ibc
-      is_instantiate
-      is_send
-      is_store_code
-      is_migrate
-      is_update_admin
-      is_clear_admin
+      block {
+        height
+        timestamp
+      }
+      transaction {
+        account {
+          address
+        }
+        hash
+        success
+        messages
+        is_clear_admin
+        is_execute
+        is_ibc
+        is_instantiate
+        is_migrate
+        is_send
+        is_store_code
+        is_update_admin
+      }
+      is_signer
     }
   }
 `);
 
-export const getExecuteTxsCountByContractAddress = graphql(`
-  query getExecuteTxsCountByContractAddress($contractAddress: String!) {
-    contract_transactions_aggregate(
-      where: {
-        contract: { address: { _eq: $contractAddress } }
-        transaction: { is_execute: { _eq: true } }
-      }
-    ) {
+export const getTxsCountByAddress = graphql(`
+  query getTxsCountByAddress($expression: account_transactions_bool_exp) {
+    account_transactions_aggregate(where: $expression) {
       aggregate {
         count
       }
@@ -48,41 +47,76 @@ export const getExecuteTxsCountByContractAddress = graphql(`
   }
 `);
 
-export const getTxsByContractAddressPagination = graphql(`
-  query getTxsByContractAddress(
-    $contractAddress: String!
-    $offset: Int!
-    $pageSize: Int!
-  ) {
-    contract_transactions_view(
-      where: { contract_address: { _eq: $contractAddress } }
-      order_by: { timestamp: desc }
+export const getTxs = graphql(`
+  query getTxs($offset: Int!, $pageSize: Int!) {
+    transactions(
+      order_by: { block_height: desc }
       offset: $offset
       limit: $pageSize
     ) {
+      block {
+        height
+        timestamp
+      }
+      account {
+        address
+      }
       hash
       success
       messages
-      sender
-      height
-      timestamp
+      is_clear_admin
       is_execute
       is_ibc
       is_instantiate
+      is_migrate
       is_send
       is_store_code
-      is_migrate
       is_update_admin
-      is_clear_admin
     }
   }
 `);
 
-export const getTxsCountByContractAddress = graphql(`
-  query getTxsCountByContractAddress($contractAddress: String!) {
-    contract_transactions_aggregate(
-      where: { contract: { address: { _eq: $contractAddress } } }
+export const getTxsCount = graphql(`
+  query getTxsCount {
+    transactions(limit: 1, order_by: { id: desc }) {
+      id
+    }
+  }
+`);
+
+export const getBlockTransactionsByHeightQueryDocument = graphql(`
+  query getBlockTransactionsByHeightQuery(
+    $limit: Int!
+    $offset: Int!
+    $height: Int!
+  ) {
+    transactions(
+      limit: $limit
+      offset: $offset
+      where: { block_height: { _eq: $height } }
+      order_by: { id: asc }
     ) {
+      hash
+      success
+      messages
+      account {
+        address
+      }
+      is_clear_admin
+      is_execute
+      is_ibc
+      is_instantiate
+      is_migrate
+      is_send
+      is_store_code
+      is_update_admin
+    }
+  }
+`);
+
+export const getBlockTransactionCountByHeightQueryDocument = graphql(`
+  query getBlockTransactionCountByHeightQuery($height: Int!) {
+    transactions_aggregate(where: { block_height: { _eq: $height } }) {
       aggregate {
         count
       }

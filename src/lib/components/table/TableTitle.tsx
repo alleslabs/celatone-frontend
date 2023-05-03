@@ -3,7 +3,7 @@ import { Badge, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface TableTitleProps extends BoxProps {
   title: string;
-  count: number;
+  count: number | string;
   helperText?: string;
 }
 
@@ -22,7 +22,9 @@ export const TableTitle = ({
       <Badge
         variant="gray"
         color="text.main"
-        textColor={count ? "text.main" : "pebble.500"}
+        textColor={
+          count && typeof count !== "string" ? "text.main" : "pebble.500"
+        }
       >
         {count}
       </Badge>

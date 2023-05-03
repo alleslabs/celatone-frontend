@@ -6,7 +6,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow, CodeNameCell } from "lib/components/table";
 import type { ContractMigrationHistory } from "lib/types";
 import { RemarkOperation } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
 
 interface MigrationRowProps {
   templateColumns: GridProps["templateColumns"];
@@ -46,7 +46,7 @@ const RemarkRender = ({
       <ExplorerLink
         type={isGovernance ? "proposal_id" : "tx_hash"}
         value={value.toString()}
-        canCopyWithHover
+        showCopyOnHover
         textFormat={textFormat}
       />
     </Flex>
@@ -58,13 +58,15 @@ export const MigrationRow = ({
   history,
 }: MigrationRowProps) => {
   const getAddressType = useGetAddressType();
+  const cw2Info = getCw2Info(history.cw2Contract, history.cw2Version);
+
   return (
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <ExplorerLink
           type="code_id"
           value={history.codeId.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>
@@ -77,18 +79,26 @@ export const MigrationRow = ({
         />
       </TableRow>
       <TableRow>
+        <Text
+          color={cw2Info ? "text.main" : "text.disabled"}
+          wordBreak="break-all"
+        >
+          {cw2Info ?? "N/A"}
+        </Text>
+      </TableRow>
+      <TableRow>
         <ExplorerLink
           type={getAddressType(history.sender)}
           value={history.sender}
           textFormat="truncate"
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>
         <ExplorerLink
-          type="block_height"
           value={history.height.toString()}
-          canCopyWithHover
+          type="block_height"
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>

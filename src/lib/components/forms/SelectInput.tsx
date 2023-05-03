@@ -15,7 +15,6 @@ import { useEffect, useRef, useState } from "react";
 
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import type { Option } from "lib/types";
 
 const ITEM_HEIGHT = 56;
 
@@ -33,6 +32,7 @@ interface SelectInputProps<T extends string> {
   initialSelected: string;
   hasDivider?: boolean;
   helperTextComponent?: ReactNode;
+  labelBgColor?: string;
 }
 
 interface SelectItemProps {
@@ -66,6 +66,7 @@ export const SelectInput = <T extends string>({
   initialSelected,
   hasDivider = false,
   helperTextComponent,
+  labelBgColor = "background.main",
 }: SelectInputProps<T>) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
@@ -73,18 +74,11 @@ export const SelectInput = <T extends string>({
   const [selected, setSelected] = useState(
     () => options.find((item) => item.value === initialSelected)?.label ?? ""
   );
-  const [inputRefWidth, setInputRefWidth] = useState<Option<number>>();
   useOutsideClick({
     ref: optionRef,
     handler: () => isOpen && onClose(),
   });
   const selectedOption = options.find((item) => item.label === selected);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      setInputRefWidth(inputRef.current.clientWidth);
-    }
-  }, [inputRef]);
 
   useEffect(() => {
     if (options.every((option) => !option.disabled)) {
@@ -115,7 +109,7 @@ export const SelectInput = <T extends string>({
               ml: 3,
               px: 1,
               zIndex: 2,
-              bg: "background.main",
+              bg: labelBgColor,
               top: -2,
             },
           }}
@@ -148,7 +142,7 @@ export const SelectInput = <T extends string>({
         ref={optionRef}
         border="unset"
         bg="pebble.900"
-        w={inputRefWidth}
+        w={inputRef.current?.clientWidth}
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
         borderRadius="8px"

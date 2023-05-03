@@ -1,6 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
+import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -23,6 +25,13 @@ export const StoredCodesTable = ({
   refetchCount,
   onViewMore,
 }: StoredCodesTableProps) => {
+  const navigate = useInternalNavigate();
+  const onRowSelect = (codeId: number) =>
+    navigate({
+      pathname: "/code/[codeId]",
+      query: { codeId },
+    });
+
   const {
     pagesQuantity,
     currentPage,
@@ -57,21 +66,29 @@ export const StoredCodesTable = ({
   };
 
   return (
-    <Box mt={12} mb={4}>
+    <Box mt={8}>
       <TableTitle
         title="Stored Codes"
         count={totalData ?? 0}
         helperText="This account stored the following codes"
+        mb={2}
       />
       <CodesTable
         codes={codes}
         isLoading={isLoading}
         emptyState={
           <EmptyState
-            message="This account did not stored any codes before."
+            message={
+              !codes ? (
+                <ErrorFetching />
+              ) : (
+                "This account did not stored any codes before."
+              )
+            }
             withBorder
           />
         }
+        onRowSelect={onRowSelect}
       />
       {!!totalData &&
         (onViewMore

@@ -1,6 +1,7 @@
 import { track } from "@amplitude/analytics-browser";
 
 import type { AttachFundsType } from "lib/components/fund/types";
+import type { Option } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -26,11 +27,15 @@ export enum AmpEvent {
   PUBLIC_REMOVE = "Public Project Remove",
   // NAVIGATE
   TO_OVERVIEW = "To Overview",
+  TO_NETWORK_OVERVIEW = "To Network Overview",
+  TO_BLOCKS = "To Blocks",
+  TO_BLOCK_DETAIL = "To Block Detail",
+  TO_TXS = "To Txs",
   TO_PAST_TXS = "To Past Txs",
   TO_DEPLOY = "To Deploy",
   TO_UPLOAD = "To Upload",
   TO_INSTANTIATE = "To Instantiate",
-  TO_PROPOSAL = "To Proposal", // TODO: use later
+  TO_PROPOSALS = "To Proposals",
   TO_QUERY = "To Query",
   TO_EXECUTE = "To Execute",
   TO_MIGRATE = "To Migrate",
@@ -46,6 +51,7 @@ export enum AmpEvent {
   TO_CONTRACT_DETAIL = "To Contract Detail",
   TO_CODE_DETAIL = "To Code Detail",
   TO_PROJECT_DETAIL = "To Public Project Detail",
+  TO_TRANSACTION_DETAIL = "To Transaction Detail",
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
   // ACTIONS
@@ -63,6 +69,9 @@ export enum AmpEvent {
   USE_CLICK_WALLET = "Use Click Wallet",
   USE_MAIN_SEARCH = "Use Main Search",
   USE_SIDEBAR = "Use Sidebar",
+  USE_TAB = "Use Tab",
+  USE_RADIO = "Use Radio",
+  USE_VIEW_MORE = "Use View More",
   USE_CODE_SELECT = "Use Code Select",
   USE_CODE_MODAL = "Use Code Modal",
   USE_CODE_FILL = "Use Code Fill",
@@ -74,13 +83,19 @@ export enum AmpEvent {
   USE_CONTRACT_SNIPPET = "Use Contract Snippet",
   USE_CMD_QUERY = "Use Command Query",
   USE_CMD_EXECUTE = "Use Command Execute",
+  USE_SEE_REDELEGATIONS = "Use See Redelegations",
   USE_BACK_BUTTON = "Use Back Button",
   USE_COPY_BUTTON = "Use Copy Button",
   USE_COPIER = "Use Copier",
   USE_QUICK_EDIT_CONTRACT = "Use Quick Edit Contract",
   USE_QUICK_EDIT_CODE = "Use Quick Edit Code",
+  USE_UNSUPPORTED_ASSETS_MODAL = "Use Unsupported Assets Modal",
   USE_OTHER_MODAL = "Use Other Modal",
   USE_SUBMIT_PROJECT = "Use Submit Project",
+  USE_VIEW_JSON = "Use View Json",
+  USE_UNSUPPORTED_ASSETS = "Use Unsupported Assets",
+  USE_TX_MSG_EXPAND = "Use Transaction Message Expand",
+  USE_EXPAND = "Use General Expand",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -105,18 +120,27 @@ type SpecialAmpEvent =
   | AmpEvent.TO_MIGRATE
   | AmpEvent.TO_ADMIN_UPDATE
   | AmpEvent.USE_MAIN_SEARCH
+  | AmpEvent.USE_TAB
+  | AmpEvent.USE_RADIO
+  | AmpEvent.USE_COPIER
   | AmpEvent.USE_OTHER_MODAL
   | AmpEvent.MINTSCAN
   | AmpEvent.WEBSITE
   | AmpEvent.SOCIAL
-  | AmpEvent.CELATONE;
+  | AmpEvent.CELATONE
+  | AmpEvent.USE_VIEW_JSON
+  | AmpEvent.USE_UNSUPPORTED_ASSETS
+  | AmpEvent.USE_COPIER
+  | AmpEvent.USE_EXPAND;
 
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
 
 export const AmpTrack = (
-  event: Exclude<AmpEvent, ActionAmpEvent | SpecialAmpEvent>
-) => track(event);
+  event: Exclude<AmpEvent, ActionAmpEvent | SpecialAmpEvent>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  properties?: Record<string, any>
+) => track(event, properties);
 
 export const AmpTrackAction = (
   event: ActionAmpEvent,
@@ -142,6 +166,11 @@ export const AmpTrackToAdminUpdate = (contract: boolean) =>
 export const AmpTrackUseMainSearch = (isClick: boolean) =>
   track(AmpEvent.USE_MAIN_SEARCH, { isClick });
 
+export const AmpTrackUseTab = (tab: string) => track(AmpEvent.USE_TAB, { tab });
+
+export const AmpTrackUseRadio = (radio: string) =>
+  track(AmpEvent.USE_RADIO, { radio });
+
 export const AmpTrackUseOtherModal = (title: string) =>
   track(AmpEvent.USE_OTHER_MODAL, { title });
 
@@ -155,3 +184,18 @@ export const AmpTrackSocial = (url: string) => track(AmpEvent.SOCIAL, { url });
 
 export const AmpTrackCelatone = (url: string) =>
   track(AmpEvent.CELATONE, { url });
+
+export const AmpTrackViewJson = (page: string) =>
+  track(AmpEvent.USE_VIEW_JSON, { page });
+
+export const AmpTrackUnsupportedToken = (page: Option<string>) =>
+  track(AmpEvent.USE_UNSUPPORTED_ASSETS, { page });
+
+export const AmpTrackCopier = (section: Option<string>, type: string) =>
+  track(AmpEvent.USE_COPIER, { section, type });
+
+export const AmpTrackExpand = (
+  action: "expand" | "collapse",
+  component: "assets" | "json" | "permission_address" | "event_box",
+  section: Option<string>
+) => track(AmpEvent.USE_EXPAND, { action, component, section });

@@ -1,4 +1,4 @@
-import type { Transaction } from "lib/types";
+import type { BlockTransaction, Transaction } from "lib/types";
 import { ActionMsgType } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
@@ -7,13 +7,11 @@ import { SingleActionMsg } from "./SingleActionMsg";
 import { SingleMsg } from "./SingleMsg";
 
 interface RenderActionMessagesProps {
-  transaction: Transaction;
-  showCopyButton: boolean;
+  transaction: Transaction | BlockTransaction;
 }
 
 export const RenderActionMessages = ({
   transaction,
-  showCopyButton,
 }: RenderActionMessagesProps) => {
   if (transaction.actionMsgType === ActionMsgType.SINGLE_ACTION_MSG) {
     return (
@@ -21,7 +19,6 @@ export const RenderActionMessages = ({
         messages={transaction.messages}
         type={extractMsgType(transaction.messages[0].type)}
         success={transaction.success}
-        showCopyButton={showCopyButton}
       />
     );
   }

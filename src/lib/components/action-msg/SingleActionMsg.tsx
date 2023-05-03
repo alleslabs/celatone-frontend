@@ -8,14 +8,12 @@ interface SingleActionMsgProps {
   type: string;
   success: boolean;
   singleMsg?: boolean;
-  showCopyButton: boolean;
 }
 export const SingleActionMsg = ({
   messages,
   type,
   success,
   singleMsg,
-  showCopyButton,
 }: SingleActionMsgProps) => {
   const singleMsgProps = useSingleActionMsgProps(
     type,
@@ -23,5 +21,5 @@ export const SingleActionMsg = ({
     messages,
     singleMsg
   );
-  return <SingleMsg {...singleMsgProps} showCopyButton={showCopyButton} />;
+  return <SingleMsg {...singleMsgProps} />;
 };

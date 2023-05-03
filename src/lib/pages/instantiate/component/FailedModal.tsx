@@ -46,7 +46,11 @@ export const FailedModal = ({ errorLog, onClose }: FailedModalProps) => (
       </ModalBody>
 
       <ModalFooter gap="8px">
-        <CopyButton value={errorLog} size="md" />
+        <CopyButton
+          value={errorLog}
+          size="md"
+          amptrackSection="tx_modal_fail_rawlog"
+        />
         <Button variant="outline-primary" onClick={onClose}>
           Close
         </Button>

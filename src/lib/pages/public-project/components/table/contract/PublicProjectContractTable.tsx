@@ -75,25 +75,25 @@ export const PublicProjectContractTable = observer(
         {!publicContracts.length ? (
           <EmptyState
             message="There is currently no contracts related to this project."
-            image={
-              onViewMore
-                ? undefined
-                : "https://assets.alleslabs.dev/illustration/search-not-found.svg"
-            }
+            imageVariant={onViewMore && "empty"}
             withBorder
           />
         ) : (
-          <TableContainer mb={10}>
-            <ContractTableHeader />
-            {publicContracts.map((contract) => (
-              <PublicProjectContractRow
-                key={contract.publicInfo.contractAddress}
-                publicContractInfo={contract}
-                templateColumn={TEMPLATE_COLUMNS}
-              />
-            ))}
-            {onViewMore && <ViewMore onClick={onViewMore} />}
-          </TableContainer>
+          <>
+            <TableContainer>
+              <ContractTableHeader />
+              {publicContracts.map((contract) => (
+                <PublicProjectContractRow
+                  key={contract.publicInfo.contractAddress}
+                  publicContractInfo={contract}
+                  templateColumns={TEMPLATE_COLUMNS}
+                />
+              ))}
+            </TableContainer>
+            {contracts.length > 5 && onViewMore && (
+              <ViewMore onClick={onViewMore} />
+            )}
+          </>
         )}
       </Box>
     );

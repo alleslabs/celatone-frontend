@@ -201,14 +201,16 @@ export const EditableCell = ({
                 bg="honeydew.darker"
                 arrowSize={8}
               >
-                <CustomIcon
-                  name="info-circle"
-                  boxSize="12px"
-                  cursor="pointer"
-                />
+                <p>
+                  <CustomIcon
+                    name="info-circle"
+                    boxSize="12px"
+                    cursor="pointer"
+                  />
+                </p>
               </Tooltip>
             )}
-            {!!onSave && (
+            {!!onSave && !isReadOnly && (
               <Flex
                 cursor="pointer"
                 opacity={isHover ? 1 : 0}

@@ -1,6 +1,7 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
-interface LabelTextProps {
+interface LabelTextProps extends FlexProps {
   label: string;
   children: string | JSX.Element;
   helperText1?: string;
@@ -12,8 +13,9 @@ export const LabelText = ({
   children,
   helperText1,
   helperText2,
+  ...flexProps
 }: LabelTextProps) => (
-  <Flex direction="column" gap={1}>
+  <Flex direction="column" gap={1} {...flexProps}>
     <Text variant="body2" color="text.dark" fontWeight={500}>
       {label}
     </Text>

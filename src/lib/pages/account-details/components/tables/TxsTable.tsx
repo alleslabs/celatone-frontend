@@ -1,43 +1,63 @@
-// TODO - Refactor: move common component out of pasttx
-import { Box, Flex } from "@chakra-ui/react";
+import { Alert, AlertDescription, Box, Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { ErrorFetching } from "../ErrorFetching";
+import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import type { EmptyStateProps } from "lib/components/state";
 import { EmptyState } from "lib/components/state";
-import {
-  TableTitle,
-  TransactionsNoSenderTable,
-  ViewMore,
-} from "lib/components/table";
+import { TableTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
+import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useTxQuery } from "lib/services/txQuery/useTxQuery";
-import type { HumanAddr, Option, TxFilters } from "lib/types";
+import {
+  useTxsByAddressPagination,
+  useTxsCountByAddress,
+} from "lib/services/txService";
+import type { HumanAddr, Option, Transaction, TxFilters } from "lib/types";
 
 interface TxsTableProps {
   walletAddress: HumanAddr;
+  accountId?: Option<number>;
   scrollComponentId: string;
-  totalData: Option<number>;
-  refetchCount: () => void;
   onViewMore?: () => void;
 }
 
-interface TxsTableBodyProps extends TxsTableProps {
-  filters: TxFilters;
-  filterSelected: string[];
-}
+const getEmptyStateProps = (
+  filterSelected: string[],
+  transactions: Option<Transaction[]>
+): EmptyStateProps => {
+  if (filterSelected.length) {
+    return { message: "No past transaction matches found with your input." };
+  }
+  if (!transactions) {
+    return {
+      message: <ErrorFetching />,
+    };
+  }
+  return {
+    message: "This account did not submit any transactions before.",
+  };
+};
 
-const TxsTableBody = ({
+export const TxsTable = ({
   walletAddress,
+  accountId,
   scrollComponentId,
-  totalData,
-  refetchCount,
   onViewMore,
-  filters,
-  filterSelected,
-}: TxsTableBodyProps) => {
+}: TxsTableProps) => {
+  const [isSigner, setIsSigner] = useState<Option<boolean>>();
+  const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
+
+  const {
+    data: txsCount = 0,
+    refetch: refetchTxsCount,
+    isLoading: txsCountLoading,
+    failureReason,
+  } = useTxsCountByAddress(walletAddress, accountId, "", filters, isSigner);
+
   const {
     pagesQuantity,
     currentPage,
@@ -46,7 +66,7 @@ const TxsTableBody = ({
     setPageSize,
     offset,
   } = usePaginator({
-    total: totalData,
+    total: txsCount,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -54,69 +74,13 @@ const TxsTableBody = ({
     },
   });
 
-  const { data: transactions, isLoading } = useTxQuery(
-    walletAddress,
-    "",
-    filters,
-    onViewMore ? 5 : pageSize,
-    offset
-  );
-
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
+  const resetPagination = () => {
+    setPageSize(10);
     setCurrentPage(1);
   };
 
-  return (
-    <>
-      <TransactionsNoSenderTable
-        transactions={transactions}
-        isLoading={isLoading}
-        emptyState={
-          !filterSelected.length ? (
-            <EmptyState
-              message="This account did not submit any transactions before."
-              withBorder
-            />
-          ) : (
-            <EmptyState
-              image="https://assets.alleslabs.dev/illustration/search-empty.svg"
-              message="No past transaction matches found with your input."
-              withBorder
-            />
-          )
-        }
-      />
-      {!!totalData &&
-        (onViewMore
-          ? totalData > 5 && <ViewMore onClick={onViewMore} />
-          : totalData > 10 && (
-              <Pagination
-                currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
-                offset={offset}
-                totalData={totalData}
-                scrollComponentId={scrollComponentId}
-                pageSize={pageSize}
-                onPageChange={onPageChange}
-                onPageSizeChange={onPageSizeChange}
-              />
-            ))}
-    </>
-  );
-};
-
-export const TxsTable = (txsTableProps: TxsTableProps) => {
-  const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
-
   const handleSetFilters = (filter: string, bool: boolean) => {
+    resetPagination();
     setFilters((prevFilters) => ({ ...prevFilters, [filter]: bool }));
   };
 
@@ -124,25 +88,101 @@ export const TxsTable = (txsTableProps: TxsTableProps) => {
     (key) => filters[key as keyof typeof filters]
   );
 
-  const { totalData, onViewMore } = txsTableProps;
+  const { data: transactions, isLoading } = useTxsByAddressPagination(
+    undefined,
+    accountId,
+    "",
+    filters,
+    isSigner,
+    offset,
+    onViewMore ? 5 : pageSize
+  );
+
+  const onPageChange = (nextPage: number) => {
+    refetchTxsCount();
+    setCurrentPage(nextPage);
+  };
+
+  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const size = Number(e.target.value);
+    refetchTxsCount();
+    setPageSize(size);
+    setCurrentPage(1);
+  };
+
+  useEffect(() => {
+    if (failureReason) setPageSize(50);
+  }, [failureReason, setPageSize]);
+
   return (
-    <Box mt={12} mb={4}>
+    <Box mt={8}>
       <Flex direction="row" justify="space-between" alignItems="center">
-        <TableTitle title="Transactions" count={totalData ?? 0} mb={0} />
+        <TableTitle
+          title="Transactions"
+          count={failureReason ? "N/A" : txsCount}
+          mb={2}
+        />
         {!onViewMore && (
-          <TxFilterSelection
-            result={filterSelected}
-            setResult={handleSetFilters}
-            boxWidth="400px"
-            placeholder="All"
-          />
+          <Flex gap={4}>
+            <TxRelationSelection
+              setValue={(value: Option<boolean>) => {
+                resetPagination();
+                setIsSigner(value);
+              }}
+              w="200px"
+            />
+            <TxFilterSelection
+              result={filterSelected}
+              setResult={handleSetFilters}
+              boxWidth="285px"
+              placeholder="All"
+            />
+          </Flex>
         )}
       </Flex>
-      <TxsTableBody
-        {...txsTableProps}
-        filters={filters}
-        filterSelected={filterSelected}
+      {Boolean(failureReason) && transactions?.length && (
+        <Alert my={6} variant="error" gap={4}>
+          <CustomIcon
+            name="alert-circle-solid"
+            boxSize={4}
+            color="error.main"
+          />
+          <AlertDescription>
+            This account has a high volume of transactions. Kindly note that{" "}
+            <span style={{ fontWeight: 700 }}>
+              we are only able to display up to 50 recent filtered transactions
+            </span>{" "}
+            at the time due to the large number of transactions.
+          </AlertDescription>
+        </Alert>
+      )}
+      <TransactionsTable
+        transactions={transactions}
+        isLoading={isLoading || txsCountLoading}
+        emptyState={
+          <EmptyState
+            withBorder
+            {...getEmptyStateProps(filterSelected, transactions)}
+          />
+        }
+        showRelations
       />
+      {!!txsCount &&
+        Boolean(transactions?.length) &&
+        (onViewMore
+          ? txsCount > 5 && <ViewMore onClick={onViewMore} />
+          : txsCount > 10 && (
+              <Pagination
+                currentPage={currentPage}
+                pagesQuantity={pagesQuantity}
+                offset={offset}
+                totalData={txsCount}
+                scrollComponentId={scrollComponentId}
+                pageSize={pageSize}
+                onPageChange={onPageChange}
+                onPageSizeChange={onPageSizeChange}
+              />
+            ))}
     </Box>
   );
 };

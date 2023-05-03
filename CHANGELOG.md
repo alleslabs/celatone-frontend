@@ -37,6 +37,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v1.0.3
+
+### Features
+
+- [#310](https://github.com/alleslabs/celatone-frontend/pull/310) Add amplitude for landing on the following pages - blocks, block detail, txs, network overview
+- [#268](https://github.com/alleslabs/celatone-frontend/pull/268) Wireup create proposal to whitelisting
+- [#266](https://github.com/alleslabs/celatone-frontend/pull/250) Add proposal whitelisting page
+- [#286](https://github.com/alleslabs/celatone-frontend/pull/286) Add block proposer
+- [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Searching can now be determined by chain
+- [#273](https://github.com/alleslabs/celatone-frontend/pull/273) Add subheader and network overview
+- [#278](https://github.com/alleslabs/celatone-frontend/pull/278) Fully wired block details page
+- [#272](https://github.com/alleslabs/celatone-frontend/pull/272) Add blocks page and table component
+- [#287](https://github.com/alleslabs/celatone-frontend/pull/287) Add app default human address for each chain
+- [#271](https://github.com/alleslabs/celatone-frontend/pull/271) Create transaction list page
+- [#245](https://github.com/alleslabs/celatone-frontend/pull/245) Add amplitude for account detail page
+- [#232](https://github.com/alleslabs/celatone-frontend/pull/232) Add delegation data and section for the account detail page
+- [#261](https://github.com/alleslabs/celatone-frontend/pull/261) Add Relation column to transaction tables and refactor transaction table components
+- [#265](https://github.com/alleslabs/celatone-frontend/pull/265) Add filter by status and type to proposal list page, and change Inactive proposal status to DepositFailed
+- [#263](https://github.com/alleslabs/celatone-frontend/pull/263) Wireup search bar and my proposal switch in proposal list page
+- [#260](https://github.com/alleslabs/celatone-frontend/pull/260) Add proposal list table to proposal list page
+- [#255](https://github.com/alleslabs/celatone-frontend/pull/255) Get data for proposal list page
+- [#250](https://github.com/alleslabs/celatone-frontend/pull/250) Add skeleton, route, and amp for proposal list page
+- [#262](https://github.com/alleslabs/celatone-frontend/pull/262) Add amplitude tracking for tx page components
+- [#224](https://github.com/alleslabs/celatone-frontend/pull/224) Support search by tx and internal tx link
+- [#226](https://github.com/alleslabs/celatone-frontend/pull/226) Add fully functional transaction details page
+- [#254](https://github.com/alleslabs/celatone-frontend/pull/254) Add GiHub link to public code and contract detail pages
+- [#230](https://github.com/alleslabs/celatone-frontend/pull/230) Add cw2info to code table
+
+### Improvements
+
+- [#309](https://github.com/alleslabs/celatone-frontend/pull/309) Add public account name and description in account detail page
+- [#289](https://github.com/alleslabs/celatone-frontend/pull/289) Add public accounts to public projects
+- [#308](https://github.com/alleslabs/celatone-frontend/pull/308) Adjust view more button to full width and fix empty state layout in contract history
+- [#304](https://github.com/alleslabs/celatone-frontend/pull/304) Remove suffix for token card
+- [#282](https://github.com/alleslabs/celatone-frontend/pull/282) Change details page top section explorer link to copy link
+- [#293](https://github.com/alleslabs/celatone-frontend/pull/293) Add comma separator to pagination and total blocks
+- [#291](https://github.com/alleslabs/celatone-frontend/pull/291) Update tx count query
+- [#285](https://github.com/alleslabs/celatone-frontend/pull/285) Add data fetching error state, and empty state to blocks page
+- [#292](https://github.com/alleslabs/celatone-frontend/pull/292) Handle format token with M and show only 2 decimal points when more than 1,000
+- [#284](https://github.com/alleslabs/celatone-frontend/pull/284) Add data fetching error state to txs page
+- [#281](https://github.com/alleslabs/celatone-frontend/pull/281) Change Osmosis mainnet GraphQL
+- [#251](https://github.com/alleslabs/celatone-frontend/pull/251) Refactor Code and Contract tables into general components
+- [#252](https://github.com/alleslabs/celatone-frontend/pull/252) Refactor Empty State image source logic
+- [#249](https://github.com/alleslabs/celatone-frontend/pull/249) Change code table format in select code draw and add CW2 info
+- [#247](https://github.com/alleslabs/celatone-frontend/pull/247) Refactor hover logic of copier icon
+- [#246](https://github.com/alleslabs/celatone-frontend/pull/246) Show edit button when code name is set, and align button section to top
+- [#240](https://github.com/alleslabs/celatone-frontend/pull/240) Change modals containing tables to drawers for easier exploration
+- [#239](https://github.com/alleslabs/celatone-frontend/pull/239) Add code description and code name for public code in code details page
+- [#237](https://github.com/alleslabs/celatone-frontend/pull/237) Change unsupported tokens layout and style
+
+### Bug fixes
+
+- [#306](https://github.com/alleslabs/celatone-frontend/pull/306) Fix react query function timeout and retries, minor ui bugs
+- [#307](https://github.com/alleslabs/celatone-frontend/pull/307) Remove minor ui in account detail
+- [#297](https://github.com/alleslabs/celatone-frontend/pull/297) Fix open new tab on tx modal link clicked
+- [#303](https://github.com/alleslabs/celatone-frontend/pull/303) Fix pagination problem when using filter
+- [#301](https://github.com/alleslabs/celatone-frontend/pull/301) Fix whitelist revalidation trigger
+- [#305](https://github.com/alleslabs/celatone-frontend/pull/305) Fix UI avatar for validator not shown when encounter special chars
+- [#302](https://github.com/alleslabs/celatone-frontend/pull/302) Fix token card width, text size for unsupported token button in account details page and tx count color when equal to zero
+- [#300](https://github.com/alleslabs/celatone-frontend/pull/300) Fix search bar's placeholder text and remove separator in latest block height
+- [#290](https://github.com/alleslabs/celatone-frontend/pull/290) Fix spacing and styling in account detail
+- [#280](https://github.com/alleslabs/celatone-frontend/pull/280) Fix begin unlocking optional coins field causing crash
+- [#269](https://github.com/alleslabs/celatone-frontend/pull/269) Fix array value json string format and receipt row text color
+- [#257](https://github.com/alleslabs/celatone-frontend/pull/257) Fix proposal resolved height query, resolved height rendering, and move ResolvedHeight and VotingEndTime to their own file
+- [#264](https://github.com/alleslabs/celatone-frontend/pull/264) Fix txhash uppercase query
+- [#258](https://github.com/alleslabs/celatone-frontend/pull/258) Fix address type render for contract admin address
+- [#253](https://github.com/alleslabs/celatone-frontend/pull/253) Fix public code logo shown when switching from mainnet to testnet
+- [#248](https://github.com/alleslabs/celatone-frontend/pull/248) Fix table padding bottom for editable cells
+- [#241](https://github.com/alleslabs/celatone-frontend/pull/241) Fix NAToken size
+- [#244](https://github.com/alleslabs/celatone-frontend/pull/244) Fix json funds instantiate cannot edit
+- [#243](https://github.com/alleslabs/celatone-frontend/pull/243) Fix Json viewer and view more btn
+- [#299](https://github.com/alleslabs/celatone-frontend/pull/299) Fix validator identity url
+
 ## v1.0.2
 
 ### Features

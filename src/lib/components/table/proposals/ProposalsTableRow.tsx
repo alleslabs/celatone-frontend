@@ -1,99 +1,37 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import { Grid, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { Proposer } from "lib/components/table/proposals/Proposer";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
 
+import { ResolvedHeight } from "./ResolvedHeight";
 import { StatusChip } from "./StatusChip";
+import { VotingEndTime } from "./VotingEndTime";
 
-interface ProposalsTableRowProps {
+export interface ProposalsTableRowProps {
   proposal: Proposal;
   templateColumns: GridProps["templateColumns"];
 }
-
-const VotingEndTimeRender = ({
-  votingEndTime,
-  depositEndTime,
-  status,
-}: {
-  votingEndTime: Proposal["votingEndTime"];
-  depositEndTime: Proposal["depositEndTime"];
-  status: Proposal["status"];
-}) => {
-  if (status === ProposalStatus.INACTIVE) {
-    return <Text color="text.dark">N/A</Text>;
-  }
-
-  const isDepositPeriod = status === ProposalStatus.DEPOSIT_PERIOD;
-  return (
-    <Flex
-      direction="column"
-      sx={{
-        "& > p:first-of-type": {
-          color: isDepositPeriod ? "text.dark" : "text.main",
-          mb: "2px",
-        },
-        "& > p:last-of-type": {
-          color: "text.dark",
-          fontSize: "12px",
-        },
-      }}
-    >
-      <p>{isDepositPeriod ? "Voting not started" : formatUTC(votingEndTime)}</p>
-      <p>
-        (
-        {isDepositPeriod
-          ? `Deposit Period ends ${dateFromNow(depositEndTime)}`
-          : dateFromNow(votingEndTime)}
-        )
-      </p>
-    </Flex>
-  );
-};
-
-const ResolvedHeightRender = ({
-  resolvedHeight,
-  isInactive,
-}: {
-  resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
-  isInactive: boolean;
-}) => {
-  if (isInactive) return <Text color="text.dark">N/A</Text>;
-
-  switch (resolvedHeight) {
-    case undefined:
-      return <Text color="text.dark">N/A</Text>;
-    case null:
-      return <Text color="text.dark">Pending</Text>;
-    default:
-      return (
-        <ExplorerLink
-          type="block_height"
-          value={resolvedHeight.toString()}
-          canCopyWithHover
-        />
-      );
-  }
-};
 
 export const ProposalsTableRow = ({
   proposal,
   templateColumns,
 }: ProposalsTableRowProps) => {
-  const getAddressType = useGetAddressType();
-  const isInactive = proposal.status === ProposalStatus.INACTIVE;
+  const isDepositFailed = proposal.status === ProposalStatus.DEPOSIT_FAILED;
+  const isDepositOrVoting =
+    proposal.status === ProposalStatus.DEPOSIT_PERIOD ||
+    proposal.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <ExplorerLink
-          isReadOnly={isInactive}
+          isReadOnly={isDepositFailed}
           type="proposal_id"
           value={proposal.proposalId.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </TableRow>
       <TableRow>{proposal.title}</TableRow>
@@ -101,31 +39,24 @@ export const ProposalsTableRow = ({
         <StatusChip status={proposal.status} />
       </TableRow>
       <TableRow>
-        <VotingEndTimeRender
+        <VotingEndTime
           votingEndTime={proposal.votingEndTime}
           depositEndTime={proposal.depositEndTime}
           status={proposal.status}
         />
       </TableRow>
       <TableRow>
-        <ResolvedHeightRender
+        <ResolvedHeight
           resolvedHeight={proposal.resolvedHeight}
-          isInactive={isInactive}
+          isDepositOrVoting={isDepositOrVoting}
+          isDepositFailed={isDepositFailed}
         />
       </TableRow>
       <TableRow>
         <Text color="text.dark">{proposal.type}</Text>
       </TableRow>
       <TableRow>
-        {proposal.proposer ? (
-          <ExplorerLink
-            type={getAddressType(proposal.proposer)}
-            value={proposal.proposer}
-            canCopyWithHover
-          />
-        ) : (
-          "N/A"
-        )}
+        <Proposer proposer={proposal.proposer} />
       </TableRow>
     </Grid>
   );

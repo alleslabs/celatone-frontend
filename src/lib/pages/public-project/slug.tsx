@@ -1,5 +1,4 @@
 import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -7,8 +6,10 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { scrollToTop } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
+import { PublicProjectAccountTable } from "./components/table/account/PublicProjectAccountTable";
 import { PublicProjectCodeTable } from "./components/table/code/PublicProjectCodeTable";
 import { PublicProjectContractTable } from "./components/table/contract/PublicProjectContractTable";
 import { usePublicData } from "./data";
@@ -17,26 +18,42 @@ enum TabIndex {
   Overview,
   Codes,
   Contracts,
+  Accounts,
 }
 
-export const ProjectDetail = observer(() => {
+export const ProjectDetail = () => {
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
-  const { publicCodes, publicContracts, projectDetail, slug, isLoading } =
-    usePublicData();
+  const {
+    publicCodes,
+    publicContracts,
+    publicAccounts,
+    projectDetail,
+    slug,
+    isLoading,
+  } = usePublicData();
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROJECT_DETAIL);
   }, [router.isReady]);
+
+  const handleOnViewMore = (tab: TabIndex) => {
+    setTabIndex(tab);
+    scrollToTop();
+  };
 
   if (isLoading) return <Loading />;
   return (
     <PageContainer>
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs index={tabIndex}>
-        <TabList my={8} borderBottom="1px" borderColor="pebble.800">
+        <TabList my={6} borderBottom="1px" borderColor="pebble.800">
           <CustomTab
-            count={publicCodes.length + publicContracts.length}
+            count={
+              publicCodes.length +
+              publicContracts.length +
+              publicAccounts.length
+            }
             onClick={() => setTabIndex(TabIndex.Overview)}
           >
             Overview
@@ -55,17 +72,28 @@ export const ProjectDetail = observer(() => {
           >
             Contracts
           </CustomTab>
+          <CustomTab
+            count={publicAccounts.length}
+            isDisabled={!publicAccounts.length}
+            onClick={() => setTabIndex(TabIndex.Accounts)}
+          >
+            Accounts
+          </CustomTab>
         </TabList>
 
         <TabPanels my={8}>
           <TabPanel p={0}>
             <PublicProjectCodeTable
               codes={publicCodes}
-              onViewMore={() => setTabIndex(TabIndex.Codes)}
+              onViewMore={() => handleOnViewMore(TabIndex.Codes)}
             />
             <PublicProjectContractTable
               contracts={publicContracts}
-              onViewMore={() => setTabIndex(TabIndex.Contracts)}
+              onViewMore={() => handleOnViewMore(TabIndex.Contracts)}
+            />
+            <PublicProjectAccountTable
+              accounts={publicAccounts}
+              onViewMore={() => handleOnViewMore(TabIndex.Accounts)}
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -74,8 +102,11 @@ export const ProjectDetail = observer(() => {
           <TabPanel p={0}>
             <PublicProjectContractTable contracts={publicContracts} />
           </TabPanel>
+          <TabPanel p={0}>
+            <PublicProjectAccountTable accounts={publicAccounts} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </PageContainer>
   );
-});
+};

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { wallets } from "@cosmos-kit/keplr";
 import { WalletProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -14,6 +13,7 @@ import {
   CELATONE_CONSTANTS,
   CELATONE_APP_CONTRACT_ADDRESS,
   CELATONE_FALLBACK_GAS_PRICE,
+  CELATONE_APP_HUMAN_ADDRESS,
 } from "env";
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
@@ -90,6 +90,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             <AppProvider
               fallbackGasPrice={CELATONE_FALLBACK_GAS_PRICE}
               appContractAddressMap={CELATONE_APP_CONTRACT_ADDRESS}
+              appHumanAddressMap={CELATONE_APP_HUMAN_ADDRESS}
               constants={CELATONE_CONSTANTS}
             >
               <TxBroadcastProvider>

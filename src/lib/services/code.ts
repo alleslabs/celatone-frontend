@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import type { Addr, InstantiatePermission } from "lib/types";
+import type { Addr, AccessConfigPermission } from "lib/types";
 
 interface CodeIdInfoResponse {
   code_info: {
@@ -8,7 +8,7 @@ interface CodeIdInfoResponse {
     creator: Addr;
     data_hash: string;
     instantiate_permission: {
-      permission: InstantiatePermission;
+      permission: AccessConfigPermission;
       address: Addr;
       addresses: Addr[];
     };

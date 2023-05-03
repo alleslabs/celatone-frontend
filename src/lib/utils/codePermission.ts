@@ -1,24 +1,24 @@
 import type { Addr, PermissionAddresses, Option } from "lib/types";
-import { InstantiatePermission } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 
 import { truncate } from "./truncate";
 
 export const getPermissionHelper = (
   address: Option<Addr>,
-  instantiatePermission: InstantiatePermission,
+  instantiatePermission: AccessConfigPermission,
   permissionAddresses: PermissionAddresses
 ) => {
   const getMessage = () => {
     switch (instantiatePermission) {
-      case InstantiatePermission.EVERYBODY:
+      case AccessConfigPermission.EVERYBODY:
         return "Everyone can instantiate contract with this code";
-      case InstantiatePermission.NOBODY:
+      case AccessConfigPermission.NOBODY:
         return "You can instantiate contract with this code through proposal only";
-      case InstantiatePermission.ANY_OF_ADDRESSES:
+      case AccessConfigPermission.ANY_OF_ADDRESSES:
         return address && permissionAddresses.includes(address)
           ? "You are included in designated addresses to instantiate"
           : "This code can be instantiate by designated addresses";
-      case InstantiatePermission.ONLY_ADDRESS:
+      case AccessConfigPermission.ONLY_ADDRESS:
         return address && permissionAddresses.includes(address)
           ? "You are designated to instantiate contract from this code"
           : `This code can only be instantiated by ${truncate(
@@ -29,7 +29,7 @@ export const getPermissionHelper = (
     }
   };
   const getColor = () =>
-    instantiatePermission === InstantiatePermission.EVERYBODY ||
+    instantiatePermission === AccessConfigPermission.EVERYBODY ||
     (address && permissionAddresses.includes(address))
       ? "success.main"
       : "info.main";

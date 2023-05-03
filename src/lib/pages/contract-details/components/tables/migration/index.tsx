@@ -60,16 +60,16 @@ export const MigrationTable = ({
   if (!migrationHistories?.length)
     return (
       <EmptyState
+        imageVariant="empty"
         message="This contract does not have any migration history yet."
-        withBorder
       />
     );
 
   const templateColumns =
-    "90px minmax(300px, 1fr) repeat(2, max(150px)) max(232px) max(180px)";
+    "90px minmax(300px, 1fr) minmax(220px, 1fr) repeat(2, max(150px)) max(232px) max(180px)";
 
   return (
-    <TableContainer overflow="visible">
+    <TableContainer>
       <MigrationHeader templateColumns={templateColumns} />
       {migrationHistories.map((history, idx) => (
         <MigrationRow

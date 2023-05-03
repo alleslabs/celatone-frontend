@@ -4,13 +4,13 @@ import big from "big.js";
 
 import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal";
-import { ViewMore } from "lib/components/table";
+import { TableTitle, ViewMore } from "lib/components/table";
 import { TokenCard } from "lib/components/TokenCard";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
 import { calTotalValue, formatPrice } from "lib/utils";
 
-import { UserAssetInfoCard } from "./UserAssetInfo";
+import { UserAssetInfoCard } from "./UserAssetInfoCard";
 
 interface AssetsSectionProps {
   walletAddress: HumanAddr;
@@ -42,7 +42,7 @@ const AssetSectionContent = ({
       {supportedAssets
         .slice(0, onViewMore ? MaxAssetsShow : undefined)
         .map((asset) => (
-          <TokenCard userBalance={asset} key={asset.balance.id} />
+          <TokenCard userBalance={asset} key={asset.balance.id} minW="full" />
         ))}
     </Grid>
   ) : (
@@ -64,7 +64,16 @@ export const AssetsSection = ({
   if (isLoading) return <Loading />;
 
   return (
-    <Flex direction="column" gap={4} mt={12} mb={4}>
+    <Flex direction="column" gap={4} my={8} width="full">
+      {onViewMore && (
+        <TableTitle
+          title="Assets"
+          count={
+            (supportedAssets?.length || 0) + (unsupportedAssets?.length || 0)
+          }
+          mb={0}
+        />
+      )}
       <Flex justify="space-between" width="full" align="center">
         <Flex gap="50px">
           <UserAssetInfoCard
@@ -72,12 +81,7 @@ export const AssetsSection = ({
               totalValue && supportedAssets ? formatPrice(totalValue) : "N/A"
             }
             isZeroValue={totalValue.eq(0) || !supportedAssets}
-            helperText="Total Value"
-          />
-          <UserAssetInfoCard
-            value={supportedAssets ? supportedAssets.length.toString() : "N/A"}
-            isZeroValue={!supportedAssets?.length}
-            helperText="Holding Supported Assets"
+            helperText="Total Asset Value"
           />
         </Flex>
         {unsupportedAssets && (

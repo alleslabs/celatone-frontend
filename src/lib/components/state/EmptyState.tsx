@@ -1,33 +1,39 @@
-import { Flex, Text, Image } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
+import type { ReactElement } from "react";
 
-interface EmptyStateProps {
-  image?: string;
-  message: string;
+import type { ImageVariant } from "./StateImage";
+import { StateImage } from "./StateImage";
+
+export interface EmptyStateProps {
+  imageVariant?: ImageVariant;
+  message: string | ReactElement;
+  heading?: string;
   withBorder?: boolean;
 }
 
 export const EmptyState = ({
   message,
-  image,
+  imageVariant,
+  heading,
   withBorder = false,
 }: EmptyStateProps) => (
   <Flex
-    py="64px"
+    py={8}
+    my={12}
     direction="column"
     borderY={withBorder ? "1px solid" : undefined}
     borderColor="pebble.700"
   >
     <Flex alignItems="center" flexDir="column" gap="4" width="full">
-      {image && (
-        <Image
-          src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
-          alt="result not found"
-          width="200px"
-        />
+      {imageVariant && <StateImage imageVariant={imageVariant} />}
+      {heading && (
+        <Heading as="h5" variant="h5">
+          {heading}
+        </Heading>
       )}
-      <Text color="text.dark" w="540px" textAlign="center">
+      <Flex fontSize="16px" color="text.dark">
         {message}
-      </Text>
+      </Flex>
     </Flex>
   </Flex>
 );

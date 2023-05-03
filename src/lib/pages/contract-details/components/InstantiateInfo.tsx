@@ -25,19 +25,15 @@ const PortIdRender = ({ portId }: { portId: string }) => {
 
   return (
     <Box
+      className="copier-wrapper"
       fontSize="14px"
-      _hover={{
-        "& .ibc-port-copy": {
-          display: "flex",
-        },
-      }}
       transition="all .25s ease-in-out"
     >
       {charArray?.map((line, idx) =>
         idx === charArray.length - 1 ? (
           <Flex align="center" key={line}>
             {line}
-            <Copier value={portId} className="ibc-port-copy" display="none" />
+            <Copier type="ibc_port" value={portId} display="none" />
           </Flex>
         ) : (
           line
@@ -64,7 +60,7 @@ const InitRender = ({
         <ExplorerLink
           type="tx_hash"
           value={initTxHash.toUpperCase()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </LabelText>
     );
@@ -79,7 +75,7 @@ const InitRender = ({
         <ExplorerLink
           type="proposal_id"
           value={initProposalId.toString()}
-          canCopyWithHover
+          showCopyOnHover
         />
       </LabelText>
     );
@@ -120,7 +116,7 @@ export const InstantiateInfo = ({
   }
 
   const instantiatorType = getAddressType(instantiateInfo.instantiator);
-  const adminType = getAddressType(instantiateInfo.admin ?? "");
+  const adminType = getAddressType(instantiateInfo.admin);
 
   return (
     <Container>
@@ -130,7 +126,7 @@ export const InstantiateInfo = ({
         <ExplorerLink
           type="code_id"
           value={instantiateInfo.codeId}
-          canCopyWithHover
+          showCopyOnHover
         />
       </LabelText>
 
@@ -146,22 +142,24 @@ export const InstantiateInfo = ({
         )}
       </LabelText>
 
-      <LabelText
-        label="Admin Address"
-        helperText1={instantiateInfo.admin ? adminType : undefined}
-      >
-        {instantiateInfo.admin ? (
+      {instantiateInfo.admin ? (
+        <LabelText
+          label="Admin Address"
+          helperText1={getAddressTypeText(adminType)}
+        >
           <ExplorerLink
             type={adminType}
             value={instantiateInfo.admin}
-            canCopyWithHover
+            showCopyOnHover
           />
-        ) : (
+        </LabelText>
+      ) : (
+        <LabelText label="Admin Address">
           <Text variant="body2" color="text.dark">
             No Admin
           </Text>
-        )}
-      </LabelText>
+        </LabelText>
+      )}
 
       <Divider border="1px solid" borderColor="pebble.700" />
 
@@ -183,7 +181,7 @@ export const InstantiateInfo = ({
             <ExplorerLink
               type="block_height"
               value={instantiateInfo.createdHeight.toString()}
-              canCopyWithHover
+              showCopyOnHover
             />
           </LabelText>
         ) : (
@@ -197,7 +195,7 @@ export const InstantiateInfo = ({
         <ExplorerLink
           type={instantiatorType}
           value={instantiateInfo.instantiator}
-          canCopyWithHover
+          showCopyOnHover
         />
       </LabelText>
 

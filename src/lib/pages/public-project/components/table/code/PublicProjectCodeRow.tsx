@@ -6,82 +6,84 @@ import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
-import { TableRowNoBorder } from "lib/components/table";
+import { TableRow } from "lib/components/table";
+import { getCw2Info } from "lib/utils";
 
 import type { PublicCodeInfo } from "./PublicProjectCodeTable";
 
 interface CodeTableRowProps {
   publicCodeInfo: PublicCodeInfo;
-  templateColumn: string;
+  templateColumns: string;
 }
 
 export const PublicProjectCodeRow = ({
-  publicCodeInfo,
-  templateColumn,
+  publicCodeInfo: { publicInfo, localInfo },
+  templateColumns,
 }: CodeTableRowProps) => {
   const navigate = useInternalNavigate();
   const { currentChainName } = useWallet();
-
   const goToCodeDetails = () => {
     navigate({
-      pathname: `/code/${publicCodeInfo.publicInfo.id}`,
+      pathname: `/code/${publicInfo.id}`,
     });
   };
 
+  const cw2Info = getCw2Info(publicInfo.cw2Contract, publicInfo.cw2Version);
+
   return (
     <Grid
+      templateColumns={templateColumns}
+      onClick={goToCodeDetails}
       _hover={{ bg: "pebble.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
-      onClick={goToCodeDetails}
       minW="min-content"
-      templateColumns={templateColumn}
-      borderBottom="1px solid"
-      borderColor="pebble.700"
     >
-      <TableRowNoBorder>
+      <TableRow>
         <ExplorerLink
-          value={publicCodeInfo.publicInfo.id.toString()}
+          value={publicInfo.id.toString()}
           type="code_id"
-          canCopyWithHover
+          showCopyOnHover
         />
-      </TableRowNoBorder>
-      <TableRowNoBorder>
-        <Text>{publicCodeInfo.publicInfo.name}</Text>
-      </TableRowNoBorder>
-      <TableRowNoBorder justifyContent="center">
-        <Text>{publicCodeInfo.publicInfo.contractCount}</Text>
-      </TableRowNoBorder>
-      <TableRowNoBorder>
+      </TableRow>
+      <TableRow>
+        <Text>{publicInfo.name}</Text>
+      </TableRow>
+      <TableRow>
+        <Text
+          color={cw2Info ? "text.main" : "text.disabled"}
+          wordBreak="break-all"
+          whiteSpace="pre-wrap"
+        >
+          {cw2Info ?? "N/A"}
+        </Text>
+      </TableRow>
+      <TableRow justifyContent="center">
+        <Text>{publicInfo.contractCount}</Text>
+      </TableRow>
+      <TableRow>
         <ExplorerLink
-          value={publicCodeInfo.publicInfo.uploader}
-          type={getAddressTypeByLength(
-            currentChainName,
-            publicCodeInfo.publicInfo.uploader
-          )}
-          canCopyWithHover
+          value={publicInfo.uploader}
+          type={getAddressTypeByLength(currentChainName, publicInfo.uploader)}
+          showCopyOnHover
         />
-      </TableRowNoBorder>
-      <TableRowNoBorder>
+      </TableRow>
+      <TableRow>
         <PermissionChip
-          instantiatePermission={
-            publicCodeInfo.publicInfo.instantiatePermission
-          }
-          permissionAddresses={publicCodeInfo.publicInfo.permissionAddresses}
+          instantiatePermission={publicInfo.instantiatePermission}
+          permissionAddresses={publicInfo.permissionAddresses}
         />
-      </TableRowNoBorder>
-      <TableRowNoBorder justifyContent="end" gap={2}>
+      </TableRow>
+      <TableRow px={0}>
         <HStack onClick={(e) => e.stopPropagation()}>
           <InstantiateButton
-            instantiatePermission={
-              publicCodeInfo.publicInfo.instantiatePermission
-            }
-            permissionAddresses={publicCodeInfo.publicInfo.permissionAddresses}
-            codeId={publicCodeInfo.publicInfo.id}
+            instantiatePermission={publicInfo.instantiatePermission}
+            permissionAddresses={publicInfo.permissionAddresses}
+            codeId={publicInfo.id}
           />
-          <SaveOrRemoveCodeModal codeInfo={publicCodeInfo.localInfo} />
+          <SaveOrRemoveCodeModal codeInfo={localInfo} />
         </HStack>
-      </TableRowNoBorder>
+      </TableRow>
     </Grid>
   );
 };

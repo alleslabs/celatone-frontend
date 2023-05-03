@@ -1,12 +1,11 @@
 import { Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
 
-import { getExplorerTxUrl } from "lib/app-fns/explorer";
+import { getExplorerProposalUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { AmpTrackMintscan } from "lib/services/amplitude";
+import { openNewTab, useOpenTxTab } from "lib/hooks";
 import type { ActionVariant, TxReceipt } from "lib/types";
 
 // TODO: refactor props to pass param in txResultRendering instead of receipt
@@ -23,18 +22,24 @@ export const ButtonSection = ({
 }: ButtonSectionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const openTxTab = useOpenTxTab("tx-page");
   const { currentChainName } = useWallet();
 
-  const openExplorer = useCallback(() => {
-    AmpTrackMintscan("tx_hash");
-    const txHash = receipts.find((r) => r.title === "Tx Hash")?.value;
-    window.open(
-      `${getExplorerTxUrl(currentChainName)}/${txHash}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
+  const openTxExplorer = () => {
+    const txHash = receipts
+      .find((r) => r.title === "Tx Hash")
+      ?.value?.toString();
+    openTxTab(txHash);
     onClose?.();
-  }, [receipts, onClose, currentChainName]);
+  };
+
+  const openProposalExplorer = () => {
+    const proposalId = receipts
+      .find((r) => r.title === "Proposal ID")
+      ?.value?.toString();
+    openNewTab(`${getExplorerProposalUrl(currentChainName)}/${proposalId}`);
+    onClose?.();
+  };
 
   switch (actionVariant) {
     case "sending":
@@ -89,7 +94,7 @@ export const ButtonSection = ({
     case "update-admin":
       return (
         <>
-          <Button variant="ghost-primary" onClick={openExplorer}>
+          <Button variant="ghost-primary" onClick={openTxExplorer}>
             See Transaction
           </Button>
           <Button
@@ -110,13 +115,43 @@ export const ButtonSection = ({
           Close
         </Button>
       );
+    case "proposal":
+      return (
+        <>
+          <Button
+            variant="ghost-primary"
+            // TODO: Revisit this when proposal page is live
+            onClick={openProposalExplorer}
+          >
+            View Proposal
+            <CustomIcon name="launch" color="lilac.main" boxSize={3} ml={2} />
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              navigate({
+                pathname: "/proposals",
+              });
+              onClose?.();
+            }}
+          >
+            See in Proposal List
+            <CustomIcon
+              name="chevron-right"
+              color="text.main"
+              boxSize={3}
+              ml={2}
+            />
+          </Button>
+        </>
+      );
     default:
       return (
         <>
           <Button variant="outline-primary" onClick={onClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={openExplorer}>
+          <Button variant="primary" onClick={openTxExplorer}>
             See Transaction
           </Button>
         </>

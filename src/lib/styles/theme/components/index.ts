@@ -1,6 +1,7 @@
 import { Alert } from "./alert";
 import { Badge } from "./badge";
 import { Button } from "./button";
+import { Drawer } from "./drawer";
 import { Form } from "./form";
 import { Heading } from "./heading";
 import { Input } from "./input";
@@ -9,6 +10,7 @@ import { Menu } from "./menu";
 import { Modal } from "./modal";
 import { Radio } from "./radio";
 import { Select } from "./select";
+import { Switch } from "./switch";
 import { Table } from "./table";
 import { Text } from "./text";
 import { Textarea } from "./textarea";
@@ -16,6 +18,7 @@ import { Tooltip } from "./tooltip";
 
 export const components = {
   Button,
+  Drawer,
   Heading,
   Text,
   Link,
@@ -30,4 +33,5 @@ export const components = {
   Tooltip,
   Textarea,
   Table,
+  Switch,
 };

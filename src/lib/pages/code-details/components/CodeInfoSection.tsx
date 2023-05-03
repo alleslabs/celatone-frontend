@@ -1,12 +1,11 @@
-import { Heading, Flex, Text, Box, Grid, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { Heading, Flex, Text, Box, Grid } from "@chakra-ui/react";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
-import type { CodeData, PermissionAddresses } from "lib/types";
+import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
+import type { CodeData } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
@@ -26,7 +25,7 @@ const getMethodSpecificRender = (
           <ExplorerLink
             type="proposal_id"
             value={proposalId.toString()}
-            canCopyWithHover
+            showCopyOnHover
           />
         </LabelText>
       ),
@@ -36,7 +35,7 @@ const getMethodSpecificRender = (
             <ExplorerLink
               type="block_height"
               value={height.toString()}
-              canCopyWithHover
+              showCopyOnHover
             />
             <Text variant="body3" color="text.dark">
               {formatUTC(created)}
@@ -55,7 +54,7 @@ const getMethodSpecificRender = (
     return {
       methodRender: (
         <LabelText label="Upload Transaction">
-          <ExplorerLink type="tx_hash" value={hash} canCopyWithHover />
+          <ExplorerLink type="tx_hash" value={hash} showCopyOnHover />
         </LabelText>
       ),
       storedBlockRender:
@@ -64,7 +63,7 @@ const getMethodSpecificRender = (
             <ExplorerLink
               type="block_height"
               value={height.toString()}
-              canCopyWithHover
+              showCopyOnHover
             />
             <Text variant="body3" color="text.dark">
               {formatUTC(created)}
@@ -87,48 +86,6 @@ const getMethodSpecificRender = (
     methodRender: <LabelText label="Created on">N/A</LabelText>,
     storedBlockRender: <Text variant="body2">N/A</Text>,
   };
-};
-
-const ViewAddresses = ({
-  permissionAddresses,
-}: {
-  permissionAddresses: PermissionAddresses;
-}) => {
-  const [viewAll, setViewAll] = useState(false);
-  const getAddressType = useGetAddressType();
-  return (
-    <>
-      {(viewAll || permissionAddresses.length === 1) &&
-        permissionAddresses.map((addr) => {
-          return (
-            <ExplorerLink
-              key={addr}
-              type={getAddressType(addr)}
-              value={addr}
-              canCopyWithHover
-            />
-          );
-        })}
-      {permissionAddresses.length > 1 && (
-        <Button
-          variant="ghost-primary"
-          onClick={() => setViewAll((prev) => !prev)}
-          size="sm"
-          p="unset"
-          w="fit-content"
-          rightIcon={
-            <CustomIcon
-              name={viewAll ? "chevron-up" : "chevron-down"}
-              color="lilac.main"
-              boxSize="3"
-            />
-          }
-        >
-          {viewAll ? "See Less" : "View All Addresses"}
-        </Button>
-      )}
-    </>
-  );
 };
 
 export const CodeInfoSection = ({
@@ -167,7 +124,7 @@ export const CodeInfoSection = ({
             <ExplorerLink
               type={uploaderType}
               value={uploader}
-              canCopyWithHover
+              showCopyOnHover
             />
             <Text variant="body3" color="text.dark">
               {getAddressTypeText(uploaderType)}
@@ -181,7 +138,10 @@ export const CodeInfoSection = ({
               instantiatePermission={instantiatePermission}
               permissionAddresses={permissionAddresses}
             />
-            <ViewAddresses permissionAddresses={permissionAddresses} />
+            <ViewPermissionAddresses
+              permissionAddresses={permissionAddresses}
+              amptrackSection="code_details"
+            />
           </Flex>
         </LabelText>
         <LabelText label="Stored on block">

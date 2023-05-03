@@ -4,16 +4,19 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { BackButton } from "lib/components/button";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CopyLink } from "lib/components/CopyLink";
+import { CustomIcon } from "lib/components/icon";
+import { GitHubLink } from "lib/components/links";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
+import { PublicDescription } from "lib/components/PublicDescription";
 import { InvalidState } from "lib/components/state";
 import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { InstantiatePermission } from "lib/types";
-import { getFirstQueryParam, isCodeId } from "lib/utils";
+import { AccessConfigPermission } from "lib/types";
+import { getCw2Info, getFirstQueryParam, isCodeId } from "lib/utils";
 
 import { CodeInfoSection } from "./components/CodeInfoSection";
 import { CTASection } from "./components/CTASection";
@@ -34,9 +37,11 @@ const CodeDetailsBody = observer(
 
     if (!codeData) return <InvalidCode />;
 
+    const cw2Info = getCw2Info(codeData.cw2Contract, codeData.cw2Version);
+
     return (
       <>
-        <Flex align="center" justify="space-between" mt={6}>
+        <Flex justify="space-between" mt={6}>
           <Flex direction="column" gap={1}>
             <Flex gap={1}>
               {publicProject.publicDetail?.logo && (
@@ -54,24 +59,61 @@ const CodeDetailsBody = observer(
                   codeId}
               </Heading>
             </Flex>
+            {publicProject.publicCodeData?.name && (
+              <Flex gap={2}>
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  Public Code Name:
+                </Text>
+                <Text variant="body2">{publicProject.publicCodeData.name}</Text>
+              </Flex>
+            )}
             <Flex gap={2}>
               <Text fontWeight={500} color="text.dark" variant="body2">
-                Code ID
+                Code ID:
               </Text>
-              <ExplorerLink type="code_id" value={codeId.toString()} />
+              <CopyLink
+                value={codeId.toString()}
+                amptrackSection="code_top"
+                type="code_id"
+              />
             </Flex>
+            <Flex gap={2}>
+              <Text fontWeight={500} color="text.dark" variant="body2">
+                CW2 Info:
+              </Text>
+              <Text
+                color={cw2Info ? "text.main" : "text.disabled"}
+                variant="body2"
+                wordBreak="break-all"
+              >
+                {cw2Info ?? "N/A"}
+              </Text>
+            </Flex>
+            {publicProject.publicCodeData?.github && (
+              <GitHubLink github={publicProject.publicCodeData.github} />
+            )}
           </Flex>
           <CTASection
             id={codeId}
             uploader={localCodeInfo?.uploader ?? codeData.uploader}
             name={localCodeInfo?.name}
             instantiatePermission={
-              codeData.instantiatePermission ?? InstantiatePermission.UNKNOWN
+              codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
             }
             permissionAddresses={codeData.permissionAddresses ?? []}
             contractCount={undefined}
+            cw2Contract={undefined}
+            cw2Version={undefined}
           />
         </Flex>
+        {publicProject.publicCodeData?.description && (
+          <PublicDescription
+            title="Public Code Description"
+            description={publicProject.publicCodeData.description}
+            textLine={2}
+            icon={<CustomIcon name="website" ml="0" my="0" />}
+          />
+        )}
         <Divider borderColor="pebble.700" my={12} />
         <CodeInfoSection codeData={codeData} chainId={chainId} />
         <CodeContractsTable codeId={codeId} />

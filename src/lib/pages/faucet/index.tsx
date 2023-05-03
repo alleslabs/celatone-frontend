@@ -12,7 +12,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { getExplorerTxUrl } from "lib/app-fns/explorer";
 import {
   useCurrentNetwork,
   useInternalNavigate,
@@ -24,6 +23,7 @@ import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useOpenTxTab } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 type ResultStatus = "success" | "error" | "warning";
@@ -42,7 +42,7 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
 
 // todo: handle token symbol by current chain
 const Faucet = () => {
-  const { address: walletAddress = "", currentChainName } = useWallet();
+  const { address: walletAddress = "" } = useWallet();
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
@@ -53,10 +53,9 @@ const Faucet = () => {
   const navigate = useInternalNavigate();
   const toast = useToast();
   const router = useRouter();
+  const openTxTab = useOpenTxTab("tx-page");
 
   const faucetUrl = process.env.NEXT_PUBLIC_FAUCET_URL;
-  // TODO: navigate to Celatone tx page
-  const txLinkUrl = getExplorerTxUrl(currentChainName);
 
   useEffect(() => {
     if (!isTestnet) navigate({ pathname: "/" });
@@ -198,21 +197,16 @@ const Faucet = () => {
             {result.message || "Something went wrong"}
           </AlertDescription>
           {result.txHash && (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${txLinkUrl}/${result.txHash}`}
+            <Button
+              variant="unstyled"
+              minW="unset"
+              size="sm"
+              _hover={{ background: "success.dark" }}
+              style={{ padding: "4px 12px" }}
+              onClick={() => openTxTab(result.txHash)}
             >
-              <Button
-                variant="unstyled"
-                minW="unset"
-                size="sm"
-                _hover={{ background: "success.dark" }}
-                style={{ padding: "4px 12px" }}
-              >
-                View Transaction
-              </Button>
-            </a>
+              View Transaction
+            </Button>
           )}
         </Alert>
       )}

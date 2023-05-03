@@ -22,13 +22,14 @@ interface PublicProjectCodeTableProps {
 }
 
 const TEMPLATE_COLUMNS =
-  "max(80px) minmax(320px, 1fr) max(120px) max(160px) max(160px) max(250px)";
+  "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px 180px";
 
 const CodeTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS}>
+  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
     <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
-    <TableHeader>Contracts</TableHeader>
+    <TableHeader>CW2 Info</TableHeader>
+    <TableHeader textAlign="center">Contracts</TableHeader>
     <TableHeader>Uploader</TableHeader>
     <TableHeader>Permission</TableHeader>
     <TableHeader />
@@ -57,6 +58,8 @@ export const PublicProjectCodeTable = observer(
           permissionAddresses: code.permissionAddresses,
           id: code.id,
           uploader: code.uploader,
+          cw2Contract: code.cw2Contract,
+          cw2Version: code.cw2Version,
           isSaved: isCodeIdSaved(code.id),
           ...getCodeLocalInfo(code.id),
         },
@@ -82,25 +85,25 @@ export const PublicProjectCodeTable = observer(
         {!publicCodes.length ? (
           <EmptyState
             message="There is currently no code related to this project."
-            image={
-              onViewMore
-                ? undefined
-                : "https://assets.alleslabs.dev/illustration/search-not-found.svg"
-            }
+            imageVariant={onViewMore && "empty"}
             withBorder
           />
         ) : (
-          <TableContainer mb={10}>
-            <CodeTableHeader />
-            {publicCodes.map((code) => (
-              <PublicProjectCodeRow
-                key={code.publicInfo.id}
-                publicCodeInfo={code}
-                templateColumn={TEMPLATE_COLUMNS}
-              />
-            ))}
-            {onViewMore && <ViewMore onClick={onViewMore} />}
-          </TableContainer>
+          <>
+            <TableContainer>
+              <CodeTableHeader />
+              {publicCodes.map((code) => (
+                <PublicProjectCodeRow
+                  key={code.publicInfo.id}
+                  publicCodeInfo={code}
+                  templateColumns={TEMPLATE_COLUMNS}
+                />
+              ))}
+            </TableContainer>
+            {codes.length > 5 && onViewMore && (
+              <ViewMore onClick={onViewMore} />
+            )}
+          </>
         )}
       </Box>
     );

@@ -10,8 +10,9 @@ import router from "next/router";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AdminButton } from "lib/components/button";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
+import { GitHubLink } from "lib/components/links";
 import {
   AddToOtherListModal,
   EditContractDetailsModal,
@@ -118,11 +119,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           >
             Contract Address:
           </Text>
-          <ExplorerLink
-            type="contract_address"
+          <CopyLink
             value={contractAddress}
-            textFormat="normal"
-            maxWidth="none"
+            amptrackSection="contract_top"
+            type="contract_address"
           />
         </Flex>
         <Flex gap={2}>
@@ -142,6 +142,9 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               {publicProject.publicInfo?.name}
             </Text>
           </Flex>
+        )}
+        {publicProject.publicInfo?.github && (
+          <GitHubLink github={publicProject.publicInfo?.github} />
         )}
       </Flex>
       <Flex gap={4}>

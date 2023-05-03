@@ -1,8 +1,10 @@
-import { Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpTrackInvalidState } from "lib/services/amplitude";
+
+import { StateImage } from "./StateImage";
 
 interface InvalidStateProps {
   title: string;
@@ -24,11 +26,7 @@ export const InvalidState = ({ title }: InvalidStateProps) => {
       my="24px"
       py="24px"
     >
-      <Image
-        src="https://assets.alleslabs.dev/illustration/search-not-found.svg"
-        alt="result not found"
-        width="200px"
-      />
+      <StateImage imageVariant="not-found" />
       <Heading as="h5" variant="h5" my="8px">
         {title}
       </Heading>

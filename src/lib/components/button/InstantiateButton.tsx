@@ -5,10 +5,10 @@ import { useWallet } from "@cosmos-kit/react";
 import { CustomIcon } from "../icon";
 import { useInternalNavigate } from "lib/app-provider";
 import type { HumanAddr, PermissionAddresses } from "lib/types";
-import { InstantiatePermission } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 
 interface InstantiateButtonProps extends ButtonProps {
-  instantiatePermission: InstantiatePermission;
+  instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
   codeId: number;
 }
@@ -53,7 +53,7 @@ const getInstantiateButtonProps = (
 };
 
 export const InstantiateButton = ({
-  instantiatePermission = InstantiatePermission.UNKNOWN,
+  instantiatePermission = AccessConfigPermission.UNKNOWN,
   permissionAddresses = [],
   codeId,
   ...buttonProps
@@ -65,18 +65,18 @@ export const InstantiateButton = ({
 
   const isAllowed =
     permissionAddresses.includes(address as HumanAddr) ||
-    instantiatePermission === InstantiatePermission.EVERYBODY;
+    instantiatePermission === AccessConfigPermission.EVERYBODY;
 
   /**
    * @todos use isDisabled when proposal flow is done
    */
   // const isDisabled =
-  //   instantiatePermission === InstantiatePermission.UNKNOWN ||
+  //   instantiatePermission === AccessConfigPermission.UNKNOWN ||
   //   !isWalletConnected;
 
   const { tooltipLabel, variant, icon } = getInstantiateButtonProps(
     isAllowed,
-    instantiatePermission === InstantiatePermission.UNKNOWN,
+    instantiatePermission === AccessConfigPermission.UNKNOWN,
     isWalletConnected
   );
 
