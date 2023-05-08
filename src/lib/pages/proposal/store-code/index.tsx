@@ -115,6 +115,7 @@ const StoreCodeProposal = () => {
     watch: uploadSectionWatch,
     setValue: uploadSectionSetValue,
     trigger: uploadSectionTrigger,
+    formState: { errors: uploadSectionErrors },
   } = useForm<UploadSectionState>({
     defaultValues: {
       wasmFile: undefined,
@@ -143,12 +144,14 @@ const StoreCodeProposal = () => {
   );
 
   const formErrorsKey = Object.keys(errors);
+  const uploadSectionErrorsKey = Object.keys(uploadSectionErrors);
 
   // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
   const shouldNotSimulateForAnyOfAddr = useMemo(
     () =>
       permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
       (addresses.some((addr) => addr.address.trim().length === 0) ||
+        Boolean(uploadSectionErrorsKey.length) ||
         addresses.some((addr) =>
           Boolean(
             validateUserAddress(addr.address) &&
@@ -159,10 +162,9 @@ const StoreCodeProposal = () => {
     [
       addresses,
       permission,
+      uploadSectionErrorsKey.length,
       validateContractAddress,
       validateUserAddress,
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      JSON.stringify(addresses),
     ]
   );
 
