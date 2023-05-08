@@ -23,6 +23,7 @@ export enum AccessType {
 
 export interface AccessConfig {
   permission: AccessType;
+  address: Addr;
   addresses: Addr[];
 }
 

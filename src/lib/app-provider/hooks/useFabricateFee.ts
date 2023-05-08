@@ -11,9 +11,10 @@ export const useFabricateFee = () => {
 
   return useCallback(
     (estimatedGas: number): StdFee => {
-      const adjustedGas = big(estimatedGas)
-        .mul(constants.gasAdjustment)
-        .toFixed(0);
+      const adjustedGas = Math.min(
+        Number(big(estimatedGas).mul(constants.gasAdjustment).toFixed(0)),
+        constants.maxGasLimit
+      );
 
       return {
         amount: [
@@ -22,9 +23,14 @@ export const useFabricateFee = () => {
             amount: big(adjustedGas).mul(chainGasPrice.gasPrice).toFixed(0),
           },
         ],
-        gas: adjustedGas as Gas<string>,
+        gas: adjustedGas.toString() as Gas<string>,
       };
     },
-    [chainGasPrice, constants.gasAdjustment]
+    [
+      chainGasPrice.denom,
+      chainGasPrice.gasPrice,
+      constants.gasAdjustment,
+      constants.maxGasLimit,
+    ]
   );
 };

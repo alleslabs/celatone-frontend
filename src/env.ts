@@ -82,6 +82,7 @@ export const MAX_FILE_SIZE = 800_000;
 
 export const CELATONE_CONSTANTS: CelatoneConstants = {
   gasAdjustment: 1.6,
+  maxGasLimit: 25_000_000,
   maxFileSize: MAX_FILE_SIZE,
 };
 

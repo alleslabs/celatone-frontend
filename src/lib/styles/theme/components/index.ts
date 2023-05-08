@@ -1,6 +1,7 @@
 import { Alert } from "./alert";
 import { Badge } from "./badge";
 import { Button } from "./button";
+import { Checkbox } from "./checkbox";
 import { Drawer } from "./drawer";
 import { Form } from "./form";
 import { Heading } from "./heading";
@@ -34,4 +35,5 @@ export const components = {
   Textarea,
   Table,
   Switch,
+  Checkbox,
 };

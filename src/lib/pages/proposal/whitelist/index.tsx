@@ -10,19 +10,18 @@ import {
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
-import big from "big.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
 import { TestnetAlert } from "../components/TestnetAlert";
-import { SIDEBAR_DETAILS } from "../constants";
+import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
   useCurrentNetwork,
   useFabricateFee,
   useSimulateFeeQuery,
-  useSubmitProposalTx,
+  useSubmitWhitelistProposalTx,
 } from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
@@ -41,7 +40,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import { composeSubmitWhitelistProposalMsg, d2Formatter } from "lib/utils";
+import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -61,7 +60,7 @@ const ProposalToWhitelist = () => {
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
-  const submitProposalTx = useSubmitProposalTx();
+  const submitProposalTx = useSubmitWhitelistProposalTx();
   const { broadcast } = useTxBroadcast();
   const {
     control,
@@ -155,18 +154,12 @@ const ProposalToWhitelist = () => {
   );
 
   const proceed = useCallback(async () => {
-    const minDepositAmount = big(minDeposit?.formattedAmount || 0);
     const stream = await submitProposalTx({
       estimatedFee,
       messages: [submitWhitelistProposalMsg],
       whitelistNumber: addressesArray.length,
-      amountToVote: minDepositAmount.lte(initialDeposit.amount)
-        ? null
-        : // TODO: Refactor this logic into utils?
-          `${d2Formatter(
-            minDepositAmount.minus(initialDeposit.amount),
-            "NaN"
-          )} ${minDeposit?.formattedDenom}`,
+      amountToVote: getAmountToVote(initialDeposit, minDeposit),
+
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
     });
@@ -175,13 +168,13 @@ const ProposalToWhitelist = () => {
       broadcast(stream);
     }
   }, [
-    addressesArray.length,
-    submitWhitelistProposalMsg,
-    estimatedFee,
-    initialDeposit.amount,
     minDeposit,
-    broadcast,
     submitProposalTx,
+    estimatedFee,
+    submitWhitelistProposalMsg,
+    addressesArray.length,
+    initialDeposit,
+    broadcast,
   ]);
 
   useEffect(() => {
@@ -404,7 +397,10 @@ const ProposalToWhitelist = () => {
             </form>
           </GridItem>
           <GridItem area="sidebar">
-            <StickySidebar marginTop="128px" metadata={SIDEBAR_DETAILS} />
+            <StickySidebar
+              marginTop="128px"
+              metadata={SIDEBAR_WHITELIST_DETAILS}
+            />
           </GridItem>
         </Grid>
       </PageContainer>
