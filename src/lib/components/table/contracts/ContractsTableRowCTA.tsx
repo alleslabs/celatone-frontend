@@ -89,7 +89,7 @@ export const ContractsTableRowCTA = ({
           >
             <CustomIcon name="more" boxSize="16px" />
           </MenuButton>
-          <MenuList>
+          <MenuList onClick={(e) => e.stopPropagation()}>
             <EditContractDetailsModal
               contractLocalInfo={contractInfo}
               triggerElement={
