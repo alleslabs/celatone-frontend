@@ -3,6 +3,8 @@ import { Button } from "@chakra-ui/react";
 import type { FC } from "react";
 import { useContext } from "react";
 
+import { AmpTrackPaginationNavigate } from "lib/services/amplitude";
+
 import { PaginatorContext } from "./PaginatorProvider";
 
 export const Next: FC<ButtonProps> = ({ children, ...buttonProps }) => {
@@ -13,6 +15,7 @@ export const Next: FC<ButtonProps> = ({ children, ...buttonProps }) => {
   const isLast = pagesQuantity ? currentPage > pagesQuantity - 1 : true;
 
   const handleNextClick = () => {
+    AmpTrackPaginationNavigate("next");
     if (!isLast) changePage(currentPage + 1);
   };
 

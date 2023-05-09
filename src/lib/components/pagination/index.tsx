@@ -3,6 +3,7 @@ import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 
 import { CustomIcon } from "../icon";
+import { AmpTrackPaginationPage } from "lib/services/amplitude";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
 import { Next } from "./Next";
@@ -31,6 +32,7 @@ export const Pagination = ({
 }: PaginationProps) => {
   useEffect(() => {
     const windowPosition = scrollYPosition();
+    AmpTrackPaginationPage(pageSize, currentPage);
     if (windowPosition) {
       if (!scrollComponentId) {
         scrollToTop();
