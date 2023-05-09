@@ -1,5 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
 import type { TokenWithValue } from "lib/types";
 import { getTokenLabel } from "lib/utils";
@@ -35,16 +36,14 @@ export const PoolAssets = ({ poolId, tokens, outAsset }: PoolAssetsProps) => (
             color={token.denom === outAsset ? "honeydew.main" : "text.main"}
           >
             {token.symbol || getTokenLabel(token.denom)}
-            <Text as="span" fontWeight={400}>
+            <Text as="span" fontWeight={400} color="honeydew.main">
               {" "}
               /
             </Text>
           </Text>
         ))}
       </Flex>
-      <Text variant="body2" color="lilac.main">
-        {poolId}
-      </Text>
+      <ExplorerLink type="pool_id" value={poolId.toString()} showCopyOnHover />
     </div>
   </Flex>
 );
