@@ -15,9 +15,13 @@ import { PoolRelatedTxsTable } from "./tables/pool-txs";
 
 interface PoolRelatedTxsProps {
   poolId: number;
+  isSuperfluid: boolean;
 }
 
-export const PoolRelatedTxs = ({ poolId }: PoolRelatedTxsProps) => {
+export const PoolRelatedTxs = ({
+  poolId,
+  isSuperfluid,
+}: PoolRelatedTxsProps) => {
   const { count: countAllTxs, countDisplay: countDisplayAllTxs } =
     usePoolTxsCount(poolId, "is_all");
   const { count: countSwapTxs, countDisplay: countDisplaySwapTxs } =
@@ -48,7 +52,9 @@ export const PoolRelatedTxs = ({ poolId }: PoolRelatedTxsProps) => {
           <CustomTab count={countDisplaySwapTxs}>Swap</CustomTab>
           <CustomTab count={countDisplayLpTxs}>LP</CustomTab>
           <CustomTab count={countDisplayBondTxs}>Bonding</CustomTab>
-          <CustomTab count={countDisplaySuperfluidTxs}>Superfluid</CustomTab>
+          {isSuperfluid && (
+            <CustomTab count={countDisplaySuperfluidTxs}>Superfluid</CustomTab>
+          )}
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
@@ -83,14 +89,16 @@ export const PoolRelatedTxs = ({ poolId }: PoolRelatedTxsProps) => {
               scrollComponentId={tableHeaderId}
             />
           </TabPanel>
-          <TabPanel p={0}>
-            <PoolRelatedTxsTable
-              poolId={poolId}
-              countTxs={countSuperfluidTxs}
-              type="is_superfluid"
-              scrollComponentId={tableHeaderId}
-            />
-          </TabPanel>
+          {isSuperfluid && (
+            <TabPanel p={0}>
+              <PoolRelatedTxsTable
+                poolId={poolId}
+                countTxs={countSuperfluidTxs}
+                type="is_superfluid"
+                scrollComponentId={tableHeaderId}
+              />
+            </TabPanel>
+          )}
         </TabPanels>
       </Tabs>
     </Box>

@@ -28,7 +28,7 @@ export const PoolId = () => {
       <BackButton />
       <PoolTopSection pool={pool} assetInfos={assetInfos} />
       <PoolAssets pool={pool} />
-      <PoolRelatedTxs poolId={pool.id} />
+      <PoolRelatedTxs poolId={pool.id} isSuperfluid={pool.isSuperfluid} />
     </PageContainer>
   );
 };
