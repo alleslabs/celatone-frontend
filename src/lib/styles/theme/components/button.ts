@@ -2,8 +2,10 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 type Dict = Record<string, string>;
 
+const pebble500 = "pebble.500";
 const pebble600 = "pebble.600";
 const pebble700 = "pebble.700";
+const pebble800 = "pebble.800";
 const violetLight = "violet.light";
 const violetDark = "violet.dark";
 const violetBg = "violet.background";
@@ -85,12 +87,12 @@ export const Button: ComponentStyleConfig = {
     }),
     "gray-solid": generateStyle({
       basic: {
-        background: "pebble.800",
+        background: pebble800,
         color: "text.main",
       },
       disabled: {
-        background: "pebble.900",
-        color: "pebble.900",
+        background: pebble800,
+        color: pebble500,
       },
       hoverBg: pebble700,
       activeBg: pebble700,
@@ -207,10 +209,10 @@ export const Button: ComponentStyleConfig = {
         "> svg": "pebble.400",
       },
       disabled: {
-        color: "pebble.500",
-        "> svg": "pebble.500",
+        color: pebble500,
+        "> svg": pebble500,
       },
-      hoverBg: "pebble.800",
+      hoverBg: pebble800,
       activeBg: "transparent",
     }),
     "ghost-error": generateStyle({

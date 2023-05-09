@@ -236,7 +236,7 @@ const ProposalToWhitelist = () => {
                 borderRadius="8px"
               >
                 <Flex gap={2} alignItems="center">
-                  <CustomIcon name="proposal-solid" />
+                  <CustomIcon name="proposal-solid" color="pebble.600" />
                   <Heading as="h6" variant="h6">
                     Fill in Proposal Details
                   </Heading>

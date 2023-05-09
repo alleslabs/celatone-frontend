@@ -200,7 +200,11 @@ export const TxFilterSelection = forwardRef<
                     <Text>{displayActionValue(option)}</Text>
 
                     {isOptionSelected(option) && (
-                      <CustomIcon name="check" data-label={option} />
+                      <CustomIcon
+                        name="check"
+                        data-label={option}
+                        color="pebble.600"
+                      />
                     )}
                   </Flex>
                 </ListItem>

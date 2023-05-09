@@ -34,7 +34,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
       </Tooltip>
       <MenuList>
         <MenuItem
-          icon={<CustomIcon name="migrate" />}
+          icon={<CustomIcon name="migrate" color="pebble.600" />}
           onClick={() => {
             navigate({
               pathname: "/migrate",
@@ -45,7 +45,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           Migrate
         </MenuItem>
         <MenuItem
-          icon={<CustomIcon name="admin" />}
+          icon={<CustomIcon name="admin" color="pebble.600" />}
           onClick={() => {
             navigate({
               pathname: "/admin",
@@ -58,7 +58,9 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
-            <MenuItem icon={<CustomIcon name="admin-clear" />}>
+            <MenuItem
+              icon={<CustomIcon name="admin-clear" color="pebble.600" />}
+            >
               Clear Admin
             </MenuItem>
           }

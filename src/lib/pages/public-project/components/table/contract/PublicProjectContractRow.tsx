@@ -74,7 +74,11 @@ export const PublicProjectContractRow = ({
         {publicContractInfo.publicInfo.description && (
           <Tooltip label={publicContractInfo.publicInfo.description}>
             <Flex cursor="pointer">
-              <CustomIcon name="info-circle" boxSize="12px" />
+              <CustomIcon
+                name="info-circle"
+                boxSize="12px"
+                color="pebble.600"
+              />
             </Flex>
           </Tooltip>
         )}

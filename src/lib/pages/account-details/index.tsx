@@ -119,12 +119,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           maxW="100%"
           borderRadius="8px"
           py={4}
-          px={5}
+          px={4}
           my={6}
           flex="1"
         >
-          <Flex align="center" gap={1} h="32px">
-            <CustomIcon name="website" ml="0" my="0" />
+          <Flex alignItems="center" gap={1} minH="32px">
+            <CustomIcon name="website" ml="0" mb="6px" color="pebble.600" />
             <Text variant="body2" fontWeight={500} color="text.dark">
               Public Account Description
             </Text>

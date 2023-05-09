@@ -93,7 +93,10 @@ export const TransactionsTableRow = ({
 
         <TableRow>
           {isAccordion && (
-            <CustomIcon name={isOpen ? "chevron-up" : "chevron-down"} />
+            <CustomIcon
+              name={isOpen ? "chevron-up" : "chevron-down"}
+              color="pebble.600"
+            />
           )}
         </TableRow>
       </Grid>

@@ -57,7 +57,7 @@ export const AllProject = observer(() => {
           rel="noopener noreferrer"
           onClick={() => AmpTrack(AmpEvent.USE_SUBMIT_PROJECT)}
         >
-          <Button gap={2} mt={8}>
+          <Button gap={2} mt={8} variant="outline-primary">
             <CustomIcon name="github" />
             Submit on Github
           </Button>

@@ -64,7 +64,11 @@ const CardInfo = ({
         </Text>
         <Tooltip label={tooltip}>
           <Flex cursor="pointer">
-            <CustomIcon name="info-circle-solid" boxSize="3" />
+            <CustomIcon
+              name="info-circle-solid"
+              boxSize="3"
+              color="pebble.600"
+            />
           </Flex>
         </Tooltip>
       </Flex>
@@ -76,7 +80,7 @@ const CardInfo = ({
         </Heading>
       )}
     </Box>
-    <CustomIcon name="chevron-right" boxSize={5} />
+    <CustomIcon name="chevron-right" boxSize={5} color="pebble.600" />
   </Flex>
 );
 

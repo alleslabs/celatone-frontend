@@ -121,7 +121,11 @@ export const SelectContractInstantiator = ({
           {listSlug.length === 0 || !contractList ? (
             <>
               <DrawerHeader>
-                <CustomIcon name="contract-address-solid" boxSize="5" />
+                <CustomIcon
+                  name="contract-address-solid"
+                  boxSize="5"
+                  color="pebble.600"
+                />
                 <Heading as="h5" variant="h5">
                   Select Contract
                 </Heading>
@@ -188,6 +192,7 @@ export const SelectContractInstantiator = ({
                   boxSize="5"
                   onClick={() => setListSlug("")}
                   cursor="pointer"
+                  color="pebble.600"
                 />
                 <Heading as="h5" variant="h5">
                   {contractList.name}

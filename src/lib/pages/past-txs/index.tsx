@@ -140,7 +140,7 @@ const PastTxs = () => {
             h="full"
           />
           <InputRightElement pointerEvents="none" h="full" mr="1">
-            <CustomIcon name="search" />
+            <CustomIcon name="search" color="pebble.600" />
           </InputRightElement>
         </InputGroup>
 

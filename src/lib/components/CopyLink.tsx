@@ -45,7 +45,13 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
         >
           {value === address ? `${value} (Me)` : value}
         </Text>
-        <CustomIcon cursor="pointer" marginLeft={2} name="copy" boxSize={3} />
+        <CustomIcon
+          cursor="pointer"
+          marginLeft={2}
+          name="copy"
+          boxSize={3}
+          color="pebble.600"
+        />
       </Flex>
     </Tooltip>
   );

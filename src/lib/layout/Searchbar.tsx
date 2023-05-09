@@ -146,7 +146,7 @@ const Searchbar = () => {
           onKeyDown={handleOnKeyEnter}
         />
         <InputRightElement pointerEvents="none" h="full">
-          <CustomIcon name="search" />
+          <CustomIcon name="search" color="pebble.600" />
         </InputRightElement>
       </InputGroup>
       {displayResults && (

@@ -86,7 +86,9 @@ export const ExpandNavMenu = ({
                 borderRadius="2px"
                 left="0px"
               />
-              {submenu.icon && <CustomIcon name={submenu.icon} />}
+              {submenu.icon && (
+                <CustomIcon name={submenu.icon} color="pebble.600" />
+              )}
               {submenu.logo && (
                 <Image
                   src={submenu.logo}

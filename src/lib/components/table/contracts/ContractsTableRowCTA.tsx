@@ -87,13 +87,17 @@ export const ContractsTableRowCTA = ({
             as={Button}
             onClick={(e) => e.stopPropagation()}
           >
-            <CustomIcon name="more" boxSize="16px" />
+            <CustomIcon name="more" boxSize="16px" color="pebble.600" />
           </MenuButton>
           <MenuList onClick={(e) => e.stopPropagation()}>
             <EditContractDetailsModal
               contractLocalInfo={contractInfo}
               triggerElement={
-                <MenuItem icon={<CustomIcon name="edit" boxSize="16px" />}>
+                <MenuItem
+                  icon={
+                    <CustomIcon name="edit" boxSize="16px" color="pebble.600" />
+                  }
+                >
                   Edit details
                 </MenuItem>
               }
@@ -101,13 +105,23 @@ export const ContractsTableRowCTA = ({
             <AddToOtherListModal
               contractLocalInfo={contractInfo}
               triggerElement={
-                <MenuItem icon={<CustomIcon name="bookmark" boxSize="16px" />}>
+                <MenuItem
+                  icon={
+                    <CustomIcon
+                      name="bookmark"
+                      boxSize="16px"
+                      color="pebble.600"
+                    />
+                  }
+                >
                   Add or remove from other lists
                 </MenuItem>
               }
             />
             <MenuItem
-              icon={<CustomIcon name="admin" boxSize="16px" />}
+              icon={
+                <CustomIcon name="admin" boxSize="16px" color="pebble.600" />
+              }
               onClick={() => {
                 navigate({
                   pathname: "/admin",
@@ -122,7 +136,13 @@ export const ContractsTableRowCTA = ({
               contractAddress={contractInfo.contractAddress}
               triggerElement={
                 <MenuItem
-                  icon={<CustomIcon name="admin-clear" boxSize="16px" />}
+                  icon={
+                    <CustomIcon
+                      name="admin-clear"
+                      boxSize="16px"
+                      color="pebble.600"
+                    />
+                  }
                   isDisabled={!isAdmin}
                 >
                   Clear Admin

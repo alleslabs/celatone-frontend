@@ -62,7 +62,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
                 contractLocalInfo.lists ? (
                   <CustomIcon name="bookmark-solid" color="violet.light" />
                 ) : (
-                  <CustomIcon name="bookmark" />
+                  <CustomIcon name="bookmark" color="pebble.600" />
                 )
               }
             />
