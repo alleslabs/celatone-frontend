@@ -8,10 +8,10 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 
-import { usePoolTxsCount } from "../data";
+import { usePoolTxsCount } from "../../data";
 import { CustomTab } from "lib/components/CustomTab";
 
-import { PoolRelatedTxsTable } from "./table/pool-txs";
+import { PoolRelatedTxsTable } from "./tables/pool-txs";
 
 interface PoolRelatedTxsProps {
   poolId: number;

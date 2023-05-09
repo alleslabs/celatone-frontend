@@ -139,8 +139,7 @@ export const usePoolByPoolId = (
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
-    if (!poolId) throw new Error("Pool ID not found (usePoolByPoolId)");
-
+    if (!poolId) throw new Error("Pool ID is undefined.");
     return indexerGraphClient
       .request(getPoolByPoolId, {
         poolId,

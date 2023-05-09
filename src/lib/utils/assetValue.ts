@@ -48,6 +48,7 @@ export const coinToTokenWithValue = (
     symbol: assetInfo?.symbol,
     logo: assetInfo?.logo,
     precision: assetInfo?.precision,
+    price: assetInfo ? (big(assetInfo.price).toFixed() as USD) : undefined,
     value: assetInfo
       ? calculateAssetValue(
           toToken(tokenAmount, assetInfo.precision),

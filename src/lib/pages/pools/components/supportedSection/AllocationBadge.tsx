@@ -3,11 +3,11 @@ import type { Big } from "big.js";
 import big from "big.js";
 
 import { getUndefinedTokenIcon } from "../../utils";
-import type { Option, Token, U, USD } from "lib/types";
+import type { Option, Ratio, Token, U, USD } from "lib/types";
 import {
   getTokenLabel,
-  formatPercentValue,
   formatUTokenWithPrecision,
+  formatRatio,
 } from "lib/utils";
 
 interface AllocationBadgeProps {
@@ -31,8 +31,8 @@ export const AllocationBadge = ({
   liquidity,
   mode,
 }: AllocationBadgeProps) => {
-  const formattedValue = formatPercentValue(
-    (value ?? big(0)).div(liquidity).times(100)
+  const formattedValue = formatRatio(
+    (value ?? big(0)).div(liquidity) as Ratio<Big>
   );
   const formattedAmount = denom
     ? formatUTokenWithPrecision(amount, precision ?? 0)

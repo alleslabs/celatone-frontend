@@ -5,21 +5,26 @@ import { TableHeader } from "lib/components/table/tableComponents";
 import type { PoolDetail } from "lib/types";
 
 interface PoolHeaderProps {
-  pool_type: PoolDetail["type"];
+  poolType: PoolDetail["type"];
+  isSupported: PoolDetail["isSupported"];
   templateColumns: GridProps["templateColumns"];
 }
 
 export const PoolAssetsTableHeader = ({
-  pool_type,
+  poolType,
+  isSupported,
   templateColumns,
 }: PoolHeaderProps) => (
-  <Grid templateColumns={templateColumns}>
+  <Grid
+    templateColumns={templateColumns}
+    sx={{ "> div": { color: "text.dark" } }}
+  >
     <TableHeader>Asset</TableHeader>
 
     <TableHeader textAlign="right">
-      {pool_type === "Stableswap" ? "Scaling Factor" : "Weight (%)"}
+      {poolType === "Stableswap" ? "Scaling Factor" : "Weight (%)"}
     </TableHeader>
-    <TableHeader textAlign="right">Value Allocation</TableHeader>
+    <TableHeader textAlign="right">{isSupported && "Allocation"}</TableHeader>
     <TableHeader textAlign="right">Amount</TableHeader>
   </Grid>
 );
