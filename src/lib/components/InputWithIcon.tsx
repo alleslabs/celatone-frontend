@@ -2,7 +2,7 @@ import type { InputProps } from "@chakra-ui/react";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { AmpTrackUseInput } from "lib/services/amplitude";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
 
@@ -27,7 +27,7 @@ const InputWithIcon = ({
       value={value}
       onChange={onChange}
       size={size}
-      onClick={action ? () => AmpTrackUseInput(action) : undefined}
+      onClick={action ? () => AmpTrack(AmpEvent.USE_SEARCH_INPUT) : undefined}
     />
     <InputRightElement h="56px" alignItems="center" mr="1">
       <CustomIcon name="search" />

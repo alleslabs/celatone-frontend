@@ -3,7 +3,7 @@ import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 
 import { CustomIcon } from "../icon";
-import { AmpTrackPaginationPage } from "lib/services/amplitude";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
 import { Next } from "./Next";
@@ -32,7 +32,6 @@ export const Pagination = ({
 }: PaginationProps) => {
   useEffect(() => {
     const windowPosition = scrollYPosition();
-    AmpTrackPaginationPage(pageSize, currentPage);
     if (windowPosition) {
       if (!scrollComponentId) {
         scrollToTop();
@@ -67,7 +66,12 @@ export const Pagination = ({
           focusBorderColor="none"
           cursor="pointer"
           value={pageSize}
-          onChange={onPageSizeChange}
+          onChange={(e) => {
+            AmpTrack(AmpEvent.USE_PAGINATION_PAGE_SIZE, {
+              pageSize: e.target.value,
+            });
+            onPageSizeChange(e);
+          }}
         >
           <option value="10">10</option>
           <option value="20">20</option>
@@ -78,10 +82,10 @@ export const Pagination = ({
         <Text variant="body3" mx="30px">
           {`${offsetData.toLocaleString()} - ${lastDataInPage.toLocaleString()} of ${totalData.toLocaleString()}`}
         </Text>
-        <Previous variant="unstyled" display="flex">
+        <Previous pageSize={pageSize} variant="unstyled" display="flex">
           <CustomIcon name="chevron-left" />
         </Previous>
-        <Next variant="unstyled" display="flex">
+        <Next pageSize={pageSize} variant="unstyled" display="flex">
           <CustomIcon name="chevron-right" />
         </Next>
       </Flex>

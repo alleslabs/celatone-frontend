@@ -96,11 +96,11 @@ export enum AmpEvent {
   USE_UNSUPPORTED_ASSETS = "Use Unsupported Assets",
   USE_TX_MSG_EXPAND = "Use Transaction Message Expand",
   USE_EXPAND = "Use General Expand",
-  USE_INPUT = "Use Input",
+  USE_SEARCH_INPUT = "Use Search Input",
   USE_FILTER_MY_PROPOSALS = "Use Filter My Proposals",
   USE_FILTER_PROPOSALS_STATUS = "Use Filter Proposals Status",
   USE_FILTER_PROPOSALS_TYPE = "Use Filter Proposals Types",
-  USE_PAGINATION_PAGE = "Use Pagination Page",
+  USE_PAGINATION_PAGE_SIZE = "Use Pagination Page Size",
   USE_PAGINATION_NAVIGATION = "Use Pagination Navigation",
   USE_CREATE_NEW_PROPOSAL = "Use Create New Proposal",
   // TX
@@ -139,8 +139,6 @@ type SpecialAmpEvent =
   | AmpEvent.USE_UNSUPPORTED_ASSETS
   | AmpEvent.USE_COPIER
   | AmpEvent.USE_EXPAND
-  | AmpEvent.USE_INPUT
-  | AmpEvent.USE_PAGINATION_PAGE
   | AmpEvent.USE_PAGINATION_NAVIGATION
   | AmpEvent.USE_FILTER_PROPOSALS_STATUS
   | AmpEvent.USE_FILTER_PROPOSALS_TYPE;
@@ -215,17 +213,19 @@ export const AmpTrackExpand = (
   section: Option<string>
 ) => track(AmpEvent.USE_EXPAND, { action, component, section });
 
-export const AmpTrackUseInput = (action: string) =>
-  track(AmpEvent.USE_INPUT, { action });
-
 export const AmpTrackUseFilter = (
   ampEvent: AmpEvent,
   filters: string[],
   action: string
 ) => track(ampEvent, { action, filters });
 
-export const AmpTrackPaginationPage = (pageSize: number, currentPage: number) =>
-  track(AmpEvent.USE_PAGINATION_PAGE, { pageSize, currentPage });
-
-export const AmpTrackPaginationNavigate = (navigate: string) =>
-  track(AmpEvent.USE_PAGINATION_NAVIGATION, { navigate });
+export const AmpTrackPaginationNavigate = (
+  navigate: string,
+  pageSize: number,
+  currentPage: number
+) =>
+  track(AmpEvent.USE_PAGINATION_NAVIGATION, {
+    navigate,
+    pageSize,
+    currentPage,
+  });
