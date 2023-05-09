@@ -34,20 +34,44 @@ const generateSearch = (search: string) =>
       ]
     : [{}];
 
-export const useTxExpression = (
-  address: Option<Addr>,
-  search: string,
-  filters: TxFilters,
-  isSigner: Option<boolean>
-) =>
-  useMemo(
-    () => ({
-      account: { address: address ? { _eq: address } : {} },
-      is_signer: isSigner === undefined ? {} : { _eq: isSigner },
-      transaction: {
-        ...generateActionsFilter(filters),
-        _or: generateSearch(search.toLocaleLowerCase()),
-      },
-    }),
-    [address, filters, isSigner, search]
-  );
+export const useTxExpression = ({
+  address,
+  accountId,
+  search,
+  filters,
+  isSigner,
+}: {
+  address?: Option<Addr>;
+  accountId?: Option<number>;
+  search: string;
+  filters: TxFilters;
+  isSigner: Option<boolean>;
+}) =>
+  useMemo(() => {
+    const hasFilter = Object.values(filters).some((filter: boolean) => filter);
+    const accountIdExp = accountId ? { account_id: { _eq: accountId } } : {};
+    const addressExp = address
+      ? { account: { address: { _eq: address } } }
+      : {};
+    const applyAccountExp = Object.keys(accountIdExp).length
+      ? accountIdExp
+      : addressExp;
+    const isSignerExp =
+      isSigner === undefined ? {} : { is_signer: { _eq: isSigner } };
+    const filterExp =
+      hasFilter || search
+        ? {
+            transaction: {
+              ...(hasFilter ? generateActionsFilter(filters) : {}),
+              ...(search
+                ? { _or: generateSearch(search.toLocaleLowerCase()) }
+                : {}),
+            },
+          }
+        : {};
+    return {
+      ...applyAccountExp,
+      ...isSignerExp,
+      ...filterExp,
+    };
+  }, [address, accountId, filters, isSigner, search]);

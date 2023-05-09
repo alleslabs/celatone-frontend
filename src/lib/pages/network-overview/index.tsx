@@ -1,4 +1,6 @@
 import { Box, Flex, Heading, Spinner, Text, Tooltip } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -6,6 +8,7 @@ import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useLatestBlockInfo } from "lib/services/blockService";
 import { useTxsCount } from "lib/services/txService";
 import { dateFromNow, formatUTC } from "lib/utils";
@@ -83,7 +86,12 @@ const CardInfo = ({
 );
 
 const NetworkOverview = () => {
+  const router = useRouter();
   const navigate = useInternalNavigate();
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_NETWORK_OVERVIEW);
+  }, [router.isReady]);
 
   const {
     data: latestBlockInfo,
@@ -142,7 +150,7 @@ const NetworkOverview = () => {
         <CardInfo
           title={blockInfo.title}
           tooltip={blockInfo.tooltip}
-          value={latestBlockInfo?.height?.toLocaleString() ?? "N/A"}
+          value={latestBlockInfo?.height?.toString() ?? "N/A"}
           isLoading={isLoadingLatestBlockInfo}
           navigate={toBlocks}
         />

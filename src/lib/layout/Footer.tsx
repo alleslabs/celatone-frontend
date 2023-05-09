@@ -63,7 +63,7 @@ const Footer = () => (
         rel="noopener noreferrer"
         onClick={() => AmpTrack(AmpEvent.FEEDBACK)}
       >
-        <Button variant="ghost" size="xs">
+        <Button variant="ghost-gray" size="xs">
           <Flex gap={1} align="center">
             <CustomIcon name="feedback" />
             <Text variant="body3" color="text.dark">
@@ -75,7 +75,7 @@ const Footer = () => (
     </Flex>
     <Flex direction="column" alignItems="end" minW="60px">
       <Button
-        variant="ghost"
+        variant="ghost-gray"
         size="xs"
         sx={{ _hover: { "> div > svg": { opacity: "100" } } }}
       >

@@ -14,5 +14,8 @@ export const useValidators = (): UseQueryResult<
 
   const queryFn = useCallback(async () => getValidators(endpoint), [endpoint]);
 
-  return useQuery(["query", "validators", endpoint], queryFn);
+  return useQuery(["query", "validators", endpoint], queryFn, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 };
