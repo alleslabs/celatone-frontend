@@ -1,7 +1,7 @@
 import { track } from "@amplitude/analytics-browser";
 
 import type { AttachFundsType } from "lib/components/fund/types";
-import type { Option } from "lib/types";
+import type { Dict, Option } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -189,7 +189,7 @@ export const AmpTrackUseOtherModal = (title: string) =>
 export const AmpTrackMintscan = (
   type: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  properties?: Record<string, any>
+  properties?: Dict<string, any>
 ) => track(AmpEvent.MINTSCAN, { type, properties });
 
 export const AmpTrackWebsite = (url: string) =>

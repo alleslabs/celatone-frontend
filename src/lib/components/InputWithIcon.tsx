@@ -27,7 +27,7 @@ const InputWithIcon = ({
       value={value}
       onChange={onChange}
       size={size}
-      onClick={() => action && AmpTrackUseInput(action)}
+      onClick={action ? () => AmpTrackUseInput(action) : undefined}
     />
     <InputRightElement h="56px" alignItems="center" mr="1">
       <CustomIcon name="search" />

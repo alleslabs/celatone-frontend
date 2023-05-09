@@ -45,21 +45,23 @@ export const ProposalTableRow = ({
       minW="min-content"
       cursor={isDepositFailed ? "default" : "pointer"}
       _hover={{ "> div": { bgColor: hoverBg } }}
-      onClick={() => {
-        if (!isDepositFailed) {
-          AmpTrackMintscan("proposal-detail", {
-            type: proposal.type,
-            status: proposal.status,
-          });
-          window.open(
-            `${getExplorerProposalUrl(
-              currentChainName
-            )}/${proposal.proposalId.toString()}`,
-            "_blank",
-            "noopener,noreferrer"
-          );
-        }
-      }}
+      onClick={
+        !isDepositFailed
+          ? () => {
+              AmpTrackMintscan("proposal-detail", {
+                type: proposal.type,
+                status: proposal.status,
+              });
+              window.open(
+                `${getExplorerProposalUrl(
+                  currentChainName
+                )}/${proposal.proposalId.toString()}`,
+                "_blank",
+                "noopener,noreferrer"
+              );
+            }
+          : undefined
+      }
     >
       <TableRowFreeze left="0">
         <ExplorerLink
