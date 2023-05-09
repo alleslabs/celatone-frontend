@@ -10,7 +10,6 @@ interface ViewMoreProps {
 export const ViewMore = ({ onClick }: ViewMoreProps) => (
   <Flex w="full" justifyContent="center" textAlign="center">
     <Button
-      size="md"
       w="full"
       borderRadius="0"
       minH="64px"

@@ -18,7 +18,13 @@ export const AllPublicProjectsPage = () => {
     <PageContainer>
       <Flex direction="column" alignItems="center" gap={8}>
         <Flex justifyContent="space-between" w="full" alignItems="center">
-          <Heading as="h5" variant="h5">
+          <Heading
+            as="h5"
+            variant="h5"
+            minH="36px"
+            display="flex"
+            alignItems="center"
+          >
             Public Projects
           </Heading>
         </Flex>

@@ -47,13 +47,20 @@ const StyledButton = ({
   variant,
 }: StyledButtonProps) => (
   <Button
-    variant={hasText ? variant : "ghost"}
+    variant={hasText ? variant : "ghost-gray"}
     style={hasText ? buttonTextProps : buttonIconProps}
     gap={2}
     onClick={action}
   >
-    <CustomIcon name={icon} />
-    {hasText && <Text>{actionText}</Text>}
+    <CustomIcon
+      name={icon}
+      color={icon === "bookmark" ? "pebble.600" : "violet.light"}
+    />
+    {hasText && (
+      <Text color={icon === "bookmark" ? "text.dark" : "violet.light"}>
+        {actionText}
+      </Text>
+    )}
   </Button>
 );
 
@@ -104,7 +111,7 @@ export const BookmarkButton = observer(
           />
         ) : (
           <StyledButton
-            variant="outline"
+            variant="outline-gray"
             hasText={hasText}
             icon="bookmark"
             actionText="Bookmark Project"

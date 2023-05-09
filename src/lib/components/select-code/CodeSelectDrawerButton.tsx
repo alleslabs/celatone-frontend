@@ -75,7 +75,6 @@ export const CodeSelectDrawerButton = ({
     <>
       <Button
         variant="outline-primary"
-        size="md"
         ml="auto"
         w="120px"
         onClick={() => {

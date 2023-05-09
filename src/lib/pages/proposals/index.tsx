@@ -87,7 +87,7 @@ const Proposals = () => {
 
   return (
     <PageContainer>
-      <Flex justify="space-between">
+      <Flex justify="space-between" alignItems="center">
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
@@ -134,7 +134,7 @@ const Proposals = () => {
             </div>
           </Tooltip>
         </Flex>
-        <Flex gap={2} pb={3}>
+        <Flex gap={3} pb={3}>
           <ProposalStatusFilter
             label="Filter by Status"
             result={statuses}

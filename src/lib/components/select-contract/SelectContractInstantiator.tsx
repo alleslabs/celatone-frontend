@@ -145,10 +145,11 @@ export const SelectContractInstantiator = ({
                       setSearchContract(inputValue as ContractAddr);
                     }}
                     placeholder={`ex. ${exampleContractAddress}`}
-                    size="md"
+                    size="lg"
                   />
                   <Button
-                    height="40px"
+                    height="56px"
+                    minW="72px"
                     isDisabled={searchContract.length === 0}
                     isLoading={isFetching || isRefetching}
                     onClick={() => {
