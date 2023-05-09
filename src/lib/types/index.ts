@@ -12,3 +12,4 @@ export * from "./proposal";
 export * from "./validator";
 export * from "./block";
 export * from "./asset";
+export * from "./converter";
