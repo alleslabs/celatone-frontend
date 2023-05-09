@@ -10,9 +10,10 @@ import type {
   PoolDetail,
   PoolTypeFilter,
   PoolWeight,
+  Ratio,
   TokenWithValue,
 } from "lib/types";
-import { coinToTokenWithValue } from "lib/utils";
+import { coinToTokenWithValue, formatRatio } from "lib/utils";
 
 export const usePools = (
   isSupported: boolean,
@@ -50,7 +51,7 @@ export const usePools = (
 };
 
 export const usePool = (
-  poolId: number
+  poolId: Option<number>
 ): { pool: Option<PoolDetail<Big, TokenWithValue>>; isLoading: boolean } => {
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
   const { data: pool, isLoading: isLoadingPoolInfo } = usePoolByPoolId(poolId);
@@ -60,7 +61,10 @@ export const usePool = (
       pool: undefined,
       isLoading: isLoadingAssetInfos || isLoadingPoolInfo,
     };
-
+  const totalPoolWeight = pool.weight?.reduce(
+    (acc, curr) => acc.add(curr.weight),
+    big(0)
+  );
   return {
     pool: {
       id: pool.id,
@@ -77,10 +81,17 @@ export const usePool = (
       exitFee: pool.exitFee,
       futurePoolGovernor: pool.futurePoolGovernor,
       weight:
-        pool.weight?.map<PoolWeight>((weight) => ({
-          denom: weight.denom,
-          weight: big(weight.weight),
-        })) ?? null,
+        pool.weight?.map<PoolWeight<Big>>((weight) => {
+          const bigWeight = big(weight.weight);
+          return {
+            denom: weight.denom,
+            weight: bigWeight,
+            percentWeight:
+              totalPoolWeight && totalPoolWeight.gt(0)
+                ? formatRatio(bigWeight.div(totalPoolWeight) as Ratio<Big>)
+                : null,
+          };
+        }) ?? null,
       smoothWeightChangeParams: pool.smoothWeightChangeParams,
       scalingFactors: pool.scalingFactors,
       scalingFactorController: pool.scalingFactorController,

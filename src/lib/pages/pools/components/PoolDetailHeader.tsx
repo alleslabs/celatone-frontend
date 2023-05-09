@@ -17,7 +17,6 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import Big from "big.js";
 
 import { getAddressTypeByLength } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
@@ -25,8 +24,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type { PoolDetail } from "lib/types/pool";
-import { jsonPrettify, truncate } from "lib/utils";
-import { formatPercentValue } from "lib/utils/formatter/formatPercentValue";
+import { formatRatio, jsonPrettify, truncate } from "lib/utils";
 
 import { PoolHeader } from "./PoolHeader";
 
@@ -148,9 +146,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
               </Flex>
             </Tooltip>
           </Flex>
-          <StyledTextContent>
-            {formatPercentValue(Big(pool.swapFee).times(100))}
-          </StyledTextContent>
+          <StyledTextContent>{formatRatio(pool.swapFee)}</StyledTextContent>
         </Flex>
         <Flex flexDirection="column" gap={1}>
           <Flex alignItems="center" gap={1}>
@@ -167,9 +163,7 @@ export const PoolDetailHeader = ({ pool }: PoolDetailHeaderProp) => {
               </Flex>
             </Tooltip>
           </Flex>
-          <StyledTextContent>
-            {formatPercentValue(Big(pool.exitFee).times(100))}
-          </StyledTextContent>
+          <StyledTextContent>{formatRatio(pool.exitFee)}</StyledTextContent>
         </Flex>
         <Flex flexDirection="column" gap={1}>
           <StyledTextLabel>Future Governor</StyledTextLabel>

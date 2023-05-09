@@ -38,7 +38,7 @@ const addressLengthMap: {
 
 export const getAddressTypeByLength = (
   chainName: string,
-  address: Option<string>
+  address: Option<string | null>
 ): AddressReturnType =>
   address
     ? addressLengthMap[chainName]?.[address.length] ?? "invalid_address"
@@ -75,7 +75,7 @@ const validateAddress = (
 export const useGetAddressType = () => {
   const { currentChainName, currentChainRecord } = useWallet();
   return useCallback(
-    (address: Option<string>): AddressReturnType => {
+    (address: Option<string | null>): AddressReturnType => {
       const addressType = getAddressTypeByLength(currentChainName, address);
       if (
         !address ||
