@@ -1,8 +1,11 @@
 import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 
-import type { AccessConfigPermission, Addr } from "lib/types";
-import type { SnakeToCamelCaseNested } from "lib/types/converter";
+import type {
+  AccessConfigPermission,
+  Addr,
+  SnakeToCamelCaseNested,
+} from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
 interface DepositParams {
@@ -18,7 +21,9 @@ export const fetchGovDepositParams = (
   lcdEndpoint: string
 ): Promise<DepositParamsInternal> =>
   axios
-    .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
+    .get<{ deposit_params: DepositParams }>(
+      `${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`
+    )
     .then(
       ({ data }) => snakeToCamel(data.deposit_params) as DepositParamsInternal
     );
@@ -40,7 +45,9 @@ export const fetchGovVotingParams = (
   lcdEndpoint: string
 ): Promise<VotingParamsInternal> =>
   axios
-    .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
+    .get<{ voting_params: VotingParams }>(
+      `${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`
+    )
     .then(
       ({ data }) =>
         snakeToCamel(
