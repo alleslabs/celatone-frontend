@@ -147,14 +147,14 @@ const ProposalToWhitelist = () => {
       setEstimatedFee(undefined);
     },
   });
-  const minDeposit = govParams?.depositParams.min_deposit;
+  const minDeposit = govParams?.depositParams.minDeposit;
   const {
     variant,
     description: alertDesc,
     icon,
   } = getAlert(
     initialDeposit.amount,
-    govParams?.depositParams.initialDeposit,
+    govParams?.depositParams.minInitialDeposit,
     minDeposit?.formattedAmount,
     minDeposit?.formattedDenom
   );
@@ -351,13 +351,13 @@ const ProposalToWhitelist = () => {
               </Heading>
               <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
                 Minimum deposit required to start{" "}
-                {formatSeconds(govParams?.depositParams.max_deposit_period)}{" "}
-                deposit period: {govParams?.depositParams.initialDeposit}{" "}
+                {formatSeconds(govParams?.depositParams.maxDepositPeriod)}{" "}
+                deposit period: {govParams?.depositParams.minInitialDeposit}{" "}
                 {minDeposit?.formattedDenom}
               </Text>
               <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
                 Minimum deposit required to start{" "}
-                {formatSeconds(govParams?.votingParams.voting_period)} voting
+                {formatSeconds(govParams?.votingParams.votingPeriod)} voting
                 period: {minDeposit?.formattedToken}
               </Text>
               <Grid py={6} columnGap={4} templateColumns="1fr 3fr">

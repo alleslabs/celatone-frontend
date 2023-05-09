@@ -2,38 +2,51 @@ import type { Coin } from "@cosmjs/stargate";
 import axios from "axios";
 
 import type { AccessConfigPermission, Addr } from "lib/types";
+import type { SnakeToCamelCaseNested } from "lib/types/converter";
+import { snakeToCamel } from "lib/utils";
 
-export interface DepositParams {
+interface DepositParams {
   min_deposit: Coin[];
   max_deposit_period: string;
   min_expedited_deposit: Coin[];
   min_initial_deposit_ratio: string;
 }
 
+export type DepositParamsInternal = SnakeToCamelCaseNested<DepositParams>;
+
 export const fetchGovDepositParams = (
   lcdEndpoint: string
-): Promise<DepositParams> =>
+): Promise<DepositParamsInternal> =>
   axios
     .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`)
-    .then(({ data }) => data.deposit_params);
+    .then(
+      ({ data }) => snakeToCamel(data.deposit_params) as DepositParamsInternal
+    );
 
 interface ProposalVotingPeriod {
   proposal_type: string;
   voting_period: string;
 }
 
-export interface VotingParams {
+interface VotingParams {
   voting_period: string;
   proposal_voting_periods: ProposalVotingPeriod[];
   expedited_voting_period: string;
 }
 
+export type VotingParamsInternal = SnakeToCamelCaseNested<VotingParams>;
+
 export const fetchGovVotingParams = (
   lcdEndpoint: string
-): Promise<VotingParams> =>
+): Promise<VotingParamsInternal> =>
   axios
     .get(`${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`)
-    .then(({ data }) => data.voting_params);
+    .then(
+      ({ data }) =>
+        snakeToCamel(
+          data.voting_params
+        ) as SnakeToCamelCaseNested<VotingParamsInternal>
+    );
 
 export interface UploadAccess {
   permission: AccessConfigPermission;

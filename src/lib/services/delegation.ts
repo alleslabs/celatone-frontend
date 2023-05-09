@@ -120,7 +120,7 @@ export const getStakingParams = async (
     `${endpoint}/cosmos/staking/v1beta1/params`
   );
   return {
-    unbondingTime: formatSeconds(data.params.unbonding_time.slice(0, -1)),
+    unbondingTime: formatSeconds(data.params.unbonding_time),
     maxEntries: data.params.max_entries,
     bondDenom: data.params.bond_denom,
   };
