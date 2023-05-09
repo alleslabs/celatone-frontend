@@ -4,10 +4,12 @@ import type { AssetInfosOpt } from "lib/services/assetService";
 import type { Message } from "lib/types";
 
 import type { MsgSwapExactAmountIn, MsgSwapExactAmountOut } from "./messages";
-import { MsgSwapExactAmountInAction } from "./swap/MsgSwapExactAmountInAction";
-import { MsgSwapExactAmountInDetail } from "./swap/MsgSwapExactAmountInDetail";
-import { MsgSwapExactAmountOutAction } from "./swap/MsgSwapExactAmountOutAction";
-import { MsgSwapExactAmountOutDetail } from "./swap/MsgSwapExactAmountOutDetail";
+import {
+  MsgSwapExactAmountInAction,
+  MsgSwapExactAmountInDetail,
+  MsgSwapExactAmountOutAction,
+  MsgSwapExactAmountOutDetail,
+} from "./swap";
 
 export const PoolTxsAction = ({
   msg,
@@ -47,12 +49,14 @@ export const PoolTxsDetail = ({
   msgIndex,
   msg,
   assetInfos,
+  isOpened,
 }: {
   txHash: string;
   blockHeight: number;
   msgIndex: number;
   msg: Message;
   assetInfos: AssetInfosOpt;
+  isOpened: boolean;
 }) => {
   // TODO: fix and add cases
   const { type } = msg;
@@ -66,6 +70,7 @@ export const PoolTxsDetail = ({
           msgIndex={msgIndex}
           msg={msg.detail as MsgSwapExactAmountIn}
           assetInfos={assetInfos}
+          isOpened={isOpened}
         />
       );
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
@@ -77,6 +82,7 @@ export const PoolTxsDetail = ({
           msgIndex={msgIndex}
           msg={msg.detail as MsgSwapExactAmountOut}
           assetInfos={assetInfos}
+          isOpened={isOpened}
         />
       );
     case "type3":

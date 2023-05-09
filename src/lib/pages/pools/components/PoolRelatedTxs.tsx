@@ -8,8 +8,8 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 
+import { usePoolTxsCount } from "../data";
 import { CustomTab } from "lib/components/CustomTab";
-import { useTxsCountByPoolId } from "lib/services/txService";
 
 import { PoolRelatedTxsTable } from "./table/pool-txs";
 
@@ -18,14 +18,16 @@ interface PoolRelatedTxsProps {
 }
 
 export const PoolRelatedTxs = ({ poolId }: PoolRelatedTxsProps) => {
-  const { data: countAllTxs = 0 } = useTxsCountByPoolId(poolId, "is_all");
-  const { data: countSwapTxs = 0 } = useTxsCountByPoolId(poolId, "is_swap");
-  const { data: countLpTxs = 0 } = useTxsCountByPoolId(poolId, "is_lp");
-  const { data: countBondTxs = 0 } = useTxsCountByPoolId(poolId, "is_bond");
-  const { data: countSuperfluidTxs = 0 } = useTxsCountByPoolId(
-    poolId,
-    "is_superfluid"
-  );
+  const { count: countAllTxs, countDisplay: countDisplayAllTxs } =
+    usePoolTxsCount(poolId, "is_all");
+  const { count: countSwapTxs, countDisplay: countDisplaySwapTxs } =
+    usePoolTxsCount(poolId, "is_swap");
+  const { count: countLpTxs, countDisplay: countDisplayLpTxs } =
+    usePoolTxsCount(poolId, "is_lp");
+  const { count: countBondTxs, countDisplay: countDisplayBondTxs } =
+    usePoolTxsCount(poolId, "is_bond");
+  const { count: countSuperfluidTxs, countDisplay: countDisplaySuperfluidTxs } =
+    usePoolTxsCount(poolId, "is_superfluid");
 
   const tableHeaderId = "poolTableHeader";
   return (
@@ -42,11 +44,11 @@ export const PoolRelatedTxs = ({ poolId }: PoolRelatedTxsProps) => {
           borderBottom="1px"
           borderColor="pebble.800"
         >
-          <CustomTab count={countAllTxs}>All</CustomTab>
-          <CustomTab count={countSwapTxs}>Swap</CustomTab>
-          <CustomTab count={countLpTxs}>LP</CustomTab>
-          <CustomTab count={countBondTxs}>Bonding</CustomTab>
-          <CustomTab count={countSuperfluidTxs}>Superfluid</CustomTab>
+          <CustomTab count={countDisplayAllTxs}>All</CustomTab>
+          <CustomTab count={countDisplaySwapTxs}>Swap</CustomTab>
+          <CustomTab count={countDisplayLpTxs}>LP</CustomTab>
+          <CustomTab count={countDisplayBondTxs}>Bonding</CustomTab>
+          <CustomTab count={countDisplaySuperfluidTxs}>Superfluid</CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>

@@ -15,11 +15,13 @@ interface PoolRouteProps {
     tokenOutDenom: string;
   }[];
   assetInfos: AssetInfosOpt;
+  isOpened: boolean;
 }
 
-export const PoolRoute = ({ routes, assetInfos }: PoolRouteProps) => {
+export const PoolRoute = ({ routes, assetInfos, isOpened }: PoolRouteProps) => {
   const { data: poolAssets, isLoading } = usePoolAssetsbyPoolIds(
-    routes.map((pool) => pool.poolId)
+    routes.map((pool) => pool.poolId),
+    isOpened
   );
 
   if (isLoading) return <Loading />;

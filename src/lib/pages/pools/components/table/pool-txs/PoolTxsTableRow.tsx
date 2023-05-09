@@ -4,35 +4,23 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { Addr, Message } from "lib/types";
+import type { Message, Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { PoolTxsAction, PoolTxsDetail } from "./messages";
 
 interface PoolTxsTableRowProps {
-  isFirstRow: boolean;
-  txHash: string;
-  success: boolean;
-  msgCount: number;
-  message: Message;
-  sender: Addr;
-  created: Date;
   msgIndex: number;
-  blockHeight: number;
+  message: Message;
+  transaction: Transaction;
   assetInfos: AssetInfosOpt;
   templateColumns: string;
 }
 
 export const PoolTxsTableRow = ({
-  isFirstRow,
-  txHash,
-  success,
-  msgCount,
-  message,
-  sender,
-  created,
   msgIndex,
-  blockHeight,
+  message,
+  transaction,
   assetInfos,
   templateColumns,
 }: PoolTxsTableRowProps) => {
@@ -59,24 +47,24 @@ export const PoolTxsTableRow = ({
         cursor="pointer"
       >
         <TableNoBorderRow>
-          {isFirstRow && (
-            <Flex>
+          {msgIndex === 0 && (
+            <>
               <ExplorerLink
-                value={txHash.toLocaleUpperCase()}
+                value={transaction.hash.toLocaleUpperCase()}
                 type="tx_hash"
                 showCopyOnHover
               />
-              {msgCount > 1 && (
+              {transaction.messages.length > 1 && (
                 <Badge variant="lilac" ml="6px">
-                  {msgCount}
+                  {transaction.messages.length}
                 </Badge>
               )}
-            </Flex>
+            </>
           )}
         </TableNoBorderRow>
         <TableNoBorderRow>
-          {isFirstRow &&
-            (success ? (
+          {msgIndex === 0 &&
+            (transaction.success ? (
               <CustomIcon name="check" color="success.main" />
             ) : (
               <CustomIcon name="close" color="error.main" />
@@ -87,27 +75,35 @@ export const PoolTxsTableRow = ({
         </TableNoBorderRow>
 
         <TableNoBorderRow>
-          <ExplorerLink value={sender} type="user_address" showCopyOnHover />
+          <ExplorerLink
+            value={transaction.sender}
+            type="user_address"
+            showCopyOnHover
+          />
         </TableNoBorderRow>
 
         <TableNoBorderRow>
-          {isFirstRow && (
+          {msgIndex === 0 && (
             <Flex direction="column" gap={1}>
-              <Text variant="body3">{formatUTC(created)}</Text>
+              <Text variant="body3">{formatUTC(transaction.created)}</Text>
               <Text variant="body3" color="text.dark">
-                {`(${dateFromNow(created)})`}
+                {`(${dateFromNow(transaction.created)})`}
               </Text>
             </Flex>
           )}
         </TableNoBorderRow>
 
-        {success && (
+        {transaction.success && (
           <TableNoBorderRow>
-            <CustomIcon name={isOpen ? "chevron-up" : "chevron-down"} />
+            <CustomIcon
+              name="chevron-down"
+              transform={isOpen ? "rotate(180deg)" : "rotate(0)"}
+              transition="all .25s ease-in-out"
+            />
           </TableNoBorderRow>
         )}
       </Grid>
-      {success && (
+      {transaction.success && (
         <Grid
           w="full"
           py={4}
@@ -118,11 +114,12 @@ export const PoolTxsTableRow = ({
           <TableNoBorderRow py={0} />
           <TableNoBorderRow py={0}>
             <PoolTxsDetail
-              txHash={txHash}
-              blockHeight={blockHeight}
+              txHash={transaction.hash}
+              blockHeight={transaction.height}
               msgIndex={msgIndex}
               msg={message}
               assetInfos={assetInfos}
+              isOpened={isOpen}
             />
           </TableNoBorderRow>
         </Grid>

@@ -13,6 +13,7 @@ interface MsgSwapExactAmountInDetailProps {
   msgIndex: number;
   msg: MsgSwapExactAmountIn;
   assetInfos: AssetInfosOpt;
+  isOpened: boolean;
 }
 
 export const MsgSwapExactAmountInDetail = ({
@@ -21,6 +22,7 @@ export const MsgSwapExactAmountInDetail = ({
   msgIndex,
   msg,
   assetInfos,
+  isOpened,
 }: MsgSwapExactAmountInDetailProps) => (
   <Flex w="full" alignItems="start" gap={12}>
     <Flex direction="column" minW="100px">
@@ -34,8 +36,17 @@ export const MsgSwapExactAmountInDetail = ({
       />
     </Flex>
     <Flex direction="column" gap={6}>
-      <PoolSwap txHash={txHash} msgIndex={msgIndex} assetInfos={assetInfos} />
-      <PoolRoute routes={msg.routes} assetInfos={assetInfos} />
+      <PoolSwap
+        txHash={txHash}
+        msgIndex={msgIndex}
+        assetInfos={assetInfos}
+        isOpened={isOpened}
+      />
+      <PoolRoute
+        routes={msg.routes}
+        assetInfos={assetInfos}
+        isOpened={isOpened}
+      />
     </Flex>
   </Flex>
 );

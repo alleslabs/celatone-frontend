@@ -4,10 +4,12 @@ import big from "big.js";
 import type { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolByPoolId, usePoolListQuery } from "lib/services/poolService";
+import { useTxsCountByPoolId } from "lib/services/txService";
 import type {
   Option,
   Pool,
   PoolDetail,
+  PoolTxFilter,
   PoolTypeFilter,
   PoolWeight,
   TokenWithValue,
@@ -85,6 +87,21 @@ export const usePool = (
       scalingFactors: pool.scalingFactors,
       scalingFactorController: pool.scalingFactorController,
     },
+    isLoading: false,
+  };
+};
+
+export const usePoolTxsCount = (
+  poolId: number,
+  type: PoolTxFilter
+): { count: number; countDisplay: string; isLoading: boolean } => {
+  const { data, isLoading } = useTxsCountByPoolId(poolId, type);
+  if (isLoading) return { count: 0, countDisplay: "0", isLoading };
+
+  const showActualCount = data !== undefined && data <= 10000;
+  return {
+    count: showActualCount ? data : 10000,
+    countDisplay: showActualCount ? data.toString() : "10000+",
     isLoading: false,
   };
 };

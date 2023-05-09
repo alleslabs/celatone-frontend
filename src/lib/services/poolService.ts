@@ -170,7 +170,8 @@ export const usePoolByPoolId = (
 };
 
 export const usePoolAssetsbyPoolIds = (
-  poolIds: number[]
+  poolIds: number[],
+  enabled = true
 ): UseQueryResult<Record<number, string[]>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -192,5 +193,7 @@ export const usePoolAssetsbyPoolIds = (
       );
   }, [poolIds, indexerGraphClient]);
 
-  return useQuery(["pools_by_pool_ids", poolIds, indexerGraphClient], queryFn);
+  return useQuery(["pools_by_pool_ids", poolIds, indexerGraphClient], queryFn, {
+    enabled,
+  });
 };

@@ -40,10 +40,10 @@ export const AssetCard = ({
       <Flex
         className="copier-wrapper"
         direction="column"
-        minH="101px"
+        minH="100px"
         gap={2}
         p={3}
-        w="250px"
+        minW="250px"
         background="pebble.800"
         borderRadius="8px"
         {...cardProps}

@@ -13,29 +13,17 @@ export const PoolTxsTableMultiRow = ({
   transaction,
   assetInfos,
   templateColumns,
-}: PoolTxsTableMultiRowProps) => {
-  let row = 0;
-  return (
-    <>
-      {transaction.messages.map((message, index) => {
-        row += 1;
-        return (
-          <PoolTxsTableRow
-            key={transaction.hash + index.toString()}
-            isFirstRow={row === 1}
-            txHash={transaction.hash}
-            success={transaction.success}
-            msgCount={transaction.messages.length}
-            message={message}
-            sender={transaction.sender}
-            created={transaction.created}
-            msgIndex={index}
-            blockHeight={transaction.height}
-            assetInfos={assetInfos}
-            templateColumns={templateColumns}
-          />
-        );
-      })}
-    </>
-  );
-};
+}: PoolTxsTableMultiRowProps) => (
+  <>
+    {transaction.messages.map((message, index) => (
+      <PoolTxsTableRow
+        key={transaction.hash + index.toString()}
+        msgIndex={index}
+        message={message}
+        transaction={transaction}
+        assetInfos={assetInfos}
+        templateColumns={templateColumns}
+      />
+    ))}
+  </>
+);

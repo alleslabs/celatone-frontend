@@ -9,11 +9,17 @@ interface MsgTokenProps {
   coin: Coin;
   symbol?: string;
   precision?: number;
+  fontWeight?: string;
 }
 
-export const MsgToken = ({ coin, symbol, precision }: MsgTokenProps) => (
+export const MsgToken = ({
+  coin,
+  symbol,
+  precision,
+  fontWeight = "600",
+}: MsgTokenProps) => (
   <Flex role="group" align="center" gap={1}>
-    <Text fontWeight="medium">
+    <Text fontWeight={fontWeight}>
       {formatBalanceWithDenom({
         coin,
         symbol,
@@ -28,7 +34,7 @@ export const MsgToken = ({ coin, symbol, precision }: MsgTokenProps) => (
       maxW="240px"
     >
       <Flex cursor="pointer">
-        <CustomIcon name="info-circle" boxSize="3" />
+        <CustomIcon name="info-circle" boxSize={3} />
       </Flex>
     </Tooltip>
     <Copier

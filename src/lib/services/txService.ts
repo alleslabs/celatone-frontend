@@ -46,7 +46,10 @@ export interface TxData extends TxResponse {
   isTxFailed: boolean;
 }
 
-export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
+export const useTxData = (
+  txHash: Option<string>,
+  enabled = true
+): UseQueryResult<TxData> => {
   const { currentChainName } = useWallet();
   const chainId = useChainId();
   const queryFn = useCallback(
@@ -64,7 +67,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
   return useQuery({
     queryKey: ["tx_data", currentChainName, chainId, txHash] as string[],
     queryFn,
-    enabled: Boolean(txHash && isTxHash(txHash)),
+    enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,
     retry: false,
   });

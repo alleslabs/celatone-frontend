@@ -1,3 +1,4 @@
+import type { FlexProps, TextProps } from "@chakra-ui/react";
 import { Flex, Image, Text } from "@chakra-ui/react";
 
 import { getUndefinedTokenIcon } from "../utils";
@@ -5,9 +6,9 @@ import type { TokenWithValue } from "lib/types";
 
 interface PoolLogoProps {
   tokens: TokenWithValue[];
-  logoSize?: number;
+  logoSize?: FlexProps["height"] | FlexProps["width"];
   marginLeft?: number;
-  textVariant?: string;
+  textVariant?: TextProps["variant"];
 }
 
 export const PoolLogo = ({
@@ -28,7 +29,7 @@ export const PoolLogo = ({
   return (
     <Flex
       css={{
-        ">:not(:first-child)": {
+        ">:not(:first-of-type)": {
           marginLeft,
         },
       }}
