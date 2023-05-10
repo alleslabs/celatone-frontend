@@ -10,13 +10,14 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
-import { useValidateAddress } from "lib/app-provider";
+import { useInternalNavigate, useValidateAddress } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
@@ -27,7 +28,7 @@ import {
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
 import type { HumanAddr } from "lib/types";
-import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
+import { formatPrice, getFirstQueryParam } from "lib/utils";
 
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
@@ -40,15 +41,17 @@ import {
 } from "./components/tables";
 import { useAccountTotalValue } from "./data";
 
+const tableHeaderId = "accountDetailsTab";
+
 enum TabIndex {
-  Overview,
-  Assets,
-  Delegations,
-  Txs,
-  Codes,
-  Contracts,
-  Admins,
-  Proposals,
+  Overview = "overview",
+  Assets = "assets",
+  Delegations = "delegations",
+  Txs = "txs",
+  Codes = "codes",
+  Contracts = "contracts",
+  Admins = "admins",
+  Proposals = "proposals",
 }
 
 interface AccountDetailsBodyProps {
@@ -58,8 +61,9 @@ interface AccountDetailsBodyProps {
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
-  const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
-  const tableHeaderId = "accountDetailsTab";
+  const navigate = useInternalNavigate();
+  const router = useRouter();
+  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
   const { data: accountId } = useAccountId(accountAddress);
@@ -76,13 +80,40 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
 
-  const handleTabChange = (tab: TabIndex) => {
-    AmpTrackUseTab(TabIndex[tab]);
-    setTabIndex(tab);
-    scrollToTop();
-  };
+  const handleTabChange = useCallback(
+    (nextTab: TabIndex) => {
+      if (nextTab === tab) return;
+      AmpTrackUseTab(nextTab);
+      navigate({
+        pathname: "/account/[accountAddress]/[tab]",
+        query: {
+          accountAddress,
+          tab: nextTab,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    },
+    [accountAddress, tab, navigate]
+  );
 
   const displayName = publicInfo?.name ?? "Account Details";
+
+  useEffect(() => {
+    if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
+      navigate({
+        pathname: "/account/[accountAddress]/[tab]",
+        query: {
+          accountAddress,
+          tab: TabIndex.Overview,
+        },
+        options: {
+          shallow: true,
+        },
+      });
+    }
+  }, [router.isReady, tab, accountAddress, navigate]);
 
   return (
     <>
@@ -135,7 +166,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </Flex>
       )}
 
-      <Tabs index={tabIndex}>
+      <Tabs index={Object.values(TabIndex).indexOf(tab)}>
         <TabList
           borderBottom="1px solid"
           borderColor="pebble.700"
@@ -325,10 +356,14 @@ const AccountDetails = () => {
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
   ) as HumanAddr;
+  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL);
-  }, [router.isReady]);
+    if (router.isReady)
+      AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL, { ...(tab && { tab }) });
+  }, [router.isReady, tab]);
+
+  if (!router.isReady) return <Loading />;
 
   return (
     <PageContainer>

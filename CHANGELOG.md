@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#322](https://github.com/alleslabs/celatone-frontend/pull/322) Tab url path for account details and public project details pages
+
 ### Improvements
 
 - [#298](https://github.com/alleslabs/celatone-frontend/pull/298) Show deposit/voting period from gov params and add minimum required alert
