@@ -51,18 +51,18 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
       justifyContent="space-between"
       alignItems="flex-start"
       w="full"
-      mt={2}
+      mt={6}
       gap={5}
     >
       <Box>
-        <Flex gap={2} align="center">
+        <Flex gap={1} align="center" minH="36px">
           {details?.logo && (
             <Image
               src={details?.logo}
               borderRadius="full"
               alt="Celatone"
-              width={8}
-              height={8}
+              width={7}
+              height={7}
             />
           )}
           <Heading as="h5" variant="h5" className="ellipsis">

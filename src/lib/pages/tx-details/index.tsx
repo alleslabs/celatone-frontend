@@ -1,15 +1,16 @@
-import { Flex } from "@chakra-ui/react";
+import { Breadcrumb, BreadcrumbItem, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { BackButton } from "lib/components/button";
+import { AppLink } from "lib/components/AppLink";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useAssetInfos } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, truncate } from "lib/utils";
 
 import { TxHeader, TxInfo } from "./components";
 import { MessageSection } from "./components/MessageSection";
@@ -44,10 +45,35 @@ const TxDetails = () => {
 
   return (
     <PageContainer>
-      <BackButton />
+      <Breadcrumb
+        w="full"
+        spacing="4px"
+        separator={<CustomIcon name="chevron-right" boxSize="3" />}
+      >
+        <BreadcrumbItem
+          _hover={{ opacity: 0.8 }}
+          transition="all 0.25s ease-in-out"
+        >
+          <AppLink color="text.dark" href="/txs">
+            Transactions
+          </AppLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
+          <Text
+            variant="body2"
+            className="ellipsis"
+            textTransform="lowercase"
+            fontWeight="600"
+            width="250px"
+            color="text.dark"
+          >
+            {truncate(txData?.txhash)}
+          </Text>
+        </BreadcrumbItem>
+      </Breadcrumb>
       {txData ? (
         <>
-          <TxHeader mt={2} txData={txData} />
+          <TxHeader mt={6} txData={txData} />
           <Flex my={12} justify="space-between">
             <TxInfo txData={txData} assetInfos={assetInfos} />
             <MessageSection txData={txData} assetInfos={assetInfos} />

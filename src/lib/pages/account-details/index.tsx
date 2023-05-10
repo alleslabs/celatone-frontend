@@ -8,12 +8,14 @@ import {
   Tabs,
   Text,
   Image,
+  Breadcrumb,
+  BreadcrumbItem,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useValidateAddress } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
+import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
@@ -27,7 +29,12 @@ import {
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
 import type { HumanAddr } from "lib/types";
-import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
+import {
+  formatPrice,
+  getFirstQueryParam,
+  scrollToTop,
+  truncate,
+} from "lib/utils";
 
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
@@ -86,30 +93,64 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   return (
     <>
-      <Flex direction="column" gap={1} mt={6} mb={6}>
-        <Flex gap={1}>
-          {publicDetail?.logo && (
-            <Image
-              src={publicDetail.logo}
-              borderRadius="full"
-              alt={publicDetail.name}
-              width={7}
-              height={7}
+      <Flex direction="column" mb={6}>
+        {publicDetail && (
+          <Breadcrumb
+            mb={6}
+            w="full"
+            spacing="4px"
+            separator={<CustomIcon name="chevron-right" boxSize="3" />}
+          >
+            <BreadcrumbItem
+              _hover={{ opacity: 0.8 }}
+              transition="all 0.25s ease-in-out"
+            >
+              <AppLink
+                color="text.dark"
+                href={`/public-project/${publicInfo?.slug}`}
+              >
+                {publicDetail?.name}
+              </AppLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage>
+              <Text
+                variant="body2"
+                className="ellipsis"
+                textTransform="lowercase"
+                fontWeight="600"
+                width="250px"
+                color="text.dark"
+              >
+                {truncate(accountAddress)}
+              </Text>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        )}
+        <Flex direction="column" gap={2}>
+          <Flex gap={1} minH="36px" align="center">
+            {publicDetail?.logo && (
+              <Image
+                src={publicDetail.logo}
+                borderRadius="full"
+                alt={publicDetail.name}
+                width={7}
+                height={7}
+              />
+            )}
+            <Heading as="h5" variant="h5">
+              {displayName}
+            </Heading>
+          </Flex>
+          <Flex gap={2}>
+            <Text fontWeight={500} color="text.dark" variant="body2">
+              Wallet Address:
+            </Text>
+            <CopyLink
+              value={accountAddress}
+              amptrackSection="account_top"
+              type="user_address"
             />
-          )}
-          <Heading as="h5" variant="h5">
-            {displayName}
-          </Heading>
-        </Flex>
-        <Flex gap={2}>
-          <Text fontWeight={500} color="text.dark" variant="body2">
-            Wallet Address:
-          </Text>
-          <CopyLink
-            value={accountAddress}
-            amptrackSection="account_top"
-            type="user_address"
-          />
+          </Flex>
         </Flex>
       </Flex>
       {publicInfo?.description && (
@@ -332,7 +373,6 @@ const AccountDetails = () => {
 
   return (
     <PageContainer>
-      <BackButton />
       {validateUserAddress(accountAddressParam) &&
       validateContractAddress(accountAddressParam) ? (
         <InvalidAccount />

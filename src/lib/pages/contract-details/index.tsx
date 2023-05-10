@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useValidateAddress } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -149,7 +148,6 @@ const ContractDetails = observer(() => {
   if (isLoading) return <Loading />;
   return (
     <PageContainer>
-      <BackButton />
       {validateContractAddress(contractAddressParam) ? (
         <InvalidContract />
       ) : (

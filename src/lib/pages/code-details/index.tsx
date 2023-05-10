@@ -1,9 +1,17 @@
-import { Divider, Flex, Heading, Text, Image } from "@chakra-ui/react";
+import {
+  Divider,
+  Flex,
+  Heading,
+  Text,
+  Image,
+  Breadcrumb,
+  BreadcrumbItem,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { BackButton } from "lib/components/button";
+import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
@@ -41,70 +49,112 @@ const CodeDetailsBody = observer(
 
     return (
       <>
-        <Flex justify="space-between" mt={6}>
-          <Flex direction="column" gap={1}>
-            <Flex gap={1}>
-              {publicProject.publicDetail?.logo && (
-                <Image
-                  src={publicProject.publicDetail.logo}
-                  borderRadius="full"
-                  alt={publicProject.publicDetail.name}
-                  width={7}
-                  height={7}
-                />
+        <Flex direction="column">
+          <Breadcrumb
+            w="full"
+            spacing="4px"
+            separator={<CustomIcon name="chevron-right" boxSize="3" />}
+          >
+            <BreadcrumbItem
+              _hover={{ opacity: 0.8 }}
+              transition="all 0.25s ease-in-out"
+            >
+              {publicProject.publicCodeData?.name ? (
+                <AppLink
+                  color="text.dark"
+                  href={`/public-project/${publicProject.publicCodeData?.slug}`}
+                >
+                  {publicProject.publicDetail?.name}
+                </AppLink>
+              ) : (
+                <AppLink color="text.dark" href="/recent-codes">
+                  Recents Codes
+                </AppLink>
               )}
-              <Heading as="h5" variant="h5">
-                {localCodeInfo?.name ??
-                  publicProject.publicCodeData?.name ??
-                  codeId}
-              </Heading>
-            </Flex>
-            {publicProject.publicCodeData?.name && (
-              <Flex gap={2}>
-                <Text fontWeight={500} color="text.dark" variant="body2">
-                  Public Code Name:
-                </Text>
-                <Text variant="body2">{publicProject.publicCodeData.name}</Text>
-              </Flex>
-            )}
-            <Flex gap={2}>
-              <Text fontWeight={500} color="text.dark" variant="body2">
-                Code ID:
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage>
+              <Text
+                variant="body2"
+                className="ellipsis"
+                textTransform="lowercase"
+                fontWeight="600"
+                width="250px"
+                color="text.dark"
+              >
+                {codeId}
               </Text>
-              <CopyLink
-                value={codeId.toString()}
-                amptrackSection="code_top"
-                type="code_id"
+            </BreadcrumbItem>
+          </Breadcrumb>
+          <Flex direction="column" gap={2} w="full" mt={6}>
+            <Flex justify="space-between" align="center">
+              <Flex gap={1}>
+                {publicProject.publicDetail?.logo && (
+                  <Image
+                    src={publicProject.publicDetail.logo}
+                    borderRadius="full"
+                    alt={publicProject.publicDetail.name}
+                    width={7}
+                    height={7}
+                  />
+                )}
+                <Heading as="h5" variant="h5">
+                  {localCodeInfo?.name ??
+                    publicProject.publicCodeData?.name ??
+                    codeId}
+                </Heading>
+              </Flex>
+              <CTASection
+                id={codeId}
+                uploader={localCodeInfo?.uploader ?? codeData.uploader}
+                name={localCodeInfo?.name}
+                instantiatePermission={
+                  codeData.instantiatePermission ??
+                  AccessConfigPermission.UNKNOWN
+                }
+                permissionAddresses={codeData.permissionAddresses ?? []}
+                contractCount={undefined}
+                cw2Contract={undefined}
+                cw2Version={undefined}
               />
             </Flex>
-            <Flex gap={2}>
-              <Text fontWeight={500} color="text.dark" variant="body2">
-                CW2 Info:
-              </Text>
-              <Text
-                color={cw2Info ? "text.main" : "text.disabled"}
-                variant="body2"
-                wordBreak="break-all"
-              >
-                {cw2Info ?? "N/A"}
-              </Text>
+            <Flex direction="column" gap={1}>
+              {publicProject.publicCodeData?.name && (
+                <Flex gap={2}>
+                  <Text fontWeight={500} color="text.dark" variant="body2">
+                    Public Code Name:
+                  </Text>
+                  <Text variant="body2">
+                    {publicProject.publicCodeData.name}
+                  </Text>
+                </Flex>
+              )}
+              <Flex gap={2}>
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  Code ID:
+                </Text>
+                <CopyLink
+                  value={codeId.toString()}
+                  amptrackSection="code_top"
+                  type="code_id"
+                />
+              </Flex>
+              <Flex gap={2}>
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  CW2 Info:
+                </Text>
+                <Text
+                  color={cw2Info ? "text.main" : "text.disabled"}
+                  variant="body2"
+                  wordBreak="break-all"
+                >
+                  {cw2Info ?? "N/A"}
+                </Text>
+              </Flex>
+              {publicProject.publicCodeData?.github && (
+                <GitHubLink github={publicProject.publicCodeData.github} />
+              )}
             </Flex>
-            {publicProject.publicCodeData?.github && (
-              <GitHubLink github={publicProject.publicCodeData.github} />
-            )}
           </Flex>
-          <CTASection
-            id={codeId}
-            uploader={localCodeInfo?.uploader ?? codeData.uploader}
-            name={localCodeInfo?.name}
-            instantiatePermission={
-              codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
-            }
-            permissionAddresses={codeData.permissionAddresses ?? []}
-            contractCount={undefined}
-            cw2Contract={undefined}
-            cw2Version={undefined}
-          />
         </Flex>
         {publicProject.publicCodeData?.description && (
           <PublicDescription
@@ -134,7 +184,6 @@ const CodeDetails = observer(() => {
   if (data.isLoading) return <Loading />;
   return (
     <PageContainer>
-      <BackButton />
       {!isCodeId(codeIdParam) ? (
         <InvalidCode />
       ) : (

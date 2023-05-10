@@ -38,66 +38,71 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const disablePrevious = block <= 1;
   return (
     <Flex
-      justify="space-between"
       mb={12}
       pb={12}
       mt={6}
       borderBottomColor="pebble.700"
       borderBottomWidth="1px"
     >
-      <Flex direction="column" gap={1}>
-        <Flex alignItems="center">
-          <CustomIcon name="block" boxSize="5" color="lilac.main" />
-          <Heading as="h5" variant="h5" className="ellipsis">
-            {blockData.height}
-          </Heading>
-        </Flex>
-        <Flex gap={2}>
-          <Text variant="body2" color="text.dark">
-            Block Hash:
-          </Text>
-          <CopyLink
-            value={blockData.hash.toUpperCase()}
-            amptrackSection="block_details_top"
-            type="block_hash"
-          />
-        </Flex>
-        <Flex gap={2} alignItems="center">
-          <Flex gap={1} alignItems="center">
-            <CustomIcon name="history" boxSize={3} color="pebble.600" />
-            <Text variant="body2" color="text.dark">
-              {dateFromNow(blockData.timestamp)}
-            </Text>
+      <Flex direction="column" gap={2} width="full">
+        <Flex justifyContent="space-between" alignItems="center" width="full">
+          <Flex alignItems="center">
+            <CustomIcon name="block" boxSize="5" color="lilac.main" />
+            <Heading as="h5" variant="h5" className="ellipsis">
+              {blockData.height}
+            </Heading>
           </Flex>
-          <DotSeparator />
-          <Text variant="body2" color="text.dark">
-            {formatUTC(blockData.timestamp)}
-          </Text>
-        </Flex>
-      </Flex>
-      <Flex gap={2}>
-        {!disablePrevious && (
-          <AppLink href={`/block/${block - 1}`}>
-            <StyledIconButton
-              icon={<CustomIcon name="chevron-left" />}
+          <Flex gap={2}>
+            {!disablePrevious && (
+              <AppLink href={`/block/${block - 1}`}>
+                <StyledIconButton
+                  icon={<CustomIcon name="chevron-left" />}
+                  variant="ghost-gray"
+                />
+              </AppLink>
+            )}
+            <AppLink href={`/block/${block + 1}`}>
+              <StyledIconButton
+                icon={<CustomIcon name="chevron-right" />}
+                variant="ghost-gray"
+              />
+            </AppLink>
+            <Button
               variant="ghost-gray"
+              padding={2}
+              rightIcon={
+                <CustomIcon name="launch" boxSize={3} color="text.dark" />
+              }
+              onClick={openLcdPage}
+            >
+              View in JSON
+            </Button>
+          </Flex>
+        </Flex>
+        <Flex direction="column" gap={1}>
+          <Flex gap={2}>
+            <Text variant="body2" color="text.dark">
+              Block Hash:
+            </Text>
+            <CopyLink
+              value={blockData.hash.toUpperCase()}
+              amptrackSection="block_details_top"
+              type="block_hash"
             />
-          </AppLink>
-        )}
-        <AppLink href={`/block/${block + 1}`}>
-          <StyledIconButton
-            icon={<CustomIcon name="chevron-right" />}
-            variant="ghost-gray"
-          />
-        </AppLink>
-        <Button
-          variant="ghost-gray"
-          padding={2}
-          rightIcon={<CustomIcon name="launch" boxSize={3} color="text.dark" />}
-          onClick={openLcdPage}
-        >
-          View in JSON
-        </Button>
+          </Flex>
+          <Flex gap={2} alignItems="center">
+            <Flex gap={1} alignItems="center">
+              <CustomIcon name="history" boxSize={3} color="pebble.600" />
+              <Text variant="body2" color="text.dark">
+                {dateFromNow(blockData.timestamp)}
+              </Text>
+            </Flex>
+            <DotSeparator />
+            <Text variant="body2" color="text.dark">
+              {formatUTC(blockData.timestamp)}
+            </Text>
+          </Flex>{" "}
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -5,10 +5,13 @@ import {
   Button,
   IconButton,
   Image,
+  Breadcrumb,
+  BreadcrumbItem,
 } from "@chakra-ui/react";
 import router from "next/router";
 
 import { useInternalNavigate } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { AdminButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
@@ -19,7 +22,7 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import type { ContractAddr, ContractData } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, truncate } from "lib/utils";
 
 interface ContractTopProps {
   contractData: ContractData;
@@ -94,94 +97,131 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
   };
 
   return (
-    <Flex justify="space-between" my={6}>
-      <Flex direction="column" gap={1} textOverflow="ellipsis" maxW="670px">
-        <Flex gap={1}>
-          {publicProject.publicDetail?.logo && (
-            <Image
-              src={publicProject.publicDetail.logo}
-              borderRadius="full"
-              alt={publicProject.publicDetail.name}
-              width={7}
-              height={7}
-            />
-          )}
-          <Heading as="h5" variant="h5" className="ellipsis">
-            {displayName}
-          </Heading>
-        </Flex>
-        <Flex gap={2}>
-          <Text
-            color="text.dark"
-            variant="body2"
-            fontWeight={500}
-            whiteSpace="nowrap"
+    <Flex justify="space-between" mb={6}>
+      <Flex direction="column" w="full">
+        {publicProject.publicDetail && (
+          <Breadcrumb
+            w="full"
+            spacing="4px"
+            mb={6}
+            separator={<CustomIcon name="chevron-right" boxSize="3" />}
           >
-            Contract Address:
-          </Text>
-          <CopyLink
-            value={contractAddress}
-            amptrackSection="contract_top"
-            type="contract_address"
-          />
-        </Flex>
-        <Flex gap={2}>
-          <Text color="text.dark" variant="body2" fontWeight={500}>
-            Label:
-          </Text>
-          <Text variant="body2" className="ellipsis">
-            {contractData.instantiateInfo?.label}
-          </Text>
-        </Flex>
-        {publicProject.publicInfo?.name && (
-          <Flex gap={2}>
-            <Text color="text.dark" variant="body2" fontWeight={500}>
-              Public Contract Name:
-            </Text>
-            <Text variant="body2" className="ellipsis">
-              {publicProject.publicInfo?.name}
-            </Text>
-          </Flex>
+            <BreadcrumbItem
+              _hover={{ opacity: 0.8 }}
+              transition="all 0.25s ease-in-out"
+            >
+              <AppLink
+                color="text.dark"
+                href={`/public-project/${publicProject.publicInfo?.slug}`}
+              >
+                {publicProject.publicDetail.name}
+              </AppLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage>
+              <Text
+                variant="body2"
+                className="ellipsis"
+                width="250px"
+                fontWeight="600"
+                color="text.dark"
+              >
+                {truncate(contractAddress)}
+              </Text>
+            </BreadcrumbItem>
+          </Breadcrumb>
         )}
-        {publicProject.publicInfo?.github && (
-          <GitHubLink github={publicProject.publicInfo?.github} />
-        )}
-      </Flex>
-      <Flex gap={4}>
-        <AdminButton
-          contractAddress={contractAddress as ContractAddr}
-          admin={instantiateInfo?.admin}
-        />
-        <Button
-          variant="outline-primary"
-          leftIcon={<CustomIcon name="query" color="violet.light" />}
-          onClick={goToQuery}
-        >
-          Query
-        </Button>
-        <Button
-          variant="outline-primary"
-          leftIcon={<CustomIcon name="execute" color="violet.light" />}
-          onClick={goToExecute}
-        >
-          Execute
-        </Button>
-        <Flex>
-          {contractLocalInfo && (
-            <EditContractDetailsModal
-              contractLocalInfo={contractLocalInfo}
-              triggerElement={
-                <IconButton
-                  fontSize="24px"
-                  variant="none"
-                  aria-label="edit"
-                  color="pebble.600"
-                  icon={<CustomIcon name="edit" />}
+        <Flex direction="column" gap={2} textOverflow="ellipsis" w="full">
+          <Flex justify="space-between" align="center">
+            <Flex gap={1} maxW="670px">
+              {publicProject.publicDetail?.logo && (
+                <Image
+                  src={publicProject.publicDetail.logo}
+                  borderRadius="full"
+                  alt={publicProject.publicDetail.name}
+                  width={7}
+                  height={7}
                 />
-              }
-            />
-          )}
-          {renderSaveButton()}
+              )}
+              <Heading as="h5" variant="h5" className="ellipsis">
+                {displayName}
+              </Heading>
+            </Flex>
+            <Flex gap={4}>
+              <AdminButton
+                contractAddress={contractAddress as ContractAddr}
+                admin={instantiateInfo?.admin}
+              />
+              <Button
+                variant="outline-primary"
+                leftIcon={<CustomIcon name="query" color="violet.light" />}
+                onClick={goToQuery}
+              >
+                Query
+              </Button>
+              <Button
+                variant="outline-primary"
+                leftIcon={<CustomIcon name="execute" color="violet.light" />}
+                onClick={goToExecute}
+              >
+                Execute
+              </Button>
+              <Flex>
+                {contractLocalInfo && (
+                  <EditContractDetailsModal
+                    contractLocalInfo={contractLocalInfo}
+                    triggerElement={
+                      <IconButton
+                        fontSize="24px"
+                        variant="none"
+                        aria-label="edit"
+                        color="pebble.600"
+                        icon={<CustomIcon name="edit" />}
+                      />
+                    }
+                  />
+                )}
+                {renderSaveButton()}
+              </Flex>
+            </Flex>
+          </Flex>
+          <Flex direction="column" gap={1}>
+            <Flex gap={2}>
+              <Text
+                color="text.dark"
+                variant="body2"
+                fontWeight={500}
+                whiteSpace="nowrap"
+              >
+                Contract Address:
+              </Text>
+              <CopyLink
+                value={contractAddress}
+                amptrackSection="contract_top"
+                type="contract_address"
+              />
+            </Flex>
+            <Flex gap={2}>
+              <Text color="text.dark" variant="body2" fontWeight={500}>
+                Label:
+              </Text>
+              <Text variant="body2" className="ellipsis">
+                {contractData.instantiateInfo?.label}
+              </Text>
+            </Flex>
+            {publicProject.publicInfo?.name && (
+              <Flex gap={2}>
+                <Text color="text.dark" variant="body2" fontWeight={500}>
+                  Public Contract Name:
+                </Text>
+                <Text variant="body2" className="ellipsis">
+                  {publicProject.publicInfo?.name}
+                </Text>
+              </Flex>
+            )}
+            {publicProject.publicInfo?.github && (
+              <GitHubLink github={publicProject.publicInfo?.github} />
+            )}
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
