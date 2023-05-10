@@ -43,7 +43,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#298](https://github.com/alleslabs/celatone-frontend/pull/298) Show deposit/voting period from gov params and add minimum required alert
+
 ### Bug fixes
+
+## v1.0.4
+
+### Bug fixes
+
+- [#316](https://github.com/alleslabs/celatone-frontend/pull/316) Stop propagation when clicking on ContractRowCTA menu
 
 ## v1.0.3
 
@@ -75,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#298](https://github.com/alleslabs/celatone-frontend/pull/298) Show deposit/voting period from gov params and add minimum required alert
 - [#309](https://github.com/alleslabs/celatone-frontend/pull/309) Add public account name and description in account detail page
 - [#289](https://github.com/alleslabs/celatone-frontend/pull/289) Add public accounts to public projects
 - [#308](https://github.com/alleslabs/celatone-frontend/pull/308) Adjust view more button to full width and fix empty state layout in contract history
@@ -97,7 +106,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#316](https://github.com/alleslabs/celatone-frontend/pull/316) Stop propagation when clicking on ContractRowCTA menu
 - [#306](https://github.com/alleslabs/celatone-frontend/pull/306) Fix react query function timeout and retries, minor ui bugs
 - [#307](https://github.com/alleslabs/celatone-frontend/pull/307) Remove minor ui in account detail
 - [#297](https://github.com/alleslabs/celatone-frontend/pull/297) Fix open new tab on tx modal link clicked
