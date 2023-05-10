@@ -18,53 +18,43 @@ const defaultAlertProps: AlertProps = {
 export const getAlert = (
   amount: string,
   minDepositAmount: Option<string>,
+  minVotingDepositAmount: Option<string>,
   denom: Option<string>
 ): AlertProps => {
   const enteredAmount = big(amount || 0);
-  if (!minDepositAmount) return defaultAlertProps;
+  if (!minVotingDepositAmount || !minDepositAmount) return defaultAlertProps;
 
   if (enteredAmount.lt(minDepositAmount)) {
     return {
-      variant: "warning",
-      description: `${d2Formatter(
-        big(minDepositAmount).sub(enteredAmount),
-        "NaN"
-      )} more ${denom} is required to enter the voting period. If you proceed with this amount without further deposit after 7 days, The chain will remove your proposal with no fund return.`,
-      icon: (
-        <CustomIcon
-          name="alert-circle-solid"
-          color="warning.main"
-          boxSize="4"
-        />
-      ),
+      variant: "error",
+      description: `${minDepositAmount} ${denom} is required to enter the deposit period.`,
+      icon: <CustomIcon name="alert-circle" color="error.main" boxSize="4" />,
     };
   }
-  if (enteredAmount.eq(minDepositAmount)) {
+  if (enteredAmount.lt(minVotingDepositAmount)) {
+    return {
+      variant: "warning",
+      description: `${d2Formatter(
+        big(minVotingDepositAmount).sub(enteredAmount),
+        "NaN"
+      )} more ${denom} is required to enter the voting period. If you proceed with this amount without further deposit after 7 days, The chain will remove your proposal with no fund return.`,
+      icon: <CustomIcon name="alert-circle" color="warning.main" boxSize="4" />,
+    };
+  }
+  if (enteredAmount.eq(minVotingDepositAmount)) {
     return {
       variant: "honeydew",
       description:
         "The proposal will proceed to voting period immediately after created.",
-      icon: (
-        <CustomIcon
-          name="info-circle-solid"
-          color="honeydew.main"
-          boxSize="4"
-        />
-      ),
+      icon: <CustomIcon name="info-circle" color="honeydew.main" boxSize="4" />,
     };
   }
-  if (big(minDepositAmount).lt(enteredAmount)) {
+  if (big(minVotingDepositAmount).lt(enteredAmount)) {
     return {
       variant: "warning",
       description: `You’re depositing more than the minimum requirement, the proposal will proceed to voting immediately after creation. To prevent fund loss if not passing the quorum, deposit equal to the minimum requirement.
 `,
-      icon: (
-        <CustomIcon
-          name="alert-circle-solid"
-          color="warning.main"
-          boxSize="4"
-        />
-      ),
+      icon: <CustomIcon name="alert-circle" color="warning.main" boxSize="4" />,
     };
   }
   return defaultAlertProps;

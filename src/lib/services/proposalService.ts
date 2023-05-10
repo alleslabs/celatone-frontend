@@ -1,5 +1,6 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import big from "big.js";
 import { useCallback } from "react";
 
 import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
@@ -33,8 +34,16 @@ import {
 } from "lib/utils";
 
 import { useProposalListExpression } from "./expression";
-import type { DepositParams, UploadAccess } from "./proposal";
-import { fetchGovDepositParams, fetchGovUploadAccessParams } from "./proposal";
+import type {
+  DepositParamsInternal,
+  UploadAccess,
+  VotingParamsInternal,
+} from "./proposal";
+import {
+  fetchGovVotingParams,
+  fetchGovDepositParams,
+  fetchGovUploadAccessParams,
+} from "./proposal";
 
 export const useRelatedProposalsByContractAddressPagination = (
   contractAddress: ContractAddr,
@@ -273,24 +282,30 @@ export interface MinDeposit {
   formattedDenom: string;
   formattedToken: string;
 }
-interface DepositParamsReturn extends Omit<DepositParams, "min_deposit"> {
-  min_deposit: MinDeposit;
+
+interface DepositParamsReturn
+  extends Omit<DepositParamsInternal, "minDeposit"> {
+  minDeposit: MinDeposit;
+  minInitialDeposit: Token;
 }
 
 export const useGovParams = (): UseQueryResult<{
   depositParams: DepositParamsReturn;
   uploadAccess: UploadAccess;
+  votingParams: VotingParamsInternal;
 }> => {
   const lcdEndpoint = useLCDEndpoint();
   const queryFn = useCallback(() => {
     return Promise.all([
       fetchGovDepositParams(lcdEndpoint),
       fetchGovUploadAccessParams(lcdEndpoint),
+      fetchGovVotingParams(lcdEndpoint),
     ]).then<{
       depositParams: DepositParamsReturn;
       uploadAccess: UploadAccess;
+      votingParams: VotingParamsInternal;
     }>((params) => {
-      const minDepositParam = params[0].min_deposit[0];
+      const minDepositParam = params[0].minDeposit[0];
       const [minDepositAmount, minDepositDenom] = [
         demicrofy(minDepositParam.amount as U<Token>).toFixed(),
         getTokenLabel(minDepositParam.denom),
@@ -298,7 +313,7 @@ export const useGovParams = (): UseQueryResult<{
       return {
         depositParams: {
           ...params[0],
-          min_deposit: {
+          minDeposit: {
             ...minDepositParam,
             amount: minDepositParam.amount as U<Token>,
             formattedAmount: minDepositAmount as Token,
@@ -309,8 +324,12 @@ export const useGovParams = (): UseQueryResult<{
               decimalPoints: 2,
             }),
           },
+          minInitialDeposit: big(params[0].minInitialDepositRatio)
+            .times(minDepositAmount)
+            .toFixed(2) as Token,
         },
         uploadAccess: params[1],
+        votingParams: params[2],
       };
     });
   }, [lcdEndpoint]);

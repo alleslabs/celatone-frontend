@@ -40,7 +40,11 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
+import {
+  composeSubmitWhitelistProposalMsg,
+  getAmountToVote,
+  formatSeconds,
+} from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -142,13 +146,14 @@ const ProposalToWhitelist = () => {
       setEstimatedFee(undefined);
     },
   });
-  const minDeposit = govParams?.depositParams.min_deposit;
+  const minDeposit = govParams?.depositParams.minDeposit;
   const {
     variant,
     description: alertDesc,
     icon,
   } = getAlert(
     initialDeposit.amount,
+    govParams?.depositParams.minInitialDeposit,
     minDeposit?.formattedAmount,
     minDeposit?.formattedDenom
   );
@@ -338,8 +343,15 @@ const ProposalToWhitelist = () => {
                 Initial Deposit
               </Heading>
               <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start 7-day voting period:{" "}
-                {minDeposit?.formattedToken}
+                Minimum deposit required to start{" "}
+                {formatSeconds(govParams?.depositParams.maxDepositPeriod)}{" "}
+                deposit period: {govParams?.depositParams.minInitialDeposit}{" "}
+                {minDeposit?.formattedDenom}
+              </Text>
+              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
+                Minimum deposit required to start{" "}
+                {formatSeconds(govParams?.votingParams.votingPeriod)} voting
+                period: {minDeposit?.formattedToken}
               </Text>
               <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                 <AssetBox baseDenom={initialDeposit.denom} />

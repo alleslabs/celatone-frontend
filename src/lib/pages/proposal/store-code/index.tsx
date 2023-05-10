@@ -87,7 +87,7 @@ const StoreCodeProposal = () => {
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
-  const minDeposit = govParams?.depositParams.min_deposit;
+  const minDeposit = govParams?.depositParams.minDeposit;
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();
@@ -139,6 +139,7 @@ const StoreCodeProposal = () => {
 
   const { variant, description, icon } = getAlert(
     initialDeposit.amount,
+    govParams?.depositParams.minInitialDeposit,
     minDeposit?.formattedAmount,
     minDeposit?.formattedDenom
   );
