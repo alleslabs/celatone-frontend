@@ -1,9 +1,12 @@
 import Link from "next/link";
 
 import type { SidebarDetails } from "lib/components/StickySidebar";
+import { AmpTrackUseRightHelperPanel } from "lib/services/amplitude";
 
+const whitelistPage = "proposal-whitelist";
 export const SIDEBAR_WHITELIST_DETAILS: SidebarDetails = {
   mainnet: {
+    page: whitelistPage,
     title: "What is whitelisted address?",
     description: (
       <span>
@@ -24,6 +27,7 @@ export const SIDEBAR_WHITELIST_DETAILS: SidebarDetails = {
     toPageTitle: "Submit Proposal To Store Code",
   },
   testnet: {
+    page: whitelistPage,
     title: "Do I need to open proposal to whitelisting in testnet?",
     description: (
       <span>
@@ -40,13 +44,16 @@ export const SIDEBAR_WHITELIST_DETAILS: SidebarDetails = {
   },
   // TODO: fill localnet information
   localnet: {
+    page: whitelistPage,
     title: "",
     description: <span />,
   },
 };
 
+const storeCodePage = "proposal-store-code";
 export const SIDEBAR_STORE_CODE_DETAILS: SidebarDetails = {
   mainnet: {
+    page: storeCodePage,
     title: "Why do I need to submit proposal?",
     description: (
       <span>
@@ -64,12 +71,18 @@ export const SIDEBAR_STORE_CODE_DETAILS: SidebarDetails = {
     toNetwork: true,
   },
   testnet: {
+    page: storeCodePage,
     title: "Do I need to submit Proposal to store code in testnet?",
     description: (
       <span>
         On the Osmosis testnet, you can store code without submitting a proposal
         by using
-        <Link href="/deploy">
+        <Link
+          href="/deploy"
+          onClick={() =>
+            AmpTrackUseRightHelperPanel(storeCodePage, "to-/deploy")
+          }
+        >
           {" "}
           <span style={{ color: "#D8BEFC" }}>Deploy Contract</span>
         </Link>
@@ -89,6 +102,7 @@ export const SIDEBAR_STORE_CODE_DETAILS: SidebarDetails = {
   },
   // TODO: fill localnet information
   localnet: {
+    page: storeCodePage,
     title: "",
     description: <span />,
   },

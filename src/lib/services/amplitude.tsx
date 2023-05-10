@@ -1,7 +1,8 @@
 import { track } from "@amplitude/analytics-browser";
 
 import type { AttachFundsType } from "lib/components/fund/types";
-import type { Option } from "lib/types";
+import type { Option, Token } from "lib/types";
+import { AccessType } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -54,6 +55,7 @@ export enum AmpEvent {
   TO_TRANSACTION_DETAIL = "To Transaction Detail",
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
+  TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
   // ACTIONS
   ACTION_UPLOAD = "Act Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -96,6 +98,11 @@ export enum AmpEvent {
   USE_UNSUPPORTED_ASSETS = "Use Unsupported Assets",
   USE_TX_MSG_EXPAND = "Use Transaction Message Expand",
   USE_EXPAND = "Use General Expand",
+  USE_RIGHT_HELPER_PANEL = "Use Right Helper Panel", // Sticky panel
+  USE_UNPIN = "Use Unpin",
+  USE_INSTANTIATE_PERMISSION = "Use Instantiate Permission",
+  USE_DEPOSIT_FILL = "Use Deposit Fill",
+  USE_SUBMIT_PROPOSAL = "Use Submit Proposal",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -131,7 +138,11 @@ type SpecialAmpEvent =
   | AmpEvent.USE_VIEW_JSON
   | AmpEvent.USE_UNSUPPORTED_ASSETS
   | AmpEvent.USE_COPIER
-  | AmpEvent.USE_EXPAND;
+  | AmpEvent.USE_EXPAND
+  | AmpEvent.USE_RIGHT_HELPER_PANEL
+  | AmpEvent.USE_UNPIN
+  | AmpEvent.USE_INSTANTIATE_PERMISSION
+  | AmpEvent.USE_DEPOSIT_FILL;
 
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
@@ -199,3 +210,28 @@ export const AmpTrackExpand = (
   component: "assets" | "json" | "permission_address" | "event_box",
   section: Option<string>
 ) => track(AmpEvent.USE_EXPAND, { action, component, section });
+
+export const AmpTrackUseClickWallet = (page?: string, component?: string) =>
+  track(AmpEvent.USE_CLICK_WALLET, { page, component });
+
+export const AmpTrackUseRightHelperPanel = (page: string, action: string) =>
+  track(AmpEvent.USE_RIGHT_HELPER_PANEL, { page, action });
+
+export const AmpTrackUseUnpin = (page: string, check: boolean) =>
+  track(AmpEvent.USE_UNPIN, { page, check });
+
+export const AmpTrackUseInstantiatePermission = (
+  page: string,
+  type: AccessType,
+  emptyAddressesLength: number,
+  addressesLength: number
+) =>
+  track(AmpEvent.USE_INSTANTIATE_PERMISSION, {
+    page,
+    type: AccessType[type],
+    emptyAddressesLength,
+    addressesLength,
+  });
+
+export const AmpTrackUseDepositFill = (page: string, amount: Token) =>
+  track(AmpEvent.USE_DEPOSIT_FILL, { page, amount });

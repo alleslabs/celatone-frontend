@@ -12,6 +12,7 @@ import {
 import { Sha256 } from "@cosmjs/crypto";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -46,7 +47,12 @@ import {
   MAX_PROPOSAL_TITLE_LENGTH,
 } from "lib/data";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackUseDepositFill,
+  AmpTrackUseUnpin,
+} from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type {
   Addr,
@@ -79,7 +85,6 @@ const defaultValues: StoreCodeProposalState = {
   codeHash: "",
 };
 
-// TODO - add amp track
 const StoreCodeProposal = () => {
   const {
     appHumanAddress: { example: exampleHumanAddress },
@@ -136,6 +141,12 @@ const StoreCodeProposal = () => {
     codeHash,
   } = watch();
   const { wasmFile, permission, addresses } = uploadSectionWatch();
+
+  // Amp
+  const router = useRouter();
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_TO_STORE_CODE);
+  }, [router.isReady]);
 
   const { variant, description, icon } = getAlert(
     initialDeposit.amount,
@@ -251,6 +262,12 @@ const StoreCodeProposal = () => {
 
   const proceed = useCallback(async () => {
     if (!wasmFile) return null;
+
+    AmpTrack(AmpEvent.USE_SUBMIT_PROPOSAL, {
+      addressesCount: addresses.length,
+      permission: AccessType[permission],
+    });
+
     const submitStoreCodeProposalMsg = async () => {
       return composeStoreCodeProposalMsg({
         proposer: walletAddress as HumanAddr,
@@ -303,6 +320,8 @@ const StoreCodeProposal = () => {
     walletAddress,
     wasmFile,
   ]);
+
+  const page = "proposal-store-code";
 
   return (
     <>
@@ -437,7 +456,10 @@ const StoreCodeProposal = () => {
                 {/* Unpin code  */}
                 <Flex direction="row" alignItems="center" gap={1}>
                   <Checkbox
-                    onChange={(e) => setValue("unpinCode", e.target.checked)}
+                    onChange={(e) => {
+                      AmpTrackUseUnpin(page, e.target.checked);
+                      setValue("unpinCode", e.target.checked);
+                    }}
                   >
                     {PROPOSAL_STORE_CODE_TEXT.unpinLabel}
                   </Checkbox>
@@ -501,6 +523,7 @@ const StoreCodeProposal = () => {
                   control={uploadSectionControl}
                   setValue={uploadSectionSetValue}
                   trigger={uploadSectionTrigger}
+                  page={page}
                 />
 
                 {/* Deposit  */}
@@ -531,6 +554,10 @@ const StoreCodeProposal = () => {
                         color="honeydew.main"
                         onClick={() => {
                           if (!minDeposit) return;
+                          AmpTrackUseDepositFill(
+                            page,
+                            minDeposit.formattedAmount
+                          );
                           setValue(
                             "initialDeposit.amount",
                             minDeposit.formattedAmount

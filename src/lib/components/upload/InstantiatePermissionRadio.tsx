@@ -1,12 +1,17 @@
 import { Text, Box, Radio, RadioGroup, Button, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
+import { useEffect } from "react";
 import type { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 
 import { AddressInput } from "../AddressInput";
 import { AssignMe } from "../AssignMe";
 import { CustomIcon } from "lib/components/icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackUseInstantiatePermission,
+} from "lib/services/amplitude";
 import type { Addr, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";
 
@@ -14,6 +19,7 @@ interface InstantiatePermissionRadioProps {
   control: Control<UploadSectionState>;
   setValue: UseFormSetValue<UploadSectionState>;
   trigger: UseFormTrigger<UploadSectionState>;
+  page?: string;
 }
 
 interface PermissionRadioProps {
@@ -32,6 +38,7 @@ export const InstantiatePermissionRadio = ({
   control,
   setValue,
   trigger,
+  page,
 }: InstantiatePermissionRadioProps) => {
   const { address: walletAddress } = useWallet();
 
@@ -51,6 +58,19 @@ export const InstantiatePermissionRadio = ({
     control,
     name: "addresses",
   });
+
+  useEffect(() => {
+    const emptyAddressesLength = addresses.filter(
+      (addr) => addr.address.trim().length === 0
+    ).length;
+    if (page)
+      AmpTrackUseInstantiatePermission(
+        page,
+        permission,
+        emptyAddressesLength,
+        addresses.length - emptyAddressesLength
+      );
+  }, [addresses, append, page, permission, remove]);
 
   return (
     <RadioGroup
