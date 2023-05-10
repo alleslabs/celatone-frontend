@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { useValidateAddress } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
-import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
+import { DefaultBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
@@ -93,7 +93,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     <>
       <Flex direction="column" mb={6}>
         {publicDetail && (
-          <DefualtBreadcrumb
+          <DefaultBreadcrumb
             mb="24px"
             primaryPage="Public Projects"
             primaryPath="/public-project"

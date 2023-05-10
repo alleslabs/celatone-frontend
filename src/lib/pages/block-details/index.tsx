@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
+import { DefaultBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -30,7 +30,7 @@ const BlockDetail = () => {
 
   return (
     <PageContainer>
-      <DefualtBreadcrumb
+      <DefaultBreadcrumb
         primaryPage="Blocks"
         primaryPath="/blocks"
         currentPage={blockData?.height.toString() ?? ""}

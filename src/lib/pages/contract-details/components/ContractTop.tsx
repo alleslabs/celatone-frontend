@@ -11,7 +11,7 @@ import router from "next/router";
 import { useInternalNavigate } from "lib/app-provider";
 import { AdminButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
-import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
+import { DefaultBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import {
@@ -98,7 +98,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     <Flex justify="space-between" mb={6}>
       <Flex direction="column" w="full">
         {publicProject.publicDetail && (
-          <DefualtBreadcrumb
+          <DefaultBreadcrumb
             mb="24px"
             primaryPage="Public Projects"
             primaryPath="/public-project"

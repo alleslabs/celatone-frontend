@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
+import { DefaultBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import {
   EditListNameModal,
@@ -77,7 +77,7 @@ const ContractsByList = observer(() => {
 
   return (
     <PageContainer>
-      <DefualtBreadcrumb
+      <DefaultBreadcrumb
         primaryPage="Contract Lists"
         primaryPath="/contract-list"
         currentPage={contractListInfo.name}

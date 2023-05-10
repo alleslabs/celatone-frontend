@@ -11,7 +11,7 @@ interface BreadcrumbProps {
   currentPage: string;
   mb?: string;
 }
-export const DefualtBreadcrumb = ({
+export const DefaultBreadcrumb = ({
   primaryPage,
   primaryPath,
   secondaryPage = "",

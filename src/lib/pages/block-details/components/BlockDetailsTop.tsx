@@ -101,7 +101,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
             <Text variant="body2" color="text.dark">
               {formatUTC(blockData.timestamp)}
             </Text>
-          </Flex>{" "}
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
