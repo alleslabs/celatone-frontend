@@ -8,16 +8,14 @@ import {
   Tabs,
   Text,
   Image,
-  Breadcrumb,
-  BreadcrumbItem,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useValidateAddress } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
+import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
@@ -95,36 +93,14 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     <>
       <Flex direction="column" mb={6}>
         {publicDetail && (
-          <Breadcrumb
-            mb={6}
-            w="full"
-            spacing="4px"
-            separator={<CustomIcon name="chevron-right" boxSize="3" />}
-          >
-            <BreadcrumbItem
-              _hover={{ opacity: 0.8 }}
-              transition="all 0.25s ease-in-out"
-            >
-              <AppLink
-                color="text.dark"
-                href={`/public-project/${publicInfo?.slug}`}
-              >
-                {publicDetail?.name}
-              </AppLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem isCurrentPage>
-              <Text
-                variant="body2"
-                className="ellipsis"
-                textTransform="lowercase"
-                fontWeight="600"
-                width="250px"
-                color="text.dark"
-              >
-                {truncate(accountAddress)}
-              </Text>
-            </BreadcrumbItem>
-          </Breadcrumb>
+          <DefualtBreadcrumb
+            mb="24px"
+            primaryPage="Public Projects"
+            primaryPath="/public-project"
+            secondaryPage={publicDetail?.name}
+            secondaryPath={`/public-project/${publicInfo?.slug}`}
+            currentPage={truncate(accountAddress)}
+          />
         )}
         <Flex direction="column" gap={2}>
           <Flex gap={1} minH="36px" align="center">

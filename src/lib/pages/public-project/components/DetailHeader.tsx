@@ -1,15 +1,6 @@
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  Text,
-  Flex,
-  Heading,
-  Image,
-} from "@chakra-ui/react";
+import { Box, Text, Flex, Heading, Image } from "@chakra-ui/react";
 
-import { AppLink } from "lib/components/AppLink";
-import { CustomIcon } from "lib/components/icon";
+import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import type { Option, PublicDetail } from "lib/types";
 import { getNameAndDescriptionDefault } from "lib/utils";
 
@@ -22,31 +13,11 @@ interface DetailHeaderProps {
 }
 export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
   <>
-    <Breadcrumb
-      w="full"
-      spacing={1}
-      separator={<CustomIcon name="chevron-right" boxSize="3" />}
-    >
-      <BreadcrumbItem
-        _hover={{ opacity: 0.8 }}
-        transition="all 0.25s ease-in-out"
-      >
-        <AppLink color="text.dark" href="/public-project">
-          Public Projects
-        </AppLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem isCurrentPage>
-        <Text
-          variant="body2"
-          className="ellipsis"
-          width="250px"
-          fontWeight="600"
-          color="text.dark"
-        >
-          {details?.name}
-        </Text>
-      </BreadcrumbItem>
-    </Breadcrumb>
+    <DefualtBreadcrumb
+      primaryPage="Public Projects"
+      primaryPath="/public-project"
+      currentPage={details?.name ?? ""}
+    />
     <Flex
       justifyContent="space-between"
       alignItems="flex-start"

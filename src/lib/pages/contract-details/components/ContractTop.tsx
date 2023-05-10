@@ -5,15 +5,13 @@ import {
   Button,
   IconButton,
   Image,
-  Breadcrumb,
-  BreadcrumbItem,
 } from "@chakra-ui/react";
 import router from "next/router";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
 import { AdminButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
+import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import {
@@ -100,35 +98,14 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     <Flex justify="space-between" mb={6}>
       <Flex direction="column" w="full">
         {publicProject.publicDetail && (
-          <Breadcrumb
-            w="full"
-            spacing="4px"
-            mb={6}
-            separator={<CustomIcon name="chevron-right" boxSize="3" />}
-          >
-            <BreadcrumbItem
-              _hover={{ opacity: 0.8 }}
-              transition="all 0.25s ease-in-out"
-            >
-              <AppLink
-                color="text.dark"
-                href={`/public-project/${publicProject.publicInfo?.slug}`}
-              >
-                {publicProject.publicDetail.name}
-              </AppLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem isCurrentPage>
-              <Text
-                variant="body2"
-                className="ellipsis"
-                width="250px"
-                fontWeight="600"
-                color="text.dark"
-              >
-                {truncate(contractAddress)}
-              </Text>
-            </BreadcrumbItem>
-          </Breadcrumb>
+          <DefualtBreadcrumb
+            mb="24px"
+            primaryPage="Public Projects"
+            primaryPath="/public-project"
+            secondaryPage={publicProject.publicDetail.name}
+            secondaryPath={`/public-project/${publicProject.publicInfo?.slug}`}
+            currentPage={truncate(contractAddress)}
+          />
         )}
         <Flex direction="column" gap={2} textOverflow="ellipsis" w="full">
           <Flex justify="space-between" align="center">

@@ -1,18 +1,10 @@
-import {
-  Divider,
-  Flex,
-  Heading,
-  Text,
-  Image,
-  Breadcrumb,
-  BreadcrumbItem,
-} from "@chakra-ui/react";
+import { Divider, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
+import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { Loading } from "lib/components/Loading";
@@ -50,41 +42,19 @@ const CodeDetailsBody = observer(
     return (
       <>
         <Flex direction="column">
-          <Breadcrumb
-            w="full"
-            spacing="4px"
-            separator={<CustomIcon name="chevron-right" boxSize="3" />}
-          >
-            <BreadcrumbItem
-              _hover={{ opacity: 0.8 }}
-              transition="all 0.25s ease-in-out"
-            >
-              {publicProject.publicCodeData?.name ? (
-                <AppLink
-                  color="text.dark"
-                  href={`/public-project/${publicProject.publicCodeData?.slug}`}
-                >
-                  {publicProject.publicDetail?.name}
-                </AppLink>
-              ) : (
-                <AppLink color="text.dark" href="/recent-codes">
-                  Recents Codes
-                </AppLink>
-              )}
-            </BreadcrumbItem>
-            <BreadcrumbItem isCurrentPage>
-              <Text
-                variant="body2"
-                className="ellipsis"
-                textTransform="lowercase"
-                fontWeight="600"
-                width="250px"
-                color="text.dark"
-              >
-                {codeId}
-              </Text>
-            </BreadcrumbItem>
-          </Breadcrumb>
+          <DefualtBreadcrumb
+            primaryPage={
+              publicProject.publicCodeData?.name ? "Public Projects" : "Codes"
+            }
+            primaryPath={
+              publicProject.publicCodeData?.name
+                ? `/public-project`
+                : "/recent-codes"
+            }
+            secondaryPage={publicProject.publicDetail?.name}
+            secondaryPath={`/public-project/${publicProject.publicCodeData?.slug}`}
+            currentPage={codeId.toString() ?? ""}
+          />
           <Flex direction="column" gap={2} w="full" mt={6}>
             <Flex justify="space-between" align="center">
               <Flex gap={1}>

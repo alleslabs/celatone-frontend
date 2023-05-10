@@ -5,16 +5,13 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  Breadcrumb,
-  BreadcrumbItem,
-  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
+import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import {
   EditListNameModal,
@@ -80,31 +77,11 @@ const ContractsByList = observer(() => {
 
   return (
     <PageContainer>
-      <Breadcrumb
-        w="full"
-        spacing="4px"
-        separator={<CustomIcon name="chevron-right" boxSize="3" />}
-      >
-        <BreadcrumbItem
-          _hover={{ opacity: 0.8 }}
-          transition="all 0.25s ease-in-out"
-        >
-          <AppLink color="text.dark" href="/contract-list">
-            Contract Lists
-          </AppLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <Text
-            variant="body2"
-            className="ellipsis"
-            width="250px"
-            fontWeight="600"
-            color="text.dark"
-          >
-            {contractListInfo.name}
-          </Text>
-        </BreadcrumbItem>
-      </Breadcrumb>
+      <DefualtBreadcrumb
+        primaryPage="Contract Lists"
+        primaryPath="/contract-list"
+        currentPage={contractListInfo.name}
+      />
       <Flex
         justifyContent="space-between"
         alignItems="center"

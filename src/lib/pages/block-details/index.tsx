@@ -1,9 +1,7 @@
-import { Breadcrumb, BreadcrumbItem, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { AppLink } from "lib/components/AppLink";
-import { CustomIcon } from "lib/components/icon";
+import { DefualtBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -32,32 +30,11 @@ const BlockDetail = () => {
 
   return (
     <PageContainer>
-      <Breadcrumb
-        w="full"
-        spacing="4px"
-        separator={<CustomIcon name="chevron-right" boxSize="3" />}
-      >
-        <BreadcrumbItem
-          _hover={{ opacity: 0.8 }}
-          transition="all 0.25s ease-in-out"
-        >
-          <AppLink color="text.dark" href="/blocks">
-            Blocks
-          </AppLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <Text
-            variant="body2"
-            className="ellipsis"
-            textTransform="lowercase"
-            fontWeight="600"
-            width="250px"
-            color="text.dark"
-          >
-            {blockData?.height}
-          </Text>
-        </BreadcrumbItem>
-      </Breadcrumb>
+      <DefualtBreadcrumb
+        primaryPage="Blocks"
+        primaryPath="/blocks"
+        currentPage={blockData?.height.toString() ?? ""}
+      />
       {blockData ? (
         <>
           <BlockDetailsTop blockData={blockData} />
