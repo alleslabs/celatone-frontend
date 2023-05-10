@@ -104,6 +104,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         )}
         <Flex direction="column" gap={2}>
           <Flex gap={1} minH="36px" align="center">
+            <CustomIcon name="wallet" boxSize="5" color="lilac.main" />
             {publicDetail?.logo && (
               <Image
                 src={publicDetail.logo}

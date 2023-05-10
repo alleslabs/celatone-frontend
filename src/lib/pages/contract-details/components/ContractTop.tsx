@@ -110,6 +110,11 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         <Flex direction="column" gap={2} textOverflow="ellipsis" w="full">
           <Flex justify="space-between" align="center">
             <Flex gap={1} maxW="670px">
+              <CustomIcon
+                name="contract-address"
+                boxSize="5"
+                color="lilac.main"
+              />
               {publicProject.publicDetail?.logo && (
                 <Image
                   src={publicProject.publicDetail.logo}

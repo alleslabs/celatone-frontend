@@ -58,6 +58,7 @@ const CodeDetailsBody = observer(
           <Flex direction="column" gap={2} w="full" mt={6}>
             <Flex justify="space-between" align="center">
               <Flex gap={1}>
+                <CustomIcon name="code" boxSize="5" color="lilac.main" />
                 {publicProject.publicDetail?.logo && (
                   <Image
                     src={publicProject.publicDetail.logo}
