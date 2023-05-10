@@ -4,8 +4,7 @@ import type { MsgSwapExactAmountIn } from "../messages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
 
-import { PoolRoute } from "./PoolRoute";
-import { PoolSwap } from "./PoolSwap";
+import { PoolRoute, PoolSwap } from "./components";
 
 interface MsgSwapExactAmountInDetailProps {
   txHash: string;

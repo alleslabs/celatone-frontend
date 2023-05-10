@@ -11,7 +11,7 @@ import {
   MsgSwapExactAmountOutDetail,
 } from "./swap";
 
-export const PoolTxsAction = ({
+export const PoolMsgAction = ({
   msg,
   assetInfos,
 }: {
@@ -19,8 +19,7 @@ export const PoolTxsAction = ({
   assetInfos: AssetInfosOpt;
 }) => {
   // TODO: fix and add cases
-  const { type } = msg;
-  switch (type) {
+  switch (msg.type) {
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
     case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn":
       return (
@@ -37,13 +36,12 @@ export const PoolTxsAction = ({
           assetInfos={assetInfos}
         />
       );
-    case "type3":
     default:
-      return <Text>{type}</Text>;
+      return <Text>{msg.type}</Text>;
   }
 };
 
-export const PoolTxsDetail = ({
+export const PoolMsgDetail = ({
   txHash,
   blockHeight,
   msgIndex,
@@ -59,8 +57,7 @@ export const PoolTxsDetail = ({
   isOpened: boolean;
 }) => {
   // TODO: fix and add cases
-  const { type } = msg;
-  switch (type) {
+  switch (msg.type) {
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
     case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn":
       return (
@@ -85,8 +82,7 @@ export const PoolTxsDetail = ({
           isOpened={isOpened}
         />
       );
-    case "type3":
     default:
-      return <Text h={20}>{type}</Text>;
+      return <Text h={20}>{msg.type}</Text>;
   }
 };

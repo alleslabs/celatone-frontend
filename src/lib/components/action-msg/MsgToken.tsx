@@ -9,14 +9,14 @@ interface MsgTokenProps {
   coin: Coin;
   symbol?: string;
   precision?: number;
-  fontWeight?: string;
+  fontWeight?: number;
 }
 
 export const MsgToken = ({
   coin,
   symbol,
   precision,
-  fontWeight = "600",
+  fontWeight = 600,
 }: MsgTokenProps) => (
   <Flex role="group" align="center" gap={1}>
     <Text fontWeight={fontWeight}>

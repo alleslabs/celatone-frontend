@@ -5,7 +5,7 @@ import type { AssetInfosOpt } from "lib/services/assetService";
 import type { Option, Transaction } from "lib/types";
 
 import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
-import { PoolTxsTableMultiRow } from "./PoolTxsTableMultiRow";
+import { PoolTxsTableRow } from "./PoolTxsTableRow";
 
 interface PoolTxsTableProps {
   transactions: Option<Transaction[]>;
@@ -30,7 +30,7 @@ export const PoolTxsTable = ({
     <TableContainer>
       <PoolTxsTableHeader templateColumns={templateColumns} />
       {transactions.map((transaction) => (
-        <PoolTxsTableMultiRow
+        <PoolTxsTableRow
           key={transaction.hash}
           transaction={transaction}
           assetInfos={assetInfos}

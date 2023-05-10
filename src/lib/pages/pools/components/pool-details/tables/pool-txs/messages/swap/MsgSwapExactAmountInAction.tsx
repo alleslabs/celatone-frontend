@@ -24,7 +24,7 @@ export const MsgSwapExactAmountInAction = ({
         coin={msg.tokenIn}
         symbol={inAssetInfo?.symbol}
         precision={inAssetInfo?.precision}
-        fontWeight="700"
+        fontWeight={700}
       />
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       at least
@@ -32,7 +32,7 @@ export const MsgSwapExactAmountInAction = ({
         coin={{ amount: msg.tokenOutMinAmount, denom: tokenOutDenom }}
         symbol={outAssetInfo?.symbol}
         precision={outAssetInfo?.precision}
-        fontWeight="400"
+        fontWeight={400}
       />
     </Flex>
   );

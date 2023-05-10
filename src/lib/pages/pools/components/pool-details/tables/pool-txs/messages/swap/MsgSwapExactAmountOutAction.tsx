@@ -24,14 +24,14 @@ export const MsgSwapExactAmountOutAction = ({
         coin={{ amount: msg.tokenInMaxAmount, denom: tokenInDenom }}
         symbol={inAssetInfo?.symbol}
         precision={inAssetInfo?.precision}
-        fontWeight="400"
+        fontWeight={400}
       />
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       <MsgToken
         coin={msg.tokenOut}
         symbol={outAssetInfo?.symbol}
         precision={outAssetInfo?.precision}
-        fontWeight="700"
+        fontWeight={700}
       />
     </Flex>
   );
