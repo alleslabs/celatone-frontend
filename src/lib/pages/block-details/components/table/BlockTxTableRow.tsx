@@ -47,7 +47,7 @@ export const BlockTxTableRow = ({
           <Flex gap={1} flexWrap="wrap">
             <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
-              <Tag variant="honeydewDark" size="sm">
+              <Tag variant="honeydew-dark" size="sm">
                 IBC
               </Tag>
             )}

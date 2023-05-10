@@ -323,7 +323,7 @@ export const TxMsgExpand = ({
       <Flex align="center" gap={2} fontSize="16px" fontWeight={500}>
         <CustomIcon name={msgIcon} boxSize={4} color="lilac.main" m={0} />
         {content}
-        {isIBC && <Tag variant="honeydewDark">IBC</Tag>}
+        {isIBC && <Tag variant="honeydew-dark">IBC</Tag>}
       </Flex>
       <CustomIcon
         name="chevron-down"

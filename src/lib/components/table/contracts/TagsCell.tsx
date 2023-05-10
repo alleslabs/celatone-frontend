@@ -40,7 +40,7 @@ export const TagsCell = ({
         }}
       >
         {tags.length ? (
-          <Tag variant="honeydewDarker">{tags.at(0)}</Tag>
+          <Tag>{tags.at(0)}</Tag>
         ) : (
           <Text variant="body2" color="text.dark">
             Not Tagged
@@ -76,11 +76,7 @@ export const TagsCell = ({
           >
             {tags.length ? (
               tags.map((item) => {
-                return (
-                  <Tag key={item} variant="honeydewDarker">
-                    {item}
-                  </Tag>
-                );
+                return <Tag key={item}>{item}</Tag>;
               })
             ) : (
               <Text variant="body2" color="text.dark">

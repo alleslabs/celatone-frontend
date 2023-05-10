@@ -31,7 +31,7 @@ export const PermissionChip = ({
   return (
     <Tooltip label={message}>
       <Flex>
-        <Tag size="md" variant={isAllowed ? "honeydewDarker" : "gray"}>
+        <Tag size="md" variant={isAllowed ? "honeydew-darker" : "gray"}>
           {instantiatePermission}
         </Tag>
       </Flex>

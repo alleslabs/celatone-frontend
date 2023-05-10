@@ -152,12 +152,7 @@ export const TagSelection = observer(
                       onClick={() => selectOption(option)}
                       key={option}
                     >
-                      <Tag
-                        variant="honeydewDarker"
-                        gap={1}
-                        mr={1}
-                        cursor="pointer"
-                      >
+                      <Tag gap={1} mr={1} cursor="pointer">
                         {option}
                         <CustomIcon name="close" boxSize="3" />
                       </Tag>
@@ -243,7 +238,7 @@ export const TagSelection = observer(
                     onClick={() => selectOptionFromList(option)}
                   >
                     <Flex alignItems="center" justifyContent="space-between">
-                      <Tag variant="honeydewDarker" gap={1} mr={1}>
+                      <Tag gap={1} mr={1}>
                         {option}
                       </Tag>
                       {isOptionSelected(option) && (
@@ -269,7 +264,7 @@ export const TagSelection = observer(
                   >
                     <Flex alignItems="center" gap={2}>
                       <Text variant="body2">Create </Text>
-                      <Tag variant="honeydewDarker" gap={1} mr={1}>
+                      <Tag gap={1} mr={1}>
                         {inputValue}
                       </Tag>
                     </Flex>

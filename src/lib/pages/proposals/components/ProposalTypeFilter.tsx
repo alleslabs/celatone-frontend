@@ -106,7 +106,7 @@ export const ProposalTypeFilter = forwardRef<
                 <FilterChip
                   key={option}
                   chipComponent={
-                    <Tag variant="honeydewDarker">
+                    <Tag>
                       {option}
                       <CustomIcon name="close" boxSize="3" mr={0} />
                     </Tag>

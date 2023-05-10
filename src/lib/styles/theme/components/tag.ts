@@ -57,13 +57,13 @@ export const Tag = defineMultiStyleConfig({
     },
   },
   variants: {
-    violetLight,
-    honeydewDark,
-    honeydewDarker,
+    "violet-light": violetLight,
+    "honeydew-dark": honeydewDark,
+    "honeydew-darker": honeydewDarker,
     gray,
   },
   defaultProps: {
     size: "md",
-    variant: "honeydewDarker",
+    variant: "honeydew-darker",
   },
 });

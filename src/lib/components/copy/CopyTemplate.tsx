@@ -7,18 +7,20 @@ interface CopyTemplateProps {
   value: string;
   copyLabel?: string;
   triggerElement: JSX.Element;
+  isDisabled?: boolean;
 }
 
 export const CopyTemplate = ({
   value,
   copyLabel = "Copied!",
   triggerElement,
+  isDisabled = false,
 }: CopyTemplateProps) => {
   const { onCopy, hasCopied, setValue } = useClipboard(value);
   useEffect(() => setValue(value), [value, setValue]);
 
   return (
-    <Tooltip isOpen={hasCopied} label={copyLabel}>
+    <Tooltip isOpen={!isDisabled && hasCopied} label={copyLabel}>
       <Box
         onClick={(e) => {
           onCopy();

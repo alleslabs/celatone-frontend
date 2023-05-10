@@ -125,7 +125,7 @@ export const TxFilterSelection = forwardRef<
                     key={option}
                   >
                     <Tag
-                      variant="violetLight"
+                      variant="violet-light"
                       gap={1}
                       mr={1}
                       whiteSpace="nowrap"
