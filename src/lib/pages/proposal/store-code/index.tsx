@@ -51,6 +51,7 @@ import {
   AmpEvent,
   AmpTrack,
   AmpTrackUseDepositFill,
+  AmpTrackUseSubmitProposal,
   AmpTrackUseUnpin,
 } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
@@ -96,6 +97,7 @@ const StoreCodeProposal = () => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();
+  const page = "proposal-store-code";
 
   // States
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
@@ -263,10 +265,15 @@ const StoreCodeProposal = () => {
   const proceed = useCallback(async () => {
     if (!wasmFile) return null;
 
-    AmpTrack(AmpEvent.USE_SUBMIT_PROPOSAL, {
-      addressesCount: addresses.length,
-      permission: AccessType[permission],
-    });
+    AmpTrackUseSubmitProposal(
+      page,
+      initialDeposit.amount,
+      minDeposit?.formattedAmount,
+      {
+        addressesCount: addresses.length,
+        permission: AccessType[permission],
+      }
+    );
 
     const submitStoreCodeProposalMsg = async () => {
       return composeStoreCodeProposalMsg({
@@ -320,8 +327,6 @@ const StoreCodeProposal = () => {
     walletAddress,
     wasmFile,
   ]);
-
-  const page = "proposal-store-code";
 
   return (
     <>
