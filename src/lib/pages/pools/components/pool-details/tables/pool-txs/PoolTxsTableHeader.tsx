@@ -9,11 +9,11 @@ export const PoolTxsTableHeader = ({
   templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
+    <TableHeader />
     <TableHeader>Transaction Hash</TableHeader>
     <TableHeader />
     <TableHeader>Actions</TableHeader>
     <TableHeader>Sender</TableHeader>
     <TableHeader>Timestamp</TableHeader>
-    <TableHeader />
   </Grid>
 );

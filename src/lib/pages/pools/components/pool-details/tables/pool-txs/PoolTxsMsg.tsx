@@ -47,6 +47,15 @@ export const PoolTxsMsg = ({
         cursor="pointer"
       >
         <TableNoBorderRow>
+          {transaction.success && (
+            <CustomIcon
+              name="chevron-down"
+              transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
+              transition="all .25s ease-in-out"
+            />
+          )}
+        </TableNoBorderRow>
+        <TableNoBorderRow>
           {msgIndex === 0 && (
             <>
               <ExplorerLink
@@ -92,16 +101,6 @@ export const PoolTxsMsg = ({
             </Flex>
           )}
         </TableNoBorderRow>
-
-        {transaction.success && (
-          <TableNoBorderRow>
-            <CustomIcon
-              name="chevron-down"
-              transform={isOpen ? "rotate(180deg)" : "rotate(0)"}
-              transition="all .25s ease-in-out"
-            />
-          </TableNoBorderRow>
-        )}
       </Grid>
       {transaction.success && (
         <Grid
