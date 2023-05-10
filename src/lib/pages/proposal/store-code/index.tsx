@@ -16,6 +16,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
+import { InitialDeposit } from "../components/InitialDeposit";
 import {
   SIDEBAR_STORE_CODE_DETAILS,
   PROPOSAL_STORE_CODE_TEXT,
@@ -55,11 +56,7 @@ import type {
   UploadSectionState,
 } from "lib/types";
 import { AccessType } from "lib/types";
-import {
-  composeStoreCodeProposalMsg,
-  formatSeconds,
-  getAmountToVote,
-} from "lib/utils";
+import { composeStoreCodeProposalMsg, getAmountToVote } from "lib/utils";
 
 interface StoreCodeProposalState {
   title: string;
@@ -509,32 +506,7 @@ const StoreCodeProposal = () => {
                 />
 
                 {/* Deposit  */}
-                <Heading as="h6" variant="h6" mt={12}>
-                  Initial Deposit
-                </Heading>
-                <Box>
-                  <Text
-                    color="text.dark"
-                    mt={2}
-                    fontWeight={500}
-                    variant="body2"
-                  >
-                    Minimum deposit required to start{" "}
-                    {formatSeconds(govParams?.depositParams.maxDepositPeriod)}{" "}
-                    deposit period: {govParams?.depositParams.minInitialDeposit}{" "}
-                    {minDeposit?.formattedDenom}
-                  </Text>
-                  <Text
-                    color="text.dark"
-                    mt={2}
-                    fontWeight={500}
-                    variant="body2"
-                  >
-                    Minimum deposit required to start{" "}
-                    {formatSeconds(govParams?.votingParams.votingPeriod)} voting
-                    period: {minDeposit?.formattedToken}
-                  </Text>
-                </Box>
+                <InitialDeposit />
                 <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                   <AssetBox baseDenom={initialDeposit.denom} />
                   <ControllerInput

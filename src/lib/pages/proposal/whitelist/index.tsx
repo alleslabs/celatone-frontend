@@ -14,6 +14,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
+import { InitialDeposit } from "../components/InitialDeposit";
 import { TestnetAlert } from "../components/TestnetAlert";
 import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
@@ -40,11 +41,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import {
-  composeSubmitWhitelistProposalMsg,
-  getAmountToVote,
-  formatSeconds,
-} from "lib/utils";
+import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -339,20 +336,7 @@ const ProposalToWhitelist = () => {
               >
                 Add More Address
               </Button>
-              <Heading as="h6" variant="h6" mt={12}>
-                Initial Deposit
-              </Heading>
-              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start{" "}
-                {formatSeconds(govParams?.depositParams.maxDepositPeriod)}{" "}
-                deposit period: {govParams?.depositParams.minInitialDeposit}{" "}
-                {minDeposit?.formattedDenom}
-              </Text>
-              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start{" "}
-                {formatSeconds(govParams?.votingParams.votingPeriod)} voting
-                period: {minDeposit?.formattedToken}
-              </Text>
+              <InitialDeposit />
               <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                 <AssetBox baseDenom={initialDeposit.denom} />
                 <ControllerInput
