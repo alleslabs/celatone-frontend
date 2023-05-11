@@ -63,7 +63,7 @@ const Proposals = () => {
   );
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSALS);
+    if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_LIST);
   }, [router.isReady]);
 
   useEffect(() => {
@@ -99,6 +99,7 @@ const Proposals = () => {
             onChange={(e) => setSearch(e.target.value)}
             size="lg"
             value={search}
+            action="proposal-list-search"
           />
           <Tooltip
             isDisabled={!!address}
@@ -122,8 +123,14 @@ const Proposals = () => {
                 disabled={!address}
                 onChange={(e) => {
                   if (e.target.checked && address) {
+                    AmpTrack(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                      toggle: "on",
+                    });
                     setProposer(address as Addr);
                   } else {
+                    AmpTrack(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                      toggle: "off",
+                    });
                     setProposer(undefined);
                   }
                   setIsSelected(e.target.checked);
