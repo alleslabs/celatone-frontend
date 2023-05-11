@@ -10,6 +10,7 @@ import {
 import { TooltipComponent } from "../TooltipComponent";
 import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const StyledMenuItem = chakra(MenuItem, {
   baseStyle: {
@@ -24,6 +25,7 @@ export const NewProposalButton = () => {
   return (
     <Menu>
       <MenuButton
+        onClick={() => AmpTrack(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
         variant="primary"
         color="text.main"
         as={Button}

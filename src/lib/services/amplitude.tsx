@@ -2,7 +2,7 @@ import { track } from "@amplitude/analytics-browser";
 import big from "big.js";
 
 import type { AttachFundsType } from "lib/components/fund/types";
-import type { Option, Token, AccessType } from "lib/types";
+import type { Option, Token, AccessType, Dict } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -36,7 +36,7 @@ export enum AmpEvent {
   TO_DEPLOY = "To Deploy",
   TO_UPLOAD = "To Upload",
   TO_INSTANTIATE = "To Instantiate",
-  TO_PROPOSALS = "To Proposals",
+  TO_PROPOSAL_LIST = "To Proposal List",
   TO_QUERY = "To Query",
   TO_EXECUTE = "To Execute",
   TO_MIGRATE = "To Migrate",
@@ -103,6 +103,13 @@ export enum AmpEvent {
   USE_INSTANTIATE_PERMISSION = "Use Instantiate Permission",
   USE_DEPOSIT_FILL = "Use Deposit Fill",
   USE_SUBMIT_PROPOSAL = "Use Submit Proposal",
+  USE_SEARCH_INPUT = "Use Search Input",
+  USE_FILTER_MY_PROPOSALS = "Use Filter My Proposals",
+  USE_FILTER_PROPOSALS_STATUS = "Use Filter Proposals Status",
+  USE_FILTER_PROPOSALS_TYPE = "Use Filter Proposals Types",
+  USE_PAGINATION_PAGE_SIZE = "Use Pagination Page Size",
+  USE_PAGINATION_NAVIGATION = "Use Pagination Navigation",
+  USE_CREATE_NEW_PROPOSAL = "Use Create New Proposal",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -142,7 +149,10 @@ type SpecialAmpEvent =
   | AmpEvent.USE_RIGHT_HELPER_PANEL
   | AmpEvent.USE_UNPIN
   | AmpEvent.USE_INSTANTIATE_PERMISSION
-  | AmpEvent.USE_DEPOSIT_FILL;
+  | AmpEvent.USE_DEPOSIT_FILL
+  | AmpEvent.USE_PAGINATION_NAVIGATION
+  | AmpEvent.USE_FILTER_PROPOSALS_STATUS
+  | AmpEvent.USE_FILTER_PROPOSALS_TYPE;
 
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
@@ -185,8 +195,11 @@ export const AmpTrackUseRadio = (radio: string) =>
 export const AmpTrackUseOtherModal = (title: string) =>
   track(AmpEvent.USE_OTHER_MODAL, { title });
 
-export const AmpTrackMintscan = (type: string) =>
-  track(AmpEvent.MINTSCAN, { type });
+export const AmpTrackMintscan = (
+  type: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  properties?: Dict<string, any>
+) => track(AmpEvent.MINTSCAN, { type, properties });
 
 export const AmpTrackWebsite = (url: string) =>
   track(AmpEvent.WEBSITE, { url });
@@ -252,3 +265,19 @@ export const AmpTrackUseSubmitProposal = (
     : "Voting";
   track(AmpEvent.USE_SUBMIT_PROPOSAL, { page, proposalPeriod, ...properties });
 };
+export const AmpTrackUseFilter = (
+  ampEvent: AmpEvent,
+  filters: string[],
+  action: string
+) => track(ampEvent, { action, filters });
+
+export const AmpTrackPaginationNavigate = (
+  navigate: string,
+  pageSize: number,
+  currentPage: number
+) =>
+  track(AmpEvent.USE_PAGINATION_NAVIGATION, {
+    navigate,
+    pageSize,
+    currentPage,
+  });
