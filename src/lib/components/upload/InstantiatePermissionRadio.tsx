@@ -1,6 +1,6 @@
 import { Text, Box, Radio, RadioGroup, Button, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useEffect } from "react";
+import { useCallback } from "react";
 import type { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 
@@ -59,7 +59,7 @@ export const InstantiatePermissionRadio = ({
     name: "addresses",
   });
 
-  useEffect(() => {
+  const updateAmptrackAddresses = useCallback(() => {
     const emptyAddressesLength = addresses.filter(
       (addr) => addr.address.trim().length === 0
     ).length;
@@ -78,6 +78,7 @@ export const InstantiatePermissionRadio = ({
       onChange={(nextValue: string) => {
         const value = parseInt(nextValue, 10);
         setValue("permission", value);
+        updateAmptrackAddresses();
       }}
       value={permission}
     >
@@ -140,7 +141,10 @@ export const InstantiatePermissionRadio = ({
                     variant="outline-gray"
                     size="lg"
                     disabled={fields.length <= 1}
-                    onClick={() => remove(idx)}
+                    onClick={() => {
+                      remove(idx);
+                      updateAmptrackAddresses();
+                    }}
                   >
                     <CustomIcon
                       name="delete"
@@ -153,7 +157,10 @@ export const InstantiatePermissionRadio = ({
                 variant="outline-primary"
                 mt={3}
                 mx="auto"
-                onClick={() => append({ address: "" as Addr })}
+                onClick={() => {
+                  append({ address: "" as Addr });
+                  updateAmptrackAddresses();
+                }}
                 leftIcon={<CustomIcon name="plus" color="violet.light" />}
               >
                 Add More Address

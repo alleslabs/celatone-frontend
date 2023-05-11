@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -38,7 +39,12 @@ import {
   MAX_PROPOSAL_TITLE_LENGTH,
 } from "lib/data/proposalWhitelist";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackUseSubmitProposal,
+  AmpTrackUseWhitelistedAddresses,
+} from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
@@ -58,6 +64,7 @@ const defaultValues: WhiteListState = {
 };
 
 const ProposalToWhitelist = () => {
+  const router = useRouter();
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
@@ -165,11 +172,18 @@ const ProposalToWhitelist = () => {
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
     });
+    AmpTrackUseSubmitProposal("proposal_whitelist", {
+      initialDeposit: initialDeposit.amount,
+      assetDenom: initialDeposit.denom,
+      minDeposit: minDeposit?.formattedAmount,
+      addressesCount: addresses.length,
+    });
     if (stream) {
       setProcessing(true);
       broadcast(stream);
     }
   }, [
+    addresses.length,
     minDeposit,
     submitProposalTx,
     estimatedFee,
@@ -179,6 +193,17 @@ const ProposalToWhitelist = () => {
     broadcast,
   ]);
 
+  const updateAmptrackAddresses = useCallback(() => {
+    const emptyAddressesLength = addresses.filter(
+      (addr) => addr.address.trim().length === 0
+    ).length;
+    AmpTrackUseWhitelistedAddresses(
+      "proposal_whitelist",
+      emptyAddressesLength,
+      addresses.length - emptyAddressesLength
+    );
+  }, [addresses]);
+
   useEffect(() => {
     if (minDeposit)
       reset({
@@ -186,6 +211,12 @@ const ProposalToWhitelist = () => {
         initialDeposit: { denom: minDeposit.denom, amount: "" },
       });
   }, [minDeposit, reset]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      AmpTrack(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
+    }
+  }, [router.isReady]);
 
   return (
     <>
@@ -220,6 +251,7 @@ const ProposalToWhitelist = () => {
             <ConnectWalletAlert
               subtitle="You need to connect wallet to proceed this action"
               mt={12}
+              page="proposal_whitelist"
             />
             <form>
               <Flex
@@ -319,7 +351,10 @@ const ProposalToWhitelist = () => {
                     variant="outline-gray"
                     size="lg"
                     disabled={fields.length <= 1}
-                    onClick={() => remove(idx)}
+                    onClick={() => {
+                      remove(idx);
+                      updateAmptrackAddresses();
+                    }}
                   >
                     <CustomIcon
                       name="delete"
@@ -331,7 +366,10 @@ const ProposalToWhitelist = () => {
               <Button
                 variant="outline-primary"
                 mt={3}
-                onClick={() => append({ address: "" as Addr })}
+                onClick={() => {
+                  append({ address: "" as Addr });
+                  updateAmptrackAddresses();
+                }}
                 leftIcon={<CustomIcon name="plus" color="violet.light" />}
               >
                 Add More Address

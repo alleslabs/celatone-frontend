@@ -56,6 +56,7 @@ export enum AmpEvent {
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
   TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
+  TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
   // ACTIONS
   ACTION_UPLOAD = "Act Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -101,6 +102,7 @@ export enum AmpEvent {
   USE_RIGHT_HELPER_PANEL = "Use Right Helper Panel", // Sticky panel
   USE_UNPIN = "Use Unpin",
   USE_INSTANTIATE_PERMISSION = "Use Instantiate Permission",
+  USE_WHITELISTED_ADDRESSES = "Use Whitelisted Addresses",
   USE_DEPOSIT_FILL = "Use Deposit Fill",
   USE_SUBMIT_PROPOSAL = "Use Submit Proposal",
   USE_SEARCH_INPUT = "Use Search Input",
@@ -110,6 +112,7 @@ export enum AmpEvent {
   USE_PAGINATION_PAGE_SIZE = "Use Pagination Page Size",
   USE_PAGINATION_NAVIGATION = "Use Pagination Navigation",
   USE_CREATE_NEW_PROPOSAL = "Use Create New Proposal",
+  USE_ALERT_CTA = "Use Alert CTA",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -152,7 +155,8 @@ type SpecialAmpEvent =
   | AmpEvent.USE_DEPOSIT_FILL
   | AmpEvent.USE_PAGINATION_NAVIGATION
   | AmpEvent.USE_FILTER_PROPOSALS_STATUS
-  | AmpEvent.USE_FILTER_PROPOSALS_TYPE;
+  | AmpEvent.USE_FILTER_PROPOSALS_TYPE
+  | AmpEvent.USE_ALERT_CTA;
 
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
@@ -246,6 +250,17 @@ export const AmpTrackUseInstantiatePermission = (
     addressesLength,
   });
 
+export const AmpTrackUseWhitelistedAddresses = (
+  page: string,
+  emptyAddressesLength: number,
+  addressesLength: number
+) =>
+  track(AmpEvent.USE_WHITELISTED_ADDRESSES, {
+    page,
+    emptyAddressesLength,
+    addressesLength,
+  });
+
 export const AmpTrackUseDepositFill = (page: string, amount: Token) =>
   track(AmpEvent.USE_DEPOSIT_FILL, { page, amount });
 
@@ -254,6 +269,7 @@ export const AmpTrackUseSubmitProposal = (
   properties: {
     initialDeposit: string;
     minDeposit: Option<string>;
+    assetDenom: Option<string>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
   }
@@ -281,3 +297,6 @@ export const AmpTrackPaginationNavigate = (
     pageSize,
     currentPage,
   });
+
+export const AmpTrackUseAlertCTA = (page: string, action: string) =>
+  track(AmpEvent.USE_ALERT_CTA, { page, action });

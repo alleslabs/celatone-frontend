@@ -270,6 +270,7 @@ const StoreCodeProposal = () => {
 
     AmpTrackUseSubmitProposal(page, {
       initialDeposit: initialDeposit.amount,
+      assetDenom: initialDeposit.denom,
       minDeposit: minDeposit?.formattedAmount,
       addressesCount: addresses.length,
       permission: AccessType[permission],
@@ -346,6 +347,7 @@ const StoreCodeProposal = () => {
             <ConnectWalletAlert
               subtitle={PROPOSAL_STORE_CODE_TEXT.connectWallet}
               mt={12}
+              page="proposal_store_code"
             />
             <form>
               <Flex my="48px" gap={6} direction="column">
