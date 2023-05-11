@@ -289,50 +289,51 @@ interface DepositParamsReturn
   minInitialDeposit: Token;
 }
 
-export const useGovParams = (): UseQueryResult<{
+export interface GovParams {
   depositParams: DepositParamsReturn;
   uploadAccess: UploadAccess;
   votingParams: VotingParamsInternal;
-}> => {
+}
+
+export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useLCDEndpoint();
-  const queryFn = useCallback(() => {
-    return Promise.all([
-      fetchGovDepositParams(lcdEndpoint),
-      fetchGovUploadAccessParams(lcdEndpoint),
-      fetchGovVotingParams(lcdEndpoint),
-    ]).then<{
-      depositParams: DepositParamsReturn;
-      uploadAccess: UploadAccess;
-      votingParams: VotingParamsInternal;
-    }>((params) => {
-      const minDepositParam = params[0].minDeposit[0];
-      const [minDepositAmount, minDepositDenom] = [
-        demicrofy(minDepositParam.amount as U<Token>).toFixed(),
-        getTokenLabel(minDepositParam.denom),
-      ];
-      return {
-        depositParams: {
-          ...params[0],
-          minDeposit: {
-            ...minDepositParam,
-            amount: minDepositParam.amount as U<Token>,
-            formattedAmount: minDepositAmount as Token,
-            formattedDenom: minDepositDenom,
-            formattedToken: formatBalanceWithDenom({
-              coin: minDepositParam,
-              precision: 6,
-              decimalPoints: 2,
-            }),
+  const queryFn = useCallback(
+    () =>
+      Promise.all([
+        fetchGovDepositParams(lcdEndpoint),
+        fetchGovUploadAccessParams(lcdEndpoint),
+        fetchGovVotingParams(lcdEndpoint),
+      ]).then<GovParams>((params) => {
+        const minDepositParam = params[0].minDeposit[0];
+        const [minDepositAmount, minDepositDenom] = [
+          demicrofy(minDepositParam.amount as U<Token>).toFixed(),
+          getTokenLabel(minDepositParam.denom),
+        ];
+
+        return {
+          depositParams: {
+            ...params[0],
+            minDeposit: {
+              ...minDepositParam,
+              amount: minDepositParam.amount as U<Token>,
+              formattedAmount: minDepositAmount as Token,
+              formattedDenom: minDepositDenom,
+              formattedToken: formatBalanceWithDenom({
+                coin: minDepositParam,
+                precision: 6,
+                decimalPoints: 2,
+              }),
+            },
+            minInitialDeposit: big(params[0].minInitialDepositRatio)
+              .times(minDepositAmount)
+              .toFixed(2) as Token,
           },
-          minInitialDeposit: big(params[0].minInitialDepositRatio)
-            .times(minDepositAmount)
-            .toFixed(2) as Token,
-        },
-        uploadAccess: params[1],
-        votingParams: params[2],
-      };
-    });
-  }, [lcdEndpoint]);
+          uploadAccess: params[1],
+          votingParams: params[2],
+        };
+      }),
+    [lcdEndpoint]
+  );
 
   return useQuery(["gov_params", lcdEndpoint], queryFn, {
     keepPreviousData: true,

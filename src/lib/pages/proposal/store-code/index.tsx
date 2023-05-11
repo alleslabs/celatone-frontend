@@ -506,7 +506,7 @@ const StoreCodeProposal = () => {
                 />
 
                 {/* Deposit  */}
-                <InitialDeposit />
+                <InitialDeposit govParams={govParams} />
                 <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                   <AssetBox baseDenom={initialDeposit.denom} />
                   <ControllerInput

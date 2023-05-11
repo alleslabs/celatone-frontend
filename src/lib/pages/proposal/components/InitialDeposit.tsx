@@ -1,10 +1,14 @@
 import { Text, Box, Heading } from "@chakra-ui/react";
 
-import { useGovParams } from "lib/services/proposalService";
+import type { GovParams } from "lib/services/proposalService";
+import type { Option } from "lib/types";
 import { formatSeconds } from "lib/utils";
 
-export const InitialDeposit = () => {
-  const { data: govParams } = useGovParams();
+interface InitialDepositProps {
+  govParams: Option<GovParams>;
+}
+
+export const InitialDeposit = ({ govParams }: InitialDepositProps) => {
   const minDeposit = govParams?.depositParams.minDeposit;
 
   return (
