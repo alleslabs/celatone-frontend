@@ -32,17 +32,16 @@ export const NewProposalButton = () => {
         Create New Proposal
       </MenuButton>
       <MenuList>
-        {/* <StyledMenuItem
+        <StyledMenuItem
           icon={<CustomIcon name="code" />}
-          // TODO - Change navigation path
           onClick={() => {
             navigate({
-              pathname: "/proposal-storecode",
+              pathname: "/proposal/store-code",
             });
           }}
         >
           To Store Code
-        </StyledMenuItem> */}
+        </StyledMenuItem>
         {/* <StyledMenuItem
           icon={<CustomIcon name="contract-address" />}
           onClick={() => {

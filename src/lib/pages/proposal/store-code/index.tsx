@@ -16,6 +16,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
+import { InitialDeposit } from "../components/InitialDeposit";
 import {
   SIDEBAR_STORE_CODE_DETAILS,
   PROPOSAL_STORE_CODE_TEXT,
@@ -505,13 +506,7 @@ const StoreCodeProposal = () => {
                 />
 
                 {/* Deposit  */}
-                <Heading as="h6" variant="h6" mt={12}>
-                  Initial Deposit
-                </Heading>
-                <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                  Minimum deposit required to start 7-day voting period:{" "}
-                  {minDeposit?.formattedToken}
-                </Text>
+                <InitialDeposit govParams={govParams} />
                 <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                   <AssetBox baseDenom={initialDeposit.denom} />
                   <ControllerInput
