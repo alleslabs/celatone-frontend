@@ -1,3 +1,4 @@
+import { Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 import type { SidebarDetails } from "lib/components/StickySidebar";
@@ -84,7 +85,9 @@ export const SIDEBAR_STORE_CODE_DETAILS: SidebarDetails = {
           }
         >
           {" "}
-          <span style={{ color: "#D8BEFC" }}>Deploy Contract</span>
+          <Text as="span" color="lilac.main">
+            Deploy Contract
+          </Text>
         </Link>
         <br />
         <br />

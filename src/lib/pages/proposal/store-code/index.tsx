@@ -86,6 +86,8 @@ const defaultValues: StoreCodeProposalState = {
   codeHash: "",
 };
 
+const page = "proposal-store-code";
+
 const StoreCodeProposal = () => {
   const {
     appHumanAddress: { example: exampleHumanAddress },
@@ -97,7 +99,6 @@ const StoreCodeProposal = () => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();
-  const page = "proposal-store-code";
 
   // States
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
@@ -265,15 +266,12 @@ const StoreCodeProposal = () => {
   const proceed = useCallback(async () => {
     if (!wasmFile) return null;
 
-    AmpTrackUseSubmitProposal(
-      page,
-      initialDeposit.amount,
-      minDeposit?.formattedAmount,
-      {
-        addressesCount: addresses.length,
-        permission: AccessType[permission],
-      }
-    );
+    AmpTrackUseSubmitProposal(page, {
+      initialDeposit: initialDeposit.amount,
+      minDeposit: minDeposit?.formattedAmount,
+      addressesCount: addresses.length,
+      permission: AccessType[permission],
+    });
 
     const submitStoreCodeProposalMsg = async () => {
       return composeStoreCodeProposalMsg({

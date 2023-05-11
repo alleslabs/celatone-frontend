@@ -70,7 +70,7 @@ export const InstantiatePermissionRadio = ({
         emptyAddressesLength,
         addresses.length - emptyAddressesLength
       );
-  }, [addresses, append, page, permission, remove]);
+  }, [addresses, page, permission]);
 
   return (
     <RadioGroup

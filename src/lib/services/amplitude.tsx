@@ -2,8 +2,7 @@ import { track } from "@amplitude/analytics-browser";
 import big from "big.js";
 
 import type { AttachFundsType } from "lib/components/fund/types";
-import type { Dict, Option, Token } from "lib/types";
-import { AccessType } from "lib/types";
+import type { Option, Token, AccessType } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -229,7 +228,7 @@ export const AmpTrackUseInstantiatePermission = (
 ) =>
   track(AmpEvent.USE_INSTANTIATE_PERMISSION, {
     page,
-    type: AccessType[type],
+    type,
     emptyAddressesLength,
     addressesLength,
   });
@@ -239,12 +238,17 @@ export const AmpTrackUseDepositFill = (page: string, amount: Token) =>
 
 export const AmpTrackUseSubmitProposal = (
   page: string,
-  initialDeposit: string,
-  minDeposit: Option<string>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  properties?: Dict<string, any>
+  properties: {
+    initialDeposit: string;
+    minDeposit: Option<string>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
+  }
 ) => {
-  const proposalPeriod =
-    big(initialDeposit) < big(minDeposit || "0") ? "Deposit" : "Voting";
+  const proposalPeriod = big(properties.initialDeposit).lt(
+    properties.minDeposit || "0"
+  )
+    ? "Deposit"
+    : "Voting";
   track(AmpEvent.USE_SUBMIT_PROPOSAL, { page, proposalPeriod, ...properties });
 };
