@@ -1,18 +1,22 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Flex } from "@chakra-ui/react";
+
+const AccordionStepperItemLine = (props: FlexProps) => (
+  <Flex
+    {...props}
+    w="1px"
+    h="28px"
+    right="45%"
+    background="pebble.600"
+    position="absolute"
+    visibility="hidden"
+    zIndex={0}
+  />
+);
 
 export const AccordionStepperItem = () => (
   <Flex position="relative">
-    <Flex
-      id="before-stepper"
-      w="1px"
-      h="28px"
-      right="45%"
-      bottom="9px"
-      background="pebble.600"
-      position="absolute"
-      visibility="hidden"
-      zIndex={0}
-    />
+    <AccordionStepperItemLine id="before-stepper" bottom="9px" />
     <Flex
       id="stepper"
       borderRadius="full"
@@ -21,16 +25,6 @@ export const AccordionStepperItem = () => (
       borderColor="pebble.600"
       borderWidth="1px"
     />
-    <Flex
-      id="after-stepper"
-      w="1px"
-      h="28px"
-      right="45%"
-      top="9px"
-      background="pebble.600"
-      position="absolute"
-      visibility="hidden"
-      zIndex={0}
-    />
+    <AccordionStepperItemLine id="after-stepper" top="9px" />
   </Flex>
 );

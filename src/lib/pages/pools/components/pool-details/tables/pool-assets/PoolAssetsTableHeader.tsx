@@ -20,7 +20,6 @@ export const PoolAssetsTableHeader = ({
     sx={{ "> div": { color: "text.dark" } }}
   >
     <TableHeader>Asset</TableHeader>
-
     <TableHeader textAlign="right">
       {poolType === "Stableswap" ? "Scaling Factor" : "Weight (%)"}
     </TableHeader>
