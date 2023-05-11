@@ -34,7 +34,7 @@ const Deploy = () => {
   const navigate = useInternalNavigate();
   const selectChain = useSelectChain();
   const endpoint = useLCDEndpoint();
-  const [canUpload, setCanUpload] = useState(false);
+  const [isPermissionedNetwork, setIsPermissionedNetwork] = useState(false);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
@@ -43,7 +43,7 @@ const Deploy = () => {
   useEffect(() => {
     (async () => {
       const uploadAccess = await getUploadAccess(endpoint);
-      setCanUpload(uploadAccess === "Everybody");
+      setIsPermissionedNetwork(uploadAccess === "Everybody");
     })();
   });
 
@@ -56,7 +56,7 @@ const Deploy = () => {
       <Heading as="h5" variant="h5" my="48px">
         Select Deploy Option
       </Heading>
-      {!canUpload && (
+      {isPermissionedNetwork && (
         <Alert variant="violet" mb="16px" alignItems="flex-start" gap="1">
           <CustomIcon
             name="info-circle-solid"
@@ -73,7 +73,7 @@ const Deploy = () => {
       <ButtonCard
         title="Upload new WASM File"
         description={
-          !canUpload ? (
+          isPermissionedNetwork ? (
             <Flex fontSize="14px" gap={1}>
               <Text color="text.disabled">
                 Currently available on permissionless networks only.
@@ -91,7 +91,7 @@ const Deploy = () => {
             "Store a new Wasm file on-chain"
           )
         }
-        disabled={!canUpload}
+        disabled={isPermissionedNetwork}
         onClick={() => navigate({ pathname: "/upload" })}
         mb="16px"
       />
