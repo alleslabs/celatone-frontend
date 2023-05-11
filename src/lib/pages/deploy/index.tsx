@@ -6,13 +6,14 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   useInternalNavigate,
   useSelectChain,
-  useCurrentNetwork,
+  useLCDEndpoint,
 } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
@@ -21,15 +22,30 @@ import WasmPageContainer from "lib/components/WasmPageContainer";
 import { getChainNameByNetwork } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
+const getUploadAccess = async (endpoint: string) => {
+  const codeParamsUrl = `${endpoint}/cosmwasm/wasm/v1/codes/params`;
+  return axios
+    .get(codeParamsUrl)
+    .then((res) => res.data.params.code_upload_access.permission);
+};
+
 const Deploy = () => {
-  const { isMainnet } = useCurrentNetwork();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const selectChain = useSelectChain();
+  const endpoint = useLCDEndpoint();
+  const [canUpload, setCanUpload] = useState(false);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
   }, [router.isReady]);
+
+  useEffect(() => {
+    (async () => {
+      const uploadAccess = await getUploadAccess(endpoint);
+      setCanUpload(uploadAccess === "Everybody");
+    })();
+  });
 
   return (
     <WasmPageContainer>
@@ -40,7 +56,7 @@ const Deploy = () => {
       <Heading as="h5" variant="h5" my="48px">
         Select Deploy Option
       </Heading>
-      {isMainnet && (
+      {!canUpload && (
         <Alert variant="violet" mb="16px" alignItems="flex-start" gap="1">
           <CustomIcon
             name="info-circle-solid"
@@ -50,17 +66,17 @@ const Deploy = () => {
           <AlertDescription>
             Uploading new Wasm files on permissioned chains is coming soon to
             Celatone. Currently, you can upload codes and instantiate contracts
-            without permission on testnet.
+            on permissionless networks
           </AlertDescription>
         </Alert>
       )}
       <ButtonCard
         title="Upload new WASM File"
         description={
-          isMainnet ? (
+          !canUpload ? (
             <Flex fontSize="14px" gap={1}>
               <Text color="text.disabled">
-                Currently available on testnet only.
+                Currently available on permissionless networks only.
               </Text>
               <Text
                 color="honeydew.main"
@@ -75,7 +91,7 @@ const Deploy = () => {
             "Store a new Wasm file on-chain"
           )
         }
-        disabled={isMainnet}
+        disabled={!canUpload}
         onClick={() => navigate({ pathname: "/upload" })}
         mb="16px"
       />
