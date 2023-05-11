@@ -17,10 +17,12 @@ import {
 } from "lib/app-provider";
 import type { Network } from "lib/data";
 import { getChainNameByNetwork } from "lib/data";
+import { AmpTrackUseRightHelperPanel } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
 
 export interface SidebarMetadata {
+  page: string;
   title: string;
   description: React.ReactElement;
   toNetwork?: boolean;
@@ -70,8 +72,15 @@ export const StickySidebar = ({
   const selectChain = useSelectChain();
   const { isMainnet } = useCurrentNetwork();
   const { network } = useCurrentNetwork();
-  const { title, description, toNetwork, toPagePath, toPageTitle, toPage } =
-    metadata[network];
+  const {
+    title,
+    description,
+    toNetwork,
+    toPagePath,
+    toPageTitle,
+    toPage,
+    page,
+  } = metadata[network];
   const hasAction = toPage;
   return (
     <Box flex="4" px={8} position="relative" {...boxProps}>
@@ -105,17 +114,21 @@ export const StickySidebar = ({
               </Text>
               {toNetwork && (
                 <ToPage
-                  onClick={() =>
+                  onClick={() => {
+                    AmpTrackUseRightHelperPanel(page, "change-network");
                     selectChain(
                       getChainNameByNetwork(isMainnet ? "testnet" : "mainnet")
-                    )
-                  }
+                    );
+                  }}
                   title={isMainnet ? "Switch To Testnet" : "Switch To Mainnet"}
                 />
               )}
               {toPage && toPagePath && toPageTitle && (
                 <ToPage
-                  onClick={() => navigate({ pathname: toPagePath })}
+                  onClick={() => {
+                    AmpTrackUseRightHelperPanel(page, `to-${toPagePath}`);
+                    navigate({ pathname: toPagePath });
+                  }}
                   title={toPageTitle}
                 />
               )}
