@@ -41,6 +41,8 @@ export const ProposalTextCell = ({
       maxW={showName ? undefined : "full"}
       onMouseOver={() => setIsHoverText(true)}
       onMouseOut={() => setIsHoverText(false)}
+      onClick={(e) => e.stopPropagation()}
+      cursor="initial"
     >
       <Text
         ref={titleRef}

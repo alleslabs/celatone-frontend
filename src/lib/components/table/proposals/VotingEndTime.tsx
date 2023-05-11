@@ -31,6 +31,8 @@ export const VotingEndTime = ({
           fontSize: "12px",
         },
       }}
+      onClick={(e) => e.stopPropagation()}
+      cursor="initial"
     >
       <p>{isDepositPeriod ? "Voting not started" : formatUTC(votingEndTime)}</p>
       <p>
