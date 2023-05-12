@@ -15,7 +15,7 @@ export const useNetworkChange = () => {
     if (router.isReady) {
       let networkRoute = getFirstQueryParam(
         router.query.network,
-        "mainnet"
+        "testnet"
       ) as Network;
 
       if (
@@ -23,7 +23,7 @@ export const useNetworkChange = () => {
         networkRoute !== "testnet" &&
         networkRoute !== "localnet"
       )
-        networkRoute = "mainnet";
+        networkRoute = "testnet";
 
       if (networkRoute !== networkRef.current) {
         networkRef.current = networkRoute;

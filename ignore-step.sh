@@ -2,7 +2,7 @@
 
 # This script will exit if the branch is not main on Vercel production deploys
 
-if [[ "$VERCEL_GIT_COMMIT_REF" != "main"  ]] ; then
+if [[ "$VERCEL_GIT_COMMIT_REF" != "add/sei-network"  ]] ; then
   # Don't build
   echo "🛑 - Build cancelled"
   exit 0;

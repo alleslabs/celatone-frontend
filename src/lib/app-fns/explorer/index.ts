@@ -3,6 +3,7 @@ export const explorerMap: Record<string, string> = {
   osmosistestnet: "https://testnet.mintscan.io/osmosis-testnet",
   terra2: "https://terrasco.pe/mainnet",
   terra2testnet: "https://terrasco.pe/testnet",
+  seitestnet2: "https://testnet.mintscan.io/sei-testnet",
 };
 
 export const getExplorerProposalUrl = (chainName: string) => {
@@ -10,6 +11,7 @@ export const getExplorerProposalUrl = (chainName: string) => {
   switch (chainName) {
     case "osmosis":
     case "osmosistestnet":
+    case "seitestnet2":
       pathSuffix = "proposals";
       break;
     case "terra2":
@@ -27,6 +29,7 @@ export const getExplorerValidatorUrl = (chainName: string) => {
   switch (chainName) {
     case "osmosis":
     case "osmosistestnet":
+    case "seitestnet2":
       pathSuffix = "validators";
       break;
     case "terra2":
