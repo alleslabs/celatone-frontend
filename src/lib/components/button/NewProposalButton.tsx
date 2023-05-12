@@ -3,6 +3,7 @@ import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { Tooltip } from "../Tooltip";
 import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
@@ -11,6 +12,7 @@ export const NewProposalButton = () => {
   return (
     <Menu>
       <MenuButton
+        onClick={() => AmpTrack(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
         variant="primary"
         as={Button}
         rightIcon={<CustomIcon name="chevron-down" />}
@@ -18,19 +20,18 @@ export const NewProposalButton = () => {
         Create New Proposal
       </MenuButton>
       <MenuList>
-        {/* <MenuItem
+        <MenuItem
           icon={<CustomIcon name="code" color="pebble.600" />}
-          // TODO - Change navigation path
           onClick={() => {
             navigate({
-              pathname: "/proposal-storecode",
+              pathname: "/proposal/store-code",
             });
           }}
         >
           To Store Code
-        </MenuItem> */}
+        </MenuItem>
         {/* <MenuItem
-          icon={<CustomIcon name="contract-address" color="pebble.600" />}
+          icon={<CustomIcon name="contract-address" color="pebble.600"/>}
           onClick={() => {
             // TODO - Change navigation path
             navigate({

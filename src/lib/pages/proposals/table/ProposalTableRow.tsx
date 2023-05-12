@@ -10,6 +10,7 @@ import { Proposer } from "lib/components/table/proposals/Proposer";
 import { ResolvedHeight } from "lib/components/table/proposals/ResolvedHeight";
 import { StatusChip } from "lib/components/table/proposals/StatusChip";
 import { VotingEndTime } from "lib/components/table/proposals/VotingEndTime";
+import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Proposal, Option } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
@@ -44,15 +45,22 @@ export const ProposalTableRow = ({
       minW="min-content"
       cursor={isDepositFailed ? "default" : "pointer"}
       _hover={{ "> div": { bgColor: hoverBg } }}
-      onClick={() =>
-        !isDepositFailed &&
-        window.open(
-          `${getExplorerProposalUrl(
-            currentChainName
-          )}/${proposal.proposalId.toString()}`,
-          "_blank",
-          "noopener,noreferrer"
-        )
+      onClick={
+        !isDepositFailed
+          ? () => {
+              AmpTrackMintscan("proposal-detail", {
+                type: proposal.type,
+                status: proposal.status,
+              });
+              window.open(
+                `${getExplorerProposalUrl(
+                  currentChainName
+                )}/${proposal.proposalId.toString()}`,
+                "_blank",
+                "noopener,noreferrer"
+              );
+            }
+          : undefined
       }
     >
       <TableRowFreeze left="0">
@@ -61,6 +69,7 @@ export const ProposalTableRow = ({
           type="proposal_id"
           value={proposal.proposalId.toString()}
           showCopyOnHover
+          ampCopierSection="proposal-list"
         />
       </TableRowFreeze>
       <TableRowFreeze
@@ -90,10 +99,14 @@ export const ProposalTableRow = ({
           resolvedHeight={proposal.resolvedHeight}
           isDepositFailed={isDepositFailed}
           isDepositOrVoting={isDepositOrVoting}
+          amptrackSection="proposal-list"
         />
       </TableRow>
       <TableRow>
-        <Proposer proposer={proposal.proposer} />
+        <Proposer
+          proposer={proposal.proposer}
+          amptrackSection="proposal-list"
+        />
       </TableRow>
     </Grid>
   );
