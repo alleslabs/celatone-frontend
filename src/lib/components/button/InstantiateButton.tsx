@@ -82,7 +82,7 @@ export const InstantiateButton = ({
   );
 
   return (
-    <Tooltip hasArrow label={tooltipLabel}>
+    <Tooltip label={tooltipLabel}>
       <Button
         // Change to isDisabled when create proposal flow is done
         disabled={!isAllowed || !isWalletConnected}
