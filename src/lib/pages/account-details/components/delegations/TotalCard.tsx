@@ -1,7 +1,7 @@
 import { InfoIcon } from "@chakra-ui/icons";
 import { Flex, Heading, Image, Spinner, Text } from "@chakra-ui/react";
 
-import { Tooltip } from "lib/components/TooltipComponent";
+import { Tooltip } from "lib/components/Tooltip";
 import { NAToken } from "lib/icon";
 import type { Option, TokenWithValue } from "lib/types";
 import {

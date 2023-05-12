@@ -3,7 +3,7 @@ import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
-import { Tooltip } from "lib/components/TooltipComponent";
+import { Tooltip } from "lib/components/Tooltip";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import type { NavMenuProps } from "./type";

@@ -6,7 +6,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
-import { Tooltip } from "lib/components/TooltipComponent";
+import { Tooltip } from "lib/components/Tooltip";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";

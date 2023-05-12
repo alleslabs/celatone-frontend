@@ -1,6 +1,6 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
-import { Tooltip } from "../TooltipComponent";
+import { Tooltip } from "../Tooltip";
 import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { AmpTrackCopier } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
-import { Tooltip } from "./TooltipComponent";
+import { Tooltip } from "./Tooltip";
 
 interface CopyLinkProps {
   value: string;

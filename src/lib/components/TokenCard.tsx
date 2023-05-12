@@ -10,7 +10,7 @@ import {
 } from "lib/utils";
 
 import { Copier } from "./copy";
-import { Tooltip } from "./TooltipComponent";
+import { Tooltip } from "./Tooltip";
 
 interface TokenCardProps extends FlexProps {
   userBalance: BalanceWithAssetInfo;

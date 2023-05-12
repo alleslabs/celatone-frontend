@@ -1,7 +1,7 @@
 import { Tag } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
-import { Tooltip } from "lib/components/TooltipComponent";
+import { Tooltip } from "lib/components/Tooltip";
 
 interface RelationChipProps {
   isSigner: boolean;

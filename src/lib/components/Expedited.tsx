@@ -1,7 +1,7 @@
 import { Flex, Text, Highlight } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
-import { Tooltip } from "./TooltipComponent";
+import { Tooltip } from "./Tooltip";
 
 const ExpeditedText = (
   <Text variant="body3">

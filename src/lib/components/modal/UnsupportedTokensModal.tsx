@@ -18,7 +18,7 @@ import { useMemo } from "react";
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import { Tooltip } from "../TooltipComponent";
+import { Tooltip } from "../Tooltip";
 import { useGetAddressType, getAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";

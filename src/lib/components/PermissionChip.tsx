@@ -5,7 +5,7 @@ import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getPermissionHelper } from "lib/utils";
 
-import { Tooltip } from "./TooltipComponent";
+import { Tooltip } from "./Tooltip";
 
 interface PermissionChipProps {
   instantiatePermission: AccessConfigPermission;

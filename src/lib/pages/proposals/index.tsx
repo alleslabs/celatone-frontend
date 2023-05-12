@@ -10,7 +10,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { Tooltip } from "lib/components/TooltipComponent";
+import { Tooltip } from "lib/components/Tooltip";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useProposalList,

@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
-import { Tooltip } from "../TooltipComponent";
+import { Tooltip } from "../Tooltip";
 import { useInternalNavigate } from "lib/app-provider";
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";

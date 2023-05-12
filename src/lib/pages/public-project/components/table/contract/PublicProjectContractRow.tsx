@@ -18,7 +18,7 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import { TableRow } from "lib/components/table";
-import { Tooltip } from "lib/components/TooltipComponent";
+import { Tooltip } from "lib/components/Tooltip";
 
 import type { PublicContractInfo } from "./PublicProjectContractTable";
 

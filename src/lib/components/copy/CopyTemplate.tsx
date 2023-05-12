@@ -1,7 +1,7 @@
 import { Box, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
 
-import { Tooltip } from "../TooltipComponent";
+import { Tooltip } from "../Tooltip";
 
 interface CopyTemplateProps {
   value: string;

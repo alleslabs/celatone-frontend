@@ -4,7 +4,7 @@ import type { ChangeEvent } from "react";
 import { useRef, useState, useEffect } from "react";
 
 import { CustomIcon } from "../icon";
-import { Tooltip } from "../TooltipComponent";
+import { Tooltip } from "../Tooltip";
 
 interface EditableCellProps {
   initialValue?: string;

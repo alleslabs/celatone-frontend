@@ -4,7 +4,7 @@ import { snakeCase } from "snake-case";
 
 import { Copier } from "../copy";
 import { CustomIcon } from "../icon";
-import { Tooltip } from "../TooltipComponent";
+import { Tooltip } from "../Tooltip";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Option } from "lib/types";
@@ -89,7 +89,7 @@ export const SingleMsg = ({
       {/* Tag left over */}
       {tags && length && length - tags.length > 0 && (
         <Tag variant="gray" size="sm">
-          +{length - tags.length}{" "}
+          +{length - tags.length}
         </Tag>
       )}
       {/* Length  */}
