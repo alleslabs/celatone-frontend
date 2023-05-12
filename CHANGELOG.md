@@ -39,9 +39,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#317](https://github.com/alleslabs/celatone-frontend/pull/317) Add amplitude for proposal list page and pagination
+
 ### Improvements
 
 - [#323](https://github.com/alleslabs/celatone-frontend/pull/323) Revise back button and breadcrumb components
+- [#328](https://github.com/alleslabs/celatone-frontend/pull/328) Add proposal and pool page in sidebar navigation
 - [#298](https://github.com/alleslabs/celatone-frontend/pull/298) Show deposit/voting period from gov params and add minimum required alert
 
 ### Bug fixes
