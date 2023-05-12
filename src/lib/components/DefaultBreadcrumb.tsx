@@ -9,7 +9,7 @@ interface BreadcrumbProps {
   secondaryPage?: string;
   secondaryPath?: string;
   currentPage: string;
-  mb?: string;
+  mb?: number;
 }
 export const DefaultBreadcrumb = ({
   primaryPage,
@@ -17,13 +17,13 @@ export const DefaultBreadcrumb = ({
   secondaryPage = "",
   secondaryPath = "",
   currentPage,
-  mb = "0",
+  mb = 0,
 }: BreadcrumbProps) => (
   <Breadcrumb
     w="full"
     spacing="4px"
     mb={mb}
-    separator={<CustomIcon name="chevron-right" boxSize="3" />}
+    separator={<CustomIcon name="chevron-right" boxSize={3} />}
   >
     <BreadcrumbItem
       _hover={{ opacity: 0.8 }}

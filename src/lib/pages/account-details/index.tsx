@@ -94,7 +94,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
       <Flex direction="column" mb={6}>
         {publicDetail && (
           <DefaultBreadcrumb
-            mb="24px"
+            mb={6}
             primaryPage="Public Projects"
             primaryPath="/public-project"
             secondaryPage={publicDetail?.name}

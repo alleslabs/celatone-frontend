@@ -99,7 +99,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
       <Flex direction="column" w="full">
         {publicProject.publicDetail && (
           <DefaultBreadcrumb
-            mb="24px"
+            mb={6}
             primaryPage="Public Projects"
             primaryPath="/public-project"
             secondaryPage={publicProject.publicDetail.name}
