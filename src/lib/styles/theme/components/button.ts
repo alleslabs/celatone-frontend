@@ -1,6 +1,5 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
-
-type Dict = Record<string, string>;
+import { defineStyle } from "@chakra-ui/react";
 
 const pebble500 = "pebble.500";
 const pebble600 = "pebble.600";
@@ -22,12 +21,12 @@ const generateStyle = ({
   hoverBg,
   activeBg,
 }: {
-  basic: Dict;
-  disabled: Dict;
+  basic: object;
+  disabled: object;
   hoverBg: string;
   activeBg: string;
 }) => {
-  return {
+  return defineStyle({
     ...basic,
     _hover: {
       background: hoverBg,
@@ -39,7 +38,7 @@ const generateStyle = ({
     _active: {
       background: activeBg,
     },
-  };
+  });
 };
 
 export const Button: ComponentStyleConfig = {
@@ -75,12 +74,16 @@ export const Button: ComponentStyleConfig = {
       basic: {
         background: "violet.main",
         color: "text.main",
-        "> svg": "text.main",
+        "& span": {
+          color: "text.main",
+        },
       },
       disabled: {
         background: violetBg,
         color: pebble600,
-        "> svg": pebble600,
+        "& span": {
+          color: pebble600,
+        },
       },
       hoverBg: violetDark,
       activeBg: violetLight,
@@ -111,14 +114,20 @@ export const Button: ComponentStyleConfig = {
         border: borderDefualt,
         borderColor: violetLight,
         color: violetLight,
-        "> div": violetLight,
-        "> svg": violetLight,
+        "> div": {
+          color: violetLight,
+        },
+        "> svg": {
+          color: violetLight,
+        },
       },
       disabled: {
         border: borderDefualt,
         borderColor: pebble700,
         color: pebble600,
-        "> svg": pebble600,
+        "> svg": {
+          color: pebble600,
+        },
       },
       hoverBg: violetBg,
       activeBg: "transparent",
@@ -128,13 +137,17 @@ export const Button: ComponentStyleConfig = {
         border: borderDefualt,
         borderColor: pebble600,
         color: "text.dark",
-        "> svg": "text.dark",
+        "> svg": {
+          color: "text.dark",
+        },
       },
       disabled: {
         border: borderDefualt,
         borderColor: pebble700,
         color: pebble600,
-        "> svg": pebble600,
+        "> svg": {
+          color: pebble600,
+        },
       },
       hoverBg: pebble700,
       activeBg: "transparent",
@@ -144,12 +157,16 @@ export const Button: ComponentStyleConfig = {
         border: borderDefualt,
         borderColor: honeydewBg,
         color: honeydewMain,
-        "> svg": honeydewMain,
+        "> svg": {
+          color: honeydewMain,
+        },
       },
       disabled: {
         border: honeydewDarker,
         color: honeydewDarker,
-        "> svg": honeydewDarker,
+        "> svg": {
+          color: honeydewDarker,
+        },
       },
       hoverBg: honeydewBg,
       activeBg: "transparent",
@@ -170,11 +187,15 @@ export const Button: ComponentStyleConfig = {
     "ghost-primary": generateStyle({
       basic: {
         color: violetLight,
-        "> svg": violetLight,
+        "> svg": {
+          color: "violetLight",
+        },
       },
       disabled: {
         color: violetDark,
-        "> svg": violetDark,
+        "> svg": {
+          color: violetDark,
+        },
       },
       hoverBg: violetBg,
       activeBg: "transparent",
@@ -182,11 +203,15 @@ export const Button: ComponentStyleConfig = {
     "ghost-lilac": generateStyle({
       basic: {
         color: "lilac.main",
-        "> svg": "lilac.main",
+        "> svg": {
+          color: "lilac.main",
+        },
       },
       disabled: {
         color: lilacBg,
-        "> svg": lilacBg,
+        "> svg": {
+          color: lilacBg,
+        },
       },
       hoverBg: lilacBg,
       activeBg: "transparent",
@@ -194,11 +219,15 @@ export const Button: ComponentStyleConfig = {
     "ghost-info": generateStyle({
       basic: {
         color: honeydewMain,
-        "> svg": honeydewMain,
+        "> svg": {
+          color: honeydewMain,
+        },
       },
       disabled: {
         color: honeydewBg,
-        "> svg": honeydewBg,
+        "> svg": {
+          color: honeydewBg,
+        },
       },
       hoverBg: honeydewBg,
       activeBg: "transparent",
@@ -206,11 +235,15 @@ export const Button: ComponentStyleConfig = {
     "ghost-gray": generateStyle({
       basic: {
         color: "pebble.400",
-        "> svg": "pebble.400",
+        "> svg": {
+          color: "pebble.400",
+        },
       },
       disabled: {
         color: pebble500,
-        "> svg": pebble500,
+        "> svg": {
+          color: pebble500,
+        },
       },
       hoverBg: pebble800,
       activeBg: "transparent",
