@@ -2,7 +2,7 @@ import { track } from "@amplitude/analytics-browser";
 import big from "big.js";
 
 import type { AttachFundsType } from "lib/components/fund/types";
-import type { Option, Token, AccessType, Dict } from "lib/types";
+import type { Option, Token, Dict } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -239,7 +239,7 @@ export const AmpTrackUseUnpin = (page: string, check: boolean) =>
 
 export const AmpTrackUseInstantiatePermission = (
   page: string,
-  type: AccessType,
+  type: string,
   emptyAddressesLength: number,
   addressesLength: number
 ) =>
@@ -253,12 +253,12 @@ export const AmpTrackUseInstantiatePermission = (
 export const AmpTrackUseWhitelistedAddresses = (
   page: string,
   emptyAddressesLength: number,
-  addressesLength: number
+  filledAddressesLength: number
 ) =>
   track(AmpEvent.USE_WHITELISTED_ADDRESSES, {
     page,
     emptyAddressesLength,
-    addressesLength,
+    filledAddressesLength,
   });
 
 export const AmpTrackUseDepositFill = (page: string, amount: Token) =>

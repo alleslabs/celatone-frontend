@@ -347,7 +347,7 @@ const StoreCodeProposal = () => {
             <ConnectWalletAlert
               subtitle={PROPOSAL_STORE_CODE_TEXT.connectWallet}
               mt={12}
-              page="proposal_store_code"
+              page={page}
             />
             <form>
               <Flex my="48px" gap={6} direction="column">

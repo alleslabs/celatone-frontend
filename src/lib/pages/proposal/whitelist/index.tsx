@@ -44,6 +44,7 @@ import {
   AmpTrack,
   AmpTrackUseSubmitProposal,
   AmpTrackUseWhitelistedAddresses,
+  AmpTrackUseDepositFill,
 } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
@@ -62,6 +63,8 @@ const defaultValues: WhiteListState = {
   addresses: [{ address: "" as Addr }],
   initialDeposit: { denom: "", amount: "" } as Coin,
 };
+
+const ampPage = "proposal_whitelist";
 
 const ProposalToWhitelist = () => {
   const router = useRouter();
@@ -172,7 +175,7 @@ const ProposalToWhitelist = () => {
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
     });
-    AmpTrackUseSubmitProposal("proposal_whitelist", {
+    AmpTrackUseSubmitProposal(ampPage, {
       initialDeposit: initialDeposit.amount,
       assetDenom: initialDeposit.denom,
       minDeposit: minDeposit?.formattedAmount,
@@ -193,16 +196,18 @@ const ProposalToWhitelist = () => {
     broadcast,
   ]);
 
-  const updateAmptrackAddresses = useCallback(() => {
+  useEffect(() => {
     const emptyAddressesLength = addresses.filter(
       (addr) => addr.address.trim().length === 0
     ).length;
     AmpTrackUseWhitelistedAddresses(
-      "proposal_whitelist",
+      ampPage,
       emptyAddressesLength,
       addresses.length - emptyAddressesLength
     );
-  }, [addresses]);
+    // Run this effect only when the amount of address input changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses.length]);
 
   useEffect(() => {
     if (minDeposit)
@@ -251,7 +256,7 @@ const ProposalToWhitelist = () => {
             <ConnectWalletAlert
               subtitle="You need to connect wallet to proceed this action"
               mt={12}
-              page="proposal_whitelist"
+              page={ampPage}
             />
             <form>
               <Flex
@@ -353,7 +358,6 @@ const ProposalToWhitelist = () => {
                     disabled={fields.length <= 1}
                     onClick={() => {
                       remove(idx);
-                      updateAmptrackAddresses();
                     }}
                   >
                     <CustomIcon
@@ -368,7 +372,6 @@ const ProposalToWhitelist = () => {
                 mt={3}
                 onClick={() => {
                   append({ address: "" as Addr });
-                  updateAmptrackAddresses();
                 }}
                 leftIcon={<CustomIcon name="plus" color="violet.light" />}
               >
@@ -395,6 +398,10 @@ const ProposalToWhitelist = () => {
                       color="honeydew.main"
                       onClick={() => {
                         if (!minDeposit) return;
+                        AmpTrackUseDepositFill(
+                          ampPage,
+                          minDeposit.formattedAmount
+                        );
                         setValue(
                           "initialDeposit.amount",
                           minDeposit.formattedAmount

@@ -1,6 +1,6 @@
 import { Text, Box, Radio, RadioGroup, Button, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import { useCallback } from "react";
+import { useEffect } from "react";
 import type { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 
@@ -59,18 +59,21 @@ export const InstantiatePermissionRadio = ({
     name: "addresses",
   });
 
-  const updateAmptrackAddresses = useCallback(() => {
+  useEffect(() => {
     const emptyAddressesLength = addresses.filter(
       (addr) => addr.address.trim().length === 0
     ).length;
-    if (page)
+    if (page) {
       AmpTrackUseInstantiatePermission(
         page,
-        permission,
+        AccessType[permission],
         emptyAddressesLength,
         addresses.length - emptyAddressesLength
       );
-  }, [addresses, page, permission]);
+    }
+    // Run this effect only when the amount of address input or selected permission changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses.length, page, permission]);
 
   return (
     <RadioGroup
@@ -78,7 +81,6 @@ export const InstantiatePermissionRadio = ({
       onChange={(nextValue: string) => {
         const value = parseInt(nextValue, 10);
         setValue("permission", value);
-        updateAmptrackAddresses();
       }}
       value={permission}
     >
@@ -143,7 +145,6 @@ export const InstantiatePermissionRadio = ({
                     disabled={fields.length <= 1}
                     onClick={() => {
                       remove(idx);
-                      updateAmptrackAddresses();
                     }}
                   >
                     <CustomIcon
@@ -159,7 +160,6 @@ export const InstantiatePermissionRadio = ({
                 mx="auto"
                 onClick={() => {
                   append({ address: "" as Addr });
-                  updateAmptrackAddresses();
                 }}
                 leftIcon={<CustomIcon name="plus" color="violet.light" />}
               >
