@@ -39,8 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-
-- [#331](https://github.com/alleslabs/celatone-frontend/pull/331) Update logic to enable upload wasm code
+- [#327](https://github.com/alleslabs/celatone-frontend/pull/327) Update logic to enable upload wasm code
 - [#317](https://github.com/alleslabs/celatone-frontend/pull/317) Add amplitude for proposal list page and pagination
 
 ### Improvements
@@ -108,7 +107,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#327](https://github.com/alleslabs/celatone-frontend/pull/327) Fix permissioned upload condition
 - [#306](https://github.com/alleslabs/celatone-frontend/pull/306) Fix react query function timeout and retries, minor ui bugs
 - [#307](https://github.com/alleslabs/celatone-frontend/pull/307) Remove minor ui in account detail
 - [#297](https://github.com/alleslabs/celatone-frontend/pull/297) Fix open new tab on tx modal link clicked

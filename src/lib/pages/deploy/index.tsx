@@ -1,3 +1,4 @@
+import type { AlertProps } from "@chakra-ui/react";
 import {
   Alert,
   AlertDescription,
@@ -7,62 +8,70 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 
-import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useUploadAccessParams } from "lib/services/proposalService";
+import type { HumanAddr } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 
-const getCodeUploadAccess = async (endpoint: string) => {
-  const codeParamsUrl = `${endpoint}/cosmwasm/wasm/v1/codes/params`;
-  return axios
-    .get(codeParamsUrl)
-    .then((res) => res.data.params.code_upload_access);
-};
-
-const enableUpload = (
-  isPermissionedNetwork: boolean,
-  whitelistedAddresses: string[],
-  address: string | undefined
-) => {
-  let enabled = false;
-  if (!isPermissionedNetwork) {
-    enabled = true;
-  }
-  if (address && isPermissionedNetwork) {
-    enabled = whitelistedAddresses.includes(address);
-  }
-  return enabled;
-};
+const getAlertContent = (
+  enabled: boolean
+): { variant: AlertProps["variant"]; icon: JSX.Element; description: string } =>
+  enabled
+    ? {
+        variant: "success",
+        icon: (
+          <CustomIcon
+            name="check-circle-solid"
+            color="success.main"
+            boxSize={4}
+          />
+        ),
+        description: "Your address is allowed to directly upload Wasm files",
+      }
+    : {
+        variant: "violet",
+        icon: (
+          <CustomIcon
+            name="info-circle-solid"
+            color="violet.light"
+            boxSize={4}
+          />
+        ),
+        description:
+          "The current network is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.",
+      };
 
 const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const endpoint = useLCDEndpoint();
   const { address } = useWallet();
-  const [isPermissionedNetwork, setIsPermissionedNetwork] = useState(false);
-  const [whitelistedAddresses, setWhitelistedAddresses] = useState<string[]>(
-    []
-  );
+  const { data, isFetching } = useUploadAccessParams();
+
+  const isPermissionedNetwork =
+    data?.permission !== AccessConfigPermission.EVERYBODY;
+
+  const enableUpload = useMemo(() => {
+    if (!isPermissionedNetwork) return true;
+    return Boolean(data?.addresses?.includes(address as HumanAddr));
+  }, [data, address, isPermissionedNetwork]);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
   }, [router.isReady]);
 
-  useEffect(() => {
-    (async () => {
-      const codeUploadAccess = await getCodeUploadAccess(endpoint);
-      setIsPermissionedNetwork(codeUploadAccess.permission !== "Everybody");
-      setWhitelistedAddresses(codeUploadAccess.addresses);
-    })();
-  }, [endpoint]);
+  if (isFetching) return <Loading />;
 
+  const { variant, icon, description } = getAlertContent(enableUpload);
   return (
     <WasmPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
@@ -74,54 +83,20 @@ const Deploy = () => {
       </Heading>
       <ConnectWalletAlert
         subtitle="You need to connect wallet to proceed this action"
-        mb={8}
+        mb={4}
       />
-      {!enableUpload(isPermissionedNetwork, whitelistedAddresses, address) && (
-        <Alert variant="violet" mb="16px" alignItems="flex-start" gap="1">
-          <CustomIcon
-            name="info-circle-solid"
-            color="violet.ligth"
-            boxSize="20px"
-          />
-          <AlertDescription>
-            The current network is a permissioned CosmWasm network. Only
-            whitelisted addresses can directly upload Wasm files.
-          </AlertDescription>
-        </Alert>
-      )}
-      {isPermissionedNetwork &&
-        enableUpload(isPermissionedNetwork, whitelistedAddresses, address) && (
-          <Alert mb={8} variant="success">
-            <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
-              boxSize="6"
-              display="flex"
-              alignItems="center"
-            />
-            <AlertDescription mx={4}>
-              Your address is allowed to directly upload Wasm files
-            </AlertDescription>
-          </Alert>
-        )}
+      <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
+        {icon}
+        <AlertDescription>{description}</AlertDescription>
+      </Alert>
       <ButtonCard
         title="Upload new WASM File"
         description={
-          isPermissionedNetwork ? (
-            <Flex fontSize="14px" gap={1}>
-              <Text
-                color={isPermissionedNetwork ? "text.disabled" : "text.main"}
-              >
-                Available for whitelisted addresses only
-              </Text>
-            </Flex>
-          ) : (
-            "Store a new Wasm file on-chain"
-          )
+          isPermissionedNetwork
+            ? "Available for whitelisted addresses only"
+            : "Store a new Wasm file on-chain"
         }
-        disabled={
-          !enableUpload(isPermissionedNetwork, whitelistedAddresses, address)
-        }
+        disabled={!enableUpload || !address}
         onClick={() => navigate({ pathname: "/upload" })}
         mb="16px"
       />
