@@ -26,7 +26,7 @@ export const CommandSection = () => {
     type: string
   ) => {
     if (isFetching) {
-      return <Spinner color="pebble.600" size="md" mx={1} />;
+      return <Spinner size="md" mx={1} />;
     }
     if (cmds.length) {
       return (

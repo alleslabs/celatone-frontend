@@ -19,6 +19,7 @@ const baseStyle = definePartsStyle({
     _focus: {
       bg: "pebble.800",
     },
+    fontSize: "14px",
   },
   divider: {
     borderColor: "pebble.700",

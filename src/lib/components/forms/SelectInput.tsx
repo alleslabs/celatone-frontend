@@ -25,7 +25,6 @@ interface SelectInputProps<T extends string> {
     value: T;
     disabled: boolean;
     icon?: IconKeys;
-    iconColor?: string;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
@@ -117,10 +116,7 @@ export const SelectInput = <T extends string>({
           <div className="form-label">{formLabel}</div>
           {selectedOption?.icon && (
             <InputLeftElement pointerEvents="none" h="full" ml="1">
-              <CustomIcon
-                name={selectedOption.icon}
-                color={selectedOption.iconColor}
-              />
+              <CustomIcon name={selectedOption.icon} color="pebble.600" />
             </InputLeftElement>
           )}
           <Input
@@ -134,7 +130,7 @@ export const SelectInput = <T extends string>({
             pl={selectedOption?.icon ? 9 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <CustomIcon name="chevron-down" />
+            <CustomIcon name="chevron-down" color="pebble.600" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
@@ -156,7 +152,7 @@ export const SelectInput = <T extends string>({
           },
         }}
       >
-        {options.map(({ label, value, disabled, icon, iconColor }) => (
+        {options.map(({ label, value, disabled, icon }) => (
           <SelectItem
             key={value}
             onSelect={() => {
@@ -166,7 +162,7 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {icon && <CustomIcon name={icon} color={iconColor} />}
+            {icon && <CustomIcon name={icon} color="pebble.600" />}
             {label}
           </SelectItem>
         ))}

@@ -1,6 +1,7 @@
 import { InfoIcon } from "@chakra-ui/icons";
-import { Flex, Heading, Image, Spinner, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Heading, Image, Spinner, Text } from "@chakra-ui/react";
 
+import { Tooltip } from "lib/components/Tooltip";
 import { NAToken } from "lib/icon";
 import type { Option, TokenWithValue } from "lib/types";
 import {
@@ -24,19 +25,14 @@ export const TotalCard = ({
 }: TotalCardProps) => (
   <Flex direction="column" minW="233px" gap={1}>
     {isLoading ? (
-      <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
+      <Spinner mt={2} alignSelf="center" size="xl" />
     ) : (
       <>
         <Flex alignItems="center" gap={1}>
           <Text variant="body2" fontWeight="500" textColor="text.dark">
             {title}
           </Text>
-          <Tooltip
-            hasArrow
-            placement="top"
-            label={message}
-            bg="honeydew.darker"
-          >
+          <Tooltip label={message}>
             <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
           </Tooltip>
         </Flex>

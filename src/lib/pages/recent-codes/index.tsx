@@ -51,10 +51,16 @@ const RecentCodes = observer(() => {
   return (
     <PageContainer>
       <Box pb="48px">
-        <Heading as="h1" size="lg" mb={4}>
+        <Heading
+          variant="h5"
+          as="h5"
+          minH="36px"
+          display="flex"
+          alignItems="center"
+        >
           Recent Codes
         </Heading>
-        <Flex gap={2}>
+        <Flex gap={3} mt={8}>
           <InputWithIcon
             placeholder="Search with code ID or code name"
             value={keyword}

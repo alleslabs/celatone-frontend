@@ -29,7 +29,7 @@ export const RadioCard = ({
             {value}
           </Text>
           {isLoading ? (
-            <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
+            <Spinner mt={2} alignSelf="center" size="xl" />
           ) : (
             <Flex alignItems="end" gap={1}>
               <Heading variant="h6" as="h6">

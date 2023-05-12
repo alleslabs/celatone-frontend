@@ -5,7 +5,6 @@ import {
   Flex,
   Box,
   Button,
-  Text,
 } from "@chakra-ui/react";
 import type { AlertProps } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
@@ -42,15 +41,14 @@ export const ConnectWalletAlert = ({
       py="12px"
     >
       <Flex gap={2}>
-        <CustomIcon name="wallet-solid" color="honeydew.main" boxSize="4" />
+        <CustomIcon name="wallet-solid" boxSize="4" />
         <Box>
           <AlertTitle>{title}</AlertTitle>
           <AlertDescription>{subtitle}</AlertDescription>
         </Box>
       </Flex>
       <Button size="sm" variant="ghost-info" gap={2} onClick={onClickConnect}>
-        <CustomIcon name="connect" color="honeydew.main" />
-        <Text color="honeydew.main">Connect Wallet</Text>
+        <CustomIcon name="connect" /> Connect Wallet
       </Button>
     </Alert>
   ) : null;
