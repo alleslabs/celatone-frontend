@@ -1,12 +1,12 @@
 import {
   Alert,
   AlertDescription,
-  AlertIcon,
   Badge,
   Flex,
   Heading,
 } from "@chakra-ui/react";
 
+import { CustomIcon } from "lib/components/icon";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type { TxData } from "lib/services/txService";
 
@@ -23,17 +23,21 @@ export const MessageSection = ({ txData, assetInfos }: MessageSectionProps) => {
     <Flex direction="column" flex={1} gap={4}>
       {txData.isTxFailed && (
         <Alert variant="error" mb={2} alignItems="center">
-          <AlertIcon />
-          <AlertDescription>{txData.raw_log}</AlertDescription>
+          <Flex gap={2} align="center">
+            <CustomIcon
+              name="alert-circle-solid"
+              color="error.main"
+              boxSize={4}
+            />
+            <AlertDescription>{txData.raw_log}</AlertDescription>
+          </Flex>
         </Alert>
       )}
       <Flex align="center" gap={2}>
         <Heading as="h6" variant="h6">
           Messages
         </Heading>
-        <Badge variant="oreo" textAlign="center">
-          {msgs.length}
-        </Badge>
+        <Badge>{msgs.length}</Badge>
       </Flex>
       {msgs.map((msg, idx) => {
         const msgLog = txData.logs.find((log) => log.msg_index === idx);

@@ -75,6 +75,7 @@ export const ProposalTableRow = ({
       <TableRowFreeze
         left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
+        color="pebble.800"
       >
         <ProposalTextCell
           title={proposal.title}

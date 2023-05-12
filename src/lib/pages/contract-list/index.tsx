@@ -28,7 +28,7 @@ const AllContractListsPage = observer(() => {
 
   return (
     <PageContainer>
-      <Flex direction="column" alignItems="center" gap={12}>
+      <Flex direction="column" alignItems="center" gap={8}>
         <Flex justifyContent="space-between" w="full" alignItems="center">
           <Heading as="h5" variant="h5">
             Contract lists
@@ -36,9 +36,7 @@ const AllContractListsPage = observer(() => {
           <CreateNewListModal
             buttonProps={{
               variant: "outline-primary",
-              leftIcon: (
-                <CustomIcon name="plus" boxSize="3" color="violet.light" />
-              ),
+              leftIcon: <CustomIcon name="plus" boxSize="3" />,
               children: "Create new list",
             }}
           />

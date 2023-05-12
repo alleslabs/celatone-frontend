@@ -37,17 +37,6 @@ const listItemProps: CSSProperties = {
   cursor: "pointer",
 };
 
-const tagItemProps: CSSProperties = {
-  borderRadius: "24px",
-  cursor: "pointer",
-  whiteSpace: "nowrap",
-  alignItems: "center",
-  display: "flex",
-  textTransform: "none",
-  gap: "4px",
-  marginRight: "8px",
-};
-
 // TODO - Refactor this along with TagSelection
 export const TxFilterSelection = forwardRef<
   HTMLInputElement,
@@ -136,13 +125,14 @@ export const TxFilterSelection = forwardRef<
                     key={option}
                   >
                     <Tag
-                      style={tagItemProps}
-                      size="md"
-                      bgColor="violet.light"
-                      color="pebble.900"
+                      variant="violet-light"
+                      gap={1}
+                      mr={1}
+                      whiteSpace="nowrap"
+                      cursor="pointer"
                     >
                       {displayActionValue(option)}
-                      <CustomIcon name="close" boxSize="3" color="pebble.900" />
+                      <CustomIcon name="close" boxSize="3" />
                     </Tag>
                   </Flex>
                 ))}
@@ -210,7 +200,11 @@ export const TxFilterSelection = forwardRef<
                     <Text>{displayActionValue(option)}</Text>
 
                     {isOptionSelected(option) && (
-                      <CustomIcon name="check" data-label={option} />
+                      <CustomIcon
+                        name="check"
+                        data-label={option}
+                        color="pebble.600"
+                      />
                     )}
                   </Flex>
                 </ListItem>

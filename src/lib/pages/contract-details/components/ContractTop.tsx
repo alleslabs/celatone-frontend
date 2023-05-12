@@ -62,7 +62,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
                 contractLocalInfo.lists ? (
                   <CustomIcon name="bookmark-solid" color="violet.light" />
                 ) : (
-                  <CustomIcon name="bookmark" />
+                  <CustomIcon name="bookmark" color="pebble.600" />
                 )
               }
             />
@@ -154,14 +154,14 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         />
         <Button
           variant="outline-primary"
-          leftIcon={<CustomIcon name="query" color="violet.light" />}
+          leftIcon={<CustomIcon name="query" />}
           onClick={goToQuery}
         >
           Query
         </Button>
         <Button
           variant="outline-primary"
-          leftIcon={<CustomIcon name="execute" color="violet.light" />}
+          leftIcon={<CustomIcon name="execute" />}
           onClick={goToExecute}
         >
           Execute

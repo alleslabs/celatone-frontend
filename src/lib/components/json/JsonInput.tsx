@@ -63,7 +63,7 @@ const getResponse = (jsonState: JsonState) => {
     case "empty":
     default:
       return {
-        color: "white",
+        color: "text.main",
         response: null,
       };
   }

@@ -111,7 +111,6 @@ const Deploy = () => {
           onClick={() => {
             router.back();
           }}
-          size="md"
           variant="ghost-gray"
         >
           Cancel

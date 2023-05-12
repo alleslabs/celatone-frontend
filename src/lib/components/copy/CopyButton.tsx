@@ -29,6 +29,7 @@ export const CopyButton = ({
   <CopyTemplate
     value={value}
     copyLabel={copyLabel}
+    isDisabled={isDisable}
     triggerElement={
       <Button
         isDisabled={isDisable}
@@ -38,15 +39,7 @@ export const CopyButton = ({
         onClick={() =>
           AmpTrack(AmpEvent.USE_COPY_BUTTON, { section: amptrackSection })
         }
-        leftIcon={
-          hasIcon ? (
-            <CustomIcon
-              name="copy"
-              color={isDisable ? "honeydew.darker" : "honeydew.main"}
-              boxSize="4"
-            />
-          ) : undefined
-        }
+        leftIcon={hasIcon ? <CustomIcon name="copy" boxSize="4" /> : undefined}
         {...buttonProps}
       >
         {buttonText}
