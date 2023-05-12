@@ -10,16 +10,11 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import {
-  useInternalNavigate,
-  useSelectChain,
-  useLCDEndpoint,
-} from "lib/app-provider";
+import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { getChainNameByNetwork } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const getUploadAccess = async (endpoint: string) => {
@@ -32,7 +27,6 @@ const getUploadAccess = async (endpoint: string) => {
 const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const selectChain = useSelectChain();
   const endpoint = useLCDEndpoint();
   const [isPermissionedNetwork, setIsPermissionedNetwork] = useState(false);
 
@@ -43,7 +37,7 @@ const Deploy = () => {
   useEffect(() => {
     (async () => {
       const uploadAccess = await getUploadAccess(endpoint);
-      setIsPermissionedNetwork(uploadAccess === "Everybody");
+      setIsPermissionedNetwork(uploadAccess !== "Everybody");
     })();
   });
 
@@ -64,7 +58,7 @@ const Deploy = () => {
             boxSize="20px"
           />
           <AlertDescription>
-            Uploading new Wasm files on permissioned chains is coming soon to
+            Uploading new Wasm files on permissioned networks is coming soon to
             Celatone. Currently, you can upload codes and instantiate contracts
             on permissionless networks
           </AlertDescription>
@@ -77,14 +71,6 @@ const Deploy = () => {
             <Flex fontSize="14px" gap={1}>
               <Text color="text.disabled">
                 Currently available on permissionless networks only.
-              </Text>
-              <Text
-                color="honeydew.main"
-                _hover={{ textDecoration: "underline" }}
-                cursor="pointer"
-                onClick={() => selectChain(getChainNameByNetwork("testnet"))}
-              >
-                Switch to testnet
               </Text>
             </Flex>
           ) : (
