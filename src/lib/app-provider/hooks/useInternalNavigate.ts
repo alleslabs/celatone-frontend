@@ -3,7 +3,7 @@ import type { Router } from "next/router";
 import type { ParsedUrlQueryInput } from "node:querystring";
 import { useCallback } from "react";
 
-import { SUPPORTED_CHAIN_IDS } from "env";
+import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
 import { getFirstQueryParam } from "lib/utils";
 
 interface NavigationArgs {
@@ -15,7 +15,6 @@ interface NavigationArgs {
 
 export const useInternalNavigate = () => {
   const router = useRouter();
-  const defaultChainId = SUPPORTED_CHAIN_IDS[0] ?? "";
 
   return useCallback(
     ({
@@ -33,7 +32,7 @@ export const useInternalNavigate = () => {
               getFirstQueryParam(router.query.network)
             )
               ? router.query.network
-              : defaultChainId,
+              : DEFAULT_SUPPORTED_CHAIN_ID,
             ...query,
           },
         },
@@ -41,6 +40,6 @@ export const useInternalNavigate = () => {
         options
       );
     },
-    [defaultChainId, router]
+    [router]
   );
 };

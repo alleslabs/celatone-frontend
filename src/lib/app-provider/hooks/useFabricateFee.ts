@@ -2,9 +2,8 @@ import type { StdFee } from "@cosmjs/stargate";
 import big from "big.js";
 import { useCallback } from "react";
 
+import { useCelatoneApp } from "../contexts/app";
 import type { Gas } from "lib/types";
-
-import { useCelatoneApp } from "./useCelatoneApp";
 
 export const useFabricateFee = () => {
   const {

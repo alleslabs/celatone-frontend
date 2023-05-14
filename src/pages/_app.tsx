@@ -9,7 +9,6 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
 
-import { CHAIN_CONFIGS } from "config";
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
@@ -38,18 +37,6 @@ configurePersistable({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
-  const availableChainsEndpoints = Object.values(CHAIN_CONFIGS).reduce<{
-    [chainName: string]: { rpc: string[]; rest: string[] };
-  }>(
-    (endpoints, config) => ({
-      ...endpoints,
-      [config.registryChainName]: {
-        rpc: [config.rpc],
-        rest: [config.lcd],
-      },
-    }),
-    {}
-  );
 
   return (
     <Chakra>
@@ -74,7 +61,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           chains={[...chains, terra2testnet]}
           assetLists={[...assets, terra2testnetAssets]}
           wallets={wallets}
-          endpointOptions={availableChainsEndpoints}
         >
           <StoreProvider>
             <AppProvider>

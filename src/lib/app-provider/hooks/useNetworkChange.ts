@@ -1,36 +1,30 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
+import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
 import { getFirstQueryParam } from "lib/utils";
 
 export const useNetworkChange = (
-  availableChainIds: string[],
   handleOnChainIdChange: (newChainId: string) => void
 ) => {
   const router = useRouter();
   const networkRef = useRef<string>();
 
-  const defaultChainId = availableChainIds[0] ?? "";
   useEffect(() => {
     if (router.isReady) {
       let networkRoute = getFirstQueryParam(
         router.query.network,
-        defaultChainId
+        DEFAULT_SUPPORTED_CHAIN_ID
       );
 
-      if (availableChainIds.every((chainId) => chainId !== networkRoute))
-        networkRoute = defaultChainId;
+      // Redirect to default chain if the chain is not supported by the app
+      if (!SUPPORTED_CHAIN_IDS.includes(networkRoute))
+        networkRoute = DEFAULT_SUPPORTED_CHAIN_ID;
 
       if (networkRoute !== networkRef.current) {
         networkRef.current = networkRoute;
         handleOnChainIdChange(networkRoute);
       }
     }
-  }, [
-    availableChainIds,
-    defaultChainId,
-    handleOnChainIdChange,
-    router.isReady,
-    router.query.network,
-  ]);
+  }, [handleOnChainIdChange, router.isReady, router.query.network]);
 };

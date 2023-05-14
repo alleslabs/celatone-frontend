@@ -1,3 +1,7 @@
+/**
+ * Remove this file when we've switched to use config file
+ */
+
 import { SELECTED_CHAIN } from "env";
 import type { Option } from "lib/types";
 

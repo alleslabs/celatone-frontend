@@ -17,7 +17,7 @@ import { useInternalNavigate } from "../hooks/useInternalNavigate";
 import { useNetworkChange } from "../hooks/useNetworkChange";
 import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG, PROJECT_CONSTANTS } from "config";
 import type { ChainConfig, ProjectConstants } from "config/types";
-import { SUPPORTED_CHAIN_IDS } from "env";
+import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
@@ -58,7 +58,9 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
 
-  const [currentChainId, setCurrentChainId] = useState(SUPPORTED_CHAIN_IDS[0]);
+  const [currentChainId, setCurrentChainId] = useState(
+    DEFAULT_SUPPORTED_CHAIN_ID
+  );
 
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
@@ -77,7 +79,8 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     [navigate, router, setCurrentChain]
   );
 
-  const chainConfig = CHAIN_CONFIGS[currentChainId] ?? DEFAULT_CHAIN_CONFIG;
+  const chainConfig = CHAIN_CONFIGS[currentChainId];
+
   const indexerGraphClient = useMemo(
     () => new GraphQLClient(chainConfig.indexer),
     [chainConfig.indexer]
@@ -104,7 +107,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     }
   }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
 
-  useNetworkChange(SUPPORTED_CHAIN_IDS, handleOnChainIdChange);
+  useNetworkChange(handleOnChainIdChange);
 
   useAmplitude();
 
@@ -115,14 +118,14 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   )
     return <LoadingOverlay />;
 
-  return CHAIN_CONFIGS[currentChainId] ? (
+  return currentChainId in CHAIN_CONFIGS ? (
     <AppContext.Provider value={states}>{children}</AppContext.Provider>
   ) : (
     // TODO: fix to a proper component
-    <div>Seomthing went wrong</div>
+    <div>Something went wrong</div>
   );
 });
 
-export const useApp = (): AppContextInterface => {
+export const useCelatoneApp = (): AppContextInterface => {
   return useContext(AppContext);
 };
