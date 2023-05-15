@@ -106,7 +106,6 @@ const Deploy = () => {
         title="Use existing Code IDs"
         description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
-        disabled={!address}
       />
       <Flex justify="center" w="100%" mt="32px">
         <Button
