@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#333](https://github.com/alleslabs/celatone-frontend/pull/333) Update endpoints including LCD, RPC, Graphql
 - [#268](https://github.com/alleslabs/celatone-frontend/pull/268) Wireup create proposal to whitelisting
 - [#266](https://github.com/alleslabs/celatone-frontend/pull/250) Add proposal whitelisting page
 - [#286](https://github.com/alleslabs/celatone-frontend/pull/286) Add block proposer
