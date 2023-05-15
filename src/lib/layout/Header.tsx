@@ -36,8 +36,8 @@ const Header = () => {
     >
       <AppLink href="/">
         <Image
-          src="https://assets.alleslabs.dev/branding/logo/logo.svg"
-          alt="Celatone"
+          src="https://assets.alleslabs.dev/integrations/sei/logo.svg"
+          alt="SEI Scan"
           minWidth="152px"
           width="152px"
           maxWidth="152px"

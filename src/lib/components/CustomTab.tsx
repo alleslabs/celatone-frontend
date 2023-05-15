@@ -25,6 +25,9 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
         "&[aria-selected=true]": {
           color: "violet.light",
         },
+        "&[aria-selected=false]": {
+          color: "pebble.500",
+        },
       }}
       _active={{
         bg: "unset",

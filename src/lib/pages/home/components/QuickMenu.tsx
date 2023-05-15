@@ -50,16 +50,16 @@ const secondaryMenu: SecondaryMenuType[] = [
 export const QuickMenu = () => (
   <Flex direction="column" gap={4} bg="pebble.900" p="48px">
     <Heading as="h5" variant="h5">
-      Start using Celatone
+      Start using Sei scan
     </Heading>
     <ConnectWalletAlert
-      title="Connect wallet to start using Celatone"
+      title="Connect wallet to start using Sei scan"
       subtitle="Actions such as deploying new contracts or sending transactions require a wallet connection"
     />
     <Flex gap={4}>
       <AppLink href="/deploy" style={{ width: "55%" }}>
         <Flex
-          bgGradient="linear(to-tr, violet.main, violet.light)"
+          bgGradient="linear(to-tr, pebble.700, lilac.dark)"
           _hover={{ opacity: "85%" }}
           style={cardProps}
           transition="all .25s ease-in-out"
@@ -70,7 +70,7 @@ export const QuickMenu = () => (
             <Text variant="body1" fontWeight="800">
               Deploy a new contract
             </Text>
-            <Text variant="body2">
+            <Text variant="body2" color="text.dark">
               Upload a new wasm code or instantiate a new contract
             </Text>
           </Flex>
@@ -98,7 +98,7 @@ export const QuickMenu = () => (
                   <Text variant="body1" fontWeight="800">
                     {item.title}
                   </Text>
-                  <Text textDecoration="none" variant="body2">
+                  <Text textDecoration="none" variant="body2" color="text.dark">
                     {item.subtitle}
                   </Text>
                 </Box>

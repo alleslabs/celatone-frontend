@@ -20,7 +20,7 @@ const FallbackRender = ({
   <>
     <Image
       boxSize={badgeSize}
-      src="https://raw.githubusercontent.com/alleslabs/assets/main/webapp-assets/asset/na-token.svg"
+      src="https://assets.alleslabs.dev/integrations/sei/illustration/na-token.svg"
       alt="N/A"
       borderRadius="50%"
     />
@@ -47,7 +47,7 @@ export const ValidatorBadge = ({
             alt={validator.moniker}
             fallbackSrc={`https://ui-avatars.com/api/?name=${removeSpecialChars(
               validator.moniker ?? ""
-            )}&background=9793F3&color=fff`}
+            )}&background=6C80B2&color=fff`}
             borderRadius="50%"
           />
           <ExplorerLink

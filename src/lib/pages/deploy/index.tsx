@@ -45,7 +45,7 @@ const Deploy = () => {
           <CustomIcon name="info-circle-solid" boxSize="20px" />
           <AlertDescription>
             Uploading new Wasm files on permissioned chains is coming soon to
-            Celatone. Currently, you can upload codes and instantiate contracts
+            Sei scan. Currently, you can upload codes and instantiate contracts
             without permission on testnet.
           </AlertDescription>
         </Alert>

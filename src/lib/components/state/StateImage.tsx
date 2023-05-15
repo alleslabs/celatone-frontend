@@ -3,9 +3,12 @@ import { Image } from "@chakra-ui/react";
 export type ImageVariant = "empty" | "not-found" | "disconnected";
 
 const imageSourceMap: Record<ImageVariant, string> = {
-  empty: "https://assets.alleslabs.dev/illustration/search-empty.svg",
-  "not-found": "https://assets.alleslabs.dev/illustration/search-not-found.svg",
-  disconnected: "https://assets.alleslabs.dev/illustration/disconnected.svg",
+  empty:
+    "https://assets.alleslabs.dev/integrations/sei/illustration/search-empty.svg",
+  "not-found":
+    "https://assets.alleslabs.dev/integrations/sei/illustration/search-not-found.svg",
+  disconnected:
+    "https://assets.alleslabs.dev/integrations/sei/illustration/disconnected.svg",
 };
 
 interface StateImageProps {

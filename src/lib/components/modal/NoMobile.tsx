@@ -29,7 +29,7 @@ export const NoMobile = () => (
           Sorry, we currently do not support mobile use.
         </Heading>
         <Text variant="body1">
-          Please use Celatone through the desktop browser for the best
+          Please use SEI scan through the desktop browser for the best
           experience.
         </Text>
       </Flex>

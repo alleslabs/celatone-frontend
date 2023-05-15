@@ -20,7 +20,7 @@ const honeydewDarker = definePartsStyle({
 
 const violetLight = definePartsStyle({
   container: {
-    bg: "violet.light",
+    bg: "violet.main",
     color: "pebble.900",
   },
 });

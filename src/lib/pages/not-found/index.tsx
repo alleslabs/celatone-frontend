@@ -26,7 +26,7 @@ const NotFoundPage = () => {
         mt={6}
       >
         <Image
-          src="https://assets.alleslabs.dev/illustration/404.svg"
+          src="https://assets.alleslabs.dev/integrations/sei/illustration/404.svg"
           alt="page not found"
           width="404px"
         />

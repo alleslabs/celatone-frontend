@@ -208,7 +208,7 @@ execute();
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
-            <CustomIcon name="code" boxSize="6" />
+            <CustomIcon name="code" boxSize="6" color="pebble.600" />
             <Heading as="h5" variant="h5">
               Code Snippet
             </Heading>

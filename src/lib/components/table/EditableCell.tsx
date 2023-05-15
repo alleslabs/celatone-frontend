@@ -137,10 +137,10 @@ export const EditableCell = ({
                   else if (e.key === "Escape") handleCancel();
                 }}
               />
-              <Button size="sm" onClick={handleSave} variant="ghost-gray">
+              <Button size="sm" onClick={handleSave} variant="ghost">
                 <CustomIcon name="check" color="success.main" />
               </Button>
-              <Button onClick={handleCancel} size="sm" variant="ghost-gray">
+              <Button onClick={handleCancel} size="sm" variant="ghost">
                 <CustomIcon name="close" color="error.light" />
               </Button>
             </Flex>

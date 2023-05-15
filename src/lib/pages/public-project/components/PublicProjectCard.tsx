@@ -59,7 +59,7 @@ export const PublicProjectCard = observer(
                 <Image
                   src={item.logo}
                   borderRadius="full"
-                  alt="Celatone"
+                  alt="logo"
                   width={7}
                   height={7}
                 />

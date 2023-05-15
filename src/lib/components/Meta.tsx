@@ -22,26 +22,26 @@ const Meta = () => {
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta property="og:title" content="Celatone Explorer" />
+      <meta property="og:title" content="Sei Scan" />
       <meta
         property="og:description"
         content="A smart contract powered explorer for the Cosmos."
       />
       <meta
         property="og:image"
-        content="https://assets.alleslabs.dev/branding/celatone-cover.jpg"
+        content="https://assets.alleslabs.dev/integrations/sei/cover.jpg"
       />
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:title" content="Celatone Explorer" />
+      <meta property="twitter:title" content="Sei Scan" />
       <meta
         property="twitter:description"
         content="A smart contract powered explorer for the Cosmos."
       />
       <meta
         property="twitter:image"
-        content="https://assets.alleslabs.dev/branding/celatone-cover.jpg"
+        content="https://assets.alleslabs.dev/integrations/sei/cover.jpg"
       />
     </>
   );

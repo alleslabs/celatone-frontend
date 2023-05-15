@@ -62,7 +62,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
             <Image
               src={details?.logo}
               borderRadius="full"
-              alt="Celatone"
+              alt="logo"
               width={8}
               height={8}
             />

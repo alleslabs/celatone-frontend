@@ -13,13 +13,13 @@ export const Heading: ComponentStyleConfig = {
     h1: {
       fontSize: "96px",
       fontWeight: 700,
-      letterSpacing: "-1.5px",
+      letterSpacing: "0.2px",
       lineHeight: 1.2,
     },
     h2: {
       fontSize: "60px",
       fontWeight: 700,
-      letterSpacing: "-0.5px",
+      letterSpacing: "0.2px",
       lineHeight: 1.2,
     },
     h3: {
@@ -31,19 +31,19 @@ export const Heading: ComponentStyleConfig = {
       fontSize: "32px",
       fontWeight: 700,
       lineHeight: 1.2,
-      letterSpacing: "0.25px",
+      letterSpacing: "0.2px",
     },
     h5: {
       fontSize: "24px",
       fontWeight: 700,
       lineHeight: 1.2,
-      letterSpacing: "0.25px",
+      letterSpacing: "0.3px",
     },
     h6: {
       fontSize: "18px",
       fontWeight: 500,
       lineHeight: 1.2,
-      letterSpacing: "0.15px",
+      letterSpacing: "0.3px",
     },
   },
 };

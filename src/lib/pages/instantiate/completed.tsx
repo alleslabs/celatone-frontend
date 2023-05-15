@@ -94,7 +94,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
       {/* Off chain detail */}
       <InstantiateOffChainForm
         title="Contract Off-Chain Detail"
-        subtitle="Filled information below will be saved on Celatone only and able to edit later."
+        subtitle="Filled information below will be saved on Sei scan only and able to edit later."
         contractAddress={txInfo.contractAddress as ContractAddr}
         contractLabel={txInfo.contractLabel}
       />

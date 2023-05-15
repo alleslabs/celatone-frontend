@@ -120,9 +120,7 @@ const ContractsByList = observer(() => {
         <Flex gap={2}>
           {isInstantiatedByMe ? (
             <Button
-              leftIcon={
-                <CustomIcon name="add-new" color="text.main" boxSize="16px" />
-              }
+              leftIcon={<CustomIcon name="add-new" boxSize="16px" />}
               onClick={() => navigate({ pathname: "/deploy" })}
             >
               Deploy New Contract

@@ -21,7 +21,7 @@ const StepLabel = ({
   <Flex
     justify="center"
     align="center"
-    backgroundColor={disabled ? "text.disabled" : "violet.main"}
+    backgroundColor={disabled ? "text.disabled" : "honeydew.main"}
     width="24px"
     height="24px"
     borderRadius="50%"

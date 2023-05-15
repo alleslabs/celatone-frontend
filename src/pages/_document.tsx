@@ -16,11 +16,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link
-            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
-            rel="stylesheet"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap"
+            href="https://fonts.cdnfonts.com/css/satoshi?styles=135009,135005,135007,135002,135000"
             rel="stylesheet"
           />
           <Meta />
