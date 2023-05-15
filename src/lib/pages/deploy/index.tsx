@@ -85,10 +85,12 @@ const Deploy = () => {
         subtitle="You need to connect wallet to proceed this action"
         mb={4}
       />
-      <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
-        {icon}
-        <AlertDescription>{description}</AlertDescription>
-      </Alert>
+      {address && (
+        <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
+          {icon}
+          <AlertDescription>{description}</AlertDescription>
+        </Alert>
+      )}
       <ButtonCard
         title="Upload new WASM File"
         description={
