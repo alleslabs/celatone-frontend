@@ -40,7 +40,7 @@ const generateVariantStyle = (
 export const Alert: ComponentStyleConfig = {
   baseStyle: {
     title: {
-      color: "white",
+      color: "text.main",
       fontSize: "16px",
       fontWeight: 600,
       letterSpacing: "0.4px",

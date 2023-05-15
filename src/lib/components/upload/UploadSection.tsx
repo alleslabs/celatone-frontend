@@ -235,7 +235,6 @@ export const UploadSection = ({
 
       <Flex justify="space-between" w="100%" mt="32px">
         <Button
-          size="md"
           variant="outline-gray"
           w="128px"
           leftIcon={<CustomIcon name="chevron-left" />}
@@ -244,7 +243,6 @@ export const UploadSection = ({
           Previous
         </Button>
         <Button
-          size="md"
           variant="primary"
           w="128px"
           disabled={

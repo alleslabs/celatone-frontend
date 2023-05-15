@@ -47,7 +47,7 @@ export const BlockTxTableRow = ({
           <Flex gap={1} flexWrap="wrap">
             <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
-              <Tag borderRadius="full" bg="honeydew.dark" color="pebble.900">
+              <Tag variant="honeydew-dark" size="sm">
                 IBC
               </Tag>
             )}
@@ -64,7 +64,10 @@ export const BlockTxTableRow = ({
 
         <TableRow>
           {isAccordion && (
-            <CustomIcon name={isOpen ? "chevron-up" : "chevron-down"} />
+            <CustomIcon
+              name={isOpen ? "chevron-up" : "chevron-down"}
+              color="pebble.600"
+            />
           )}
         </TableRow>
       </Grid>

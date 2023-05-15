@@ -38,7 +38,7 @@ export const AllContractLists = ({
         setInputState={setSearchKeyword}
         placeholder="Search for your lists"
         labelBgColor={formLabelBgColor}
-        size="md"
+        size="lg"
         mb={isReadOnly ? 4 : 12}
       />
       {filteredContractLists.length === 0 ? (

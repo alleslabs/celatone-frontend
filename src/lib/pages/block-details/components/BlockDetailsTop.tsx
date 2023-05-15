@@ -93,7 +93,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
         <Button
           variant="ghost-gray"
           padding={2}
-          rightIcon={<CustomIcon name="launch" boxSize={3} color="text.dark" />}
+          rightIcon={<CustomIcon name="launch" boxSize={3} />}
           onClick={openLcdPage}
         >
           View in JSON

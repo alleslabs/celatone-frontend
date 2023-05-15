@@ -75,7 +75,7 @@ const Header = () => {
               >
                 {currentChainRecord?.chain.chain_id}
               </Text>
-              <CustomIcon name="chevron-down" />
+              <CustomIcon name="chevron-down" color="pebble.600" />
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">
@@ -102,7 +102,7 @@ const Header = () => {
                     </Text>
                   </Flex>
                   {chainName === currentChainName && (
-                    <CustomIcon name="check" boxSize="3" />
+                    <CustomIcon name="check" boxSize="3" color="pebble.600" />
                   )}
                 </Flex>
               </MenuItem>
