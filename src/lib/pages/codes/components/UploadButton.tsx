@@ -1,19 +1,14 @@
 import { Button } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import { useGovParams } from "lib/services/proposalService";
-import type { Addr } from "lib/types";
 
-export const UploadButton = () => {
-  const { address = "" } = useWallet();
+interface UploadButtonProps {
+  isAllowed: boolean;
+}
+export const UploadButton = ({ isAllowed }: UploadButtonProps) => {
   const navigate = useInternalNavigate();
-  const { data: govParams } = useGovParams();
-  const isAllowed = Boolean(
-    govParams?.uploadAccess?.addresses?.includes(address as Addr)
-  );
 
   return (
     <Tooltip

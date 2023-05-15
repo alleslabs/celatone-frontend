@@ -1,32 +1,37 @@
 import { Heading, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
-import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { useGovParams } from "lib/services/proposalService";
-import type { Addr } from "lib/types";
+import { useUploadAccessParams } from "lib/services/proposalService";
+import type { HumanAddr } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 
 const Upload = () => {
   const router = useRouter();
-  const { isMainnet } = useCurrentNetwork();
-
-  const { address = "" } = useWallet();
+  const { address } = useWallet();
   const navigate = useInternalNavigate();
-  const { data: govParams } = useGovParams();
-  const isAllowed = Boolean(
-    govParams?.uploadAccess?.addresses?.includes(address as Addr)
-  );
+  const { data } = useUploadAccessParams();
+
+  const isPermissionedNetwork =
+    data?.permission !== AccessConfigPermission.EVERYBODY;
+
+  const enableUpload = useMemo(() => {
+    if (!isPermissionedNetwork) return true;
+    return Boolean(data?.addresses?.includes(address as HumanAddr));
+  }, [data, address, isPermissionedNetwork]);
 
   useEffect(() => {
-    if (!isAllowed && isMainnet) navigate({ pathname: "/deploy" });
+    // Redirect back to deploy page
+    if (!enableUpload) navigate({ pathname: "/deploy", replace: true });
     else if (router.isReady) AmpTrack(AmpEvent.TO_UPLOAD);
-  }, [isAllowed, isMainnet, navigate, router.isReady]);
+  }, [enableUpload, navigate, router.isReady]);
 
   return (
     <WasmPageContainer>
