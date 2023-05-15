@@ -65,8 +65,8 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
       const config = CHAIN_CONFIGS[newChainId];
-      setCurrentChain(config?.registryChainName);
       setCurrentChainId(newChainId);
+      setCurrentChain(config?.registryChainName);
 
       navigate({
         pathname: router.pathname.replace("/[network]", ""),

@@ -11,7 +11,6 @@ export const useSelectChain = () => {
     (chainId: string) => {
       if (router.query.network === chainId) return;
 
-      // TODO: Should we check if the chain is supported by the app here?
       handleOnChainIdChange(chainId);
     },
     [handleOnChainIdChange, router.query.network]
