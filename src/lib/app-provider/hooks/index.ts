@@ -1,6 +1,5 @@
 export * from "./useAddress";
 export * from "./useAmplitude";
-export * from "./useCelatoneApp";
 export * from "./useChainId";
 export * from "./useDummyWallet";
 export * from "./useFabricateFee";

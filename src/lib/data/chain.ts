@@ -1,3 +1,7 @@
+/**
+ * Remove this file when we've switched to use config file
+ */
+
 import { SELECTED_CHAIN } from "env";
 import type { Option } from "lib/types";
 
@@ -25,19 +29,6 @@ export const OSMOSIS_CHAINS: Chain = {
 export const MITOSIS_CHAINS: Chain = {
   mainnet: "osmosis",
   testnet: "osmosistestnet",
-};
-
-export const getSupportedChainNames = (): SupportedChain[] => {
-  switch (SELECTED_CHAIN) {
-    case "terra":
-      return Object.values(TERRA_CHAINS);
-    case "osmosis":
-      return Object.values(OSMOSIS_CHAINS);
-    case "mitosis":
-      return Object.values(MITOSIS_CHAINS);
-    default:
-      throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
-  }
 };
 
 /**

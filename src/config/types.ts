@@ -24,7 +24,7 @@ type PoolConfig =
       enabled: false;
     };
 
-interface ChainConfig {
+export interface ChainConfig {
   chain: string;
   registryChainName: string;
   lcd: string;
@@ -37,7 +37,10 @@ interface ChainConfig {
     pool: PoolConfig;
   };
   gas: {
-    gasPrice: number;
+    gasPrice: {
+      tokenPerGas: number;
+      denom: string;
+    };
     gasAdjustment: number;
   };
   exampleAddresses: {

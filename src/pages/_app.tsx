@@ -1,3 +1,4 @@
+import type { EndpointOptions } from "@cosmos-kit/core";
 import { wallets } from "@cosmos-kit/keplr";
 import { WalletProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -9,12 +10,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
 
-import {
-  CELATONE_CONSTANTS,
-  CELATONE_APP_CONTRACT_ADDRESS,
-  CELATONE_FALLBACK_GAS_PRICE,
-  CELATONE_APP_HUMAN_ADDRESS,
-} from "env";
+import { CHAIN_CONFIGS } from "config";
 import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
@@ -43,6 +39,18 @@ configurePersistable({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
+  const availableChainsEndpoints = Object.values(
+    CHAIN_CONFIGS
+  ).reduce<EndpointOptions>(
+    (endpoints, config) => ({
+      ...endpoints,
+      [config.registryChainName]: {
+        rpc: [config.rpc],
+        rest: [config.lcd],
+      },
+    }),
+    {}
+  );
 
   return (
     <Chakra>
@@ -67,32 +75,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           chains={[...chains, terra2testnet]}
           assetLists={[...assets, terra2testnetAssets]}
           wallets={wallets}
-          endpointOptions={{
-            osmosis: {
-              rpc: ["https://rpc.osmosis.zone/"],
-              rest: ["https://lcd.osmosis.zone/"],
-            },
-            osmosistestnet: {
-              rpc: ["https://rpc-test.osmosis.zone/"],
-              rest: ["https://lcd-test.osmosis.zone/"],
-            },
-            terra2: {
-              rpc: ["https://terra-rpc.lavenderfive.com/"],
-              rest: ["https://phoenix-lcd.terra.dev/"],
-            },
-            terra2testnet: {
-              rpc: ["https://terra-testnet-rpc.polkachu.com/"],
-              rest: ["https://pisco-lcd.terra.dev/"],
-            },
-          }}
+          endpointOptions={availableChainsEndpoints}
         >
           <StoreProvider>
-            <AppProvider
-              fallbackGasPrice={CELATONE_FALLBACK_GAS_PRICE}
-              appContractAddressMap={CELATONE_APP_CONTRACT_ADDRESS}
-              appHumanAddressMap={CELATONE_APP_HUMAN_ADDRESS}
-              constants={CELATONE_CONSTANTS}
-            >
+            <AppProvider>
               <TxBroadcastProvider>
                 <Head>
                   <meta

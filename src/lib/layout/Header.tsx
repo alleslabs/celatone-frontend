@@ -9,18 +9,19 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { useSelectChain } from "lib/app-provider";
+import { CHAIN_CONFIGS } from "config";
+import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetBtn } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { WalletSection } from "lib/components/Wallet";
-import { getSupportedChainNames } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import Searchbar from "./Searchbar";
 
 const Header = () => {
-  const { currentChainRecord, currentChainName, getChainRecord } = useWallet();
+  const { availableChainIds, currentChainId } = useCelatoneApp();
+  const { getChainRecord } = useWallet();
   const selectChain = useSelectChain();
 
   return (
@@ -73,17 +74,17 @@ const Header = () => {
                 whiteSpace="nowrap"
                 maxW="170px"
               >
-                {currentChainRecord?.chain.chain_id}
+                {currentChainId}
               </Text>
               <CustomIcon name="chevron-down" />
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">
-            {getSupportedChainNames().map((chainName) => (
+            {availableChainIds.map((chainId) => (
               <MenuItem
-                key={chainName}
+                key={chainId}
                 onClick={() => {
-                  selectChain(chainName);
+                  selectChain(chainId);
                 }}
                 flexDirection="column"
                 alignItems="flex-start"
@@ -95,13 +96,17 @@ const Header = () => {
                 <Flex justify="space-between" align="center" w="full">
                   <Flex direction="column">
                     <Text variant="body2">
-                      {getChainRecord(chainName)?.chain.pretty_name}
+                      {
+                        getChainRecord(
+                          CHAIN_CONFIGS[chainId]?.registryChainName
+                        )?.chain.pretty_name
+                      }
                     </Text>
                     <Text color="text.dark" variant="body3">
-                      {getChainRecord(chainName)?.chain.chain_id}
+                      {chainId}
                     </Text>
                   </Flex>
-                  {chainName === currentChainName && (
+                  {chainId === currentChainId && (
                     <CustomIcon name="check" boxSize="3" />
                   )}
                 </Flex>

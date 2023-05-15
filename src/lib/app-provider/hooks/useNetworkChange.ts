@@ -1,35 +1,30 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import { getChainNameByNetwork } from "lib/data";
-import type { Network } from "lib/data";
+import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
 import { getFirstQueryParam } from "lib/utils";
 
-export const useNetworkChange = () => {
+export const useNetworkChange = (
+  handleOnChainIdChange: (newChainId: string) => void
+) => {
   const router = useRouter();
-  const { currentChainName, setCurrentChain } = useWallet();
   const networkRef = useRef<string>();
 
   useEffect(() => {
     if (router.isReady) {
       let networkRoute = getFirstQueryParam(
         router.query.network,
-        "mainnet"
-      ) as Network;
+        DEFAULT_SUPPORTED_CHAIN_ID
+      );
 
-      if (
-        networkRoute !== "mainnet" &&
-        networkRoute !== "testnet" &&
-        networkRoute !== "localnet"
-      )
-        networkRoute = "mainnet";
+      // Redirect to default chain if the chain is not supported by the app
+      if (!SUPPORTED_CHAIN_IDS.includes(networkRoute))
+        networkRoute = DEFAULT_SUPPORTED_CHAIN_ID;
 
       if (networkRoute !== networkRef.current) {
         networkRef.current = networkRoute;
-        const chainName = getChainNameByNetwork(networkRoute);
-        if (currentChainName !== chainName) setCurrentChain(chainName);
+        handleOnChainIdChange(networkRoute);
       }
     }
-  }, [router, currentChainName, setCurrentChain]);
+  }, [handleOnChainIdChange, router.isReady, router.query.network]);
 };

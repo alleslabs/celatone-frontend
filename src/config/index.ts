@@ -1,6 +1,42 @@
 import type { ContractAddr, HumanAddr, ValidatorAddr } from "lib/types";
 
-import type { ChainConfigs } from "./types";
+import type { ChainConfig, ChainConfigs, ProjectConstants } from "./types";
+
+export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
+  chain: "",
+  registryChainName: "",
+  lcd: "",
+  rpc: "",
+  indexer: "",
+  api: "",
+  features: {
+    faucet: {
+      enabled: false,
+    },
+    wasm: {
+      enabled: false,
+    },
+    pool: {
+      enabled: false,
+    },
+  },
+  gas: {
+    gasPrice: {
+      tokenPerGas: 0,
+      denom: "",
+    },
+    gasAdjustment: 1.0,
+  },
+  exampleAddresses: {
+    user: "" as HumanAddr,
+    contract: "" as ContractAddr,
+    validator: "" as ValidatorAddr,
+  },
+  explorerLink: {
+    validator: "",
+    proposal: "",
+  },
+};
 
 export const CHAIN_CONFIGS: ChainConfigs = {
   "osmosis-1": {
@@ -8,7 +44,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "osmosis",
     lcd: "https://lcd.osmosis.zone",
     rpc: "https://rpc.osmosis.zone",
-    indexer: "https://osmosis-mainnet-graphql2.alleslabs.dev/v1/graphql",
+    indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     features: {
       faucet: {
@@ -23,7 +59,10 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       },
     },
     gas: {
-      gasPrice: 0.025,
+      gasPrice: {
+        tokenPerGas: 0.025,
+        denom: "uosmo",
+      },
       gasAdjustment: 1.5,
     },
     exampleAddresses: {
@@ -38,12 +77,12 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
   },
-  "osmos-test-4": {
+  "osmo-test-4": {
     chain: "osmosis",
     registryChainName: "osmosistestnet",
     lcd: "https://lcd-test.osmosis.zone",
     rpc: "https://rpc-test.osmosis.zone",
-    indexer: "https://osmosis-testnet-graphql2.alleslabs.dev/v1/graphql",
+    indexer: "https://osmosis-testnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     features: {
       faucet: {
@@ -59,7 +98,10 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       },
     },
     gas: {
-      gasPrice: 0.025,
+      gasPrice: {
+        tokenPerGas: 0.025,
+        denom: "uosmo",
+      },
       gasAdjustment: 1.5,
     },
     exampleAddresses: {
@@ -76,7 +118,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
   },
 };
 
-export const PROJECT_CONSTANTS = {
+export const PROJECT_CONSTANTS: ProjectConstants = {
   maxListNameLength: 50,
   maxContractNameLength: 50,
   maxContractDescriptionLength: 250,
