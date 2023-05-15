@@ -1,7 +1,12 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { useCelatoneApp, useChainId, useLCDEndpoint } from "lib/app-provider";
+import {
+  useBaseApiRoute,
+  useCelatoneApp,
+  useChainId,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
@@ -91,6 +96,7 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 export const useContractData = (
   contractAddress: ContractAddr
 ): ContractDataState => {
+  const baseApiRoute = useBaseApiRoute("balances");
   const { indexerGraphClient } = useCelatoneApp();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
@@ -119,13 +125,8 @@ export const useContractData = (
 
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
     useQuery(
-      ["query", "contractBalances", contractAddress, chainId],
-      async () =>
-        queryContractBalances(
-          currentChainRecord?.name,
-          currentChainRecord?.chain.chain_id,
-          contractAddress
-        ),
+      ["query", "contractBalances", baseApiRoute, contractAddress],
+      async () => queryContractBalances(baseApiRoute, contractAddress),
       { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 

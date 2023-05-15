@@ -1,20 +1,12 @@
 import axios from "axios";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
-import type { Addr, Balance, Option } from "lib/types";
+import type { Addr, Balance } from "lib/types";
 
 export const getAccountBalanceInfo = async (
-  walletAddr: Addr,
-  chainName: Option<string>,
-  chainId: Option<string>
+  baseApiRoute: string,
+  walletAddr: Addr
 ): Promise<Balance[]> => {
-  if (!chainName || !chainId)
-    throw new Error("Invalid chain (getAccountBalanceInfo)");
-
-  const { data } = await axios.get<Balance[]>(
-    `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
-      chainName
-    )}/${chainId}/${walletAddr}`
-  );
+  if (!baseApiRoute) throw new Error("Failed to retrieve API route.");
+  const { data } = await axios.get<Balance[]>(`${baseApiRoute}/${walletAddr}`);
   return data;
 };

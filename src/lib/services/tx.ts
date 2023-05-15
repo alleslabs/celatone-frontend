@@ -4,7 +4,6 @@ import type { CompactBitArray } from "cosmjs-types/cosmos/crypto/multisig/v1beta
 import type { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import type { Any } from "cosmjs-types/google/protobuf/any";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import type { TypeUrl } from "lib/data";
 import type { Option, Fee } from "lib/types";
 import { parseDateOpt } from "lib/utils";
@@ -80,15 +79,10 @@ export interface TxResponse {
 }
 
 export const queryTxData = async (
-  chainName: string,
-  chainId: string,
+  baseApiRoute: string,
   txHash: string
 ): Promise<TxResponse> => {
-  const { data } = await axios.get(
-    `${CELATONE_API_ENDPOINT}/txs/${getChainApiPath(
-      chainName
-    )}/${chainId}/${txHash.toUpperCase()}`
-  );
+  const { data } = await axios.get(`${baseApiRoute}/${txHash.toUpperCase()}`);
 
   return {
     ...data.tx_response,

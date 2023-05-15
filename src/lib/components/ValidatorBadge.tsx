@@ -1,8 +1,7 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Flex, Image, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
-import { getChainApiPath } from "env";
+import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ValidatorInfo } from "lib/types";
 import { removeSpecialChars } from "lib/utils";
@@ -34,16 +33,16 @@ export const ValidatorBadge = ({
   validator,
   badgeSize = 10,
 }: ValidatorBadgeProps) => {
-  const { currentChainName } = useWallet();
+  const {
+    chainConfig: { chain },
+  } = useCelatoneApp();
   return (
     <Flex alignItems="center" gap={2}>
       {validator ? (
         <>
           <Image
             boxSize={badgeSize}
-            src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${getChainApiPath(
-              currentChainName
-            )}/moniker/${validator.validatorAddress}.png`}
+            src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${chain}/moniker/${validator.validatorAddress}.png`}
             alt={validator.moniker}
             fallbackSrc={`https://ui-avatars.com/api/?name=${removeSpecialChars(
               validator.moniker ?? ""

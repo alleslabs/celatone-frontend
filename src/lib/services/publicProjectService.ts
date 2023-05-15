@@ -1,10 +1,9 @@
-import { useWallet } from "@cosmos-kit/react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useCallback } from "react";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath, getMainnetApiPath } from "env";
+import { useBaseApiRoute } from "lib/app-provider";
 import type {
   PublicContract,
   Option,
@@ -32,18 +31,14 @@ const parseCode = (raw: RawPublicCode): PublicCode => ({
 });
 
 export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
-  const { currentChainRecord } = useWallet();
+  const baseApiRoute = useBaseApiRoute("projects");
 
   const queryFn = useCallback(async () => {
-    if (!currentChainRecord)
-      throw new Error("No chain selected (usePublicProjects)");
+    if (!baseApiRoute)
+      throw new Error("Failed to retrieve projects API route.");
 
     return axios
-      .get<RawPublicProjectInfo[]>(
-        `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
-          currentChainRecord.chain.chain_name
-        )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}`
-      )
+      .get<RawPublicProjectInfo[]>(baseApiRoute)
       .then(({ data: projects }) =>
         projects.map<PublicProjectInfo>((project) => ({
           ...project,
@@ -51,9 +46,9 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
           contracts: project.contracts.map(parseContract),
         }))
       );
-  }, [currentChainRecord]);
+  }, [baseApiRoute]);
 
-  return useQuery(["public_project", currentChainRecord], queryFn, {
+  return useQuery(["public_project", baseApiRoute], queryFn, {
     keepPreviousData: true,
   });
 };
@@ -61,57 +56,45 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
 export const usePublicProjectBySlug = (
   slug: Option<string>
 ): UseQueryResult<PublicProjectInfo> => {
-  const { currentChainRecord } = useWallet();
+  const baseApiRoute = useBaseApiRoute("projects");
 
   const queryFn = useCallback(async () => {
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
-    if (!currentChainRecord)
-      throw new Error("No chain selected (usePublicProjectBySlug)");
+    if (!baseApiRoute)
+      throw new Error("Failed to retrieve projects API route.");
     return axios
-      .get<RawPublicProjectInfo>(
-        `${CELATONE_API_ENDPOINT}/projects/${getChainApiPath(
-          currentChainRecord.chain.chain_name
-        )}/${getMainnetApiPath(currentChainRecord.chain.chain_id)}/${slug}`
-      )
+      .get<RawPublicProjectInfo>(`${baseApiRoute}/${slug}`)
       .then<PublicProjectInfo>(({ data: publicProject }) => ({
         ...publicProject,
         codes: publicProject.codes.map(parseCode),
         contracts: publicProject.contracts.map(parseContract),
       }));
-  }, [currentChainRecord, slug]);
+  }, [baseApiRoute, slug]);
 
-  return useQuery(
-    ["public_project_by_slug", slug, currentChainRecord],
-    queryFn,
-    {
-      enabled: !!slug,
-    }
-  );
+  return useQuery(["public_project_by_slug", baseApiRoute, slug], queryFn, {
+    enabled: !!slug,
+  });
 };
 
 export const usePublicProjectByContractAddress = (
   contractAddress: Option<string>
 ): UseQueryResult<PublicInfo> => {
-  const { currentChainRecord } = useWallet();
+  const baseApiRoute = useBaseApiRoute("contracts");
 
   const queryFn = useCallback(async () => {
     if (!contractAddress)
       throw new Error(
         "Contract address not found (usePublicProjectByContractAddress)"
       );
-    if (!currentChainRecord)
-      throw new Error("No chain selected (usePublicProjectByContractAddress)");
+    if (!baseApiRoute)
+      throw new Error("Failed to retrieve contracts API route.");
     return axios
-      .get<PublicInfo>(
-        `${CELATONE_API_ENDPOINT}/contracts/${getChainApiPath(
-          currentChainRecord.chain.chain_name
-        )}/${currentChainRecord.chain.chain_id}/${contractAddress}`
-      )
+      .get<PublicInfo>(`${baseApiRoute}/${contractAddress}`)
       .then(({ data: projectInfo }) => projectInfo);
-  }, [contractAddress, currentChainRecord]);
+  }, [baseApiRoute, contractAddress]);
 
   return useQuery(
-    ["public_project_by_contract_address", contractAddress, currentChainRecord],
+    ["public_project_by_contract_address", baseApiRoute, contractAddress],
     queryFn,
     {
       keepPreviousData: true,
@@ -125,25 +108,20 @@ export const usePublicProjectByContractAddress = (
 export const usePublicProjectByCodeId = (
   codeId: Option<number>
 ): UseQueryResult<PublicCode> => {
-  const { currentChainRecord } = useWallet();
+  const baseApiRoute = useBaseApiRoute("codes");
 
   const queryFn = useCallback(async () => {
     if (!codeId)
       throw new Error("Code ID not found (usePublicProjectByCodeId)");
-    if (!currentChainRecord)
-      throw new Error("No chain selected (usePublicProjectByCodeId)");
+    if (!baseApiRoute) throw new Error("Failed to retrieve codes API route.");
 
     return axios
-      .get<RawPublicCode>(
-        `${CELATONE_API_ENDPOINT}/codes/${getChainApiPath(
-          currentChainRecord.chain.chain_name
-        )}/${currentChainRecord.chain.chain_id}/${codeId}`
-      )
+      .get<RawPublicCode>(`${baseApiRoute}/${codeId}`)
       .then(({ data: projectInfo }) => parseCode(projectInfo));
-  }, [codeId, currentChainRecord]);
+  }, [baseApiRoute, codeId]);
 
   return useQuery(
-    ["public_project_by_code_id", codeId, currentChainRecord],
+    ["public_project_by_code_id", baseApiRoute, codeId],
     queryFn,
     {
       keepPreviousData: true,
