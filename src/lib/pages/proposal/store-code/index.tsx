@@ -498,7 +498,7 @@ const StoreCodeProposal = () => {
                   }}
                   error={
                     builder &&
-                    !source.match(PROPOSAL_STORE_CODE_TEXT.builderPattern)
+                    !builder.match(PROPOSAL_STORE_CODE_TEXT.builderPattern)
                       ? PROPOSAL_STORE_CODE_TEXT.builderError
                       : errors.builder?.message
                   }

@@ -135,7 +135,7 @@ export const PROPOSAL_STORE_CODE_TEXT = {
   builderLabel: "Builder",
   builderRequired: "Builder is required",
   builderHelperText:
-    "Builder is the docker image used to build the code deterministically, which is used for smart contract verification. It can be tagged, digested, or combination of both.",
+    "Builder is the docker image used to build the code deterministically. It is used for smart contract verification. It can be tagged, digested, or combination of both.",
   builderPattern: /^[a-zA-Z0-9!@#$:;/%\\^&*)(+=._-]*$/,
   builderError:
     "Builder should contain only alphanumerics and special characters",
