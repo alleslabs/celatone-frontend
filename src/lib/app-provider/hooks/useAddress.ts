@@ -19,7 +19,7 @@ const addressLengthMap: {
     50: "validator_address",
     63: "contract_address",
   },
-  osmosistestnet: {
+  osmosistestnet5: {
     43: "user_address",
     50: "validator_address",
     63: "contract_address",
