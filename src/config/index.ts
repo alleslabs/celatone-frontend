@@ -43,7 +43,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     chain: "osmosis",
     registryChainName: "osmosis",
     lcd: "https://lcd.osmosis.zone",
-    rpc: "https://rpc.osmosis.zone",
+    rpc: "https://rpc.osmosis.zone:443",
     indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     features: {
@@ -81,7 +81,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     chain: "osmosis",
     registryChainName: "osmosistestnet",
     lcd: "https://lcd-test.osmosis.zone",
-    rpc: "https://rpc-test.osmosis.zone",
+    rpc: "https://rpc-test.osmosis.zone:443",
     indexer: "https://osmosis-testnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     features: {

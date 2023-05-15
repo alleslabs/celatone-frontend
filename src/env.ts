@@ -18,14 +18,6 @@ export const DEFAULT_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
 
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
 
-// TODO: Below are deprecated. Remove them later
-export const FALLBACK_LCD_ENDPOINT: Record<string, string> = {
-  osmosis: "https://lcd.osmosis.zone/",
-  osmosistestnet: "https://lcd-test.osmosis.zone/",
-  terra2: "https://phoenix-lcd.terra.dev/",
-  terra2testnet: "https://pisco-lcd.terra.dev/",
-};
-
 export const SELECTED_CHAIN = process.env
   .NEXT_PUBLIC_SELECTED_CHAIN as SupportedChain;
 
