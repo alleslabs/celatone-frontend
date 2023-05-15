@@ -73,7 +73,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               rest: ["https://lcd.osmosis.zone/"],
             },
             osmosistestnet5: {
-              rpc: ["	https://rpc.osmotest5.osmosis.zone/"],
+              rpc: ["https://rpc.osmotest5.osmosis.zone/"],
               rest: ["https://lcd.osmotest5.osmosis.zone/"],
             },
             terra2: {
