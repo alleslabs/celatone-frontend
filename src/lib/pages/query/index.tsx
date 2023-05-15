@@ -98,14 +98,14 @@ const Query = () => {
         </Heading>
         <Box>
           <Button
-            variant="ghost-primary"
+            variant="ghost-lilac"
             size="sm"
             p="unset"
             pl="2"
             onClick={goToExecute}
           >
             Go To Execute
-            <CustomIcon name="chevron-right" color="lilac.main" boxSize="3" />
+            <CustomIcon name="chevron-right" boxSize="3" />
           </Button>
         </Box>
       </Flex>

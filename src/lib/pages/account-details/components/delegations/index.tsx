@@ -138,8 +138,8 @@ export const DelegationsSection = ({
             <Button
               variant="ghost-gray"
               minW="fit-content"
-              leftIcon={<CustomIcon name="history" color="pebble.400" />}
-              rightIcon={<CustomIcon name="chevron-right" color="pebble.400" />}
+              leftIcon={<CustomIcon name="history" />}
+              rightIcon={<CustomIcon name="chevron-right" />}
               isDisabled={!redelegationCount}
               onClick={() => {
                 AmpTrack(AmpEvent.USE_SEE_REDELEGATIONS);

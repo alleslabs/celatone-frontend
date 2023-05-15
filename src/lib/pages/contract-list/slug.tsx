@@ -111,13 +111,7 @@ const ContractsByList = observer(() => {
               }}
               buttonProps={{
                 variant: "outline-primary",
-                leftIcon: (
-                  <CustomIcon
-                    name="bookmark"
-                    boxSize="3"
-                    color="violet.light"
-                  />
-                ),
+                leftIcon: <CustomIcon name="bookmark" boxSize="3" />,
                 children: "Save Contract",
               }}
             />
@@ -125,7 +119,7 @@ const ContractsByList = observer(() => {
           {contractListInfo.isInfoEditable && (
             <Menu>
               <MenuButton h="full" variant="ghost-gray" as={Button}>
-                <CustomIcon name="more" />
+                <CustomIcon name="more" color="pebble.600" />
               </MenuButton>
               <MenuList>
                 <EditListNameModal
@@ -134,7 +128,7 @@ const ContractsByList = observer(() => {
                     value: contractListInfo.slug,
                   }}
                   menuItemProps={{
-                    icon: <CustomIcon name="edit" />,
+                    icon: <CustomIcon name="edit" color="pebble.600" />,
                     children: "Edit list name",
                   }}
                   reroute

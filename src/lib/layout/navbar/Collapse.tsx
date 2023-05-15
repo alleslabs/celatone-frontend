@@ -1,8 +1,9 @@
-import { Box, Flex, IconButton, Image, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import type { NavMenuProps } from "./type";
@@ -32,12 +33,7 @@ export const CollapseNavMenu = ({
         >
           <Flex justifyContent="space-between" alignItems="center">
             {!isMobile && item.category === "Overview" && (
-              <Tooltip
-                label="Expand"
-                hasArrow
-                placement="right"
-                bg="honeydew.darker"
-              >
+              <Tooltip label="Expand" placement="right">
                 <IconButton
                   aria-label="overview"
                   variant="ghost-info"
@@ -47,12 +43,7 @@ export const CollapseNavMenu = ({
                   p={1}
                   mt={2}
                   mx={2}
-                  icon={
-                    <CustomIcon
-                      name="double-chevron-right"
-                      color="honeydew.main"
-                    />
-                  }
+                  icon={<CustomIcon name="double-chevron-right" />}
                   onClick={() => setIsExpand(true)}
                 />
               </Tooltip>
@@ -64,12 +55,7 @@ export const CollapseNavMenu = ({
               key={submenu.slug}
               onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
             >
-              <Tooltip
-                label={submenu.name}
-                hasArrow
-                placement="right"
-                bg="honeydew.darker"
-              >
+              <Tooltip label={submenu.name} placement="right">
                 <Flex
                   cursor="pointer"
                   p={1}
@@ -93,7 +79,9 @@ export const CollapseNavMenu = ({
                     borderRadius="2px"
                     left="0px"
                   />
-                  {submenu.icon && <CustomIcon name={submenu.icon} />}
+                  {submenu.icon && (
+                    <CustomIcon name={submenu.icon} color="pebble.600" />
+                  )}
                   {submenu.logo && (
                     <Image
                       src={submenu.logo}

@@ -144,18 +144,12 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <Tag
                       cursor="pointer"
                       whiteSpace="nowrap"
-                      size="md"
-                      bgColor="violet.light"
-                      color="pebble.900"
-                      alignItems="center"
-                      display="flex"
-                      textTransform="none"
+                      variant="violet-light"
                       gap={1}
-                      mr={2}
-                      borderRadius="full"
+                      mr={1}
                     >
                       {option.label}
-                      <CustomIcon name="close" color="pebble.900" boxSize="3" />
+                      <CustomIcon name="close" boxSize="3" />
                     </Tag>
                   </Flex>
                 ))}

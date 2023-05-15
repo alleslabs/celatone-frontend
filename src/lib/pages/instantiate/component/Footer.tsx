@@ -35,7 +35,7 @@ export const Footer = ({ onInstantiate, disabled, loading }: FooterProps) => {
           disabled={disabled}
           w="128px"
         >
-          {loading ? <Spinner size="md" color="pebble.600" /> : "Instantiate"}
+          {loading ? <Spinner size="md" variant="light" /> : "Instantiate"}
         </Button>
       </Flex>
     </Box>

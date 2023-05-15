@@ -1,4 +1,4 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
 import { CustomIcon } from "../icon";
@@ -18,12 +18,10 @@ export const FaucetBtn = () => {
   return isTestnet ? (
     <Button
       variant="outline-gray"
-      leftIcon={<CustomIcon name="faucet" color="text.dark" />}
+      leftIcon={<CustomIcon name="faucet" />}
       onClick={onClick}
     >
-      <Text color="text.dark" fontWeight={700}>
-        Faucet
-      </Text>
+      Faucet
     </Button>
   ) : null;
 };

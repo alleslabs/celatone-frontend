@@ -10,7 +10,7 @@ export const BackButton = (props: ButtonProps) => {
 
   return (
     <Button
-      variant="ghost-primary"
+      variant="ghost-lilac"
       size="sm"
       mb="8px"
       p="unset"
@@ -21,7 +21,7 @@ export const BackButton = (props: ButtonProps) => {
       }}
       {...props}
     >
-      <CustomIcon name="chevron-left" color="lilac.main" boxSize="3" mr={2} />
+      <CustomIcon name="chevron-left" boxSize="3" mr={2} />
       BACK
     </Button>
   );

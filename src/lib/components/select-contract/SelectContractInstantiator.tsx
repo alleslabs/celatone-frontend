@@ -110,9 +110,7 @@ export const SelectContractInstantiator = ({
           onOpen();
         }}
         leftIcon={
-          !notSelected ? (
-            <CustomIcon name="swap" color="violet.light" boxSize="12px" />
-          ) : undefined
+          !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
         }
       >
         {notSelected ? "Select Contract" : "Change Contract"}
@@ -123,7 +121,11 @@ export const SelectContractInstantiator = ({
           {listSlug.length === 0 || !contractList ? (
             <>
               <DrawerHeader>
-                <CustomIcon name="contract-address-solid" boxSize="5" />
+                <CustomIcon
+                  name="contract-address-solid"
+                  boxSize="5"
+                  color="pebble.600"
+                />
                 <Heading as="h5" variant="h5">
                   Select Contract
                 </Heading>
@@ -131,7 +133,7 @@ export const SelectContractInstantiator = ({
               <DrawerCloseButton />
 
               <DrawerBody p="24px" overflowY="scroll">
-                <Heading as="h6" variant="h6" mb="8px">
+                <Heading as="h6" variant="h6" mb={4}>
                   Fill contract address manually
                 </Heading>
                 <Flex gap="8px" alignItems="center">
@@ -143,10 +145,11 @@ export const SelectContractInstantiator = ({
                       setSearchContract(inputValue as ContractAddr);
                     }}
                     placeholder={`ex. ${exampleContractAddress}`}
-                    size="md"
+                    size="lg"
                   />
                   <Button
-                    height="40px"
+                    height="56px"
+                    minW="72px"
                     isDisabled={searchContract.length === 0}
                     isLoading={isFetching || isRefetching}
                     onClick={() => {
@@ -171,7 +174,7 @@ export const SelectContractInstantiator = ({
                   <Divider borderColor="pebble.700" />
                 </Flex>
 
-                <Heading as="h6" variant="h6" mb={6}>
+                <Heading as="h6" variant="h6" mb={4}>
                   Select from your Contract List
                 </Heading>
                 <AllContractLists
@@ -190,6 +193,7 @@ export const SelectContractInstantiator = ({
                   boxSize="5"
                   onClick={() => setListSlug("")}
                   cursor="pointer"
+                  color="pebble.600"
                 />
                 <Heading as="h5" variant="h5">
                   {contractList.name}
