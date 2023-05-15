@@ -39,7 +39,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
-import { TooltipComponent } from "lib/components/TooltipComponent";
+import { Tooltip } from "lib/components/Tooltip";
 import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePermissionRadio";
 import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
 import { UploadCard } from "lib/components/upload/UploadCard";
@@ -468,7 +468,7 @@ const StoreCodeProposal = () => {
                   >
                     {PROPOSAL_STORE_CODE_TEXT.unpinLabel}
                   </Checkbox>
-                  <TooltipComponent
+                  <Tooltip
                     label={PROPOSAL_STORE_CODE_TEXT.unpinTooltip}
                     maxW="440px"
                   >
@@ -479,7 +479,7 @@ const StoreCodeProposal = () => {
                         color="white"
                       />
                     </div>
-                  </TooltipComponent>
+                  </Tooltip>
                 </Flex>
 
                 {/* Builder  */}

@@ -68,7 +68,7 @@ export const PublicProjectContractTable = observer(
             value={searchKeyword}
             setInputState={setSearchKeyword}
             placeholder="Search with contract address or contract name"
-            size="md"
+            size="lg"
             mb={6}
           />
         )}

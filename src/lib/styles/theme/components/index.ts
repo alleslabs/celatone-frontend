@@ -11,8 +11,10 @@ import { Menu } from "./menu";
 import { Modal } from "./modal";
 import { Radio } from "./radio";
 import { Select } from "./select";
+import { Spinner } from "./spinner";
 import { Switch } from "./switch";
 import { Table } from "./table";
+import { Tag } from "./tag";
 import { Text } from "./text";
 import { Textarea } from "./textarea";
 import { Tooltip } from "./tooltip";
@@ -36,4 +38,6 @@ export const components = {
   Table,
   Switch,
   Checkbox,
+  Spinner,
+  Tag,
 };

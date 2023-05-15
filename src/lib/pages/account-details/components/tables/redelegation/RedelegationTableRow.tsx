@@ -26,7 +26,7 @@ export const RedelegationTableRow = ({
       <ValidatorBadge validator={redelegation.srcValidator} />
     </TableRow>
     <TableRow>
-      <CustomIcon name="arrow-right" boxSize={6} />
+      <CustomIcon name="arrow-right" boxSize={6} color="pebble.600" />
     </TableRow>
     <TableRow>
       <ValidatorBadge validator={redelegation.dstValidator} />

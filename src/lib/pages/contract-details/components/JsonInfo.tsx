@@ -36,6 +36,7 @@ export const JsonInfo = ({
         <CustomIcon
           transition="all .25s ease-in-out"
           name={expand ? "chevron-up" : "chevron-down"}
+          color="pebble.600"
         />
       </Flex>
       <div

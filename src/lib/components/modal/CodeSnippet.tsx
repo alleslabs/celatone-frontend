@@ -200,10 +200,7 @@ execute();
           onOpen();
         }}
       >
-        <CustomIcon
-          name="code"
-          color={isDisabled ? "honeydew.darker" : "honeydew.main"}
-        />
+        <CustomIcon name="code" />
         Code Snippet
       </Button>
 

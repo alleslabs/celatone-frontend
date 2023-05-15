@@ -29,7 +29,7 @@ export const FilterDropdownItem = ({
   >
     <Flex alignItems="center" justifyContent="space-between">
       {filterDropdownComponent}
-      {isOptionSelected && <CustomIcon name="check" />}
+      {isOptionSelected && <CustomIcon name="check" color="pebble.600" />}
     </Flex>
   </ListItem>
 );

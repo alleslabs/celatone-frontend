@@ -1,7 +1,9 @@
-import { defineStyleConfig } from "@chakra-ui/react";
-import type { StyleConfig } from "@chakra-ui/react";
+import type { ComponentStyleConfig } from "@chakra-ui/react";
+import { cssVar } from "@chakra-ui/react";
 
-const styles: StyleConfig = {
+const $arrowBg = cssVar("popper-arrow-bg");
+
+export const Tooltip: ComponentStyleConfig = {
   baseStyle: {
     borderRadius: "8px",
     color: "text.main",
@@ -10,7 +12,7 @@ const styles: StyleConfig = {
     fontWeight: 400,
     fontSize: "14px",
     maxW: "280px",
+    bg: "honeydew.darker",
+    [$arrowBg.variable]: "colors.honeydew.darker",
   },
 };
-
-export const Tooltip = defineStyleConfig(styles);

@@ -1,8 +1,9 @@
-import { Button, Tooltip } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
 
@@ -16,11 +17,7 @@ export const UploadButton = () => {
 
   return (
     <Tooltip
-      hasArrow
       label="Only allowed address can upload Wasm file without opening proposal"
-      placement="top"
-      arrowSize={8}
-      bg="honeydew.darker"
       isDisabled={isAllowed}
     >
       <Button

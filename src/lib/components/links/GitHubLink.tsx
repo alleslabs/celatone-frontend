@@ -24,7 +24,12 @@ export const GitHubLink = ({ github }: GitHubLinkProps) => {
         <Text color="lilac.main" variant="body2" wordBreak="break-all">
           {org}/{repo}
         </Text>
-        <CustomIcon name="launch" boxSize="12px" marginLeft="8px" />
+        <CustomIcon
+          name="launch"
+          boxSize="12px"
+          marginLeft="8px"
+          color="pebble.600"
+        />
       </a>
     </Flex>
   );
