@@ -19,7 +19,6 @@ import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
 import { CelatoneSeo } from "lib/components/Seo";
-import { terra2testnet, terra2testnetAssets } from "lib/config/terra2testnet";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import { StoreProvider } from "lib/providers/store";
@@ -64,17 +63,17 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
       <QueryClientProvider client={queryClient}>
         <WalletProvider
-          chains={[...chains, terra2testnet]}
-          assetLists={[...assets, terra2testnetAssets]}
+          chains={chains}
+          assetLists={assets}
           wallets={wallets}
           endpointOptions={{
             osmosis: {
               rpc: ["https://rpc.osmosis.zone/"],
               rest: ["https://lcd.osmosis.zone/"],
             },
-            osmosistestnet: {
-              rpc: ["https://rpc-test.osmosis.zone/"],
-              rest: ["https://lcd-test.osmosis.zone/"],
+            osmosistestnet5: {
+              rpc: ["https://rpc.osmotest5.osmosis.zone/"],
+              rest: ["https://lcd.osmotest5.osmosis.zone/"],
             },
             terra2: {
               rpc: ["https://terra-rpc.lavenderfive.com/"],
