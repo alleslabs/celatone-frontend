@@ -22,6 +22,7 @@ export const PoolRoute = ({ routes, assetInfos, isOpened }: PoolRouteProps) => {
     routes.map((pool) => pool.poolId),
     isOpened
   );
+  const showStepper = routes.length > 1;
 
   if (isLoading) return <Loading />;
   if (!poolAssets)
@@ -43,13 +44,14 @@ export const PoolRoute = ({ routes, assetInfos, isOpened }: PoolRouteProps) => {
             className="accordion-stepper-wrapper"
             alignItems="center"
           >
-            <AccordionStepperItem />
+            {showStepper && <AccordionStepperItem />}
             <Flex alignItems="center" w="full" my={2}>
               <PoolLogo
                 tokens={tokens}
                 logoSize={5}
                 marginLeft={-4}
                 textVariant="small"
+                minW={20}
               />
               <div>
                 <Flex
