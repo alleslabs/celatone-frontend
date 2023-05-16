@@ -17,7 +17,7 @@ const Upload = () => {
   const router = useRouter();
   const { address } = useWallet();
   const navigate = useInternalNavigate();
-  const { data } = useUploadAccessParams();
+  const { data, isLoading } = useUploadAccessParams();
 
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;
@@ -29,9 +29,10 @@ const Upload = () => {
 
   useEffect(() => {
     // Redirect back to deploy page
-    if (!enableUpload) navigate({ pathname: "/deploy", replace: true });
+    if (!enableUpload && !isLoading)
+      navigate({ pathname: "/deploy", replace: true });
     else if (router.isReady) AmpTrack(AmpEvent.TO_UPLOAD);
-  }, [enableUpload, navigate, router.isReady]);
+  }, [enableUpload, isLoading, navigate, router.isReady]);
 
   return (
     <WasmPageContainer>
