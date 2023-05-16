@@ -56,7 +56,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
       <Flex>
         <PoolHeader
           poolId={item.id}
-          isSuperFluid={item.isSuperfluid}
+          isSuperfluid={item.isSuperfluid}
           poolType={item.type}
           poolLiquidity={item.poolLiquidity}
         />

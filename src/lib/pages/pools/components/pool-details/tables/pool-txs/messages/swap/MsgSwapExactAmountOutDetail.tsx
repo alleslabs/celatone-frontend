@@ -1,8 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import type { MsgSwapExactAmountOut } from "../messages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
+import type { MsgSwapExactAmountOutDetails } from "lib/utils/tx/types";
 
 import { PoolRoute, PoolSwap } from "./components";
 
@@ -10,7 +10,7 @@ interface MsgSwapExactAmountOutDetailProps {
   txHash: string;
   blockHeight: number;
   msgIndex: number;
-  msg: MsgSwapExactAmountOut;
+  msg: MsgSwapExactAmountOutDetails;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
 }
@@ -25,7 +25,7 @@ export const MsgSwapExactAmountOutDetail = ({
 }: MsgSwapExactAmountOutDetailProps) => {
   const outDenoms = msg.routes
     .map((route) => route.tokenInDenom)
-    .concat(msg.tokenOut.denom);
+    .concat(msg.token_out.denom);
   const routes = msg.routes.map((route, index) => ({
     poolId: route.poolId,
     tokenOutDenom: outDenoms.at(index + 1) ?? "",

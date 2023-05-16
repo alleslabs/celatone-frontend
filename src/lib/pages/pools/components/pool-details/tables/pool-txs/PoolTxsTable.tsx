@@ -1,13 +1,20 @@
 import { TableContainer } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import { Loading } from "lib/components/Loading";
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { Option, Transaction } from "lib/types";
+import type {
+  Option,
+  PoolDetail,
+  TokenWithValue,
+  Transaction,
+} from "lib/types";
 
 import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
 import { PoolTxsTableRow } from "./PoolTxsTableRow";
 
 interface PoolTxsTableProps {
+  pool: PoolDetail<Big, TokenWithValue>;
   transactions: Option<Transaction[]>;
   assetInfos: AssetInfosOpt;
   isLoading: boolean;
@@ -15,6 +22,7 @@ interface PoolTxsTableProps {
 }
 
 export const PoolTxsTable = ({
+  pool,
   transactions,
   assetInfos,
   isLoading,
@@ -32,6 +40,7 @@ export const PoolTxsTable = ({
       {transactions.map((transaction) => (
         <PoolTxsTableRow
           key={transaction.hash}
+          pool={pool}
           transaction={transaction}
           assetInfos={assetInfos}
           templateColumns={templateColumns}

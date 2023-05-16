@@ -4,7 +4,6 @@ import { useInternalNavigate } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
-import { useAssetInfos } from "lib/services/assetService";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
@@ -17,7 +16,6 @@ import { usePool } from "./data";
 export const PoolId = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { assetInfos } = useAssetInfos();
   const poolId = Number(getFirstQueryParam(router.query.poolId));
   const { pool, isLoading } = usePool(poolId);
 
@@ -26,9 +24,9 @@ export const PoolId = () => {
   return (
     <PageContainer>
       <BackButton />
-      <PoolTopSection pool={pool} assetInfos={assetInfos} />
+      <PoolTopSection pool={pool} />
       <PoolAssets pool={pool} />
-      <PoolRelatedTxs poolId={pool.id} isSuperfluid={pool.isSuperfluid} />
+      <PoolRelatedTxs pool={pool} />
     </PageContainer>
   );
 };

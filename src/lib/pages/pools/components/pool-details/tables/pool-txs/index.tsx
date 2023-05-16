@@ -1,3 +1,4 @@
+import type Big from "big.js";
 import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
@@ -5,19 +6,19 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useTxsByPoolIdPagination } from "lib/services/txService";
-import type { PoolTxFilter } from "lib/types";
+import type { PoolDetail, PoolTxFilter, TokenWithValue } from "lib/types";
 
 import { PoolTxsTable } from "./PoolTxsTable";
 
 interface PoolRelatedTxsTableProps {
-  poolId: number;
+  pool: PoolDetail<Big, TokenWithValue>;
   countTxs: number;
   type: PoolTxFilter;
   scrollComponentId: string;
 }
 
 export const PoolRelatedTxsTable = ({
-  poolId,
+  pool,
   countTxs,
   type,
   scrollComponentId,
@@ -44,7 +45,7 @@ export const PoolRelatedTxsTable = ({
     data: txs,
     isLoading,
     error,
-  } = useTxsByPoolIdPagination(poolId, type, offset, pageSize);
+  } = useTxsByPoolIdPagination(pool.id, type, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
     setCurrentPage(nextPage);
@@ -67,6 +68,7 @@ export const PoolRelatedTxsTable = ({
   return (
     <>
       <PoolTxsTable
+        pool={pool}
         transactions={txs}
         assetInfos={assetInfos}
         isLoading={isLoadingAssetInfos || isLoading}

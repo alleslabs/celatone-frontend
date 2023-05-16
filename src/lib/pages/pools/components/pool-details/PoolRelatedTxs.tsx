@@ -7,31 +7,29 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import { usePoolTxsCount } from "../../data";
 import { CustomTab } from "lib/components/CustomTab";
+import type { PoolDetail, TokenWithValue } from "lib/types";
 
 import { PoolRelatedTxsTable } from "./tables/pool-txs";
 
 interface PoolRelatedTxsProps {
-  poolId: number;
-  isSuperfluid: boolean;
+  pool: PoolDetail<Big, TokenWithValue>;
 }
 
-export const PoolRelatedTxs = ({
-  poolId,
-  isSuperfluid,
-}: PoolRelatedTxsProps) => {
+export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
   const { count: countAllTxs, countDisplay: countDisplayAllTxs } =
-    usePoolTxsCount(poolId, "is_all");
+    usePoolTxsCount(pool.id, "is_all");
   const { count: countSwapTxs, countDisplay: countDisplaySwapTxs } =
-    usePoolTxsCount(poolId, "is_swap");
+    usePoolTxsCount(pool.id, "is_swap");
   const { count: countLpTxs, countDisplay: countDisplayLpTxs } =
-    usePoolTxsCount(poolId, "is_lp");
+    usePoolTxsCount(pool.id, "is_lp");
   const { count: countBondTxs, countDisplay: countDisplayBondTxs } =
-    usePoolTxsCount(poolId, "is_bond");
+    usePoolTxsCount(pool.id, "is_bond");
   const { count: countSuperfluidTxs, countDisplay: countDisplaySuperfluidTxs } =
-    usePoolTxsCount(poolId, "is_superfluid");
+    usePoolTxsCount(pool.id, "is_superfluid");
 
   const tableHeaderId = "poolTableHeader";
   return (
@@ -52,14 +50,14 @@ export const PoolRelatedTxs = ({
           <CustomTab count={countDisplaySwapTxs}>Swap</CustomTab>
           <CustomTab count={countDisplayLpTxs}>LP</CustomTab>
           <CustomTab count={countDisplayBondTxs}>Bonding</CustomTab>
-          {isSuperfluid && (
+          {pool.isSuperfluid && (
             <CustomTab count={countDisplaySuperfluidTxs}>Superfluid</CustomTab>
           )}
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
             <PoolRelatedTxsTable
-              poolId={poolId}
+              pool={pool}
               countTxs={countAllTxs}
               type="is_all"
               scrollComponentId={tableHeaderId}
@@ -67,7 +65,7 @@ export const PoolRelatedTxs = ({
           </TabPanel>
           <TabPanel p={0}>
             <PoolRelatedTxsTable
-              poolId={poolId}
+              pool={pool}
               countTxs={countSwapTxs}
               type="is_swap"
               scrollComponentId={tableHeaderId}
@@ -75,7 +73,7 @@ export const PoolRelatedTxs = ({
           </TabPanel>
           <TabPanel p={0}>
             <PoolRelatedTxsTable
-              poolId={poolId}
+              pool={pool}
               countTxs={countLpTxs}
               type="is_lp"
               scrollComponentId={tableHeaderId}
@@ -83,16 +81,16 @@ export const PoolRelatedTxs = ({
           </TabPanel>
           <TabPanel p={0}>
             <PoolRelatedTxsTable
-              poolId={poolId}
+              pool={pool}
               countTxs={countBondTxs}
               type="is_bond"
               scrollComponentId={tableHeaderId}
             />
           </TabPanel>
-          {isSuperfluid && (
+          {pool.isSuperfluid && (
             <TabPanel p={0}>
               <PoolRelatedTxsTable
-                poolId={poolId}
+                pool={pool}
                 countTxs={countSuperfluidTxs}
                 type="is_superfluid"
                 scrollComponentId={tableHeaderId}

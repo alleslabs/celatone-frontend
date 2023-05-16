@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { AssetCard } from "../../AssetCard";
+import { AssetCard } from "../../components";
+import { coinFromStr } from "../../utils";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -33,13 +34,11 @@ export const PoolSwap = ({
 
   // Get the token-in from the third attribute of the event e.g. 10000utoken
   const inAsset = swapEvent.attributes.at(3)?.value ?? "";
-  const inAmount = inAsset.match(/[0-9]+/g)?.[0] ?? "";
-  const inDenom = inAsset.slice(inAmount.length);
+  const { amount: inAmount, denom: inDenom } = coinFromStr(inAsset);
 
   // Get the token-out from the last attribute of the event e.g. 10000utoken
   const outAsset = swapEvent.attributes.at(-1)?.value ?? "";
-  const outAmount = outAsset.match(/[0-9]+/g)?.[0] ?? "";
-  const outDenom = outAsset.slice(outAmount.length);
+  const { amount: outAmount, denom: outDenom } = coinFromStr(outAsset);
 
   return (
     <Flex gap={4} alignItems="center">
@@ -53,7 +52,7 @@ export const PoolSwap = ({
           assetInfo={assetInfos?.[inDenom]}
         />
       </div>
-      <CustomIcon name="arrow-right" boxSize={6} color="honeydew.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       <div>
         <Text variant="body2" textColor="pebble.500" fontWeight={500}>
           To

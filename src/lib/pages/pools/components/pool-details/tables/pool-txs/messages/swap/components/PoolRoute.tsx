@@ -9,12 +9,10 @@ import type { AssetInfosOpt } from "lib/services/assetService";
 import { usePoolAssetsbyPoolIds } from "lib/services/poolService";
 import type { TokenWithValue } from "lib/types";
 import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
+import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
 interface PoolRouteProps {
-  routes: {
-    poolId: number;
-    tokenOutDenom: string;
-  }[];
+  routes: MsgSwapExactAmountInDetails["routes"];
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
 }

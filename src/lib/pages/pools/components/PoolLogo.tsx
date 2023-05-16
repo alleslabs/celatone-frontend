@@ -8,6 +8,7 @@ interface PoolLogoProps {
   tokens: TokenWithValue[];
   logoSize?: FlexProps["height"] | FlexProps["width"];
   marginLeft?: number;
+  minW?: FlexProps["minW"];
   textVariant?: TextProps["variant"];
 }
 
@@ -15,6 +16,7 @@ export const PoolLogo = ({
   tokens,
   logoSize = 10,
   marginLeft = -12,
+  minW = 24,
   textVariant = "body2",
 }: PoolLogoProps) => {
   const renderLogo = (token: TokenWithValue, i: number) => (
@@ -33,7 +35,7 @@ export const PoolLogo = ({
           marginLeft,
         },
       }}
-      width="96px"
+      minW={minW}
       alignItems="center"
       justifyContent="center"
     >

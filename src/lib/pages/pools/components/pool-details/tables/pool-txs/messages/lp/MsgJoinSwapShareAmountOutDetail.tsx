@@ -2,27 +2,27 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
+import type { MsgJoinSwapShareAmountOutDetails } from "lib/utils/tx/types";
 
-import { PoolRoute, PoolSwap } from "./components";
+import { LiquidityDivider, PoolAssetCard, PoolAssetsGrid } from "./components";
 
-interface MsgSwapExactAmountInDetailProps {
+interface MsgJoinSwapShareAmountOutDetailProps {
   txHash: string;
   blockHeight: number;
   msgIndex: number;
-  msg: MsgSwapExactAmountInDetails;
+  msg: MsgJoinSwapShareAmountOutDetails;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
 }
 
-export const MsgSwapExactAmountInDetail = ({
+export const MsgJoinSwapShareAmountOutDetail = ({
   txHash,
   blockHeight,
   msgIndex,
   msg,
   assetInfos,
   isOpened,
-}: MsgSwapExactAmountInDetailProps) => (
+}: MsgJoinSwapShareAmountOutDetailProps) => (
   <Flex w="full" alignItems="start" gap={12}>
     <Flex direction="column" minW="100px">
       <Text variant="body2" textColor="pebble.500" fontWeight={500}>
@@ -34,16 +34,21 @@ export const MsgSwapExactAmountInDetail = ({
         showCopyOnHover
       />
     </Flex>
-    <Flex direction="column" gap={6}>
-      <PoolSwap
+    <Flex direction="column" gap={3}>
+      <PoolAssetsGrid
         txHash={txHash}
         msgIndex={msgIndex}
+        isJoin
         assetInfos={assetInfos}
         isOpened={isOpened}
       />
-      <PoolRoute
-        routes={msg.routes}
+      <LiquidityDivider />
+      <PoolAssetCard
+        msgIndex={msgIndex}
+        msgShareAmount={msg.share_amount_out}
+        poolId={msg.pool_id}
         assetInfos={assetInfos}
+        isJoin
         isOpened={isOpened}
       />
     </Flex>

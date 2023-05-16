@@ -1,9 +1,24 @@
 import { Text } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { Message } from "lib/types";
+import type { Message, PoolDetail, TokenWithValue } from "lib/types";
+import { extractTxDetails } from "lib/utils";
 
-import type { MsgSwapExactAmountIn, MsgSwapExactAmountOut } from "./messages";
+import {
+  MsgExitPoolAction,
+  MsgExitPoolDetail,
+  MsgExitSwapExternAmountOutAction,
+  MsgExitSwapExternAmountOutDetail,
+  MsgExitSwapShareAmountInAction,
+  MsgExitSwapShareAmountInDetail,
+  MsgJoinPoolAction,
+  MsgJoinPoolDetail,
+  MsgJoinSwapExternAmountInAction,
+  MsgJoinSwapExternAmountInDetail,
+  MsgJoinSwapShareAmountOutAction,
+  MsgJoinSwapShareAmountOutDetail,
+} from "./lp";
 import {
   MsgSwapExactAmountInAction,
   MsgSwapExactAmountInDetail,
@@ -13,31 +28,84 @@ import {
 
 export const PoolMsgAction = ({
   msg,
+  pool,
   assetInfos,
 }: {
   msg: Message;
+  pool: PoolDetail<Big, TokenWithValue>;
   assetInfos: AssetInfosOpt;
 }) => {
-  // TODO: fix and add cases
-  switch (msg.type) {
+  const { type, detail, log } = msg;
+  switch (type) {
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
-    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
+      const details = extractTxDetails(type, detail, log);
       return (
-        <MsgSwapExactAmountInAction
-          msg={msg.detail as MsgSwapExactAmountIn}
-          assetInfos={assetInfos}
-        />
+        <MsgSwapExactAmountInAction msg={details} assetInfos={assetInfos} />
       );
+    }
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
-    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut": {
+      const details = extractTxDetails(type, detail, log);
       return (
-        <MsgSwapExactAmountOutAction
-          msg={msg.detail as MsgSwapExactAmountOut}
+        <MsgSwapExactAmountOutAction msg={details} assetInfos={assetInfos} />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinPool": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinPoolAction msg={details} pool={pool} assetInfos={assetInfos} />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinSwapExternAmountInAction
+          msg={details}
+          pool={pool}
           assetInfos={assetInfos}
         />
       );
-    default:
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinSwapShareAmountOutAction
+          msg={details}
+          pool={pool}
+          assetInfos={assetInfos}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitPool": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitPoolAction msg={details} pool={pool} assetInfos={assetInfos} />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitSwapShareAmountInAction
+          msg={details}
+          pool={pool}
+          assetInfos={assetInfos}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitSwapExternAmountOutAction
+          msg={details}
+          pool={pool}
+          assetInfos={assetInfos}
+        />
+      );
+    }
+    default: {
       return <Text>{msg.type}</Text>;
+    }
   }
 };
 
@@ -56,33 +124,115 @@ export const PoolMsgDetail = ({
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
 }) => {
-  // TODO: fix and add cases
-  switch (msg.type) {
+  const { type, detail, log } = msg;
+  switch (type) {
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
-    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
+      const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountInDetail
           txHash={txHash}
           blockHeight={blockHeight}
           msgIndex={msgIndex}
-          msg={msg.detail as MsgSwapExactAmountIn}
+          msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
         />
       );
+    }
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
-    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut": {
+      const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountOutDetail
           txHash={txHash}
           blockHeight={blockHeight}
           msgIndex={msgIndex}
-          msg={msg.detail as MsgSwapExactAmountOut}
+          msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
         />
       );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinPool": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinPoolDetail
+          txHash={txHash}
+          blockHeight={blockHeight}
+          msgIndex={msgIndex}
+          msg={details}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinSwapExternAmountInDetail
+          txHash={txHash}
+          blockHeight={blockHeight}
+          msgIndex={msgIndex}
+          msg={details}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinSwapShareAmountOutDetail
+          txHash={txHash}
+          blockHeight={blockHeight}
+          msgIndex={msgIndex}
+          msg={details}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitPool": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitPoolDetail
+          txHash={txHash}
+          blockHeight={blockHeight}
+          msgIndex={msgIndex}
+          msg={details}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitSwapShareAmountInDetail
+          txHash={txHash}
+          blockHeight={blockHeight}
+          msgIndex={msgIndex}
+          msg={details}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitSwapExternAmountOutDetail
+          txHash={txHash}
+          blockHeight={blockHeight}
+          msgIndex={msgIndex}
+          msg={details}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+        />
+      );
+    }
     default:
-      return <Text h={20}>{msg.type}</Text>;
+      return <Text h={20}>{JSON.stringify(msg.detail)}</Text>;
   }
 };

@@ -1,21 +1,23 @@
 import { Flex, Heading, Text, Box, Image } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import { BALANCER_ICON, STABLESWAP_ICON, SUPERFLUID_ICON } from "../constant";
+import type { TokenWithValue } from "lib/types";
 import type { PoolDetail } from "lib/types/pool";
 import { getTokenLabel } from "lib/utils";
 
 import { PoolLogo } from "./PoolLogo";
 
 interface PoolHeaderProps {
-  poolId: PoolDetail["id"];
-  isSuperFluid: PoolDetail["isSuperfluid"];
-  poolType: PoolDetail["type"];
-  poolLiquidity: PoolDetail["poolLiquidity"];
+  poolId: PoolDetail<Big, TokenWithValue>["id"];
+  isSuperfluid: PoolDetail<Big, TokenWithValue>["isSuperfluid"];
+  poolType: PoolDetail<Big, TokenWithValue>["type"];
+  poolLiquidity: PoolDetail<Big, TokenWithValue>["poolLiquidity"];
 }
 
 export const PoolHeader = ({
   poolId,
-  isSuperFluid,
+  isSuperfluid,
   poolType,
   poolLiquidity,
 }: PoolHeaderProps) => (
@@ -89,7 +91,7 @@ export const PoolHeader = ({
               </Flex>
             </Flex>
           )}
-          {isSuperFluid && (
+          {isSuperfluid && (
             <Flex alignItems="center" gap={2}>
               <Flex
                 backgroundColor="pebble.600"

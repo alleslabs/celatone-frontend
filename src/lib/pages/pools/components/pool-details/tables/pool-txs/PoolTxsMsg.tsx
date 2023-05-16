@@ -1,17 +1,26 @@
 import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
+import type Big from "big.js";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { Message, Transaction } from "lib/types";
+import type {
+  Message,
+  PoolDetail,
+  TokenWithValue,
+  Transaction,
+} from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { PoolMsgAction, PoolMsgDetail } from "./messages";
+import { PoolOtherMsgs } from "./messages/PoolOtherMsgs";
 
 interface PoolTxsMsgProps {
   msgIndex: number;
-  message: Message;
+  message?: Message;
+  otherMsgs: { [key: string]: number };
+  pool: PoolDetail<Big, TokenWithValue>;
   transaction: Transaction;
   assetInfos: AssetInfosOpt;
   templateColumns: string;
@@ -20,6 +29,8 @@ interface PoolTxsMsgProps {
 export const PoolTxsMsg = ({
   msgIndex,
   message,
+  otherMsgs,
+  pool,
   transaction,
   assetInfos,
   templateColumns,
@@ -38,6 +49,11 @@ export const PoolTxsMsg = ({
       borderY="0.5px solid"
       borderColor="pebble.700"
       _hover={{ background: "pebble.900" }}
+      sx={{
+        "&:hover .pool-msg-detail-container": {
+          borderColor: "pebble.700",
+        },
+      }}
     >
       <Grid
         className="copier-wrapper"
@@ -47,7 +63,7 @@ export const PoolTxsMsg = ({
         cursor="pointer"
       >
         <TableNoBorderRow>
-          {transaction.success && (
+          {transaction.success && message && (
             <CustomIcon
               name="chevron-down"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
@@ -80,7 +96,11 @@ export const PoolTxsMsg = ({
             ))}
         </TableNoBorderRow>
         <TableNoBorderRow>
-          <PoolMsgAction msg={message} assetInfos={assetInfos} />
+          {message ? (
+            <PoolMsgAction msg={message} pool={pool} assetInfos={assetInfos} />
+          ) : (
+            <PoolOtherMsgs otherMsgs={otherMsgs} />
+          )}
         </TableNoBorderRow>
 
         <TableNoBorderRow>
@@ -102,7 +122,7 @@ export const PoolTxsMsg = ({
           )}
         </TableNoBorderRow>
       </Grid>
-      {transaction.success && (
+      {transaction.success && message && (
         <Grid
           w="full"
           py={4}

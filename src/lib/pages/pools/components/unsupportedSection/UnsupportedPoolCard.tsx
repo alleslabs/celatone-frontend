@@ -58,7 +58,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
               <Flex alignItems="center" justifyContent="space-between">
                 <PoolHeader
                   poolId={item.id}
-                  isSuperFluid={item.isSuperfluid}
+                  isSuperfluid={item.isSuperfluid}
                   poolType={item.type}
                   poolLiquidity={item.poolLiquidity}
                 />
