@@ -22,10 +22,11 @@ export const MsgJoinPoolAction = ({
 }: MsgJoinPoolActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const poolAssetInfo = assetInfos?.[poolDenom];
+
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
-      Provided
-      {msg.token_in_maxs.map((asset, index) => {
+      Provided{" "}
+      {(msg.token_in_maxs ?? []).map((asset, index) => {
         const inAssetInfo = assetInfos?.[asset.denom];
         return (
           <Flex gap={1} alignItems="center">

@@ -33,8 +33,10 @@ export const MsgExitPoolAction = ({
       />
       from
       <PoolLogoLink pool={pool} />
-      <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
-      {msg.token_out_mins.map((asset, index) => {
+      {msg.token_out_mins && (
+        <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
+      )}
+      {(msg.token_out_mins ?? []).map((asset, index) => {
         const outAssetInfo = assetInfos?.[asset.denom];
         return (
           <Flex gap={1} alignItems="center">

@@ -32,7 +32,7 @@ export const MsgSwapExactAmountOutDetail = ({
   }));
 
   return (
-    <Flex alignItems="start" gap={12}>
+    <Flex w="full" alignItems="start" gap={12}>
       <Flex direction="column">
         <Text variant="body2" textColor="pebble.500" fontWeight={500}>
           Block height
