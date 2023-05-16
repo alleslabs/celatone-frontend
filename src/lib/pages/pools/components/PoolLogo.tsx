@@ -20,12 +20,14 @@ export const PoolLogo = ({
   textVariant = "body2",
 }: PoolLogoProps) => {
   const renderLogo = (token: TokenWithValue, i: number) => (
-    <Image
-      key={token.denom}
-      boxSize={logoSize}
-      src={token.logo || getUndefinedTokenIcon(token.denom)}
-      zIndex={2 - i}
-    />
+    <Flex>
+      <Image
+        key={token.denom}
+        boxSize={logoSize}
+        src={token.logo || getUndefinedTokenIcon(token.denom)}
+        zIndex={2 - i}
+      />
+    </Flex>
   );
 
   return (

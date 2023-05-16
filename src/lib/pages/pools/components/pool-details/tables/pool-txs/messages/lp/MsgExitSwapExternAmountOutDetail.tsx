@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
@@ -34,7 +34,7 @@ export const MsgExitSwapExternAmountOutDetail = ({
         showCopyOnHover
       />
     </Flex>
-    <Flex direction="column" gap={3}>
+    <Box w="full">
       <PoolAssetCard
         txHash={txHash}
         msgIndex={msgIndex}
@@ -52,6 +52,6 @@ export const MsgExitSwapExternAmountOutDetail = ({
         assetInfos={assetInfos}
         isOpened={isOpened}
       />
-    </Flex>
+    </Box>
   </Flex>
 );

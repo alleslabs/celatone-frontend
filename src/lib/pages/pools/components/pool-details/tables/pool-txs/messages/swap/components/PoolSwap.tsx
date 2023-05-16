@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Grid, Text } from "@chakra-ui/react";
 
 import { AssetCard } from "../../components";
 import { coinFromStr } from "../../utils";
@@ -41,7 +41,7 @@ export const PoolSwap = ({
   const { amount: outAmount, denom: outDenom } = coinFromStr(outAsset);
 
   return (
-    <Flex gap={4} alignItems="center">
+    <Grid gap={4} alignItems="center" mb={6} templateColumns="1fr 24px 1fr">
       <div>
         <Text variant="body2" textColor="pebble.500" fontWeight={500}>
           From
@@ -63,6 +63,6 @@ export const PoolSwap = ({
           assetInfo={assetInfos?.[outDenom]}
         />
       </div>
-    </Flex>
+    </Grid>
   );
 };

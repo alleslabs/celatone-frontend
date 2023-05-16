@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
@@ -34,7 +34,7 @@ export const MsgJoinSwapExternAmountInDetail = ({
         showCopyOnHover
       />
     </Flex>
-    <Flex direction="column" gap={3}>
+    <Box w="full">
       <PoolAssetsGrid
         msgIndex={msgIndex}
         msgAssets={[msg.token_in]}
@@ -51,6 +51,6 @@ export const MsgJoinSwapExternAmountInDetail = ({
         isJoin
         isOpened={isOpened}
       />
-    </Flex>
+    </Box>
   </Flex>
 );

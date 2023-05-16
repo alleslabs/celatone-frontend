@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
@@ -23,7 +23,7 @@ export const MsgExitSwapShareAmountInDetail = ({
   assetInfos,
   isOpened,
 }: MsgExitSwapShareAmountInDetailProps) => (
-  <Flex w="full" alignItems="start" gap={12}>
+  <Flex minW="full" alignItems="start" gap={12}>
     <Flex direction="column" minW="100px">
       <Text variant="body2" textColor="pebble.500" fontWeight={500}>
         Block height
@@ -34,7 +34,7 @@ export const MsgExitSwapShareAmountInDetail = ({
         showCopyOnHover
       />
     </Flex>
-    <Flex direction="column" gap={3}>
+    <Box w="full">
       <PoolAssetCard
         msgIndex={msgIndex}
         poolId={msg.pool_id}
@@ -52,6 +52,6 @@ export const MsgExitSwapShareAmountInDetail = ({
         assetInfos={assetInfos}
         isOpened={isOpened}
       />
-    </Flex>
+    </Box>
   </Flex>
 );
