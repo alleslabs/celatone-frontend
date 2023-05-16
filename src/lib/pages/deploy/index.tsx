@@ -11,7 +11,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -56,6 +56,7 @@ const Deploy = () => {
   const navigate = useInternalNavigate();
   const { address } = useWallet();
   const { data, isFetching } = useUploadAccessParams();
+  const { isMainnet } = useCurrentNetwork();
 
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;
@@ -85,7 +86,8 @@ const Deploy = () => {
         subtitle="You need to connect wallet to proceed this action"
         mb={4}
       />
-      {address && (
+      {/* Revist isMainnet logic */}
+      {address && isMainnet && (
         <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
           {icon}
           <AlertDescription>{description}</AlertDescription>
