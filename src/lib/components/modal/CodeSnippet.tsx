@@ -44,9 +44,8 @@ const CodeSnippet = ({
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { currentChainRecord, currentChainName } = useWallet();
   const isDisabled = !contractAddress || !message.length;
-
-  const endpoint = useLCDEndpoint();
   const client = currentChainRecord?.chain.daemon_name;
+  const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();
   const chainId = currentChainRecord?.chain.chain_id;
   const codeSnippets: Record<
@@ -71,7 +70,7 @@ ${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
         snippet: `import base64
 import requests\n
 CONTRACT_ADDRESS = "${contractAddress}"
-LCD_URL = "${endpoint}"
+LCD_URL = "${lcdEndpoint}"
 QUERY_MSG = b'''${message}'''\n
 query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
 res = requests.get(
@@ -101,7 +100,7 @@ queryContract(rpcURL, contractAddress, queryMsg);`,
         name: "Axios",
         mode: "javascript",
         snippet: `const axios = require('axios');\n
-const lcdURL = '${endpoint}';
+const lcdURL = '${lcdEndpoint}';
 const contractAddress =
 "${contractAddress}";
 const queryMsg = ${message};\n

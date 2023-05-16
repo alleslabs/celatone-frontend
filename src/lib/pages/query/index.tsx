@@ -25,7 +25,7 @@ import { QueryArea } from "./components/QueryArea";
 const Query = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");
@@ -51,8 +51,8 @@ const Query = () => {
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
-    async () => queryData(endpoint, contractAddress, '{"": {}}'),
+    ["query", "cmds", lcdEndpoint, contractAddress, '{"": {}}'],
+    async () => queryData(lcdEndpoint, contractAddress, '{"": {}}'),
     {
       enabled: !!contractAddress,
       retry: false,

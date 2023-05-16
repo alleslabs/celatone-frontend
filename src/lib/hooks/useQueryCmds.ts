@@ -8,12 +8,12 @@ import type { ContractAddr, RpcQueryError } from "lib/types";
 
 export const useQueryCmds = (contractAddress: ContractAddr) => {
   const [queryCmds, setQueryCmds] = useState<[string, string][]>([]);
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
+    ["query", "cmds", lcdEndpoint, contractAddress, '{"": {}}'],
     async () =>
-      queryData(endpoint, contractAddress as ContractAddr, '{"": {}}'),
+      queryData(lcdEndpoint, contractAddress as ContractAddr, '{"": {}}'),
     {
       enabled: !!contractAddress,
       retry: false,
