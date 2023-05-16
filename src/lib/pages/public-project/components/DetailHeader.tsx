@@ -1,6 +1,6 @@
 import { Box, Text, Flex, Heading, Image } from "@chakra-ui/react";
 
-import { DefaultBreadcrumb } from "lib/components/DefaultBreadcrumb";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import type { Option, PublicDetail } from "lib/types";
 import { getNameAndDescriptionDefault } from "lib/utils";
 
@@ -13,7 +13,7 @@ interface DetailHeaderProps {
 }
 export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
   <>
-    <DefaultBreadcrumb
+    <Breadcrumb
       primaryPage="Public Projects"
       primaryPath="/public-project"
       currentPage={details?.name ?? ""}

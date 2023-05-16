@@ -3,8 +3,8 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
-import { DefaultBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { Loading } from "lib/components/Loading";
@@ -42,7 +42,7 @@ const CodeDetailsBody = observer(
     return (
       <>
         <Flex direction="column">
-          <DefaultBreadcrumb
+          <Breadcrumb
             primaryPage={
               publicProject.publicCodeData?.name ? "Public Projects" : "Codes"
             }

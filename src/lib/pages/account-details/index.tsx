@@ -12,9 +12,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useValidateAddress } from "lib/app-provider";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
-import { DefaultBreadcrumb } from "lib/components/DefaultBreadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -93,7 +93,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     <>
       <Flex direction="column" mb={6}>
         {publicDetail && (
-          <DefaultBreadcrumb
+          <Breadcrumb
             mb={6}
             primaryPage="Public Projects"
             primaryPath="/public-project"

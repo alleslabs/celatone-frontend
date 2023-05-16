@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { DefaultBreadcrumb } from "lib/components/DefaultBreadcrumb";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state/EmptyState";
@@ -44,7 +44,7 @@ const TxDetails = () => {
 
   return (
     <PageContainer>
-      <DefaultBreadcrumb
+      <Breadcrumb
         primaryPage="Transactions"
         primaryPath="/txs"
         currentPage={truncate(txData?.txhash)}

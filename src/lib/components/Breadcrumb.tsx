@@ -1,4 +1,8 @@
-import { Breadcrumb, BreadcrumbItem, Text } from "@chakra-ui/react";
+import {
+  Breadcrumb as ChakraBreadcrumb,
+  BreadcrumbItem as ChakraBreadcrumbItem,
+  Text,
+} from "@chakra-ui/react";
 
 import { AppLink } from "./AppLink";
 import { CustomIcon } from "./icon";
@@ -11,7 +15,8 @@ interface BreadcrumbProps {
   currentPage: string;
   mb?: number;
 }
-export const DefaultBreadcrumb = ({
+
+export const Breadcrumb = ({
   primaryPage,
   primaryPath,
   secondaryPage = "",
@@ -19,31 +24,31 @@ export const DefaultBreadcrumb = ({
   currentPage,
   mb = 0,
 }: BreadcrumbProps) => (
-  <Breadcrumb
+  <ChakraBreadcrumb
     w="full"
     spacing="4px"
     mb={mb}
     separator={<CustomIcon name="chevron-right" boxSize={3} />}
   >
-    <BreadcrumbItem
+    <ChakraBreadcrumbItem
       _hover={{ opacity: 0.8 }}
       transition="all 0.25s ease-in-out"
     >
       <AppLink color="text.dark" href={primaryPath}>
         {primaryPage}
       </AppLink>
-    </BreadcrumbItem>
+    </ChakraBreadcrumbItem>
     {secondaryPage && (
-      <BreadcrumbItem
+      <ChakraBreadcrumbItem
         _hover={{ opacity: 0.8 }}
         transition="all 0.25s ease-in-out"
       >
         <AppLink color="text.dark" href={secondaryPath}>
           {secondaryPage}
         </AppLink>
-      </BreadcrumbItem>
+      </ChakraBreadcrumbItem>
     )}
-    <BreadcrumbItem isCurrentPage>
+    <ChakraBreadcrumbItem isCurrentPage>
       <Text
         variant="body2"
         className="ellipsis"
@@ -53,6 +58,6 @@ export const DefaultBreadcrumb = ({
       >
         {currentPage}
       </Text>
-    </BreadcrumbItem>
-  </Breadcrumb>
+    </ChakraBreadcrumbItem>
+  </ChakraBreadcrumb>
 );
