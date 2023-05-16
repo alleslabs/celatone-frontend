@@ -10,9 +10,12 @@ import { getValidators } from "./validator";
 export const useValidators = (): UseQueryResult<
   Record<string, RawValidator>
 > => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
-  const queryFn = useCallback(async () => getValidators(endpoint), [endpoint]);
+  const queryFn = useCallback(
+    async () => getValidators(lcdEndpoint),
+    [lcdEndpoint]
+  );
 
-  return useQuery(["query", "validators", endpoint], queryFn);
+  return useQuery(["query", "validators", lcdEndpoint], queryFn);
 };

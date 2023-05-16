@@ -63,7 +63,7 @@ export const SelectContractInstantiator = ({
   const contractLists = [instantiatedListInfo, ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const resetOnClose = () => {
     setListSlug("");
@@ -80,8 +80,8 @@ export const SelectContractInstantiator = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", searchContract, endpoint],
-    async () => queryContract(endpoint, searchContract as ContractAddr),
+    ["query", "contract", searchContract, lcdEndpoint],
+    async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
     {
       enabled: false,
       retry: false,
