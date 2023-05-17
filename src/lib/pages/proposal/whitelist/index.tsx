@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -38,7 +39,13 @@ import {
   MAX_PROPOSAL_TITLE_LENGTH,
 } from "lib/data/proposalWhitelist";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackUseSubmitProposal,
+  AmpTrackUseWhitelistedAddresses,
+  AmpTrackUseDepositFill,
+} from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
@@ -57,7 +64,10 @@ const defaultValues: WhiteListState = {
   initialDeposit: { denom: "", amount: "" } as Coin,
 };
 
+const ampPage = "proposal_whitelist";
+
 const ProposalToWhitelist = () => {
+  const router = useRouter();
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
@@ -165,11 +175,18 @@ const ProposalToWhitelist = () => {
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
     });
+    AmpTrackUseSubmitProposal(ampPage, {
+      initialDeposit: initialDeposit.amount,
+      assetDenom: initialDeposit.denom,
+      minDeposit: minDeposit?.formattedAmount,
+      addressesCount: addresses.length,
+    });
     if (stream) {
       setProcessing(true);
       broadcast(stream);
     }
   }, [
+    addresses.length,
     minDeposit,
     submitProposalTx,
     estimatedFee,
@@ -180,12 +197,31 @@ const ProposalToWhitelist = () => {
   ]);
 
   useEffect(() => {
+    const emptyAddressesLength = addresses.filter(
+      (addr) => addr.address.trim().length === 0
+    ).length;
+    AmpTrackUseWhitelistedAddresses(
+      ampPage,
+      emptyAddressesLength,
+      addresses.length - emptyAddressesLength
+    );
+    // Run this effect only when the amount of address input changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses.length]);
+
+  useEffect(() => {
     if (minDeposit)
       reset({
         ...defaultValues,
         initialDeposit: { denom: minDeposit.denom, amount: "" },
       });
   }, [minDeposit, reset]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      AmpTrack(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
+    }
+  }, [router.isReady]);
 
   return (
     <>
@@ -220,6 +256,7 @@ const ProposalToWhitelist = () => {
             <ConnectWalletAlert
               subtitle="You need to connect wallet to proceed this action"
               mt={12}
+              page={ampPage}
             />
             <form>
               <Flex
@@ -354,6 +391,10 @@ const ProposalToWhitelist = () => {
                       color="honeydew.main"
                       onClick={() => {
                         if (!minDeposit) return;
+                        AmpTrackUseDepositFill(
+                          ampPage,
+                          minDeposit.formattedAmount
+                        );
                         setValue(
                           "initialDeposit.amount",
                           minDeposit.formattedAmount

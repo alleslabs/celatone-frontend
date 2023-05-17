@@ -63,14 +63,17 @@ export const InstantiatePermissionRadio = ({
     const emptyAddressesLength = addresses.filter(
       (addr) => addr.address.trim().length === 0
     ).length;
-    if (page)
+    if (page) {
       AmpTrackUseInstantiatePermission(
         page,
-        permission,
+        AccessType[permission],
         emptyAddressesLength,
         addresses.length - emptyAddressesLength
       );
-  }, [addresses, page, permission]);
+    }
+    // Run this effect only when the amount of address input or selected permission changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses.length, page, permission]);
 
   return (
     <RadioGroup
@@ -140,7 +143,9 @@ export const InstantiatePermissionRadio = ({
                     variant="outline-gray"
                     size="lg"
                     disabled={fields.length <= 1}
-                    onClick={() => remove(idx)}
+                    onClick={() => {
+                      remove(idx);
+                    }}
                   >
                     <CustomIcon
                       name="delete"
@@ -153,7 +158,9 @@ export const InstantiatePermissionRadio = ({
                 variant="outline-primary"
                 mt={3}
                 mx="auto"
-                onClick={() => append({ address: "" as Addr })}
+                onClick={() => {
+                  append({ address: "" as Addr });
+                }}
                 leftIcon={<CustomIcon name="plus" color="violet.light" />}
               >
                 Add More Address
