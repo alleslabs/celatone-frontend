@@ -13,13 +13,12 @@ import {
   Heading,
   Tooltip,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import { useGetAddressType, getAddressTypeByLength } from "lib/app-provider";
+import { useGetAddressType, useGetAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { AmpTrackUnsupportedToken } from "lib/services/amplitude";
@@ -152,12 +151,12 @@ export const UnsupportedTokensModal = ({
   buttonProps,
   amptrackSection,
 }: UnsupportedTokensModalProps) => {
-  const { currentChainName } = useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const getAddressTypeByLength = useGetAddressTypeByLength();
 
   if (unsupportedAssets.length === 0) return null;
 
-  const addressType = getAddressTypeByLength(currentChainName, address);
+  const addressType = getAddressTypeByLength(address);
   const content = unsupportedTokensContent(addressType);
 
   return (
