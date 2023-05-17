@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#337](https://github.com/alleslabs/celatone-frontend/pull/337) Fix beforeunload keep showing up Leave modal
 - [#330](https://github.com/alleslabs/celatone-frontend/pull/330) Fix proposal table component propagation
 
 ## v1.0.4
