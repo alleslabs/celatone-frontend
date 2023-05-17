@@ -39,7 +39,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
-import { TooltipComponent } from "lib/components/TooltipComponent";
+import { Tooltip } from "lib/components/Tooltip";
 import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePermissionRadio";
 import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
 import { UploadCard } from "lib/components/upload/UploadCard";
@@ -470,7 +470,7 @@ const StoreCodeProposal = () => {
                   >
                     {PROPOSAL_STORE_CODE_TEXT.unpinLabel}
                   </Checkbox>
-                  <TooltipComponent
+                  <Tooltip
                     label={PROPOSAL_STORE_CODE_TEXT.unpinTooltip}
                     maxW="440px"
                   >
@@ -481,7 +481,7 @@ const StoreCodeProposal = () => {
                         color="white"
                       />
                     </div>
-                  </TooltipComponent>
+                  </Tooltip>
                 </Flex>
 
                 {/* Builder  */}
@@ -492,10 +492,18 @@ const StoreCodeProposal = () => {
                   label={PROPOSAL_STORE_CODE_TEXT.builderLabel}
                   labelBgColor="background.main"
                   variant="floating"
+                  helperText={PROPOSAL_STORE_CODE_TEXT.builderHelperText}
+                  // Builder is a docker image, can be tagged, digested, or both
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.builderRequired,
+                    pattern: PROPOSAL_STORE_CODE_TEXT.builderPattern,
                   }}
-                  error={errors.builder?.message}
+                  error={
+                    builder &&
+                    !builder.match(PROPOSAL_STORE_CODE_TEXT.builderPattern)
+                      ? PROPOSAL_STORE_CODE_TEXT.builderError
+                      : errors.builder?.message
+                  }
                 />
 
                 {/* Source  */}
@@ -509,11 +517,12 @@ const StoreCodeProposal = () => {
                   helperText={PROPOSAL_STORE_CODE_TEXT.sourceHelperText}
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.sourceRequired,
-                    pattern: /^(?!:)[a-zA-Z0-9+.-]+:/,
+                    pattern: PROPOSAL_STORE_CODE_TEXT.sourcePattern,
                   }}
                   error={
                     // Source should be absolute url or absolute path
-                    source && !source.match(/^(?!:)[a-zA-Z0-9+.-]+:/)
+                    source &&
+                    !source.match(PROPOSAL_STORE_CODE_TEXT.sourcePattern)
                       ? PROPOSAL_STORE_CODE_TEXT.sourceHelperText
                       : errors.source?.message
                   }

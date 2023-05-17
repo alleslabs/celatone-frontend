@@ -89,7 +89,11 @@ export const QuickMenu = () => (
               alignItems="center"
             >
               <Flex alignItems="center" gap={3}>
-                <CustomIcon name={item.icon} boxSize="24px" />
+                <CustomIcon
+                  name={item.icon}
+                  boxSize="24px"
+                  color="pebble.600"
+                />
                 <Box>
                   <Text variant="body1" fontWeight="800">
                     {item.title}
@@ -99,7 +103,11 @@ export const QuickMenu = () => (
                   </Text>
                 </Box>
               </Flex>
-              <CustomIcon name="chevron-right" boxSize="24px" />
+              <CustomIcon
+                name="chevron-right"
+                boxSize="24px"
+                color="pebble.600"
+              />
             </Flex>
           </AppLink>
         ))}

@@ -114,7 +114,7 @@ export const SIDEBAR_STORE_CODE_DETAILS: SidebarDetails = {
 export const PROPOSAL_STORE_CODE_TEXT = {
   header: "Create Proposal to Store Code",
   description:
-    "To store your contract code, you need to submit a `StoreCodeProposal`. After the proposal passes, the code will bestored on-chain and can then be instantiated.",
+    "To store your contract code, you need to submit a `StoreCodeProposal`. After the proposal passes, the code will be stored on-chain and can then be instantiated.",
   connectWallet: "You need to connect wallet to proceed this action",
   titlePlaceholder: "ex. Store code for ...",
   titleLabel: "Proposal Title",
@@ -134,11 +134,17 @@ export const PROPOSAL_STORE_CODE_TEXT = {
   builderPlaceholder: "ex. cosmwasm/lorem-optimizer:0.1.1",
   builderLabel: "Builder",
   builderRequired: "Builder is required",
+  builderHelperText:
+    "Builder is the docker image used to build the code deterministically for smart contract verification. Can be tagged, digested, or combination of both.",
+  builderPattern: /^[a-zA-Z0-9!@#$:;/%\\^&*)(+=._-]*$/,
+  builderError:
+    "Builder should contain only alphanumerics and special characters",
   sourcePlaceholder: "URL to the code",
   sourceLabel: "Source",
   sourceRequired: "Source is required",
   sourceHelperText:
     "Please provide absolute or path-absolute URL (ex. https://github.com/example/url/)",
+  sourcePattern: /^(?!:)[a-zA-Z0-9+.-]+:/,
   permissionTitle: "Instantiate Permission",
   permissionDescription:
     "If the proposal is passed, the stored code can be instantiated to a contract by your selected option",

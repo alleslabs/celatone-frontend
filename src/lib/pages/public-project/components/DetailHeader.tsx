@@ -25,7 +25,9 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
     <Breadcrumb
       w="full"
       spacing={1}
-      separator={<CustomIcon name="chevron-right" boxSize="3" />}
+      separator={
+        <CustomIcon name="chevron-right" boxSize="3" color="pebble.600" />
+      }
     >
       <BreadcrumbItem
         _hover={{ opacity: 0.8 }}

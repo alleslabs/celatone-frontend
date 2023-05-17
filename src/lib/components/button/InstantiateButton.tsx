@@ -1,8 +1,9 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, Tooltip } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 import { useInternalNavigate } from "lib/app-provider";
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
@@ -81,13 +82,7 @@ export const InstantiateButton = ({
   );
 
   return (
-    <Tooltip
-      hasArrow
-      label={tooltipLabel}
-      placement="top"
-      arrowSize={8}
-      bg="honeydew.darker"
-    >
+    <Tooltip label={tooltipLabel}>
       <Button
         // Change to isDisabled when create proposal flow is done
         disabled={!isAllowed || !isWalletConnected}

@@ -57,6 +57,7 @@ export const fetchGovVotingParams = (
 
 export interface UploadAccess {
   permission: AccessConfigPermission;
+  address: Addr;
   addresses?: Addr[];
 }
 
@@ -64,7 +65,5 @@ export const fetchGovUploadAccessParams = async (
   lcdEndpoint: string
 ): Promise<UploadAccess> =>
   axios
-    .get(
-      `${lcdEndpoint}/cosmos/params/v1beta1/params?subspace=wasm&key=uploadAccess`
-    )
-    .then(({ data }) => JSON.parse(data.param.value));
+    .get(`${lcdEndpoint}/cosmwasm/wasm/v1/codes/params`)
+    .then(({ data }) => data.params.code_upload_access);

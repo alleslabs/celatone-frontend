@@ -62,6 +62,7 @@ export const FilterInput = ({
         boxSize="40px"
         right="0px"
         minH="full"
+        color="pebble.600"
         backgroundColor="background.main"
         onClick={() => setIsDropdown(!isDropdown)}
       />

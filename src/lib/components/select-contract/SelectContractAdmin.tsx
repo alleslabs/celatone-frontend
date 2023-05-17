@@ -67,9 +67,7 @@ export const SelectContractAdmin = ({
           onOpen();
         }}
         leftIcon={
-          !notSelected ? (
-            <CustomIcon name="swap" color="violet.light" boxSize="12px" />
-          ) : undefined
+          !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
         }
         disabled={!address}
       >
@@ -80,7 +78,11 @@ export const SelectContractAdmin = ({
         <DrawerOverlay />
         <DrawerContent h="80%">
           <DrawerHeader>
-            <CustomIcon name="contract-address-solid" boxSize="5" />
+            <CustomIcon
+              name="contract-address-solid"
+              boxSize="5"
+              color="pebble.600"
+            />
             <Heading as="h5" variant="h5">
               Select contract which you have permission
             </Heading>

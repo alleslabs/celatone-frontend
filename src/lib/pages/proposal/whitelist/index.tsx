@@ -268,7 +268,7 @@ const ProposalToWhitelist = () => {
                 borderRadius="8px"
               >
                 <Flex gap={2} alignItems="center">
-                  <CustomIcon name="proposal-solid" />
+                  <CustomIcon name="proposal-solid" color="pebble.600" />
                   <Heading as="h6" variant="h6">
                     Fill in Proposal Details
                   </Heading>
@@ -358,10 +358,7 @@ const ProposalToWhitelist = () => {
                     disabled={fields.length <= 1}
                     onClick={() => remove(idx)}
                   >
-                    <CustomIcon
-                      name="delete"
-                      color={fields.length <= 1 ? "pebble.600" : "text.dark"}
-                    />
+                    <CustomIcon name="delete" />
                   </Button>
                 </Flex>
               ))}
@@ -369,7 +366,7 @@ const ProposalToWhitelist = () => {
                 variant="outline-primary"
                 mt={3}
                 onClick={() => append({ address: "" as Addr })}
-                leftIcon={<CustomIcon name="plus" color="violet.light" />}
+                leftIcon={<CustomIcon name="plus" />}
               >
                 Add More Address
               </Button>

@@ -124,11 +124,16 @@ const PastTxs = () => {
 
   return (
     <PageContainer>
-      <Heading variant="h5" as="h5">
+      <Heading
+        variant="h5"
+        as="h5"
+        minH="36px"
+        display="flex"
+        alignItems="center"
+      >
         Past Transactions
       </Heading>
-
-      <Flex mt="48px" gap={1}>
+      <Flex my={8} gap={3}>
         <InputGroup>
           <Input
             value={pastTxsState.search}
@@ -140,11 +145,10 @@ const PastTxs = () => {
             h="full"
           />
           <InputRightElement pointerEvents="none" h="full" mr="1">
-            <CustomIcon name="search" />
+            <CustomIcon name="search" color="pebble.600" />
           </InputRightElement>
         </InputGroup>
-
-        <Flex gap={1}>
+        <Flex gap={3}>
           <TxRelationSelection
             setValue={(value) => {
               resetPagination();
