@@ -53,6 +53,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       wasm: {
         enabled: true,
         storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
       },
       pool: {
         enabled: true,
@@ -92,6 +93,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       wasm: {
         enabled: true,
         storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
       },
       pool: {
         enabled: true,
