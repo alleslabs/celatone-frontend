@@ -356,9 +356,7 @@ const ProposalToWhitelist = () => {
                     variant="outline-gray"
                     size="lg"
                     disabled={fields.length <= 1}
-                    onClick={() => {
-                      remove(idx);
-                    }}
+                    onClick={() => remove(idx)}
                   >
                     <CustomIcon
                       name="delete"
@@ -370,9 +368,7 @@ const ProposalToWhitelist = () => {
               <Button
                 variant="outline-primary"
                 mt={3}
-                onClick={() => {
-                  append({ address: "" as Addr });
-                }}
+                onClick={() => append({ address: "" as Addr })}
                 leftIcon={<CustomIcon name="plus" color="violet.light" />}
               >
                 Add More Address
