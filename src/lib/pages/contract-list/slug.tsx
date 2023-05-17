@@ -56,7 +56,7 @@ const ContractsByList = observer(() => {
     // TODO: find a better approach?
     const timeoutId = setTimeout(() => {
       if (isHydrated && contractListInfo === undefined)
-        navigate({ pathname: "/contract-list" });
+        navigate({ pathname: "/contract-lists" });
     }, 100);
     return () => clearTimeout(timeoutId);
   }, [contractListInfo, isHydrated, navigate]);
@@ -91,7 +91,7 @@ const ContractsByList = observer(() => {
           _hover={{ opacity: 0.8 }}
           transition="all 0.25s ease-in-out"
         >
-          <AppLink color="text.dark" href="/contract-list">
+          <AppLink color="text.dark" href="/contract-lists">
             Contract Lists
           </AppLink>
         </BreadcrumbItem>

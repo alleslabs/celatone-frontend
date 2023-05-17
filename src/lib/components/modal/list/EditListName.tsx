@@ -75,7 +75,7 @@ export function EditListNameModal({
         handleSave();
         if (reroute)
           navigate({
-            pathname: "/contract-list/[slug]",
+            pathname: "/contract-lists/[slug]",
             query: { slug: formatSlugName(listName) },
             replace: true,
           });
