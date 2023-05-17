@@ -28,7 +28,7 @@ export const AdminContractsTable = ({
   const navigate = useInternalNavigate();
   const onRowSelect = (contract: ContractAddr) =>
     navigate({
-      pathname: "/contract/[contract]",
+      pathname: "/contracts/[contract]",
       query: { contract },
     });
 

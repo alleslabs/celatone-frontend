@@ -69,7 +69,7 @@ export function EditListNameModal({
     <ActionModal
       title="Edit list name"
       icon="add-new"
-      trigger={<MenuItem {...menuItemProps} />}
+      trigger={<MenuItem {...menuItemProps} as="button" />}
       mainBtnTitle="Save"
       mainAction={() => {
         handleSave();

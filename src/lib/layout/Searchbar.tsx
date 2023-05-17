@@ -39,15 +39,15 @@ interface ResultItemProps {
 const getRoute = (type: SearchResultType) => {
   switch (type) {
     case "Code ID":
-      return "/code";
+      return "/codes";
     case "Contract Address":
-      return "/contract";
+      return "/contracts";
     case "Wallet Address":
-      return "/account";
+      return "/accounts";
     case "Transaction Hash":
-      return "/tx";
+      return "/txs";
     case "Block":
-      return "/block";
+      return "/blocks";
     default:
       return null;
   }

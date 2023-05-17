@@ -61,7 +61,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
           w="full"
           variant="outline-gray"
           onClick={() =>
-            navigate({ pathname: `/contract/${txInfo.contractAddress}` })
+            navigate({ pathname: `/contracts/${txInfo.contractAddress}` })
           }
         >
           View Contract

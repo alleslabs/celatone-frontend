@@ -50,7 +50,7 @@ export const ButtonSection = ({
           <Button
             variant="ghost-lilac"
             onClick={() => {
-              navigate({ pathname: "/codes" });
+              navigate({ pathname: "/my-codes" });
               onClose?.();
             }}
           >
@@ -99,7 +99,7 @@ export const ButtonSection = ({
           <Button
             variant="primary"
             onClick={() =>
-              navigate({ pathname: `/contract/${router.query.contract}` })
+              navigate({ pathname: `/contracts/${router.query.contract}` })
             }
           >
             View Contract Details

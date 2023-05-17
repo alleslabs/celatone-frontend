@@ -73,7 +73,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     {
       category: "Codes",
       submenu: [
-        { name: "My Codes", slug: "/codes", icon: "code" },
+        { name: "My Codes", slug: "/my-codes", icon: "code" },
         { name: "Recent Codes", slug: "/recent-codes", icon: "website" },
       ],
     },

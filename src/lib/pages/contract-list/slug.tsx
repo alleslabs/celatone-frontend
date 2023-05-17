@@ -48,7 +48,7 @@ const ContractsByList = observer(() => {
 
   const onContractSelect = (contract: ContractAddr) =>
     navigate({
-      pathname: "/contract/[contract]",
+      pathname: "/contracts/[contract]",
       query: { contract },
     });
 
