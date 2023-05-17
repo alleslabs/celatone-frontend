@@ -69,6 +69,15 @@ export const AppProvider = observer(
     const { setProjectUserKey, isProjectUserKeyExist } =
       usePublicProjectStore();
 
+    useEffect(() => {
+      const handler = (e: BeforeUnloadEvent) => {
+        e.stopImmediatePropagation();
+      };
+
+      window.addEventListener("beforeunload", handler);
+      return () => window.removeEventListener("beforeunload", handler);
+    }, []);
+
     const chainGasPrice = useMemo(() => {
       if (
         !currentChainRecord ||
