@@ -1,7 +1,7 @@
 import { Heading, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -22,10 +22,9 @@ const Upload = () => {
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;
 
-  const enableUpload = useMemo(() => {
-    if (!isPermissionedNetwork) return true;
-    return Boolean(data?.addresses?.includes(address as HumanAddr));
-  }, [data, address, isPermissionedNetwork]);
+  const enableUpload =
+    !isPermissionedNetwork ||
+    Boolean(data?.addresses?.includes(address as HumanAddr));
 
   useEffect(() => {
     // Redirect back to deploy page

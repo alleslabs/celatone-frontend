@@ -26,7 +26,7 @@ export const MyStoredCodesSection = ({
   isSearching,
 }: MyStoredCodesSectionProps) => {
   const { data } = useUploadAccessParams();
-  const { address = "" } = useWallet();
+  const { address } = useWallet();
   const isAllowed = Boolean(data?.addresses?.includes(address as Addr));
 
   const isPermissionedNetwork =

@@ -9,9 +9,9 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
-import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -56,15 +56,13 @@ const Deploy = () => {
   const navigate = useInternalNavigate();
   const { address } = useWallet();
   const { data, isFetching } = useUploadAccessParams();
-  const { isMainnet } = useCurrentNetwork();
 
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;
 
-  const enableUpload = useMemo(() => {
-    if (!isPermissionedNetwork) return true;
-    return Boolean(data?.addresses?.includes(address as HumanAddr));
-  }, [data, address, isPermissionedNetwork]);
+  const enableUpload =
+    !isPermissionedNetwork ||
+    Boolean(data?.addresses?.includes(address as HumanAddr));
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
@@ -86,8 +84,7 @@ const Deploy = () => {
         subtitle="You need to connect wallet to proceed this action"
         mb={4}
       />
-      {/* Revist isMainnet logic */}
-      {address && isMainnet && (
+      {address && isPermissionedNetwork && (
         <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
           {icon}
           <AlertDescription>{description}</AlertDescription>

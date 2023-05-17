@@ -18,13 +18,7 @@ export const UploadButton = ({ isAllowed }: UploadButtonProps) => {
       <Button
         disabled={!isAllowed}
         onClick={() => navigate({ pathname: "/upload" })}
-        rightIcon={
-          <CustomIcon
-            name="upload"
-            color={!isAllowed ? "pebble.600" : "text.main"}
-            boxSize="12px"
-          />
-        }
+        rightIcon={<CustomIcon name="upload" boxSize="12px" />}
       >
         Upload New Code
       </Button>
