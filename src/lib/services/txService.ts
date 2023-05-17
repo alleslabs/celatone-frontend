@@ -277,9 +277,11 @@ export const useTxsCountByPoolId = (
 
   return useQuery(
     ["transactions_count_by_pool_id", poolId, type, indexerGraphClient],
-    queryFn,
+    createQueryFnWithTimeout(queryFn, 5000),
     {
       enabled: !!poolId,
+      retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };

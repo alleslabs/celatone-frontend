@@ -29,7 +29,7 @@ export const MsgJoinPoolAction = ({
       {(msg.token_in_maxs ?? []).map((asset, index) => {
         const inAssetInfo = assetInfos?.[asset.denom];
         return (
-          <Flex gap={1} alignItems="center">
+          <Flex key={asset.denom} gap={1} alignItems="center">
             {index > 0 && (
               <CustomIcon name="plus" boxSize={4} color="lilac.main" />
             )}

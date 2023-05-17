@@ -20,9 +20,8 @@ export const PoolLogo = ({
   textVariant = "body2",
 }: PoolLogoProps) => {
   const renderLogo = (token: TokenWithValue, i: number) => (
-    <Flex>
+    <Flex key={token.denom}>
       <Image
-        key={token.denom}
         boxSize={logoSize}
         src={token.logo || getUndefinedTokenIcon(token.denom)}
         zIndex={2 - i}
