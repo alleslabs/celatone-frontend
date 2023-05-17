@@ -33,6 +33,40 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/:network/account/:address",
+        destination: "/:network/accounts/:address",
+        permanent: false,
+      },
+      {
+        source: "/:network/tx/:txHash",
+        destination: "/:network/txs/:txHash",
+        permanent: false,
+      },
+      {
+        source: "/:network/block/:height",
+        destination: "/:network/blocks/:height",
+        permanent: false,
+      },
+      {
+        source: "/:network/code/:codeId",
+        destination: "/:network/codes/:codeId",
+        permanent: false,
+      },
+      {
+        source: "/:network/contract/:address",
+        destination: "/:network/contracts/:address",
+        permanent: false,
+      },
+      {
+        source: "/:network/public-project/:slug",
+        destination: "/:network/public-projects/:slug",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 const moduleExports = {
