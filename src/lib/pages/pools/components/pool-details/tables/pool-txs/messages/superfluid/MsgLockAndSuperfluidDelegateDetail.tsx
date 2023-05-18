@@ -87,6 +87,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
               validatorAddress: msg.val_addr,
               moniker: validator?.moniker,
             }}
+            badgeSize={6}
           />
         </Flex>
       </Flex>
