@@ -53,11 +53,11 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const toast = useToast();
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    ["query", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, Number(codeId)),
     {
       enabled: false,
       retry: false,

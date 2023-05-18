@@ -101,7 +101,8 @@ export const useContractData = (
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
+
   const { assetInfos } = useAssetInfos();
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
@@ -110,16 +111,16 @@ export const useContractData = (
 
   const { data: instantiateInfo, isLoading: isInstantiateInfoLoading } =
     useQuery(
-      ["query", "instantiate_info", endpoint, contractAddress],
+      ["query", "instantiate_info", lcdEndpoint, contractAddress],
       async () =>
-        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
+        queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
       { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 
   const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
     useQuery(
-      ["query", "contract_cw2_info", endpoint, contractAddress],
-      async () => queryContractCw2Info(endpoint, contractAddress),
+      ["query", "contract_cw2_info", lcdEndpoint, contractAddress],
+      async () => queryContractCw2Info(lcdEndpoint, contractAddress),
       { enabled: !!currentChainRecord && !!contractAddress, retry: false }
     );
 

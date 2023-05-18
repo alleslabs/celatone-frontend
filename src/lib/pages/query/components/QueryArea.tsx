@@ -40,7 +40,8 @@ export const QueryArea = ({
   initialMsg,
   cmds,
 }: QueryAreaProps) => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
+
   const userKey = useUserKey();
   const { addActivity } = useContractStore();
   const { address } = useWallet();
@@ -50,8 +51,8 @@ export const QueryArea = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", endpoint, contractAddress, msg],
-    async () => queryData(endpoint, contractAddress, msg),
+    ["query", lcdEndpoint, contractAddress, msg],
+    async () => queryData(lcdEndpoint, contractAddress, msg),
     {
       enabled: false,
       retry: false,

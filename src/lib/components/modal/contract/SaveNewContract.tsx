@@ -41,7 +41,8 @@ export function SaveNewContractModal({
   list,
   buttonProps,
 }: SaveNewContractModalProps) {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
+
   const { indexerGraphClient } = useCelatoneApp();
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
@@ -102,10 +103,10 @@ export function SaveNewContractModal({
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "instantiate_info", endpoint, contractAddressState],
+    ["query", "instantiate_info", lcdEndpoint, contractAddressState],
     async () =>
       queryInstantiateInfo(
-        endpoint,
+        lcdEndpoint,
         indexerGraphClient,
         contractAddressState as ContractAddr
       ),

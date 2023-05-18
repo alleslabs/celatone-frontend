@@ -37,7 +37,8 @@ export const MigrateContract = ({
 }: MigrateContractProps) => {
   const { address } = useWallet();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
+
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
 
@@ -79,8 +80,8 @@ export const MigrateContract = ({
   });
 
   const { refetch } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    ["query", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, Number(codeId)),
     {
       enabled: !!address && !!codeId.length,
       retry: false,

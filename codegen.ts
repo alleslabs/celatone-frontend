@@ -1,5 +1,8 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
+/**
+ * @remarks Update schema when it is needed
+ */
 const config: CodegenConfig = {
   schema: "https://osmosis-testnet-graphql.alleslabs.dev/v1/graphql",
   documents: ["src/**/*.tsx", "src/**/*.ts"],

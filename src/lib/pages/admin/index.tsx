@@ -42,7 +42,8 @@ const UpdateAdmin = () => {
   const fabricateFee = useFabricateFee();
   const updateAdminTx = useUpdateAdminTx();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
+
   const { indexerGraphClient } = useCelatoneApp();
 
   const [adminAddress, setAdminAddress] = useState("");
@@ -115,12 +116,16 @@ const UpdateAdmin = () => {
     [
       "query",
       "instantiate_info",
-      endpoint,
+      lcdEndpoint,
       indexerGraphClient,
       contractAddressParam,
     ],
     async () =>
-      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddressParam),
+      queryInstantiateInfo(
+        lcdEndpoint,
+        indexerGraphClient,
+        contractAddressParam
+      ),
     {
       enabled: !!contractAddressParam,
       refetchOnWindowFocus: false,

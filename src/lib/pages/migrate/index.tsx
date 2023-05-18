@@ -35,7 +35,8 @@ const Migrate = () => {
   const { indexerGraphClient } = useCelatoneApp();
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
+
   const { address = "" } = useWallet();
 
   const { setValue, watch } = useForm<MigratePageState>({
@@ -67,9 +68,9 @@ const Migrate = () => {
   );
 
   useQuery(
-    ["query", "instantiate_info", endpoint, contractAddress],
+    ["query", "instantiate_info", lcdEndpoint, contractAddress],
     async () =>
-      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
+      queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
     {
       enabled: !!contractAddress,
       retry: 0,
