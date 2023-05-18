@@ -43,6 +43,8 @@ const nextConfig = {
       "proposal",
       "project",
       "contract-list",
+      "past-tx",
+      "my-code",
     ];
 
     return routes.reduce((acc, route) => {
