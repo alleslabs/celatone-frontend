@@ -124,6 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#341](https://github.com/alleslabs/celatone-frontend/pull/341) Apply faucet info from chain config
 - [#234](https://github.com/alleslabs/celatone-frontend/pull/234) Fix faucet wording
 - [#216](https://github.com/alleslabs/celatone-frontend/pull/216) Change icon to Alles Labs icon set
 - [#227](https://github.com/alleslabs/celatone-frontend/pull/227) Refactor directory structure and components e.g. various tables
