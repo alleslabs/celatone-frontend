@@ -24,7 +24,7 @@ export const NewProposalButton = () => {
           icon={<CustomIcon name="code" color="pebble.600" />}
           onClick={() => {
             navigate({
-              pathname: "/proposal/store-code",
+              pathname: "/proposals/store-code",
             });
           }}
         >
@@ -33,9 +33,8 @@ export const NewProposalButton = () => {
         {/* <MenuItem
           icon={<CustomIcon name="contract-address" color="pebble.600"/>}
           onClick={() => {
-            // TODO - Change navigation path
             navigate({
-              pathname: "/proposal-instantiate",
+              pathname: "/proposals/instantiate",
             });
           }}
         >
@@ -50,7 +49,7 @@ export const NewProposalButton = () => {
             icon={<CustomIcon name="admin" color="pebble.600" />}
             onClick={() => {
               navigate({
-                pathname: "/proposal/whitelist",
+                pathname: "/proposals/whitelist",
               });
             }}
           >

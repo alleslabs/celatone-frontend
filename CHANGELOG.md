@@ -50,11 +50,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#331](https://github.com/alleslabs/celatone-frontend/pull/331) Add validation check for builder in proposal to store code page
 - [#324](https://github.com/alleslabs/celatone-frontend/pull/324) Add deposit/voting period from gov params and add minimum required alert for proposal to store code
+- [#339](https://github.com/alleslabs/celatone-frontend/pull/339) Update all routes to plural form, and patch all codes
+- [#334](https://github.com/alleslabs/celatone-frontend/pull/334) Change `osmo-test-4` to `osmo-test-5`, fix tx service when accountId is undefined
 - [#311](https://github.com/alleslabs/celatone-frontend/pull/311) Refine css styling
 - [#328](https://github.com/alleslabs/celatone-frontend/pull/328) Add proposal and pool page in sidebar navigation
 - [#298](https://github.com/alleslabs/celatone-frontend/pull/298) Show deposit/voting period from gov params and add minimum required alert
 
 ### Bug fixes
+
+- [$340](https://github.com/alleslabs/celatone-frontend/pull/340) Remove resend and redo button in accordion if relation is related (Past txs page)
+- [#337](https://github.com/alleslabs/celatone-frontend/pull/337) Fix beforeunload keep showing up Leave modal
+- [#330](https://github.com/alleslabs/celatone-frontend/pull/330) Fix proposal table component propagation
 
 ## v1.0.4
 

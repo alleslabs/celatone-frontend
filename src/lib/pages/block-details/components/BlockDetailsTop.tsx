@@ -77,14 +77,14 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
       </Flex>
       <Flex gap={2}>
         {!disablePrevious && (
-          <AppLink href={`/block/${block - 1}`}>
+          <AppLink href={`/blocks/${block - 1}`}>
             <StyledIconButton
               icon={<CustomIcon name="chevron-left" />}
               variant="ghost-gray"
             />
           </AppLink>
         )}
-        <AppLink href={`/block/${block + 1}`}>
+        <AppLink href={`/blocks/${block + 1}`}>
           <StyledIconButton
             icon={<CustomIcon name="chevron-right" />}
             variant="ghost-gray"

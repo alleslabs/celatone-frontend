@@ -33,6 +33,48 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    const routes = [
+      "account",
+      "tx",
+      "block",
+      "code",
+      "contract",
+      "proposal",
+      "project",
+      "contract-list",
+      "past-tx",
+      "my-code",
+    ];
+
+    return routes.reduce((acc, route) => {
+      acc.push({
+        source: `/:network/${route}/:id`,
+        destination: `/:network/${route}s/:id`,
+        permanent: false,
+      });
+
+      acc.push({
+        source: `/${route}/:id`,
+        destination: `/${route}s/:id`,
+        permanent: false,
+      });
+
+      acc.push({
+        source: `/:network/${route}`,
+        destination: `/:network/${route}s`,
+        permanent: false,
+      });
+
+      acc.push({
+        source: `/${route}`,
+        destination: `/${route}s`,
+        permanent: false,
+      });
+
+      return acc;
+    }, []);
+  },
 };
 
 const moduleExports = {

@@ -23,7 +23,7 @@ const SubHeader = () => {
 
   const activeColor = "violet.light";
 
-  const myPageSlug = `/account/${address}`;
+  const myPageSlug = `/accounts/${address}`;
 
   return (
     <Flex px={6} alignItems="center" h="full" justifyContent="space-between">
