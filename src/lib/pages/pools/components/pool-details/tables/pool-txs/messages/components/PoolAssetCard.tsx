@@ -1,14 +1,12 @@
 import { Flex, Text } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 
-import { getPoolDenom } from "../../utils";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
-import type { AssetInfosOpt } from "lib/services/assetService";
 import { usePoolAssetsbyPoolIds } from "lib/services/poolService";
-import { useTxData } from "lib/services/txService";
-import type { TokenWithValue } from "lib/types";
+import type { AssetInfo, Option, TokenWithValue } from "lib/types";
 import {
   coinToTokenWithValue,
   formatBalanceWithDenom,
@@ -16,72 +14,49 @@ import {
 } from "lib/utils";
 
 interface PoolAssetCardProps {
-  txHash?: string;
-  msgIndex: number;
-  poolId: string;
-  msgShareAmount?: string;
-  assetInfos: AssetInfosOpt;
-  isJoin: boolean;
+  poolId: number;
+  description: string;
+  assetText: string;
+  poolAsset: Coin;
+  poolAssetInfo: Option<AssetInfo>;
   isOpened: boolean;
 }
 
 export const PoolAssetCard = ({
-  txHash,
-  msgIndex,
   poolId,
-  msgShareAmount,
-  assetInfos,
-  isJoin,
+  description,
+  assetText,
+  poolAsset,
+  poolAssetInfo,
   isOpened,
 }: PoolAssetCardProps) => {
-  const { data: txData, isLoading: isTxDataLoading } = useTxData(
-    txHash,
+  const { data: poolAssets, isLoading } = usePoolAssetsbyPoolIds(
+    [poolId],
     isOpened
   );
-  const { data: poolAssets, isLoading: isPoolAssetsLoading } =
-    usePoolAssetsbyPoolIds([Number(poolId)], isOpened);
 
-  if (!msgShareAmount && (isTxDataLoading || isPoolAssetsLoading))
-    return <Loading />;
-
-  const poolDenom = getPoolDenom(poolId);
-  const eventShareAmount = txData?.logs
-    .find((event) => event.msg_index === msgIndex)
-    ?.events?.find((event) => event.type === "coin_received")
-    ?.attributes.at(3)
-    ?.value.slice(0, -poolDenom.length);
-
-  const shareAmount = msgShareAmount ?? eventShareAmount;
-  if (!shareAmount || !poolAssets)
+  if (isLoading) return <Loading />;
+  if (!poolAssets)
     return (
-      <EmptyState message="There is an error during fetching pool detail." />
+      <EmptyState message="There is an error during fetching transaction detail." />
     );
 
-  const tokens = poolAssets[Number(poolId)].map<TokenWithValue>((denom) =>
-    coinToTokenWithValue(denom, "0", assetInfos?.[denom])
+  const tokens = poolAssets[poolId].map<TokenWithValue>((denom) =>
+    coinToTokenWithValue(denom, "0", poolAssetInfo)
   );
   return (
-    <Flex
-      className="pool-msg-detail-container"
-      direction="column"
-      gap={2}
-      p={4}
-      border="1px solid"
-      borderColor="transparent"
-      borderRadius="8px"
-      bgColor="pebble.900"
-    >
+    <>
       <Flex justifyContent="space-between">
         <Text variant="body2" textColor="text.dark">
-          {isJoin ? "Provided to" : "Removed from"}
+          {description}
         </Text>
         <Text>
-          {isJoin ? "Received " : "Burn "}
+          {assetText}
           <span style={{ fontWeight: 700 }}>
             {formatBalanceWithDenom({
-              coin: { amount: shareAmount, denom: poolDenom },
-              symbol: assetInfos?.[poolDenom]?.symbol,
-              precision: assetInfos?.[poolDenom]?.precision,
+              coin: poolAsset,
+              symbol: poolAssetInfo?.symbol,
+              precision: poolAssetInfo?.precision,
             })}
           </span>
         </Text>
@@ -132,6 +107,6 @@ export const PoolAssetCard = ({
           />
         </div>
       </Flex>
-    </Flex>
+    </>
   );
 };

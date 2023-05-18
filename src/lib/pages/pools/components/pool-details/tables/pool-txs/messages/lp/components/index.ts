@@ -1,3 +1,3 @@
 export * from "./LiquidityDivider";
-export * from "./PoolAssetCard";
+export * from "./PoolLPCard";
 export * from "./PoolAssetsGrid";

@@ -4,7 +4,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type { MsgJoinPoolDetails } from "lib/utils/tx/types";
 
-import { PoolAssetCard, LiquidityDivider, PoolAssetsGrid } from "./components";
+import { PoolLPCard, LiquidityDivider, PoolAssetsGrid } from "./components";
 
 interface MsgJoinPoolDetailProps {
   txHash: string;
@@ -24,7 +24,7 @@ export const MsgJoinPoolDetail = ({
   isOpened,
 }: MsgJoinPoolDetailProps) => (
   <Flex w="full" alignItems="start" gap={12}>
-    <Flex direction="column" minW="100px">
+    <Flex direction="column" gap={1}>
       <Text variant="body2" textColor="pebble.500" fontWeight={500}>
         Block height
       </Text>
@@ -43,7 +43,7 @@ export const MsgJoinPoolDetail = ({
         isOpened={isOpened}
       />
       <LiquidityDivider />
-      <PoolAssetCard
+      <PoolLPCard
         msgIndex={msgIndex}
         poolId={msg.pool_id}
         msgShareAmount={msg.share_out_amount}

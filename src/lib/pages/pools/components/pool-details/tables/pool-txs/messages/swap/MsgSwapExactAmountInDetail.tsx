@@ -24,7 +24,7 @@ export const MsgSwapExactAmountInDetail = ({
   isOpened,
 }: MsgSwapExactAmountInDetailProps) => (
   <Flex w="full" alignItems="start" gap={12}>
-    <Flex direction="column">
+    <Flex direction="column" gap={1}>
       <Text variant="body2" textColor="pebble.500" fontWeight={500}>
         Block height
       </Text>

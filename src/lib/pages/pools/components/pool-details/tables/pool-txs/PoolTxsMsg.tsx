@@ -137,6 +137,7 @@ export const PoolTxsMsg = ({
               blockHeight={transaction.height}
               msgIndex={msgIndex}
               msg={message}
+              pool={pool}
               assetInfos={assetInfos}
               isOpened={isOpen}
             />

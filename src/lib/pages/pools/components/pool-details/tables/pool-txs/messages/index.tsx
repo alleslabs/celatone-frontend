@@ -5,6 +5,7 @@ import type { AssetInfosOpt } from "lib/services/assetService";
 import type { Message, PoolDetail, TokenWithValue } from "lib/types";
 import { extractTxDetails } from "lib/utils";
 
+import { MsgLockTokensAction, MsgLockTokensDetail } from "./lockup";
 import {
   MsgExitPoolAction,
   MsgExitPoolDetail,
@@ -19,6 +20,10 @@ import {
   MsgJoinSwapShareAmountOutAction,
   MsgJoinSwapShareAmountOutDetail,
 } from "./lp";
+import {
+  MsgLockAndSuperfluidDelegateAction,
+  MsgLockAndSuperfluidDelegateDetail,
+} from "./superfluid";
 import {
   MsgSwapExactAmountInAction,
   MsgSwapExactAmountInDetail,
@@ -103,6 +108,26 @@ export const PoolMsgAction = ({
         />
       );
     }
+    case "/osmosis.lockup.MsgLockTokens": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgLockTokensAction
+          msg={details}
+          pool={pool}
+          assetInfos={assetInfos}
+        />
+      );
+    }
+    case "/osmosis.superfluid.MsgLockAndSuperfluidDelegate": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgLockAndSuperfluidDelegateAction
+          msg={details}
+          pool={pool}
+          assetInfos={assetInfos}
+        />
+      );
+    }
     default: {
       return <Text>{msg.type}</Text>;
     }
@@ -114,6 +139,7 @@ export const PoolMsgDetail = ({
   blockHeight,
   msgIndex,
   msg,
+  pool,
   assetInfos,
   isOpened,
 }: {
@@ -121,6 +147,7 @@ export const PoolMsgDetail = ({
   blockHeight: number;
   msgIndex: number;
   msg: Message;
+  pool: PoolDetail<Big, TokenWithValue>;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
 }) => {
@@ -227,6 +254,34 @@ export const PoolMsgDetail = ({
           blockHeight={blockHeight}
           msgIndex={msgIndex}
           msg={details}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+        />
+      );
+    }
+    case "/osmosis.lockup.MsgLockTokens": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgLockTokensDetail
+          txHash={txHash}
+          blockHeight={blockHeight}
+          msgIndex={msgIndex}
+          msg={details}
+          pool={pool}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+        />
+      );
+    }
+    case "/osmosis.superfluid.MsgLockAndSuperfluidDelegate": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgLockAndSuperfluidDelegateDetail
+          txHash={txHash}
+          blockHeight={blockHeight}
+          msgIndex={msgIndex}
+          msg={details}
+          pool={pool}
           assetInfos={assetInfos}
           isOpened={isOpened}
         />

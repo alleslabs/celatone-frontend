@@ -4,7 +4,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type { MsgExitSwapExternAmountOutDetails } from "lib/utils/tx/types";
 
-import { PoolAssetCard, LiquidityDivider, PoolAssetsGrid } from "./components";
+import { PoolLPCard, LiquidityDivider, PoolAssetsGrid } from "./components";
 
 interface MsgExitSwapExternAmountOutDetailProps {
   txHash: string;
@@ -24,7 +24,7 @@ export const MsgExitSwapExternAmountOutDetail = ({
   isOpened,
 }: MsgExitSwapExternAmountOutDetailProps) => (
   <Flex w="full" alignItems="start" gap={12}>
-    <Flex direction="column" minW="100px">
+    <Flex direction="column" gap={1}>
       <Text variant="body2" textColor="pebble.500" fontWeight={500}>
         Block height
       </Text>
@@ -35,7 +35,7 @@ export const MsgExitSwapExternAmountOutDetail = ({
       />
     </Flex>
     <Box w="full">
-      <PoolAssetCard
+      <PoolLPCard
         txHash={txHash}
         msgIndex={msgIndex}
         poolId={msg.pool_id}
