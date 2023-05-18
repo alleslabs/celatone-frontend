@@ -104,6 +104,7 @@ export const TransactionsTableRow = ({
         <Grid w="full" py={4} hidden={!isOpen}>
           {transaction.messages.map((msg, index) => (
             <AccordionTx
+              isSigner={transaction.isSigner}
               key={index.toString() + msg.type}
               message={msg}
               allowFurtherAction={showAction}
