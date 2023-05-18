@@ -20,7 +20,7 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
       features: { wasm },
     },
   } = useCelatoneApp();
-  const gas = wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
+  const gas = wasm.enabled ? wasm.clearAdminGas : 0;
   const clearAdminFee = fabricateFee(gas);
 
   return useCallback(
