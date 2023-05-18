@@ -26,7 +26,7 @@ const RecentCodes = observer(() => {
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
     navigate({
-      pathname: "/code/[codeId]",
+      pathname: "/codes/[codeId]",
       query: { codeId },
     });
 

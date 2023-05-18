@@ -17,7 +17,7 @@ export const useOpenTxTab = (type: "lcd" | "tx-page") => {
       ? `${CELATONE_API_ENDPOINT}/txs/${getChainApiPath(
           currentChainName
         )}/${chainId}`
-      : `/${getNetworkByChainName(currentChainName)}/tx`;
+      : `/${getNetworkByChainName(currentChainName)}/txs`;
 
   return useCallback(
     (txHash: Option<string>) => {

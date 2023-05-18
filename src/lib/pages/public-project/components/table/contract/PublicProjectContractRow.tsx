@@ -46,7 +46,7 @@ export const PublicProjectContractRow = ({
 
   const goToContractDetails = () => {
     navigate({
-      pathname: `/contract/${publicContractInfo.publicInfo.contractAddress}`,
+      pathname: `/contracts/${publicContractInfo.publicInfo.contractAddress}`,
     });
   };
 

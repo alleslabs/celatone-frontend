@@ -73,8 +73,8 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     {
       category: "Codes",
       submenu: [
-        { name: "My Codes", slug: "/codes", icon: "code" },
-        { name: "Recent Codes", slug: "/recent-codes", icon: "website" },
+        { name: "My Codes", slug: "/my-codes", icon: "code" },
+        { name: "Recent Codes", slug: "/codes", icon: "website" },
       ],
     },
     {
@@ -82,12 +82,12 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       submenu: [
         {
           name: INSTANTIATED_LIST_NAME,
-          slug: `/contract-list/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
+          slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
           icon: getListIcon(INSTANTIATED_LIST_NAME),
         },
         {
           name: SAVED_LIST_NAME,
-          slug: `/contract-list/${formatSlugName(SAVED_LIST_NAME)}`,
+          slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
           icon: getListIcon(SAVED_LIST_NAME),
         },
         ...getContractLists()
@@ -96,12 +96,12 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           .slice(0, 3)
           .map((list) => ({
             name: list.name,
-            slug: `/contract-list/${list.slug}`,
+            slug: `/contract-lists/${list.slug}`,
             icon: getListIcon(list.name),
           })),
         {
           name: "View All Lists",
-          slug: "/contract-list",
+          slug: "/contract-lists",
           icon: "more",
         },
       ],
@@ -114,12 +114,12 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       submenu: [
         ...getSavedPublicProjects().map((list) => ({
           name: list.name,
-          slug: `/public-project/${list.slug}`,
+          slug: `/projects/${list.slug}`,
           logo: list.logo,
         })),
         {
           name: "View All Projects",
-          slug: "/public-project",
+          slug: "/projects",
           icon: "public-project",
         },
       ],
