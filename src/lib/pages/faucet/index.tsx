@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import {
-  useCurrentNetwork,
+  useCelatoneApp,
   useInternalNavigate,
   useValidateAddress,
 } from "lib/app-provider";
@@ -25,6 +25,7 @@ import type { IconKeys } from "lib/components/icon";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useOpenTxTab } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { capitalize } from "lib/utils";
 
 type ResultStatus = "success" | "error" | "warning";
 
@@ -49,18 +50,29 @@ const Faucet = () => {
   const [result, setResult] = useState<Result>({});
 
   const { validateUserAddress } = useValidateAddress();
-  const { isTestnet } = useCurrentNetwork();
   const navigate = useInternalNavigate();
   const toast = useToast();
   const router = useRouter();
   const openTxTab = useOpenTxTab("tx-page");
+  const {
+    chainConfig: {
+      features: { faucet },
+      chain,
+    },
+  } = useCelatoneApp();
 
-  const faucetUrl = process.env.NEXT_PUBLIC_FAUCET_URL;
+  const { faucetUrl, faucetDenom, faucetAmount } = faucet.enabled
+    ? {
+        faucetUrl: faucet.url,
+        faucetDenom: faucet.denom.toUpperCase(),
+        faucetAmount: faucet.amount,
+      }
+    : { faucetUrl: "", faucetDenom: "", faucetAmount: 0 };
 
   useEffect(() => {
-    if (!isTestnet) navigate({ pathname: "/" });
+    if (!faucet.enabled) navigate({ pathname: "/", replace: true });
     else if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
-  }, [isTestnet, navigate, router]);
+  }, [faucet.enabled, navigate, router]);
 
   useEffect(() => {
     if (address) {
@@ -89,7 +101,7 @@ const Faucet = () => {
       })
       .then(({ data: { txHash } }) => {
         toast({
-          title: "10 Testnet OSMO sent from the faucet",
+          title: `${faucetAmount} Testnet ${faucetDenom} sent from the faucet`,
           status: "success",
           duration: 5000,
           isClosable: false,
@@ -109,8 +121,7 @@ const Faucet = () => {
         setIsLoading(false);
         setResult({
           status: "success",
-          message:
-            "Sent 10 testnet OSMO from the faucet. You will need to wait for another hour to request again.",
+          message: `Sent ${faucetAmount} testnet ${faucetDenom} from the faucet. You will need to wait for another hour to request again.`,
           txHash,
         });
       })
@@ -146,11 +157,12 @@ const Faucet = () => {
     <WasmPageContainer>
       <BackButton alignSelf="flex-start" />
       <Heading as="h5" variant="h5">
-        Osmosis Testnet Faucet
+        {capitalize(chain)} Testnet Faucet
       </Heading>
       <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
-        The faucet provides 10 testnet OSMO per request. Requests are limited to
-        once per hour for each receiving address and IP address.
+        The faucet provides {faucetAmount} testnet {faucetDenom} per request.
+        Requests are limited to once per hour for each receiving address and IP
+        address.
       </Text>
       <TextInput
         variant="floating"
@@ -182,7 +194,7 @@ const Faucet = () => {
         isLoading={isLoading}
         disabled={disabled}
       >
-        Request 10 testnet OSMO
+        Request {faucetAmount} testnet {faucetDenom}
       </Button>
       {result.status && (
         <Alert mt={8} variant={result.status}>
