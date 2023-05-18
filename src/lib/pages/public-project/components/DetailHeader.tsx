@@ -33,7 +33,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
         _hover={{ opacity: 0.8 }}
         transition="all 0.25s ease-in-out"
       >
-        <AppLink color="text.dark" href="/public-projects">
+        <AppLink color="text.dark" href="/projects">
           Public Projects
         </AppLink>
       </BreadcrumbItem>

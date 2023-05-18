@@ -14,7 +14,7 @@ export const useIsCurrentPage = () => {
           return pathName === `${networkPath}` || pathName === "/";
         // handle contract list page and public project page
         case "/contract-lists":
-        case "/public-projects":
+        case "/projects":
           return pathName === `${networkPath}${slug}`;
         // handle page with query param
         default:

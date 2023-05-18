@@ -34,38 +34,44 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    return [
-      {
-        source: "/:network/account/:address",
-        destination: "/:network/accounts/:address",
-        permanent: false,
-      },
-      {
-        source: "/:network/tx/:txHash",
-        destination: "/:network/txs/:txHash",
-        permanent: false,
-      },
-      {
-        source: "/:network/block/:height",
-        destination: "/:network/blocks/:height",
-        permanent: false,
-      },
-      {
-        source: "/:network/code/:codeId",
-        destination: "/:network/codes/:codeId",
-        permanent: false,
-      },
-      {
-        source: "/:network/contract/:address",
-        destination: "/:network/contracts/:address",
-        permanent: false,
-      },
-      {
-        source: "/:network/public-project/:slug",
-        destination: "/:network/public-projects/:slug",
-        permanent: false,
-      },
+    const routes = [
+      "account",
+      "tx",
+      "block",
+      "code",
+      "contract",
+      "proposal",
+      "project",
+      "contract-list",
     ];
+
+    return routes.reduce((acc, route) => {
+      acc.push({
+        source: `/:network/${route}/:id`,
+        destination: `/:network/${route}s/:id`,
+        permanent: false,
+      });
+
+      acc.push({
+        source: `/${route}/:id`,
+        destination: `/${route}s/:id`,
+        permanent: false,
+      });
+
+      acc.push({
+        source: `/:network/${route}`,
+        destination: `/:network/${route}s`,
+        permanent: false,
+      });
+
+      acc.push({
+        source: `/${route}`,
+        destination: `/${route}s`,
+        permanent: false,
+      });
+
+      return acc;
+    }, []);
   },
 };
 

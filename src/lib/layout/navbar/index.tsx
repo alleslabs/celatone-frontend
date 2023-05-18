@@ -114,12 +114,12 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       submenu: [
         ...getSavedPublicProjects().map((list) => ({
           name: list.name,
-          slug: `/public-projects/${list.slug}`,
+          slug: `/projects/${list.slug}`,
           logo: list.logo,
         })),
         {
           name: "View All Projects",
-          slug: "/public-projects",
+          slug: "/projects",
           icon: "public-project",
         },
       ],
