@@ -124,12 +124,13 @@ export const queryInstantiateInfo = async (
 };
 
 export const queryContractBalances = async (
-  baseApiRoute: string,
+  balancesApiRoute: string,
   contractAddress: ContractAddr
 ): Promise<Balance[]> => {
-  if (!baseApiRoute) throw new Error("Invalid chain (queryContractBalances)");
+  if (!balancesApiRoute)
+    throw new Error("Failed to retrieve contract balances API route.");
   const { data } = await axios.get<Balance[]>(
-    `${baseApiRoute}/${contractAddress}`
+    `${balancesApiRoute}/${contractAddress}`
   );
   return data;
 };

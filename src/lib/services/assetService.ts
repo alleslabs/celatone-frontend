@@ -1,4 +1,3 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useBaseApiRoute } from "lib/app-provider";
@@ -11,13 +10,12 @@ export const useAssetInfos = (): {
   assetInfos: AssetInfosOpt;
   isLoading: boolean;
 } => {
-  const { currentChainRecord } = useWallet();
-  const baseApiRoute = useBaseApiRoute("assets");
+  const assetsApiRoute = useBaseApiRoute("assets");
 
   const { data: assets, isLoading } = useQuery(
-    ["query", "assetInfos", baseApiRoute],
-    async () => getAssetInfos(baseApiRoute),
-    { enabled: !!currentChainRecord }
+    ["query", "assetInfos", assetsApiRoute],
+    async () => getAssetInfos(assetsApiRoute),
+    { enabled: !!assetsApiRoute }
   );
 
   return {

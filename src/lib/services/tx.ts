@@ -79,10 +79,11 @@ export interface TxResponse {
 }
 
 export const queryTxData = async (
-  baseApiRoute: string,
+  txsApiRoute: string,
   txHash: string
 ): Promise<TxResponse> => {
-  const { data } = await axios.get(`${baseApiRoute}/${txHash.toUpperCase()}`);
+  if (!txsApiRoute) throw new Error("Failed to retrieve txs API route.");
+  const { data } = await axios.get(`${txsApiRoute}/${txHash.toUpperCase()}`);
 
   return {
     ...data.tx_response,

@@ -96,7 +96,7 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 export const useContractData = (
   contractAddress: ContractAddr
 ): ContractDataState => {
-  const baseApiRoute = useBaseApiRoute("balances");
+  const balancesApiRoute = useBaseApiRoute("balances");
   const { indexerGraphClient } = useCelatoneApp();
   const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
@@ -125,9 +125,9 @@ export const useContractData = (
 
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
     useQuery(
-      ["query", "contractBalances", baseApiRoute, contractAddress],
-      async () => queryContractBalances(baseApiRoute, contractAddress),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
+      ["query", "contractBalances", balancesApiRoute, contractAddress],
+      async () => queryContractBalances(balancesApiRoute, contractAddress),
+      { enabled: !!balancesApiRoute && !!contractAddress, retry: false }
     );
 
   const contractBalancesWithAssetInfos = contractBalances

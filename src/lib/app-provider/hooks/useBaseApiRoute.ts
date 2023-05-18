@@ -7,6 +7,7 @@ export const useBaseApiRoute = (
     chainConfig: { chain, api },
     currentChainId,
   } = useCelatoneApp();
+  if (!chain || !api || !currentChainId) return "";
   switch (type) {
     case "txs":
       return `${api}/txs/${chain}/${currentChainId}`;
