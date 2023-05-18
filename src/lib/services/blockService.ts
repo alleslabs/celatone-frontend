@@ -14,7 +14,7 @@ import type {
   LatestBlock,
   ValidatorAddr,
 } from "lib/types";
-import { parseDate, parseDateOpt, parseTxHash } from "lib/utils";
+import { isBlock, parseDate, parseDateOpt, parseTxHash } from "lib/utils";
 
 export const useBlocklistQuery = (
   limit: number,
@@ -70,14 +70,17 @@ export const useBlockCountQuery = (): UseQueryResult<number> => {
 };
 
 export const useBlockDetailsQuery = (
-  height: number
+  height: string
 ): UseQueryResult<BlockDetails | null> => {
   const chainId = useChainId();
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(
     async () =>
       indexerGraphClient
-        .request(getBlockDetailsByHeightQueryDocument, { height })
+        .request(getBlockDetailsByHeightQueryDocument, {
+          height: Number(height),
+        })
         .then<BlockDetails | null>(({ blocks_by_pk }) =>
           blocks_by_pk
             ? {
@@ -103,7 +106,7 @@ export const useBlockDetailsQuery = (
   );
 
   return useQuery(["block_details", indexerGraphClient, height], queryFn, {
-    keepPreviousData: true,
+    enabled: isBlock(height),
     retry: false,
     refetchOnWindowFocus: false,
   });

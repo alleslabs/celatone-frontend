@@ -12,4 +12,5 @@ export const isTxHash = (input: string): boolean => {
   return input.length === 64;
 };
 
-export const isBlock = (input: string): boolean => !!Number(input);
+export const isBlock = (input: string): boolean =>
+  input !== "" && !!Number(input);

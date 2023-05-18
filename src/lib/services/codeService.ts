@@ -21,7 +21,7 @@ import type {
   Addr,
   HumanAddr,
 } from "lib/types";
-import { parseDateOpt, parseTxHashOpt } from "lib/utils";
+import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -117,7 +117,7 @@ export const useCodeListByCodeIds = (
 };
 
 export const useCodeDataByCodeId = (
-  codeId: Option<number>
+  codeId: string
 ): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -126,7 +126,7 @@ export const useCodeDataByCodeId = (
 
     return indexerGraphClient
       .request(getCodeDataByCodeId, {
-        codeId,
+        codeId: Number(codeId),
       })
       .then(({ codes_by_pk }) => {
         if (!codes_by_pk) return null;
@@ -155,8 +155,7 @@ export const useCodeDataByCodeId = (
       });
   }, [codeId, indexerGraphClient]);
   return useQuery(["code_data_by_id", codeId, indexerGraphClient], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
+    enabled: isCodeId(codeId),
   });
 };
 
