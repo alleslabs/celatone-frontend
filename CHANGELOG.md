@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v1.0.5
+
 ### Features
 
 - [#327](https://github.com/alleslabs/celatone-frontend/pull/327) Update logic to enable upload wasm code
