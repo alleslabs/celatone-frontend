@@ -24,7 +24,7 @@ export const SIDEBAR_WHITELIST_DETAILS: SidebarDetails = {
       </span>
     ),
     toPage: true,
-    toPagePath: "/proposal/store-code",
+    toPagePath: "/proposals/store-code",
     toPageTitle: "Submit Proposal To Store Code",
   },
   testnet: {

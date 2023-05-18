@@ -8,7 +8,7 @@ export const ProposalButton = () => {
   return (
     <Button
       variant="outline-primary"
-      onClick={() => navigate({ pathname: "/proposal/store-code" })}
+      onClick={() => navigate({ pathname: "/proposals/store-code" })}
       rightIcon={
         <CustomIcon
           name="submit-proposal"
