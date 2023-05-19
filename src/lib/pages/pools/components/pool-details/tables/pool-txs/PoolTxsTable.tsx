@@ -32,7 +32,7 @@ export const PoolTxsTable = ({
   if (!transactions?.length) return emptyState;
 
   const templateColumns =
-    "30px 180px 40px minmax(360px, 1fr) max(150px) max(220px)";
+    "25px 180px 40px minmax(360px, 1fr) max(160px) max(220px)";
 
   return (
     <TableContainer>

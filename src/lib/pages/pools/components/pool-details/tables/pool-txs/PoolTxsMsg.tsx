@@ -62,7 +62,7 @@ export const PoolTxsMsg = ({
         transition="all .25s ease-in-out"
         cursor="pointer"
       >
-        <TableNoBorderRow>
+        <TableNoBorderRow pl={2}>
           {transaction.success && message && (
             <CustomIcon
               name="chevron-down"
