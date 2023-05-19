@@ -190,16 +190,17 @@ const Searchbar = () => {
   const handleOnKeyEnter = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (!results.length) return;
-      const lastIndex = results.length - 1;
-      const nextCursor = getNextCursor(e.key, cursor, lastIndex);
-      const listItem = document.getElementById(`item-${nextCursor}`);
       switch (e.key) {
         case "ArrowUp":
-        case "ArrowDown":
+        case "ArrowDown": {
+          const lastIndex = results.length - 1;
+          const nextCursor = getNextCursor(e.key, cursor, lastIndex);
+          const listItem = document.getElementById(`item-${nextCursor}`);
           e.preventDefault();
           setCursor(nextCursor);
           listItem?.scrollIntoView({ block: "nearest", inline: "center" });
           break;
+        }
         case "Enter":
           handleSelectResult(results.at(cursor ?? 0));
           break;
