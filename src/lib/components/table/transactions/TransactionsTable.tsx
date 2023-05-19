@@ -25,7 +25,7 @@ export const TransactionsTable = ({
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
 
-  const templateColumns = `30px 150px 40px minmax(360px, 1fr) ${
+  const templateColumns = `25px 180px 40px minmax(360px, 1fr) ${
     showRelations ? "100px " : ""
   }max(160px) ${showTimestamp ? "max(220px) " : ""}${
     showAction ? "100px " : ""

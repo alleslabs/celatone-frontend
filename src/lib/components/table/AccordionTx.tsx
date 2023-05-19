@@ -38,7 +38,7 @@ export const AccordionTx = ({
   message,
   allowFurtherAction,
   isSigner = false,
-  accordionSpacing = "206px",
+  accordionSpacing = "260px",
 }: AccordionTxProps) => {
   const [showButton, setShowButton] = useState(false);
   return (

@@ -1,4 +1,12 @@
-import { Flex, Text, Grid, useDisclosure, Tag, Box } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Grid,
+  useDisclosure,
+  Tag,
+  Box,
+  Badge,
+} from "@chakra-ui/react";
 
 import { AccordionTx } from "../AccordionTx";
 import { TableRow } from "../tableComponents";
@@ -39,7 +47,7 @@ export const TransactionsTableRow = ({
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
-        <TableRow>
+        <TableRow pl={2}>
           {isAccordion && (
             <CustomIcon
               name="chevron-down"
@@ -49,11 +57,18 @@ export const TransactionsTableRow = ({
           )}
         </TableRow>
         <TableRow>
-          <ExplorerLink
-            value={transaction.hash.toLocaleUpperCase()}
-            type="tx_hash"
-            showCopyOnHover
-          />
+          <>
+            <ExplorerLink
+              value={transaction.hash.toLocaleUpperCase()}
+              type="tx_hash"
+              showCopyOnHover
+            />
+            {transaction.messages.length > 1 && (
+              <Badge variant="lilac" ml="6px">
+                {transaction.messages.length}
+              </Badge>
+            )}
+          </>
         </TableRow>
         <TableRow>
           {transaction.success ? (
