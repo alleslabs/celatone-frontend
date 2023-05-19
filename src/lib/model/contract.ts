@@ -98,7 +98,6 @@ export const useContractData = (
 ): ContractDataState => {
   const balancesApiRoute = useBaseApiRoute("balances");
   const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
   const lcdEndpoint = useLCDEndpoint();
@@ -114,21 +113,21 @@ export const useContractData = (
       ["query", "instantiate_info", lcdEndpoint, contractAddress],
       async () =>
         queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
+      { enabled: !!contractAddress, retry: false }
     );
 
   const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
     useQuery(
       ["query", "contract_cw2_info", lcdEndpoint, contractAddress],
       async () => queryContractCw2Info(lcdEndpoint, contractAddress),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
+      { enabled: !!contractAddress, retry: false }
     );
 
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
     useQuery(
       ["query", "contractBalances", balancesApiRoute, contractAddress],
       async () => queryContractBalances(balancesApiRoute, contractAddress),
-      { enabled: !!balancesApiRoute && !!contractAddress, retry: false }
+      { enabled: !!contractAddress, retry: false }
     );
 
   const contractBalancesWithAssetInfos = contractBalances

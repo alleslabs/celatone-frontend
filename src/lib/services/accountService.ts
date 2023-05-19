@@ -14,6 +14,6 @@ export const useAccountBalances = (
   return useQuery(
     ["account_balance_info", address, balancesApiRoute],
     async () => getAccountBalanceInfo(balancesApiRoute, address as Addr),
-    { enabled: !!balancesApiRoute && !!address }
+    { enabled: !!address }
   );
 };

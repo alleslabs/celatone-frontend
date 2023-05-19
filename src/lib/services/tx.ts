@@ -82,7 +82,6 @@ export const queryTxData = async (
   txsApiRoute: string,
   txHash: string
 ): Promise<TxResponse> => {
-  if (!txsApiRoute) throw new Error("Failed to retrieve txs API route.");
   const { data } = await axios.get(`${txsApiRoute}/${txHash.toUpperCase()}`);
 
   return {

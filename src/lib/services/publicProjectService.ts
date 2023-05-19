@@ -34,9 +34,6 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
   const projectsApiRoute = useBaseApiRoute("projects");
 
   const queryFn = useCallback(async () => {
-    if (!projectsApiRoute)
-      throw new Error("Failed to retrieve projects API route.");
-
     return axios
       .get<RawPublicProjectInfo[]>(projectsApiRoute)
       .then(({ data: projects }) =>
@@ -49,7 +46,6 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
   }, [projectsApiRoute]);
 
   return useQuery(["public_project", projectsApiRoute], queryFn, {
-    enabled: !!projectsApiRoute,
     keepPreviousData: true,
   });
 };
@@ -61,8 +57,6 @@ export const usePublicProjectBySlug = (
 
   const queryFn = useCallback(async () => {
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
-    if (!projectsApiRoute)
-      throw new Error("Failed to retrieve projects API route.");
     return axios
       .get<RawPublicProjectInfo>(`${projectsApiRoute}/${slug}`)
       .then<PublicProjectInfo>(({ data: publicProject }) => ({
@@ -73,7 +67,7 @@ export const usePublicProjectBySlug = (
   }, [projectsApiRoute, slug]);
 
   return useQuery(["public_project_by_slug", projectsApiRoute, slug], queryFn, {
-    enabled: !!slug && !!projectsApiRoute,
+    enabled: !!slug,
   });
 };
 
@@ -87,8 +81,6 @@ export const usePublicProjectByContractAddress = (
       throw new Error(
         "Contract address not found (usePublicProjectByContractAddress)"
       );
-    if (!projectsApiRoute)
-      throw new Error("Failed to retrieve contracts API route.");
     return axios
       .get<PublicInfo>(`${projectsApiRoute}/${contractAddress}`)
       .then(({ data: projectInfo }) => projectInfo);
@@ -99,7 +91,7 @@ export const usePublicProjectByContractAddress = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!contractAddress && !!projectsApiRoute,
+      enabled: !!contractAddress,
       retry: false,
       refetchOnWindowFocus: false,
     }
@@ -114,8 +106,6 @@ export const usePublicProjectByCodeId = (
   const queryFn = useCallback(async () => {
     if (!codeId)
       throw new Error("Code ID not found (usePublicProjectByCodeId)");
-    if (!projectsApiRoute)
-      throw new Error("Failed to retrieve codes API route.");
 
     return axios
       .get<RawPublicCode>(`${projectsApiRoute}/${codeId}`)
@@ -127,7 +117,7 @@ export const usePublicProjectByCodeId = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!codeId && !!projectsApiRoute,
+      enabled: !!codeId,
       retry: false,
       refetchOnWindowFocus: false,
     }

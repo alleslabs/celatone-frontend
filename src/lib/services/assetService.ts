@@ -14,8 +14,7 @@ export const useAssetInfos = (): {
 
   const { data: assets, isLoading } = useQuery(
     ["query", "assetInfos", assetsApiRoute],
-    async () => getAssetInfos(assetsApiRoute),
-    { enabled: !!assetsApiRoute }
+    async () => getAssetInfos(assetsApiRoute)
   );
 
   return {
