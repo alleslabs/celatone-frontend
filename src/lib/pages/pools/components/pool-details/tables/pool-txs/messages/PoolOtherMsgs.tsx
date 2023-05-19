@@ -1,5 +1,6 @@
 import { Flex, Tag, Text } from "@chakra-ui/react";
 
+import { TooltipInfo } from "lib/components/TooltipComponent";
 import { extractMsgType } from "lib/utils";
 
 interface PoolOtherMsgsProps {
@@ -9,7 +10,7 @@ interface PoolOtherMsgsProps {
 export const PoolOtherMsgs = ({ otherMsgs }: PoolOtherMsgsProps) => {
   const typePaths = Object.keys(otherMsgs);
   return (
-    <Flex gap={1} flexWrap="wrap">
+    <Flex gap={2} flexWrap="wrap">
       Total
       {typePaths.map((typePath, index) => {
         const type = extractMsgType(typePath);
@@ -20,6 +21,7 @@ export const PoolOtherMsgs = ({ otherMsgs }: PoolOtherMsgsProps) => {
           </Text>
         );
       })}
+      <TooltipInfo label="TODO: wait for text" iconVariant="solid" />
     </Flex>
   );
 };
