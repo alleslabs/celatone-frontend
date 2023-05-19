@@ -174,13 +174,14 @@ const StoreCodeProposal = () => {
               validateContractAddress(addr.address)
           )
         )),
-
     [
       addresses,
       permission,
       uploadSectionErrorsKey.length,
       validateContractAddress,
       validateUserAddress,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      JSON.stringify(addresses),
     ]
   );
 
