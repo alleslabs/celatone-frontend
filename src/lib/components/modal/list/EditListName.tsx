@@ -69,13 +69,13 @@ export function EditListNameModal({
     <ActionModal
       title="Edit list name"
       icon="add-new"
-      trigger={<MenuItem {...menuItemProps} />}
+      trigger={<MenuItem {...menuItemProps} as="button" />}
       mainBtnTitle="Save"
       mainAction={() => {
         handleSave();
         if (reroute)
           navigate({
-            pathname: "/contract-list/[slug]",
+            pathname: "/contract-lists/[slug]",
             query: { slug: formatSlugName(listName) },
             replace: true,
           });

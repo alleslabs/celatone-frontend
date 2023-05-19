@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, Switch, Tooltip } from "@chakra-ui/react";
+import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
@@ -10,6 +10,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { Tooltip } from "lib/components/Tooltip";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
   useProposalList,
@@ -68,8 +69,8 @@ const Proposals = () => {
     // remark: disable proposal and redirect to home page
     navigate({ pathname: "/" });
 
-    if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSALS);
-  }, [router.isReady, navigate]);
+    if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_LIST);
+  }, [navigate, router.isReady]);
 
   useEffect(() => {
     setPageSize(10);
@@ -91,7 +92,7 @@ const Proposals = () => {
 
   return (
     <PageContainer>
-      <Flex justify="space-between">
+      <Flex justify="space-between" alignItems="center">
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
@@ -104,13 +105,11 @@ const Proposals = () => {
             onChange={(e) => setSearch(e.target.value)}
             size="lg"
             value={search}
+            action="proposal-list-search"
           />
           <Tooltip
             isDisabled={!!address}
-            hasArrow
             label="You need to connect your wallet to see your proposals"
-            placement="top"
-            bg="honeydew.darker"
             maxW="240px"
             whiteSpace="pre-line"
             textAlign="center"
@@ -127,8 +126,14 @@ const Proposals = () => {
                 disabled={!address}
                 onChange={(e) => {
                   if (e.target.checked && address) {
+                    AmpTrack(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                      toggle: "on",
+                    });
                     setProposer(address as Addr);
                   } else {
+                    AmpTrack(AmpEvent.USE_FILTER_MY_PROPOSALS, {
+                      toggle: "off",
+                    });
                     setProposer(undefined);
                   }
                   setIsSelected(e.target.checked);
@@ -141,7 +146,7 @@ const Proposals = () => {
             </div>
           </Tooltip>
         </Flex>
-        <Flex gap={2} pb={3}>
+        <Flex gap={3} pb={3}>
           <ProposalStatusFilter
             label="Filter by Status"
             result={statuses}

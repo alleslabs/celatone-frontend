@@ -33,18 +33,17 @@ export const ContractListCard = ({
   return (
     <Flex
       as={Button}
+      variant="gray-solid"
       gap={4}
       h="75px"
       onClick={() => handleListSelect(item.slug)}
-      bg="pebble.800"
-      _hover={{ bg: "pebble.700" }}
-      _disabled={{
-        bg: "pebble.800",
-        _hover: { bg: "pebble.800" },
-      }}
       isDisabled={isDisabled}
     >
-      <CustomIcon name={getListIcon(item.name)} boxSize="24px" />
+      <CustomIcon
+        name={getListIcon(item.name)}
+        boxSize="24px"
+        color="pebble.600"
+      />
       <Flex flexDirection="column" alignItems="start" gap={1}>
         <Flex alignItems="center" gap={2}>
           <Text
@@ -56,9 +55,7 @@ export const ContractListCard = ({
           >
             {item.name}
           </Text>
-          <Badge variant="gray" color="text.main">
-            {item.contracts.length}
-          </Badge>
+          <Badge>{item.contracts.length}</Badge>
         </Flex>
         {isInstantiatedByMe && (
           <Text variant="body3" color="text.dark">
@@ -69,14 +66,20 @@ export const ContractListCard = ({
       <Spacer />
       {!isReadOnly && (
         <Menu>
-          <MenuButton m="0" h="full" variant="ghost-gray" as={Button}>
-            <CustomIcon name="more" />
+          <MenuButton
+            m="0"
+            h="full"
+            variant="ghost-gray"
+            as={Button}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CustomIcon name="more" color="pebble.600" />
           </MenuButton>
           <MenuList>
             <EditListNameModal
               list={{ label: item.name, value: item.slug }}
               menuItemProps={{
-                icon: <CustomIcon name="edit" />,
+                icon: <CustomIcon name="edit" color="pebble.600" />,
                 children: "Edit list name",
               }}
             />

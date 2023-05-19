@@ -8,10 +8,12 @@ export const ResolvedHeight = ({
   resolvedHeight,
   isDepositFailed,
   isDepositOrVoting,
+  amptrackSection,
 }: {
   resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
   isDepositFailed: boolean;
   isDepositOrVoting: boolean;
+  amptrackSection?: string;
 }) => {
   if (isDepositOrVoting) return <Text color="text.dark">Pending</Text>;
   if (!resolvedHeight || isDepositFailed)
@@ -21,6 +23,7 @@ export const ResolvedHeight = ({
       type="block_height"
       value={resolvedHeight.toString()}
       showCopyOnHover
+      ampCopierSection={amptrackSection}
     />
   );
 };

@@ -1,4 +1,4 @@
-import { Flex, Tag, TagLabel, Text } from "@chakra-ui/react";
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import type { ContractLocalInfo } from "lib/stores/contract";
@@ -40,26 +40,14 @@ export const TagsCell = ({
         }}
       >
         {tags.length ? (
-          <Tag
-            borderRadius="full"
-            variant="solid"
-            bgColor="honeydew.darker"
-            color="text.main"
-          >
-            <TagLabel>{tags.at(0)}</TagLabel>
-          </Tag>
+          <Tag>{tags.at(0)}</Tag>
         ) : (
           <Text variant="body2" color="text.dark">
             Not Tagged
           </Text>
         )}
-        <Tag
-          borderRadius="full"
-          variant="solid"
-          colorScheme="gray"
-          display={tags.length > 1 ? "flex" : "none"}
-        >
-          <TagLabel>{tags.length - 1}+</TagLabel>
+        <Tag variant="gray" display={tags.length > 1 ? "flex" : "none"}>
+          {tags.length - 1}+
         </Tag>
       </Flex>
 
@@ -88,17 +76,7 @@ export const TagsCell = ({
           >
             {tags.length ? (
               tags.map((item) => {
-                return (
-                  <Tag
-                    key={item}
-                    borderRadius="full"
-                    variant="solid"
-                    bgColor="honeydew.darker"
-                    color="text.main"
-                  >
-                    <TagLabel>{item}</TagLabel>
-                  </Tag>
-                );
+                return <Tag key={item}>{item}</Tag>;
               })
             ) : (
               <Text variant="body2" color="text.dark">

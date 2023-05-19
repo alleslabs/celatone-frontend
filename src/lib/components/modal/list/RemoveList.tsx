@@ -24,8 +24,8 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   const handleRemove = () => {
     AmpTrack(AmpEvent.LIST_REMOVE);
     removeList(userKey, list.value);
-    navigate({ pathname: "/contract-list" });
-    // TODO: show toast after removed and redirect to /contract-list
+    navigate({ pathname: "/contract-lists" });
+    // TODO: show toast after removed and redirect to /contract-lists
     setTimeout(() => {
       toast({
         title: `Removed ${shortenName(list.label)}`,
@@ -43,7 +43,7 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
       title={`Remove ${shortenName(list.label)}?`}
       icon="delete"
       iconColor="error.light"
-      trigger={<MenuItem {...menuItemProps} />}
+      trigger={<MenuItem {...menuItemProps} as="button" />}
       mainBtnTitle="Yes, Remove list"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"

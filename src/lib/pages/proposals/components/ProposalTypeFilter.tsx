@@ -15,6 +15,7 @@ import { DropdownContainer } from "lib/components/filter/FilterComponents";
 import { FilterDropdownItem } from "lib/components/filter/FilterDropdownItem";
 import { FilterInput } from "lib/components/filter/FilterInput";
 import { CustomIcon } from "lib/components/icon";
+import { AmpEvent, AmpTrackUseFilter } from "lib/services/amplitude";
 import { useProposalTypes } from "lib/services/proposalService";
 import type { ProposalType } from "lib/types";
 import { ProposalTypeCosmos } from "lib/types";
@@ -75,8 +76,10 @@ export const ProposalTypeFilter = forwardRef<
         inputRef.current.value = "";
       }
       if (result.includes(option)) {
+        AmpTrackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_TYPE, result, "remove");
         setResult((prevState) => prevState.filter((value) => value !== option));
       } else {
+        AmpTrackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_TYPE, result, "add");
         setResult((prevState) => [...prevState, option]);
       }
     };
@@ -106,19 +109,9 @@ export const ProposalTypeFilter = forwardRef<
                 <FilterChip
                   key={option}
                   chipComponent={
-                    <Tag
-                      fontSize="12px"
-                      borderRadius="full"
-                      bg="honeydew.darker"
-                      color="text.main"
-                    >
+                    <Tag>
                       {option}
-                      <CustomIcon
-                        name="close"
-                        boxSize="3"
-                        color="text.main"
-                        mr={0}
-                      />
+                      <CustomIcon name="close" boxSize="3" mr={0} />
                     </Tag>
                   }
                   onSelect={() => selectOption(option)}

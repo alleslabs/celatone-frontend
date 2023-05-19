@@ -15,12 +15,12 @@ const getNavigationArgs = (accountInfo: Account): NavigationArgs => {
   switch (accountInfo.type) {
     case "account":
       return {
-        pathname: "/account/[accountAddress]",
+        pathname: "/accounts/[accountAddress]",
         query: { accountAddress: accountInfo.address },
       };
     case "contract":
       return {
-        pathname: "/contract/[accountAddress]",
+        pathname: "/contracts/[accountAddress]",
         query: { accountAddress: accountInfo.address },
       };
     default:

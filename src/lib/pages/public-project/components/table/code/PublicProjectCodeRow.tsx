@@ -24,7 +24,7 @@ export const PublicProjectCodeRow = ({
   const { currentChainName } = useWallet();
   const goToCodeDetails = () => {
     navigate({
-      pathname: `/code/${publicInfo.id}`,
+      pathname: `/codes/${publicInfo.id}`,
     });
   };
 

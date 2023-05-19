@@ -1,7 +1,6 @@
 import {
   Flex,
   Heading,
-  Spinner,
   TabList,
   TabPanel,
   TabPanels,
@@ -17,6 +16,7 @@ import { BackButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
@@ -119,12 +119,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           maxW="100%"
           borderRadius="8px"
           py={4}
-          px={5}
+          px={4}
           my={6}
           flex="1"
         >
-          <Flex align="center" gap={1} h="32px">
-            <CustomIcon name="website" ml="0" my="0" />
+          <Flex alignItems="center" gap={1} minH="32px">
+            <CustomIcon name="website" ml="0" mb="6px" color="pebble.600" />
             <Text variant="body2" fontWeight={500} color="text.dark">
               Public Account Description
             </Text>
@@ -204,12 +204,11 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 Total Account Value
               </Text>
               {isLoading ? (
-                <Spinner mt={2} alignSelf="center" size="md" speed="0.65s" />
+                <Loading />
               ) : (
                 <Heading
                   as="h5"
                   variant="h5"
-                  fontWeight="600"
                   color={
                     !totalAccountValue || totalAccountValue.eq(0)
                       ? "text.dark"

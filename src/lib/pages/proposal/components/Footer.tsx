@@ -37,7 +37,7 @@ export const Footer = ({
             isDisabled={isLoading}
           >
             {isLoading ? (
-              <Spinner size="md" color="pebble.600" />
+              <Spinner size="md" variant="light" />
             ) : (
               "Submit Proposal"
             )}
