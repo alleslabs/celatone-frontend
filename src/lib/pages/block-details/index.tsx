@@ -9,11 +9,7 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useBlockDetailsQuery } from "lib/services/blockService";
 import { getFirstQueryParam } from "lib/utils";
 
-import {
-  BlockDetailsTop,
-  BlockInfo,
-  BlockTransactionTable,
-} from "./components";
+import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
 
 const BlockDetail = () => {
   const router = useRouter();
@@ -35,7 +31,7 @@ const BlockDetail = () => {
         <>
           <BlockDetailsTop blockData={blockData} />
           <BlockInfo blockData={blockData} />
-          <BlockTransactionTable height={Number(heightParam)} />
+          <BlockTxsTable height={Number(heightParam)} />
         </>
       ) : (
         <EmptyState

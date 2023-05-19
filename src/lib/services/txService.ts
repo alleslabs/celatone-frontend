@@ -16,14 +16,7 @@ import {
   getBlockTransactionsByHeightQueryDocument,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
-import type {
-  Addr,
-  Option,
-  Transaction,
-  TxFilters,
-  BlockTransaction,
-  Message,
-} from "lib/types";
+import type { Addr, Option, Transaction, TxFilters, Message } from "lib/types";
 import { MsgFurtherAction } from "lib/types";
 import {
   getActionMsgType,
@@ -260,7 +253,7 @@ export const useTxsByBlockHeightPagination = (
   height: number,
   limit: number,
   offset: number
-): UseQueryResult<BlockTransaction[]> => {
+): UseQueryResult<Transaction[]> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(
@@ -272,22 +265,26 @@ export const useTxsByBlockHeightPagination = (
           height,
         })
         .then(({ transactions }) =>
-          transactions.map<BlockTransaction>((tx) => ({
-            hash: parseTxHash(tx.hash),
-            messages: snakeToCamel(tx.messages) as Message[],
-            sender: tx.account.address as Addr,
-            success: tx.success,
+          transactions.map((transaction) => ({
+            hash: parseTxHash(transaction.hash),
+            messages: snakeToCamel(transaction.messages),
+            sender: transaction.account.address as Addr,
+            isSigner: false,
+            height,
+            created: parseDate(transaction.block.timestamp),
+            success: transaction.success,
             actionMsgType: getActionMsgType([
-              tx.is_execute,
-              tx.is_instantiate,
-              tx.is_send,
-              tx.is_store_code,
-              tx.is_migrate,
-              tx.is_update_admin,
-              tx.is_clear_admin,
+              transaction.is_execute,
+              transaction.is_instantiate,
+              transaction.is_send,
+              transaction.is_store_code,
+              transaction.is_migrate,
+              transaction.is_update_admin,
+              transaction.is_clear_admin,
             ]),
-            isIbc: tx.is_ibc,
-            isInstantiate: tx.is_instantiate,
+            furtherAction: MsgFurtherAction.NONE,
+            isIbc: transaction.is_ibc,
+            isInstantiate: transaction.is_instantiate,
           }))
         ),
     [height, limit, offset, indexerGraphClient]

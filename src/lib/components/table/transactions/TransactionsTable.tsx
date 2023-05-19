@@ -10,6 +10,7 @@ interface TransactionsTableProps {
   isLoading: boolean;
   emptyState: JSX.Element;
   showRelations: boolean;
+  showTimestamp?: boolean;
   showAction?: boolean;
 }
 
@@ -18,20 +19,24 @@ export const TransactionsTable = ({
   isLoading,
   emptyState,
   showRelations,
+  showTimestamp = true,
   showAction = false,
 }: TransactionsTableProps) => {
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
 
-  const templateColumns = `150px 40px minmax(360px, 1fr) ${
+  const templateColumns = `30px 150px 40px minmax(360px, 1fr) ${
     showRelations ? "100px " : ""
-  }max(150px) max(220px) ${showAction ? "100px " : ""}60px`;
+  }max(160px) ${showTimestamp ? "max(220px) " : ""}${
+    showAction ? "100px " : ""
+  }`;
 
   return (
     <TableContainer>
       <TransactionsTableHeader
         templateColumns={templateColumns}
         showRelations={showRelations}
+        showTimestamp={showTimestamp}
         showAction={showAction}
       />
       {transactions.map((transaction) => (
@@ -40,6 +45,7 @@ export const TransactionsTable = ({
           transaction={transaction}
           templateColumns={templateColumns}
           showRelations={showRelations}
+          showTimestamp={showTimestamp}
           showAction={showAction}
         />
       ))}

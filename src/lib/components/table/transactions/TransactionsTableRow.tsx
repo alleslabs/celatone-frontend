@@ -15,6 +15,7 @@ interface TransactionsTableRowProps {
   transaction: Transaction;
   templateColumns: string;
   showRelations: boolean;
+  showTimestamp: boolean;
   showAction: boolean;
 }
 
@@ -22,6 +23,7 @@ export const TransactionsTableRow = ({
   transaction,
   templateColumns,
   showRelations,
+  showTimestamp,
   showAction,
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -37,6 +39,14 @@ export const TransactionsTableRow = ({
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
+        <TableRow>
+          {isAccordion && (
+            <CustomIcon
+              name={isOpen ? "chevron-up" : "chevron-down"}
+              color="pebble.600"
+            />
+          )}
+        </TableRow>
         <TableRow>
           <ExplorerLink
             value={transaction.hash.toLocaleUpperCase()}
@@ -76,29 +86,22 @@ export const TransactionsTableRow = ({
           />
         </TableRow>
 
-        <TableRow>
-          <Flex direction="column" gap={1}>
-            <Text variant="body3">{formatUTC(transaction.created)}</Text>
-            <Text variant="body3" color="text.dark">
-              {`(${dateFromNow(transaction.created)})`}
-            </Text>
-          </Flex>
-        </TableRow>
+        {showTimestamp && (
+          <TableRow>
+            <Flex direction="column" gap={1}>
+              <Text variant="body3">{formatUTC(transaction.created)}</Text>
+              <Text variant="body3" color="text.dark">
+                {`(${dateFromNow(transaction.created)})`}
+              </Text>
+            </Flex>
+          </TableRow>
+        )}
 
         {showAction && (
           <TableRow>
             <FurtherActionButton transaction={transaction} />
           </TableRow>
         )}
-
-        <TableRow>
-          {isAccordion && (
-            <CustomIcon
-              name={isOpen ? "chevron-up" : "chevron-down"}
-              color="pebble.600"
-            />
-          )}
-        </TableRow>
       </Grid>
       {isAccordion && (
         <Grid w="full" py={4} hidden={!isOpen}>
