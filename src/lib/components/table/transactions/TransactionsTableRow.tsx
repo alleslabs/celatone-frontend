@@ -42,8 +42,9 @@ export const TransactionsTableRow = ({
         <TableRow>
           {isAccordion && (
             <CustomIcon
-              name={isOpen ? "chevron-up" : "chevron-down"}
-              color="pebble.600"
+              name="chevron-down"
+              transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
+              transition="all .25s ease-in-out"
             />
           )}
         </TableRow>
