@@ -39,6 +39,9 @@ interface ResultItemProps {
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
 }
 
+/**
+ * @todos Change path to plural form
+ */
 const getRouteOptions = (
   type: Option<SearchResultType>
 ): { pathname: string; query: string } | null => {
