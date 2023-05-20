@@ -7,7 +7,7 @@ import {
   getExplorerValidatorUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/app-provider";
-import { useCurrentNetwork } from "lib/app-provider/hooks/useCurrentNetwork";
+import { useCelatoneApp } from "lib/app-provider/contexts";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -107,7 +107,7 @@ const LinkRender = ({
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
-  const { network } = useCurrentNetwork();
+  const { currentChainId } = useCelatoneApp();
   const textElement = (
     <Text
       variant={textVariant}
@@ -128,7 +128,7 @@ const LinkRender = ({
     </AppLink>
   ) : (
     <a
-      href={isInternal ? `/${network}${hrefLink}` : hrefLink}
+      href={isInternal ? `/${currentChainId}${hrefLink}` : hrefLink}
       target="_blank"
       rel="noopener noreferrer"
       data-peer
