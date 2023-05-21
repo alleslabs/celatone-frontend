@@ -86,7 +86,7 @@ export const useTxsByAddressPagination = (
         offset,
         pageSize,
       })
-      .then(({ account_transactions }) =>
+      .then<Transaction[]>(({ account_transactions }) =>
         account_transactions.map<Transaction>((transaction) => ({
           hash: parseTxHash(transaction.transaction.hash),
           messages: snakeToCamel(transaction.transaction.messages) as Message[],
@@ -204,10 +204,10 @@ export const useTxs = (
           offset,
           pageSize,
         })
-        .then(({ transactions }) =>
-          transactions.map((transaction) => ({
+        .then<Transaction[]>(({ transactions }) =>
+          transactions.map<Transaction>((transaction) => ({
             hash: parseTxHash(transaction.hash),
-            messages: snakeToCamel(transaction.messages),
+            messages: snakeToCamel(transaction.messages) as Message[],
             sender: transaction.account.address as Addr,
             isSigner: false,
             height: transaction.block.height,
@@ -264,10 +264,10 @@ export const useTxsByBlockHeightPagination = (
           offset,
           height,
         })
-        .then(({ transactions }) =>
-          transactions.map((transaction) => ({
+        .then<Transaction[]>(({ transactions }) =>
+          transactions.map<Transaction>((transaction) => ({
             hash: parseTxHash(transaction.hash),
-            messages: snakeToCamel(transaction.messages),
+            messages: snakeToCamel(transaction.messages) as Message[],
             sender: transaction.account.address as Addr,
             isSigner: false,
             height,
