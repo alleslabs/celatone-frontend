@@ -80,7 +80,7 @@ export const SelectContractInstantiator = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", searchContract, lcdEndpoint],
+    ["query", "contract", lcdEndpoint, searchContract],
     async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
     {
       enabled: false,

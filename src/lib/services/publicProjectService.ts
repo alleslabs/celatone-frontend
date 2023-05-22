@@ -14,6 +14,7 @@ import type {
   PublicCode,
   RawPublicCode,
 } from "lib/types";
+import { isCodeId } from "lib/utils";
 
 const parseContract = (raw: RawPublicContract): PublicContract => ({
   contractAddress: raw.address,
@@ -99,7 +100,7 @@ export const usePublicProjectByContractAddress = (
 };
 
 export const usePublicProjectByCodeId = (
-  codeId: Option<number>
+  codeId: string
 ): UseQueryResult<PublicCode> => {
   const projectsApiRoute = useBaseApiRoute("codes");
 
@@ -117,7 +118,7 @@ export const usePublicProjectByCodeId = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!codeId,
+      enabled: isCodeId(codeId),
       retry: false,
       refetchOnWindowFocus: false,
     }

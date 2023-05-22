@@ -34,7 +34,7 @@ export interface CodeDataState {
   };
 }
 
-export const useCodeData = (codeId: number): CodeDataState => {
+export const useCodeData = (codeId: string): CodeDataState => {
   const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(

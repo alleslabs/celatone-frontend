@@ -125,7 +125,7 @@ const CodeDetailsBody = observer(
 const CodeDetails = observer(() => {
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
-  const data = useCodeData(Number(codeIdParam));
+  const data = useCodeData(codeIdParam);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
