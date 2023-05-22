@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 
 import {
   useCelatoneApp,
+  useFaucetConfig,
   useInternalNavigate,
   useValidateAddress,
 } from "lib/app-provider";
@@ -55,19 +56,14 @@ const Faucet = () => {
   const router = useRouter();
   const openTxTab = useOpenTxTab("tx-page");
   const {
-    chainConfig: {
-      features: { faucet },
-      chain,
-    },
+    chainConfig: { chain },
   } = useCelatoneApp();
-
-  const { faucetUrl, faucetDenom, faucetAmount } = faucet.enabled
-    ? {
-        faucetUrl: faucet.url,
-        faucetDenom: faucet.denom.toUpperCase(),
-        faucetAmount: faucet.amount,
-      }
-    : { faucetUrl: "", faucetDenom: "", faucetAmount: 0 };
+  const faucet = useFaucetConfig();
+  const { faucetUrl, faucetDenom, faucetAmount } = {
+    faucetUrl: faucet.url,
+    faucetDenom: faucet.denom.toUpperCase(),
+    faucetAmount: faucet.amount,
+  };
 
   useEffect(() => {
     if (!faucet.enabled) navigate({ pathname: "/", replace: true });
