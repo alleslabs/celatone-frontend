@@ -13,14 +13,14 @@ import {
 import { useCallback, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
 import type { SearchResultType } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
 import type { Option } from "lib/types";
 
-const NOT_FOUND =
+const NOT_FOUND_MSG =
   "Matches not found. Please check your spelling or make sure you have selected the correct network.";
 
 const StyledListItem = chakra(ListItem, {
@@ -39,26 +39,26 @@ interface ResultItemProps {
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
 }
 
-/**
- * @todos Change path to plural form
- */
 const getRouteOptions = (
   type: Option<SearchResultType>
 ): { pathname: string; query: string } | null => {
   switch (type) {
     case "Wallet Address":
-      return { pathname: "/account/[accountAddress]", query: "accountAddress" };
+      return {
+        pathname: "/accounts/[accountAddress]",
+        query: "accountAddress",
+      };
     case "Transaction Hash":
-      return { pathname: "/tx/[txHash]", query: "txHash" };
+      return { pathname: "/txs/[txHash]", query: "txHash" };
     case "Code ID":
-      return { pathname: "/code/[codeId]", query: "codeId" };
+      return { pathname: "/codes/[codeId]", query: "codeId" };
     case "Contract Address":
       return {
-        pathname: "/contract/[contractAddress]",
+        pathname: "/contracts/[contractAddress]",
         query: "contractAddress",
       };
     case "Block":
-      return { pathname: "/block/[height]", query: "height" };
+      return { pathname: "/blocks/[height]", query: "height" };
     default:
       return null;
   }
@@ -114,7 +114,7 @@ const ResultRender = ({
     {!results.length ? (
       <StyledListItem>
         <Text variant="body2" fontWeight={500} color="text.dark" p="8px">
-          {NOT_FOUND}
+          {NOT_FOUND_MSG}
         </Text>
       </StyledListItem>
     ) : (
@@ -150,18 +150,31 @@ const getNextCursor = (
   }
 };
 
+const getPlaceholder = (isWasm: boolean) => {
+  const wasmText = isWasm ? "Code ID / Contract Address / " : "";
+  // TODO: uncomment when validator page is implemented
+  // const validatorText = noValidator ? "" : "/ Validator Address";
+
+  return `Search by Wallet Address / Tx Hash / ${wasmText}Block`;
+};
+
 const Searchbar = () => {
   const [keyword, setKeyword] = useState("");
   const [displayResults, setDisplayResults] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
 
+  const {
+    chainConfig: {
+      features: {
+        wasm: { enabled: isWasm },
+      },
+    },
+  } = useCelatoneApp();
   const navigate = useInternalNavigate();
-  const resetHandlerStates = useCallback(() => {
-    setIsTyping(false);
-    setCursor(undefined);
-  }, []);
-  const { results, isLoading } = useSearchHandler(keyword, resetHandlerStates);
+  const { results, isLoading } = useSearchHandler(keyword, () =>
+    setIsTyping(false)
+  );
   const boxRef = useRef<HTMLDivElement>(null);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -169,6 +182,7 @@ const Searchbar = () => {
     setKeyword(inputValue);
     setDisplayResults(inputValue.length > 0);
     setIsTyping(true);
+    setCursor(0);
   };
 
   const handleSelectResult = useCallback(
@@ -223,7 +237,7 @@ const Searchbar = () => {
           value={keyword}
           h="36px"
           onChange={handleSearchChange}
-          placeholder="Search by Wallet Address / Tx Hash / Code ID / Contract Address / Block"
+          placeholder={getPlaceholder(isWasm)}
           focusBorderColor="lilac.main"
           onFocus={() => setDisplayResults(keyword.length > 0)}
           onKeyDown={handleOnKeyEnter}

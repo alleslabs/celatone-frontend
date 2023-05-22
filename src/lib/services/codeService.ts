@@ -117,7 +117,8 @@ export const useCodeListByCodeIds = (
 };
 
 export const useCodeDataByCodeId = (
-  codeId: string
+  codeId: string,
+  enabled = true
 ): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -155,7 +156,7 @@ export const useCodeDataByCodeId = (
       });
   }, [codeId, indexerGraphClient]);
   return useQuery(["code_data_by_id", codeId, indexerGraphClient], queryFn, {
-    enabled: isCodeId(codeId),
+    enabled: enabled && isCodeId(codeId),
   });
 };
 
