@@ -2,8 +2,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "../contexts";
-import { useFabricateFee } from "../hooks";
+import { useFabricateFee, useWasmConfig } from "../hooks";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
 import type { ContractAddr, HumanAddr } from "lib/types";
 
@@ -15,13 +14,9 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
   const { address, getCosmWasmClient } = useWallet();
   const queryClient = useQueryClient();
   const fabricateFee = useFabricateFee();
-  const {
-    chainConfig: {
-      features: { wasm },
-    },
-  } = useCelatoneApp();
-  const gas = wasm.enabled ? wasm.clearAdminGas : 0;
-  const clearAdminFee = fabricateFee(gas);
+  const wasm = useWasmConfig();
+
+  const clearAdminFee = fabricateFee(wasm.clearAdminGas);
 
   return useCallback(
     async ({ onTxSucceed }: ClearAdminStreamParams) => {
