@@ -14,3 +14,4 @@ export * from "./useTokensInfo";
 export * from "./useCurrentNetwork";
 export * from "./useBaseApiRoute";
 export * from "./useRPCEndpoint";
+export * from "./useWasmConfig";
