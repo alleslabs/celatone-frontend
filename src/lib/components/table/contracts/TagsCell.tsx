@@ -53,7 +53,7 @@ export const TagsCell = ({
 
       {isHover && (
         <Flex
-          bgColor={tags.length > 1 ? "pebble.800" : "inherit"}
+          bgColor={tags.length > 1 ? "gray.800" : "inherit"}
           py={4}
           borderRadius="8px"
           position="absolute"

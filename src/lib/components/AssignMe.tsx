@@ -14,7 +14,7 @@ export const AssignMe = ({ onClick, isDisable = false }: AssginMeProps) => {
     <Text
       textAlign="right"
       mr={3}
-      color={enabled ? "honeydew.main" : "pebble.500"}
+      color={enabled ? "accent.main" : "gray.500"}
       fontWeight="600"
       variant="body3"
       cursor={enabled ? "pointer" : "not-allowed"}

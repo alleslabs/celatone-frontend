@@ -161,7 +161,7 @@ const Faucet = () => {
         label="Receiving Address"
         helperAction={
           <Text
-            color="honeydew.main"
+            color="accent.main"
             fontWeight="600"
             variant="body3"
             cursor="pointer"

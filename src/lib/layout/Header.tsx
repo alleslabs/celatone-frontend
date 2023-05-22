@@ -56,8 +56,8 @@ const Header = () => {
             py="5px"
             borderRadius="8px"
             borderWidth="1px"
-            borderColor="pebble.600"
-            _hover={{ bg: "pebble.700" }}
+            borderColor="gray.600"
+            _hover={{ bg: "gray.700" }}
             transition="all .25s ease-in-out"
             w="170px"
           >
@@ -75,7 +75,7 @@ const Header = () => {
               >
                 {currentChainRecord?.chain.chain_id}
               </Text>
-              <CustomIcon name="chevron-down" color="pebble.600" />
+              <CustomIcon name="chevron-down" color="gray.600" />
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">
@@ -88,7 +88,7 @@ const Header = () => {
                 flexDirection="column"
                 alignItems="flex-start"
                 _hover={{
-                  backgroundColor: "pebble.800",
+                  backgroundColor: "gray.800",
                 }}
                 transition="all .25s ease-in-out"
               >
@@ -102,7 +102,7 @@ const Header = () => {
                     </Text>
                   </Flex>
                   {chainName === currentChainName && (
-                    <CustomIcon name="check" boxSize="3" color="pebble.600" />
+                    <CustomIcon name="check" boxSize="3" color="gray.600" />
                   )}
                 </Flex>
               </MenuItem>

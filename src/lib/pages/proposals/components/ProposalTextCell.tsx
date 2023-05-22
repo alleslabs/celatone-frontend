@@ -36,7 +36,7 @@ export const ProposalTextCell = ({
       position="absolute"
       justify="center"
       borderRadius="8px"
-      bgColor={showName ? "pebble.800" : "undefined"}
+      bgColor={showName ? "gray.800" : "undefined"}
       px={4}
       maxW={showName ? undefined : "full"}
       onMouseOver={() => setIsHoverText(true)}

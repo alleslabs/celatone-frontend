@@ -95,7 +95,7 @@ export const uploadContractTx = ({
             </>
           ),
           headerIcon: (
-            <CustomIcon name="upload-cloud" boxSize="5" color="pebble.600" />
+            <CustomIcon name="upload-cloud" boxSize="5" color="gray.600" />
           ),
         },
         actionVariant: isMigrate ? "upload-migrate" : "upload",

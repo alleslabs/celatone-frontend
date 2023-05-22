@@ -25,11 +25,11 @@ export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => (
         name="expedited"
         boxSize="4"
         ml="0"
-        color={isActiveExpedited ? "honeydew.main" : "pebble.400"}
+        color={isActiveExpedited ? "accent.main" : "gray.400"}
       />
       <Text
         variant="body3"
-        color={isActiveExpedited ? "honeydew.main" : "text.dark"}
+        color={isActiveExpedited ? "accent.main" : "text.dark"}
       >
         Expedited
       </Text>

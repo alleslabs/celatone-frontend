@@ -23,7 +23,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       mb={0}
       sx={{
         "&[aria-selected=true]": {
-          color: "violet.light",
+          color: "primary.light",
         },
       }}
       _active={{
@@ -34,7 +34,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       {tabProps.children}
 
       {count !== undefined && (
-        <Badge variant={isSelected ? "violet" : "gray"} ml="6px">
+        <Badge variant={isSelected ? "primary" : "gray"} ml="6px">
           {count}
         </Badge>
       )}

@@ -92,7 +92,7 @@ const Execute = () => {
         </Heading>
         <Box>
           <Button
-            variant="ghost-lilac"
+            variant="ghost-secondary"
             size="sm"
             p="unset"
             pl="2"

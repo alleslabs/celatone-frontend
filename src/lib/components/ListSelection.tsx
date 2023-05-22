@@ -46,7 +46,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       setResult,
       placeholder,
       helperText,
-      labelBgColor = "pebble.900",
+      labelBgColor = "gray.900",
       ...rest
     }: ListSelectionProps,
     ref
@@ -127,7 +127,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
             alignItems="center"
             color="text.main"
             border="1px solid"
-            borderColor="pebble.700"
+            borderColor="gray.700"
             background="none"
             borderRadius="8px"
             maxW="100%"
@@ -144,7 +144,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <Tag
                       cursor="pointer"
                       whiteSpace="nowrap"
-                      variant="violet-light"
+                      variant="primary-light"
                       gap={1}
                       mr={1}
                     >
@@ -194,7 +194,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
           {displayOptions && (
             <List
               borderRadius="8px"
-              bg="pebble.800"
+              bg="gray.800"
               px="2"
               py="1"
               mt={0}
@@ -210,7 +210,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                 <ListItem
                   key={option.value}
                   style={listItemProps}
-                  _hover={{ bg: "pebble.700" }}
+                  _hover={{ bg: "gray.700" }}
                   transition="all .25s ease-in-out"
                   onClick={() => selectOptionFromList(option)}
                 >
@@ -221,7 +221,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                         data-label={option.label}
                         mr={2}
                         name="check"
-                        color="pebble.600"
+                        color="gray.600"
                         boxSize="3"
                       />
                     )}
@@ -235,7 +235,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <ListItem
                       w="full"
                       style={listItemProps}
-                      _hover={{ bg: "pebble.700" }}
+                      _hover={{ bg: "gray.700" }}
                       transition="all .25s ease-in-out"
                       data-testid="create-option"
                       onClick={() => setEnableOutside(false)}

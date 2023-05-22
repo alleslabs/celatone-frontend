@@ -17,7 +17,7 @@ export const Footer = ({
     <Grid
       w="full"
       px="48px"
-      bg="pebble.900"
+      bg="gray.900"
       h="70px"
       bottom="0"
       position="sticky"

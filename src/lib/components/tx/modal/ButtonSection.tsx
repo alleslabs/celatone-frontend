@@ -48,7 +48,7 @@ export const ButtonSection = ({
       return (
         <>
           <Button
-            variant="ghost-lilac"
+            variant="ghost-secondary"
             onClick={() => {
               navigate({ pathname: "/my-codes" });
               onClose?.();
@@ -93,7 +93,7 @@ export const ButtonSection = ({
     case "update-admin":
       return (
         <>
-          <Button variant="ghost-lilac" onClick={openTxExplorer}>
+          <Button variant="ghost-secondary" onClick={openTxExplorer}>
             See Transaction
           </Button>
           <Button
@@ -118,7 +118,7 @@ export const ButtonSection = ({
       return (
         <>
           <Button
-            variant="ghost-lilac"
+            variant="ghost-secondary"
             // TODO: Revisit this when proposal page is live
             onClick={openProposalExplorer}
           >

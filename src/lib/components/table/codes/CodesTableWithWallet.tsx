@@ -29,7 +29,7 @@ export const CodesTableWithWallet = ({
       direction="column"
       py="48px"
       borderY="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
     >
       <DisconnectedState text={disconnectedMessage} />
     </Flex>

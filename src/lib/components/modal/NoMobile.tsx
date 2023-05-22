@@ -22,7 +22,7 @@ export const NoMobile = () => (
       >
         <CustomIcon
           name="info-circle-solid"
-          color="violet.light"
+          color="primary.light"
           boxSize="10"
         />
         <Heading as="h5" variant="h5" py="4">

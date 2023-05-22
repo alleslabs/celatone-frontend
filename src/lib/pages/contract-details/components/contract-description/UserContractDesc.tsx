@@ -38,8 +38,8 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
         triggerElement={
           <Button
             size="xs"
-            color="lilac.main"
-            variant="ghost-lilac"
+            color="secondary.main"
+            variant="ghost-secondary"
             leftIcon={<CustomIcon name="edit" boxSize="3" />}
           >
             {description ? "Edit" : "Add Description"}
@@ -59,7 +59,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   return (
     <Flex
       direction="column"
-      bg="pebble.900"
+      bg="gray.900"
       maxW="100%"
       borderRadius="8px"
       p={4}

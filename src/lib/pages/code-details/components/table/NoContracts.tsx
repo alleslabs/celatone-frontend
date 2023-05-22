@@ -11,7 +11,7 @@ const DisconnectedState = () => (
     gap="16px"
     py="48px"
     borderY="1px solid"
-    borderColor="pebble.700"
+    borderColor="gray.700"
   >
     <StateImage imageVariant="empty" />
     <Text variant="body1" color="text.dark">

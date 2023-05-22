@@ -320,7 +320,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             error={validateAdmin(watchAdminAddress)}
             helperAction={
               <Text
-                color="honeydew.main"
+                color="accent.main"
                 fontWeight="600"
                 variant="body3"
                 cursor="pointer"

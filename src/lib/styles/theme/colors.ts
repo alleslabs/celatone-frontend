@@ -39,9 +39,6 @@ const extendedColors: BasicColor = {
     dark: "#207966",
     background: "#102E28",
   },
-  info: {
-    main: "#29B6F6",
-  },
   background: {
     main: "#111117",
     overlay: "rgba(17, 17, 23, 0.7)",
@@ -51,7 +48,7 @@ const extendedColors: BasicColor = {
     dark: "#ADADC2",
     disabled: "#8A8AA5",
   },
-  violet: {
+  primary: {
     main: "#5942F3",
     light: "#9793F3",
     lighter: "#DCDBFB",
@@ -59,7 +56,14 @@ const extendedColors: BasicColor = {
     darker: "#292676",
     background: "#181733",
   },
-  honeydew: {
+  secondary: {
+    main: "#D8BEFC",
+    light: "#E8D8FD",
+    dark: "#A28FBD",
+    darker: "#6C5F7E",
+    background: "#36303F",
+  },
+  accent: {
     main: "#C6E141",
     light: "#DDED8D",
     lighter: "#E8F3B3",
@@ -67,14 +71,7 @@ const extendedColors: BasicColor = {
     darker: "#637121",
     background: "#3D470B",
   },
-  lilac: {
-    main: "#D8BEFC",
-    light: "#E8D8FD",
-    dark: "#A28FBD",
-    darker: "#6C5F7E",
-    background: "#36303F",
-  },
-  pebble: {
+  gray: {
     100: "#F7F2FE",
     400: "#ADADC2",
     500: "#8A8AA5",

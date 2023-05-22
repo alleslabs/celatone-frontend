@@ -33,9 +33,9 @@ export const RecentActivities = observer(() => {
               minW="360px"
               cursor="pointer"
               p={6}
-              bg="pebble.900"
+              bg="gray.900"
               borderRadius="8px"
-              _hover={{ bg: "pebble.800" }}
+              _hover={{ bg: "gray.800" }}
               transition="all .25s ease-in-out"
               key={item.type + item.contractAddress + item.timestamp}
               onClick={() =>
@@ -48,9 +48,9 @@ export const RecentActivities = observer(() => {
               <Flex alignItems="center" gap={1}>
                 <CustomIcon
                   name={item.type === "query" ? "query" : "execute"}
-                  color="honeydew.main"
+                  color="accent.main"
                 />
-                <Text variant="body2" color="honeydew.main">
+                <Text variant="body2" color="accent.main">
                   {item.type === "query" ? "Query" : "Execute"}
                 </Text>
               </Flex>
@@ -58,7 +58,7 @@ export const RecentActivities = observer(() => {
                 <Text
                   variant="body3"
                   padding="4px 8px"
-                  backgroundColor="pebble.700"
+                  backgroundColor="gray.700"
                   borderRadius="16px"
                 >
                   {item.action}
@@ -92,7 +92,7 @@ export const RecentActivities = observer(() => {
           px={12}
           borderTopWidth={1}
           borderBottomWidth={1}
-          borderColor="pebble.700"
+          borderColor="gray.700"
           justifyContent="center"
           alignItems="center"
           minH="128px"

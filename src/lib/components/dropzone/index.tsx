@@ -31,13 +31,13 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
   return (
     <Flex
       border="1px dashed"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       w="full"
       p="24px 16px"
       borderRadius="8px"
       align="center"
       direction="column"
-      _hover={{ bg: "pebble.900" }}
+      _hover={{ bg: "gray.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
       {...getRootProps()}
@@ -48,9 +48,9 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
       <Flex my="8px" gap="4px">
         <Text
           variant="body1"
-          color="lilac.main"
+          color="secondary.main"
           transition="all .25s ease-in-out"
-          _hover={{ color: "lilac.light" }}
+          _hover={{ color: "secondary.light" }}
           style={{ textDecoration: "underline" }}
         >
           Click to upload

@@ -39,11 +39,11 @@ const getAlertContent = (
         description: "Your address is allowed to directly upload Wasm files",
       }
     : {
-        variant: "violet",
+        variant: "primary",
         icon: (
           <CustomIcon
             name="info-circle-solid"
-            color="violet.light"
+            color="primary.light"
             boxSize={4}
           />
         ),

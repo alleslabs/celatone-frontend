@@ -53,7 +53,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
         gap={6}
         w="full"
         borderBottomWidth={1}
-        borderBottomColor="pebble.700"
+        borderBottomColor="gray.700"
         pb={8}
         my={8}
       >

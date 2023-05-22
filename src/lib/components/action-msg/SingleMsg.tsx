@@ -68,7 +68,7 @@ export const SingleMsg = ({
           </Text>
           <Tooltip label={`Token ID: ${token.id}`} maxW="240px">
             <Flex cursor="pointer">
-              <CustomIcon name="info-circle" boxSize="3" color="pebble.600" />
+              <CustomIcon name="info-circle" boxSize="3" color="gray.600" />
             </Flex>
           </Tooltip>
           <Copier

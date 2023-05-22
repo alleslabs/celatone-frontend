@@ -36,7 +36,7 @@ export const FilterInput = ({
       background="none"
       borderRadius="8px"
       border="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       overflowX="scroll"
       alignItems="center"
     >
@@ -62,7 +62,7 @@ export const FilterInput = ({
         boxSize="40px"
         right="0px"
         minH="full"
-        color="pebble.600"
+        color="gray.600"
         backgroundColor="background.main"
         onClick={() => setIsDropdown(!isDropdown)}
       />

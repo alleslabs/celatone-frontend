@@ -47,7 +47,7 @@ export const ProjectDetail = () => {
     <PageContainer>
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs index={tabIndex}>
-        <TabList my={6} borderBottom="1px" borderColor="pebble.800">
+        <TabList my={6} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={
               publicCodes.length +

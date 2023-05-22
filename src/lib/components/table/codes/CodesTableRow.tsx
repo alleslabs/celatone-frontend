@@ -28,7 +28,7 @@ export const CodesTableRow = ({
     <Grid
       templateColumns={templateColumns}
       onClick={() => onRowSelect(codeInfo.id)}
-      _hover={{ bg: "pebble.900" }}
+      _hover={{ bg: "gray.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
       minW="min-content"

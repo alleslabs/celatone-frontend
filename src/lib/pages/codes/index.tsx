@@ -74,7 +74,7 @@ const Codes = observer(() => {
         My Codes
       </Heading>
       <Tabs mt={8}>
-        <TabList mb="32px" borderBottom="1px" borderColor="pebble.800">
+        <TabList mb="32px" borderBottom="1px" borderColor="gray.800">
           <CustomTab count={allCodesCount}>All Codes</CustomTab>
           <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
           <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>

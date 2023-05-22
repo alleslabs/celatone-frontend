@@ -31,8 +31,8 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
         }}
         _hover={{
           textDecoration: "underline",
-          textDecorationColor: "lilac.light",
-          "& > p": { color: "lilac.light" },
+          textDecorationColor: "secondary.light",
+          "& > p": { color: "secondary.light" },
         }}
         cursor="pointer"
         onMouseEnter={() => setIsHover(true)}
@@ -40,7 +40,7 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
       >
         <Text
           variant="body2"
-          color="lilac.main"
+          color="secondary.main"
           transition="all .25s ease-in-out"
         >
           {value === address ? `${value} (Me)` : value}
@@ -50,7 +50,7 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
           marginLeft={2}
           name="copy"
           boxSize={3}
-          color="pebble.600"
+          color="gray.600"
         />
       </Flex>
     </Tooltip>

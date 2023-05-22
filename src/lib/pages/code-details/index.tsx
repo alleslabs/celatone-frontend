@@ -112,11 +112,11 @@ const CodeDetailsBody = observer(
             description={publicProject.publicCodeData.description}
             textLine={2}
             icon={
-              <CustomIcon name="website" ml="0" mb="6px" color="pebble.600" />
+              <CustomIcon name="website" ml="0" mb="6px" color="gray.600" />
             }
           />
         )}
-        <Divider borderColor="pebble.700" my={12} />
+        <Divider borderColor="gray.700" my={12} />
         <CodeInfoSection codeData={codeData} chainId={chainId} />
         <CodeContractsTable codeId={codeId} />
       </>

@@ -66,7 +66,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
     <Flex
       className="copier-wrapper"
       borderRadius="8px"
-      bg="pebble.800"
+      bg="gray.800"
       direction="column"
       px={4}
       py={3}
@@ -89,7 +89,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
           </Text>
           <Tooltip label={`Token ID: ${balance.id}`} maxW="500px">
             <Flex cursor="pointer" className="info" display="none">
-              <CustomIcon name="info-circle" boxSize="3" color="pebble.600" />
+              <CustomIcon name="info-circle" boxSize="3" color="gray.600" />
             </Flex>
           </Tooltip>
           <Copier
@@ -171,14 +171,14 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="800px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name={content.icon} boxSize="5" color="pebble.600" />
+              <CustomIcon name={content.icon} boxSize="5" color="gray.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>
             </Flex>
           </ModalHeader>
 
-          <ModalCloseButton color="pebble.600" />
+          <ModalCloseButton color="gray.600" />
           <ModalBody maxH="400px" overflow="overlay" pb={6}>
             <Flex direction="column" gap={5}>
               {address && (

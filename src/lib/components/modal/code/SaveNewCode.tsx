@@ -188,7 +188,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           value={codeId}
           onInputChange={setCodeId}
           label="Code ID"
-          labelBgColor="pebble.900"
+          labelBgColor="gray.900"
           status={codeIdStatus}
           placeholder="ex. 1234"
         />
@@ -196,7 +196,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           variant="floating"
           value={uploader}
           label="Uploader"
-          labelBgColor="pebble.900"
+          labelBgColor="gray.900"
           placeholder="Uploader address will display here"
           setInputState={() => {}}
           status={uploaderStatus}
@@ -207,7 +207,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           value={name}
           setInputState={setName}
           label="Code Name"
-          labelBgColor="pebble.900"
+          labelBgColor="gray.900"
           placeholder="Untitled Name"
           helperText="Fill in code name to define its use as a reminder"
           status={nameStatus}

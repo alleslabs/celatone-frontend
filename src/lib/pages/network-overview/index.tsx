@@ -52,9 +52,9 @@ const CardInfo = ({
 }: CardInfoProps) => (
   <Flex
     style={cardProps}
-    _hover={{ bg: "pebble.700" }}
+    _hover={{ bg: "gray.700" }}
     transition="all .25s ease-in-out"
-    bg="pebble.800"
+    bg="gray.800"
     onClick={navigate}
   >
     <Box>
@@ -64,11 +64,7 @@ const CardInfo = ({
         </Text>
         <Tooltip label={tooltip}>
           <Flex cursor="pointer">
-            <CustomIcon
-              name="info-circle-solid"
-              boxSize="3"
-              color="pebble.600"
-            />
+            <CustomIcon name="info-circle-solid" boxSize="3" color="gray.600" />
           </Flex>
         </Tooltip>
       </Flex>
@@ -80,7 +76,7 @@ const CardInfo = ({
         </Heading>
       )}
     </Box>
-    <CustomIcon name="chevron-right" boxSize={5} color="pebble.600" />
+    <CustomIcon name="chevron-right" boxSize={5} color="gray.600" />
   </Flex>
 );
 

@@ -36,7 +36,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
           list={list}
           buttonProps={{
             variant: "outline-primary",
-            leftIcon: <CustomIcon name="bookmark" color="pebble.600" />,
+            leftIcon: <CustomIcon name="bookmark" color="gray.600" />,
             children: "Save Contract",
             ml: 2,
           }}
@@ -67,7 +67,7 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
   return (
     <Flex
       borderY="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       width="full"
       py="48px"
       direction="column"

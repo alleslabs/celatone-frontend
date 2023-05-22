@@ -21,7 +21,7 @@ export const InvalidState = ({ title }: InvalidStateProps) => {
       direction="column"
       alignItems="center"
       borderY="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       width="full"
       my="24px"
       py="24px"

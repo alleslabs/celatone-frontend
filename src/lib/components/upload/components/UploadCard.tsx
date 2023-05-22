@@ -60,10 +60,10 @@ export const UploadCard = ({
         p="16px"
         gap="16px"
         w="full"
-        bgColor="pebble.900"
+        bgColor="gray.900"
         borderRadius="8px"
         border="1px solid"
-        borderColor={isError ? "error.main" : "pebble.900"}
+        borderColor={isError ? "error.main" : "gray.900"}
       >
         <UploadIcon />
         <Flex direction="column">

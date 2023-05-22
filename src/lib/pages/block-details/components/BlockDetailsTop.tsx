@@ -42,12 +42,12 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
       mb={12}
       pb={12}
       mt={6}
-      borderBottomColor="pebble.700"
+      borderBottomColor="gray.700"
       borderBottomWidth="1px"
     >
       <Flex direction="column" gap={1}>
         <Flex alignItems="center">
-          <CustomIcon name="block" boxSize="5" color="lilac.main" />
+          <CustomIcon name="block" boxSize="5" color="secondary.main" />
           <Heading as="h5" variant="h5" className="ellipsis">
             {blockData.height}
           </Heading>
@@ -64,7 +64,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
         </Flex>
         <Flex gap={2} alignItems="center">
           <Flex gap={1} alignItems="center">
-            <CustomIcon name="history" boxSize={3} color="pebble.600" />
+            <CustomIcon name="history" boxSize={3} color="gray.600" />
             <Text variant="body2" color="text.dark">
               {dateFromNow(blockData.timestamp)}
             </Text>

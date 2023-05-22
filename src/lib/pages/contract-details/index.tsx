@@ -92,7 +92,7 @@ const ContractDetailsBody = observer(
           History
         </Heading>
         <Tabs>
-          <TabList borderBottom="1px solid" borderColor="pebble.700">
+          <TabList borderBottom="1px solid" borderColor="gray.700">
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>

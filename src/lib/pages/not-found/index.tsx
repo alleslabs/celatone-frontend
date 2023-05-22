@@ -17,7 +17,7 @@ const NotFoundPage = () => {
       <BackButton />
       <Flex
         borderY="1px solid"
-        borderColor="pebble.700"
+        borderColor="gray.700"
         justify="center"
         align="center"
         direction="column"

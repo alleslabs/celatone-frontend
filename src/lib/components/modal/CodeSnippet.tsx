@@ -191,7 +191,7 @@ execute();
     <>
       <Button
         isDisabled={isDisabled}
-        variant="outline-info"
+        variant="outline-accent"
         size="sm"
         ml="auto"
         gap="1"
@@ -213,10 +213,10 @@ execute();
               Code Snippet
             </Heading>
           </ModalHeader>
-          <ModalCloseButton color="pebble.600" />
+          <ModalCloseButton color="gray.600" />
           <ModalBody px={4} maxH="640px" overflow="scroll">
             <Tabs>
-              <TabList borderBottom="1px solid" borderColor="pebble.700">
+              <TabList borderBottom="1px solid" borderColor="gray.700">
                 {codeSnippets[type].map((item) => (
                   <CustomTab key={`menu-${item.name}`}>{item.name}</CustomTab>
                 ))}

@@ -36,8 +36,8 @@ export const ProposalTableRow = ({
     proposal.status === ProposalStatus.VOTING_PERIOD;
 
   const hoverBg = (): Option<string> => {
-    if (proposal.isExpedited && isDepositOrVoting) return "violet.background";
-    return isDepositFailed ? undefined : "pebble.900";
+    if (proposal.isExpedited && isDepositOrVoting) return "primary.background";
+    return isDepositFailed ? undefined : "gray.900";
   };
 
   return (
@@ -76,7 +76,7 @@ export const ProposalTableRow = ({
       <TableRowFreeze
         left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
-        color="pebble.800"
+        color="gray.800"
       >
         <ProposalTextCell
           title={proposal.title}

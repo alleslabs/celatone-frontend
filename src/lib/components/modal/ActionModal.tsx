@@ -41,7 +41,7 @@ export interface ActionModalProps {
 }
 export function ActionModal({
   icon = "edit-solid",
-  iconColor = "pebble.600",
+  iconColor = "gray.600",
   title,
   subtitle,
   trigger,
@@ -89,7 +89,7 @@ export function ActionModal({
         <ModalContent>
           <ModalHeader
             borderBottomWidth={noHeaderBorder ? 0 : 1}
-            borderColor="pebble.700"
+            borderColor="gray.700"
           >
             <Box w="full">
               <Flex alignItems="center" gap="3">
@@ -106,7 +106,7 @@ export function ActionModal({
               <Box>{headerContent}</Box>
             </Box>
           </ModalHeader>
-          {!noCloseButton && <ModalCloseButton color="pebble.600" />}
+          {!noCloseButton && <ModalCloseButton color="gray.600" />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
             <Flex w="full" justifyContent="center" gap="2">

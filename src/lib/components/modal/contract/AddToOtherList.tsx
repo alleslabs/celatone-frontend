@@ -72,7 +72,7 @@ export const AddToOtherListModal = observer(
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
             setResult={setContractLists}
-            labelBgColor="pebble.900"
+            labelBgColor="gray.900"
           />
         </Box>
       </ActionModal>

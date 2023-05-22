@@ -87,7 +87,7 @@ export function EditListNameModal({
         variant="floating"
         value={listName}
         setInputState={setListName}
-        labelBgColor="pebble.900"
+        labelBgColor="gray.900"
         status={status}
         label="List Name"
       />

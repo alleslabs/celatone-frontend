@@ -196,7 +196,7 @@ export const ContractSelectSection = observer(
       <Flex
         mb={style.container}
         borderWidth="thin"
-        borderColor="pebble.800"
+        borderColor="gray.800"
         p="16px"
         borderRadius="8px"
         fontSize="12px"

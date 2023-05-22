@@ -124,7 +124,7 @@ export const SelectContractInstantiator = ({
                 <CustomIcon
                   name="contract-address-solid"
                   boxSize="5"
-                  color="pebble.600"
+                  color="gray.600"
                 />
                 <Heading as="h5" variant="h5">
                   Select Contract
@@ -169,9 +169,9 @@ export const SelectContractInstantiator = ({
                 </Text>
 
                 <Flex my="24px" gap="8px" alignItems="center">
-                  <Divider borderColor="pebble.700" />
+                  <Divider borderColor="gray.700" />
                   <Text variant="body1">OR</Text>
-                  <Divider borderColor="pebble.700" />
+                  <Divider borderColor="gray.700" />
                 </Flex>
 
                 <Heading as="h6" variant="h6" mb={4}>
@@ -181,7 +181,7 @@ export const SelectContractInstantiator = ({
                   contractLists={contractLists}
                   handleListSelect={handleListSelect}
                   isReadOnly
-                  formLabelBgColor="pebble.900"
+                  formLabelBgColor="gray.900"
                 />
               </DrawerBody>
             </>
@@ -193,7 +193,7 @@ export const SelectContractInstantiator = ({
                   boxSize="5"
                   onClick={() => setListSlug("")}
                   cursor="pointer"
-                  color="pebble.600"
+                  color="gray.600"
                 />
                 <Heading as="h5" variant="h5">
                   {contractList.name}

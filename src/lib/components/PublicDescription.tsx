@@ -30,7 +30,7 @@ export const PublicDescription = ({
   return (
     <Flex
       direction="column"
-      bg="pebble.900"
+      bg="gray.900"
       maxW="100%"
       borderRadius="8px"
       p={4}

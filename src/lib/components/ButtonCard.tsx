@@ -24,14 +24,14 @@ export const ButtonCard = ({
     align="center"
     justify="space-between"
     onClick={!disabled ? onClick : undefined}
-    bgColor="pebble.800"
+    bgColor="gray.800"
     borderRadius="8px"
     w="100%"
     cursor="pointer"
-    _hover={{ bgColor: "pebble.700" }}
+    _hover={{ bgColor: "gray.700" }}
     transition="all .25s ease-in-out"
     _disabled={{
-      bgColor: "pebble.900",
+      bgColor: "gray.900",
       cursor: "not-allowed",
     }}
     {...componentProps}
@@ -52,6 +52,6 @@ export const ButtonCard = ({
         description
       )}
     </Stack>
-    <CustomIcon name="chevron-right" color="pebble.600" />
+    <CustomIcon name="chevron-right" color="gray.600" />
   </Flex>
 );

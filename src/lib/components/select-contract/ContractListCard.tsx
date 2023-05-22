@@ -42,7 +42,7 @@ export const ContractListCard = ({
       <CustomIcon
         name={getListIcon(item.name)}
         boxSize="24px"
-        color="pebble.600"
+        color="gray.600"
       />
       <Flex flexDirection="column" alignItems="start" gap={1}>
         <Flex alignItems="center" gap={2}>
@@ -73,13 +73,13 @@ export const ContractListCard = ({
             as={Button}
             onClick={(e) => e.stopPropagation()}
           >
-            <CustomIcon name="more" color="pebble.600" />
+            <CustomIcon name="more" color="gray.600" />
           </MenuButton>
           <MenuList>
             <EditListNameModal
               list={{ label: item.name, value: item.slug }}
               menuItemProps={{
-                icon: <CustomIcon name="edit" color="pebble.600" />,
+                icon: <CustomIcon name="edit" color="gray.600" />,
                 children: "Edit list name",
               }}
             />

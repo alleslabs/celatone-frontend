@@ -37,7 +37,7 @@ export const TokenCard = ({
         minH="101px"
         gap={2}
         p={3}
-        background="pebble.900"
+        background="gray.900"
         borderRadius="8px"
         {...cardProps}
       >
@@ -45,7 +45,7 @@ export const TokenCard = ({
           gap={1}
           alignItems="center"
           borderBottom="1px solid"
-          borderBottomColor="pebble.700"
+          borderBottomColor="gray.700"
           pb={2}
         >
           <Image

@@ -31,12 +31,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     <ActionModal
       title="Edit Tags"
       trigger={
-        <CustomIcon
-          cursor="pointer"
-          name="edit"
-          color="pebble.600"
-          boxSize="3"
-        />
+        <CustomIcon cursor="pointer" name="edit" color="gray.600" boxSize="3" />
       }
       headerContent={
         <Flex pt="6" gap="36px">
@@ -73,7 +68,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
             setResult={(selectedOptions: string[]) => {
               setTagResult(selectedOptions);
             }}
-            labelBgColor="pebble.900"
+            labelBgColor="gray.900"
           />
         </Box>
       </FormControl>

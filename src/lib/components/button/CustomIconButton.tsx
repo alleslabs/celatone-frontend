@@ -30,7 +30,7 @@ export const CustomIconButton = ({
       alignItems="center"
       onClick={onClick}
     >
-      <CustomIcon name={icon} boxSize="5" color="pebble.600" />
+      <CustomIcon name={icon} boxSize="5" color="gray.600" />
     </Link>
   </Button>
 );

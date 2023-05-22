@@ -161,7 +161,7 @@ export const InstantiateInfo = ({
         </LabelText>
       )}
 
-      <Divider border="1px solid" borderColor="pebble.700" />
+      <Divider border="1px solid" borderColor="gray.700" />
 
       {instantiateInfo &&
         (instantiateInfo.createdHeight ? (

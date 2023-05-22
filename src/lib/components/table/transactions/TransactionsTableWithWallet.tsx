@@ -19,7 +19,7 @@ export const TransactionsTableWithWallet = ({
 }: TransactionsTableWithWalletProps) => {
   const { address } = useWallet();
   return !address ? (
-    <Flex direction="column" py="48px" borderColor="pebble.700">
+    <Flex direction="column" py="48px" borderColor="gray.700">
       <DisconnectedState
         text="to see your past transactions."
         helperText="Past transactions will display here."

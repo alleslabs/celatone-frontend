@@ -131,7 +131,7 @@ export const ProposalTypeFilter = forwardRef<
                 onSelect={() => selectOption(cosmosType)}
               />
             ))}
-            {cosmosTypes.length && <Divider borderColor="pebble.700" />}
+            {cosmosTypes.length && <Divider borderColor="gray.700" />}
 
             {generalTypes.map((generalType) => (
               <FilterDropdownItem

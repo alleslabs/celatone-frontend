@@ -26,7 +26,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
       w="full"
       spacing={1}
       separator={
-        <CustomIcon name="chevron-right" boxSize="3" color="pebble.600" />
+        <CustomIcon name="chevron-right" boxSize="3" color="gray.600" />
       }
     >
       <BreadcrumbItem

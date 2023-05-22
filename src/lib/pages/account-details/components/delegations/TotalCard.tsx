@@ -33,7 +33,7 @@ export const TotalCard = ({
             {title}
           </Text>
           <Tooltip label={message}>
-            <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
+            <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
           </Tooltip>
         </Flex>
         {!token ? (

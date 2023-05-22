@@ -70,7 +70,7 @@ export const CommandSection = () => {
     <Flex gap={6}>
       <Flex
         direction="column"
-        bg="pebble.900"
+        bg="gray.900"
         p={4}
         borderRadius="8px"
         flex={0.5}
@@ -82,7 +82,7 @@ export const CommandSection = () => {
       </Flex>
       <Flex
         direction="column"
-        bg="pebble.900"
+        bg="gray.900"
         p={4}
         borderRadius="8px"
         flex={0.5}
