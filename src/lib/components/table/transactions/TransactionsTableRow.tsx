@@ -1,4 +1,12 @@
-import { Flex, Text, Grid, useDisclosure, Tag, Box } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Grid,
+  useDisclosure,
+  Tag,
+  Box,
+  Badge,
+} from "@chakra-ui/react";
 
 import { AccordionTx } from "../AccordionTx";
 import { TableRow } from "../tableComponents";
@@ -15,6 +23,7 @@ interface TransactionsTableRowProps {
   transaction: Transaction;
   templateColumns: string;
   showRelations: boolean;
+  showTimestamp: boolean;
   showAction: boolean;
 }
 
@@ -22,6 +31,7 @@ export const TransactionsTableRow = ({
   transaction,
   templateColumns,
   showRelations,
+  showTimestamp,
   showAction,
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -37,12 +47,28 @@ export const TransactionsTableRow = ({
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
+        <TableRow pl={2}>
+          {isAccordion && (
+            <CustomIcon
+              name="chevron-down"
+              transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
+              transition="all .25s ease-in-out"
+            />
+          )}
+        </TableRow>
         <TableRow>
-          <ExplorerLink
-            value={transaction.hash.toLocaleUpperCase()}
-            type="tx_hash"
-            showCopyOnHover
-          />
+          <>
+            <ExplorerLink
+              value={transaction.hash.toLocaleUpperCase()}
+              type="tx_hash"
+              showCopyOnHover
+            />
+            {transaction.messages.length > 1 && (
+              <Badge variant="lilac" ml="6px">
+                {transaction.messages.length}
+              </Badge>
+            )}
+          </>
         </TableRow>
         <TableRow>
           {transaction.success ? (
@@ -76,29 +102,22 @@ export const TransactionsTableRow = ({
           />
         </TableRow>
 
-        <TableRow>
-          <Flex direction="column" gap={1}>
-            <Text variant="body3">{formatUTC(transaction.created)}</Text>
-            <Text variant="body3" color="text.dark">
-              {`(${dateFromNow(transaction.created)})`}
-            </Text>
-          </Flex>
-        </TableRow>
+        {showTimestamp && (
+          <TableRow>
+            <Flex direction="column" gap={1}>
+              <Text variant="body3">{formatUTC(transaction.created)}</Text>
+              <Text variant="body3" color="text.dark">
+                {`(${dateFromNow(transaction.created)})`}
+              </Text>
+            </Flex>
+          </TableRow>
+        )}
 
         {showAction && (
           <TableRow>
             <FurtherActionButton transaction={transaction} />
           </TableRow>
         )}
-
-        <TableRow>
-          {isAccordion && (
-            <CustomIcon
-              name={isOpen ? "chevron-up" : "chevron-down"}
-              color="pebble.600"
-            />
-          )}
-        </TableRow>
       </Grid>
       {isAccordion && (
         <Grid w="full" py={4} hidden={!isOpen}>
