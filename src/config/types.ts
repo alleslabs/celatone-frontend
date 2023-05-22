@@ -13,6 +13,7 @@ type WasmConfig =
   | {
       enabled: true;
       storeCodeMaxFileSize: number;
+      clearAdminGas: number;
     }
   | {
       enabled: false;

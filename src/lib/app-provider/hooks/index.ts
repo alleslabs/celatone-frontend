@@ -12,5 +12,7 @@ export * from "./useSelectChain";
 export * from "./useSimulateFee";
 export * from "./useTokensInfo";
 export * from "./useCurrentNetwork";
+export * from "./useBaseApiRoute";
 export * from "./useRPCEndpoint";
 export * from "./useFaucetConfig";
+export * from "./useWasmConfig";
