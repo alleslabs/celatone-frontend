@@ -151,11 +151,9 @@ const getNextCursor = (
 };
 
 const getPlaceholder = (isWasm: boolean) => {
-  const wasmText = isWasm ? "Code ID / Contract Address / " : "";
-  // TODO: uncomment when validator page is implemented
-  // const validatorText = noValidator ? "" : "/ Validator Address";
+  const wasmText = isWasm ? "/ Code ID / Contract Address" : "";
 
-  return `Search by Wallet Address / Tx Hash / ${wasmText}Block`;
+  return `Search by Wallet Address / Tx Hash / Block ${wasmText}`;
 };
 
 const Searchbar = () => {
