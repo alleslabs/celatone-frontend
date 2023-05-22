@@ -29,7 +29,7 @@ export const TotalCard = ({
     ) : (
       <>
         <Flex alignItems="center" gap={1}>
-          <Text variant="body2" fontWeight="500" textColor="text.dark">
+          <Text variant="body2" fontWeight={500} textColor="text.dark">
             {title}
           </Text>
           <Tooltip label={message}>

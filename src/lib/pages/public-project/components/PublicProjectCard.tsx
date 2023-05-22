@@ -65,7 +65,7 @@ export const PublicProjectCard = observer(
                 />
                 <Text
                   variant="body1"
-                  fontWeight="600"
+                  fontWeight={700}
                   textOverflow="ellipsis"
                   overflow="hidden"
                   mt="4px"

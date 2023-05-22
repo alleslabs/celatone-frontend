@@ -200,7 +200,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               borderBottom="1px solid"
               borderBottomColor="gray.700"
             >
-              <Text variant="body2" fontWeight="500" color="text.dark">
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Total Account Value
               </Text>
               {isLoading ? (

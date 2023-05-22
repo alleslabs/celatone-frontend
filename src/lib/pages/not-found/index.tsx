@@ -22,7 +22,7 @@ const NotFoundPage = () => {
         align="center"
         direction="column"
         gap={2}
-        py={6}
+        py={12}
         mt={6}
       >
         <Image
@@ -30,13 +30,12 @@ const NotFoundPage = () => {
           alt="page not found"
           width="404px"
         />
-        <Heading variant="h5" as="h5" color="text.dark">
+        <Heading variant="h5" as="h5" color="text.main" mt={8}>
           This page is not found
         </Heading>
         <Text
-          color="text.disabled"
+          color="text.dark"
           variant="body2"
-          fontWeight={500}
           textAlign="center"
           lineHeight="24px"
         >

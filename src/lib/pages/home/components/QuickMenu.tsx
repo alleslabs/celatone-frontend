@@ -94,7 +94,7 @@ export const QuickMenu = () => (
                   <Text variant="body1" fontWeight="800">
                     {item.title}
                   </Text>
-                  <Text textDecoration="none" variant="body2">
+                  <Text textDecoration="none" variant="body2" color="text.dark">
                     {item.subtitle}
                   </Text>
                 </Box>

@@ -42,7 +42,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
           variant="body2"
           className="ellipsis"
           width="250px"
-          fontWeight="600"
+          fontWeight={700}
           color="text.dark"
         >
           {details?.name}

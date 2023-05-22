@@ -16,7 +16,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       display="flex"
       alignItems="center"
       fontSize="14px"
-      fontWeight="700"
+      fontWeight={700}
       lineHeight="24px"
       letterSpacing="0.4px"
       variant="ghost-gray"

@@ -321,7 +321,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             helperAction={
               <Text
                 color="accent.main"
-                fontWeight="600"
+                fontWeight={700}
                 variant="body3"
                 cursor="pointer"
                 onClick={() => {

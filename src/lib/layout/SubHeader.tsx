@@ -59,7 +59,7 @@ const SubHeader = () => {
               />
               <Text
                 variant="body2"
-                fontWeight="600"
+                fontWeight={700}
                 color={isCurrentPage(item.slug) ? activeColor : "text.dark"}
               >
                 {item.name}
@@ -84,7 +84,7 @@ const SubHeader = () => {
               transition="all .25s ease-in-out"
             >
               <CustomIcon boxSize={3} name="admin" color="secondary.main" />
-              <Text variant="body2" fontWeight="600" color="secondary.main">
+              <Text variant="body2" fontWeight={700} color="secondary.main">
                 My Page
               </Text>
             </Flex>

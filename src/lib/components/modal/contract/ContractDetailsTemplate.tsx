@@ -92,7 +92,7 @@ export const ContractDetailsTemplateModal = ({
       subtitle={subtitle}
       headerContent={
         <Flex gap={4} alignItems="center" pt="6">
-          <Text variant="body2" fontWeight="600">
+          <Text variant="body2" fontWeight={500} color="text.dark">
             Contract Address
           </Text>
           <ExplorerLink

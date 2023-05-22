@@ -15,7 +15,7 @@ export const AssignMe = ({ onClick, isDisable = false }: AssginMeProps) => {
       textAlign="right"
       mr={3}
       color={enabled ? "accent.main" : "gray.500"}
-      fontWeight="600"
+      fontWeight={700}
       variant="body3"
       cursor={enabled ? "pointer" : "not-allowed"}
       minW={16}

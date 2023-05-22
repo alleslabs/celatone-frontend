@@ -183,7 +183,7 @@ export const UnsupportedTokensModal = ({
             <Flex direction="column" gap={5}>
               {address && (
                 <Flex direction="row" gap={4}>
-                  <Text variant="body2" fontWeight="700">
+                  <Text variant="body2" fontWeight={700}>
                     {content.header}
                   </Text>
                   <ExplorerLink value={address} type={addressType} />

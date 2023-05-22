@@ -30,12 +30,7 @@ export const InvalidState = ({ title }: InvalidStateProps) => {
       <Heading as="h5" variant="h5" my="8px">
         {title}
       </Heading>
-      <Text
-        variant="body2"
-        fontWeight="500"
-        color="text.dark"
-        textAlign="center"
-      >
+      <Text variant="body2" color="text.dark" textAlign="center">
         Please double-check your input and make sure you have selected the
         correct network.
       </Text>

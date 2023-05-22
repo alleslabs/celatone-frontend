@@ -49,7 +49,7 @@ export const ContractListCard = ({
           <Text
             variant="body1"
             textColor={isDisabled ? "text.disabled" : "text.main"}
-            fontWeight="600"
+            fontWeight={700}
             textOverflow="ellipsis"
             overflow="hidden"
           >

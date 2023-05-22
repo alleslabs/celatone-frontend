@@ -370,7 +370,7 @@ const ProposalToWhitelist = () => {
                     <Text
                       textAlign="right"
                       mr={3}
-                      fontWeight="600"
+                      fontWeight={700}
                       cursor="pointer"
                       variant="body3"
                       minW={16}

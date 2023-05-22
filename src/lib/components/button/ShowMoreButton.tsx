@@ -24,7 +24,7 @@ export const ShowMoreButton = ({
     w="fit-content"
     onClick={setToggleShowMore}
   >
-    <Text variant="body3" color="secondary.main" fontWeight="700">
+    <Text variant="body3" color="secondary.main" fontWeight={700}>
       {toggleShowMore ? showLessText : showMoreText}
     </Text>
   </Button>

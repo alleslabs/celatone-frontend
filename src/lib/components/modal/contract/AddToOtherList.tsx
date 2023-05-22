@@ -41,10 +41,10 @@ export const AddToOtherListModal = observer(
         headerContent={
           <Flex pt="6" gap="36px">
             <Flex direction="column" gap="8px">
-              <Text variant="body2" fontWeight="600">
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Contract Name
               </Text>
-              <Text variant="body2" fontWeight="600">
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Contract Address
               </Text>
             </Flex>

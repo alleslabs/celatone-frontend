@@ -29,7 +29,7 @@ export const ExpandNavMenu = ({
         }}
       >
         <Flex justifyContent="space-between" alignItems="center">
-          <Text py="2" variant="body3" fontWeight="600">
+          <Text py="2" variant="body3" fontWeight={700}>
             {item.category}
           </Text>
           {item.category === "Overview" && (

@@ -61,7 +61,7 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
 
   return (
     <ListItem p={2} borderBottomColor="gray.700" bg="gray.900">
-      <Text variant="body2" fontWeight="500" color="text.dark" p="8px">
+      <Text variant="body2" fontWeight={500} color="text.dark" p="8px">
         {text}
       </Text>
       {route && (
