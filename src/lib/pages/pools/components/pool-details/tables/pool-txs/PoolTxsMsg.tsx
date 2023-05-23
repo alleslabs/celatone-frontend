@@ -4,6 +4,7 @@ import type Big from "big.js";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
+import { TooltipComponent } from "lib/components/TooltipComponent";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type {
   Message,
@@ -80,9 +81,11 @@ export const PoolTxsMsg = ({
                 showCopyOnHover
               />
               {transaction.messages.length > 1 && (
-                <Badge variant="lilac" ml="6px">
-                  {transaction.messages.length}
-                </Badge>
+                <TooltipComponent label="There are at least one messages within this transaction that related to this pool.">
+                  <Badge variant="lilac" ml="6px">
+                    {transaction.messages.length}
+                  </Badge>
+                </TooltipComponent>
               )}
             </>
           )}
