@@ -77,13 +77,13 @@ interface StoreCodeProposalState {
 }
 
 const defaultValues: StoreCodeProposalState = {
-  title: "",
-  proposalDesc: "",
-  runAs: "" as Addr,
-  initialDeposit: { denom: "", amount: "" } as Coin,
+  title: "123",
+  proposalDesc: "123123",
+  runAs: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as Addr,
+  initialDeposit: { denom: "", amount: "1" } as Coin,
   unpinCode: false,
-  builder: "",
-  source: "",
+  builder: "cosmwasm/lorem",
+  source: "https://github.com",
   codeHash: "",
 };
 
@@ -251,6 +251,7 @@ const StoreCodeProposal = () => {
     wasmFile,
     permission,
     addresses: addresses.map((addr) => addr.address),
+    precision: minDeposit?.precision,
     onSuccess: (fee) => {
       if (wasmFile && walletAddress && fee) {
         setSimulateStatus({
@@ -291,6 +292,7 @@ const StoreCodeProposal = () => {
         builder,
         codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
         initialDeposit,
+        precision: minDeposit?.precision,
       });
     };
 

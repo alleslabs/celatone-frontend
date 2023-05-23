@@ -137,6 +137,7 @@ interface SimulateQueryParamsForProposalStoreCode {
   wasmFile: Option<File>;
   permission: AccessType;
   addresses: Addr[];
+  precision: Option<number>;
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -154,6 +155,7 @@ export const useSimulateFeeForProposalStoreCode = ({
   wasmFile,
   permission,
   addresses,
+  precision,
   onSuccess,
   onError,
 }: SimulateQueryParamsForProposalStoreCode) => {
@@ -180,6 +182,7 @@ export const useSimulateFeeForProposalStoreCode = ({
         builder,
         codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
         initialDeposit,
+        precision,
       });
     };
 

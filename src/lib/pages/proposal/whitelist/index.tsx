@@ -95,6 +95,7 @@ const ProposalToWhitelist = () => {
   });
   const { isTestnet } = useCurrentNetwork();
 
+  const minDeposit = govParams?.depositParams.minDeposit;
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
   const enabledTx = useMemo(
@@ -128,12 +129,14 @@ const ProposalToWhitelist = () => {
         }),
         initialDeposit,
         proposer: walletAddress as Addr,
+        precision: minDeposit?.precision,
       }),
     [
       addressesArray,
       description,
       govParams?.uploadAccess,
       initialDeposit,
+      minDeposit,
       title,
       walletAddress,
     ]
@@ -153,7 +156,7 @@ const ProposalToWhitelist = () => {
       setEstimatedFee(undefined);
     },
   });
-  const minDeposit = govParams?.depositParams.minDeposit;
+
   const {
     variant,
     description: alertDesc,

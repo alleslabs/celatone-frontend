@@ -2,7 +2,7 @@ import type { Coin } from "@cosmjs/stargate";
 import { ParameterChangeProposal } from "cosmjs-types/cosmos/params/v1beta1/params";
 import { StoreCodeProposal } from "cosmjs-types/cosmwasm/wasm/v1/proposal";
 
-import { microfy } from "../formatter";
+import { exponentify } from "../formatter";
 import { typeUrlDict } from "lib/data";
 import type {
   ComposedMsg,
@@ -11,6 +11,7 @@ import type {
   Addr,
   Token,
   HumanAddr,
+  Option,
 } from "lib/types";
 import { MsgType } from "lib/types";
 
@@ -51,6 +52,7 @@ interface WhitelistProposalMsgArgs {
   changesValue: string;
   initialDeposit: Coin;
   proposer: Addr;
+  precision: Option<number>;
 }
 
 export const composeSubmitWhitelistProposalMsg = ({
@@ -59,6 +61,7 @@ export const composeSubmitWhitelistProposalMsg = ({
   changesValue,
   initialDeposit,
   proposer,
+  precision,
 }: WhitelistProposalMsgArgs): ComposedMsg =>
   composeMsg(MsgType.SUBMIT_PROPOSAL, {
     content: {
@@ -80,7 +83,10 @@ export const composeSubmitWhitelistProposalMsg = ({
     initialDeposit: [
       {
         denom: initialDeposit.denom,
-        amount: microfy((initialDeposit.amount || 0) as Token).toFixed(0),
+        amount: exponentify(
+          (initialDeposit.amount || 0) as Token,
+          precision
+        ).toFixed(0),
       },
     ],
     proposer,
@@ -99,6 +105,7 @@ interface StoreCodeProposalMsgArgs {
   builder: string;
   codeHash: Uint8Array;
   initialDeposit: Coin;
+  precision: Option<number>;
 }
 
 export const composeStoreCodeProposalMsg = ({
@@ -114,8 +121,9 @@ export const composeStoreCodeProposalMsg = ({
   builder,
   codeHash,
   initialDeposit,
-}: StoreCodeProposalMsgArgs): ComposedMsg => {
-  return composeMsg(MsgType.SUBMIT_PROPOSAL, {
+  precision,
+}: StoreCodeProposalMsgArgs): ComposedMsg =>
+  composeMsg(MsgType.SUBMIT_PROPOSAL, {
     content: {
       typeUrl: "/cosmwasm.wasm.v1.StoreCodeProposal",
       value: Uint8Array.from(
@@ -139,9 +147,11 @@ export const composeStoreCodeProposalMsg = ({
     initialDeposit: [
       {
         denom: initialDeposit.denom,
-        amount: microfy((initialDeposit.amount || 0) as Token).toFixed(0),
+        amount: exponentify(
+          (initialDeposit.amount || 0) as Token,
+          precision
+        ).toFixed(0),
       },
     ],
     proposer,
   });
-};
