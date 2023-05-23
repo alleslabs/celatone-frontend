@@ -3,7 +3,7 @@ import type { Coin } from "@cosmjs/stargate";
 import big from "big.js";
 
 import { AssetCard } from "../../components";
-import { coinFromStr } from "../../utils";
+import { coinsFromStr } from "../../utils";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import type { AssetInfosOpt } from "lib/services/assetService";
@@ -35,17 +35,15 @@ export const PoolAssetsGrid = ({
     .find((event) => event.msg_index === msgIndex)
     ?.events?.find((event) => event.type === "coin_received");
 
-  let eventAssets = receivedEvent?.attributes
-    .at(1)
-    ?.value.split(",")
-    .map((asset) => coinFromStr(asset));
+  const assetAttr = receivedEvent?.attributes.at(1)?.value;
+  let eventAssets = assetAttr ? coinsFromStr(assetAttr) : undefined;
   if (msgSwapDenom) {
     const specifiedAsset = eventAssets?.find(
       (asset) => asset.denom === msgSwapDenom
     );
 
     const swapAttr = receivedEvent?.attributes.at(-1)?.value;
-    const swapAsset = swapAttr ? coinFromStr(swapAttr) : undefined;
+    const swapAsset = swapAttr ? coinsFromStr(swapAttr)[0] : undefined;
 
     eventAssets =
       specifiedAsset && swapAsset

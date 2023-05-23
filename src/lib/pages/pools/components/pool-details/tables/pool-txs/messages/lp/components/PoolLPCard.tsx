@@ -56,7 +56,7 @@ export const PoolLPCard = ({
       <PoolAssetCard
         poolId={Number(poolId)}
         description={isJoin ? "Provided to" : "Removed from"}
-        assetText={isJoin ? "Received " : "Burn "}
+        assetText={isJoin ? "Received" : "Burn"}
         poolAsset={{ amount: shareAmount, denom: poolDenom }}
         poolAssetInfo={assetInfos?.[poolDenom]}
         isOpened={isOpened}

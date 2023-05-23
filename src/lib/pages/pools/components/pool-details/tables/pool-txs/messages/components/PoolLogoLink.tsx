@@ -15,7 +15,6 @@ export const PoolLogoLink = ({ pool }: PoolLogoLinkProps) => (
       logoSize={5}
       marginLeft={-4}
       minW={0}
-      textVariant="small"
     />
     <ExplorerLink type="pool_id" value={pool.id.toString()} showCopyOnHover />
   </Flex>

@@ -5,7 +5,7 @@ import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { Message, PoolDetail, Transaction } from "lib/types";
+import type { Message, Option, PoolDetail, Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { PoolMsgAction, PoolMsgDetail } from "./messages";
@@ -13,7 +13,7 @@ import { PoolOtherMsgs } from "./messages/PoolOtherMsgs";
 
 interface PoolTxsMsgProps {
   msgIndex: number;
-  message?: Message;
+  message: Option<Message>;
   otherMsgs: { [key: string]: number };
   pool: PoolDetail;
   transaction: Transaction;
@@ -36,6 +36,7 @@ export const PoolTxsMsg = ({
     .slice(0, 2)
     .concat("1fr")
     .join(" ");
+  const isFirstSubRow = msgIndex === 0;
 
   return (
     <Box
@@ -68,7 +69,7 @@ export const PoolTxsMsg = ({
           )}
         </TableNoBorderRow>
         <TableNoBorderRow>
-          {msgIndex === 0 && (
+          {isFirstSubRow && (
             <>
               <ExplorerLink
                 value={transaction.hash.toLocaleUpperCase()}
@@ -86,7 +87,7 @@ export const PoolTxsMsg = ({
           )}
         </TableNoBorderRow>
         <TableNoBorderRow>
-          {msgIndex === 0 &&
+          {isFirstSubRow &&
             (transaction.success ? (
               <CustomIcon name="check" color="success.main" />
             ) : (
@@ -110,7 +111,7 @@ export const PoolTxsMsg = ({
         </TableNoBorderRow>
 
         <TableNoBorderRow>
-          {msgIndex === 0 && (
+          {isFirstSubRow && (
             <Flex direction="column" gap={1}>
               <Text variant="body3">{formatUTC(transaction.created)}</Text>
               <Text variant="body3" color="text.dark">

@@ -1,7 +1,7 @@
 import { Grid, Text } from "@chakra-ui/react";
 
 import { AssetCard } from "../../components";
-import { coinFromStr } from "../../utils";
+import { coinsFromStr } from "../../utils";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -34,11 +34,11 @@ export const PoolSwap = ({
 
   // Get the token-in from the third attribute of the event e.g. 10000utoken
   const inAsset = swapEvent.attributes.at(3)?.value ?? "";
-  const { amount: inAmount, denom: inDenom } = coinFromStr(inAsset);
+  const { amount: inAmount, denom: inDenom } = coinsFromStr(inAsset)[0];
 
   // Get the token-out from the last attribute of the event e.g. 10000utoken
   const outAsset = swapEvent.attributes.at(-1)?.value ?? "";
-  const { amount: outAmount, denom: outDenom } = coinFromStr(outAsset);
+  const { amount: outAmount, denom: outDenom } = coinsFromStr(outAsset)[0];
 
   return (
     <Grid gap={4} alignItems="center" mb={6} templateColumns="1fr 24px 1fr">

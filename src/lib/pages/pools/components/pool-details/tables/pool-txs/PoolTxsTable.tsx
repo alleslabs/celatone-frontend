@@ -7,6 +7,9 @@ import type { Option, PoolDetail, Transaction } from "lib/types";
 import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
 import { PoolTxsTableRow } from "./PoolTxsTableRow";
 
+const TEMPLATE_COLUMNS =
+  "25px 180px 40px minmax(360px, 1fr) max(160px) max(220px)";
+
 interface PoolTxsTableProps {
   pool: PoolDetail;
   transactions: Option<Transaction[]>;
@@ -25,19 +28,16 @@ export const PoolTxsTable = ({
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
 
-  const templateColumns =
-    "25px 180px 40px minmax(360px, 1fr) max(160px) max(220px)";
-
   return (
     <TableContainer>
-      <PoolTxsTableHeader templateColumns={templateColumns} />
+      <PoolTxsTableHeader templateColumns={TEMPLATE_COLUMNS} />
       {transactions.map((transaction) => (
         <PoolTxsTableRow
           key={transaction.hash}
           pool={pool}
           transaction={transaction}
           assetInfos={assetInfos}
-          templateColumns={templateColumns}
+          templateColumns={TEMPLATE_COLUMNS}
         />
       ))}
     </TableContainer>

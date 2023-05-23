@@ -51,7 +51,7 @@ export const PoolAssetCard = ({
           {description}
         </Text>
         <Text>
-          {assetText}
+          {assetText}{" "}
           <span style={{ fontWeight: 700 }}>
             {formatBalanceWithDenom({
               coin: poolAsset,
