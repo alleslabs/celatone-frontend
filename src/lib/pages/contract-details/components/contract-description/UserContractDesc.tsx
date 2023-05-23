@@ -40,7 +40,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
             size="xs"
             color="secondary.main"
             variant="ghost-secondary"
-            leftIcon={<CustomIcon name="edit" boxSize="3" />}
+            leftIcon={<CustomIcon name="edit" boxSize={3} />}
           >
             {description ? "Edit" : "Add Description"}
           </Button>
@@ -68,7 +68,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
       role="group"
     >
       <Flex justify="space-between" align="center" h="32px">
-        <Text variant="body2" fontWeight={500} color="text.dark" mt="1px">
+        <Text variant="body2" fontWeight={500} color="text.dark">
           Your Contract Description
         </Text>
         <Box display="none" _groupHover={{ display: "flex" }}>

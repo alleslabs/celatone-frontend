@@ -67,7 +67,7 @@ export const ContractListCard = ({
       {!isReadOnly && (
         <Menu>
           <MenuButton
-            m="0"
+            m={0}
             h="full"
             variant="ghost-gray"
             as={Button}

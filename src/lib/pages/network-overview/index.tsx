@@ -64,7 +64,7 @@ const CardInfo = ({
         </Text>
         <Tooltip label={tooltip}>
           <Flex cursor="pointer">
-            <CustomIcon name="info-circle-solid" boxSize="3" color="gray.600" />
+            <CustomIcon name="info-circle-solid" boxSize={3} color="gray.600" />
           </Flex>
         </Tooltip>
       </Flex>
@@ -134,7 +134,7 @@ const NetworkOverview = () => {
           </Text>
         )}
       </Flex>
-      <Flex gap={4} mb="64px">
+      <Flex gap={4} mb={16}>
         <CardInfo
           title={txInfo.title}
           tooltip={txInfo.tooltip}
@@ -159,7 +159,7 @@ const NetworkOverview = () => {
         {txsCount && txsCount > 5 && <ViewMore onClick={toTxs} />}
       </Box>
 
-      <Box mt="84px">
+      <Box mt={16}>
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>

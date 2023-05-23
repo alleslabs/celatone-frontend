@@ -28,7 +28,7 @@ export const getAlert = (
     return {
       variant: "error",
       description: `${minDepositAmount} ${denom} is required to enter the deposit period.`,
-      icon: <CustomIcon name="alert-circle" color="error.main" boxSize="4" />,
+      icon: <CustomIcon name="alert-circle" color="error.main" boxSize={4} />,
     };
   }
   if (enteredAmount.lt(minVotingDepositAmount)) {
@@ -38,7 +38,7 @@ export const getAlert = (
         big(minVotingDepositAmount).sub(enteredAmount),
         "NaN"
       )} more ${denom} is required to enter the voting period. If you proceed with this amount without further deposit after 7 days, The chain will remove your proposal with no fund return.`,
-      icon: <CustomIcon name="alert-circle" color="warning.main" boxSize="4" />,
+      icon: <CustomIcon name="alert-circle" color="warning.main" boxSize={4} />,
     };
   }
   if (enteredAmount.eq(minVotingDepositAmount)) {
@@ -46,7 +46,7 @@ export const getAlert = (
       variant: "accent",
       description:
         "The proposal will proceed to voting period immediately after created.",
-      icon: <CustomIcon name="info-circle" color="accent.main" boxSize="4" />,
+      icon: <CustomIcon name="info-circle" color="accent.main" boxSize={4} />,
     };
   }
   if (big(minVotingDepositAmount).lt(enteredAmount)) {
@@ -54,7 +54,7 @@ export const getAlert = (
       variant: "warning",
       description: `You’re depositing more than the minimum requirement, the proposal will proceed to voting immediately after creation. To prevent fund loss if not passing the quorum, deposit equal to the minimum requirement.
 `,
-      icon: <CustomIcon name="alert-circle" color="warning.main" boxSize="4" />,
+      icon: <CustomIcon name="alert-circle" color="warning.main" boxSize={4} />,
     };
   }
   return defaultAlertProps;

@@ -92,14 +92,14 @@ export function ActionModal({
             borderColor="gray.700"
           >
             <Box w="full">
-              <Flex alignItems="center" gap="3">
-                <CustomIcon name={icon} color={iconColor} boxSize="5" />
+              <Flex alignItems="center" gap={3}>
+                <CustomIcon name={icon} color={iconColor} boxSize={5} />
                 <Heading as="h5" variant="h5">
                   {title}
                 </Heading>
               </Flex>
               {subtitle && (
-                <Text variant="body3" color="text.dark" pt="2">
+                <Text variant="body3" color="text.dark" pt={2}>
                   {subtitle}
                 </Text>
               )}
@@ -109,7 +109,7 @@ export function ActionModal({
           {!noCloseButton && <ModalCloseButton color="gray.600" />}
           <ModalBody>{children}</ModalBody>
           <ModalFooter>
-            <Flex w="full" justifyContent="center" gap="2">
+            <Flex w="full" justifyContent="center" gap={2}>
               <Button
                 w="200px"
                 onClick={handleOnMain}

@@ -22,13 +22,13 @@ interface ActionSectionProps {
 const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
   list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? (
     <Button
-      leftIcon={<CustomIcon name="add-new" boxSize="4" />}
+      leftIcon={<CustomIcon name="add-new" boxSize={4} />}
       onClick={handleAction}
     >
       Deploy New Contract
     </Button>
   ) : (
-    <Flex alignItems="center" gap="4" color="text.dark" direction="column">
+    <Flex alignItems="center" gap={4} color="text.dark" direction="column">
       <Flex align="center">
         Save existing contracts to the list with
         <SaveNewContractModal
@@ -69,11 +69,11 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
       borderY="1px solid"
       borderColor="gray.700"
       width="full"
-      py="48px"
+      py={12}
       direction="column"
       alignContent="center"
     >
-      <Flex alignItems="center" flexDir="column" gap="4">
+      <Flex alignItems="center" flexDir="column" gap={4}>
         <StateImage imageVariant="empty" />
         <Text color="text.dark">{renderText(list.value)}</Text>
         {!isReadOnly && (

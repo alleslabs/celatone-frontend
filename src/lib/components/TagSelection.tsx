@@ -145,7 +145,7 @@ export const TagSelection = observer(
               overflowX="scroll"
             >
               {result.length > 0 && (
-                <Flex alignItems="center" pl="2">
+                <Flex alignItems="center" pl={2}>
                   {result.map((option) => (
                     <Flex
                       display="inline-block"
@@ -154,7 +154,7 @@ export const TagSelection = observer(
                     >
                       <Tag gap={1} mr={1} cursor="pointer">
                         {option}
-                        <CustomIcon name="close" boxSize="3" />
+                        <CustomIcon name="close" boxSize={3} />
                       </Tag>
                     </Flex>
                   ))}
@@ -202,8 +202,8 @@ export const TagSelection = observer(
               <List
                 borderRadius="8px"
                 bg="gray.800"
-                px="2"
-                py="1"
+                px={2}
+                py={1}
                 mt={0}
                 position="absolute"
                 zIndex="2"
@@ -247,7 +247,7 @@ export const TagSelection = observer(
                           mr={2}
                           name="check"
                           color="gray.600"
-                          boxSize="3"
+                          boxSize={3}
                         />
                       )}
                     </Flex>

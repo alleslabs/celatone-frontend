@@ -13,7 +13,7 @@ interface TxHeaderProps extends FlexProps {
 }
 
 const DotSeparator = () => (
-  <Box bg="secondary.darker" borderRadius="50%" w="4px" h="4px" />
+  <Box bg="secondary.darker" borderRadius="50%" w={1} h={1} />
 );
 
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {

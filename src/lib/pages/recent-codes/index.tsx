@@ -50,7 +50,7 @@ const RecentCodes = observer(() => {
 
   return (
     <PageContainer>
-      <Box pb="48px">
+      <Box pb={12}>
         <Heading
           variant="h5"
           as="h5"

@@ -25,12 +25,7 @@ export const CodesTableWithWallet = ({
 }: CodesTableWithWalletProps) => {
   const { address } = useWallet();
   return !address ? (
-    <Flex
-      direction="column"
-      py="48px"
-      borderY="1px solid"
-      borderColor="gray.700"
-    >
+    <Flex direction="column" py={12} borderY="1px solid" borderColor="gray.700">
       <DisconnectedState text={disconnectedMessage} />
     </Flex>
   ) : (

@@ -31,7 +31,7 @@ export const ViewFullMsgButton = ({
     </Text>
     <CustomIcon
       name={viewFull ? "chevron-up" : "chevron-down"}
-      boxSize="3"
+      boxSize={3}
       color="text.dark"
     />
   </Flex>

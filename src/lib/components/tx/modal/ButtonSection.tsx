@@ -68,7 +68,7 @@ export const ButtonSection = ({
             }}
           >
             Proceed to instantiate
-            <CustomIcon name="instantiate" boxSize="3" />
+            <CustomIcon name="instantiate" boxSize={3} />
           </Button>
         </>
       );
@@ -86,7 +86,7 @@ export const ButtonSection = ({
           }}
         >
           Proceed to Migrate
-          <CustomIcon name="migrate" boxSize="3" />
+          <CustomIcon name="migrate" boxSize={3} />
         </Button>
       );
     case "migrate":
@@ -103,7 +103,7 @@ export const ButtonSection = ({
             }
           >
             View Contract Details
-            <CustomIcon name="chevron-right" boxSize="3" />
+            <CustomIcon name="chevron-right" boxSize={3} />
           </Button>
         </>
       );

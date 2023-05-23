@@ -21,7 +21,7 @@ export const MyStoredCodesSection = ({
   isSearching,
 }: MyStoredCodesSectionProps) => (
   <Box mb={8}>
-    <HStack alignItems="center" justifyContent="space-between" mb="18px">
+    <HStack alignItems="center" justifyContent="space-between" mb={4}>
       <Heading as="h6" variant="h6">
         My Stored Codes
       </Heading>

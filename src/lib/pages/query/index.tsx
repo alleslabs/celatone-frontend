@@ -103,11 +103,11 @@ const Query = () => {
             variant="ghost-secondary"
             size="sm"
             p="unset"
-            pl="2"
+            pl={2}
             onClick={goToExecute}
           >
             Go To Execute
-            <CustomIcon name="chevron-right" boxSize="3" />
+            <CustomIcon name="chevron-right" boxSize={3} />
           </Button>
         </Box>
       </Flex>

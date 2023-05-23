@@ -54,7 +54,7 @@ export const RecentActivities = observer(() => {
                   {item.type === "query" ? "Query" : "Execute"}
                 </Text>
               </Flex>
-              <Flex alignItems="center" gap="4px">
+              <Flex alignItems="center" gap={1}>
                 <Text
                   variant="body3"
                   padding="4px 8px"

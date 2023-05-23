@@ -117,7 +117,7 @@ export const TxFilterSelection = forwardRef<
             overflowX="scroll"
           >
             {result.length > 0 && (
-              <Flex alignItems="center" pl="2">
+              <Flex alignItems="center" pl={2}>
                 {[...result].reverse().map((option) => (
                   <Flex
                     display="inline-block"
@@ -132,7 +132,7 @@ export const TxFilterSelection = forwardRef<
                       cursor="pointer"
                     >
                       {displayActionValue(option)}
-                      <CustomIcon name="close" boxSize="3" />
+                      <CustomIcon name="close" boxSize={3} />
                     </Tag>
                   </Flex>
                 ))}
@@ -179,8 +179,8 @@ export const TxFilterSelection = forwardRef<
             <List
               borderRadius="8px"
               bg="gray.900"
-              px="2"
-              py="1"
+              px={2}
+              py={1}
               mt={0}
               position="absolute"
               zIndex="2"

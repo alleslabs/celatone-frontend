@@ -15,8 +15,8 @@ export const ExpandNavMenu = ({
   <Box px={4} py={2} overflowY="auto">
     {navMenu.map((item) => (
       <Box
-        pb="4"
-        mb="4"
+        pb={4}
+        mb={4}
         key={item.category}
         borderBottom="1px solid"
         borderColor="gray.700"
@@ -29,7 +29,7 @@ export const ExpandNavMenu = ({
         }}
       >
         <Flex justifyContent="space-between" alignItems="center">
-          <Text py="2" variant="body3" fontWeight={700}>
+          <Text py={2} variant="body3" fontWeight={700}>
             {item.category}
           </Text>
           {item.category === "Overview" && (
@@ -37,7 +37,7 @@ export const ExpandNavMenu = ({
               variant="ghost-accent"
               size="xs"
               iconSpacing={1}
-              leftIcon={<CustomIcon name="double-chevron-left" boxSize="3" />}
+              leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
               onClick={() => setIsExpand(false)}
             >
               HIDE
@@ -49,7 +49,7 @@ export const ExpandNavMenu = ({
                 variant: "ghost-accent",
                 iconSpacing: 1,
                 size: "xs",
-                leftIcon: <CustomIcon name="plus" boxSize="3" />,
+                leftIcon: <CustomIcon name="plus" boxSize={3} />,
                 children: "NEW LIST",
                 onClick: () => AmpTrack(AmpEvent.USE_SIDEBAR),
               }}
@@ -63,7 +63,7 @@ export const ExpandNavMenu = ({
             onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
           >
             <Flex
-              gap="2"
+              gap={2}
               p={2}
               cursor="pointer"
               _hover={{ bg: "gray.700", borderRadius: "8px" }}

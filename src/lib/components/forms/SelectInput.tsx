@@ -115,7 +115,7 @@ export const SelectInput = <T extends string>({
         >
           <div className="form-label">{formLabel}</div>
           {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full" ml="1">
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
               <CustomIcon name={selectedOption.icon} color="gray.600" />
             </InputLeftElement>
           )}

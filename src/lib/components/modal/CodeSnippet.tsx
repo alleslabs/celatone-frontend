@@ -194,7 +194,7 @@ execute();
         variant="outline-accent"
         size="sm"
         ml="auto"
-        gap="1"
+        gap={1}
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_SNIPPET);
           onOpen();
@@ -208,7 +208,7 @@ execute();
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
-            <CustomIcon name="code" boxSize="6" color="gray.600" />
+            <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
               Code Snippet
             </Heading>

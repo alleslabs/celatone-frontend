@@ -283,7 +283,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           DEPLOY NEW CONTRACT
         </Text>
         <Stepper mode="deploy" currentStep={2} />
-        <Heading as="h5" variant="h5" my="48px">
+        <Heading as="h5" variant="h5" my={12}>
           Instantiate new contract
         </Heading>
         <ConnectWalletAlert
@@ -307,7 +307,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             label="Label"
             helperText="The contract's label help briefly describe the contract and what it does."
             variant="floating"
-            mb="32px"
+            mb={8}
             rules={{ required: "Label is required" }}
           />
           <ControllerInput
@@ -333,7 +333,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               </Text>
             }
           />
-          <Heading variant="h6" as="h6" my="32px" alignSelf="flex-start">
+          <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
             Instantiate Message
           </Heading>
           <JsonInput
@@ -341,7 +341,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             setText={(newVal: string) => setValue("initMsg", newVal)}
             minLines={10}
           />
-          <Heading variant="h6" as="h6" my="32px" alignSelf="flex-start">
+          <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
             Send asset to contract
           </Heading>
           <AttachFund

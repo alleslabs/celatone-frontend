@@ -197,7 +197,7 @@ export const ContractSelectSection = observer(
         mb={style.container}
         borderWidth="thin"
         borderColor="gray.800"
-        p="16px"
+        p={4}
         borderRadius="8px"
         fontSize="12px"
         justify="space-between"
@@ -235,7 +235,7 @@ export const ContractSelectSection = observer(
               label={contractState.label}
             />
           </Flex>
-          <Flex gap="8px" alignItems="center">
+          <Flex gap={2} alignItems="center">
             {mode === "all-lists" && contractState.isValid && (
               <ContractDetailsButton
                 contractAddress={contractAddress}

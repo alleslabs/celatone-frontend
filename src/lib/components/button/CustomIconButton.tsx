@@ -17,7 +17,7 @@ export const CustomIconButton = ({
   <Button
     variant="ghost-gray"
     size="xs"
-    px="1"
+    px={1}
     minWidth="32px"
     minHeight="32px"
     height="full"
@@ -30,7 +30,7 @@ export const CustomIconButton = ({
       alignItems="center"
       onClick={onClick}
     >
-      <CustomIcon name={icon} boxSize="5" color="gray.600" />
+      <CustomIcon name={icon} boxSize={5} color="gray.600" />
     </Link>
   </Button>
 );

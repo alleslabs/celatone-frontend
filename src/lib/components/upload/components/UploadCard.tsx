@@ -57,8 +57,8 @@ export const UploadCard = ({
     <>
       <Flex
         align="center"
-        p="16px"
-        gap="16px"
+        p={4}
+        gap={4}
         w="full"
         bgColor="gray.900"
         borderRadius="8px"
@@ -68,11 +68,11 @@ export const UploadCard = ({
         <UploadIcon />
         <Flex direction="column">
           <Text variant="body1">{file.name}</Text>
-          <Text variant="body2" color="text.dark" display="flex" gap="4px">
+          <Text variant="body2" color="text.dark" display="flex" gap={1}>
             {big(file.size).div(1000).toFixed(0)} KB • {statusText}
           </Text>
         </Flex>
-        <Flex align="center" gap="16px" ml="auto">
+        <Flex align="center" gap={4} ml="auto">
           <CustomIcon
             name="delete"
             color="text.dark"

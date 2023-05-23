@@ -55,7 +55,7 @@ export const PublicProjectCard = observer(
               w="full"
               alignItems="flex-start"
             >
-              <Flex gap={2} pr="1">
+              <Flex gap={2} pr={1}>
                 <Image
                   src={item.logo}
                   borderRadius="full"
@@ -68,7 +68,7 @@ export const PublicProjectCard = observer(
                   fontWeight={700}
                   textOverflow="ellipsis"
                   overflow="hidden"
-                  mt="4px"
+                  mt={1}
                 >
                   {item.name}
                 </Text>

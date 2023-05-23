@@ -111,7 +111,7 @@ export const ProposalTypeFilter = forwardRef<
                   chipComponent={
                     <Tag>
                       {option}
-                      <CustomIcon name="close" boxSize="3" mr={0} />
+                      <CustomIcon name="close" boxSize={3} mr={0} />
                     </Tag>
                   }
                   onSelect={() => selectOption(option)}

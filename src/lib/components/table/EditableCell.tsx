@@ -204,7 +204,7 @@ export const EditableCell = ({
                 opacity={isHover ? 1 : 0}
                 onClick={handleEdit}
               >
-                <CustomIcon name="edit" color="gray.600" boxSize="3" />
+                <CustomIcon name="edit" color="gray.600" boxSize={3} />
               </Flex>
             )}
           </Flex>

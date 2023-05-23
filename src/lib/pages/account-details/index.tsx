@@ -124,12 +124,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           flex="1"
         >
           <Flex alignItems="center" gap={1} minH="32px">
-            <CustomIcon name="website" ml="0" mb="6px" color="gray.600" />
+            <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
             <Text variant="body2" fontWeight={500} color="text.dark">
               Public Account Description
             </Text>
           </Flex>
-          <Text variant="body2" color="text.main" mb="1">
+          <Text variant="body2" color="text.main" mb={1}>
             {publicInfo?.description}
           </Text>
         </Flex>

@@ -45,7 +45,7 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
     >
       <input {...getInputProps()} />
       <UploadIcon />
-      <Flex my="8px" gap="4px">
+      <Flex my={2} gap={1}>
         <Text
           variant="body1"
           color="secondary.main"

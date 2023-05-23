@@ -102,9 +102,9 @@ export const SelectContractInstantiator = ({
     <>
       <Button
         variant={notSelected ? "primary" : "outline-primary"}
-        py="6px"
+        py={1}
         size="sm"
-        px="16px"
+        px={4}
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
@@ -123,7 +123,7 @@ export const SelectContractInstantiator = ({
               <DrawerHeader>
                 <CustomIcon
                   name="contract-address-solid"
-                  boxSize="5"
+                  boxSize={5}
                   color="gray.600"
                 />
                 <Heading as="h5" variant="h5">
@@ -132,11 +132,11 @@ export const SelectContractInstantiator = ({
               </DrawerHeader>
               <DrawerCloseButton />
 
-              <DrawerBody p="24px" overflowY="scroll">
+              <DrawerBody p={6} overflowY="scroll">
                 <Heading as="h6" variant="h6" mb={4}>
                   Fill contract address manually
                 </Heading>
-                <Flex gap="8px" alignItems="center">
+                <Flex gap={2} alignItems="center">
                   <Input
                     isInvalid={invalid !== ""}
                     value={searchContract}
@@ -168,7 +168,7 @@ export const SelectContractInstantiator = ({
                   {invalid}
                 </Text>
 
-                <Flex my="24px" gap="8px" alignItems="center">
+                <Flex my={6} gap={2} alignItems="center">
                   <Divider borderColor="gray.700" />
                   <Text variant="body1">OR</Text>
                   <Divider borderColor="gray.700" />
@@ -190,7 +190,7 @@ export const SelectContractInstantiator = ({
               <DrawerHeader>
                 <CustomIcon
                   name="chevron-left"
-                  boxSize="5"
+                  boxSize={5}
                   onClick={() => setListSlug("")}
                   cursor="pointer"
                   color="gray.600"

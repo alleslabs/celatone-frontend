@@ -39,7 +39,7 @@ export const PublicDescription = ({
     >
       <Flex align="center" gap={1} h="32px">
         {icon}
-        <Text variant="body2" fontWeight={500} color="text.dark" mt="1px">
+        <Text variant="body2" fontWeight={500} color="text.dark">
           {title}
         </Text>
       </Flex>

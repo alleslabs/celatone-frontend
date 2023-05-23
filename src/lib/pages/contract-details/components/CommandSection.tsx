@@ -33,7 +33,7 @@ export const CommandSection = () => {
         <ButtonGroup
           width="90%"
           flexWrap="wrap"
-          rowGap="8px"
+          rowGap={2}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",

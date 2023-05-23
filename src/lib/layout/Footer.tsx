@@ -52,8 +52,8 @@ const Footer = () => (
           rel="noopener noreferrer"
           onClick={() => AmpTrackCelatone(item.url)}
         >
-          <Button variant="ghost-gray" size="xs" px="1">
-            <CustomIcon name={item.icon} boxSize="5" color="gray.600" />
+          <Button variant="ghost-gray" size="xs" px={1}>
+            <CustomIcon name={item.icon} boxSize={5} color="gray.600" />
           </Button>
         </Link>
       ))}

@@ -1,7 +1,7 @@
 import { Text, Flex } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
-import { DotSeparator } from "lib/components/DotSeperator";
+import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
 
 interface ProposalTextCellProps {

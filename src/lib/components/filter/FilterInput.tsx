@@ -57,7 +57,7 @@ export const FilterInput = ({
       <CustomIcon
         name={isDropdown ? "chevron-up" : "chevron-down"}
         position="absolute"
-        mr="0.5px"
+        mr={1}
         px={3}
         boxSize="40px"
         right="0px"

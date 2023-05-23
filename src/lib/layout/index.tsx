@@ -50,7 +50,7 @@ const Layout = ({ children }: LayoutProps) => {
       overflowX="hidden"
       bg="background.main"
     >
-      <GridItem bg="gray.900" area="header" mb="1">
+      <GridItem bg="gray.900" area="header" mb={1}>
         <Header />
       </GridItem>
       <GridItem bg="gray.900" area="nav" overflowY="auto">

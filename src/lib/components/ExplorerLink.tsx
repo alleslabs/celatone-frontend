@@ -203,7 +203,7 @@ export const ExplorerLink = ({
             value={copyValue || value}
             copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
             display={showCopyOnHover ? "none" : "block"}
-            ml="8px"
+            ml={2}
             amptrackSection={ampCopierSection}
           />
         </>

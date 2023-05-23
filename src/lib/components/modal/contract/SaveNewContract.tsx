@@ -199,7 +199,7 @@ export function SaveNewContractModal({
       otherAction={resetForm}
       closeOnOverlayClick={false}
     >
-      <VStack gap="16px">
+      <VStack gap={4}>
         <ControllerInput
           name="contractAddress"
           control={control}

@@ -65,7 +65,7 @@ export const TransactionsTableRow = ({
               showCopyOnHover
             />
             {transaction.messages.length > 1 && (
-              <Badge variant="secondary" ml="6px">
+              <Badge variant="secondary" ml={2}>
                 {transaction.messages.length}
               </Badge>
             )}

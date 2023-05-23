@@ -15,7 +15,7 @@ export const ShowMoreButton = ({
   setToggleShowMore,
 }: ShowMoreButtonProps) => (
   <Button
-    p="0"
+    p={0}
     rightIcon={
       <CustomIcon name={toggleShowMore ? "chevron-up" : "chevron-down"} />
     }

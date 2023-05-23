@@ -38,10 +38,10 @@ export const ConnectWalletAlert = ({
       variant="accent"
       alignItems="center"
       justifyContent="space-between"
-      py="12px"
+      py={3}
     >
       <Flex gap={2}>
-        <CustomIcon name="wallet-solid" boxSize="4" />
+        <CustomIcon name="wallet-solid" boxSize={4} />
         <Box>
           <AlertTitle>{title}</AlertTitle>
           <AlertDescription>{subtitle}</AlertDescription>

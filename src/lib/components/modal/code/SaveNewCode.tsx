@@ -181,7 +181,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       otherBtnTitle="Cancel"
       closeOnOverlayClick={false}
     >
-      <FormControl display="flex" flexDir="column" gap="36px">
+      <FormControl display="flex" flexDir="column" gap={9}>
         Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
           variant="floating"

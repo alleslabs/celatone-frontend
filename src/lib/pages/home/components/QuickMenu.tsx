@@ -48,7 +48,7 @@ const secondaryMenu: SecondaryMenuType[] = [
 ];
 
 export const QuickMenu = () => (
-  <Flex direction="column" gap={4} bg="gray.900" p="48px">
+  <Flex direction="column" gap={4} bg="gray.900" p={12}>
     <Heading as="h5" variant="h5">
       Start using Celatone
     </Heading>

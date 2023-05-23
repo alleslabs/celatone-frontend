@@ -90,7 +90,7 @@ export const submitProposalTx = ({
             <CustomIcon
               name="submit-proposal-solid"
               color="gray.600"
-              boxSize="5"
+              boxSize={5}
             />
           ),
         },

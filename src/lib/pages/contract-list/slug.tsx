@@ -84,7 +84,7 @@ const ContractsByList = observer(() => {
         w="full"
         spacing="4px"
         separator={
-          <CustomIcon name="chevron-right" boxSize="3" color="gray.600" />
+          <CustomIcon name="chevron-right" boxSize={3} color="gray.600" />
         }
       >
         <BreadcrumbItem
@@ -134,7 +134,7 @@ const ContractsByList = observer(() => {
               }}
               buttonProps={{
                 variant: "outline-primary",
-                leftIcon: <CustomIcon name="bookmark" boxSize="3" />,
+                leftIcon: <CustomIcon name="bookmark" boxSize={3} />,
                 children: "Save Contract",
               }}
             />

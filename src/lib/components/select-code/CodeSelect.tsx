@@ -29,8 +29,8 @@ export const CodeSelect = ({
     <Flex direction="column" {...componentProps}>
       <Flex
         align="center"
-        p="16px"
-        gap="16px"
+        p={4}
+        gap={4}
         w="100%"
         bgColor="gray.900"
         borderRadius="8px"

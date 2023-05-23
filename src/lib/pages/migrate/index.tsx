@@ -131,7 +131,7 @@ const Migrate = () => {
   return (
     <WasmPageContainer>
       {firstStep ? (
-        <Box w="full" mb="24px">
+        <Box w="full" mb={6}>
           <Text
             variant="body1"
             color="text.dark"
@@ -142,20 +142,20 @@ const Migrate = () => {
             MIGRATE CONTRACT
           </Text>
           <Stepper mode="migrate" currentStep={1} />
-          <Heading as="h5" variant="h5" textAlign="center" mt="48px">
+          <Heading as="h5" variant="h5" textAlign="center" mt={12}>
             Migrate Contract
           </Heading>
         </Box>
       ) : (
-        <Box w="full" mb="48px">
-          <Heading as="h5" variant="h5" textAlign="center" my="12px">
+        <Box w="full" mb={12}>
+          <Heading as="h5" variant="h5" textAlign="center" my={3}>
             Migrate Contract
           </Heading>
           <Stepper mode="migrate" currentStep={2} />
         </Box>
       )}
       <ConnectWalletAlert
-        mb="24px"
+        mb={6}
         subtitle="You need to connect your wallet to perform this action"
       />
       {/* Select Migrate Contract modal */}
@@ -164,7 +164,7 @@ const Migrate = () => {
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
       />
-      <Box mt="48px" w="full">
+      <Box mt={12} w="full">
         {renderBody()}
       </Box>
     </WasmPageContainer>

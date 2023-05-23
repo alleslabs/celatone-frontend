@@ -63,7 +63,7 @@ export const TokenCard = ({
           >
             {symbol}
           </Text>
-          <Badge variant="gray" ml="6px">
+          <Badge variant="gray" ml={2}>
             {price ? formatPrice(price as USD<number>) : "N/A"}
           </Badge>
           <Copier
@@ -71,7 +71,7 @@ export const TokenCard = ({
             value={id}
             copyLabel="Token ID Copied!"
             display="none"
-            ml="1px"
+            ml={1}
             amptrackSection={amptrackSection}
           />
         </Flex>

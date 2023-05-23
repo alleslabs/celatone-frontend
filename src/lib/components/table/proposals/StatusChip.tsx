@@ -35,7 +35,7 @@ export const StatusChip = ({
   return (
     <Tag bgColor={getBgColor(status)}>
       {formatStatus}
-      {hasCloseBtn && <CustomIcon name="close" boxSize="3" mr={0} />}
+      {hasCloseBtn && <CustomIcon name="close" boxSize={3} mr={0} />}
     </Tag>
   );
 };

@@ -89,7 +89,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
           </Text>
           <Tooltip label={`Token ID: ${balance.id}`} maxW="500px">
             <Flex cursor="pointer" className="info" display="none">
-              <CustomIcon name="info-circle" boxSize="3" color="gray.600" />
+              <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
             </Flex>
           </Tooltip>
           <Copier
@@ -97,7 +97,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             value={balance.id}
             copyLabel="Token ID Copied!"
             display="none"
-            ml="1px"
+            ml={1}
             amptrackSection="unsupported_token_copy"
           />
         </Flex>
@@ -171,7 +171,7 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="800px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name={content.icon} boxSize="5" color="gray.600" />
+              <CustomIcon name={content.icon} boxSize={5} color="gray.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>

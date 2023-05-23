@@ -40,7 +40,7 @@ const getResponse = (jsonState: JsonState) => {
             <CustomIcon
               name="check-circle-solid"
               color="success.main"
-              boxSize="3"
+              boxSize={3}
             />
             Valid JSON Format
           </>
@@ -54,7 +54,7 @@ const getResponse = (jsonState: JsonState) => {
             <CustomIcon
               name="alert-circle-solid"
               color="error.light"
-              boxSize="3"
+              boxSize={3}
             />
             {jsonState.errMsg}
           </>

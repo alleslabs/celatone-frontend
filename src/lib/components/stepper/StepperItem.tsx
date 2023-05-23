@@ -27,7 +27,7 @@ const StepLabel = ({
     borderRadius="50%"
   >
     {currentStep > step ? (
-      <CustomIcon name="check" color="text.main" boxSize="3" />
+      <CustomIcon name="check" color="text.main" boxSize={3} />
     ) : (
       <Text variant="body3">{step}</Text>
     )}

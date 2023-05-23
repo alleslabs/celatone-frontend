@@ -23,8 +23,8 @@ export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => (
     <Flex align="center">
       <CustomIcon
         name="expedited"
-        boxSize="4"
-        ml="0"
+        boxSize={4}
+        ml={0}
         color={isActiveExpedited ? "accent.main" : "gray.400"}
       />
       <Text

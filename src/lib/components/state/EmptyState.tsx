@@ -24,7 +24,7 @@ export const EmptyState = ({
     borderY={withBorder ? "1px solid" : undefined}
     borderColor="gray.700"
   >
-    <Flex alignItems="center" flexDir="column" gap="4" width="full">
+    <Flex alignItems="center" flexDir="column" gap={4} width="full">
       {imageVariant && <StateImage imageVariant={imageVariant} />}
       {heading && (
         <Heading as="h5" variant="h5">

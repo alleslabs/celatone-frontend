@@ -61,13 +61,13 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
 
   return (
     <ListItem p={2} borderBottomColor="gray.700" bg="gray.900">
-      <Text variant="body2" fontWeight={500} color="text.dark" p="8px">
+      <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
         {text}
       </Text>
       {route && (
         <Text
           variant="body2"
-          p="8px"
+          p={2}
           borderRadius="8px"
           _hover={{ bg: "gray.800", cursor: "pointer" }}
           transition="all 0.25s ease-in-out"

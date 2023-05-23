@@ -31,11 +31,11 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     <ActionModal
       title="Edit Tags"
       trigger={
-        <CustomIcon cursor="pointer" name="edit" color="gray.600" boxSize="3" />
+        <CustomIcon cursor="pointer" name="edit" color="gray.600" boxSize={3} />
       }
       headerContent={
-        <Flex pt="6" gap="36px">
-          <Flex direction="column" gap="8px">
+        <Flex pt={6} gap={9}>
+          <Flex direction="column" gap={2}>
             <Text variant="body2" fontWeight={500} color="text.dark">
               Contract Name
             </Text>
@@ -44,7 +44,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
             </Text>
           </Flex>
 
-          <Flex direction="column" gap="8px">
+          <Flex direction="column" gap={2}>
             <Text variant="body2">
               {contractLocalInfo.name ?? contractLocalInfo.label}
             </Text>
@@ -60,7 +60,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
       otherBtnTitle="Cancel"
     >
       <FormControl>
-        <Box my="24px">
+        <Box my={6}>
           <TagSelection
             result={tagResult}
             placeholder="Tags"

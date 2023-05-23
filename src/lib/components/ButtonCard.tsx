@@ -20,7 +20,7 @@ export const ButtonCard = ({
 }: ButtonCardProps) => (
   <Flex
     aria-disabled={disabled}
-    p="24px"
+    p={6}
     align="center"
     justify="space-between"
     onClick={!disabled ? onClick : undefined}

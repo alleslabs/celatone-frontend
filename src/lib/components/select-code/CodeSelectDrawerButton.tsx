@@ -89,7 +89,7 @@ export const CodeSelectDrawerButton = ({
         <DrawerOverlay />
         <DrawerContent h="80%">
           <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
-            <CustomIcon name="code" boxSize="6" color="gray.600" />
+            <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
               Select Code ID
             </Heading>
