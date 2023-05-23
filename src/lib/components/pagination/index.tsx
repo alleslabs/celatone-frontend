@@ -3,6 +3,7 @@ import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 
 import { CustomIcon } from "../icon";
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
 import { Next } from "./Next";
@@ -65,22 +66,27 @@ export const Pagination = ({
           focusBorderColor="none"
           cursor="pointer"
           value={pageSize}
-          onChange={onPageSizeChange}
+          onChange={(e) => {
+            AmpTrack(AmpEvent.USE_PAGINATION_PAGE_SIZE, {
+              pageSize: e.target.value,
+            });
+            onPageSizeChange(e);
+          }}
         >
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
           <option value="100">100</option>
-          <CustomIcon name="chevron-down" />
+          <CustomIcon name="chevron-down" color="pebble.600" />
         </Select>
         <Text variant="body3" mx="30px">
           {`${offsetData.toLocaleString()} - ${lastDataInPage.toLocaleString()} of ${totalData.toLocaleString()}`}
         </Text>
-        <Previous variant="unstyled" display="flex">
-          <CustomIcon name="chevron-left" />
+        <Previous pageSize={pageSize} variant="unstyled" display="flex">
+          <CustomIcon name="chevron-left" color="text.dark" />
         </Previous>
-        <Next variant="unstyled" display="flex">
-          <CustomIcon name="chevron-right" />
+        <Next pageSize={pageSize} variant="unstyled" display="flex">
+          <CustomIcon name="chevron-right" color="text.dark" />
         </Next>
       </Flex>
     </Paginator>

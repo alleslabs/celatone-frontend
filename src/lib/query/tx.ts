@@ -135,12 +135,16 @@ export const getBlockTransactionsByHeightQueryDocument = graphql(`
       where: { block_height: { _eq: $height } }
       order_by: { id: asc }
     ) {
-      hash
-      success
-      messages
+      block {
+        height
+        timestamp
+      }
       account {
         address
       }
+      hash
+      success
+      messages
       is_clear_admin
       is_execute
       is_ibc

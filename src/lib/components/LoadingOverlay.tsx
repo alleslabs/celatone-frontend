@@ -14,7 +14,7 @@ export const LoadingOverlay = () => (
     left={0}
     zIndex="overlay"
   >
-    <Spinner color="pebble.600" size="xl" />
+    <Spinner size="xl" />
     <Text variant="body1">Loading ...</Text>
   </Flex>
 );

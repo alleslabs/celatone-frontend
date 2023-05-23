@@ -13,6 +13,7 @@ import { TableRow } from "./tableComponents";
 interface AccordionTxProps {
   message: Message;
   allowFurtherAction: boolean;
+  isSigner?: boolean;
   accordionSpacing?: GridItemProps["pl"];
 }
 
@@ -36,7 +37,8 @@ const RenderButton = ({ message }: RenderButtonProps) => {
 export const AccordionTx = ({
   message,
   allowFurtherAction,
-  accordionSpacing = "206px",
+  isSigner = false,
+  accordionSpacing = "260px",
 }: AccordionTxProps) => {
   const [showButton, setShowButton] = useState(false);
   return (
@@ -63,7 +65,7 @@ export const AccordionTx = ({
         success
         singleMsg
       />
-      {allowFurtherAction && (
+      {allowFurtherAction && isSigner && (
         <SlideFade in={showButton} offsetY="20px">
           <RenderButton message={message} />
         </SlideFade>

@@ -1,15 +1,19 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
+import { defineStyle } from "@chakra-ui/react";
 
-type Dict = Record<string, string>;
-
+const pebble500 = "pebble.500";
 const pebble600 = "pebble.600";
 const pebble700 = "pebble.700";
+const pebble800 = "pebble.800";
 const violetLight = "violet.light";
+const violetDark = "violet.dark";
+const violetBg = "violet.background";
 const honeydewBg = "honeydew.background";
+const honeydewMain = "honeydew.main";
 const honeydewDarker = "honeydew.darker";
 const borderDefualt = "1px solid";
-const violetBg = "violet.background";
 const errorDark = "error.dark";
+const lilacBg = "lilac.background";
 
 const generateStyle = ({
   basic,
@@ -17,12 +21,12 @@ const generateStyle = ({
   hoverBg,
   activeBg,
 }: {
-  basic: Dict;
-  disabled: Dict;
+  basic: object;
+  disabled: object;
   hoverBg: string;
   activeBg: string;
 }) => {
-  return {
+  return defineStyle({
     ...basic,
     _hover: {
       background: hoverBg,
@@ -34,7 +38,7 @@ const generateStyle = ({
     _active: {
       background: activeBg,
     },
-  };
+  });
 };
 
 export const Button: ComponentStyleConfig = {
@@ -71,9 +75,24 @@ export const Button: ComponentStyleConfig = {
       disabled: {
         background: violetBg,
         color: pebble600,
+        "& span": {
+          color: pebble600,
+        },
       },
-      hoverBg: "violet.dark",
+      hoverBg: violetDark,
       activeBg: violetLight,
+    }),
+    "gray-solid": generateStyle({
+      basic: {
+        background: pebble800,
+        color: "text.main",
+      },
+      disabled: {
+        background: pebble800,
+        color: pebble500,
+      },
+      hoverBg: pebble700,
+      activeBg: pebble700,
     }),
     error: generateStyle({
       basic: { background: "error.main", color: "black" },
@@ -89,11 +108,20 @@ export const Button: ComponentStyleConfig = {
         border: borderDefualt,
         borderColor: violetLight,
         color: violetLight,
+        "> div": {
+          color: violetLight,
+        },
+        "> svg": {
+          color: violetLight,
+        },
       },
       disabled: {
         border: borderDefualt,
         borderColor: pebble700,
         color: pebble600,
+        "> svg": {
+          color: pebble600,
+        },
       },
       hoverBg: violetBg,
       activeBg: "transparent",
@@ -102,12 +130,18 @@ export const Button: ComponentStyleConfig = {
       basic: {
         border: borderDefualt,
         borderColor: pebble600,
-        color: "pebble.400",
+        color: "text.dark",
+        "> svg": {
+          color: "text.dark",
+        },
       },
       disabled: {
         border: borderDefualt,
         borderColor: pebble700,
         color: pebble600,
+        "> svg": {
+          color: pebble600,
+        },
       },
       hoverBg: pebble700,
       activeBg: "transparent",
@@ -116,11 +150,17 @@ export const Button: ComponentStyleConfig = {
       basic: {
         border: borderDefualt,
         borderColor: honeydewBg,
-        color: "honeydew.main",
+        color: honeydewMain,
+        "> svg": {
+          color: honeydewMain,
+        },
       },
       disabled: {
         border: honeydewDarker,
         color: honeydewDarker,
+        "> svg": {
+          color: honeydewDarker,
+        },
       },
       hoverBg: honeydewBg,
       activeBg: "transparent",
@@ -140,10 +180,16 @@ export const Button: ComponentStyleConfig = {
     }),
     "ghost-primary": generateStyle({
       basic: {
-        color: "violet.light",
+        color: violetLight,
+        "> svg": {
+          color: "violetLight",
+        },
       },
       disabled: {
-        color: violetBg,
+        color: violetDark,
+        "> svg": {
+          color: violetDark,
+        },
       },
       hoverBg: violetBg,
       activeBg: "transparent",
@@ -151,19 +197,31 @@ export const Button: ComponentStyleConfig = {
     "ghost-lilac": generateStyle({
       basic: {
         color: "lilac.main",
+        "> svg": {
+          color: "lilac.main",
+        },
       },
       disabled: {
-        color: "lilac.background",
+        color: lilacBg,
+        "> svg": {
+          color: lilacBg,
+        },
       },
-      hoverBg: "lilac.background",
+      hoverBg: lilacBg,
       activeBg: "transparent",
     }),
     "ghost-info": generateStyle({
       basic: {
-        color: "honeydew.main",
+        color: honeydewMain,
+        "> svg": {
+          color: honeydewMain,
+        },
       },
       disabled: {
         color: honeydewBg,
+        "> svg": {
+          color: honeydewBg,
+        },
       },
       hoverBg: honeydewBg,
       activeBg: "transparent",
@@ -171,11 +229,17 @@ export const Button: ComponentStyleConfig = {
     "ghost-gray": generateStyle({
       basic: {
         color: "pebble.400",
+        "> svg": {
+          color: "pebble.400",
+        },
       },
       disabled: {
-        color: "pebble.600",
+        color: pebble500,
+        "> svg": {
+          color: pebble500,
+        },
       },
-      hoverBg: "pebble.800",
+      hoverBg: pebble800,
       activeBg: "transparent",
     }),
     "ghost-error": generateStyle({

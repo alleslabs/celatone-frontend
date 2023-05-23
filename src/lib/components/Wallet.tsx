@@ -47,7 +47,6 @@ export const WalletSection = () => {
           icon="wallet"
           onClick={onClickOpenView}
           variant="outline-info"
-          iconColor="honeydew.main"
         />
       }
       rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}

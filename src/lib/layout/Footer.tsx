@@ -53,7 +53,7 @@ const Footer = () => (
           onClick={() => AmpTrackCelatone(item.url)}
         >
           <Button variant="ghost-gray" size="xs" px="1">
-            <CustomIcon name={item.icon} boxSize="5" />
+            <CustomIcon name={item.icon} boxSize="5" color="pebble.600" />
           </Button>
         </Link>
       ))}
@@ -65,7 +65,7 @@ const Footer = () => (
       >
         <Button variant="ghost-gray" size="xs">
           <Flex gap={1} align="center">
-            <CustomIcon name="feedback" />
+            <CustomIcon name="feedback" color="pebble.600" />
             <Text variant="body3" color="text.dark">
               Feedback
             </Text>

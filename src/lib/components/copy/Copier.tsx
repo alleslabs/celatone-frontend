@@ -36,6 +36,7 @@ export const Copier = ({
         onClick={() => AmpTrackCopier(amptrackSection, type)}
         name="copy"
         boxSize={4}
+        color="pebble.600"
       />
     }
   />

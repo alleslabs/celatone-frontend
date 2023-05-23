@@ -25,13 +25,15 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
     <Breadcrumb
       w="full"
       spacing={1}
-      separator={<CustomIcon name="chevron-right" boxSize="3" />}
+      separator={
+        <CustomIcon name="chevron-right" boxSize="3" color="pebble.600" />
+      }
     >
       <BreadcrumbItem
         _hover={{ opacity: 0.8 }}
         transition="all 0.25s ease-in-out"
       >
-        <AppLink color="text.dark" href="/public-project">
+        <AppLink color="text.dark" href="/projects">
           Public Projects
         </AppLink>
       </BreadcrumbItem>

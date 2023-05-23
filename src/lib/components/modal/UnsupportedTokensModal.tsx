@@ -11,7 +11,6 @@ import {
   ModalBody,
   Button,
   Heading,
-  Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
@@ -19,6 +18,7 @@ import { useMemo } from "react";
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 import { useGetAddressType, getAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
@@ -87,15 +87,9 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
           <Text variant="body2" className="ellipsis">
             {tokenLabel}
           </Text>
-          <Tooltip
-            hasArrow
-            label={`Token ID: ${balance.id}`}
-            placement="top"
-            bg="honeydew.darker"
-            maxW="500px"
-          >
+          <Tooltip label={`Token ID: ${balance.id}`} maxW="500px">
             <Flex cursor="pointer" className="info" display="none">
-              <CustomIcon name="info-circle" boxSize="3" />
+              <CustomIcon name="info-circle" boxSize="3" color="pebble.600" />
             </Flex>
           </Tooltip>
           <Copier
@@ -168,14 +162,7 @@ export const UnsupportedTokensModal = ({
           onOpen();
         }}
       >
-        <Button
-          variant="ghost-gray"
-          color="text.dark"
-          mb={1}
-          fontSize="12px"
-          fontWeight={500}
-          {...buttonProps}
-        >
+        <Button variant="ghost-gray" mb={1} size="sm" {...buttonProps}>
           {`View ${unsupportedAssets.length} Unsupported Assets`}
         </Button>
       </Flex>
@@ -184,7 +171,7 @@ export const UnsupportedTokensModal = ({
         <ModalContent w="800px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name={content.icon} boxSize="5" />
+              <CustomIcon name={content.icon} boxSize="5" color="pebble.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>

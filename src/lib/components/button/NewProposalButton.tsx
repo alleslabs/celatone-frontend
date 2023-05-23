@@ -1,21 +1,9 @@
-import {
-  Button,
-  chakra,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
-import { TooltipComponent } from "../TooltipComponent";
+import { Tooltip } from "../Tooltip";
 import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-
-const StyledMenuItem = chakra(MenuItem, {
-  baseStyle: {
-    fontSize: "14px",
-  },
-});
+import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
@@ -24,51 +12,50 @@ export const NewProposalButton = () => {
   return (
     <Menu>
       <MenuButton
+        onClick={() => AmpTrack(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
         variant="primary"
-        color="text.main"
         as={Button}
-        rightIcon={<CustomIcon name="chevron-down" color="text.main" />}
+        rightIcon={<CustomIcon name="chevron-down" />}
       >
         Create New Proposal
       </MenuButton>
       <MenuList>
-        {/* <StyledMenuItem
-          icon={<CustomIcon name="code" />}
-          // TODO - Change navigation path
+        <MenuItem
+          icon={<CustomIcon name="code" color="pebble.600" />}
           onClick={() => {
             navigate({
-              pathname: "/proposal-storecode",
+              pathname: "/proposals/store-code",
             });
           }}
         >
           To Store Code
-        </StyledMenuItem> */}
-        {/* <StyledMenuItem
-          icon={<CustomIcon name="contract-address" />}
+        </MenuItem>
+        {/* <MenuItem
+          icon={<CustomIcon name="contract-address" color="pebble.600"/>}
           onClick={() => {
-            // TODO - Change navigation path
             navigate({
-              pathname: "/proposal-instantiate",
+              pathname: "/proposals/instantiate",
             });
           }}
         >
           To Instantiate Contract
-        </StyledMenuItem> */}
-        <TooltipComponent
+        </MenuItem> */}
+        <Tooltip
           label={isTestnet ? "Not available in testnet" : undefined}
+          placement="left"
         >
-          <StyledMenuItem
+          <MenuItem
             isDisabled={isTestnet}
-            icon={<CustomIcon name="admin" />}
+            icon={<CustomIcon name="admin" color="pebble.600" />}
             onClick={() => {
               navigate({
-                pathname: "/proposal/whitelist",
+                pathname: "/proposals/whitelist",
               });
             }}
           >
             To Whitelist
-          </StyledMenuItem>
-        </TooltipComponent>
+          </MenuItem>
+        </Tooltip>
       </MenuList>
     </Menu>
   );

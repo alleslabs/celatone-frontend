@@ -34,7 +34,7 @@ const Codes = observer(() => {
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
     navigate({
-      pathname: "/code/[codeId]",
+      pathname: "/codes/[codeId]",
       query: { codeId },
     });
 
@@ -64,16 +64,22 @@ const Codes = observer(() => {
 
   return (
     <PageContainer>
-      <Heading as="h1" size="lg" color="white" pb={8}>
+      <Heading
+        variant="h5"
+        as="h5"
+        minH="36px"
+        display="flex"
+        alignItems="center"
+      >
         My Codes
       </Heading>
-      <Tabs>
+      <Tabs mt={8}>
         <TabList mb="32px" borderBottom="1px" borderColor="pebble.800">
           <CustomTab count={allCodesCount}>All Codes</CustomTab>
           <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
           <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
         </TabList>
-        <Flex gap={2} pb={4}>
+        <Flex gap={3} pb={4}>
           <InputWithIcon
             placeholder="Search with code ID or code name"
             value={keyword}

@@ -1,5 +1,5 @@
 import type { DividerProps, GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
+import { Grid, Text } from "@chakra-ui/react";
 
 import { TableHeader, TableHeaderFreeze } from "lib/components/table";
 
@@ -18,8 +18,9 @@ export const ProposalTableHeader = ({
       <TableHeaderFreeze
         left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
+        color="pebble.800"
       >
-        Proposal Title/Type
+        <Text color="text.main">Proposal Title/Type</Text>
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Voting ends</TableHeader>

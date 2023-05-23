@@ -27,12 +27,6 @@ import {
 import type { ContractInfo, LVPair, Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-const StyledMenuItem = chakra(MenuItem, {
-  baseStyle: {
-    fontSize: "14px",
-  },
-});
-
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
     display: "flex",
@@ -87,32 +81,47 @@ export const ContractsTableRowCTA = ({
 
       <TableRow>
         <Menu>
-          <MenuButton size="sm" variant="ghost-gray" as={Button}>
-            <CustomIcon name="more" boxSize="16px" />
+          <MenuButton
+            size="sm"
+            variant="ghost-gray"
+            as={Button}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CustomIcon name="more" boxSize="16px" color="pebble.600" />
           </MenuButton>
-          <MenuList>
+          <MenuList onClick={(e) => e.stopPropagation()}>
             <EditContractDetailsModal
               contractLocalInfo={contractInfo}
               triggerElement={
-                <StyledMenuItem
-                  icon={<CustomIcon name="edit" boxSize="16px" />}
+                <MenuItem
+                  icon={
+                    <CustomIcon name="edit" boxSize="16px" color="pebble.600" />
+                  }
                 >
                   Edit details
-                </StyledMenuItem>
+                </MenuItem>
               }
             />
             <AddToOtherListModal
               contractLocalInfo={contractInfo}
               triggerElement={
-                <StyledMenuItem
-                  icon={<CustomIcon name="bookmark" boxSize="16px" />}
+                <MenuItem
+                  icon={
+                    <CustomIcon
+                      name="bookmark"
+                      boxSize="16px"
+                      color="pebble.600"
+                    />
+                  }
                 >
                   Add or remove from other lists
-                </StyledMenuItem>
+                </MenuItem>
               }
             />
-            <StyledMenuItem
-              icon={<CustomIcon name="admin" boxSize="16px" />}
+            <MenuItem
+              icon={
+                <CustomIcon name="admin" boxSize="16px" color="pebble.600" />
+              }
               onClick={() => {
                 navigate({
                   pathname: "/admin",
@@ -122,16 +131,22 @@ export const ContractsTableRowCTA = ({
               isDisabled={!isAdmin}
             >
               Update Admin
-            </StyledMenuItem>
+            </MenuItem>
             <ClearAdminModal
               contractAddress={contractInfo.contractAddress}
               triggerElement={
-                <StyledMenuItem
-                  icon={<CustomIcon name="admin-clear" boxSize="16px" />}
+                <MenuItem
+                  icon={
+                    <CustomIcon
+                      name="admin-clear"
+                      boxSize="16px"
+                      color="pebble.600"
+                    />
+                  }
                   isDisabled={!isAdmin}
                 >
                   Clear Admin
-                </StyledMenuItem>
+                </MenuItem>
               }
             />
             {!!withCTA.removingContractList && (
@@ -184,10 +199,8 @@ export const ContractsTableRowCTA = ({
               contractLocalInfo={contractInfo}
               triggerElement={
                 <StyledIconButton
-                  icon={
-                    <CustomIcon name="bookmark-solid" color="violet.light" />
-                  }
-                  variant="ghost-gray"
+                  icon={<CustomIcon name="bookmark-solid" />}
+                  variant="ghost-primary"
                 />
               }
             />

@@ -25,7 +25,7 @@ export const NoMobile = () => (
           color="violet.light"
           boxSize="10"
         />
-        <Heading as="h6" py="4">
+        <Heading as="h5" variant="h5" py="4">
           Sorry, we currently do not support mobile use.
         </Heading>
         <Text variant="body1">

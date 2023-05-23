@@ -4,7 +4,7 @@ import type { Big } from "big.js";
 
 import { Copier } from "lib/components/copy";
 import { TableRow } from "lib/components/table/tableComponents";
-import { TooltipInfo } from "lib/components/TooltipComponent";
+import { TooltipInfo } from "lib/components/Tooltip";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
 import type { USD, PoolDetail, TokenWithValue, Ratio } from "lib/types";
 import {

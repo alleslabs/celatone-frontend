@@ -52,6 +52,6 @@ export const ButtonCard = ({
         description
       )}
     </Stack>
-    <CustomIcon name="chevron-right" />
+    <CustomIcon name="chevron-right" color="pebble.600" />
   </Flex>
 );

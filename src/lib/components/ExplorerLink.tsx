@@ -43,22 +43,22 @@ const getNavigationUrl = (
   let url = "";
   switch (type) {
     case "tx_hash":
-      url = "/tx";
+      url = "/txs";
       break;
     case "contract_address":
-      url = "/contract";
+      url = "/contracts";
       break;
     case "user_address":
-      url = "/account";
+      url = "/accounts";
       break;
     case "validator_address":
       url = getExplorerValidatorUrl(currentChainName);
       break;
     case "code_id":
-      url = "/code";
+      url = "/codes";
       break;
     case "block_height":
-      url = "/block";
+      url = "/blocks";
       break;
     case "proposal_id":
       url = getExplorerProposalUrl(currentChainName);
