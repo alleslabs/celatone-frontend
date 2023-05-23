@@ -6,10 +6,11 @@ import { getTokenLabel } from "lib/utils";
 
 import { PoolLogo } from "./PoolLogo";
 
-type PoolHeaderProps = Pick<PoolDetail, "isSuperfluid" | "poolLiquidity"> & {
+interface PoolHeaderProps
+  extends Pick<PoolDetail, "isSuperfluid" | "poolLiquidity"> {
   poolId: PoolDetail["id"];
   poolType: PoolDetail["type"];
-};
+}
 
 export const PoolHeader = ({
   poolId,
