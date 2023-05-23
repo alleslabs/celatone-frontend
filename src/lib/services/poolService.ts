@@ -184,14 +184,14 @@ export const usePoolAssetsbyPoolIds = (
         poolIds,
       })
       .then(({ pools }) =>
-        pools.reduce(
+        pools.reduce<Record<number, string[]>>(
           (prev, pool) => ({
             ...prev,
             [pool.id]: (pool.liquidity as Coin[]).map(
               (liquidity) => liquidity.denom
             ),
           }),
-          {} as Record<number, string[]>
+          {}
         )
       );
   }, [poolIds, indexerGraphClient]);

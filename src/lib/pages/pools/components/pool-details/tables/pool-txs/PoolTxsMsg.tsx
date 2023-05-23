@@ -1,17 +1,11 @@
 import { Flex, Text, Grid, useDisclosure, Box, Badge } from "@chakra-ui/react";
-import type Big from "big.js";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type {
-  Message,
-  PoolDetail,
-  TokenWithValue,
-  Transaction,
-} from "lib/types";
+import type { Message, PoolDetail, Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { PoolMsgAction, PoolMsgDetail } from "./messages";
@@ -21,7 +15,7 @@ interface PoolTxsMsgProps {
   msgIndex: number;
   message?: Message;
   otherMsgs: { [key: string]: number };
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
   transaction: Transaction;
   assetInfos: AssetInfosOpt;
   templateColumns: string;

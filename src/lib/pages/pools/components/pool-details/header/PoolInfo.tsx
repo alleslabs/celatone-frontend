@@ -1,16 +1,15 @@
 import { Flex, Text } from "@chakra-ui/react";
-import type Big from "big.js";
 
 import { JsonModalButton } from "../JsonModalButton";
 import { useGetAddressType } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { PoolDetail, TokenWithValue } from "lib/types";
+import type { PoolDetail } from "lib/types";
 import { formatRatio } from "lib/utils";
 
 interface PoolInfoProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
 }
 
 export const PoolInfo = ({ pool }: PoolInfoProps) => {

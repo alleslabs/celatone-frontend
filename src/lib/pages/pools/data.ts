@@ -54,7 +54,7 @@ export const usePools = (
 
 export const usePool = (
   poolId: Option<number>
-): { pool: Option<PoolDetail<Big, TokenWithValue>>; isLoading: boolean } => {
+): { pool: Option<PoolDetail>; isLoading: boolean } => {
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
   const { data: pool, isLoading: isLoadingPoolInfo } = usePoolByPoolId(poolId);
 
@@ -83,7 +83,7 @@ export const usePool = (
       exitFee: pool.exitFee,
       futurePoolGovernor: pool.futurePoolGovernor,
       weight:
-        pool.weight?.map<PoolWeight<Big>>((weight) => {
+        pool.weight?.map<PoolWeight>((weight) => {
           const bigWeight = big(weight.weight);
           return {
             denom: weight.denom,
@@ -109,10 +109,11 @@ export const usePoolTxsCount = (
   const { data, isLoading } = useTxsCountByPoolId(poolId, type);
   if (isLoading) return { count: 0, countDisplay: "0", isLoading };
 
-  const showActualCount = data !== undefined && data <= 10000;
+  const upperboundCount = 10000;
+  const showActualCount = data !== undefined && data <= upperboundCount;
   return {
-    count: showActualCount ? data : 10000,
-    countDisplay: showActualCount ? data.toString() : "10000+",
+    count: showActualCount ? data : upperboundCount,
+    countDisplay: showActualCount ? data.toString() : `${upperboundCount}+`,
     isLoading: false,
   };
 };

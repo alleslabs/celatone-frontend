@@ -1,13 +1,13 @@
 import type { Big } from "big.js";
 
 import { TableContainer } from "lib/components/table/tableComponents";
-import type { PoolDetail, TokenWithValue, USD } from "lib/types";
+import type { PoolDetail, USD } from "lib/types";
 
 import { PoolAssetsTableHeader } from "./PoolAssetsTableHeader";
 import { PoolAssetsTableRow } from "./PoolAssetsTableRow";
 
 interface PoolAssetsTableProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
   totalLiquidity: USD<Big>;
 }
 

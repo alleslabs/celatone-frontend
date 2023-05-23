@@ -1,13 +1,11 @@
-import type Big from "big.js";
-
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type { PoolDetail, TokenWithValue, Transaction } from "lib/types";
+import type { PoolDetail, Transaction } from "lib/types";
 
 import { extractPoolMsgs } from "./messages/utils";
 import { PoolTxsMsg } from "./PoolTxsMsg";
 
 interface PoolTxsTableRowProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
   transaction: Transaction;
   assetInfos: AssetInfosOpt;
   templateColumns: string;

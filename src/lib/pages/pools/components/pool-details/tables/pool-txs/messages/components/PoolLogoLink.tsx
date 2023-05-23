@@ -1,12 +1,11 @@
 import { Flex } from "@chakra-ui/react";
-import type Big from "big.js";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
-import type { PoolDetail, TokenWithValue } from "lib/types";
+import type { PoolDetail } from "lib/types";
 
 interface PoolLogoLinkProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
 }
 
 export const PoolLogoLink = ({ pool }: PoolLogoLinkProps) => (

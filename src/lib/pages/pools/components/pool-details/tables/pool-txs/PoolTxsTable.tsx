@@ -1,20 +1,14 @@
 import { TableContainer } from "@chakra-ui/react";
-import type Big from "big.js";
 
 import { Loading } from "lib/components/Loading";
 import type { AssetInfosOpt } from "lib/services/assetService";
-import type {
-  Option,
-  PoolDetail,
-  TokenWithValue,
-  Transaction,
-} from "lib/types";
+import type { Option, PoolDetail, Transaction } from "lib/types";
 
 import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
 import { PoolTxsTableRow } from "./PoolTxsTableRow";
 
 interface PoolTxsTableProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
   transactions: Option<Transaction[]>;
   assetInfos: AssetInfosOpt;
   isLoading: boolean;

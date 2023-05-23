@@ -1,4 +1,4 @@
-import type { FlexProps, TextProps } from "@chakra-ui/react";
+import type { FlexProps, ImageProps, TextProps } from "@chakra-ui/react";
 import { Flex, Image, Text } from "@chakra-ui/react";
 
 import { getUndefinedTokenIcon } from "../utils";
@@ -6,7 +6,7 @@ import type { TokenWithValue } from "lib/types";
 
 interface PoolLogoProps {
   tokens: TokenWithValue[];
-  logoSize?: FlexProps["height"] | FlexProps["width"];
+  logoSize?: ImageProps["boxSize"];
   marginLeft?: number;
   minW?: FlexProps["minW"];
   textVariant?: TextProps["variant"];

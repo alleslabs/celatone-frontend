@@ -1,4 +1,3 @@
-import type Big from "big.js";
 import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
@@ -6,12 +5,12 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useTxsByPoolIdPagination } from "lib/services/txService";
-import type { PoolDetail, PoolTxFilter, TokenWithValue } from "lib/types";
+import type { PoolDetail, PoolTxFilter } from "lib/types";
 
 import { PoolTxsTable } from "./PoolTxsTable";
 
 interface PoolRelatedTxsTableProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
   countTxs: number;
   type: PoolTxFilter;
   scrollComponentId: string;

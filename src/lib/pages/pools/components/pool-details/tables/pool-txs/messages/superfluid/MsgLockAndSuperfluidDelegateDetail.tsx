@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import type Big from "big.js";
 
 import { PoolAssetCard } from "../components";
 import { getPoolDenom } from "../utils";
@@ -9,7 +8,7 @@ import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
 import { useValidator } from "lib/services/validatorService";
-import type { PoolDetail, TokenWithValue } from "lib/types";
+import type { PoolDetail } from "lib/types";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
 
 interface MsgLockAndSuperfluidDelegateDetailProps {
@@ -17,7 +16,7 @@ interface MsgLockAndSuperfluidDelegateDetailProps {
   blockHeight: number;
   msgIndex: number;
   msg: MsgLockAndSuperfluidDelegateDetails;
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
 }

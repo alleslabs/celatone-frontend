@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import type Big from "big.js";
 
 import { PoolAssetCard } from "../components";
 import { getPoolDenom } from "../utils";
@@ -8,7 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
-import type { PoolDetail, TokenWithValue } from "lib/types";
+import type { PoolDetail } from "lib/types";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
 
 interface MsgLockTokensDetailProps {
@@ -16,7 +15,7 @@ interface MsgLockTokensDetailProps {
   blockHeight: number;
   msgIndex: number;
   msg: MsgLockTokensDetails;
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
 }

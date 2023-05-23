@@ -7,16 +7,15 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import type Big from "big.js";
 
 import { usePoolTxsCount } from "../../data";
 import { CustomTab } from "lib/components/CustomTab";
-import type { PoolDetail, TokenWithValue } from "lib/types";
+import type { PoolDetail } from "lib/types";
 
 import { PoolRelatedTxsTable } from "./tables/pool-txs";
 
 interface PoolRelatedTxsProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
 }
 
 export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {

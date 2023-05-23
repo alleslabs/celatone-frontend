@@ -16,7 +16,7 @@ import {
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
   token: TokenWithValue;
   templateColumns: GridProps["templateColumns"];
   totalLiquidity: USD<Big>;

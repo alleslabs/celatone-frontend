@@ -1,18 +1,17 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import type Big from "big.js";
 
 import { PoolHeader } from "../../PoolHeader";
 import { getPoolUrl } from "lib/app-fns/explorer";
 import { useLCDEndpoint } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { openNewTab } from "lib/hooks";
-import type { PoolDetail, TokenWithValue } from "lib/types";
+import type { PoolDetail } from "lib/types";
 
 import { PoolInfo } from "./PoolInfo";
 
 interface PoolTopSectionProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
 }
 
 export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
