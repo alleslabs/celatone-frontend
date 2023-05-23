@@ -29,12 +29,7 @@ export const AssetCard = ({
 }: AssetCardProps) => {
   const symbol = assetInfo?.symbol ?? denom;
   return (
-    <Tooltip
-      label={`Token ID: ${denom}`}
-      maxW="240px"
-      whiteSpace="pre-line"
-      textAlign="center"
-    >
+    <Tooltip label={`Token ID: ${denom}`} maxW="240px" textAlign="center">
       <Flex
         className="copier-wrapper"
         direction="column"

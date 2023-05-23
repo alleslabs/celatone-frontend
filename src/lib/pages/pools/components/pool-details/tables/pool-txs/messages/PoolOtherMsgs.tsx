@@ -15,7 +15,10 @@ export const PoolOtherMsgs = ({ otherMsgs }: PoolOtherMsgsProps) => {
         const type = extractMsgType(typePath);
         return (
           <Text key={typePath} fontWeight={600}>
-            {type} <Tag borderRadius="full">{otherMsgs[typePath]}</Tag>
+            {type}{" "}
+            <Tag variant="gray" borderRadius="full">
+              {otherMsgs[typePath]}
+            </Tag>
             {index + 1 < typePaths.length && ","}
           </Text>
         );
