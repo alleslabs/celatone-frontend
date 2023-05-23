@@ -97,7 +97,7 @@ export const PoolTxsMsg = ({
           {message ? (
             <PoolMsgAction msg={message} pool={pool} assetInfos={assetInfos} />
           ) : (
-            <PoolOtherMsgs otherMsgs={otherMsgs} />
+            <PoolOtherMsgs otherMsgs={otherMsgs} isIbc={transaction.isIbc} />
           )}
         </TableNoBorderRow>
 

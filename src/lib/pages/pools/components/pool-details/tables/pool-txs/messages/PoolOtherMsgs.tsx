@@ -4,12 +4,13 @@ import { extractMsgType } from "lib/utils";
 
 interface PoolOtherMsgsProps {
   otherMsgs: { [key: string]: number };
+  isIbc: boolean;
 }
 
-export const PoolOtherMsgs = ({ otherMsgs }: PoolOtherMsgsProps) => {
+export const PoolOtherMsgs = ({ otherMsgs, isIbc }: PoolOtherMsgsProps) => {
   const typePaths = Object.keys(otherMsgs);
   return (
-    <Flex gap={2} flexWrap="wrap">
+    <Flex gap={2} flexWrap="wrap" alignItems="center">
       Total
       {typePaths.map((typePath, index) => {
         const type = extractMsgType(typePath);
@@ -23,6 +24,11 @@ export const PoolOtherMsgs = ({ otherMsgs }: PoolOtherMsgsProps) => {
           </Text>
         );
       })}
+      {isIbc && (
+        <Tag variant="honeydew-dark" size="sm">
+          IBC
+        </Tag>
+      )}
     </Flex>
   );
 };
