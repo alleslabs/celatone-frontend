@@ -45,7 +45,10 @@ export interface TxData extends TxResponse {
   isTxFailed: boolean;
 }
 
-export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
+export const useTxData = (
+  txHash: Option<string>,
+  enabled = true
+): UseQueryResult<TxData> => {
   const { currentChainName } = useWallet();
   const chainId = useChainId();
   const queryFn = useCallback(
@@ -63,7 +66,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
   return useQuery({
     queryKey: ["tx_data", currentChainName, chainId, txHash] as string[],
     queryFn,
-    enabled: Boolean(txHash && isTxHash(txHash)),
+    enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -269,9 +272,11 @@ export const useTxsCountByPoolId = (
 
   return useQuery(
     ["transactions_count_by_pool_id", poolId, type, indexerGraphClient],
-    queryFn,
+    createQueryFnWithTimeout(queryFn, 5000),
     {
       enabled: !!poolId,
+      retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };

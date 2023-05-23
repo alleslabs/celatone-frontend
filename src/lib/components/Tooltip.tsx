@@ -26,6 +26,7 @@ export const TooltipInfo = ({
   <Tooltip {...tooltipProps}>
     <div style={{ cursor: "pointer" }}>
       <CustomIcon
+        color="pebble.600"
         name={iconVariant === "solid" ? "info-circle-solid" : "info-circle"}
         boxSize={3}
         m={0}

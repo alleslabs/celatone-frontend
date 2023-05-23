@@ -1,23 +1,20 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
-import type Big from "big.js";
 
+import { PoolHeader } from "../../PoolHeader";
 import { getPoolUrl } from "lib/app-fns/explorer";
 import { useLCDEndpoint } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { openNewTab } from "lib/hooks";
-import type { AssetInfosOpt } from "lib/services/assetService";
-import type { PoolDetail, TokenWithValue } from "lib/types";
+import type { PoolDetail } from "lib/types";
 
-import { PoolHeader } from "./PoolHeader";
 import { PoolInfo } from "./PoolInfo";
 
 interface PoolTopSectionProps {
-  pool: PoolDetail<Big, TokenWithValue>;
-  assetInfos: AssetInfosOpt;
+  pool: PoolDetail;
 }
 
-export const PoolTopSection = ({ pool, assetInfos }: PoolTopSectionProps) => {
+export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
   const { currentChainName } = useWallet();
   const lcdEndpoint = useLCDEndpoint();
 
@@ -28,7 +25,12 @@ export const PoolTopSection = ({ pool, assetInfos }: PoolTopSectionProps) => {
   return (
     <>
       <Flex justifyContent="space-between" align="center" w="full">
-        <PoolHeader pool={pool} assetInfos={assetInfos} />
+        <PoolHeader
+          poolId={pool.id}
+          isSuperfluid={pool.isSuperfluid}
+          poolType={pool.type}
+          poolLiquidity={pool.poolLiquidity}
+        />
         <Flex align="center" gap={2}>
           <Button
             variant="ghost-gray"

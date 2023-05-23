@@ -17,6 +17,7 @@ export const Badge: ComponentStyleConfig = {
       background: "pebble.700",
       color: "text.main",
     },
+    honeydew: { background: "honeydew.dark", color: "background.main" },
     lilac: {
       background: "lilac.main",
       color: "background.main",

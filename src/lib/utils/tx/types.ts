@@ -393,13 +393,13 @@ export interface MsgExitPoolDetails extends MsgBaseDetails {
 }
 export interface MsgSwapExactAmountInDetails extends MsgBaseDetails {
   sender: Addr;
-  routes: object;
+  routes: { poolId: number; tokenOutDenom: string }[];
   token_in: Coin;
   token_out_min_amount: string;
 }
 export interface MsgSwapExactAmountOutDetails extends MsgBaseDetails {
   sender: Addr;
-  routes: object;
+  routes: { poolId: number; tokenInDenom: string }[];
   token_in_max_amount: string;
   token_out: Coin;
 }
@@ -413,7 +413,7 @@ export interface MsgJoinSwapShareAmountOutDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   token_in_denom: string;
-  share_out_amount: string;
+  share_amount_out: string;
   token_in_max_amount: string;
 }
 export interface MsgExitSwapShareAmountInDetails extends MsgBaseDetails {
@@ -683,9 +683,13 @@ export type MsgReturnType<T extends TypeUrl> =
     ? MsgJoinPoolDetails
     : T extends "/osmosis.gamm.v1beta1.MsgExitPool"
     ? MsgExitPoolDetails
-    : T extends "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn"
+    : T extends
+        | "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn"
+        | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn"
     ? MsgSwapExactAmountInDetails
-    : T extends "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut"
+    : T extends
+        | "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut"
+        | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut"
     ? MsgSwapExactAmountOutDetails
     : T extends "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn"
     ? MsgJoinSwapExternAmountInDetails

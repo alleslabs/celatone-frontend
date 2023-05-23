@@ -106,7 +106,6 @@ const Proposals = () => {
             isDisabled={!!address}
             label="You need to connect your wallet to see your proposals"
             maxW="240px"
-            whiteSpace="pre-line"
             textAlign="center"
           >
             <div>

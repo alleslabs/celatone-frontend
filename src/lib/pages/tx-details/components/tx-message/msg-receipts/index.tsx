@@ -1605,8 +1605,8 @@ export const generateReceipts = (
           value: details.token_in_denom,
         },
         {
-          title: "Share Out Amount",
-          value: details.share_out_amount,
+          title: "Share Amount Out",
+          value: details.share_amount_out,
         },
         {
           title: "Token In Max Amount",

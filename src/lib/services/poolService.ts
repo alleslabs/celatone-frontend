@@ -11,6 +11,7 @@ import {
   getPoolListByDenoms,
   getPoolListByDenomsCount,
   getPoolListCount,
+  getPoolsByPoolIds,
 } from "lib/query";
 import type { Option, Pool, PoolDetail, PoolTypeFilter } from "lib/types";
 import { isPositiveInt } from "lib/utils";
@@ -167,6 +168,35 @@ export const usePoolByPoolId = (
   }, [poolId, indexerGraphClient]);
 
   return useQuery(["pool_by_pool_id", poolId, indexerGraphClient], queryFn, {
-    enabled: Boolean(poolId),
+    enabled: !!poolId,
+  });
+};
+
+export const usePoolAssetsbyPoolIds = (
+  poolIds: number[],
+  enabled = true
+): UseQueryResult<Record<number, string[]>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getPoolsByPoolIds, {
+        poolIds,
+      })
+      .then(({ pools }) =>
+        pools.reduce<Record<number, string[]>>(
+          (prev, pool) => ({
+            ...prev,
+            [pool.id]: (pool.liquidity as Coin[]).map(
+              (liquidity) => liquidity.denom
+            ),
+          }),
+          {}
+        )
+      );
+  }, [poolIds, indexerGraphClient]);
+
+  return useQuery(["pools_by_pool_ids", poolIds, indexerGraphClient], queryFn, {
+    enabled,
   });
 };

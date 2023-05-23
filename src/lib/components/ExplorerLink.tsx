@@ -20,7 +20,8 @@ export type LinkType =
   | "tx_hash"
   | "code_id"
   | "block_height"
-  | "proposal_id";
+  | "proposal_id"
+  | "pool_id";
 
 interface ExplorerLinkProps extends BoxProps {
   value: string;
@@ -62,6 +63,9 @@ const getNavigationUrl = (
       break;
     case "proposal_id":
       url = getExplorerProposalUrl(currentChainName);
+      break;
+    case "pool_id":
+      url = "/pools";
       break;
     case "invalid_address":
       return "";
@@ -161,7 +165,8 @@ export const ExplorerLink = ({
     type === "contract_address" ||
     type === "user_address" ||
     type === "tx_hash" ||
-    type === "block_height";
+    type === "block_height" ||
+    type === "pool_id";
 
   const [hrefLink, textValue] = [
     getNavigationUrl(type, currentChainName, copyValue || value),

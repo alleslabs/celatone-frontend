@@ -25,12 +25,7 @@ export const TokenCard = ({
   const { symbol, price, amount, precision, id } = userBalance.balance;
 
   return (
-    <Tooltip
-      label={`Token ID: ${id}`}
-      maxW="240px"
-      whiteSpace="pre-line"
-      textAlign="center"
-    >
+    <Tooltip label={`Token ID: ${id}`} maxW="240px" textAlign="center">
       <Flex
         className="copier-wrapper"
         direction="column"

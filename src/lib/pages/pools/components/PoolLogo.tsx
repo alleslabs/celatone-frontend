@@ -1,55 +1,71 @@
-import { Flex, Image } from "@chakra-ui/react";
+import type { FlexProps, ImageProps, TextProps } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 
 import { getUndefinedTokenIcon } from "../utils";
-import type { PoolDetail } from "lib/types/pool";
+import type { TokenWithValue } from "lib/types";
+
+interface PoolAssetLogoProps {
+  token: TokenWithValue;
+  logoSize: ImageProps["boxSize"];
+  idx: number;
+}
+
+const PoolAssetLogo = ({ token, logoSize, idx }: PoolAssetLogoProps) => (
+  <Flex key={token.denom}>
+    <Image
+      boxSize={logoSize}
+      src={token.logo || getUndefinedTokenIcon(token.denom)}
+      zIndex={2 - idx}
+    />
+  </Flex>
+);
 
 interface PoolLogoProps {
-  poolLiquidity: PoolDetail["poolLiquidity"];
+  tokens: TokenWithValue[];
+  logoSize?: ImageProps["boxSize"];
+  marginLeft?: number;
+  minW?: FlexProps["minW"];
+  textVariant?: TextProps["variant"];
 }
-export const PoolLogo = ({ poolLiquidity }: PoolLogoProps) => {
-  return (
-    <Flex
-      css={{
-        ">:not(:first-of-type)": {
-          marginLeft: "-12px",
-        },
-      }}
-      width="96px"
-      alignItems="center"
-      justifyContent="center"
-    >
-      {poolLiquidity.length > 3 ? (
-        <>
-          {poolLiquidity.slice(0, 2).map((item, i) => (
-            <Image
-              key={item.denom}
-              boxSize={10}
-              src={item.logo ?? getUndefinedTokenIcon(item.denom)}
-              zIndex={2 - i}
-            />
-          ))}
-          <Flex
-            minW={10}
-            minH={10}
-            borderRadius="full"
-            backgroundColor="pebble.700"
-            alignItems="center"
-            justifyContent="center"
-            marginLeft="-12px"
-          >
-            +{poolLiquidity.length - 2}
-          </Flex>
-        </>
-      ) : (
-        poolLiquidity.map((asset, i) => (
-          <Image
-            key={asset.denom}
-            boxSize={10}
-            src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
-            zIndex={2 - i}
-          />
-        ))
-      )}
-    </Flex>
-  );
-};
+
+export const PoolLogo = ({
+  tokens,
+  logoSize = 10,
+  marginLeft = -12,
+  minW = 24,
+  textVariant = "body2",
+}: PoolLogoProps) => (
+  <Flex
+    css={{
+      ">:not(:first-of-type)": {
+        marginLeft,
+      },
+    }}
+    minW={minW}
+    alignItems="center"
+    justifyContent="center"
+  >
+    {tokens.length > 3 ? (
+      <>
+        {tokens.slice(0, 2).map((token, idx) => (
+          <PoolAssetLogo token={token} logoSize={logoSize} idx={idx} />
+        ))}
+        <Flex
+          width={logoSize}
+          height={logoSize}
+          borderRadius="full"
+          backgroundColor="pebble.700"
+          alignItems="center"
+          justifyContent="center"
+          marginLeft="-12px"
+        >
+          <Text variant={textVariant}> +{tokens.length - 2}</Text>
+        </Flex>
+      </>
+    ) : (
+      tokens.map((token, idx) => (
+        <PoolAssetLogo token={token} logoSize={logoSize} idx={idx} />
+      ))
+    )}
+  </Flex>
+);

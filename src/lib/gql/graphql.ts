@@ -12620,6 +12620,15 @@ export type GetPoolByPoolIdQuery = {
   } | null;
 };
 
+export type GetPoolsByPoolIdsQueryVariables = Exact<{
+  poolIds: Array<Scalars["Int"]> | Scalars["Int"];
+}>;
+
+export type GetPoolsByPoolIdsQuery = {
+  __typename?: "query_root";
+  pools: Array<{ __typename?: "pools"; id: number; liquidity: any }>;
+};
+
 export type GetRelatedProposalsByContractAddressPaginationQueryVariables =
   Exact<{
     contractAddress: Scalars["String"];
@@ -16563,6 +16572,85 @@ export const GetPoolByPoolIdDocument = {
   GetPoolByPoolIdQuery,
   GetPoolByPoolIdQueryVariables
 >;
+export const GetPoolsByPoolIdsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolsByPoolIds" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "poolIds" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "Int" },
+                },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pools" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_in" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "poolIds" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "liquidity" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPoolsByPoolIdsQuery,
+  GetPoolsByPoolIdsQueryVariables
+>;
 export const GetRelatedProposalsByContractAddressPaginationDocument = {
   kind: "Document",
   definitions: [
@@ -17629,6 +17717,11 @@ export const GetTxsByPoolIdPaginationDocument = {
                     {
                       kind: "ObjectField",
                       name: { kind: "Name", value: "block_height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction_id" },
                       value: { kind: "EnumValue", value: "desc" },
                     },
                   ],

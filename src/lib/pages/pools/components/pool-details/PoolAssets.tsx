@@ -4,13 +4,13 @@ import big from "big.js";
 import Link from "next/link";
 
 import { CustomIcon } from "lib/components/icon";
-import type { PoolDetail, TokenWithValue, USD } from "lib/types";
+import type { PoolDetail, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
-import { PoolAssetsTable } from "./table";
+import { PoolAssetsTable } from "./tables/pool-assets";
 
 interface PoolAssetsProps {
-  pool: PoolDetail<Big, TokenWithValue>;
+  pool: PoolDetail;
 }
 
 export const PoolAssets = ({ pool }: PoolAssetsProps) => {

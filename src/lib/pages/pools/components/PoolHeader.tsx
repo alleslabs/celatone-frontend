@@ -6,22 +6,21 @@ import { getTokenLabel } from "lib/utils";
 
 import { PoolLogo } from "./PoolLogo";
 
-interface PoolHeaderProps {
+interface PoolHeaderProps
+  extends Pick<PoolDetail, "isSuperfluid" | "poolLiquidity"> {
   poolId: PoolDetail["id"];
-  isSuperFluid: PoolDetail["isSuperfluid"];
   poolType: PoolDetail["type"];
-  poolLiquidity: PoolDetail["poolLiquidity"];
 }
 
 export const PoolHeader = ({
   poolId,
-  isSuperFluid,
+  isSuperfluid,
   poolType,
   poolLiquidity,
 }: PoolHeaderProps) => (
   <Flex justifyContent="space-between" w="full">
     <Flex alignItems="center" gap={4}>
-      <PoolLogo poolLiquidity={poolLiquidity} />
+      <PoolLogo tokens={poolLiquidity} />
       <Box>
         <Flex gap={1} flexWrap="wrap">
           <Heading as="h6" fontWeight="600" variant="h6">
@@ -89,7 +88,7 @@ export const PoolHeader = ({
               </Flex>
             </Flex>
           )}
-          {isSuperFluid && (
+          {isSuperfluid && (
             <Flex alignItems="center" gap={2}>
               <Flex
                 backgroundColor="pebble.600"

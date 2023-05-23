@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#294](https://github.com/alleslabs/celatone-frontend/pull/294) Add Pool related txs table
 - [#296](https://github.com/alleslabs/celatone-frontend/pull/296) Add pool header and pool assets section for pool details page
 - [#295](https://github.com/alleslabs/celatone-frontend/pull/295) Add expand/collapse all for unsupported pool list
 - [#277](https://github.com/alleslabs/celatone-frontend/pull/277) Wire up data for pool navigation page
