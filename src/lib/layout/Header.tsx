@@ -10,7 +10,7 @@ import {
 import { useWallet } from "@cosmos-kit/react";
 
 import { CHAIN_CONFIGS } from "config";
-import { useCelatoneApp, useChainId, useSelectChain } from "lib/app-provider";
+import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetBtn } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
@@ -20,8 +20,7 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import Searchbar from "./Searchbar";
 
 const Header = () => {
-  const { availableChainIds } = useCelatoneApp();
-  const chainId = useChainId();
+  const { availableChainIds, currentChainId } = useCelatoneApp();
   const { getChainRecord } = useWallet();
   const selectChain = useSelectChain();
 
@@ -75,17 +74,17 @@ const Header = () => {
                 whiteSpace="nowrap"
                 maxW="170px"
               >
-                {chainId}
+                {currentChainId}
               </Text>
               <CustomIcon name="chevron-down" />
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">
-            {availableChainIds.map((chain) => (
+            {availableChainIds.map((chainId) => (
               <MenuItem
-                key={chain}
+                key={chainId}
                 onClick={() => {
-                  selectChain(chain);
+                  selectChain(chainId);
                 }}
                 flexDirection="column"
                 alignItems="flex-start"
@@ -98,15 +97,18 @@ const Header = () => {
                   <Flex direction="column">
                     <Text variant="body2">
                       {
-                        getChainRecord(CHAIN_CONFIGS[chain]?.registryChainName)
-                          ?.chain.pretty_name
+                        getChainRecord(
+                          CHAIN_CONFIGS[chainId]?.registryChainName
+                        )?.chain.pretty_name
                       }
                     </Text>
                     <Text color="text.dark" variant="body3">
-                      {chain}
+                      {chainId}
                     </Text>
                   </Flex>
-                  {chain === chainId && <CustomIcon name="check" boxSize="3" />}
+                  {chainId === currentChainId && (
+                    <CustomIcon name="check" boxSize="3" />
+                  )}
                 </Flex>
               </MenuItem>
             ))}

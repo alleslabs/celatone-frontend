@@ -64,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#354](https://github.com/alleslabs/celatone-frontend/pull/354) Update useChainId to use currentChainId from config
+- [#354](https://github.com/alleslabs/celatone-frontend/pull/354) Remove useChainId and use currentChainId from config
 - [#338](https://github.com/alleslabs/celatone-frontend/pull/338) Use gas from chain config
 - [#333](https://github.com/alleslabs/celatone-frontend/pull/333) Update endpoints including LCD, RPC, Graphql
 - [#335](https://github.com/alleslabs/celatone-frontend/pull/335) Refactor hardcoded api route to utils

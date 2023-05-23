@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   useBaseApiRoute,
   useCelatoneApp,
-  useChainId,
   useLCDEndpoint,
 } from "lib/app-provider";
 import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
@@ -97,7 +96,7 @@ export const useContractData = (
   contractAddress: ContractAddr
 ): ContractDataState => {
   const balancesApiRoute = useBaseApiRoute("balances");
-  const { indexerGraphClient } = useCelatoneApp();
+  const { indexerGraphClient, currentChainId } = useCelatoneApp();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
   const lcdEndpoint = useLCDEndpoint();
@@ -106,7 +105,6 @@ export const useContractData = (
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
-  const chainId = useChainId();
 
   const { data: instantiateInfo, isLoading: isInstantiateInfoLoading } =
     useQuery(
@@ -154,7 +152,7 @@ export const useContractData = (
 
   return {
     contractData: {
-      chainId,
+      chainId: currentChainId,
       codeInfo,
       contractLocalInfo,
       contractCw2Info,

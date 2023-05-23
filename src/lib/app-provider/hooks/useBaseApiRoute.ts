@@ -1,30 +1,32 @@
 import { useCelatoneApp } from "../contexts";
 
-import { useChainId } from "./useChainId";
-
 export const useBaseApiRoute = (
   type: "txs" | "balances" | "assets" | "projects" | "contracts" | "codes"
 ): string => {
   const {
     chainConfig: { chain, api },
+    currentChainId,
   } = useCelatoneApp();
-  const chainId = useChainId();
-  if (!chain || !api)
-    throw new Error("Error retrieving chain or api from chain config.");
+  if (!chain || !api || !currentChainId)
+    throw new Error(
+      "Error retrieving chain, api, or currentChainId from chain config."
+    );
   switch (type) {
     case "txs":
-      return `${api}/txs/${chain}/${chainId}`;
+      return `${api}/txs/${chain}/${currentChainId}`;
     case "balances":
-      return `${api}/balances/${chain}/${chainId}`;
+      return `${api}/balances/${chain}/${currentChainId}`;
     case "assets":
-      return `${api}/assets/${chain}/${chainId}`;
+      return `${api}/assets/${chain}/${currentChainId}`;
     case "projects":
-      return `${api}/projects/${chain}/${chainId}`;
+      return `${api}/projects/${chain}/${currentChainId}`;
     case "contracts":
-      return `${api}/contracts/${chain}/${chainId}`;
+      return `${api}/contracts/${chain}/${currentChainId}`;
     case "codes":
-      return `${api}/codes/${chain}/${chainId}`;
+      return `${api}/codes/${chain}/${currentChainId}`;
     default:
-      throw new Error("Error retrieving chain or api from chain config.");
+      throw new Error(
+        "Error retrieving chain, api, or currentChainId from chain config."
+      );
   }
 };
