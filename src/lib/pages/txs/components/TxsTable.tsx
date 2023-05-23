@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
-import { useChainId } from "lib/app-provider";
+import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -13,7 +13,7 @@ interface TxsTableProps {
 }
 
 export const TxsTable = ({ isViewMore }: TxsTableProps) => {
-  const chainId = useChainId();
+  const { currentChainId } = useCelatoneApp();
   const { data: countTxs = 0 } = useTxsCount();
 
   const {
@@ -47,7 +47,7 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
   useEffect(() => {
     if (!isViewMore) setPageSize(10);
     setCurrentPage(1);
-  }, [chainId, isViewMore, setCurrentPage, setPageSize]);
+  }, [currentChainId, isViewMore, setCurrentPage, setPageSize]);
   // TODO - Might consider adding this state in all transaction table
   if (error)
     return (

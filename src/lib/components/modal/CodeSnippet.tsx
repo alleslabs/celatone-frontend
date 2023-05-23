@@ -19,7 +19,11 @@ import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-import { useLCDEndpoint, useRPCEndpoint } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useLCDEndpoint,
+  useRPCEndpoint,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
@@ -47,7 +51,7 @@ const CodeSnippet = ({
   const client = currentChainRecord?.chain.daemon_name;
   const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();
-  const chainId = currentChainRecord?.chain.chain_id;
+  const { currentChainId } = useCelatoneApp();
   const codeSnippets: Record<
     string,
     { name: string; mode: string; snippet: string }[]
@@ -56,7 +60,7 @@ const CodeSnippet = ({
       {
         name: "CLI",
         mode: "sh",
-        snippet: `export CHAIN_ID='${chainId}'\n
+        snippet: `export CHAIN_ID='${currentChainId}'\n
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export QUERY_MSG='${message}'\n
 export RPC_URL='${rpcEndpoint}'\n
@@ -117,7 +121,7 @@ queryContract();`,
         name: "CLI",
         mode: "sh",
         snippet: `${client} keys add --recover celatone\n
-export CHAIN_ID='${chainId}'\n
+export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export EXECUTE_MSG='${message}'\n
