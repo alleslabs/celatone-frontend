@@ -19,7 +19,7 @@ import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-import { useLCDEndpoint, useRPCEndpoint } from "lib/app-provider";
+import { useChainId, useLCDEndpoint, useRPCEndpoint } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
@@ -47,7 +47,7 @@ const CodeSnippet = ({
   const client = currentChainRecord?.chain.daemon_name;
   const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();
-  const chainId = currentChainRecord?.chain.chain_id;
+  const chainId = useChainId();
   const codeSnippets: Record<
     string,
     { name: string; mode: string; snippet: string }[]

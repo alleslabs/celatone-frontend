@@ -5,7 +5,7 @@ import type {
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
+import { useBaseApiRoute, useCelatoneApp, useChainId } from "lib/app-provider";
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
@@ -42,18 +42,18 @@ export interface TxData extends TxResponse {
 }
 
 export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
-  const { currentChainId } = useCelatoneApp();
+  const chainId = useChainId();
   const txsApiRoute = useBaseApiRoute("txs");
   const queryFn = useCallback(
     async ({ queryKey }: QueryFunctionContext<string[]>): Promise<TxData> => {
       const txData = await queryTxData(queryKey[1], queryKey[2]);
       return {
         ...txData,
-        chainId: currentChainId,
+        chainId,
         isTxFailed: Boolean(txData.code),
       };
     },
-    [currentChainId]
+    [chainId]
   );
 
   return useQuery({
