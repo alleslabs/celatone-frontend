@@ -7,11 +7,5 @@ export const useWasmConfig = () => {
     },
   } = useCelatoneApp();
 
-  if (!wasm.enabled) {
-    throw new Error(
-      "Cannot access Wasm configs when Wasm feature is disabled."
-    );
-  }
-
   return wasm;
 };

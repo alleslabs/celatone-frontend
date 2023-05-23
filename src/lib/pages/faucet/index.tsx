@@ -10,7 +10,7 @@ import { useWallet } from "@cosmos-kit/react";
 import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   useCelatoneApp,
@@ -59,16 +59,28 @@ const Faucet = () => {
     chainConfig: { chain },
   } = useCelatoneApp();
   const faucet = useFaucetConfig();
-  const { faucetUrl, faucetDenom, faucetAmount } = {
-    faucetUrl: faucet.url,
-    faucetDenom: faucet.denom.toUpperCase(),
-    faucetAmount: faucet.amount,
-  };
+
+  const { faucetUrl, faucetDenom, faucetAmount } = useMemo(() => {
+    if (!faucet.enabled)
+      // Remark: this shouldn't be used as the faucet is disabled
+      return {
+        faucetUrl: "",
+        faucetDenom: "",
+        faucetAmount: "",
+      };
+
+    return {
+      faucetUrl: faucet.url,
+      faucetDenom: faucet.denom.toUpperCase(),
+      faucetAmount: faucet.amount,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [faucet.enabled]);
 
   useEffect(() => {
     if (!faucet.enabled) navigate({ pathname: "/", replace: true });
     else if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
-  }, [faucet.enabled, navigate, router]);
+  }, [faucet, navigate, router]);
 
   useEffect(() => {
     if (address) {

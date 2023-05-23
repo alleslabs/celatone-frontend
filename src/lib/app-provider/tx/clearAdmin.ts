@@ -16,13 +16,18 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
   const fabricateFee = useFabricateFee();
   const wasm = useWasmConfig();
 
-  const clearAdminFee = fabricateFee(wasm.clearAdminGas);
-
   return useCallback(
     async ({ onTxSucceed }: ClearAdminStreamParams) => {
       const client = await getCosmWasmClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
+
+      if (!wasm.enabled)
+        throw new Error(
+          "Wasm config isn't loaded or Wasm feature is disabled."
+        );
+
+      const clearAdminFee = fabricateFee(wasm.clearAdminGas);
 
       return clearAdminTx({
         address: address as HumanAddr,
@@ -42,6 +47,13 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
         },
       });
     },
-    [address, clearAdminFee, queryClient, contractAddress, getCosmWasmClient]
+    [
+      getCosmWasmClient,
+      address,
+      wasm,
+      fabricateFee,
+      contractAddress,
+      queryClient,
+    ]
   );
 };

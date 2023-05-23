@@ -17,7 +17,7 @@ import { useInternalNavigate } from "../hooks/useInternalNavigate";
 import { useNetworkChange } from "../hooks/useNetworkChange";
 import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG, PROJECT_CONSTANTS } from "config";
 import type { ChainConfig, ProjectConstants } from "config/types";
-import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
+import { SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
@@ -58,9 +58,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
 
-  const [currentChainId, setCurrentChainId] = useState(
-    DEFAULT_SUPPORTED_CHAIN_ID
-  );
+  const [currentChainId, setCurrentChainId] = useState("");
 
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
@@ -76,10 +74,12 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
         },
       });
     },
-    [navigate, router, setCurrentChain]
+    [navigate, router.pathname, router.query, setCurrentChain]
   );
 
-  const chainConfig = CHAIN_CONFIGS[currentChainId];
+  const chainConfig = currentChainId
+    ? CHAIN_CONFIGS[currentChainId]
+    : DEFAULT_CHAIN_CONFIG;
 
   const indexerGraphClient = useMemo(
     () => new GraphQLClient(chainConfig.indexer),
@@ -114,7 +114,8 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   if (
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
-    !isProjectUserKeyExist()
+    !isProjectUserKeyExist() ||
+    !currentChainId
   )
     return <LoadingOverlay />;
 
