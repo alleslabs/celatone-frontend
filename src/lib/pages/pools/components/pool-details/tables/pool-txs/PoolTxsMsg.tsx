@@ -69,6 +69,7 @@ export const PoolTxsMsg = ({
               name="chevron-down"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
               transition="all .25s ease-in-out"
+              color="gray.600"
             />
           )}
         </TableNoBorderRow>
