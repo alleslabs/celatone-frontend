@@ -1,7 +1,8 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Badge, Text, Image, Flex, Tooltip } from "@chakra-ui/react";
+import { Badge, Text, Image, Flex } from "@chakra-ui/react";
 
 import { Copier } from "lib/components/copy";
+import { Tooltip } from "lib/components/Tooltip";
 import { NAToken } from "lib/icon";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
 import type { AssetInfo, Option, Token, U, USD } from "lib/types";
@@ -29,10 +30,7 @@ export const AssetCard = ({
   const symbol = assetInfo?.symbol ?? denom;
   return (
     <Tooltip
-      hasArrow
       label={`Token ID: ${denom}`}
-      placement="top"
-      bg="honeydew.darker"
       maxW="240px"
       whiteSpace="pre-line"
       textAlign="center"

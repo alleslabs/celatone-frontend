@@ -35,7 +35,6 @@ interface StyledButtonProps {
   hasText: boolean;
   actionText: string;
   icon: IconKeys;
-  iconColor: string;
   action: (e: MouseEvent<HTMLButtonElement>) => void;
   variant: string;
 }
@@ -46,16 +45,22 @@ const StyledButton = ({
   icon,
   action,
   variant,
-  iconColor,
 }: StyledButtonProps) => (
   <Button
-    variant={hasText ? variant : "ghost"}
+    variant={hasText ? variant : "ghost-gray"}
     style={hasText ? buttonTextProps : buttonIconProps}
     gap={2}
     onClick={action}
   >
-    <CustomIcon name={icon} color={iconColor} />
-    {hasText && <Text>{actionText}</Text>}
+    <CustomIcon
+      name={icon}
+      color={icon === "bookmark" ? "pebble.600" : "violet.light"}
+    />
+    {hasText && (
+      <Text color={icon === "bookmark" ? "text.dark" : "violet.light"}>
+        {actionText}
+      </Text>
+    )}
   </Button>
 );
 
@@ -98,7 +103,6 @@ export const BookmarkButton = observer(
             variant="outline-primary"
             hasText={hasText}
             icon="bookmark-solid"
-            iconColor="violet.light"
             actionText="Bookmarked"
             action={(e) => {
               e.stopPropagation();
@@ -107,10 +111,9 @@ export const BookmarkButton = observer(
           />
         ) : (
           <StyledButton
-            variant="outline"
+            variant="outline-gray"
             hasText={hasText}
             icon="bookmark"
-            iconColor="pebble.600"
             actionText="Bookmark Project"
             action={(e) => {
               if (details) {

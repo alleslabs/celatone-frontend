@@ -5,7 +5,7 @@ export const SaveCodeButton = () => (
   <SaveNewCodeModal
     buttonProps={{
       variant: "outline-primary",
-      leftIcon: <CustomIcon name="bookmark" color="violet.light" />,
+      leftIcon: <CustomIcon name="bookmark" />,
       children: "Save New Code",
     }}
   />

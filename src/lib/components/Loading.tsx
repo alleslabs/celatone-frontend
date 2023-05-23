@@ -14,7 +14,7 @@ export const Loading = ({ withBorder = true }: LoadingProps) => (
     flexDirection="column"
     alignItems="center"
   >
-    <Spinner size="xl" speed="0.65s" />
+    <Spinner size="xl" />
     <Text mt="20px">Loading ...</Text>
   </Flex>
 );

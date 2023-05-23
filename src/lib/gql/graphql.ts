@@ -12885,6 +12885,7 @@ export type GetBlockTransactionsByHeightQueryQuery = {
     is_send: boolean;
     is_store_code: boolean;
     is_update_admin: boolean;
+    block: { __typename?: "blocks"; height: number; timestamp: any };
     account: { __typename?: "accounts"; address: string };
   }>;
 };
@@ -18157,9 +18158,23 @@ export const GetBlockTransactionsByHeightQueryDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "hash" } },
-                { kind: "Field", name: { kind: "Name", value: "success" } },
-                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "block" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "account" },
@@ -18173,6 +18188,9 @@ export const GetBlockTransactionsByHeightQueryDocument = {
                     ],
                   },
                 },
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "is_clear_admin" },

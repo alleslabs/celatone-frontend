@@ -5,11 +5,13 @@ import { useWallet } from "@cosmos-kit/react";
 import { ProposalTextCell } from "../components/ProposalTextCell";
 import { getExplorerProposalUrl } from "lib/app-fns/explorer";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { StopPropagationBox } from "lib/components/StopPropagationBox";
 import { TableRow, TableRowFreeze } from "lib/components/table";
 import { Proposer } from "lib/components/table/proposals/Proposer";
 import { ResolvedHeight } from "lib/components/table/proposals/ResolvedHeight";
 import { StatusChip } from "lib/components/table/proposals/StatusChip";
 import { VotingEndTime } from "lib/components/table/proposals/VotingEndTime";
+import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Proposal, Option } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
@@ -44,15 +46,22 @@ export const ProposalTableRow = ({
       minW="min-content"
       cursor={isDepositFailed ? "default" : "pointer"}
       _hover={{ "> div": { bgColor: hoverBg } }}
-      onClick={() =>
-        !isDepositFailed &&
-        window.open(
-          `${getExplorerProposalUrl(
-            currentChainName
-          )}/${proposal.proposalId.toString()}`,
-          "_blank",
-          "noopener,noreferrer"
-        )
+      onClick={
+        !isDepositFailed
+          ? () => {
+              AmpTrackMintscan("proposal-detail", {
+                type: proposal.type,
+                status: proposal.status,
+              });
+              window.open(
+                `${getExplorerProposalUrl(
+                  currentChainName
+                )}/${proposal.proposalId.toString()}`,
+                "_blank",
+                "noopener,noreferrer"
+              );
+            }
+          : undefined
       }
     >
       <TableRowFreeze left="0">
@@ -61,11 +70,13 @@ export const ProposalTableRow = ({
           type="proposal_id"
           value={proposal.proposalId.toString()}
           showCopyOnHover
+          ampCopierSection="proposal-list"
         />
       </TableRowFreeze>
       <TableRowFreeze
         left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
+        color="pebble.800"
       >
         <ProposalTextCell
           title={proposal.title}
@@ -75,7 +86,9 @@ export const ProposalTableRow = ({
         />
       </TableRowFreeze>
       <TableRow justifyContent="center">
-        <StatusChip status={proposal.status} />
+        <StopPropagationBox>
+          <StatusChip status={proposal.status} />
+        </StopPropagationBox>
       </TableRow>
       <TableRow>
         <VotingEndTime
@@ -85,14 +98,20 @@ export const ProposalTableRow = ({
         />
       </TableRow>
       <TableRow>
-        <ResolvedHeight
-          resolvedHeight={proposal.resolvedHeight}
-          isDepositFailed={isDepositFailed}
-          isDepositOrVoting={isDepositOrVoting}
-        />
+        <StopPropagationBox>
+          <ResolvedHeight
+            resolvedHeight={proposal.resolvedHeight}
+            isDepositFailed={isDepositFailed}
+            isDepositOrVoting={isDepositOrVoting}
+            amptrackSection="proposal-list"
+          />
+        </StopPropagationBox>
       </TableRow>
       <TableRow>
-        <Proposer proposer={proposal.proposer} />
+        <Proposer
+          proposer={proposal.proposer}
+          amptrackSection="proposal-list"
+        />
       </TableRow>
     </Grid>
   );

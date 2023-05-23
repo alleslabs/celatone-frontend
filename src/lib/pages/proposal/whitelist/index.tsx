@@ -41,7 +41,11 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import { composeSubmitWhitelistProposalMsg, d2Formatter } from "lib/utils";
+import {
+  composeSubmitWhitelistProposalMsg,
+  d2Formatter,
+  formatSeconds,
+} from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -143,13 +147,14 @@ const ProposalToWhitelist = () => {
       setEstimatedFee(undefined);
     },
   });
-  const minDeposit = govParams?.depositParams.min_deposit;
+  const minDeposit = govParams?.depositParams.minDeposit;
   const {
     variant,
     description: alertDesc,
     icon,
   } = getAlert(
     initialDeposit.amount,
+    govParams?.depositParams.minInitialDeposit,
     minDeposit?.formattedAmount,
     minDeposit?.formattedDenom
   );
@@ -236,7 +241,7 @@ const ProposalToWhitelist = () => {
                 borderRadius="8px"
               >
                 <Flex gap={2} alignItems="center">
-                  <CustomIcon name="proposal-solid" />
+                  <CustomIcon name="proposal-solid" color="pebble.600" />
                   <Heading as="h6" variant="h6">
                     Fill in Proposal Details
                   </Heading>
@@ -326,10 +331,7 @@ const ProposalToWhitelist = () => {
                     disabled={fields.length <= 1}
                     onClick={() => remove(idx)}
                   >
-                    <CustomIcon
-                      name="delete"
-                      color={fields.length <= 1 ? "pebble.600" : "text.dark"}
-                    />
+                    <CustomIcon name="delete" />
                   </Button>
                 </Flex>
               ))}
@@ -337,7 +339,7 @@ const ProposalToWhitelist = () => {
                 variant="outline-primary"
                 mt={3}
                 onClick={() => append({ address: "" as Addr })}
-                leftIcon={<CustomIcon name="plus" color="violet.light" />}
+                leftIcon={<CustomIcon name="plus" />}
               >
                 Add More Address
               </Button>
@@ -345,8 +347,15 @@ const ProposalToWhitelist = () => {
                 Initial Deposit
               </Heading>
               <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start 7-day voting period:{" "}
-                {minDeposit?.formattedToken}
+                Minimum deposit required to start{" "}
+                {formatSeconds(govParams?.depositParams.maxDepositPeriod)}{" "}
+                deposit period: {govParams?.depositParams.minInitialDeposit}{" "}
+                {minDeposit?.formattedDenom}
+              </Text>
+              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
+                Minimum deposit required to start{" "}
+                {formatSeconds(govParams?.votingParams.votingPeriod)} voting
+                period: {minDeposit?.formattedToken}
               </Text>
               <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                 <AssetBox baseDenom={initialDeposit.denom} />

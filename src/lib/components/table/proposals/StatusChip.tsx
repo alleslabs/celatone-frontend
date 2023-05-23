@@ -1,20 +1,9 @@
-import { chakra, Tag } from "@chakra-ui/react";
+import { Tag } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
-
-const StyledTag = chakra(Tag, {
-  baseStyle: {
-    borderRadius: "16px",
-    fontSize: "12px",
-    fontWeight: 400,
-    color: "text.main",
-    height: "24px",
-    w: "fit-content",
-  },
-});
 
 const getBgColor = (
   status: Proposal["status"]
@@ -44,11 +33,9 @@ export const StatusChip = ({
 }) => {
   const formatStatus = status.replace(/([A-Z])/g, " $1").trim();
   return (
-    <StyledTag bgColor={getBgColor(status)}>
+    <Tag bgColor={getBgColor(status)}>
       {formatStatus}
-      {hasCloseBtn && (
-        <CustomIcon name="close" boxSize="3" color="text.main" mr={0} />
-      )}
-    </StyledTag>
+      {hasCloseBtn && <CustomIcon name="close" boxSize="3" mr={0} />}
+    </Tag>
   );
 };

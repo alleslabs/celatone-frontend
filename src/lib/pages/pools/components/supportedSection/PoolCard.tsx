@@ -1,4 +1,4 @@
-import { Flex, IconButton, SimpleGrid, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, IconButton, SimpleGrid, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import type { Big } from "big.js";
 import big from "big.js";
@@ -8,6 +8,7 @@ import { PoolHeader } from "../PoolHeader";
 import { getPoolUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import type { USD, Pool, Token, U } from "lib/types";
 import { formatPrice } from "lib/utils";
 
@@ -60,13 +61,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           poolType={item.type}
           poolLiquidity={item.poolLiquidity}
         />
-        <Tooltip
-          hasArrow
-          label="See in osmosis.zone"
-          placement="top"
-          bg="honeydew.darker"
-          maxW="240px"
-        >
+        <Tooltip label="See in osmosis.zone">
           <Link
             href={`${getPoolUrl(currentChainName)}/${item.id}`}
             onClick={(e) => e.stopPropagation()}

@@ -74,7 +74,9 @@ export const StickySidebar = ({
                     color: "lilac.light",
                     bgColor: "lilac.background",
                   }}
-                  onClick={() => navigate({ pathname: "/proposal/store-code" })}
+                  onClick={() =>
+                    navigate({ pathname: "/proposals/store-code" })
+                  }
                 >
                   <Text variant="body3" color="inherit" fontWeight={700}>
                     Submit Proposal To Store Code

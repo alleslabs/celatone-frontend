@@ -49,8 +49,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#283](https://github.com/alleslabs/celatone-frontend/pull/283) Change unsupported token icon render logic
+- [#347](https://github.com/alleslabs/celatone-frontend/pull/347) Move tx table accordion arrow to the front and refactor block txs table
 
 ### Bug fixes
+
+## v1.0.5
+
+### Features
+
+- [#346](https://github.com/alleslabs/celatone-frontend/pull/346) Apply initial condition to my stored codes upload button
+- [#327](https://github.com/alleslabs/celatone-frontend/pull/327) Update logic to enable upload wasm code
+- [#317](https://github.com/alleslabs/celatone-frontend/pull/317) Add amplitude for proposal list page and pagination
+
+### Improvements
+
+- [#339](https://github.com/alleslabs/celatone-frontend/pull/339) Update all routes to plural form, and patch all codes
+- [#334](https://github.com/alleslabs/celatone-frontend/pull/334) Change `osmo-test-4` to `osmo-test-5`, fix tx service when accountId is undefined
+- [#311](https://github.com/alleslabs/celatone-frontend/pull/311) Refine css styling
+- [#328](https://github.com/alleslabs/celatone-frontend/pull/328) Add proposal and pool page in sidebar navigation
+- [#298](https://github.com/alleslabs/celatone-frontend/pull/298) Show deposit/voting period from gov params and add minimum required alert
+
+### Bug fixes
+
+- [$348](https://github.com/alleslabs/celatone-frontend/pull/348) Workaround for the issue that walletManager local storage is not cleared when switching networks
+- [$340](https://github.com/alleslabs/celatone-frontend/pull/340) Remove resend and redo button in accordion if relation is related (Past txs page)
+- [#337](https://github.com/alleslabs/celatone-frontend/pull/337) Fix beforeunload keep showing up Leave modal
+- [#330](https://github.com/alleslabs/celatone-frontend/pull/330) Fix proposal table component propagation
+
+## v1.0.4
+
+### Bug fixes
+
+- [#316](https://github.com/alleslabs/celatone-frontend/pull/316) Stop propagation when clicking on ContractRowCTA menu
 
 ## v1.0.3
 

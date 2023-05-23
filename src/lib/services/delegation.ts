@@ -3,7 +3,7 @@ import axios from "axios";
 import big from "big.js";
 
 import type { Addr, Token, U, ValidatorAddr } from "lib/types";
-import { parseDate, secondsToDays } from "lib/utils";
+import { parseDate, formatSeconds } from "lib/utils";
 
 interface StakingParamsResponse {
   params: {
@@ -120,7 +120,7 @@ export const getStakingParams = async (
     `${endpoint}/cosmos/staking/v1beta1/params`
   );
   return {
-    unbondingTime: secondsToDays(data.params.unbonding_time.slice(0, -1)),
+    unbondingTime: formatSeconds(data.params.unbonding_time),
     maxEntries: data.params.max_entries,
     bondDenom: data.params.bond_denom,
   };

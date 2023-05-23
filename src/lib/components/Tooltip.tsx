@@ -1,16 +1,15 @@
 import type { TooltipProps } from "@chakra-ui/react";
-import { Tooltip } from "@chakra-ui/react";
+import { Tooltip as ChakraTooltip } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
 
-export const TooltipComponent = ({
-  placement,
+export const Tooltip = ({
+  placement = "top",
   ...tooltipProps
 }: TooltipProps) => (
-  <Tooltip
+  <ChakraTooltip
     hasArrow
-    placement={placement ?? "top"}
-    bg="honeydew.darker"
+    placement={placement}
     arrowSize={8}
     {...tooltipProps}
   />
@@ -24,7 +23,7 @@ export const TooltipInfo = ({
   iconVariant = "default",
   ...tooltipProps
 }: TooltipInfoProps) => (
-  <TooltipComponent {...tooltipProps}>
+  <Tooltip {...tooltipProps}>
     <div style={{ cursor: "pointer" }}>
       <CustomIcon
         name={iconVariant === "solid" ? "info-circle-solid" : "info-circle"}
@@ -32,5 +31,5 @@ export const TooltipInfo = ({
         m={0}
       />
     </div>
-  </TooltipComponent>
+  </Tooltip>
 );

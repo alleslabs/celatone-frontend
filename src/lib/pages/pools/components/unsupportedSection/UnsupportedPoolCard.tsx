@@ -1,7 +1,6 @@
 import {
   Flex,
   IconButton,
-  Tooltip,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
@@ -19,6 +18,7 @@ import { getPoolUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "lib/components/Tooltip";
 import type { Pool } from "lib/types";
 import { formatUTokenWithPrecision } from "lib/utils";
 
@@ -63,13 +63,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                   poolLiquidity={item.poolLiquidity}
                 />
                 <Flex>
-                  <Tooltip
-                    hasArrow
-                    label="See in osmosis.zone"
-                    placement="top"
-                    bg="honeydew.darker"
-                    maxW="240px"
-                  >
+                  <Tooltip label="See in osmosis.zone">
                     <Link
                       href={`${getPoolUrl(currentChainName)}/${item.id}`}
                       onClick={(e) => e.stopPropagation()}

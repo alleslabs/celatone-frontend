@@ -62,16 +62,22 @@ export const SingleMsg = ({
       ))}
       {/* Tags  */}
       {tags?.map((tag: string, index: number) => (
-        <Tag key={index.toString() + tag} borderRadius="full">
+        <Tag variant="gray" size="sm" key={index.toString() + tag}>
           {snakeCase(tag) || tag}
         </Tag>
       ))}
       {/* Tag left over */}
       {tags && length && length - tags.length > 0 && (
-        <Tag borderRadius="full">+{length - tags.length} </Tag>
+        <Tag variant="gray" size="sm">
+          +{length - tags.length}
+        </Tag>
       )}
       {/* Length  */}
-      {!tags && length && <Tag borderRadius="full">{length}</Tag>}
+      {!tags && length && (
+        <Tag variant="gray" size="sm">
+          {length}
+        </Tag>
+      )}
       {/* Text2 */}
       {text2}
       {/* Link */}

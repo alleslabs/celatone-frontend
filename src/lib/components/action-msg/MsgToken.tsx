@@ -1,8 +1,9 @@
-import { Flex, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 
 import { Copier } from "../copy";
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 import { formatBalanceWithDenom } from "lib/utils";
 
 interface MsgTokenProps {
@@ -26,13 +27,7 @@ export const MsgToken = ({
         precision,
       })}
     </Text>
-    <Tooltip
-      hasArrow
-      label={`Token ID: ${coin.denom}`}
-      placement="top"
-      bg="honeydew.darker"
-      maxW="240px"
-    >
+    <Tooltip label={`Token ID: ${coin.denom}`} maxW="240px">
       <Flex cursor="pointer">
         <CustomIcon name="info-circle" boxSize={3} />
       </Flex>

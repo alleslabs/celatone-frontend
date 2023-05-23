@@ -44,10 +44,7 @@ export const AssetInput = ({
       disabled={disableDelete}
       onClick={onDelete}
     >
-      <CustomIcon
-        name="delete"
-        color={disableDelete ? "pebble.600" : "text.dark"}
-      />
+      <CustomIcon name="delete" />
     </Button>
   </Grid>
 );
