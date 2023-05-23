@@ -26,11 +26,11 @@ export const FailedModal = ({ errorLog, onClose }: FailedModalProps) => (
     <ModalOverlay />
     <ModalContent w="600px">
       <ModalHeader>
-        <Flex gap="12px" align="center">
+        <Flex gap={3} align="center">
           <CustomIcon
             name="alert-circle-solid"
             color="error.light"
-            boxSize="5"
+            boxSize={5}
           />
           <Heading as="h5" variant="h5">
             Failed to instantiate
@@ -40,12 +40,12 @@ export const FailedModal = ({ errorLog, onClose }: FailedModalProps) => (
       <ModalCloseButton />
       <ModalBody>
         Something went wrong. Here are the error logs.
-        <Box bg="background.main" borderRadius="8px" p="8px" mt="16px">
+        <Box bg="background.main" borderRadius="8px" p={2} mt={4}>
           <Text>{errorLog}</Text>
         </Box>
       </ModalBody>
 
-      <ModalFooter gap="8px">
+      <ModalFooter gap={2}>
         <CopyButton
           value={errorLog}
           size="md"

@@ -35,19 +35,19 @@ export const ConnectWalletAlert = ({
   return !address ? (
     <Alert
       {...alertProps}
-      variant="honeydew"
+      variant="accent"
       alignItems="center"
       justifyContent="space-between"
-      py="12px"
+      py={3}
     >
       <Flex gap={2}>
-        <CustomIcon name="wallet-solid" boxSize="4" />
+        <CustomIcon name="wallet-solid" boxSize={4} />
         <Box>
           <AlertTitle>{title}</AlertTitle>
           <AlertDescription>{subtitle}</AlertDescription>
         </Box>
       </Flex>
-      <Button size="sm" variant="ghost-info" gap={2} onClick={onClickConnect}>
+      <Button size="sm" variant="ghost-accent" gap={2} onClick={onClickConnect}>
         <CustomIcon name="connect" /> Connect Wallet
       </Button>
     </Alert>

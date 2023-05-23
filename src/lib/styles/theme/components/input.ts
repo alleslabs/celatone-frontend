@@ -6,18 +6,18 @@ export const Input: ComponentStyleConfig = {
       field: {
         color: "text.main",
         border: "1px solid",
-        borderColor: "pebble.700",
+        borderColor: "gray.700",
         background: "none",
         borderRadius: "8px",
         _hover: {
-          borderColor: "pebble.600",
+          borderColor: "gray.600",
         },
         _focusWithin: {
-          borderColor: "lilac.main",
+          borderColor: "secondary.main",
           borderWidth: "2px",
         },
         _active: {
-          borderColor: "lilac.main",
+          borderColor: "secondary.main",
           borderWidth: "2px",
         },
         _disabled: {
@@ -27,7 +27,7 @@ export const Input: ComponentStyleConfig = {
         _invalid: {
           borderColor: "error.main",
         },
-        _placeholder: { color: "pebble.600" },
+        _placeholder: { color: "gray.600" },
       },
     },
   },

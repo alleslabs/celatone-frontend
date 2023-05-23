@@ -60,9 +60,9 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               aria-label="save"
               icon={
                 contractLocalInfo.lists ? (
-                  <CustomIcon name="bookmark-solid" color="violet.light" />
+                  <CustomIcon name="bookmark-solid" color="primary.light" />
                 ) : (
-                  <CustomIcon name="bookmark" color="pebble.600" />
+                  <CustomIcon name="bookmark" color="gray.600" />
                 )
               }
             />
@@ -83,7 +83,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               fontSize="24px"
               variant="none"
               aria-label="save"
-              color="pebble.600"
+              color="gray.600"
               icon={<CustomIcon name="bookmark" />}
             />
           }
@@ -175,7 +175,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
                   fontSize="24px"
                   variant="none"
                   aria-label="edit"
-                  color="pebble.600"
+                  color="gray.600"
                   icon={<CustomIcon name="edit" />}
                 />
               }

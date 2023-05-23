@@ -74,7 +74,7 @@ const Codes = observer(() => {
         My Codes
       </Heading>
       <Tabs mt={8}>
-        <TabList mb="32px" borderBottom="1px" borderColor="pebble.800">
+        <TabList mb={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab count={allCodesCount}>All Codes</CustomTab>
           <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
           <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
@@ -112,7 +112,7 @@ const Codes = observer(() => {
               isSearching={isSearching}
             />
           </TabPanel>
-          <TabPanel p="0px">
+          <TabPanel p={0}>
             <MyStoredCodesSection
               codes={stored}
               isLoading={isStoredCodesLoading}
@@ -121,7 +121,7 @@ const Codes = observer(() => {
               isSearching={isSearching}
             />
           </TabPanel>
-          <TabPanel p="0px">
+          <TabPanel p={0}>
             <MySavedCodesSection
               codes={saved}
               isLoading={isSavedCodesLoading}

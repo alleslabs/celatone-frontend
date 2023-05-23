@@ -35,9 +35,9 @@ export const AssetBox = ({ baseDenom }: { baseDenom: Option<string> }) => {
       padding="16px 12px"
       borderRadius="8px"
       border="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       position="relative"
-      color={tokenInfo ? "text.main" : "pebble.600"}
+      color={tokenInfo ? "text.main" : "gray.600"}
     >
       <AssetLabel>Asset</AssetLabel>
       <Flex align="center">

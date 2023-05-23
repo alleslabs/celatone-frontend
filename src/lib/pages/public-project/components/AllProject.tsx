@@ -92,7 +92,7 @@ export const AllProject = observer(() => {
           ))}
         </SimpleGrid>
       )}
-      <Flex justifyContent="center" gap="2" w="100%" mt="64px">
+      <Flex justifyContent="center" gap={2} w="100%" mt={16}>
         <Text color="text.dark" variant="body2">
           Want your project here?
         </Text>

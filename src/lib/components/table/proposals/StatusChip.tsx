@@ -10,17 +10,17 @@ const getBgColor = (
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
     case ProposalStatus.DEPOSIT_PERIOD:
-      return "lilac.darker";
+      return "secondary.darker";
     case ProposalStatus.FAILED:
     case ProposalStatus.REJECTED:
       return "error.dark";
     case ProposalStatus.PASSED:
       return "success.dark";
     case ProposalStatus.VOTING_PERIOD:
-      return "violet.dark";
+      return "primary.dark";
     case ProposalStatus.DEPOSIT_FAILED:
     default:
-      return "pebble.700";
+      return "gray.700";
   }
 };
 
@@ -35,7 +35,7 @@ export const StatusChip = ({
   return (
     <Tag bgColor={getBgColor(status)}>
       {formatStatus}
-      {hasCloseBtn && <CustomIcon name="close" boxSize="3" mr={0} />}
+      {hasCloseBtn && <CustomIcon name="close" boxSize={3} mr={0} />}
     </Tag>
   );
 };

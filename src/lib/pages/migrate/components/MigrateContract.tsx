@@ -182,7 +182,7 @@ export const MigrateContract = ({
         <Flex gap={2} mb={4}>
           <CustomIcon
             name="alert-circle-solid"
-            boxSize="3"
+            boxSize={3}
             color="error.main"
           />
           <Text variant="body3" color="error.main">
@@ -196,7 +196,7 @@ export const MigrateContract = ({
         alignSelf="flex-start"
         alignItems="center"
         display="flex"
-        gap="4px"
+        gap={1}
       >
         <p>Transaction Fee:</p>
         <EstimatedFeeRender
@@ -204,7 +204,7 @@ export const MigrateContract = ({
           loading={isSimulating}
         />
       </Flex>
-      <Flex justify="space-between" w="100%" mt="32px">
+      <Flex justify="space-between" w="100%" mt={8}>
         <Button
           variant="outline-gray"
           w="128px"

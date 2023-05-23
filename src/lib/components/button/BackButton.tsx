@@ -10,18 +10,18 @@ export const BackButton = (props: ButtonProps) => {
 
   return (
     <Button
-      variant="ghost-lilac"
+      variant="ghost-secondary"
       size="sm"
-      mb="8px"
+      mb={2}
       p="unset"
-      pr="2"
+      pr={2}
       onClick={() => {
         AmpTrack(AmpEvent.USE_BACK_BUTTON);
         router.back();
       }}
       {...props}
     >
-      <CustomIcon name="chevron-left" boxSize="3" mr={2} />
+      <CustomIcon name="chevron-left" boxSize={3} mr={2} />
       BACK
     </Button>
   );

@@ -57,22 +57,22 @@ export const UploadCard = ({
     <>
       <Flex
         align="center"
-        p="16px"
-        gap="16px"
+        p={4}
+        gap={4}
         w="full"
-        bgColor="pebble.900"
+        bgColor="gray.900"
         borderRadius="8px"
         border="1px solid"
-        borderColor={isError ? "error.main" : "pebble.900"}
+        borderColor={isError ? "error.main" : "gray.900"}
       >
         <UploadIcon />
         <Flex direction="column">
           <Text variant="body1">{file.name}</Text>
-          <Text variant="body2" color="text.dark" display="flex" gap="4px">
+          <Text variant="body2" color="text.dark" display="flex" gap={1}>
             {big(file.size).div(1000).toFixed(0)} KB • {statusText}
           </Text>
         </Flex>
-        <Flex align="center" gap="16px" ml="auto">
+        <Flex align="center" gap={4} ml="auto">
           <CustomIcon
             name="delete"
             color="text.dark"

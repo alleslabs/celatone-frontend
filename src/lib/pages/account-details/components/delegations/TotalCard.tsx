@@ -29,11 +29,11 @@ export const TotalCard = ({
     ) : (
       <>
         <Flex alignItems="center" gap={1}>
-          <Text variant="body2" fontWeight="500" textColor="text.dark">
+          <Text variant="body2" fontWeight={500} textColor="text.dark">
             {title}
           </Text>
           <Tooltip label={message}>
-            <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
+            <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
           </Tooltip>
         </Flex>
         {!token ? (

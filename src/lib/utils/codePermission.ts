@@ -32,7 +32,7 @@ export const getPermissionHelper = (
     instantiatePermission === AccessConfigPermission.EVERYBODY ||
     (address && permissionAddresses.includes(address))
       ? "success.main"
-      : "info.main";
+      : "text.dark";
 
   return { message: getMessage(), messageColor: getColor() };
 };

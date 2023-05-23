@@ -32,9 +32,9 @@ export const NonRedelegatableSection = ({
     <Box
       px={6}
       py={4}
-      bgColor="pebble.900"
+      bgColor="gray.900"
       border="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       borderRadius="8px"
     >
       <Text variant="body2">

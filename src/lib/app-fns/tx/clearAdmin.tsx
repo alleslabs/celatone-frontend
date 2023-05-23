@@ -70,7 +70,7 @@ export const clearAdminTx = ({
             <CustomIcon
               name="check-circle-solid"
               color="success.main"
-              boxSize="5"
+              boxSize={5}
             />
           ),
         },

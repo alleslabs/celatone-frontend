@@ -115,7 +115,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
       {publicInfo?.description && (
         <Flex
           direction="column"
-          bg="pebble.900"
+          bg="gray.900"
           maxW="100%"
           borderRadius="8px"
           py={4}
@@ -124,12 +124,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           flex="1"
         >
           <Flex alignItems="center" gap={1} minH="32px">
-            <CustomIcon name="website" ml="0" mb="6px" color="pebble.600" />
+            <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
             <Text variant="body2" fontWeight={500} color="text.dark">
               Public Account Description
             </Text>
           </Flex>
-          <Text variant="body2" color="text.main" mb="1">
+          <Text variant="body2" color="text.main" mb={1}>
             {publicInfo?.description}
           </Text>
         </Flex>
@@ -138,7 +138,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
       <Tabs index={tabIndex}>
         <TabList
           borderBottom="1px solid"
-          borderColor="pebble.700"
+          borderColor="gray.700"
           overflowX="scroll"
           id={tableHeaderId}
         >
@@ -198,9 +198,9 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               pb={8}
               direction="column"
               borderBottom="1px solid"
-              borderBottomColor="pebble.700"
+              borderBottomColor="gray.700"
             >
-              <Text variant="body2" fontWeight="500" color="text.dark">
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Total Account Value
               </Text>
               {isLoading ? (
@@ -219,13 +219,13 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 </Heading>
               )}
             </Flex>
-            <Flex borderBottom="1px solid" borderBottomColor="pebble.700">
+            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}
                 onViewMore={() => handleTabChange(TabIndex.Assets)}
               />
             </Flex>
-            <Flex borderBottom="1px solid" borderBottomColor="pebble.700">
+            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <DelegationsSection
                 walletAddress={accountAddress}
                 onViewMore={() => handleTabChange(TabIndex.Delegations)}

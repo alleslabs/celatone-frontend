@@ -39,11 +39,11 @@ const getAlertContent = (
         description: "Your address is allowed to directly upload Wasm files",
       }
     : {
-        variant: "violet",
+        variant: "primary",
         icon: (
           <CustomIcon
             name="info-circle-solid"
-            color="violet.light"
+            color="primary.light"
             boxSize={4}
           />
         ),
@@ -78,7 +78,7 @@ const Deploy = () => {
         DEPLOY NEW CONTRACT
       </Text>
       <Stepper mode="deploy" currentStep={1} />
-      <Heading as="h5" variant="h5" my="48px">
+      <Heading as="h5" variant="h5" my={12}>
         Select Deploy Option
       </Heading>
       <ConnectWalletAlert
@@ -100,7 +100,7 @@ const Deploy = () => {
         }
         disabled={!enableUpload || !address}
         onClick={() => navigate({ pathname: "/upload" })}
-        mb="16px"
+        mb={4}
       />
       <ButtonCard
         title="Use existing Code IDs"
@@ -108,7 +108,7 @@ const Deploy = () => {
         onClick={() => navigate({ pathname: "/instantiate" })}
         disabled={!address}
       />
-      <Flex justify="center" w="100%" mt="32px">
+      <Flex justify="center" w="100%" mt={8}>
         <Button
           onClick={() => {
             router.back();

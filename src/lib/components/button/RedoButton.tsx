@@ -27,7 +27,7 @@ export const RedoButton = ({ message }: RedoButtonProps) => {
         )
       }
     >
-      <CustomIcon name="redo" boxSize="3" />
+      <CustomIcon name="redo" boxSize={3} />
       Redo
     </Button>
   );

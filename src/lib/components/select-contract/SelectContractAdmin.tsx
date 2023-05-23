@@ -59,8 +59,8 @@ export const SelectContractAdmin = ({
     <>
       <Button
         variant={notSelected ? "primary" : "outline-primary"}
-        py="6px"
-        px="16px"
+        py={1}
+        px={4}
         size="sm"
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
@@ -80,8 +80,8 @@ export const SelectContractAdmin = ({
           <DrawerHeader>
             <CustomIcon
               name="contract-address-solid"
-              boxSize="5"
-              color="pebble.600"
+              boxSize={5}
+              color="gray.600"
             />
             <Heading as="h5" variant="h5">
               Select contract which you have permission

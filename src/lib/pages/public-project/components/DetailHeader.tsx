@@ -26,7 +26,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
       w="full"
       spacing={1}
       separator={
-        <CustomIcon name="chevron-right" boxSize="3" color="pebble.600" />
+        <CustomIcon name="chevron-right" boxSize={3} color="gray.600" />
       }
     >
       <BreadcrumbItem
@@ -42,7 +42,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
           variant="body2"
           className="ellipsis"
           width="250px"
-          fontWeight="600"
+          fontWeight={700}
           color="text.dark"
         >
           {details?.name}

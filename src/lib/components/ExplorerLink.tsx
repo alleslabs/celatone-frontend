@@ -111,9 +111,9 @@ const LinkRender = ({
   const textElement = (
     <Text
       variant={textVariant}
-      color="lilac.main"
+      color="secondary.main"
       transition="all .25s ease-in-out"
-      _hover={{ color: "lilac.light" }}
+      _hover={{ color: "secondary.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
       maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
@@ -179,7 +179,7 @@ export const ExplorerLink = ({
       _hover={{
         ...(!readOnly && {
           textDecoration: "underline",
-          textDecorationColor: "lilac.light",
+          textDecorationColor: "secondary.light",
         }),
       }}
       {...componentProps}
@@ -203,7 +203,7 @@ export const ExplorerLink = ({
             value={copyValue || value}
             copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
             display={showCopyOnHover ? "none" : "block"}
-            ml="8px"
+            ml={2}
             amptrackSection={ampCopierSection}
           />
         </>

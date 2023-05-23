@@ -21,21 +21,16 @@ export const InvalidState = ({ title }: InvalidStateProps) => {
       direction="column"
       alignItems="center"
       borderY="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       width="full"
-      my="24px"
-      py="24px"
+      my={6}
+      py={6}
     >
       <StateImage imageVariant="not-found" />
-      <Heading as="h5" variant="h5" my="8px">
+      <Heading as="h5" variant="h5" my={2}>
         {title}
       </Heading>
-      <Text
-        variant="body2"
-        fontWeight="500"
-        color="text.dark"
-        textAlign="center"
-      >
+      <Text variant="body2" color="text.dark" textAlign="center">
         Please double-check your input and make sure you have selected the
         correct network.
       </Text>

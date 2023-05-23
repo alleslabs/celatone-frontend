@@ -89,8 +89,8 @@ export const submitProposalTx = ({
           headerIcon: (
             <CustomIcon
               name="submit-proposal-solid"
-              color="pebble.600"
-              boxSize="5"
+              color="gray.600"
+              boxSize={5}
             />
           ),
         },

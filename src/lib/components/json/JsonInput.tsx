@@ -40,7 +40,7 @@ const getResponse = (jsonState: JsonState) => {
             <CustomIcon
               name="check-circle-solid"
               color="success.main"
-              boxSize="3"
+              boxSize={3}
             />
             Valid JSON Format
           </>
@@ -54,7 +54,7 @@ const getResponse = (jsonState: JsonState) => {
             <CustomIcon
               name="alert-circle-solid"
               color="error.light"
-              boxSize="3"
+              boxSize={3}
             />
             {jsonState.errMsg}
           </>
@@ -109,12 +109,12 @@ const JsonInput = ({
       <Box
         p="16px 12px"
         borderWidth="thin"
-        borderColor="pebble.700"
+        borderColor="gray.700"
         borderRadius="8px"
         position="relative"
         transition="all .25s ease-in-out"
         _hover={{
-          borderColor: "pebble.600",
+          borderColor: "gray.600",
         }}
       >
         <JsonEditor
@@ -140,7 +140,7 @@ const JsonInput = ({
           top="10px"
           right="10px"
           p="4px 10px"
-          variant="outline-info"
+          variant="outline-accent"
           fontSize="12px"
           background="background.main"
           float="right"

@@ -39,7 +39,7 @@ export const StickySidebar = ({
     <Box flex="4" px={8} position="relative" {...boxProps}>
       <Flex position="fixed" width="full">
         <Accordion allowToggle width={96} defaultIndex={[0]}>
-          <AccordionItem borderTop="none" borderColor="pebble.700">
+          <AccordionItem borderTop="none" borderColor="gray.700">
             <AccordionButton py={3} px={0}>
               <Text
                 variant="body2"
@@ -49,13 +49,13 @@ export const StickySidebar = ({
               >
                 {title}
               </Text>
-              <AccordionIcon color="pebble.600" ml="auto" />
+              <AccordionIcon color="gray.600" ml="auto" />
             </AccordionButton>
             <AccordionPanel
               py={3}
               px={0}
               borderTop="1px solid"
-              borderColor="pebble.700"
+              borderColor="gray.700"
             >
               <Text variant="body2" color="text.dark" mb={hasAction ? 3 : 0}>
                 {description}
@@ -69,10 +69,10 @@ export const StickySidebar = ({
                   gap={2}
                   width="fit-content"
                   transition="all 0.25s ease-in-out"
-                  color="lilac.main"
+                  color="secondary.main"
                   _hover={{
-                    color: "lilac.light",
-                    bgColor: "lilac.background",
+                    color: "secondary.light",
+                    bgColor: "secondary.background",
                   }}
                   onClick={() =>
                     navigate({ pathname: "/proposals/store-code" })
@@ -83,7 +83,7 @@ export const StickySidebar = ({
                   </Text>
                   <CustomIcon
                     name="chevron-right"
-                    color="lilac.main"
+                    color="secondary.main"
                     boxSize={3}
                     m={0}
                   />

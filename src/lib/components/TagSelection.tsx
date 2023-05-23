@@ -141,11 +141,11 @@ export const TagSelection = observer(
               borderRadius="8px"
               maxW="100%"
               border="1px solid"
-              borderColor="pebble.700"
+              borderColor="gray.700"
               overflowX="scroll"
             >
               {result.length > 0 && (
-                <Flex alignItems="center" pl="2">
+                <Flex alignItems="center" pl={2}>
                   {result.map((option) => (
                     <Flex
                       display="inline-block"
@@ -154,7 +154,7 @@ export const TagSelection = observer(
                     >
                       <Tag gap={1} mr={1} cursor="pointer">
                         {option}
-                        <CustomIcon name="close" boxSize="3" />
+                        <CustomIcon name="close" boxSize={3} />
                       </Tag>
                     </Flex>
                   ))}
@@ -182,7 +182,7 @@ export const TagSelection = observer(
                 position="absolute"
                 top={0}
                 left={0}
-                fontWeight="400"
+                fontWeight={400}
                 color="text.dark"
                 bgColor={labelBgColor}
                 pointerEvents="none"
@@ -201,9 +201,9 @@ export const TagSelection = observer(
             {displayOptions && (
               <List
                 borderRadius="8px"
-                bg="pebble.800"
-                px="2"
-                py="1"
+                bg="gray.800"
+                px={2}
+                py={1}
                 mt={0}
                 position="absolute"
                 zIndex="2"
@@ -215,7 +215,7 @@ export const TagSelection = observer(
                 {/* header */}
                 <ListItem
                   p={2}
-                  borderBottomColor="pebble.700"
+                  borderBottomColor="gray.700"
                   borderBottomWidth={noResultAndUncreatable ? "0" : "1px"}
                 >
                   {noResultAndUncreatable ? (
@@ -233,7 +233,7 @@ export const TagSelection = observer(
                   <ListItem
                     key={option}
                     style={listItemProps}
-                    _hover={{ bg: "pebble.700" }}
+                    _hover={{ bg: "gray.700" }}
                     transition="all .25s ease-in-out"
                     onClick={() => selectOptionFromList(option)}
                   >
@@ -246,8 +246,8 @@ export const TagSelection = observer(
                           data-label={option}
                           mr={2}
                           name="check"
-                          color="pebble.600"
-                          boxSize="3"
+                          color="gray.600"
+                          boxSize={3}
                         />
                       )}
                     </Flex>
@@ -257,7 +257,7 @@ export const TagSelection = observer(
                 {canCreateOption && inputValue && (
                   <ListItem
                     style={listItemProps}
-                    _hover={{ bg: "pebble.700" }}
+                    _hover={{ bg: "gray.700" }}
                     transition="all .25s ease-in-out"
                     data-testid="create-option"
                     onClick={() => createOption()}
