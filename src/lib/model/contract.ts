@@ -1,7 +1,11 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { useCelatoneApp, useChainId, useLCDEndpoint } from "lib/app-provider";
+import {
+  useBaseApiRoute,
+  useCelatoneApp,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAssetInfos } from "lib/services/assetService";
@@ -91,8 +95,8 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
 export const useContractData = (
   contractAddress: ContractAddr
 ): ContractDataState => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
+  const balancesApiRoute = useBaseApiRoute("balances");
+  const { indexerGraphClient, currentChainId } = useCelatoneApp();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
   const lcdEndpoint = useLCDEndpoint();
@@ -101,33 +105,27 @@ export const useContractData = (
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
-  const chainId = useChainId();
 
   const { data: instantiateInfo, isLoading: isInstantiateInfoLoading } =
     useQuery(
       ["query", "instantiate_info", lcdEndpoint, contractAddress],
       async () =>
         queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
+      { enabled: !!contractAddress, retry: false }
     );
 
   const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
     useQuery(
       ["query", "contract_cw2_info", lcdEndpoint, contractAddress],
       async () => queryContractCw2Info(lcdEndpoint, contractAddress),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
+      { enabled: !!contractAddress, retry: false }
     );
 
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
     useQuery(
-      ["query", "contractBalances", contractAddress, chainId],
-      async () =>
-        queryContractBalances(
-          currentChainRecord?.name,
-          currentChainRecord?.chain.chain_id,
-          contractAddress
-        ),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
+      ["query", "contractBalances", balancesApiRoute, contractAddress],
+      async () => queryContractBalances(balancesApiRoute, contractAddress),
+      { enabled: !!contractAddress, retry: false }
     );
 
   const contractBalancesWithAssetInfos = contractBalances
@@ -154,7 +152,7 @@ export const useContractData = (
 
   return {
     contractData: {
-      chainId,
+      chainId: currentChainId,
       codeInfo,
       contractLocalInfo,
       contractCw2Info,

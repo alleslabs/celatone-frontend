@@ -16,9 +16,7 @@ import {
 const BlockDetail = () => {
   const router = useRouter();
   const heightParam = getFirstQueryParam(router.query.height);
-  const { data: blockData, isLoading } = useBlockDetailsQuery(
-    Number(heightParam)
-  );
+  const { data: blockData, isLoading } = useBlockDetailsQuery(heightParam);
 
   if (isLoading) return <Loading />;
 

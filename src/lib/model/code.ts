@@ -1,7 +1,7 @@
 import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
-import { useChainId } from "lib/app-provider";
+import { useCelatoneApp } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useUserKey, usePermissionFilter, useSearchFilter } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
@@ -34,18 +34,18 @@ export interface CodeDataState {
   };
 }
 
-export const useCodeData = (codeId: number): CodeDataState => {
+export const useCodeData = (codeId: string): CodeDataState => {
   const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug
   );
 
-  const chainId = useChainId();
+  const { currentChainId } = useCelatoneApp();
 
   return {
     isLoading,
-    chainId,
+    chainId: currentChainId,
     codeData: codeInfo as CodeData,
     publicProject: {
       publicCodeData: publicCodeInfo,

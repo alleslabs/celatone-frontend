@@ -1,6 +1,5 @@
 export * from "./useAddress";
 export * from "./useAmplitude";
-export * from "./useChainId";
 export * from "./useDummyWallet";
 export * from "./useFabricateFee";
 export * from "./useInternalNavigate";
@@ -12,4 +11,6 @@ export * from "./useSelectChain";
 export * from "./useSimulateFee";
 export * from "./useTokensInfo";
 export * from "./useCurrentNetwork";
+export * from "./useBaseApiRoute";
 export * from "./useRPCEndpoint";
+export * from "./useWasmConfig";

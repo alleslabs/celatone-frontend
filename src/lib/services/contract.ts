@@ -1,7 +1,6 @@
 import axios from "axios";
 import type { GraphQLClient } from "graphql-request";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import { getBlockTimestampByHeightQueryDocument } from "lib/query";
 import type {
   Addr,
@@ -125,16 +124,11 @@ export const queryInstantiateInfo = async (
 };
 
 export const queryContractBalances = async (
-  chainName: Option<string>,
-  chainId: Option<string>,
+  balancesApiRoute: string,
   contractAddress: ContractAddr
 ): Promise<Balance[]> => {
-  if (!chainName || !chainId)
-    throw new Error("Invalid chain (queryContractBalances)");
   const { data } = await axios.get<Balance[]>(
-    `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
-      chainName
-    )}/${chainId}/${contractAddress}`
+    `${balancesApiRoute}/${contractAddress}`
   );
   return data;
 };
