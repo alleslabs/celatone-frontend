@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
+import { CURR_THEME } from "env";
 import { useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetBtn } from "lib/components/button";
@@ -36,7 +37,7 @@ const Header = () => {
     >
       <AppLink href="/">
         <Image
-          src="https://assets.alleslabs.dev/branding/logo/logo.svg"
+          src={CURR_THEME.branding.logo}
           alt="Celatone"
           minWidth="152px"
           width="152px"

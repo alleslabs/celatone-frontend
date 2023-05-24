@@ -1,6 +1,8 @@
-import { SELECTED_CHAIN } from "env";
+import { CURR_THEME, SELECTED_CHAIN } from "env";
 
-const APP_NAME = "celatone";
+const APP_NAME = CURR_THEME.branding.seo.appName;
+const FALLBACK_DESC = "A smart contract powered explorer for the Cosmos.";
+const FALLBACK_IMG = "https://assets.alleslabs.dev/branding/celatone-cover.jpg";
 
 const Meta = () => {
   const chainName = SELECTED_CHAIN || "";
@@ -13,35 +15,46 @@ const Meta = () => {
       <meta name="apple-mobile-web-app-title" content={APP_NAME} />
       <meta name="format-detection" content="telephone=no" />
       <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="theme-color" content="#FFFFFF" />
-      <title>{`${title} Explorer | Celatone`}</title>
+      <meta name="theme-color" content={CURR_THEME.colors.background.main} />
+      <title>{`${title} Explorer | ${CURR_THEME.branding.seo.title}`}</title>
       <meta
         name="description"
-        content="A smart contract powered explorer for the Cosmos."
+        content={CURR_THEME.branding.seo.description ?? FALLBACK_DESC}
       />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta property="og:title" content="Celatone Explorer" />
+      <meta
+        property="og:title"
+        content={`${title} Explorer | ${CURR_THEME.branding.seo.title}`}
+      />
       <meta
         property="og:description"
-        content="A smart contract powered explorer for the Cosmos."
+        content={CURR_THEME.branding.seo.description ?? FALLBACK_DESC}
       />
       <meta
         property="og:image"
-        content="https://assets.alleslabs.dev/branding/celatone-cover.jpg"
+        content={CURR_THEME.branding.seo.image ?? FALLBACK_IMG}
       />
 
       {/* Twitter */}
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:title" content="Celatone Explorer" />
+      <meta
+        property="twitter:card"
+        content={
+          CURR_THEME.branding.seo.twitter.cardType ?? "summary_large_image"
+        }
+      />
+      <meta
+        property="twitter:title"
+        content={`${title} Explorer | ${CURR_THEME.branding.seo.title}`}
+      />
       <meta
         property="twitter:description"
-        content="A smart contract powered explorer for the Cosmos."
+        content={CURR_THEME.branding.seo.description ?? FALLBACK_DESC}
       />
       <meta
         property="twitter:image"
-        content="https://assets.alleslabs.dev/branding/celatone-cover.jpg"
+        content={CURR_THEME.branding.seo.image ?? FALLBACK_IMG}
       />
     </>
   );
