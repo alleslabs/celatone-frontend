@@ -18,7 +18,7 @@ export const Copier = ({
   type,
   value,
   copyLabel,
-  display = "block",
+  display = "inline",
   ml = 2,
   amptrackSection,
 }: CopierProps) => (
@@ -34,7 +34,7 @@ export const Copier = ({
         marginLeft={ml}
         onClick={() => AmpTrackCopier(amptrackSection, type)}
         name="copy"
-        boxSize="12px"
+        boxSize={3}
         color="gray.600"
       />
     }

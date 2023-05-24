@@ -15,15 +15,25 @@ export const ResolvedHeight = ({
   isDepositOrVoting: boolean;
   amptrackSection?: string;
 }) => {
-  if (isDepositOrVoting) return <Text color="text.dark">Pending</Text>;
+  if (isDepositOrVoting)
+    return (
+      <Text color="text.dark" variant={{ base: "body2", md: "body1" }}>
+        Pending
+      </Text>
+    );
   if (!resolvedHeight || isDepositFailed)
-    return <Text color="text.dark">N/A</Text>;
+    return (
+      <Text color="text.dark" variant={{ base: "body2", md: "body1" }}>
+        N/A
+      </Text>
+    );
   return (
     <ExplorerLink
       type="block_height"
       value={resolvedHeight.toString()}
       showCopyOnHover
       ampCopierSection={amptrackSection}
+      textVariant={{ base: "body2", md: "body1" }}
     />
   );
 };

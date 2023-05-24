@@ -12,15 +12,17 @@ export const Proposer = ({
   amptrackSection?: string;
 }) => {
   const getAddressType = useGetAddressType();
-
   return proposer ? (
     <ExplorerLink
       type={getAddressType(proposer)}
       value={proposer}
       showCopyOnHover
       ampCopierSection={amptrackSection}
+      textVariant={{ base: "body2", md: "body1" }}
     />
   ) : (
-    <Text color="text.dark">N/A</Text>
+    <Text color="text.dark" variant={{ base: "body2", md: "body1" }}>
+      N/A
+    </Text>
   );
 };

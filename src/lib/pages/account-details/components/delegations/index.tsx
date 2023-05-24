@@ -1,8 +1,7 @@
-import { Button, Flex, Heading, useDisclosure } from "@chakra-ui/react";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import type Big from "big.js";
 import big from "big.js";
 
-import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { useUserDelegationInfos } from "lib/pages/account-details/data";
@@ -17,6 +16,7 @@ import type {
 } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
+import { DelegationInfo } from "./DelegationInfo";
 import { DelegationsBody } from "./DelegationsBody";
 import { RedelegationsSection } from "./RedelegationsSection";
 import { TotalCard } from "./TotalCard";
@@ -83,8 +83,23 @@ export const DelegationsSection = ({
 
   const redelegationCount = redelegations?.length ?? 0;
 
+  const TotalBondedCard = (
+    <TotalCard
+      title="Total Bonded"
+      message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
+      token={totalBondedBondDenom}
+      isLoading={isLoadingTotalBonded}
+    />
+  );
+
   return (
-    <Flex my={8} position="relative" overflow="hidden" width="full">
+    <Flex
+      mt={{ base: 4, md: 8 }}
+      mb={{ base: 0, md: 8 }}
+      position="relative"
+      overflow="hidden"
+      width="full"
+    >
       <Flex
         direction="column"
         gap={4}
@@ -94,62 +109,34 @@ export const DelegationsSection = ({
         left={isOpen ? "-100%" : "0"}
         transition="all 0.25s"
       >
-        {onViewMore && (
-          <Heading variant="h6" as="h6">
-            Delegations
-          </Heading>
-        )}
-        <Flex justify="space-between" alignItems="center" overflowX="scroll">
-          <Flex gap={8}>
-            <TotalCard
-              title="Total Bonded"
-              message={`Total delegated and unbonding ${bondDenomLabel}, including those delegated through vesting`}
-              token={totalBondedBondDenom}
-              isLoading={isLoadingTotalBonded}
-            />
-            <TotalCard
-              title="Reward"
-              message={`Total rewards earned from delegated ${bondDenomLabel} across all validators`}
-              token={totalRewardBondDenom}
-              isLoading={isLoadingRewards}
-            />
-            {isValidator && (
+        <DelegationInfo
+          TotalBondedCard={TotalBondedCard}
+          infoCards={
+            <>
+              {TotalBondedCard}
               <TotalCard
-                title="Commission"
-                message="Total commission reward earned by your validator"
-                token={totalCommissionBondDenom}
-                isLoading={isLoadingTotalCommission}
+                title="Reward"
+                message={`Total rewards earned from delegated ${bondDenomLabel} across all validators`}
+                token={totalRewardBondDenom}
+                isLoading={isLoadingRewards}
               />
-            )}
-          </Flex>
-          {onViewMore ? (
-            <Button
-              variant="ghost-gray"
-              minW="fit-content"
-              rightIcon={<CustomIcon name="chevron-right" />}
-              onClick={() => {
-                AmpTrack(AmpEvent.USE_VIEW_MORE);
-                onViewMore();
-              }}
-            >
-              View Delegation Info
-            </Button>
-          ) : (
-            <Button
-              variant="ghost-gray"
-              minW="fit-content"
-              leftIcon={<CustomIcon name="history" />}
-              rightIcon={<CustomIcon name="chevron-right" />}
-              isDisabled={!redelegationCount}
-              onClick={() => {
-                AmpTrack(AmpEvent.USE_SEE_REDELEGATIONS);
-                onToggle();
-              }}
-            >
-              See Active Redelegations ({redelegationCount})
-            </Button>
-          )}
-        </Flex>
+              {isValidator && (
+                <TotalCard
+                  title="Commission"
+                  message="Total commission reward earned by your validator"
+                  token={totalCommissionBondDenom}
+                  isLoading={isLoadingTotalCommission}
+                />
+              )}
+            </>
+          }
+          onViewMore={onViewMore}
+          redelegationCount={redelegationCount}
+          onClickToggle={() => {
+            AmpTrack(AmpEvent.USE_SEE_REDELEGATIONS);
+            onToggle();
+          }}
+        />
         {!onViewMore && (
           <DelegationsBody
             totalDelegations={totalDelegations}

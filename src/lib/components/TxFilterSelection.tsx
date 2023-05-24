@@ -28,6 +28,8 @@ export interface TxFilterSelectionProps extends InputProps {
   label?: string;
   boxWidth?: LayoutProps["width"];
   boxHeight?: LayoutProps["height"];
+  size?: string | object;
+  tagSize?: string | object;
 }
 
 const listItemProps: CSSProperties = {
@@ -52,6 +54,8 @@ export const TxFilterSelection = forwardRef<
       label = "Filter by Actions",
       boxWidth = "full",
       boxHeight = "56px",
+      size = "lg",
+      tagSize = "md",
       ...rest
     }: TxFilterSelectionProps,
     ref
@@ -130,6 +134,7 @@ export const TxFilterSelection = forwardRef<
                       mr={1}
                       whiteSpace="nowrap"
                       cursor="pointer"
+                      size={tagSize}
                     >
                       {displayActionValue(option)}
                       <CustomIcon name="close" boxSize={3} />
@@ -143,7 +148,7 @@ export const TxFilterSelection = forwardRef<
               autoComplete="off"
               w="100%"
               minW="200px"
-              size="lg"
+              size={size}
               placeholder={result.length ? "" : placeholder}
               onChange={(e) => filterOptions(e.currentTarget.value)}
               onFocus={() => {

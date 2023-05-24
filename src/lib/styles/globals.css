@@ -1,4 +1,5 @@
 /* Global Styling here */
 .copier-wrapper:hover .copier {
-  display: block;
+  display: inline;
+  max-height: 11px;
 }

@@ -45,20 +45,24 @@ const variantStyle: Record<
   },
 };
 
-const ReceiptRow = ({ title, value, html }: TxReceipt) => (
-  <Flex fontSize="14px" w="full">
-    <Text variant="body2">{title}</Text>
-    {html || (
-      <Text
-        variant="body2"
-        wordBreak="break-word"
-        color={value === null ? "gray.600" : "text.main"}
-      >
-        {value === null ? String(value) : value}
+const ReceiptRow = ({ title, value, html }: TxReceipt) => {
+  return (
+    <Flex fontSize="14px" w="full" direction={{ base: "column", md: "row" }}>
+      <Text variant="body2" mb={{ base: 1, md: 0 }}>
+        {title}
       </Text>
-    )}
-  </Flex>
-);
+      {html || (
+        <Text
+          variant="body2"
+          wordBreak="break-word"
+          color={value === null ? "gray.600" : "text.main"}
+        >
+          {value === null ? String(value) : value}
+        </Text>
+      )}
+    </Flex>
+  );
+};
 
 export const TxReceiptRender = ({
   receipts,

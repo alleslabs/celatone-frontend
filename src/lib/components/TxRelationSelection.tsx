@@ -31,15 +31,18 @@ const relationOptions = [
 
 interface TxRelationSelectionProps extends BoxProps {
   setValue: (value: Option<boolean>) => void;
+  size?: string | object;
 }
 
 export const TxRelationSelection = ({
   setValue,
+  size = "lg",
   ...props
 }: TxRelationSelectionProps) => (
   <Box {...props}>
     <SelectInput
       formLabel="Filter by Relations"
+      size={size}
       options={relationOptions}
       onChange={(value: RelationType) =>
         setValue(

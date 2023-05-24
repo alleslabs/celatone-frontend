@@ -1,4 +1,4 @@
-import { TableContainer } from "@chakra-ui/react";
+import { Box, TableContainer } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -33,7 +33,7 @@ const DelegationsTableBody = ({
     );
 
   return (
-    <TableContainer>
+    <TableContainer width="100%">
       <BondedTableHeader templateColumns={TEMPLATE_COLUMNS} isDelegation />
       {delegations.map((delegation) => (
         <BondedTableRow
@@ -63,7 +63,7 @@ export const DelegationsTable = ({
   defaultToken,
   isLoading,
 }: DelegationsTableProps) => (
-  <div>
+  <Box width="100%">
     <TableTitle title="Delegated to" count={delegations?.length ?? 0} mb={2} />
     <DelegationsTableBody
       delegations={delegations}
@@ -71,5 +71,5 @@ export const DelegationsTable = ({
       defaultToken={defaultToken}
       isLoading={isLoading}
     />
-  </div>
+  </Box>
 );

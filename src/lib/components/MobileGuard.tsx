@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
@@ -8,6 +9,12 @@ interface MobileGuardProps {
   children: ReactNode;
 }
 export const MobileGuard = ({ children }: MobileGuardProps) => {
+  const router = useRouter();
+  const pathName = router.asPath;
   const isMobile = useMobile();
-  return isMobile ? <NoMobile /> : <>{children}</>;
+  const isResponsive =
+    pathName.includes(`account`) || pathName.includes(`/txs/`);
+  if (isResponsive && isMobile) return <>{children}</>;
+  if (!isResponsive && isMobile) return <NoMobile />;
+  return <>{children}</>;
 };

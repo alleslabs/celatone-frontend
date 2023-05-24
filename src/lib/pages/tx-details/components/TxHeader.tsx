@@ -1,6 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Button, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
@@ -18,24 +19,67 @@ const DotSeparator = () => (
 
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
   const openLcdTab = useOpenTxTab("lcd");
+  const isMobile = useMobile();
   return (
     <Flex direction="column" gap={2} {...flexProps}>
       <Flex justify="space-between" align="center">
-        <Heading as="h5" variant="h5">
-          Transaction Details
-        </Heading>
-        <Button
-          variant="ghost-gray"
-          rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
-          onClick={() => {
-            AmpTrackViewJson("tx_page_transaction_hash");
-            openLcdTab(txData.txhash);
-          }}
-        >
-          View in JSON
-        </Button>
+        <Flex gap={2}>
+          <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
+            Transaction Details
+          </Heading>
+          {isMobile && (
+            <Flex
+              align="center"
+              gap={1}
+              color={txData.isTxFailed ? "error.main" : "success.main"}
+            >
+              {txData.isTxFailed ? (
+                <>
+                  <CustomIcon
+                    name="close-circle-solid"
+                    boxSize={3}
+                    m={0}
+                    color="error.main"
+                  />
+                  <Text variant="body2" color="error.main">
+                    Failed
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <CustomIcon
+                    name="check-circle-solid"
+                    boxSize={3}
+                    m={0}
+                    color="success.main"
+                  />
+                  <Text variant="body2" color="success.main">
+                    Success
+                  </Text>
+                </>
+              )}
+            </Flex>
+          )}
+        </Flex>
+        {!isMobile && (
+          <Button
+            variant="ghost-gray"
+            rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
+            onClick={() => {
+              AmpTrackViewJson("tx_page_transaction_hash");
+              openLcdTab(txData.txhash);
+            }}
+          >
+            View in JSON
+          </Button>
+        )}
       </Flex>
-      <Flex gap={2} fontSize="14px" w="full">
+      <Flex
+        gap={{ base: 1, md: 2 }}
+        fontSize="14px"
+        w="full"
+        direction={{ base: "column", md: "row" }}
+      >
         <Text variant="body2" fontWeight={500} color="text.dark">
           Transaction Hash:
         </Text>
@@ -46,39 +90,51 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         />
       </Flex>
       <Flex gap={2} fontSize="14px" color="text.dark" align="center">
-        <Flex
-          align="center"
-          gap={1}
-          color={txData.isTxFailed ? "error.main" : "success.main"}
-        >
-          {txData.isTxFailed ? (
-            <>
-              <CustomIcon
-                name="close-circle-solid"
-                boxSize={3}
-                m={0}
-                color="error.main"
-              />
-              <p>Failed</p>
-            </>
-          ) : (
-            <>
-              <CustomIcon
-                name="check-circle-solid"
-                boxSize={3}
-                m={0}
-                color="success.main"
-              />
-              <p>Success</p>
-            </>
-          )}
-        </Flex>
-        <DotSeparator />
+        {!isMobile && (
+          <>
+            <Flex
+              align="center"
+              gap={1}
+              color={txData.isTxFailed ? "error.main" : "success.main"}
+            >
+              {txData.isTxFailed ? (
+                <>
+                  <CustomIcon
+                    name="close-circle-solid"
+                    boxSize={3}
+                    m={0}
+                    color="error.main"
+                  />
+                  <Text variant="body2" color="error.main">
+                    Failed
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <CustomIcon
+                    name="check-circle-solid"
+                    boxSize={3}
+                    m={0}
+                    color="success.main"
+                  />
+                  <Text variant="body2" color="success.main">
+                    Success
+                  </Text>
+                </>
+              )}
+            </Flex>
+            <DotSeparator />
+          </>
+        )}
         {txData.timestamp ? (
           <>
-            <p>{dateFromNow(txData.timestamp)}</p>
+            <Text color="text.dark" display="inline">
+              {dateFromNow(txData.timestamp)}
+            </Text>
             <DotSeparator />
-            <p>{formatUTC(txData.timestamp)}</p>
+            <Text color="text.dark" display="inline">
+              {formatUTC(txData.timestamp)}
+            </Text>
           </>
         ) : (
           <p>N/A</p>

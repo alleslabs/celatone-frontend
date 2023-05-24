@@ -1,5 +1,5 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import {
@@ -7,6 +7,8 @@ import {
   getExplorerValidatorUrl,
 } from "lib/app-fns/explorer";
 import type { AddressReturnType } from "lib/app-provider";
+// eslint-disable-next-line import/no-cycle
+import { useMobile } from "lib/app-provider";
 import { useCurrentNetwork } from "lib/app-provider/hooks/useCurrentNetwork";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option } from "lib/types";
@@ -117,6 +119,9 @@ const LinkRender = ({
       className={isEllipsis ? "ellipsis" : undefined}
       maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
+      wordBreak={{ base: "break-all", md: "inherit" }}
+      display={{ base: "inline", md: "flex" }}
+      align={{ base: "start", md: "center" }}
     >
       {textValue}
     </Text>
@@ -169,7 +174,7 @@ export const ExplorerLink = ({
   ];
 
   const readOnly = isReadOnly || !hrefLink;
-
+  const isMobile = useMobile();
   return (
     <Box
       className="copier-wrapper"
@@ -187,7 +192,7 @@ export const ExplorerLink = ({
       {readOnly ? (
         <Text variant="body2">{textValue}</Text>
       ) : (
-        <>
+        <Flex display={{ base: "inline", md: "flex" }}>
           <LinkRender
             type={type}
             isInternal={isInternal}
@@ -202,11 +207,11 @@ export const ExplorerLink = ({
             type={type}
             value={copyValue || value}
             copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
-            display={showCopyOnHover ? "none" : "block"}
+            display={showCopyOnHover && !isMobile ? "none" : "inline"}
             ml={2}
             amptrackSection={ampCopierSection}
           />
-        </>
+        </Flex>
       )}
     </Box>
   );

@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useMobile } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -11,13 +12,13 @@ import { useAssetInfos } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
 import { getFirstQueryParam } from "lib/utils";
 
-import { TxHeader, TxInfo } from "./components";
+import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
 
 const TxDetails = () => {
   const router = useRouter();
   const hashParam = getFirstQueryParam(router.query.txHash);
-
+  const isMobile = useMobile();
   const {
     data: txData,
     isLoading: txLoading,
@@ -44,12 +45,13 @@ const TxDetails = () => {
 
   return (
     <PageContainer>
-      <BackButton />
+      {!isMobile && <BackButton />}
       {txData ? (
         <>
           <TxHeader mt={2} txData={txData} />
-          <Flex my={12} justify="space-between">
-            <TxInfo txData={txData} assetInfos={assetInfos} />
+          {isMobile && <TxInfoMobile txData={txData} assetInfos={assetInfos} />}
+          <Flex my={{ base: 0, md: 12 }} justify="space-between">
+            {!isMobile && <TxInfo txData={txData} assetInfos={assetInfos} />}
             <MessageSection txData={txData} assetInfos={assetInfos} />
           </Flex>
         </>

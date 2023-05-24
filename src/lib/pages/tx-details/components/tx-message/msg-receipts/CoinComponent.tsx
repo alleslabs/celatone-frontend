@@ -2,6 +2,7 @@ import { Flex, Grid } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { useState } from "react";
 
+import { useMobile } from "lib/app-provider";
 import { ShowMoreButton } from "lib/components/button";
 import { UnsupportedTokensModal } from "lib/components/modal/UnsupportedTokensModal";
 import { TokenCard } from "lib/components/TokenCard";
@@ -29,10 +30,11 @@ const MultiCoin = ({
   const [showMore, setShowMore] = useState(false);
 
   const hasSupportedCoins = supportedCoins.length > 0;
+  const isMobile = useMobile();
   return (
     <Flex direction="column" w="full">
       {hasSupportedCoins && (
-        <Grid gridGap={4} gridTemplateColumns="1fr 1fr">
+        <Grid gridGap={4} gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"}>
           {supportedCoins.slice(0, showMore ? undefined : 2).map((coin) => {
             const assetInfo = assetInfos[coin.denom];
             return (
@@ -113,7 +115,8 @@ const SingleCoin = ({
         assetInfo,
       }}
       amptrackSection="tx_msg_receipts_assets"
-      w="50%"
+      w={{ base: "100%", md: "50%" }}
+      mt={{ base: 2, md: 0 }}
     />
   ) : (
     <UnsupportedTokensModal
