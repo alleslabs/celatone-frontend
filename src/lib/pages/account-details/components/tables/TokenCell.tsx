@@ -23,7 +23,7 @@ export const TokenCell = ({ token }: TokenCellProps) => (
     />
     <Flex direction="column">
       <Flex gap={1} alignItems="center">
-        <Text variant="body2" fontWeight="700">
+        <Text variant="body2" fontWeight={700}>
           {formatUTokenWithPrecision(token.amount, token.precision || 0)}
         </Text>
         <Text variant="body2">

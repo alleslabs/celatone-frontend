@@ -16,8 +16,8 @@ export const Footer = ({
   return (
     <Grid
       w="full"
-      px="48px"
-      bg="pebble.900"
+      px={12}
+      bg="gray.900"
       h="70px"
       bottom="0"
       position="sticky"
@@ -37,7 +37,7 @@ export const Footer = ({
             isDisabled={isLoading}
           >
             {isLoading ? (
-              <Spinner size="md" color="pebble.600" />
+              <Spinner size="md" variant="light" />
             ) : (
               "Submit Proposal"
             )}

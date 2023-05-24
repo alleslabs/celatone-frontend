@@ -20,10 +20,8 @@ export const TableTitle = ({
         {title}
       </Heading>
       <Badge
-        variant="gray"
-        color="text.main"
         textColor={
-          count && typeof count !== "string" ? "text.main" : "pebble.500"
+          count && typeof count !== "string" ? "text.main" : "text.disabled"
         }
       >
         {count}

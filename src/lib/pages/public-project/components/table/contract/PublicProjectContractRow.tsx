@@ -6,7 +6,6 @@ import {
   IconButton,
   Text,
   Flex,
-  Tooltip,
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
@@ -19,6 +18,7 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import { TableRow } from "lib/components/table";
+import { Tooltip } from "lib/components/Tooltip";
 
 import type { PublicContractInfo } from "./PublicProjectContractTable";
 
@@ -46,7 +46,7 @@ export const PublicProjectContractRow = ({
 
   const goToContractDetails = () => {
     navigate({
-      pathname: `/contract/${publicContractInfo.publicInfo.contractAddress}`,
+      pathname: `/contracts/${publicContractInfo.publicInfo.contractAddress}`,
     });
   };
 
@@ -54,7 +54,7 @@ export const PublicProjectContractRow = ({
     <Grid
       templateColumns={templateColumns}
       onClick={goToContractDetails}
-      _hover={{ bg: "pebble.900" }}
+      _hover={{ bg: "gray.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
       minW="min-content"
@@ -72,15 +72,9 @@ export const PublicProjectContractRow = ({
       <TableRow gap={1}>
         <Text>{publicContractInfo.publicInfo.name}</Text>
         {publicContractInfo.publicInfo.description && (
-          <Tooltip
-            hasArrow
-            label={publicContractInfo.publicInfo.description}
-            placement="top"
-            bg="honeydew.darker"
-            arrowSize={8}
-          >
+          <Tooltip label={publicContractInfo.publicInfo.description}>
             <Flex cursor="pointer">
-              <CustomIcon name="info-circle" boxSize="12px" />
+              <CustomIcon name="info-circle" boxSize="12px" color="gray.600" />
             </Flex>
           </Tooltip>
         )}
@@ -122,10 +116,8 @@ export const PublicProjectContractRow = ({
                 contractLocalInfo={publicContractInfo.localInfo}
                 triggerElement={
                   <StyledIconButton
-                    icon={
-                      <CustomIcon name="bookmark-solid" color="violet.light" />
-                    }
-                    variant="ghost-gray"
+                    icon={<CustomIcon name="bookmark-solid" />}
+                    variant="ghost-primary"
                   />
                 }
               />

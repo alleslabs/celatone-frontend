@@ -25,13 +25,15 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
     <Breadcrumb
       w="full"
       spacing={1}
-      separator={<CustomIcon name="chevron-right" boxSize="3" />}
+      separator={
+        <CustomIcon name="chevron-right" boxSize={3} color="gray.600" />
+      }
     >
       <BreadcrumbItem
         _hover={{ opacity: 0.8 }}
         transition="all 0.25s ease-in-out"
       >
-        <AppLink color="text.dark" href="/public-project">
+        <AppLink color="text.dark" href="/projects">
           Public Projects
         </AppLink>
       </BreadcrumbItem>
@@ -40,7 +42,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
           variant="body2"
           className="ellipsis"
           width="250px"
-          fontWeight="600"
+          fontWeight={700}
           color="text.dark"
         >
           {details?.name}

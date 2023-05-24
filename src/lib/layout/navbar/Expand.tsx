@@ -15,11 +15,11 @@ export const ExpandNavMenu = ({
   <Box px={4} py={2} overflowY="auto">
     {navMenu.map((item) => (
       <Box
-        pb="4"
-        mb="4"
+        pb={4}
+        mb={4}
         key={item.category}
         borderBottom="1px solid"
-        borderColor="pebble.700"
+        borderColor="gray.700"
         sx={{
           "&:last-of-type": {
             borderBottom: "none",
@@ -29,21 +29,15 @@ export const ExpandNavMenu = ({
         }}
       >
         <Flex justifyContent="space-between" alignItems="center">
-          <Text py="2" variant="body3" fontWeight="600">
+          <Text py={2} variant="body3" fontWeight={700}>
             {item.category}
           </Text>
           {item.category === "Overview" && (
             <Button
-              variant="ghost-info"
+              variant="ghost-accent"
               size="xs"
               iconSpacing={1}
-              leftIcon={
-                <CustomIcon
-                  name="double-chevron-left"
-                  color="honeydew.main"
-                  boxSize="3"
-                />
-              }
+              leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
               onClick={() => setIsExpand(false)}
             >
               HIDE
@@ -52,12 +46,10 @@ export const ExpandNavMenu = ({
           {item.category === "Contracts" && (
             <CreateNewListModal
               buttonProps={{
-                variant: "ghost-info",
+                variant: "ghost-accent",
                 iconSpacing: 1,
                 size: "xs",
-                leftIcon: (
-                  <CustomIcon name="plus" color="honeydew.main" boxSize="3" />
-                ),
+                leftIcon: <CustomIcon name="plus" boxSize={3} />,
                 children: "NEW LIST",
                 onClick: () => AmpTrack(AmpEvent.USE_SIDEBAR),
               }}
@@ -71,30 +63,30 @@ export const ExpandNavMenu = ({
             onClick={() => AmpTrack(AmpEvent.USE_SIDEBAR)}
           >
             <Flex
-              gap="2"
+              gap={2}
               p={2}
               cursor="pointer"
-              _hover={{ bg: "pebble.700", borderRadius: "8px" }}
+              _hover={{ bg: "gray.700", borderRadius: "8px" }}
               my="1px"
               transition="all .25s ease-in-out"
               alignItems="center"
               position="relative"
-              bgColor={
-                isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
-              }
+              bgColor={isCurrentPage(submenu.slug) ? "gray.800" : "transparent"}
               borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
             >
               <Flex
                 opacity={isCurrentPage(submenu.slug) ? 1 : 0}
                 width="3px"
                 height="20px"
-                bgColor="violet.light"
+                bgColor="primary.light"
                 position="absolute"
                 top="10px"
                 borderRadius="2px"
                 left="0px"
               />
-              {submenu.icon && <CustomIcon name={submenu.icon} />}
+              {submenu.icon && (
+                <CustomIcon name={submenu.icon} color="gray.600" />
+              )}
               {submenu.logo && (
                 <Image
                   src={submenu.logo}

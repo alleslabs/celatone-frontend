@@ -13,7 +13,7 @@ interface TxHeaderProps extends FlexProps {
 }
 
 const DotSeparator = () => (
-  <Box bg="lilac.darker" borderRadius="50%" w="4px" h="4px" />
+  <Box bg="secondary.darker" borderRadius="50%" w={1} h={1} />
 );
 
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
@@ -26,9 +26,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         </Heading>
         <Button
           variant="ghost-gray"
-          rightIcon={
-            <CustomIcon name="launch" boxSize={3} color="text.dark" m={0} />
-          }
+          rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
           onClick={() => {
             AmpTrackViewJson("tx_page_transaction_hash");
             openLcdTab(txData.txhash);

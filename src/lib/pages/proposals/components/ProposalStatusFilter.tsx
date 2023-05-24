@@ -9,6 +9,7 @@ import { DropdownContainer } from "lib/components/filter/FilterComponents";
 import { FilterDropdownItem } from "lib/components/filter/FilterDropdownItem";
 import { FilterInput } from "lib/components/filter/FilterInput";
 import { StatusChip } from "lib/components/table/proposals/StatusChip";
+import { AmpEvent, AmpTrackUseFilter } from "lib/services/amplitude";
 import { ProposalStatus } from "lib/types";
 
 export interface ProposalStatusFilterProps extends InputProps {
@@ -59,8 +60,14 @@ export const ProposalStatusFilter = forwardRef<
         inputRef.current.value = "";
       }
       if (result.includes(option)) {
+        AmpTrackUseFilter(
+          AmpEvent.USE_FILTER_PROPOSALS_STATUS,
+          result,
+          "remove"
+        );
         setResult((prevState) => prevState.filter((value) => value !== option));
       } else {
+        AmpTrackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
         setResult((prevState) => [...prevState, option]);
       }
     };

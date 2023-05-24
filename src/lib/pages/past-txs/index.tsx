@@ -124,11 +124,16 @@ const PastTxs = () => {
 
   return (
     <PageContainer>
-      <Heading variant="h5" as="h5">
+      <Heading
+        variant="h5"
+        as="h5"
+        minH="36px"
+        display="flex"
+        alignItems="center"
+      >
         Past Transactions
       </Heading>
-
-      <Flex mt="48px" gap={1}>
+      <Flex my={8} gap={3}>
         <InputGroup>
           <Input
             value={pastTxsState.search}
@@ -139,12 +144,11 @@ const PastTxs = () => {
             placeholder="Search with transaction hash or contract address"
             h="full"
           />
-          <InputRightElement pointerEvents="none" h="full" mr="1">
-            <CustomIcon name="search" />
+          <InputRightElement pointerEvents="none" h="full" mr={1}>
+            <CustomIcon name="search" color="gray.600" />
           </InputRightElement>
         </InputGroup>
-
-        <Flex gap={1}>
+        <Flex gap={3}>
           <TxRelationSelection
             setValue={(value) => {
               resetPagination();

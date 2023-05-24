@@ -22,8 +22,8 @@ export const PastTransaction = () => (
       </Text>
       <AppLink href="/past-txs">
         <Text
-          color="lilac.main"
-          _hover={{ color: "lilac.light" }}
+          color="secondary.main"
+          _hover={{ color: "secondary.light" }}
           transition="all .25s ease-in-out"
         >
           Past Transactions

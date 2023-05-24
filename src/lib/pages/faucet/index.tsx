@@ -98,7 +98,7 @@ const Faucet = () => {
             <CustomIcon
               name="check-circle-solid"
               color="success.main"
-              boxSize="4"
+              boxSize={4}
               display="flex"
               alignItems="center"
             />
@@ -161,8 +161,8 @@ const Faucet = () => {
         label="Receiving Address"
         helperAction={
           <Text
-            color="honeydew.main"
-            fontWeight="600"
+            color="accent.main"
+            fontWeight={700}
             variant="body3"
             cursor="pointer"
             alignSelf="flex-start"
@@ -189,7 +189,7 @@ const Faucet = () => {
           <CustomIcon
             name={STATUS_ICONS[result.status]}
             color={`${result.status}.main`}
-            boxSize="6"
+            boxSize={6}
             display="flex"
             alignItems="center"
           />

@@ -1,9 +1,10 @@
-import { Tag, Text, Flex, Tooltip } from "@chakra-ui/react";
+import { Tag, Text, Flex } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
 import { Copier } from "../copy";
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Option } from "lib/types";
@@ -65,15 +66,9 @@ export const SingleMsg = ({
               precision: token.precision,
             })}
           </Text>
-          <Tooltip
-            hasArrow
-            label={`Token ID: ${token.id}`}
-            placement="top"
-            bg="honeydew.darker"
-            maxW="240px"
-          >
+          <Tooltip label={`Token ID: ${token.id}`} maxW="240px">
             <Flex cursor="pointer">
-              <CustomIcon name="info-circle" boxSize="3" />
+              <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
             </Flex>
           </Tooltip>
           <Copier
@@ -81,22 +76,28 @@ export const SingleMsg = ({
             value={token.id}
             copyLabel="Token ID Copied!"
             display="none"
-            ml="4px"
+            ml={1}
           />
         </Flex>
       ))}
       {/* Tags  */}
       {tags?.map((tag: string, index: number) => (
-        <Tag key={index.toString() + tag} borderRadius="full">
+        <Tag variant="gray" size="sm" key={index.toString() + tag}>
           {snakeCase(tag) || tag}
         </Tag>
       ))}
       {/* Tag left over */}
       {tags && length && length - tags.length > 0 && (
-        <Tag borderRadius="full">+{length - tags.length} </Tag>
+        <Tag variant="gray" size="sm">
+          +{length - tags.length}
+        </Tag>
       )}
       {/* Length  */}
-      {!tags && length && <Tag borderRadius="full">{length}</Tag>}
+      {!tags && length && (
+        <Tag variant="gray" size="sm">
+          {length}
+        </Tag>
+      )}
       {/* Text2 */}
       {text2}
       {/* Link */}

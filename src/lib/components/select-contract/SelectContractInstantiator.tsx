@@ -102,17 +102,15 @@ export const SelectContractInstantiator = ({
     <>
       <Button
         variant={notSelected ? "primary" : "outline-primary"}
-        py="6px"
+        py={1}
         size="sm"
-        px="16px"
+        px={4}
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
         }}
         leftIcon={
-          !notSelected ? (
-            <CustomIcon name="swap" color="violet.light" boxSize="12px" />
-          ) : undefined
+          !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
         }
       >
         {notSelected ? "Select Contract" : "Change Contract"}
@@ -123,18 +121,22 @@ export const SelectContractInstantiator = ({
           {listSlug.length === 0 || !contractList ? (
             <>
               <DrawerHeader>
-                <CustomIcon name="contract-address-solid" boxSize="5" />
+                <CustomIcon
+                  name="contract-address-solid"
+                  boxSize={5}
+                  color="gray.600"
+                />
                 <Heading as="h5" variant="h5">
                   Select Contract
                 </Heading>
               </DrawerHeader>
               <DrawerCloseButton />
 
-              <DrawerBody p="24px" overflowY="scroll">
-                <Heading as="h6" variant="h6" mb="8px">
+              <DrawerBody p={6} overflowY="scroll">
+                <Heading as="h6" variant="h6" mb={4}>
                   Fill contract address manually
                 </Heading>
-                <Flex gap="8px" alignItems="center">
+                <Flex gap={2} alignItems="center">
                   <Input
                     isInvalid={invalid !== ""}
                     value={searchContract}
@@ -143,10 +145,11 @@ export const SelectContractInstantiator = ({
                       setSearchContract(inputValue as ContractAddr);
                     }}
                     placeholder={`ex. ${exampleContractAddress}`}
-                    size="md"
+                    size="lg"
                   />
                   <Button
-                    height="40px"
+                    height="56px"
+                    minW="72px"
                     isDisabled={searchContract.length === 0}
                     isLoading={isFetching || isRefetching}
                     onClick={() => {
@@ -165,20 +168,20 @@ export const SelectContractInstantiator = ({
                   {invalid}
                 </Text>
 
-                <Flex my="24px" gap="8px" alignItems="center">
-                  <Divider borderColor="pebble.700" />
+                <Flex my={6} gap={2} alignItems="center">
+                  <Divider borderColor="gray.700" />
                   <Text variant="body1">OR</Text>
-                  <Divider borderColor="pebble.700" />
+                  <Divider borderColor="gray.700" />
                 </Flex>
 
-                <Heading as="h6" variant="h6" mb={6}>
+                <Heading as="h6" variant="h6" mb={4}>
                   Select from your Contract List
                 </Heading>
                 <AllContractLists
                   contractLists={contractLists}
                   handleListSelect={handleListSelect}
                   isReadOnly
-                  formLabelBgColor="pebble.900"
+                  formLabelBgColor="gray.900"
                 />
               </DrawerBody>
             </>
@@ -187,9 +190,10 @@ export const SelectContractInstantiator = ({
               <DrawerHeader>
                 <CustomIcon
                   name="chevron-left"
-                  boxSize="5"
+                  boxSize={5}
                   onClick={() => setListSlug("")}
                   cursor="pointer"
+                  color="gray.600"
                 />
                 <Heading as="h5" variant="h5">
                   {contractList.name}

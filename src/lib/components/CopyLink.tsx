@@ -1,10 +1,11 @@
-import { Flex, Text, Tooltip, useClipboard } from "@chakra-ui/react";
+import { Flex, Text, useClipboard } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 import { useState } from "react";
 
 import { AmpTrackCopier } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
+import { Tooltip } from "./Tooltip";
 
 interface CopyLinkProps {
   value: string;
@@ -18,12 +19,8 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
   const [isHover, setIsHover] = useState(false);
   return (
     <Tooltip
-      hasArrow
       isOpen={isHover || hasCopied}
       label={hasCopied ? "Copied!" : "Click to copy"}
-      placement="top"
-      arrowSize={8}
-      bgColor="honeydew.darker"
       closeOnClick={false}
     >
       <Flex
@@ -34,8 +31,8 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
         }}
         _hover={{
           textDecoration: "underline",
-          textDecorationColor: "lilac.light",
-          "& > p": { color: "lilac.light" },
+          textDecorationColor: "secondary.light",
+          "& > p": { color: "secondary.light" },
         }}
         cursor="pointer"
         onMouseEnter={() => setIsHover(true)}
@@ -43,12 +40,18 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
       >
         <Text
           variant="body2"
-          color="lilac.main"
+          color="secondary.main"
           transition="all .25s ease-in-out"
         >
           {value === address ? `${value} (Me)` : value}
         </Text>
-        <CustomIcon cursor="pointer" marginLeft={2} name="copy" boxSize={3} />
+        <CustomIcon
+          cursor="pointer"
+          marginLeft={2}
+          name="copy"
+          boxSize={3}
+          color="gray.600"
+        />
       </Flex>
     </Tooltip>
   );

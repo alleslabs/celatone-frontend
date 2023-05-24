@@ -236,12 +236,12 @@ const ProposalToWhitelist = () => {
                 mt={12}
                 p={4}
                 gap={6}
-                bgColor="pebble.900"
+                bgColor="gray.900"
                 flexDirection="column"
                 borderRadius="8px"
               >
                 <Flex gap={2} alignItems="center">
-                  <CustomIcon name="proposal-solid" />
+                  <CustomIcon name="proposal-solid" color="gray.600" />
                   <Heading as="h6" variant="h6">
                     Fill in Proposal Details
                   </Heading>
@@ -251,7 +251,7 @@ const ProposalToWhitelist = () => {
                   control={control}
                   placeholder="ex. Allow XYZ to store code without proposal"
                   label="Proposal Title"
-                  labelBgColor="pebble.900"
+                  labelBgColor="gray.900"
                   variant="floating"
                   rules={{
                     required: "Proposal Title is required",
@@ -269,7 +269,7 @@ const ProposalToWhitelist = () => {
                   label="Proposal Description"
                   placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
                   variant="floating"
-                  labelBgColor="pebble.900"
+                  labelBgColor="gray.900"
                   rules={{
                     required: "Proposal Description is required",
                   }}
@@ -331,10 +331,7 @@ const ProposalToWhitelist = () => {
                     disabled={fields.length <= 1}
                     onClick={() => remove(idx)}
                   >
-                    <CustomIcon
-                      name="delete"
-                      color={fields.length <= 1 ? "pebble.600" : "text.dark"}
-                    />
+                    <CustomIcon name="delete" />
                   </Button>
                 </Flex>
               ))}
@@ -342,7 +339,7 @@ const ProposalToWhitelist = () => {
                 variant="outline-primary"
                 mt={3}
                 onClick={() => append({ address: "" as Addr })}
-                leftIcon={<CustomIcon name="plus" color="violet.light" />}
+                leftIcon={<CustomIcon name="plus" />}
               >
                 Add More Address
               </Button>
@@ -373,11 +370,11 @@ const ProposalToWhitelist = () => {
                     <Text
                       textAlign="right"
                       mr={3}
-                      fontWeight="600"
+                      fontWeight={700}
                       cursor="pointer"
                       variant="body3"
                       minW={16}
-                      color="honeydew.main"
+                      color="accent.main"
                       onClick={() => {
                         if (!minDeposit) return;
                         setValue(

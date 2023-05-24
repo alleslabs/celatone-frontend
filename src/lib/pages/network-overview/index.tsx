@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spinner, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -6,6 +6,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
+import { Tooltip } from "lib/components/Tooltip";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -51,9 +52,9 @@ const CardInfo = ({
 }: CardInfoProps) => (
   <Flex
     style={cardProps}
-    _hover={{ bg: "pebble.700" }}
+    _hover={{ bg: "gray.700" }}
     transition="all .25s ease-in-out"
-    bg="pebble.800"
+    bg="gray.800"
     onClick={navigate}
   >
     <Box>
@@ -61,27 +62,21 @@ const CardInfo = ({
         <Text variant="body2" color="text.dark">
           {title}
         </Text>
-        <Tooltip
-          hasArrow
-          label={tooltip}
-          placement="top"
-          bg="honeydew.darker"
-          arrowSize={8}
-        >
+        <Tooltip label={tooltip}>
           <Flex cursor="pointer">
-            <CustomIcon name="info-circle-solid" boxSize="3" />
+            <CustomIcon name="info-circle-solid" boxSize={3} color="gray.600" />
           </Flex>
         </Tooltip>
       </Flex>
       {isLoading ? (
-        <Spinner size="md" speed="0.65s" />
+        <Spinner size="md" />
       ) : (
         <Heading as="h5" variant="h5">
           {value}
         </Heading>
       )}
     </Box>
-    <CustomIcon name="chevron-right" boxSize={5} />
+    <CustomIcon name="chevron-right" boxSize={5} color="gray.600" />
   </Flex>
 );
 
@@ -118,7 +113,7 @@ const NetworkOverview = () => {
         </Heading>
         {isLoadingLatestBlockInfo ? (
           <Flex>
-            <Spinner size="sm" speed="0.65s" />
+            <Spinner size="md" />
             <Text variant="body2" color="text.dark" ml={2}>
               Loading latest data for you ...
             </Text>
@@ -139,7 +134,7 @@ const NetworkOverview = () => {
           </Text>
         )}
       </Flex>
-      <Flex gap={4} mb="64px">
+      <Flex gap={4} mb={16}>
         <CardInfo
           title={txInfo.title}
           tooltip={txInfo.tooltip}
@@ -164,7 +159,7 @@ const NetworkOverview = () => {
         {txsCount && txsCount > 5 && <ViewMore onClick={toTxs} />}
       </Box>
 
-      <Box mt="84px">
+      <Box mt={16}>
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>

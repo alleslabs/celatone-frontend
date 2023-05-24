@@ -336,3 +336,12 @@ export const useGovParams = (): UseQueryResult<{
     keepPreviousData: true,
   });
 };
+
+export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
+  const lcdEndpoint = useLCDEndpoint();
+  return useQuery(
+    ["upload_access", lcdEndpoint],
+    () => fetchGovUploadAccessParams(lcdEndpoint),
+    { keepPreviousData: true, refetchOnWindowFocus: false }
+  );
+};

@@ -101,7 +101,7 @@ const ContractDetailsButton = ({
           variant="ghost-gray"
           float="right"
           size="sm"
-          leftIcon={<CustomIcon name="edit" color="text.dark" />}
+          leftIcon={<CustomIcon name="edit" />}
         >
           Edit
         </Button>
@@ -120,9 +120,7 @@ const ContractDetailsButton = ({
           variant="outline-gray"
           float="right"
           size="sm"
-          leftIcon={
-            <CustomIcon name="bookmark" color="text.dark" boxSize="12px" />
-          }
+          leftIcon={<CustomIcon name="bookmark" boxSize="12px" />}
         >
           Add To List
         </Button>
@@ -198,8 +196,8 @@ export const ContractSelectSection = observer(
       <Flex
         mb={style.container}
         borderWidth="thin"
-        borderColor="pebble.800"
-        p="16px"
+        borderColor="gray.800"
+        p={4}
         borderRadius="8px"
         fontSize="12px"
         justify="space-between"
@@ -237,7 +235,7 @@ export const ContractSelectSection = observer(
               label={contractState.label}
             />
           </Flex>
-          <Flex gap="8px" alignItems="center">
+          <Flex gap={2} alignItems="center">
             {mode === "all-lists" && contractState.isValid && (
               <ContractDetailsButton
                 contractAddress={contractAddress}

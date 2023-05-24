@@ -10,7 +10,6 @@ interface PermissionOption {
   value: PermissionFilterValue;
   disabled: boolean;
   icon?: IconKeys;
-  iconColor: string;
 }
 
 interface FilterByPermissionProps {
@@ -25,21 +24,18 @@ const options: PermissionOption[] = [
     value: "all",
     disabled: false,
     icon: "check",
-    iconColor: "text.dark",
   },
   {
     label: "Can Instantiate without proposal",
     value: "without-proposal",
     disabled: false,
     icon: "instantiate",
-    iconColor: "text.dark",
   },
   {
     label: "Instantiate through proposal only",
     value: "with-proposal",
     disabled: false,
     icon: "vote",
-    iconColor: "text.dark",
   },
 ];
 
@@ -48,7 +44,7 @@ export const FilterByPermission = ({
   initialSelected,
   labelBgColor = "background.main",
 }: FilterByPermissionProps) => (
-  <Grid columnGap="16px" w="full" mb="16px" maxW="360px">
+  <Grid columnGap={4} w="full" mb={4} maxW="360px">
     <SelectInput<PermissionFilterValue>
       formLabel="Filter by Instantiate Permission"
       options={options}

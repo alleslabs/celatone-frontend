@@ -16,15 +16,14 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       display="flex"
       alignItems="center"
       fontSize="14px"
-      fontWeight="700"
+      fontWeight={700}
       lineHeight="24px"
       letterSpacing="0.4px"
       variant="ghost-gray"
-      color="text.dark"
       mb={0}
       sx={{
         "&[aria-selected=true]": {
-          color: "violet.light",
+          color: "primary.light",
         },
       }}
       _active={{
@@ -35,11 +34,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       {tabProps.children}
 
       {count !== undefined && (
-        <Badge
-          variant={isSelected ? "violet" : "gray"}
-          ml="6px"
-          color="text.main"
-        >
+        <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
           {count}
         </Badge>
       )}

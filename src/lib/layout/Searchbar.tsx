@@ -39,15 +39,15 @@ interface ResultItemProps {
 const getRoute = (type: SearchResultType) => {
   switch (type) {
     case "Code ID":
-      return "/code";
+      return "/codes";
     case "Contract Address":
-      return "/contract";
+      return "/contracts";
     case "Wallet Address":
-      return "/account";
+      return "/accounts";
     case "Transaction Hash":
-      return "/tx";
+      return "/txs";
     case "Block":
-      return "/block";
+      return "/blocks";
     default:
       return null;
   }
@@ -60,16 +60,16 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
   const route = type ? getRoute(type) : null;
 
   return (
-    <ListItem p={2} borderBottomColor="pebble.700" bg="pebble.900">
-      <Text variant="body2" fontWeight="500" color="text.dark" p="8px">
+    <ListItem p={2} borderBottomColor="gray.700" bg="gray.900">
+      <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
         {text}
       </Text>
       {route && (
         <Text
           variant="body2"
-          p="8px"
+          p={2}
           borderRadius="8px"
-          _hover={{ bg: "pebble.800", cursor: "pointer" }}
+          _hover={{ bg: "gray.800", cursor: "pointer" }}
           transition="all 0.25s ease-in-out"
           onClick={() => handleSelectResult(type, true)}
         >
@@ -141,18 +141,18 @@ const Searchbar = () => {
           h="36px"
           onChange={handleSearchChange}
           placeholder={placeholder}
-          focusBorderColor="lilac.main"
+          focusBorderColor="secondary.main"
           onFocus={() => setDisplayResults(keyword.length > 0)}
           onKeyDown={handleOnKeyEnter}
         />
         <InputRightElement pointerEvents="none" h="full">
-          <CustomIcon name="search" />
+          <CustomIcon name="search" color="gray.600" />
         </InputRightElement>
       </InputGroup>
       {displayResults && (
         <List
           borderRadius="8px"
-          bg="pebble.900"
+          bg="gray.900"
           position="absolute"
           zIndex="2"
           w="full"

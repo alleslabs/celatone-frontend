@@ -36,7 +36,7 @@ export const FilterInput = ({
       background="none"
       borderRadius="8px"
       border="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       overflowX="scroll"
       alignItems="center"
     >
@@ -57,11 +57,12 @@ export const FilterInput = ({
       <CustomIcon
         name={isDropdown ? "chevron-up" : "chevron-down"}
         position="absolute"
-        mr="0.5px"
+        mr={1}
         px={3}
         boxSize="40px"
         right="0px"
         minH="full"
+        color="gray.600"
         backgroundColor="background.main"
         onClick={() => setIsDropdown(!isDropdown)}
       />
@@ -71,7 +72,7 @@ export const FilterInput = ({
       position="absolute"
       top={0}
       left={0}
-      fontWeight="400"
+      fontWeight={400}
       color="text.dark"
       bgColor="background.main"
       pointerEvents="none"

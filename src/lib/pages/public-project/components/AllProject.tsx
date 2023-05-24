@@ -57,7 +57,7 @@ export const AllProject = observer(() => {
           rel="noopener noreferrer"
           onClick={() => AmpTrack(AmpEvent.USE_SUBMIT_PROJECT)}
         >
-          <Button gap={2} mt={8}>
+          <Button gap={2} mt={8} variant="outline-primary">
             <CustomIcon name="github" />
             Submit on Github
           </Button>
@@ -73,7 +73,7 @@ export const AllProject = observer(() => {
         setInputState={setSearchKeyword}
         labelBgColor="background"
         placeholder="Search for existing public projects by project name"
-        size="md"
+        size="lg"
         mb={12}
       />
       {!filteredPublicProjects.length ? (
@@ -92,7 +92,7 @@ export const AllProject = observer(() => {
           ))}
         </SimpleGrid>
       )}
-      <Flex justifyContent="center" gap="2" w="100%" mt="64px">
+      <Flex justifyContent="center" gap={2} w="100%" mt={16}>
         <Text color="text.dark" variant="body2">
           Want your project here?
         </Text>

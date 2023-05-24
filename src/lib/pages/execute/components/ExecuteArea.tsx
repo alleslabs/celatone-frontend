@@ -216,14 +216,14 @@ export const ExecuteArea = ({
   return (
     <Box my={4}>
       {contractAddress && (
-        <Text variant="body3" mb="8px">
+        <Text variant="body3" mb={4}>
           Message Suggestions:
         </Text>
       )}
       {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
-          rowGap="8px"
+          rowGap={4}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
@@ -244,12 +244,12 @@ export const ExecuteArea = ({
         </ButtonGroup>
       ) : (
         contractAddress && (
-          <Text mt="8px" variant="body2" color="text.dark">
+          <Text mt={2} variant="body2" color="text.dark">
             No ExecuteMsgs suggestion available
           </Text>
         )
       )}
-      <Flex gap="32px" mt={8} direction={{ sm: "column", lg: "row" }}>
+      <Flex gap={8} mt={8} direction={{ sm: "column", lg: "row" }}>
         <Box w={{ sm: "full", lg: "50%" }}>
           <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
           {error && <ErrorMessageRender error={error} mb={4} />}
@@ -286,16 +286,7 @@ export const ExecuteArea = ({
             p="6px 16px"
             onClick={proceed}
             isDisabled={!enableExecute || !fee || isFetching}
-            leftIcon={
-              <CustomIcon
-                name="execute"
-                color={
-                  !enableExecute || !fee || isFetching
-                    ? "pebble.600"
-                    : "text.main"
-                }
-              />
-            }
+            leftIcon={<CustomIcon name="execute" />}
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >

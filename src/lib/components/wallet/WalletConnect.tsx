@@ -11,7 +11,6 @@ export const ConnectWalletButton = ({
   isLoading,
   isDisabled,
   onClickConnectBtn,
-  iconColor = "text.main",
   variant,
 }: ConnectWalletType) => (
   <Button
@@ -20,9 +19,9 @@ export const ConnectWalletButton = ({
     isDisabled={isDisabled}
     onClick={onClickConnectBtn}
     variant={variant}
-    gap="1"
+    gap={1}
   >
-    <CustomIcon name="connect" color={iconColor} />
+    <CustomIcon name="connect" />
     {buttonText || "Connect"}
   </Button>
 );
@@ -32,19 +31,16 @@ export const Connected = ({
   onClick,
   icon,
   variant,
-  iconColor,
 }: {
   buttonText: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
   icon?: IconKeys;
   variant?: string;
-  iconColor?: string;
 }) => (
   <ConnectWalletButton
     buttonText={buttonText}
     onClickConnectBtn={onClick}
     icon={icon}
-    iconColor={iconColor}
     variant={variant}
   />
 );

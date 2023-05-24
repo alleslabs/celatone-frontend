@@ -71,7 +71,7 @@ export const SelectFund = ({
       ))}
       <Button
         variant="outline-primary"
-        mt="32px"
+        mt={8}
         mx="auto"
         onClick={() => append({ denom: "", amount: "" })}
         disabled={assetOptions.length === selectedAssets.length}

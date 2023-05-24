@@ -35,7 +35,7 @@ export const ClearAdminModal = ({
       mainAction={proceed}
       mainVariant="error"
       otherBtnTitle="No, keep it"
-      otherVariant="ghost-primary"
+      otherVariant="ghost-secondary"
     >
       <Text>
         Clearing the admin is a permanent action. You&apos;ll not be able to

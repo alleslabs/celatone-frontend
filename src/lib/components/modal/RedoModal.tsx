@@ -44,13 +44,13 @@ export const RedoModal = ({ message }: RedoModalProps) => {
         <ModalContent w="640px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name="redo" boxSize="5" />
+              <CustomIcon name="redo" boxSize={5} color="gray.600" />
               <Heading variant="h5" as="h5">
                 Redo Instantiate
               </Heading>
             </Flex>
           </ModalHeader>
-          <ModalCloseButton color="pebble.600" />
+          <ModalCloseButton color="gray.600" />
           <ModalBody maxH="400px" overflow="overlay">
             <Flex direction="column" gap={5}>
               <Flex direction="row" gap={4}>
@@ -75,11 +75,11 @@ export const RedoModal = ({ message }: RedoModalProps) => {
               direction="row"
               align="center"
               justifyContent="end"
-              gap="4"
+              gap={4}
             >
               <Button
                 cursor="pointer"
-                variant="ghost-primary"
+                variant="ghost-secondary"
                 onClick={onClose}
               >
                 Cancel

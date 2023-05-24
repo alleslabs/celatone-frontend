@@ -25,7 +25,6 @@ interface SelectInputProps<T extends string> {
     value: T;
     disabled: boolean;
     icon?: IconKeys;
-    iconColor?: string;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
@@ -50,7 +49,7 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
     cursor="pointer"
     gap={2}
     aria-disabled={disabled}
-    _hover={{ bg: "pebble.800" }}
+    _hover={{ bg: "gray.800" }}
     transition="all .25s ease-in-out"
     _disabled={{ opacity: 0.4, pointerEvents: "none" }}
   >
@@ -98,7 +97,7 @@ export const SelectInput = <T extends string>({
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
-                borderColor: "lilac.main",
+                borderColor: "secondary.main",
               },
             },
             "& .form-label": {
@@ -116,11 +115,8 @@ export const SelectInput = <T extends string>({
         >
           <div className="form-label">{formLabel}</div>
           {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full" ml="1">
-              <CustomIcon
-                name={selectedOption.icon}
-                color={selectedOption.iconColor}
-              />
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
+              <CustomIcon name={selectedOption.icon} color="gray.600" />
             </InputLeftElement>
           )}
           <Input
@@ -134,14 +130,14 @@ export const SelectInput = <T extends string>({
             pl={selectedOption?.icon ? 9 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <CustomIcon name="chevron-down" />
+            <CustomIcon name="chevron-down" color="gray.600" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
         ref={optionRef}
         border="unset"
-        bg="pebble.900"
+        bg="gray.900"
         w={inputRef.current?.clientWidth}
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
@@ -152,11 +148,11 @@ export const SelectInput = <T extends string>({
         sx={{
           "> div:not(:last-of-type)": {
             borderBottom: hasDivider && "1px solid",
-            borderBottomColor: hasDivider && "pebble.700",
+            borderBottomColor: hasDivider && "gray.700",
           },
         }}
       >
-        {options.map(({ label, value, disabled, icon, iconColor }) => (
+        {options.map(({ label, value, disabled, icon }) => (
           <SelectItem
             key={value}
             onSelect={() => {
@@ -166,7 +162,7 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {icon && <CustomIcon name={icon} color={iconColor} />}
+            {icon && <CustomIcon name={icon} color="gray.600" />}
             {label}
           </SelectItem>
         ))}
@@ -176,7 +172,7 @@ export const SelectInput = <T extends string>({
             h={`${ITEM_HEIGHT}px`}
             align="center"
             borderTop={!hasDivider ? "1px solid" : "none"}
-            borderTopColor="pebble.700"
+            borderTopColor="gray.700"
           >
             {helperTextComponent}
           </Flex>

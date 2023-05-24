@@ -37,17 +37,6 @@ const listItemProps: CSSProperties = {
   cursor: "pointer",
 };
 
-const tagItemProps: CSSProperties = {
-  borderRadius: "24px",
-  cursor: "pointer",
-  whiteSpace: "nowrap",
-  alignItems: "center",
-  display: "flex",
-  textTransform: "none",
-  gap: "4px",
-  marginRight: "8px",
-};
-
 // TODO - Refactor this along with TagSelection
 export const TxFilterSelection = forwardRef<
   HTMLInputElement,
@@ -123,12 +112,12 @@ export const TxFilterSelection = forwardRef<
             background="none"
             borderRadius="8px"
             border="1px solid"
-            borderColor="pebble.700"
+            borderColor="gray.700"
             maxW="100%"
             overflowX="scroll"
           >
             {result.length > 0 && (
-              <Flex alignItems="center" pl="2">
+              <Flex alignItems="center" pl={2}>
                 {[...result].reverse().map((option) => (
                   <Flex
                     display="inline-block"
@@ -136,13 +125,14 @@ export const TxFilterSelection = forwardRef<
                     key={option}
                   >
                     <Tag
-                      style={tagItemProps}
-                      size="md"
-                      bgColor="violet.light"
-                      color="pebble.900"
+                      variant="primary-light"
+                      gap={1}
+                      mr={1}
+                      whiteSpace="nowrap"
+                      cursor="pointer"
                     >
                       {displayActionValue(option)}
-                      <CustomIcon name="close" boxSize="3" color="pebble.900" />
+                      <CustomIcon name="close" boxSize={3} />
                     </Tag>
                   </Flex>
                 ))}
@@ -169,7 +159,7 @@ export const TxFilterSelection = forwardRef<
               position="absolute"
               top={0}
               left={0}
-              fontWeight="400"
+              fontWeight={400}
               color="text.dark"
               bgColor={labelBgColor}
               pointerEvents="none"
@@ -188,9 +178,9 @@ export const TxFilterSelection = forwardRef<
           {displayOptions && (
             <List
               borderRadius="8px"
-              bg="pebble.900"
-              px="2"
-              py="1"
+              bg="gray.900"
+              px={2}
+              py={1}
               mt={0}
               position="absolute"
               zIndex="2"
@@ -202,7 +192,7 @@ export const TxFilterSelection = forwardRef<
                 <ListItem
                   key={option}
                   style={listItemProps}
-                  _hover={{ bg: "pebble.800" }}
+                  _hover={{ bg: "gray.800" }}
                   transition="all .25s ease-in-out"
                   onClick={() => selectOption(option)}
                 >
@@ -210,7 +200,11 @@ export const TxFilterSelection = forwardRef<
                     <Text>{displayActionValue(option)}</Text>
 
                     {isOptionSelected(option) && (
-                      <CustomIcon name="check" data-label={option} />
+                      <CustomIcon
+                        name="check"
+                        data-label={option}
+                        color="gray.600"
+                      />
                     )}
                   </Flex>
                 </ListItem>

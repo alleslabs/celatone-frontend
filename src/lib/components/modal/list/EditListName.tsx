@@ -69,13 +69,13 @@ export function EditListNameModal({
     <ActionModal
       title="Edit list name"
       icon="add-new"
-      trigger={<MenuItem {...menuItemProps} />}
+      trigger={<MenuItem {...menuItemProps} as="button" />}
       mainBtnTitle="Save"
       mainAction={() => {
         handleSave();
         if (reroute)
           navigate({
-            pathname: "/contract-list/[slug]",
+            pathname: "/contract-lists/[slug]",
             query: { slug: formatSlugName(listName) },
             replace: true,
           });
@@ -87,7 +87,7 @@ export function EditListNameModal({
         variant="floating"
         value={listName}
         setInputState={setListName}
-        labelBgColor="pebble.900"
+        labelBgColor="gray.900"
         status={status}
         label="List Name"
       />

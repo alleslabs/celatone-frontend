@@ -16,7 +16,7 @@ export const ContractDesc = ({ contractData }: ContractDescProps) => (
         title="Public Contract Description"
         description={contractData.publicProject.publicInfo.description}
         textLine={contractData.contractLocalInfo?.description ? 4 : 2}
-        icon={<CustomIcon name="website" ml="0" my="0" />}
+        icon={<CustomIcon name="website" ml={0} mb={2} color="gray.600" />}
       />
     )}
     <UserContractDesc contractData={contractData} />

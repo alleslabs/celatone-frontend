@@ -1,24 +1,11 @@
-import {
-  Button,
-  chakra,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
 import { ClearAdminModal } from "../modal/contract/ClearAdmin";
+import { Tooltip } from "../Tooltip";
 import { useInternalNavigate } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
-
-const StyledMenuItem = chakra(MenuItem, {
-  baseStyle: {
-    fontSize: "14px",
-  },
-});
 
 interface AdminButtonProps {
   contractAddress: ContractAddr;
@@ -33,11 +20,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
   return (
     <Menu>
       <Tooltip
-        hasArrow
         label="You don't have admin access to this contract."
-        placement="top"
-        bg="honeydew.darker"
-        arrowSize={8}
         isDisabled={isAdmin}
       >
         <MenuButton
@@ -50,8 +33,8 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         </MenuButton>
       </Tooltip>
       <MenuList>
-        <StyledMenuItem
-          icon={<CustomIcon name="migrate" />}
+        <MenuItem
+          icon={<CustomIcon name="migrate" color="gray.600" />}
           onClick={() => {
             navigate({
               pathname: "/migrate",
@@ -60,9 +43,9 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           }}
         >
           Migrate
-        </StyledMenuItem>
-        <StyledMenuItem
-          icon={<CustomIcon name="admin" />}
+        </MenuItem>
+        <MenuItem
+          icon={<CustomIcon name="admin" color="gray.600" />}
           onClick={() => {
             navigate({
               pathname: "/admin",
@@ -71,13 +54,13 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           }}
         >
           Update Admin
-        </StyledMenuItem>
+        </MenuItem>
         <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
-            <StyledMenuItem icon={<CustomIcon name="admin-clear" />}>
+            <MenuItem icon={<CustomIcon name="admin-clear" color="gray.600" />}>
               Clear Admin
-            </StyledMenuItem>
+            </MenuItem>
           }
         />
       </MenuList>

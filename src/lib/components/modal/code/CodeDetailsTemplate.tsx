@@ -119,7 +119,7 @@ export const CodeDetailsTemplateModal = ({
         size="lg"
         helperText="Fill in code name to define its use as a reminder"
         label="Code Name"
-        labelBgColor="pebble.900"
+        labelBgColor="gray.900"
         maxLength={MAX_CODE_NAME_LENGTH}
       />
     </ActionModal>

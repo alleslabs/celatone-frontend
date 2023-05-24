@@ -1,14 +1,19 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
+import { defineStyle } from "@chakra-ui/react";
 
-type Dict = Record<string, string>;
-
-const pebble600 = "pebble.600";
-const pebble700 = "pebble.700";
-const violetLight = "violet.light";
-const honeydewBg = "honeydew.background";
-const honeydewDarker = "honeydew.darker";
+const gray500 = "gray.500";
+const gray600 = "gray.600";
+const gray700 = "gray.700";
+const gray800 = "gray.800";
+const primaryLight = "primary.light";
+const primaryDark = "primary.dark";
+const primaryBg = "primary.background";
+const accentBg = "accent.background";
+const accentMain = "accent.main";
+const accentDarker = "accent.darker";
 const borderDefualt = "1px solid";
 const errorDark = "error.dark";
+const secondaryBg = "secondary.background";
 
 const generateStyle = ({
   basic,
@@ -16,12 +21,12 @@ const generateStyle = ({
   hoverBg,
   activeBg,
 }: {
-  basic: Dict;
-  disabled: Dict;
+  basic: object;
+  disabled: object;
   hoverBg: string;
   activeBg: string;
 }) => {
-  return {
+  return defineStyle({
     ...basic,
     _hover: {
       background: hoverBg,
@@ -33,7 +38,7 @@ const generateStyle = ({
     _active: {
       background: activeBg,
     },
-  };
+  });
 };
 
 export const Button: ComponentStyleConfig = {
@@ -66,13 +71,34 @@ export const Button: ComponentStyleConfig = {
   },
   variants: {
     primary: generateStyle({
-      basic: { background: "violet.main", color: "text.main" },
-      disabled: {
-        background: "violet.background",
-        color: pebble600,
+      basic: {
+        background: "primary.main",
+        color: "text.main",
+        "& span": {
+          color: "text.main",
+        },
       },
-      hoverBg: "violet.dark",
-      activeBg: violetLight,
+      disabled: {
+        background: primaryBg,
+        color: gray600,
+        "& span": {
+          color: gray600,
+        },
+      },
+      hoverBg: primaryDark,
+      activeBg: primaryLight,
+    }),
+    "gray-solid": generateStyle({
+      basic: {
+        background: gray800,
+        color: "text.main",
+      },
+      disabled: {
+        background: gray800,
+        color: gray500,
+      },
+      hoverBg: gray700,
+      activeBg: gray700,
     }),
     error: generateStyle({
       basic: { background: "error.main", color: "black" },
@@ -86,85 +112,140 @@ export const Button: ComponentStyleConfig = {
     "outline-primary": generateStyle({
       basic: {
         border: borderDefualt,
-        borderColor: violetLight,
-        color: violetLight,
+        borderColor: primaryLight,
+        color: primaryLight,
+        "> div": {
+          color: primaryLight,
+        },
+        "> svg": {
+          color: primaryLight,
+        },
       },
       disabled: {
         border: borderDefualt,
-        borderColor: pebble700,
-        color: pebble600,
+        borderColor: gray700,
+        color: gray600,
+        "> svg": {
+          color: gray600,
+        },
       },
-      hoverBg: "violet.background",
+      hoverBg: primaryBg,
       activeBg: "transparent",
     }),
     "outline-gray": generateStyle({
       basic: {
         border: borderDefualt,
-        borderColor: pebble600,
-        color: "pebble.400",
+        borderColor: gray600,
+        color: "text.dark",
+        "> svg": {
+          color: "text.dark",
+        },
       },
       disabled: {
         border: borderDefualt,
-        borderColor: pebble700,
-        color: pebble600,
+        borderColor: gray700,
+        color: gray600,
+        "> svg": {
+          color: gray600,
+        },
       },
-      hoverBg: pebble700,
+      hoverBg: gray700,
       activeBg: "transparent",
     }),
-    "outline-info": generateStyle({
+    "outline-accent": generateStyle({
       basic: {
         border: borderDefualt,
-        borderColor: honeydewBg,
-        color: "honeydew.main",
+        borderColor: accentBg,
+        color: accentMain,
+        "> svg": {
+          color: accentMain,
+        },
       },
       disabled: {
-        border: honeydewDarker,
-        color: honeydewDarker,
+        border: accentDarker,
+        color: accentDarker,
+        "> svg": {
+          color: accentDarker,
+        },
       },
-      hoverBg: honeydewBg,
+      hoverBg: accentBg,
       activeBg: "transparent",
     }),
     "command-button": generateStyle({
       basic: {
         border: borderDefualt,
-        borderColor: honeydewDarker,
+        borderColor: accentDarker,
         color: "text.main",
       },
       disabled: {
-        border: honeydewDarker,
-        color: honeydewDarker,
+        border: accentDarker,
+        color: accentDarker,
       },
-      hoverBg: honeydewBg,
+      hoverBg: accentBg,
       activeBg: "transparent",
     }),
     "ghost-primary": generateStyle({
       basic: {
-        color: "lilac.main",
+        color: primaryLight,
+        "> svg": {
+          color: "primaryLight",
+        },
       },
       disabled: {
-        color: "lilac.background",
+        color: primaryDark,
+        "> svg": {
+          color: primaryDark,
+        },
       },
-      hoverBg: "lilac.background",
+      hoverBg: primaryBg,
       activeBg: "transparent",
     }),
-    "ghost-info": generateStyle({
+    "ghost-secondary": generateStyle({
       basic: {
-        color: "honeydew.main",
+        color: "secondary.main",
+        "> svg": {
+          color: "secondary.main",
+        },
       },
       disabled: {
-        color: honeydewBg,
+        color: secondaryBg,
+        "> svg": {
+          color: secondaryBg,
+        },
       },
-      hoverBg: honeydewBg,
+      hoverBg: secondaryBg,
+      activeBg: "transparent",
+    }),
+    "ghost-accent": generateStyle({
+      basic: {
+        color: accentMain,
+        "> svg": {
+          color: accentMain,
+        },
+      },
+      disabled: {
+        color: accentBg,
+        "> svg": {
+          color: accentBg,
+        },
+      },
+      hoverBg: accentBg,
       activeBg: "transparent",
     }),
     "ghost-gray": generateStyle({
       basic: {
-        color: "pebble.400",
+        color: "gray.400",
+        "> svg": {
+          color: "gray.400",
+        },
       },
       disabled: {
-        color: "pebble.600",
+        color: gray500,
+        "> svg": {
+          color: gray500,
+        },
       },
-      hoverBg: "pebble.800",
+      hoverBg: gray800,
       activeBg: "transparent",
     }),
     "ghost-error": generateStyle({

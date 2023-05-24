@@ -26,14 +26,14 @@ export const CommandSection = () => {
     type: string
   ) => {
     if (isFetching) {
-      return <Spinner color="pebble.600" size="md" mx={1} />;
+      return <Spinner size="md" mx={1} />;
     }
     if (cmds.length) {
       return (
         <ButtonGroup
           width="90%"
           flexWrap="wrap"
-          rowGap="8px"
+          rowGap={2}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
@@ -70,7 +70,7 @@ export const CommandSection = () => {
     <Flex gap={6}>
       <Flex
         direction="column"
-        bg="pebble.900"
+        bg="gray.900"
         p={4}
         borderRadius="8px"
         flex={0.5}
@@ -82,7 +82,7 @@ export const CommandSection = () => {
       </Flex>
       <Flex
         direction="column"
-        bg="pebble.900"
+        bg="gray.900"
         p={4}
         borderRadius="8px"
         flex={0.5}

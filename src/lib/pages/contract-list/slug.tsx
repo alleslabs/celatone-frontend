@@ -48,7 +48,7 @@ const ContractsByList = observer(() => {
 
   const onContractSelect = (contract: ContractAddr) =>
     navigate({
-      pathname: "/contract/[contract]",
+      pathname: "/contracts/[contract]",
       query: { contract },
     });
 
@@ -56,7 +56,7 @@ const ContractsByList = observer(() => {
     // TODO: find a better approach?
     const timeoutId = setTimeout(() => {
       if (isHydrated && contractListInfo === undefined)
-        navigate({ pathname: "/contract-list" });
+        navigate({ pathname: "/contract-lists" });
     }, 100);
     return () => clearTimeout(timeoutId);
   }, [contractListInfo, isHydrated, navigate]);
@@ -83,13 +83,15 @@ const ContractsByList = observer(() => {
       <Breadcrumb
         w="full"
         spacing="4px"
-        separator={<CustomIcon name="chevron-right" boxSize="3" />}
+        separator={
+          <CustomIcon name="chevron-right" boxSize={3} color="gray.600" />
+        }
       >
         <BreadcrumbItem
           _hover={{ opacity: 0.8 }}
           transition="all 0.25s ease-in-out"
         >
-          <AppLink color="text.dark" href="/contract-list">
+          <AppLink color="text.dark" href="/contract-lists">
             Contract Lists
           </AppLink>
         </BreadcrumbItem>
@@ -98,7 +100,7 @@ const ContractsByList = observer(() => {
             variant="body2"
             className="ellipsis"
             width="250px"
-            fontWeight="600"
+            fontWeight={700}
             color="text.dark"
           >
             {contractListInfo.name}
@@ -118,9 +120,7 @@ const ContractsByList = observer(() => {
         <Flex gap={2}>
           {isInstantiatedByMe ? (
             <Button
-              leftIcon={
-                <CustomIcon name="add-new" color="text.main" boxSize="16px" />
-              }
+              leftIcon={<CustomIcon name="add-new" boxSize="16px" />}
               onClick={() => navigate({ pathname: "/deploy" })}
             >
               Deploy New Contract
@@ -134,13 +134,7 @@ const ContractsByList = observer(() => {
               }}
               buttonProps={{
                 variant: "outline-primary",
-                leftIcon: (
-                  <CustomIcon
-                    name="bookmark"
-                    boxSize="3"
-                    color="violet.light"
-                  />
-                ),
+                leftIcon: <CustomIcon name="bookmark" boxSize={3} />,
                 children: "Save Contract",
               }}
             />
@@ -148,7 +142,7 @@ const ContractsByList = observer(() => {
           {contractListInfo.isInfoEditable && (
             <Menu>
               <MenuButton h="full" variant="ghost-gray" as={Button}>
-                <CustomIcon name="more" />
+                <CustomIcon name="more" color="gray.600" />
               </MenuButton>
               <MenuList>
                 <EditListNameModal
@@ -157,7 +151,7 @@ const ContractsByList = observer(() => {
                     value: contractListInfo.slug,
                   }}
                   menuItemProps={{
-                    icon: <CustomIcon name="edit" />,
+                    icon: <CustomIcon name="edit" color="gray.600" />,
                     children: "Edit list name",
                   }}
                   reroute
