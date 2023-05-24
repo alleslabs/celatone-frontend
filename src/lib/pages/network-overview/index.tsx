@@ -10,8 +10,12 @@ import { Tooltip } from "lib/components/Tooltip";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { useLatestBlockInfo } from "lib/services/blockService";
+import {
+  useAverageBlockTime,
+  useLatestBlockInfo,
+} from "lib/services/blockService";
 import { useTxsCount } from "lib/services/txService";
+import type { Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 const cardProps = {
@@ -24,16 +28,14 @@ const cardProps = {
   cursor: "pointer",
 };
 
-const txInfo = {
-  title: "Total Transactions",
-  tooltip:
-    "Verified transactions track network activity and growth, indicating ecosystem health.",
+const blockTimeInfo = {
+  title: "Average Block Time",
+  tooltip: "Average time to finality between the last 100 indexed blocks.",
 };
 
 const blockInfo = {
-  title: "Latest Block Height",
-  tooltip:
-    "Latest Block Height tracks transactions and network growth for a healthy blockchain ecosystem.",
+  title: "Latest Indexed Block Height",
+  tooltip: "The latest block height indexed by the indexer.",
 };
 
 interface CardInfoProps {
@@ -80,6 +82,16 @@ const CardInfo = ({
   </Flex>
 );
 
+const calculateAverageBlockTime = (
+  latest: Option<Date>,
+  hundred: Option<Date>
+) => {
+  if (!latest || !hundred) return "N/A";
+  return `${((latest.getTime() - hundred.getTime()) / 100 / 1000)
+    .toFixed(3)
+    .toString()}s`;
+};
+
 const NetworkOverview = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -93,6 +105,11 @@ const NetworkOverview = () => {
     isLoading: isLoadingLatestBlockInfo,
     error: latestBlockInfoError,
   } = useLatestBlockInfo();
+  const { data } = useAverageBlockTime();
+  const averageBlockTime = calculateAverageBlockTime(
+    data?.latest,
+    data?.hundred
+  );
   const { data: txsCount, isLoading: isLoadingTxsCount } = useTxsCount();
 
   const toTxs = () =>
@@ -136,9 +153,9 @@ const NetworkOverview = () => {
       </Flex>
       <Flex gap={4} mb={16}>
         <CardInfo
-          title={txInfo.title}
-          tooltip={txInfo.tooltip}
-          value={txsCount?.toLocaleString() ?? "N/A"}
+          title={blockTimeInfo.title}
+          tooltip={blockTimeInfo.tooltip}
+          value={averageBlockTime}
           isLoading={isLoadingTxsCount}
           navigate={toTxs}
         />

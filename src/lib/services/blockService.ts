@@ -7,10 +7,12 @@ import {
   getLatestBlockInfoQueryDocument,
   getBlockDetailsByHeightQueryDocument,
   getBlockListQueryDocument,
+  getBlockTimeQueryDocument,
 } from "lib/query";
 import type {
   BlockDetails,
   BlockInfo,
+  BlockTimeInfo,
   LatestBlock,
   ValidatorAddr,
 } from "lib/types";
@@ -123,4 +125,22 @@ export const useLatestBlockInfo = (): UseQueryResult<LatestBlock> => {
   );
 
   return useQuery(["latest_block_info", indexerGraphClient], queryFn);
+};
+
+export const useAverageBlockTime = (): UseQueryResult<BlockTimeInfo> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getBlockTimeQueryDocument)
+        .then(({ hundred, latest }) => {
+          return {
+            hundred: parseDateOpt(hundred[0].timestamp),
+            latest: parseDateOpt(latest[0].timestamp),
+          };
+        }),
+    [indexerGraphClient]
+  );
+
+  return useQuery(["average_block_time", indexerGraphClient], queryFn);
 };

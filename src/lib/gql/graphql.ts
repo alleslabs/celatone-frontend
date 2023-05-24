@@ -11824,6 +11824,14 @@ export type GetLatestBlockInfoQuery = {
   blocks: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
 };
 
+export type GetBlockTimeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetBlockTimeQuery = {
+  __typename?: "query_root";
+  hundred: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
+  latest: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
+};
+
 export type GetCodeListQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCodeListQueryQuery = {
@@ -12826,6 +12834,92 @@ export const GetLatestBlockInfoDocument = {
   GetLatestBlockInfoQuery,
   GetLatestBlockInfoQueryVariables
 >;
+export const GetBlockTimeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTime" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hundred" },
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: { kind: "IntValue", value: "100" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "latest" },
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetBlockTimeQuery, GetBlockTimeQueryVariables>;
 export const GetCodeListQueryDocument = {
   kind: "Document",
   definitions: [
