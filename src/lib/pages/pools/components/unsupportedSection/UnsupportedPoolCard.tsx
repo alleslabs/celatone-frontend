@@ -19,6 +19,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
+import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { Pool } from "lib/types";
 import { formatUTokenWithPrecision } from "lib/utils";
 
@@ -66,7 +67,12 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                   <Tooltip label="See in osmosis.zone">
                     <Link
                       href={`${getPoolUrl(currentChainName)}/${item.id}`}
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        AmpTrackWebsite(
+                          `${getPoolUrl(currentChainName)}/${item.id}`
+                        );
+                        e.stopPropagation();
+                      }}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -144,13 +150,16 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                     View Pool Details
                   </Button>
                   <Button
-                    onClick={() =>
+                    onClick={() => {
+                      AmpTrackWebsite(
+                        `${getPoolUrl(currentChainName)}/${item.id}`
+                      );
                       window.open(
                         `${getPoolUrl(currentChainName)}/${item.id}`,
                         "_blank",
                         "noopener,noreferrer"
-                      )
-                    }
+                      );
+                    }}
                     size="sm"
                     variant="outline-primary"
                     rightIcon={
