@@ -38,7 +38,7 @@ const ProjectDetail = () => {
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;
     navigate({
-      pathname: "/public-projects/[slug]/[tab]",
+      pathname: "/projects/[slug]/[tab]",
       query: {
         slug,
         tab: nextTab,
@@ -53,7 +53,7 @@ const ProjectDetail = () => {
     if (router.isReady) {
       if (!tab || !Object.values(TabIndex).includes(tab)) {
         navigate({
-          pathname: "/public-projects/[slug]/[tab]",
+          pathname: "/projects/[slug]/[tab]",
           query: {
             slug,
             tab: TabIndex.Overview,
@@ -73,7 +73,7 @@ const ProjectDetail = () => {
     <PageContainer>
       <DetailHeader details={projectDetail} slug={slug} />
       <Tabs index={Object.values(TabIndex).indexOf(tab)}>
-        <TabList my={6} borderBottom="1px" borderColor="pebble.800">
+        <TabList my={6} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={
               publicCodes.length +
