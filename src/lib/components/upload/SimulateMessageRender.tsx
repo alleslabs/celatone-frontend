@@ -43,7 +43,7 @@ export const SimulateMessageRender = ({
 }: SimulateMessageRenderProps) => {
   const status = getStatus(isLoading, isSuccess);
   return (
-    <Flex gap={2} {...restProps}>
+    <Flex gap={2} align="center" {...restProps}>
       {item[status].icon}
       <Text variant="body3" color={item[status].color}>
         {value}

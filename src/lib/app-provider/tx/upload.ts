@@ -1,5 +1,6 @@
 import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
+import { gzip } from "node-gzip";
 import { useCallback } from "react";
 
 import { uploadContractTx } from "lib/app-fns/tx/upload";
@@ -36,7 +37,7 @@ export const useUploadContractTx = (isMigrate: boolean) => {
 
       const message = composeStoreCodeMsg({
         sender: address as Addr,
-        wasmByteCode: new Uint8Array(await wasmCode),
+        wasmByteCode: await gzip(new Uint8Array(await wasmCode)),
         permission,
         addresses,
       });

@@ -13,6 +13,7 @@ import { Sha256 } from "@cosmjs/crypto";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
+import { gzip } from "node-gzip";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -77,13 +78,13 @@ interface StoreCodeProposalState {
 }
 
 const defaultValues: StoreCodeProposalState = {
-  title: "123",
-  proposalDesc: "123123",
-  runAs: "osmo1acqpnvg2t4wmqfdv8hq47d3petfksjs5r9t45p" as Addr,
-  initialDeposit: { denom: "", amount: "1" } as Coin,
+  title: "",
+  proposalDesc: "",
+  runAs: "" as Addr,
+  initialDeposit: { denom: "", amount: "" } as Coin,
   unpinCode: false,
-  builder: "cosmwasm/lorem",
-  source: "https://github.com",
+  builder: "",
+  source: "",
   codeHash: "",
 };
 
@@ -204,9 +205,15 @@ const StoreCodeProposal = () => {
       Boolean(
         isAllInputFilled &&
           !shouldNotSimulateForAnyOfAddr &&
-          !formErrorsKey.length
+          !formErrorsKey.length &&
+          wasmFile
       ),
-    [formErrorsKey.length, isAllInputFilled, shouldNotSimulateForAnyOfAddr]
+    [
+      formErrorsKey.length,
+      isAllInputFilled,
+      shouldNotSimulateForAnyOfAddr,
+      wasmFile,
+    ]
   );
 
   // Reset simulation status to default when some of the input is not filled
@@ -284,7 +291,7 @@ const StoreCodeProposal = () => {
         title,
         description: proposalDesc,
         runAs: runAs as Addr,
-        wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
+        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
         permission,
         addresses: addresses.map((addr) => addr.address),
         unpinCode,
