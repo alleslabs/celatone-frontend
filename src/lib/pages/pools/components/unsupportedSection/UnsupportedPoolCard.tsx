@@ -19,7 +19,7 @@ import { useInternalNavigate } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import { AmpTrackWebsite } from "lib/services/amplitude";
+import { AmpTrackExpand, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Pool } from "lib/types";
 import { formatUTokenWithPrecision } from "lib/utils";
 
@@ -54,7 +54,18 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
     >
       {({ isExpanded }) => (
         <>
-          <AccordionButton>
+          <AccordionButton
+            onClick={() =>
+              AmpTrackExpand(
+                !isExpanded ? "expand" : "collapse",
+                {
+                  type: "unsupported_pool",
+                  id: item.id,
+                },
+                "pool-list-page"
+              )
+            }
+          >
             <Flex gap={4} flexDirection="column" p={4} w="full">
               <Flex alignItems="center" justifyContent="space-between">
                 <PoolHeader
@@ -84,21 +95,18 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                       />
                     </Link>
                   </Tooltip>
-                  {isExpanded ? (
-                    <StyledIconButton
-                      variant="none"
-                      aria-label="external"
-                      _hover={{ backgroundColor: hoverBgColor }}
-                      icon={<CustomIcon name="chevron-up" />}
-                    />
-                  ) : (
-                    <StyledIconButton
-                      variant="none"
-                      aria-label="external"
-                      _hover={{ backgroundColor: hoverBgColor }}
-                      icon={<CustomIcon name="chevron-down" />}
-                    />
-                  )}
+                  <StyledIconButton
+                    variant="none"
+                    aria-label="external"
+                    _hover={{ backgroundColor: hoverBgColor }}
+                    icon={
+                      <CustomIcon
+                        name="chevron-down"
+                        transform={isExpanded ? "rotate(180deg)" : "rotate(0)"}
+                        transition="all .25s ease-in-out"
+                      />
+                    }
+                  />
                 </Flex>
               </Flex>
             </Flex>

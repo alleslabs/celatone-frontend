@@ -23,7 +23,6 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { Order_By } from "lib/gql/graphql";
 import {
-  AmpTrackExpand,
   AmpTrackExpandAll,
   AmpTrackUseSort,
   AmpTrackUseToggle,
@@ -58,30 +57,8 @@ export const UnsupportedSection = ({
 
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
-  const updateExpandedIndexes = (indexes: number[]) => {
-    if (indexes.length > expandedIndexes.length) {
-      const expandedId = indexes.find((idx) =>
-        expandedIndexes.every((expandedIdx) => expandedIdx !== idx)
-      );
-      if (expandedId)
-        AmpTrackExpand(
-          "expand",
-          { type: "unsupported_pool", id: expandedId },
-          "pool-list-page"
-        );
-    } else {
-      const collapsedId = expandedIndexes.find((expandedIdx) =>
-        indexes.every((idx) => idx !== expandedIdx)
-      );
-      if (collapsedId)
-        AmpTrackExpand(
-          "collapse",
-          { type: "unsupported_pool", id: collapsedId },
-          "pool-list-page"
-        );
-    }
+  const updateExpandedIndexes = (indexes: number[]) =>
     setExpandedIndexes(indexes);
-  };
 
   const {
     pagesQuantity,
