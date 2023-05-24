@@ -1,4 +1,3 @@
-import { useWallet } from "@cosmos-kit/react";
 import router from "next/router";
 
 import type { GetAddressTypeByLengthFn } from "lib/app-provider";
@@ -35,7 +34,6 @@ import { getFirstQueryParam, getExecuteMsgTags } from "lib/utils";
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param getContractLocalInfo - contract local info
  * @param isInstantiate2 - boolean of whether the message is instantiate2 or not
  *
@@ -45,7 +43,6 @@ import { getFirstQueryParam, getExecuteMsgTags } from "lib/utils";
 const instantiateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   getContractLocalInfo: (
     contractAddress: ContractAddr
   ) => Option<ContractLocalInfo>,
@@ -116,7 +113,6 @@ const instantiateSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param singleMsg - true when use in accordion
  * @param getContractLocalInfo - contract local info
  *
@@ -126,7 +122,6 @@ const instantiateSingleMsgProps = (
 const executeSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   singleMsg: Option<boolean>,
   getContractLocalInfo: (
     contractAddress: ContractAddr
@@ -218,7 +213,6 @@ const executeSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param assetInfos - information of assets
  * @param getContractLocalInfo - contract local info
  *
@@ -228,7 +222,6 @@ const executeSingleMsgProps = (
 const sendSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   assetInfos: Option<Record<string, AssetInfo>>,
   getContractLocalInfo: (
     contractAddress: ContractAddr
@@ -322,7 +315,6 @@ const sendSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param getContractLocalInfo - contract local info
  *
  * @returns msgProps use in <SingleMsg />
@@ -331,7 +323,6 @@ const sendSingleMsgProps = (
 const migrateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   getContractLocalInfo: (
     contractAddress: ContractAddr
   ) => Option<ContractLocalInfo>,
@@ -390,7 +381,6 @@ const migrateSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param getContractLocalInfo - contract local info
  * 
  * @returns msgProps use in <SingleMsg />
@@ -399,7 +389,6 @@ const migrateSingleMsgProps = (
 const updateAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   getContractLocalInfo: (
     contractAddress: ContractAddr
   ) => Option<ContractLocalInfo>,
@@ -465,7 +454,6 @@ const updateAdminSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param getContractLocalInfo - contract local info
  *
  * @returns msgProps use in <SingleMsg />
@@ -474,7 +462,6 @@ const updateAdminSingleMsgProps = (
 const clearAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   getContractLocalInfo: (
     contractAddress: ContractAddr
   ) => Option<ContractLocalInfo>,
@@ -604,7 +591,6 @@ export const useSingleActionMsgProps = (
   messages: Message[],
   singleMsg: Option<boolean>
 ): SingleMsgProps => {
-  const { currentChainName } = useWallet();
   const { getContractLocalInfo } = useContractStore();
   const { assetInfos } = useAssetInfos();
   const getAddressTypeByLength = useGetAddressTypeByLength();
@@ -614,7 +600,6 @@ export const useSingleActionMsgProps = (
       return executeSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         singleMsg,
         getContractLocalInfo,
         getAddressTypeByLength
@@ -623,7 +608,6 @@ export const useSingleActionMsgProps = (
       return sendSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         assetInfos,
         getContractLocalInfo,
         getAddressTypeByLength
@@ -632,7 +616,6 @@ export const useSingleActionMsgProps = (
       return migrateSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         getContractLocalInfo,
         getAddressTypeByLength
       );
@@ -640,7 +623,6 @@ export const useSingleActionMsgProps = (
       return instantiateSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         getContractLocalInfo,
         false,
         getAddressTypeByLength
@@ -649,7 +631,6 @@ export const useSingleActionMsgProps = (
       return instantiateSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         getContractLocalInfo,
         true,
         getAddressTypeByLength
@@ -658,7 +639,6 @@ export const useSingleActionMsgProps = (
       return updateAdminSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         getContractLocalInfo,
         getAddressTypeByLength
       );
@@ -666,7 +646,6 @@ export const useSingleActionMsgProps = (
       return clearAdminSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         getContractLocalInfo,
         getAddressTypeByLength
       );
