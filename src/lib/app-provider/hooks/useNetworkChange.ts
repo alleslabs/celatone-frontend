@@ -11,12 +11,23 @@ export const useNetworkChange = (
   const networkRef = useRef<string>();
 
   useEffect(() => {
+    let networkRoute = router.asPath.split("/")[1];
+
+    // TODO: refactor later
     if (router.isReady) {
-      let networkRoute = getFirstQueryParam(
+      networkRoute = getFirstQueryParam(
         router.query.network,
         DEFAULT_SUPPORTED_CHAIN_ID
       );
+      // Redirect to default chain if the chain is not supported by the app
+      if (!SUPPORTED_CHAIN_IDS.includes(networkRoute))
+        networkRoute = DEFAULT_SUPPORTED_CHAIN_ID;
 
+      if (networkRoute !== networkRef.current) {
+        networkRef.current = networkRoute;
+        handleOnChainIdChange(networkRoute);
+      }
+    } else if (router.pathname === "/404") {
       // Redirect to default chain if the chain is not supported by the app
       if (!SUPPORTED_CHAIN_IDS.includes(networkRoute))
         networkRoute = DEFAULT_SUPPORTED_CHAIN_ID;
@@ -26,5 +37,11 @@ export const useNetworkChange = (
         handleOnChainIdChange(networkRoute);
       }
     }
-  }, [handleOnChainIdChange, router.isReady, router.query.network]);
+  }, [
+    handleOnChainIdChange,
+    router.asPath,
+    router.isReady,
+    router.pathname,
+    router.query.network,
+  ]);
 };

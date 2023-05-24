@@ -1,7 +1,6 @@
 import { useWallet } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import {
   useCallback,
@@ -13,7 +12,6 @@ import {
 } from "react";
 
 import { useAmplitude } from "../hooks/useAmplitude";
-import { useInternalNavigate } from "../hooks/useInternalNavigate";
 import { useNetworkChange } from "../hooks/useNetworkChange";
 import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG, PROJECT_CONSTANTS } from "config";
 import type { ChainConfig, ProjectConstants } from "config/types";
@@ -50,8 +48,6 @@ const AppContext = createContext<AppContextInterface>({
 });
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
-  const router = useRouter();
-  const navigate = useInternalNavigate();
   const { currentChainName, setCurrentChain } = useWallet();
 
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
@@ -60,43 +56,30 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
 
   const [currentChainId, setCurrentChainId] = useState("");
 
+  // Remark: this function is only used in useSelectChain. Do not use in other places.
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
       const config = CHAIN_CONFIGS[newChainId];
       setCurrentChainId(newChainId);
       setCurrentChain(config?.registryChainName);
-
-      navigate({
-        pathname: router.pathname.replace("/[network]", ""),
-        query: {
-          ...router.query,
-          network: newChainId,
-        },
-      });
     },
-    [navigate, router.pathname, router.query, setCurrentChain]
+    [setCurrentChain, setCurrentChainId]
   );
 
-  const chainConfig = currentChainId
-    ? CHAIN_CONFIGS[currentChainId]
-    : DEFAULT_CHAIN_CONFIG;
+  const states = useMemo<AppContextInterface>(() => {
+    const chainConfig = currentChainId
+      ? CHAIN_CONFIGS[currentChainId]
+      : DEFAULT_CHAIN_CONFIG;
 
-  const indexerGraphClient = useMemo(
-    () => new GraphQLClient(chainConfig.indexer),
-    [chainConfig.indexer]
-  );
-
-  const states = useMemo<AppContextInterface>(
-    () => ({
+    return {
       availableChainIds: SUPPORTED_CHAIN_IDS,
       currentChainId,
       chainConfig,
-      indexerGraphClient,
+      indexerGraphClient: new GraphQLClient(chainConfig.indexer),
       constants: PROJECT_CONSTANTS,
       handleOnChainIdChange,
-    }),
-    [chainConfig, currentChainId, handleOnChainIdChange, indexerGraphClient]
-  );
+    };
+  }, [currentChainId, handleOnChainIdChange]);
 
   useEffect(() => {
     if (currentChainName) {
