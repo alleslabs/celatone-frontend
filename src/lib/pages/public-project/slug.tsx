@@ -38,7 +38,7 @@ const ProjectDetail = () => {
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;
     navigate({
-      pathname: "/public-project/[slug]/[tab]",
+      pathname: "/public-projects/[slug]/[tab]",
       query: {
         slug,
         tab: nextTab,
@@ -53,7 +53,7 @@ const ProjectDetail = () => {
     if (router.isReady) {
       if (!tab || !Object.values(TabIndex).includes(tab)) {
         navigate({
-          pathname: "/public-project/[slug]/[tab]",
+          pathname: "/public-projects/[slug]/[tab]",
           query: {
             slug,
             tab: TabIndex.Overview,

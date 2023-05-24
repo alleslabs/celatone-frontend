@@ -85,7 +85,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
       if (nextTab === tab) return;
       AmpTrackUseTab(nextTab);
       navigate({
-        pathname: "/account/[accountAddress]/[tab]",
+        pathname: "/accounts/[accountAddress]/[tab]",
         query: {
           accountAddress,
           tab: nextTab,
@@ -103,7 +103,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   useEffect(() => {
     if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
       navigate({
-        pathname: "/account/[accountAddress]/[tab]",
+        pathname: "/accounts/[accountAddress]/[tab]",
         query: {
           accountAddress,
           tab: TabIndex.Overview,
