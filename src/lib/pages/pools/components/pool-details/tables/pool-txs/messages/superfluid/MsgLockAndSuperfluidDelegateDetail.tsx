@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 import { PoolAssetCard } from "../components";
 import { getPoolDenom } from "../utils";
@@ -19,6 +19,7 @@ interface MsgLockAndSuperfluidDelegateDetailProps {
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgLockAndSuperfluidDelegateDetail = ({
@@ -29,6 +30,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
   pool,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: MsgLockAndSuperfluidDelegateDetailProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -69,6 +71,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
             value={blockHeight.toString()}
             type="block_height"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         </Flex>
         <Flex direction="column" gap={1}>
@@ -87,10 +90,11 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
               moniker: validator?.moniker,
             }}
             badgeSize={6}
+            ampCopierSection={ampCopierSection}
           />
         </Flex>
       </Flex>
-      <Box w="full">
+      <Flex direction="column" w="full" gap={2}>
         <PoolAssetCard
           poolId={pool.id}
           description="Bonded to"
@@ -98,8 +102,9 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
           poolAsset={poolAsset}
           poolAssetInfo={poolAssetInfo}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
-      </Box>
+      </Flex>
     </Flex>
   );
 };

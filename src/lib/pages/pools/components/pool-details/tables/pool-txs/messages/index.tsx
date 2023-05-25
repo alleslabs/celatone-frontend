@@ -34,10 +34,12 @@ export const PoolMsgAction = ({
   msg,
   pool,
   assetInfos,
+  ampCopierSection,
 }: {
   msg: Message;
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
+  ampCopierSection?: string;
 }) => {
   const { type, detail, log } = msg;
   switch (type) {
@@ -45,20 +47,33 @@ export const PoolMsgAction = ({
     case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
       const details = extractTxDetails(type, detail, log);
       return (
-        <MsgSwapExactAmountInAction msg={details} assetInfos={assetInfos} />
+        <MsgSwapExactAmountInAction
+          msg={details}
+          assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
+        />
       );
     }
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
     case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut": {
       const details = extractTxDetails(type, detail, log);
       return (
-        <MsgSwapExactAmountOutAction msg={details} assetInfos={assetInfos} />
+        <MsgSwapExactAmountOutAction
+          msg={details}
+          assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
+        />
       );
     }
     case "/osmosis.gamm.v1beta1.MsgJoinPool": {
       const details = extractTxDetails(type, detail, log);
       return (
-        <MsgJoinPoolAction msg={details} pool={pool} assetInfos={assetInfos} />
+        <MsgJoinPoolAction
+          msg={details}
+          pool={pool}
+          assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
+        />
       );
     }
     case "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn": {
@@ -68,6 +83,7 @@ export const PoolMsgAction = ({
           msg={details}
           pool={pool}
           assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -78,13 +94,19 @@ export const PoolMsgAction = ({
           msg={details}
           pool={pool}
           assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
     case "/osmosis.gamm.v1beta1.MsgExitPool": {
       const details = extractTxDetails(type, detail, log);
       return (
-        <MsgExitPoolAction msg={details} pool={pool} assetInfos={assetInfos} />
+        <MsgExitPoolAction
+          msg={details}
+          pool={pool}
+          assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
+        />
       );
     }
     case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
@@ -94,6 +116,7 @@ export const PoolMsgAction = ({
           msg={details}
           pool={pool}
           assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -104,6 +127,7 @@ export const PoolMsgAction = ({
           msg={details}
           pool={pool}
           assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -114,6 +138,7 @@ export const PoolMsgAction = ({
           msg={details}
           pool={pool}
           assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -124,6 +149,7 @@ export const PoolMsgAction = ({
           msg={details}
           pool={pool}
           assetInfos={assetInfos}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -141,6 +167,7 @@ export const PoolMsgDetail = ({
   pool,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: {
   txHash: string;
   blockHeight: number;
@@ -149,6 +176,7 @@ export const PoolMsgDetail = ({
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }) => {
   const { type, detail, log } = msg;
   switch (type) {
@@ -163,6 +191,7 @@ export const PoolMsgDetail = ({
           msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -177,6 +206,7 @@ export const PoolMsgDetail = ({
           msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -190,6 +220,7 @@ export const PoolMsgDetail = ({
           msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -203,6 +234,7 @@ export const PoolMsgDetail = ({
           msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -216,6 +248,7 @@ export const PoolMsgDetail = ({
           msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -229,6 +262,7 @@ export const PoolMsgDetail = ({
           msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -242,6 +276,7 @@ export const PoolMsgDetail = ({
           msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -255,6 +290,7 @@ export const PoolMsgDetail = ({
           msg={details}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -269,6 +305,7 @@ export const PoolMsgDetail = ({
           pool={pool}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -283,6 +320,7 @@ export const PoolMsgDetail = ({
           pool={pool}
           assetInfos={assetInfos}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       );
     }

@@ -4,6 +4,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TableNoBorderRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
+import { AmpTrackExpand } from "lib/services/amplitude";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type { Message, Option, PoolDetail, Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
@@ -54,9 +55,18 @@ export const PoolTxsMsg = ({
       <Grid
         className="copier-wrapper"
         templateColumns={templateColumns}
-        onClick={onToggle}
         transition="all .25s ease-in-out"
         cursor="pointer"
+        onClick={() => {
+          if (message) {
+            AmpTrackExpand(
+              !isOpen ? "expand" : "collapse",
+              "pool_tx_msg",
+              `pool_txs-${message.type.split(".")[-1]}`
+            );
+          }
+          onToggle();
+        }}
       >
         <TableNoBorderRow pl={2}>
           {transaction.success && message && (
@@ -75,6 +85,7 @@ export const PoolTxsMsg = ({
                 value={transaction.hash.toLocaleUpperCase()}
                 type="tx_hash"
                 showCopyOnHover
+                ampCopierSection={`pool_txs-${transaction.messages.length}-tx_hash`}
               />
               {transaction.messages.length > 1 && (
                 <Tooltip label="There are at least one messages within this transaction that related to this pool.">
@@ -96,7 +107,12 @@ export const PoolTxsMsg = ({
         </TableNoBorderRow>
         <TableNoBorderRow>
           {message ? (
-            <PoolMsgAction msg={message} pool={pool} assetInfos={assetInfos} />
+            <PoolMsgAction
+              msg={message}
+              pool={pool}
+              assetInfos={assetInfos}
+              ampCopierSection={`pool_txs-${message.type.split(".")[-1]}-row`}
+            />
           ) : (
             <PoolOtherMsgs otherMsgs={otherMsgs} isIbc={transaction.isIbc} />
           )}
@@ -107,6 +123,7 @@ export const PoolTxsMsg = ({
             value={transaction.sender}
             type="user_address"
             showCopyOnHover
+            ampCopierSection={`pool_txs-${transaction.messages.length}-sender`}
           />
         </TableNoBorderRow>
 
@@ -139,6 +156,9 @@ export const PoolTxsMsg = ({
               pool={pool}
               assetInfos={assetInfos}
               isOpened={isOpen}
+              ampCopierSection={`pool_txs-${
+                message.type.split(".")[-1]
+              }-detail`}
             />
           </TableNoBorderRow>
         </Grid>

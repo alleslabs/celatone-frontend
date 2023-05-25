@@ -29,10 +29,10 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       <LabelText label="Pool ID">
         <CopyLink
           value={pool.id.toString()}
-          amptrackSection="pool_details_id"
           type="pool_id"
           showCopyOnHover
           w="50px"
+          amptrackSection="pool_info"
         />
       </LabelText>
       <LabelText label="Created Height">
@@ -41,6 +41,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           value={(pool.blockHeight ?? "N/A").toString()}
           showCopyOnHover
           isReadOnly={!pool.blockHeight}
+          ampCopierSection="pool_info"
         />
       </LabelText>
       <LabelText label="Pool Created by">
@@ -51,6 +52,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           showCopyOnHover
           textFormat="truncate"
           w="140px"
+          ampCopierSection="pool_info"
         />
       </LabelText>
       <LabelText

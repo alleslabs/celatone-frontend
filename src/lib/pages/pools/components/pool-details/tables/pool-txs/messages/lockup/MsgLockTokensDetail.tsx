@@ -18,6 +18,7 @@ interface MsgLockTokensDetailProps {
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgLockTokensDetail = ({
@@ -28,6 +29,7 @@ export const MsgLockTokensDetail = ({
   pool,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: MsgLockTokensDetailProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -59,6 +61,7 @@ export const MsgLockTokensDetail = ({
             value={blockHeight.toString()}
             type="block_height"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         </Flex>
         <Flex direction="column" gap={1}>
@@ -76,6 +79,7 @@ export const MsgLockTokensDetail = ({
             symbol={poolAssetInfo?.symbol}
             precision={poolAssetInfo?.precision}
             fontWeight={700}
+            ampCopierSection={ampCopierSection}
           />
         </Flex>
       </Flex>
@@ -87,6 +91,7 @@ export const MsgLockTokensDetail = ({
           poolAsset={poolAsset}
           poolAssetInfo={poolAssetInfo}
           isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
       </Box>
     </Flex>

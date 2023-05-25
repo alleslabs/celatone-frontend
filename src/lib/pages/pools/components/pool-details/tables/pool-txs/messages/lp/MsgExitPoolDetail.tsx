@@ -13,6 +13,7 @@ interface MsgExitPoolDetailProps {
   msg: MsgExitPoolDetails;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgExitPoolDetail = ({
@@ -22,6 +23,7 @@ export const MsgExitPoolDetail = ({
   msg,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: MsgExitPoolDetailProps) => (
   <Flex w="full" alignItems="start" gap={12}>
     <Flex direction="column" gap={1}>
@@ -32,6 +34,7 @@ export const MsgExitPoolDetail = ({
         value={blockHeight.toString()}
         type="block_height"
         showCopyOnHover
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
     <Box w="full">
@@ -42,6 +45,7 @@ export const MsgExitPoolDetail = ({
         assetInfos={assetInfos}
         isJoin={false}
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
       <LiquidityDivider />
       <PoolAssetsGrid
@@ -50,6 +54,7 @@ export const MsgExitPoolDetail = ({
         isJoin={false}
         assetInfos={assetInfos}
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
     </Box>
   </Flex>

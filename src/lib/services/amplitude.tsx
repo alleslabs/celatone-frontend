@@ -54,6 +54,7 @@ export enum AmpEvent {
   TO_TRANSACTION_DETAIL = "To Transaction Detail",
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
+  TO_POOL_DETAIL = "To Pool Detail",
   // ACTIONS
   ACTION_UPLOAD = "Act Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -209,7 +210,12 @@ export const AmpTrackCopier = (section: Option<string>, type: string) =>
 
 export const AmpTrackExpand = (
   action: "expand" | "collapse",
-  component: "assets" | "json" | "permission_address" | "event_box",
+  component:
+    | "assets"
+    | "json"
+    | "permission_address"
+    | "event_box"
+    | "pool_tx_msg",
   section: Option<string>
 ) => track(AmpEvent.USE_EXPAND, { action, component, section });
 

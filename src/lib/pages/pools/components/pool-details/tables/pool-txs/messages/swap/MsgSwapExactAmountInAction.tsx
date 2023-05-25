@@ -8,11 +8,13 @@ import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 interface MsgSwapExactAmountInActionProps {
   msg: MsgSwapExactAmountInDetails;
   assetInfos: AssetInfosOpt;
+  ampCopierSection?: string;
 }
 
 export const MsgSwapExactAmountInAction = ({
   msg,
   assetInfos,
+  ampCopierSection,
 }: MsgSwapExactAmountInActionProps) => {
   const inAssetInfo = assetInfos?.[msg.token_in.denom];
   const tokenOutDenom = msg.routes.at(-1)?.tokenOutDenom ?? "";
@@ -25,6 +27,7 @@ export const MsgSwapExactAmountInAction = ({
         symbol={inAssetInfo?.symbol}
         precision={inAssetInfo?.precision}
         fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       at least
@@ -33,6 +36,7 @@ export const MsgSwapExactAmountInAction = ({
         symbol={outAssetInfo?.symbol}
         precision={outAssetInfo?.precision}
         fontWeight={400}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

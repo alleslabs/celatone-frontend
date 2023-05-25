@@ -12,12 +12,14 @@ interface MsgJoinPoolActionProps {
   msg: MsgJoinPoolDetails;
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
+  ampCopierSection?: string;
 }
 
 export const MsgJoinPoolAction = ({
   msg,
   pool,
   assetInfos,
+  ampCopierSection,
 }: MsgJoinPoolActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const poolAssetInfo = assetInfos?.[poolDenom];
@@ -38,18 +40,20 @@ export const MsgJoinPoolAction = ({
               symbol={inAssetInfo?.symbol}
               precision={inAssetInfo?.precision}
               fontWeight={400}
+              ampCopierSection={ampCopierSection}
             />
           </Flex>
         );
       })}
       to
-      <PoolLogoLink pool={pool} />
+      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       <MsgToken
         coin={{ amount: msg.share_out_amount, denom: poolDenom }}
         symbol={poolAssetInfo?.symbol}
         precision={poolAssetInfo?.precision}
         fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

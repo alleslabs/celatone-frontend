@@ -11,12 +11,14 @@ interface MsgLockTokensActionProps {
   msg: MsgLockTokensDetails;
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
+  ampCopierSection?: string;
 }
 
 export const MsgLockTokensAction = ({
   msg,
   pool,
   assetInfos,
+  ampCopierSection,
 }: MsgLockTokensActionProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -32,9 +34,10 @@ export const MsgLockTokensAction = ({
         symbol={poolAssetInfo?.symbol}
         precision={poolAssetInfo?.precision}
         fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
       to
-      <PoolLogoLink pool={pool} />
+      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       with
       <span style={{ fontWeight: 700 }}>
         {Number(msg.duration) / (24 * 60 * 60 * 1e9)}

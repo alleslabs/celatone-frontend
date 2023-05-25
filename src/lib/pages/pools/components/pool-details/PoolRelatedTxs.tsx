@@ -10,6 +10,7 @@ import {
 
 import { usePoolTxsCount } from "../../data";
 import { CustomTab } from "lib/components/CustomTab";
+import { AmpTrackUseTab } from "lib/services/amplitude";
 import type { PoolDetail } from "lib/types";
 
 import { PoolRelatedTxsTable } from "./tables/pool-txs";
@@ -45,12 +46,37 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           borderBottom="1px"
           borderColor="pebble.800"
         >
-          <CustomTab count={countDisplayAllTxs}>All</CustomTab>
-          <CustomTab count={countDisplaySwapTxs}>Swap</CustomTab>
-          <CustomTab count={countDisplayLpTxs}>LP</CustomTab>
-          <CustomTab count={countDisplayBondTxs}>Bonding</CustomTab>
+          <CustomTab
+            count={countDisplayAllTxs}
+            onClick={() => AmpTrackUseTab("All")}
+          >
+            All
+          </CustomTab>
+          <CustomTab
+            count={countDisplaySwapTxs}
+            onClick={() => AmpTrackUseTab("Swap")}
+          >
+            Swap
+          </CustomTab>
+          <CustomTab
+            count={countDisplayLpTxs}
+            onClick={() => AmpTrackUseTab("LP")}
+          >
+            LP
+          </CustomTab>
+          <CustomTab
+            count={countDisplayBondTxs}
+            onClick={() => AmpTrackUseTab("Bonding")}
+          >
+            Bonding
+          </CustomTab>
           {pool.isSuperfluid && (
-            <CustomTab count={countDisplaySuperfluidTxs}>Superfluid</CustomTab>
+            <CustomTab
+              count={countDisplaySuperfluidTxs}
+              onClick={() => AmpTrackUseTab("Superfluid")}
+            >
+              Superfluid
+            </CustomTab>
           )}
         </TabList>
         <TabPanels>

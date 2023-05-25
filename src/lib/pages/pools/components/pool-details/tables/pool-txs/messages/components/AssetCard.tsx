@@ -17,14 +17,14 @@ interface AssetCardProps extends FlexProps {
   amount: string;
   denom: string;
   assetInfo: Option<AssetInfo>;
-  amptrackSection?: string;
+  ampCopierSection?: string;
 }
 
 export const AssetCard = ({
   amount,
   denom,
   assetInfo,
-  amptrackSection,
+  ampCopierSection,
   ...cardProps
 }: AssetCardProps) => {
   const symbol = assetInfo?.symbol ?? denom;
@@ -69,7 +69,7 @@ export const AssetCard = ({
             copyLabel="Token ID Copied!"
             display="none"
             ml="1px"
-            amptrackSection={amptrackSection}
+            amptrackSection={ampCopierSection}
           />
         </Flex>
 
