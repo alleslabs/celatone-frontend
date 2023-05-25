@@ -38,7 +38,6 @@ export const PoolTxsMsg = ({
     .concat("1fr")
     .join(" ");
   const isFirstSubRow = msgIndex === 0;
-
   return (
     <Box
       w="full"
@@ -62,7 +61,7 @@ export const PoolTxsMsg = ({
             AmpTrackExpand(
               !isOpen ? "expand" : "collapse",
               "pool_tx_msg",
-              `pool_txs-${message.type.split(".")[-1]}`
+              `pool_txs-${message.type.split(".").at(-1)}`
             );
           }
           onToggle();
@@ -111,7 +110,9 @@ export const PoolTxsMsg = ({
               msg={message}
               pool={pool}
               assetInfos={assetInfos}
-              ampCopierSection={`pool_txs-${message.type.split(".")[-1]}-row`}
+              ampCopierSection={`pool_txs-${message.type
+                .split(".")
+                .at(-1)}-row`}
             />
           ) : (
             <PoolOtherMsgs otherMsgs={otherMsgs} isIbc={transaction.isIbc} />
@@ -156,9 +157,9 @@ export const PoolTxsMsg = ({
               pool={pool}
               assetInfos={assetInfos}
               isOpened={isOpen}
-              ampCopierSection={`pool_txs-${
-                message.type.split(".")[-1]
-              }-detail`}
+              ampCopierSection={`pool_txs-${message.type
+                .split(".")
+                .at(-1)}-detail`}
             />
           </TableNoBorderRow>
         </Grid>
