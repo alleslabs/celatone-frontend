@@ -102,6 +102,7 @@ export enum AmpEvent {
   USE_FILTER_MY_PROPOSALS = "Use Filter My Proposals",
   USE_FILTER_PROPOSALS_STATUS = "Use Filter Proposals Status",
   USE_FILTER_PROPOSALS_TYPE = "Use Filter Proposals Types",
+  USE_FILTER_POOL_TYPE = "Use Filter Pool Types",
   USE_PAGINATION_PAGE_SIZE = "Use Pagination Page Size",
   USE_PAGINATION_NAVIGATION = "Use Pagination Navigation",
   USE_CREATE_NEW_PROPOSAL = "Use Create New Proposal",
@@ -148,6 +149,7 @@ type SpecialAmpEvent =
   | AmpEvent.USE_PAGINATION_NAVIGATION
   | AmpEvent.USE_FILTER_PROPOSALS_STATUS
   | AmpEvent.USE_FILTER_PROPOSALS_TYPE
+  | AmpEvent.USE_FILTER_POOL_TYPE
   | AmpEvent.USE_SORT
   | AmpEvent.USE_VIEW
   | AmpEvent.USE_TOGGLE;
