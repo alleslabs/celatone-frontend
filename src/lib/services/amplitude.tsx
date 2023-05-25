@@ -216,16 +216,22 @@ export const AmpTrackUnsupportedToken = (page: Option<string>) =>
 export const AmpTrackCopier = (section: Option<string>, type: string) =>
   track(AmpEvent.USE_COPIER, { section, type });
 
-export const AmpTrackExpand = (
-  action: "expand" | "collapse",
+export const AmpTrackExpand = ({
+  action,
+  component,
+  info,
+  section,
+}: {
+  action: "expand" | "collapse";
   component:
     | "assets"
     | "json"
     | "permission_address"
     | "event_box"
-    | { type: "unsupported_pool"; id: number },
-  section: Option<string>
-) => track(AmpEvent.USE_EXPAND, { action, component, section });
+    | "unsupported_pool";
+  info?: object;
+  section?: string;
+}) => track(AmpEvent.USE_EXPAND, { action, component, info, section });
 
 export const AmpTrackExpandAll = (action: "expand" | "collapse") =>
   track(AmpEvent.USE_EXPAND, { action });

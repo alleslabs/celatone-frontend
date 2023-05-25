@@ -188,9 +188,9 @@ export const SupportedSection = ({
               size="sm"
               pr={1}
               onClick={() => {
-                const newOrdering = !showNewest;
-                AmpTrackUseSort(newOrdering ? "Descending" : "Ascending");
-                setShowNewest(newOrdering);
+                const isDesc = !showNewest;
+                AmpTrackUseSort(isDesc ? "Descending" : "Ascending");
+                setShowNewest(isDesc);
               }}
             >
               {showNewest ? "Newest First" : "Oldest First"}

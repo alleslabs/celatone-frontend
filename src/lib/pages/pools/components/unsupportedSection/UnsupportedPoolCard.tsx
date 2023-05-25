@@ -56,14 +56,12 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
         <>
           <AccordionButton
             onClick={() =>
-              AmpTrackExpand(
-                !isExpanded ? "expand" : "collapse",
-                {
-                  type: "unsupported_pool",
-                  id: item.id,
-                },
-                "pool-list-page"
-              )
+              AmpTrackExpand({
+                action: !isExpanded ? "expand" : "collapse",
+                component: "unsupported_pool",
+                info: { poolId: item.id },
+                section: "pool-list-page",
+              })
             }
           >
             <Flex gap={4} flexDirection="column" p={4} w="full">

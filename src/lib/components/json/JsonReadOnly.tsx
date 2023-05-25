@@ -88,11 +88,11 @@ const JsonReadOnly = ({
       {showExpandButton && (
         <ViewFullMsgButton
           onClick={() => {
-            AmpTrackExpand(
-              viewFull ? "collapse" : "expand",
-              "json",
-              amptrackSection
-            );
+            AmpTrackExpand({
+              action: viewFull ? "collapse" : "expand",
+              component: "json",
+              section: amptrackSection,
+            });
             setViewFull((prev) => !prev);
           }}
           viewFull={viewFull}
