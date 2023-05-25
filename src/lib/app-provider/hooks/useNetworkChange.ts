@@ -15,13 +15,15 @@ export const useNetworkChange = (
       ? getFirstQueryParam(router.query.network, DEFAULT_SUPPORTED_CHAIN_ID)
       : router.asPath.split("/")[1];
 
-    // Redirect to default chain if the chain is not supported by the app
-    if (!SUPPORTED_CHAIN_IDS.includes(networkRoute))
-      networkRoute = DEFAULT_SUPPORTED_CHAIN_ID;
+    if (router.isReady || router.pathname === "/404") {
+      // Redirect to default chain if the chain is not supported by the app
+      if (!SUPPORTED_CHAIN_IDS.includes(networkRoute))
+        networkRoute = DEFAULT_SUPPORTED_CHAIN_ID;
 
-    if (networkRoute !== networkRef.current) {
-      networkRef.current = networkRoute;
-      handleOnChainIdChange(networkRoute);
+      if (networkRoute !== networkRef.current) {
+        networkRef.current = networkRoute;
+        handleOnChainIdChange(networkRoute);
+      }
     }
   }, [
     handleOnChainIdChange,
