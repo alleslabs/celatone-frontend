@@ -36,7 +36,7 @@ export const AssetCard = ({
         minH="100px"
         gap={2}
         p={3}
-        minW="250px"
+        w="270px"
         background="pebble.800"
         borderRadius="8px"
         {...cardProps}
