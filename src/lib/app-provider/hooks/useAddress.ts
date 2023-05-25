@@ -1,8 +1,9 @@
 import { fromBech32 } from "@cosmjs/encoding";
 import type { ChainRecord } from "@cosmos-kit/core";
 import { useWallet } from "@cosmos-kit/react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
+import { useCelatoneApp } from "../contexts";
 import type { Option } from "lib/types";
 
 export type AddressReturnType =
@@ -11,38 +12,35 @@ export type AddressReturnType =
   | "validator_address"
   | "invalid_address";
 
-const addressLengthMap: {
-  [key: string]: { [length: number]: AddressReturnType };
-} = {
-  osmosis: {
-    43: "user_address",
-    50: "validator_address",
-    63: "contract_address",
-  },
-  osmosistestnet: {
-    43: "user_address",
-    50: "validator_address",
-    63: "contract_address",
-  },
-  terra2: {
-    44: "user_address",
-    51: "validator_address",
-    64: "contract_address",
-  },
-  terra2testnet: {
-    44: "user_address",
-    51: "validator_address",
-    64: "contract_address",
-  },
+export const useGetAddressTypeByLength = () => {
+  const {
+    chainConfig: { exampleAddresses },
+  } = useCelatoneApp();
+  const addressLengthMap = useMemo(
+    () =>
+      Object.entries(exampleAddresses).reduce<{
+        [key: number]: AddressReturnType;
+      }>(
+        (acc, curr) => ({
+          ...acc,
+          [curr[1].length]: `${curr[0]}_address` as AddressReturnType,
+        }),
+        {}
+      ),
+    [exampleAddresses]
+  );
+  return useCallback(
+    (address: Option<string>): AddressReturnType =>
+      address
+        ? addressLengthMap[address.length] ?? "invalid_address"
+        : "invalid_address",
+    [addressLengthMap]
+  );
 };
 
-export const getAddressTypeByLength = (
-  chainName: string,
-  address: Option<string>
-): AddressReturnType =>
-  address
-    ? addressLengthMap[chainName]?.[address.length] ?? "invalid_address"
-    : "invalid_address";
+export type GetAddressTypeByLengthFn = ReturnType<
+  typeof useGetAddressTypeByLength
+>;
 
 const getPrefix = (basePrefix: string, addressType: AddressReturnType) => {
   if (addressType === "validator_address") return `${basePrefix}valoper`;
@@ -52,7 +50,8 @@ const getPrefix = (basePrefix: string, addressType: AddressReturnType) => {
 const validateAddress = (
   currentChainRecord: ChainRecord | undefined,
   address: string,
-  addressType: AddressReturnType
+  addressType: AddressReturnType,
+  getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   if (!currentChainRecord) return "Invalid network";
 
@@ -61,7 +60,7 @@ const validateAddress = (
   if (!address.startsWith(prefix))
     return `Invalid prefix (expected "${prefix}")`;
 
-  if (getAddressTypeByLength(currentChainRecord.name, address) !== addressType)
+  if (getAddressTypeByLength(address) !== addressType)
     return "Invalid address length";
 
   try {
@@ -73,41 +72,63 @@ const validateAddress = (
 };
 
 export const useGetAddressType = () => {
-  const { currentChainName, currentChainRecord } = useWallet();
+  const { currentChainRecord } = useWallet();
+  const getAddressTypeByLength = useGetAddressTypeByLength();
   return useCallback(
     (address: Option<string>): AddressReturnType => {
-      const addressType = getAddressTypeByLength(currentChainName, address);
+      const addressType = getAddressTypeByLength(address);
       if (
         !address ||
         addressType === "invalid_address" ||
-        validateAddress(currentChainRecord, address, addressType)
+        validateAddress(
+          currentChainRecord,
+          address,
+          addressType,
+          getAddressTypeByLength
+        )
       )
         return "invalid_address";
       return addressType;
     },
-    [currentChainName, currentChainRecord]
+    [currentChainRecord, getAddressTypeByLength]
   );
 };
 
 // TODO: refactor
 export const useValidateAddress = () => {
   const { currentChainRecord } = useWallet();
+  const getAddressTypeByLength = useGetAddressTypeByLength();
 
   return {
     validateContractAddress: useCallback(
       (address: string) =>
-        validateAddress(currentChainRecord, address, "contract_address"),
-      [currentChainRecord]
+        validateAddress(
+          currentChainRecord,
+          address,
+          "contract_address",
+          getAddressTypeByLength
+        ),
+      [currentChainRecord, getAddressTypeByLength]
     ),
     validateUserAddress: useCallback(
       (address: string) =>
-        validateAddress(currentChainRecord, address, "user_address"),
-      [currentChainRecord]
+        validateAddress(
+          currentChainRecord,
+          address,
+          "user_address",
+          getAddressTypeByLength
+        ),
+      [currentChainRecord, getAddressTypeByLength]
     ),
     validateValidatorAddress: useCallback(
       (address: string) =>
-        validateAddress(currentChainRecord, address, "validator_address"),
-      [currentChainRecord]
+        validateAddress(
+          currentChainRecord,
+          address,
+          "validator_address",
+          getAddressTypeByLength
+        ),
+      [currentChainRecord, getAddressTypeByLength]
     ),
   };
 };

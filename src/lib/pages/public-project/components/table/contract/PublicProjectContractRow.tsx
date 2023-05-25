@@ -8,9 +8,11 @@ import {
   Flex,
   Tooltip,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
-import { useInternalNavigate, getAddressTypeByLength } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useGetAddressTypeByLength,
+} from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -42,7 +44,7 @@ export const PublicProjectContractRow = ({
   templateColumns,
 }: ContractTableRowProps) => {
   const navigate = useInternalNavigate();
-  const { currentChainName } = useWallet();
+  const getAddressTypeByLength = useGetAddressTypeByLength();
 
   const goToContractDetails = () => {
     navigate({
@@ -63,7 +65,6 @@ export const PublicProjectContractRow = ({
         <ExplorerLink
           value={publicContractInfo.publicInfo.contractAddress}
           type={getAddressTypeByLength(
-            currentChainName,
             publicContractInfo.publicInfo.contractAddress
           )}
           showCopyOnHover
@@ -89,7 +90,6 @@ export const PublicProjectContractRow = ({
         <ExplorerLink
           value={publicContractInfo.publicInfo.instantiator}
           type={getAddressTypeByLength(
-            currentChainName,
             publicContractInfo.publicInfo.instantiator
           )}
           showCopyOnHover

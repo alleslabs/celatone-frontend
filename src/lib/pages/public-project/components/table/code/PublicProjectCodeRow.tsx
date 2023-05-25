@@ -1,7 +1,9 @@
 import { HStack, Grid, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
-import { useInternalNavigate, getAddressTypeByLength } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useGetAddressTypeByLength,
+} from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SaveOrRemoveCodeModal } from "lib/components/modal";
@@ -21,7 +23,7 @@ export const PublicProjectCodeRow = ({
   templateColumns,
 }: CodeTableRowProps) => {
   const navigate = useInternalNavigate();
-  const { currentChainName } = useWallet();
+  const getAddressTypeByLength = useGetAddressTypeByLength();
   const goToCodeDetails = () => {
     navigate({
       pathname: `/code/${publicInfo.id}`,
@@ -64,7 +66,7 @@ export const PublicProjectCodeRow = ({
       <TableRow>
         <ExplorerLink
           value={publicInfo.uploader}
-          type={getAddressTypeByLength(currentChainName, publicInfo.uploader)}
+          type={getAddressTypeByLength(publicInfo.uploader)}
           showCopyOnHover
         />
       </TableRow>
