@@ -1,11 +1,11 @@
 import { useCelatoneApp } from "../contexts";
 
-export const useWasmConfig = () => {
+export const useFaucetConfig = () => {
   const {
     chainConfig: {
-      features: { wasm },
+      features: { faucet },
     },
   } = useCelatoneApp();
 
-  return wasm;
+  return faucet;
 };

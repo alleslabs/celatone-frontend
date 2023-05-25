@@ -4,6 +4,8 @@ type FaucetConfig =
   | {
       enabled: true;
       url: string;
+      denom: string;
+      amount: number;
     }
   | { enabled: false };
 
