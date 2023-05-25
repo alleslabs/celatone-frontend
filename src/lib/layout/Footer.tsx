@@ -1,13 +1,13 @@
-import { Flex, Text, Button, Image } from "@chakra-ui/react";
+import { Flex, Text, Image, Button } from "@chakra-ui/react";
 import Link from "next/link";
 
 import { CURR_THEME } from "env";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
-import { AmpEvent, AmpTrack, AmpTrackCelatone } from "lib/services/amplitude";
+import { AmpEvent, AmpTrack, AmpTrackSocial } from "lib/services/amplitude";
 
 interface SocialMenuType {
-  url: string | undefined;
+  url?: string;
   icon: IconKeys;
   slug: string;
 }
@@ -63,12 +63,12 @@ const themedSocial: SocialMenuType[] = [
   },
   {
     url: CURR_THEME.socialMedia?.reddit,
-    icon: "reddit-solid",
+    icon: "reddit",
     slug: "reddit",
   },
   {
     url: CURR_THEME.socialMedia?.linkedin,
-    icon: "medium",
+    icon: "linkedin",
     slug: "linkedin",
   },
 ];
@@ -93,34 +93,32 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image src={CURR_THEME.footer?.logo} h={8} mr={2} />
+            <Image src={isThemed.logo} h={8} mr={2} />
           </Link>
-          {themedSocial.map((item) => (
-            <>
-              {item.url && (
-                <Link
+          {themedSocial.map(
+            (item) =>
+              item.url !== undefined && (
+                <Button
+                  variant="ghost"
+                  size="xs"
                   key={`social-${item.slug}`}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => AmpTrackCelatone(item.url ?? "")}
+                  gap={1}
+                  px={0}
+                  onClick={() => AmpTrackSocial(item.url ?? "")}
                 >
-                  <Button variant="ghost-gray" size="xs" px={0}>
-                    <CustomIcon name={item.icon} boxSize={5} color="gray.600" />
-                  </Button>
-                </Link>
-              )}
-            </>
-          ))}
+                  <CustomIcon name={item.icon} boxSize={5} color="gray.600" />
+                </Button>
+              )
+          )}
         </Flex>
         <Text variant="body3" color="gray.400">
-          {CURR_THEME.footer?.description}
+          {isThemed.description}
         </Text>
       </Flex>
       <Flex direction="row" alignItems="end" minW="60px">
-        <Button
-          variant="ghost-gray"
-          size="xs"
+        <Flex
+          gap={1}
+          align="center"
           sx={{ _hover: { "> div > svg": { opacity: "100" } } }}
         >
           <Link
@@ -131,6 +129,7 @@ const Footer = () => {
           >
             <Flex
               gap={1}
+              mr={1}
               align="center"
               sx={{ _hover: { "> div": { opacity: "100" } } }}
             >
@@ -150,40 +149,45 @@ const Footer = () => {
               </Text>
             </Flex>
           </Link>
-        </Button>
+        </Flex>
         <Link
           href="https://feedback.alleslabs.com"
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => AmpTrack(AmpEvent.FEEDBACK)}
         >
-          <Button variant="ghost-gray" size="xs" pl="1" mr="1">
-            <Flex gap={1} align="center">
-              <CustomIcon name="feedback" color="gray.600" />
-              <Text variant="body3" color="text.dark">
-                Feedback
-              </Text>
-            </Flex>
-          </Button>
+          <Flex
+            gap={1}
+            pr={2}
+            pl={1}
+            borderRadius={8}
+            mr={1}
+            align="center"
+            _hover={{ background: "gray.800" }}
+            transition="all .25s ease-in-out"
+          >
+            <CustomIcon name="feedback" color="gray.600" />
+            <Text variant="body3" color="text.dark">
+              Feedback
+            </Text>
+          </Flex>
         </Link>
         <Flex direction="row" gap={1} align="center">
-          {socialMenu.map((item) => (
-            <>
-              {item.url && (
-                <Link
+          {socialMenu.map(
+            (item) =>
+              item.url && (
+                <Button
+                  variant="ghost"
+                  size="xs"
                   key={`themed-${item.slug}`}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => AmpTrackCelatone(item.url ?? "")}
+                  gap={1}
+                  px={0}
+                  onClick={() => AmpTrackSocial(item.url ?? "")}
                 >
-                  <Button variant="ghost-gray" size="xs" px={0}>
-                    <CustomIcon name={item.icon} boxSize={4} color="gray.600" />
-                  </Button>
-                </Link>
-              )}
-            </>
-          ))}
+                  <CustomIcon name={item.icon} boxSize={4} color="gray.600" />
+                </Button>
+              )
+          )}
         </Flex>
       </Flex>
     </Flex>
@@ -197,73 +201,78 @@ const Footer = () => {
       mx={1}
     >
       <Flex direction="row" gap={1} align="center">
-        {socialMenu.map((item) => (
-          <>
-            {item.url && (
-              <Link
+        {socialMenu.map(
+          (item) =>
+            item.url && (
+              <Button
+                variant="ghost"
+                size="xs"
+                gap={1}
+                px={0}
                 key={`social-${item.slug}`}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => AmpTrackCelatone(item.url ?? "")}
+                onClick={() => AmpTrackSocial(item.url ?? "")}
               >
-                <Button variant="ghost-gray" size="xs" px={1}>
-                  <CustomIcon name={item.icon} boxSize={5} color="gray.600" />
-                </Button>
-              </Link>
-            )}
-          </>
-        ))}
+                <CustomIcon name={item.icon} boxSize={5} color="gray.600" />
+              </Button>
+            )
+        )}
         <Link
           href="https://feedback.alleslabs.com"
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => AmpTrack(AmpEvent.FEEDBACK)}
         >
-          <Button variant="ghost-gray" size="xs">
-            <Flex gap={1} align="center">
-              <CustomIcon name="feedback" color="gray.600" />
-              <Text variant="body3" color="text.dark">
-                Feedback
-              </Text>
-            </Flex>
-          </Button>
+          <Flex
+            gap={1}
+            pr={2}
+            pl={1}
+            borderRadius={8}
+            mr={1}
+            align="center"
+            _hover={{ background: "gray.800" }}
+            transition="all .25s ease-in-out"
+          >
+            <CustomIcon name="feedback" color="gray.600" />
+            <Text variant="body3" color="text.dark">
+              Feedback
+            </Text>
+          </Flex>
         </Link>
       </Flex>
       <Flex direction="column" alignItems="end" minW="60px">
-        <Button
-          variant="ghost-gray"
-          size="xs"
-          sx={{ _hover: { "> div > svg": { opacity: "100" } } }}
+        <Link
+          href="https://twitter.com/alleslabs"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => AmpTrack(AmpEvent.ALLESLABS)}
         >
-          <Link
-            href="https://twitter.com/alleslabs"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => AmpTrack(AmpEvent.ALLESLABS)}
+          <Flex
+            gap={1}
+            align="center"
+            _hover={{
+              "& svg": {
+                opacity: 1,
+              },
+            }}
           >
-            <Flex
-              gap={1}
-              align="center"
-              sx={{ _hover: { "> div": { opacity: "100" } } }}
+            <CustomIcon
+              name="alles"
+              opacity={0}
+              transition="opacity .25s ease-in-out"
+            />
+            <Text variant="body3" color="text.dark">
+              Made by
+            </Text>
+            <Text
+              variant="body3"
+              color="secondary.main"
+              transition="all .25s ease-in-out"
+              _hover={{ color: "secondary.light" }}
             >
-              <Flex opacity="0" transition="all .25s ease-in-out">
-                <CustomIcon name="alles" />
-              </Flex>
-              <Text variant="body3" color="text.dark">
-                Made by
-              </Text>
-              <Text
-                variant="body3"
-                color="secondary.main"
-                transition="all .25s ease-in-out"
-                _hover={{ color: "secondary.light" }}
-              >
-                Alles Labs
-              </Text>
-            </Flex>
-          </Link>
-        </Button>
+              Alles Labs
+            </Text>
+          </Flex>
+        </Link>
       </Flex>
     </Flex>
   );
