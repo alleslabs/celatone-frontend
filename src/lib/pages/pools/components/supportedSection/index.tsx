@@ -24,6 +24,11 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ToggleWithName } from "lib/components/ToggleWithName";
 import { Order_By } from "lib/gql/graphql";
+import {
+  AmpTrackUseSort,
+  AmpTrackUseToggle,
+  AmpTrackUseView,
+} from "lib/services/amplitude";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
@@ -123,7 +128,7 @@ export const SupportedSection = ({
   return (
     <>
       <Flex alignItems="center" mb={12}>
-        <Flex grow="2" gap={4}>
+        <Flex grow={2} gap={4}>
           <InputWithIcon
             placeholder="Search with Pool ID, Symbol or Token ID"
             value={keyword}
@@ -132,6 +137,7 @@ export const SupportedSection = ({
               setValue("keyword", e.target.value);
             }}
             size="lg"
+            action="supported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"
@@ -148,6 +154,7 @@ export const SupportedSection = ({
                 defaultChecked={isSuperfluidOnly}
                 onChange={(e) => {
                   setCurrentPage(1);
+                  AmpTrackUseToggle("isSuperfluidOnly", e.target.checked);
                   setValue("isSuperfluidOnly", e.target.checked);
                 }}
               />
@@ -172,15 +179,19 @@ export const SupportedSection = ({
           </Badge>
         </Flex>
         <Flex gap={4}>
-          <Flex gap="2" alignItems="center">
+          <Flex gap={2} alignItems="center">
             <Text variant="body2" color="text.dark">
               Sort Pool ID:
             </Text>
             <Button
               variant="outline-gray"
               size="sm"
-              pr="1"
-              onClick={() => setShowNewest(!showNewest)}
+              pr={1}
+              onClick={() => {
+                const isDesc = !showNewest;
+                AmpTrackUseSort(isDesc ? "descending" : "ascending");
+                setShowNewest(isDesc);
+              }}
             >
               {showNewest ? "Newest First" : "Oldest First"}
               <CustomIcon
@@ -189,14 +200,17 @@ export const SupportedSection = ({
               />
             </Button>
           </Flex>
-          <Flex gap="2" alignItems="center">
+          <Flex gap={2} alignItems="center">
             <Text variant="body2" color="text.dark">
               View asset allocation in:
             </Text>
             <ToggleWithName
               selectedValue={toggle}
               options={OPTIONS}
-              selectOption={(value: string) => setToggle(value)}
+              selectOption={(value: string) => {
+                AmpTrackUseView(value);
+                setToggle(value);
+              }}
             />
           </Flex>
         </Flex>

@@ -2,6 +2,7 @@ import { Grid } from "@chakra-ui/react";
 
 import { BALANCER_ICON, STABLESWAP_ICON } from "../constant";
 import { SelectInput } from "lib/components/forms";
+import { AmpEvent, AmpTrackUseFilter } from "lib/services/amplitude";
 import type { PoolTypeFilter } from "lib/types";
 
 interface PoolTypeOption {
@@ -46,7 +47,10 @@ export const FilterByPoolType = ({
     <SelectInput<PoolTypeFilter>
       formLabel="Filter by Pool Type"
       options={options}
-      onChange={setPoolTypeValue}
+      onChange={(newVal) => {
+        AmpTrackUseFilter(AmpEvent.USE_FILTER_POOL_TYPE, [newVal], newVal);
+        setPoolTypeValue(newVal);
+      }}
       initialSelected={initialSelected}
       labelBgColor={labelBgColor}
     />
