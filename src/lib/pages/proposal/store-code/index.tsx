@@ -13,6 +13,7 @@ import { Sha256 } from "@cosmjs/crypto";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
+import { gzip } from "node-gzip";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -204,9 +205,15 @@ const StoreCodeProposal = () => {
       Boolean(
         isAllInputFilled &&
           !shouldNotSimulateForAnyOfAddr &&
-          !formErrorsKey.length
+          !formErrorsKey.length &&
+          wasmFile
       ),
-    [formErrorsKey.length, isAllInputFilled, shouldNotSimulateForAnyOfAddr]
+    [
+      formErrorsKey.length,
+      isAllInputFilled,
+      shouldNotSimulateForAnyOfAddr,
+      wasmFile,
+    ]
   );
 
   // Reset simulation status to default when some of the input is not filled
@@ -251,6 +258,7 @@ const StoreCodeProposal = () => {
     wasmFile,
     permission,
     addresses: addresses.map((addr) => addr.address),
+    precision: minDeposit?.precision,
     onSuccess: (fee) => {
       if (wasmFile && walletAddress && fee) {
         setSimulateStatus({
@@ -283,7 +291,7 @@ const StoreCodeProposal = () => {
         title,
         description: proposalDesc,
         runAs: runAs as Addr,
-        wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
+        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
         permission,
         addresses: addresses.map((addr) => addr.address),
         unpinCode,
@@ -291,6 +299,7 @@ const StoreCodeProposal = () => {
         builder,
         codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
         initialDeposit,
+        precision: minDeposit?.precision,
       });
     };
 

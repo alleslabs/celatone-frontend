@@ -2,6 +2,7 @@ import type { Coin } from "@cosmjs/amino";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
+import { gzip } from "node-gzip";
 
 import { useDummyWallet } from "../hooks";
 import type {
@@ -98,7 +99,7 @@ export const useSimulateFeeForStoreCode = ({
     const submitStoreCodeMsg = async () => {
       return composeStoreCodeMsg({
         sender: address as HumanAddr,
-        wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
+        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
         permission,
         addresses,
       });
@@ -137,6 +138,7 @@ interface SimulateQueryParamsForProposalStoreCode {
   wasmFile: Option<File>;
   permission: AccessType;
   addresses: Addr[];
+  precision: Option<number>;
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
@@ -154,6 +156,7 @@ export const useSimulateFeeForProposalStoreCode = ({
   wasmFile,
   permission,
   addresses,
+  precision,
   onSuccess,
   onError,
 }: SimulateQueryParamsForProposalStoreCode) => {
@@ -172,7 +175,7 @@ export const useSimulateFeeForProposalStoreCode = ({
         title,
         description,
         runAs: runAs as Addr,
-        wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
+        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
         permission,
         addresses,
         unpinCode,
@@ -180,6 +183,7 @@ export const useSimulateFeeForProposalStoreCode = ({
         builder,
         codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
         initialDeposit,
+        precision,
       });
     };
 

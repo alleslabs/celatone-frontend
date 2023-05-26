@@ -3,7 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import big from "big.js";
 import { useCallback } from "react";
 
-import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useChainRecordAsset,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import {
   getProposalList,
   getProposalListCount,
@@ -26,7 +30,7 @@ import type {
   Token,
 } from "lib/types";
 import {
-  demicrofy,
+  deexponentify,
   formatBalanceWithDenom,
   getTokenLabel,
   parseDate,
@@ -281,6 +285,7 @@ export interface MinDeposit {
   formattedAmount: Token;
   formattedDenom: string;
   formattedToken: string;
+  precision: number;
 }
 
 interface DepositParamsReturn
@@ -297,6 +302,7 @@ export interface GovParams {
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useLCDEndpoint();
+  const getAssetInfo = useChainRecordAsset();
   const queryFn = useCallback(
     () =>
       Promise.all([
@@ -305,11 +311,14 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
         fetchGovVotingParams(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
+        const assetInfo = getAssetInfo(minDepositParam.denom);
         const [minDepositAmount, minDepositDenom] = [
-          demicrofy(minDepositParam.amount as U<Token>).toFixed(),
+          deexponentify(
+            minDepositParam.amount as U<Token>,
+            assetInfo?.precision
+          ).toFixed(),
           getTokenLabel(minDepositParam.denom),
         ];
-
         return {
           depositParams: {
             ...params[0],
@@ -320,9 +329,10 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
               formattedDenom: minDepositDenom,
               formattedToken: formatBalanceWithDenom({
                 coin: minDepositParam,
-                precision: 6,
+                precision: assetInfo?.precision,
                 decimalPoints: 2,
               }),
+              precision: assetInfo?.precision ?? 0,
             },
             minInitialDeposit: big(params[0].minInitialDepositRatio)
               .times(minDepositAmount)
@@ -332,11 +342,12 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [lcdEndpoint]
+    [lcdEndpoint, getAssetInfo]
   );
 
   return useQuery(["gov_params", lcdEndpoint], queryFn, {
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   });
 };
 
