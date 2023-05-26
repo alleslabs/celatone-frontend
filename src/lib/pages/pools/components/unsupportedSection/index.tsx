@@ -183,10 +183,8 @@ export const UnsupportedSection = ({
                 AmpTrackExpandAll(
                   !expandedIndexes.length ? "expand" : "collapse"
                 );
-                setExpandedIndexes(
-                  !expandedIndexes.length
-                    ? Array.from(Array(pageSize).keys())
-                    : []
+                setExpandedIndexes((prev) =>
+                  !prev.length ? Array.from(Array(pageSize).keys()) : []
                 );
               }}
             >
