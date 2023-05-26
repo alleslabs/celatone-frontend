@@ -1,5 +1,6 @@
 import { Flex, Heading, Box, Text, SimpleGrid } from "@chakra-ui/react";
 
+import { CURR_THEME } from "env";
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -59,7 +60,7 @@ export const QuickMenu = () => (
     <Flex gap={4}>
       <AppLink href="/deploy" style={{ width: "55%" }}>
         <Flex
-          bgGradient="linear(to-tr, primary.main, primary.light)"
+          bgGradient={CURR_THEME.colors.gradient?.main}
           _hover={{ opacity: "85%" }}
           style={cardProps}
           transition="all .25s ease-in-out"

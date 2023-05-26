@@ -2,6 +2,7 @@ import { Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { CURR_THEME } from "env";
 import { BackButton } from "lib/components/button";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -26,7 +27,7 @@ const NotFoundPage = () => {
         mt={6}
       >
         <Image
-          src="https://assets.alleslabs.dev/illustration/404.svg"
+          src={CURR_THEME.illustration.error}
           alt="page not found"
           width="404px"
         />
