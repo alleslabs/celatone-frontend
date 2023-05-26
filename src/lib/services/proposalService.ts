@@ -332,7 +332,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
                 precision: assetInfo?.precision,
                 decimalPoints: 2,
               }),
-              precision: assetInfo?.precision || 0,
+              precision: assetInfo?.precision ?? 0,
             },
             minInitialDeposit: big(params[0].minInitialDepositRatio)
               .times(minDepositAmount)
