@@ -54,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#360](https://github.com/alleslabs/celatone-frontend/pull/360) Fix supported pool list cannot be searched with token ID
+
 ## v1.0.5
 
 ### Features
