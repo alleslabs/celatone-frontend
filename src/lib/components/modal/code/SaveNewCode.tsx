@@ -5,16 +5,19 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { useLCDEndpoint } from "lib/app-provider";
+import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { Addr, HumanAddr } from "lib/types";
-import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
+import {
+  getMaxLengthError,
+  getNameAndDescriptionDefault,
+  getPermissionHelper,
+} from "lib/utils";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
@@ -22,6 +25,8 @@ interface SaveNewCodeModalProps {
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { address } = useWallet();
+  const { constants } = useCelatoneApp();
+
   /* STATE */
   const [codeId, setCodeId] = useState("");
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
@@ -41,13 +46,17 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     const trimedName = name.trim();
     if (trimedName.length === 0) {
       setNameStatus({ state: "init" });
-    } else if (trimedName.length > MAX_CODE_NAME_LENGTH)
+    } else if (trimedName.length > constants.maxCodeNameLength)
       setNameStatus({
         state: "error",
-        message: getMaxCodeNameLengthError(trimedName.length),
+        message: getMaxLengthError(
+          "Code name",
+          trimedName.length,
+          constants.maxCodeNameLength
+        ),
       });
     else setNameStatus({ state: "success" });
-  }, [name]);
+  }, [constants.maxCodeNameLength, name]);
 
   /* DEPENDENCY */
   const toast = useToast();

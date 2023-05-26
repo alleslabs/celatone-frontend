@@ -2,17 +2,16 @@ import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
 import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { LVPair } from "lib/types";
-import { formatSlugName, shortenName } from "lib/utils";
+import { formatSlugName, getMaxLengthError, shortenName } from "lib/utils";
 
 interface EditListNameModalProps {
   list: LVPair;
@@ -24,6 +23,7 @@ export function EditListNameModal({
   menuItemProps,
   reroute = false,
 }: EditListNameModalProps) {
+  const { constants } = useCelatoneApp();
   const userKey = useUserKey();
   const { renameList, isContractListExist } = useContractStore();
   const navigate = useInternalNavigate();
@@ -36,10 +36,14 @@ export function EditListNameModal({
     const trimedListName = listName.trim();
     if (trimedListName.length === 0) {
       setStatus({ state: "init" });
-    } else if (trimedListName.length > MAX_LIST_NAME_LENGTH)
+    } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
         state: "error",
-        message: getMaxListNameLengthError(trimedListName.length),
+        message: getMaxLengthError(
+          "List name",
+          trimedListName.length,
+          constants.maxListNameLength
+        ),
       });
     else if (
       formatSlugName(listName) !== list.value &&
@@ -47,7 +51,13 @@ export function EditListNameModal({
     )
       setStatus({ state: "error", message: "Already existed" });
     else setStatus({ state: "success" });
-  }, [isContractListExist, list.value, listName, userKey]);
+  }, [
+    constants.maxListNameLength,
+    isContractListExist,
+    list.value,
+    listName,
+    userKey,
+  ]);
 
   const toast = useToast();
   const handleSave = () => {

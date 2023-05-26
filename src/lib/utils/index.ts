@@ -28,3 +28,5 @@ export * from "./executeTags";
 export * from "./cw2";
 export * from "./bech32";
 export * from "./proposal";
+export * from "./error";
+export * from "./icon";

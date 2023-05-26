@@ -4,14 +4,14 @@ import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import { ActionModal } from "../ActionModal";
+import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
 import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { shortenName } from "lib/utils";
+import { getMaxLengthError, shortenName } from "lib/utils";
 
 interface CreateNewListModalProps {
   buttonProps?: ButtonProps;
@@ -28,6 +28,7 @@ export function CreateNewListModal({
   onCreate,
   onClose,
 }: CreateNewListModalProps) {
+  const { constants } = useCelatoneApp();
   const userKey = useUserKey();
   const { createNewList, isContractListExist } = useContractStore();
 
@@ -44,15 +45,19 @@ export function CreateNewListModal({
     const trimedListName = listName.trim();
     if (trimedListName.length === 0) {
       setStatus({ state: "init" });
-    } else if (trimedListName.length > MAX_LIST_NAME_LENGTH)
+    } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
         state: "error",
-        message: getMaxListNameLengthError(trimedListName.length),
+        message: getMaxLengthError(
+          "List name",
+          trimedListName.length,
+          constants.maxListNameLength
+        ),
       });
     else if (isContractListExist(userKey, trimedListName))
       setStatus({ state: "error", message: "Already existed" });
     else setStatus({ state: "success" });
-  }, [isContractListExist, listName, userKey]);
+  }, [constants.maxListNameLength, isContractListExist, listName, userKey]);
 
   const toast = useToast();
   const handleCreate = useCallback(() => {

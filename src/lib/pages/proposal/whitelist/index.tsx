@@ -19,6 +19,7 @@ import { TestnetAlert } from "../components/TestnetAlert";
 import { SIDEBAR_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
+  useCelatoneApp,
   useCurrentNetwork,
   useFabricateFee,
   useSimulateFeeQuery,
@@ -33,15 +34,15 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
-import {
-  getMaxProposalTitleLengthError,
-  MAX_PROPOSAL_TITLE_LENGTH,
-} from "lib/data/proposalWhitelist";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import { composeSubmitWhitelistProposalMsg, d2Formatter } from "lib/utils";
+import {
+  composeSubmitWhitelistProposalMsg,
+  d2Formatter,
+  getMaxLengthError,
+} from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -58,6 +59,7 @@ const defaultValues: WhiteListState = {
 };
 
 const ProposalToWhitelist = () => {
+  const { constants } = useCelatoneApp();
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
@@ -250,11 +252,15 @@ const ProposalToWhitelist = () => {
                   variant="floating"
                   rules={{
                     required: "Proposal Title is required",
-                    maxLength: MAX_PROPOSAL_TITLE_LENGTH,
+                    maxLength: constants.maxProposalTitleLength,
                   }}
                   error={
                     formErrors.title?.message ||
-                    getMaxProposalTitleLengthError(title.length)
+                    getMaxLengthError(
+                      "Proposal title",
+                      title.length,
+                      constants.maxProposalTitleLength
+                    )
                   }
                 />
                 <ControllerTextarea

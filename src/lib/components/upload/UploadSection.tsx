@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { CustomIcon } from "../icon";
 import {
+  useCelatoneApp,
   useFabricateFee,
   useSimulateFee,
   useUploadContractTx,
@@ -12,13 +13,12 @@ import {
 import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ControllerInput } from "lib/components/forms";
-import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg } from "lib/utils";
+import { composeMsg, getMaxLengthError } from "lib/utils";
 
 import { UploadCard } from "./components/UploadCard";
 import type { UploadSectionState } from "./types";
@@ -32,6 +32,7 @@ export const UploadSection = ({
   handleBack,
   isMigrate = false,
 }: UploadSectionProps) => {
+  const { constants } = useCelatoneApp();
   const { simulate, loading } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { address } = useWallet();
@@ -46,14 +47,14 @@ export const UploadSection = ({
   } = useForm<UploadSectionState>({
     defaultValues: {
       wasmFile: undefined,
-      codeDesc: "",
+      codeName: "",
       estimatedFee: undefined,
       simulateStatus: "pending",
       simulateError: "",
     },
     mode: "all",
   });
-  const { wasmFile, codeDesc, estimatedFee, simulateStatus, simulateError } =
+  const { wasmFile, codeName, estimatedFee, simulateStatus, simulateError } =
     watch();
 
   const postUploadTx = useUploadContractTx(isMigrate);
@@ -64,13 +65,13 @@ export const UploadSection = ({
       const stream = await postUploadTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),
-        codeDesc,
+        codeName,
         estimatedFee,
         onTxSucceed: (codeId: number) => {
           updateCodeInfo(
             codeId,
             address as HumanAddr,
-            codeDesc || `${wasmFile?.name}(${codeId})`
+            codeName || `${wasmFile?.name}(${codeId})`
           );
         },
       });
@@ -80,7 +81,7 @@ export const UploadSection = ({
   }, [
     postUploadTx,
     wasmFile,
-    codeDesc,
+    codeName,
     estimatedFee,
     broadcast,
     updateCodeInfo,
@@ -111,7 +112,7 @@ export const UploadSection = ({
   }, [wasmFile, address, simulate, fabricateFee, setValue]);
 
   const isDisabled =
-    !estimatedFee || !wasmFile || !!errors.codeDesc || !address;
+    !estimatedFee || !wasmFile || !!errors.codeName || !address;
   return (
     <>
       {wasmFile ? (
@@ -128,15 +129,22 @@ export const UploadSection = ({
         <DropZone setFile={(file) => setValue("wasmFile", file)} />
       )}
       <ControllerInput
-        name="codeDesc"
+        name="codeName"
         control={control}
         label="Code Name (Optional)"
         placeholder="Untitled Name"
         helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
         rules={{
-          maxLength: MAX_CODE_NAME_LENGTH,
+          maxLength: constants.maxCodeNameLength,
         }}
-        error={errors.codeDesc && getMaxCodeNameLengthError(codeDesc.length)}
+        error={
+          errors.codeName &&
+          getMaxLengthError(
+            "Code name",
+            codeName.length,
+            constants.maxCodeNameLength
+          )
+        }
         variant="floating"
         my="32px"
       />
