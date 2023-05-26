@@ -14,9 +14,10 @@ interface DetailHeaderProps {
 export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
   <>
     <Breadcrumb
-      primaryPage="Public Projects"
-      primaryPath="/public-project"
-      currentPage={details?.name ?? ""}
+      items={[
+        { text: "Public Projects", href: "/public-project" },
+        { text: details?.name ?? "" },
+      ]}
     />
     <Flex
       justifyContent="space-between"

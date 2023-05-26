@@ -45,9 +45,10 @@ const TxDetails = () => {
   return (
     <PageContainer>
       <Breadcrumb
-        primaryPage="Transactions"
-        primaryPath="/txs"
-        currentPage={truncate(txData?.txhash)}
+        items={[
+          { text: "Transactions", href: "/txs" },
+          { text: truncate(txData?.txhash) },
+        ]}
       />
       {txData ? (
         <>

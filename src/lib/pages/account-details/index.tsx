@@ -94,12 +94,15 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
       <Flex direction="column" mb={6}>
         {publicDetail && (
           <Breadcrumb
+            items={[
+              { text: "Public Projects", href: "/public-project" },
+              {
+                text: publicDetail?.name,
+                href: `/public-project/${publicInfo?.slug}`,
+              },
+              { text: truncate(accountAddress) },
+            ]}
             mb={6}
-            primaryPage="Public Projects"
-            primaryPath="/public-project"
-            secondaryPage={publicDetail?.name}
-            secondaryPath={`/public-project/${publicInfo?.slug}`}
-            currentPage={truncate(accountAddress)}
           />
         )}
         <Flex direction="column" gap={2}>

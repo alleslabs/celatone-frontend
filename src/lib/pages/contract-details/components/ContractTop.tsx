@@ -99,12 +99,15 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
       <Flex direction="column" w="full">
         {publicProject.publicDetail && (
           <Breadcrumb
+            items={[
+              { text: "Public Projects", href: "/public-project" },
+              {
+                text: publicProject.publicDetail.name,
+                href: `/public-project/${publicProject.publicInfo?.slug}`,
+              },
+              { text: truncate(contractAddress) },
+            ]}
             mb={6}
-            primaryPage="Public Projects"
-            primaryPath="/public-project"
-            secondaryPage={publicProject.publicDetail.name}
-            secondaryPath={`/public-project/${publicProject.publicInfo?.slug}`}
-            currentPage={truncate(contractAddress)}
           />
         )}
         <Flex direction="column" gap={2} textOverflow="ellipsis" w="full">

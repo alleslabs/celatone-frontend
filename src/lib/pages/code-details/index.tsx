@@ -43,17 +43,21 @@ const CodeDetailsBody = observer(
       <>
         <Flex direction="column">
           <Breadcrumb
-            primaryPage={
-              publicProject.publicCodeData?.name ? "Public Projects" : "Codes"
-            }
-            primaryPath={
-              publicProject.publicCodeData?.name
-                ? `/public-project`
-                : "/recent-codes"
-            }
-            secondaryPage={publicProject.publicDetail?.name}
-            secondaryPath={`/public-project/${publicProject.publicCodeData?.slug}`}
-            currentPage={codeId.toString() ?? ""}
+            items={[
+              {
+                text: publicProject.publicCodeData?.name
+                  ? "Public Projects"
+                  : "Codes",
+                href: publicProject.publicCodeData?.name
+                  ? `/public-project`
+                  : "/recent-codes",
+              },
+              {
+                text: publicProject.publicDetail?.name ?? null,
+                href: `/public-project/${publicProject.publicCodeData?.slug}`,
+              },
+              { text: codeId.toString() ?? "" },
+            ]}
           />
           <Flex direction="column" gap={2} w="full" mt={6}>
             <Flex justify="space-between" align="center">

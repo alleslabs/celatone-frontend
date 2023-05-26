@@ -78,9 +78,10 @@ const ContractsByList = observer(() => {
   return (
     <PageContainer>
       <Breadcrumb
-        primaryPage="Contract Lists"
-        primaryPath="/contract-list"
-        currentPage={contractListInfo.name}
+        items={[
+          { text: "Contract Lists", href: "/contract-list" },
+          { text: contractListInfo.name },
+        ]}
       />
       <Flex
         justifyContent="space-between"

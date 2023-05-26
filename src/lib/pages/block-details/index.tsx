@@ -31,9 +31,10 @@ const BlockDetail = () => {
   return (
     <PageContainer>
       <Breadcrumb
-        primaryPage="Blocks"
-        primaryPath="/blocks"
-        currentPage={blockData?.height.toString() ?? ""}
+        items={[
+          { text: "Blocks", href: "/blocks" },
+          { text: blockData?.height.toString() ?? "" },
+        ]}
       />
       {blockData ? (
         <>
