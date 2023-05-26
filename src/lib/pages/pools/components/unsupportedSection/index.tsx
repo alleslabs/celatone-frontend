@@ -87,7 +87,7 @@ export const UnsupportedSection = ({
     refetchCount();
     setPageSize(size);
     setCurrentPage(1);
-    updateExpandedIndexes([]);
+    setExpandedIndexes([]);
   };
 
   const { pools, isLoading } = usePools(
@@ -179,13 +179,16 @@ export const UnsupportedSection = ({
               variant="outline-gray"
               w="94px"
               size="sm"
-              onClick={() =>
-                setExpandedIndexes((prev) => {
-                  const isExpand = !prev.length;
-                  AmpTrackExpandAll(isExpand ? "expand" : "collapse");
-                  return isExpand ? Array.from(Array(pageSize).keys()) : [];
-                })
-              }
+              onClick={() => {
+                AmpTrackExpandAll(
+                  !expandedIndexes.length ? "expand" : "collapse"
+                );
+                setExpandedIndexes(
+                  !expandedIndexes.length
+                    ? Array.from(Array(pageSize).keys())
+                    : []
+                );
+              }}
             >
               {expandedIndexes.length ? "Collapse All" : "Expand All"}
             </Button>

@@ -37,8 +37,8 @@ export interface PoolDetail<
   swapFee: Ratio<number>;
   exitFee: Ratio<number>;
   futurePoolGovernor: string | null;
+  weight: PoolWeight<TWeight>[] | null;
   smoothWeightChangeParams: object | null;
   scalingFactors: string[] | null;
   scalingFactorController: string | null;
-  weight: PoolWeight<TWeight>[] | null;
 }
