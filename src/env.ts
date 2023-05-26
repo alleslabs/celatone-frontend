@@ -107,7 +107,7 @@ export const getChainApiPath = (chainName: string) => {
 // TODO to handle testnet separately later
 export const getMainnetApiPath = (chainId: string) => {
   switch (chainId) {
-    case "osmo-test-4":
+    case "osmo-test-5":
     case "osmosis-1":
       return "osmosis-1";
     case "pisco-1":

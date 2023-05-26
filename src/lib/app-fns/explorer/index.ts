@@ -43,7 +43,7 @@ export const getPoolUrl = (chainName: string) => {
   switch (chainName) {
     case "osmosis":
       return "https://app.osmosis.zone/pool";
-    case "osmosistestnet":
+    case "osmosistestnet5":
       return "https://testnet.osmosis.zone/pool";
     default:
       return "";

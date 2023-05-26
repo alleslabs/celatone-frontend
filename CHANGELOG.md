@@ -54,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#362](https://github.com/alleslabs/celatone-frontend/pull/362) Fix missed out hard-coded osmosis testnet 4 in code
+
 ## v1.0.5
 
 ### Features
