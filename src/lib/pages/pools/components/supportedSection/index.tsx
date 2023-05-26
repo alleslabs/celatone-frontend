@@ -189,7 +189,7 @@ export const SupportedSection = ({
               pr={1}
               onClick={() => {
                 const isDesc = !showNewest;
-                AmpTrackUseSort(isDesc ? "Descending" : "Ascending");
+                AmpTrackUseSort(isDesc ? "descending" : "ascending");
                 setShowNewest(isDesc);
               }}
             >

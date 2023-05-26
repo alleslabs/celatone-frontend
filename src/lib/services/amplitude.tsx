@@ -255,7 +255,7 @@ export const AmpTrackPaginationNavigate = (
     currentPage,
   });
 
-export const AmpTrackUseSort = (order: "Ascending" | "Descending") =>
+export const AmpTrackUseSort = (order: "ascending" | "descending") =>
   track(AmpEvent.USE_SORT, { order });
 
 export const AmpTrackUseView = (view: string) =>
