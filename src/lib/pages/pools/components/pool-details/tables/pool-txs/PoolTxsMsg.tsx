@@ -58,11 +58,12 @@ export const PoolTxsMsg = ({
         cursor="pointer"
         onClick={() => {
           if (message) {
-            AmpTrackExpand(
-              !isOpen ? "expand" : "collapse",
-              "pool_tx_msg",
-              `pool_txs-${message.type.split(".").at(-1)}`
-            );
+            AmpTrackExpand({
+              action: !isOpen ? "expand" : "collapse",
+              component: "pool_tx_msg",
+              info: { msgType: message.type.split(".").at(-1) },
+              section: `pool_txs`,
+            });
           }
           onToggle();
         }}

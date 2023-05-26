@@ -34,22 +34,28 @@ export const PoolLogo = ({
   marginLeft = -12,
   minW = 24,
   textVariant = "body2",
-}: PoolLogoProps) => (
-  <Flex
-    css={{
-      ">:not(:first-of-type)": {
-        marginLeft,
-      },
-    }}
-    minW={minW}
-    alignItems="center"
-    justifyContent="center"
-  >
-    {tokens.length > 3 ? (
-      <>
-        {tokens.slice(0, 2).map((token, idx) => (
-          <PoolAssetLogo token={token} logoSize={logoSize} idx={idx} />
-        ))}
+}: PoolLogoProps) => {
+  const isShortened = tokens.length > 3;
+  return (
+    <Flex
+      css={{
+        ">:not(:first-of-type)": {
+          marginLeft,
+        },
+      }}
+      minW={minW}
+      alignItems="center"
+      justifyContent="center"
+    >
+      {tokens.slice(0, isShortened ? 2 : undefined).map((token, idx) => (
+        <PoolAssetLogo
+          key={token.denom}
+          token={token}
+          logoSize={logoSize}
+          idx={idx}
+        />
+      ))}
+      {isShortened && (
         <Flex
           width={logoSize}
           height={logoSize}
@@ -61,11 +67,7 @@ export const PoolLogo = ({
         >
           <Text variant={textVariant}> +{tokens.length - 2}</Text>
         </Flex>
-      </>
-    ) : (
-      tokens.map((token, idx) => (
-        <PoolAssetLogo token={token} logoSize={logoSize} idx={idx} />
-      ))
-    )}
-  </Flex>
-);
+      )}
+    </Flex>
+  );
+};

@@ -63,11 +63,11 @@ const MultiCoin = ({
             showLessText="View Less Assets"
             toggleShowMore={showMore}
             setToggleShowMore={() => {
-              AmpTrackExpand(
-                showMore ? "collapse" : "expand",
-                "assets",
-                "tx_page"
-              );
+              AmpTrackExpand({
+                action: showMore ? "collapse" : "expand",
+                component: "assets",
+                section: "tx_page",
+              });
               setShowMore(!showMore);
             }}
           />
