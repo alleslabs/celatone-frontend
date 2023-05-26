@@ -15,13 +15,16 @@ export const coinsFromStr = (str: string): Coin[] => {
 };
 
 export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
-  const result: { msgs: Message[]; others: { [key: string]: number } } = {
+  const result: {
+    msgs: { msg: Message; index: number }[];
+    others: { [key: string]: number };
+  } = {
     msgs: [],
     others: {},
   };
 
   // eslint-disable-next-line complexity
-  msgs.forEach((msg) => {
+  msgs.forEach((msg, index) => {
     const { type, detail, log } = msg;
     switch (type) {
       case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
@@ -34,7 +37,7 @@ export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
             (pool) => Number(pool.poolId) === poolId
           )
         )
-          result.msgs.push(msg);
+          result.msgs.push({ msg, index });
         break;
       }
       case "/osmosis.gamm.v1beta1.MsgJoinPool":
@@ -44,7 +47,8 @@ export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
       case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn":
       case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
         const details = extractTxDetails(type, detail, log);
-        if (Number(details.pool_id) === poolId) result.msgs.push(msg);
+        if (Number(details.pool_id) === poolId)
+          result.msgs.push({ msg, index });
         break;
       }
       case "/osmosis.lockup.MsgLockTokens":
@@ -52,7 +56,7 @@ export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
         const details = extractTxDetails(type, detail, log);
         const poolDenom = getPoolDenom(poolId.toString());
         if (details.coins.some((coin) => coin.denom === poolDenom))
-          result.msgs.push(msg);
+          result.msgs.push({ msg, index });
         break;
       }
 

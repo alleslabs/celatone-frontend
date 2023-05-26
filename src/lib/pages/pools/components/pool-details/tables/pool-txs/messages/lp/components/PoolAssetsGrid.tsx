@@ -32,7 +32,7 @@ export const PoolAssetsGrid = ({
   if (!msgAssets && isLoading) return <Loading withBorder={false} />;
 
   const receivedEvent = txData?.logs
-    .find((event) => event.msg_index === msgIndex)
+    .find((log) => log.msg_index === msgIndex)
     ?.events?.find((event) => event.type === "coin_received");
 
   const assetAttr = receivedEvent?.attributes.at(1)?.value;
