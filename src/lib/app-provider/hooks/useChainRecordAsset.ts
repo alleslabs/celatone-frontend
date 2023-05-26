@@ -25,6 +25,9 @@ export const useChainRecordAsset = () => {
             precision:
               assetInfo?.denom_units.find(
                 (unit) =>
+                  /**
+                   * @remarks Might have to revisit this logic later. Edge case is when only uToken config is supplied (no token counterpart)
+                   */
                   unit.denom ===
                   (denom[0] === "u" ? denom.slice(1) : "u".concat(denom))
               )?.exponent ?? 0,
