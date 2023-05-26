@@ -1,110 +1,4 @@
-import type { ThemeConfig } from "./type";
-
-export const DEFAULT_THEME: ThemeConfig = {
-  branding: {
-    logo: "https://assets.alleslabs.dev/branding/logo/logo.svg",
-    favicon: "https://assets.alleslabs.dev/branding/favicon.ico",
-    seo: {
-      appName: "celatone",
-      title: "Celatone Explorer for Cosmos chain",
-      description: "A smart contract powered explorer for the Cosmos.",
-      image: "https://assets.alleslabs.dev/branding/celatone-cover.jpg",
-      twitter: {
-        handle: "@celatone_",
-        cardType: "summary_large_image",
-      },
-    },
-  },
-  fonts: {
-    heading: {
-      url: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap",
-      name: "Poppins, serif",
-    },
-    body: {
-      url: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
-      name: "Space Grotesk, sans-serif",
-    },
-  },
-  colors: {
-    gradient: {
-      main: "linear(to-tr, #5235EF, #6145FC)",
-    },
-    error: {
-      main: "#FF666E",
-      light: "#FF8086",
-      dark: "#b43e44",
-      background: "#4C1A1D",
-    },
-    warning: {
-      main: "#FFBB33",
-      light: "#FFCC66",
-      dark: "#CC8800",
-      background: "#523600",
-    },
-    success: {
-      main: "#42BEA6",
-      light: "#67CBB7",
-      dark: "#207966",
-      background: "#102E28",
-    },
-    background: {
-      main: "#111117",
-      overlay: "rgba(17, 17, 23, 0.7)",
-    },
-    text: {
-      main: "#F7F2FE",
-      dark: "#ADADC2",
-      disabled: "#8A8AA5",
-    },
-    primary: {
-      main: "#5942F3",
-      light: "#9793F3",
-      lighter: "#DCDBFB",
-      dark: "#3E38B0",
-      darker: "#292676",
-      background: "#181733",
-    },
-    secondary: {
-      main: "#D8BEFC",
-      light: "#E8D8FD",
-      dark: "#A28FBD",
-      darker: "#6C5F7E",
-      background: "#36303F",
-    },
-    accent: {
-      main: "#C6E141",
-      light: "#DDED8D",
-      lighter: "#E8F3B3",
-      dark: "#95A931",
-      darker: "#637121",
-      background: "#3D470B",
-    },
-    gray: {
-      100: "#F7F2FE",
-      400: "#ADADC2",
-      500: "#8A8AA5",
-      600: "#68688A",
-      700: "#343445",
-      800: "#272734",
-      900: "#1A1A22",
-    },
-  },
-  jsonTheme: "monokai",
-  illustration: {
-    error: "https://assets.alleslabs.dev/illustration/404.svg",
-    searchNotFound:
-      "https://assets.alleslabs.dev/illustration/search-not-found.svg",
-    searchEmpty: "https://assets.alleslabs.dev/illustration/search-empty.svg",
-    disconnected: "https://assets.alleslabs.dev/illustration/disconnected.svg",
-  },
-  socialMedia: {
-    website: "https://celat.one/",
-    github: "https://github.com/alleslabs",
-    twitter: "https://twitter.com/celatone_",
-    medium: "https://blog.alleslabs.com/",
-    telegram: "https://t.me/celatone_announcements",
-  },
-};
+import type { ThemeConfig } from "config/type";
 
 export const OSMOSIS_THEME: ThemeConfig = {
   branding: {
@@ -112,7 +6,7 @@ export const OSMOSIS_THEME: ThemeConfig = {
     favicon: "https://assets.alleslabs.dev/integrations/osmosis/favicon.ico",
     seo: {
       appName: "osmoscan",
-      title: "OsmoScan | Osmosis Explorer powered by Celatone",
+      title: "OsmoScan powered by Celatone",
       description:
         "Explore, deploy, execute, and query smart contracts on Osmosis from a user-friendly web UI",
       image:
@@ -140,7 +34,7 @@ export const OSMOSIS_THEME: ThemeConfig = {
     error: {
       main: "#FF666E",
       light: "#FF8086",
-      dark: "#b43e44",
+      dark: "#B43E44",
       background: "#4C1A1D",
     },
     warning: {

@@ -5,27 +5,18 @@ import { CURR_THEME } from "env";
 
 export const CelatoneSeo = () => {
   const { currentChainRecord } = useWallet();
-  const title =
-    CURR_THEME.branding.seo.title ??
-    `${currentChainRecord?.chain.pretty_name} Explorer | Celatone`;
+  const title = `${currentChainRecord?.chain.pretty_name} Explorer | ${CURR_THEME.branding.seo.title}`;
 
   return (
     <DefaultSeo
       title={title}
-      description={
-        CURR_THEME.branding.seo.description ??
-        "A smart contract powered explorer for the Cosmos."
-      }
+      description={CURR_THEME.branding.seo.description}
       openGraph={{
         type: "website",
-        description:
-          CURR_THEME.branding.seo.description ??
-          "A smart contract powered explorer for the Cosmos.",
+        description: CURR_THEME.branding.seo.description,
         images: [
           {
-            url:
-              CURR_THEME.branding.seo.image ??
-              "https://assets.alleslabs.dev/branding/celatone-cover.jpg",
+            url: CURR_THEME.branding.seo.image,
             width: 1200,
             height: 630,
             alt: title,
@@ -33,9 +24,8 @@ export const CelatoneSeo = () => {
         ],
       }}
       twitter={{
-        handle: CURR_THEME.branding.seo.twitter.handle ?? "@celatone_",
-        cardType:
-          CURR_THEME.branding.seo.twitter.cardType ?? "summary_large_image",
+        handle: CURR_THEME.branding.seo.twitter.handle,
+        cardType: CURR_THEME.branding.seo.twitter.cardType,
       }}
     />
   );

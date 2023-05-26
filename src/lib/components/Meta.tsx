@@ -1,8 +1,6 @@
 import { CURR_THEME, SELECTED_CHAIN } from "env";
 
 const APP_NAME = CURR_THEME.branding.seo.appName;
-const FALLBACK_DESC = "A smart contract powered explorer for the Cosmos.";
-const FALLBACK_IMG = "https://assets.alleslabs.dev/branding/celatone-cover.jpg";
 
 const Meta = () => {
   const chainName = SELECTED_CHAIN || "";
@@ -17,10 +15,7 @@ const Meta = () => {
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="theme-color" content={CURR_THEME.colors.background.main} />
       <title>{`${title} Explorer | ${CURR_THEME.branding.seo.title}`}</title>
-      <meta
-        name="description"
-        content={CURR_THEME.branding.seo.description ?? FALLBACK_DESC}
-      />
+      <meta name="description" content={CURR_THEME.branding.seo.description} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
@@ -30,19 +25,14 @@ const Meta = () => {
       />
       <meta
         property="og:description"
-        content={CURR_THEME.branding.seo.description ?? FALLBACK_DESC}
+        content={CURR_THEME.branding.seo.description}
       />
-      <meta
-        property="og:image"
-        content={CURR_THEME.branding.seo.image ?? FALLBACK_IMG}
-      />
+      <meta property="og:image" content={CURR_THEME.branding.seo.image} />
 
       {/* Twitter */}
       <meta
         property="twitter:card"
-        content={
-          CURR_THEME.branding.seo.twitter.cardType ?? "summary_large_image"
-        }
+        content={CURR_THEME.branding.seo.twitter.cardType}
       />
       <meta
         property="twitter:title"
@@ -50,12 +40,9 @@ const Meta = () => {
       />
       <meta
         property="twitter:description"
-        content={CURR_THEME.branding.seo.description ?? FALLBACK_DESC}
+        content={CURR_THEME.branding.seo.description}
       />
-      <meta
-        property="twitter:image"
-        content={CURR_THEME.branding.seo.image ?? FALLBACK_IMG}
-      />
+      <meta property="twitter:image" content={CURR_THEME.branding.seo.image} />
     </>
   );
 };
