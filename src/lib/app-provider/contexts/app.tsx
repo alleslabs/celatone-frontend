@@ -17,6 +17,7 @@ import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG, PROJECT_CONSTANTS } from "config";
 import type { ChainConfig, ProjectConstants } from "config/types";
 import { SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { EmptyState } from "lib/components/state/EmptyState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
   useCodeStore,
@@ -75,19 +76,17 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       availableChainIds: SUPPORTED_CHAIN_IDS,
       currentChainId,
       chainConfig,
-      indexerGraphClient: new GraphQLClient(chainConfig.indexer),
+      indexerGraphClient: new GraphQLClient(chainConfig?.indexer ?? ""),
       constants: PROJECT_CONSTANTS,
       handleOnChainIdChange,
     };
   }, [currentChainId, handleOnChainIdChange]);
 
   useEffect(() => {
-    if (currentChainName) {
-      const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
-      setCodeUserKey(userKey);
-      setContractUserKey(userKey);
-      setProjectUserKey(userKey);
-    }
+    const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
+    setCodeUserKey(userKey);
+    setContractUserKey(userKey);
+    setProjectUserKey(userKey);
   }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
 
   useNetworkChange(handleOnChainIdChange);
@@ -105,8 +104,10 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   return currentChainId in CHAIN_CONFIGS ? (
     <AppContext.Provider value={states}>{children}</AppContext.Provider>
   ) : (
-    // TODO: fix to a proper component
-    <div>Something went wrong</div>
+    <EmptyState
+      imageVariant="not-found"
+      message={`‘${currentChainId}‘ is not available in local chain config`}
+    />
   );
 });
 
