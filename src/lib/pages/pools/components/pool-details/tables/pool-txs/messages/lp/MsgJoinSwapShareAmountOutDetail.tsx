@@ -1,7 +1,9 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
+import { PoolInfoText } from "../components/PoolInfoText";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfosOpt } from "lib/services/assetService";
+import { extractMsgType } from "lib/utils";
 import type { MsgJoinSwapShareAmountOutDetails } from "lib/utils/tx/types";
 
 import { LiquidityDivider, PoolLPCard, PoolAssetsGrid } from "./components";
@@ -23,34 +25,35 @@ export const MsgJoinSwapShareAmountOutDetail = ({
   assetInfos,
   isOpened,
 }: MsgJoinSwapShareAmountOutDetailProps) => (
-  <Flex w="full" alignItems="start" gap={12}>
-    <Flex direction="column" gap={1}>
-      <Text variant="body2" textColor="pebble.500" fontWeight={500}>
-        Block height
-      </Text>
-      <ExplorerLink
-        value={blockHeight.toString()}
-        type="block_height"
-        showCopyOnHover
+  <Flex w="full" direction="column" alignItems="start" gap={6}>
+    <Flex gap={12}>
+      <PoolInfoText
+        title="Block height"
+        component={
+          <ExplorerLink
+            value={blockHeight.toString()}
+            type="block_height"
+            showCopyOnHover
+          />
+        }
       />
+      <PoolInfoText title="Message" isText text={extractMsgType(msg.type)} />
     </Flex>
-    <Box w="full">
-      <PoolAssetsGrid
-        txHash={txHash}
-        msgIndex={msgIndex}
-        isJoin
-        assetInfos={assetInfos}
-        isOpened={isOpened}
-      />
-      <LiquidityDivider />
-      <PoolLPCard
-        msgIndex={msgIndex}
-        msgShareAmount={msg.share_amount_out}
-        poolId={msg.pool_id}
-        assetInfos={assetInfos}
-        isJoin
-        isOpened={isOpened}
-      />
-    </Box>
+    <PoolAssetsGrid
+      txHash={txHash}
+      msgIndex={msgIndex}
+      isJoin
+      assetInfos={assetInfos}
+      isOpened={isOpened}
+    />
+    <LiquidityDivider />
+    <PoolLPCard
+      msgIndex={msgIndex}
+      msgShareAmount={msg.share_amount_out}
+      poolId={msg.pool_id}
+      assetInfos={assetInfos}
+      isJoin
+      isOpened={isOpened}
+    />
   </Flex>
 );

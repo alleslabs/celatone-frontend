@@ -1,5 +1,5 @@
 import type { TooltipProps } from "@chakra-ui/react";
-import { Tooltip as ChakraTooltip } from "@chakra-ui/react";
+import { Flex, Tooltip as ChakraTooltip } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
 
@@ -24,13 +24,13 @@ export const TooltipInfo = ({
   ...tooltipProps
 }: TooltipInfoProps) => (
   <Tooltip {...tooltipProps}>
-    <div style={{ cursor: "pointer" }}>
+    <Flex cursor="pointer">
       <CustomIcon
         color="pebble.600"
         name={iconVariant === "solid" ? "info-circle-solid" : "info-circle"}
-        boxSize={3}
+        boxSize="12px"
         m={0}
       />
-    </div>
+    </Flex>
   </Tooltip>
 );

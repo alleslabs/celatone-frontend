@@ -39,7 +39,7 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
         )}
       </Flex>
       <PoolAssetsTable pool={pool} totalLiquidity={totalLiquidity} />
-      <Flex gap="2" alignItems="center">
+      <Flex gap="2" alignItems="center" mt={4}>
         <Text variant="body2" color="text.dark">
           What is asset weight and allocation?
         </Text>
