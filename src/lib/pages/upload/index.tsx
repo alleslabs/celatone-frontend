@@ -21,12 +21,12 @@ const Upload = () => {
         DEPLOY NEW CONTRACT
       </Text>
       <Stepper mode="deploy" currentStep={1} />
-      <Heading as="h5" variant="h5" my="48px">
+      <Heading as="h5" variant="h5" my={12}>
         Upload Wasm file
       </Heading>
       <ConnectWalletAlert
         subtitle="You need to connect your wallet first"
-        mb="48px"
+        mb={12}
       />
       <UploadSection handleBack={() => router.back()} />
     </WasmPageContainer>

@@ -1,3 +1,4 @@
+import type { AlertProps } from "@chakra-ui/react";
 import {
   Alert,
   AlertDescription,
@@ -6,81 +7,108 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
+import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
-import {
-  useInternalNavigate,
-  useSelectChain,
-  useCurrentNetwork,
-} from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
+import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
-import { getChainNameByNetwork } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useUploadAccessParams } from "lib/services/proposalService";
+import type { HumanAddr } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
+
+const getAlertContent = (
+  enabled: boolean
+): { variant: AlertProps["variant"]; icon: JSX.Element; description: string } =>
+  enabled
+    ? {
+        variant: "success",
+        icon: (
+          <CustomIcon
+            name="check-circle-solid"
+            color="success.main"
+            boxSize={4}
+          />
+        ),
+        description: "Your address is allowed to directly upload Wasm files",
+      }
+    : {
+        variant: "primary",
+        icon: (
+          <CustomIcon
+            name="info-circle-solid"
+            color="primary.light"
+            boxSize={4}
+          />
+        ),
+        description:
+          "The current network is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.",
+      };
 
 const Deploy = () => {
-  const { isMainnet } = useCurrentNetwork();
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const selectChain = useSelectChain();
+  const { address } = useWallet();
+  const { data, isFetching } = useUploadAccessParams();
+
+  const isPermissionedNetwork =
+    data?.permission !== AccessConfigPermission.EVERYBODY;
+
+  const enableUpload = useMemo(() => {
+    if (!isPermissionedNetwork) return true;
+    return Boolean(data?.addresses?.includes(address as HumanAddr));
+  }, [data, address, isPermissionedNetwork]);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
   }, [router.isReady]);
 
+  if (isFetching) return <Loading />;
+
+  const { variant, icon, description } = getAlertContent(enableUpload);
   return (
     <WasmPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
         DEPLOY NEW CONTRACT
       </Text>
       <Stepper mode="deploy" currentStep={1} />
-      <Heading as="h5" variant="h5" my="48px">
+      <Heading as="h5" variant="h5" my={12}>
         Select Deploy Option
       </Heading>
-      {isMainnet && (
-        <Alert variant="violet" mb="16px" alignItems="flex-start" gap="1">
-          <CustomIcon name="info-circle-solid" boxSize="20px" />
-          <AlertDescription>
-            Uploading new Wasm files on permissioned chains is coming soon to
-            Celatone. Currently, you can upload codes and instantiate contracts
-            without permission on testnet.
-          </AlertDescription>
+      <ConnectWalletAlert
+        subtitle="You need to connect wallet to proceed this action"
+        mb={4}
+      />
+      {address && (
+        <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
+          {icon}
+          <AlertDescription>{description}</AlertDescription>
         </Alert>
       )}
       <ButtonCard
         title="Upload new WASM File"
         description={
-          isMainnet ? (
-            <Flex fontSize="14px" gap={1}>
-              <Text color="text.disabled">
-                Currently available on testnet only.
-              </Text>
-              <Text
-                color="honeydew.main"
-                _hover={{ textDecoration: "underline" }}
-                cursor="pointer"
-                onClick={() => selectChain(getChainNameByNetwork("testnet"))}
-              >
-                Switch to testnet
-              </Text>
-            </Flex>
-          ) : (
-            "Store a new Wasm file on-chain"
-          )
+          isPermissionedNetwork
+            ? "Available for whitelisted addresses only"
+            : "Store a new Wasm file on-chain"
         }
-        disabled={isMainnet}
+        disabled={!enableUpload || !address}
         onClick={() => navigate({ pathname: "/upload" })}
-        mb="16px"
+        mb={4}
       />
       <ButtonCard
         title="Use existing Code IDs"
         description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
+        disabled={!address}
       />
-      <Flex justify="center" w="100%" mt="32px">
+      <Flex justify="center" w="100%" mt={8}>
         <Button
           onClick={() => {
             router.back();

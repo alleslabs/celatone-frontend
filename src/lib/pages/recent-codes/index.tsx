@@ -26,7 +26,7 @@ const RecentCodes = observer(() => {
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
     navigate({
-      pathname: "/code/[codeId]",
+      pathname: "/codes/[codeId]",
       query: { codeId },
     });
 
@@ -50,7 +50,7 @@ const RecentCodes = observer(() => {
 
   return (
     <PageContainer>
-      <Box pb="48px">
+      <Box pb={12}>
         <Heading
           variant="h5"
           as="h5"

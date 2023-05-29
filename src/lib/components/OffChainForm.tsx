@@ -39,7 +39,7 @@ export const OffChainForm = <T extends OffchainDetail>({
   errors,
   labelBgColor = "background.main",
 }: OffChainFormProps<T>) => (
-  <VStack gap="16px" w="full">
+  <VStack gap={4} w="full">
     <ControllerInput
       name={"name" as FieldPath<T>}
       control={control}

@@ -1,5 +1,6 @@
 import { Flex, Heading, Box, Text, SimpleGrid } from "@chakra-ui/react";
 
+import { CURR_THEME } from "env";
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -48,7 +49,7 @@ const secondaryMenu: SecondaryMenuType[] = [
 ];
 
 export const QuickMenu = () => (
-  <Flex direction="column" gap={4} bg="pebble.900" p="48px">
+  <Flex direction="column" gap={4} bg="gray.900" p={12}>
     <Heading as="h5" variant="h5">
       Start using Celatone
     </Heading>
@@ -59,7 +60,7 @@ export const QuickMenu = () => (
     <Flex gap={4}>
       <AppLink href="/deploy" style={{ width: "55%" }}>
         <Flex
-          bgGradient="linear(to-tr, violet.main, violet.light)"
+          bgGradient={CURR_THEME.colors.gradient?.main}
           _hover={{ opacity: "85%" }}
           style={cardProps}
           transition="all .25s ease-in-out"
@@ -83,22 +84,18 @@ export const QuickMenu = () => (
           <AppLink href={`/${item.slug}`} key={item.slug}>
             <Flex
               style={cardProps}
-              _hover={{ bg: "pebble.700" }}
+              _hover={{ bg: "gray.700" }}
               transition="all .25s ease-in-out"
-              bg="pebble.800"
+              bg="gray.800"
               alignItems="center"
             >
               <Flex alignItems="center" gap={3}>
-                <CustomIcon
-                  name={item.icon}
-                  boxSize="24px"
-                  color="pebble.600"
-                />
+                <CustomIcon name={item.icon} boxSize="24px" color="gray.600" />
                 <Box>
                   <Text variant="body1" fontWeight="800">
                     {item.title}
                   </Text>
-                  <Text textDecoration="none" variant="body2">
+                  <Text textDecoration="none" variant="body2" color="text.dark">
                     {item.subtitle}
                   </Text>
                 </Box>
@@ -106,7 +103,7 @@ export const QuickMenu = () => (
               <CustomIcon
                 name="chevron-right"
                 boxSize="24px"
-                color="pebble.600"
+                color="gray.600"
               />
             </Flex>
           </AppLink>

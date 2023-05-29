@@ -27,7 +27,7 @@ export const AssetInput = ({
   assetOptions,
   initialSelected,
 }: AssetInputProps) => (
-  <Grid templateColumns="130px 1fr auto" columnGap="16px" w="full" mb="16px">
+  <Grid templateColumns="130px 1fr auto" columnGap={4} w="full" mb={4}>
     <SelectInput
       formLabel="Asset"
       options={assetOptions}

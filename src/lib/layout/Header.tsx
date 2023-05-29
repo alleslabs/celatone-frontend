@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
+import { CURR_THEME } from "env";
 import { useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetBtn } from "lib/components/button";
@@ -32,32 +33,32 @@ const Header = () => {
       justifyContent="space-between"
       px={6}
       mb={1}
-      gap="24px"
+      gap={6}
     >
       <AppLink href="/">
         <Image
-          src="https://assets.alleslabs.dev/branding/logo/logo.svg"
+          src={CURR_THEME.branding.logo}
           alt="Celatone"
           minWidth="152px"
           width="152px"
           maxWidth="152px"
-          mr="36px"
+          mr={8}
           transition="all 0.25s ease-in-out"
           _hover={{ cursor: "pointer", opacity: 0.85 }}
         />
       </AppLink>
       <Searchbar />
-      <Flex gap="16px">
+      <Flex gap={4}>
         <FaucetBtn />
         <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
           <MenuButton
             pl={4}
             pr={2}
-            py="5px"
+            py={1}
             borderRadius="8px"
             borderWidth="1px"
-            borderColor="pebble.600"
-            _hover={{ bg: "pebble.700" }}
+            borderColor="gray.600"
+            _hover={{ bg: "gray.700" }}
             transition="all .25s ease-in-out"
             w="170px"
           >
@@ -75,7 +76,7 @@ const Header = () => {
               >
                 {currentChainRecord?.chain.chain_id}
               </Text>
-              <CustomIcon name="chevron-down" color="pebble.600" />
+              <CustomIcon name="chevron-down" color="gray.600" />
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">
@@ -88,7 +89,7 @@ const Header = () => {
                 flexDirection="column"
                 alignItems="flex-start"
                 _hover={{
-                  backgroundColor: "pebble.800",
+                  backgroundColor: "gray.800",
                 }}
                 transition="all .25s ease-in-out"
               >
@@ -102,7 +103,7 @@ const Header = () => {
                     </Text>
                   </Flex>
                   {chainName === currentChainName && (
-                    <CustomIcon name="check" boxSize="3" color="pebble.600" />
+                    <CustomIcon name="check" boxSize={3} color="gray.600" />
                   )}
                 </Flex>
               </MenuItem>

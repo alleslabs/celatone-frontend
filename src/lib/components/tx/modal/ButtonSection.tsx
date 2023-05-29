@@ -48,9 +48,9 @@ export const ButtonSection = ({
       return (
         <>
           <Button
-            variant="ghost-lilac"
+            variant="ghost-secondary"
             onClick={() => {
-              navigate({ pathname: "/codes" });
+              navigate({ pathname: "/my-codes" });
               onClose?.();
             }}
           >
@@ -68,7 +68,7 @@ export const ButtonSection = ({
             }}
           >
             Proceed to instantiate
-            <CustomIcon name="instantiate" boxSize="3" />
+            <CustomIcon name="instantiate" boxSize={3} />
           </Button>
         </>
       );
@@ -86,24 +86,24 @@ export const ButtonSection = ({
           }}
         >
           Proceed to Migrate
-          <CustomIcon name="migrate" boxSize="3" />
+          <CustomIcon name="migrate" boxSize={3} />
         </Button>
       );
     case "migrate":
     case "update-admin":
       return (
         <>
-          <Button variant="ghost-lilac" onClick={openTxExplorer}>
+          <Button variant="ghost-secondary" onClick={openTxExplorer}>
             See Transaction
           </Button>
           <Button
             variant="primary"
             onClick={() =>
-              navigate({ pathname: `/contract/${router.query.contract}` })
+              navigate({ pathname: `/contracts/${router.query.contract}` })
             }
           >
             View Contract Details
-            <CustomIcon name="chevron-right" boxSize="3" />
+            <CustomIcon name="chevron-right" boxSize={3} />
           </Button>
         </>
       );
@@ -118,7 +118,7 @@ export const ButtonSection = ({
       return (
         <>
           <Button
-            variant="ghost-lilac"
+            variant="ghost-secondary"
             // TODO: Revisit this when proposal page is live
             onClick={openProposalExplorer}
           >

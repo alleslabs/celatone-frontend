@@ -45,7 +45,7 @@ const ContractsByList = observer(() => {
 
   const onContractSelect = (contract: ContractAddr) =>
     navigate({
-      pathname: "/contract/[contract]",
+      pathname: "/contracts/[contract]",
       query: { contract },
     });
 
@@ -53,7 +53,7 @@ const ContractsByList = observer(() => {
     // TODO: find a better approach?
     const timeoutId = setTimeout(() => {
       if (isHydrated && contractListInfo === undefined)
-        navigate({ pathname: "/contract-list" });
+        navigate({ pathname: "/contract-lists" });
     }, 100);
     return () => clearTimeout(timeoutId);
   }, [contractListInfo, isHydrated, navigate]);
@@ -96,9 +96,7 @@ const ContractsByList = observer(() => {
         <Flex gap={2}>
           {isInstantiatedByMe ? (
             <Button
-              leftIcon={
-                <CustomIcon name="add-new" color="text.main" boxSize="16px" />
-              }
+              leftIcon={<CustomIcon name="add-new" boxSize="16px" />}
               onClick={() => navigate({ pathname: "/deploy" })}
             >
               Deploy New Contract
@@ -112,7 +110,7 @@ const ContractsByList = observer(() => {
               }}
               buttonProps={{
                 variant: "outline-primary",
-                leftIcon: <CustomIcon name="bookmark" boxSize="3" />,
+                leftIcon: <CustomIcon name="bookmark" boxSize={3} />,
                 children: "Save Contract",
               }}
             />
@@ -120,7 +118,7 @@ const ContractsByList = observer(() => {
           {contractListInfo.isInfoEditable && (
             <Menu>
               <MenuButton h="full" variant="ghost-gray" as={Button}>
-                <CustomIcon name="more" color="pebble.600" />
+                <CustomIcon name="more" color="gray.600" />
               </MenuButton>
               <MenuList>
                 <EditListNameModal
@@ -129,7 +127,7 @@ const ContractsByList = observer(() => {
                     value: contractListInfo.slug,
                   }}
                   menuItemProps={{
-                    icon: <CustomIcon name="edit" color="pebble.600" />,
+                    icon: <CustomIcon name="edit" color="gray.600" />,
                     children: "Edit list name",
                   }}
                   reroute

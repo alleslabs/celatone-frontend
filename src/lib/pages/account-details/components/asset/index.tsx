@@ -75,7 +75,7 @@ export const AssetsSection = ({
         />
       )}
       <Flex justify="space-between" width="full" align="center">
-        <Flex gap="50px">
+        <Flex gap={12}>
           <UserAssetInfoCard
             value={
               totalValue && supportedAssets ? formatPrice(totalValue) : "N/A"

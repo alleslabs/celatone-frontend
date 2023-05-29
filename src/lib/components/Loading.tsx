@@ -3,14 +3,14 @@ import { Flex, Spinner, Text } from "@chakra-ui/react";
 export const Loading = () => (
   <Flex
     borderY="1px solid"
-    borderColor="pebble.700"
+    borderColor="gray.700"
     width="full"
-    py="60px"
+    py={15}
     my={12}
     flexDirection="column"
     alignItems="center"
   >
     <Spinner size="xl" />
-    <Text mt="20px">Loading ...</Text>
+    <Text mt={5}>Loading ...</Text>
   </Flex>
 );

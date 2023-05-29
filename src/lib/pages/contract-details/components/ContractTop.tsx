@@ -61,9 +61,9 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               aria-label="save"
               icon={
                 contractLocalInfo.lists ? (
-                  <CustomIcon name="bookmark-solid" color="violet.light" />
+                  <CustomIcon name="bookmark-solid" color="primary.light" />
                 ) : (
-                  <CustomIcon name="bookmark" color="pebble.600" />
+                  <CustomIcon name="bookmark" color="gray.600" />
                 )
               }
             />
@@ -84,7 +84,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               fontSize="24px"
               variant="none"
               aria-label="save"
-              color="pebble.600"
+              color="gray.600"
               icon={<CustomIcon name="bookmark" />}
             />
           }
@@ -100,10 +100,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         {publicProject.publicDetail && (
           <Breadcrumb
             items={[
-              { text: "Public Projects", href: "/public-project" },
+              { text: "Public Projects", href: "/projects" },
               {
                 text: publicProject.publicDetail.name,
-                href: `/public-project/${publicProject.publicInfo?.slug}`,
+                href: `/projects/${publicProject.publicInfo?.slug}`,
               },
               { text: truncate(contractAddress) },
             ]}
@@ -116,7 +116,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               <CustomIcon
                 name="contract-address"
                 boxSize="5"
-                color="lilac.main"
+                color="secondary.main"
               />
               {publicProject.publicDetail?.logo && (
                 <Image
@@ -138,14 +138,14 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               />
               <Button
                 variant="outline-primary"
-                leftIcon={<CustomIcon name="query" color="violet.light" />}
+                leftIcon={<CustomIcon name="query" color="primary.light" />}
                 onClick={goToQuery}
               >
                 Query
               </Button>
               <Button
                 variant="outline-primary"
-                leftIcon={<CustomIcon name="execute" color="violet.light" />}
+                leftIcon={<CustomIcon name="execute" color="primary.light" />}
                 onClick={goToExecute}
               >
                 Execute
@@ -159,7 +159,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
                         fontSize="24px"
                         variant="none"
                         aria-label="edit"
-                        color="pebble.600"
+                        color="gray.600"
                         icon={<CustomIcon name="edit" />}
                       />
                     }

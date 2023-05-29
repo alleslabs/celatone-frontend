@@ -19,7 +19,7 @@ const AllContractListsPage = observer(() => {
   const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
 
   const handleListSelect = (slug: string) => {
-    navigate({ pathname: "/contract-list/[slug]", query: { slug } });
+    navigate({ pathname: "/contract-lists/[slug]", query: { slug } });
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const AllContractListsPage = observer(() => {
           <CreateNewListModal
             buttonProps={{
               variant: "outline-primary",
-              leftIcon: <CustomIcon name="plus" boxSize="3" />,
+              leftIcon: <CustomIcon name="plus" boxSize={3} />,
               children: "Create new list",
             }}
           />

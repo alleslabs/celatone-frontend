@@ -1,7 +1,7 @@
 import { Text, Flex } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
-import { DotSeparator } from "lib/components/DotSeperator";
+import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
 
 interface ProposalTextCellProps {
@@ -36,11 +36,13 @@ export const ProposalTextCell = ({
       position="absolute"
       justify="center"
       borderRadius="8px"
-      bgColor={showName ? "pebble.800" : "undefined"}
+      bgColor={showName ? "gray.800" : "undefined"}
       px={4}
       maxW={showName ? undefined : "full"}
       onMouseOver={() => setIsHoverText(true)}
       onMouseOut={() => setIsHoverText(false)}
+      onClick={(e) => e.stopPropagation()}
+      cursor="initial"
     >
       <Text
         ref={titleRef}

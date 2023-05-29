@@ -19,6 +19,7 @@ import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
+import { CURR_THEME } from "env";
 import { useLCDEndpoint } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -29,6 +30,8 @@ import "ace-builds/src-noconflict/mode-sh";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
 interface CodeSnippetProps {
   contractAddress: ContractAddr;
@@ -191,10 +194,10 @@ execute();
     <>
       <Button
         isDisabled={isDisabled}
-        variant="outline-info"
+        variant="outline-accent"
         size="sm"
         ml="auto"
-        gap="1"
+        gap={1}
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_SNIPPET);
           onOpen();
@@ -208,15 +211,15 @@ execute();
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
-            <CustomIcon name="code" boxSize="6" />
+            <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
               Code Snippet
             </Heading>
           </ModalHeader>
-          <ModalCloseButton color="pebble.600" />
+          <ModalCloseButton color="gray.600" />
           <ModalBody px={4} maxH="640px" overflow="scroll">
             <Tabs>
-              <TabList borderBottom="1px solid" borderColor="pebble.700">
+              <TabList borderBottom="1px solid" borderColor="gray.700">
                 {codeSnippets[type].map((item) => (
                   <CustomTab key={`menu-${item.name}`}>{item.name}</CustomTab>
                 ))}
@@ -233,7 +236,7 @@ execute();
                       <AceEditor
                         readOnly
                         mode={item.mode}
-                        theme="monokai"
+                        theme={CURR_THEME.jsonTheme}
                         fontSize="14px"
                         style={{
                           width: "100%",

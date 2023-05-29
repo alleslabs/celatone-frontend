@@ -116,7 +116,7 @@ export const EditableCell = ({
             zIndex="sticky"
             top="-32px"
             left="-16px"
-            bg="pebble.800"
+            bg="gray.800"
             p={3}
             borderRadius="8px"
             onClick={(e) => e.stopPropagation()}
@@ -137,10 +137,10 @@ export const EditableCell = ({
                   else if (e.key === "Escape") handleCancel();
                 }}
               />
-              <Button size="sm" onClick={handleSave} variant="ghost-gray">
+              <Button size="sm" onClick={handleSave} variant="ghost">
                 <CustomIcon name="check" color="success.main" />
               </Button>
-              <Button onClick={handleCancel} size="sm" variant="ghost-gray">
+              <Button onClick={handleCancel} size="sm" variant="ghost">
                 <CustomIcon name="close" color="error.light" />
               </Button>
             </Flex>
@@ -177,7 +177,7 @@ export const EditableCell = ({
                 top="-16px"
                 left="-16px"
                 borderRadius="8px"
-                bg={isReadOnly ? "pebble.700" : "pebble.800"}
+                bg={isReadOnly ? "gray.700" : "gray.800"}
                 whiteSpace="nowrap"
                 p={4}
                 position="absolute"
@@ -204,7 +204,7 @@ export const EditableCell = ({
                 opacity={isHover ? 1 : 0}
                 onClick={handleEdit}
               >
-                <CustomIcon name="edit" color="pebble.600" boxSize="3" />
+                <CustomIcon name="edit" color="gray.600" boxSize={3} />
               </Flex>
             )}
           </Flex>

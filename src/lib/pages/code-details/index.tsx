@@ -49,12 +49,12 @@ const CodeDetailsBody = observer(
                   ? "Public Projects"
                   : "Codes",
                 href: publicProject.publicCodeData?.name
-                  ? `/public-project`
-                  : "/recent-codes",
+                  ? `/projects`
+                  : "/codes",
               },
               {
                 text: publicProject.publicDetail?.name ?? null,
-                href: `/public-project/${publicProject.publicCodeData?.slug}`,
+                href: `/projects/${publicProject.publicCodeData?.slug}`,
               },
               { text: codeId.toString() ?? "" },
             ]}
@@ -62,7 +62,7 @@ const CodeDetailsBody = observer(
           <Flex direction="column" gap={2} w="full" mt={6}>
             <Flex justify="space-between" align="center">
               <Flex gap={1}>
-                <CustomIcon name="code" boxSize="5" color="lilac.main" />
+                <CustomIcon name="code" boxSize="5" color="secondary.main" />
                 {publicProject.publicDetail?.logo && (
                   <Image
                     src={publicProject.publicDetail.logo}
@@ -136,12 +136,10 @@ const CodeDetailsBody = observer(
             title="Public Code Description"
             description={publicProject.publicCodeData.description}
             textLine={2}
-            icon={
-              <CustomIcon name="website" ml="0" mb="6px" color="pebble.600" />
-            }
+            icon={<CustomIcon name="website" ml={0} mb={2} color="gray.600" />}
           />
         )}
-        <Divider borderColor="pebble.700" my={12} />
+        <Divider borderColor="gray.700" my={12} />
         <CodeInfoSection codeData={codeData} chainId={chainId} />
         <CodeContractsTable codeId={codeId} />
       </>

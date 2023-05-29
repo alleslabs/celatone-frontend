@@ -21,13 +21,13 @@ const StepLabel = ({
   <Flex
     justify="center"
     align="center"
-    backgroundColor={disabled ? "text.disabled" : "violet.main"}
+    backgroundColor={disabled ? "text.disabled" : "primary.main"}
     width="24px"
     height="24px"
     borderRadius="50%"
   >
     {currentStep > step ? (
-      <CustomIcon name="check" color="text.main" boxSize="3" />
+      <CustomIcon name="check" color="text.main" boxSize={3} />
     ) : (
       <Text variant="body3">{step}</Text>
     )}
@@ -54,7 +54,7 @@ export const StepperItem = ({
           content: '""',
           flex: 1,
           height: "1px",
-          backgroundColor: "pebble.600",
+          backgroundColor: "gray.600",
           marginInlineEnd: "8px",
         },
       }}

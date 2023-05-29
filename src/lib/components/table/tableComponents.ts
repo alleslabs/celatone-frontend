@@ -22,7 +22,7 @@ const tableHeaderBaseStyle = {
   py: 6,
   px: 4,
   borderBottom: "1px solid",
-  borderColor: "pebble.700",
+  borderColor: "gray.700",
 };
 
 export const TableHeader = chakra(GridItem, {
@@ -45,7 +45,7 @@ const tableRowBaseStyle = {
   display: "flex",
   alignItems: "center",
   borderBottom: "1px solid",
-  borderColor: "pebble.700",
+  borderColor: "gray.700",
 };
 
 export const TableRow = chakra(GridItem, {

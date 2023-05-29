@@ -64,7 +64,7 @@ export const resendTx = ({
         receiptInfo: {
           header: "Transaction Completed",
           description: (
-            <Text fontWeight="700">
+            <Text fontWeight={700}>
               Your transaction was successfully resent.
             </Text>
           ),
@@ -72,7 +72,7 @@ export const resendTx = ({
             <CustomIcon
               name="check-circle-solid"
               color="success.main"
-              boxSize="5"
+              boxSize={5}
             />
           ),
         },

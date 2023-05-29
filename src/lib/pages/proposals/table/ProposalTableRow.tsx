@@ -5,6 +5,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { ProposalTextCell } from "../components/ProposalTextCell";
 import { getExplorerProposalUrl } from "lib/app-fns/explorer";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { StopPropagationBox } from "lib/components/StopPropagationBox";
 import { TableRow, TableRowFreeze } from "lib/components/table";
 import { Proposer } from "lib/components/table/proposals/Proposer";
 import { ResolvedHeight } from "lib/components/table/proposals/ResolvedHeight";
@@ -35,8 +36,8 @@ export const ProposalTableRow = ({
     proposal.status === ProposalStatus.VOTING_PERIOD;
 
   const hoverBg = (): Option<string> => {
-    if (proposal.isExpedited && isDepositOrVoting) return "violet.background";
-    return isDepositFailed ? undefined : "pebble.900";
+    if (proposal.isExpedited && isDepositOrVoting) return "primary.background";
+    return isDepositFailed ? undefined : "gray.900";
   };
 
   return (
@@ -75,7 +76,7 @@ export const ProposalTableRow = ({
       <TableRowFreeze
         left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
-        color="pebble.800"
+        color="gray.800"
       >
         <ProposalTextCell
           title={proposal.title}
@@ -85,7 +86,9 @@ export const ProposalTableRow = ({
         />
       </TableRowFreeze>
       <TableRow justifyContent="center">
-        <StatusChip status={proposal.status} />
+        <StopPropagationBox>
+          <StatusChip status={proposal.status} />
+        </StopPropagationBox>
       </TableRow>
       <TableRow>
         <VotingEndTime
@@ -95,12 +98,14 @@ export const ProposalTableRow = ({
         />
       </TableRow>
       <TableRow>
-        <ResolvedHeight
-          resolvedHeight={proposal.resolvedHeight}
-          isDepositFailed={isDepositFailed}
-          isDepositOrVoting={isDepositOrVoting}
-          amptrackSection="proposal-list"
-        />
+        <StopPropagationBox>
+          <ResolvedHeight
+            resolvedHeight={proposal.resolvedHeight}
+            isDepositFailed={isDepositFailed}
+            isDepositOrVoting={isDepositOrVoting}
+            amptrackSection="proposal-list"
+          />
+        </StopPropagationBox>
       </TableRow>
       <TableRow>
         <Proposer

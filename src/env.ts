@@ -1,3 +1,4 @@
+import { DEFAULT_THEME, OSMOSIS_THEME } from "config/theme";
 import type { SupportedChain } from "lib/data";
 import type {
   ContractAddr,
@@ -13,7 +14,7 @@ import type {
 } from "types";
 
 export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
-  osmosistestnet: {
+  osmosistestnet5: {
     denom: "uosmo",
     gasPrice: "0.025" as U<Token>,
   },
@@ -32,7 +33,7 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
 ): CelatoneContractAddress => {
   switch (chainName) {
     case "osmosis":
-    case "osmosistestnet":
+    case "osmosistestnet5":
       return {
         example:
           "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
@@ -55,7 +56,7 @@ export const CELATONE_APP_HUMAN_ADDRESS = (
 ): CelatoneHumanAddress => {
   switch (chainName) {
     case "osmosis":
-    case "osmosistestnet":
+    case "osmosistestnet5":
       return {
         example: "osmo14wk9zecqam9jsac7xwtf8e349ckquzzlx9k8c3" as HumanAddr,
       };
@@ -73,7 +74,7 @@ export const CELATONE_APP_HUMAN_ADDRESS = (
 
 export const FALLBACK_LCD_ENDPOINT: Record<string, string> = {
   osmosis: "https://lcd.osmosis.zone/",
-  osmosistestnet: "https://lcd-test.osmosis.zone/",
+  osmosistestnet5: "https://lcd.osmotest5.osmosis.zone/",
   terra2: "https://phoenix-lcd.terra.dev/",
   terra2testnet: "https://pisco-lcd.terra.dev/",
 };
@@ -94,7 +95,7 @@ export const CELATONE_API_ENDPOINT = "https://celatone-api.alleslabs.dev";
 
 export const getChainApiPath = (chainName: string) => {
   switch (chainName) {
-    case "osmosistestnet":
+    case "osmosistestnet5":
     case "osmosis":
       return "osmosis";
     case "terra2":
@@ -117,3 +118,14 @@ export const getMainnetApiPath = (chainId: string) => {
       return undefined;
   }
 };
+
+// CURRENT THEME CONFIG
+export const CURR_THEME = (() => {
+  switch (process.env.NEXT_PUBLIC_THEME) {
+    case "osmosis":
+      return OSMOSIS_THEME;
+    case "sei":
+    default:
+      return DEFAULT_THEME;
+  }
+})();

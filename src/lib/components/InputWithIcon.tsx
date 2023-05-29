@@ -29,8 +29,8 @@ const InputWithIcon = ({
       size={size}
       onClick={action ? () => AmpTrack(AmpEvent.USE_SEARCH_INPUT) : undefined}
     />
-    <InputRightElement h="56px" alignItems="center" mr="1">
-      <CustomIcon name="search" color="pebble.600" />
+    <InputRightElement h="56px" alignItems="center" mr={1}>
+      <CustomIcon name="search" color="gray.600" />
     </InputRightElement>
   </InputGroup>
 );

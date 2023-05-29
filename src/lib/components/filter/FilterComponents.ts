@@ -3,7 +3,7 @@ import { chakra, List } from "@chakra-ui/react";
 export const DropdownContainer = chakra(List, {
   baseStyle: {
     borderRadius: "8px",
-    bg: "pebble.900",
+    bg: "gray.900",
     px: 2,
     py: 1,
     mt: 0,

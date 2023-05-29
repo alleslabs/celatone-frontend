@@ -138,7 +138,7 @@ export const UploadSection = ({
         }}
         error={errors.codeDesc && getMaxCodeNameLengthError(codeDesc.length)}
         variant="floating"
-        my="32px"
+        my={8}
       />
       <Flex
         fontSize="14px"
@@ -146,12 +146,12 @@ export const UploadSection = ({
         alignSelf="flex-start"
         alignItems="center"
         display="flex"
-        gap="4px"
+        gap={1}
       >
         <p>Transaction Fee:</p>
         <EstimatedFeeRender estimatedFee={estimatedFee} loading={loading} />
       </Flex>
-      <Flex justify="space-between" w="100%" mt="32px">
+      <Flex justify="space-between" w="100%" mt={8}>
         <Button
           variant="outline-gray"
           w="128px"

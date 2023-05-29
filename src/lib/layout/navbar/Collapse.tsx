@@ -22,7 +22,7 @@ export const CollapseNavMenu = ({
           minW="fit-content"
           key={item.category}
           borderBottom="1px solid"
-          borderColor="pebble.700"
+          borderColor="gray.700"
           sx={{
             "&:last-of-type": {
               borderBottom: "none",
@@ -36,7 +36,7 @@ export const CollapseNavMenu = ({
               <Tooltip label="Expand" placement="right">
                 <IconButton
                   aria-label="overview"
-                  variant="ghost-info"
+                  variant="ghost-accent"
                   fontSize="24px"
                   height="fit-content"
                   minW="fit-content"
@@ -60,12 +60,12 @@ export const CollapseNavMenu = ({
                   cursor="pointer"
                   p={1}
                   m={2}
-                  _hover={{ bg: "pebble.700", borderRadius: "8px" }}
+                  _hover={{ bg: "gray.700", borderRadius: "8px" }}
                   transition="all .25s ease-in-out"
                   alignItems="center"
                   position="relative"
                   bgColor={
-                    isCurrentPage(submenu.slug) ? "pebble.800" : "transparent"
+                    isCurrentPage(submenu.slug) ? "gray.800" : "transparent"
                   }
                   borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
                 >
@@ -73,14 +73,14 @@ export const CollapseNavMenu = ({
                     opacity={isCurrentPage(submenu.slug) ? 1 : 0}
                     width="3px"
                     height="16px"
-                    bgColor="violet.light"
+                    bgColor="primary.light"
                     position="absolute"
                     top="8px"
                     borderRadius="2px"
                     left="0px"
                   />
                   {submenu.icon && (
-                    <CustomIcon name={submenu.icon} color="pebble.600" />
+                    <CustomIcon name={submenu.icon} color="gray.600" />
                   )}
                   {submenu.logo && (
                     <Image

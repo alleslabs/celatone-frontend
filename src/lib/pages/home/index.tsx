@@ -18,7 +18,7 @@ const Home = () => {
   }, [router.isReady]);
 
   return chainConfig.isWasm ? (
-    <Box mx="1">
+    <Box mx={1}>
       <QuickMenu />
       <RecentActivities />
     </Box>

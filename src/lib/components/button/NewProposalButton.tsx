@@ -21,21 +21,20 @@ export const NewProposalButton = () => {
       </MenuButton>
       <MenuList>
         <MenuItem
-          icon={<CustomIcon name="code" color="pebble.600" />}
+          icon={<CustomIcon name="code" color="gray.600" />}
           onClick={() => {
             navigate({
-              pathname: "/proposal/store-code",
+              pathname: "/proposals/store-code",
             });
           }}
         >
           To Store Code
         </MenuItem>
         {/* <MenuItem
-          icon={<CustomIcon name="contract-address" color="pebble.600"/>}
+          icon={<CustomIcon name="contract-address" color="gray.600"/>}
           onClick={() => {
-            // TODO - Change navigation path
             navigate({
-              pathname: "/proposal-instantiate",
+              pathname: "/proposals/instantiate",
             });
           }}
         >
@@ -47,10 +46,10 @@ export const NewProposalButton = () => {
         >
           <MenuItem
             isDisabled={isTestnet}
-            icon={<CustomIcon name="admin" color="pebble.600" />}
+            icon={<CustomIcon name="admin" color="gray.600" />}
             onClick={() => {
               navigate({
-                pathname: "/proposal/whitelist",
+                pathname: "/proposals/whitelist",
               });
             }}
           >

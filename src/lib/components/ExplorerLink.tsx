@@ -43,22 +43,22 @@ const getNavigationUrl = (
   let url = "";
   switch (type) {
     case "tx_hash":
-      url = "/tx";
+      url = "/txs";
       break;
     case "contract_address":
-      url = "/contract";
+      url = "/contracts";
       break;
     case "user_address":
-      url = "/account";
+      url = "/accounts";
       break;
     case "validator_address":
       url = getExplorerValidatorUrl(currentChainName);
       break;
     case "code_id":
-      url = "/code";
+      url = "/codes";
       break;
     case "block_height":
-      url = "/block";
+      url = "/blocks";
       break;
     case "proposal_id":
       url = getExplorerProposalUrl(currentChainName);
@@ -111,9 +111,9 @@ const LinkRender = ({
   const textElement = (
     <Text
       variant={textVariant}
-      color="lilac.main"
+      color="secondary.main"
       transition="all .25s ease-in-out"
-      _hover={{ color: "lilac.light" }}
+      _hover={{ color: "secondary.light" }}
       className={isEllipsis ? "ellipsis" : undefined}
       maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
@@ -179,7 +179,7 @@ export const ExplorerLink = ({
       _hover={{
         ...(!readOnly && {
           textDecoration: "underline",
-          textDecorationColor: "lilac.light",
+          textDecorationColor: "secondary.light",
         }),
       }}
       {...componentProps}
@@ -203,7 +203,7 @@ export const ExplorerLink = ({
             value={copyValue || value}
             copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
             display={showCopyOnHover ? "none" : "block"}
-            ml="8px"
+            ml={2}
             amptrackSection={ampCopierSection}
           />
         </>

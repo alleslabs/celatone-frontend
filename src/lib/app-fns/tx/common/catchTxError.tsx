@@ -52,7 +52,7 @@ export const catchTxError = (
           <CustomIcon
             name="alert-circle-solid"
             color="error.light"
-            boxSize="5"
+            boxSize={5}
           />
         ),
       },

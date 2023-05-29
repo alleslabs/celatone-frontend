@@ -18,13 +18,13 @@ export const TERRA_CHAINS: Chain = {
 
 export const OSMOSIS_CHAINS: Chain = {
   mainnet: "osmosis",
-  testnet: "osmosistestnet",
+  testnet: "osmosistestnet5",
 };
 
 // TODO: Remove this when mitosis is ready
 export const MITOSIS_CHAINS: Chain = {
   mainnet: "osmosis",
-  testnet: "osmosistestnet",
+  testnet: "osmosistestnet5",
 };
 
 export const getSupportedChainNames = (): SupportedChain[] => {

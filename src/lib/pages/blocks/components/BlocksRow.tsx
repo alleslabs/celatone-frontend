@@ -36,7 +36,7 @@ export const BlocksRow = ({ templateColumns, blockData }: BlocksRowProps) => {
       </TableRow>
       <TableRow>
         <Flex direction="column">
-          <Text variant="body2" color="text.dark" mb="2px">
+          <Text variant="body2" color="text.dark">
             {formatUTC(blockData.timestamp)}
           </Text>
           <Text variant="body3" color="text.disabled">
