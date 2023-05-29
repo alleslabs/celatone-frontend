@@ -35,6 +35,10 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
       init_msg
       transaction {
         hash
+        block_height
+        block {
+          timestamp
+        }
       }
       contract_proposals(
         where: {

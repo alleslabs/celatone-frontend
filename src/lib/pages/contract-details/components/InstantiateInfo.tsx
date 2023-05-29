@@ -101,6 +101,8 @@ export const InstantiateInfo = ({
     initTxHash,
     initProposalId,
     initProposalTitle,
+    createdHeight,
+    createdTime,
   },
 }: InstantiateInfoProps) => {
   const getAddressType = useGetAddressType();
@@ -163,30 +165,21 @@ export const InstantiateInfo = ({
 
       <Divider border="1px solid" borderColor="gray.700" />
 
-      {instantiateInfo &&
-        (instantiateInfo.createdHeight ? (
-          <LabelText
-            label="Instantiated Block Height"
-            helperText1={
-              instantiateInfo.createdTime
-                ? formatUTC(instantiateInfo.createdTime)
-                : undefined
-            }
-            helperText2={
-              instantiateInfo.createdTime
-                ? dateFromNow(instantiateInfo.createdTime)
-                : undefined
-            }
-          >
-            <ExplorerLink
-              type="block_height"
-              value={instantiateInfo.createdHeight.toString()}
-              showCopyOnHover
-            />
-          </LabelText>
-        ) : (
-          <LabelText label="Instantiated Block Height">N/A</LabelText>
-        ))}
+      {createdHeight ? (
+        <LabelText
+          label="Instantiated Block Height"
+          helperText1={createdTime ? formatUTC(createdTime) : undefined}
+          helperText2={createdTime ? dateFromNow(createdTime) : undefined}
+        >
+          <ExplorerLink
+            type="block_height"
+            value={createdHeight.toString()}
+            showCopyOnHover
+          />
+        </LabelText>
+      ) : (
+        <LabelText label="Instantiated Block Height">N/A</LabelText>
+      )}
 
       <LabelText
         label="Instantiated by"
