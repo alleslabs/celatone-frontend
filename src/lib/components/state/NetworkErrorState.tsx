@@ -42,6 +42,7 @@ export const NetworkErrorState = () => {
         </Text>
         {bullets.map((bullet) => (
           <Text
+            key={bullet}
             fontWeight={500}
             color="text.dark"
             variant="body2"
