@@ -80,38 +80,42 @@ const Header = () => {
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">
-            {availableChainIds.map((chainId) => (
-              <MenuItem
-                key={chainId}
-                onClick={() => {
-                  selectChain(chainId);
-                }}
-                flexDirection="column"
-                alignItems="flex-start"
-                _hover={{
-                  backgroundColor: "pebble.800",
-                }}
-                transition="all .25s ease-in-out"
-              >
-                <Flex justify="space-between" align="center" w="full">
-                  <Flex direction="column">
-                    <Text variant="body2">
-                      {
-                        getChainRecord(
-                          CHAIN_CONFIGS[chainId]?.registryChainName
-                        )?.chain.pretty_name
-                      }
-                    </Text>
-                    <Text color="text.dark" variant="body3">
-                      {chainId}
-                    </Text>
+            {availableChainIds.map((chainId) => {
+              const noConfig = !(chainId in CHAIN_CONFIGS);
+              return (
+                <MenuItem
+                  key={chainId}
+                  onClick={() => {
+                    selectChain(chainId);
+                  }}
+                  flexDirection="column"
+                  alignItems="flex-start"
+                  _hover={{
+                    backgroundColor: "pebble.800",
+                  }}
+                  transition="all .25s ease-in-out"
+                  isDisabled={noConfig}
+                >
+                  <Flex justify="space-between" align="center" w="full">
+                    <Flex direction="column">
+                      <Text variant="body2">
+                        {
+                          getChainRecord(
+                            CHAIN_CONFIGS[chainId]?.registryChainName
+                          )?.chain.pretty_name
+                        }
+                      </Text>
+                      <Text color="text.dark" variant="body3">
+                        {chainId}
+                      </Text>
+                    </Flex>
+                    {chainId === currentChainId && (
+                      <CustomIcon name="check" boxSize="3" />
+                    )}
                   </Flex>
-                  {chainId === currentChainId && (
-                    <CustomIcon name="check" boxSize="3" />
-                  )}
-                </Flex>
-              </MenuItem>
-            ))}
+                </MenuItem>
+              );
+            })}
           </MenuList>
         </Menu>
         <WalletSection />

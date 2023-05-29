@@ -17,7 +17,7 @@ import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG, PROJECT_CONSTANTS } from "config";
 import type { ChainConfig, ProjectConstants } from "config/types";
 import { SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { EmptyState } from "lib/components/state/EmptyState";
+import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
   useCodeStore,
@@ -104,10 +104,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   return currentChainId in CHAIN_CONFIGS ? (
     <AppContext.Provider value={states}>{children}</AppContext.Provider>
   ) : (
-    <EmptyState
-      imageVariant="not-found"
-      message={`‘${currentChainId}‘ is not available in local chain config`}
-    />
+    <NetworkErrorState />
   );
 });
 
