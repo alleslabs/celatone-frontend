@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 import { PoolAssetCard } from "../components";
 import { PoolInfoText } from "../components/PoolInfoText";
@@ -76,15 +76,17 @@ export const MsgLockTokensDetail = ({
 
         <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
-      <PoolAssetCard
-        poolId={pool.id}
-        description="Bonded to"
-        assetText="Bonded"
-        poolAsset={poolAsset}
-        poolAssetInfo={poolAssetInfo}
-        isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
-      />
+      <Box w="full">
+        <PoolAssetCard
+          poolId={pool.id}
+          description="Bonded to"
+          assetText="Bonded"
+          poolAsset={poolAsset}
+          poolAssetInfo={poolAssetInfo}
+          isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
+        />
+      </Box>
     </Flex>
   );
 };

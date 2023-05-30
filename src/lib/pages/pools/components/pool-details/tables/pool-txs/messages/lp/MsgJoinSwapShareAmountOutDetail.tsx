@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 import { PoolInfoText } from "../components/PoolInfoText";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -39,23 +39,25 @@ export const MsgJoinSwapShareAmountOutDetail = ({
       </PoolInfoText>
       <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
     </Flex>
-    <PoolAssetsGrid
-      txHash={txHash}
-      msgIndex={msgIndex}
-      isJoin
-      assetInfos={assetInfos}
-      isOpened={isOpened}
-      ampCopierSection={ampCopierSection}
-    />
-    <LiquidityDivider />
-    <PoolLPCard
-      msgIndex={msgIndex}
-      msgShareAmount={msg.share_amount_out}
-      poolId={msg.pool_id}
-      assetInfos={assetInfos}
-      isJoin
-      isOpened={isOpened}
-      ampCopierSection={ampCopierSection}
-    />
+    <Box w="full">
+      <PoolAssetsGrid
+        txHash={txHash}
+        msgIndex={msgIndex}
+        isJoin
+        assetInfos={assetInfos}
+        isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
+      />
+      <LiquidityDivider />
+      <PoolLPCard
+        msgIndex={msgIndex}
+        msgShareAmount={msg.share_amount_out}
+        poolId={msg.pool_id}
+        assetInfos={assetInfos}
+        isJoin
+        isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
+      />
+    </Box>
   </Flex>
 );

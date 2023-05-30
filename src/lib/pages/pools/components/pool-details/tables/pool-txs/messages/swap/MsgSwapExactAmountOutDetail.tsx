@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 import { PoolInfoText } from "../components/PoolInfoText";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -48,19 +48,21 @@ export const MsgSwapExactAmountOutDetail = ({
         </PoolInfoText>
         <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
-      <PoolSwap
-        txHash={txHash}
-        msgIndex={msgIndex}
-        assetInfos={assetInfos}
-        isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
-      />
-      <PoolRoute
-        routes={routes}
-        assetInfos={assetInfos}
-        isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
-      />
+      <Box w="full">
+        <PoolSwap
+          txHash={txHash}
+          msgIndex={msgIndex}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
+        />
+        <PoolRoute
+          routes={routes}
+          assetInfos={assetInfos}
+          isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
+        />
+      </Box>
     </Flex>
   );
 };
