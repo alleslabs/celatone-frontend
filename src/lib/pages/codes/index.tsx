@@ -1,4 +1,4 @@
-import { Heading, Box, Flex } from "@chakra-ui/react";
+import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
@@ -60,6 +60,9 @@ const RecentCodes = observer(() => {
         >
           Recent Codes
         </Heading>
+        <Text variant="body2" color="text.dark" fontWeight="500">
+          These codes are the most recently stored on this network
+        </Text>
         <Flex gap={3} mt={8}>
           <InputWithIcon
             placeholder="Search with code ID or code name"

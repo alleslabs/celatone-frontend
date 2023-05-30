@@ -19,7 +19,7 @@ const BlocksPage = () => {
         Blocks
       </Heading>
       <Text variant="body2" fontWeight={500} color="text.dark" mt={1} mb={8}>
-        This page displays all blocks in this network sorted by recency
+        This page displays all blocks on this network sorted by recency
       </Text>
       <BlocksTable />
     </PageContainer>

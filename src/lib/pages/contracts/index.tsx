@@ -1,4 +1,4 @@
-import { Heading, Box, Flex } from "@chakra-ui/react";
+import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
@@ -45,6 +45,9 @@ const RecentContracts = observer(() => {
         >
           Recent Contracts
         </Heading>
+        <Text variant="body2" color="text.dark" fontWeight="500">
+          These contracts are the most recently instantiated on this network
+        </Text>
         <Flex mt={8}>
           <InputWithIcon
             placeholder="Search with contract address, name or label"
