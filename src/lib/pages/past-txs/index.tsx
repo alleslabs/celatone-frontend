@@ -144,7 +144,7 @@ const PastTxs = () => {
             placeholder="Search with transaction hash or contract address"
             h="full"
           />
-          <InputRightElement pointerEvents="none" h="full" mr="1">
+          <InputRightElement pointerEvents="none" h="full" mr={1}>
             <CustomIcon name="search" color="pebble.600" />
           </InputRightElement>
         </InputGroup>
@@ -171,17 +171,14 @@ const PastTxs = () => {
           !pastTxsState.search.trim().length || !filterSelected.length ? (
             <EmptyState
               imageVariant="not-found"
-              message={`
-      No past transaction matches found with your input.
-      You can search with transaction hash, and contract address.
-      `}
+              message="No past transaction matches found with your input. You can search with transaction hash, and contract address."
+              withBorder
             />
           ) : (
             <EmptyState
               imageVariant="empty"
-              message={`
-    Past transactions will display here.
-    `}
+              message="Past transactions will display here."
+              withBorder
             />
           )
         }

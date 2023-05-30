@@ -1,6 +1,7 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 import { PoolAssetCard } from "../components";
+import { PoolInfoText } from "../components/PoolInfoText";
 import { getPoolDenom } from "../utils";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
@@ -9,6 +10,7 @@ import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
 import { useValidator } from "lib/services/validatorService";
 import type { PoolDetail } from "lib/types";
+import { extractMsgType } from "lib/utils";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
 
 interface MsgLockAndSuperfluidDelegateDetailProps {
@@ -61,29 +63,18 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
     ?.attributes.at(0)?.value;
 
   return (
-    <Flex w="full" direction="column" gap={4}>
+    <Flex w="full" direction="column" gap={6}>
       <Flex gap={12}>
-        <Flex direction="column" gap={1}>
-          <Text variant="body2" textColor="pebble.500" fontWeight={500}>
-            Block height
-          </Text>
+        <PoolInfoText title="Block height">
           <ExplorerLink
             value={blockHeight.toString()}
             type="block_height"
             showCopyOnHover
             ampCopierSection={ampCopierSection}
           />
-        </Flex>
-        <Flex direction="column" gap={1}>
-          <Text variant="body2" textColor="pebble.500" fontWeight={500}>
-            LockID
-          </Text>
-          <Text variant="body2">{lockId}</Text>
-        </Flex>
-        <Flex direction="column" gap={1}>
-          <Text variant="body2" textColor="pebble.500" fontWeight={500}>
-            To Validator
-          </Text>
+        </PoolInfoText>
+        <PoolInfoText title="LockID">{lockId}</PoolInfoText>
+        <PoolInfoText title="To Validator">
           <ValidatorBadge
             validator={{
               validatorAddress: msg.val_addr,
@@ -92,9 +83,10 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
             badgeSize={6}
             ampCopierSection={ampCopierSection}
           />
-        </Flex>
+        </PoolInfoText>
+        <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
-      <Flex direction="column" w="full" gap={2}>
+      <Box w="full">
         <PoolAssetCard
           poolId={pool.id}
           description="Bonded to"
@@ -104,7 +96,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
           isOpened={isOpened}
           ampCopierSection={ampCopierSection}
         />
-      </Flex>
+      </Box>
     </Flex>
   );
 };

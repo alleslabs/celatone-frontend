@@ -18,8 +18,7 @@ export const EmptyState = ({
   withBorder = false,
 }: EmptyStateProps) => (
   <Flex
-    py={8}
-    my={12}
+    py={12}
     direction="column"
     borderY={withBorder ? "1px solid" : undefined}
     borderColor="pebble.700"

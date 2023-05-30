@@ -117,9 +117,13 @@ export const SelectInput = <T extends string>({
           }}
         >
           <div className="form-label">{formLabel}</div>
-          {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full" ml="1">
+          {selectedOption?.image && (
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
               <Image boxSize={6} src={selectedOption.image} />
+            </InputLeftElement>
+          )}
+          {selectedOption?.icon && (
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
               <CustomIcon
                 name={selectedOption.icon}
                 color={selectedOption.iconColor}
@@ -134,7 +138,7 @@ export const SelectInput = <T extends string>({
             value={selected || placeholder}
             fontSize="14px"
             color={selected ? "text.main" : "text.dark"}
-            pl={selectedOption?.icon ? 9 : 4}
+            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
             <CustomIcon name="chevron-down" color="pebble.600" />

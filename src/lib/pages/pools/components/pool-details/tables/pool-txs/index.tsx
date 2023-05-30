@@ -59,9 +59,9 @@ export const PoolRelatedTxsTable = ({
   if (error)
     return (
       <EmptyState
-        withBorder
         imageVariant="not-found"
         message="There is an error during fetching transactions."
+        withBorder
       />
     );
   return (
@@ -73,9 +73,9 @@ export const PoolRelatedTxsTable = ({
         isLoading={isLoadingAssetInfos || isLoading}
         emptyState={
           <EmptyState
-            withBorder
             imageVariant="empty"
             message="There are no transactions in this network."
+            withBorder
           />
         }
       />

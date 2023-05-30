@@ -62,6 +62,7 @@ export const MigrationTable = ({
       <EmptyState
         imageVariant="empty"
         message="This contract does not have any migration history yet."
+        withBorder
       />
     );
 
