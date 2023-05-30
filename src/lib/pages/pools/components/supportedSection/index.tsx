@@ -216,16 +216,18 @@ export const SupportedSection = ({
         </Flex>
       </Flex>
       <SupportedPoolList pools={pools} isLoading={isLoading} mode={toggle} />
-      <Pagination
-        currentPage={currentPage}
-        pagesQuantity={pagesQuantity}
-        offset={offset}
-        totalData={totalData}
-        scrollComponentId={scrollComponentId}
-        pageSize={pageSize}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-      />
+      {totalData > 10 && (
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </>
   );
 };
