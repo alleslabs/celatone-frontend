@@ -55,6 +55,7 @@ export enum AmpEvent {
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
   TO_POOL_LIST = "To Pool List",
+  TO_POOL_DETAIL = "To Pool Detail",
   // ACTIONS
   ACTION_UPLOAD = "Act Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -230,7 +231,8 @@ export const AmpTrackExpand = ({
     | "json"
     | "permission_address"
     | "event_box"
-    | "unsupported_pool";
+    | "unsupported_pool"
+    | "pool_tx_msg";
   info?: object;
   section?: string;
 }) => track(AmpEvent.USE_EXPAND, { action, component, info, section });

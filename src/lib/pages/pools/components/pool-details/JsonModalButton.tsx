@@ -13,6 +13,7 @@ import {
 
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { AmpTrackViewJson } from "lib/services/amplitude";
 import { jsonPrettify } from "lib/utils";
 
 interface JsonModalButtonProps {
@@ -41,7 +42,10 @@ export const JsonModalButton = ({
             m={0}
           />
         }
-        onClick={onOpen}
+        onClick={() => {
+          AmpTrackViewJson(`pool_page_(${modalHeader})`);
+          onOpen();
+        }}
       >
         View JSON
       </Button>

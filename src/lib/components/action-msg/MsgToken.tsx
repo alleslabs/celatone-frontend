@@ -10,6 +10,7 @@ interface MsgTokenProps {
   symbol?: string;
   precision?: number;
   fontWeight?: number;
+  ampCopierSection?: string;
 }
 
 export const MsgToken = ({
@@ -17,6 +18,7 @@ export const MsgToken = ({
   symbol,
   precision,
   fontWeight = 600,
+  ampCopierSection,
 }: MsgTokenProps) => (
   <Flex role="group" align="center" gap={1}>
     <Text fontWeight={fontWeight}>
@@ -37,6 +39,7 @@ export const MsgToken = ({
       copyLabel="Token ID Copied!"
       display="none"
       ml="4px"
+      amptrackSection={ampCopierSection}
     />
   </Flex>
 );

@@ -12,12 +12,14 @@ interface MsgJoinSwapShareAmountOutActionProps {
   msg: MsgJoinSwapShareAmountOutDetails;
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
+  ampCopierSection?: string;
 }
 
 export const MsgJoinSwapShareAmountOutAction = ({
   msg,
   pool,
   assetInfos,
+  ampCopierSection,
 }: MsgJoinSwapShareAmountOutActionProps) => {
   const inAssetInfo = assetInfos?.[msg.token_in_denom];
   const poolDenom = getPoolDenom(msg.pool_id);
@@ -30,15 +32,17 @@ export const MsgJoinSwapShareAmountOutAction = ({
         symbol={inAssetInfo?.symbol}
         precision={inAssetInfo?.precision}
         fontWeight={400}
+        ampCopierSection={ampCopierSection}
       />
       to
-      <PoolLogoLink pool={pool} />
+      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       <MsgToken
         coin={{ amount: msg.share_amount_out, denom: poolDenom }}
         symbol={poolAssetInfo?.symbol}
         precision={poolAssetInfo?.precision}
         fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

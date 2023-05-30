@@ -12,12 +12,14 @@ interface MsgExitSwapExternAmountOutActionProps {
   msg: MsgExitSwapExternAmountOutDetails;
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
+  ampCopierSection?: string;
 }
 
 export const MsgExitSwapExternAmountOutAction = ({
   msg,
   pool,
   assetInfos,
+  ampCopierSection,
 }: MsgExitSwapExternAmountOutActionProps) => {
   const outAssetInfo = assetInfos?.[msg.token_out.denom];
   const poolDenom = getPoolDenom(msg.pool_id);
@@ -30,15 +32,17 @@ export const MsgExitSwapExternAmountOutAction = ({
         symbol={poolAssetInfo?.symbol}
         precision={poolAssetInfo?.precision}
         fontWeight={400}
+        ampCopierSection={ampCopierSection}
       />
       to
-      <PoolLogoLink pool={pool} />
+      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       <MsgToken
         coin={msg.token_out}
         symbol={outAssetInfo?.symbol}
         precision={outAssetInfo?.precision}
         fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

@@ -6,6 +6,7 @@ import { getPoolUrl } from "lib/app-fns/explorer";
 import { useLCDEndpoint } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { openNewTab } from "lib/hooks";
+import { AmpTrackViewJson, AmpTrackWebsite } from "lib/services/amplitude";
 import type { PoolDetail } from "lib/types";
 
 import { PoolInfo } from "./PoolInfo";
@@ -18,10 +19,14 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
   const { currentChainName } = useWallet();
   const lcdEndpoint = useLCDEndpoint();
 
-  const openPoolLcd = () =>
+  const openPoolLcd = () => {
+    AmpTrackViewJson("pool_page_pool_lcd");
     openNewTab(`${lcdEndpoint}/osmosis/gamm/v1beta1/pools/${pool.id}`);
-  const openOsmosisPool = () =>
+  };
+  const openOsmosisPool = () => {
+    AmpTrackWebsite(`${getPoolUrl(currentChainName)}/${pool.id}`);
     openNewTab(`${getPoolUrl(currentChainName)}/${pool.id}`);
+  };
   return (
     <>
       <Flex justifyContent="space-between" align="center" w="full">

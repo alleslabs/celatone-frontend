@@ -15,6 +15,7 @@ interface PoolLPCardProps {
   assetInfos: AssetInfosOpt;
   isJoin: boolean;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const PoolLPCard = ({
@@ -25,6 +26,7 @@ export const PoolLPCard = ({
   assetInfos,
   isJoin,
   isOpened,
+  ampCopierSection,
 }: PoolLPCardProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (!msgShareAmount && isLoading) return <Loading withBorder={false} />;
@@ -60,6 +62,7 @@ export const PoolLPCard = ({
         poolAsset={{ amount: shareAmount, denom: poolDenom }}
         poolAssetInfo={assetInfos?.[poolDenom]}
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

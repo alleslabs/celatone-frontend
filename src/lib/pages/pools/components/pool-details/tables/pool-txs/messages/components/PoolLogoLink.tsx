@@ -6,9 +6,10 @@ import type { PoolDetail } from "lib/types";
 
 interface PoolLogoLinkProps {
   pool: PoolDetail;
+  ampCopierSection?: string;
 }
 
-export const PoolLogoLink = ({ pool }: PoolLogoLinkProps) => (
+export const PoolLogoLink = ({ pool, ampCopierSection }: PoolLogoLinkProps) => (
   <Flex gap={1}>
     <PoolLogo
       tokens={pool.poolLiquidity}
@@ -16,6 +17,11 @@ export const PoolLogoLink = ({ pool }: PoolLogoLinkProps) => (
       marginLeft={-4}
       minW={0}
     />
-    <ExplorerLink type="pool_id" value={pool.id.toString()} showCopyOnHover />
+    <ExplorerLink
+      type="pool_id"
+      value={pool.id.toString()}
+      showCopyOnHover
+      ampCopierSection={ampCopierSection}
+    />
   </Flex>
 );

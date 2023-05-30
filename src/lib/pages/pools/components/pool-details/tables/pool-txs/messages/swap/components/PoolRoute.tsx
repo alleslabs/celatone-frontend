@@ -15,9 +15,15 @@ interface PoolRouteProps {
   routes: MsgSwapExactAmountInDetails["routes"];
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
-export const PoolRoute = ({ routes, assetInfos, isOpened }: PoolRouteProps) => {
+export const PoolRoute = ({
+  routes,
+  assetInfos,
+  isOpened,
+  ampCopierSection,
+}: PoolRouteProps) => {
   const { data: poolAssets, isLoading } = usePoolAssetsbyPoolIds(
     routes.map((pool) => pool.poolId),
     isOpened
@@ -87,6 +93,7 @@ export const PoolRoute = ({ routes, assetInfos, isOpened }: PoolRouteProps) => {
                   type="pool_id"
                   value={pool.poolId.toString()}
                   showCopyOnHover
+                  ampCopierSection={ampCopierSection}
                 />
               </div>
             </Flex>

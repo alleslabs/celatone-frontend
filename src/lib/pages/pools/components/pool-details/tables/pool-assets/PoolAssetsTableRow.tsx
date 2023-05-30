@@ -69,6 +69,7 @@ export const PoolAssetsTableRow = ({
                   value={token.denom}
                   copyLabel="Token ID Copied!"
                   ml={0}
+                  amptrackSection="pool_assets"
                 />
               </Flex>
             </Flex>

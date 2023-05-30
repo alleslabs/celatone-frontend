@@ -13,6 +13,7 @@ interface PoolSwapInterface {
   msgIndex: number;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const PoolSwap = ({
@@ -20,6 +21,7 @@ export const PoolSwap = ({
   msgIndex,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: PoolSwapInterface) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (isLoading) return <Loading withBorder={false} />;
@@ -41,7 +43,12 @@ export const PoolSwap = ({
   const { amount: outAmount, denom: outDenom } = coinsFromStr(outAsset)[0];
 
   return (
-    <Grid gap={4} alignItems="center" mb={6} templateColumns="1fr 24px 1fr">
+    <Grid
+      gap={4}
+      alignItems="center"
+      mb={6}
+      templateColumns="minmax(250px, 1fr) 24px minmax(250px, 1fr)"
+    >
       <div>
         <Text variant="body2" textColor="pebble.500" fontWeight={500}>
           From
@@ -50,6 +57,7 @@ export const PoolSwap = ({
           amount={inAmount}
           denom={inDenom}
           assetInfo={assetInfos?.[inDenom]}
+          ampCopierSection={ampCopierSection}
         />
       </div>
       <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
@@ -61,6 +69,7 @@ export const PoolSwap = ({
           amount={outAmount}
           denom={outDenom}
           assetInfo={assetInfos?.[outDenom]}
+          ampCopierSection={ampCopierSection}
         />
       </div>
     </Grid>

@@ -4,6 +4,7 @@ import big from "big.js";
 import Link from "next/link";
 
 import { CustomIcon } from "lib/components/icon";
+import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { PoolDetail, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
@@ -47,6 +48,11 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
           href="https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() =>
+            AmpTrackWebsite(
+              "https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
+            )
+          }
         >
           <Flex gap="2px" alignItems="center">
             <Text color="lilac.main" variant="body2">
