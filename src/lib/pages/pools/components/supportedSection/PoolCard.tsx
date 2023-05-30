@@ -9,6 +9,7 @@ import { getPoolUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
+import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { USD, Pool, Token, U } from "lib/types";
 import { formatPrice } from "lib/utils";
 
@@ -64,7 +65,10 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
         <Tooltip label="See in osmosis.zone">
           <Link
             href={`${getPoolUrl(currentChainName)}/${item.id}`}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              AmpTrackWebsite(`${getPoolUrl(currentChainName)}/${item.id}`);
+              e.stopPropagation();
+            }}
             target="_blank"
             rel="noopener noreferrer"
           >

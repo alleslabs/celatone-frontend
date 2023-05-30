@@ -11,12 +11,14 @@ interface MsgLockAndSuperfluidDelegateActionProps {
   msg: MsgLockAndSuperfluidDelegateDetails;
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
+  ampCopierSection?: string;
 }
 
 export const MsgLockAndSuperfluidDelegateAction = ({
   msg,
   pool,
   assetInfos,
+  ampCopierSection,
 }: MsgLockAndSuperfluidDelegateActionProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -32,9 +34,10 @@ export const MsgLockAndSuperfluidDelegateAction = ({
         symbol={poolAssetInfo?.symbol}
         precision={poolAssetInfo?.precision}
         fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
       to
-      <PoolLogoLink pool={pool} />
+      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       with
       <span style={{ fontWeight: 700 }}>14</span>
       days unbonding

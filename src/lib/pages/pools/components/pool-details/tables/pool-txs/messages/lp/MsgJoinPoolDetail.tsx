@@ -15,6 +15,7 @@ interface MsgJoinPoolDetailProps {
   msg: MsgJoinPoolDetails;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgJoinPoolDetail = ({
@@ -24,6 +25,7 @@ export const MsgJoinPoolDetail = ({
   msg,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: MsgJoinPoolDetailProps) => (
   <Flex w="full" direction="column" alignItems="start" gap={6}>
     <Flex gap={12}>
@@ -34,6 +36,7 @@ export const MsgJoinPoolDetail = ({
             value={blockHeight.toString()}
             type="block_height"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         }
       />
@@ -46,6 +49,7 @@ export const MsgJoinPoolDetail = ({
         isJoin
         assetInfos={assetInfos}
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
       <LiquidityDivider />
       <PoolLPCard
@@ -55,6 +59,7 @@ export const MsgJoinPoolDetail = ({
         assetInfos={assetInfos}
         isJoin
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
     </Box>
   </Flex>

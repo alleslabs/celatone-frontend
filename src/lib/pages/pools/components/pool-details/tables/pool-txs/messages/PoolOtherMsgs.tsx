@@ -10,7 +10,7 @@ interface PoolOtherMsgsProps {
 export const PoolOtherMsgs = ({ otherMsgs, isIbc }: PoolOtherMsgsProps) => {
   const typePaths = Object.keys(otherMsgs);
   return (
-    <Flex gap={2} flexWrap="wrap" alignItems="center">
+    <Flex gap={2} flexWrap="wrap" alignContent="center">
       Total
       {typePaths.map((typePath, index) => {
         const type = extractMsgType(typePath);

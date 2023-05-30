@@ -20,6 +20,7 @@ interface PoolAssetCardProps {
   poolAsset: Coin;
   poolAssetInfo: Option<AssetInfo>;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const PoolAssetCard = ({
@@ -29,6 +30,7 @@ export const PoolAssetCard = ({
   poolAsset,
   poolAssetInfo,
   isOpened,
+  ampCopierSection,
 }: PoolAssetCardProps) => {
   const { data: poolAssets, isLoading } = usePoolAssetsbyPoolIds(
     [poolId],
@@ -104,6 +106,7 @@ export const PoolAssetCard = ({
             type="pool_id"
             value={poolId.toString()}
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         </div>
       </Flex>

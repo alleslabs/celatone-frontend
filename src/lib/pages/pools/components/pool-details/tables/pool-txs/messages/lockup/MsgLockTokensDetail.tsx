@@ -20,6 +20,7 @@ interface MsgLockTokensDetailProps {
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgLockTokensDetail = ({
@@ -30,6 +31,7 @@ export const MsgLockTokensDetail = ({
   pool,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: MsgLockTokensDetailProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -42,7 +44,7 @@ export const MsgLockTokensDetail = ({
   if (isLoading) return <Loading withBorder={false} />;
 
   const lockId = txData?.logs
-    .find((event) => event.msg_index === msgIndex)
+    .find((log) => log.msg_index === msgIndex)
     ?.events?.find(
       (event) =>
         event.type.includes("lock") &&
@@ -60,6 +62,7 @@ export const MsgLockTokensDetail = ({
               value={blockHeight.toString()}
               type="block_height"
               showCopyOnHover
+              ampCopierSection={ampCopierSection}
             />
           }
         />
@@ -72,6 +75,7 @@ export const MsgLockTokensDetail = ({
               symbol={poolAssetInfo?.symbol}
               precision={poolAssetInfo?.precision}
               fontWeight={700}
+              ampCopierSection={ampCopierSection}
             />
           }
         />
@@ -84,6 +88,7 @@ export const MsgLockTokensDetail = ({
         poolAsset={poolAsset}
         poolAssetInfo={poolAssetInfo}
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

@@ -17,6 +17,7 @@ interface PoolAssetsGridProps {
   isJoin: boolean;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const PoolAssetsGrid = ({
@@ -27,12 +28,13 @@ export const PoolAssetsGrid = ({
   isJoin,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: PoolAssetsGridProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (!msgAssets && isLoading) return <Loading withBorder={false} />;
 
   const receivedEvent = txData?.logs
-    .find((event) => event.msg_index === msgIndex)
+    .find((log) => log.msg_index === msgIndex)
     ?.events?.find((event) => event.type === "coin_received");
 
   const assetAttr = receivedEvent?.attributes.at(1)?.value;
@@ -85,6 +87,7 @@ export const PoolAssetsGrid = ({
             amount={asset.amount}
             denom={asset.denom}
             assetInfo={assetInfos?.[asset.denom]}
+            ampCopierSection={ampCopierSection}
           />
         ))}
       </SimpleGrid>

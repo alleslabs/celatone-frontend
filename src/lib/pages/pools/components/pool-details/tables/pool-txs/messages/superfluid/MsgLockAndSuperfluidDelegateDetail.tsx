@@ -21,6 +21,7 @@ interface MsgLockAndSuperfluidDelegateDetailProps {
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgLockAndSuperfluidDelegateDetail = ({
@@ -31,6 +32,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
   pool,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: MsgLockAndSuperfluidDelegateDetailProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -52,7 +54,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
     return <Loading withBorder={false} />;
 
   const lockId = txData?.logs
-    .find((event) => event.msg_index === msgIndex)
+    .find((log) => log.msg_index === msgIndex)
     ?.events?.find(
       (event) =>
         event.type.includes("lock") &&
@@ -70,6 +72,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
               value={blockHeight.toString()}
               type="block_height"
               showCopyOnHover
+              ampCopierSection={ampCopierSection}
             />
           }
         />
@@ -83,6 +86,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
                 moniker: validator?.moniker,
               }}
               badgeSize={6}
+              ampCopierSection={ampCopierSection}
             />
           }
         />
@@ -95,6 +99,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
         poolAsset={poolAsset}
         poolAssetInfo={poolAssetInfo}
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

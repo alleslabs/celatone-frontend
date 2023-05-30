@@ -15,6 +15,7 @@ interface MsgSwapExactAmountInDetailProps {
   msg: MsgSwapExactAmountInDetails;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgSwapExactAmountInDetail = ({
@@ -24,6 +25,7 @@ export const MsgSwapExactAmountInDetail = ({
   msg,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: MsgSwapExactAmountInDetailProps) => (
   <Flex w="full" direction="column" alignItems="start" gap={6}>
     <Flex gap={12}>
@@ -34,6 +36,7 @@ export const MsgSwapExactAmountInDetail = ({
             value={blockHeight.toString()}
             type="block_height"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         }
       />
@@ -44,11 +47,13 @@ export const MsgSwapExactAmountInDetail = ({
       msgIndex={msgIndex}
       assetInfos={assetInfos}
       isOpened={isOpened}
+      ampCopierSection={ampCopierSection}
     />
     <PoolRoute
       routes={msg.routes}
       assetInfos={assetInfos}
       isOpened={isOpened}
+      ampCopierSection={ampCopierSection}
     />
   </Flex>
 );

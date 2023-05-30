@@ -1,9 +1,11 @@
 import { Heading, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
+import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import { usePoolListCountQuery } from "lib/services/poolService";
 
 import { SupportedSection } from "./components/supportedSection";
@@ -15,6 +17,7 @@ enum TabIndex {
 }
 
 export const PoolIndex = () => {
+  const router = useRouter();
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
 
   const { data: supportedPoolCount, isLoading: isLoadingSupported } =
@@ -32,7 +35,16 @@ export const PoolIndex = () => {
       search: "",
     });
 
+  const handleTabChange = (tab: TabIndex) => {
+    AmpTrackUseTab(TabIndex[tab]);
+    setTabIndex(tab);
+  };
+
   const sectionHeaderId = "poolListTab";
+
+  useEffect(() => {
+    if (router.isReady) AmpTrack(AmpEvent.TO_POOL_LIST);
+  }, [router.isReady]);
 
   useEffect(() => {
     if (
@@ -40,8 +52,8 @@ export const PoolIndex = () => {
       unsupportedPoolCount !== undefined
     ) {
       if (supportedPoolCount === 0 && unsupportedPoolCount > 0)
-        setTabIndex(TabIndex.Unsupported);
-      else setTabIndex(TabIndex.Supported);
+        handleTabChange(TabIndex.Unsupported);
+      else handleTabChange(TabIndex.Supported);
     }
   }, [supportedPoolCount, unsupportedPoolCount]);
 
@@ -55,13 +67,13 @@ export const PoolIndex = () => {
         <TabList my={8} borderBottom="1px" borderColor="pebble.800">
           <CustomTab
             count={supportedPoolCount ?? 0}
-            onClick={() => setTabIndex(TabIndex.Supported)}
+            onClick={() => handleTabChange(TabIndex.Supported)}
           >
             Pools
           </CustomTab>
           <CustomTab
             count={unsupportedPoolCount ?? 0}
-            onClick={() => setTabIndex(TabIndex.Unsupported)}
+            onClick={() => handleTabChange(TabIndex.Unsupported)}
           >
             Pools with unsupported tokens
           </CustomTab>

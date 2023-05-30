@@ -15,6 +15,7 @@ interface MsgExitSwapExternAmountOutDetailProps {
   msg: MsgExitSwapExternAmountOutDetails;
   assetInfos: AssetInfosOpt;
   isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgExitSwapExternAmountOutDetail = ({
@@ -24,6 +25,7 @@ export const MsgExitSwapExternAmountOutDetail = ({
   msg,
   assetInfos,
   isOpened,
+  ampCopierSection,
 }: MsgExitSwapExternAmountOutDetailProps) => (
   <Flex w="full" direction="column" alignItems="start" gap={12}>
     <Flex gap={12}>
@@ -34,6 +36,7 @@ export const MsgExitSwapExternAmountOutDetail = ({
             value={blockHeight.toString()}
             type="block_height"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         }
       />
@@ -47,6 +50,7 @@ export const MsgExitSwapExternAmountOutDetail = ({
         assetInfos={assetInfos}
         isJoin={false}
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
       <LiquidityDivider />
       <PoolAssetsGrid
@@ -56,6 +60,7 @@ export const MsgExitSwapExternAmountOutDetail = ({
         isJoin={false}
         assetInfos={assetInfos}
         isOpened={isOpened}
+        ampCopierSection={ampCopierSection}
       />
     </Box>
   </Flex>

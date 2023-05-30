@@ -12,12 +12,14 @@ interface MsgExitPoolActionProps {
   msg: MsgExitPoolDetails;
   pool: PoolDetail;
   assetInfos: AssetInfosOpt;
+  ampCopierSection?: string;
 }
 
 export const MsgExitPoolAction = ({
   msg,
   pool,
   assetInfos,
+  ampCopierSection,
 }: MsgExitPoolActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const poolAssetInfo = assetInfos?.[poolDenom];
@@ -29,9 +31,10 @@ export const MsgExitPoolAction = ({
         symbol={poolAssetInfo?.symbol}
         precision={poolAssetInfo?.precision}
         fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
       from
-      <PoolLogoLink pool={pool} />
+      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       {msg.token_out_mins && (
         <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
       )}
@@ -48,6 +51,7 @@ export const MsgExitPoolAction = ({
               symbol={outAssetInfo?.symbol}
               precision={outAssetInfo?.precision}
               fontWeight={400}
+              ampCopierSection={ampCopierSection}
             />
           </Flex>
         );

@@ -22,8 +22,14 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { Order_By } from "lib/gql/graphql";
+import {
+  AmpTrackExpandAll,
+  AmpTrackUseSort,
+  AmpTrackUseToggle,
+} from "lib/services/amplitude";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
+import { isPositiveInt } from "lib/utils";
 
 import { UnsupportedPoolList } from "./UnsupportedPoolList";
 
@@ -41,20 +47,22 @@ export const UnsupportedSection = ({
     },
   });
   const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
+  const search =
+    !keyword || isPositiveInt(keyword) ? keyword : `{"${keyword}"}`;
+
   const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
     isSupported: false,
-    poolType: "All",
-    isSuperfluidOnly: false,
-    search: "",
+    poolType: poolTypeValue,
+    isSuperfluidOnly,
+    search,
   });
 
   const [showNewest, setShowNewest] = useState(true);
 
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
-  const updateExpandedIndexes = (indexes: number[]) => {
+  const updateExpandedIndexes = (indexes: number[]) =>
     setExpandedIndexes(indexes);
-  };
 
   const {
     pagesQuantity,
@@ -83,14 +91,14 @@ export const UnsupportedSection = ({
     refetchCount();
     setPageSize(size);
     setCurrentPage(1);
-    updateExpandedIndexes([]);
+    setExpandedIndexes([]);
   };
 
   const { pools, isLoading } = usePools(
     false,
     poolTypeValue,
     isSuperfluidOnly,
-    keyword,
+    search,
     showNewest ? Order_By.Desc : Order_By.Asc,
     offset,
     pageSize
@@ -99,14 +107,16 @@ export const UnsupportedSection = ({
   return (
     <>
       <Flex alignItems="center" mb={12}>
-        <Flex grow="2" gap={4}>
+        <Flex grow={2} gap={4}>
           <InputWithIcon
             placeholder="Search with Pool ID or Token ID"
             value={keyword}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setValue("keyword", e.target.value)
-            }
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setCurrentPage(1);
+              setValue("keyword", e.target.value);
+            }}
             size="lg"
+            action="unsupported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"
@@ -120,9 +130,13 @@ export const UnsupportedSection = ({
               <Switch
                 size="md"
                 defaultChecked={isSuperfluidOnly}
-                onChange={(e) => setValue("isSuperfluidOnly", e.target.checked)}
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  AmpTrackUseToggle("isSuperfluidOnly", e.target.checked);
+                  setValue("isSuperfluidOnly", e.target.checked);
+                }}
               />
-              <FormLabel mb="0" cursor="pointer">
+              <FormLabel mb={0} cursor="pointer">
                 <Text display="flex" gap={2} alignItems="center">
                   Show only
                   <Image boxSize={4} src={SUPERFLUID_ICON} />
@@ -143,42 +157,40 @@ export const UnsupportedSection = ({
           </Badge>
         </Flex>
         <Flex gap={4}>
-          <Flex gap="2" alignItems="center">
+          <Flex gap={2} alignItems="center">
             <Text variant="body2" color="text.dark">
               Sort Pool ID:
             </Text>
-            {showNewest ? (
-              <Button
-                variant="outline-gray"
-                size="sm"
-                pr="1"
-                onClick={() => setShowNewest(!showNewest)}
-              >
-                Newest First
-                <CustomIcon name="arrow-down" color="text.dark" />
-              </Button>
-            ) : (
-              <Button
-                variant="outline-gray"
-                size="sm"
-                pr="1"
-                onClick={() => setShowNewest(!showNewest)}
-              >
-                Oldest First
-                <CustomIcon name="arrow-up" color="text.dark" />
-              </Button>
-            )}
+            <Button
+              variant="outline-gray"
+              size="sm"
+              pr={1}
+              onClick={() => {
+                const isDesc = !showNewest;
+                AmpTrackUseSort(isDesc ? "descending" : "ascending");
+                setShowNewest(isDesc);
+              }}
+            >
+              {showNewest ? "Newest First" : "Oldest First"}
+              <CustomIcon
+                name={showNewest ? "arrow-down" : "arrow-up"}
+                color="text.dark"
+              />
+            </Button>
           </Flex>
-          <Flex gap="2" alignItems="center">
+          <Flex gap={2} alignItems="center">
             <Button
               variant="outline-gray"
               w="94px"
               size="sm"
-              onClick={() =>
+              onClick={() => {
+                AmpTrackExpandAll(
+                  !expandedIndexes.length ? "expand" : "collapse"
+                );
                 setExpandedIndexes((prev) =>
-                  prev.length ? [] : Array.from(Array(pageSize).keys())
-                )
-              }
+                  !prev.length ? Array.from(Array(pageSize).keys()) : []
+                );
+              }}
             >
               {expandedIndexes.length ? "Collapse All" : "Expand All"}
             </Button>
@@ -191,16 +203,18 @@ export const UnsupportedSection = ({
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
       />
-      <Pagination
-        currentPage={currentPage}
-        pagesQuantity={pagesQuantity}
-        offset={offset}
-        totalData={totalData}
-        scrollComponentId={scrollComponentId}
-        pageSize={pageSize}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-      />
+      {totalData > 10 && (
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </>
   );
 };

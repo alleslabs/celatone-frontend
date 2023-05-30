@@ -54,6 +54,8 @@ export enum AmpEvent {
   TO_TRANSACTION_DETAIL = "To Transaction Detail",
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
+  TO_POOL_LIST = "To Pool List",
+  TO_POOL_DETAIL = "To Pool Detail",
   // ACTIONS
   ACTION_UPLOAD = "Act Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -96,13 +98,18 @@ export enum AmpEvent {
   USE_UNSUPPORTED_ASSETS = "Use Unsupported Assets",
   USE_TX_MSG_EXPAND = "Use Transaction Message Expand",
   USE_EXPAND = "Use General Expand",
+  USE_EXPAND_ALL = "Use Expand All",
   USE_SEARCH_INPUT = "Use Search Input",
   USE_FILTER_MY_PROPOSALS = "Use Filter My Proposals",
   USE_FILTER_PROPOSALS_STATUS = "Use Filter Proposals Status",
   USE_FILTER_PROPOSALS_TYPE = "Use Filter Proposals Types",
+  USE_FILTER_POOL_TYPE = "Use Filter Pool Types",
   USE_PAGINATION_PAGE_SIZE = "Use Pagination Page Size",
   USE_PAGINATION_NAVIGATION = "Use Pagination Navigation",
   USE_CREATE_NEW_PROPOSAL = "Use Create New Proposal",
+  USE_SORT = "Use Sort",
+  USE_VIEW = "Use View",
+  USE_TOGGLE = "Use Toggle",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -139,9 +146,14 @@ type SpecialAmpEvent =
   | AmpEvent.USE_UNSUPPORTED_ASSETS
   | AmpEvent.USE_COPIER
   | AmpEvent.USE_EXPAND
+  | AmpEvent.USE_EXPAND_ALL
   | AmpEvent.USE_PAGINATION_NAVIGATION
   | AmpEvent.USE_FILTER_PROPOSALS_STATUS
-  | AmpEvent.USE_FILTER_PROPOSALS_TYPE;
+  | AmpEvent.USE_FILTER_PROPOSALS_TYPE
+  | AmpEvent.USE_FILTER_POOL_TYPE
+  | AmpEvent.USE_SORT
+  | AmpEvent.USE_VIEW
+  | AmpEvent.USE_TOGGLE;
 
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
@@ -207,11 +219,26 @@ export const AmpTrackUnsupportedToken = (page: Option<string>) =>
 export const AmpTrackCopier = (section: Option<string>, type: string) =>
   track(AmpEvent.USE_COPIER, { section, type });
 
-export const AmpTrackExpand = (
-  action: "expand" | "collapse",
-  component: "assets" | "json" | "permission_address" | "event_box",
-  section: Option<string>
-) => track(AmpEvent.USE_EXPAND, { action, component, section });
+export const AmpTrackExpand = ({
+  action,
+  component,
+  info,
+  section,
+}: {
+  action: "expand" | "collapse";
+  component:
+    | "assets"
+    | "json"
+    | "permission_address"
+    | "event_box"
+    | "unsupported_pool"
+    | "pool_tx_msg";
+  info?: object;
+  section?: string;
+}) => track(AmpEvent.USE_EXPAND, { action, component, info, section });
+
+export const AmpTrackExpandAll = (action: "expand" | "collapse") =>
+  track(AmpEvent.USE_EXPAND, { action });
 
 export const AmpTrackUseFilter = (
   ampEvent: AmpEvent,
@@ -229,3 +256,12 @@ export const AmpTrackPaginationNavigate = (
     pageSize,
     currentPage,
   });
+
+export const AmpTrackUseSort = (order: "ascending" | "descending") =>
+  track(AmpEvent.USE_SORT, { order });
+
+export const AmpTrackUseView = (view: string) =>
+  track(AmpEvent.USE_VIEW, { view });
+
+export const AmpTrackUseToggle = (name: string, isActive: boolean) =>
+  track(AmpEvent.USE_TOGGLE, { name, isActive });
