@@ -83,15 +83,20 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   }, [currentChainId, handleOnChainIdChange]);
 
   useEffect(() => {
-    const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
-    setCodeUserKey(userKey);
-    setContractUserKey(userKey);
-    setProjectUserKey(userKey);
+    if (currentChainName) {
+      const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
+      setCodeUserKey(userKey);
+      setContractUserKey(userKey);
+      setProjectUserKey(userKey);
+    }
   }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
 
   useNetworkChange(handleOnChainIdChange);
 
   useAmplitude();
+
+  if (currentChainId && !(currentChainId in CHAIN_CONFIGS))
+    return <NetworkErrorState />;
 
   if (
     !isCodeUserKeyExist() ||
@@ -101,11 +106,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   )
     return <LoadingOverlay />;
 
-  return currentChainId in CHAIN_CONFIGS ? (
-    <AppContext.Provider value={states}>{children}</AppContext.Provider>
-  ) : (
-    <NetworkErrorState />
-  );
+  return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
 });
 
 export const useCelatoneApp = (): AppContextInterface => {
