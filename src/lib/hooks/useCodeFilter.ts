@@ -9,7 +9,7 @@ export type PermissionFilterValue =
   | "without-proposal"
   | "with-proposal";
 
-export const usePermissionFilter = (filterValue: PermissionFilterValue) => {
+export const useCodePermissionFilter = (filterValue: PermissionFilterValue) => {
   const { address } = useWallet();
   return useCallback(
     ({ instantiatePermission, permissionAddresses }: CodeInfo) => {
@@ -31,7 +31,7 @@ export const usePermissionFilter = (filterValue: PermissionFilterValue) => {
   );
 };
 
-export const useSearchFilter = (keyword: string) =>
+export const useCodeSearchFilter = (keyword: string) =>
   useCallback(
     (code: CodeInfo) => {
       const computedKeyword = keyword.trim();

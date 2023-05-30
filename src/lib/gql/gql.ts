@@ -25,6 +25,8 @@ const documents = {
     types.GetCodeListByWalletAddressPaginationDocument,
   "\n  query getCodeListCountByWalletAddress($walletAddress: String!) {\n    codes_aggregate(where: { account: { address: { _eq: $walletAddress } } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetCodeListCountByWalletAddressDocument,
+  "\n  query getContractListQuery {\n    contracts(\n      limit: 100\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      address\n      label\n      admin: account {\n        address\n      }\n      accountByInitBy {\n        address\n      }\n    }\n  }\n":
+    types.GetContractListQueryDocument,
   "\n  query getInstantiatedListByUserQueryDocument($walletAddr: String!) {\n    contracts(\n      where: { accountByInitBy: { address: { _eq: $walletAddr } } }\n      limit: 100\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      label\n      address\n      accountByInitBy {\n        address\n      }\n    }\n  }\n":
     types.GetInstantiatedListByUserQueryDocumentDocument,
   "\n  query getInstantiatedCountByUserQueryDocument($walletAddr: String!) {\n    contracts_aggregate(\n      where: { accountByInitBy: { address: { _eq: $walletAddr } } }\n    ) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
@@ -110,6 +112,9 @@ export function graphql(
 export function graphql(
   source: "\n  query getCodeListCountByWalletAddress($walletAddress: String!) {\n    codes_aggregate(where: { account: { address: { _eq: $walletAddress } } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getCodeListCountByWalletAddress($walletAddress: String!) {\n    codes_aggregate(where: { account: { address: { _eq: $walletAddress } } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getContractListQuery {\n    contracts(\n      limit: 100\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      address\n      label\n      admin: account {\n        address\n      }\n      accountByInitBy {\n        address\n      }\n    }\n  }\n"
+): typeof documents["\n  query getContractListQuery {\n    contracts(\n      limit: 100\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      address\n      label\n      admin: account {\n        address\n      }\n      accountByInitBy {\n        address\n      }\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getInstantiatedListByUserQueryDocument($walletAddr: String!) {\n    contracts(\n      where: { accountByInitBy: { address: { _eq: $walletAddr } } }\n      limit: 100\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      label\n      address\n      accountByInitBy {\n        address\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getInstantiatedListByUserQueryDocument($walletAddr: String!) {\n    contracts(\n      where: { accountByInitBy: { address: { _eq: $walletAddr } } }\n      limit: 100\n      offset: 0\n      order_by: { transaction: { block: { timestamp: desc } } }\n    ) {\n      label\n      address\n      accountByInitBy {\n        address\n      }\n    }\n  }\n"];

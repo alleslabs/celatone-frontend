@@ -73,13 +73,18 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     {
       category: "Codes",
       submenu: [
-        { name: "My Codes", slug: "/my-codes", icon: "code" },
         { name: "Recent Codes", slug: "/codes", icon: "website" },
+        { name: "My Codes", slug: "/my-codes", icon: "code" },
       ],
     },
     {
       category: "Contracts",
       submenu: [
+        {
+          name: "Recent Contracts",
+          slug: "/contracts",
+          icon: "website",
+        },
         {
           name: INSTANTIATED_LIST_NAME,
           slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,

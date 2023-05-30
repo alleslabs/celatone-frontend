@@ -3,7 +3,11 @@ import { useMemo } from "react";
 
 import { useChainId } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
-import { useUserKey, usePermissionFilter, useSearchFilter } from "lib/hooks";
+import {
+  useUserKey,
+  useCodePermissionFilter,
+  useCodeSearchFilter,
+} from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import {
   useCodeDataByCodeId,
@@ -112,8 +116,8 @@ export const useMyCodesData = (
   keyword: string,
   permissionValue: PermissionFilterValue
 ): MyCodesData => {
-  const permissionFilterFn = usePermissionFilter(permissionValue);
-  const searchFilterFn = useSearchFilter(keyword);
+  const permissionFilterFn = useCodePermissionFilter(permissionValue);
+  const searchFilterFn = useCodeSearchFilter(keyword);
 
   const { storedCodes, isLoading: isStoredCodesLoading } = useStoredCodes();
   const { savedCodes, isLoading: isSavedCodesLoading } = useSavedCodes();

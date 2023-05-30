@@ -1,4 +1,5 @@
 export * from "./useCodeFilter";
+export * from "./useContractFilter";
 export * from "./useExecuteCmds";
 export * from "./useHandleSave";
 export * from "./useQueryCmds";
