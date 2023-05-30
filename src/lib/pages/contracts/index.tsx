@@ -71,6 +71,7 @@ const RecentContracts = observer(() => {
           />
         }
         onRowSelect={onRowSelect}
+        hasTag={false}
       />
     </PageContainer>
   );
