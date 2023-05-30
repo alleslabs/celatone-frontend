@@ -12,9 +12,7 @@ export const PoolInfoText = ({ title, children }: PoolInfoTextProps) => (
       {title}
     </Text>
     {typeof children === "string" ? (
-      <Text variant="body2" fontWeight={400}>
-        {children}
-      </Text>
+      <Text variant="body2">{children}</Text>
     ) : (
       children
     )}
