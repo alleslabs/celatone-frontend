@@ -1,3 +1,4 @@
+import { DEFAULT_THEME, OSMOSIS_THEME } from "config/theme";
 import type { SupportedChain } from "lib/data";
 import type {
   ContractAddr,
@@ -117,3 +118,14 @@ export const getMainnetApiPath = (chainId: string) => {
       return undefined;
   }
 };
+
+// CURRENT THEME CONFIG
+export const CURR_THEME = (() => {
+  switch (process.env.NEXT_PUBLIC_THEME) {
+    case "osmosis":
+      return OSMOSIS_THEME;
+    case "sei":
+    default:
+      return DEFAULT_THEME;
+  }
+})();

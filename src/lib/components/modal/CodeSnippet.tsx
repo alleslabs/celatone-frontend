@@ -19,6 +19,7 @@ import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
+import { CURR_THEME } from "env";
 import { useLCDEndpoint } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -29,6 +30,8 @@ import "ace-builds/src-noconflict/mode-sh";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
 interface CodeSnippetProps {
   contractAddress: ContractAddr;
@@ -233,7 +236,7 @@ execute();
                       <AceEditor
                         readOnly
                         mode={item.mode}
-                        theme="monokai"
+                        theme={CURR_THEME.jsonTheme}
                         fontSize="14px"
                         style={{
                           width: "100%",

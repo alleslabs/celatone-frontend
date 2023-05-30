@@ -1,9 +1,11 @@
-import { Flex, Text, Button } from "@chakra-ui/react";
+import type { IconProps } from "@chakra-ui/react";
+import { Flex, Text, Image } from "@chakra-ui/react";
 import Link from "next/link";
 
+import { CURR_THEME } from "env";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
-import { AmpEvent, AmpTrack, AmpTrackCelatone } from "lib/services/amplitude";
+import { AmpEvent, AmpTrack, AmpTrackSocial } from "lib/services/amplitude";
 
 interface SocialMenuType {
   url: string;
@@ -34,8 +36,181 @@ const socialMenu: SocialMenuType[] = [
   },
 ];
 
+const socialSequence = {
+  github: 0,
+  discord: 1,
+  twitter: 2,
+  telegram: 3,
+  medium: 4,
+  reddit: 5,
+  linkedin: 6,
+};
+
+const themedSocial: SocialMenuType[] = Object.entries(
+  CURR_THEME.socialMedia ?? {}
+).reduce<SocialMenuType[]>((acc, curr) => {
+  if (curr[0] in socialSequence) {
+    acc[socialSequence[curr[0] as keyof typeof socialSequence]] = {
+      url: curr[1],
+      icon: curr[0] as IconKeys,
+      slug: curr[0],
+    };
+  }
+  return acc;
+}, []);
+
+const SocialMenuRender = ({
+  isThemed,
+  iconSize,
+}: {
+  isThemed?: boolean;
+  iconSize: IconProps["boxSize"];
+}) => (
+  <Flex>
+    {(isThemed ? themedSocial : socialMenu).map((item) => (
+      <Link
+        key={`${isThemed ? "themed" : "social"}-${item.slug}`}
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => {
+          AmpTrackSocial(item.url);
+        }}
+      >
+        <Flex
+          borderRadius="8px"
+          transition="all .25s ease-in-out"
+          _hover={{ backgroundColor: "gray.800" }}
+        >
+          <CustomIcon name={item.icon} boxSize={iconSize} color="gray.600" />
+        </Flex>
+      </Link>
+    ))}
+  </Flex>
+);
+
+const AllesFeedback = () => (
+  <Link
+    href="https://feedback.alleslabs.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={() => AmpTrack(AmpEvent.FEEDBACK)}
+  >
+    <Flex
+      gap={1}
+      pr={2}
+      pl={1}
+      borderRadius={8}
+      align="center"
+      _hover={{ background: "gray.800" }}
+      transition="all .25s ease-in-out"
+    >
+      <CustomIcon name="feedback" color="gray.600" />
+      <Text variant="body3" color="text.dark">
+        Feedback
+      </Text>
+    </Flex>
+  </Link>
+);
+
+const IconLink = ({
+  href,
+  icon,
+  text1,
+  text2,
+}: {
+  href: string;
+  icon: IconKeys;
+  text1: string;
+  text2: string;
+}) => (
+  <Link
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={() => AmpTrack(AmpEvent.ALLESLABS)}
+  >
+    <Flex
+      gap={1}
+      align="center"
+      _hover={{
+        "& svg": {
+          opacity: 1,
+        },
+      }}
+    >
+      <CustomIcon
+        name={icon}
+        opacity={0}
+        transition="opacity .25s ease-in-out"
+      />
+      <Text variant="body3" color="text.dark">
+        {text1}
+        <Text
+          as="span"
+          ml={1}
+          color="secondary.main"
+          transition="all .25s ease-in-out"
+          _hover={{ color: "secondary.light" }}
+        >
+          {text2}
+        </Text>
+      </Text>
+    </Flex>
+  </Link>
+);
+
 const Footer = () => {
-  return (
+  const isThemed = CURR_THEME.footer;
+
+  return isThemed ? (
+    <Flex
+      as="footer"
+      align={{ base: "center", md: "end" }}
+      direction={{ base: "column", md: "row" }}
+      justifyContent="space-between"
+      px={12}
+      py={6}
+      mx={1}
+      background="background.overlay"
+    >
+      <Flex direction="column" gap={2}>
+        <Flex direction={{ base: "column", md: "row" }} gap={1} align="center">
+          <Link
+            href={CURR_THEME.socialMedia?.website ?? ""}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image src={isThemed.logo} h={8} mr={{ base: 0, md: 2 }} />
+          </Link>
+          <SocialMenuRender isThemed iconSize={5} />
+        </Flex>
+        <Text
+          variant="body3"
+          color="gray.400"
+          align={{ base: "center", md: "left" }}
+        >
+          {isThemed.description}
+        </Text>
+      </Flex>
+      <Flex
+        align={{ base: "center", md: "end" }}
+        justifyContent={{ base: "center", md: "flex-end" }}
+        gap={1}
+        mr={{ base: 8, md: 0 }}
+        mt={{ base: 4, md: 0 }}
+      >
+        <IconLink
+          href="https://celat.one/"
+          icon="celatone"
+          text1="Powered by"
+          text2="Celatone"
+        />
+        <AllesFeedback />
+        <SocialMenuRender iconSize={4} />
+      </Flex>
+    </Flex>
+  ) : (
     <Flex
       as="footer"
       align="center"
@@ -43,79 +218,17 @@ const Footer = () => {
       px={12}
       py={4}
       mx={1}
-      direction={{ base: "column", md: "row" }}
     >
       <Flex direction="row" gap={1} align="center">
-        {socialMenu.map((item) => (
-          <Link
-            key={`social-${item.slug}`}
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => AmpTrackCelatone(item.url)}
-          >
-            <Button variant="ghost-gray" size="xs" px={1}>
-              <CustomIcon name={item.icon} boxSize={5} color="gray.600" />
-            </Button>
-          </Link>
-        ))}
-        <Link
-          href="https://feedback.alleslabs.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => AmpTrack(AmpEvent.FEEDBACK)}
-        >
-          <Button variant="ghost-gray" size="xs">
-            <Flex gap={1} align="center">
-              <CustomIcon name="feedback" color="gray.600" />
-              <Text variant="body3" color="text.dark">
-                Feedback
-              </Text>
-            </Flex>
-          </Button>
-        </Link>
+        <SocialMenuRender iconSize={5} />
+        <AllesFeedback />
       </Flex>
-      <Flex
-        direction="column"
-        alignItems="end"
-        minW="60px"
-        mt={{ base: 2, md: 0 }}
-      >
-        <Button
-          variant="ghost-gray"
-          size="xs"
-          sx={{ _hover: { "> div > svg": { opacity: "100" } } }}
-        >
-          <Link
-            href="https://twitter.com/alleslabs"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => AmpTrack(AmpEvent.ALLESLABS)}
-          >
-            <Flex
-              gap={1}
-              align="center"
-              sx={{ _hover: { "> div": { opacity: "100" } } }}
-            >
-              <Flex opacity="0" transition="all .25s ease-in-out">
-                <CustomIcon name="alles" />
-              </Flex>
-              <Text variant="body3" color="text.dark">
-                Made by
-              </Text>
-              <Text
-                variant="body3"
-                color="secondary.main"
-                transition="all .25s ease-in-out"
-                _hover={{ color: "secondary.light" }}
-                mr={{ base: 6, md: 0 }}
-              >
-                Alles Labs
-              </Text>
-            </Flex>
-          </Link>
-        </Button>
-      </Flex>
+      <IconLink
+        href="https://twitter.com/alleslabs"
+        icon="alles"
+        text1="Made by"
+        text2="Alles Labs"
+      />
     </Flex>
   );
 };

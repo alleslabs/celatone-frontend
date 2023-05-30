@@ -2,7 +2,7 @@ import type { ImageProps } from "@chakra-ui/react";
 import { Flex, Image, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import { getChainApiPath } from "env";
+import { CURR_THEME, getChainApiPath } from "env";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
@@ -52,7 +52,10 @@ export const ValidatorBadge = ({
             alt={validator.moniker}
             fallbackSrc={`https://ui-avatars.com/api/?name=${removeSpecialChars(
               validator.moniker ?? ""
-            )}&background=9793F3&color=fff`}
+            )}&background=${CURR_THEME.colors.secondary.main.replace(
+              "#",
+              ""
+            )}&color=fff`}
             borderRadius="50%"
           />
           <Flex direction="column">
