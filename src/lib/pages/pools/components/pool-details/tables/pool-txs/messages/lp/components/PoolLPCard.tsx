@@ -33,7 +33,7 @@ export const PoolLPCard = ({
 
   const poolDenom = getPoolDenom(poolId);
   const eventShareAmount = txData?.logs
-    .find((event) => event.msg_index === msgIndex)
+    .find((log) => log.msg_index === msgIndex)
     ?.events?.find((event) => event.type === "coin_received")
     ?.attributes.at(3)
     ?.value.slice(0, -poolDenom.length);

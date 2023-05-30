@@ -52,7 +52,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
     return <Loading withBorder={false} />;
 
   const lockId = txData?.logs
-    .find((event) => event.msg_index === msgIndex)
+    .find((log) => log.msg_index === msgIndex)
     ?.events?.find(
       (event) =>
         event.type.includes("lock") &&

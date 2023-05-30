@@ -44,7 +44,7 @@ const getFullRpcUrl = (rpcUrl: Option<string>, chainId: Option<string>) => {
   const baseUrl = rpcUrl?.slice(0, rpcUrl.length - 1);
   switch (chainId) {
     case "osmosis-1":
-    case "osmo-test-4":
+    case "osmo-test-5":
       return `${baseUrl}:443`;
     default:
       return `${baseUrl}:26657`;
