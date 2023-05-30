@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#366](https://github.com/alleslabs/celatone-frontend/pull/366) Add recent contracts
+
 ### Improvements
 
 - [#357](https://github.com/alleslabs/celatone-frontend/pull/357) Abstract color, typeface, images to theme config

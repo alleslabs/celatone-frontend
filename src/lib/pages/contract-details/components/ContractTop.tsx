@@ -97,19 +97,25 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
   return (
     <Flex justify="space-between" mb={6}>
       <Flex direction="column" w="full">
-        {publicProject.publicDetail && (
-          <Breadcrumb
-            items={[
-              { text: "Public Projects", href: "/projects" },
-              {
-                text: publicProject.publicDetail.name,
-                href: `/projects/${publicProject.publicInfo?.slug}`,
-              },
-              { text: truncate(contractAddress) },
-            ]}
-            mb={6}
-          />
-        )}
+        <Breadcrumb
+          items={[
+            {
+              text: publicProject.publicDetail?.name
+                ? "Public Projects"
+                : "Contracts",
+              href: publicProject.publicDetail?.name
+                ? "/projects"
+                : "/contracts",
+            },
+            {
+              text: publicProject.publicDetail?.name,
+              href: `/projects/${publicProject.publicInfo?.slug}`,
+            },
+            { text: truncate(contractAddress) },
+          ]}
+          mb={6}
+        />
+
         <Flex direction="column" gap={2} textOverflow="ellipsis" w="full">
           <Flex justify="space-between" align="center">
             <Flex gap={1} maxW="670px">
