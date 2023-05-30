@@ -47,7 +47,7 @@ const CodeDetailsBody = observer(
               text: publicProject.publicCodeData?.name
                 ? "Public Projects"
                 : "Codes",
-              href: publicProject.publicCodeData?.name ? `/projects` : "/codes",
+              href: publicProject.publicCodeData?.name ? "/projects" : "/codes",
             },
             {
               text: publicProject.publicDetail?.name,
