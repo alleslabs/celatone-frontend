@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -93,7 +92,6 @@ const Query = () => {
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
-      <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
         <Heading as="h5" variant="h5">
           Query Contract

@@ -17,7 +17,6 @@ import {
   useInternalNavigate,
   useValidateAddress,
 } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
@@ -144,7 +143,6 @@ const Faucet = () => {
 
   return (
     <WasmPageContainer>
-      <BackButton alignSelf="flex-start" />
       <Heading as="h5" variant="h5">
         Osmosis Testnet Faucet
       </Heading>

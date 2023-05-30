@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { BackButton } from "lib/components/button";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -26,7 +26,12 @@ const BlockDetail = () => {
 
   return (
     <PageContainer>
-      <BackButton />
+      <Breadcrumb
+        items={[
+          { text: "Blocks", href: "/blocks" },
+          { text: blockData?.height.toString() },
+        ]}
+      />
       {blockData ? (
         <>
           <BlockDetailsTop blockData={blockData} />
