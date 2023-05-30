@@ -38,18 +38,15 @@ export const MsgSwapExactAmountOutDetail = ({
   return (
     <Flex w="full" direction="column" alignItems="start" gap={6}>
       <Flex gap={12}>
-        <PoolInfoText
-          title="Block height"
-          component={
-            <ExplorerLink
-              value={blockHeight.toString()}
-              type="block_height"
-              showCopyOnHover
-              ampCopierSection={ampCopierSection}
-            />
-          }
-        />
-        <PoolInfoText title="Message" isText text={extractMsgType(msg.type)} />
+        <PoolInfoText title="Block height">
+          <ExplorerLink
+            value={blockHeight.toString()}
+            type="block_height"
+            showCopyOnHover
+            ampCopierSection={ampCopierSection}
+          />
+        </PoolInfoText>
+        <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
       <PoolSwap
         txHash={txHash}

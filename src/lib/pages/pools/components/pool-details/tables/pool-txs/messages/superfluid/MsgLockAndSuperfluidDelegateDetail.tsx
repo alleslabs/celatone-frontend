@@ -65,32 +65,26 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
   return (
     <Flex w="full" direction="column" gap={6}>
       <Flex gap={12}>
-        <PoolInfoText
-          title="Block height"
-          component={
-            <ExplorerLink
-              value={blockHeight.toString()}
-              type="block_height"
-              showCopyOnHover
-              ampCopierSection={ampCopierSection}
-            />
-          }
-        />
-        <PoolInfoText title="LockID" isText text={lockId} />
-        <PoolInfoText
-          title="To Validator"
-          component={
-            <ValidatorBadge
-              validator={{
-                validatorAddress: msg.val_addr,
-                moniker: validator?.moniker,
-              }}
-              badgeSize={6}
-              ampCopierSection={ampCopierSection}
-            />
-          }
-        />
-        <PoolInfoText title="Message" isText text={extractMsgType(msg.type)} />
+        <PoolInfoText title="Block height">
+          <ExplorerLink
+            value={blockHeight.toString()}
+            type="block_height"
+            showCopyOnHover
+            ampCopierSection={ampCopierSection}
+          />
+        </PoolInfoText>
+        <PoolInfoText title="LockID">{lockId}</PoolInfoText>
+        <PoolInfoText title="To Validator">
+          <ValidatorBadge
+            validator={{
+              validatorAddress: msg.val_addr,
+              moniker: validator?.moniker,
+            }}
+            badgeSize={6}
+            ampCopierSection={ampCopierSection}
+          />
+        </PoolInfoText>
+        <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
       <PoolAssetCard
         poolId={pool.id}

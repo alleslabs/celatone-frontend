@@ -3,27 +3,20 @@ import type { ReactNode } from "react";
 
 interface PoolInfoTextProps {
   title: string;
-  isText?: boolean;
-  text?: string;
-  component?: ReactNode;
+  children: ReactNode;
 }
 
-export const PoolInfoText = ({
-  title,
-  isText = false,
-  text,
-  component,
-}: PoolInfoTextProps) => (
+export const PoolInfoText = ({ title, children }: PoolInfoTextProps) => (
   <Flex direction="column" gap={1} minW="90px">
     <Text variant="body2" textColor="pebble.500" fontWeight={500}>
       {title}
     </Text>
-    {isText ? (
+    {typeof children === "string" ? (
       <Text variant="body2" fontWeight={400}>
-        {text}
+        {children}
       </Text>
     ) : (
-      component
+      children
     )}
   </Flex>
 );

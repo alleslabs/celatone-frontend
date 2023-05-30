@@ -55,31 +55,26 @@ export const MsgLockTokensDetail = ({
   return (
     <Flex w="full" direction="column" gap={6}>
       <Flex gap={12}>
-        <PoolInfoText
-          title="Block height"
-          component={
-            <ExplorerLink
-              value={blockHeight.toString()}
-              type="block_height"
-              showCopyOnHover
-              ampCopierSection={ampCopierSection}
-            />
-          }
-        />
-        <PoolInfoText title="LockID" isText text={lockId} />
-        <PoolInfoText
-          title="Bonded LP"
-          component={
-            <MsgToken
-              coin={poolAsset}
-              symbol={poolAssetInfo?.symbol}
-              precision={poolAssetInfo?.precision}
-              fontWeight={700}
-              ampCopierSection={ampCopierSection}
-            />
-          }
-        />
-        <PoolInfoText title="Message" isText text={extractMsgType(msg.type)} />
+        <PoolInfoText title="Block height">
+          <ExplorerLink
+            value={blockHeight.toString()}
+            type="block_height"
+            showCopyOnHover
+            ampCopierSection={ampCopierSection}
+          />
+        </PoolInfoText>
+        <PoolInfoText title="LockID">{lockId}</PoolInfoText>
+        <PoolInfoText title="Bonded LP">
+          <MsgToken
+            coin={poolAsset}
+            symbol={poolAssetInfo?.symbol}
+            precision={poolAssetInfo?.precision}
+            fontWeight={700}
+            ampCopierSection={ampCopierSection}
+          />
+        </PoolInfoText>
+
+        <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
       <PoolAssetCard
         poolId={pool.id}
