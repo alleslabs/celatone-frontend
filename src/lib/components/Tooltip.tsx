@@ -28,7 +28,7 @@ export const TooltipInfo = ({
       <CustomIcon
         color="pebble.600"
         name={iconVariant === "solid" ? "info-circle-solid" : "info-circle"}
-        boxSize="12px"
+        boxSize={3}
         m={0}
       />
     </Flex>
