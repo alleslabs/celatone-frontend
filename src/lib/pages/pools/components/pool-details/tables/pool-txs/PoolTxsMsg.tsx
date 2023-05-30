@@ -7,7 +7,7 @@ import { Tooltip } from "lib/components/Tooltip";
 import { AmpTrackExpand } from "lib/services/amplitude";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type { Message, Option, PoolDetail, Transaction } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 
 import { PoolMsgAction, PoolMsgDetail } from "./messages";
 import { PoolOtherMsgs } from "./messages/PoolOtherMsgs";
@@ -62,7 +62,7 @@ export const PoolTxsMsg = ({
             AmpTrackExpand({
               action: !isOpen ? "expand" : "collapse",
               component: "pool_tx_msg",
-              info: { msgType: message.type.split(".").at(-1) },
+              info: { msgType: extractMsgType(message.type) },
               section: `pool_txs`,
             });
           }
@@ -112,9 +112,7 @@ export const PoolTxsMsg = ({
               msg={message}
               pool={pool}
               assetInfos={assetInfos}
-              ampCopierSection={`pool_txs-${message.type
-                .split(".")
-                .at(-1)}-row`}
+              ampCopierSection={`pool_txs-${extractMsgType(message.type)}-row`}
             />
           ) : (
             <PoolOtherMsgs otherMsgs={otherMsgs} isIbc={transaction.isIbc} />
@@ -159,9 +157,9 @@ export const PoolTxsMsg = ({
               pool={pool}
               assetInfos={assetInfos}
               isOpened={isOpen}
-              ampCopierSection={`pool_txs-${message.type
-                .split(".")
-                .at(-1)}-detail`}
+              ampCopierSection={`pool_txs-${extractMsgType(
+                message.type
+              )}-detail`}
             />
           </TableNoBorderRow>
         </Grid>
