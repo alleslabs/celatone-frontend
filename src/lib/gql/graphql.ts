@@ -11970,7 +11970,11 @@ export type GetContractListQueryQuery = {
     address: string;
     label: string;
     admin?: { __typename?: "accounts"; address: string } | null;
-    accountByInitBy?: { __typename?: "accounts"; address: string } | null;
+    init_by: Array<{
+      __typename?: "contract_histories";
+      block: { __typename?: "blocks"; timestamp: any };
+      account: { __typename?: "accounts"; address: string };
+    }>;
   }>;
 };
 
@@ -13649,26 +13653,8 @@ export const GetContractListQueryDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "transaction" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "block" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "timestamp" },
-                                  value: { kind: "EnumValue", value: "desc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
+                      name: { kind: "Name", value: "id" },
+                      value: { kind: "EnumValue", value: "desc" },
                     },
                   ],
                 },
@@ -13695,13 +13681,66 @@ export const GetContractListQueryDocument = {
                 },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "accountByInitBy" },
+                  alias: { kind: "Name", value: "init_by" },
+                  name: { kind: "Name", value: "contract_histories" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "block" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "timestamp" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "address" },
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
                       },
                     ],
                   },

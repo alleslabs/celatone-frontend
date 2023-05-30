@@ -47,11 +47,11 @@ export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
       .then(({ contracts }) =>
         contracts.map<ContractInfo>((contract) => ({
           contractAddress: contract.address as ContractAddr,
-          instantiator: contract.accountByInitBy?.address as Addr,
+          instantiator: contract.init_by.at(0)?.account.address as Addr,
           label: contract.label,
           admin: contract.admin?.address as Addr,
           latestUpdater: undefined,
-          latestUpdated: undefined,
+          latestUpdated: parseDateOpt(contract.init_by.at(0)?.block.timestamp),
           remark: undefined,
         }))
       );

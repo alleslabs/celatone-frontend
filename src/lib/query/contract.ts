@@ -2,18 +2,22 @@ import { graphql } from "lib/gql";
 
 export const getContractListQueryDocument = graphql(`
   query getContractListQuery {
-    contracts(
-      limit: 100
-      offset: 0
-      order_by: { transaction: { block: { timestamp: desc } } }
-    ) {
+    contracts(limit: 100, offset: 0, order_by: { id: desc }) {
       address
       label
       admin: account {
         address
       }
-      accountByInitBy {
-        address
+      init_by: contract_histories(
+        order_by: { block: { timestamp: asc } }
+        limit: 1
+      ) {
+        block {
+          timestamp
+        }
+        account {
+          address
+        }
       }
     }
   }

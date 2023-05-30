@@ -71,7 +71,6 @@ const RecentContracts = observer(() => {
           />
         }
         onRowSelect={onRowSelect}
-        withCTA={{ removingContractList: undefined }}
       />
     </PageContainer>
   );
