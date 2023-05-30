@@ -47,7 +47,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
       <Flex direction="column" gap={2} width="full">
         <Flex justifyContent="space-between" alignItems="center" width="full">
           <Flex alignItems="center">
-            <CustomIcon name="block" boxSize="5" color="secondary.main" />
+            <CustomIcon name="block" boxSize={5} color="secondary.main" />
             <Heading as="h5" variant="h5" className="ellipsis">
               {blockData.height}
             </Heading>

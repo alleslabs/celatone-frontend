@@ -29,7 +29,7 @@ const BlockDetail = () => {
       <Breadcrumb
         items={[
           { text: "Blocks", href: "/blocks" },
-          { text: blockData?.height.toString() ?? "" },
+          { text: blockData?.height.toString() },
         ]}
       />
       {blockData ? (

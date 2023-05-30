@@ -2,14 +2,15 @@ import {
   Breadcrumb as ChakraBreadcrumb,
   BreadcrumbItem as ChakraBreadcrumbItem,
   Text,
-  Flex,
 } from "@chakra-ui/react";
+
+import type { Option } from "lib/types";
 
 import { AppLink } from "./AppLink";
 import { CustomIcon } from "./icon";
 
 type BreadcrumbItemProps = {
-  text: string | null;
+  text: Option<string>;
   href?: string;
 };
 
@@ -17,36 +18,39 @@ type BreadcrumbProps = {
   items: BreadcrumbItemProps[];
   mb?: number;
 };
+
 export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
-  <ChakraBreadcrumb w="full" spacing="4px" mb={mb}>
-    {items.map((item) => (
-      <>
-        {item.href ? (
-          <Flex display={item.text ? "flex" : "none"} align="center">
-            <ChakraBreadcrumbItem
-              _hover={{ opacity: 0.8 }}
-              transition="all 0.25s ease-in-out"
-            >
-              <AppLink color="text.dark" href={item.href}>
-                {item.text}
-              </AppLink>
-            </ChakraBreadcrumbItem>
-            <CustomIcon name="chevron-right" boxSize={3} color="gray.600" />
-          </Flex>
-        ) : (
-          <ChakraBreadcrumbItem isCurrentPage>
-            <Text
-              variant="body2"
-              className="ellipsis"
-              fontWeight="600"
-              width="250px"
-              color="text.dark"
-            >
+  <ChakraBreadcrumb
+    w="full"
+    spacing="4px"
+    mb={mb}
+    separator={<CustomIcon name="chevron-right" boxSize={3} color="gray.600" />}
+  >
+    {items.map((item) =>
+      item.href ? (
+        item.text && (
+          <ChakraBreadcrumbItem
+            _hover={{ opacity: 0.8 }}
+            transition="all 0.25s ease-in-out"
+          >
+            <AppLink color="text.dark" href={item.href}>
               {item.text}
-            </Text>
+            </AppLink>
           </ChakraBreadcrumbItem>
-        )}
-      </>
-    ))}
+        )
+      ) : (
+        <ChakraBreadcrumbItem isCurrentPage>
+          <Text
+            variant="body2"
+            className="ellipsis"
+            fontWeight={600}
+            width="250px"
+            color="text.dark"
+          >
+            {item.text}
+          </Text>
+        </ChakraBreadcrumbItem>
+      )
+    )}
   </ChakraBreadcrumb>
 );
