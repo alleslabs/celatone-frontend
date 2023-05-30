@@ -29,6 +29,7 @@ import {
 } from "lib/services/amplitude";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
+import { isPositiveInt } from "lib/utils";
 
 import { UnsupportedPoolList } from "./UnsupportedPoolList";
 
@@ -46,11 +47,14 @@ export const UnsupportedSection = ({
     },
   });
   const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
+  const search =
+    !keyword || isPositiveInt(keyword) ? keyword : `{"${keyword}"}`;
+
   const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
     isSupported: false,
-    poolType: "All",
-    isSuperfluidOnly: false,
-    search: "",
+    poolType: poolTypeValue,
+    isSuperfluidOnly,
+    search,
   });
 
   const [showNewest, setShowNewest] = useState(true);
@@ -94,7 +98,7 @@ export const UnsupportedSection = ({
     false,
     poolTypeValue,
     isSuperfluidOnly,
-    keyword,
+    search,
     showNewest ? Order_By.Desc : Order_By.Asc,
     offset,
     pageSize
@@ -199,16 +203,18 @@ export const UnsupportedSection = ({
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
       />
-      <Pagination
-        currentPage={currentPage}
-        pagesQuantity={pagesQuantity}
-        offset={offset}
-        totalData={totalData}
-        scrollComponentId={scrollComponentId}
-        pageSize={pageSize}
-        onPageChange={onPageChange}
-        onPageSizeChange={onPageSizeChange}
-      />
+      {totalData > 10 && (
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </>
   );
 };

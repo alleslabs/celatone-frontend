@@ -12,6 +12,7 @@ import { PoolMsgAction, PoolMsgDetail } from "./messages";
 import { PoolOtherMsgs } from "./messages/PoolOtherMsgs";
 
 interface PoolTxsMsgProps {
+  isFirstSubRow: boolean;
   msgIndex: number;
   message: Option<Message>;
   otherMsgs: { [key: string]: number };
@@ -22,6 +23,7 @@ interface PoolTxsMsgProps {
 }
 
 export const PoolTxsMsg = ({
+  isFirstSubRow,
   msgIndex,
   message,
   otherMsgs,
@@ -36,7 +38,6 @@ export const PoolTxsMsg = ({
     .slice(0, 2)
     .concat("1fr")
     .join(" ");
-  const isFirstSubRow = msgIndex === 0;
 
   return (
     <Box

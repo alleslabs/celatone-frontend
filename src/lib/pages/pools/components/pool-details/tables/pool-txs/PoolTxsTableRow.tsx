@@ -27,7 +27,8 @@ export const PoolTxsTableRow = ({
       {hasOtherMsgs && (
         <PoolTxsMsg
           key={`${transaction.hash}0`}
-          msgIndex={0}
+          isFirstSubRow
+          msgIndex={-1}
           otherMsgs={others}
           message={undefined}
           pool={pool}
@@ -39,9 +40,10 @@ export const PoolTxsTableRow = ({
       {filteredMsgs.map((message, index) => (
         <PoolTxsMsg
           key={transaction.hash + Number(hasOtherMsgs) + index.toString()}
-          msgIndex={Number(hasOtherMsgs) + index}
+          isFirstSubRow={!hasOtherMsgs && index === 0}
+          msgIndex={message.index}
           otherMsgs={others}
-          message={message}
+          message={message.msg}
           pool={pool}
           transaction={transaction}
           assetInfos={assetInfos}

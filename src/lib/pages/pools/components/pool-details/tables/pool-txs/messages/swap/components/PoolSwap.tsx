@@ -25,7 +25,7 @@ export const PoolSwap = ({
   if (isLoading) return <Loading withBorder={false} />;
 
   const swapEvent = txData?.logs
-    .find((event) => event.msg_index === msgIndex)
+    .find((log) => log.msg_index === msgIndex)
     ?.events?.find((event) => event.type === "token_swapped");
   if (!swapEvent)
     return (
