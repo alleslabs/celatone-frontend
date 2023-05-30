@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SUPERFLUID_ICON } from "../../constant";
@@ -47,10 +47,8 @@ export const UnsupportedSection = ({
     },
   });
   const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
-  const search = useMemo(
-    () => (!keyword || isPositiveInt(keyword) ? keyword : `{"${keyword}"}`),
-    [keyword]
-  );
+  const search =
+    !keyword || isPositiveInt(keyword) ? keyword : `{"${keyword}"}`;
 
   const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
     isSupported: false,
