@@ -13,7 +13,7 @@ interface ContractsTableProps {
   onRowSelect: (contract: ContractAddr) => void;
   isReadOnly?: boolean;
   withCTA?: CTAInfo;
-  hasTag?: boolean;
+  withoutTag?: boolean;
 }
 
 export const ContractsTable = ({
@@ -23,7 +23,7 @@ export const ContractsTable = ({
   onRowSelect,
   isReadOnly = false,
   withCTA,
-  hasTag = true,
+  withoutTag = false,
 }: ContractsTableProps) => {
   if (isLoading) return <Loading />;
   if (!contracts?.length) return emptyState;
@@ -32,10 +32,11 @@ export const ContractsTable = ({
   if (isReadOnly)
     templateColumns =
       "minmax(160px, 300px) minmax(300px, 3fr) minmax(200px, 2fr) 1fr";
-  else if (hasTag)
+  else if (withoutTag)
+    templateColumns = "160px minmax(300px, 3fr)  250px 300px 80px";
+  else
     templateColumns =
       "160px minmax(300px, 3fr) minmax(200px, 2fr) 150px 260px 80px";
-  else templateColumns = "250px minmax(300px, 3fr)  250px 300px 80px";
 
   return (
     <TableContainer>
@@ -43,7 +44,7 @@ export const ContractsTable = ({
         templateColumns={templateColumns}
         isReadOnly={isReadOnly}
         withCTA={withCTA}
-        hasTag={hasTag}
+        withoutTag={withoutTag}
       />
       {contracts.map((contractInfo) => (
         <ContractsTableRow
@@ -59,7 +60,7 @@ export const ContractsTable = ({
           onRowSelect={onRowSelect}
           isReadOnly={isReadOnly}
           withCTA={withCTA}
-          hasTag={hasTag}
+          withoutTag={withoutTag}
         />
       ))}
     </TableContainer>

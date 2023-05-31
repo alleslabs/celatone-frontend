@@ -1,20 +1,15 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import type { ChangeEvent } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import InputWithIcon from "lib/components/InputWithIcon";
+import { TextInput } from "lib/components/forms";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import { ContractsTable } from "lib/components/table";
 import type { ContractAddr } from "lib/types";
 
 import { useRecentContractsData } from "./data";
-
-interface RecentContractsState {
-  keyword: string;
-}
 
 const RecentContracts = observer(() => {
   const navigate = useInternalNavigate();
@@ -23,15 +18,11 @@ const RecentContracts = observer(() => {
       pathname: "/contracts/[contract]",
       query: { contract },
     });
-  const { watch, setValue } = useForm<RecentContractsState>({
-    defaultValues: {
-      keyword: "",
-    },
-  });
-  const { keyword } = watch();
-  const { recentContracts, isLoading } = useRecentContractsData(keyword);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
-  const isSearching = !!keyword;
+  const { recentContracts, isLoading } = useRecentContractsData(searchKeyword);
+
+  const isSearching = !!searchKeyword;
 
   return (
     <PageContainer>
@@ -45,16 +36,15 @@ const RecentContracts = observer(() => {
         >
           Recent Contracts
         </Heading>
-        <Text variant="body2" color="text.dark" fontWeight="500">
+        <Text variant="body2" color="text.dark" fontWeight={500}>
           These contracts are the most recently instantiated on this network
         </Text>
         <Flex mt={8}>
-          <InputWithIcon
+          <TextInput
+            variant="floating"
+            value={searchKeyword}
+            setInputState={setSearchKeyword}
             placeholder="Search with contract address, name or label"
-            value={keyword}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setValue("keyword", e.target.value)
-            }
             size="lg"
           />
         </Flex>
@@ -74,7 +64,7 @@ const RecentContracts = observer(() => {
           />
         }
         onRowSelect={onRowSelect}
-        hasTag={false}
+        withoutTag
       />
     </PageContainer>
   );

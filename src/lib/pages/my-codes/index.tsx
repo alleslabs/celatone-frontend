@@ -37,7 +37,7 @@ const Codes = observer(() => {
       pathname: "/codes/[codeId]",
       query: { codeId },
     });
-
+  // TODO refactor to useState
   const { watch, setValue } = useForm<CodeFilterState>({
     defaultValues: {
       permissionValue: "all",

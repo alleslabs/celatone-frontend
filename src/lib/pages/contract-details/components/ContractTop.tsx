@@ -35,6 +35,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     publicProject.publicInfo?.name ||
     instantiateInfo?.label;
 
+  const publicName = publicProject.publicDetail?.name;
   const goToQuery = () => {
     navigate({
       pathname: "/query",
@@ -100,15 +101,11 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         <Breadcrumb
           items={[
             {
-              text: publicProject.publicDetail?.name
-                ? "Public Projects"
-                : "Contracts",
-              href: publicProject.publicDetail?.name
-                ? "/projects"
-                : "/contracts",
+              text: publicName ? "Public Projects" : "Contracts",
+              href: publicName ? "/projects" : "/contracts",
             },
             {
-              text: publicProject.publicDetail?.name,
+              text: publicName,
               href: `/projects/${publicProject.publicInfo?.slug}`,
             },
             { text: truncate(contractAddress) },

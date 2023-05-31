@@ -9,17 +9,17 @@ export const ContractsTableHeader = ({
   templateColumns,
   isReadOnly,
   withCTA,
-  hasTag = true,
+  withoutTag = false,
 }: {
   templateColumns: GridProps["templateColumns"];
   isReadOnly: boolean;
   withCTA?: CTAInfo;
-  hasTag?: boolean;
+  withoutTag?: boolean;
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Contract Address</TableHeader>
     <TableHeader>Contract Name</TableHeader>
-    {hasTag && <TableHeader>Tags</TableHeader>}
+    {!withoutTag && <TableHeader>Tags</TableHeader>}
     <TableHeader>Instantiator</TableHeader>
     {!isReadOnly && (
       <>
