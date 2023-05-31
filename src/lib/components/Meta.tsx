@@ -1,10 +1,14 @@
-import { SELECTED_CHAIN } from "env";
+import { useCelatoneApp } from "lib/app-provider";
 
 const APP_NAME = "celatone";
 
 const Meta = () => {
-  const chainName = SELECTED_CHAIN || "";
-  const title = `${chainName.charAt(0).toUpperCase() + chainName.slice(1)}`;
+  const {
+    chainConfig: { registryChainName },
+  } = useCelatoneApp();
+  const title = `${
+    registryChainName.charAt(0).toUpperCase() + registryChainName.slice(1)
+  }`;
   return (
     <>
       <meta name="application-name" content={APP_NAME} />
