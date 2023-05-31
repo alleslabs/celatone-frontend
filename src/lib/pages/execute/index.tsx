@@ -3,7 +3,7 @@ import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -23,11 +23,16 @@ import {
 import { ExecuteArea } from "./components/ExecuteArea";
 
 const Execute = () => {
+  const wasm = useWasmConfig();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const [initialMsg, setInitialMsg] = useState("");
   const [contractAddress, setContractAddress] = useState("");
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
+
+  useEffect(() => {
+    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
+  }, [navigate, wasm.enabled]);
 
   const { isFetching, execCmds } = useExecuteCmds(
     contractAddress as ContractAddr

@@ -1,6 +1,7 @@
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import { useEffect, useState } from "react";
 
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
 import CompletedPage from "./completed";
@@ -11,6 +12,8 @@ export interface InstantiateTxInfo extends InstantiateResult {
 }
 
 const Index = () => {
+  const wasm = useWasmConfig();
+  const navigate = useInternalNavigate();
   const [completed, setCompleted] = useState(false);
   const [txInfo, setTxInfo] = useState<InstantiateTxInfo>({
     contractAddress: "",
@@ -22,6 +25,10 @@ const Index = () => {
     gasUsed: 0,
     contractLabel: "",
   });
+
+  useEffect(() => {
+    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
+  }, [navigate, wasm.enabled]);
 
   useEffect(() => {
     scrollToTop();

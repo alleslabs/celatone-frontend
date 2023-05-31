@@ -14,6 +14,7 @@ import {
   useLCDEndpoint,
   useGetAddressType,
   useValidateAddress,
+  useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -34,6 +35,7 @@ import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
 
 const UpdateAdmin = () => {
+  const wasm = useWasmConfig();
   const router = useRouter();
   const { address } = useWallet();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
@@ -187,8 +189,9 @@ const UpdateAdmin = () => {
   ]);
 
   useEffect(() => {
-    if (router.isReady) AmpTrackToAdminUpdate(!!contractAddressParam);
-  }, [router.isReady, contractAddressParam]);
+    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
+    else if (router.isReady) AmpTrackToAdminUpdate(!!contractAddressParam);
+  }, [router.isReady, contractAddressParam, wasm.enabled, navigate]);
 
   return (
     <WasmPageContainer>

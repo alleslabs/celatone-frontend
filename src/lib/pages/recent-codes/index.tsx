@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -22,6 +22,7 @@ interface RecentCodesState {
 }
 
 const RecentCodes = observer(() => {
+  const wasm = useWasmConfig();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -43,8 +44,9 @@ const RecentCodes = observer(() => {
   );
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
-  }, [router.isReady]);
+    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
+    else if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
+  }, [navigate, router.isReady, wasm.enabled]);
 
   const isSearching = !!keyword || permissionValue !== "all";
 

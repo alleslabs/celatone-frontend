@@ -13,7 +13,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -31,6 +31,7 @@ import type { ContractAddr } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 const ContractsByList = observer(() => {
+  const wasm = useWasmConfig();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const listSlug = getFirstQueryParam(router.query.slug);
@@ -62,7 +63,8 @@ const ContractsByList = observer(() => {
   }, [contractListInfo, isHydrated, navigate]);
 
   useEffect(() => {
-    if (router.isReady) {
+    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
+    else if (router.isReady) {
       switch (listSlug) {
         case formatSlugName(INSTANTIATED_LIST_NAME):
           AmpTrack(AmpEvent.TO_LIST_BY_ME);
@@ -74,7 +76,7 @@ const ContractsByList = observer(() => {
           AmpTrack(AmpEvent.TO_LIST_OTHERS);
       }
     }
-  }, [router.isReady, listSlug]);
+  }, [router.isReady, listSlug, wasm.enabled, navigate]);
 
   if (!contractListInfo) return null;
 

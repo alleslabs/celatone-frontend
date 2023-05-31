@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
@@ -123,13 +124,16 @@ const CodeDetailsBody = observer(
 );
 
 const CodeDetails = observer(() => {
+  const wasm = useWasmConfig();
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(codeIdParam);
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
-  }, [router.isReady]);
+    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
+    else if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
+  }, [navigate, router.isReady, wasm.enabled]);
 
   if (data.isLoading) return <Loading />;
   return (

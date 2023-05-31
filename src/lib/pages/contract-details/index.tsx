@@ -10,7 +10,11 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useValidateAddress } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useValidateAddress,
+  useWasmConfig,
+} from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
@@ -135,7 +139,9 @@ const ContractDetailsBody = observer(
 );
 
 const ContractDetails = observer(() => {
+  const wasm = useWasmConfig();
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const { validateContractAddress } = useValidateAddress();
   const contractAddressParam = getFirstQueryParam(
     router.query.contractAddress
@@ -143,8 +149,9 @@ const ContractDetails = observer(() => {
   const { isLoading, contractData } = useContractData(contractAddressParam);
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
-  }, [router.isReady]);
+    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
+    else if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
+  }, [navigate, router.isReady, wasm.enabled]);
 
   if (isLoading) return <Loading />;
   return (

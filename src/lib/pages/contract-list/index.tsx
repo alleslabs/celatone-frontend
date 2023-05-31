@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { CreateNewListModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
@@ -13,6 +13,7 @@ import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const AllContractListsPage = observer(() => {
+  const wasm = useWasmConfig();
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { getContractLists } = useContractStore();
@@ -23,8 +24,9 @@ const AllContractListsPage = observer(() => {
   };
 
   useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_ALL_LISTS);
-  }, [router.isReady]);
+    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
+    else if (router.isReady) AmpTrack(AmpEvent.TO_ALL_LISTS);
+  }, [navigate, router.isReady, wasm.enabled]);
 
   return (
     <PageContainer>
