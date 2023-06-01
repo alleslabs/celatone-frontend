@@ -22,7 +22,7 @@ const RecentContracts = observer(() => {
 
   const { recentContracts, isLoading } = useRecentContractsData(searchKeyword);
 
-  const isSearching = !!searchKeyword;
+  const isSearching = Boolean(searchKeyword);
 
   return (
     <PageContainer>

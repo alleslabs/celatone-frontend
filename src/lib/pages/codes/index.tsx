@@ -46,7 +46,7 @@ const RecentCodes = observer(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
   }, [router.isReady]);
 
-  const isSearching = !!keyword || permissionValue !== "all";
+  const isSearching = Boolean(keyword) || permissionValue !== "all";
 
   return (
     <PageContainer>
