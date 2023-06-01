@@ -93,7 +93,7 @@ export const ContractsTableRow = ({
   onRowSelect,
   isReadOnly,
   withCTA,
-  withoutTag = false,
+  withoutTag,
 }: ContractsTableRowProps) => (
   <Grid
     templateColumns={templateColumns}

@@ -9,7 +9,7 @@ export const ContractsTableHeader = ({
   templateColumns,
   isReadOnly,
   withCTA,
-  withoutTag = false,
+  withoutTag,
 }: {
   templateColumns: GridProps["templateColumns"];
   isReadOnly: boolean;

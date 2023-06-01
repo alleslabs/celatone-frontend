@@ -23,7 +23,7 @@ export const ContractsTable = ({
   onRowSelect,
   isReadOnly = false,
   withCTA,
-  withoutTag = false,
+  withoutTag,
 }: ContractsTableProps) => {
   if (isLoading) return <Loading />;
   if (!contracts?.length) return emptyState;
