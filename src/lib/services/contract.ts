@@ -101,14 +101,16 @@ export const queryInstantiateInfo = async (
   let createdTime: Option<Date>;
   if (res.contract_info.created) {
     createdHeight = Number(res.contract_info.created.block_height);
-    await indexerGraphClient
-      .request(getBlockTimestampByHeightQueryDocument, {
-        height: createdHeight,
-      })
-      .then(({ blocks_by_pk }) => {
-        createdTime = parseDateOpt(blocks_by_pk?.timestamp);
-      })
-      .catch(() => {});
+    if (!Number.isNaN(createdHeight)) {
+      await indexerGraphClient
+        .request(getBlockTimestampByHeightQueryDocument, {
+          height: createdHeight,
+        })
+        .then(({ blocks_by_pk }) => {
+          createdTime = parseDateOpt(blocks_by_pk?.timestamp);
+        })
+        .catch(() => {});
+    }
   }
 
   return {
