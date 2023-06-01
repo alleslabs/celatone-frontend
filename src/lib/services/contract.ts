@@ -101,7 +101,7 @@ export const queryInstantiateInfo = async (
   let createdTime: Option<Date>;
   if (res.contract_info.created) {
     createdHeight = Number(res.contract_info.created.block_height);
-    if (!Number.isNaN(createdHeight)) {
+    if (createdHeight) {
       await indexerGraphClient
         .request(getBlockTimestampByHeightQueryDocument, {
           height: createdHeight,
