@@ -80,13 +80,13 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
   },
-  "osmo-test-4": {
+  "osmo-test-5": {
     chain: "osmosis",
     registryChainName: "osmosistestnet",
     prettyName: "Osmosis Testnet",
-    lcd: "https://lcd-test.osmosis.zone",
-    rpc: "https://rpc-test.osmosis.zone",
-    indexer: "https://osmosis-testnet-graphql.alleslabs.dev/v1/graphql",
+    lcd: "https://lcd.osmotest5.osmosis.zone",
+    rpc: "https://rpc.osmotest5.osmosis.zone",
+    indexer: "https://osmo-test-5-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     features: {
       faucet: {
@@ -119,8 +119,8 @@ export const CHAIN_CONFIGS: ChainConfigs = {
         "osmovaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
     },
     explorerLink: {
-      validator: "https://www.mintscan.io/osmosis/validators",
-      proposal: "https://www.mintscan.io/osmosis/proposals",
+      validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
+      proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
   },
 };
