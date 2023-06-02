@@ -20,7 +20,7 @@ export const ProposalTable = ({ proposals, isLoading }: ProposalTableProps) => {
   if (!proposals)
     return (
       <EmptyState
-        message="There are no proposals in this network."
+        message="There are no proposals on this network."
         imageVariant="empty"
         withBorder
       />

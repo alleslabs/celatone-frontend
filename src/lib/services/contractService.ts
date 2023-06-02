@@ -11,6 +11,7 @@ import {
   getContractListByWalletAddressPagination,
   getContractListCountByAdmin,
   getContractListCountByCodeId,
+  getContractListQueryDocument,
   getInstantiatedCountByUserQueryDocument,
   getInstantiateDetailByContractQueryDocument,
   getInstantiatedListByUserQueryDocument,
@@ -38,6 +39,32 @@ interface InstantiateDetail {
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
 }
+
+export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getContractListQueryDocument)
+        .then(({ contracts }) =>
+          contracts.map<ContractInfo>((contract) => ({
+            contractAddress: contract.address as ContractAddr,
+            instantiator: contract.init_by.at(0)?.account.address as Addr,
+            label: contract.label,
+            admin: contract.admin?.address as Addr,
+            latestUpdater: undefined,
+            latestUpdated: parseDateOpt(
+              contract.init_by.at(0)?.block.timestamp
+            ),
+            remark: undefined,
+          }))
+        ),
+    [indexerGraphClient]
+  );
+
+  return useQuery(["recent_contracts", indexerGraphClient], queryFn);
+};
 
 export const useInstantiatedCountByUserQuery = (
   walletAddr: Option<HumanAddr>

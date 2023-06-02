@@ -2,7 +2,7 @@ import type { ThemeConfig } from "config/type";
 
 export const OSMOSIS_THEME: ThemeConfig = {
   branding: {
-    logo: "https://assets.alleslabs.dev/integrations/osmosis/logo.png",
+    logo: "https://assets.alleslabs.dev/integrations/osmosis/logo.svg",
     favicon: "https://assets.alleslabs.dev/integrations/osmosis/favicon.ico",
     seo: {
       appName: "osmoscan",
@@ -67,8 +67,8 @@ export const OSMOSIS_THEME: ThemeConfig = {
       background: "#201865",
     },
     secondary: {
-      main: "#8481F8",
-      light: "#9B99FF",
+      main: "#9895FF",
+      light: "#ACA9FF",
       dark: "#6A67EA",
       darker: "#5855DB",
       background: "#2F306A",

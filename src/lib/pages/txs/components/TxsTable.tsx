@@ -66,7 +66,7 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
           <EmptyState
             withBorder
             imageVariant="empty"
-            message="There are no transactions in this network."
+            message="There are no transactions on this network."
           />
         }
         showAction={false}

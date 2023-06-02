@@ -17,6 +17,7 @@ interface ContractsTableRowProps {
   onRowSelect: (contract: ContractAddr) => void;
   isReadOnly: boolean;
   withCTA?: CTAInfo;
+  withoutTag?: boolean;
 }
 
 const InstantiatorRender = ({
@@ -92,6 +93,7 @@ export const ContractsTableRow = ({
   onRowSelect,
   isReadOnly,
   withCTA,
+  withoutTag,
 }: ContractsTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
@@ -117,10 +119,11 @@ export const ContractsTableRow = ({
       />
     </TableRow>
 
-    <TableRow>
-      <TagsCell contractLocalInfo={contractInfo} isReadOnly={isReadOnly} />
-    </TableRow>
-
+    {!withoutTag && (
+      <TableRow>
+        <TagsCell contractLocalInfo={contractInfo} isReadOnly={isReadOnly} />
+      </TableRow>
+    )}
     <TableRow>
       <InstantiatorRender contractInfo={contractInfo} isReadOnly={isReadOnly} />
     </TableRow>
