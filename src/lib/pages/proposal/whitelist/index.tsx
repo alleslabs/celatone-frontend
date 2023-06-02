@@ -34,15 +34,12 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import {
-  composeSubmitWhitelistProposalMsg,
-  d2Formatter,
-  getMaxLengthError,
-} from "lib/utils";
+import { composeSubmitWhitelistProposalMsg, d2Formatter } from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -60,6 +57,7 @@ const defaultValues: WhiteListState = {
 
 const ProposalToWhitelist = () => {
   const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
@@ -255,12 +253,13 @@ const ProposalToWhitelist = () => {
                     maxLength: constants.maxProposalTitleLength,
                   }}
                   error={
-                    formErrors.title?.message ||
-                    getMaxLengthError(
-                      "Proposal title",
-                      title.length,
-                      constants.maxProposalTitleLength
-                    )
+                    title.length > constants.maxProposalTitleLength
+                      ? getMaxLengthError(
+                          "Proposal title",
+                          title.length,
+                          "proposal_title"
+                        )
+                      : formErrors.title?.message
                   }
                 />
                 <ControllerTextarea

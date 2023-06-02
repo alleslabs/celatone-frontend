@@ -9,15 +9,12 @@ import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { Addr, HumanAddr } from "lib/types";
-import {
-  getMaxLengthError,
-  getNameAndDescriptionDefault,
-  getPermissionHelper,
-} from "lib/utils";
+import { getNameAndDescriptionDefault, getPermissionHelper } from "lib/utils";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;
@@ -26,6 +23,7 @@ interface SaveNewCodeModalProps {
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { address } = useWallet();
   const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
 
   /* STATE */
   const [codeId, setCodeId] = useState("");
@@ -49,14 +47,10 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     } else if (trimedName.length > constants.maxCodeNameLength)
       setNameStatus({
         state: "error",
-        message: getMaxLengthError(
-          "Code name",
-          trimedName.length,
-          constants.maxCodeNameLength
-        ),
+        message: getMaxLengthError("Code name", trimedName.length, "code_name"),
       });
     else setNameStatus({ state: "success" });
-  }, [constants.maxCodeNameLength, name]);
+  }, [constants.maxCodeNameLength, getMaxLengthError, name]);
 
   /* DEPENDENCY */
   const toast = useToast();

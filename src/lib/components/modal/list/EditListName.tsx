@@ -7,11 +7,11 @@ import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
 import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { useUserKey } from "lib/hooks";
+import { useGetMaxLengthError, useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { LVPair } from "lib/types";
-import { formatSlugName, getMaxLengthError, shortenName } from "lib/utils";
+import { formatSlugName, shortenName } from "lib/utils";
 
 interface EditListNameModalProps {
   list: LVPair;
@@ -24,6 +24,7 @@ export function EditListNameModal({
   reroute = false,
 }: EditListNameModalProps) {
   const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
   const userKey = useUserKey();
   const { renameList, isContractListExist } = useContractStore();
   const navigate = useInternalNavigate();
@@ -42,7 +43,7 @@ export function EditListNameModal({
         message: getMaxLengthError(
           "List name",
           trimedListName.length,
-          constants.maxListNameLength
+          "list_name"
         ),
       });
     else if (
@@ -53,6 +54,7 @@ export function EditListNameModal({
     else setStatus({ state: "success" });
   }, [
     constants.maxListNameLength,
+    getMaxLengthError,
     isContractListExist,
     list.value,
     listName,

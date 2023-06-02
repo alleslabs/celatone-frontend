@@ -8,3 +8,4 @@ export * from "./useToast";
 export * from "./useUserKey";
 export * from "./useOpenTxTab";
 export * from "./useIsCurrentPage";
+export * from "./useGetMaxLengthError";

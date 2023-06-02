@@ -2,8 +2,8 @@ import { VStack } from "@chakra-ui/react";
 import type { Control, FieldErrorsImpl, FieldPath } from "react-hook-form";
 
 import { useCelatoneApp } from "lib/app-provider";
+import { useGetMaxLengthError } from "lib/hooks";
 import type { LVPair } from "lib/types";
-import { getMaxLengthError } from "lib/utils";
 
 import { ControllerInput, ControllerTextarea } from "./forms";
 import { ListSelection } from "./ListSelection";
@@ -36,6 +36,7 @@ export const OffChainForm = <T extends OffchainDetail>({
   labelBgColor = "background.main",
 }: OffChainFormProps<T>) => {
   const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
 
   return (
     <VStack gap="16px" w="full">
@@ -51,11 +52,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         }}
         error={
           errors.name &&
-          getMaxLengthError(
-            "Contract name",
-            state.name.length,
-            constants.maxContractNameLength
-          )
+          getMaxLengthError("Contract name", state.name.length, "contract_name")
         }
         labelBgColor={labelBgColor}
       />
@@ -73,7 +70,7 @@ export const OffChainForm = <T extends OffchainDetail>({
           getMaxLengthError(
             "Contract description",
             state.description.length,
-            constants.maxContractDescriptionLength
+            "contract_desc"
           )
         }
         labelBgColor={labelBgColor}

@@ -13,12 +13,13 @@ import {
 import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ControllerInput } from "lib/components/forms";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, getMaxLengthError } from "lib/utils";
+import { composeMsg } from "lib/utils";
 
 import { UploadCard } from "./components/UploadCard";
 import type { UploadSectionState } from "./types";
@@ -33,6 +34,7 @@ export const UploadSection = ({
   isMigrate = false,
 }: UploadSectionProps) => {
   const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
   const { simulate, loading } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { address } = useWallet();
@@ -139,11 +141,7 @@ export const UploadSection = ({
         }}
         error={
           errors.codeName &&
-          getMaxLengthError(
-            "Code name",
-            codeName.length,
-            constants.maxCodeNameLength
-          )
+          getMaxLengthError("Code name", codeName.length, "code_name")
         }
         variant="floating"
         my="32px"
