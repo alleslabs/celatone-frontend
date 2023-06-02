@@ -73,7 +73,7 @@ export const AttachFund = ({
   attachFundsOption,
 }: AttachFundProps) => (
   <>
-    <Flex mb="20px">
+    <Flex mb={5}>
       <SelectInput
         formLabel="Attach Funds"
         options={attachFundsOptions}

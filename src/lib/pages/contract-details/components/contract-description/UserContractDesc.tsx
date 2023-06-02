@@ -38,9 +38,9 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
         triggerElement={
           <Button
             size="xs"
-            color="lilac.main"
-            variant="ghost-lilac"
-            leftIcon={<CustomIcon name="edit" boxSize="3" />}
+            color="secondary.main"
+            variant="ghost-secondary"
+            leftIcon={<CustomIcon name="edit" boxSize={3} />}
           >
             {description ? "Edit" : "Add Description"}
           </Button>
@@ -59,7 +59,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
   return (
     <Flex
       direction="column"
-      bg="pebble.900"
+      bg="gray.900"
       maxW="100%"
       borderRadius="8px"
       p={4}
@@ -68,7 +68,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
       role="group"
     >
       <Flex justify="space-between" align="center" h="32px">
-        <Text variant="body2" fontWeight={500} color="text.dark" mt="1px">
+        <Text variant="body2" fontWeight={500} color="text.dark">
           Your Contract Description
         </Text>
         <Box display="none" _groupHover={{ display: "flex" }}>

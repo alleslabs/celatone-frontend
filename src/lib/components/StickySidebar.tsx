@@ -50,17 +50,17 @@ const ToPage = ({ onClick, title }: ToPageProps) => (
     gap={2}
     width="fit-content"
     transition="all 0.25s ease-in-out"
-    color="lilac.main"
+    color="secondary.main"
     _hover={{
-      color: "lilac.light",
-      bgColor: "lilac.background",
+      color: "secondary.light",
+      bgColor: "secondary.background",
     }}
     onClick={onClick}
   >
     <Text variant="body3" color="inherit" fontWeight={700}>
       {title}
     </Text>
-    <CustomIcon name="chevron-right" color="lilac.main" boxSize={3} m={0} />
+    <CustomIcon name="chevron-right" color="secondary.main" boxSize={3} m={0} />
   </Flex>
 );
 
@@ -86,7 +86,7 @@ export const StickySidebar = ({
     <Box flex="4" px={8} position="relative" {...boxProps}>
       <Flex position="fixed" width="full">
         <Accordion allowToggle width={96} defaultIndex={[0]}>
-          <AccordionItem borderTop="none" borderColor="pebble.700">
+          <AccordionItem borderTop="none" borderColor="gray.700">
             <AccordionButton py={3} px={0}>
               <Text
                 variant="body2"
@@ -96,13 +96,13 @@ export const StickySidebar = ({
               >
                 {title}
               </Text>
-              <AccordionIcon color="pebble.600" ml="auto" />
+              <AccordionIcon color="gray.600" ml="auto" />
             </AccordionButton>
             <AccordionPanel
               py={3}
               px={0}
               borderTop="1px solid"
-              borderColor="pebble.700"
+              borderColor="gray.700"
             >
               <Text
                 variant="body2"

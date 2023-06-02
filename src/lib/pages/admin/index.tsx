@@ -187,11 +187,11 @@ const UpdateAdmin = () => {
 
   return (
     <WasmPageContainer>
-      <Heading as="h5" variant="h5" mb="24px">
+      <Heading as="h5" variant="h5" mb={6}>
         Update Admin
       </Heading>
       <ConnectWalletAlert
-        mb="24px"
+        mb={6}
         subtitle="You need to connect your wallet to perform this action"
       />
       <ContractSelectSection
@@ -205,7 +205,7 @@ const UpdateAdmin = () => {
         helperText="This address will be an admin for the deployed smart contract."
         value={adminAddress}
         setInputState={setAdminAddress}
-        mt="48px"
+        mt={12}
         status={adminFormStatus}
       />
       <Flex
@@ -214,7 +214,7 @@ const UpdateAdmin = () => {
         alignItems="center"
         alignSelf="flex-start"
         gap={1}
-        mt="48px"
+        mt={12}
       >
         <p>Transaction Fee:</p>
         <EstimatedFeeRender estimatedFee={estimatedFee} loading={isFetching} />
@@ -226,11 +226,7 @@ const UpdateAdmin = () => {
           alignSelf="flex-start"
         />
       )}
-      <Button
-        disabled={!estimatedFee || isFetching}
-        onClick={proceed}
-        mt="48px"
-      >
+      <Button disabled={!estimatedFee || isFetching} onClick={proceed} mt={12}>
         Update Admin
       </Button>
     </WasmPageContainer>

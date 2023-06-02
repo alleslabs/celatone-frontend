@@ -18,7 +18,7 @@ export const ProposalTableHeader = ({
       <TableHeaderFreeze
         left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
-        color="pebble.800"
+        color="gray.800"
       >
         <Text color="text.main">Proposal Title/Type</Text>
       </TableHeaderFreeze>

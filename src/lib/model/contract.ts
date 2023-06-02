@@ -167,6 +167,10 @@ export const useContractData = (
       initTxHash: instantiateDetail?.initTxHash,
       initProposalId: instantiateDetail?.initProposalId,
       initProposalTitle: instantiateDetail?.initProposalTitle,
+      createdHeight:
+        instantiateInfo?.createdHeight ?? instantiateDetail?.createdHeight,
+      createdTime:
+        instantiateInfo?.createdTime ?? instantiateDetail?.createdTime,
     },
     isLoading:
       isInstantiateInfoLoading ||

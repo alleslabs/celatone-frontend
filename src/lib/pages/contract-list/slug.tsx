@@ -5,16 +5,13 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  Breadcrumb,
-  BreadcrumbItem,
-  Text,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import {
   EditListNameModal,
@@ -81,32 +78,11 @@ const ContractsByList = observer(() => {
   return (
     <PageContainer>
       <Breadcrumb
-        w="full"
-        spacing="4px"
-        separator={
-          <CustomIcon name="chevron-right" boxSize="3" color="pebble.600" />
-        }
-      >
-        <BreadcrumbItem
-          _hover={{ opacity: 0.8 }}
-          transition="all 0.25s ease-in-out"
-        >
-          <AppLink color="text.dark" href="/contract-lists">
-            Contract Lists
-          </AppLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <Text
-            variant="body2"
-            className="ellipsis"
-            width="250px"
-            fontWeight="600"
-            color="text.dark"
-          >
-            {contractListInfo.name}
-          </Text>
-        </BreadcrumbItem>
-      </Breadcrumb>
+        items={[
+          { text: "Contract Lists", href: "/contract-list" },
+          { text: contractListInfo.name },
+        ]}
+      />
       <Flex
         justifyContent="space-between"
         alignItems="center"
@@ -120,9 +96,7 @@ const ContractsByList = observer(() => {
         <Flex gap={2}>
           {isInstantiatedByMe ? (
             <Button
-              leftIcon={
-                <CustomIcon name="add-new" color="text.main" boxSize="16px" />
-              }
+              leftIcon={<CustomIcon name="add-new" boxSize="16px" />}
               onClick={() => navigate({ pathname: "/deploy" })}
             >
               Deploy New Contract
@@ -136,7 +110,7 @@ const ContractsByList = observer(() => {
               }}
               buttonProps={{
                 variant: "outline-primary",
-                leftIcon: <CustomIcon name="bookmark" boxSize="3" />,
+                leftIcon: <CustomIcon name="bookmark" boxSize={3} />,
                 children: "Save Contract",
               }}
             />
@@ -144,7 +118,7 @@ const ContractsByList = observer(() => {
           {contractListInfo.isInfoEditable && (
             <Menu>
               <MenuButton h="full" variant="ghost-gray" as={Button}>
-                <CustomIcon name="more" color="pebble.600" />
+                <CustomIcon name="more" color="gray.600" />
               </MenuButton>
               <MenuList>
                 <EditListNameModal
@@ -153,7 +127,7 @@ const ContractsByList = observer(() => {
                     value: contractListInfo.slug,
                   }}
                   menuItemProps={{
-                    icon: <CustomIcon name="edit" color="pebble.600" />,
+                    icon: <CustomIcon name="edit" color="gray.600" />,
                     children: "Edit list name",
                   }}
                   reroute

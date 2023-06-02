@@ -41,17 +41,6 @@ export interface Transaction {
   isInstantiate: boolean;
 }
 
-export type BlockTransaction = Pick<
-  Transaction,
-  | "hash"
-  | "messages"
-  | "success"
-  | "sender"
-  | "actionMsgType"
-  | "isIbc"
-  | "isInstantiate"
->;
-
 export interface TxFilters {
   isExecute: boolean;
   isInstantiate: boolean;

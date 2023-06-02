@@ -54,7 +54,7 @@ export const PublicProjectContractRow = ({
     <Grid
       templateColumns={templateColumns}
       onClick={goToContractDetails}
-      _hover={{ bg: "pebble.900" }}
+      _hover={{ bg: "gray.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
       minW="min-content"
@@ -74,11 +74,7 @@ export const PublicProjectContractRow = ({
         {publicContractInfo.publicInfo.description && (
           <Tooltip label={publicContractInfo.publicInfo.description}>
             <Flex cursor="pointer">
-              <CustomIcon
-                name="info-circle"
-                boxSize="12px"
-                color="pebble.600"
-              />
+              <CustomIcon name="info-circle" boxSize="12px" color="gray.600" />
             </Flex>
           </Tooltip>
         )}

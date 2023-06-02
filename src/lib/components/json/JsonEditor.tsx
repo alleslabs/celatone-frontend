@@ -4,6 +4,10 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-pastel_on_dark";
+
+import { CURR_THEME } from "env";
 
 interface JsonEditorProps {
   value: string;
@@ -26,7 +30,7 @@ const JsonEditor = ({
     <AceEditor
       ref={editorRef}
       mode="json"
-      theme="monokai"
+      theme={CURR_THEME.jsonTheme}
       fontSize="14px"
       readOnly={readOnly}
       style={{

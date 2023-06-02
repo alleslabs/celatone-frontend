@@ -89,8 +89,8 @@ export const submitWhitelistProposalTx = ({
           headerIcon: (
             <CustomIcon
               name="submit-proposal-solid"
-              color="pebble.600"
-              boxSize="5"
+              color="gray.600"
+              boxSize={5}
             />
           ),
         },
@@ -170,7 +170,7 @@ export const submitStoreCodeProposalTx = ({
           headerIcon: (
             <CustomIcon
               name="submit-proposal-solid"
-              color="pebble.600"
+              color="gray.600"
               boxSize="5"
             />
           ),

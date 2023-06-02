@@ -19,7 +19,7 @@ export const MySavedCodesSection = ({
   isSearching,
 }: MySavedCodesSectionProps) => (
   <Box mb={8}>
-    <HStack alignItems="center" justifyContent="space-between" mb="18px">
+    <HStack alignItems="center" justifyContent="space-between" mb={4}>
       <Heading as="h6" variant="h6">
         My Saved Codes
       </Heading>

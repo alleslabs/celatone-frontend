@@ -32,8 +32,8 @@ export const PublicProjectCard = observer(
         pt={4}
         pb={2}
         alignItems="center"
-        bg="pebble.800"
-        _hover={{ bg: "pebble.700" }}
+        bg="gray.800"
+        _hover={{ bg: "gray.700" }}
         transition="all .25s ease-in-out"
         borderRadius="8px"
         gap={4}
@@ -55,7 +55,7 @@ export const PublicProjectCard = observer(
               w="full"
               alignItems="flex-start"
             >
-              <Flex gap={2} pr="1">
+              <Flex gap={2} pr={1}>
                 <Image
                   src={item.logo}
                   borderRadius="full"
@@ -65,10 +65,10 @@ export const PublicProjectCard = observer(
                 />
                 <Text
                   variant="body1"
-                  fontWeight="600"
+                  fontWeight={700}
                   textOverflow="ellipsis"
                   overflow="hidden"
-                  mt="4px"
+                  mt={1}
                 >
                   {item.name}
                 </Text>

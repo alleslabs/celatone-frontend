@@ -196,7 +196,7 @@ export const UploadSection = ({
         }}
         error={errors.codeName && getMaxCodeNameLengthError(codeName.length)}
         variant="floating"
-        my="32px"
+        my={8}
       />
       <InstantiatePermissionRadio
         control={control}
@@ -224,8 +224,9 @@ export const UploadSection = ({
           alignSelf="flex-start"
           alignItems="center"
           display="flex"
+          gap={1}
         >
-          Transaction Fee:{" "}
+          <p>Transaction Fee:</p>
           <EstimatedFeeRender
             estimatedFee={estimatedFee}
             loading={isSimulating}

@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { BackButton } from "lib/components/button";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
@@ -41,9 +41,25 @@ const CodeDetailsBody = observer(
 
     return (
       <>
-        <Flex justify="space-between" mt={6}>
-          <Flex direction="column" gap={1}>
+        <Breadcrumb
+          items={[
+            {
+              text: publicProject.publicCodeData?.name
+                ? "Public Projects"
+                : "Codes",
+              href: publicProject.publicCodeData?.name ? "/projects" : "/codes",
+            },
+            {
+              text: publicProject.publicDetail?.name,
+              href: `/projects/${publicProject.publicCodeData?.slug}`,
+            },
+            { text: codeId.toString() },
+          ]}
+        />
+        <Flex direction="column" gap={2} w="full" mt={6}>
+          <Flex justify="space-between" align="center">
             <Flex gap={1}>
+              <CustomIcon name="code" boxSize={5} color="secondary.main" />
               {publicProject.publicDetail?.logo && (
                 <Image
                   src={publicProject.publicDetail.logo}
@@ -59,6 +75,20 @@ const CodeDetailsBody = observer(
                   codeId}
               </Heading>
             </Flex>
+            <CTASection
+              id={codeId}
+              uploader={localCodeInfo?.uploader ?? codeData.uploader}
+              name={localCodeInfo?.name}
+              instantiatePermission={
+                codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
+              }
+              permissionAddresses={codeData.permissionAddresses ?? []}
+              contractCount={undefined}
+              cw2Contract={undefined}
+              cw2Version={undefined}
+            />
+          </Flex>
+          <Flex direction="column" gap={1}>
             {publicProject.publicCodeData?.name && (
               <Flex gap={2}>
                 <Text fontWeight={500} color="text.dark" variant="body2">
@@ -93,30 +123,16 @@ const CodeDetailsBody = observer(
               <GitHubLink github={publicProject.publicCodeData.github} />
             )}
           </Flex>
-          <CTASection
-            id={codeId}
-            uploader={localCodeInfo?.uploader ?? codeData.uploader}
-            name={localCodeInfo?.name}
-            instantiatePermission={
-              codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
-            }
-            permissionAddresses={codeData.permissionAddresses ?? []}
-            contractCount={undefined}
-            cw2Contract={undefined}
-            cw2Version={undefined}
-          />
         </Flex>
         {publicProject.publicCodeData?.description && (
           <PublicDescription
             title="Public Code Description"
             description={publicProject.publicCodeData.description}
             textLine={2}
-            icon={
-              <CustomIcon name="website" ml="0" mb="6px" color="pebble.600" />
-            }
+            icon={<CustomIcon name="website" ml={0} mb={2} color="gray.600" />}
           />
         )}
-        <Divider borderColor="pebble.700" my={12} />
+        <Divider borderColor="gray.700" my={12} />
         <CodeInfoSection codeData={codeData} chainId={chainId} />
         <CodeContractsTable codeId={codeId} />
       </>
@@ -136,7 +152,6 @@ const CodeDetails = observer(() => {
   if (data.isLoading) return <Loading />;
   return (
     <PageContainer>
-      <BackButton />
       {!isCodeId(codeIdParam) ? (
         <InvalidCode />
       ) : (

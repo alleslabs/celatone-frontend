@@ -43,14 +43,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#321](https://github.com/alleslabs/celatone-frontend/pull/321) Add amplitude to proposal to store code page
 - [#274](https://github.com/alleslabs/celatone-frontend/pull/274) Add proposal to store code page
 - [#279](https://github.com/alleslabs/celatone-frontend/pull/279) Add instantiate permission to msg store code, change error display design, and upgrade cosmjs to version 0.30.1
-- [#327](https://github.com/alleslabs/celatone-frontend/pull/327) Update logic to enable upload wasm code
-- [#317](https://github.com/alleslabs/celatone-frontend/pull/317) Add amplitude for proposal list page and pagination
 
 ### Improvements
 
 - [#342](https://github.com/alleslabs/celatone-frontend/pull/342) Add fallback n/a token on asset icon on asset box
 - [#331](https://github.com/alleslabs/celatone-frontend/pull/331) Add validation check for builder in proposal to store code page
 - [#324](https://github.com/alleslabs/celatone-frontend/pull/324) Add deposit/voting period from gov params and add minimum required alert for proposal to store code
+- [#357](https://github.com/alleslabs/celatone-frontend/pull/357) Abstract color, typeface, images to theme config
+- [#352](https://github.com/alleslabs/celatone-frontend/pull/352) Refactor/Abstract styling (color system, font weight and more)
+- [#347](https://github.com/alleslabs/celatone-frontend/pull/347) Move tx table accordion arrow to the front and refactor block txs table
+
+### Bug fixes
+
+- [#356](https://github.com/alleslabs/celatone-frontend/pull/356) Fix store code out of gas error by gzipping file before submitting tx
+- [#344](https://github.com/alleslabs/celatone-frontend/pull/344) Fix enable tx bug in proposal to store code
+
+## v1.0.5
+
+### Features
+
+- [#346](https://github.com/alleslabs/celatone-frontend/pull/346) Apply initial condition to my stored codes upload button
+- [#327](https://github.com/alleslabs/celatone-frontend/pull/327) Update logic to enable upload wasm code
+- [#317](https://github.com/alleslabs/celatone-frontend/pull/317) Add amplitude for proposal list page and pagination
+
+### Improvements
+
+- [#364](https://github.com/alleslabs/celatone-frontend/pull/364) (Contract Details) use instantiated height and time from indexer as fallback
+- [#323](https://github.com/alleslabs/celatone-frontend/pull/323) Revise back button and breadcrumb components
 - [#339](https://github.com/alleslabs/celatone-frontend/pull/339) Update all routes to plural form, and patch all codes
 - [#334](https://github.com/alleslabs/celatone-frontend/pull/334) Change `osmo-test-4` to `osmo-test-5`, fix tx service when accountId is undefined
 - [#311](https://github.com/alleslabs/celatone-frontend/pull/311) Refine css styling
@@ -59,8 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#356](https://github.com/alleslabs/celatone-frontend/pull/356) Fix store code out of gas error by gzipping file before submitting tx
-- [#344](https://github.com/alleslabs/celatone-frontend/pull/344) Fix enable tx bug in proposal to store code
+- [#370](https://github.com/alleslabs/celatone-frontend/pull/370) Fix ContractResponse type
+- [$348](https://github.com/alleslabs/celatone-frontend/pull/348) Workaround for the issue that walletManager local storage is not cleared when switching networks
 - [$340](https://github.com/alleslabs/celatone-frontend/pull/340) Remove resend and redo button in accordion if relation is related (Past txs page)
 - [#337](https://github.com/alleslabs/celatone-frontend/pull/337) Fix beforeunload keep showing up Leave modal
 - [#330](https://github.com/alleslabs/celatone-frontend/pull/330) Fix proposal table component propagation
@@ -101,7 +120,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#298](https://github.com/alleslabs/celatone-frontend/pull/298) Show deposit/voting period from gov params and add minimum required alert
 - [#309](https://github.com/alleslabs/celatone-frontend/pull/309) Add public account name and description in account detail page
 - [#289](https://github.com/alleslabs/celatone-frontend/pull/289) Add public accounts to public projects
 - [#308](https://github.com/alleslabs/celatone-frontend/pull/308) Adjust view more button to full width and fix empty state layout in contract history

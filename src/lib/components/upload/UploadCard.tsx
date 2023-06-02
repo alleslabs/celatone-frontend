@@ -14,7 +14,7 @@ export const UploadCard = ({ file, deleteFile }: UploadCardProps) => (
     p="16px"
     gap="16px"
     w="full"
-    bgColor="pebble.900"
+    bgColor="gray.900"
     borderRadius="8px"
     justifyContent="space-between"
   >

@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useValidateAddress } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
@@ -27,7 +27,12 @@ import {
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
 import type { HumanAddr } from "lib/types";
-import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
+import {
+  formatPrice,
+  getFirstQueryParam,
+  scrollToTop,
+  truncate,
+} from "lib/utils";
 
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
@@ -86,36 +91,52 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   return (
     <>
-      <Flex direction="column" gap={1} mt={6} mb={6}>
-        <Flex gap={1}>
-          {publicDetail?.logo && (
-            <Image
-              src={publicDetail.logo}
-              borderRadius="full"
-              alt={publicDetail.name}
-              width={7}
-              height={7}
-            />
-          )}
-          <Heading as="h5" variant="h5">
-            {displayName}
-          </Heading>
-        </Flex>
-        <Flex gap={2}>
-          <Text fontWeight={500} color="text.dark" variant="body2">
-            Wallet Address:
-          </Text>
-          <CopyLink
-            value={accountAddress}
-            amptrackSection="account_top"
-            type="user_address"
+      <Flex direction="column" mb={6}>
+        {publicDetail && (
+          <Breadcrumb
+            items={[
+              { text: "Public Projects", href: "/projects" },
+              {
+                text: publicDetail?.name,
+                href: `/projects/${publicInfo?.slug}`,
+              },
+              { text: truncate(accountAddress) },
+            ]}
+            mb={6}
           />
+        )}
+        <Flex direction="column" gap={2}>
+          <Flex gap={1} minH="36px" align="center">
+            <CustomIcon name="wallet" boxSize={5} color="secondary.main" />
+            {publicDetail?.logo && (
+              <Image
+                src={publicDetail.logo}
+                borderRadius="full"
+                alt={publicDetail.name}
+                width={7}
+                height={7}
+              />
+            )}
+            <Heading as="h5" variant="h5">
+              {displayName}
+            </Heading>
+          </Flex>
+          <Flex gap={2}>
+            <Text fontWeight={500} color="text.dark" variant="body2">
+              Wallet Address:
+            </Text>
+            <CopyLink
+              value={accountAddress}
+              amptrackSection="account_top"
+              type="user_address"
+            />
+          </Flex>
         </Flex>
       </Flex>
       {publicInfo?.description && (
         <Flex
           direction="column"
-          bg="pebble.900"
+          bg="gray.900"
           maxW="100%"
           borderRadius="8px"
           py={4}
@@ -124,12 +145,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           flex="1"
         >
           <Flex alignItems="center" gap={1} minH="32px">
-            <CustomIcon name="website" ml="0" mb="6px" color="pebble.600" />
+            <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
             <Text variant="body2" fontWeight={500} color="text.dark">
               Public Account Description
             </Text>
           </Flex>
-          <Text variant="body2" color="text.main" mb="1">
+          <Text variant="body2" color="text.main" mb={1}>
             {publicInfo?.description}
           </Text>
         </Flex>
@@ -138,7 +159,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
       <Tabs index={tabIndex}>
         <TabList
           borderBottom="1px solid"
-          borderColor="pebble.700"
+          borderColor="gray.700"
           overflowX="scroll"
           id={tableHeaderId}
         >
@@ -198,9 +219,9 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               pb={8}
               direction="column"
               borderBottom="1px solid"
-              borderBottomColor="pebble.700"
+              borderBottomColor="gray.700"
             >
-              <Text variant="body2" fontWeight="500" color="text.dark">
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Total Account Value
               </Text>
               {isLoading ? (
@@ -219,13 +240,13 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 </Heading>
               )}
             </Flex>
-            <Flex borderBottom="1px solid" borderBottomColor="pebble.700">
+            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}
                 onViewMore={() => handleTabChange(TabIndex.Assets)}
               />
             </Flex>
-            <Flex borderBottom="1px solid" borderBottomColor="pebble.700">
+            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <DelegationsSection
                 walletAddress={accountAddress}
                 onViewMore={() => handleTabChange(TabIndex.Delegations)}
@@ -331,7 +352,6 @@ const AccountDetails = () => {
 
   return (
     <PageContainer>
-      <BackButton />
       {validateUserAddress(accountAddressParam) &&
       validateContractAddress(accountAddressParam) ? (
         <InvalidAccount />

@@ -12351,7 +12351,12 @@ export type GetInstantiateDetailByContractQueryDocumentQuery = {
   contracts_by_pk?: {
     __typename?: "contracts";
     init_msg?: string | null;
-    transaction?: { __typename?: "transactions"; hash: any } | null;
+    transaction?: {
+      __typename?: "transactions";
+      hash: any;
+      block_height: number;
+      block: { __typename?: "blocks"; timestamp: any };
+    } | null;
     contract_proposals: Array<{
       __typename?: "contract_proposals";
       proposal: { __typename?: "proposals"; id: number; title: string };
@@ -12751,6 +12756,7 @@ export type GetBlockTransactionsByHeightQueryQuery = {
     is_send: boolean;
     is_store_code: boolean;
     is_update_admin: boolean;
+    block: { __typename?: "blocks"; height: number; timestamp: any };
     account: { __typename?: "accounts"; address: string };
   }>;
 };
@@ -14235,6 +14241,23 @@ export const GetInstantiateDetailByContractQueryDocumentDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "hash" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block_height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
@@ -17197,9 +17220,23 @@ export const GetBlockTransactionsByHeightQueryDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "hash" } },
-                { kind: "Field", name: { kind: "Name", value: "success" } },
-                { kind: "Field", name: { kind: "Name", value: "messages" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "block" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "account" },
@@ -17213,6 +17250,9 @@ export const GetBlockTransactionsByHeightQueryDocument = {
                     ],
                   },
                 },
+                { kind: "Field", name: { kind: "Name", value: "hash" } },
+                { kind: "Field", name: { kind: "Name", value: "success" } },
+                { kind: "Field", name: { kind: "Name", value: "messages" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "is_clear_admin" },

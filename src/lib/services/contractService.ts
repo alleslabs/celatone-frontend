@@ -31,6 +31,8 @@ import type {
 import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
 interface InstantiateDetail {
+  createdHeight: Option<number>;
+  createdTime: Option<Date>;
   initMsg: Option<string>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
@@ -136,6 +138,10 @@ export const useInstantiateDetailByContractQuery = (
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then(({ contracts_by_pk }) => ({
+        createdHeight: contracts_by_pk?.transaction?.block_height,
+        createdTime: parseDateOpt(
+          contracts_by_pk?.transaction?.block.timestamp
+        ),
         initMsg: contracts_by_pk?.init_msg,
         initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
         initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,

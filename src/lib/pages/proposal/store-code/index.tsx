@@ -459,8 +459,8 @@ const StoreCodeProposal = () => {
                     borderRadius="5px"
                     px={3}
                     py={4}
-                    borderColor="pebble.700"
-                    bg="pebble.800"
+                    borderColor="gray.700"
+                    bg="gray.800"
                     h="56px"
                     w="full"
                     overflowX="auto"
@@ -571,7 +571,7 @@ const StoreCodeProposal = () => {
                         cursor="pointer"
                         variant="body3"
                         minW={16}
-                        color="honeydew.main"
+                        color="accent.main"
                         onClick={() => {
                           if (!minDeposit) return;
                           AmpTrackUseDepositFill(

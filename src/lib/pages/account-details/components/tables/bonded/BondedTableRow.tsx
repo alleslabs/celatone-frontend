@@ -24,7 +24,7 @@ export const BondedTableRow = ({
 }: BondedTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
-    _hover={{ bg: "pebble.900" }}
+    _hover={{ bg: "gray.900" }}
     transition="all .25s ease-in-out"
     minW="min-content"
   >

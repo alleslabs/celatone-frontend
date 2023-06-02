@@ -85,7 +85,7 @@ export const SIDEBAR_STORE_CODE_DETAILS: SidebarDetails = {
           }
         >
           {" "}
-          <Text as="span" color="lilac.main">
+          <Text as="span" color="secondary.main">
             Deploy Contract
           </Text>
         </Link>

@@ -13,11 +13,11 @@ export const DisconnectedState = ({
   text,
   helperText,
 }: DisconnectedStateProps) => (
-  <Flex direction="column" alignItems="center" gap="16px">
+  <Flex direction="column" alignItems="center" gap={4}>
     <StateImage imageVariant="disconnected" />
     <Flex align="center" justify="center">
       <ConnectWalletBtn />
-      <Text variant="body1" color="text.dark" ml="8px">
+      <Text variant="body1" color="text.dark" ml={2}>
         {text}
       </Text>
     </Flex>
@@ -26,7 +26,7 @@ export const DisconnectedState = ({
         variant="body1"
         color="text.dark"
         textAlign="center"
-        mt="16px"
+        mt={4}
         maxW="520px"
         alignSelf="center"
       >

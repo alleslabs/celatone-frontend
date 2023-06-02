@@ -46,7 +46,7 @@ export const WalletSection = () => {
           buttonText={truncate(address)}
           icon="wallet"
           onClick={onClickOpenView}
-          variant="outline-info"
+          variant="outline-accent"
         />
       }
       rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}

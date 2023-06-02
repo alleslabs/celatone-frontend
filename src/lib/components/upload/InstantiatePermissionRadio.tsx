@@ -149,7 +149,7 @@ export const InstantiatePermissionRadio = ({
                   >
                     <CustomIcon
                       name="delete"
-                      color={fields.length <= 1 ? "pebble.600" : "text.dark"}
+                      color={fields.length <= 1 ? "gray.600" : "text.dark"}
                     />
                   </Button>
                 </Flex>
@@ -161,7 +161,7 @@ export const InstantiatePermissionRadio = ({
                 onClick={() => {
                   append({ address: "" as Addr });
                 }}
-                leftIcon={<CustomIcon name="plus" color="violet.light" />}
+                leftIcon={<CustomIcon name="plus" color="primary.light" />}
               >
                 Add More Address
               </Button>

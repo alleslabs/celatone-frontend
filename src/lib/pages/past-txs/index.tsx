@@ -144,8 +144,8 @@ const PastTxs = () => {
             placeholder="Search with transaction hash or contract address"
             h="full"
           />
-          <InputRightElement pointerEvents="none" h="full" mr="1">
-            <CustomIcon name="search" color="pebble.600" />
+          <InputRightElement pointerEvents="none" h="full" mr={1}>
+            <CustomIcon name="search" color="gray.600" />
           </InputRightElement>
         </InputGroup>
         <Flex gap={3}>

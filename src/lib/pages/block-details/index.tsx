@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { BackButton } from "lib/components/button";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -9,11 +9,7 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useBlockDetailsQuery } from "lib/services/blockService";
 import { getFirstQueryParam } from "lib/utils";
 
-import {
-  BlockDetailsTop,
-  BlockInfo,
-  BlockTransactionTable,
-} from "./components";
+import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
 
 const BlockDetail = () => {
   const router = useRouter();
@@ -30,12 +26,17 @@ const BlockDetail = () => {
 
   return (
     <PageContainer>
-      <BackButton />
+      <Breadcrumb
+        items={[
+          { text: "Blocks", href: "/blocks" },
+          { text: blockData?.height.toString() },
+        ]}
+      />
       {blockData ? (
         <>
           <BlockDetailsTop blockData={blockData} />
           <BlockInfo blockData={blockData} />
-          <BlockTransactionTable height={Number(heightParam)} />
+          <BlockTxsTable height={Number(heightParam)} />
         </>
       ) : (
         <EmptyState

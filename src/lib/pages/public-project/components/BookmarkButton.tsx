@@ -54,10 +54,10 @@ const StyledButton = ({
   >
     <CustomIcon
       name={icon}
-      color={icon === "bookmark" ? "pebble.600" : "violet.light"}
+      color={icon === "bookmark" ? "gray.600" : "primary.light"}
     />
     {hasText && (
-      <Text color={icon === "bookmark" ? "text.dark" : "violet.light"}>
+      <Text color={icon === "bookmark" ? "text.dark" : "primary.light"}>
         {actionText}
       </Text>
     )}

@@ -26,7 +26,7 @@ export const BlocksRow = ({ templateColumns, blockData }: BlocksRowProps) => {
       </TableRow>
       <TableRow>{truncate(blockData.hash.toUpperCase())}</TableRow>
       <TableRow>
-        <ValidatorBadge validator={blockData.proposer} />
+        <ValidatorBadge validator={blockData.proposer} badgeSize={7} />
       </TableRow>
       <TableRow
         justifyContent="center"
@@ -36,7 +36,7 @@ export const BlocksRow = ({ templateColumns, blockData }: BlocksRowProps) => {
       </TableRow>
       <TableRow>
         <Flex direction="column">
-          <Text variant="body2" color="text.dark" mb="2px">
+          <Text variant="body2" color="text.dark">
             {formatUTC(blockData.timestamp)}
           </Text>
           <Text variant="body3" color="text.disabled">

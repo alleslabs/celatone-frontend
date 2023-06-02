@@ -12,7 +12,7 @@ export const ProposalButton = () => {
       rightIcon={
         <CustomIcon
           name="submit-proposal"
-          color="violet.light"
+          color="primary.light"
           boxSize="12px"
         />
       }

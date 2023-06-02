@@ -24,8 +24,8 @@ const item = {
     ),
   },
   loading: {
-    color: "pebble.500",
-    icon: <Spinner color="pebble.600" size="sm" mx={1} />,
+    color: "gray.500",
+    icon: <Spinner color="gray.600" size="sm" mx={1} />,
   },
 };
 

@@ -29,13 +29,13 @@ export const CodeSelect = ({
     <Flex direction="column" {...componentProps}>
       <Flex
         align="center"
-        p="16px"
-        gap="16px"
+        p={4}
+        gap={4}
         w="100%"
-        bgColor="pebble.900"
+        bgColor="gray.900"
         borderRadius="8px"
         borderWidth="1px"
-        borderColor={isError ? "error.main" : "pebble.700"}
+        borderColor={isError ? "error.main" : "gray.700"}
       >
         <UploadIcon variant={codeId ? "primary" : "muted"} />
         {codeId ? (

@@ -14,7 +14,7 @@ export const MigrateOptions = ({
   existHandler,
 }: MigrateOptionsProps) => (
   <>
-    <Heading as="h5" variant="h5" mb="24px" textAlign="center">
+    <Heading as="h5" variant="h5" mb={6} textAlign="center">
       Migrate Options
     </Heading>
     <ButtonCard
@@ -22,7 +22,7 @@ export const MigrateOptions = ({
       title="Upload new WASM File"
       description="Deploy contract by uploading new Wasm file"
       onClick={uploadHandler}
-      mb="16px"
+      mb={4}
     />
     <ButtonCard
       disabled={!isAdmin}

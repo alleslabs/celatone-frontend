@@ -24,8 +24,8 @@ export const JsonInfo = ({
         align="center"
         p="12px 16px"
         borderRadius="8px"
-        background="pebble.900"
-        _hover={{ backgroundColor: "pebble.800" }}
+        background="gray.900"
+        _hover={{ backgroundColor: "gray.800" }}
         transition="all .25s ease-in-out"
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
@@ -36,7 +36,7 @@ export const JsonInfo = ({
         <CustomIcon
           transition="all .25s ease-in-out"
           name={expand ? "chevron-up" : "chevron-down"}
-          color="pebble.600"
+          color="gray.600"
         />
       </Flex>
       <div

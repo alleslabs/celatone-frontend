@@ -38,7 +38,7 @@ export const AccordionTx = ({
   message,
   allowFurtherAction,
   isSigner = false,
-  accordionSpacing = "206px",
+  accordionSpacing = "260px",
 }: AccordionTxProps) => {
   const [showButton, setShowButton] = useState(false);
   return (
@@ -48,7 +48,7 @@ export const AccordionTx = ({
       borderBottom="none"
       pl={accordionSpacing}
       gap={3}
-      _hover={{ background: "pebble.800" }}
+      _hover={{ background: "gray.800" }}
       transition="all .25s ease-in-out"
       css={{
         "&:not(:first-of-type) div#before-stepper": {

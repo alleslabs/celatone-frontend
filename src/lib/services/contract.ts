@@ -29,8 +29,8 @@ interface ContractResponse {
     admin?: Addr;
     label: string;
     created?: {
-      block_height: number;
-      tx_index: number;
+      block_height: string;
+      tx_index: string;
     };
     ibc_port_id: string;
     extension?: string;
@@ -100,15 +100,17 @@ export const queryInstantiateInfo = async (
   let createdHeight: Option<number>;
   let createdTime: Option<Date>;
   if (res.contract_info.created) {
-    createdHeight = res.contract_info.created.block_height;
-    await indexerGraphClient
-      .request(getBlockTimestampByHeightQueryDocument, {
-        height: createdHeight,
-      })
-      .then(({ blocks_by_pk }) => {
-        createdTime = parseDateOpt(blocks_by_pk?.timestamp);
-      })
-      .catch(() => {});
+    createdHeight = Number(res.contract_info.created.block_height);
+    if (createdHeight) {
+      await indexerGraphClient
+        .request(getBlockTimestampByHeightQueryDocument, {
+          height: createdHeight,
+        })
+        .then(({ blocks_by_pk }) => {
+          createdTime = parseDateOpt(blocks_by_pk?.timestamp);
+        })
+        .catch(() => {});
+    }
   }
 
   return {

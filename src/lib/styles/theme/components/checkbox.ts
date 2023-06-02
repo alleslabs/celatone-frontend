@@ -1,15 +1,15 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
 
-const violet = "violet.light";
+const primary = "primary.light";
 export const Checkbox: ComponentStyleConfig = {
   baseStyle: {
     control: {
       _checked: {
-        bg: violet,
-        borderColor: violet,
+        bg: primary,
+        borderColor: primary,
         _hover: {
-          bg: violet,
-          borderColor: violet,
+          bg: primary,
+          borderColor: primary,
         },
       },
     },

@@ -4,30 +4,30 @@ import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(tagAnatomy.keys);
 
-const honeydewDark = definePartsStyle({
+const accentDark = definePartsStyle({
   container: {
-    bg: "honeydew.dark",
-    color: "pebble.900",
+    bg: "accent.dark",
+    color: "gray.900",
   },
 });
 
-const honeydewDarker = definePartsStyle({
+const accentDarker = definePartsStyle({
   container: {
-    bg: "honeydew.darker",
+    bg: "accent.darker",
     color: "text.main",
   },
 });
 
-const violetLight = definePartsStyle({
+const primaryLight = definePartsStyle({
   container: {
-    bg: "violet.light",
-    color: "pebble.900",
+    bg: "primary.light",
+    color: "gray.900",
   },
 });
 
 const gray = definePartsStyle({
   container: {
-    bg: "pebble.700",
+    bg: "gray.700",
     color: "text.main",
   },
 });
@@ -57,13 +57,13 @@ export const Tag = defineMultiStyleConfig({
     },
   },
   variants: {
-    "violet-light": violetLight,
-    "honeydew-dark": honeydewDark,
-    "honeydew-darker": honeydewDarker,
+    "primary-light": primaryLight,
+    "accent-dark": accentDark,
+    "accent-darker": accentDarker,
     gray,
   },
   defaultProps: {
     size: "md",
-    variant: "honeydew-darker",
+    variant: "accent-darker",
   },
 });

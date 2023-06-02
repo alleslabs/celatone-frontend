@@ -12,10 +12,14 @@ export const Badge: ComponentStyleConfig = {
     maxH: "20px",
   },
   variants: {
-    violet: { background: "violet.darker", color: "text.main" },
+    primary: { background: "primary.darker", color: "text.main" },
     gray: {
-      background: "pebble.700",
+      background: "gray.700",
       color: "text.main",
+    },
+    secondary: {
+      background: "secondary.main",
+      color: "background.main",
     },
   },
   defaultProps: {

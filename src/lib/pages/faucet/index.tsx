@@ -17,7 +17,6 @@ import {
   useInternalNavigate,
   useValidateAddress,
 } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
@@ -98,7 +97,7 @@ const Faucet = () => {
             <CustomIcon
               name="check-circle-solid"
               color="success.main"
-              boxSize="4"
+              boxSize={4}
               display="flex"
               alignItems="center"
             />
@@ -144,7 +143,6 @@ const Faucet = () => {
 
   return (
     <WasmPageContainer>
-      <BackButton alignSelf="flex-start" />
       <Heading as="h5" variant="h5">
         Osmosis Testnet Faucet
       </Heading>
@@ -161,8 +159,8 @@ const Faucet = () => {
         label="Receiving Address"
         helperAction={
           <Text
-            color="honeydew.main"
-            fontWeight="600"
+            color="accent.main"
+            fontWeight={700}
             variant="body3"
             cursor="pointer"
             alignSelf="flex-start"
@@ -189,7 +187,7 @@ const Faucet = () => {
           <CustomIcon
             name={STATUS_ICONS[result.status]}
             color={`${result.status}.main`}
-            boxSize="6"
+            boxSize={6}
             display="flex"
             alignItems="center"
           />
