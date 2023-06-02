@@ -150,7 +150,7 @@ const ContractDetails = observer(() => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
+    if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
   }, [navigate, router.isReady, wasm.enabled]);
 
   if (isLoading) return <Loading />;

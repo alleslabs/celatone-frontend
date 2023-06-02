@@ -31,7 +31,7 @@ const Deploy = () => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
+    if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
   }, [navigate, router.isReady, wasm.enabled]);
 
   return (

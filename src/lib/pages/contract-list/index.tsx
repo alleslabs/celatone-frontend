@@ -25,7 +25,7 @@ const AllContractListsPage = observer(() => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_ALL_LISTS);
+    if (router.isReady) AmpTrack(AmpEvent.TO_ALL_LISTS);
   }, [navigate, router.isReady, wasm.enabled]);
 
   return (

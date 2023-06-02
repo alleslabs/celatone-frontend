@@ -15,7 +15,7 @@ export const AllPublicProjectsPage = () => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_ALL_PROJECTS);
+    if (router.isReady) AmpTrack(AmpEvent.TO_ALL_PROJECTS);
   }, [navigate, router.isReady, wasm.enabled]);
 
   return (

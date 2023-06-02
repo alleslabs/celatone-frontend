@@ -190,7 +190,7 @@ const UpdateAdmin = () => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrackToAdminUpdate(!!contractAddressParam);
+    if (router.isReady) AmpTrackToAdminUpdate(!!contractAddressParam);
   }, [router.isReady, contractAddressParam, wasm.enabled, navigate]);
 
   return (

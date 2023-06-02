@@ -132,7 +132,7 @@ const CodeDetails = observer(() => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
+    if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
   }, [navigate, router.isReady, wasm.enabled]);
 
   if (data.isLoading) return <Loading />;

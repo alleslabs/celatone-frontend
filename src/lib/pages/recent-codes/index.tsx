@@ -45,7 +45,7 @@ const RecentCodes = observer(() => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
+    if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
   }, [navigate, router.isReady, wasm.enabled]);
 
   const isSearching = !!keyword || permissionValue !== "all";

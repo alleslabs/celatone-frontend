@@ -61,7 +61,7 @@ const Codes = observer(() => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);
+    if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);
   }, [navigate, router.isReady, wasm.enabled]);
 
   return (

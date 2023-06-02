@@ -30,6 +30,7 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const ContractsByList = observer(() => {
   const wasm = useWasmConfig();
   const router = useRouter();
@@ -64,7 +65,7 @@ const ContractsByList = observer(() => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) {
+    if (router.isReady) {
       switch (listSlug) {
         case formatSlugName(INSTANTIATED_LIST_NAME):
           AmpTrack(AmpEvent.TO_LIST_BY_ME);

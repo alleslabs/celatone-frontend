@@ -16,7 +16,7 @@ const Upload = () => {
 
   useEffect(() => {
     if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_UPLOAD);
+    if (router.isReady) AmpTrack(AmpEvent.TO_UPLOAD);
   }, [navigate, router.isReady, wasm.enabled]);
 
   return (
