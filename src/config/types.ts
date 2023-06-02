@@ -30,6 +30,7 @@ type PoolConfig =
 export interface ChainConfig {
   chain: string;
   registryChainName: string;
+  prettyName: string;
   lcd: string;
   rpc: string;
   indexer: string;
