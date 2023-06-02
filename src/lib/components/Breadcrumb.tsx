@@ -32,6 +32,7 @@ export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
           <ChakraBreadcrumbItem
             _hover={{ opacity: 0.8 }}
             transition="all 0.25s ease-in-out"
+            key={`bc-${item.href}`}
           >
             <AppLink color="text.dark" href={item.href}>
               {item.text}
@@ -39,7 +40,7 @@ export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
           </ChakraBreadcrumbItem>
         )
       ) : (
-        <ChakraBreadcrumbItem isCurrentPage>
+        <ChakraBreadcrumbItem isCurrentPage key={`bc-${item.href}`}>
           <Text
             variant="body2"
             className="ellipsis"

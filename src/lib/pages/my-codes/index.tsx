@@ -29,7 +29,7 @@ interface CodeFilterState {
   permissionValue: PermissionFilterValue;
 }
 
-const Codes = observer(() => {
+const MyCodes = observer(() => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -135,4 +135,4 @@ const Codes = observer(() => {
   );
 });
 
-export default Codes;
+export default MyCodes;
