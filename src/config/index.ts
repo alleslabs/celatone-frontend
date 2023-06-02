@@ -5,6 +5,7 @@ import type { ChainConfig, ChainConfigs, ProjectConstants } from "./types";
 export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   chain: "",
   registryChainName: "",
+  prettyName: "",
   lcd: "",
   rpc: "",
   indexer: "",
@@ -42,6 +43,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
   "osmosis-1": {
     chain: "osmosis",
     registryChainName: "osmosis",
+    prettyName: "Osmosis",
     lcd: "https://lcd.osmosis.zone",
     rpc: "https://rpc.osmosis.zone",
     indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
@@ -81,6 +83,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
   "osmo-test-4": {
     chain: "osmosis",
     registryChainName: "osmosistestnet",
+    prettyName: "Osmosis Testnet",
     lcd: "https://lcd-test.osmosis.zone",
     rpc: "https://rpc-test.osmosis.zone",
     indexer: "https://osmosis-testnet-graphql.alleslabs.dev/v1/graphql",

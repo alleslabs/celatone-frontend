@@ -1,11 +1,12 @@
-import { useWallet } from "@cosmos-kit/react";
+import { useCelatoneApp } from "lib/app-provider";
 
 const APP_NAME = "celatone";
 
 const Meta = () => {
-  const { currentChainRecord } = useWallet();
-  const title = `${currentChainRecord?.chain.pretty_name} Explorer | Celatone`;
-
+  const {
+    chainConfig: { prettyName },
+  } = useCelatoneApp();
+  const title = `${prettyName} Explorer | Celatone`;
   return (
     <>
       <meta name="application-name" content={APP_NAME} />
