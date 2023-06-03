@@ -140,8 +140,7 @@ export const UploadSection = ({
           maxLength: constants.maxCodeNameLength,
         }}
         error={
-          errors.codeName &&
-          getMaxLengthError("Code name", codeName.length, "code_name")
+          errors.codeName && getMaxLengthError(codeName.length, "code_name")
         }
         variant="floating"
         my="32px"

@@ -51,8 +51,7 @@ export const OffChainForm = <T extends OffchainDetail>({
           maxLength: constants.maxContractNameLength,
         }}
         error={
-          errors.name &&
-          getMaxLengthError("Contract name", state.name.length, "contract_name")
+          errors.name && getMaxLengthError(state.name.length, "contract_name")
         }
         labelBgColor={labelBgColor}
       />
@@ -67,11 +66,7 @@ export const OffChainForm = <T extends OffchainDetail>({
         }}
         error={
           errors.description &&
-          getMaxLengthError(
-            "Contract description",
-            state.description.length,
-            "contract_desc"
-          )
+          getMaxLengthError(state.description.length, "contract_desc")
         }
         labelBgColor={labelBgColor}
       />

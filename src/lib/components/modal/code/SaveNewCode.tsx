@@ -47,7 +47,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     } else if (trimedName.length > constants.maxCodeNameLength)
       setNameStatus({
         state: "error",
-        message: getMaxLengthError("Code name", trimedName.length, "code_name"),
+        message: getMaxLengthError(trimedName.length, "code_name"),
       });
     else setNameStatus({ state: "success" });
   }, [constants.maxCodeNameLength, getMaxLengthError, name]);

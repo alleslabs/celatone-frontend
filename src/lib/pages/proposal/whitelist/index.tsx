@@ -254,11 +254,7 @@ const ProposalToWhitelist = () => {
                   }}
                   error={
                     title.length > constants.maxProposalTitleLength
-                      ? getMaxLengthError(
-                          "Proposal title",
-                          title.length,
-                          "proposal_title"
-                        )
+                      ? getMaxLengthError(title.length, "proposal_title")
                       : formErrors.title?.message
                   }
                 />

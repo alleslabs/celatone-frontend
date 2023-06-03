@@ -49,11 +49,7 @@ export function CreateNewListModal({
     } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
         state: "error",
-        message: getMaxLengthError(
-          "List name",
-          trimedListName.length,
-          "list_name"
-        ),
+        message: getMaxLengthError(trimedListName.length, "list_name"),
       });
     else if (isContractListExist(userKey, trimedListName))
       setStatus({ state: "error", message: "Already existed" });
