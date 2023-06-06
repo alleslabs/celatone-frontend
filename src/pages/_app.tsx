@@ -19,6 +19,9 @@ import { AppProvider } from "lib/app-provider/contexts/app";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
 import { CelatoneSeo } from "lib/components/Seo";
+import { sei, seiAssets } from "lib/config/sei";
+import { seitestnet2, seitestnet2Assets } from "lib/config/seitestnet2";
+import { terra2testnet, terra2testnetAssets } from "lib/config/terra2testnet";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import { StoreProvider } from "lib/providers/store";
@@ -63,8 +66,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
       <QueryClientProvider client={queryClient}>
         <WalletProvider
-          chains={chains}
-          assetLists={assets}
+          chains={[...chains, terra2testnet, sei, seitestnet2]}
+          assetLists={[
+            ...assets,
+            terra2testnetAssets,
+            seiAssets,
+            seitestnet2Assets,
+          ]}
           wallets={wallets}
           endpointOptions={{
             osmosis: {
@@ -82,6 +90,14 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             terra2testnet: {
               rpc: ["https://terra-testnet-rpc.polkachu.com/"],
               rest: ["https://pisco-lcd.terra.dev/"],
+            },
+            sei: {
+              rpc: ["https://sei-rpc.polkachu.com/"],
+              rest: ["https://sei-api.polkachu.com/"],
+            },
+            seitestnet2: {
+              rpc: ["https://rpc.atlantic-2.seinetwork.io/"],
+              rest: ["https://rest.atlantic-2.seinetwork.io/"],
             },
           }}
         >

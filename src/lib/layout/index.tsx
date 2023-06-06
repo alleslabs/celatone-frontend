@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useState, useEffect } from "react";
 
-import { useMobile } from "lib/app-provider";
-import { getChainConfig } from "lib/data";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
@@ -18,34 +16,18 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
-  const isMobile = useMobile();
 
-  const [isExpand, setIsExpand] = useState(!isMobile);
-  const chainConfig = getChainConfig();
-
-  const lightMode = {
-    templateAreas: `"header""nav""main"`,
-    templateRows: "70px 48px 1fr",
-    templateCols: "1fr",
-    navBar: <SubHeader />,
-  };
-  const fullMode = {
-    templateAreas: `"header header""nav main"`,
-    templateRows: "70px 1fr",
-    templateCols: isExpand ? "224px 1fr" : "48px 1fr",
-    navBar: <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />,
-  };
-
-  const mode = chainConfig.isWasm ? fullMode : lightMode;
+  const [isExpand, setIsExpand] = useState(false);
 
   useEffect(() => {
     scrollToTop();
   }, [router.asPath]);
+
   return (
     <Grid
-      templateAreas={mode.templateAreas}
-      gridTemplateRows={mode.templateRows}
-      gridTemplateColumns={mode.templateCols}
+      templateAreas={`"header header""subheader subheader""nav main"`}
+      gridTemplateRows="70px 48px 1fr"
+      gridTemplateColumns={isExpand ? "224px 1fr" : "48px 1fr"}
       h="100vh"
       overflowX="hidden"
       bg="background.main"
@@ -53,8 +35,11 @@ const Layout = ({ children }: LayoutProps) => {
       <GridItem bg="gray.900" area="header" mb={1}>
         <Header />
       </GridItem>
+      <GridItem bg="gray.900" area="subheader" mb="1">
+        <SubHeader />
+      </GridItem>
       <GridItem bg="gray.900" area="nav" overflowY="auto">
-        {mode.navBar}
+        <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
       </GridItem>
       <GridItem area="main" overflowY="auto" id="content">
         <div style={{ minHeight: `calc(100vh - 129px)` }}>{children}</div>

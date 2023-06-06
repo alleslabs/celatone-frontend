@@ -25,24 +25,14 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
 
   const navMenu: MenuInfo[] = [
     {
-      category: "Overview",
+      category: "Your Account",
       submenu: [
-        { name: "Overview", slug: "/", icon: "home" },
+        { name: "Developer Home", slug: "/dev-home", icon: "home" },
         {
           name: "Past Transactions",
           slug: "/past-txs",
           icon: "history",
         },
-        {
-          name: "Proposals",
-          slug: "/proposals",
-          icon: "proposal",
-        },
-        // {
-        //   name: "Osmosis Pools",
-        //   slug: "/pools",
-        //   icon: "pool",
-        // },
       ],
     },
     {

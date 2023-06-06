@@ -51,10 +51,10 @@ const secondaryMenu: SecondaryMenuType[] = [
 export const QuickMenu = () => (
   <Flex direction="column" gap={4} bg="gray.900" p={12}>
     <Heading as="h5" variant="h5">
-      Start using Celatone
+      Start using SeiScan
     </Heading>
     <ConnectWalletAlert
-      title="Connect wallet to start using Celatone"
+      title="Connect wallet to start using SeiScan"
       subtitle="Actions such as deploying new contracts or sending transactions require a wallet connection"
     />
     <Flex gap={4}>
@@ -71,7 +71,7 @@ export const QuickMenu = () => (
             <Text variant="body1" fontWeight="800">
               Deploy a new contract
             </Text>
-            <Text variant="body2">
+            <Text variant="body2" color="text.dark">
               Upload a new wasm code or instantiate a new contract
             </Text>
           </Flex>

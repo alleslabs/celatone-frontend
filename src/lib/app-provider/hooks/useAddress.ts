@@ -34,6 +34,16 @@ const addressLengthMap: {
     51: "validator_address",
     64: "contract_address",
   },
+  sei: {
+    42: "user_address",
+    49: "validator_address",
+    62: "contract_address",
+  },
+  seitestnet2: {
+    42: "user_address",
+    49: "validator_address",
+    62: "contract_address",
+  },
 };
 
 export const getAddressTypeByLength = (

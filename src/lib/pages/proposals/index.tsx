@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useState, useEffect } from "react";
 
-import { useChainId } from "lib/app-provider";
+import { useChainId, useInternalNavigate } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -62,10 +62,12 @@ const Proposals = () => {
     search,
     proposer
   );
+  const navigate = useInternalNavigate();
 
   useEffect(() => {
+    navigate({ pathname: "/" });
     if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_LIST);
-  }, [router.isReady]);
+  }, [navigate, router.isReady]);
 
   useEffect(() => {
     setPageSize(10);

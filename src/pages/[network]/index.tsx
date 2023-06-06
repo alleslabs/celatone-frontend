@@ -1,3 +1,3 @@
-import Home from "lib/pages/home";
+import NetworkOverview from "lib/pages/network-overview";
 
-export default Home;
+export default NetworkOverview;

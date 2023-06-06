@@ -98,8 +98,7 @@ const Searchbar = () => {
   useEffect(() => {
     const res: SearchResultType[] = [];
     if (chainConfig.isWasm && isCodeId(keyword)) res.push("Code ID");
-    else if (isBlock(keyword)) res.push("Block");
-
+    if (isBlock(keyword)) res.push("Block");
     if (!validateContractAddress(keyword)) res.push("Contract Address");
     if (!validateUserAddress(keyword)) res.push("Wallet Address");
     if (isTxHash(keyword)) res.push("Transaction Hash");

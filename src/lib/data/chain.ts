@@ -1,7 +1,7 @@
 import { SELECTED_CHAIN } from "env";
 import type { Option } from "lib/types";
 
-export type SupportedChain = "osmosis" | "terra" | "mitosis";
+export type SupportedChain = "osmosis" | "terra" | "mitosis" | "sei";
 
 interface Chain {
   mainnet: string;
@@ -27,6 +27,11 @@ export const MITOSIS_CHAINS: Chain = {
   testnet: "osmosistestnet5",
 };
 
+export const SEI_CHAINS: Chain = {
+  mainnet: "sei",
+  testnet: "seitestnet2",
+};
+
 export const getSupportedChainNames = (): SupportedChain[] => {
   switch (SELECTED_CHAIN) {
     case "terra":
@@ -35,6 +40,8 @@ export const getSupportedChainNames = (): SupportedChain[] => {
       return Object.values(OSMOSIS_CHAINS);
     case "mitosis":
       return Object.values(MITOSIS_CHAINS);
+    case "sei":
+      return Object.values(SEI_CHAINS);
     default:
       throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
   }
@@ -49,11 +56,13 @@ export const getSupportedChainNames = (): SupportedChain[] => {
 export const getChainNameByNetwork = (network: Network): string => {
   switch (SELECTED_CHAIN) {
     case "terra":
-      return TERRA_CHAINS[network] ?? TERRA_CHAINS.mainnet;
+      return TERRA_CHAINS[network] ?? TERRA_CHAINS.testnet;
     case "osmosis":
-      return OSMOSIS_CHAINS[network] ?? OSMOSIS_CHAINS.mainnet;
+      return OSMOSIS_CHAINS[network] ?? OSMOSIS_CHAINS.testnet;
     case "mitosis":
-      return MITOSIS_CHAINS[network] ?? MITOSIS_CHAINS.mainnet;
+      return MITOSIS_CHAINS[network] ?? MITOSIS_CHAINS.testnet;
+    case "sei":
+      return SEI_CHAINS[network] ?? SEI_CHAINS.testnet;
     default:
       throw new Error(`Unsupported chain: ${SELECTED_CHAIN}`);
   }
@@ -76,6 +85,11 @@ export const getNetworkByChainName = (chainName: string): Network => {
     case "mitosis":
       network = (Object.keys(MITOSIS_CHAINS) as Network[]).find(
         (each) => MITOSIS_CHAINS[each as keyof Chain] === chainName
+      );
+      break;
+    case "sei":
+      network = (Object.keys(SEI_CHAINS) as Network[]).find(
+        (each) => SEI_CHAINS[each as keyof Chain] === chainName
       );
       break;
     default:
@@ -103,6 +117,9 @@ const CHAIN_CONFIG: Record<SupportedChain, ChainConfig> = {
   },
   mitosis: {
     isWasm: false,
+  },
+  sei: {
+    isWasm: true,
   },
 };
 

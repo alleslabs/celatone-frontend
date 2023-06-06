@@ -9,7 +9,7 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { QuickMenu } from "./components/QuickMenu";
 import { RecentActivities } from "./components/RecentActivities";
 
-const Home = () => {
+const DevHome = () => {
   const router = useRouter();
   const chainConfig = getChainConfig();
 
@@ -27,4 +27,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default DevHome;

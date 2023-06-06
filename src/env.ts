@@ -26,6 +26,10 @@ export const CELATONE_FALLBACK_GAS_PRICE: Record<string, ChainGasPrice> = {
     denom: "uluna",
     gasPrice: "0.15" as U<Token>,
   },
+  seitestnet2: {
+    denom: "usei",
+    gasPrice: "0.03" as U<Token>,
+  },
 };
 
 export const CELATONE_APP_CONTRACT_ADDRESS = (
@@ -43,6 +47,12 @@ export const CELATONE_APP_CONTRACT_ADDRESS = (
       return {
         example:
           "terra1k5arpcpusfrtnucr5q8f5uh5twghh3q360hv4j6fe0hvzn7x8skqempu76" as ContractAddr,
+      };
+    case "sei":
+    case "seitestnet2":
+      return {
+        example:
+          "sei18l6zzyyhrl7j9zw2lew50677va25rtsa2s4yy5gdpg4nxz3y3j9se47f0k" as ContractAddr,
       };
     default:
       return {
@@ -65,6 +75,11 @@ export const CELATONE_APP_HUMAN_ADDRESS = (
       return {
         example: "terra1dtdqq3sn8c6y6sjvtf4340aycv2g6x6pp5tkln" as HumanAddr,
       };
+    case "sei":
+    case "seitestnet2":
+      return {
+        example: "sei1acqpnvg2t4wmqfdv8hq47d3petfksjs5xjfnyj" as HumanAddr,
+      };
     default:
       return {
         example: "" as HumanAddr,
@@ -77,6 +92,7 @@ export const FALLBACK_LCD_ENDPOINT: Record<string, string> = {
   osmosistestnet5: "https://lcd.osmotest5.osmosis.zone/",
   terra2: "https://phoenix-lcd.terra.dev/",
   terra2testnet: "https://pisco-lcd.terra.dev/",
+  seitestnet2: "https://sei-testnet-2-rest.brocha.in/",
 };
 
 export const MAX_FILE_SIZE = 800_000;
@@ -101,6 +117,9 @@ export const getChainApiPath = (chainName: string) => {
     case "terra2":
     case "terra2testnet":
       return "terra";
+    case "sei":
+    case "seitestnet2":
+      return "sei";
     default:
       return undefined;
   }
@@ -114,6 +133,9 @@ export const getMainnetApiPath = (chainId: string) => {
     case "pisco-1":
     case "phoenix-1":
       return "phoenix-1";
+    case "pacific-1":
+    case "atlantic-2":
+      return "pacific-1";
     default:
       return undefined;
   }
