@@ -17,6 +17,7 @@ import {
   useInternalNavigate,
   useValidateAddress,
 } from "lib/app-provider";
+import { AssignMe } from "lib/components/AssignMe";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
@@ -158,19 +159,14 @@ const Faucet = () => {
         status={status}
         label="Receiving Address"
         helperAction={
-          <Text
-            color="accent.main"
-            fontWeight={700}
-            variant="body3"
-            cursor="pointer"
-            alignSelf="flex-start"
+          <AssignMe
             onClick={() => {
               AmpTrack(AmpEvent.USE_ASSIGN_ME);
               setAddress(walletAddress);
             }}
-          >
-            Assign me
-          </Text>
+            isDisable={!walletAddress || address === walletAddress}
+            textAlign="left"
+          />
         }
       />
       <Button
