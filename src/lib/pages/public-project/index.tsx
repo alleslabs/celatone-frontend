@@ -2,12 +2,14 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import { AllProject } from "./components/AllProject";
 
 export const AllPublicProjectsPage = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
 
   useEffect(() => {

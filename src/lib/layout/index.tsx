@@ -18,7 +18,7 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
-  const { enabled: isWasm } = useWasmConfig();
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   const [isExpand, setIsExpand] = useState(!isMobile);
 
@@ -35,7 +35,7 @@ const Layout = ({ children }: LayoutProps) => {
     navBar: <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />,
   };
 
-  const mode = isWasm ? fullMode : lightMode;
+  const mode = wasm.enabled ? fullMode : lightMode;
 
   useEffect(() => {
     scrollToTop();

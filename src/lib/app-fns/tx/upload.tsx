@@ -19,7 +19,7 @@ import { sendingTx } from "./common/sending";
 
 interface UploadTxParams {
   address: HumanAddr;
-  codeDesc: string;
+  codeName: string;
   wasmCode: Uint8Array;
   wasmFileName: string;
   fee: StdFee;
@@ -31,7 +31,7 @@ interface UploadTxParams {
 
 export const uploadContractTx = ({
   address,
-  codeDesc,
+  codeName,
   wasmCode,
   wasmFileName,
   fee,
@@ -88,7 +88,7 @@ export const uploadContractTx = ({
           description: (
             <>
               <span style={{ fontWeight: 700 }}>
-                ‘{codeDesc || `${wasmFileName}(${txInfo.codeId})`}’
+                ‘{codeName || `${wasmFileName}(${txInfo.codeId})`}’
               </span>{" "}
               is has been uploaded. Would you like to{" "}
               {isMigrate ? "migrate" : "instantiate"} your code now?

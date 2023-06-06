@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { UploadIcon } from "../icon";
-import { MAX_FILE_SIZE } from "lib/data";
+import { useWasmConfig } from "lib/app-provider";
 
 interface DropZoneProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -12,6 +12,8 @@ interface DropZoneProps
 }
 
 export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const onDrop = useCallback(
     (file: File[]) => {
       setFile(file[0]);
@@ -25,7 +27,8 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
     accept: {
       "application/wasm": [".wasm"],
     },
-    maxSize: MAX_FILE_SIZE,
+    // Throwing error when wasm is disabled will cause the page to not redirect, so default value is assigned instead
+    maxSize: wasm.enabled ? wasm.storeCodeMaxFileSize : 0,
   });
 
   return (

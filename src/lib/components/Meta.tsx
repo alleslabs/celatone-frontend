@@ -1,10 +1,12 @@
-import { SELECTED_CHAIN } from "env";
+import { useCelatoneApp } from "lib/app-provider";
 
 const APP_NAME = "celatone";
 
 const Meta = () => {
-  const chainName = SELECTED_CHAIN || "";
-  const title = `${chainName.charAt(0).toUpperCase() + chainName.slice(1)}`;
+  const {
+    chainConfig: { prettyName },
+  } = useCelatoneApp();
+  const title = `${prettyName} Explorer | Celatone`;
   return (
     <>
       <meta name="application-name" content={APP_NAME} />
@@ -14,7 +16,7 @@ const Meta = () => {
       <meta name="format-detection" content="telephone=no" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="theme-color" content="#FFFFFF" />
-      <title>{`${title} Explorer | Celatone`}</title>
+      <title>{title}</title>
       <meta
         name="description"
         content="A smart contract powered explorer for the Cosmos."

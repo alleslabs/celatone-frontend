@@ -11,13 +11,13 @@ import { RecentActivities } from "./components/RecentActivities";
 
 const Home = () => {
   const router = useRouter();
-  const { enabled: isWasm } = useWasmConfig();
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_OVERVIEW);
   }, [router.isReady]);
 
-  return isWasm ? (
+  return wasm.enabled ? (
     <Box mx="1">
       <QuickMenu />
       <RecentActivities />

@@ -2,6 +2,7 @@ import { Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useWasmConfig } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
@@ -10,6 +11,7 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const Upload = () => {
   const router = useRouter();
+  useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_UPLOAD);

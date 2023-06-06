@@ -9,6 +9,7 @@ import {
   useCelatoneApp,
   useInternalNavigate,
   useLCDEndpoint,
+  useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -32,6 +33,7 @@ const defaultValues: MigratePageState = {
 };
 
 const Migrate = () => {
+  useWasmConfig({ shouldRedirect: true });
   const { indexerGraphClient } = useCelatoneApp();
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -43,6 +45,7 @@ const Migrate = () => {
     mode: "all",
     defaultValues,
   });
+
   const { migrateStep, contractAddress, admin, codeId } = watch();
 
   const firstStep = migrateStep !== "migrate_contract";

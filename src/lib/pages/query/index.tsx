@@ -4,7 +4,11 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useLCDEndpoint,
+  useWasmConfig,
+} from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
@@ -23,6 +27,7 @@ import {
 import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const lcdEndpoint = useLCDEndpoint();
