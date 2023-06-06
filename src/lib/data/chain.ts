@@ -80,27 +80,3 @@ export const getNetworkByChainName = (chainName: string): Network => {
 
   return network;
 };
-
-interface ChainConfig {
-  isWasm: boolean;
-}
-
-const CHAIN_CONFIG: Record<SupportedChain, ChainConfig> = {
-  osmosis: {
-    isWasm: true,
-  },
-  terra: {
-    isWasm: true,
-  },
-  mitosis: {
-    isWasm: false,
-  },
-};
-
-export const getChainConfig = () => {
-  if (!SELECTED_CHAIN)
-    throw new Error(`${SELECTED_CHAIN} - environment variable not found`);
-  if (!CHAIN_CONFIG[SELECTED_CHAIN])
-    throw new Error(`Chain not found in chain config`);
-  return CHAIN_CONFIG[SELECTED_CHAIN];
-};

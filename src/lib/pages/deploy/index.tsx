@@ -13,6 +13,7 @@ import {
   useInternalNavigate,
   useSelectChain,
   useCurrentNetwork,
+  useWasmConfig,
 } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
@@ -26,6 +27,7 @@ const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const selectChain = useSelectChain();
+  useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);

@@ -79,7 +79,7 @@ const Faucet = () => {
 
   useEffect(() => {
     if (!faucet.enabled) navigate({ pathname: "/", replace: true });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
+    if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
   }, [faucet, navigate, router]);
 
   useEffect(() => {

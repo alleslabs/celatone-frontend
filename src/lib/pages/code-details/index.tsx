@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useWasmConfig } from "lib/app-provider";
 import { BackButton } from "lib/components/button";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
@@ -123,6 +124,7 @@ const CodeDetailsBody = observer(
 );
 
 const CodeDetails = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(codeIdParam);

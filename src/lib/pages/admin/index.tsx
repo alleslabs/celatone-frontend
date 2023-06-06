@@ -14,6 +14,7 @@ import {
   useLCDEndpoint,
   useGetAddressType,
   useValidateAddress,
+  useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -34,6 +35,7 @@ import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
 
 const UpdateAdmin = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { address } = useWallet();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
