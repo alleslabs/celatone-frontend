@@ -27,9 +27,15 @@ type PoolConfig =
       enabled: false;
     };
 
+export interface ExplorerConfig {
+  validator: string;
+  proposal: string;
+}
+
 export interface ChainConfig {
   chain: string;
   registryChainName: string;
+  prettyName: string;
   lcd: string;
   rpc: string;
   indexer: string;
@@ -51,10 +57,7 @@ export interface ChainConfig {
     validator: ValidatorAddr;
     contract: ContractAddr;
   };
-  explorerLink: {
-    validator: string;
-    proposal: string;
-  };
+  explorerLink: ExplorerConfig;
 }
 
 export interface ChainConfigs {

@@ -2,10 +2,7 @@ import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import {
-  getExplorerProposalUrl,
-  getExplorerValidatorUrl,
-} from "lib/app-fns/explorer";
+import type { ExplorerConfig } from "config/types";
 import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { AmpTrackMintscan } from "lib/services/amplitude";
@@ -37,7 +34,7 @@ interface ExplorerLinkProps extends BoxProps {
 
 const getNavigationUrl = (
   type: ExplorerLinkProps["type"],
-  currentChainName: string,
+  explorerConfig: ExplorerConfig,
   value: string
 ) => {
   let url = "";
@@ -52,7 +49,7 @@ const getNavigationUrl = (
       url = "/account";
       break;
     case "validator_address":
-      url = getExplorerValidatorUrl(currentChainName);
+      url = explorerConfig.validator;
       break;
     case "code_id":
       url = "/code";
@@ -61,7 +58,7 @@ const getNavigationUrl = (
       url = "/block";
       break;
     case "proposal_id":
-      url = getExplorerProposalUrl(currentChainName);
+      url = explorerConfig.proposal;
       break;
     case "invalid_address":
       return "";
@@ -155,7 +152,11 @@ export const ExplorerLink = ({
   openNewTab,
   ...componentProps
 }: ExplorerLinkProps) => {
-  const { address, currentChainName } = useWallet();
+  const { address } = useWallet();
+  const {
+    chainConfig: { explorerLink: explorerConfig },
+  } = useCelatoneApp();
+
   const isInternal =
     type === "code_id" ||
     type === "contract_address" ||
@@ -164,7 +165,7 @@ export const ExplorerLink = ({
     type === "block_height";
 
   const [hrefLink, textValue] = [
-    getNavigationUrl(type, currentChainName, copyValue || value),
+    getNavigationUrl(type, explorerConfig, copyValue || value),
     getValueText(value === address, textFormat === "truncate", value),
   ];
 

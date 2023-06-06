@@ -1,4 +1,3 @@
-import type { IconKeys } from "lib/components/icon";
 import type { LVPair } from "lib/types";
 import { MsgType } from "lib/types";
 /**
@@ -12,47 +11,6 @@ export const SAVED_LIST_NAME = "Saved Contracts";
 
 // special slug with all cap letters to avoid conflict with any list
 export const ADMIN_SPECIAL_SLUG = "ADMIN";
-
-export const getMaxLengthError = (
-  field: string,
-  currentLength: number,
-  maxLength: number
-) => {
-  return currentLength > maxLength
-    ? `${field} is too long. (${currentLength}/${maxLength})`
-    : undefined;
-};
-
-export const MAX_LIST_NAME_LENGTH = 50;
-export const getMaxListNameLengthError = (currentLength: number) =>
-  getMaxLengthError("List name", currentLength, MAX_LIST_NAME_LENGTH);
-
-export const MAX_CONTRACT_NAME_LENGTH = 50;
-export const getMaxContractNameLengthError = (currentLength: number) =>
-  getMaxLengthError("Contract name", currentLength, MAX_CONTRACT_NAME_LENGTH);
-
-export const MAX_CONTRACT_DESCRIPTION_LENGTH = 250;
-export const getMaxContractDescriptionLengthError = (currentLength: number) =>
-  getMaxLengthError(
-    "Contract description",
-    currentLength,
-    MAX_CONTRACT_DESCRIPTION_LENGTH
-  );
-
-export const MAX_CODE_NAME_LENGTH = 50;
-export const getMaxCodeNameLengthError = (currentLength: number) =>
-  getMaxLengthError("Code name", currentLength, MAX_CODE_NAME_LENGTH);
-
-export const getListIcon = (listName: string): IconKeys => {
-  switch (listName) {
-    case INSTANTIATED_LIST_NAME:
-      return "wallet";
-    case SAVED_LIST_NAME:
-      return "bookmark-solid";
-    default:
-      return "contract-list";
-  }
-};
 
 export const DEFAULT_LIST: LVPair[] = [
   {

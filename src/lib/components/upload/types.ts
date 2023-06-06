@@ -4,7 +4,7 @@ export type SimulateStatus = "pending" | "completed" | "failed";
 
 export interface UploadSectionState {
   wasmFile?: File;
-  codeDesc: string;
+  codeName: string;
   estimatedFee?: StdFee;
   simulateStatus: SimulateStatus;
   simulateError: string;
