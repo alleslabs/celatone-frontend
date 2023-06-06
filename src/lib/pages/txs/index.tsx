@@ -19,7 +19,7 @@ const Txs = () => {
         Transactions
       </Heading>
       <Text variant="body2" color="text.dark" mb={8} mt={1}>
-        This page displays all transactions in this network sorted by recency
+        This page displays all transactions on this network sorted by recency
       </Text>
       <TxsTable isViewMore={false} />
     </PageContainer>

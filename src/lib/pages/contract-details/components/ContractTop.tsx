@@ -35,6 +35,7 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
     publicProject.publicInfo?.name ||
     instantiateInfo?.label;
 
+  const publicName = publicProject.publicDetail?.name;
   const goToQuery = () => {
     navigate({
       pathname: "/query",
@@ -97,19 +98,21 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
   return (
     <Flex justify="space-between" mb={6}>
       <Flex direction="column" w="full">
-        {publicProject.publicDetail && (
-          <Breadcrumb
-            items={[
-              { text: "Public Projects", href: "/projects" },
-              {
-                text: publicProject.publicDetail.name,
-                href: `/projects/${publicProject.publicInfo?.slug}`,
-              },
-              { text: truncate(contractAddress) },
-            ]}
-            mb={6}
-          />
-        )}
+        <Breadcrumb
+          items={[
+            {
+              text: publicName ? "Public Projects" : "Contracts",
+              href: publicName ? "/projects" : "/contracts",
+            },
+            {
+              text: publicName,
+              href: `/projects/${publicProject.publicInfo?.slug}`,
+            },
+            { text: truncate(contractAddress) },
+          ]}
+          mb={6}
+        />
+
         <Flex direction="column" gap={2} textOverflow="ellipsis" w="full">
           <Flex justify="space-between" align="center">
             <Flex gap={1} maxW="670px">

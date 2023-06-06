@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#321](https://github.com/alleslabs/celatone-frontend/pull/321) Add amplitude to proposal to store code page
 - [#274](https://github.com/alleslabs/celatone-frontend/pull/274) Add proposal to store code page
 - [#279](https://github.com/alleslabs/celatone-frontend/pull/279) Add instantiate permission to msg store code, change error display design, and upgrade cosmjs to version 0.30.1
+- [#366](https://github.com/alleslabs/celatone-frontend/pull/366) Add recent contracts
 
 ### Improvements
 

@@ -45,7 +45,7 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
       );
   }, [indexerGraphClient]);
 
-  return useQuery(["all_codes", indexerGraphClient], queryFn);
+  return useQuery(["recents_codes", indexerGraphClient], queryFn);
 };
 
 export const useCodeListByWalletAddress = (

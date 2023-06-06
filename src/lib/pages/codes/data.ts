@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import type { PermissionFilterValue } from "lib/hooks";
-import { usePermissionFilter, useSearchFilter } from "lib/hooks";
+import { useCodePermissionFilter, useCodeSearchFilter } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useCodeListQuery } from "lib/services/codeService";
 import type { CodeInfo } from "lib/types";
@@ -17,8 +17,8 @@ export const useRecentCodesData = (
 ): RecentCodesData => {
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
   const { data: rawRecentCodes = [], isLoading } = useCodeListQuery();
-  const permissionFilterFn = usePermissionFilter(permissionValue);
-  const searchFilterFn = useSearchFilter(keyword);
+  const permissionFilterFn = useCodePermissionFilter(permissionValue);
+  const searchFilterFn = useCodeSearchFilter(keyword);
 
   const recentCodes = rawRecentCodes.map<CodeInfo>((code) => ({
     ...code,
