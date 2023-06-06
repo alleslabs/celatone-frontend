@@ -25,7 +25,7 @@ const AllContractListsPage = observer(() => {
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_ALL_LISTS);
-  }, [navigate, router.isReady]);
+  }, [router.isReady]);
 
   return (
     <PageContainer>

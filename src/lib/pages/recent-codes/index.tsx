@@ -45,7 +45,7 @@ const RecentCodes = observer(() => {
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
-  }, [navigate, router.isReady]);
+  }, [router.isReady]);
 
   const isSearching = !!keyword || permissionValue !== "all";
 

@@ -30,7 +30,6 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 const ContractsByList = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();

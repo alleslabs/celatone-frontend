@@ -31,7 +31,7 @@ const Deploy = () => {
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
-  }, [navigate, router.isReady]);
+  }, [router.isReady]);
 
   return (
     <WasmPageContainer>

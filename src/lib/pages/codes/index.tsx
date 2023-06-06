@@ -61,7 +61,7 @@ const Codes = observer(() => {
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);
-  }, [navigate, router.isReady]);
+  }, [router.isReady]);
 
   return (
     <PageContainer>

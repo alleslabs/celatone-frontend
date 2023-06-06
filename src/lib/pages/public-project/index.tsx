@@ -2,7 +2,7 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
+import { useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
@@ -10,12 +10,11 @@ import { AllProject } from "./components/AllProject";
 
 export const AllPublicProjectsPage = () => {
   useWasmConfig({ shouldRedirect: true });
-  const navigate = useInternalNavigate();
   const router = useRouter();
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_ALL_PROJECTS);
-  }, [navigate, router.isReady]);
+  }, [router.isReady]);
 
   return (
     <PageContainer>
