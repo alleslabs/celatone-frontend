@@ -12,7 +12,7 @@ interface DropZoneProps
 }
 
 export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
-  const wasm = useWasmConfig();
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   const onDrop = useCallback(
     (file: File[]) => {

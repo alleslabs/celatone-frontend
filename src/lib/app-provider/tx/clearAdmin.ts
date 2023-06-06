@@ -14,7 +14,7 @@ export const useClearAdminTx = (contractAddress: ContractAddr) => {
   const { address, getCosmWasmClient } = useWallet();
   const queryClient = useQueryClient();
   const fabricateFee = useFabricateFee();
-  const wasm = useWasmConfig();
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   return useCallback(
     async ({ onTxSucceed }: ClearAdminStreamParams) => {

@@ -139,7 +139,7 @@ const ContractDetailsBody = observer(
 );
 
 const ContractDetails = observer(() => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { validateContractAddress } = useValidateAddress();
@@ -149,9 +149,8 @@ const ContractDetails = observer(() => {
   const { isLoading, contractData } = useContractData(contractAddressParam);
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
-  }, [navigate, router.isReady, wasm.enabled]);
+  }, [navigate, router.isReady]);
 
   if (isLoading) return <Loading />;
   return (

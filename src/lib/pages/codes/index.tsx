@@ -30,7 +30,7 @@ interface CodeFilterState {
 }
 
 const Codes = observer(() => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -60,9 +60,8 @@ const Codes = observer(() => {
   const isSearching = !!keyword || permissionValue !== "all";
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);
-  }, [navigate, router.isReady, wasm.enabled]);
+  }, [navigate, router.isReady]);
 
   return (
     <PageContainer>

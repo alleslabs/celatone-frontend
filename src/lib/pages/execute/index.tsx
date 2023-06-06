@@ -23,16 +23,12 @@ import {
 import { ExecuteArea } from "./components/ExecuteArea";
 
 const Execute = () => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const [initialMsg, setInitialMsg] = useState("");
   const [contractAddress, setContractAddress] = useState("");
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
-
-  useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-  }, [navigate, wasm.enabled]);
 
   const { isFetching, execCmds } = useExecuteCmds(
     contractAddress as ContractAddr

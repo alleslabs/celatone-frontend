@@ -11,13 +11,12 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const Upload = () => {
   const router = useRouter();
-  const wasm = useWasmConfig();
   const navigate = useInternalNavigate();
+  useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_UPLOAD);
-  }, [navigate, router.isReady, wasm.enabled]);
+  }, [navigate, router.isReady]);
 
   return (
     <WasmPageContainer>

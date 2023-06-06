@@ -22,7 +22,7 @@ interface RecentCodesState {
 }
 
 const RecentCodes = observer(() => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -44,9 +44,8 @@ const RecentCodes = observer(() => {
   );
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
-  }, [navigate, router.isReady, wasm.enabled]);
+  }, [navigate, router.isReady]);
 
   const isSearching = !!keyword || permissionValue !== "all";
 

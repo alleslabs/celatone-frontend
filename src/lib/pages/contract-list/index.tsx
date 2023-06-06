@@ -13,7 +13,7 @@ import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 const AllContractListsPage = observer(() => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { getContractLists } = useContractStore();
@@ -24,9 +24,8 @@ const AllContractListsPage = observer(() => {
   };
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_ALL_LISTS);
-  }, [navigate, router.isReady, wasm.enabled]);
+  }, [navigate, router.isReady]);
 
   return (
     <PageContainer>

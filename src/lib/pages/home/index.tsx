@@ -11,7 +11,7 @@ import { RecentActivities } from "./components/RecentActivities";
 
 const Home = () => {
   const router = useRouter();
-  const wasm = useWasmConfig();
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_OVERVIEW);

@@ -9,14 +9,13 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { AllProject } from "./components/AllProject";
 
 export const AllPublicProjectsPage = () => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const navigate = useInternalNavigate();
   const router = useRouter();
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_ALL_PROJECTS);
-  }, [navigate, router.isReady, wasm.enabled]);
+  }, [navigate, router.isReady]);
 
   return (
     <PageContainer>

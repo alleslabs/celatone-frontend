@@ -27,7 +27,7 @@ import {
 import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const lcdEndpoint = useLCDEndpoint();
@@ -35,10 +35,6 @@ const Query = () => {
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");
   const [cmds, setCmds] = useState<[string, string][]>([]);
-
-  useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-  }, [navigate, wasm.enabled]);
 
   const goToExecute = () => {
     navigate({

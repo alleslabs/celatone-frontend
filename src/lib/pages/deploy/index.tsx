@@ -27,12 +27,11 @@ const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const selectChain = useSelectChain();
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
-  }, [navigate, router.isReady, wasm.enabled]);
+  }, [navigate, router.isReady]);
 
   return (
     <WasmPageContainer>

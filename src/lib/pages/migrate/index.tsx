@@ -33,7 +33,7 @@ const defaultValues: MigratePageState = {
 };
 
 const Migrate = () => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const { indexerGraphClient } = useCelatoneApp();
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -45,10 +45,6 @@ const Migrate = () => {
     mode: "all",
     defaultValues,
   });
-
-  useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
-  }, [navigate, wasm.enabled]);
 
   const { migrateStep, contractAddress, admin, codeId } = watch();
 

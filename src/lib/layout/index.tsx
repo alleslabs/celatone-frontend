@@ -18,7 +18,7 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
-  const wasm = useWasmConfig();
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   const [isExpand, setIsExpand] = useState(!isMobile);
 

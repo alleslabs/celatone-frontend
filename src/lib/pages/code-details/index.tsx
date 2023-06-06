@@ -124,16 +124,15 @@ const CodeDetailsBody = observer(
 );
 
 const CodeDetails = observer(() => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(codeIdParam);
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
-  }, [navigate, router.isReady, wasm.enabled]);
+  }, [navigate, router.isReady]);
 
   if (data.isLoading) return <Loading />;
   return (

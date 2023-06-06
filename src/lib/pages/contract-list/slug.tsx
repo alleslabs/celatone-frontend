@@ -32,7 +32,7 @@ import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const ContractsByList = observer(() => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const listSlug = getFirstQueryParam(router.query.slug);
@@ -64,7 +64,6 @@ const ContractsByList = observer(() => {
   }, [contractListInfo, isHydrated, navigate]);
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) {
       switch (listSlug) {
         case formatSlugName(INSTANTIATED_LIST_NAME):
@@ -77,7 +76,7 @@ const ContractsByList = observer(() => {
           AmpTrack(AmpEvent.TO_LIST_OTHERS);
       }
     }
-  }, [router.isReady, listSlug, wasm.enabled, navigate]);
+  }, [router.isReady, listSlug]);
 
   if (!contractListInfo) return null;
 

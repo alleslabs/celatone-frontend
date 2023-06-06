@@ -35,7 +35,7 @@ import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
 
 const UpdateAdmin = () => {
-  const wasm = useWasmConfig();
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { address } = useWallet();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
@@ -189,9 +189,8 @@ const UpdateAdmin = () => {
   ]);
 
   useEffect(() => {
-    if (!wasm.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrackToAdminUpdate(!!contractAddressParam);
-  }, [router.isReady, contractAddressParam, wasm.enabled, navigate]);
+  }, [router.isReady, contractAddressParam]);
 
   return (
     <WasmPageContainer>
