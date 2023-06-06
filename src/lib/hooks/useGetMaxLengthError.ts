@@ -34,12 +34,6 @@ export const useGetMaxLengthError = () => {
 
       return `${fieldName} is too long. (${currentLength}/${maxLength})`;
     },
-    [
-      constants.maxCodeNameLength,
-      constants.maxContractDescriptionLength,
-      constants.maxContractNameLength,
-      constants.maxListNameLength,
-      constants.maxProposalTitleLength,
-    ]
+    [constants]
   );
 };
