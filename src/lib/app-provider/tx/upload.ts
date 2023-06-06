@@ -8,7 +8,7 @@ import type { HumanAddr, Option } from "lib/types";
 export interface UploadStreamParams {
   wasmFileName: Option<string>;
   wasmCode: Option<Promise<ArrayBuffer>>;
-  codeDesc: string;
+  codeName: string;
   estimatedFee: Option<StdFee>;
   onTxSucceed?: (codeId: number) => void;
 }
@@ -20,7 +20,7 @@ export const useUploadContractTx = (isMigrate: boolean) => {
     async ({
       wasmFileName,
       wasmCode,
-      codeDesc,
+      codeName,
       estimatedFee,
       onTxSucceed,
     }: UploadStreamParams) => {
@@ -32,7 +32,7 @@ export const useUploadContractTx = (isMigrate: boolean) => {
       return uploadContractTx({
         address: address as HumanAddr,
         wasmCode: new Uint8Array(await wasmCode),
-        codeDesc,
+        codeName,
         wasmFileName,
         fee: estimatedFee,
         client,
