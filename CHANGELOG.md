@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#373](https://github.com/alleslabs/celatone-frontend/pull/373) Add view in Json for assets in account details page
 - [#364](https://github.com/alleslabs/celatone-frontend/pull/364) (Contract Details) use instantiated height and time from indexer as fallback
 - [#323](https://github.com/alleslabs/celatone-frontend/pull/323) Revise back button and breadcrumb components
 - [#339](https://github.com/alleslabs/celatone-frontend/pull/339) Update all routes to plural form, and patch all codes
