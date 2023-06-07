@@ -47,7 +47,6 @@ export interface CodeDataState {
 
 export const useCodeData = (codeId: number): CodeDataState => {
   const endpoint = useLCDEndpoint();
-  const { currentChainRecord } = useWallet();
 
   const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
@@ -61,7 +60,7 @@ export const useCodeData = (codeId: number): CodeDataState => {
   } = useQuery(
     ["query", "code_data", endpoint, codeId],
     async () => getCodeIdInfo(endpoint, codeId),
-    { enabled: Boolean(currentChainRecord) && Boolean(codeId), retry: false }
+    { enabled: Boolean(endpoint) && Boolean(codeId), retry: false }
   );
 
   const chainId = useChainId();
