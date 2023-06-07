@@ -8,8 +8,10 @@ import {
 } from "@chakra-ui/react";
 
 import { TooltipComponent } from "../TooltipComponent";
-import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { useGovParams } from "lib/services/proposalService";
+import { AccessConfigPermission } from "lib/types";
 
 const StyledMenuItem = chakra(MenuItem, {
   baseStyle: {
@@ -19,8 +21,9 @@ const StyledMenuItem = chakra(MenuItem, {
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
-  const { isTestnet } = useCurrentNetwork();
-
+  const { data: govParams } = useGovParams();
+  const isPermissionless =
+    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
   return (
     <Menu>
       <MenuButton
@@ -55,10 +58,14 @@ export const NewProposalButton = () => {
           To Instantiate Contract
         </StyledMenuItem> */}
         <TooltipComponent
-          label={isTestnet ? "Not available in testnet" : undefined}
+          label={
+            isPermissionless
+              ? "Not available in permissionless network"
+              : undefined
+          }
         >
           <StyledMenuItem
-            isDisabled={isTestnet}
+            isDisabled={isPermissionless}
             icon={<CustomIcon name="admin" />}
             onClick={() => {
               navigate({

@@ -10,8 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
-import type { Network } from "lib/data";
+import { useInternalNavigate } from "lib/app-provider";
 
 import { CustomIcon } from "./icon";
 
@@ -21,10 +20,8 @@ export interface SidebarMetadata {
   toStoreCode?: boolean;
 }
 
-export type SidebarDetails = Record<Network, SidebarMetadata>;
-
 interface StickySidebarProps extends BoxProps {
-  metadata: SidebarDetails;
+  metadata: SidebarMetadata;
 }
 
 export const StickySidebar = ({
@@ -32,8 +29,7 @@ export const StickySidebar = ({
   ...boxProps
 }: StickySidebarProps) => {
   const navigate = useInternalNavigate();
-  const { network } = useCurrentNetwork();
-  const { title, description, toStoreCode } = metadata[network];
+  const { title, description, toStoreCode } = metadata;
   const hasAction = toStoreCode;
   return (
     <Box flex="4" px={8} position="relative" {...boxProps}>

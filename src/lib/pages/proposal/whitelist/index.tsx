@@ -15,12 +15,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
-import { TestnetAlert } from "../components/TestnetAlert";
+import { PermissionlessAlert } from "../components/PermissionlessAlert";
 import { SIDEBAR_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
   useCelatoneApp,
-  useCurrentNetwork,
   useFabricateFee,
   useSimulateFeeQuery,
   useSubmitProposalTx,
@@ -39,6 +38,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
+import { AccessConfigPermission } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, d2Formatter } from "lib/utils";
 
 interface WhiteListState {
@@ -59,6 +59,9 @@ const ProposalToWhitelist = () => {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const { address: walletAddress = "" } = useWallet();
+  const {
+    chainConfig: { prettyName },
+  } = useCelatoneApp();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
   const submitProposalTx = useSubmitProposalTx();
@@ -83,8 +86,9 @@ const ProposalToWhitelist = () => {
     control,
     name: "addresses",
   });
-  const { isTestnet } = useCurrentNetwork();
 
+  const isPermissionless =
+    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
   const enabledTx = useMemo(
@@ -199,9 +203,9 @@ const ProposalToWhitelist = () => {
           templateAreas={`"prespace alert alert postspace" "prespace main sidebar postspace"`}
           templateColumns="1fr 6fr 4fr 1fr"
           sx={
-            isTestnet
+            isPermissionless
               ? {
-                  "> div:not(.testnet-alert)": {
+                  "> div:not(.permissionless-alert)": {
                     opacity: 0.5,
                     pointerEvents: "none",
                   },
@@ -209,9 +213,9 @@ const ProposalToWhitelist = () => {
               : undefined
           }
         >
-          {isTestnet && (
-            <GridItem area="alert" className="testnet-alert" mb={10}>
-              <TestnetAlert />
+          {isPermissionless && (
+            <GridItem area="alert" className="permissionless-alert" mb={10}>
+              <PermissionlessAlert />
             </GridItem>
           )}
           <GridItem area="main">
@@ -405,7 +409,13 @@ const ProposalToWhitelist = () => {
             </form>
           </GridItem>
           <GridItem area="sidebar">
-            <StickySidebar marginTop="128px" metadata={SIDEBAR_DETAILS} />
+            <StickySidebar
+              marginTop="128px"
+              metadata={SIDEBAR_DETAILS(
+                prettyName,
+                isPermissionless ? "permissionless" : "permissioned"
+              )}
+            />
           </GridItem>
         </Grid>
       </PageContainer>

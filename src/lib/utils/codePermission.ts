@@ -3,6 +3,14 @@ import { AccessConfigPermission } from "lib/types";
 
 import { truncate } from "./truncate";
 
+export const resolvePermission = (
+  address: Option<Addr>,
+  permission: AccessConfigPermission = AccessConfigPermission.UNKNOWN,
+  permissionAddresses: PermissionAddresses = []
+): boolean =>
+  permission === AccessConfigPermission.EVERYBODY ||
+  (address ? permissionAddresses.includes(address) : false);
+
 export const getPermissionHelper = (
   address: Option<Addr>,
   instantiatePermission: AccessConfigPermission,
@@ -29,8 +37,7 @@ export const getPermissionHelper = (
     }
   };
   const getColor = () =>
-    instantiatePermission === AccessConfigPermission.EVERYBODY ||
-    (address && permissionAddresses.includes(address))
+    resolvePermission(address, instantiatePermission, permissionAddresses)
       ? "success.main"
       : "info.main";
 
