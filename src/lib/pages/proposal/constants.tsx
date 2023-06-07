@@ -2,8 +2,6 @@ import type { SidebarMetadata } from "lib/components/StickySidebar";
 
 export type NetworkPermission = "permissioned" | "permissionless";
 
-export type SidebarDetails = Record<NetworkPermission, SidebarMetadata>;
-
 export const SIDEBAR_DETAILS: (
   chainName: string,
   permission: NetworkPermission
