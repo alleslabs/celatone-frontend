@@ -40,6 +40,7 @@ const Layout = ({ children }: LayoutProps) => {
   useEffect(() => {
     scrollToTop();
   }, [router.asPath]);
+
   return (
     <Grid
       templateAreas={mode.templateAreas}

@@ -17,6 +17,7 @@ import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG, PROJECT_CONSTANTS } from "config";
 import type { ChainConfig, ProjectConstants } from "config/types";
 import { SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
   useCodeStore,
@@ -67,9 +68,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   );
 
   const states = useMemo<AppContextInterface>(() => {
-    const chainConfig = currentChainId
-      ? CHAIN_CONFIGS[currentChainId]
-      : DEFAULT_CHAIN_CONFIG;
+    const chainConfig = CHAIN_CONFIGS[currentChainId] ?? DEFAULT_CHAIN_CONFIG;
 
     return {
       availableChainIds: SUPPORTED_CHAIN_IDS,
@@ -94,6 +93,9 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
 
   useAmplitude();
 
+  if (currentChainId && !(currentChainId in CHAIN_CONFIGS))
+    return <NetworkErrorState />;
+
   if (
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
@@ -102,12 +104,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   )
     return <LoadingOverlay />;
 
-  return currentChainId in CHAIN_CONFIGS ? (
-    <AppContext.Provider value={states}>{children}</AppContext.Provider>
-  ) : (
-    // TODO: fix to a proper component
-    <div>Something went wrong</div>
-  );
+  return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
 });
 
 export const useCelatoneApp = (): AppContextInterface => {
