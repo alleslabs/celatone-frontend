@@ -5,8 +5,11 @@ const gray500 = "gray.500";
 const gray600 = "gray.600";
 const gray700 = "gray.700";
 const gray800 = "gray.800";
+const gray900 = "gray.900";
 const primaryLight = "primary.light";
+const primaryMain = "primary.main";
 const primaryDark = "primary.dark";
+const primaryDarker = "primary.darker";
 const primaryBg = "primary.background";
 const accentBg = "accent.background";
 const accentMain = "accent.main";
@@ -72,17 +75,17 @@ export const Button: ComponentStyleConfig = {
   variants: {
     primary: generateStyle({
       basic: {
-        background: "primary.main",
-        color: "text.main",
+        background: primaryMain,
+        color: gray900,
         "& span": {
-          color: "text.main",
+          color: gray900,
         },
       },
       disabled: {
-        background: primaryBg,
-        color: gray600,
+        background: primaryDarker,
+        color: gray900,
         "& span": {
-          color: gray600,
+          color: gray900,
         },
       },
       hoverBg: primaryDark,
@@ -112,13 +115,13 @@ export const Button: ComponentStyleConfig = {
     "outline-primary": generateStyle({
       basic: {
         border: borderDefualt,
-        borderColor: primaryLight,
-        color: primaryLight,
+        borderColor: primaryDarker,
+        color: primaryMain,
         "> div": {
-          color: primaryLight,
+          color: primaryMain,
         },
         "> svg": {
-          color: primaryLight,
+          color: primaryDarker,
         },
       },
       disabled: {
@@ -135,7 +138,7 @@ export const Button: ComponentStyleConfig = {
     "outline-gray": generateStyle({
       basic: {
         border: borderDefualt,
-        borderColor: gray600,
+        borderColor: gray500,
         color: "text.dark",
         "> svg": {
           color: "text.dark",

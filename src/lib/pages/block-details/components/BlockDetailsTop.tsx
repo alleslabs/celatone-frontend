@@ -38,30 +38,35 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const disablePrevious = block <= 1;
   return (
     <Flex
-      mb={12}
-      pb={12}
-      mt={6}
+      justify="space-between"
+      mb={{ base: 8, md: 12 }}
+      pb={{ base: 8, md: 12 }}
+      mt={{ base: 2, md: 6 }}
       borderBottomColor="gray.700"
       borderBottomWidth="1px"
     >
-      <Flex direction="column" gap={2} width="full">
-        <Flex justifyContent="space-between" alignItems="center" width="full">
+      <Flex direction="column" gap={1} w="full">
+        <Flex justify="space-between" align="center" width="full">
           <Flex alignItems="center">
             <CustomIcon name="block" boxSize={5} color="secondary.main" />
-            <Heading as="h5" variant="h5" className="ellipsis">
+            <Heading
+              as="h5"
+              variant={{ base: "h6", md: "h5" }}
+              className="ellipsis"
+            >
               {blockData.height}
             </Heading>
           </Flex>
           <Flex gap={2}>
             {!disablePrevious && (
-              <AppLink href={`/block/${block - 1}`}>
+              <AppLink href={`/blocks/${block - 1}`}>
                 <StyledIconButton
                   icon={<CustomIcon name="chevron-left" />}
                   variant="ghost-gray"
                 />
               </AppLink>
             )}
-            <AppLink href={`/block/${block + 1}`}>
+            <AppLink href={`/blocks/${block + 1}`}>
               <StyledIconButton
                 icon={<CustomIcon name="chevron-right" />}
                 variant="ghost-gray"
@@ -70,14 +75,25 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
             <Button
               variant="ghost-gray"
               padding={2}
-              rightIcon={
-                <CustomIcon name="launch" boxSize={3} color="text.dark" />
-              }
+              rightIcon={<CustomIcon name="launch" boxSize={3} />}
               onClick={openLcdPage}
             >
               View in JSON
             </Button>
           </Flex>
+        </Flex>
+        <Flex
+          gap={{ base: 0, md: 2 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Text variant="body2" color="text.dark" display="inline">
+            Block Hash:
+          </Text>
+          <CopyLink
+            value={blockData.hash.toUpperCase()}
+            amptrackSection="block_details_top"
+            type="block_hash"
+          />
         </Flex>
         <Flex direction="column" gap={1}>
           <Flex gap={2}>

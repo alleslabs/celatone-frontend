@@ -3,13 +3,17 @@ import { Flex, Image, Text } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
 import { CURR_THEME, getChainApiPath } from "env";
+import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
 import type { ValidatorInfo } from "lib/types";
 import { removeSpecialChars } from "lib/utils";
 
 interface ValidatorBadgeProps {
   validator: ValidatorInfo | null;
   badgeSize?: ImageProps["boxSize"];
+  maxWidth?: string;
+  hasLabel?: boolean;
 }
 
 const FallbackRender = ({
@@ -33,8 +37,11 @@ const FallbackRender = ({
 export const ValidatorBadge = ({
   validator,
   badgeSize = 10,
+  maxWidth = "160px",
+  hasLabel = true,
 }: ValidatorBadgeProps) => {
   const { currentChainName } = useWallet();
+  const isMobile = useMobile();
   return (
     <Flex alignItems="center" gap={2}>
       {validator ? (
@@ -53,13 +60,17 @@ export const ValidatorBadge = ({
             )}&color=fff`}
             borderRadius="50%"
           />
-          <ExplorerLink
-            value={validator.moniker ?? validator.validatorAddress}
-            copyValue={validator.validatorAddress}
-            type="validator_address"
-            textFormat="ellipsis"
-            showCopyOnHover
-          />
+          <Flex direction="column">
+            {isMobile && hasLabel && <MobileLabel label="Validator" />}
+            <ExplorerLink
+              value={validator.moniker ?? validator.validatorAddress}
+              copyValue={validator.validatorAddress}
+              type="validator_address"
+              textFormat="ellipsis"
+              showCopyOnHover
+              maxWidth={maxWidth}
+            />
+          </Flex>
         </>
       ) : (
         <FallbackRender badgeSize={badgeSize} />

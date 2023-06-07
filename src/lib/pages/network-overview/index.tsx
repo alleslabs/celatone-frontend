@@ -25,7 +25,6 @@ const cardProps = {
   justifyContent: "space-between",
   alignItems: "center",
   height: "100%",
-  cursor: "pointer",
 };
 
 const blockTimeInfo = {
@@ -58,6 +57,7 @@ const CardInfo = ({
     transition="all .25s ease-in-out"
     bg="gray.800"
     onClick={navigate}
+    cursor="pointer"
   >
     <Box>
       <Flex alignItems="center" gap={1} mb={2}>
@@ -94,6 +94,7 @@ const calculateAverageBlockTime = (
 
 const NetworkOverview = () => {
   const router = useRouter();
+
   const navigate = useInternalNavigate();
 
   useEffect(() => {
@@ -124,8 +125,13 @@ const NetworkOverview = () => {
 
   return (
     <PageContainer>
-      <Flex justifyContent="space-between" mb={5}>
-        <Heading as="h4" variant="h4">
+      <Flex
+        justifyContent={{ base: "start", md: "space-between" }}
+        align={{ base: "start", md: "start" }}
+        mb={5}
+        direction={{ base: "column", md: "row" }}
+      >
+        <Heading as="h4" variant="h4" mb={{ base: 4, md: 0 }}>
           Network Overview
         </Heading>
         {isLoadingLatestBlockInfo ? (
@@ -139,7 +145,7 @@ const NetworkOverview = () => {
           <Text
             variant="body2"
             color="text.dark"
-            textAlign="right"
+            textAlign={{ base: "left", md: "right" }}
             whiteSpace="pre-line"
             lineHeight={3}
           >
@@ -151,7 +157,7 @@ const NetworkOverview = () => {
           </Text>
         )}
       </Flex>
-      <Flex gap={4} mb={16}>
+      <Flex gap={4} mb={16} direction={{ base: "column", md: "row" }}>
         <CardInfo
           title={blockTimeInfo.title}
           tooltip={blockTimeInfo.tooltip}
@@ -167,7 +173,6 @@ const NetworkOverview = () => {
           navigate={toBlocks}
         />
       </Flex>
-
       <Box>
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions

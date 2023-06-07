@@ -56,8 +56,12 @@ const CodeDetailsBody = observer(
             { text: codeId.toString() },
           ]}
         />
-        <Flex direction="column" gap={2} w="full" mt={6}>
-          <Flex justify="space-between" align="center">
+        <Flex
+          justify="space-between"
+          mt={{ base: 3, md: 6 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Flex direction="column" gap={{ base: 2, md: 1 }}>
             <Flex gap={1}>
               <CustomIcon name="code" boxSize={5} color="secondary.main" />
               {publicProject.publicDetail?.logo && (
@@ -75,29 +79,22 @@ const CodeDetailsBody = observer(
                   codeId}
               </Heading>
             </Flex>
-            <CTASection
-              id={codeId}
-              uploader={localCodeInfo?.uploader ?? codeData.uploader}
-              name={localCodeInfo?.name}
-              instantiatePermission={
-                codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
-              }
-              permissionAddresses={codeData.permissionAddresses ?? []}
-              contractCount={undefined}
-              cw2Contract={undefined}
-              cw2Version={undefined}
-            />
-          </Flex>
-          <Flex direction="column" gap={1}>
             {publicProject.publicCodeData?.name && (
-              <Flex gap={2}>
+              <Flex
+                mt={{ base: 2, md: 0 }}
+                gap={{ base: 0, md: 2 }}
+                direction={{ base: "column", md: "row" }}
+              >
                 <Text fontWeight={500} color="text.dark" variant="body2">
                   Public Code Name:
                 </Text>
                 <Text variant="body2">{publicProject.publicCodeData.name}</Text>
               </Flex>
             )}
-            <Flex gap={2}>
+            <Flex
+              gap={{ base: 0, md: 2 }}
+              direction={{ base: "column", md: "row" }}
+            >
               <Text fontWeight={500} color="text.dark" variant="body2">
                 Code ID:
               </Text>
@@ -107,7 +104,10 @@ const CodeDetailsBody = observer(
                 type="code_id"
               />
             </Flex>
-            <Flex gap={2}>
+            <Flex
+              gap={{ base: 0, md: 2 }}
+              direction={{ base: "column", md: "row" }}
+            >
               <Text fontWeight={500} color="text.dark" variant="body2">
                 CW2 Info:
               </Text>
@@ -123,6 +123,20 @@ const CodeDetailsBody = observer(
               <GitHubLink github={publicProject.publicCodeData.github} />
             )}
           </Flex>
+          <Flex direction="column" gap={1}>
+            <CTASection
+              id={codeId}
+              uploader={localCodeInfo?.uploader ?? codeData.uploader}
+              name={localCodeInfo?.name}
+              instantiatePermission={
+                codeData.instantiatePermission ?? AccessConfigPermission.UNKNOWN
+              }
+              permissionAddresses={codeData.permissionAddresses ?? []}
+              contractCount={undefined}
+              cw2Contract={undefined}
+              cw2Version={undefined}
+            />
+          </Flex>
         </Flex>
         {publicProject.publicCodeData?.description && (
           <PublicDescription
@@ -132,7 +146,7 @@ const CodeDetailsBody = observer(
             icon={<CustomIcon name="website" ml={0} mb={2} color="gray.600" />}
           />
         )}
-        <Divider borderColor="gray.700" my={12} />
+        <Divider borderColor="gray.700" my={{ base: 6, md: 12 }} />
         <CodeInfoSection codeData={codeData} chainId={chainId} />
         <CodeContractsTable codeId={codeId} />
       </>
@@ -144,7 +158,6 @@ const CodeDetails = observer(() => {
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
   const data = useCodeData(Number(codeIdParam));
-
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
   }, [router.isReady]);

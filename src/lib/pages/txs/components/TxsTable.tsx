@@ -1,7 +1,9 @@
+import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
-import { useChainId } from "lib/app-provider";
+import { useChainId, useMobile } from "lib/app-provider";
+import { TransactionCard } from "lib/components/card/TransactionCard";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -43,7 +45,7 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
     setPageSize(size);
     setCurrentPage(1);
   };
-
+  const isMobile = useMobile();
   useEffect(() => {
     if (!isViewMore) setPageSize(10);
     setCurrentPage(1);
@@ -56,6 +58,39 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
         imageVariant="not-found"
         message="There is an error during fetching transactions."
       />
+    );
+  if (isMobile)
+    return (
+      <>
+        {txs ? (
+          <Flex direction="column" gap={4} w="full" mt={4}>
+            {txs?.map((transaction) => (
+              <TransactionCard
+                transaction={transaction}
+                key={transaction.hash}
+                showRelations={false}
+              />
+            ))}
+            {!isViewMore && countTxs > 10 && (
+              <Pagination
+                currentPage={currentPage}
+                pagesQuantity={pagesQuantity}
+                offset={offset}
+                totalData={countTxs}
+                pageSize={pageSize}
+                onPageChange={onPageChange}
+                onPageSizeChange={onPageSizeChange}
+              />
+            )}
+          </Flex>
+        ) : (
+          <EmptyState
+            withBorder
+            imageVariant="empty"
+            message="There are no transactions in this network."
+          />
+        )}
+      </>
     );
   return (
     <>

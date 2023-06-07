@@ -10,7 +10,11 @@ interface ContractDescProps {
   contractData: ContractData;
 }
 export const ContractDesc = ({ contractData }: ContractDescProps) => (
-  <Flex gap={6}>
+  <Flex
+    gap={{ base: 4, md: 6 }}
+    direction={{ base: "column", md: "row" }}
+    mt={{ base: 4, md: 0 }}
+  >
     {contractData.publicProject.publicInfo?.description && (
       <PublicDescription
         title="Public Contract Description"

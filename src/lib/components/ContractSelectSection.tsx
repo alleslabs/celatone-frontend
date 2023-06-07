@@ -204,8 +204,11 @@ export const ContractSelectSection = observer(
         align="center"
         width="full"
       >
-        <Flex gap={4} width="100%">
-          <Flex direction="column" width={style.contractAddrContainer}>
+        <Flex gap={4} width="100%" direction={{ base: "column", md: "row" }}>
+          <Flex
+            direction="column"
+            width={{ base: "auto", md: style.contractAddrContainer }}
+          >
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -226,7 +229,10 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex direction="column" width={style.contractNameContainer}>
+          <Flex
+            direction="column"
+            width={{ base: "auto", md: style.contractNameContainer }}
+          >
             Contract Name
             <DisplayName
               notSelected={notSelected}

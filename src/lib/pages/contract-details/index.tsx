@@ -58,7 +58,7 @@ const ContractDetailsBody = observer(
       <>
         <ContractTop contractData={contractData} />
         {/* Tokens Section */}
-        <Flex direction="column">
+        <Flex direction="column" mt={{ base: 8, md: 0 }}>
           <TokenSection balances={contractData.balances} />
         </Flex>
         {/* Contract Description Section */}
@@ -66,11 +66,15 @@ const ContractDetailsBody = observer(
         {/* Query/Execute commands section */}
         <CommandSection />
         {/* Instantiate/Contract Info Section */}
-        <Flex my={12} justify="space-between">
+        <Flex
+          my={12}
+          justify="space-between"
+          direction={{ base: "column", md: "row" }}
+        >
           {/* Instantiate Info */}
           <InstantiateInfo contractData={contractData} />
           {/* Contract Info (Expand) */}
-          <Flex direction="column" flex={0.8} gap={4}>
+          <Flex direction="column" flex={0.8} gap={4} mt={{ base: 12, md: 0 }}>
             <JsonInfo
               header="Contract Info"
               jsonString={jsonPrettify(
@@ -90,8 +94,14 @@ const ContractDetailsBody = observer(
         <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
           History
         </Heading>
+
         <Tabs>
-          <TabList borderBottom="1px solid" borderColor="gray.700">
+          <TabList
+            borderBottom="1px solid"
+            borderColor="gray.700"
+            overflowX={{ base: "scroll", md: "auto" }}
+            w={{ base: "max-content", md: "auto" }}
+          >
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>
@@ -140,7 +150,6 @@ const ContractDetails = observer(() => {
     router.query.contractAddress
   ) as ContractAddr;
   const { isLoading, contractData } = useContractData(contractAddressParam);
-
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
   }, [router.isReady]);

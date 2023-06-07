@@ -55,39 +55,51 @@ export const Pagination = ({
       pagesQuantity={pagesQuantity}
       onPageChange={onPageChange}
     >
-      <Flex align="center" justify="center" w="full" px={4}>
-        <Text variant="body3" color="text.dark">
-          Items per page:
-        </Text>
-        <Select
-          border="none"
-          w="70px"
-          fontSize="12px"
-          focusBorderColor="none"
-          cursor="pointer"
-          value={pageSize}
-          onChange={(e) => {
-            AmpTrack(AmpEvent.USE_PAGINATION_PAGE_SIZE, {
-              pageSize: e.target.value,
-            });
-            onPageSizeChange(e);
-          }}
-        >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <CustomIcon name="chevron-down" color="gray.600" />
-        </Select>
-        <Text variant="body3" mx={7}>
-          {`${offsetData.toLocaleString()} - ${lastDataInPage.toLocaleString()} of ${totalData.toLocaleString()}`}
-        </Text>
-        <Previous pageSize={pageSize} variant="unstyled" display="flex">
-          <CustomIcon name="chevron-left" color="text.dark" />
-        </Previous>
-        <Next pageSize={pageSize} variant="unstyled" display="flex">
-          <CustomIcon name="chevron-right" color="text.dark" />
-        </Next>
+      <Flex
+        align="center"
+        justify="center"
+        w="full"
+        px={4}
+        mt={{ base: 6, md: 2 }}
+        direction={{ base: "column", md: "row" }}
+      >
+        <Flex align="center" justify="center">
+          <Text variant="body3" color="text.dark">
+            Items per page:
+          </Text>
+          <Select
+            border="none"
+            w="70px"
+            fontSize="12px"
+            focusBorderColor="none"
+            cursor="pointer"
+            value={pageSize}
+            h={{ base: 6, md: "auto" }}
+            onChange={(e) => {
+              AmpTrack(AmpEvent.USE_PAGINATION_PAGE_SIZE, {
+                pageSize: e.target.value,
+              });
+              onPageSizeChange(e);
+            }}
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <CustomIcon name="chevron-down" color="gray.600" />
+          </Select>
+        </Flex>
+        <Flex align="center" justify="center">
+          <Text variant="body3" mx={{ base: 0, md: "30px" }}>
+            {`${offsetData.toLocaleString()} - ${lastDataInPage.toLocaleString()} of ${totalData.toLocaleString()}`}
+          </Text>
+          <Previous pageSize={pageSize} variant="unstyled" display="flex">
+            <CustomIcon name="chevron-left" color="text.dark" />
+          </Previous>
+          <Next pageSize={pageSize} variant="unstyled" display="flex">
+            <CustomIcon name="chevron-right" color="text.dark" />
+          </Next>
+        </Flex>
       </Flex>
     </Paginator>
   );

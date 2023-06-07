@@ -5,7 +5,11 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
-import { useFabricateFee, useExecuteContractTx } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useExecuteContractTx,
+  useMobile,
+} from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
@@ -213,6 +217,7 @@ export const ExecuteArea = ({
     };
   });
 
+  const isMobile = useMobile();
   return (
     <Box my={4}>
       {contractAddress && (
@@ -290,7 +295,7 @@ export const ExecuteArea = ({
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >
-            Execute (Ctrl + Enter)
+            Execute {!isMobile && "(Ctrl + Enter)"}
           </Button>
         </Flex>
       </Flex>

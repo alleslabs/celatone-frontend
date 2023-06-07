@@ -9,6 +9,7 @@ export interface EmptyStateProps {
   message: string | ReactElement;
   heading?: string;
   withBorder?: boolean;
+  my?: number;
 }
 
 export const EmptyState = ({
@@ -16,10 +17,11 @@ export const EmptyState = ({
   imageVariant,
   heading,
   withBorder = false,
+  my = 12,
 }: EmptyStateProps) => (
   <Flex
     py={8}
-    my={12}
+    my={my}
     direction="column"
     borderY={withBorder ? "1px solid" : undefined}
     borderColor="gray.700"

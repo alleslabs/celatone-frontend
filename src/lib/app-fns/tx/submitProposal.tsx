@@ -11,7 +11,9 @@ import type { HumanAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { findAttr, formatUFee } from "lib/utils";
 
-import { catchTxError, postTx, sendingTx } from "./common";
+import { catchTxError } from "./common/catchTxError";
+import { postTx } from "./common/post";
+import { sendingTx } from "./common/sending";
 
 interface SubmitProposalTxParams {
   address: HumanAddr;

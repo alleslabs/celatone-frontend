@@ -15,15 +15,23 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
       <Heading as="h6" variant="h6" mb={6}>
         Block Information
       </Heading>
-      <Flex gap={16}>
-        <LabelText label="Network">{blockData.network}</LabelText>
-        <LabelText label="Gas (Used/Wanted)">
-          {`${blockData.gasUsed ? formatInteger(blockData.gasUsed) : 0} / ${
-            blockData.gasLimit ? formatInteger(blockData.gasLimit) : 0
-          }`}
-        </LabelText>
-        <LabelText label="Proposed by">
-          <ValidatorBadge validator={blockData.proposer} badgeSize={6} />
+      <Flex gap={{ base: 4, md: 12 }} direction={{ base: "column", md: "row" }}>
+        <Flex direction="row" flex="1" maxW={{ md: "400px" }}>
+          <LabelText flex="1" label="Network">
+            {blockData.network}
+          </LabelText>
+          <LabelText flex="1" label="Gas (Used/Wanted)">
+            {`${blockData.gasUsed ? formatInteger(blockData.gasUsed) : 0} / ${
+              blockData.gasLimit ? formatInteger(blockData.gasLimit) : 0
+            }`}
+          </LabelText>
+        </Flex>
+        <LabelText label="Proposed by" flex="1">
+          <ValidatorBadge
+            validator={blockData.proposer}
+            badgeSize={6}
+            hasLabel={false}
+          />
         </LabelText>
       </Flex>
     </Box>

@@ -5,7 +5,7 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-import { useLCDEndpoint } from "lib/app-provider";
+import { useLCDEndpoint, useMobile } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -93,6 +93,7 @@ export const QueryArea = ({
     };
   });
 
+  const isMobile = useMobile();
   return (
     <Flex direction="column">
       <Box width="full" mt={4} mb={8} alignItems="center">
@@ -132,11 +133,11 @@ export const QueryArea = ({
           )
         )}
       </Box>
-      <Flex gap={4}>
+      <Flex gap={4} direction={{ base: "column", md: "row" }}>
         <Box w="full">
           <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
-          <Flex align="center" justify="space-between">
-            <Flex gap={2}>
+          <Flex align="center" justify="space-between" gap={{ base: 1, md: 0 }}>
+            <Flex gap={{ base: 1, md: 2 }}>
               <CopyButton
                 isDisable={!msg.length}
                 value={msg}
@@ -152,12 +153,13 @@ export const QueryArea = ({
               variant="primary"
               fontSize="14px"
               p="6px 16px"
+              size={{ base: "sm", md: "md" }}
               onClick={handleQuery}
               isDisabled={jsonValidate(msg) !== null}
               isLoading={isFetching || isRefetching}
               leftIcon={<CustomIcon name="query" />}
             >
-              Query (Ctrl + Enter)
+              Query {!isMobile && "(Ctrl + Enter)"}
             </Button>
           </Flex>
         </Box>

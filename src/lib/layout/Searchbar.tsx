@@ -11,7 +11,11 @@ import {
 import type { ChangeEvent, KeyboardEvent } from "react";
 import { useRef, useEffect, useState } from "react";
 
-import { useInternalNavigate, useValidateAddress } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useMobile,
+  useValidateAddress,
+} from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { getChainConfig } from "lib/data";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
@@ -82,6 +86,7 @@ const ResultItem = ({ type, value, handleSelectResult }: ResultItemProps) => {
 
 // TODO - Implement all search for Wasm chain
 const Searchbar = () => {
+  const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
 
@@ -92,20 +97,26 @@ const Searchbar = () => {
   const boxRef = useRef<HTMLDivElement>(null);
   const chainConfig = getChainConfig();
 
-  let placeholder = "Search by Wallet Address / Tx Hash / ";
-  placeholder += chainConfig.isWasm ? "Code ID / Contract Address" : "Block";
+  let placeholder = "Search by Wallet Address / Tx Hash ";
+  placeholder += chainConfig.isWasm
+    ? "/ Code ID / Contract Address"
+    : "/ Block";
 
   useEffect(() => {
     const res: SearchResultType[] = [];
+
     if (chainConfig.isWasm && isCodeId(keyword)) res.push("Code ID");
-    if (isBlock(keyword)) res.push("Block");
+    else if (isBlock(keyword)) res.push("Block");
+
     if (!validateContractAddress(keyword)) res.push("Contract Address");
+
     if (!validateUserAddress(keyword)) res.push("Wallet Address");
     if (isTxHash(keyword)) res.push("Transaction Hash");
     // TODO: add proposal ID
     setResults(res);
   }, [
     chainConfig.isWasm,
+    isMobile,
     keyword,
     validateContractAddress,
     validateUserAddress,
@@ -145,7 +156,7 @@ const Searchbar = () => {
           onKeyDown={handleOnKeyEnter}
         />
         <InputRightElement pointerEvents="none" h="full">
-          <CustomIcon name="search" color="gray.600" />
+          <CustomIcon name="search" color="gray.600" bg="gray.900" />
         </InputRightElement>
       </InputGroup>
       {displayResults && (

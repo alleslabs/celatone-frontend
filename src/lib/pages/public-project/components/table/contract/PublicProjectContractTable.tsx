@@ -1,8 +1,10 @@
-import { TableContainer, Grid, Box } from "@chakra-ui/react";
+import { TableContainer, Grid, Box, Flex } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
+import { PublicContractCard } from "lib/components/card/PublicContractCard";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
@@ -58,9 +60,21 @@ export const PublicProjectContractTable = observer(
           ...contract,
         },
       }));
-
+    const isMobile = useMobile();
+    if (!publicContracts.length)
+      return (
+        <>
+          <TableTitle title="Contracts" count={contracts.length} />
+          <EmptyState
+            my={4}
+            message="There is currently no contracts related to this project."
+            imageVariant={onViewMore && "empty"}
+            withBorder
+          />
+        </>
+      );
     return (
-      <Box mt={12} mb={4}>
+      <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
           <TextInput
@@ -72,12 +86,16 @@ export const PublicProjectContractTable = observer(
             mb={6}
           />
         )}
-        {!publicContracts.length ? (
-          <EmptyState
-            message="There is currently no contracts related to this project."
-            imageVariant={onViewMore && "empty"}
-            withBorder
-          />
+        {isMobile ? (
+          <Flex direction="column" gap={4} w="full" mt={4}>
+            {publicContracts.map((contract) => (
+              <PublicContractCard
+                publicInfo={contract.publicInfo}
+                localInfo={contract.localInfo}
+                key={contract.publicInfo.contractAddress}
+              />
+            ))}
+          </Flex>
         ) : (
           <>
             <TableContainer>
