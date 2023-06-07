@@ -55,8 +55,12 @@ const CodeDetailsBody = observer(
   ({ codeDataState, codeId }: CodeDetailsBodyProps) => {
     const { getCodeLocalInfo } = useCodeStore();
     const localCodeInfo = getCodeLocalInfo(codeId);
-    const { chainId, codeData, publicProject, lcdCodeData } = codeDataState;
-    const { codeHash, isLcdCodeLoading, isLcdCodeError } = lcdCodeData;
+    const {
+      chainId,
+      codeData,
+      publicProject,
+      lcdCodeData: { codeHash, isLcdCodeLoading, isLcdCodeError },
+    } = codeDataState;
 
     if (!codeData) return <InvalidCode />;
 
