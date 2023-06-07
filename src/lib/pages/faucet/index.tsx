@@ -164,7 +164,7 @@ const Faucet = () => {
               AmpTrack(AmpEvent.USE_ASSIGN_ME);
               setAddress(walletAddress);
             }}
-            isDisable={!walletAddress || address === walletAddress}
+            isDisable={address === walletAddress}
             textAlign="left"
           />
         }

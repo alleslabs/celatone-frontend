@@ -325,7 +325,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                   AmpTrack(AmpEvent.USE_ASSIGN_ME);
                   setValue("adminAddress", address);
                 }}
-                isDisable={!address || watchAdminAddress === address}
+                isDisable={watchAdminAddress === address}
               />
             }
           />
