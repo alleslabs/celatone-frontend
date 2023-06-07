@@ -68,15 +68,13 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   );
 
   const states = useMemo<AppContextInterface>(() => {
-    const chainConfig = currentChainId
-      ? CHAIN_CONFIGS[currentChainId]
-      : DEFAULT_CHAIN_CONFIG;
+    const chainConfig = CHAIN_CONFIGS[currentChainId] ?? DEFAULT_CHAIN_CONFIG;
 
     return {
       availableChainIds: SUPPORTED_CHAIN_IDS,
       currentChainId,
       chainConfig,
-      indexerGraphClient: new GraphQLClient(chainConfig?.indexer ?? ""),
+      indexerGraphClient: new GraphQLClient(chainConfig.indexer),
       constants: PROJECT_CONSTANTS,
       handleOnChainIdChange,
     };

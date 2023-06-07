@@ -7,7 +7,6 @@ import {
   MenuItem,
   Image,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { CHAIN_CONFIGS } from "config";
 import { useCelatoneApp, useSelectChain } from "lib/app-provider";
@@ -21,7 +20,6 @@ import Searchbar from "./Searchbar";
 
 const Header = () => {
   const { availableChainIds, currentChainId } = useCelatoneApp();
-  const { getChainRecord } = useWallet();
   const selectChain = useSelectChain();
 
   return (
@@ -99,11 +97,7 @@ const Header = () => {
                   <Flex justify="space-between" align="center" w="full">
                     <Flex direction="column">
                       <Text variant="body2">
-                        {
-                          getChainRecord(
-                            CHAIN_CONFIGS[chainId]?.registryChainName
-                          )?.chain.pretty_name
-                        }
+                        {CHAIN_CONFIGS[chainId]?.prettyName || chainId}
                       </Text>
                       <Text color="text.dark" variant="body3">
                         {chainId}
