@@ -15,5 +15,3 @@ export const SUPPORTED_CHAIN_IDS: string[] = (() => {
 export const DEFAULT_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
 
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
-
-export const SELECTED_CHAIN = process.env.NEXT_PUBLIC_SELECTED_CHAIN;
