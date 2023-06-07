@@ -25,7 +25,9 @@ import type {
   UploadSectionState,
 } from "lib/types";
 import { AccessType } from "lib/types";
+import { getCodeHash } from "lib/utils";
 
+import { CodeHashBox } from "./CodeHashBox";
 import { InstantiatePermissionRadio } from "./InstantiatePermissionRadio";
 import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
@@ -46,6 +48,7 @@ export const UploadSection = ({
   const postUploadTx = useUploadContractTx(isMigrate);
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
 
+  const [codeHash, setCodeHash] = useState<string>();
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateStatus, setSimulateStatus] = useState<SimulateStatus>({
     status: "default",
@@ -161,6 +164,15 @@ export const UploadSection = ({
     JSON.stringify(addresses),
   ]);
 
+  // Generate hash value from wasm file
+  const setHashValue = useCallback(async () => {
+    setCodeHash(await getCodeHash(wasmFile));
+  }, [wasmFile]);
+
+  useEffect(() => {
+    setHashValue();
+  }, [setHashValue]);
+
   useEffect(() => {
     if (!wasmFile) {
       setDefaultBehavior();
@@ -173,7 +185,7 @@ export const UploadSection = ({
   }, [wasmFile, address, shouldNotSimulate, permission, setValue]);
 
   return (
-    <>
+    <Flex direction="column" gap={8} maxW="550px">
       {wasmFile ? (
         <UploadCard
           file={wasmFile}
@@ -185,6 +197,7 @@ export const UploadSection = ({
       ) : (
         <DropZone setFile={(file) => setValue("wasmFile", file)} />
       )}
+      <CodeHashBox codeHash={codeHash} />
       <ControllerInput
         name="codeName"
         control={control}
@@ -196,7 +209,6 @@ export const UploadSection = ({
         }}
         error={errors.codeName && getMaxCodeNameLengthError(codeName.length)}
         variant="floating"
-        my={8}
       />
       <InstantiatePermissionRadio
         control={control}
@@ -204,7 +216,7 @@ export const UploadSection = ({
         trigger={trigger}
       />
 
-      <Box mt={10} width="full">
+      <Box width="full">
         {(simulateStatus.status !== "default" || isSimulating) && (
           <SimulateMessageRender
             value={
@@ -256,6 +268,6 @@ export const UploadSection = ({
           Upload
         </Button>
       </Flex>
-    </>
+    </Flex>
   );
 };

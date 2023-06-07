@@ -127,7 +127,6 @@ export const PROPOSAL_STORE_CODE_TEXT = {
   runAsHelperText: "This address will be stored as code creator.",
   runAsRequired: "Creator is required",
   uploadHeader: "Upload Wasm File",
-  codeHashHeader: "Code Hash",
   unpinLabel: "Unpin code",
   unpinTooltip:
     "Unpin removes the guarantee of a contract to be pinned. After calling this, the code may or may not remain in memory depending on the implementor's choice. Unpin is idempotent.",

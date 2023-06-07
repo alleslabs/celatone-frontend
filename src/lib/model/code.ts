@@ -1,7 +1,8 @@
 import { useWallet } from "@cosmos-kit/react";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { useChainId } from "lib/app-provider";
+import { useChainId, useLCDEndpoint } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import {
   useUserKey,
@@ -9,6 +10,7 @@ import {
   useCodeSearchFilter,
 } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
+import { getCodeIdInfo } from "lib/services/code";
 import {
   useCodeDataByCodeId,
   useCodeListByCodeIds,
@@ -32,6 +34,11 @@ export interface CodeDataState {
   isLoading: boolean;
   chainId: string;
   codeData: Option<CodeData>;
+  lcdCodeData: {
+    codeHash: Option<string>;
+    isLcdCodeLoading: boolean;
+    isLcdCodeError: unknown;
+  };
   publicProject: {
     publicCodeData: Option<PublicCode>;
     publicDetail: Option<PublicDetail>;
@@ -39,10 +46,22 @@ export interface CodeDataState {
 }
 
 export const useCodeData = (codeId: number): CodeDataState => {
+  const endpoint = useLCDEndpoint();
+  const { currentChainRecord } = useWallet();
+
   const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug
+  );
+  const {
+    data: lcdCode,
+    isLoading: isLcdCodeLoading,
+    error: isLcdCodeError,
+  } = useQuery(
+    ["query", "code_data", endpoint, codeId],
+    async () => getCodeIdInfo(endpoint, codeId),
+    { enabled: Boolean(currentChainRecord) && Boolean(codeId), retry: false }
   );
 
   const chainId = useChainId();
@@ -51,6 +70,11 @@ export const useCodeData = (codeId: number): CodeDataState => {
     isLoading,
     chainId,
     codeData: codeInfo as CodeData,
+    lcdCodeData: {
+      codeHash: lcdCode?.code_info.data_hash,
+      isLcdCodeLoading,
+      isLcdCodeError,
+    },
     publicProject: {
       publicCodeData: publicCodeInfo,
       publicDetail: publicInfoBySlug?.details,

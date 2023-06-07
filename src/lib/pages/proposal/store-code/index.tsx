@@ -9,7 +9,6 @@ import {
   Checkbox,
   Box,
 } from "@chakra-ui/react";
-import { Sha256 } from "@cosmjs/crypto";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
@@ -41,6 +40,7 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import { Tooltip } from "lib/components/Tooltip";
+import { CodeHashBox } from "lib/components/upload/CodeHashBox";
 import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePermissionRadio";
 import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
 import { UploadCard } from "lib/components/upload/UploadCard";
@@ -64,7 +64,11 @@ import type {
   UploadSectionState,
 } from "lib/types";
 import { AccessType } from "lib/types";
-import { composeStoreCodeProposalMsg, getAmountToVote } from "lib/utils";
+import {
+  composeStoreCodeProposalMsg,
+  getAmountToVote,
+  getCodeHash,
+} from "lib/utils";
 
 interface StoreCodeProposalState {
   title: string;
@@ -231,14 +235,7 @@ const StoreCodeProposal = () => {
 
   // Generate hash value from wasm file
   const setHashValue = useCallback(async () => {
-    if (wasmFile) {
-      const wasmFileBytes = new Sha256(
-        new Uint8Array(await wasmFile.arrayBuffer())
-      ).digest();
-      setValue("codeHash", Buffer.from(wasmFileBytes).toString("hex"));
-    } else {
-      setValue("codeHash", "");
-    }
+    setValue("codeHash", await getCodeHash(wasmFile));
   }, [setValue, wasmFile]);
 
   useEffect(() => {
@@ -443,33 +440,7 @@ const StoreCodeProposal = () => {
                 )}
 
                 {/* Code hash  */}
-                <Flex position="relative">
-                  <Text
-                    position="absolute"
-                    variant="body3"
-                    color="text.dark"
-                    px="1px"
-                    top="-10px"
-                    left={3}
-                  >
-                    {PROPOSAL_STORE_CODE_TEXT.codeHashHeader}
-                  </Text>
-                  <Flex
-                    border="1px"
-                    borderRadius="5px"
-                    px={3}
-                    py={4}
-                    borderColor="gray.700"
-                    bg="gray.800"
-                    h="56px"
-                    w="full"
-                    overflowX="auto"
-                    overflowY="hidden"
-                  >
-                    <Text>{codeHash}</Text>
-                  </Flex>
-                </Flex>
-
+                <CodeHashBox codeHash={codeHash} />
                 {/* Unpin code  */}
                 <Flex direction="row" alignItems="center" gap={1}>
                   <Checkbox
