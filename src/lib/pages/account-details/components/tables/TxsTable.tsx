@@ -52,7 +52,7 @@ export const TxsTable = ({
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
 
   const {
-    data: txsCount = 0,
+    data: txsCount,
     refetch: refetchTxsCount,
     isLoading: txsCountLoading,
     failureReason,
@@ -119,7 +119,7 @@ export const TxsTable = ({
       <Flex direction="row" justify="space-between" alignItems="center">
         <TableTitle
           title="Transactions"
-          count={failureReason ? "N/A" : txsCount}
+          count={txsCount === undefined ? "N/A" : txsCount}
           mb={2}
         />
         {!onViewMore && (
@@ -167,11 +167,13 @@ export const TxsTable = ({
         }
         showRelations
       />
-      {!!txsCount &&
-        Boolean(transactions?.length) &&
+      {Boolean(transactions?.length) &&
         (onViewMore
-          ? txsCount > 5 && <ViewMore onClick={onViewMore} />
-          : txsCount > 10 && (
+          ? (txsCount === undefined || txsCount > 5) && (
+              <ViewMore onClick={onViewMore} />
+            )
+          : txsCount &&
+            txsCount > 10 && (
               <Pagination
                 currentPage={currentPage}
                 pagesQuantity={pagesQuantity}
