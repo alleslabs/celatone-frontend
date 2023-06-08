@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#377](https://github.com/alleslabs/celatone-frontend/pull/377) Able to access txs tab when count query timeout, change tabs to lazy load mode for better performance
+
 ## v1.0.5
 
 ### Features

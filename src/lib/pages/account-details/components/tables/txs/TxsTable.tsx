@@ -49,12 +49,10 @@ const getEmptyStateProps = (
 
 const TxTitle = ({
   onViewMore,
-  failureReason,
   txsCount,
 }: {
   onViewMore: TxsTableProps["onViewMore"];
-  failureReason: unknown;
-  txsCount: number;
+  txsCount: Option<number>;
 }) => {
   const isMobile = useMobile();
 
@@ -62,14 +60,14 @@ const TxTitle = ({
     return (
       <MobileTitle
         title="Transactions"
-        count={failureReason ? "N/A" : txsCount}
+        count={txsCount === undefined ? "N/A" : txsCount}
         onViewMore={onViewMore}
       />
     );
   return (
     <TableTitle
       title="Transactions"
-      count={failureReason ? "N/A" : txsCount}
+      count={txsCount === undefined ? "N/A" : txsCount}
       mb={2}
     />
   );
@@ -84,7 +82,7 @@ export const TxsTable = ({
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
 
   const {
-    data: txsCount = 0,
+    data: txsCount,
     refetch: refetchTxsCount,
     isLoading: txsCountLoading,
     failureReason,
@@ -149,13 +147,7 @@ export const TxsTable = ({
   return (
     <Box mt={{ base: 4, md: 8 }}>
       <TxsTop
-        title={
-          <TxTitle
-            onViewMore={onViewMore}
-            failureReason={failureReason}
-            txsCount={txsCount}
-          />
-        }
+        title={<TxTitle onViewMore={onViewMore} txsCount={txsCount} />}
         onViewMore={onViewMore}
         relationSelection={
           <TxRelationSelection
@@ -191,11 +183,12 @@ export const TxsTable = ({
         showRelations
         onViewMore={onViewMore}
       />
-      {!!txsCount &&
-        Boolean(transactions?.length) &&
+      {Boolean(transactions?.length) &&
         (onViewMore
-          ? txsCount > 5 && !isMobile && <ViewMore onClick={onViewMore} />
-          : txsCount > 10 && (
+          ? (txsCount === undefined || txsCount > 5) &&
+            !isMobile && <ViewMore onClick={onViewMore} />
+          : txsCount &&
+            txsCount > 10 && (
               <Pagination
                 currentPage={currentPage}
                 pagesQuantity={pagesQuantity}
