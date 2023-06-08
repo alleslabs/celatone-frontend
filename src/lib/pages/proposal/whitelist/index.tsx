@@ -10,19 +10,20 @@ import {
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
-import big from "big.js";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
+import { InitialDeposit } from "../components/InitialDeposit";
 import { TestnetAlert } from "../components/TestnetAlert";
-import { SIDEBAR_DETAILS } from "../constants";
+import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
   useCurrentNetwork,
   useFabricateFee,
   useSimulateFeeQuery,
-  useSubmitProposalTx,
+  useSubmitWhitelistProposalTx,
 } from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
@@ -38,14 +39,16 @@ import {
   MAX_PROPOSAL_TITLE_LENGTH,
 } from "lib/data/proposalWhitelist";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import {
+  AmpEvent,
+  AmpTrack,
+  AmpTrackUseSubmitProposal,
+  AmpTrackUseWhitelistedAddresses,
+  AmpTrackUseDepositFill,
+} from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
 import type { Addr } from "lib/types";
-import {
-  composeSubmitWhitelistProposalMsg,
-  d2Formatter,
-  formatSeconds,
-} from "lib/utils";
+import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -61,11 +64,14 @@ const defaultValues: WhiteListState = {
   initialDeposit: { denom: "", amount: "" } as Coin,
 };
 
+const ampPage = "proposal_whitelist";
+
 const ProposalToWhitelist = () => {
+  const router = useRouter();
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
-  const submitProposalTx = useSubmitProposalTx();
+  const submitProposalTx = useSubmitWhitelistProposalTx();
   const { broadcast } = useTxBroadcast();
   const {
     control,
@@ -89,6 +95,7 @@ const ProposalToWhitelist = () => {
   });
   const { isTestnet } = useCurrentNetwork();
 
+  const minDeposit = govParams?.depositParams.minDeposit;
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
   const enabledTx = useMemo(
@@ -122,12 +129,14 @@ const ProposalToWhitelist = () => {
         }),
         initialDeposit,
         proposer: walletAddress as Addr,
+        precision: minDeposit?.precision,
       }),
     [
       addressesArray,
       description,
       govParams?.uploadAccess,
       initialDeposit,
+      minDeposit,
       title,
       walletAddress,
     ]
@@ -147,7 +156,7 @@ const ProposalToWhitelist = () => {
       setEstimatedFee(undefined);
     },
   });
-  const minDeposit = govParams?.depositParams.minDeposit;
+
   const {
     variant,
     description: alertDesc,
@@ -160,34 +169,48 @@ const ProposalToWhitelist = () => {
   );
 
   const proceed = useCallback(async () => {
-    const minDepositAmount = big(minDeposit?.formattedAmount || 0);
     const stream = await submitProposalTx({
       estimatedFee,
       messages: [submitWhitelistProposalMsg],
       whitelistNumber: addressesArray.length,
-      amountToVote: minDepositAmount.lte(initialDeposit.amount)
-        ? null
-        : // TODO: Refactor this logic into utils?
-          `${d2Formatter(
-            minDepositAmount.minus(initialDeposit.amount),
-            "NaN"
-          )} ${minDeposit?.formattedDenom}`,
+      amountToVote: getAmountToVote(initialDeposit, minDeposit),
+
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
+    });
+    AmpTrackUseSubmitProposal(ampPage, {
+      initialDeposit: initialDeposit.amount,
+      assetDenom: initialDeposit.denom,
+      minDeposit: minDeposit?.formattedAmount,
+      addressesCount: addresses.length,
     });
     if (stream) {
       setProcessing(true);
       broadcast(stream);
     }
   }, [
-    addressesArray.length,
-    submitWhitelistProposalMsg,
-    estimatedFee,
-    initialDeposit.amount,
+    addresses.length,
     minDeposit,
-    broadcast,
     submitProposalTx,
+    estimatedFee,
+    submitWhitelistProposalMsg,
+    addressesArray.length,
+    initialDeposit,
+    broadcast,
   ]);
+
+  useEffect(() => {
+    const emptyAddressesLength = addresses.filter(
+      (addr) => addr.address.trim().length === 0
+    ).length;
+    AmpTrackUseWhitelistedAddresses(
+      ampPage,
+      emptyAddressesLength,
+      addresses.length - emptyAddressesLength
+    );
+    // Run this effect only when the amount of address input changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses.length]);
 
   useEffect(() => {
     if (minDeposit)
@@ -196,6 +219,12 @@ const ProposalToWhitelist = () => {
         initialDeposit: { denom: minDeposit.denom, amount: "" },
       });
   }, [minDeposit, reset]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      AmpTrack(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
+    }
+  }, [router.isReady]);
 
   return (
     <>
@@ -230,6 +259,7 @@ const ProposalToWhitelist = () => {
             <ConnectWalletAlert
               subtitle="You need to connect wallet to proceed this action"
               mt={12}
+              page={ampPage}
             />
             <form>
               <Flex
@@ -343,20 +373,7 @@ const ProposalToWhitelist = () => {
               >
                 Add More Address
               </Button>
-              <Heading as="h6" variant="h6" mt={12}>
-                Initial Deposit
-              </Heading>
-              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start{" "}
-                {formatSeconds(govParams?.depositParams.maxDepositPeriod)}{" "}
-                deposit period: {govParams?.depositParams.minInitialDeposit}{" "}
-                {minDeposit?.formattedDenom}
-              </Text>
-              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start{" "}
-                {formatSeconds(govParams?.votingParams.votingPeriod)} voting
-                period: {minDeposit?.formattedToken}
-              </Text>
+              <InitialDeposit govParams={govParams} />
               <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                 <AssetBox baseDenom={initialDeposit.denom} />
                 <ControllerInput
@@ -377,6 +394,10 @@ const ProposalToWhitelist = () => {
                       color="accent.main"
                       onClick={() => {
                         if (!minDeposit) return;
+                        AmpTrackUseDepositFill(
+                          ampPage,
+                          minDeposit.formattedAmount
+                        );
                         setValue(
                           "initialDeposit.amount",
                           minDeposit.formattedAmount
@@ -413,7 +434,10 @@ const ProposalToWhitelist = () => {
             </form>
           </GridItem>
           <GridItem area="sidebar">
-            <StickySidebar marginTop="128px" metadata={SIDEBAR_DETAILS} />
+            <StickySidebar
+              marginTop="128px"
+              metadata={SIDEBAR_WHITELIST_DETAILS}
+            />
           </GridItem>
         </Grid>
       </PageContainer>

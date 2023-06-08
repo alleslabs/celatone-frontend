@@ -49,7 +49,6 @@ export const ProposalsTableRow = ({
         <ResolvedHeight
           resolvedHeight={proposal.resolvedHeight}
           isDepositOrVoting={isDepositOrVoting}
-          isDepositFailed={isDepositFailed}
         />
       </TableRow>
       <TableRow>
