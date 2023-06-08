@@ -13,3 +13,4 @@ export * from "./useSelectChain";
 export * from "./useSimulateFee";
 export * from "./useTokensInfo";
 export * from "./useCurrentNetwork";
+export * from "./useChainRecordAsset";
