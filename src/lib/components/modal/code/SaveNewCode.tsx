@@ -60,7 +60,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
   const { refetch, isFetching, isRefetching } = useQuery(
     ["query", lcdEndpoint, codeId],
-    async () => getCodeIdInfo(lcdEndpoint, Number(codeId)),
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: false,
       retry: false,
@@ -176,7 +176,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     <ActionModal
       title="Save New Code"
       icon="bookmark-solid"
-      trigger={<Button {...buttonProps} />}
+      trigger={<Button {...buttonProps} as="button" />}
       mainBtnTitle="Save New Code"
       mainAction={handleSave}
       otherAction={reset}

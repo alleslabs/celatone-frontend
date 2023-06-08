@@ -1,7 +1,14 @@
 import { useCelatoneApp } from "../contexts";
 
 export const useBaseApiRoute = (
-  type: "txs" | "balances" | "assets" | "projects" | "contracts" | "codes"
+  type:
+    | "txs"
+    | "balances"
+    | "assets"
+    | "projects"
+    | "contracts"
+    | "codes"
+    | "accounts"
 ): string => {
   const {
     chainConfig: { chain, api },
@@ -24,6 +31,8 @@ export const useBaseApiRoute = (
       return `${api}/contracts/${chain}/${currentChainId}`;
     case "codes":
       return `${api}/codes/${chain}/${currentChainId}`;
+    case "accounts":
+      return `${api}/accounts/${chain}/${currentChainId}`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."

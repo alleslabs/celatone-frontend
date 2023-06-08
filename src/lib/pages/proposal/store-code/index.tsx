@@ -44,10 +44,7 @@ import { CodeHashBox } from "lib/components/upload/CodeHashBox";
 import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePermissionRadio";
 import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
 import { UploadCard } from "lib/components/upload/UploadCard";
-import {
-  getMaxProposalTitleLengthError,
-  MAX_PROPOSAL_TITLE_LENGTH,
-} from "lib/data";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
@@ -63,7 +60,7 @@ import type {
   SimulateStatus,
   UploadSectionState,
 } from "lib/types";
-import { AccessType } from "lib/types";
+import { AccessType, AccessConfigPermission } from "lib/types";
 import {
   composeStoreCodeProposalMsg,
   getAmountToVote,
@@ -96,12 +93,16 @@ const page = "proposal-store-code";
 
 const StoreCodeProposal = () => {
   const {
-    appHumanAddress: { example: exampleHumanAddress },
+    constants,
+    chainConfig: { prettyName, exampleAddresses },
   } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
   const { address: walletAddress = "" } = useWallet();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
   const minDeposit = govParams?.depositParams.minDeposit;
+  const isPermissionless =
+    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();
@@ -372,11 +373,11 @@ const StoreCodeProposal = () => {
                   variant="floating"
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.titleRequired,
-                    maxLength: MAX_PROPOSAL_TITLE_LENGTH,
+                    maxLength: constants.maxProposalTitleLength,
                   }}
                   error={
                     errors.title?.message ||
-                    getMaxProposalTitleLengthError(title.length)
+                    getMaxLengthError(title.length, "proposal_title")
                   }
                 />
 
@@ -401,7 +402,7 @@ const StoreCodeProposal = () => {
                   control={control}
                   label={PROPOSAL_STORE_CODE_TEXT.runAsLabel}
                   labelBgColor="background.main"
-                  placeholder={`ex. ${exampleHumanAddress}`}
+                  placeholder={`ex. ${exampleAddresses.user}`}
                   variant="floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.runAsHelperText}
                   requiredText={PROPOSAL_STORE_CODE_TEXT.runAsRequired}
@@ -603,7 +604,10 @@ const StoreCodeProposal = () => {
           <GridItem area="sidebar">
             <StickySidebar
               marginTop="128px"
-              metadata={SIDEBAR_STORE_CODE_DETAILS}
+              metadata={SIDEBAR_STORE_CODE_DETAILS(
+                prettyName,
+                isPermissionless ? "permissionless" : "permissioned"
+              )}
             />
           </GridItem>
         </Grid>

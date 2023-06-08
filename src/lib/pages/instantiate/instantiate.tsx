@@ -148,7 +148,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
 
   const { refetch } = useQuery(
     ["query", lcdEndpoint, codeId],
-    async () => getCodeIdInfo(lcdEndpoint, Number(codeId)),
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,
       retry: false,
