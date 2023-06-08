@@ -20,6 +20,7 @@ interface AddressInputProps<T extends FieldValues>
   validation?: RegisterOptions["validate"];
   maxLength?: number;
   helperAction?: ReactNode;
+  requiredText?: string;
 }
 
 const getAddressStatus = (input: string, error: Option<string>): FormStatus => {
@@ -40,6 +41,7 @@ export const AddressInput = <T extends FieldValues>({
   validation = {},
   maxLength,
   helperAction,
+  requiredText = "Address is empty",
 }: AddressInputProps<T>) => {
   const {
     appHumanAddress: { example: exampleAddr },
@@ -73,7 +75,7 @@ export const AddressInput = <T extends FieldValues>({
       helperText={helperText}
       size={size}
       rules={{
-        required: "Address is empty",
+        required: requiredText,
         validate: { validateAddress, ...validation },
       }}
       maxLength={maxLength}

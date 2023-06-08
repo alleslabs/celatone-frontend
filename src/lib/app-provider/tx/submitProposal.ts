@@ -3,10 +3,13 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
-import { submitProposalTx } from "lib/app-fns/tx/submitProposal";
+import {
+  submitStoreCodeProposalTx,
+  submitWhitelistProposalTx,
+} from "lib/app-fns/tx/submitProposal";
 import type { HumanAddr } from "lib/types";
 
-export interface SubmitProposalStreamParams {
+export interface SubmitWhitelistProposalStreamParams {
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
   estimatedFee?: StdFee;
@@ -15,7 +18,7 @@ export interface SubmitProposalStreamParams {
   amountToVote: string | null;
 }
 
-export const useSubmitProposalTx = () => {
+export const useSubmitWhitelistProposalTx = () => {
   const { address, getCosmWasmClient } = useWallet();
 
   return useCallback(
@@ -26,12 +29,12 @@ export const useSubmitProposalTx = () => {
       messages,
       whitelistNumber,
       amountToVote,
-    }: SubmitProposalStreamParams) => {
+    }: SubmitWhitelistProposalStreamParams) => {
       const client = await getCosmWasmClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
-      return submitProposalTx({
+      return submitWhitelistProposalTx({
         address: address as HumanAddr,
         client,
         onTxSucceed,
@@ -43,5 +46,45 @@ export const useSubmitProposalTx = () => {
       });
     },
     [address, getCosmWasmClient]
+  );
+};
+
+interface SubmitStoreCodeProposalStreamParams {
+  wasmFileName: string;
+  messages: EncodeObject[];
+  amountToVote: string | null;
+  estimatedFee?: StdFee;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
+}
+
+export const useSubmitStoreCodeProposalTx = () => {
+  const { address, getCosmWasmClient, currentChainName } = useWallet();
+  return useCallback(
+    async ({
+      estimatedFee,
+      messages,
+      wasmFileName,
+      amountToVote,
+      onTxSucceed,
+      onTxFailed,
+    }: SubmitStoreCodeProposalStreamParams) => {
+      const client = await getCosmWasmClient();
+      if (!address || !client || !currentChainName)
+        throw new Error("Please check your wallet connection.");
+      if (!estimatedFee) return null;
+      return submitStoreCodeProposalTx({
+        address: address as HumanAddr,
+        chainName: currentChainName,
+        client,
+        onTxSucceed,
+        onTxFailed,
+        fee: estimatedFee,
+        messages,
+        wasmFileName,
+        amountToVote,
+      });
+    },
+    [address, currentChainName, getCosmWasmClient]
   );
 };
