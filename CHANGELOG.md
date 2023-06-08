@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#378](https://github.com/alleslabs/celatone-frontend/pull/378) Add query params for pagination
 - [#322](https://github.com/alleslabs/celatone-frontend/pull/322) Tab url path for account details and public project details pages
 
 ### Improvements
