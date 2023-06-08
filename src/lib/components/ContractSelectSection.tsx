@@ -134,7 +134,7 @@ export const ContractSelectSection = observer(
     const { getContractLocalInfo } = useContractStore();
     const { indexerGraphClient } = useCelatoneApp();
     const isMobile = useMobile();
-    const endpoint = useLCDEndpoint();
+    const lcdEndpoint = useLCDEndpoint();
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
@@ -154,12 +154,12 @@ export const ContractSelectSection = observer(
       [
         "query",
         "instantiate_info",
-        endpoint,
+        lcdEndpoint,
         indexerGraphClient,
         contractAddress,
       ],
       async () =>
-        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
+        queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
       {
         enabled: false,
         retry: false,
@@ -186,7 +186,7 @@ export const ContractSelectSection = observer(
           label: contractLocalInfo.label,
         });
       }
-    }, [contractAddress, contractLocalInfo, endpoint, reset, refetch]);
+    }, [contractAddress, contractLocalInfo, lcdEndpoint, reset, refetch]);
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;

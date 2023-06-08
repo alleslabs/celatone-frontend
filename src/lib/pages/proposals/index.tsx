@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useState, useEffect } from "react";
 
-import { useChainId } from "lib/app-provider";
+import { useCelatoneApp } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -23,7 +23,7 @@ import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 import { ProposalTable } from "./table/ProposalTable";
 
 const Proposals = () => {
-  const chainId = useChainId();
+  const { currentChainId } = useCelatoneApp();
   const router = useRouter();
   const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
   const [types, setTypes] = useState<ProposalType[]>([]);
@@ -70,12 +70,12 @@ const Proposals = () => {
   useEffect(() => {
     setPageSize(10);
     setCurrentPage(1);
-  }, [chainId, setCurrentPage, setPageSize]);
+  }, [currentChainId, setCurrentPage, setPageSize]);
 
   useEffect(() => {
     setIsSelected(false);
     setProposer(undefined);
-  }, [chainId, address]);
+  }, [currentChainId, address]);
 
   const onPageChange = (nextPage: number) => setCurrentPage(nextPage);
 

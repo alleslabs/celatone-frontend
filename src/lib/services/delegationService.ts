@@ -23,14 +23,14 @@ import {
 } from "./delegation";
 
 export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const queryFn = useCallback(
-    async () => getStakingParams(endpoint),
-    [endpoint]
+    async () => getStakingParams(lcdEndpoint),
+    [lcdEndpoint]
   );
 
-  return useQuery(["query", "staking_params", endpoint], queryFn, {
+  return useQuery(["query", "staking_params", lcdEndpoint], queryFn, {
     retry: 1,
     refetchOnWindowFocus: false,
   });
@@ -39,14 +39,14 @@ export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
 export const useDelegations = (
   address: Addr
 ): UseQueryResult<RawDelegation[]> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const queryFn = useCallback(
-    async () => getDelegations(endpoint, address),
-    [address, endpoint]
+    async () => getDelegations(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "delegations", endpoint, address], queryFn, {
+  return useQuery(["query", "delegations", lcdEndpoint, address], queryFn, {
     retry: 1,
     refetchOnWindowFocus: false,
   });
@@ -55,14 +55,14 @@ export const useDelegations = (
 export const useUnbondings = (
   address: Addr
 ): UseQueryResult<RawUnbonding[]> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const queryFn = useCallback(
-    async () => getUnbondings(endpoint, address),
-    [address, endpoint]
+    async () => getUnbondings(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "unbondings", endpoint, address], queryFn, {
+  return useQuery(["query", "unbondings", lcdEndpoint, address], queryFn, {
     retry: 1,
     refetchOnWindowFocus: false,
   });
@@ -71,30 +71,34 @@ export const useUnbondings = (
 export const useDelegationRewards = (
   address: Addr
 ): UseQueryResult<RawDelegationRewards> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const queryFn = useCallback(
-    async () => getDelegationRewards(endpoint, address),
-    [address, endpoint]
+    async () => getDelegationRewards(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "delegation_rewards", endpoint, address], queryFn, {
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    ["query", "delegation_rewards", lcdEndpoint, address],
+    queryFn,
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useRedelegations = (
   address: Addr
 ): UseQueryResult<RawRedelegation[]> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const queryFn = useCallback(
-    async () => getRedelegations(endpoint, address),
-    [address, endpoint]
+    async () => getRedelegations(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "redelegations", endpoint, address], queryFn, {
+  return useQuery(["query", "redelegations", lcdEndpoint, address], queryFn, {
     retry: 1,
     refetchOnWindowFocus: false,
   });
@@ -103,14 +107,14 @@ export const useRedelegations = (
 export const useCommission = (
   address: ValidatorAddr
 ): UseQueryResult<RawCommission> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const queryFn = useCallback(
-    async () => getCommission(endpoint, address),
-    [address, endpoint]
+    async () => getCommission(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "commission", endpoint, address], queryFn, {
+  return useQuery(["query", "commission", lcdEndpoint, address], queryFn, {
     retry: 1,
     refetchOnWindowFocus: false,
   });

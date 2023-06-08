@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
 import {
+  useCelatoneApp,
   useFabricateFee,
   useSimulateFeeForStoreCode,
   useUploadContractTx,
@@ -14,7 +15,7 @@ import {
 } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
-import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -41,6 +42,8 @@ export const UploadSection = ({
   handleBack,
   isMigrate = false,
 }: UploadSectionProps) => {
+  const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
   const fabricateFee = useFabricateFee();
   const { address } = useWallet();
   const { broadcast } = useTxBroadcast();
@@ -205,9 +208,11 @@ export const UploadSection = ({
         placeholder="Untitled Name"
         helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
         rules={{
-          maxLength: MAX_CODE_NAME_LENGTH,
+          maxLength: constants.maxCodeNameLength,
         }}
-        error={errors.codeName && getMaxCodeNameLengthError(codeName.length)}
+        error={
+          errors.codeName && getMaxLengthError(codeName.length, "code_name")
+        }
         variant="floating"
       />
       <InstantiatePermissionRadio

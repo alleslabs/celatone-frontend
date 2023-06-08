@@ -1,23 +1,15 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
-import { useChainId } from "lib/app-provider";
-import { getNetworkByChainName } from "lib/data";
+import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
 import type { Option } from "lib/types";
 
 export const openNewTab = (url: string) =>
   window.open(url, "_blank", "noopener,noreferrer");
 
 export const useOpenTxTab = (type: "lcd" | "tx-page") => {
-  const { currentChainName } = useWallet();
-  const chainId = useChainId();
-  const baseUrl =
-    type === "lcd"
-      ? `${CELATONE_API_ENDPOINT}/txs/${getChainApiPath(
-          currentChainName
-        )}/${chainId}`
-      : `/${getNetworkByChainName(currentChainName)}/txs`;
+  const { currentChainId } = useCelatoneApp();
+  const txsApiRoute = useBaseApiRoute("txs");
+  const baseUrl = type === "lcd" ? txsApiRoute : `/${currentChainId}/txs`;
 
   return useCallback(
     (txHash: Option<string>) => {

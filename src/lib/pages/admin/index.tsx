@@ -14,6 +14,7 @@ import {
   useLCDEndpoint,
   useGetAddressType,
   useValidateAddress,
+  useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -34,6 +35,7 @@ import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
 
 const UpdateAdmin = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { address } = useWallet();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
@@ -42,7 +44,8 @@ const UpdateAdmin = () => {
   const fabricateFee = useFabricateFee();
   const updateAdminTx = useUpdateAdminTx();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
+
   const { indexerGraphClient } = useCelatoneApp();
 
   const [adminAddress, setAdminAddress] = useState("");
@@ -115,12 +118,16 @@ const UpdateAdmin = () => {
     [
       "query",
       "instantiate_info",
-      endpoint,
+      lcdEndpoint,
       indexerGraphClient,
       contractAddressParam,
     ],
     async () =>
-      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddressParam),
+      queryInstantiateInfo(
+        lcdEndpoint,
+        indexerGraphClient,
+        contractAddressParam
+      ),
     {
       enabled: !!contractAddressParam,
       refetchOnWindowFocus: false,

@@ -11,7 +11,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -63,6 +63,8 @@ const Deploy = () => {
   const enableUpload =
     !isPermissionedNetwork ||
     Boolean(data?.addresses?.includes(address as HumanAddr));
+
+  useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);

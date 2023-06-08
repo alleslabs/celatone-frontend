@@ -7,6 +7,7 @@ import { Tooltip } from "../Tooltip";
 import { useInternalNavigate } from "lib/app-provider";
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
+import { resolvePermission } from "lib/utils";
 
 interface InstantiateButtonProps extends ButtonProps {
   instantiatePermission: AccessConfigPermission;
@@ -64,9 +65,11 @@ export const InstantiateButton = ({
   const goToInstantiate = () =>
     navigate({ pathname: "/instantiate", query: { "code-id": codeId } });
 
-  const isAllowed =
-    permissionAddresses.includes(address as HumanAddr) ||
-    instantiatePermission === AccessConfigPermission.EVERYBODY;
+  const isAllowed = resolvePermission(
+    address as HumanAddr,
+    instantiatePermission,
+    permissionAddresses
+  );
 
   /**
    * @todos use isDisabled when proposal flow is done

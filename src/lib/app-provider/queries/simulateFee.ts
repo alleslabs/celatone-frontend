@@ -4,7 +4,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
-import { useDummyWallet } from "../hooks";
+import { useDummyWallet, useRPCEndpoint } from "../hooks";
 import type {
   AccessType,
   Addr,
@@ -30,22 +30,21 @@ export const useSimulateFeeQuery = ({
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
-  const { address, getCosmWasmClient, currentChainName, currentChainRecord } =
-    useWallet();
+  const { address, getCosmWasmClient, currentChainName } = useWallet();
   const { dummyWallet, dummyAddress } = useDummyWallet();
-
+  const rpcEndpoint = useRPCEndpoint();
   const userAddress = isDummyUser ? dummyAddress : address || dummyAddress;
 
   const simulateFn = async (msgs: ComposedMsg[]) => {
     // TODO: revisit this logic
-    if (!currentChainRecord?.preferredEndpoints?.rpc?.[0] || !userAddress) {
-      throw new Error("No RPC endpoint or user address");
+    if (!userAddress) {
+      throw new Error("No user address");
     }
 
     const client =
       dummyWallet && (isDummyUser || !address)
         ? await SigningCosmWasmClient.connectWithSigner(
-            currentChainRecord.preferredEndpoints.rpc[0],
+            rpcEndpoint,
             dummyWallet
           )
         : await getCosmWasmClient();
@@ -58,7 +57,13 @@ export const useSimulateFeeQuery = ({
   };
 
   return useQuery({
-    queryKey: ["simulate", currentChainName, userAddress, messages],
+    queryKey: [
+      "simulate",
+      currentChainName,
+      userAddress,
+      messages,
+      rpcEndpoint,
+    ],
     queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
     enabled,
     keepPreviousData: true,

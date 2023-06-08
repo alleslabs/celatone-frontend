@@ -1,9 +1,7 @@
 import { Button } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 
-import { getExplorerProposalUrl } from "lib/app-fns/explorer";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { openNewTab, useOpenTxTab } from "lib/hooks";
 import type { ActionVariant, TxReceipt } from "lib/types";
@@ -23,7 +21,11 @@ export const ButtonSection = ({
   const router = useRouter();
   const navigate = useInternalNavigate();
   const openTxTab = useOpenTxTab("tx-page");
-  const { currentChainName } = useWallet();
+  const {
+    chainConfig: {
+      explorerLink: { proposal: explorerProposal },
+    },
+  } = useCelatoneApp();
 
   const openTxExplorer = () => {
     const txHash = receipts
@@ -37,7 +39,7 @@ export const ButtonSection = ({
     const proposalId = receipts
       .find((r) => r.title === "Proposal ID")
       ?.value?.toString();
-    openNewTab(`${getExplorerProposalUrl(currentChainName)}/${proposalId}`);
+    openNewTab(`${explorerProposal}/${proposalId}`);
     onClose?.();
   };
 

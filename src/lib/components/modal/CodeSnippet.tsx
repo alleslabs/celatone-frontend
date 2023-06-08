@@ -20,10 +20,14 @@ import AceEditor from "react-ace";
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import { CURR_THEME } from "env";
-import { useLCDEndpoint } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useLCDEndpoint,
+  useRPCEndpoint,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { ContractAddr, Option } from "lib/types";
+import type { ContractAddr } from "lib/types";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-sh";
@@ -39,21 +43,6 @@ interface CodeSnippetProps {
   type: "query" | "execute";
 }
 
-/**
- *
- * @todo: This is a temporary solution to get the full RPC URL for Osmosis.
- */
-const getFullRpcUrl = (rpcUrl: Option<string>, chainId: Option<string>) => {
-  const baseUrl = rpcUrl?.slice(0, rpcUrl.length - 1);
-  switch (chainId) {
-    case "osmosis-1":
-    case "osmo-test-4":
-      return `${baseUrl}:443`;
-    default:
-      return `${baseUrl}:26657`;
-  }
-};
-
 const CodeSnippet = ({
   contractAddress,
   message,
@@ -62,11 +51,10 @@ const CodeSnippet = ({
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { currentChainRecord, currentChainName } = useWallet();
   const isDisabled = !contractAddress || !message.length;
-
-  const endpoint = useLCDEndpoint();
   const client = currentChainRecord?.chain.daemon_name;
-  const rpcUrl = currentChainRecord?.preferredEndpoints?.rpc?.[0];
-  const chainId = currentChainRecord?.chain.chain_id;
+  const lcdEndpoint = useLCDEndpoint();
+  const rpcEndpoint = useRPCEndpoint();
+  const { currentChainId } = useCelatoneApp();
   const codeSnippets: Record<
     string,
     { name: string; mode: string; snippet: string }[]
@@ -75,10 +63,10 @@ const CodeSnippet = ({
       {
         name: "CLI",
         mode: "sh",
-        snippet: `export CHAIN_ID='${chainId}'\n
+        snippet: `export CHAIN_ID='${currentChainId}'\n
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export QUERY_MSG='${message}'\n
-export RPC_URL='${getFullRpcUrl(rpcUrl, chainId)}'\n
+export RPC_URL='${rpcEndpoint}'\n
 ${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
   --chain-id $CHAIN_ID \\
   --node $RPC_URL`,
@@ -89,7 +77,7 @@ ${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
         snippet: `import base64
 import requests\n
 CONTRACT_ADDRESS = "${contractAddress}"
-LCD_URL = "${endpoint}"
+LCD_URL = "${lcdEndpoint}"
 QUERY_MSG = b'''${message}'''\n
 query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
 res = requests.get(
@@ -101,7 +89,7 @@ print(res)`,
         name: "CosmJS",
         mode: "javascript",
         snippet: `const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
-const rpcURL = "${rpcUrl}";
+const rpcURL = "${rpcEndpoint}";
 const contractAddress =
 "${contractAddress}";
 const queryMsg = \`${message}\`;\n
@@ -119,7 +107,7 @@ queryContract(rpcURL, contractAddress, queryMsg);`,
         name: "Axios",
         mode: "javascript",
         snippet: `const axios = require('axios');\n
-const lcdURL = '${endpoint}';
+const lcdURL = '${lcdEndpoint}';
 const contractAddress =
 "${contractAddress}";
 const queryMsg = ${message};\n
@@ -136,8 +124,8 @@ queryContract();`,
         name: "CLI",
         mode: "sh",
         snippet: `${client} keys add --recover celatone\n
-export CHAIN_ID='${chainId}'\n
-export RPC_URL='${getFullRpcUrl(rpcUrl, chainId)}'\n
+export CHAIN_ID='${currentChainId}'\n
+export RPC_URL='${rpcEndpoint}'\n
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export EXECUTE_MSG='${message}'\n
 ${client} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
@@ -161,7 +149,7 @@ const contractAddress =
   '${contractAddress}';
 
 const execute = async () => {
-  const rpcEndpoint = '${rpcUrl}';
+  const rpcEndpoint = '${rpcEndpoint}';
   const signer = await getOfflineSignerAmino({ mnemonic, chain });
   const client = await SigningCosmWasmClient.connectWithSigner(
     rpcEndpoint,

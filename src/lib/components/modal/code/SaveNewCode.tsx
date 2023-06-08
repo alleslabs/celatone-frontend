@@ -5,11 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { useLCDEndpoint } from "lib/app-provider";
+import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
@@ -22,6 +22,9 @@ interface SaveNewCodeModalProps {
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { address } = useWallet();
+  const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
+
   /* STATE */
   const [codeId, setCodeId] = useState("");
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
@@ -41,23 +44,23 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     const trimedName = name.trim();
     if (trimedName.length === 0) {
       setNameStatus({ state: "init" });
-    } else if (trimedName.length > MAX_CODE_NAME_LENGTH)
+    } else if (trimedName.length > constants.maxCodeNameLength)
       setNameStatus({
         state: "error",
-        message: getMaxCodeNameLengthError(trimedName.length),
+        message: getMaxLengthError(trimedName.length, "code_name"),
       });
     else setNameStatus({ state: "success" });
-  }, [name]);
+  }, [constants.maxCodeNameLength, getMaxLengthError, name]);
 
   /* DEPENDENCY */
   const toast = useToast();
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
 
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    ["query", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, Number(codeId)),
     {
       enabled: false,
       retry: false,

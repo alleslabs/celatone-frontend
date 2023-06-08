@@ -3,7 +3,7 @@ import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
@@ -25,6 +25,8 @@ const Upload = () => {
   const enableUpload =
     !isPermissionedNetwork ||
     Boolean(data?.addresses?.includes(address as HumanAddr));
+
+  useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
     // Redirect back to deploy page

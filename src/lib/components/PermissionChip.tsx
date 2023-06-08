@@ -1,9 +1,12 @@
 import { Flex, Tag } from "@chakra-ui/react";
 import { useWallet } from "@cosmos-kit/react";
 
-import type { HumanAddr, PermissionAddresses } from "lib/types";
-import { AccessConfigPermission } from "lib/types";
-import { getPermissionHelper } from "lib/utils";
+import type {
+  HumanAddr,
+  PermissionAddresses,
+  AccessConfigPermission,
+} from "lib/types";
+import { getPermissionHelper, resolvePermission } from "lib/utils";
 
 import { Tooltip } from "./Tooltip";
 
@@ -18,9 +21,11 @@ export const PermissionChip = ({
 }: PermissionChipProps) => {
   const { address } = useWallet();
 
-  const isAllowed =
-    permissionAddresses.includes(address as HumanAddr) ||
-    instantiatePermission === AccessConfigPermission.EVERYBODY;
+  const isAllowed = resolvePermission(
+    address as HumanAddr,
+    instantiatePermission,
+    permissionAddresses
+  );
 
   const { message } = getPermissionHelper(
     address as HumanAddr,
