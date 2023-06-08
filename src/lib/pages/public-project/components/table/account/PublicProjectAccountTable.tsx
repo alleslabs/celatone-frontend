@@ -46,7 +46,7 @@ export const PublicProjectAccountTable = ({
           variant="floating"
           value={searchKeyword}
           setInputState={setSearchKeyword}
-          placeholder="Search with account address, name or description"
+          placeholder="Search with Account Address, Name, or Description"
           size="lg"
           mb={6}
         />

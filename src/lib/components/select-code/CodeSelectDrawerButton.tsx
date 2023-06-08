@@ -98,7 +98,7 @@ export const CodeSelectDrawerButton = ({
           <DrawerBody px={0} overflow="scroll">
             <Flex gap={2} px={6} py={2}>
               <InputWithIcon
-                placeholder="Search with code ID or code name"
+                placeholder="Search with Code ID or Code Name"
                 value={keyword}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)
