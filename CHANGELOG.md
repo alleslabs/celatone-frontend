@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#380](https://github.com/alleslabs/celatone-frontend/pull/380) Support local network
 - [#363](https://github.com/alleslabs/celatone-frontend/pull/363) Add config not found page and rewrite network logic
 - [#343](https://github.com/alleslabs/celatone-frontend/pull/343) Apply fetching mechanism and keyboard arrow navigation to searchbar
 - [#372](https://github.com/alleslabs/celatone-frontend/pull/372) Add code hash to code details and upload section
