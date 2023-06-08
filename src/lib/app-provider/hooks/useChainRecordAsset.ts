@@ -20,7 +20,7 @@ export const useChainRecordAsset = () => {
         (asset) => asset.base === denom
       );
       return assetInfo
-        ? (snakeToCamel({
+        ? snakeToCamel({
             ...assetInfo,
             precision:
               assetInfo?.denom_units.find(
@@ -31,7 +31,7 @@ export const useChainRecordAsset = () => {
                   unit.denom ===
                   (denom[0] === "u" ? denom.slice(1) : "u".concat(denom))
               )?.exponent ?? 0,
-          }) as InternalChainRecordAsset)
+          })
         : null;
     },
     [currentChainRecord]
