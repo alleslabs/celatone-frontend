@@ -29,6 +29,7 @@ import {
   useSimulateFeeForProposalStoreCode,
   useSubmitStoreCodeProposalTx,
   useValidateAddress,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
@@ -92,8 +93,10 @@ const defaultValues: StoreCodeProposalState = {
 const page = "proposal-store-code";
 
 const StoreCodeProposal = () => {
+  useWasmConfig({ shouldRedirect: true });
   const {
     constants,
+    currentChainId,
     chainConfig: { prettyName, exampleAddresses },
   } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
@@ -376,8 +379,9 @@ const StoreCodeProposal = () => {
                     maxLength: constants.maxProposalTitleLength,
                   }}
                   error={
-                    errors.title?.message ||
-                    getMaxLengthError(title.length, "proposal_title")
+                    title.length > constants.maxProposalTitleLength
+                      ? getMaxLengthError(title.length, "proposal_title")
+                      : errors.title?.message
                   }
                 />
 
@@ -606,6 +610,7 @@ const StoreCodeProposal = () => {
               marginTop="128px"
               metadata={SIDEBAR_STORE_CODE_DETAILS(
                 prettyName,
+                currentChainId,
                 isPermissionless ? "permissionless" : "permissioned"
               )}
             />

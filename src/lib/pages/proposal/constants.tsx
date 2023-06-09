@@ -55,8 +55,9 @@ export const SIDEBAR_WHITELIST_DETAILS: (
 const storeCodePage = "proposal-store-code";
 export const SIDEBAR_STORE_CODE_DETAILS: (
   chainName: string,
+  chainId: string,
   permission: NetworkPermission
-) => SidebarMetadata = (chainName, permission) =>
+) => SidebarMetadata = (chainName, chainId, permission) =>
   ({
     permissioned: {
       page: storeCodePage,
@@ -83,7 +84,7 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
           On the {chainName}, you can store code without submitting a proposal
           by using
           <Link
-            href="/deploy"
+            href={`/${chainId}/deploy`}
             onClick={() =>
               AmpTrackUseRightHelperPanel(storeCodePage, "to-/deploy")
             }
