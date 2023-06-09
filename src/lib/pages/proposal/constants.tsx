@@ -1,6 +1,4 @@
-import { Text } from "@chakra-ui/react";
-import Link from "next/link";
-
+import { AppLink } from "lib/components/AppLink";
 import type { SidebarMetadata } from "lib/components/StickySidebar";
 import { AmpTrackUseRightHelperPanel } from "lib/services/amplitude";
 
@@ -55,9 +53,8 @@ export const SIDEBAR_WHITELIST_DETAILS: (
 const storeCodePage = "proposal-store-code";
 export const SIDEBAR_STORE_CODE_DETAILS: (
   chainName: string,
-  chainId: string,
   permission: NetworkPermission
-) => SidebarMetadata = (chainName, chainId, permission) =>
+) => SidebarMetadata = (chainName, permission) =>
   ({
     permissioned: {
       page: storeCodePage,
@@ -82,18 +79,17 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
       description: (
         <span>
           On the {chainName}, you can store code without submitting a proposal
-          by using
-          <Link
-            href={`/${chainId}/deploy`}
+          by using{" "}
+          <AppLink
             onClick={() =>
               AmpTrackUseRightHelperPanel(storeCodePage, "to-/deploy")
             }
+            color="secondary.main"
+            href="/deploy"
+            style={{ display: "inline-flex" }}
           >
-            {" "}
-            <Text as="span" color="secondary.main">
-              Deploy Contract
-            </Text>
-          </Link>
+            Deploy Contract
+          </AppLink>
           <br />
           <br />
           However, if you&apos;re interested in exploring about the proposal

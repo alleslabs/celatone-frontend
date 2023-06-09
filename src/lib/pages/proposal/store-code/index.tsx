@@ -96,7 +96,6 @@ const StoreCodeProposal = () => {
   useWasmConfig({ shouldRedirect: true });
   const {
     constants,
-    currentChainId,
     chainConfig: { prettyName, exampleAddresses },
   } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
@@ -610,7 +609,6 @@ const StoreCodeProposal = () => {
               marginTop="128px"
               metadata={SIDEBAR_STORE_CODE_DETAILS(
                 prettyName,
-                currentChainId,
                 isPermissionless ? "permissionless" : "permissioned"
               )}
             />
