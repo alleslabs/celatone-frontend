@@ -1,5 +1,4 @@
 import { Heading, Flex, Text, Box, Grid } from "@chakra-ui/react";
-import plur from "plur";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -133,9 +132,7 @@ export const CodeInfoSection = ({
           </Flex>
         </LabelText>
         {methodRender}
-        <LabelText
-          label={plur("Instantiate Permission", permissionAddresses.length)}
-        >
+        <LabelText label="Instantiate Permission">
           <Flex direction="column" gap={1}>
             <PermissionChip
               instantiatePermission={instantiatePermission}

@@ -2,7 +2,6 @@
 /* eslint-disable complexity */
 import { Flex } from "@chakra-ui/react";
 import big from "big.js";
-import plur from "plur";
 
 import type { TxMsgData } from "..";
 import type { AddressReturnType } from "lib/app-provider";
@@ -56,10 +55,7 @@ export const generateReceipts = (
           }),
         },
         details.instantiate_permission && {
-          title: plur(
-            "Instantiate Permission",
-            details.instantiate_permission.addresses.length
-          ),
+          title: "Instantiate Permission",
           html: (
             <Flex direction="column" gap={1}>
               <PermissionChip
@@ -1696,7 +1692,7 @@ export const generateReceipts = (
           }),
         },
         {
-          title: plur("Coin", details.coins.length),
+          title: "Coins",
           html: getCoinComponent(details.coins, assetInfos),
         },
         {
@@ -1725,7 +1721,7 @@ export const generateReceipts = (
           value: details.gauge_id,
         },
         {
-          title: plur("Reward", details.rewards.length),
+          title: "Rewards",
           html: getCoinComponent(details.rewards, assetInfos),
         },
       ];
@@ -1747,7 +1743,7 @@ export const generateReceipts = (
           value: details.duration,
         },
         {
-          title: plur("Coin", details.coins.length),
+          title: "Coin",
           html: getCoinComponent(details.coins, assetInfos),
         },
       ];
@@ -1782,7 +1778,7 @@ export const generateReceipts = (
           value: details.ID,
         },
         details.coins && {
-          title: plur("Coin", details.coins.length),
+          title: "Coins",
           html: getCoinComponent(details.coins, assetInfos),
         },
       ];
@@ -1858,7 +1854,7 @@ export const generateReceipts = (
           }),
         },
         {
-          title: plur("Coin", details.coins.length),
+          title: "Coins",
           html: getCoinComponent(details.coins, assetInfos),
         },
         validatorAddrReceipt(details.val_addr),
@@ -1997,7 +1993,7 @@ export const generateReceipts = (
           }),
         },
         {
-          title: plur("Hot Route", details.hot_routes.length),
+          title: "Hot Routes",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.hot_routes,
@@ -2017,7 +2013,7 @@ export const generateReceipts = (
           }),
         },
         {
-          title: plur("Hot Route", details.base_denoms.length),
+          title: "Hot Routes",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.base_denoms,
@@ -2132,7 +2128,7 @@ export const generateReceipts = (
           }),
         },
         {
-          title: plur("Preference", details.preferences.length),
+          title: "Preferences",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.preferences,
