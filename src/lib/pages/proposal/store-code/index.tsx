@@ -29,6 +29,7 @@ import {
   useSimulateFeeForProposalStoreCode,
   useSubmitStoreCodeProposalTx,
   useValidateAddress,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
@@ -92,6 +93,7 @@ const defaultValues: StoreCodeProposalState = {
 const page = "proposal-store-code";
 
 const StoreCodeProposal = () => {
+  useWasmConfig({ shouldRedirect: true });
   const {
     constants,
     chainConfig: { prettyName, exampleAddresses },
@@ -376,8 +378,9 @@ const StoreCodeProposal = () => {
                     maxLength: constants.maxProposalTitleLength,
                   }}
                   error={
-                    errors.title?.message ||
-                    getMaxLengthError(title.length, "proposal_title")
+                    title.length > constants.maxProposalTitleLength
+                      ? getMaxLengthError(title.length, "proposal_title")
+                      : errors.title?.message
                   }
                 />
 

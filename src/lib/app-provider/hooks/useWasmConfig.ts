@@ -2,7 +2,11 @@ import { useCelatoneApp } from "../contexts";
 
 import { useInternalNavigate } from "./useInternalNavigate";
 
-export const useWasmConfig = (shouldRedirect: { shouldRedirect: boolean }) => {
+export const useWasmConfig = ({
+  shouldRedirect,
+}: {
+  shouldRedirect: boolean;
+}) => {
   const {
     chainConfig: {
       features: { wasm },
