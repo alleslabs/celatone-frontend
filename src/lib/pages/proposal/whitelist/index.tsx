@@ -24,6 +24,7 @@ import {
   useFabricateFee,
   useSimulateFeeQuery,
   useSubmitWhitelistProposalTx,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
@@ -65,6 +66,7 @@ const defaultValues: WhiteListState = {
 const ampPage = "proposal_whitelist";
 
 const ProposalToWhitelist = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
