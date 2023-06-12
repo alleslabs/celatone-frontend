@@ -1,10 +1,10 @@
 import { fromBech32 } from "@cosmjs/encoding";
-import type { ChainRecord } from "@cosmos-kit/core";
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useMemo } from "react";
 
 import { useCelatoneApp } from "../contexts";
 import type { Option } from "lib/types";
+
+import { useCurrentChain } from "./useCurrentChain";
 
 export type AddressReturnType =
   | "user_address"
@@ -48,14 +48,15 @@ const getPrefix = (basePrefix: string, addressType: AddressReturnType) => {
 };
 
 const validateAddress = (
-  currentChainRecord: ChainRecord | undefined,
+  bech32Prefix: string,
   address: string,
   addressType: AddressReturnType,
   getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
-  if (!currentChainRecord) return "Invalid network";
+  if (!bech32Prefix)
+    return "Can not retrieve bech32 prefix of the current network.";
 
-  const prefix = getPrefix(currentChainRecord.chain.bech32_prefix, addressType);
+  const prefix = getPrefix(bech32Prefix, addressType);
 
   if (!address.startsWith(prefix))
     return `Invalid prefix (expected "${prefix}")`;
@@ -72,7 +73,7 @@ const validateAddress = (
 };
 
 export const useGetAddressType = () => {
-  const { currentChainRecord } = useWallet();
+  const { chain } = useCurrentChain();
   const getAddressTypeByLength = useGetAddressTypeByLength();
   return useCallback(
     (address: Option<string>): AddressReturnType => {
@@ -81,7 +82,7 @@ export const useGetAddressType = () => {
         !address ||
         addressType === "invalid_address" ||
         validateAddress(
-          currentChainRecord,
+          chain.bech32_prefix,
           address,
           addressType,
           getAddressTypeByLength
@@ -90,45 +91,45 @@ export const useGetAddressType = () => {
         return "invalid_address";
       return addressType;
     },
-    [currentChainRecord, getAddressTypeByLength]
+    [chain, getAddressTypeByLength]
   );
 };
 
 // TODO: refactor
 export const useValidateAddress = () => {
-  const { currentChainRecord } = useWallet();
+  const { chain } = useCurrentChain();
   const getAddressTypeByLength = useGetAddressTypeByLength();
 
   return {
     validateContractAddress: useCallback(
       (address: string) =>
         validateAddress(
-          currentChainRecord,
+          chain.bech32_prefix,
           address,
           "contract_address",
           getAddressTypeByLength
         ),
-      [currentChainRecord, getAddressTypeByLength]
+      [chain, getAddressTypeByLength]
     ),
     validateUserAddress: useCallback(
       (address: string) =>
         validateAddress(
-          currentChainRecord,
+          chain.bech32_prefix,
           address,
           "user_address",
           getAddressTypeByLength
         ),
-      [currentChainRecord, getAddressTypeByLength]
+      [chain, getAddressTypeByLength]
     ),
     validateValidatorAddress: useCallback(
       (address: string) =>
         validateAddress(
-          currentChainRecord,
+          chain.bech32_prefix,
           address,
           "validator_address",
           getAddressTypeByLength
         ),
-      [currentChainRecord, getAddressTypeByLength]
+      [chain, getAddressTypeByLength]
     ),
   };
 };

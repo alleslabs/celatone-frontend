@@ -1,6 +1,6 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
+import { useCurrentChain } from "lib/app-provider";
 import type { CodeInfo, HumanAddr } from "lib/types";
 import { resolvePermission } from "lib/utils";
 
@@ -10,7 +10,7 @@ export type PermissionFilterValue =
   | "with-proposal";
 
 export const useCodePermissionFilter = (filterValue: PermissionFilterValue) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   return useCallback(
     ({ instantiatePermission, permissionAddresses }: CodeInfo) => {
       const isAllowed = resolvePermission(

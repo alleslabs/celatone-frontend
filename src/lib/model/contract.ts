@@ -1,9 +1,9 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 
 import {
   useBaseApiRoute,
   useCelatoneApp,
+  useCurrentChain,
   useLCDEndpoint,
 } from "lib/app-provider";
 import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
@@ -50,7 +50,7 @@ interface InstantiatedByMeState {
 }
 
 export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { data: contracts = [], isLoading } = useInstantiatedListByUserQuery(
     enable ? (address as HumanAddr) : undefined
   );
@@ -74,7 +74,7 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
 };
 
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { data: count } = useInstantiatedCountByUserQuery(address as HumanAddr);
 
   return {

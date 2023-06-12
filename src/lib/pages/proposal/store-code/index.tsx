@@ -10,7 +10,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { gzip } from "node-gzip";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -25,6 +24,7 @@ import {
 import { getAlert } from "../utils";
 import {
   useCelatoneApp,
+  useCurrentChain,
   useFabricateFee,
   useSimulateFeeForProposalStoreCode,
   useSubmitStoreCodeProposalTx,
@@ -97,7 +97,7 @@ const StoreCodeProposal = () => {
     chainConfig: { prettyName, exampleAddresses },
   } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const { address: walletAddress = "" } = useWallet();
+  const { address: walletAddress = "" } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
   const minDeposit = govParams?.depositParams.minDeposit;

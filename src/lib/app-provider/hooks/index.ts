@@ -15,3 +15,4 @@ export * from "./useBaseApiRoute";
 export * from "./useRPCEndpoint";
 export * from "./useFaucetConfig";
 export * from "./useWasmConfig";
+export * from "./useCurrentChain";

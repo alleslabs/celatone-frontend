@@ -1,6 +1,6 @@
 import type { EndpointOptions } from "@cosmos-kit/core";
 import { wallets } from "@cosmos-kit/keplr";
-import { WalletProvider } from "@cosmos-kit/react";
+import { ChainProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { assets, chains } from "chain-registry";
 import localforage from "localforage";
@@ -70,11 +70,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </Script>
 
       <QueryClientProvider client={queryClient}>
-        <WalletProvider
+        <ChainProvider
           chains={chains}
           assetLists={assets}
           wallets={wallets}
           endpointOptions={availableChainsEndpoints}
+          wrappedWithChakra
         >
           <StoreProvider>
             <AppProvider>
@@ -94,7 +95,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               </TxBroadcastProvider>
             </AppProvider>
           </StoreProvider>
-        </WalletProvider>
+        </ChainProvider>
       </QueryClientProvider>
     </Chakra>
   );

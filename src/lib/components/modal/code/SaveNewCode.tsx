@@ -1,11 +1,14 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, useToast, FormControl } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useCurrentChain,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
@@ -21,7 +24,8 @@ interface SaveNewCodeModalProps {
 }
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
+
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
 

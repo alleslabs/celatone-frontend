@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, HStack } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { MyStoredCodesTable } from "lib/components/table";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { Addr, CodeInfo } from "lib/types";
@@ -26,7 +26,7 @@ export const MyStoredCodesSection = ({
   isSearching,
 }: MyStoredCodesSectionProps) => {
   const { data } = useUploadAccessParams();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const isAllowed = Boolean(data?.addresses?.includes(address as Addr));
 
   const isPermissionedNetwork =

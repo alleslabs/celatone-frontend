@@ -1,9 +1,12 @@
 import { Heading, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useInternalNavigate,
+  useWasmConfig,
+} from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
@@ -15,7 +18,7 @@ import { AccessConfigPermission } from "lib/types";
 
 const Upload = () => {
   const router = useRouter();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
   const { data, isLoading } = useUploadAccessParams();
 

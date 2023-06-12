@@ -1,6 +1,5 @@
 import { Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useRouter } from "next/router";
@@ -14,6 +13,7 @@ import {
   useCelatoneApp,
   useLCDEndpoint,
   useValidateAddress,
+  useCurrentChain,
 } from "lib/app-provider";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -71,7 +71,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       exampleAddresses: { contract: exampleContractAddress },
     },
   } = useCelatoneApp();
-  const { address = "" } = useWallet();
+  const { address = "" } = useCurrentChain();
   const lcdEndpoint = useLCDEndpoint();
 
   const postInstantiateTx = useInstantiateTx();

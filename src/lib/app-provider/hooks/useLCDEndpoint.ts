@@ -1,10 +1,13 @@
-import { useWallet } from "@cosmos-kit/react";
-
 import { useCelatoneApp } from "../contexts";
 
-export const useLCDEndpoint = () => {
-  const { currentChainRecord } = useWallet();
-  const { chainConfig } = useCelatoneApp();
+import { useCurrentChain } from "./useCurrentChain";
 
-  return currentChainRecord?.preferredEndpoints?.rest?.[0] ?? chainConfig.lcd;
+export const useLCDEndpoint = () => {
+  const { chainWallet } = useCurrentChain();
+  const { chainConfig } = useCelatoneApp();
+  const restRecord = chainWallet?.chainRecord.preferredEndpoints?.rest?.[0];
+  const endpoint =
+    typeof restRecord === "string" ? restRecord : restRecord?.url;
+
+  return endpoint ?? chainConfig.lcd;
 };

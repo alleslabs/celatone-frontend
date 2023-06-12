@@ -1,6 +1,5 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -15,6 +14,7 @@ import {
   useGetAddressType,
   useValidateAddress,
   useWasmConfig,
+  useCurrentChain,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -37,7 +37,7 @@ import { composeMsg, getFirstQueryParam } from "lib/utils";
 const UpdateAdmin = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const getAddressType = useGetAddressType();
   const navigate = useInternalNavigate();

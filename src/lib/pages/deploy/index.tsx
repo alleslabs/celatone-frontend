@@ -7,11 +7,14 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useInternalNavigate,
+  useWasmConfig,
+} from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -54,7 +57,7 @@ const getAlertContent = (
 const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { data, isFetching } = useUploadAccessParams();
 
   const isPermissionedNetwork =

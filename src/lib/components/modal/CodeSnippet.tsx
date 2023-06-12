@@ -14,7 +14,6 @@ import {
   Heading,
   Box,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
@@ -22,6 +21,7 @@ import { CustomIcon } from "../icon";
 import { CURR_THEME } from "env";
 import {
   useCelatoneApp,
+  useCurrentChain,
   useLCDEndpoint,
   useRPCEndpoint,
 } from "lib/app-provider";
@@ -49,9 +49,10 @@ const CodeSnippet = ({
   type = "query",
 }: CodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { currentChainRecord, currentChainName } = useWallet();
+  const {
+    chain: { chain_name: chainName, daemon_name: daemonName },
+  } = useCurrentChain();
   const isDisabled = !contractAddress || !message.length;
-  const client = currentChainRecord?.chain.daemon_name;
   const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();
   const { currentChainId } = useCelatoneApp();
@@ -67,7 +68,7 @@ const CodeSnippet = ({
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export QUERY_MSG='${message}'\n
 export RPC_URL='${rpcEndpoint}'\n
-${client} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
+${daemonName} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
   --chain-id $CHAIN_ID \\
   --node $RPC_URL`,
       },
@@ -123,12 +124,12 @@ queryContract();`,
       {
         name: "CLI",
         mode: "sh",
-        snippet: `${client} keys add --recover celatone\n
+        snippet: `${daemonName} keys add --recover celatone\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export EXECUTE_MSG='${message}'\n
-${client} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
+${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --from celatone \\
   --chain-id $CHAIN_ID \\
   --node $RPC_URL`,
@@ -144,7 +145,7 @@ const { chains } = require("chain-registry");
 // TODO: Replace with your mnemonic (not recommended for production use)
 const mnemonic =
   "<MNEMONIC>";
-const chain = chains.find(({ chain_name }) => chain_name === '${currentChainName}');
+const chain = chains.find(({ chain_name }) => chain_name === '${chainName}');
 const contractAddress =
   '${contractAddress}';
 

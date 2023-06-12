@@ -1,10 +1,9 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
-import { useInternalNavigate } from "lib/app-provider";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import type { HumanAddr, PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
@@ -60,7 +59,7 @@ export const InstantiateButton = ({
   codeId,
   ...buttonProps
 }: InstantiateButtonProps) => {
-  const { address, isWalletConnected } = useWallet();
+  const { address, isWalletConnected } = useCurrentChain();
   const navigate = useInternalNavigate();
   const goToInstantiate = () =>
     navigate({ pathname: "/instantiate", query: { "code-id": codeId } });

@@ -1,4 +1,4 @@
-import { useWallet } from "@cosmos-kit/react";
+import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
@@ -49,23 +49,20 @@ const AppContext = createContext<AppContextInterface>({
 });
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
-  const { currentChainName, setCurrentChain } = useWallet();
-
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
+  const { setModalTheme } = useModalTheme();
 
+  const [currentChainName, setCurrentChainName] = useState<string>();
   const [currentChainId, setCurrentChainId] = useState("");
 
   // Remark: this function is only used in useSelectChain. Do not use in other places.
-  const handleOnChainIdChange = useCallback(
-    (newChainId: string) => {
-      const config = CHAIN_CONFIGS[newChainId];
-      setCurrentChainId(newChainId);
-      setCurrentChain(config?.registryChainName);
-    },
-    [setCurrentChain, setCurrentChainId]
-  );
+  const handleOnChainIdChange = useCallback((newChainId: string) => {
+    const config = CHAIN_CONFIGS[newChainId];
+    setCurrentChainId(newChainId);
+    setCurrentChainName(config?.registryChainName);
+  }, []);
 
   const states = useMemo<AppContextInterface>(() => {
     const chainConfig = CHAIN_CONFIGS[currentChainId] ?? DEFAULT_CHAIN_CONFIG;
@@ -99,9 +96,15 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
     return () => window.removeEventListener("beforeunload", handler);
   }, []);
 
+  useEffect(() => {
+    if (localStorage.getItem("cosmology-ui-theme") !== "dark") {
+      setModalTheme("dark");
+    }
+  }, [setModalTheme]);
+
   useNetworkChange(handleOnChainIdChange);
 
-  useAmplitude();
+  useAmplitude(currentChainName);
 
   if (currentChainId && !(currentChainId in CHAIN_CONFIGS))
     return <NetworkErrorState />;

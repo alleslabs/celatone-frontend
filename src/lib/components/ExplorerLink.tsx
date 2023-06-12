@@ -1,10 +1,10 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import type { ExplorerConfig } from "config/types";
 import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
+import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -152,7 +152,7 @@ export const ExplorerLink = ({
   openNewTab,
   ...componentProps
 }: ExplorerLinkProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const {
     chainConfig: { explorerLink: explorerConfig },
   } = useCelatoneApp();
