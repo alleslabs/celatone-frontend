@@ -1,14 +1,14 @@
-import { Flex, Select, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 
-import { CustomIcon } from "../icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useMobile } from "lib/app-provider";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
-import { Next } from "./Next";
+import { PageDetail } from "./PageDetail";
+import { PageGoTo } from "./PageGoTo";
+import { PageList } from "./PageList";
 import { Paginator } from "./Paginator";
-import { Previous } from "./Previous";
 
 interface PaginationProps {
   currentPage: number;
@@ -30,6 +30,8 @@ export const Pagination = ({
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
+  const isMobile = useMobile();
+
   useEffect(() => {
     const windowPosition = scrollYPosition();
     if (windowPosition) {
@@ -41,11 +43,12 @@ export const Pagination = ({
     }
   }, [currentPage, pageSize, scrollComponentId]);
 
-  const { offsetData, lastDataInPage } = useMemo(() => {
+  const { offsetData, lastDataInPage, lastPage } = useMemo(() => {
     return {
       offsetData: offset + 1,
       lastDataInPage:
         currentPage !== pagesQuantity ? pageSize * currentPage : totalData,
+      lastPage: Math.ceil(totalData / pageSize),
     };
   }, [currentPage, offset, pageSize, pagesQuantity, totalData]);
 
@@ -55,39 +58,27 @@ export const Pagination = ({
       pagesQuantity={pagesQuantity}
       onPageChange={onPageChange}
     >
-      <Flex align="center" justify="center" w="full" px={4}>
-        <Text variant="body3" color="text.dark">
-          Items per page:
-        </Text>
-        <Select
-          border="none"
-          w="70px"
-          fontSize="12px"
-          focusBorderColor="none"
-          cursor="pointer"
-          value={pageSize}
-          onChange={(e) => {
-            AmpTrack(AmpEvent.USE_PAGINATION_PAGE_SIZE, {
-              pageSize: e.target.value,
-            });
-            onPageSizeChange(e);
-          }}
-        >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <CustomIcon name="chevron-down" color="gray.600" />
-        </Select>
-        <Text variant="body3" mx={7}>
-          {`${offsetData.toLocaleString()} - ${lastDataInPage.toLocaleString()} of ${totalData.toLocaleString()}`}
-        </Text>
-        <Previous pageSize={pageSize} variant="unstyled" display="flex">
-          <CustomIcon name="chevron-left" color="text.dark" />
-        </Previous>
-        <Next pageSize={pageSize} variant="unstyled" display="flex">
-          <CustomIcon name="chevron-right" color="text.dark" />
-        </Next>
+      <Flex
+        direction={isMobile ? "column" : "row"}
+        gap={isMobile ? 4 : 8}
+        align="center"
+        justify="center"
+        w="full"
+      >
+        <PageDetail
+          pageSize={pageSize}
+          offsetData={offsetData}
+          lastDataInPage={lastDataInPage}
+          totalData={totalData}
+          onPageSizeChange={onPageSizeChange}
+        />
+        <PageList
+          pageSize={pageSize}
+          currentPage={currentPage}
+          lastPage={lastPage}
+          onPageChange={onPageChange}
+        />
+        <PageGoTo lastPage={lastPage} onPageChange={onPageChange} />
       </Flex>
     </Paginator>
   );
