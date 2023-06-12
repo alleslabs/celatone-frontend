@@ -19,7 +19,7 @@ export const PageList = ({
   lastPage,
   onPageChange,
 }: PageListProps) => (
-  <Flex align="center" gap={1}>
+  <Flex align="center" gap={1} justifyContent="center">
     <Previous pageSize={pageSize} variant="unstyled" display="flex">
       <CustomIcon name="chevron-left" color="text.dark" />
     </Previous>

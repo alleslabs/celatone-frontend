@@ -23,6 +23,7 @@ export const PageButton = ({
       }
       _active={isCurrentPage ? {} : { background: "gray.600" }}
       boxSize={10}
+      w="fit-content"
     >
       {pageNumber}
     </Button>
