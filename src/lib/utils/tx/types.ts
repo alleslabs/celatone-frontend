@@ -683,9 +683,13 @@ export type MsgReturnType<T extends TypeUrl> =
     ? MsgJoinPoolDetails
     : T extends "/osmosis.gamm.v1beta1.MsgExitPool"
     ? MsgExitPoolDetails
-    : T extends "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn"
+    : T extends
+        | "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn"
+        | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn"
     ? MsgSwapExactAmountInDetails
-    : T extends "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut"
+    : T extends
+        | "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut"
+        | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut"
     ? MsgSwapExactAmountOutDetails
     : T extends "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn"
     ? MsgJoinSwapExternAmountInDetails
