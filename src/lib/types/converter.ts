@@ -4,7 +4,9 @@ export type SnakeToCamelCase<S extends string> =
     ? `${T}${Capitalize<SnakeToCamelCase<U>>}`
     : S;
 
-export type SnakeToCamelCaseNested<T> = T extends Array<infer R>
+export type SnakeToCamelCaseNested<T> = T extends (...args: any[]) => any
+  ? T
+  : T extends Array<infer R>
   ? Array<SnakeToCamelCaseNested<R>>
   : T extends Record<string, any>
   ? {
@@ -23,7 +25,9 @@ export type CamelToSnakeCase<S extends string> =
         : ""}${Lowercase<First>}${CamelToSnakeCase<Rest>}`
     : S;
 
-export type CamelToSnakeCaseNested<T> = T extends Array<infer R>
+export type CamelToSnakeCaseNested<T> = T extends (...args: any[]) => any
+  ? T
+  : T extends Array<infer R>
   ? Array<CamelToSnakeCaseNested<R>>
   : T extends Record<string, any>
   ? {
