@@ -17,10 +17,12 @@ export const PageGoTo = ({ lastPage, onPageChange }: PageGoToProps) => {
 
   return (
     <Flex align="center" justify="center" gap={2}>
-      <Text w="fit-content">Go to page:</Text>
+      <Text variant="body2" w="fit-content">
+        Go to page:
+      </Text>
       <Input
         textAlign="center"
-        w="44px"
+        w={16}
         value={newPage}
         onChange={(e) => {
           if (e.target.value.length === 0) setNewPage("");

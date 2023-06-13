@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 
@@ -64,6 +64,7 @@ export const Pagination = ({
         align="center"
         justify="center"
         w="full"
+        pt={6}
       >
         <PageDetail
           pageSize={pageSize}
@@ -72,6 +73,7 @@ export const Pagination = ({
           totalData={totalData}
           onPageSizeChange={onPageSizeChange}
         />
+        <Spacer />
         <PageList
           pageSize={pageSize}
           currentPage={currentPage}

@@ -22,8 +22,10 @@ export const PageButton = ({
         isCurrentPage ? { cursor: "default" } : { background: "gray.700" }
       }
       _active={isCurrentPage ? {} : { background: "gray.600" }}
-      boxSize={10}
+      minH={10}
+      minW={10}
       w="fit-content"
+      size="sm"
     >
       {pageNumber}
     </Button>

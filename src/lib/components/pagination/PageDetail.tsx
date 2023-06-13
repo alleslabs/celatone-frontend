@@ -24,6 +24,7 @@ export const PageDetail = ({
       Items per page:
     </Text>
     <Select
+      h="fit-content"
       border="none"
       w="70px"
       fontSize="12px"
