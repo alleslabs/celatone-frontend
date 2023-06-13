@@ -9,7 +9,6 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -21,6 +20,7 @@ import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
   useCelatoneApp,
+  useCurrentChain,
   useFabricateFee,
   useSimulateFeeQuery,
   useSubmitWhitelistProposalTx,
@@ -70,7 +70,7 @@ const ProposalToWhitelist = () => {
   const router = useRouter();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const { address: walletAddress = "" } = useWallet();
+  const { address: walletAddress = "" } = useCurrentChain();
   const {
     chainConfig: { prettyName },
   } = useCelatoneApp();

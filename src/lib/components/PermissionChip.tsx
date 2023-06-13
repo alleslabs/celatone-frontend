@@ -1,6 +1,6 @@
 import { Flex, Tag } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
+import { useCurrentChain } from "lib/app-provider";
 import type {
   HumanAddr,
   PermissionAddresses,
@@ -19,7 +19,7 @@ export const PermissionChip = ({
   instantiatePermission,
   permissionAddresses,
 }: PermissionChipProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
 
   const isAllowed = resolvePermission(
     address as HumanAddr,

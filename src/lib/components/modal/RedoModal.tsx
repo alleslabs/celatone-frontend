@@ -12,9 +12,9 @@ import {
   Heading,
   ModalFooter,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
+import { useCurrentChain } from "lib/app-provider";
 import { useRedo } from "lib/hooks";
 import type { Message, Msg } from "lib/types";
 import { extractMsgType } from "lib/utils";
@@ -26,7 +26,9 @@ interface RedoModalProps {
 export const RedoModal = ({ message }: RedoModalProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onClickRedo = useRedo();
-  const { currentChainName } = useWallet();
+  const {
+    chain: { chain_name: chainName },
+  } = useCurrentChain();
 
   return (
     <>
@@ -90,7 +92,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
                     e,
                     extractMsgType(message.type),
                     message.detail as Msg,
-                    currentChainName
+                    chainName
                   )
                 }
               >{`Redo with \u2018MsgInstantiateContract\u2019`}</Button>

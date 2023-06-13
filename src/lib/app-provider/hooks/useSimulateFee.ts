@@ -1,19 +1,20 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useState } from "react";
 
 import type { Gas } from "lib/types";
 import type { ComposedMsg } from "lib/types/tx";
 
+import { useCurrentChain } from "./useCurrentChain";
+
 // TODO: remove this hook after migrating to useQuery version
 export const useSimulateFee = () => {
-  const { address, getCosmWasmClient } = useWallet();
+  const { address, getSigningCosmWasmClient } = useCurrentChain();
 
   const [loading, setLoading] = useState(false);
 
   const simulate = useCallback(
     async (messages: ComposedMsg[], memo?: string) => {
       setLoading(true);
-      const client = await getCosmWasmClient();
+      const client = await getSigningCosmWasmClient();
       if (!client || !address) {
         setLoading(false);
         return undefined;
@@ -27,7 +28,7 @@ export const useSimulateFee = () => {
         throw e;
       }
     },
-    [address, getCosmWasmClient, setLoading]
+    [address, getSigningCosmWasmClient, setLoading]
   );
 
   return { simulate, loading };

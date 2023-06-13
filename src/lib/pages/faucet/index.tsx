@@ -6,7 +6,6 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -14,6 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import {
   useCelatoneApp,
+  useCurrentChain,
   useFaucetConfig,
   useInternalNavigate,
   useValidateAddress,
@@ -44,7 +44,7 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
 
 // todo: handle token symbol by current chain
 const Faucet = () => {
-  const { address: walletAddress = "" } = useWallet();
+  const { address: walletAddress = "" } = useCurrentChain();
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });

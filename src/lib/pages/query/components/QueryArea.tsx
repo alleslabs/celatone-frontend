@@ -1,11 +1,10 @@
 import { Box, Flex, Spacer, Button, ButtonGroup, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-import { useLCDEndpoint } from "lib/app-provider";
+import { useCurrentChain, useLCDEndpoint } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -44,7 +43,7 @@ export const QueryArea = ({
 
   const userKey = useUserKey();
   const { addActivity } = useContractStore();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
 
   const [msg, setMsg] = useState("");
   const [res, setRes] = useState("");

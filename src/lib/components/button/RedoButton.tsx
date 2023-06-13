@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
+import { useCurrentChain } from "lib/app-provider";
 import { useRedo } from "lib/hooks/useRedo";
 import type { Message, Msg } from "lib/types";
 import { extractMsgType } from "lib/utils";
@@ -12,8 +12,7 @@ interface RedoButtonProps {
 
 export const RedoButton = ({ message }: RedoButtonProps) => {
   const onClickRedo = useRedo();
-  const { currentChainName } = useWallet();
-
+  const { chain } = useCurrentChain();
   return (
     <Button
       variant="outline"
@@ -23,7 +22,7 @@ export const RedoButton = ({ message }: RedoButtonProps) => {
           e,
           extractMsgType(message.type),
           message.detail as Msg,
-          currentChainName
+          chain.chain_name
         )
       }
     >

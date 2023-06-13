@@ -1,8 +1,11 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useCurrentChain,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import {
   useUserKey,
@@ -81,7 +84,7 @@ export const useCodeData = (codeId: string): CodeDataState => {
 };
 
 const useStoredCodes = () => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
   const { data: rawStoredCodes, isLoading } = useCodeListByWalletAddress(

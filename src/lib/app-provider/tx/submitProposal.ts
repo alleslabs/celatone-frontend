@@ -1,8 +1,8 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
+import { useCurrentChain } from "../hooks";
 import {
   submitStoreCodeProposalTx,
   submitWhitelistProposalTx,
@@ -19,7 +19,7 @@ export interface SubmitWhitelistProposalStreamParams {
 }
 
 export const useSubmitWhitelistProposalTx = () => {
-  const { address, getCosmWasmClient } = useWallet();
+  const { address, getSigningCosmWasmClient } = useCurrentChain();
 
   return useCallback(
     async ({
@@ -30,7 +30,7 @@ export const useSubmitWhitelistProposalTx = () => {
       whitelistNumber,
       amountToVote,
     }: SubmitWhitelistProposalStreamParams) => {
-      const client = await getCosmWasmClient();
+      const client = await getSigningCosmWasmClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
@@ -45,7 +45,7 @@ export const useSubmitWhitelistProposalTx = () => {
         amountToVote,
       });
     },
-    [address, getCosmWasmClient]
+    [address, getSigningCosmWasmClient]
   );
 };
 
@@ -59,7 +59,7 @@ interface SubmitStoreCodeProposalStreamParams {
 }
 
 export const useSubmitStoreCodeProposalTx = () => {
-  const { address, getCosmWasmClient, currentChainName } = useWallet();
+  const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
   return useCallback(
     async ({
       estimatedFee,
@@ -69,13 +69,13 @@ export const useSubmitStoreCodeProposalTx = () => {
       onTxSucceed,
       onTxFailed,
     }: SubmitStoreCodeProposalStreamParams) => {
-      const client = await getCosmWasmClient();
-      if (!address || !client || !currentChainName)
+      const client = await getSigningCosmWasmClient();
+      if (!address || !client || !chain.chain_name)
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
       return submitStoreCodeProposalTx({
         address: address as HumanAddr,
-        chainName: currentChainName,
+        chainName: chain.chain_name,
         client,
         onTxSucceed,
         onTxFailed,
@@ -85,6 +85,6 @@ export const useSubmitStoreCodeProposalTx = () => {
         amountToVote,
       });
     },
-    [address, currentChainName, getCosmWasmClient]
+    [address, chain.chain_name, getSigningCosmWasmClient]
   );
 };

@@ -1,6 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -8,6 +7,7 @@ import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
 import {
   useCelatoneApp,
+  useCurrentChain,
   useFabricateFee,
   useSimulateFeeForStoreCode,
   useUploadContractTx,
@@ -45,7 +45,7 @@ export const UploadSection = ({
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const fabricateFee = useFabricateFee();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();
   const postUploadTx = useUploadContractTx(isMigrate);

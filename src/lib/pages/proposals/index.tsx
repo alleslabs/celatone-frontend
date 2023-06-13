@@ -1,10 +1,9 @@
 import { Flex, Heading, Text, Switch } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useState, useEffect } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -28,7 +27,7 @@ const Proposals = () => {
   const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
   const [types, setTypes] = useState<ProposalType[]>([]);
 
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const [search, setSearch] = useState("");
   const [proposer, setProposer] = useState<Option<Addr>>();
   const [isSelected, setIsSelected] = useState(false);

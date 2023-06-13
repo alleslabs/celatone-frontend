@@ -1,11 +1,14 @@
 import { Box, Flex, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
-import { useFabricateFee, useExecuteContractTx } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useExecuteContractTx,
+  useCurrentChain,
+} from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
@@ -58,7 +61,7 @@ export const ExecuteArea = ({
   initialFunds,
   cmds,
 }: ExecuteAreaProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const executeTx = useExecuteContractTx();
   const { broadcast } = useTxBroadcast();

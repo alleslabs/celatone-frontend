@@ -1,5 +1,4 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
@@ -7,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import {
   useCelatoneApp,
+  useCurrentChain,
   useInternalNavigate,
   useLCDEndpoint,
   useWasmConfig,
@@ -39,7 +39,7 @@ const Migrate = () => {
   const navigate = useInternalNavigate();
   const lcdEndpoint = useLCDEndpoint();
 
-  const { address = "" } = useWallet();
+  const { address = "" } = useCurrentChain();
 
   const { setValue, watch } = useForm<MigratePageState>({
     mode: "all",
