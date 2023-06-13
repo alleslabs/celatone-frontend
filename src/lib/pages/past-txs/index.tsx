@@ -131,7 +131,7 @@ const PastTxs = () => {
         display="flex"
         alignItems="center"
       >
-        ß Past Transactions
+        Past Transactions
       </Heading>
       <Flex my={8} gap={3}>
         <InputGroup>
