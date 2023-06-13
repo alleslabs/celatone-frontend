@@ -12,6 +12,15 @@ import Header from "./Header";
 import Navbar from "./navbar";
 import SubHeader from "./SubHeader";
 
+const getLocalIsExpand = () => {
+  const state = localStorage.getItem("navbar");
+  if (state === null) return null;
+  return state === "expand";
+};
+const setLocalIsExpand = (isExpand: boolean) => {
+  localStorage.setItem("navbar", isExpand ? "expand" : "collapse");
+};
+
 type LayoutProps = {
   children: ReactNode;
 };
@@ -20,7 +29,12 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
 
-  const [isExpand, setIsExpand] = useState(!isMobile);
+  const [isExpand, setIsExpand] = useState(getLocalIsExpand() ?? !isMobile);
+  const handleIsExpand = (newState: boolean) => {
+    setIsExpand(newState);
+    setLocalIsExpand(newState);
+  };
+
   const chainConfig = getChainConfig();
 
   const lightMode = {
@@ -33,7 +47,7 @@ const Layout = ({ children }: LayoutProps) => {
     templateAreas: `"header header""nav main"`,
     templateRows: "70px 1fr",
     templateCols: isExpand ? "224px 1fr" : "48px 1fr",
-    navBar: <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />,
+    navBar: <Navbar isExpand={isExpand} setIsExpand={handleIsExpand} />,
   };
 
   const mode = chainConfig.isWasm ? fullMode : lightMode;
