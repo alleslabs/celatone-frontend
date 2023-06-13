@@ -5,6 +5,7 @@ import { ActionModal } from "../ActionModal";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { MAX_CODE_NAME_LENGTH } from "lib/data";
@@ -19,6 +20,7 @@ interface CodeDetailsTemplateModalProps {
   isNewCode: boolean;
   codeInfo: CodeInfo;
   triggerElement: JSX.Element;
+  icon?: IconKeys;
 }
 
 export const CodeDetailsTemplateModal = ({
@@ -28,6 +30,7 @@ export const CodeDetailsTemplateModal = ({
   isNewCode,
   codeInfo,
   triggerElement,
+  icon = "bookmark-solid",
 }: CodeDetailsTemplateModalProps) => {
   const { saveNewCode, updateCodeInfo } = useCodeStore();
   const toast = useToast();
@@ -76,8 +79,7 @@ export const CodeDetailsTemplateModal = ({
     <ActionModal
       title={title}
       trigger={triggerElement}
-      icon="bookmark-solid"
-      noCloseButton
+      icon={icon}
       mainBtnTitle={mainBtnTitle}
       mainAction={handleAction}
       headerContent={

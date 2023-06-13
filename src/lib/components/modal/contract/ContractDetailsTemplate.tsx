@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import type { IconKeys } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
@@ -20,10 +21,12 @@ interface ContractDetailsTemplateModalProps {
   triggerElement: JSX.Element;
   defaultList?: LVPair[];
   isSave?: boolean;
+  icon?: IconKeys;
 }
 export const ContractDetailsTemplateModal = ({
   title,
   subtitle,
+  icon = "edit-solid",
   contractLocalInfo,
   triggerElement,
   defaultList = [],
@@ -90,6 +93,7 @@ export const ContractDetailsTemplateModal = ({
     <ActionModal
       title={title}
       subtitle={subtitle}
+      icon={icon}
       headerContent={
         <Flex gap={4} alignItems="center" pt={6}>
           <Text variant="body2" fontWeight={500} color="text.dark">
@@ -107,7 +111,6 @@ export const ContractDetailsTemplateModal = ({
       disabledMain={!!errors.name || !!errors.description}
       otherBtnTitle="Cancel"
       otherAction={resetForm}
-      closeOnOverlayClick={false}
     >
       <OffChainForm<OffchainDetail>
         state={offchainState}

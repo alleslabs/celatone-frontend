@@ -114,7 +114,7 @@ export const ContractsTableRowCTA = ({
                     />
                   }
                 >
-                  Add or remove from other lists
+                  Add or remove from lists
                 </MenuItem>
               }
             />

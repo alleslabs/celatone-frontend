@@ -59,13 +59,13 @@ export function RemoveCodeModal({
           ? `Remove \u2018${shortenName(name, 20)}\u2019?`
           : `Remove Code ID: ${codeId} ?`
       }
-      icon="delete"
+      icon="delete-solid"
       iconColor="error.light"
+      mainVariant="error"
       mainBtnTitle="Yes, Remove It"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
       trigger={trigger}
-      noCloseButton
     >
       <Text>
         You can save this code again later, but you will need to add its new
