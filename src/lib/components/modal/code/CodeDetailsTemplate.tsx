@@ -77,7 +77,6 @@ export const CodeDetailsTemplateModal = ({
       title={title}
       trigger={triggerElement}
       icon="bookmark-solid"
-      noHeaderBorder
       noCloseButton
       mainBtnTitle={mainBtnTitle}
       mainAction={handleAction}

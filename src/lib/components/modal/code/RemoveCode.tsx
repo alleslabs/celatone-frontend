@@ -66,7 +66,6 @@ export function RemoveCodeModal({
       otherBtnTitle="No, Keep It"
       trigger={trigger}
       noCloseButton
-      noHeaderBorder
     >
       <Text>
         You can save this code again later, but you will need to add its new

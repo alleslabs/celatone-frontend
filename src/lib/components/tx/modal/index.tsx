@@ -36,6 +36,8 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
     onClose();
   }, [navigate, onClose, isUpdateAdminSucceed]);
 
+  const showCloseButton = result.phase === TxStreamPhase.SUCCEED;
+
   return (
     <Modal
       isOpen
@@ -49,7 +51,7 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
           {result.receiptInfo.headerIcon}
           {result.receiptInfo.header}
         </ModalHeader>
-        {isUpdateAdminSucceed && <ModalCloseButton color="gray.600" />}
+        {showCloseButton && <ModalCloseButton color="gray.600" />}
         {(result.receiptInfo.description || result.receipts.length > 0) && (
           <ModalBody>
             {result.receiptInfo.description && (

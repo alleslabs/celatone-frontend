@@ -27,6 +27,7 @@ export const MyStoredCodesTable = ({
     isLoading={isLoading}
     emptyState={
       <EmptyState
+        my={0}
         imageVariant={isSearching ? "not-found" : "empty"}
         message={isSearching ? "No matched codes found" : emptyMessage}
         withBorder
