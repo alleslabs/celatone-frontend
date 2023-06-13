@@ -7,6 +7,9 @@ import * as uuid from "uuid";
 import type { Option } from "lib/types";
 
 export const useAmplitude = (chainName: Option<string>) => {
+  /**
+   * @remarks Revisit default chain name
+   */
   const { address } = useChain(chainName ?? "osmosis");
   if (typeof window !== "undefined") {
     init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY ?? "", undefined, {

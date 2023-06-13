@@ -73,7 +73,9 @@ const validateAddress = (
 };
 
 export const useGetAddressType = () => {
-  const { chain } = useCurrentChain();
+  const {
+    chain: { bech32_prefix: bech32Prefix },
+  } = useCurrentChain();
   const getAddressTypeByLength = useGetAddressTypeByLength();
   return useCallback(
     (address: Option<string>): AddressReturnType => {
@@ -82,7 +84,7 @@ export const useGetAddressType = () => {
         !address ||
         addressType === "invalid_address" ||
         validateAddress(
-          chain.bech32_prefix,
+          bech32Prefix,
           address,
           addressType,
           getAddressTypeByLength
@@ -91,45 +93,47 @@ export const useGetAddressType = () => {
         return "invalid_address";
       return addressType;
     },
-    [chain, getAddressTypeByLength]
+    [bech32Prefix, getAddressTypeByLength]
   );
 };
 
 // TODO: refactor
 export const useValidateAddress = () => {
-  const { chain } = useCurrentChain();
+  const {
+    chain: { bech32_prefix: bech32Prefix },
+  } = useCurrentChain();
   const getAddressTypeByLength = useGetAddressTypeByLength();
 
   return {
     validateContractAddress: useCallback(
       (address: string) =>
         validateAddress(
-          chain.bech32_prefix,
+          bech32Prefix,
           address,
           "contract_address",
           getAddressTypeByLength
         ),
-      [chain, getAddressTypeByLength]
+      [bech32Prefix, getAddressTypeByLength]
     ),
     validateUserAddress: useCallback(
       (address: string) =>
         validateAddress(
-          chain.bech32_prefix,
+          bech32Prefix,
           address,
           "user_address",
           getAddressTypeByLength
         ),
-      [chain, getAddressTypeByLength]
+      [bech32Prefix, getAddressTypeByLength]
     ),
     validateValidatorAddress: useCallback(
       (address: string) =>
         validateAddress(
-          chain.bech32_prefix,
+          bech32Prefix,
           address,
           "validator_address",
           getAddressTypeByLength
         ),
-      [chain, getAddressTypeByLength]
+      [bech32Prefix, getAddressTypeByLength]
     ),
   };
 };

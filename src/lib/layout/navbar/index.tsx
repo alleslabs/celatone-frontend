@@ -115,6 +115,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     },
   ];
 
+  // TODO: remove mainnet concept for public project
   if (networkType === "mainnet") {
     navMenu.push({
       category: "Public Projects",
