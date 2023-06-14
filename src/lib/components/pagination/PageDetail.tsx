@@ -24,9 +24,10 @@ export const PageDetail = ({
       Items per page:
     </Text>
     <Select
-      h="fit-content"
       border="none"
-      w="70px"
+      minW="70px"
+      w="fit-content"
+      h="fit-content"
       fontSize="12px"
       focusBorderColor="none"
       cursor="pointer"

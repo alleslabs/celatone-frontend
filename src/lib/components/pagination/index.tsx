@@ -2,7 +2,6 @@ import { Flex, Spacer } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 
-import { useMobile } from "lib/app-provider";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
 import { PageDetail } from "./PageDetail";
@@ -30,8 +29,6 @@ export const Pagination = ({
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
-  const isMobile = useMobile();
-
   useEffect(() => {
     const windowPosition = scrollYPosition();
     if (windowPosition) {
@@ -59,10 +56,8 @@ export const Pagination = ({
       onPageChange={onPageChange}
     >
       <Flex
-        direction={isMobile ? "column" : "row"}
-        gap={isMobile ? 4 : 8}
-        align="center"
-        justify="center"
+        direction={{ base: "column", md: "row" }}
+        gap={{ base: 4, md: 8 }}
         w="full"
         pt={6}
       >

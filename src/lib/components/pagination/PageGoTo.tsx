@@ -17,9 +17,7 @@ export const PageGoTo = ({ lastPage, onPageChange }: PageGoToProps) => {
 
   return (
     <Flex align="center" justify="center" gap={2}>
-      <Text variant="body2" w="fit-content">
-        Go to page:
-      </Text>
+      <Text variant="body2">Go to page:</Text>
       <Input
         textAlign="center"
         w={16}
@@ -38,7 +36,7 @@ export const PageGoTo = ({ lastPage, onPageChange }: PageGoToProps) => {
         variant="ghost-primary"
         margin={0}
         paddingX={2}
-        onClick={() => handleGoTo()}
+        onClick={handleGoTo}
         rightIcon={<CustomIcon name="chevron-right" />}
       >
         Go

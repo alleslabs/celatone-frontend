@@ -33,7 +33,7 @@ export const PageList = ({
         {currentPage > 2 && (
           <>
             {currentPage > 3 && (
-              <Text mx="2px" px="7px">
+              <Text mx="2px" px={2}>
                 ...
               </Text>
             )}
@@ -61,7 +61,7 @@ export const PageList = ({
               onPageChange={onPageChange}
             />
             {currentPage < lastPage - 2 && (
-              <Text mx="2px" px="7px">
+              <Text mx="2px" px={2}>
                 ...
               </Text>
             )}
