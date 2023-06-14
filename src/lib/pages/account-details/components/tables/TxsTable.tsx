@@ -169,7 +169,8 @@ export const TxsTable = ({
       />
       {Boolean(transactions?.length) &&
         (onViewMore
-          ? (txsCount === undefined || txsCount > 5) && (
+          ? !txsCountLoading &&
+            (txsCount === undefined || txsCount > 5) && (
               <ViewMore onClick={onViewMore} />
             )
           : txsCount &&
