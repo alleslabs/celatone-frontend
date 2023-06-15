@@ -34,7 +34,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
     <>
       <Button
         leftIcon={<CustomIcon name="redo" />}
-        variant="outline"
+        variant="outline-gray"
         iconSpacing="2"
         size="sm"
         onClick={onOpen}

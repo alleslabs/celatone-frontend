@@ -27,7 +27,7 @@ export const DEFAULT_THEME: ThemeConfig = {
   },
   colors: {
     gradient: {
-      main: "linear(to-tr, #5235EF, #6145FC)",
+      main: "linear(to-tr, #5942F3, #9793F3)",
     },
     error: {
       main: "#FF666E",

@@ -53,7 +53,7 @@ export const NewProposalButton = () => {
         >
           <MenuItem
             isDisabled={isPermissionless}
-            icon={<CustomIcon name="admin" />}
+            icon={<CustomIcon name="admin" color="gray.600" />}
             onClick={() => {
               navigate({
                 pathname: "/proposals/whitelist",
