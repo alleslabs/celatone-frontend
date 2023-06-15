@@ -54,7 +54,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   const getAddressType = useGetAddressType();
   // TODO - Move this to utils
   const [tokenLabel, tokenType] = useMemo(() => {
-    const label = getTokenLabel(balance.id);
+    const label = getTokenLabel(balance.id, balance.symbol);
     const type = !balance.id.includes("/")
       ? getTokenTypeWithAddress(balance.type, getAddressType(balance.id))
       : getTokenType(balance.id.split("/")[0]);
