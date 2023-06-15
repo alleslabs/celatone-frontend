@@ -24,8 +24,8 @@ export const ProposalsTableHeader = ({
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Voting ends</TableHeader>
-      <TableHeader>Resolved Block Height </TableHeader>
-      <TableHeader>Proposed By </TableHeader>
+      <TableHeader>Resolved Block Height</TableHeader>
+      <TableHeader>Proposed By</TableHeader>
     </Grid>
   );
 };
