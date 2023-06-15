@@ -9,6 +9,8 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { EmptyState } from "lib/components/state";
+import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import {
@@ -19,7 +21,6 @@ import type { ProposalStatus, ProposalType, Addr, Option } from "lib/types";
 
 import { ProposalStatusFilter } from "./components/ProposalStatusFilter";
 import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
-import { ProposalTable } from "./table/ProposalTable";
 
 const Proposals = () => {
   const { currentChainId } = useCelatoneApp();
@@ -164,7 +165,28 @@ const Proposals = () => {
           />
         </Flex>
       </Flex>
-      <ProposalTable proposals={proposals} isLoading={isLoading} />
+      <ProposalsTable
+        proposals={proposals}
+        isLoading={isLoading}
+        emptyState={
+          statuses.length > 0 ||
+          types.length > 0 ||
+          search.trim().length > 0 ||
+          proposer !== undefined ? (
+            <EmptyState
+              imageVariant="not-found"
+              message="No matches found. Please double-check your input and select correct network."
+              withBorder
+            />
+          ) : (
+            <EmptyState
+              imageVariant="empty"
+              message="There are no proposals on this network."
+              withBorder
+            />
+          )
+        }
+      />
       {countProposals > 10 && (
         <Pagination
           currentPage={currentPage}
