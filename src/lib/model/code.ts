@@ -1,7 +1,11 @@
-import { useWallet } from "@cosmos-kit/react";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { useChainId } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useCurrentChain,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import {
   useUserKey,
@@ -9,6 +13,7 @@ import {
   useCodeSearchFilter,
 } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
+import { getCodeIdInfo } from "lib/services/code";
 import {
   useCodeDataByCodeId,
   useCodeListByCodeIds,
@@ -32,25 +37,45 @@ export interface CodeDataState {
   isLoading: boolean;
   chainId: string;
   codeData: Option<CodeData>;
+  lcdCodeData: {
+    codeHash: Option<string>;
+    isLcdCodeLoading: boolean;
+    isLcdCodeError: unknown;
+  };
   publicProject: {
     publicCodeData: Option<PublicCode>;
     publicDetail: Option<PublicDetail>;
   };
 }
 
-export const useCodeData = (codeId: number): CodeDataState => {
+export const useCodeData = (codeId: string): CodeDataState => {
+  const { currentChainId } = useCelatoneApp();
+  const endpoint = useLCDEndpoint();
+
   const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug
   );
-
-  const chainId = useChainId();
+  const {
+    data: lcdCode,
+    isLoading: isLcdCodeLoading,
+    error: isLcdCodeError,
+  } = useQuery(
+    ["query", "code_data", endpoint, codeId],
+    async () => getCodeIdInfo(endpoint, codeId),
+    { enabled: Boolean(endpoint) && Boolean(codeId), retry: false }
+  );
 
   return {
     isLoading,
-    chainId,
+    chainId: currentChainId,
     codeData: codeInfo as CodeData,
+    lcdCodeData: {
+      codeHash: lcdCode?.code_info.data_hash,
+      isLcdCodeLoading,
+      isLcdCodeError,
+    },
     publicProject: {
       publicCodeData: publicCodeInfo,
       publicDetail: publicInfoBySlug?.details,
@@ -59,7 +84,7 @@ export const useCodeData = (codeId: number): CodeDataState => {
 };
 
 const useStoredCodes = () => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
   const { data: rawStoredCodes, isLoading } = useCodeListByWalletAddress(

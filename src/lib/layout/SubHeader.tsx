@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -18,7 +18,7 @@ const SubHeader = () => {
     { name: "Blocks", slug: "/blocks", icon: "block" },
     // { name: "Validators", slug: "/validators", icon: "admin" },
   ];
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "primary.light";

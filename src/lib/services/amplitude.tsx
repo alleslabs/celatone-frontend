@@ -1,7 +1,8 @@
 import { track } from "@amplitude/analytics-browser";
+import big from "big.js";
 
 import type { AttachFundsType } from "lib/components/fund/types";
-import type { Dict, Option } from "lib/types";
+import type { Option, Token, Dict } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -54,6 +55,8 @@ export enum AmpEvent {
   TO_TRANSACTION_DETAIL = "To Transaction Detail",
   TO_NOT_FOUND = "To 404 Not Found",
   TO_FAUCET = "To Faucet",
+  TO_PROPOSAL_TO_STORE_CODE = "To Proposal To Store Code",
+  TO_PROPOSAL_TO_WHITELIST = "To Proposal To Whitelist",
   // ACTIONS
   ACTION_UPLOAD = "Act Upload",
   ACTION_INSTANTIATE = "Action Instantiate",
@@ -96,6 +99,12 @@ export enum AmpEvent {
   USE_UNSUPPORTED_ASSETS = "Use Unsupported Assets",
   USE_TX_MSG_EXPAND = "Use Transaction Message Expand",
   USE_EXPAND = "Use General Expand",
+  USE_RIGHT_HELPER_PANEL = "Use Right Helper Panel", // Sticky panel
+  USE_UNPIN = "Use Unpin",
+  USE_INSTANTIATE_PERMISSION = "Use Instantiate Permission",
+  USE_WHITELISTED_ADDRESSES = "Use Whitelisted Addresses",
+  USE_DEPOSIT_FILL = "Use Deposit Fill",
+  USE_SUBMIT_PROPOSAL = "Use Submit Proposal",
   USE_SEARCH_INPUT = "Use Search Input",
   USE_FILTER_MY_PROPOSALS = "Use Filter My Proposals",
   USE_FILTER_PROPOSALS_STATUS = "Use Filter Proposals Status",
@@ -103,6 +112,7 @@ export enum AmpEvent {
   USE_PAGINATION_PAGE_SIZE = "Use Pagination Page Size",
   USE_PAGINATION_NAVIGATION = "Use Pagination Navigation",
   USE_CREATE_NEW_PROPOSAL = "Use Create New Proposal",
+  USE_ALERT_CTA = "Use Alert CTA",
   // TX
   TX_SUCCEED = "Tx Succeed",
   TX_FAILED = "Tx Failed",
@@ -139,9 +149,14 @@ type SpecialAmpEvent =
   | AmpEvent.USE_UNSUPPORTED_ASSETS
   | AmpEvent.USE_COPIER
   | AmpEvent.USE_EXPAND
+  | AmpEvent.USE_RIGHT_HELPER_PANEL
+  | AmpEvent.USE_UNPIN
+  | AmpEvent.USE_INSTANTIATE_PERMISSION
+  | AmpEvent.USE_DEPOSIT_FILL
   | AmpEvent.USE_PAGINATION_NAVIGATION
   | AmpEvent.USE_FILTER_PROPOSALS_STATUS
-  | AmpEvent.USE_FILTER_PROPOSALS_TYPE;
+  | AmpEvent.USE_FILTER_PROPOSALS_TYPE
+  | AmpEvent.USE_ALERT_CTA;
 
 export const AmpTrackInvalidState = (title: string) =>
   track(AmpEvent.INVALID_STATE, { title });
@@ -213,6 +228,59 @@ export const AmpTrackExpand = (
   section: Option<string>
 ) => track(AmpEvent.USE_EXPAND, { action, component, section });
 
+export const AmpTrackUseClickWallet = (page?: string, component?: string) =>
+  track(AmpEvent.USE_CLICK_WALLET, { page, component });
+
+export const AmpTrackUseRightHelperPanel = (page: string, action: string) =>
+  track(AmpEvent.USE_RIGHT_HELPER_PANEL, { page, action });
+
+export const AmpTrackUseUnpin = (page: string, check: boolean) =>
+  track(AmpEvent.USE_UNPIN, { page, check });
+
+export const AmpTrackUseInstantiatePermission = (
+  page: string,
+  type: string,
+  emptyAddressesLength: number,
+  addressesLength: number
+) =>
+  track(AmpEvent.USE_INSTANTIATE_PERMISSION, {
+    page,
+    type,
+    emptyAddressesLength,
+    addressesLength,
+  });
+
+export const AmpTrackUseWhitelistedAddresses = (
+  page: string,
+  emptyAddressesLength: number,
+  filledAddressesLength: number
+) =>
+  track(AmpEvent.USE_WHITELISTED_ADDRESSES, {
+    page,
+    emptyAddressesLength,
+    filledAddressesLength,
+  });
+
+export const AmpTrackUseDepositFill = (page: string, amount: Token) =>
+  track(AmpEvent.USE_DEPOSIT_FILL, { page, amount });
+
+export const AmpTrackUseSubmitProposal = (
+  page: string,
+  properties: {
+    initialDeposit: string;
+    minDeposit: Option<string>;
+    assetDenom: Option<string>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
+  }
+) => {
+  const proposalPeriod = big(properties.initialDeposit).lt(
+    properties.minDeposit || "0"
+  )
+    ? "Deposit"
+    : "Voting";
+  track(AmpEvent.USE_SUBMIT_PROPOSAL, { page, proposalPeriod, ...properties });
+};
 export const AmpTrackUseFilter = (
   ampEvent: AmpEvent,
   filters: string[],
@@ -229,3 +297,6 @@ export const AmpTrackPaginationNavigate = (
     pageSize,
     currentPage,
   });
+
+export const AmpTrackUseAlertCTA = (page: string, action: string) =>
+  track(AmpEvent.USE_ALERT_CTA, { page, action });

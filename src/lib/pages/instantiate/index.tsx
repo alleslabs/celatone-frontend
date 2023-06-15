@@ -1,6 +1,7 @@
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import { useEffect, useState } from "react";
 
+import { useWasmConfig } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
 import CompletedPage from "./completed";
@@ -11,6 +12,7 @@ export interface InstantiateTxInfo extends InstantiateResult {
 }
 
 const Index = () => {
+  useWasmConfig({ shouldRedirect: true });
   const [completed, setCompleted] = useState(false);
   const [txInfo, setTxInfo] = useState<InstantiateTxInfo>({
     contractAddress: "",

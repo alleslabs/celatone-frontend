@@ -1,8 +1,9 @@
-import { Divider, Flex, Heading, Text, Image } from "@chakra-ui/react";
+import { Divider, Flex, Heading, Text, Image, Spinner } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
@@ -15,6 +16,7 @@ import type { CodeDataState } from "lib/model/code";
 import { useCodeData } from "lib/model/code";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getCw2Info, getFirstQueryParam, isCodeId } from "lib/utils";
 
@@ -29,11 +31,37 @@ interface CodeDetailsBodyProps {
 
 const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
+const CodeHashInfo = ({
+  isLcdCodeLoading,
+  isLcdCodeError,
+  codeHash,
+}: {
+  isLcdCodeLoading: boolean;
+  isLcdCodeError: unknown;
+  codeHash: Option<string>;
+}) => {
+  if (isLcdCodeLoading) return <Spinner size="sm" />;
+  if (codeHash)
+    return (
+      <CopyLink value={codeHash} amptrackSection="code_hash" type="code_hash" />
+    );
+  return (
+    <Text color="text.disabled" variant="body2">
+      {isLcdCodeError ? "Error fetching data" : "N/A"}
+    </Text>
+  );
+};
+
 const CodeDetailsBody = observer(
   ({ codeDataState, codeId }: CodeDetailsBodyProps) => {
     const { getCodeLocalInfo } = useCodeStore();
     const localCodeInfo = getCodeLocalInfo(codeId);
-    const { chainId, codeData, publicProject } = codeDataState;
+    const {
+      chainId,
+      codeData,
+      publicProject,
+      lcdCodeData: { codeHash, isLcdCodeLoading, isLcdCodeError },
+    } = codeDataState;
 
     if (!codeData) return <InvalidCode />;
 
@@ -109,6 +137,16 @@ const CodeDetailsBody = observer(
             </Flex>
             <Flex gap={2}>
               <Text fontWeight={500} color="text.dark" variant="body2">
+                Code Hash:
+              </Text>
+              <CodeHashInfo
+                isLcdCodeError={isLcdCodeError}
+                isLcdCodeLoading={isLcdCodeLoading}
+                codeHash={codeHash}
+              />
+            </Flex>
+            <Flex gap={2}>
+              <Text fontWeight={500} color="text.dark" variant="body2">
                 CW2 Info:
               </Text>
               <Text
@@ -141,9 +179,10 @@ const CodeDetailsBody = observer(
 );
 
 const CodeDetails = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
-  const data = useCodeData(Number(codeIdParam));
+  const data = useCodeData(codeIdParam);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);

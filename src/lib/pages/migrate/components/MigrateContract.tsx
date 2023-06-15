@@ -1,6 +1,5 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useCallback, useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import {
   useFabricateFee,
   useSimulateFeeQuery,
   useLCDEndpoint,
+  useCurrentChain,
 } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -35,9 +35,10 @@ export const MigrateContract = ({
   codeIdParam,
   handleBack,
 }: MigrateContractProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useLCDEndpoint();
+
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
 
@@ -79,8 +80,8 @@ export const MigrateContract = ({
   });
 
   const { refetch } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    ["query", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,
       retry: false,

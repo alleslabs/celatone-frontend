@@ -6,17 +6,19 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
-  useCurrentNetwork,
+  useCelatoneApp,
+  useCurrentChain,
+  useFaucetConfig,
   useInternalNavigate,
   useValidateAddress,
 } from "lib/app-provider";
+import { AssignMe } from "lib/components/AssignMe";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
@@ -24,6 +26,7 @@ import type { IconKeys } from "lib/components/icon";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useOpenTxTab } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { capitalize } from "lib/utils";
 
 type ResultStatus = "success" | "error" | "warning";
 
@@ -41,25 +44,43 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
 
 // todo: handle token symbol by current chain
 const Faucet = () => {
-  const { address: walletAddress = "" } = useWallet();
+  const { address: walletAddress = "" } = useCurrentChain();
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
   const [result, setResult] = useState<Result>({});
 
   const { validateUserAddress } = useValidateAddress();
-  const { isTestnet } = useCurrentNetwork();
   const navigate = useInternalNavigate();
   const toast = useToast();
   const router = useRouter();
   const openTxTab = useOpenTxTab("tx-page");
+  const {
+    chainConfig: { chain },
+  } = useCelatoneApp();
+  const faucet = useFaucetConfig();
 
-  const faucetUrl = process.env.NEXT_PUBLIC_FAUCET_URL;
+  const { faucetUrl, faucetDenom, faucetAmount } = useMemo(() => {
+    if (!faucet.enabled)
+      // Remark: this shouldn't be used as the faucet is disabled
+      return {
+        faucetUrl: "",
+        faucetDenom: "",
+        faucetAmount: "",
+      };
+
+    return {
+      faucetUrl: faucet.url,
+      faucetDenom: faucet.denom.toUpperCase(),
+      faucetAmount: faucet.amount,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [faucet.enabled]);
 
   useEffect(() => {
-    if (!isTestnet) navigate({ pathname: "/" });
-    else if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
-  }, [isTestnet, navigate, router]);
+    if (!faucet.enabled) navigate({ pathname: "/", replace: true });
+    if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
+  }, [faucet, navigate, router]);
 
   useEffect(() => {
     if (address) {
@@ -88,7 +109,7 @@ const Faucet = () => {
       })
       .then(({ data: { txHash } }) => {
         toast({
-          title: "10 Testnet OSMO sent from the faucet",
+          title: `${faucetAmount} Testnet ${faucetDenom} sent from the faucet`,
           status: "success",
           duration: 5000,
           isClosable: false,
@@ -108,8 +129,7 @@ const Faucet = () => {
         setIsLoading(false);
         setResult({
           status: "success",
-          message:
-            "Sent 10 testnet OSMO from the faucet. You will need to wait for another hour to request again.",
+          message: `Sent ${faucetAmount} testnet ${faucetDenom} from the faucet. You will need to wait for another hour to request again.`,
           txHash,
         });
       })
@@ -144,11 +164,12 @@ const Faucet = () => {
   return (
     <WasmPageContainer>
       <Heading as="h5" variant="h5">
-        Osmosis Testnet Faucet
+        {capitalize(chain)} Testnet Faucet
       </Heading>
       <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
-        The faucet provides 10 testnet OSMO per request. Requests are limited to
-        once per hour for each receiving address and IP address.
+        The faucet provides {faucetAmount} testnet {faucetDenom} per request.
+        Requests are limited to once per hour for each receiving address and IP
+        address.
       </Text>
       <TextInput
         variant="floating"
@@ -158,19 +179,14 @@ const Faucet = () => {
         status={status}
         label="Receiving Address"
         helperAction={
-          <Text
-            color="accent.main"
-            fontWeight={700}
-            variant="body3"
-            cursor="pointer"
-            alignSelf="flex-start"
+          <AssignMe
             onClick={() => {
               AmpTrack(AmpEvent.USE_ASSIGN_ME);
               setAddress(walletAddress);
             }}
-          >
-            Assign me
-          </Text>
+            isDisable={address === walletAddress}
+            textAlign="left"
+          />
         }
       />
       <Button
@@ -180,7 +196,7 @@ const Faucet = () => {
         isLoading={isLoading}
         disabled={disabled}
       >
-        Request 10 testnet OSMO
+        Request {faucetAmount} testnet {faucetDenom}
       </Button>
       {result.status && (
         <Alert mt={8} variant={result.status}>

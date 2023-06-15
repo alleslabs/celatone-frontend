@@ -7,11 +7,14 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useInternalNavigate,
+  useWasmConfig,
+} from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -54,16 +57,17 @@ const getAlertContent = (
 const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { data, isFetching } = useUploadAccessParams();
 
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;
 
-  const enableUpload = useMemo(() => {
-    if (!isPermissionedNetwork) return true;
-    return Boolean(data?.addresses?.includes(address as HumanAddr));
-  }, [data, address, isPermissionedNetwork]);
+  const enableUpload =
+    !isPermissionedNetwork ||
+    Boolean(data?.addresses?.includes(address as HumanAddr));
+
+  useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
@@ -85,7 +89,7 @@ const Deploy = () => {
         subtitle="You need to connect wallet to proceed this action"
         mb={4}
       />
-      {address && (
+      {address && isPermissionedNetwork && (
         <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
           {icon}
           <AlertDescription>{description}</AlertDescription>
@@ -106,7 +110,6 @@ const Deploy = () => {
         title="Use existing Code IDs"
         description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
-        disabled={!address}
       />
       <Flex justify="center" w="100%" mt={8}>
         <Button

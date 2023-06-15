@@ -1,7 +1,7 @@
 import { Flex, Text, useClipboard } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useState } from "react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { AmpTrackCopier } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
@@ -14,7 +14,7 @@ interface CopyLinkProps {
 }
 
 export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { onCopy, hasCopied } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
   return (

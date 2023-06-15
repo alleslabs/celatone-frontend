@@ -1,27 +1,30 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 
-import { useInternalNavigate } from "lib/app-provider/hooks/useInternalNavigate";
-import { getNetworkByChainName } from "lib/data";
+import { useCelatoneApp } from "../contexts/app";
+
+import { useInternalNavigate } from "./useInternalNavigate";
 
 export const useSelectChain = () => {
   const router = useRouter();
-  const { currentChainName, setCurrentChain } = useWallet();
-  const navigate = useInternalNavigate();
+  const navigator = useInternalNavigate();
+  const { handleOnChainIdChange } = useCelatoneApp();
 
   return useCallback(
-    (chainName: string) => {
-      if (chainName === currentChainName) return;
-      setCurrentChain(chainName);
-      navigate({
+    (chainId: string) => {
+      if (router.query.network === chainId) return;
+
+      // Remark: This is workaround solution to set new chainId and replace the pathname
+      handleOnChainIdChange(chainId);
+
+      navigator({
         pathname: router.pathname.replace("/[network]", ""),
         query: {
           ...router.query,
-          network: getNetworkByChainName(chainName),
+          network: chainId,
         },
       });
     },
-    [currentChainName, setCurrentChain, navigate, router]
+    [handleOnChainIdChange, navigator, router.pathname, router.query]
   );
 };

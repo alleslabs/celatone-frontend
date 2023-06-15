@@ -1,13 +1,10 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
-import {
-  getExplorerProposalUrl,
-  getExplorerValidatorUrl,
-} from "lib/app-fns/explorer";
+import type { ExplorerConfig } from "config/types";
 import type { AddressReturnType } from "lib/app-provider";
-import { useCurrentNetwork } from "lib/app-provider/hooks/useCurrentNetwork";
+import { useCelatoneApp } from "lib/app-provider/contexts";
+import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -37,7 +34,7 @@ interface ExplorerLinkProps extends BoxProps {
 
 const getNavigationUrl = (
   type: ExplorerLinkProps["type"],
-  currentChainName: string,
+  explorerConfig: ExplorerConfig,
   value: string
 ) => {
   let url = "";
@@ -52,7 +49,7 @@ const getNavigationUrl = (
       url = "/accounts";
       break;
     case "validator_address":
-      url = getExplorerValidatorUrl(currentChainName);
+      url = explorerConfig.validator;
       break;
     case "code_id":
       url = "/codes";
@@ -61,7 +58,7 @@ const getNavigationUrl = (
       url = "/blocks";
       break;
     case "proposal_id":
-      url = getExplorerProposalUrl(currentChainName);
+      url = explorerConfig.proposal;
       break;
     case "invalid_address":
       return "";
@@ -107,7 +104,7 @@ const LinkRender = ({
   textVariant: TextProps["variant"];
   openNewTab: Option<boolean>;
 }) => {
-  const { network } = useCurrentNetwork();
+  const { currentChainId } = useCelatoneApp();
   const textElement = (
     <Text
       variant={textVariant}
@@ -128,7 +125,7 @@ const LinkRender = ({
     </AppLink>
   ) : (
     <a
-      href={isInternal ? `/${network}${hrefLink}` : hrefLink}
+      href={isInternal ? `/${currentChainId}${hrefLink}` : hrefLink}
       target="_blank"
       rel="noopener noreferrer"
       data-peer
@@ -155,7 +152,11 @@ export const ExplorerLink = ({
   openNewTab,
   ...componentProps
 }: ExplorerLinkProps) => {
-  const { address, currentChainName } = useWallet();
+  const { address } = useCurrentChain();
+  const {
+    chainConfig: { explorerLink: explorerConfig },
+  } = useCelatoneApp();
+
   const isInternal =
     type === "code_id" ||
     type === "contract_address" ||
@@ -164,7 +165,7 @@ export const ExplorerLink = ({
     type === "block_height";
 
   const [hrefLink, textValue] = [
-    getNavigationUrl(type, currentChainName, copyValue || value),
+    getNavigationUrl(type, explorerConfig, copyValue || value),
     getValueText(value === address, textFormat === "truncate", value),
   ];
 

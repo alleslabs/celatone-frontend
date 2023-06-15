@@ -1,38 +1,51 @@
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
+import { gzip } from "node-gzip";
 import { useCallback } from "react";
 
+import { useCurrentChain } from "../hooks";
 import { uploadContractTx } from "lib/app-fns/tx/upload";
-import type { HumanAddr, Option } from "lib/types";
+import type { AccessType, Addr, HumanAddr, Option } from "lib/types";
+import { composeStoreCodeMsg } from "lib/utils";
 
 export interface UploadStreamParams {
   wasmFileName: Option<string>;
   wasmCode: Option<Promise<ArrayBuffer>>;
-  codeDesc: string;
+  addresses: Addr[];
+  permission: AccessType;
+  codeName: string;
   estimatedFee: Option<StdFee>;
   onTxSucceed?: (codeId: number) => void;
 }
 
 export const useUploadContractTx = (isMigrate: boolean) => {
-  const { address, getCosmWasmClient } = useWallet();
+  const { address, getSigningCosmWasmClient } = useCurrentChain();
 
   return useCallback(
     async ({
       wasmFileName,
       wasmCode,
-      codeDesc,
+      addresses,
+      permission,
+      codeName,
       estimatedFee,
       onTxSucceed,
     }: UploadStreamParams) => {
-      const client = await getCosmWasmClient();
+      const client = await getSigningCosmWasmClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!wasmFileName || !wasmCode || !estimatedFee) return null;
 
+      const message = composeStoreCodeMsg({
+        sender: address as Addr,
+        wasmByteCode: await gzip(new Uint8Array(await wasmCode)),
+        permission,
+        addresses,
+      });
+
       return uploadContractTx({
         address: address as HumanAddr,
-        wasmCode: new Uint8Array(await wasmCode),
-        codeDesc,
+        messages: [message],
+        codeName,
         wasmFileName,
         fee: estimatedFee,
         client,
@@ -40,6 +53,6 @@ export const useUploadContractTx = (isMigrate: boolean) => {
         isMigrate,
       });
     },
-    [address, getCosmWasmClient, isMigrate]
+    [address, getSigningCosmWasmClient, isMigrate]
   );
 };

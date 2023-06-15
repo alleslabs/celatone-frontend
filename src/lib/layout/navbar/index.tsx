@@ -1,12 +1,12 @@
 import { Flex } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 
-import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
+import { useCurrentChain } from "lib/app-provider";
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { useContractStore, usePublicProjectStore } from "lib/providers/store";
 import { cmpContractListInfo } from "lib/stores/contract";
-import { formatSlugName } from "lib/utils";
+import { formatSlugName, getListIcon } from "lib/utils";
 
 import { CollapseNavMenu } from "./Collapse";
 import { ExpandNavMenu } from "./Expand";
@@ -20,7 +20,9 @@ interface NavbarProps {
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { getContractLists } = useContractStore();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const { currentChainRecord } = useWallet();
+  const {
+    chain: { network_type: networkType },
+  } = useCurrentChain();
   const isCurrentPage = useIsCurrentPage();
 
   const navMenu: MenuInfo[] = [
@@ -113,7 +115,8 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     },
   ];
 
-  if (currentChainRecord?.chain.network_type === "mainnet") {
+  // TODO: remove mainnet concept for public project
+  if (networkType === "mainnet") {
     navMenu.push({
       category: "Public Projects",
       submenu: [
