@@ -74,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#392](https://github.com/alleslabs/celatone-frontend/pull/392) Fix format denom function
 - [#390](https://github.com/alleslabs/celatone-frontend/pull/390) Fix minor styling
 - [#391](https://github.com/alleslabs/celatone-frontend/pull/391) Fix incorrect empty state for past txs table
 - [#383](https://github.com/alleslabs/celatone-frontend/pull/383) Fix title input field and navigation in sticky bar in proposal to store code, redirect path for wasm flag
