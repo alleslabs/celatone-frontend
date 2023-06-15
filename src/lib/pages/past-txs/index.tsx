@@ -168,7 +168,9 @@ const PastTxs = () => {
         transactions={txs}
         isLoading={isLoading}
         emptyState={
-          !pastTxsState.search.trim().length || !filterSelected.length ? (
+          pastTxsState.search.trim().length > 0 ||
+          pastTxsState.isSigner !== undefined ||
+          filterSelected.length > 0 ? (
             <EmptyState
               imageVariant="not-found"
               message={`
