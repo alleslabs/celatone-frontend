@@ -27,7 +27,8 @@ import type { HumanAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 const getAlertContent = (
-  enabled: boolean
+  enabled: boolean,
+  chainPrettyName: string
 ): { variant: AlertProps["variant"]; icon: JSX.Element; description: string } =>
   enabled
     ? {
@@ -50,14 +51,16 @@ const getAlertContent = (
             boxSize={4}
           />
         ),
-        description:
-          "The current network is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.",
+        description: `${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`,
       };
 
 const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { address } = useCurrentChain();
+  const {
+    address,
+    chain: { pretty_name: chainPrettyName },
+  } = useCurrentChain();
   const { data, isFetching } = useUploadAccessParams();
 
   const isPermissionedNetwork =
@@ -75,7 +78,10 @@ const Deploy = () => {
 
   if (isFetching) return <Loading />;
 
-  const { variant, icon, description } = getAlertContent(enableUpload);
+  const { variant, icon, description } = getAlertContent(
+    enableUpload,
+    chainPrettyName
+  );
   return (
     <WasmPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>

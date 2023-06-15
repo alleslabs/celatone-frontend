@@ -212,7 +212,6 @@ const UpdateAdmin = () => {
         helperText="This address will be an admin for the deployed smart contract."
         value={adminAddress}
         setInputState={setAdminAddress}
-        mt={12}
         status={adminFormStatus}
       />
       <Flex
