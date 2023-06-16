@@ -17,6 +17,7 @@ import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpTrackToMigrate } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
+import { useUploadAccessParams } from "lib/services/proposalService";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -38,6 +39,7 @@ const Migrate = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const lcdEndpoint = useLCDEndpoint();
+  const { data: uploadAccess } = useUploadAccessParams();
 
   const { address = "" } = useCurrentChain();
 
@@ -121,6 +123,7 @@ const Migrate = () => {
         return (
           <MigrateOptions
             isAdmin={admin === address}
+            uploadAccess={uploadAccess}
             uploadHandler={() => {
               setValue("migrateStep", "upload_new_code");
             }}

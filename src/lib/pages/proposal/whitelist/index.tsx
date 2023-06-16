@@ -131,6 +131,9 @@ const ProposalToWhitelist = () => {
         description,
         changesValue: JSON.stringify({
           ...govParams?.uploadAccess,
+          permission: !isPermissionless
+            ? AccessConfigPermission.ANY_OF_ADDRESSES
+            : AccessConfigPermission.EVERYBODY,
           addresses: govParams?.uploadAccess.addresses?.concat(addressesArray),
         }),
         initialDeposit,
@@ -145,6 +148,7 @@ const ProposalToWhitelist = () => {
       minDeposit,
       title,
       walletAddress,
+      isPermissionless,
     ]
   );
 
