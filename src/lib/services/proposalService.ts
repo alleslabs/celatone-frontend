@@ -317,7 +317,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
             minDepositParam.amount as U<Token>,
             assetInfo?.precision
           ).toFixed(),
-          getTokenLabel(minDepositParam.denom),
+          getTokenLabel(minDepositParam.denom, assetInfo?.symbol),
         ];
         return {
           depositParams: {
@@ -330,7 +330,6 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
               formattedToken: formatBalanceWithDenom({
                 coin: minDepositParam,
                 precision: assetInfo?.precision,
-                decimalPoints: 2,
               }),
               precision: assetInfo?.precision ?? 0,
             },
