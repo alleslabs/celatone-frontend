@@ -2,7 +2,7 @@ import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { usePublicProjectConfig } from "lib/app-provider";
+import { usePublicProjectConfig, useWasmConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -24,6 +24,7 @@ enum TabIndex {
 
 export const ProjectDetail = () => {
   const router = useRouter();
+  const wasm = useWasmConfig({ shouldRedirect: false });
   const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
   const {
     publicCodes,
@@ -48,7 +49,7 @@ export const ProjectDetail = () => {
   return (
     <PageContainer>
       <DetailHeader details={projectDetail} slug={slug} />
-      <Tabs index={tabIndex}>
+      <Tabs index={tabIndex} isLazy lazyBehavior="keepMounted">
         <TabList my={6} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={
@@ -63,6 +64,7 @@ export const ProjectDetail = () => {
           <CustomTab
             count={publicCodes.length}
             isDisabled={!publicCodes.length}
+            hidden={!wasm.enabled}
             onClick={() => setTabIndex(TabIndex.Codes)}
           >
             Codes
@@ -70,6 +72,7 @@ export const ProjectDetail = () => {
           <CustomTab
             count={publicContracts.length}
             isDisabled={!publicContracts.length}
+            hidden={!wasm.enabled}
             onClick={() => setTabIndex(TabIndex.Contracts)}
           >
             Contracts
@@ -85,14 +88,18 @@ export const ProjectDetail = () => {
 
         <TabPanels my={8}>
           <TabPanel p={0}>
-            <PublicProjectCodeTable
-              codes={publicCodes}
-              onViewMore={() => handleOnViewMore(TabIndex.Codes)}
-            />
-            <PublicProjectContractTable
-              contracts={publicContracts}
-              onViewMore={() => handleOnViewMore(TabIndex.Contracts)}
-            />
+            {wasm.enabled && (
+              <>
+                <PublicProjectCodeTable
+                  codes={publicCodes}
+                  onViewMore={() => handleOnViewMore(TabIndex.Codes)}
+                />
+                <PublicProjectContractTable
+                  contracts={publicContracts}
+                  onViewMore={() => handleOnViewMore(TabIndex.Contracts)}
+                />
+              </>
+            )}
             <PublicProjectAccountTable
               accounts={publicAccounts}
               onViewMore={() => handleOnViewMore(TabIndex.Accounts)}

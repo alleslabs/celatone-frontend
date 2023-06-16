@@ -3,7 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useCallback } from "react";
 
-import { useBaseApiRoute } from "lib/app-provider";
+import {
+  useBaseApiRoute,
+  usePublicProjectConfig,
+  useWasmConfig,
+} from "lib/app-provider";
 import type {
   PublicContract,
   Option,
@@ -33,6 +37,7 @@ const parseCode = (raw: RawPublicCode): PublicCode => ({
 
 export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
   const projectsApiRoute = useBaseApiRoute("projects");
+  const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
     return axios
@@ -48,6 +53,7 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
 
   return useQuery(["public_project", projectsApiRoute], queryFn, {
     keepPreviousData: true,
+    enabled: projectConfig.enabled,
   });
 };
 
@@ -55,6 +61,7 @@ export const usePublicProjectBySlug = (
   slug: Option<string>
 ): UseQueryResult<PublicProjectInfo> => {
   const projectsApiRoute = useBaseApiRoute("projects");
+  const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
     if (!slug) throw new Error("No project selected (usePublicProjectBySlug)");
@@ -68,7 +75,7 @@ export const usePublicProjectBySlug = (
   }, [projectsApiRoute, slug]);
 
   return useQuery(["public_project_by_slug", projectsApiRoute, slug], queryFn, {
-    enabled: !!slug,
+    enabled: !!slug && projectConfig.enabled,
   });
 };
 
@@ -76,6 +83,8 @@ export const usePublicProjectByContractAddress = (
   contractAddress: Option<string>
 ): UseQueryResult<PublicInfo> => {
   const projectsApiRoute = useBaseApiRoute("contracts");
+  const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
+  const wasmConfig = useWasmConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
     if (!contractAddress)
@@ -92,7 +101,7 @@ export const usePublicProjectByContractAddress = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!contractAddress,
+      enabled: !!contractAddress && projectConfig.enabled && wasmConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }
@@ -103,6 +112,8 @@ export const usePublicProjectByCodeId = (
   codeId: string
 ): UseQueryResult<PublicCode> => {
   const projectsApiRoute = useBaseApiRoute("codes");
+  const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
+  const wasmConfig = useWasmConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
     if (!codeId)
@@ -118,7 +129,7 @@ export const usePublicProjectByCodeId = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: isCodeId(codeId),
+      enabled: isCodeId(codeId) && projectConfig.enabled && wasmConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }
@@ -129,6 +140,8 @@ export const usePublicProjectByAccountAddress = (
   accountAddress: Option<string>
 ): UseQueryResult<PublicInfo> => {
   const projectsApiRoute = useBaseApiRoute("accounts");
+  const projectConfig = usePublicProjectConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!accountAddress)
       throw new Error(
@@ -143,7 +156,7 @@ export const usePublicProjectByAccountAddress = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!accountAddress,
+      enabled: !!accountAddress && projectConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }

@@ -9,9 +9,9 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { AllProject } from "./components/AllProject";
 
 export const AllPublicProjectsPage = () => {
-  usePublicProjectConfig({ shouldRedirect: true });
   const router = useRouter();
 
+  usePublicProjectConfig({ shouldRedirect: true });
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_ALL_PROJECTS);
   }, [router.isReady]);
