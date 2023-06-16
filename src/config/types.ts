@@ -19,21 +19,9 @@ type WasmConfig =
       enabled: false;
     };
 
-type PoolConfig =
-  | {
-      enabled: true;
-    }
-  | {
-      enabled: false;
-    };
+type PoolConfig = { enabled: boolean };
 
-type PublicProjectConfig =
-  | {
-      enabled: true;
-    }
-  | {
-      enabled: false;
-    };
+type PublicProjectConfig = { enabled: boolean };
 
 export interface ExplorerConfig {
   validator: string;
