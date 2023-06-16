@@ -75,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#395](https://github.com/alleslabs/celatone-frontend/pull/395) Disable wasm related tabs on the account detail page
 - [#392](https://github.com/alleslabs/celatone-frontend/pull/392) Fix format denom function
 - [#390](https://github.com/alleslabs/celatone-frontend/pull/390) Fix minor styling
 - [#391](https://github.com/alleslabs/celatone-frontend/pull/391) Fix incorrect empty state for past txs table

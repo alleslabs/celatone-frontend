@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { useValidateAddress } from "lib/app-provider";
+import { useValidateAddress, useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
@@ -63,6 +63,8 @@ interface AccountDetailsBodyProps {
 const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
   const tableHeaderId = "accountDetailsTab";
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
@@ -156,7 +158,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </Flex>
       )}
 
-      <Tabs index={tabIndex}>
+      <Tabs index={tabIndex} isLazy lazyBehavior="keepMounted">
         <TabList
           borderBottom="1px solid"
           borderColor="gray.700"
@@ -187,6 +189,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             count={tableCounts.codesCount}
             isDisabled={!tableCounts.codesCount}
             onClick={() => handleTabChange(TabIndex.Codes)}
+            hidden={!wasm.enabled}
           >
             Codes
           </CustomTab>
@@ -194,6 +197,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             count={tableCounts.contractsCount}
             isDisabled={!tableCounts.contractsCount}
             onClick={() => handleTabChange(TabIndex.Contracts)}
+            hidden={!wasm.enabled}
           >
             Contracts
           </CustomTab>
@@ -201,6 +205,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             count={tableCounts.contractsAdminCount}
             isDisabled={!tableCounts.contractsAdminCount}
             onClick={() => handleTabChange(TabIndex.Admins)}
+            hidden={!wasm.enabled}
           >
             Admins
           </CustomTab>
@@ -258,27 +263,31 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               scrollComponentId={tableHeaderId}
               onViewMore={() => handleTabChange(TabIndex.Txs)}
             />
-            <StoredCodesTable
-              walletAddress={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.codesCount}
-              refetchCount={refetchCodesCount}
-              onViewMore={() => handleTabChange(TabIndex.Codes)}
-            />
-            <InstantiatedContractsTable
-              walletAddress={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.contractsCount}
-              refetchCount={refetchContractsCount}
-              onViewMore={() => handleTabChange(TabIndex.Contracts)}
-            />
-            <AdminContractsTable
-              walletAddress={accountAddress}
-              scrollComponentId={tableHeaderId}
-              totalData={tableCounts.contractsAdminCount}
-              refetchCount={refetchContractsAdminCount}
-              onViewMore={() => handleTabChange(TabIndex.Admins)}
-            />
+            {wasm.enabled && (
+              <>
+                <StoredCodesTable
+                  walletAddress={accountAddress}
+                  scrollComponentId={tableHeaderId}
+                  totalData={tableCounts.codesCount}
+                  refetchCount={refetchCodesCount}
+                  onViewMore={() => handleTabChange(TabIndex.Codes)}
+                />
+                <InstantiatedContractsTable
+                  walletAddress={accountAddress}
+                  scrollComponentId={tableHeaderId}
+                  totalData={tableCounts.contractsCount}
+                  refetchCount={refetchContractsCount}
+                  onViewMore={() => handleTabChange(TabIndex.Contracts)}
+                />
+                <AdminContractsTable
+                  walletAddress={accountAddress}
+                  scrollComponentId={tableHeaderId}
+                  totalData={tableCounts.contractsAdminCount}
+                  refetchCount={refetchContractsAdminCount}
+                  onViewMore={() => handleTabChange(TabIndex.Admins)}
+                />
+              </>
+            )}
             <OpenedProposalsTable
               walletAddress={accountAddress}
               scrollComponentId={tableHeaderId}
