@@ -3,7 +3,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import {
   getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
@@ -167,6 +167,8 @@ export const useCodeListByWalletAddressPagination = (
   pageSize: number
 ): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
@@ -202,7 +204,11 @@ export const useCodeListByWalletAddressPagination = (
       walletAddress,
     ],
     createQueryFnWithTimeout(queryFn),
-    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
+    {
+      enabled: wasm.enabled && !!walletAddress,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 
@@ -210,6 +216,8 @@ export const useCodeListCountByWalletAddress = (
   walletAddress: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
@@ -228,7 +236,7 @@ export const useCodeListCountByWalletAddress = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!walletAddress,
+      enabled: wasm.enabled && !!walletAddress,
     }
   );
 };
