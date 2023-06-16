@@ -29,6 +29,7 @@ import {
 } from "lib/services/amplitude";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
+import { PoolType } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
 import { UnsupportedPoolList } from "./UnsupportedPoolList";
@@ -41,7 +42,7 @@ export const UnsupportedSection = ({
 }: UnsupportedSectionProp) => {
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
-      poolTypeValue: "All",
+      poolTypeValue: PoolType.ALL,
       keyword: "",
       isSuperfluidOnly: false,
     },

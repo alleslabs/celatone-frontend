@@ -50,9 +50,13 @@ export interface TxFilters {
   isClearAdmin: boolean;
 }
 
+// TODO - Revisit when backend finished
 export type PoolTxFilter =
   | "is_all"
   | "is_swap"
   | "is_lp"
   | "is_bond"
-  | "is_superfluid";
+  | "is_superfluid"
+  | "is_clp"
+  | "is_collect"
+  | "is_migrate";

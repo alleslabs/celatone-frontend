@@ -9,7 +9,16 @@ import type {
   TokenWithValue,
 } from "lib/types";
 
-export type PoolTypeFilter = "All" | "Balancer" | "Stableswap";
+// TODO - Recheck type name
+export enum PoolType {
+  ALL = "All",
+  BALANCER = "Balancer",
+  STABLESWAP = "Stableswap",
+  COSMWASM = "Cosmwasm",
+  CL = "ConcentratedLiquidity",
+}
+
+export type PoolTypeFilter = PoolType;
 
 export interface PoolWeight<T extends string | Big = Big> {
   denom: string;
@@ -21,11 +30,12 @@ export interface Pool<
   TLiquidity extends Coin | TokenWithValue = TokenWithValue
 > {
   id: number;
-  type: string;
+  type: PoolType;
   isSuperfluid: boolean;
   poolLiquidity: TLiquidity[];
 }
 
+// TODO - Revisit when backend finished
 export interface PoolDetail<
   TWeight extends string | Big = Big,
   TLiquidity extends Coin | TokenWithValue = TokenWithValue
@@ -41,4 +51,6 @@ export interface PoolDetail<
   smoothWeightChangeParams: object | null;
   scalingFactors: string[] | null;
   scalingFactorController: string | null;
+  spreadFactor: string | null;
+  tickSpacing: string | null;
 }

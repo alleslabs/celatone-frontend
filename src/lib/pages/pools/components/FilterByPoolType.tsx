@@ -1,9 +1,10 @@
 import { Grid } from "@chakra-ui/react";
 
-import { BALANCER_ICON, STABLESWAP_ICON } from "../constant";
+import { BALANCER_ICON, COSMWASM_ICON, STABLESWAP_ICON } from "../constant";
 import { SelectInput } from "lib/components/forms";
 import { AmpEvent, AmpTrackUseFilter } from "lib/services/amplitude";
 import type { PoolTypeFilter } from "lib/types";
+import { PoolType } from "lib/types";
 
 interface PoolTypeOption {
   label: string;
@@ -21,19 +22,31 @@ interface FilterByPoolTypeProps {
 const options: PoolTypeOption[] = [
   {
     label: "All Pools",
-    value: "All",
+    value: PoolType.ALL,
     disabled: false,
   },
   {
     label: "Balancer Pools",
-    value: "Balancer",
+    value: PoolType.BALANCER,
     image: BALANCER_ICON,
     disabled: false,
   },
   {
     label: "StableSwap Pools",
-    value: "Stableswap",
+    value: PoolType.STABLESWAP,
     image: STABLESWAP_ICON,
+    disabled: false,
+  },
+  {
+    label: "Concentrated Liquidity Pools",
+    value: PoolType.CL,
+    image: BALANCER_ICON,
+    disabled: false,
+  },
+  {
+    label: "CosmWasm Pools",
+    value: PoolType.COSMWASM,
+    image: COSMWASM_ICON,
     disabled: false,
   },
 ];

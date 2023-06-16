@@ -38,11 +38,11 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           slug: "/proposals",
           icon: "proposal",
         },
-        // {
-        //   name: "Osmosis Pools",
-        //   slug: "/pools",
-        //   icon: "pool",
-        // },
+        {
+          name: "Osmosis Pools",
+          slug: "/pools",
+          icon: "pool",
+        },
       ],
     },
     {

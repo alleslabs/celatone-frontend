@@ -14,6 +14,7 @@ import Link from "next/link";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
+import { UnderDevAlert } from "../UnderDevAlert";
 import { getPoolUrl } from "lib/app-fns/explorer";
 import { useInternalNavigate } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
@@ -110,73 +111,83 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
             </Flex>
           </AccordionButton>
           <AccordionPanel pb={4}>
-            <Flex>
-              <Text
-                color="text.dark"
-                variant="body2"
-                fontWeight="600"
-                w="144px"
-              >
-                Tokens in Pool
-              </Text>
-              <Flex gap={4} flexDirection="column">
-                <Flex gap={2} flexDirection="column">
-                  {item.poolLiquidity.map((asset) => (
-                    <Flex
-                      className="copier-wrapper"
-                      key={asset.denom}
-                      gap={3}
-                      alignItems="center"
+            {item.poolLiquidity ? (
+              <Flex>
+                <Text
+                  color="text.dark"
+                  variant="body2"
+                  fontWeight="600"
+                  w="144px"
+                >
+                  Tokens in Pool
+                </Text>
+                <Flex gap={4} flexDirection="column">
+                  <Flex gap={2} flexDirection="column">
+                    {item.poolLiquidity.map((asset) => (
+                      <Flex
+                        className="copier-wrapper"
+                        key={asset.denom}
+                        gap={3}
+                        alignItems="center"
+                      >
+                        <Image
+                          boxSize={6}
+                          src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
+                        />
+                        <Text
+                          variant="body2"
+                          color="text.main"
+                          fontWeight="bold"
+                        >
+                          {formatUTokenWithPrecision(
+                            asset.amount,
+                            asset.precision ?? 0
+                          )}
+                        </Text>
+                        <Flex>{asset.symbol ?? asset.denom}</Flex>
+                        <Copier
+                          type={
+                            asset.symbol
+                              ? "supported_asset"
+                              : "unsupported_asset"
+                          }
+                          value={asset.denom}
+                          copyLabel="Token ID Copied!"
+                          display="none"
+                          ml="1px"
+                        />
+                      </Flex>
+                    ))}
+                  </Flex>
+                  <Flex gap={3}>
+                    <Button onClick={handleOnClick} size="sm">
+                      View Pool Details
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        AmpTrackWebsite(
+                          `${getPoolUrl(currentChainName)}/${item.id}`
+                        );
+                        window.open(
+                          `${getPoolUrl(currentChainName)}/${item.id}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                      size="sm"
+                      variant="outline-primary"
+                      rightIcon={
+                        <CustomIcon name="launch" color="outline-primary" />
+                      }
                     >
-                      <Image
-                        boxSize={6}
-                        src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
-                      />
-                      <Text variant="body2" color="text.main" fontWeight="bold">
-                        {formatUTokenWithPrecision(
-                          asset.amount,
-                          asset.precision ?? 0
-                        )}
-                      </Text>
-                      <Flex>{asset.symbol ?? asset.denom}</Flex>
-                      <Copier
-                        type={
-                          asset.symbol ? "supported_asset" : "unsupported_asset"
-                        }
-                        value={asset.denom}
-                        copyLabel="Token ID Copied!"
-                        display="none"
-                        ml="1px"
-                      />
-                    </Flex>
-                  ))}
-                </Flex>
-                <Flex gap={3}>
-                  <Button onClick={handleOnClick} size="sm">
-                    View Pool Details
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      AmpTrackWebsite(
-                        `${getPoolUrl(currentChainName)}/${item.id}`
-                      );
-                      window.open(
-                        `${getPoolUrl(currentChainName)}/${item.id}`,
-                        "_blank",
-                        "noopener,noreferrer"
-                      );
-                    }}
-                    size="sm"
-                    variant="outline-primary"
-                    rightIcon={
-                      <CustomIcon name="launch" color="outline-primary" />
-                    }
-                  >
-                    View in Osmosis
-                  </Button>
+                      View in Osmosis
+                    </Button>
+                  </Flex>
                 </Flex>
               </Flex>
-            </Flex>
+            ) : (
+              <UnderDevAlert poolType={item.type} />
+            )}
           </AccordionPanel>
         </>
       )}

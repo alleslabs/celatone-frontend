@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Divider, Flex, Text } from "@chakra-ui/react";
 
 import { JsonModalButton } from "../JsonModalButton";
 import { useGetAddressType } from "lib/app-provider";
@@ -55,6 +55,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           ampCopierSection="pool_info"
         />
       </LabelText>
+      <Divider orientation="vertical" h="46px" />
       <LabelText
         label="Swap Fee"
         tooltipText="The fee charged for making a swap in a pool, defined by the pool creator, and paid by traders in the form of a percentage the input swap asset amount"
@@ -87,6 +88,18 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           </Text>
         )}
       </LabelText>
+      {/* TODO - Change value */}
+      {pool.tickSpacing && (
+        <LabelText label="Tick Spacing" tooltipText="">
+          <Text variant="body2">100</Text>
+        </LabelText>
+      )}
+      {/* TODO - Change value */}
+      {pool.spreadFactor && (
+        <LabelText label="Spread Factor" tooltipText="">
+          <Text variant="body2">{formatRatio(pool.exitFee)}</Text>
+        </LabelText>
+      )}
       {pool.smoothWeightChangeParams && (
         <LabelText label="Smooth weight change params">
           <JsonModalButton

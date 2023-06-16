@@ -7,6 +7,7 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
 import { usePoolListCountQuery } from "lib/services/poolService";
+import { PoolType } from "lib/types";
 
 import { SupportedSection } from "./components/supportedSection";
 import { UnsupportedSection } from "./components/unsupportedSection";
@@ -23,14 +24,14 @@ export const PoolIndex = () => {
   const { data: supportedPoolCount, isLoading: isLoadingSupported } =
     usePoolListCountQuery({
       isSupported: true,
-      poolType: "All",
+      poolType: PoolType.ALL,
       isSuperfluidOnly: false,
       search: "",
     });
   const { data: unsupportedPoolCount, isLoading: isLoadingUnsupported } =
     usePoolListCountQuery({
       isSupported: false,
-      poolType: "All",
+      poolType: PoolType.ALL,
       isSuperfluidOnly: false,
       search: "",
     });

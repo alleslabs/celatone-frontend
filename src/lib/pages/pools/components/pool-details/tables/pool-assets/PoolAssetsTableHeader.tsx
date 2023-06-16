@@ -3,6 +3,7 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "lib/components/table/tableComponents";
 import type { PoolDetail } from "lib/types";
+import { PoolType } from "lib/types";
 
 interface PoolHeaderProps {
   poolType: PoolDetail["type"];
@@ -21,7 +22,7 @@ export const PoolAssetsTableHeader = ({
   >
     <TableHeader>Asset</TableHeader>
     <TableHeader textAlign="right">
-      {poolType === "Stableswap" ? "Scaling Factor" : "Weight (%)"}
+      {poolType === PoolType.STABLESWAP ? "Scaling Factor" : "Weight (%)"}
     </TableHeader>
     <TableHeader textAlign="right">{isSupported && "Allocation"}</TableHeader>
     <TableHeader textAlign="right">Amount</TableHeader>

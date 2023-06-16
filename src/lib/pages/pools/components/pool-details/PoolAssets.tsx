@@ -4,8 +4,10 @@ import big from "big.js";
 import Link from "next/link";
 
 import { CustomIcon } from "lib/components/icon";
+import { EmptyState } from "lib/components/state";
 import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { PoolDetail, USD } from "lib/types";
+import { PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { PoolAssetsTable } from "./tables/pool-assets";
@@ -34,34 +36,47 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
           <Text variant="body2" color="text.dark" fontWeight={500}>
             Total Liquidity:
             <Text as="span" fontWeight={700} color="text.main" ml={2}>
-              {formatPrice(totalLiquidity)}
+              {pool.poolLiquidity ? formatPrice(totalLiquidity) : "N/A"}
             </Text>
           </Text>
         )}
       </Flex>
-      <PoolAssetsTable pool={pool} totalLiquidity={totalLiquidity} />
-      <Flex gap={2} alignItems="center" mt={4}>
-        <Text variant="body2" color="text.dark">
-          What is asset weight and allocation?
-        </Text>
-        <Link
-          href="https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() =>
-            AmpTrackWebsite(
-              "https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
-            )
+      {pool.type === PoolType.CL ? (
+        <EmptyState
+          imageVariant="empty"
+          heading="Coming soon!"
+          message={
+            "Asset allocation and liquidity information for \n concentrated liquidity pool are under construction."
           }
-        >
-          <Flex gap="2px" alignItems="center">
-            <Text color="lilac.main" variant="body2">
-              Read more
+          withBorder
+        />
+      ) : (
+        <>
+          <PoolAssetsTable pool={pool} totalLiquidity={totalLiquidity} />
+          <Flex gap={2} alignItems="center" mt={4}>
+            <Text variant="body2" color="text.dark">
+              What is asset weight and allocation?
             </Text>
-            <CustomIcon name="launch" color="lilac.main" boxSize={3} />
+            <Link
+              href="https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                AmpTrackWebsite(
+                  "https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
+                )
+              }
+            >
+              <Flex gap="2px" alignItems="center">
+                <Text color="lilac.main" variant="body2">
+                  Read more
+                </Text>
+                <CustomIcon name="launch" color="lilac.main" boxSize={3} />
+              </Flex>
+            </Link>
           </Flex>
-        </Link>
-      </Flex>
+        </>
+      )}
     </>
   );
 };
