@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#338](https://github.com/alleslabs/celatone-frontend/pull/338) Use gas from chain config
 - [#333](https://github.com/alleslabs/celatone-frontend/pull/333) Update endpoints including LCD, RPC, Graphql
 - [#335](https://github.com/alleslabs/celatone-frontend/pull/335) Refactor hardcoded api route to utils
+- [#386](https://github.com/alleslabs/celatone-frontend/pull/386) Handle uppercase address
 - [#382](https://github.com/alleslabs/celatone-frontend/pull/382) Add pool manager v15 msgs to tx details
 - [#371](https://github.com/alleslabs/celatone-frontend/pull/371) Refactor assign me component and fix color in redelegation page
 - [#342](https://github.com/alleslabs/celatone-frontend/pull/342) Add fallback n/a token on asset icon on asset box

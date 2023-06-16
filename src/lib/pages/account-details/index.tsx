@@ -353,7 +353,7 @@ const AccountDetails = () => {
   // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
-  ) as HumanAddr;
+  ).toLowerCase() as HumanAddr;
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL);
