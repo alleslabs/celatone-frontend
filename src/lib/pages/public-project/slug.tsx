@@ -2,6 +2,7 @@ import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { usePublicProjectConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -33,6 +34,7 @@ export const ProjectDetail = () => {
     isLoading,
   } = usePublicData();
 
+  usePublicProjectConfig({ shouldRedirect: true });
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROJECT_DETAIL);
   }, [router.isReady]);

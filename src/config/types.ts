@@ -27,6 +27,14 @@ type PoolConfig =
       enabled: false;
     };
 
+type PublicProjectConfig =
+  | {
+      enabled: true;
+    }
+  | {
+      enabled: false;
+    };
+
 export interface ExplorerConfig {
   validator: string;
   proposal: string;
@@ -44,6 +52,7 @@ export interface ChainConfig {
     faucet: FaucetConfig;
     wasm: WasmConfig;
     pool: PoolConfig;
+    publicProject: PublicProjectConfig;
   };
   gas: {
     gasPrice: {

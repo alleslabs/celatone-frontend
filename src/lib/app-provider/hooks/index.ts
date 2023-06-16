@@ -13,6 +13,5 @@ export * from "./useTokensInfo";
 export * from "./useChainRecordAsset";
 export * from "./useBaseApiRoute";
 export * from "./useRPCEndpoint";
-export * from "./useFaucetConfig";
-export * from "./useWasmConfig";
+export * from "./useConfig";
 export * from "./useCurrentChain";
