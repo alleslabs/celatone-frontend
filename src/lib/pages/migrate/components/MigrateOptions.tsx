@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, Heading } from "@chakra-ui/react";
 
-import { useCurrentChain } from "lib/app-provider";
+import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CustomIcon } from "lib/components/icon";
 import type { UploadAccess } from "lib/services/proposal";
@@ -21,10 +21,10 @@ export const MigrateOptions = ({
   uploadHandler,
   existHandler,
 }: MigrateOptionsProps) => {
+  const { address } = useCurrentChain();
   const {
-    address,
-    chain: { pretty_name: chainPrettyName },
-  } = useCurrentChain();
+    chainConfig: { prettyName: chainPrettyName },
+  } = useCelatoneApp();
   const isPermissionedNetwork =
     uploadAccess?.permission !== AccessConfigPermission.EVERYBODY;
   const isAllowed = resolvePermission(

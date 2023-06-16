@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import {
+  useCelatoneApp,
   useCurrentChain,
   useInternalNavigate,
   useWasmConfig,
@@ -57,10 +58,10 @@ const getAlertContent = (
 const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const { address } = useCurrentChain();
   const {
-    address,
-    chain: { pretty_name: chainPrettyName },
-  } = useCurrentChain();
+    chainConfig: { prettyName: chainPrettyName },
+  } = useCelatoneApp();
   const { data, isFetching } = useUploadAccessParams();
 
   const isPermissionedNetwork =
