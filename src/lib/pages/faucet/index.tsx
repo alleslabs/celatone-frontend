@@ -15,7 +15,6 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useFaucetConfig,
-  useInternalNavigate,
   useValidateAddress,
 } from "lib/app-provider";
 import { AssignMe } from "lib/components/AssignMe";
@@ -26,7 +25,6 @@ import type { IconKeys } from "lib/components/icon";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useOpenTxTab } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { capitalize } from "lib/utils";
 
 type ResultStatus = "success" | "error" | "warning";
 
@@ -42,7 +40,6 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
   warning: "alert-circle-solid",
 };
 
-// todo: handle token symbol by current chain
 const Faucet = () => {
   const { address: walletAddress = "" } = useCurrentChain();
   const [address, setAddress] = useState("");
@@ -51,14 +48,13 @@ const Faucet = () => {
   const [result, setResult] = useState<Result>({});
 
   const { validateUserAddress } = useValidateAddress();
-  const navigate = useInternalNavigate();
   const toast = useToast();
   const router = useRouter();
   const openTxTab = useOpenTxTab("tx-page");
   const {
-    chainConfig: { chain },
+    chainConfig: { prettyName },
   } = useCelatoneApp();
-  const faucet = useFaucetConfig();
+  const faucet = useFaucetConfig({ shouldRedirect: true });
 
   const { faucetUrl, faucetDenom, faucetAmount } = useMemo(() => {
     if (!faucet.enabled)
@@ -78,9 +74,8 @@ const Faucet = () => {
   }, [faucet.enabled]);
 
   useEffect(() => {
-    if (!faucet.enabled) navigate({ pathname: "/", replace: true });
     if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
-  }, [faucet, navigate, router]);
+  }, [router]);
 
   useEffect(() => {
     if (address) {
@@ -164,7 +159,7 @@ const Faucet = () => {
   return (
     <WasmPageContainer>
       <Heading as="h5" variant="h5">
-        {capitalize(chain)} Testnet Faucet
+        {prettyName} Faucet
       </Heading>
       <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
         The faucet provides {faucetAmount} testnet {faucetDenom} per request.

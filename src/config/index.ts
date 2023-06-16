@@ -20,6 +20,9 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     pool: {
       enabled: false,
     },
+    publicProject: {
+      enabled: false,
+    },
   },
   gas: {
     gasPrice: {
@@ -59,6 +62,9 @@ export const CHAIN_CONFIGS: ChainConfigs = {
         clearAdminGas: 50_000,
       },
       pool: {
+        enabled: true,
+      },
+      publicProject: {
         enabled: true,
       },
     },
@@ -104,6 +110,9 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       },
       pool: {
         enabled: true,
+      },
+      publicProject: {
+        enabled: false,
       },
     },
     gas: {

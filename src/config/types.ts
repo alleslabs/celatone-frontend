@@ -19,13 +19,9 @@ type WasmConfig =
       enabled: false;
     };
 
-type PoolConfig =
-  | {
-      enabled: true;
-    }
-  | {
-      enabled: false;
-    };
+type PoolConfig = { enabled: boolean };
+
+type PublicProjectConfig = { enabled: boolean };
 
 export interface ExplorerConfig {
   validator: string;
@@ -44,6 +40,7 @@ export interface ChainConfig {
     faucet: FaucetConfig;
     wasm: WasmConfig;
     pool: PoolConfig;
+    publicProject: PublicProjectConfig;
   };
   gas: {
     gasPrice: {

@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { useCurrentChain } from "lib/app-provider";
+import { usePublicProjectConfig } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { useContractStore, usePublicProjectStore } from "lib/providers/store";
@@ -20,9 +20,7 @@ interface NavbarProps {
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { getContractLists } = useContractStore();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const {
-    chain: { network_type: networkType },
-  } = useCurrentChain();
+  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
 
   const navMenu: MenuInfo[] = [
@@ -115,8 +113,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     },
   ];
 
-  // TODO: remove mainnet concept for public project
-  if (networkType === "mainnet") {
+  if (publicProject.enabled) {
     navMenu.push({
       category: "Public Projects",
       submenu: [
