@@ -158,7 +158,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </Flex>
       )}
 
-      <Tabs index={tabIndex}>
+      <Tabs index={tabIndex} isLazy lazyBehavior="keepMounted">
         <TabList
           borderBottom="1px solid"
           borderColor="gray.700"
