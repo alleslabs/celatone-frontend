@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#397](https://github.com/alleslabs/celatone-frontend/pull/397) Implement first version of Osmosis v16 pool
 - [#358](https://github.com/alleslabs/celatone-frontend/pull/358) Add Amp for Pool Detail page
 - [#355](https://github.com/alleslabs/celatone-frontend/pull/355) Add Amp for Pool List page
 - [#294](https://github.com/alleslabs/celatone-frontend/pull/294) Add Pool related txs table
