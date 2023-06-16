@@ -75,11 +75,11 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
     },
     permissionless: {
       page: storeCodePage,
-      title: "Do I need to submit Proposal to store code in testnet?",
+      title: `Do I need to submit Proposal to store code on ${chainName}?`,
       description: (
         <span>
-          On the {chainName}, you can store code without submitting a proposal
-          by using{" "}
+          On {chainName}, you can store code without submitting a proposal by
+          using{" "}
           <AppLink
             onClick={() =>
               AmpTrackUseRightHelperPanel(storeCodePage, "to-/deploy")
@@ -96,7 +96,8 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
           process, you can try submitting a proposal.
           <br />
           <br />
-          On the mainnet, submitting a proposal is required to store code.
+          On the permissioned chain, submitting a proposal is required to store
+          code.
         </span>
       ),
       toPage: true,

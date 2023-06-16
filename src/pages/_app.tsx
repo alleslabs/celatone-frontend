@@ -36,20 +36,21 @@ configurePersistable({
   stringify: false,
 });
 
+const availableChainsEndpoints = Object.values(CHAIN_CONFIGS).reduce<
+  EndpointOptions["endpoints"]
+>(
+  (endpoints, config) => ({
+    ...endpoints,
+    [config.registryChainName]: {
+      rpc: [config.rpc],
+      rest: [config.lcd],
+    },
+  }),
+  {}
+);
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
-  const availableChainsEndpoints = Object.values(
-    CHAIN_CONFIGS
-  ).reduce<EndpointOptions>(
-    (endpoints, config) => ({
-      ...endpoints,
-      [config.registryChainName]: {
-        rpc: [config.rpc],
-        rest: [config.lcd],
-      },
-    }),
-    {}
-  );
 
   return (
     <Chakra>
@@ -74,7 +75,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           chains={chains}
           assetLists={assets}
           wallets={wallets}
-          endpointOptions={availableChainsEndpoints}
+          endpointOptions={{
+            isLazy: true,
+            endpoints: availableChainsEndpoints,
+          }}
+          signerOptions={{
+            preferredSignType: () => "direct",
+          }}
           wrappedWithChakra
         >
           <StoreProvider>

@@ -6,7 +6,6 @@ import { useUploadAccessParams } from "lib/services/proposalService";
 import type { Addr, CodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
-import { DeployButton } from "./DeployButton";
 import { ProposalButton } from "./ProposalButton";
 import { UploadButton } from "./UploadButton";
 
@@ -45,7 +44,7 @@ export const MyStoredCodesSection = ({
               <ProposalButton />
             </>
           ) : (
-            <DeployButton />
+            <UploadButton isAllowed />
           )}
         </Flex>
       </HStack>
