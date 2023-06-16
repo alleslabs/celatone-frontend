@@ -36,7 +36,6 @@ interface AppContextInterface {
   chainConfig: ChainConfig;
   indexerGraphClient: GraphQLClient;
   constants: ProjectConstants;
-  handleOnChainIdChange: (newChainId: string) => void;
 }
 
 const AppContext = createContext<AppContextInterface>({
@@ -45,7 +44,6 @@ const AppContext = createContext<AppContextInterface>({
   chainConfig: DEFAULT_CHAIN_CONFIG,
   indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer),
   constants: PROJECT_CONSTANTS,
-  handleOnChainIdChange: () => {},
 });
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
@@ -73,9 +71,8 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       chainConfig,
       indexerGraphClient: new GraphQLClient(chainConfig.indexer),
       constants: PROJECT_CONSTANTS,
-      handleOnChainIdChange,
     };
-  }, [currentChainId, handleOnChainIdChange]);
+  }, [currentChainId]);
 
   useEffect(() => {
     if (currentChainName) {
