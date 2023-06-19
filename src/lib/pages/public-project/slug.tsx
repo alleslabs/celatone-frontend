@@ -45,6 +45,10 @@ export const ProjectDetail = () => {
     scrollToTop();
   };
 
+  const overviewCount =
+    publicAccounts.length +
+    (wasm.enabled ? publicCodes.length + publicContracts.length : 0);
+
   if (isLoading) return <Loading />;
   return (
     <PageContainer>
@@ -52,11 +56,7 @@ export const ProjectDetail = () => {
       <Tabs index={tabIndex} isLazy lazyBehavior="keepMounted">
         <TabList my={6} borderBottom="1px" borderColor="gray.800">
           <CustomTab
-            count={
-              publicCodes.length +
-              publicContracts.length +
-              publicAccounts.length
-            }
+            count={overviewCount}
             onClick={() => setTabIndex(TabIndex.Overview)}
           >
             Overview
