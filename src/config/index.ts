@@ -135,6 +135,53 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
   },
+  localosmosis: {
+    chain: "localosmosis",
+    registryChainName: "localosmosis",
+    prettyName: "Local Osmosis",
+    lcd: "http://localhost/lcd",
+    rpc: "http://localhost/rpc/",
+    indexer: "http://localhost/graphql/v1/graphql",
+    api: "http://localhost/api",
+    features: {
+      faucet: {
+        enabled: true,
+        url: "http://localhost:5005/request",
+        denom: "osmo",
+        amount: 10,
+      },
+      wasm: {
+        enabled: true,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: false,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.025,
+        denom: "uosmo",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    exampleAddresses: {
+      user: "osmo14wk9zecqam9jsac7xwtf8e349ckquzzlx9k8c3" as HumanAddr,
+      contract:
+        "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
+      validator:
+        "osmovaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
+    },
+    explorerLink: {
+      validator: "https://www.mintscan.io/osmosis/validators",
+      proposal: "https://www.mintscan.io/osmosis/proposals",
+    },
+  },
 };
 
 export const PROJECT_CONSTANTS: ProjectConstants = {
