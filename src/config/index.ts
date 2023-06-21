@@ -136,12 +136,12 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   localosmosis: {
-    chain: "localosmosis",
+    chain: "osmosis",
     registryChainName: "localosmosis",
     prettyName: "Local Osmosis",
-    lcd: "http://localhost/lcd",
+    lcd: "http://localhost/rest",
     rpc: "http://localhost/rpc/",
-    indexer: "http://localhost/graphql/v1/graphql",
+    indexer: "http://localhost/hasura/v1/graphql",
     api: "http://localhost/api",
     features: {
       faucet: {
@@ -164,7 +164,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.025,
+        tokenPerGas: 0.25,
         denom: "uosmo",
       },
       gasAdjustment: 1.5,

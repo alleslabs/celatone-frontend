@@ -31,7 +31,7 @@ export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
   );
 
   return useQuery(["query", "staking_params", lcdEndpoint], queryFn, {
-    retry: 1,
+    retry: 3,
     refetchOnWindowFocus: false,
   });
 };
@@ -47,7 +47,7 @@ export const useDelegations = (
   );
 
   return useQuery(["query", "delegations", lcdEndpoint, address], queryFn, {
-    retry: 1,
+    retry: 3,
     refetchOnWindowFocus: false,
   });
 };
@@ -63,7 +63,7 @@ export const useUnbondings = (
   );
 
   return useQuery(["query", "unbondings", lcdEndpoint, address], queryFn, {
-    retry: 1,
+    retry: 3,
     refetchOnWindowFocus: false,
   });
 };
@@ -82,7 +82,7 @@ export const useDelegationRewards = (
     ["query", "delegation_rewards", lcdEndpoint, address],
     queryFn,
     {
-      retry: 1,
+      retry: 3,
       refetchOnWindowFocus: false,
     }
   );
@@ -99,7 +99,7 @@ export const useRedelegations = (
   );
 
   return useQuery(["query", "redelegations", lcdEndpoint, address], queryFn, {
-    retry: 1,
+    retry: 3,
     refetchOnWindowFocus: false,
   });
 };
@@ -115,7 +115,7 @@ export const useCommission = (
   );
 
   return useQuery(["query", "commission", lcdEndpoint, address], queryFn, {
-    retry: 1,
+    retry: 3,
     refetchOnWindowFocus: false,
   });
 };

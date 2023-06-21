@@ -16,10 +16,10 @@ export const localosmosis: Chain = {
     fee_tokens: [
       {
         denom: "uosmo",
-        fixed_min_gas_price: 0,
-        low_gas_price: 0.0025,
+        fixed_min_gas_price: 0.025,
+        low_gas_price: 0.025,
         average_gas_price: 0.025,
-        high_gas_price: 0.04,
+        high_gas_price: 0.025,
       },
     ],
   },
@@ -38,7 +38,7 @@ export const localosmosis: Chain = {
     ],
     rest: [
       {
-        address: "http://localhost/lcd",
+        address: "http://localhost/rest",
       },
     ],
   },
