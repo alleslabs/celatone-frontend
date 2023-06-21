@@ -18,7 +18,6 @@ export const useValidators = (): UseQueryResult<
   );
 
   return useQuery(["query", "validators", lcdEndpoint], queryFn, {
-    retry: 1,
     refetchOnWindowFocus: false,
   });
 };
