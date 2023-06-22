@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#402](https://github.com/alleslabs/celatone-frontend/pull/402) Add validator image resolver hook (add keybase as a fallback option)
 - [#386](https://github.com/alleslabs/celatone-frontend/pull/386) Handle uppercase address
 - [#382](https://github.com/alleslabs/celatone-frontend/pull/382) Add pool manager v15 msgs to tx details
 - [#371](https://github.com/alleslabs/celatone-frontend/pull/371) Refactor assign me component and fix color in redelegation page

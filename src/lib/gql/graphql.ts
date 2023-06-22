@@ -11783,6 +11783,7 @@ export type GetBlockListQueryQuery = {
       __typename?: "validators";
       moniker: string;
       operator_address: string;
+      identity: string;
     } | null;
   }>;
 };
@@ -11813,6 +11814,7 @@ export type GetBlockDetailsByHeightQuery = {
       __typename?: "validators";
       moniker: string;
       operator_address: string;
+      identity: string;
     } | null;
   } | null;
 };
@@ -12657,6 +12659,10 @@ export const GetBlockListQueryDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "operator_address" },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "identity" },
+                      },
                     ],
                   },
                 },
@@ -12761,6 +12767,10 @@ export const GetBlockDetailsByHeightDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "operator_address" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "identity" },
                       },
                     ],
                   },

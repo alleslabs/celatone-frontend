@@ -45,6 +45,7 @@ export const useBlocklistQuery = (
                     moniker: validator.moniker,
                     validatorAddress:
                       validator.operator_address as ValidatorAddr,
+                    identity: validator.identity,
                   }
                 : null,
             })
@@ -94,6 +95,7 @@ export const useBlockDetailsQuery = (
                       moniker: blocks_by_pk.validator.moniker,
                       validatorAddress: blocks_by_pk.validator
                         .operator_address as ValidatorAddr,
+                      identity: blocks_by_pk.validator.identity,
                     }
                   : null,
               }

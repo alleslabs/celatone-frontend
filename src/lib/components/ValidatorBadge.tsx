@@ -1,11 +1,9 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Flex, Image, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
+import { Spinner, Flex, Image, Text } from "@chakra-ui/react";
 
-import { CURR_THEME, getChainApiPath } from "env";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useValidatorImage } from "lib/services/validatorService";
 import type { ValidatorInfo } from "lib/types";
-import { removeSpecialChars } from "lib/utils";
 
 interface ValidatorBadgeProps {
   validator: ValidatorInfo | null;
@@ -34,25 +32,22 @@ export const ValidatorBadge = ({
   validator,
   badgeSize = 10,
 }: ValidatorBadgeProps) => {
-  const { currentChainName } = useWallet();
+  const { data: valImgSrc, isLoading } = useValidatorImage(validator);
+
   return (
     <Flex alignItems="center" gap={2}>
       {validator ? (
         <>
-          <Image
-            boxSize={badgeSize}
-            src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${getChainApiPath(
-              currentChainName
-            )}/moniker/${validator.validatorAddress}.png`}
-            alt={validator.moniker}
-            fallbackSrc={`https://ui-avatars.com/api/?name=${removeSpecialChars(
-              validator.moniker ?? ""
-            )}&background=${CURR_THEME.colors.secondary.main.replace(
-              "#",
-              ""
-            )}&color=fff`}
-            borderRadius="50%"
-          />
+          {isLoading ? (
+            <Spinner boxSize={badgeSize} />
+          ) : (
+            <Image
+              boxSize={badgeSize}
+              src={valImgSrc}
+              alt={validator.moniker}
+              borderRadius="50%"
+            />
+          )}
           <ExplorerLink
             value={validator.moniker ?? validator.validatorAddress}
             copyValue={validator.validatorAddress}

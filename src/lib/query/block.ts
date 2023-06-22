@@ -22,6 +22,7 @@ export const getBlockListQueryDocument = graphql(`
       validator {
         moniker
         operator_address
+        identity
       }
     }
   }
@@ -44,6 +45,7 @@ export const getBlockDetailsByHeightQueryDocument = graphql(`
       validator {
         moniker
         operator_address
+        identity
       }
     }
   }
