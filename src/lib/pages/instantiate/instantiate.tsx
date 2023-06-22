@@ -82,9 +82,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
-  const [simulating, setSimulating] = useState(false);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
-
+  const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
+  const [estimatedFee, setEstimatedFee] = useState<StdFee>();
+  const [simulateError, setSimulateError] = useState("");
+  const [processing, setProcessing] = useState(false);
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
@@ -117,10 +119,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
-
-  const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
-  const [estimatedFee, setEstimatedFee] = useState<StdFee>();
-  const [simulateError, setSimulateError] = useState("");
 
   const enableInstantiate = useMemo(
     () =>
@@ -192,11 +190,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       admin: adminAddress,
       funds,
       estimatedFee,
-      onTxSucceed: onComplete,
+      onTxSucceed: (txResult, contractLabel) => {
+        setProcessing(false);
+        onComplete(txResult, contractLabel);
+      },
+      onTxFailed: () => setProcessing(false),
     });
 
-    if (stream) broadcast(stream);
-    setSimulating(false);
+    if (stream) {
+      setProcessing(true);
+      broadcast(stream);
+    }
   }, [
     adminAddress,
     attachFundsOption,
@@ -391,8 +395,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       </WasmPageContainer>
       <Footer
         onInstantiate={proceed}
-        disabled={!enableInstantiate}
-        loading={simulating}
+        disabled={!enableInstantiate || isSimulating}
+        loading={processing}
       />
     </>
   );
