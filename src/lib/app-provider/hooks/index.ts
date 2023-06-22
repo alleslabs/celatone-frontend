@@ -10,7 +10,6 @@ export * from "./useMediaQuery";
 export * from "./useNetworkChange";
 export * from "./useRestrictedInput";
 export * from "./useSelectChain";
-export * from "./useSimulateFee";
 export * from "./useTokensInfo";
 export * from "./useCurrentNetwork";
 export * from "./useChainRecordAsset";
