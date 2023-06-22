@@ -33,7 +33,7 @@ interface ExplorerLinkProps extends BoxProps {
   openNewTab?: boolean;
 }
 
-const getNavigationUrl = (
+export const getNavigationUrl = (
   type: ExplorerLinkProps["type"],
   explorerConfig: ExplorerConfig,
   value: string,

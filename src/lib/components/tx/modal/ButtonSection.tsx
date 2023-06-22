@@ -6,6 +6,7 @@ import {
   useCelatoneApp,
   useLCDEndpoint,
 } from "lib/app-provider";
+import { getNavigationUrl } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { openNewTab, useOpenTxTab } from "lib/hooks";
 import type { ActionVariant, TxReceipt } from "lib/types";
@@ -26,9 +27,7 @@ export const ButtonSection = ({
   const navigate = useInternalNavigate();
   const openTxTab = useOpenTxTab("tx-page");
   const {
-    chainConfig: {
-      explorerLink: { proposal: explorerProposal },
-    },
+    chainConfig: { explorerLink },
   } = useCelatoneApp();
   const lcdEndpoint = useLCDEndpoint();
 
@@ -45,9 +44,12 @@ export const ButtonSection = ({
       .find((r) => r.title === "Proposal ID")
       ?.value?.toString();
     openNewTab(
-      explorerProposal
-        ? `${explorerProposal}/${proposalId}`
-        : `${lcdEndpoint}/cosmos/gov/v1beta1/proposals/${proposalId}`
+      getNavigationUrl(
+        "proposal_id",
+        explorerLink,
+        proposalId ?? "",
+        lcdEndpoint
+      )
     );
     onClose?.();
   };

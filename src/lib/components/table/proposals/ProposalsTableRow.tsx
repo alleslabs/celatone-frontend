@@ -3,7 +3,7 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableRow, TableRowFreeze } from "../tableComponents";
 import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { ExplorerLink, getNavigationUrl } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
 import { Proposer } from "lib/components/table/proposals/Proposer";
 import { openNewTab } from "lib/hooks";
@@ -28,9 +28,7 @@ export const ProposalsTableRow = ({
   boxShadow,
 }: ProposalsTableRowProps) => {
   const {
-    chainConfig: {
-      explorerLink: { proposal: explorerProposal },
-    },
+    chainConfig: { explorerLink },
   } = useCelatoneApp();
   const lcdEndpoint = useLCDEndpoint();
 
@@ -60,9 +58,12 @@ export const ProposalsTableRow = ({
                 status: proposal.status,
               });
               openNewTab(
-                explorerProposal
-                  ? `${explorerProposal}/${proposal.proposalId.toString()}`
-                  : `${lcdEndpoint}/cosmos/gov/v1beta1/proposals/${proposal.proposalId.toString()}`
+                getNavigationUrl(
+                  "proposal_id",
+                  explorerLink,
+                  proposal.proposalId.toString(),
+                  lcdEndpoint
+                )
               );
             }
           : undefined
