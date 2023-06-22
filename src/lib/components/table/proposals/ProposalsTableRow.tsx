@@ -2,7 +2,7 @@ import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
 import { TableRow, TableRowFreeze } from "../tableComponents";
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
 import { Proposer } from "lib/components/table/proposals/Proposer";
@@ -32,6 +32,7 @@ export const ProposalsTableRow = ({
       explorerLink: { proposal: explorerProposal },
     },
   } = useCelatoneApp();
+  const lcdEndpoint = useLCDEndpoint();
 
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
@@ -59,7 +60,9 @@ export const ProposalsTableRow = ({
                 status: proposal.status,
               });
               openNewTab(
-                `${explorerProposal}/${proposal.proposalId.toString()}`
+                explorerProposal
+                  ? `${explorerProposal}/${proposal.proposalId.toString()}`
+                  : `${lcdEndpoint}/cosmos/gov/v1beta1/proposals/${proposal.proposalId.toString()}`
               );
             }
           : undefined

@@ -1,7 +1,11 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { useInternalNavigate, useCelatoneApp } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useCelatoneApp,
+  useLCDEndpoint,
+} from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { openNewTab, useOpenTxTab } from "lib/hooks";
 import type { ActionVariant, TxReceipt } from "lib/types";
@@ -26,6 +30,7 @@ export const ButtonSection = ({
       explorerLink: { proposal: explorerProposal },
     },
   } = useCelatoneApp();
+  const lcdEndpoint = useLCDEndpoint();
 
   const openTxExplorer = () => {
     const txHash = receipts
@@ -39,7 +44,11 @@ export const ButtonSection = ({
     const proposalId = receipts
       .find((r) => r.title === "Proposal ID")
       ?.value?.toString();
-    openNewTab(`${explorerProposal}/${proposalId}`);
+    openNewTab(
+      explorerProposal
+        ? `${explorerProposal}/${proposalId}`
+        : `${lcdEndpoint}/cosmos/gov/v1beta1/proposals/${proposalId}`
+    );
     onClose?.();
   };
 

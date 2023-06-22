@@ -121,7 +121,7 @@ export const useInstantiatedListByUserQuery = (
   return useQuery(
     ["instantiated_list_by_user", walletAddr, indexerGraphClient],
     queryFn,
-    { enabled: !!walletAddr }
+    { enabled: !!walletAddr, refetchOnWindowFocus: false }
   );
 };
 
