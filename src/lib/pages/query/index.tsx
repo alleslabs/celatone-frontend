@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import {
+  useBaseApiRoute,
   useInternalNavigate,
-  useLCDEndpoint,
   useWasmConfig,
 } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -29,7 +29,7 @@ const Query = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");

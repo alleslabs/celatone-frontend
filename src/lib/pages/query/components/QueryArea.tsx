@@ -4,7 +4,7 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-import { useCurrentChain, useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute, useCurrentChain } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -39,7 +39,7 @@ export const QueryArea = ({
   initialMsg,
   cmds,
 }: QueryAreaProps) => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const userKey = useUserKey();
   const { addActivity } = useContractStore();

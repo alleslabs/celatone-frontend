@@ -8,8 +8,8 @@ import { useForm } from "react-hook-form";
 import {
   useFabricateFee,
   useSimulateFeeQuery,
-  useLCDEndpoint,
   useCurrentChain,
+  useBaseApiRoute,
 } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -37,7 +37,7 @@ export const MigrateContract = ({
 }: MigrateContractProps) => {
   const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();

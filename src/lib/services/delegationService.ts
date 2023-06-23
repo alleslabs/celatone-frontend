@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute } from "lib/app-provider";
 import type { Addr, ValidatorAddr } from "lib/types";
 
 import type {
@@ -23,7 +23,7 @@ import {
 } from "./delegation";
 
 export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
     async () => getStakingParams(lcdEndpoint),
@@ -38,7 +38,7 @@ export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
 export const useDelegations = (
   address: Addr
 ): UseQueryResult<RawDelegation[]> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
     async () => getDelegations(lcdEndpoint, address),
@@ -53,7 +53,7 @@ export const useDelegations = (
 export const useUnbondings = (
   address: Addr
 ): UseQueryResult<RawUnbonding[]> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
     async () => getUnbondings(lcdEndpoint, address),
@@ -68,7 +68,7 @@ export const useUnbondings = (
 export const useDelegationRewards = (
   address: Addr
 ): UseQueryResult<RawDelegationRewards> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
     async () => getDelegationRewards(lcdEndpoint, address),
@@ -87,7 +87,7 @@ export const useDelegationRewards = (
 export const useRedelegations = (
   address: Addr
 ): UseQueryResult<RawRedelegation[]> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
     async () => getRedelegations(lcdEndpoint, address),
@@ -102,7 +102,7 @@ export const useRedelegations = (
 export const useCommission = (
   address: ValidatorAddr
 ): UseQueryResult<RawCommission> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
     async () => getCommission(lcdEndpoint, address),

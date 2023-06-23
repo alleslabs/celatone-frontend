@@ -7,7 +7,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
@@ -30,7 +30,7 @@ interface BlockDetailsTopProps {
 
 export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const block = Number(blockData.height);
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   const openLcdPage = () =>
     openNewTab(
       `${lcdEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`

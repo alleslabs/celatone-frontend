@@ -5,10 +5,10 @@ import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import {
+  useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
   useInternalNavigate,
-  useLCDEndpoint,
   useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -38,7 +38,7 @@ const Migrate = () => {
   const { indexerGraphClient } = useCelatoneApp();
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   const { data: uploadAccess } = useUploadAccessParams();
 
   const { address = "" } = useCurrentChain();

@@ -11,9 +11,9 @@ import {
   useSimulateFee,
   useInstantiateTx,
   useCelatoneApp,
-  useLCDEndpoint,
   useValidateAddress,
   useCurrentChain,
+  useBaseApiRoute,
 } from "lib/app-provider";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -72,7 +72,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   } = useCelatoneApp();
   const { address = "" } = useCurrentChain();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const postInstantiateTx = useInstantiateTx();
   const { simulate } = useSimulateFee();

@@ -5,9 +5,9 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
 import {
+  useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
-  useLCDEndpoint,
 } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
@@ -60,7 +60,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const toast = useToast();
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { refetch, isFetching, isRefetching } = useQuery(
     ["query", lcdEndpoint, codeId],
