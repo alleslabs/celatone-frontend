@@ -1,6 +1,7 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Spinner, Flex, Image, Text } from "@chakra-ui/react";
 
+import validatorDefaultImg from "../../../public/validator.svg";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useValidatorImage } from "lib/services/validatorService";
 import type { ValidatorInfo } from "lib/types";
@@ -46,6 +47,7 @@ export const ValidatorBadge = ({
               src={valImgSrc}
               alt={validator.moniker}
               borderRadius="50%"
+              fallbackSrc={validatorDefaultImg.src}
             />
           )}
           <ExplorerLink
