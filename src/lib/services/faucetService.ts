@@ -34,7 +34,7 @@ export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
     queryKey: ["query", "faucet_info", faucet],
     queryFn,
     enabled: faucet.enabled,
-    retry: 1,
+    retry: 2,
     refetchOnWindowFocus: false,
   });
 };

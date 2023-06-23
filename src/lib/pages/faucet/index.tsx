@@ -216,6 +216,7 @@ const Faucet = () => {
               variant="unstyled"
               minW="unset"
               size="sm"
+              ml="auto"
               _hover={{ background: "success.dark" }}
               style={{ padding: "4px 12px" }}
               onClick={() => openTxTab(result.txHash)}
