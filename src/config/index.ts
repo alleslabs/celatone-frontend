@@ -100,8 +100,6 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       faucet: {
         enabled: true,
         url: "https://faucet.alleslabs.dev",
-        denom: "osmo",
-        amount: 10,
       },
       wasm: {
         enabled: true,
@@ -147,8 +145,6 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       faucet: {
         enabled: true,
         url: "http://localhost:5005/request",
-        denom: "osmo",
-        amount: 10,
       },
       wasm: {
         enabled: true,
