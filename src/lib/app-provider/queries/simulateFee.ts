@@ -66,7 +66,7 @@ export const useSimulateFeeQuery = ({
     queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
     enabled,
     keepPreviousData: true,
-    retry: false,
+    retry: 2,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     onSuccess,
