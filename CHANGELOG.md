@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#405](https://github.com/alleslabs/celatone-frontend/pull/405) add test cases for `utils/formatter/token.ts`
 - [#398](https://github.com/alleslabs/celatone-frontend/pull/398) Setup Jest and sample tests
 - [#372](https://github.com/alleslabs/celatone-frontend/pull/372) Add code hash to code details and upload section
 - [#329](https://github.com/alleslabs/celatone-frontend/pull/329) Add allowed user to store code flow
