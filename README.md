@@ -15,8 +15,8 @@ The Celatone frontend uses the following technologies:
 
 ### Prerequisites
 
-1. [Node.js](https://nodejs.org/en/) (version >= 14) or nvm installed.
-2. [`Yarn`](https://yarnpkg.com/) installed.
+1. [Node.js](https://nodejs.org/en/) (version >= 16) or using node version manager [nvm](https://github.com/nvm-sh/nvm#intro) (recommended, installation guide for nvm [here](https://collabnix.com/how-to-install-and-configure-nvm-on-mac-os/)).
+2. [`Yarn`](https://yarnpkg.com/getting-started/install) installed.
 
 ### Develop
 
