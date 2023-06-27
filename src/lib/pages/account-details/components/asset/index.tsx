@@ -7,7 +7,7 @@ import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { TokenCard } from "lib/components/TokenCard";
-import { useOpenAssetTab } from "lib/hooks/useOpenAssetTab";
+import { useOpenAssetTab } from "lib/hooks/useOpenTab";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
 import { AmpTrackViewJson } from "lib/services/amplitude";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
@@ -68,7 +68,7 @@ export const AssetsSection = ({
   if (isLoading) return <Loading />;
 
   const totalAsset =
-    (supportedAssets?.length || 0) + (unsupportedAssets?.length || 0);
+    (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
 
   return (
     <Flex direction="column" gap={4} my={8} width="full">

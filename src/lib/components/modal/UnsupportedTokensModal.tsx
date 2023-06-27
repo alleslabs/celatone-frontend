@@ -155,16 +155,18 @@ export const UnsupportedTokensModal = ({
 
   return (
     <>
-      <Flex
+      <Button
+        variant="ghost-gray"
+        mb={1}
+        size="sm"
+        {...buttonProps}
         onClick={() => {
           AmpTrackUnsupportedToken(amptrackSection);
           onOpen();
         }}
       >
-        <Button variant="ghost-gray" mb={1} size="sm" {...buttonProps}>
-          {`View ${unsupportedAssets.length} Unsupported Assets`}
-        </Button>
-      </Flex>
+        {`View ${unsupportedAssets.length} Unsupported Assets`}
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent w="800px">

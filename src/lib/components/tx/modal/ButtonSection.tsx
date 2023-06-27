@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 
 import { useInternalNavigate, useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { openNewTab, useOpenTxTab } from "lib/hooks";
+import { useOpenTxTab } from "lib/hooks";
 import type { ActionVariant, TxReceipt } from "lib/types";
+import { openNewTab } from "lib/utils";
 
 // TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
