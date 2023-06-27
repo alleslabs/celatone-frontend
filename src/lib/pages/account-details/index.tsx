@@ -77,6 +77,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchContractsAdminCount,
     refetchContractsCount,
     refetchProposalsCount,
+    loadingState: { txCountLoading },
   } = useAccountDetailsTableCounts(accountAddress, accountId);
 
   const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
@@ -156,7 +157,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </Flex>
       )}
 
-      <Tabs index={tabIndex}>
+      <Tabs index={tabIndex} isLazy lazyBehavior="keepMounted">
         <TabList
           borderBottom="1px solid"
           borderColor="gray.700"
@@ -178,7 +179,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           </CustomTab>
           <CustomTab
             count={tableCounts.txsCount}
-            isDisabled={!tableCounts.txsCount}
+            isDisabled={txCountLoading || tableCounts.txsCount === 0}
             onClick={() => handleTabChange(TabIndex.Txs)}
           >
             Transactions
@@ -344,7 +345,7 @@ const AccountDetails = () => {
   // TODO: change to `Addr` for correctness (i.e. interchain account)
   const accountAddressParam = getFirstQueryParam(
     router.query.accountAddress
-  ) as HumanAddr;
+  ).toLowerCase() as HumanAddr;
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL);

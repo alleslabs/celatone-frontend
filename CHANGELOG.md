@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#407](https://github.com/alleslabs/celatone-frontend/pull/407) Add code upload error message under the dropzone
 - [#372](https://github.com/alleslabs/celatone-frontend/pull/372) Add code hash to code details and upload section
 - [#329](https://github.com/alleslabs/celatone-frontend/pull/329) Add allowed user to store code flow
 - [#321](https://github.com/alleslabs/celatone-frontend/pull/321) Add amplitude to proposal to store code page
@@ -49,6 +50,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#376](https://github.com/alleslabs/celatone-frontend/pull/376) Fix pluralize and capitalize
+- [#401](https://github.com/alleslabs/celatone-frontend/pull/401) Add permission chip to code selection box
+- [#386](https://github.com/alleslabs/celatone-frontend/pull/386) Handle uppercase address
+- [#382](https://github.com/alleslabs/celatone-frontend/pull/382) Add pool manager v15 msgs to tx details
+- [#371](https://github.com/alleslabs/celatone-frontend/pull/371) Refactor assign me component and fix color in redelegation page
 - [#342](https://github.com/alleslabs/celatone-frontend/pull/342) Add fallback n/a token on asset icon on asset box
 - [#331](https://github.com/alleslabs/celatone-frontend/pull/331) Add validation check for builder in proposal to store code page
 - [#324](https://github.com/alleslabs/celatone-frontend/pull/324) Add deposit/voting period from gov params and add minimum required alert for proposal to store code
@@ -58,6 +63,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#379](https://github.com/alleslabs/celatone-frontend/pull/379) Able to access txs tab when count query timeout, change tabs to lazy load mode for better performance
+- [#387](https://github.com/alleslabs/celatone-frontend/pull/387) Fix reseting proposal table when applying filters
+- [#375](https://github.com/alleslabs/celatone-frontend/pull/375) Fix incorrect display resolve height in proposals page
 - [#356](https://github.com/alleslabs/celatone-frontend/pull/356) Fix store code out of gas error by gzipping file before submitting tx
 - [#344](https://github.com/alleslabs/celatone-frontend/pull/344) Fix enable tx bug in proposal to store code
 

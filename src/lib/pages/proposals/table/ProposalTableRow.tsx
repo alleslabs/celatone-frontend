@@ -101,7 +101,6 @@ export const ProposalTableRow = ({
         <StopPropagationBox>
           <ResolvedHeight
             resolvedHeight={proposal.resolvedHeight}
-            isDepositFailed={isDepositFailed}
             isDepositOrVoting={isDepositOrVoting}
             amptrackSection="proposal-list"
           />

@@ -15,6 +15,7 @@ import {
   useLCDEndpoint,
   useValidateAddress,
 } from "lib/app-provider";
+import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
@@ -319,18 +320,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             variant="floating"
             error={validateAdmin(watchAdminAddress)}
             helperAction={
-              <Text
-                color="accent.main"
-                fontWeight={700}
-                variant="body3"
-                cursor="pointer"
+              <AssignMe
                 onClick={() => {
                   AmpTrack(AmpEvent.USE_ASSIGN_ME);
                   setValue("adminAddress", address);
                 }}
-              >
-                Assign me
-              </Text>
+                isDisable={watchAdminAddress === address}
+              />
             }
           />
           <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
