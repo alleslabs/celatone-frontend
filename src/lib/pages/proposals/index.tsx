@@ -54,6 +54,7 @@ const Proposals = () => {
       isDisabled: false,
     },
   });
+
   const { data: proposals, isLoading } = useProposalList(
     offset,
     pageSize,
@@ -70,7 +71,7 @@ const Proposals = () => {
   useEffect(() => {
     setPageSize(10);
     setCurrentPage(1);
-  }, [chainId, setCurrentPage, setPageSize]);
+  }, [chainId, setCurrentPage, setPageSize, statuses, types, search, proposer]);
 
   useEffect(() => {
     setIsSelected(false);
