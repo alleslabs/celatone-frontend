@@ -6,10 +6,10 @@ import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
 import { Proposer } from "lib/components/table/proposals/Proposer";
-import { openNewTab } from "lib/hooks";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option, Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
+import { openNewTab } from "lib/utils";
 
 import { ProposalTextCell } from "./ProposalTextCell";
 import { ResolvedHeight } from "./ResolvedHeight";
