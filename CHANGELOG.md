@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#388](https://github.com/alleslabs/celatone-frontend/pull/388) Save Navbar expand/collapse state in the local state
 - [#407](https://github.com/alleslabs/celatone-frontend/pull/407) Add code upload error message under the dropzone
 - [#372](https://github.com/alleslabs/celatone-frontend/pull/372) Add code hash to code details and upload section
 - [#329](https://github.com/alleslabs/celatone-frontend/pull/329) Add allowed user to store code flow
