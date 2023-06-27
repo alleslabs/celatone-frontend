@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#401](https://github.com/alleslabs/celatone-frontend/pull/401) Add permission chip to code selection box
 - [#386](https://github.com/alleslabs/celatone-frontend/pull/386) Handle uppercase address
 - [#382](https://github.com/alleslabs/celatone-frontend/pull/382) Add pool manager v15 msgs to tx details
 - [#371](https://github.com/alleslabs/celatone-frontend/pull/371) Refactor assign me component and fix color in redelegation page
