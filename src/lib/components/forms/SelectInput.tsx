@@ -6,7 +6,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   useDisclosure,
-  useOutsideClick,
   Flex,
   InputLeftElement,
 } from "@chakra-ui/react";
@@ -67,16 +66,12 @@ export const SelectInput = <T extends string>({
   helperTextComponent,
   labelBgColor = "background.main",
 }: SelectInputProps<T>) => {
-  const optionRef = useRef() as MutableRefObject<HTMLElement>;
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [selected, setSelected] = useState(
     () => options.find((item) => item.value === initialSelected)?.label ?? ""
   );
-  useOutsideClick({
-    ref: optionRef,
-    handler: () => isOpen && onClose(),
-  });
+
   const selectedOption = options.find((item) => item.label === selected);
 
   useEffect(() => {
@@ -89,10 +84,15 @@ export const SelectInput = <T extends string>({
   }, [initialSelected, options]);
 
   return (
-    <Popover placement="bottom-start" isOpen={isOpen}>
+    <Popover
+      placement="bottom-start"
+      isOpen={isOpen}
+      onOpen={onOpen}
+      onClose={onClose}
+      returnFocusOnClose={false}
+    >
       <PopoverTrigger>
         <InputGroup
-          onClick={onOpen}
           sx={{
             "&[aria-expanded=true]": {
               "> input": {
@@ -135,7 +135,6 @@ export const SelectInput = <T extends string>({
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
-        ref={optionRef}
         border="unset"
         bg="gray.900"
         w={inputRef.current?.clientWidth}

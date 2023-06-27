@@ -19,6 +19,8 @@ import { useState, useRef, forwardRef } from "react";
 import { CustomIcon } from "lib/components/icon";
 import { displayActionValue, mergeRefs } from "lib/utils";
 
+import { DropdownChevron } from "./DropdownChevron";
+
 export interface TxFilterSelectionProps extends InputProps {
   placeholder?: string;
   result: string[];
@@ -154,6 +156,9 @@ export const TxFilterSelection = forwardRef<
               maxLength={36}
               style={{ border: 0, maxHeight: "54px" }}
               {...rest}
+            />
+            <DropdownChevron
+              onClick={() => setDisplayOptions((prev) => !prev)}
             />
             <FormLabel
               position="absolute"
