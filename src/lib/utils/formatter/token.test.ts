@@ -115,15 +115,22 @@ describe("toToken", () => {
     expect(toToken(NaN as U<Token<BigSource>>, 6)).toEqual(
       big(0) as Token<Big>
     );
+    expect(toToken("" as U<Token<BigSource>>, 6)).toEqual(big(0) as Token<Big>);
   });
   test("more than 1", () => {
     expect(toToken(12345678 as U<Token<BigSource>>, 6)).toEqual(
       big(12.345678) as Token<Big>
     );
+    expect(toToken("123456789" as U<Token<BigSource>>, 6)).toEqual(
+      big(123.456789) as Token<Big>
+    );
   });
   test("less than 1", () => {
     expect(toToken(1234 as U<Token<BigSource>>, 6)).toEqual(
       big(0.001234) as Token<Big>
+    );
+    expect(toToken("234" as U<Token<BigSource>>, 6)).toEqual(
+      big(0.000234) as Token<Big>
     );
   });
 });
