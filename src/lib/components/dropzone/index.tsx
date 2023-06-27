@@ -63,7 +63,7 @@ export function DropZone({ setFile, ...componentProps }: DropZoneProps) {
         </Text>
       </Flex>
       {fileRejections.length > 0 && (
-        <Text variant="body3" color="error.main">
+        <Text variant="body3" color="error.main" mt="2px">
           {fileRejections[0].errors[0].message}
         </Text>
       )}
