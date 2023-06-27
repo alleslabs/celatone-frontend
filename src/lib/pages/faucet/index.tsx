@@ -168,7 +168,7 @@ const Faucet = () => {
         {prettyName} Faucet
       </Heading>
       <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
-        The faucet provides {faucetAmount} testnet {faucetDenom} per request.
+        The faucet provides {faucetAmount} testnet {faucetDenom} per request.{" "}
         {faucetInfo?.RateLimit &&
           "Requests are limited to once per hour for each receiving address and IP address."}
       </Text>
