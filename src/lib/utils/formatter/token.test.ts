@@ -26,6 +26,10 @@ describe("formatDecimal", () => {
   });
 
   test("from string", () => {
+    expect(f(0xab, FALLBACK)).toEqual("171.0000");
+    expect(f(1e2, FALLBACK)).toEqual("100.0000");
+    expect(f(0b111, FALLBACK)).toEqual("7.0000");
+
     expect(f("12345678", FALLBACK)).toEqual("12345678.0000");
     expect(f("12345.678", FALLBACK)).toEqual("12345.6780");
 
@@ -86,6 +90,7 @@ describe("d2Formatter", () => {
   test("positive", () => {
     expect(d2Formatter("1234.5678", FALLBACK)).toEqual("1,234.56");
     expect(d2Formatter(1234.5, FALLBACK)).toEqual("1,234.50");
+    expect(d2Formatter(1234, FALLBACK)).toEqual("1,234.00");
   });
   test("negative", () => {
     expect(d2Formatter("-1234.5678", FALLBACK)).toEqual("-1,234.56");
@@ -97,6 +102,7 @@ describe("d6Formatter", () => {
   test("positive", () => {
     expect(d6Formatter("0.123456789", FALLBACK)).toEqual("0.123456");
     expect(d6Formatter(0.1234, FALLBACK)).toEqual("0.123400");
+    expect(d6Formatter(1234, FALLBACK)).toEqual("1,234.000000");
   });
   test("negative", () => {
     expect(d6Formatter("-0.123456789", FALLBACK)).toEqual("-0.123456");
@@ -168,20 +174,16 @@ describe("formatUTokenWithPrecision", () => {
       )
     ).toEqual("12,345.67B");
     expect(
-      formatUTokenWithPrecision(
-        "12345678901234" as U<Token<BigSource>>,
-        6,
-        true
-      )
+      formatUTokenWithPrecision(12345678901234 as U<Token<BigSource>>, 6, true)
     ).toEqual("12.34M");
     expect(
-      formatUTokenWithPrecision("1234567890" as U<Token<BigSource>>, 6, true)
+      formatUTokenWithPrecision(1234567890 as U<Token<BigSource>>, 6, true)
     ).toEqual("1,234.56");
     expect(
-      formatUTokenWithPrecision("123456789" as U<Token<BigSource>>, 6, true)
+      formatUTokenWithPrecision(123456789 as U<Token<BigSource>>, 6, true)
     ).toEqual("123.456789");
     expect(
-      formatUTokenWithPrecision("123456789" as U<Token<BigSource>>, 6, true, 3)
+      formatUTokenWithPrecision(123456789 as U<Token<BigSource>>, 6, true, 3)
     ).toEqual("123.456");
   });
 });
@@ -191,19 +193,24 @@ describe("formatPrice", () => {
     expect(formatPrice(NaN as USD<BigSource>)).toEqual("$0.00");
     expect(formatPrice("" as USD<BigSource>)).toEqual("$0.00");
   });
-  test("0", () => {
+  test("0 -> 2 decimal points", () => {
     expect(formatPrice(0 as USD<BigSource>)).toEqual("$0.00");
+    expect(formatPrice("0" as USD<BigSource>)).toEqual("$0.00");
   });
   test("> 1", () => {
     expect(formatPrice(1.0 as USD<BigSource>)).toEqual("$1.00");
-    expect(formatPrice(1.234 as USD<BigSource>)).toEqual("$1.23");
+    expect(formatPrice(1.23 as USD<BigSource>)).toEqual("$1.23");
+    expect(formatPrice("1.234" as USD<BigSource>)).toEqual("$1.23");
   });
   test("< 0.000001", () => {
     expect(formatPrice(0.0000001 as USD<BigSource>)).toEqual("<$0.000001");
+    expect(formatPrice("0.00000001" as USD<BigSource>)).toEqual("<$0.000001");
   });
   test("0.000001 <= x < 1", () => {
     expect(formatPrice(0.123 as USD<BigSource>)).toEqual("$0.123000");
+    expect(formatPrice("0.123" as USD<BigSource>)).toEqual("$0.123000");
     expect(formatPrice(0.123456789 as USD<BigSource>)).toEqual("$0.123456");
+    expect(formatPrice("0.123456789" as USD<BigSource>)).toEqual("$0.123456");
   });
 });
 
@@ -214,6 +221,8 @@ describe("formatInteger", () => {
   });
   test("valid", () => {
     expect(formatInteger("1234.567890" as BigSource)).toEqual("1,234");
+    expect(formatInteger("-1234.567890" as BigSource)).toEqual("-1,234");
     expect(formatInteger(1234 as BigSource)).toEqual("1,234");
+    expect(formatInteger(-1234 as BigSource)).toEqual("-1,234");
   });
 });
