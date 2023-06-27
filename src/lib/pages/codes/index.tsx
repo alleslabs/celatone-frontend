@@ -65,7 +65,7 @@ const RecentCodes = observer(() => {
         </Text>
         <Flex gap={3} mt={8}>
           <InputWithIcon
-            placeholder="Search with code ID or code name"
+            placeholder="Search with Code ID or Code Name"
             value={keyword}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setValue("keyword", e.target.value)

@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import plur from "plur";
 
 import { useGetAddressType } from "lib/app-provider";
 import { TxReceiptRender } from "lib/components/tx";
@@ -21,7 +22,7 @@ export const TxMsgDetails = ({
   const receipts = generateReceipts(txMsgData, getAddressType, assetInfos)
     .concat(
       txMsgData.log && {
-        title: "Event Logs",
+        title: plur("Event Log", txMsgData.log.events.length),
         html: (
           <Flex direction="column" gap={3} w="full">
             {txMsgData.log.events.map((event, idx) => (
