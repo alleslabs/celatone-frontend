@@ -79,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#403](https://github.com/alleslabs/celatone-frontend/pull/403) Retrieve faucet information from api and use api instead of lcd to prevent CORS
+- [#400](https://github.com/alleslabs/celatone-frontend/pull/400) Fallback explorer link for validator/proposal and gov params token symbol
 - [#395](https://github.com/alleslabs/celatone-frontend/pull/395) Disable wasm related tabs on the account detail page
 - [#392](https://github.com/alleslabs/celatone-frontend/pull/392) Fix format denom function
 - [#390](https://github.com/alleslabs/celatone-frontend/pull/390) Fix minor styling
@@ -99,6 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#373](https://github.com/alleslabs/celatone-frontend/pull/373) Add view in Json for assets in account details page
 - [#364](https://github.com/alleslabs/celatone-frontend/pull/364) (Contract Details) use instantiated height and time from indexer as fallback
 - [#323](https://github.com/alleslabs/celatone-frontend/pull/323) Revise back button and breadcrumb components
 - [#339](https://github.com/alleslabs/celatone-frontend/pull/339) Update all routes to plural form, and patch all codes

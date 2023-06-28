@@ -1,10 +1,16 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { useInternalNavigate, useCelatoneApp } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useCelatoneApp,
+  useLCDEndpoint,
+} from "lib/app-provider";
+import { getNavigationUrl } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { openNewTab, useOpenTxTab } from "lib/hooks";
+import { useOpenTxTab } from "lib/hooks";
 import type { ActionVariant, TxReceipt } from "lib/types";
+import { openNewTab } from "lib/utils";
 
 // TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
@@ -22,10 +28,9 @@ export const ButtonSection = ({
   const navigate = useInternalNavigate();
   const openTxTab = useOpenTxTab("tx-page");
   const {
-    chainConfig: {
-      explorerLink: { proposal: explorerProposal },
-    },
+    chainConfig: { explorerLink },
   } = useCelatoneApp();
+  const lcdEndpoint = useLCDEndpoint();
 
   const openTxExplorer = () => {
     const txHash = receipts
@@ -39,7 +44,15 @@ export const ButtonSection = ({
     const proposalId = receipts
       .find((r) => r.title === "Proposal ID")
       ?.value?.toString();
-    openNewTab(`${explorerProposal}/${proposalId}`);
+    // TOOD: revisit retrieving url (make a proper hook)
+    openNewTab(
+      getNavigationUrl(
+        "proposal_id",
+        explorerLink,
+        proposalId ?? "",
+        lcdEndpoint
+      )
+    );
     onClose?.();
   };
 

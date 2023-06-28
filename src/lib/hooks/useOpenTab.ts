@@ -2,9 +2,7 @@ import { useCallback } from "react";
 
 import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
 import type { Option } from "lib/types";
-
-export const openNewTab = (url: string) =>
-  window.open(url, "_blank", "noopener,noreferrer");
+import { openNewTab } from "lib/utils";
 
 export const useOpenTxTab = (type: "lcd" | "tx-page") => {
   const { currentChainId } = useCelatoneApp();
@@ -16,5 +14,16 @@ export const useOpenTxTab = (type: "lcd" | "tx-page") => {
       openNewTab(`${baseUrl}/${txHash}`);
     },
     [baseUrl]
+  );
+};
+
+export const useOpenAssetTab = () => {
+  const balancesApiRoute = useBaseApiRoute("balances");
+
+  return useCallback(
+    (walletAddr: string) => {
+      openNewTab(`${balancesApiRoute}/${walletAddr}`);
+    },
+    [balancesApiRoute]
   );
 };

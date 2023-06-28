@@ -11,9 +11,8 @@ import { useBaseApiRoute, useInternalNavigate } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
-import { openNewTab } from "lib/hooks";
 import type { BlockDetails } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { dateFromNow, formatUTC, openNewTab } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {

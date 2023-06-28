@@ -330,6 +330,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
               formattedToken: formatBalanceWithDenom({
                 coin: minDepositParam,
                 precision: assetInfo?.precision,
+                symbol: assetInfo?.symbol,
               }),
               precision: assetInfo?.precision ?? 0,
             },

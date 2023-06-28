@@ -174,8 +174,8 @@ export const CHAIN_CONFIGS: ChainConfigs = {
         "osmovaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
     },
     explorerLink: {
-      validator: "https://www.mintscan.io/osmosis/validators",
-      proposal: "https://www.mintscan.io/osmosis/proposals",
+      validator: "",
+      proposal: "",
     },
   },
 };

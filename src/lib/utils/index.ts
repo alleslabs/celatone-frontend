@@ -30,3 +30,4 @@ export * from "./bech32";
 export * from "./proposal";
 export * from "./codeHash";
 export * from "./icon";
+export * from "./window";
