@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { isCodeId, isTxHash, isBlock } from "./validate";
 
 describe("isCodeId", () => {
@@ -26,10 +27,10 @@ describe("isTxHash", () => {
     ).toBeTruthy();
   });
   describe("invalid", () => {
-    test("empty", () => {
+    test("empty string", () => {
       expect(isTxHash("")).toBeFalsy();
     });
-    test("hex", () => {
+    test("non-hexstring", () => {
       expect(
         isTxHash(
           "GE7C3F5D7C223257877BCF145452D8B5D45BFD55620B14EE97E6C86EDE16BFE7"
@@ -48,7 +49,7 @@ describe("isBlock", () => {
   });
   describe("invalid", () => {
     test("empty string", () => {
-      expect(isCodeId("1234ABCD")).toBeFalsy();
+      expect(isCodeId("")).toBeFalsy();
     });
     test("non-number string", () => {
       expect(isCodeId("1234ABCD")).toBeFalsy();
