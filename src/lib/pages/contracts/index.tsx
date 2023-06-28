@@ -2,7 +2,7 @@ import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
@@ -12,6 +12,7 @@ import type { ContractAddr } from "lib/types";
 import { useRecentContractsData } from "./data";
 
 const RecentContracts = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const navigate = useInternalNavigate();
   const onRowSelect = (contract: ContractAddr) =>
     navigate({

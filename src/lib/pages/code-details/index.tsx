@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
@@ -178,9 +179,10 @@ const CodeDetailsBody = observer(
 );
 
 const CodeDetails = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const codeIdParam = getFirstQueryParam(router.query.codeId);
-  const data = useCodeData(Number(codeIdParam));
+  const data = useCodeData(codeIdParam);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);

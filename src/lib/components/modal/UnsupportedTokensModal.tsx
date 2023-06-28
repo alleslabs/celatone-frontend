@@ -12,14 +12,13 @@ import {
   Button,
   Heading,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
-import { useGetAddressType, getAddressTypeByLength } from "lib/app-provider";
+import { useGetAddressType, useGetAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { AmpTrackUnsupportedToken } from "lib/services/amplitude";
@@ -55,7 +54,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   const getAddressType = useGetAddressType();
   // TODO - Move this to utils
   const [tokenLabel, tokenType] = useMemo(() => {
-    const label = getTokenLabel(balance.id);
+    const label = getTokenLabel(balance.id, balance.symbol);
     const type = !balance.id.includes("/")
       ? getTokenTypeWithAddress(balance.type, getAddressType(balance.id))
       : getTokenType(balance.id.split("/")[0]);
@@ -146,26 +145,28 @@ export const UnsupportedTokensModal = ({
   buttonProps,
   amptrackSection,
 }: UnsupportedTokensModalProps) => {
-  const { currentChainName } = useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const getAddressTypeByLength = useGetAddressTypeByLength();
 
   if (unsupportedAssets.length === 0) return null;
 
-  const addressType = getAddressTypeByLength(currentChainName, address);
+  const addressType = getAddressTypeByLength(address);
   const content = unsupportedTokensContent(addressType);
 
   return (
     <>
-      <Flex
+      <Button
+        variant="ghost-gray"
+        mb={1}
+        size="sm"
+        {...buttonProps}
         onClick={() => {
           AmpTrackUnsupportedToken(amptrackSection);
           onOpen();
         }}
       >
-        <Button variant="ghost-gray" mb={1} size="sm" {...buttonProps}>
-          {`View ${unsupportedAssets.length} Unsupported Assets`}
-        </Button>
-      </Flex>
+        {`View ${unsupportedAssets.length} Unsupported Assets`}
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent w="800px">

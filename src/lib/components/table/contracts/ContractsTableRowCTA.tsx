@@ -11,10 +11,9 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { TableRow } from "../tableComponents";
-import { useInternalNavigate } from "lib/app-provider";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -49,7 +48,7 @@ export const ContractsTableRowCTA = ({
   contractInfo,
   withCTA,
 }: ContractsTableRowCTAProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === contractInfo.admin;

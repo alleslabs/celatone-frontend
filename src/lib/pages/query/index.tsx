@@ -4,7 +4,11 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
+import {
+  useBaseApiRoute,
+  useInternalNavigate,
+  useWasmConfig,
+} from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -22,9 +26,10 @@ import {
 import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");
@@ -50,8 +55,8 @@ const Query = () => {
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
-    async () => queryData(endpoint, contractAddress, '{"": {}}'),
+    ["query", "cmds", lcdEndpoint, contractAddress, '{"": {}}'],
+    async () => queryData(lcdEndpoint, contractAddress, '{"": {}}'),
     {
       enabled: !!contractAddress,
       retry: false,

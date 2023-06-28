@@ -3,7 +3,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import {
   getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
@@ -22,7 +22,7 @@ import type {
   Addr,
   HumanAddr,
 } from "lib/types";
-import { parseDateOpt, parseTxHashOpt } from "lib/utils";
+import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -118,7 +118,8 @@ export const useCodeListByCodeIds = (
 };
 
 export const useCodeDataByCodeId = (
-  codeId: Option<number>
+  codeId: string,
+  enabled = true
 ): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -127,7 +128,7 @@ export const useCodeDataByCodeId = (
 
     return indexerGraphClient
       .request(getCodeDataByCodeId, {
-        codeId,
+        codeId: Number(codeId),
       })
       .then(({ codes_by_pk }) => {
         if (!codes_by_pk) return null;
@@ -156,8 +157,7 @@ export const useCodeDataByCodeId = (
       });
   }, [codeId, indexerGraphClient]);
   return useQuery(["code_data_by_id", codeId, indexerGraphClient], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
+    enabled: enabled && isCodeId(codeId),
   });
 };
 
@@ -167,6 +167,8 @@ export const useCodeListByWalletAddressPagination = (
   pageSize: number
 ): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
@@ -202,7 +204,11 @@ export const useCodeListByWalletAddressPagination = (
       walletAddress,
     ],
     createQueryFnWithTimeout(queryFn),
-    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
+    {
+      enabled: wasm.enabled && !!walletAddress,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 
@@ -210,6 +216,8 @@ export const useCodeListCountByWalletAddress = (
   walletAddress: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
@@ -228,7 +236,7 @@ export const useCodeListCountByWalletAddress = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!walletAddress,
+      enabled: wasm.enabled && !!walletAddress,
     }
   );
 };

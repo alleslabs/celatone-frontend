@@ -1,12 +1,13 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
 import {
+  useCelatoneApp,
+  useCurrentChain,
   useFabricateFee,
   useSimulateFeeForStoreCode,
   useUploadContractTx,
@@ -14,7 +15,7 @@ import {
 } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
-import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -41,8 +42,10 @@ export const UploadSection = ({
   handleBack,
   isMigrate = false,
 }: UploadSectionProps) => {
+  const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
   const fabricateFee = useFabricateFee();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();
   const postUploadTx = useUploadContractTx(isMigrate);
@@ -205,9 +208,11 @@ export const UploadSection = ({
         placeholder="Untitled Name"
         helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
         rules={{
-          maxLength: MAX_CODE_NAME_LENGTH,
+          maxLength: constants.maxCodeNameLength,
         }}
-        error={errors.codeName && getMaxCodeNameLengthError(codeName.length)}
+        error={
+          errors.codeName && getMaxLengthError(codeName.length, "code_name")
+        }
         variant="floating"
       />
       <InstantiatePermissionRadio

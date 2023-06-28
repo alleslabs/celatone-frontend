@@ -25,7 +25,7 @@ export const CodeSelect = ({
 }: CodeSelectProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const name = getCodeLocalInfo(Number(codeId))?.name;
-  const { data: codeInfo } = useCodeDataByCodeId(Number(codeId));
+  const { data: codeInfo } = useCodeDataByCodeId(codeId);
 
   const isError = status.state === "error";
   return (

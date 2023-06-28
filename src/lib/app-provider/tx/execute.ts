@@ -1,7 +1,7 @@
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
+import { useCurrentChain } from "../hooks";
 import { executeContractTx } from "lib/app-fns/tx/execute";
 import { useUserKey } from "lib/hooks/useUserKey";
 import type { Activity } from "lib/stores/contract";
@@ -17,7 +17,7 @@ export interface ExecuteStreamParams {
 }
 
 export const useExecuteContractTx = () => {
-  const { address, getCosmWasmClient } = useWallet();
+  const { address, getSigningCosmWasmClient } = useCurrentChain();
   const userKey = useUserKey();
 
   return useCallback(
@@ -29,7 +29,7 @@ export const useExecuteContractTx = () => {
       msg,
       funds,
     }: ExecuteStreamParams) => {
-      const client = await getCosmWasmClient();
+      const client = await getSigningCosmWasmClient();
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
@@ -46,6 +46,6 @@ export const useExecuteContractTx = () => {
         onTxFailed,
       });
     },
-    [address, userKey, getCosmWasmClient]
+    [address, userKey, getSigningCosmWasmClient]
   );
 };

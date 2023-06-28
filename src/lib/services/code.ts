@@ -18,10 +18,10 @@ interface CodeIdInfoResponse {
 
 export const getCodeIdInfo = async (
   endpoint: string,
-  id: number
+  id: string
 ): Promise<CodeIdInfoResponse> => {
   const { data } = await axios.get<CodeIdInfoResponse>(
-    `${endpoint}cosmwasm/wasm/v1/code/${id}`
+    `${endpoint}/cosmwasm/wasm/v1/code/${id}`
   );
   return data;
 };
