@@ -122,7 +122,7 @@ export const ContractListDetail = ({
           variant="floating"
           value={searchKeyword}
           setInputState={setSearchKeyword}
-          placeholder="Search with contract address, name, or description"
+          placeholder="Search with Contract Address, Name, or Description"
           size={!isReadOnly ? "lg" : "md"}
         />
         {!isReadOnly && (

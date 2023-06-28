@@ -95,8 +95,7 @@ const ContractDetailsBody = observer(
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>
-            {/* <CustomTab count={tableCounts.executeCount}>Executes</CustomTab> */}
-            <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
+            <CustomTab count={tableCounts.migrationCount}>Migrations</CustomTab>
             <CustomTab count={tableCounts.relatedProposalsCount}>
               Related Proposals
             </CustomTab>
