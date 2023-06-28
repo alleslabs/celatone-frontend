@@ -2,8 +2,8 @@ import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
 import { TableRow, TableRowFreeze } from "../tableComponents";
-import { useCelatoneApp } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
+import { ExplorerLink, getNavigationUrl } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
 import { Proposer } from "lib/components/table/proposals/Proposer";
 import { AmpTrackMintscan } from "lib/services/amplitude";
@@ -28,10 +28,9 @@ export const ProposalsTableRow = ({
   boxShadow,
 }: ProposalsTableRowProps) => {
   const {
-    chainConfig: {
-      explorerLink: { proposal: explorerProposal },
-    },
+    chainConfig: { explorerLink },
   } = useCelatoneApp();
+  const lcdEndpoint = useLCDEndpoint();
 
   // TODO - Revisit split columnsWidth
   const columnsWidth = templateColumns?.toString().split(" ");
@@ -58,8 +57,14 @@ export const ProposalsTableRow = ({
                 type: proposal.type,
                 status: proposal.status,
               });
+              // TOOD: revisit retrieving url (make a proper hook)
               openNewTab(
-                `${explorerProposal}/${proposal.proposalId.toString()}`
+                getNavigationUrl(
+                  "proposal_id",
+                  explorerLink,
+                  proposal.proposalId.toString(),
+                  lcdEndpoint
+                )
               );
             }
           : undefined

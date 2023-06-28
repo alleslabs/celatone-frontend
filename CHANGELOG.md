@@ -78,6 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#400](https://github.com/alleslabs/celatone-frontend/pull/400) Fallback explorer link for validator/proposal and gov params token symbol
 - [#395](https://github.com/alleslabs/celatone-frontend/pull/395) Disable wasm related tabs on the account detail page
 - [#392](https://github.com/alleslabs/celatone-frontend/pull/392) Fix format denom function
 - [#390](https://github.com/alleslabs/celatone-frontend/pull/390) Fix minor styling

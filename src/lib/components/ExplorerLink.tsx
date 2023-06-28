@@ -5,6 +5,7 @@ import type { ExplorerConfig } from "config/types";
 import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
+import { useLCDEndpoint } from "lib/app-provider/hooks/useLCDEndpoint";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -32,10 +33,11 @@ interface ExplorerLinkProps extends BoxProps {
   openNewTab?: boolean;
 }
 
-const getNavigationUrl = (
+export const getNavigationUrl = (
   type: ExplorerLinkProps["type"],
   explorerConfig: ExplorerConfig,
-  value: string
+  value: string,
+  lcdEndpoint: string
 ) => {
   let url = "";
   switch (type) {
@@ -49,7 +51,9 @@ const getNavigationUrl = (
       url = "/accounts";
       break;
     case "validator_address":
-      url = explorerConfig.validator;
+      url =
+        explorerConfig.validator ||
+        `${lcdEndpoint}/cosmos/staking/v1beta1/validators`;
       break;
     case "code_id":
       url = "/codes";
@@ -58,7 +62,9 @@ const getNavigationUrl = (
       url = "/blocks";
       break;
     case "proposal_id":
-      url = explorerConfig.proposal;
+      url =
+        explorerConfig.proposal ||
+        `${lcdEndpoint}/cosmos/gov/v1beta1/proposals`;
       break;
     case "invalid_address":
       return "";
@@ -153,6 +159,7 @@ export const ExplorerLink = ({
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address } = useCurrentChain();
+  const lcdEndpoint = useLCDEndpoint();
   const {
     chainConfig: { explorerLink: explorerConfig },
   } = useCelatoneApp();
@@ -165,7 +172,7 @@ export const ExplorerLink = ({
     type === "block_height";
 
   const [hrefLink, textValue] = [
-    getNavigationUrl(type, explorerConfig, copyValue || value),
+    getNavigationUrl(type, explorerConfig, copyValue || value, lcdEndpoint),
     getValueText(value === address, textFormat === "truncate", value),
   ];
 
