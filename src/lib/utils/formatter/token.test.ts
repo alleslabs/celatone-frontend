@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import type { Big, BigSource } from "big.js";
 import big from "big.js";
 
@@ -19,17 +20,22 @@ describe("formatDecimal", () => {
   const f = formatDecimal({ decimalPoints: 4, delimiter: false });
   const fDelim = formatDecimal({ decimalPoints: 4, delimiter: true });
 
-  test("invalid", () => {
-    expect(f("invalid value", FALLBACK)).toEqual(FALLBACK);
-    expect(f(NaN, FALLBACK)).toEqual(FALLBACK);
-    expect(f("0x13ac", FALLBACK)).toEqual(FALLBACK);
+  describe("invalid", () => {
+    test("empty string", () => {
+      expect(f("invalid value", FALLBACK)).toEqual(FALLBACK);
+    });
+    test("non-number string", () => {
+      expect(f("invalid value", FALLBACK)).toEqual(FALLBACK);
+    });
+    test("hexstring is not acceptable", () => {
+      expect(f("0x13ac", FALLBACK)).toEqual(FALLBACK);
+    });
+    test("NaN", () => {
+      expect(f(NaN, FALLBACK)).toEqual(FALLBACK);
+    });
   });
 
   test("from string", () => {
-    expect(f(0xab, FALLBACK)).toEqual("171.0000");
-    expect(f(1e2, FALLBACK)).toEqual("100.0000");
-    expect(f(0b111, FALLBACK)).toEqual("7.0000");
-
     expect(f("12345678", FALLBACK)).toEqual("12345678.0000");
     expect(f("12345.678", FALLBACK)).toEqual("12345.6780");
 
@@ -52,6 +58,10 @@ describe("formatDecimal", () => {
   });
 
   test("from number", () => {
+    expect(f(0xab, FALLBACK)).toEqual("171.0000");
+    expect(f(1e2, FALLBACK)).toEqual("100.0000");
+    expect(f(0b111, FALLBACK)).toEqual("7.0000");
+
     expect(f(12345678, FALLBACK)).toEqual("12345678.0000");
     expect(f(12345.678, FALLBACK)).toEqual("12345.6780");
 
@@ -87,35 +97,46 @@ describe("formatDecimal", () => {
 });
 
 describe("d2Formatter", () => {
-  test("positive", () => {
+  test("from string", () => {
+    expect(d2Formatter("-1234.5678", FALLBACK)).toEqual("-1,234.56");
     expect(d2Formatter("1234.5678", FALLBACK)).toEqual("1,234.56");
+  });
+  test("from number", () => {
     expect(d2Formatter(1234.5, FALLBACK)).toEqual("1,234.50");
     expect(d2Formatter(1234, FALLBACK)).toEqual("1,234.00");
-  });
-  test("negative", () => {
-    expect(d2Formatter("-1234.5678", FALLBACK)).toEqual("-1,234.56");
     expect(d2Formatter(-1234.5, FALLBACK)).toEqual("-1,234.50");
   });
 });
 
 describe("d6Formatter", () => {
-  test("positive", () => {
+  test("from string", () => {
     expect(d6Formatter("0.123456789", FALLBACK)).toEqual("0.123456");
+    expect(d6Formatter("-0.123456789", FALLBACK)).toEqual("-0.123456");
+  });
+  test("from number", () => {
     expect(d6Formatter(0.1234, FALLBACK)).toEqual("0.123400");
     expect(d6Formatter(1234, FALLBACK)).toEqual("1,234.000000");
-  });
-  test("negative", () => {
-    expect(d6Formatter("-0.123456789", FALLBACK)).toEqual("-0.123456");
     expect(d6Formatter(-0.1234, FALLBACK)).toEqual("-0.123400");
   });
 });
 
 describe("toToken", () => {
-  test("invalid", () => {
-    expect(toToken(NaN as U<Token<BigSource>>, 6)).toEqual(
-      big(0) as Token<Big>
-    );
-    expect(toToken("" as U<Token<BigSource>>, 6)).toEqual(big(0) as Token<Big>);
+  describe("invalid", () => {
+    test("empty string", () => {
+      expect(toToken("" as U<Token<BigSource>>, 6)).toEqual(
+        big(0) as Token<Big>
+      );
+    });
+    test("non-number string", () => {
+      expect(toToken("ABC" as U<Token<BigSource>>, 6)).toEqual(
+        big(0) as Token<Big>
+      );
+    });
+    test("NaN", () => {
+      expect(toToken(NaN as U<Token<BigSource>>, 6)).toEqual(
+        big(0) as Token<Big>
+      );
+    });
   });
   test("more than 1", () => {
     expect(toToken(12345678 as U<Token<BigSource>>, 6)).toEqual(
@@ -136,16 +157,23 @@ describe("toToken", () => {
 });
 
 describe("formatUTokenWithPrecision", () => {
-  test("invalid", () => {
-    expect(
-      formatUTokenWithPrecision("" as U<Token<BigSource>>, 6, false)
-    ).toEqual("0.000000");
-    expect(
-      formatUTokenWithPrecision(NaN as U<Token<BigSource>>, 8, false)
-    ).toEqual("0.00000000");
-    expect(
-      formatUTokenWithPrecision(NaN as U<Token<BigSource>>, 6, true, 3)
-    ).toEqual("0.000");
+  describe("invalid", () => {
+    test("empty string", () => {
+      expect(
+        formatUTokenWithPrecision("" as U<Token<BigSource>>, 6, false)
+      ).toEqual("0.000000");
+      expect(
+        formatUTokenWithPrecision("" as U<Token<BigSource>>, 6, true, 1)
+      ).toEqual("0.0");
+    });
+    test("NaN", () => {
+      expect(
+        formatUTokenWithPrecision(NaN as U<Token<BigSource>>, 8, false)
+      ).toEqual("0.00000000");
+      expect(
+        formatUTokenWithPrecision(NaN as U<Token<BigSource>>, 6, true, 3)
+      ).toEqual("0.000");
+    });
   });
   test("no suffix", () => {
     expect(
@@ -172,64 +200,104 @@ describe("formatUTokenWithPrecision", () => {
       )
     ).toEqual("12,345,678,901,234.56789000");
   });
-  test("with suffix", () => {
-    expect(
-      formatUTokenWithPrecision(
-        "12345678901234567890" as U<Token<BigSource>>,
-        6,
-        true
-      )
-    ).toEqual("12,345.67B");
-    expect(
-      formatUTokenWithPrecision(12345678901234 as U<Token<BigSource>>, 6, true)
-    ).toEqual("12.34M");
-    expect(
-      formatUTokenWithPrecision(1234567890 as U<Token<BigSource>>, 6, true)
-    ).toEqual("1,234.56");
-    expect(
-      formatUTokenWithPrecision(123456789 as U<Token<BigSource>>, 6, true)
-    ).toEqual("123.456789");
-    expect(
-      formatUTokenWithPrecision(123456789 as U<Token<BigSource>>, 6, true, 3)
-    ).toEqual("123.456");
+  describe("with suffix", () => {
+    test(">= B", () => {
+      expect(
+        formatUTokenWithPrecision(
+          "12345678901234567890" as U<Token<BigSource>>,
+          6,
+          true
+        )
+      ).toEqual("12,345.67B");
+    });
+    test(">= M", () => {
+      expect(
+        formatUTokenWithPrecision(
+          12345678901234 as U<Token<BigSource>>,
+          6,
+          true
+        )
+      ).toEqual("12.34M");
+    });
+    test(">= K", () => {
+      expect(
+        formatUTokenWithPrecision(1234567890 as U<Token<BigSource>>, 6, true)
+      ).toEqual("1,234.56");
+    });
+    test("< K", () => {
+      expect(
+        formatUTokenWithPrecision(123456789 as U<Token<BigSource>>, 6, true)
+      ).toEqual("123.456789");
+      expect(
+        formatUTokenWithPrecision(123456789 as U<Token<BigSource>>, 6, true, 3)
+      ).toEqual("123.456");
+    });
   });
 });
 
 describe("formatPrice", () => {
-  test("invalid", () => {
-    expect(formatPrice(NaN as USD<BigSource>)).toEqual("$0.00");
-    expect(formatPrice("" as USD<BigSource>)).toEqual("$0.00");
+  describe("invalid", () => {
+    test("empty string", () => {
+      expect(formatPrice("" as USD<BigSource>)).toEqual("$0.00");
+    });
+    test("NaN", () => {
+      expect(formatPrice(NaN as USD<BigSource>)).toEqual("$0.00");
+    });
   });
-  test("0 -> 2 decimal points", () => {
-    expect(formatPrice(0 as USD<BigSource>)).toEqual("$0.00");
-    expect(formatPrice("0" as USD<BigSource>)).toEqual("$0.00");
+  describe("if 0, use 2 decimal points", () => {
+    test("from string", () => {
+      expect(formatPrice("0" as USD<BigSource>)).toEqual("$0.00");
+    });
+    test("from number", () => {
+      expect(formatPrice(0 as USD<BigSource>)).toEqual("$0.00");
+    });
   });
-  test("> 1", () => {
-    expect(formatPrice(1.0 as USD<BigSource>)).toEqual("$1.00");
-    expect(formatPrice(1.23 as USD<BigSource>)).toEqual("$1.23");
-    expect(formatPrice("1.234" as USD<BigSource>)).toEqual("$1.23");
+  describe("> 1", () => {
+    test("from string", () => {
+      expect(formatPrice("1.234" as USD<BigSource>)).toEqual("$1.23");
+    });
+    test("from number", () => {
+      expect(formatPrice(1.0 as USD<BigSource>)).toEqual("$1.00");
+      expect(formatPrice(1.23 as USD<BigSource>)).toEqual("$1.23");
+    });
   });
-  test("< 0.000001", () => {
-    expect(formatPrice(0.0000001 as USD<BigSource>)).toEqual("<$0.000001");
-    expect(formatPrice("0.00000001" as USD<BigSource>)).toEqual("<$0.000001");
+  describe("< 0.000001", () => {
+    test("from string", () => {
+      expect(formatPrice("0.00000001" as USD<BigSource>)).toEqual("<$0.000001");
+    });
+    test("from number", () => {
+      expect(formatPrice(0.0000001 as USD<BigSource>)).toEqual("<$0.000001");
+    });
   });
-  test("0.000001 <= x < 1", () => {
-    expect(formatPrice(0.123 as USD<BigSource>)).toEqual("$0.123000");
-    expect(formatPrice("0.123" as USD<BigSource>)).toEqual("$0.123000");
-    expect(formatPrice(0.123456789 as USD<BigSource>)).toEqual("$0.123456");
-    expect(formatPrice("0.123456789" as USD<BigSource>)).toEqual("$0.123456");
+  describe("0.000001 <= x < 1", () => {
+    test("from string", () => {
+      expect(formatPrice("0.123" as USD<BigSource>)).toEqual("$0.123000");
+      expect(formatPrice("0.123456789" as USD<BigSource>)).toEqual("$0.123456");
+    });
+    test("from number", () => {
+      expect(formatPrice(0.123 as USD<BigSource>)).toEqual("$0.123000");
+      expect(formatPrice(0.123456789 as USD<BigSource>)).toEqual("$0.123456");
+    });
   });
 });
 
 describe("formatInteger", () => {
-  test("invalid", () => {
-    expect(formatInteger(NaN as BigSource)).toEqual("Not Available");
-    expect(formatInteger("" as BigSource)).toEqual("Not Available");
+  describe("invalid", () => {
+    test("empty string", () => {
+      expect(formatInteger("" as BigSource)).toEqual("Not Available");
+    });
+    test("NaN", () => {
+      expect(formatInteger(NaN as BigSource)).toEqual("Not Available");
+    });
   });
-  test("valid", () => {
-    expect(formatInteger("1234.567890" as BigSource)).toEqual("1,234");
-    expect(formatInteger("-1234.567890" as BigSource)).toEqual("-1,234");
-    expect(formatInteger(1234 as BigSource)).toEqual("1,234");
-    expect(formatInteger(-1234 as BigSource)).toEqual("-1,234");
+  describe("valid", () => {
+    test("from string", () => {
+      expect(formatInteger("1234.567890" as BigSource)).toEqual("1,234");
+      expect(formatInteger("-1234.567890" as BigSource)).toEqual("-1,234");
+    });
+    test("from string", () => {
+      expect(formatInteger(1234 as BigSource)).toEqual("1,234");
+      expect(formatInteger(-1234 as BigSource)).toEqual("-1,234");
+    });
   });
 });
