@@ -7,7 +7,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute, useInternalNavigate } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
@@ -28,7 +28,7 @@ interface BlockDetailsTopProps {
 
 export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const block = Number(blockData.height);
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   const navigate = useInternalNavigate();
   const openLcdPage = () =>
     openNewTab(

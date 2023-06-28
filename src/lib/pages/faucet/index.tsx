@@ -25,6 +25,7 @@ import type { IconKeys } from "lib/components/icon";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useOpenTxTab } from "lib/hooks";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useFaucetInfo } from "lib/services/faucetService";
 
 type ResultStatus = "success" | "error" | "warning";
 
@@ -55,6 +56,7 @@ const Faucet = () => {
     chainConfig: { prettyName },
   } = useCelatoneApp();
   const faucet = useFaucetConfig({ shouldRedirect: true });
+  const { data: faucetInfo } = useFaucetInfo();
 
   const { faucetUrl, faucetDenom, faucetAmount } = useMemo(() => {
     if (!faucet.enabled)
@@ -67,11 +69,11 @@ const Faucet = () => {
 
     return {
       faucetUrl: faucet.url,
-      faucetDenom: faucet.denom.toUpperCase(),
-      faucetAmount: faucet.amount,
+      faucetDenom: faucetInfo?.formattedDenom ?? "token",
+      faucetAmount: faucetInfo?.formattedAmount,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [faucet.enabled]);
+  }, [faucet.enabled, faucetInfo?.formattedAmount, faucetInfo?.formattedDenom]);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
@@ -124,7 +126,11 @@ const Faucet = () => {
         setIsLoading(false);
         setResult({
           status: "success",
-          message: `Sent ${faucetAmount} testnet ${faucetDenom} from the faucet. You will need to wait for another hour to request again.`,
+          message: `Sent ${faucetAmount} testnet ${faucetDenom} from the faucet. ${
+            faucetInfo?.RateLimit
+              ? "You will need to wait for another hour to request again."
+              : ""
+          }`,
           txHash,
         });
       })
@@ -162,9 +168,9 @@ const Faucet = () => {
         {prettyName} Faucet
       </Heading>
       <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
-        The faucet provides {faucetAmount} testnet {faucetDenom} per request.
-        Requests are limited to once per hour for each receiving address and IP
-        address.
+        The faucet provides {faucetAmount} testnet {faucetDenom} per request.{" "}
+        {faucetInfo?.RateLimit &&
+          "Requests are limited to once per hour for each receiving address and IP address."}
       </Text>
       <TextInput
         variant="floating"
@@ -210,6 +216,7 @@ const Faucet = () => {
               variant="unstyled"
               minW="unset"
               size="sm"
+              ml="auto"
               _hover={{ background: "success.dark" }}
               style={{ padding: "4px 12px" }}
               onClick={() => openTxTab(result.txHash)}

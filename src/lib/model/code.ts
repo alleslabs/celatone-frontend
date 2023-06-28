@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import {
+  useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
-  useLCDEndpoint,
 } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import {
@@ -50,7 +50,7 @@ export interface CodeDataState {
 
 export const useCodeData = (codeId: string): CodeDataState => {
   const { currentChainId } = useCelatoneApp();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
@@ -62,9 +62,9 @@ export const useCodeData = (codeId: string): CodeDataState => {
     isLoading: isLcdCodeLoading,
     error: isLcdCodeError,
   } = useQuery(
-    ["query", "code_data", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, codeId),
-    { enabled: Boolean(endpoint) && Boolean(codeId), retry: false }
+    ["query", "code_data", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
+    { enabled: Boolean(lcdEndpoint) && Boolean(codeId), retry: false }
   );
 
   return {

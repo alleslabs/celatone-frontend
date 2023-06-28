@@ -10,11 +10,11 @@ import {
   useInternalNavigate,
   useSimulateFeeQuery,
   useUpdateAdminTx,
-  useLCDEndpoint,
   useGetAddressType,
   useValidateAddress,
   useWasmConfig,
   useCurrentChain,
+  useBaseApiRoute,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -44,7 +44,7 @@ const UpdateAdmin = () => {
   const fabricateFee = useFabricateFee();
   const updateAdminTx = useUpdateAdminTx();
   const { broadcast } = useTxBroadcast();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { indexerGraphClient } = useCelatoneApp();
 

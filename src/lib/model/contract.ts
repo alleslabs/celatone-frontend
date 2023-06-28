@@ -4,7 +4,6 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
-  useLCDEndpoint,
 } from "lib/app-provider";
 import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
 import { useCodeStore, useContractStore } from "lib/providers/store";
@@ -99,7 +98,7 @@ export const useContractData = (
   const { indexerGraphClient, currentChainId } = useCelatoneApp();
   const { getCodeLocalInfo } = useCodeStore();
   const { getContractLocalInfo } = useContractStore();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { assetInfos } = useAssetInfos();
   const { data: publicInfo } =

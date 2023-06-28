@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import {
+  useBaseApiRoute,
   useCelatoneApp,
   useGetAddressType,
-  useLCDEndpoint,
 } from "lib/app-provider";
 import type { ContractAddr } from "lib/types";
 import { isBlock, isCodeId, isTxHash } from "lib/utils";
@@ -35,7 +35,7 @@ export const useSearchHandler = (
       },
     },
   } = useCelatoneApp();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(debouncedKeyword);
   const { data: txData, isLoading: txLoading } = useTxData(debouncedKeyword);

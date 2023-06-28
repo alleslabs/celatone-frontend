@@ -4,9 +4,9 @@ import big from "big.js";
 import { useCallback } from "react";
 
 import {
+  useBaseApiRoute,
   useCelatoneApp,
   useChainRecordAsset,
-  useLCDEndpoint,
 } from "lib/app-provider";
 import {
   getProposalList,
@@ -301,7 +301,7 @@ export interface GovParams {
 }
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   const getAssetInfo = useChainRecordAsset();
   const queryFn = useCallback(
     () =>
@@ -352,7 +352,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
 };
 
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   return useQuery(
     ["upload_access", lcdEndpoint],
     () => fetchGovUploadAccessParams(lcdEndpoint),

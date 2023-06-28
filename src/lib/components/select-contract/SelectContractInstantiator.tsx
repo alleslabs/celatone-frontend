@@ -19,8 +19,8 @@ import { useState } from "react";
 
 import { CustomIcon } from "../icon";
 import {
+  useBaseApiRoute,
   useCelatoneApp,
-  useLCDEndpoint,
   useValidateAddress,
 } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -63,7 +63,7 @@ export const SelectContractInstantiator = ({
   const contractLists = [instantiatedListInfo, ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const resetOnClose = () => {
     setListSlug("");

@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
 import {
+  useBaseApiRoute,
   useCelatoneApp,
-  useLCDEndpoint,
   useValidateAddress,
 } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
@@ -41,7 +41,7 @@ export function SaveNewContractModal({
   list,
   buttonProps,
 }: SaveNewContractModalProps) {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { indexerGraphClient } = useCelatoneApp();
   const { getContractLocalInfo } = useContractStore();
