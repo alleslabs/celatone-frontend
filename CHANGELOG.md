@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#338](https://github.com/alleslabs/celatone-frontend/pull/338) Use gas from chain config
 - [#333](https://github.com/alleslabs/celatone-frontend/pull/333) Update endpoints including LCD, RPC, Graphql
 - [#335](https://github.com/alleslabs/celatone-frontend/pull/335) Refactor hardcoded api route to utils
+- [#373](https://github.com/alleslabs/celatone-frontend/pull/373) Add view in Json for assets in account details page
 - [#376](https://github.com/alleslabs/celatone-frontend/pull/376) Fix pluralize and capitalize
 - [#401](https://github.com/alleslabs/celatone-frontend/pull/401) Add permission chip to code selection box
 - [#386](https://github.com/alleslabs/celatone-frontend/pull/386) Handle uppercase address
@@ -106,7 +107,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#373](https://github.com/alleslabs/celatone-frontend/pull/373) Add view in Json for assets in account details page
 - [#364](https://github.com/alleslabs/celatone-frontend/pull/364) (Contract Details) use instantiated height and time from indexer as fallback
 - [#323](https://github.com/alleslabs/celatone-frontend/pull/323) Revise back button and breadcrumb components
 - [#339](https://github.com/alleslabs/celatone-frontend/pull/339) Update all routes to plural form, and patch all codes
