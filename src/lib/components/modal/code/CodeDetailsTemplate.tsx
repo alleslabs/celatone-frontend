@@ -81,6 +81,7 @@ export const CodeDetailsTemplateModal = ({
       trigger={triggerElement}
       icon={icon}
       mainBtnTitle={mainBtnTitle}
+      closeOnOverlayClick={false}
       mainAction={handleAction}
       headerContent={
         <Flex direction="column" gap={2}>
