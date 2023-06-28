@@ -73,7 +73,7 @@ const Faucet = () => {
       faucetAmount: faucetInfo?.formattedAmount,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [faucet.enabled, faucetInfo]);
+  }, [faucet.enabled, faucetInfo?.formattedAmount, faucetInfo?.formattedDenom]);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_FAUCET);
