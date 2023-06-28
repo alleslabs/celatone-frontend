@@ -41,7 +41,13 @@ cd celatone-frontend
 yarn
 ```
 
-3. Finally, run the development server
+3. Create a local config
+
+```
+echo "NEXT_PUBLIC_SELECTED_CHAIN=osmosis" > .env.local
+```
+
+4. Finally, run the development server
 
 ```bash
 yarn dev
