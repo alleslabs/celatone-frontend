@@ -158,6 +158,7 @@ export const TxFilterSelection = forwardRef<
               {...rest}
             />
             <DropdownChevron
+              isOpen={displayOptions}
               onClick={() => setDisplayOptions((prev) => !prev)}
             />
             <FormLabel

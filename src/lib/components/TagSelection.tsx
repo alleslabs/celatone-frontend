@@ -180,6 +180,10 @@ export const TagSelection = observer(
                 style={{ border: 0, maxHeight: "54px" }}
               />
               <DropdownChevron
+                isOpen={displayOptions}
+                bg={labelBgColor}
+                // input max height 54px + border top and bottom 2px
+                height="56px"
                 onClick={() => setDisplayOptions((prev) => !prev)}
               />
               <FormLabel
