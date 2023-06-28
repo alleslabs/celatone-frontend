@@ -4,22 +4,21 @@ import { CodeStore } from "./code";
 
 const TEST_USER_KEY = "test-default-address";
 
-const initCodeStore = () => {
+test("CodeStore setting userkey", () => {
   const codeStore = new CodeStore();
+  expect(codeStore.isCodeUserKeyExist()).toBeFalsy();
   codeStore.setCodeUserKey(TEST_USER_KEY);
-  return codeStore;
-};
+  expect(codeStore.isCodeUserKeyExist()).toBeTruthy();
+});
 
 describe("CodeStore", () => {
-  test("setting userkey", () => {
-    const codeStore = new CodeStore();
-    expect(codeStore.isCodeUserKeyExist()).toBeFalsy();
+  let codeStore: CodeStore;
+  beforeEach(() => {
+    codeStore = new CodeStore();
     codeStore.setCodeUserKey(TEST_USER_KEY);
-    expect(codeStore.isCodeUserKeyExist()).toBeTruthy();
   });
 
   test("code local info", () => {
-    const codeStore = initCodeStore();
     expect(codeStore.getCodeLocalInfo(1)).toBeUndefined();
 
     codeStore.updateCodeInfo(
@@ -45,7 +44,6 @@ describe("CodeStore", () => {
   });
 
   test("save codes", () => {
-    const codeStore = initCodeStore();
     expect(codeStore.isCodeIdSaved(1)).toBeFalsy();
     expect(codeStore.lastSavedCodeIds(TEST_USER_KEY)).toStrictEqual([]);
 
