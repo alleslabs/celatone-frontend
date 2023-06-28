@@ -3,6 +3,7 @@ import type { Addr } from "lib/types";
 import { CodeStore } from "./code";
 
 const TEST_USER_KEY = "test-default-address";
+const EMPTY_USER_KEY = "empty-user-address";
 
 test("CodeStore setting userkey", () => {
   const codeStore = new CodeStore();
@@ -20,6 +21,17 @@ describe("CodeStore", () => {
 
   test("code local info", () => {
     expect(codeStore.getCodeLocalInfo(1)).toBeUndefined();
+    // Do nothing as no code is saved
+    codeStore.removeSavedCode(1);
+
+    codeStore.updateCodeInfo(
+      1,
+      "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as Addr
+    );
+    expect(codeStore.getCodeLocalInfo(1)).toStrictEqual({
+      id: 1,
+      uploader: "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly",
+    });
 
     codeStore.updateCodeInfo(
       1,
@@ -31,10 +43,46 @@ describe("CodeStore", () => {
       name: "code-name",
       uploader: "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly",
     });
+    expect(codeStore.getCodeLocalInfo(2)).toBeUndefined();
 
     expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([]);
     codeStore.saveNewCode(1);
     expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([
+      {
+        id: 1,
+        name: "code-name",
+        uploader: "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly",
+      },
+    ]);
+
+    expect(codeStore.lastSavedCodes(EMPTY_USER_KEY)).toStrictEqual([]);
+
+    expect(codeStore.isCodeIdSaved(2)).toBeFalsy();
+    codeStore.saveNewCode(2);
+    expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([
+      {
+        id: 2,
+        name: undefined,
+        uploader: "N/A",
+      },
+      {
+        id: 1,
+        name: "code-name",
+        uploader: "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly",
+      },
+    ]);
+
+    codeStore.updateCodeInfo(
+      2,
+      "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as Addr,
+      ""
+    );
+    expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([
+      {
+        id: 2,
+        name: undefined,
+        uploader: "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly",
+      },
       {
         id: 1,
         name: "code-name",
