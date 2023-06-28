@@ -43,6 +43,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#380](https://github.com/alleslabs/celatone-frontend/pull/380) Support local network
 - [#363](https://github.com/alleslabs/celatone-frontend/pull/363) Add config not found page and rewrite network logic
 - [#343](https://github.com/alleslabs/celatone-frontend/pull/343) Apply fetching mechanism and keyboard arrow navigation to searchbar
+- [#384](https://github.com/alleslabs/celatone-frontend/pull/384) New pagination style
+- [#388](https://github.com/alleslabs/celatone-frontend/pull/388) Save Navbar expand/collapse state in the local state
+- [#407](https://github.com/alleslabs/celatone-frontend/pull/407) Add code upload error message under the dropzone
 - [#372](https://github.com/alleslabs/celatone-frontend/pull/372) Add code hash to code details and upload section
 - [#329](https://github.com/alleslabs/celatone-frontend/pull/329) Add allowed user to store code flow
 - [#321](https://github.com/alleslabs/celatone-frontend/pull/321) Add amplitude to proposal to store code page
@@ -66,6 +69,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#338](https://github.com/alleslabs/celatone-frontend/pull/338) Use gas from chain config
 - [#333](https://github.com/alleslabs/celatone-frontend/pull/333) Update endpoints including LCD, RPC, Graphql
 - [#335](https://github.com/alleslabs/celatone-frontend/pull/335) Refactor hardcoded api route to utils
+- [#376](https://github.com/alleslabs/celatone-frontend/pull/376) Fix pluralize and capitalize
+- [#401](https://github.com/alleslabs/celatone-frontend/pull/401) Add permission chip to code selection box
 - [#386](https://github.com/alleslabs/celatone-frontend/pull/386) Handle uppercase address
 - [#382](https://github.com/alleslabs/celatone-frontend/pull/382) Add pool manager v15 msgs to tx details
 - [#371](https://github.com/alleslabs/celatone-frontend/pull/371) Refactor assign me component and fix color in redelegation page
@@ -85,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#390](https://github.com/alleslabs/celatone-frontend/pull/390) Fix minor styling
 - [#391](https://github.com/alleslabs/celatone-frontend/pull/391) Fix incorrect empty state for past txs table
 - [#383](https://github.com/alleslabs/celatone-frontend/pull/383) Fix title input field and navigation in sticky bar in proposal to store code, redirect path for wasm flag
+- [#379](https://github.com/alleslabs/celatone-frontend/pull/379) Able to access txs tab when count query timeout, change tabs to lazy load mode for better performance
 - [#387](https://github.com/alleslabs/celatone-frontend/pull/387) Fix reseting proposal table when applying filters
 - [#375](https://github.com/alleslabs/celatone-frontend/pull/375) Fix incorrect display resolve height in proposals page
 - [#356](https://github.com/alleslabs/celatone-frontend/pull/356) Fix store code out of gas error by gzipping file before submitting tx

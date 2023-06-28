@@ -45,7 +45,7 @@ const RecentContracts = observer(() => {
             variant="floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
-            placeholder="Search with contract address, name or label"
+            placeholder="Search with Contract Address, Name, or Label"
             size="lg"
           />
         </Flex>

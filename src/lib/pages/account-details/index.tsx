@@ -79,6 +79,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchContractsAdminCount,
     refetchContractsCount,
     refetchProposalsCount,
+    loadingState: { txCountLoading },
   } = useAccountDetailsTableCounts(accountAddress, accountId);
 
   const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
@@ -180,7 +181,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           </CustomTab>
           <CustomTab
             count={tableCounts.txsCount}
-            isDisabled={!tableCounts.txsCount}
+            isDisabled={txCountLoading || tableCounts.txsCount === 0}
             onClick={() => handleTabChange(TabIndex.Txs)}
           >
             Transactions

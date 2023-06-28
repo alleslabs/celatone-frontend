@@ -141,7 +141,7 @@ const PastTxs = () => {
               setCurrentPage(1);
               setValue("search", e.target.value);
             }}
-            placeholder="Search with transaction hash or contract address"
+            placeholder="Search with Transaction Hash or Contract Address"
             h="full"
           />
           <InputRightElement pointerEvents="none" h="full" mr={1}>

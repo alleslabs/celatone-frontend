@@ -1,9 +1,10 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import { useMobile, useWasmConfig } from "lib/app-provider";
+import { useLocalStorage } from "lib/hooks/useLocalStorage";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
@@ -20,7 +21,7 @@ const Layout = ({ children }: LayoutProps) => {
   const isMobile = useMobile();
   const wasm = useWasmConfig({ shouldRedirect: false });
 
-  const [isExpand, setIsExpand] = useState(!isMobile);
+  const [isExpand, setIsExpand] = useLocalStorage("navbar", !isMobile);
 
   const lightMode = {
     templateAreas: `"header""nav""main"`,
