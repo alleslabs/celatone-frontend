@@ -43,6 +43,7 @@ export const ButtonSection = ({
     const proposalId = receipts
       .find((r) => r.title === "Proposal ID")
       ?.value?.toString();
+    // TOOD: revisit retrieving url (make a proper hook)
     openNewTab(
       getNavigationUrl(
         "proposal_id",

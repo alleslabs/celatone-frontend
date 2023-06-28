@@ -57,6 +57,7 @@ export const ProposalsTableRow = ({
                 type: proposal.type,
                 status: proposal.status,
               });
+              // TOOD: revisit retrieving url (make a proper hook)
               openNewTab(
                 getNavigationUrl(
                   "proposal_id",
