@@ -5,12 +5,12 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
+import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
@@ -36,7 +36,7 @@ interface PastTxsState {
 
 const PastTxs = () => {
   const router = useRouter();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
 
   const defaultValues: PastTxsState = {
     search: "",
@@ -141,7 +141,7 @@ const PastTxs = () => {
               setCurrentPage(1);
               setValue("search", e.target.value);
             }}
-            placeholder="Search with transaction hash or contract address"
+            placeholder="Search with Transaction Hash or Contract Address"
             h="full"
           />
           <InputRightElement pointerEvents="none" h="full" mr={1}>
@@ -168,7 +168,9 @@ const PastTxs = () => {
         transactions={txs}
         isLoading={isLoading}
         emptyState={
-          !pastTxsState.search.trim().length || !filterSelected.length ? (
+          pastTxsState.search.trim().length > 0 ||
+          pastTxsState.isSigner !== undefined ||
+          filterSelected.length > 0 ? (
             <EmptyState
               imageVariant="not-found"
               message={`

@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
 import {
+  useBaseApiRoute,
   useCelatoneApp,
-  useLCDEndpoint,
   useValidateAddress,
 } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
@@ -41,13 +41,16 @@ export function SaveNewContractModal({
   list,
   buttonProps,
 }: SaveNewContractModalProps) {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
+
   const { indexerGraphClient } = useCelatoneApp();
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 
   const {
-    appContractAddress: { example: exampleContractAddress },
+    chainConfig: {
+      exampleAddresses: { contract: exampleContractAddress },
+    },
   } = useCelatoneApp();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
@@ -100,10 +103,10 @@ export function SaveNewContractModal({
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "instantiate_info", endpoint, contractAddressState],
+    ["query", "instantiate_info", lcdEndpoint, contractAddressState],
     async () =>
       queryInstantiateInfo(
-        endpoint,
+        lcdEndpoint,
         indexerGraphClient,
         contractAddressState as ContractAddr
       ),
@@ -189,7 +192,7 @@ export function SaveNewContractModal({
     <ActionModal
       title="Save New Contract"
       icon="bookmark-solid"
-      trigger={<Button {...buttonProps} />}
+      trigger={<Button as="button" {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}
       disabledMain={

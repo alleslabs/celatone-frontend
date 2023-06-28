@@ -23,4 +23,4 @@ export const formatBalanceWithDenom = ({
     precision || 0,
     false,
     decimalPoints
-  )} ${getTokenLabel(symbol || coin.denom)}`;
+  )} ${getTokenLabel(coin.denom, symbol)}`;

@@ -10,7 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useValidateAddress } from "lib/app-provider";
+import { useValidateAddress, useWasmConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -95,8 +95,7 @@ const ContractDetailsBody = observer(
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>
-            {/* <CustomTab count={tableCounts.executeCount}>Executes</CustomTab> */}
-            <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
+            <CustomTab count={tableCounts.migrationCount}>Migrations</CustomTab>
             <CustomTab count={tableCounts.relatedProposalsCount}>
               Related Proposals
             </CustomTab>
@@ -134,6 +133,7 @@ const ContractDetailsBody = observer(
 );
 
 const ContractDetails = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
   const contractAddressParam = getFirstQueryParam(

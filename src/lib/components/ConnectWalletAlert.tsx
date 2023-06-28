@@ -7,9 +7,9 @@ import {
   Button,
 } from "@chakra-ui/react";
 import type { AlertProps } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { AmpTrackUseClickWallet } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
@@ -26,7 +26,7 @@ export const ConnectWalletAlert = ({
   page,
   ...alertProps
 }: ConnectWalletAlertProps) => {
-  const { address, connect } = useWallet();
+  const { address, connect } = useCurrentChain();
 
   const onClickConnect: MouseEventHandler = async (e) => {
     AmpTrackUseClickWallet(page, "alert");

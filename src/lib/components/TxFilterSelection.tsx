@@ -49,7 +49,7 @@ export const TxFilterSelection = forwardRef<
       placeholder,
       helperText,
       labelBgColor = "background.main",
-      label = "Filter by Actions",
+      label = "Filter by Action",
       boxWidth = "full",
       boxHeight = "56px",
       ...rest
