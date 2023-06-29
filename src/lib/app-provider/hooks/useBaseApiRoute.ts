@@ -19,7 +19,7 @@ export const useBaseApiRoute = (
 
   if (!chain || !currentChainId || !configApi)
     throw new Error(
-      "Error retrieving chain, api,  or currentChainId from chain config."
+      "Error retrieving chain, api, or currentChainId from chain config."
     );
 
   const api = OVERRIDE_API_ENDPOINT || configApi;
