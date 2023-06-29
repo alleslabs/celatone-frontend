@@ -15,6 +15,7 @@ import {
   useCurrentChain,
   useBaseApiRoute,
 } from "lib/app-provider";
+import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import type { FormStatus } from "lib/components/forms";
@@ -37,13 +38,7 @@ import {
 import { getCodeIdInfo } from "lib/services/code";
 import type { HumanAddr } from "lib/types";
 import { AccessConfigPermission, MsgType } from "lib/types";
-import {
-  composeMsg,
-  getAttachFunds,
-  jsonPrettify,
-  jsonValidate,
-  libDecode,
-} from "lib/utils";
+import { composeMsg, jsonPrettify, jsonValidate, libDecode } from "lib/utils";
 
 import { FailedModal, Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
@@ -79,6 +74,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const getAttachFunds = useAttachFunds();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -140,12 +136,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codeId, address, watchInitMsg, Object.keys(formErrors), status.state]);
 
-  const funds = getAttachFunds({
-    attachFundsOption,
-    assetsJsonStr,
-    assetsSelect,
-  });
-
   const { refetch } = useQuery(
     ["query", lcdEndpoint, codeId],
     async () => getCodeIdInfo(lcdEndpoint, codeId),
@@ -181,6 +171,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   const proceed = useCallback(() => {
     handleSubmit(async ({ adminAddress, label, initMsg }) => {
+      const funds = getAttachFunds(
+        attachFundsOption,
+        assetsJsonStr,
+        assetsSelect
+      );
       AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
 
       setSimulating(true);
@@ -213,9 +208,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       }
     })();
   }, [
-    funds,
     handleSubmit,
+    getAttachFunds,
     attachFundsOption,
+    assetsJsonStr,
+    assetsSelect,
     address,
     codeId,
     simulate,

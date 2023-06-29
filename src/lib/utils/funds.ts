@@ -2,17 +2,28 @@ import type { Coin } from "@cosmjs/stargate";
 
 import type { Token } from "lib/types";
 
-import { microfy } from "./formatter/currency";
+import { exponentify } from "./formatter";
 
 export const sortDenoms = (assets: Coin[]): Coin[] =>
   assets.sort(({ denom: aDenom }, { denom: bDenom }) =>
     aDenom.localeCompare(bDenom)
   );
 
-export const fabricateFunds = (assets: Coin[]): Coin[] =>
-  sortDenoms(assets.filter((asset) => Number(asset.amount) && asset.denom)).map(
-    (asset) => ({
-      ...asset,
-      amount: microfy(asset.amount as Token).toFixed(0),
-    })
+interface CoinWithPrecision {
+  denom: string;
+  amount: string;
+  precision: number;
+}
+
+export const fabricateFunds = (assets: CoinWithPrecision[]): Coin[] =>
+  sortDenoms(
+    assets
+      .filter((asset) => Number(asset.amount) && asset.denom)
+      .map((asset) => ({
+        ...asset,
+        amount: exponentify(
+          (asset.amount || 0) as Token,
+          asset.precision
+        ).toFixed(0),
+      }))
   );
