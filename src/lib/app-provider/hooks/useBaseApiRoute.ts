@@ -1,5 +1,5 @@
 import { useCelatoneApp } from "../contexts";
-import { OVERRIDE_API_ENDPOINT } from "env";
+import { CELATONE_API_OVERRIDE } from "env";
 
 export const useBaseApiRoute = (
   type:
@@ -22,7 +22,7 @@ export const useBaseApiRoute = (
       "Error retrieving chain, api, or currentChainId from chain config."
     );
 
-  const api = OVERRIDE_API_ENDPOINT || configApi;
+  const api = CELATONE_API_OVERRIDE || configApi;
 
   switch (type) {
     case "txs":
