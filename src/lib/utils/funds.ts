@@ -9,9 +9,7 @@ export const sortDenoms = (assets: Coin[]): Coin[] =>
     aDenom.localeCompare(bDenom)
   );
 
-interface CoinWithPrecision {
-  denom: string;
-  amount: string;
+interface CoinWithPrecision extends Coin {
   precision: Option<number>;
 }
 
@@ -21,9 +19,6 @@ export const fabricateFunds = (assets: CoinWithPrecision[]): Coin[] =>
       .filter((asset) => Number(asset.amount) && asset.denom)
       .map((asset) => ({
         ...asset,
-        amount: exponentify(
-          (asset.amount || 0) as Token,
-          asset.precision
-        ).toFixed(0),
+        amount: exponentify(asset.amount as Token, asset.precision).toFixed(0),
       }))
   );

@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import type { Control, UseFormSetValue } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 
-import { useNativeTokensInfo } from "lib/app-provider";
 import { AssetInput, ControllerInput } from "lib/components/forms";
+import { useNativeTokensInfo } from "lib/services/assetService";
 
 import { ASSETS_SELECT } from "./data";
 import type { AttachFundsState } from "./types";
@@ -15,12 +15,16 @@ interface SelectFundProps {
   setValue: UseFormSetValue<AttachFundsState>;
   assetsSelect: Coin[];
 }
+
+/**
+ * @remarks amount in assetsSelect is an amount before multiplying precision, the multiplication will be done before sending transaction
+ */
 export const SelectFund = ({
   control,
   setValue,
   assetsSelect,
 }: SelectFundProps) => {
-  const nativeTokensInfo = useNativeTokensInfo();
+  const { data: nativeTokensInfo = [] } = useNativeTokensInfo();
   const { fields, append, remove } = useFieldArray({
     control,
     name: ASSETS_SELECT,
@@ -32,8 +36,8 @@ export const SelectFund = ({
     () =>
       nativeTokensInfo.map((asset) => ({
         label: asset.symbol,
-        value: asset.base,
-        disabled: selectedAssets.includes(asset.base),
+        value: asset.id,
+        disabled: selectedAssets.includes(asset.id),
       })),
     [nativeTokensInfo, selectedAssets]
   );

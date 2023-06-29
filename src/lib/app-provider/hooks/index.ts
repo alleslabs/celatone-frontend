@@ -9,7 +9,6 @@ export * from "./useNetworkChange";
 export * from "./useRestrictedInput";
 export * from "./useSelectChain";
 export * from "./useSimulateFee";
-export * from "./useTokensInfo";
 export * from "./useChainRecordAsset";
 export * from "./useBaseApiRoute";
 export * from "./useRPCEndpoint";

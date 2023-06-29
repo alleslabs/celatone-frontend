@@ -2,12 +2,11 @@ import type { Coin } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { AttachFundsType } from "lib/components/fund/types";
+import { useAssetInfos } from "lib/services/assetService";
 import { fabricateFunds, sortDenoms } from "lib/utils";
 
-import { useChainRecordAsset } from "./useChainRecordAsset";
-
 export const useAttachFunds = () => {
-  const getAssetInfo = useChainRecordAsset();
+  const { assetInfos } = useAssetInfos();
 
   return useCallback(
     (
@@ -18,7 +17,7 @@ export const useAttachFunds = () => {
       const assetsSelectWithPrecision = assetsSelect.map((coin) => {
         return {
           ...coin,
-          precision: getAssetInfo(coin.denom)?.precision,
+          precision: assetInfos?.[coin.denom]?.precision,
         };
       });
 
@@ -38,6 +37,6 @@ export const useAttachFunds = () => {
           return [];
       }
     },
-    [getAssetInfo]
+    [assetInfos]
   );
 };
