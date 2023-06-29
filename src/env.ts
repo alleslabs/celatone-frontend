@@ -18,6 +18,9 @@ export const DEFAULT_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
 
 export const DUMMY_MNEMONIC = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;
 
+export const OVERRIDE_API_ENDPOINT =
+  process.env.NEXT_PUBLIC_OVERRIDE_API_ENDPOINT;
+
 // CURRENT THEME CONFIG
 export const CURR_THEME = (() => {
   switch (process.env.NEXT_PUBLIC_THEME) {

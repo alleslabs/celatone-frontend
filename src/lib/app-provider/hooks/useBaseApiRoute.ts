@@ -1,4 +1,5 @@
 import { useCelatoneApp } from "../contexts";
+import { OVERRIDE_API_ENDPOINT } from "env";
 
 export const useBaseApiRoute = (
   type:
@@ -12,13 +13,17 @@ export const useBaseApiRoute = (
     | "rest"
 ): string => {
   const {
-    chainConfig: { chain, api },
+    chainConfig: { chain, api: configApi },
     currentChainId,
   } = useCelatoneApp();
-  if (!chain || !api || !currentChainId)
+
+  if (!chain || !currentChainId || !configApi)
     throw new Error(
-      "Error retrieving chain, api, or currentChainId from chain config."
+      "Error retrieving chain, api,  or currentChainId from chain config."
     );
+
+  const api = OVERRIDE_API_ENDPOINT || configApi;
+
   switch (type) {
     case "txs":
       return `${api}/txs/${chain}/${currentChainId}`;
