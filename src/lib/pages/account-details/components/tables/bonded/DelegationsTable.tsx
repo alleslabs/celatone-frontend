@@ -23,7 +23,7 @@ const DelegationsTableBody = ({
   defaultToken,
   isLoading,
 }: DelegationsTableProps) => {
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!delegations?.length)
     return (
       <EmptyState

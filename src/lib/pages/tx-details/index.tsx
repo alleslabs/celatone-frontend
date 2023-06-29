@@ -40,7 +40,7 @@ const TxDetails = () => {
   }, [router.isReady, txData, txLoading, txFetching]);
 
   if ((txLoading && txFetching) || assetLoading || !hashParam)
-    return <Loading />;
+    return <Loading withBorder />;
 
   return (
     <PageContainer>

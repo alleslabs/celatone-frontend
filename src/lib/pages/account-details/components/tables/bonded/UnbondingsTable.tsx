@@ -19,7 +19,7 @@ const UnbondingsTableBody = ({
   unbondings,
   isLoading,
 }: UnbondingsTableProps) => {
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!unbondings?.length)
     return (
       <EmptyState

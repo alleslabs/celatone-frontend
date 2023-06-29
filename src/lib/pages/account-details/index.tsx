@@ -231,7 +231,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
                 Total Account Value
               </Text>
               {isLoading ? (
-                <Loading />
+                <Loading withBorder />
               ) : (
                 <Heading
                   as="h5"

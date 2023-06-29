@@ -1,24 +1,34 @@
 import { Flex } from "@chakra-ui/react";
 
+import type { ContractData } from "../../types";
 import { CustomIcon } from "lib/components/icon";
 import { PublicDescription } from "lib/components/PublicDescription";
-import type { ContractData } from "lib/types";
 
 import { UserContractDesc } from "./UserContractDesc";
 
 interface ContractDescProps {
-  contractData: ContractData;
+  contractDetail: ContractData["contractDetail"];
+  contractLocalInfo: ContractData["contractLocalInfo"];
+  publicProject: ContractData["publicProject"];
 }
-export const ContractDesc = ({ contractData }: ContractDescProps) => (
+export const ContractDesc = ({
+  contractDetail,
+  contractLocalInfo,
+  publicProject,
+}: ContractDescProps) => (
   <Flex gap={6}>
-    {contractData.publicProject.publicInfo?.description && (
+    {publicProject.publicInfo?.description && (
       <PublicDescription
         title="Public Contract Description"
-        description={contractData.publicProject.publicInfo.description}
-        textLine={contractData.contractLocalInfo?.description ? 4 : 2}
+        description={publicProject.publicInfo.description}
+        textLine={contractLocalInfo?.description ? 4 : 2}
         icon={<CustomIcon name="website" ml={0} mb={2} color="gray.600" />}
       />
     )}
-    <UserContractDesc contractData={contractData} />
+    <UserContractDesc
+      contractDetail={contractDetail}
+      contractLocalInfo={contractLocalInfo}
+      publicProject={publicProject}
+    />
   </Flex>
 );

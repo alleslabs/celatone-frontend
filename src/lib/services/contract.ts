@@ -1,7 +1,5 @@
 import axios from "axios";
-import type { GraphQLClient } from "graphql-request";
 
-import { getBlockTimestampByHeightQueryDocument } from "lib/query";
 import type {
   Addr,
   Balance,
@@ -9,7 +7,7 @@ import type {
   Option,
   PublicInfo,
 } from "lib/types";
-import { encode, libDecode, parseDateOpt } from "lib/utils";
+import { encode, libDecode } from "lib/utils";
 
 export interface ContractCw2InfoRaw {
   data: string;
@@ -20,7 +18,7 @@ export interface ContractCw2Info {
   version: string;
 }
 
-interface ContractResponse {
+export interface ContractResponse {
   address: ContractAddr;
   contract_info: {
     code_id: string;
@@ -42,18 +40,6 @@ interface PublicInfoResponse {
   address: ContractAddr;
   description: string;
   github: string;
-}
-
-export interface InstantiateInfo {
-  contractAddress: ContractAddr;
-  codeId: string;
-  instantiator: Addr;
-  admin: Option<Addr>;
-  label: string;
-  createdHeight: Option<number>;
-  createdTime: Option<Date>;
-  ibcPortId: string;
-  raw: ContractResponse;
 }
 
 export const queryData = async (
@@ -86,43 +72,6 @@ export const queryContractCw2Info = async (
     `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
   );
   return JSON.parse(libDecode(data.data)) as ContractCw2Info;
-};
-
-export const queryInstantiateInfo = async (
-  endpoint: string,
-  indexerGraphClient: GraphQLClient,
-  contractAddress: ContractAddr
-): Promise<InstantiateInfo> => {
-  const res = await queryContract(endpoint, contractAddress);
-
-  // TODO: query height from gql instead when supporting Terra
-  let createdHeight: Option<number>;
-  let createdTime: Option<Date>;
-  if (res.contract_info.created) {
-    createdHeight = Number(res.contract_info.created.block_height);
-    if (createdHeight) {
-      await indexerGraphClient
-        .request(getBlockTimestampByHeightQueryDocument, {
-          height: createdHeight,
-        })
-        .then(({ blocks_by_pk }) => {
-          createdTime = parseDateOpt(blocks_by_pk?.timestamp);
-        })
-        .catch(() => {});
-    }
-  }
-
-  return {
-    contractAddress: res.address,
-    codeId: res.contract_info.code_id,
-    instantiator: res.contract_info.creator,
-    admin: res.contract_info.admin,
-    label: res.contract_info.label,
-    createdHeight,
-    createdTime,
-    ibcPortId: res.contract_info.ibc_port_id,
-    raw: res,
-  };
 };
 
 export const queryContractBalances = async (

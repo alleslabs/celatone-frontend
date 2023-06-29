@@ -65,7 +65,7 @@ export const AssetsSection = ({
   let totalValue = big(0) as USD<Big>;
   if (supportedAssets) totalValue = calTotalValue(supportedAssets);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
 
   const totalAsset =
     (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);

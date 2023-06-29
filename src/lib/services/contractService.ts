@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import {
   getAdminByContractAddressesQueryDocument,
+  getContractByContractAddressQueryDocument,
   getContractListByAdmin,
   getContractListByAdminPagination,
   getContractListByCodeIdPagination,
@@ -31,6 +32,11 @@ import type {
 } from "lib/types";
 import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
+export interface ContractDetail extends ContractLocalInfo {
+  codeId: number;
+  admin: Option<Addr>;
+}
+
 interface InstantiateDetail {
   createdHeight: Option<number>;
   createdTime: Option<Date>;
@@ -39,6 +45,70 @@ interface InstantiateDetail {
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
 }
+
+export const useContractDetailByContractAddress = (
+  contractAddress: ContractAddr,
+  onSuccess?: (data: ContractDetail) => void,
+  onError?: (err: Error) => void
+): UseQueryResult<ContractDetail> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getContractByContractAddressQueryDocument, { contractAddress })
+      .then(({ contracts_by_pk }) => {
+        if (!contracts_by_pk) throw Error("Contract not found");
+        return {
+          contractAddress,
+          codeId: contracts_by_pk.code_id,
+          label: contracts_by_pk.label,
+          instantiator: contracts_by_pk.accountByInitBy?.address as Addr,
+          admin: contracts_by_pk.admin?.address as Addr,
+        };
+      });
+  }, [contractAddress, indexerGraphClient]);
+
+  return useQuery(
+    ["contract_detail_by_contract", contractAddress, indexerGraphClient],
+    queryFn,
+    {
+      refetchOnWindowFocus: false,
+      enabled: !!contractAddress,
+      onSuccess,
+      onError,
+    }
+  );
+};
+
+export const useInstantiateDetailByContractQuery = (
+  contractAddress: ContractAddr
+): UseQueryResult<InstantiateDetail> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
+      .then(({ contracts_by_pk }) => ({
+        createdHeight: contracts_by_pk?.transaction?.block_height,
+        createdTime: parseDateOpt(
+          contracts_by_pk?.transaction?.block.timestamp
+        ),
+        initMsg: contracts_by_pk?.init_msg,
+        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
+        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
+        initProposalTitle:
+          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
+      }));
+  }, [contractAddress, indexerGraphClient]);
+
+  return useQuery(
+    ["instantiate_detail_by_contract", contractAddress, indexerGraphClient],
+    queryFn,
+    {
+      enabled: !!contractAddress,
+    }
+  );
+};
 
 export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -153,37 +223,6 @@ export const useContractListByAdmin = (
     {
       keepPreviousData: true,
       enabled: !!adminAddress,
-    }
-  );
-};
-
-export const useInstantiateDetailByContractQuery = (
-  contractAddress: ContractAddr
-): UseQueryResult<InstantiateDetail> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
-      .then(({ contracts_by_pk }) => ({
-        createdHeight: contracts_by_pk?.transaction?.block_height,
-        createdTime: parseDateOpt(
-          contracts_by_pk?.transaction?.block.timestamp
-        ),
-        initMsg: contracts_by_pk?.init_msg,
-        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
-        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
-        initProposalTitle:
-          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
-      }));
-  }, [contractAddress, indexerGraphClient]);
-
-  return useQuery(
-    ["instantiate_detail_by_contract", contractAddress, indexerGraphClient],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!contractAddress,
     }
   );
 };

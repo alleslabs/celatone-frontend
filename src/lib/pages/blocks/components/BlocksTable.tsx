@@ -57,7 +57,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     setCurrentPage(1);
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (error)
     return (
       <EmptyState

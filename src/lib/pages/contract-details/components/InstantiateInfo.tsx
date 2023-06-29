@@ -1,15 +1,27 @@
 import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
+import type { ContractData } from "../types";
 import { useGetAddressType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { ContractData, Option } from "lib/types";
+import { Loading } from "lib/components/Loading";
+import type { Option } from "lib/types";
 import { formatUTC, dateFromNow } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {
-  contractData: ContractData;
+  chainId: ContractData["chainId"];
+  codeLocalInfo: ContractData["codeLocalInfo"];
+  contractDetail: ContractData["contractDetail"];
+  contractCw2Info: ContractData["contractCw2Info"];
+  initTxHash: ContractData["initTxHash"];
+  initProposalId: ContractData["initProposalId"];
+  initProposalTitle: ContractData["initProposalTitle"];
+  createdHeight: ContractData["createdHeight"];
+  createdTime: ContractData["createdTime"];
+  rawContractResponse: ContractData["rawContractResponse"];
+  isLoading: boolean;
 }
 
 const Container = chakra(Flex, {
@@ -93,21 +105,28 @@ const InitRender = ({
 };
 
 export const InstantiateInfo = ({
-  contractData: {
-    contractCw2Info,
-    instantiateInfo,
-    chainId,
-    codeInfo,
-    initTxHash,
-    initProposalId,
-    initProposalTitle,
-    createdHeight,
-    createdTime,
-  },
+  chainId,
+  codeLocalInfo,
+  contractDetail,
+  contractCw2Info,
+  initTxHash,
+  initProposalId,
+  initProposalTitle,
+  createdHeight,
+  createdTime,
+  rawContractResponse,
+  isLoading,
 }: InstantiateInfoProps) => {
   const getAddressType = useGetAddressType();
 
-  if (!instantiateInfo) {
+  if (isLoading)
+    return (
+      <Container>
+        <Loading />
+      </Container>
+    );
+
+  if (!contractDetail) {
     return (
       <Container>
         <Text variant="body2" color="text.dark">
@@ -117,17 +136,17 @@ export const InstantiateInfo = ({
     );
   }
 
-  const instantiatorType = getAddressType(instantiateInfo.instantiator);
-  const adminType = getAddressType(instantiateInfo.admin);
+  const instantiatorType = getAddressType(contractDetail.instantiator);
+  const adminType = getAddressType(contractDetail.admin);
 
   return (
     <Container>
       <LabelText label="Network">{chainId}</LabelText>
 
-      <LabelText label="From Code" helperText1={codeInfo?.name}>
+      <LabelText label="From Code" helperText1={codeLocalInfo?.name}>
         <ExplorerLink
           type="code_id"
-          value={instantiateInfo.codeId}
+          value={contractDetail.codeId.toString()}
           showCopyOnHover
         />
       </LabelText>
@@ -144,14 +163,14 @@ export const InstantiateInfo = ({
         )}
       </LabelText>
 
-      {instantiateInfo.admin ? (
+      {contractDetail.admin ? (
         <LabelText
           label="Admin Address"
           helperText1={getAddressTypeText(adminType)}
         >
           <ExplorerLink
             type={adminType}
-            value={instantiateInfo.admin}
+            value={contractDetail.admin}
             showCopyOnHover
           />
         </LabelText>
@@ -187,7 +206,7 @@ export const InstantiateInfo = ({
       >
         <ExplorerLink
           type={instantiatorType}
-          value={instantiateInfo.instantiator}
+          value={contractDetail.instantiator ?? "N/A"}
           showCopyOnHover
         />
       </LabelText>
@@ -196,12 +215,14 @@ export const InstantiateInfo = ({
         initTxHash={initTxHash}
         initProposalId={initProposalId}
         initProposalTitle={initProposalTitle}
-        createdHeight={instantiateInfo.createdHeight}
+        createdHeight={createdHeight}
       />
 
-      {instantiateInfo.ibcPortId && (
+      {rawContractResponse?.contract_info.ibc_port_id && (
         <LabelText label="IBC Port ID">
-          <PortIdRender portId={instantiateInfo.ibcPortId} />
+          <PortIdRender
+            portId={rawContractResponse.contract_info.ibc_port_id}
+          />
         </LabelText>
       )}
     </Container>
