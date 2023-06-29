@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import type { Token } from "lib/types";
+import type { Token, Option } from "lib/types";
 
 import { exponentify } from "./formatter";
 
@@ -12,7 +12,7 @@ export const sortDenoms = (assets: Coin[]): Coin[] =>
 interface CoinWithPrecision {
   denom: string;
   amount: string;
-  precision: number;
+  precision: Option<number>;
 }
 
 export const fabricateFunds = (assets: CoinWithPrecision[]): Coin[] =>

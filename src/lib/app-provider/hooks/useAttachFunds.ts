@@ -18,7 +18,7 @@ export const useAttachFunds = () => {
       const assetsSelectWithPrecision = assetsSelect.map((coin) => {
         return {
           ...coin,
-          precision: getAssetInfo(coin.denom)?.precision ?? 1,
+          precision: getAssetInfo(coin.denom)?.precision,
         };
       });
 
