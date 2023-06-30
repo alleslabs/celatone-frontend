@@ -26,13 +26,10 @@ export const useAttachFunds = () => {
           return fabricateFunds(assetsSelectWithPrecision);
         case AttachFundsType.ATTACH_FUNDS_JSON:
           try {
-            if (JSON.parse(assetsJsonStr)) {
-              return sortDenoms(JSON.parse(assetsJsonStr) as Coin[]);
-            }
+            return sortDenoms(JSON.parse(assetsJsonStr));
           } catch {
             return [];
           }
-          return [];
         default:
           return [];
       }

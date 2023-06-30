@@ -10,7 +10,7 @@ export const useBaseApiRoute = (
     | "codes"
     | "accounts"
     | "rest"
-    | "feeTokens"
+    | "native_tokens"
 ): string => {
   const {
     chainConfig: { chain, api },
@@ -38,7 +38,7 @@ export const useBaseApiRoute = (
     case "rest":
       return `${api}/rest/${chain}/${currentChainId}`;
     // TODO - change path when it is implemented
-    case "feeTokens":
+    case "native_tokens":
       return `${api}/assets/${chain}/${currentChainId}`;
     default:
       throw new Error(

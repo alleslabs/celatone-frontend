@@ -29,10 +29,10 @@ export const useAssetInfos = (): {
 };
 
 export const useNativeTokensInfo = (): UseQueryResult<Option<AssetInfo[]>> => {
-  const feeTokensApiRoute = useBaseApiRoute("feeTokens");
+  const nativeTokensApiRoute = useBaseApiRoute("native_tokens");
   return useQuery(
-    ["query", "nativeTokensInfo", feeTokensApiRoute],
-    async () => getAssetInfos(feeTokensApiRoute),
-    { enabled: !!feeTokensApiRoute, retry: 1, refetchOnWindowFocus: false }
+    ["query", "nativeTokensInfo", nativeTokensApiRoute],
+    async () => getAssetInfos(nativeTokensApiRoute),
+    { enabled: !!nativeTokensApiRoute, retry: 1, refetchOnWindowFocus: false }
   );
 };
