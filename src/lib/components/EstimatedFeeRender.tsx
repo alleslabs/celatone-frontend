@@ -1,7 +1,7 @@
 import { Spinner } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 
-import { useChainRecordAsset } from "lib/app-provider";
+import { useAssetInfos } from "lib/services/assetService";
 import { formatBalanceWithDenom } from "lib/utils";
 
 export const EstimatedFeeRender = ({
@@ -11,7 +11,7 @@ export const EstimatedFeeRender = ({
   estimatedFee: StdFee | undefined;
   loading: boolean;
 }) => {
-  const getAssetInfo = useChainRecordAsset();
+  const { assetInfos } = useAssetInfos();
   if (loading) {
     return (
       <>
@@ -23,7 +23,8 @@ export const EstimatedFeeRender = ({
 
   if (!coin) return <>--</>;
 
-  const chainAssetInfo = getAssetInfo(coin.denom);
+  const chainAssetInfo = assetInfos?.[coin.denom];
+
   return (
     <>
       {formatBalanceWithDenom({
