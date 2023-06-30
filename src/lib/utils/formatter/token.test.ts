@@ -155,6 +155,7 @@ describe("toToken", () => {
     );
   });
   test("less than 1", () => {
+    expect(toToken("0.0" as U<Token>, 6)).toEqual(big(0.0) as Token<Big>);
     expect(toToken(0 as U<Token<number>>, 6)).toEqual(big(0.0) as Token<Big>);
     expect(toToken(1234 as U<Token<number>>, 6)).toEqual(
       big(0.001234) as Token<Big>
@@ -223,13 +224,13 @@ describe("formatUTokenWithPrecision", () => {
 describe("formatPrice", () => {
   describe("invalid", () => {
     test("empty string", () => {
-      expect(formatPrice("" as USD)).toEqual("Not Available");
+      expect(formatPrice("" as USD)).toEqual("N/A");
     });
     test("NaN", () => {
-      expect(formatPrice(NaN as USD<number>)).toEqual("Not Available");
+      expect(formatPrice(NaN as USD<number>)).toEqual("N/A");
     });
     test("negative number", () => {
-      expect(formatPrice(-1 as USD<number>)).toEqual("Not Available");
+      expect(formatPrice(-1 as USD<number>)).toEqual("N/A");
     });
   });
   describe("if 0, use 2 decimal points", () => {
@@ -272,10 +273,10 @@ describe("formatPrice", () => {
 describe("formatInteger", () => {
   describe("invalid", () => {
     test("empty string", () => {
-      expect(formatInteger("")).toEqual("Not Available");
+      expect(formatInteger("")).toEqual("N/A");
     });
     test("NaN", () => {
-      expect(formatInteger(NaN)).toEqual("Not Available");
+      expect(formatInteger(NaN)).toEqual("N/A");
     });
   });
   describe("valid", () => {

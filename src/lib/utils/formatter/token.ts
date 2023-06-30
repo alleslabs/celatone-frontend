@@ -3,7 +3,7 @@ import big from "big.js";
 
 import type { Token, U, USD } from "lib/types";
 
-const NOT_AVAILABLE = "Not Available";
+const INVALID = "N/A";
 
 const B = 1_000_000_000;
 const M = 1_000_000;
@@ -76,7 +76,7 @@ export const formatUTokenWithPrecision = (
   return formatDecimal({
     decimalPoints: decimalPoints || precision,
     delimiter: true,
-  })(token, NOT_AVAILABLE);
+  })(token, INVALID);
 };
 
 /**
@@ -94,7 +94,7 @@ export const formatPrice = (value: USD<BigSource>): string => {
     const d2 = d2Formatter(price, "0.00");
     const d6 = d6Formatter(price, "0.00");
 
-    if (price.lt(0)) return NOT_AVAILABLE;
+    if (price.lt(0)) return INVALID;
 
     if (price.eq(0) || price.gte(1)) {
       return `$${d2}`;
@@ -105,11 +105,11 @@ export const formatPrice = (value: USD<BigSource>): string => {
     }
     return `$${d6}`;
   } catch {
-    return NOT_AVAILABLE;
+    return INVALID;
   }
 };
 
 export const formatInteger = (n: BigSource): string => {
   const formatter = formatDecimal({ decimalPoints: 0, delimiter: true });
-  return formatter(n, NOT_AVAILABLE);
+  return formatter(n, INVALID);
 };
