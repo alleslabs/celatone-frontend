@@ -3,6 +3,8 @@ import big from "big.js";
 
 import type { Token, U, USD } from "lib/types";
 
+const NOT_AVAILABLE = "Not Available";
+
 const B = 1_000_000_000;
 const M = 1_000_000;
 const K = 1_000;
@@ -47,7 +49,8 @@ export const toToken = (
   // TODO: try toFixed(precision) here after having unit test?
 ): Token<Big> => {
   try {
-    return big(uAmount).div(big(10).pow(precision)) as Token<Big>;
+    const value = big(uAmount).div(big(10).pow(precision));
+    return (value.gte(0) ? value : big(0)) as Token<Big>;
   } catch {
     return big(0) as Token<Big>;
   }
@@ -73,7 +76,7 @@ export const formatUTokenWithPrecision = (
   return formatDecimal({
     decimalPoints: decimalPoints || precision,
     delimiter: true,
-  })(token, "0.00");
+  })(token, NOT_AVAILABLE);
 };
 
 /**
@@ -91,6 +94,8 @@ export const formatPrice = (value: USD<BigSource>): string => {
     const d2 = d2Formatter(price, "0.00");
     const d6 = d6Formatter(price, "0.00");
 
+    if (price.lt(0)) return NOT_AVAILABLE;
+
     if (price.eq(0) || price.gte(1)) {
       return `$${d2}`;
     }
@@ -100,11 +105,11 @@ export const formatPrice = (value: USD<BigSource>): string => {
     }
     return `$${d6}`;
   } catch {
-    return "$0.00";
+    return NOT_AVAILABLE;
   }
 };
 
 export const formatInteger = (n: BigSource): string => {
   const formatter = formatDecimal({ decimalPoints: 0, delimiter: true });
-  return formatter(n, "Not Available");
+  return formatter(n, NOT_AVAILABLE);
 };
