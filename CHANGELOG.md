@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#398](https://github.com/alleslabs/celatone-frontend/pull/398) Setup Jest and sample tests
 - [#411](https://github.com/alleslabs/celatone-frontend/pull/411) Add override api endpoint
 - [#385](https://github.com/alleslabs/celatone-frontend/pull/385) Upgrade cosmos kit major version and replace hooks
 - [#380](https://github.com/alleslabs/celatone-frontend/pull/380) Support local network
