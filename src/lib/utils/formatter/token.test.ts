@@ -22,7 +22,7 @@ describe("formatDecimal", () => {
 
   describe("invalid", () => {
     test("empty string", () => {
-      expect(f("invalid value", FALLBACK)).toEqual(FALLBACK);
+      expect(f("", FALLBACK)).toEqual(FALLBACK);
     });
     test("non-number string", () => {
       expect(f("invalid value", FALLBACK)).toEqual(FALLBACK);
@@ -42,6 +42,9 @@ describe("formatDecimal", () => {
     expect(f("-12345678", FALLBACK)).toEqual("-12345678.0000");
     expect(f("-12345.678", FALLBACK)).toEqual("-12345.6780");
 
+    expect(fDelim("00.000", FALLBACK)).toEqual("0.0000");
+    expect(fDelim("0.0000001", FALLBACK)).toEqual("0.0000");
+    expect(fDelim("0.123", FALLBACK)).toEqual("0.1230");
     expect(fDelim("123", FALLBACK)).toEqual("123.0000");
     expect(fDelim("01234", FALLBACK)).toEqual("1,234.0000");
     expect(fDelim("12340", FALLBACK)).toEqual("12,340.0000");
@@ -49,6 +52,10 @@ describe("formatDecimal", () => {
     expect(fDelim("12345.678", FALLBACK)).toEqual("12,345.6780");
     expect(fDelim("123.45678", FALLBACK)).toEqual("123.4567");
 
+    expect(fDelim("-0", FALLBACK)).toEqual("0.0000");
+    expect(fDelim("-0.0000001", FALLBACK)).toEqual("0.0000");
+    expect(fDelim("-0.123", FALLBACK)).toEqual("-0.1230");
+    expect(fDelim("-01.230", FALLBACK)).toEqual("-1.2300");
     expect(fDelim("-123", FALLBACK)).toEqual("-123.0000");
     expect(fDelim("-01234", FALLBACK)).toEqual("-1,234.0000");
     expect(fDelim("-12340", FALLBACK)).toEqual("-12,340.0000");
@@ -68,12 +75,16 @@ describe("formatDecimal", () => {
     expect(f(-12345678, FALLBACK)).toEqual("-12345678.0000");
     expect(f(-12345.678, FALLBACK)).toEqual("-12345.6780");
 
+    expect(fDelim(0, FALLBACK)).toEqual("0.0000");
+    expect(fDelim(0.123, FALLBACK)).toEqual("0.1230");
     expect(fDelim(123, FALLBACK)).toEqual("123.0000");
     expect(fDelim(12340, FALLBACK)).toEqual("12,340.0000");
     expect(fDelim(12345678, FALLBACK)).toEqual("12,345,678.0000");
     expect(fDelim(12345.678, FALLBACK)).toEqual("12,345.6780");
     expect(fDelim(123.45678, FALLBACK)).toEqual("123.4567");
 
+    expect(fDelim(-0, FALLBACK)).toEqual("0.0000");
+    expect(fDelim(-0.123, FALLBACK)).toEqual("-0.1230");
     expect(fDelim(-123, FALLBACK)).toEqual("-123.0000");
     expect(fDelim(-12340, FALLBACK)).toEqual("-12,340.0000");
     expect(fDelim(-12345678, FALLBACK)).toEqual("-12,345,678.0000");
@@ -205,8 +216,7 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision(
           "12345678901234567890" as U<Token<BigSource>>,
-          6,
-          true
+          6
         )
       ).toEqual("12,345.67B");
     });
