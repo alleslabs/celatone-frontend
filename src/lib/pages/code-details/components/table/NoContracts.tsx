@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { ConnectWalletBtn } from "lib/components/button";
 import { EmptyState, StateImage } from "lib/components/state";
 
@@ -27,7 +27,7 @@ const DisconnectedState = () => (
 );
 
 export const NoContracts = () => {
-  const { isWalletConnected } = useWallet();
+  const { isWalletConnected } = useCurrentChain();
   return !isWalletConnected ? (
     <DisconnectedState />
   ) : (

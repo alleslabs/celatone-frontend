@@ -1,14 +1,11 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
-export const useNativeTokensInfo = () => {
-  const { currentChainRecord } = useWallet();
+import { useCurrentChain } from "./useCurrentChain";
 
+export const useNativeTokensInfo = () => {
+  const { assets } = useCurrentChain();
   return useMemo(
-    () =>
-      currentChainRecord?.assetList?.assets?.filter(
-        (asset) => !asset.base.includes("cw20")
-      ) ?? [],
-    [currentChainRecord]
+    () => assets?.assets.filter((asset) => !asset.base.includes("cw20")) ?? [],
+    [assets]
   );
 };

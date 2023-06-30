@@ -9,21 +9,22 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
 import { InitialDeposit } from "../components/InitialDeposit";
-import { TestnetAlert } from "../components/TestnetAlert";
+import { PermissionlessAlert } from "../components/PermissionlessAlert";
 import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
-  useCurrentNetwork,
+  useCelatoneApp,
+  useCurrentChain,
   useFabricateFee,
   useSimulateFeeQuery,
   useSubmitWhitelistProposalTx,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
@@ -34,10 +35,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
-import {
-  getMaxProposalTitleLengthError,
-  MAX_PROPOSAL_TITLE_LENGTH,
-} from "lib/data/proposalWhitelist";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
@@ -47,6 +45,7 @@ import {
   AmpTrackUseDepositFill,
 } from "lib/services/amplitude";
 import { useGovParams } from "lib/services/proposalService";
+import { AccessConfigPermission } from "lib/types";
 import type { Addr } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
 
@@ -67,8 +66,14 @@ const defaultValues: WhiteListState = {
 const ampPage = "proposal_whitelist";
 
 const ProposalToWhitelist = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-  const { address: walletAddress = "" } = useWallet();
+  const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
+  const { address: walletAddress = "" } = useCurrentChain();
+  const {
+    chainConfig: { prettyName },
+  } = useCelatoneApp();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
   const submitProposalTx = useSubmitWhitelistProposalTx();
@@ -93,9 +98,10 @@ const ProposalToWhitelist = () => {
     control,
     name: "addresses",
   });
-  const { isTestnet } = useCurrentNetwork();
 
   const minDeposit = govParams?.depositParams.minDeposit;
+  const isPermissionless =
+    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
   const enabledTx = useMemo(
@@ -125,6 +131,9 @@ const ProposalToWhitelist = () => {
         description,
         changesValue: JSON.stringify({
           ...govParams?.uploadAccess,
+          permission: !isPermissionless
+            ? AccessConfigPermission.ANY_OF_ADDRESSES
+            : AccessConfigPermission.EVERYBODY,
           addresses: govParams?.uploadAccess.addresses?.concat(addressesArray),
         }),
         initialDeposit,
@@ -139,6 +148,7 @@ const ProposalToWhitelist = () => {
       minDeposit,
       title,
       walletAddress,
+      isPermissionless,
     ]
   );
 
@@ -233,9 +243,9 @@ const ProposalToWhitelist = () => {
           templateAreas={`"prespace alert alert postspace" "prespace main sidebar postspace"`}
           templateColumns="1fr 6fr 4fr 1fr"
           sx={
-            isTestnet
+            isPermissionless
               ? {
-                  "> div:not(.testnet-alert)": {
+                  "> div:not(.permissionless-alert)": {
                     opacity: 0.5,
                     pointerEvents: "none",
                   },
@@ -243,9 +253,9 @@ const ProposalToWhitelist = () => {
               : undefined
           }
         >
-          {isTestnet && (
-            <GridItem area="alert" className="testnet-alert" mb={10}>
-              <TestnetAlert />
+          {isPermissionless && (
+            <GridItem area="alert" className="permissionless-alert" mb={10}>
+              <PermissionlessAlert />
             </GridItem>
           )}
           <GridItem area="main">
@@ -285,11 +295,12 @@ const ProposalToWhitelist = () => {
                   variant="floating"
                   rules={{
                     required: "Proposal Title is required",
-                    maxLength: MAX_PROPOSAL_TITLE_LENGTH,
+                    maxLength: constants.maxProposalTitleLength,
                   }}
                   error={
-                    formErrors.title?.message ||
-                    getMaxProposalTitleLengthError(title.length)
+                    title.length > constants.maxProposalTitleLength
+                      ? getMaxLengthError(title.length, "proposal_title")
+                      : formErrors.title?.message
                   }
                 />
                 <ControllerTextarea
@@ -436,7 +447,10 @@ const ProposalToWhitelist = () => {
           <GridItem area="sidebar">
             <StickySidebar
               marginTop="128px"
-              metadata={SIDEBAR_WHITELIST_DETAILS}
+              metadata={SIDEBAR_WHITELIST_DETAILS(
+                prettyName,
+                isPermissionless ? "permissionless" : "permissioned"
+              )}
             />
           </GridItem>
         </Grid>

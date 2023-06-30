@@ -1,9 +1,10 @@
 import type { Asset } from "@chain-registry/types";
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
 import type { SnakeToCamelCaseNested } from "lib/types";
 import { snakeToCamel } from "lib/utils";
+
+import { useCurrentChain } from "./useCurrentChain";
 
 interface ChainRecordAsset extends Asset {
   precision: number;
@@ -12,13 +13,11 @@ interface ChainRecordAsset extends Asset {
 type InternalChainRecordAsset = SnakeToCamelCaseNested<ChainRecordAsset>;
 
 export const useChainRecordAsset = () => {
-  const { currentChainRecord } = useWallet();
+  const { assets } = useCurrentChain();
 
   return useCallback(
     (denom: string): InternalChainRecordAsset | null => {
-      const assetInfo = currentChainRecord?.assetList.assets.find(
-        (asset) => asset.base === denom
-      );
+      const assetInfo = assets?.assets.find((asset) => asset.base === denom);
       return assetInfo
         ? (snakeToCamel({
             ...assetInfo,
@@ -34,6 +33,6 @@ export const useChainRecordAsset = () => {
           }) as InternalChainRecordAsset)
         : null;
     },
-    [currentChainRecord]
+    [assets]
   );
 };

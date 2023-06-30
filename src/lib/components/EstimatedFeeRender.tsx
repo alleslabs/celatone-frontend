@@ -26,7 +26,11 @@ export const EstimatedFeeRender = ({
   const chainAssetInfo = getAssetInfo(coin.denom);
   return (
     <>
-      {formatBalanceWithDenom({ coin, precision: chainAssetInfo?.precision })}
+      {formatBalanceWithDenom({
+        coin,
+        precision: chainAssetInfo?.precision,
+        symbol: chainAssetInfo?.symbol,
+      })}
     </>
   );
 };

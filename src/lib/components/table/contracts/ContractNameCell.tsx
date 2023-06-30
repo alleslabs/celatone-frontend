@@ -1,5 +1,5 @@
 import { EditableCell } from "../EditableCell";
-import { MAX_CONTRACT_NAME_LENGTH } from "lib/data";
+import { useCelatoneApp } from "lib/app-provider";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractLocalInfo } from "lib/stores/contract";
@@ -13,6 +13,7 @@ export const ContractNameCell = ({
   contractLocalInfo,
   isReadOnly = false,
 }: ContractNameCellProps) => {
+  const { constants } = useCelatoneApp();
   const onSave = useHandleContractSave({
     title: "Changed name successfully!",
     contractAddress: contractLocalInfo.contractAddress,
@@ -24,7 +25,7 @@ export const ContractNameCell = ({
     <EditableCell
       initialValue={contractLocalInfo.name}
       defaultValue={contractLocalInfo.label}
-      maxLength={MAX_CONTRACT_NAME_LENGTH}
+      maxLength={constants.maxContractNameLength}
       tooltip={contractLocalInfo.description}
       isReadOnly={isReadOnly}
       onSave={!isReadOnly ? onSave : undefined}
