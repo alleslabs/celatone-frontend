@@ -14,12 +14,15 @@ import type {
 
 import { toToken } from "./formatter";
 
-export const calculateAssetValue = (
+const calculateAssetValue = (
   amount: Token<BigSource>,
   price: USD<number>
 ): USD<Big> => big(amount).mul(price) as USD<Big>;
 
 export const calAssetValueWithPrecision = (balance: Balance): USD<Big> => {
+  if (Number.isNaN(Number(balance.amount)))
+    throw new Error("Error balance amount is not a number");
+
   if (balance.price) {
     return calculateAssetValue(
       toToken(balance.amount as U<Token>, balance.precision),

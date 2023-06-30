@@ -6,8 +6,6 @@ export * from "./format";
 export * from "./json";
 export * from "./router";
 export * from "./truncate";
-export * from "./number";
-export * from "./isDecimalNumber";
 export * from "./extractMsgType";
 export * from "./scroll";
 export * from "./date";

@@ -10,7 +10,6 @@ import type React from "react";
 import type { FC, SetStateAction, Dispatch } from "react";
 
 import type { IconKeys } from "../icon";
-import { isDecimalNumber } from "lib/utils";
 
 import { INITIAL_VALUES } from "./paginationData";
 
@@ -116,7 +115,7 @@ export const PaginatorProvider: FC<PaginatorProviderProps> = ({
   }, [isDisabledProp]);
 
   useEffect(() => {
-    if (isDecimalNumber(currentPageProp)) {
+    if (!Number.isInteger(currentPageProp)) {
       // eslint-disable-next-line no-console
       console.error(
         `Chakra paginator -> passed down currentPage has to be a whole number`

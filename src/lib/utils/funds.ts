@@ -6,7 +6,7 @@ import { microfy } from "./formatter/currency";
 
 export const sortDenoms = (assets: Coin[]): Coin[] =>
   assets.sort(({ denom: aDenom }, { denom: bDenom }) =>
-    aDenom.localeCompare(bDenom)
+    aDenom.localeCompare(bDenom, undefined, { sensitivity: "base" })
   );
 
 export const fabricateFunds = (assets: Coin[]): Coin[] =>
