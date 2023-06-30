@@ -11,8 +11,8 @@ export const EstimatedFeeRender = ({
   estimatedFee: StdFee | undefined;
   loading: boolean;
 }) => {
-  const { assetInfos } = useAssetInfos();
-  if (loading) {
+  const { assetInfos, isLoading } = useAssetInfos();
+  if (loading || isLoading) {
     return (
       <>
         <Spinner size="sm" mx={1} /> Estimating ...

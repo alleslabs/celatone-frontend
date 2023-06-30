@@ -342,7 +342,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
     [lcdEndpoint, assetInfos]
   );
 
-  return useQuery(["gov_params", lcdEndpoint], queryFn, {
+  return useQuery(["gov_params", lcdEndpoint, assetInfos], queryFn, {
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
