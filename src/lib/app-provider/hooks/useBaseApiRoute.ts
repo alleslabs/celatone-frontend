@@ -11,6 +11,8 @@ export const useBaseApiRoute = (
     | "codes"
     | "accounts"
     | "rest"
+    | "icns_names"
+    | "icns_address"
 ): string => {
   const {
     chainConfig: { chain, api: configApi },
@@ -41,6 +43,10 @@ export const useBaseApiRoute = (
       return `${api}/accounts/${chain}/${currentChainId}`;
     case "rest":
       return `${api}/rest/${chain}/${currentChainId}`;
+    case "icns_names":
+      return `${api}/icns/names`;
+    case "icns_address":
+      return `${api}/icns/address`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."

@@ -6,14 +6,12 @@ import {
   TabPanels,
   Tabs,
   Text,
-  Image,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useValidateAddress, useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
-import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -22,6 +20,7 @@ import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountId } from "lib/services/accountService";
 import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
+import { useICNSNamesByAddress } from "lib/services/nameService";
 import {
   usePublicProjectByAccountAddress,
   usePublicProjectBySlug,
@@ -34,6 +33,7 @@ import {
   truncate,
 } from "lib/utils";
 
+import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
 import {
@@ -70,6 +70,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
   const { data: accountId } = useAccountId(accountAddress);
+  const { data: icnsName } = useICNSNamesByAddress(accountAddress);
 
   const publicDetail = publicInfoBySlug?.details;
 
@@ -90,8 +91,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     scrollToTop();
   };
 
-  const displayName = publicInfo?.name ?? "Account Details";
-
   return (
     <>
       <Flex direction="column" mb={6}>
@@ -108,33 +107,12 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             mb={6}
           />
         )}
-        <Flex direction="column" gap={2}>
-          <Flex gap={1} minH="36px" align="center">
-            <CustomIcon name="wallet" boxSize={5} color="secondary.main" />
-            {publicDetail?.logo && (
-              <Image
-                src={publicDetail.logo}
-                borderRadius="full"
-                alt={publicDetail.name}
-                width={7}
-                height={7}
-              />
-            )}
-            <Heading as="h5" variant="h5">
-              {displayName}
-            </Heading>
-          </Flex>
-          <Flex gap={2}>
-            <Text fontWeight={500} color="text.dark" variant="body2">
-              Wallet Address:
-            </Text>
-            <CopyLink
-              value={accountAddress}
-              amptrackSection="account_top"
-              type="user_address"
-            />
-          </Flex>
-        </Flex>
+        <AccountHeader
+          publicName={publicInfo?.name}
+          publicDetail={publicDetail}
+          icnsName={icnsName}
+          accountAddress={accountAddress}
+        />
       </Flex>
       {publicInfo?.description && (
         <Flex

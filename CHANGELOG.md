@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#415](https://github.com/alleslabs/celatone-frontend/pull/415) Search by icns names feature and Show registered icns names on account details page
 - [#398](https://github.com/alleslabs/celatone-frontend/pull/398) Setup Jest and sample tests
 - [#411](https://github.com/alleslabs/celatone-frontend/pull/411) Add override api endpoint
 - [#385](https://github.com/alleslabs/celatone-frontend/pull/385) Upgrade cosmos kit major version and replace hooks

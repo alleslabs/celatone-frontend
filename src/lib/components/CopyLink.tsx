@@ -1,3 +1,4 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text, useClipboard } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -7,13 +8,20 @@ import { AmpTrackCopier } from "lib/services/amplitude";
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
 
-interface CopyLinkProps {
+interface CopyLinkProps extends FlexProps {
   value: string;
   amptrackSection?: string;
   type: string;
+  withoutIcon?: boolean;
 }
 
-export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
+export const CopyLink = ({
+  value,
+  amptrackSection,
+  type,
+  withoutIcon,
+  ...flexProps
+}: CopyLinkProps) => {
   const { address } = useCurrentChain();
   const { onCopy, hasCopied } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
@@ -37,6 +45,7 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
         cursor="pointer"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
+        {...flexProps}
       >
         <Text
           variant="body2"
@@ -45,13 +54,15 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
         >
           {value === address ? `${value} (Me)` : value}
         </Text>
-        <CustomIcon
-          cursor="pointer"
-          marginLeft={2}
-          name="copy"
-          boxSize={3}
-          color="gray.600"
-        />
+        {!withoutIcon && (
+          <CustomIcon
+            cursor="pointer"
+            marginLeft={2}
+            name="copy"
+            boxSize={3}
+            color="gray.600"
+          />
+        )}
       </Flex>
     </Tooltip>
   );

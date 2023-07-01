@@ -9,6 +9,7 @@ import {
   useOutsideClick,
   Spinner,
   chakra,
+  Flex,
 } from "@chakra-ui/react";
 import { useCallback, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
@@ -16,9 +17,13 @@ import type { ChangeEvent, KeyboardEvent } from "react";
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
-import type { SearchResultType } from "lib/services/searchService";
+import { useICNSNamesByAddress } from "lib/services/nameService";
+import type {
+  ResultMetadata,
+  SearchResultType,
+} from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { Option } from "lib/types";
+import type { Addr, Option } from "lib/types";
 
 const NOT_FOUND_MSG =
   "Matches not found. Please check your spelling or make sure you have selected the correct network.";
@@ -35,6 +40,7 @@ interface ResultItemProps {
   type: SearchResultType;
   value: string;
   cursor: Option<number>;
+  metadata: ResultMetadata;
   setCursor: (index: Option<number>) => void;
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
 }
@@ -69,19 +75,20 @@ const ResultItem = ({
   type,
   value,
   cursor,
+  metadata,
   setCursor,
   handleSelectResult,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
-
+  const { data: icnsNames } = useICNSNamesByAddress(value as Addr);
   return (
     <StyledListItem id={`item-${index}`}>
       <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
         {type}
       </Text>
       {route && (
-        <Text
-          variant="body2"
+        <Flex
+          direction="column"
           p={2}
           borderRadius="8px"
           _hover={{ bg: "gray.800", cursor: "pointer" }}
@@ -91,8 +98,17 @@ const ResultItem = ({
           onMouseMove={() => index !== cursor && setCursor(index)}
           onClick={() => handleSelectResult(type, true)}
         >
-          {value}
-        </Text>
+          {metadata.icns.address || icnsNames ? (
+            <>
+              <Text variant="body2">{metadata.icns.address || value}</Text>
+              <Text variant="body3" color="text.dark">
+                {icnsNames ? icnsNames.primary_name : value}
+              </Text>
+            </>
+          ) : (
+            <Text variant="body2">{value}</Text>
+          )}
+        </Flex>
       )}
     </StyledListItem>
   );
@@ -102,12 +118,14 @@ const ResultRender = ({
   results,
   keyword,
   cursor,
+  metadata,
   setCursor,
   handleSelectResult,
 }: {
   results: SearchResultType[];
   keyword: string;
   cursor: Option<number>;
+  metadata: ResultMetadata;
   setCursor: (index: Option<number>) => void;
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
 }) => (
@@ -126,6 +144,7 @@ const ResultRender = ({
           type={type}
           value={keyword}
           cursor={cursor}
+          metadata={metadata}
           setCursor={setCursor}
           handleSelectResult={handleSelectResult}
         />
@@ -171,7 +190,7 @@ const Searchbar = () => {
     },
   } = useCelatoneApp();
   const navigate = useInternalNavigate();
-  const { results, isLoading } = useSearchHandler(keyword, () =>
+  const { results, isLoading, metadata } = useSearchHandler(keyword, () =>
     setIsTyping(false)
   );
   const boxRef = useRef<HTMLDivElement>(null);
@@ -191,13 +210,13 @@ const Searchbar = () => {
       if (routeOptions) {
         navigate({
           pathname: routeOptions.pathname,
-          query: { [routeOptions.query]: keyword },
+          query: { [routeOptions.query]: metadata.icns.address || keyword },
         });
         setDisplayResults(false);
         setKeyword("");
       }
     },
-    [keyword, navigate]
+    [metadata.icns.address, keyword, navigate]
   );
 
   const handleOnKeyEnter = useCallback(
@@ -267,10 +286,11 @@ const Searchbar = () => {
             </StyledListItem>
           ) : (
             <ResultRender
-              cursor={cursor}
-              setCursor={setCursor}
               results={results}
               keyword={keyword}
+              cursor={cursor}
+              metadata={metadata}
+              setCursor={setCursor}
               handleSelectResult={handleSelectResult}
             />
           )}
