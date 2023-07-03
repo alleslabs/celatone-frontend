@@ -7,11 +7,15 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useCurrentChain,
+  useInternalNavigate,
+  useWasmConfig,
+} from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -24,7 +28,8 @@ import type { HumanAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 const getAlertContent = (
-  enabled: boolean
+  enabled: boolean,
+  chainPrettyName: string
 ): { variant: AlertProps["variant"]; icon: JSX.Element; description: string } =>
   enabled
     ? {
@@ -47,14 +52,16 @@ const getAlertContent = (
             boxSize={4}
           />
         ),
-        description:
-          "The current network is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.",
+        description: `${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`,
       };
 
 const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
+  const {
+    chainConfig: { prettyName: chainPrettyName },
+  } = useCelatoneApp();
   const { data, isFetching } = useUploadAccessParams();
 
   const isPermissionedNetwork =
@@ -64,13 +71,18 @@ const Deploy = () => {
     !isPermissionedNetwork ||
     Boolean(data?.addresses?.includes(address as HumanAddr));
 
+  useWasmConfig({ shouldRedirect: true });
+
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
   }, [router.isReady]);
 
   if (isFetching) return <Loading />;
 
-  const { variant, icon, description } = getAlertContent(enableUpload);
+  const { variant, icon, description } = getAlertContent(
+    enableUpload,
+    chainPrettyName
+  );
   return (
     <WasmPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>

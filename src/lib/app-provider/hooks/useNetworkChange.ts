@@ -1,35 +1,50 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import { getChainNameByNetwork } from "lib/data";
-import type { Network } from "lib/data";
+import { DEFAULT_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
 import { getFirstQueryParam } from "lib/utils";
 
-export const useNetworkChange = () => {
+import { useInternalNavigate } from "./useInternalNavigate";
+
+export const useNetworkChange = (
+  handleOnChainIdChange: (newChainId: string) => void
+) => {
   const router = useRouter();
-  const { currentChainName, setCurrentChain } = useWallet();
   const networkRef = useRef<string>();
+  const navigate = useInternalNavigate();
 
   useEffect(() => {
-    if (router.isReady) {
-      let networkRoute = getFirstQueryParam(
-        router.query.network,
-        "mainnet"
-      ) as Network;
+    const networkRoute = router.query.network
+      ? getFirstQueryParam(router.query.network, DEFAULT_SUPPORTED_CHAIN_ID)
+      : router.asPath.split("/")[1];
 
-      if (
-        networkRoute !== "mainnet" &&
-        networkRoute !== "testnet" &&
-        networkRoute !== "localnet"
-      )
-        networkRoute = "mainnet";
-
-      if (networkRoute !== networkRef.current) {
+    if (router.isReady || router.pathname === "/404") {
+      // Redirect to default chain if there is no network query provided
+      if (!router.query.network) {
+        navigate({
+          pathname: router.pathname,
+          query: { ...router.query },
+          replace: true,
+        });
+      } else if (
+        router.pathname === "/[network]" &&
+        !SUPPORTED_CHAIN_IDS.includes(networkRoute)
+      ) {
+        navigate({
+          pathname: "/",
+          replace: true,
+        });
+      } else if (networkRoute !== networkRef.current) {
         networkRef.current = networkRoute;
-        const chainName = getChainNameByNetwork(networkRoute);
-        if (currentChainName !== chainName) setCurrentChain(chainName);
+        handleOnChainIdChange(networkRoute);
       }
     }
-  }, [router, currentChainName, setCurrentChain]);
+  }, [
+    handleOnChainIdChange,
+    navigate,
+    router.asPath,
+    router.isReady,
+    router.pathname,
+    router.query,
+  ]);
 };

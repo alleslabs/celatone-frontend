@@ -39,7 +39,7 @@ export const TxRelationSelection = ({
 }: TxRelationSelectionProps) => (
   <Box {...props}>
     <SelectInput
-      formLabel="Filter by Relations"
+      formLabel="Filter by Relation"
       options={relationOptions}
       onChange={(value: RelationType) =>
         setValue(

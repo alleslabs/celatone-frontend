@@ -11,9 +11,9 @@ import {
 
 import { CustomIcon } from "../icon";
 import { EditListNameModal, RemoveListModal } from "lib/components/modal";
-import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
+import { INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
-import { dateFromNow, formatSlugName } from "lib/utils";
+import { dateFromNow, formatSlugName, getListIcon } from "lib/utils";
 
 interface ContractListCardProps {
   item: ContractListInfo;

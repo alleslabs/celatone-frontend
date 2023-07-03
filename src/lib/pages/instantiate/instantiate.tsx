@@ -1,7 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useRouter } from "next/router";
@@ -12,9 +11,10 @@ import {
   useFabricateFee,
   useInstantiateTx,
   useCelatoneApp,
-  useLCDEndpoint,
   useValidateAddress,
   useSimulateFeeQuery,
+  useCurrentChain,
+  useBaseApiRoute,
 } from "lib/app-provider";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -70,10 +70,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
   const {
-    appContractAddress: { example: exampleContractAddress },
+    chainConfig: {
+      exampleAddresses: { contract: exampleContractAddress },
+    },
   } = useCelatoneApp();
-  const { address = "" } = useWallet();
-  const endpoint = useLCDEndpoint();
+  const { address = "" } = useCurrentChain();
+  const lcdEndpoint = useBaseApiRoute("rest");
+
   const postInstantiateTx = useInstantiateTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
@@ -149,8 +152,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
 
   const { refetch } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    ["query", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,
       retry: false,

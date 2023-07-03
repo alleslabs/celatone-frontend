@@ -5,7 +5,7 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -22,6 +22,7 @@ interface RecentCodesState {
 }
 
 const RecentCodes = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -65,7 +66,7 @@ const RecentCodes = observer(() => {
         </Text>
         <Flex gap={3} mt={8}>
           <InputWithIcon
-            placeholder="Search with code ID or code name"
+            placeholder="Search with Code ID or Code Name"
             value={keyword}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setValue("keyword", e.target.value)

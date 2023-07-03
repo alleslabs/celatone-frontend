@@ -1,6 +1,6 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
+import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { DEFAULT_ADDRESS } from "lib/data";
 import { formatUserKey } from "lib/utils";
 
@@ -10,8 +10,10 @@ import { formatUserKey } from "lib/utils";
  */
 
 export const useUserKey = () => {
-  const { currentChainName } = useWallet();
+  const {
+    chain: { chain_name: chainName },
+  } = useCurrentChain();
   return useMemo(() => {
-    return formatUserKey(currentChainName, DEFAULT_ADDRESS);
-  }, [currentChainName]);
+    return formatUserKey(chainName, DEFAULT_ADDRESS);
+  }, [chainName]);
 };

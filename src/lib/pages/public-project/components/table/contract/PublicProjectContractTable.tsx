@@ -67,7 +67,7 @@ export const PublicProjectContractTable = observer(
             variant="floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
-            placeholder="Search with contract address or contract name"
+            placeholder="Search with Contract Address or Contract Name"
             size="lg"
             mb={6}
           />

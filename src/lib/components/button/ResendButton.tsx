@@ -64,7 +64,7 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
 
   return (
     <Button
-      variant="outline"
+      variant="outline-gray"
       iconSpacing="0"
       size="sm"
       onClick={(e) => {

@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute } from "lib/app-provider";
 
 import type { RawValidator } from "./validator";
 import { getValidators } from "./validator";
@@ -10,12 +10,14 @@ import { getValidators } from "./validator";
 export const useValidators = (): UseQueryResult<
   Record<string, RawValidator>
 > => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
-  const queryFn = useCallback(async () => getValidators(endpoint), [endpoint]);
+  const queryFn = useCallback(
+    async () => getValidators(lcdEndpoint),
+    [lcdEndpoint]
+  );
 
-  return useQuery(["query", "validators", endpoint], queryFn, {
-    retry: 1,
+  return useQuery(["query", "validators", lcdEndpoint], queryFn, {
     refetchOnWindowFocus: false,
   });
 };

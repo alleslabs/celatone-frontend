@@ -19,8 +19,8 @@ import { useState } from "react";
 
 import { CustomIcon } from "../icon";
 import {
+  useBaseApiRoute,
   useCelatoneApp,
-  useLCDEndpoint,
   useValidateAddress,
 } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -43,7 +43,9 @@ export const SelectContractInstantiator = ({
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
   const {
-    appContractAddress: { example: exampleContractAddress },
+    chainConfig: {
+      exampleAddresses: { contract: exampleContractAddress },
+    },
   } = useCelatoneApp();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
@@ -61,7 +63,7 @@ export const SelectContractInstantiator = ({
   const contractLists = [instantiatedListInfo, ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const resetOnClose = () => {
     setListSlug("");
@@ -78,8 +80,8 @@ export const SelectContractInstantiator = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", searchContract, endpoint],
-    async () => queryContract(endpoint, searchContract as ContractAddr),
+    ["query", "contract", lcdEndpoint, searchContract],
+    async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
     {
       enabled: false,
       retry: false,

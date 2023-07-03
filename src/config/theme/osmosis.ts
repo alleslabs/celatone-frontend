@@ -1,4 +1,4 @@
-import type { ThemeConfig } from "config/type";
+import type { ThemeConfig } from "./types";
 
 export const OSMOSIS_THEME: ThemeConfig = {
   branding: {

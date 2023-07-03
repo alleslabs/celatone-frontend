@@ -4,9 +4,9 @@ import big from "big.js";
 import { useCallback } from "react";
 
 import {
+  useBaseApiRoute,
   useCelatoneApp,
   useChainRecordAsset,
-  useLCDEndpoint,
 } from "lib/app-provider";
 import {
   getProposalList,
@@ -301,7 +301,7 @@ export interface GovParams {
 }
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   const getAssetInfo = useChainRecordAsset();
   const queryFn = useCallback(
     () =>
@@ -317,7 +317,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
             minDepositParam.amount as U<Token>,
             assetInfo?.precision
           ).toFixed(),
-          getTokenLabel(minDepositParam.denom),
+          getTokenLabel(minDepositParam.denom, assetInfo?.symbol),
         ];
         return {
           depositParams: {
@@ -330,7 +330,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
               formattedToken: formatBalanceWithDenom({
                 coin: minDepositParam,
                 precision: assetInfo?.precision,
-                decimalPoints: 2,
+                symbol: assetInfo?.symbol,
               }),
               precision: assetInfo?.precision ?? 0,
             },
@@ -352,7 +352,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
 };
 
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   return useQuery(
     ["upload_access", lcdEndpoint],
     () => fetchGovUploadAccessParams(lcdEndpoint),
