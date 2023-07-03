@@ -34,6 +34,7 @@ export const useAttachFunds = () => {
           return [];
       }
     },
-    [assetInfos]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(assetInfos)]
   );
 };
