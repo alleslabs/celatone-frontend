@@ -74,7 +74,7 @@ export const formatUTokenWithPrecision = (
     if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
   }
   return formatDecimal({
-    decimalPoints: decimalPoints || precision,
+    decimalPoints: decimalPoints ?? precision,
     delimiter: true,
   })(token, INVALID);
 };
