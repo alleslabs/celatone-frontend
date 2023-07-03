@@ -260,10 +260,12 @@ describe("formatPrice", () => {
   });
   describe("0.000001 <= x < 1", () => {
     test("from string", () => {
+      expect(formatPrice("0.000001" as USD)).toEqual("$0.000001");
       expect(formatPrice("0.123" as USD)).toEqual("$0.123000");
       expect(formatPrice("0.123456789" as USD)).toEqual("$0.123456");
     });
     test("from number", () => {
+      expect(formatPrice(0.000001 as USD<number>)).toEqual("$0.000001");
       expect(formatPrice(0.123 as USD<number>)).toEqual("$0.123000");
       expect(formatPrice(0.123456789 as USD<number>)).toEqual("$0.123456");
     });
