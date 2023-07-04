@@ -1,8 +1,8 @@
 import { Box, chakra, Flex, Image, Text } from "@chakra-ui/react";
 
 import { NAToken } from "lib/icon";
-import { useNativeTokensInfo } from "lib/services/assetService";
-import type { AssetInfo, Option } from "lib/types";
+import { useAssetInfos } from "lib/services/assetService";
+import type { Option } from "lib/types";
 
 const AssetLabel = chakra(Text, {
   baseStyle: {
@@ -26,10 +26,9 @@ const AssetLabel = chakra(Text, {
 });
 
 export const AssetBox = ({ baseDenom }: { baseDenom: Option<string> }) => {
-  const { data: nativeTokensInfo = [] } = useNativeTokensInfo();
-  const tokenInfo = nativeTokensInfo.find(
-    (asset: AssetInfo) => asset.id === baseDenom
-  );
+  const { assetInfos } = useAssetInfos();
+  const tokenInfo = baseDenom ? assetInfos?.[baseDenom] : undefined;
+
   return (
     <Box
       h="56px"

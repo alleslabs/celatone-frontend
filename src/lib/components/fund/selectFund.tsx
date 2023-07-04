@@ -5,7 +5,7 @@ import type { Control, UseFormSetValue } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 
 import { AssetInput, ControllerInput } from "lib/components/forms";
-import { useNativeTokensInfo } from "lib/services/assetService";
+import { useAssetInfoList } from "lib/services/assetService";
 
 import { ASSETS_SELECT } from "./data";
 import type { AttachFundsState } from "./types";
@@ -24,7 +24,7 @@ export const SelectFund = ({
   setValue,
   assetsSelect,
 }: SelectFundProps) => {
-  const { data: nativeTokensInfo = [] } = useNativeTokensInfo();
+  const { data: assetInfos = [] } = useAssetInfoList();
   const { fields, append, remove } = useFieldArray({
     control,
     name: ASSETS_SELECT,
@@ -34,12 +34,12 @@ export const SelectFund = ({
 
   const assetOptions = useMemo(
     () =>
-      nativeTokensInfo.map((asset) => ({
+      assetInfos.map((asset) => ({
         label: asset.symbol,
         value: asset.id,
         disabled: selectedAssets.includes(asset.id),
       })),
-    [nativeTokensInfo, selectedAssets]
+    [assetInfos, selectedAssets]
   );
 
   const rules = {
