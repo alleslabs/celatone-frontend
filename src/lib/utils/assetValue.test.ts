@@ -7,6 +7,7 @@ import type {
   Token,
   TokenWithValue,
   U,
+  USD,
 } from "lib/types";
 
 import {
@@ -374,16 +375,25 @@ describe("addTokenWithValue", () => {
     denom: "uadenom",
     amount: big(100) as U<Token<Big>>,
     precision: 6,
-    value: big(200) as U<Token<Big>>,
+    value: big(200) as USD<Big>,
     symbol: "",
     logo: "",
   } as TokenWithValue;
 
   const tokenWithValue2 = {
+    denom: "uadenom",
+    amount: big(100) as U<Token<Big>>,
+    precision: 6,
+    value: big(3500) as USD<Big>,
+    symbol: "",
+    logo: "",
+  } as TokenWithValue;
+
+  const tokenWithValue3 = {
     denom: "ubdenom",
     amount: big(100) as U<Token<Big>>,
     precision: 6,
-    value: big(3500) as U<Token<Big>>,
+    value: big(3500) as USD<Big>,
     symbol: "",
     logo: "",
   } as TokenWithValue;
@@ -399,12 +409,34 @@ describe("addTokenWithValue", () => {
       denom: "uadenom",
       amount: big(200) as U<Token<Big>>,
       precision: 6,
-      value: big(3700) as U<Token<Big>>,
+      value: big(3700) as USD<Big>,
       symbol: "",
       logo: "",
     };
     expect(addTokenWithValue(tokenWithValue1, tokenWithValue2)).toEqual(
       expectResult
     );
+    expect(addTokenWithValue(tokenWithValue2, tokenWithValue1)).toEqual(
+      expectResult
+    );
+  });
+
+  test("invalid, when denoms are not the same", () => {
+    expect(addTokenWithValue(tokenWithValue1, tokenWithValue3)).toEqual({
+      denom: "",
+      amount: big(0) as U<Token<Big>>,
+      precision: undefined,
+      value: big(0) as USD<Big>,
+      symbol: undefined,
+      logo: undefined,
+    });
+    expect(addTokenWithValue(tokenWithValue1, tokenWithValue3)).toEqual({
+      denom: "",
+      amount: big(0) as U<Token<Big>>,
+      precision: undefined,
+      value: big(0) as USD<Big>,
+      symbol: undefined,
+      logo: undefined,
+    });
   });
 });

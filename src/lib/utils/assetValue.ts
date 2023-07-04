@@ -63,11 +63,20 @@ export const coinToTokenWithValue = (
 export const addTokenWithValue = (
   oldTotal: Option<TokenWithValue>,
   token: TokenWithValue
-): TokenWithValue =>
-  !oldTotal
-    ? token
-    : {
+): TokenWithValue => {
+  if (!oldTotal) return token;
+  return oldTotal.denom === token.denom
+    ? {
         ...oldTotal,
         amount: oldTotal.amount.add(token.amount) as U<Token<Big>>,
         value: oldTotal.value?.add(token.value ?? 0) as USD<Big>,
+      }
+    : {
+        denom: "",
+        amount: big(0) as U<Token<Big>>,
+        symbol: undefined,
+        logo: undefined,
+        precision: undefined,
+        value: big(0) as USD<Big>,
       };
+};
