@@ -8,7 +8,7 @@ interface PoolInfoTextProps {
 
 export const PoolInfoText = ({ title, children }: PoolInfoTextProps) => (
   <Flex direction="column" gap={1} minW="90px">
-    <Text variant="body2" textColor="pebble.500" fontWeight={500}>
+    <Text variant="body2" textColor="gray.500" fontWeight={500}>
       {title}
     </Text>
     {typeof children === "string" ? (

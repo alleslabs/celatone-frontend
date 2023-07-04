@@ -52,7 +52,7 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
     cursor="pointer"
     gap={2}
     aria-disabled={disabled}
-    _hover={{ bg: "pebble.800" }}
+    _hover={{ bg: "gray.800" }}
     transition="all .25s ease-in-out"
     _disabled={{ opacity: 0.4, pointerEvents: "none" }}
   >
@@ -100,7 +100,7 @@ export const SelectInput = <T extends string>({
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
-                borderColor: "lilac.main",
+                borderColor: "secondary.main",
               },
             },
             "& .form-label": {
@@ -141,14 +141,14 @@ export const SelectInput = <T extends string>({
             pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <CustomIcon name="chevron-down" color="pebble.600" />
+            <CustomIcon name="chevron-down" color="gray.600" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
         ref={optionRef}
         border="unset"
-        bg="pebble.900"
+        bg="gray.900"
         w={inputRef.current?.clientWidth}
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
@@ -159,7 +159,7 @@ export const SelectInput = <T extends string>({
         sx={{
           "> div:not(:last-of-type)": {
             borderBottom: hasDivider && "1px solid",
-            borderBottomColor: hasDivider && "pebble.700",
+            borderBottomColor: hasDivider && "gray.700",
           },
         }}
       >
@@ -184,7 +184,7 @@ export const SelectInput = <T extends string>({
             h={`${ITEM_HEIGHT}px`}
             align="center"
             borderTop={!hasDivider ? "1px solid" : "none"}
-            borderTopColor="pebble.700"
+            borderTopColor="gray.700"
           >
             {helperTextComponent}
           </Flex>

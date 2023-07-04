@@ -17,15 +17,15 @@ export const NoMobile = () => (
         direction="column"
         justify="center"
         align="center"
-        padding="8"
+        p={8}
         textAlign="center"
       >
         <CustomIcon
           name="info-circle-solid"
-          color="violet.light"
-          boxSize="10"
+          color="primary.light"
+          boxSize={10}
         />
-        <Heading as="h5" variant="h5" py="4">
+        <Heading as="h5" variant="h5" py={1}>
           Sorry, we currently do not support mobile use.
         </Heading>
         <Text variant="body1">

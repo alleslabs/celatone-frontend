@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp, useLCDEndpoint, useMobile } from "lib/app-provider";
+import { useBaseApiRoute, useCelatoneApp, useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
@@ -134,7 +134,7 @@ export const ContractSelectSection = observer(
     const { getContractLocalInfo } = useContractStore();
     const { indexerGraphClient } = useCelatoneApp();
     const isMobile = useMobile();
-    const endpoint = useLCDEndpoint();
+    const lcdEndpoint = useBaseApiRoute("rest");
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
@@ -154,12 +154,12 @@ export const ContractSelectSection = observer(
       [
         "query",
         "instantiate_info",
-        endpoint,
+        lcdEndpoint,
         indexerGraphClient,
         contractAddress,
       ],
       async () =>
-        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
+        queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
       {
         enabled: false,
         retry: false,
@@ -186,7 +186,7 @@ export const ContractSelectSection = observer(
           label: contractLocalInfo.label,
         });
       }
-    }, [contractAddress, contractLocalInfo, endpoint, reset, refetch]);
+    }, [contractAddress, contractLocalInfo, lcdEndpoint, reset, refetch]);
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;
@@ -196,8 +196,8 @@ export const ContractSelectSection = observer(
       <Flex
         mb={style.container}
         borderWidth="thin"
-        borderColor="pebble.800"
-        p="16px"
+        borderColor="gray.800"
+        p={4}
         borderRadius="8px"
         fontSize="12px"
         justify="space-between"
@@ -235,7 +235,7 @@ export const ContractSelectSection = observer(
               label={contractState.label}
             />
           </Flex>
-          <Flex gap="8px" alignItems="center">
+          <Flex gap={2} alignItems="center">
             {mode === "all-lists" && contractState.isValid && (
               <ContractDetailsButton
                 contractAddress={contractAddress}

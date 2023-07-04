@@ -7,7 +7,7 @@ const AccordionStepperItemLine = (props: FlexProps) => (
     w="1px"
     h="28px"
     right="45%"
-    background="pebble.600"
+    background="gray.600"
     position="absolute"
     visibility="hidden"
     zIndex={0}
@@ -22,7 +22,7 @@ export const AccordionStepperItem = () => (
       borderRadius="full"
       h="10px"
       w="10px"
-      borderColor="pebble.600"
+      borderColor="gray.600"
       borderWidth="1px"
     />
     <AccordionStepperItemLine id="after-stepper" top="9px" />

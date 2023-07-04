@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -18,10 +18,10 @@ const SubHeader = () => {
     { name: "Blocks", slug: "/blocks", icon: "block" },
     // { name: "Validators", slug: "/validators", icon: "admin" },
   ];
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const isCurrentPage = useIsCurrentPage();
 
-  const activeColor = "violet.light";
+  const activeColor = "primary.light";
 
   const myPageSlug = `/accounts/${address}`;
 
@@ -55,11 +55,11 @@ const SubHeader = () => {
               <CustomIcon
                 boxSize={3}
                 name={item.icon}
-                color={isCurrentPage(item.slug) ? activeColor : "pebble.600"}
+                color={isCurrentPage(item.slug) ? activeColor : "gray.600"}
               />
               <Text
                 variant="body2"
-                fontWeight="600"
+                fontWeight={700}
                 color={isCurrentPage(item.slug) ? activeColor : "text.dark"}
               >
                 {item.name}
@@ -78,13 +78,13 @@ const SubHeader = () => {
               h="full"
               borderBottomWidth={2}
               borderColor={
-                isCurrentPage(myPageSlug) ? "lilac.main" : "transparent"
+                isCurrentPage(myPageSlug) ? "secondary.main" : "transparent"
               }
-              _hover={{ borderColor: "lilac.main" }}
+              _hover={{ borderColor: "secondary.main" }}
               transition="all .25s ease-in-out"
             >
-              <CustomIcon boxSize={3} name="admin" color="lilac.main" />
-              <Text variant="body2" fontWeight="600" color="lilac.main">
+              <CustomIcon boxSize={3} name="admin" color="secondary.main" />
+              <Text variant="body2" fontWeight={700} color="secondary.main">
                 My Page
               </Text>
             </Flex>

@@ -36,7 +36,7 @@ export const MsgExitSwapExternAmountOutAction = ({
       />
       to
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
-      <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
       <MsgToken
         coin={msg.token_out}
         symbol={outAssetInfo?.symbol}

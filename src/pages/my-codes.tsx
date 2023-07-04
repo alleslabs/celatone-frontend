@@ -1,3 +1,3 @@
-import Codes from "lib/pages/codes";
+import MyCodes from "lib/pages/my-codes";
 
-export default Codes;
+export default MyCodes;

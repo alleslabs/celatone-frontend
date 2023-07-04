@@ -12,16 +12,16 @@ export const Badge: ComponentStyleConfig = {
     maxH: "20px",
   },
   variants: {
-    violet: { background: "violet.darker", color: "text.main" },
+    primary: { background: "primary.darker", color: "text.main" },
     gray: {
-      background: "pebble.700",
+      background: "gray.700",
       color: "text.main",
     },
-    honeydew: { background: "honeydew.dark", color: "background.main" },
-    lilac: {
-      background: "lilac.main",
+    secondary: {
+      background: "secondary.main",
       color: "background.main",
     },
+    accent: { background: "accent.dark", color: "background.main" },
   },
   defaultProps: {
     variant: "gray",

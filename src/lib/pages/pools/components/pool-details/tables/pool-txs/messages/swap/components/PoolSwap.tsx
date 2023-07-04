@@ -50,7 +50,7 @@ export const PoolSwap = ({
       templateColumns="minmax(250px, 1fr) 24px minmax(250px, 1fr)"
     >
       <div>
-        <Text variant="body2" textColor="pebble.500" fontWeight={500}>
+        <Text variant="body2" textColor="gray.500" fontWeight={500}>
           From
         </Text>
         <AssetCard
@@ -60,9 +60,9 @@ export const PoolSwap = ({
           ampCopierSection={ampCopierSection}
         />
       </div>
-      <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
       <div>
-        <Text variant="body2" textColor="pebble.500" fontWeight={500}>
+        <Text variant="body2" textColor="gray.500" fontWeight={500}>
           To
         </Text>
         <AssetCard

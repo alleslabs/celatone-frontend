@@ -27,7 +27,7 @@ export const Form: ComponentStyleConfig = {
             color: "text.disabled",
           },
           _active: {
-            color: "lilac.main",
+            color: "secondary.main",
           },
           "&.md-label, &.textarea-label": {
             transform: "scale(0.75) translateY(-20px)",

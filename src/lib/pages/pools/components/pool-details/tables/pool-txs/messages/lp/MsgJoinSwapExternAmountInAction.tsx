@@ -36,7 +36,7 @@ export const MsgJoinSwapExternAmountInAction = ({
       />
       to
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
-      <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
       at least
       <MsgToken
         coin={{ amount: msg.share_out_min_amount, denom: poolDenom }}

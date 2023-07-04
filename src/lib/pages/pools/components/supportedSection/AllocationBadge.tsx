@@ -39,11 +39,11 @@ export const AllocationBadge = ({
     : "-";
   return (
     <Flex
-      bg="pebble.800"
+      bg="gray.800"
       px={3}
       py={1}
       border="1px solid"
-      borderColor="pebble.700"
+      borderColor="gray.700"
       borderRadius="8px"
       transition="all .25s ease-in-out"
       alignItems="center"

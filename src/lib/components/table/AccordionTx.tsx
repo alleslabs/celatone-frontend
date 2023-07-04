@@ -49,7 +49,7 @@ export const AccordionTx = ({
       borderBottom="none"
       pl={accordionSpacing}
       gap={3}
-      _hover={{ background: "pebble.800" }}
+      _hover={{ background: "gray.800" }}
       transition="all .25s ease-in-out"
       onMouseEnter={() => setShowButton(true)}
       onMouseLeave={() => setShowButton(false)}

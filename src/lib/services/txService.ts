@@ -1,4 +1,3 @@
-import { useWallet } from "@cosmos-kit/react";
 import type {
   QueryFunctionContext,
   UseQueryResult,
@@ -6,7 +5,7 @@ import type {
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp, useChainId } from "lib/app-provider";
+import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
@@ -49,22 +48,22 @@ export const useTxData = (
   txHash: Option<string>,
   enabled = true
 ): UseQueryResult<TxData> => {
-  const { currentChainName } = useWallet();
-  const chainId = useChainId();
+  const { currentChainId } = useCelatoneApp();
+  const txsApiRoute = useBaseApiRoute("txs");
   const queryFn = useCallback(
     async ({ queryKey }: QueryFunctionContext<string[]>): Promise<TxData> => {
-      const txData = await queryTxData(queryKey[1], queryKey[2], queryKey[3]);
+      const txData = await queryTxData(queryKey[1], queryKey[2]);
       return {
         ...txData,
-        chainId,
+        chainId: currentChainId,
         isTxFailed: Boolean(txData.code),
       };
     },
-    [chainId]
+    [currentChainId]
   );
 
   return useQuery({
-    queryKey: ["tx_data", currentChainName, chainId, txHash] as string[],
+    queryKey: ["tx_data", txsApiRoute, txHash] as string[],
     queryFn,
     enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,

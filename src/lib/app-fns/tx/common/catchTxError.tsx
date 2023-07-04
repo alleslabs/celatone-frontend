@@ -36,7 +36,6 @@ export const catchTxError = (
 ): OperatorFunction<TxResultRendering, TxResultRendering> => {
   return catchError((error: Error) => {
     const txHash = error.message.match("(?:tx )(.*?)(?= at)")?.at(1);
-
     AmpTrack(
       error.message === "Request rejected"
         ? AmpEvent.TX_REJECTED
@@ -52,7 +51,7 @@ export const catchTxError = (
           <CustomIcon
             name="alert-circle-solid"
             color="error.light"
-            boxSize="5"
+            boxSize={5}
           />
         ),
       },

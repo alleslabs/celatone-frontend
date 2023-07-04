@@ -5,7 +5,7 @@ import type {
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute } from "lib/app-provider";
 import type { Option, ValidatorAddr } from "lib/types";
 
 import type { RawValidator } from "./validator";
@@ -15,12 +15,12 @@ export const useValidator = (
   validatorAddr: Option<ValidatorAddr>,
   enabled = true
 ): UseQueryResult<RawValidator> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   const queryFn = async ({ queryKey }: QueryFunctionContext<string[]>) =>
     getValidator(queryKey[2], queryKey[3] as ValidatorAddr);
 
   return useQuery(
-    ["query", "validator", endpoint, validatorAddr] as string[],
+    ["query", "validator", lcdEndpoint, validatorAddr] as string[],
     queryFn,
     {
       enabled: enabled && !!validatorAddr,
@@ -33,11 +33,13 @@ export const useValidator = (
 export const useValidators = (): UseQueryResult<
   Record<string, RawValidator>
 > => {
-  const endpoint = useLCDEndpoint();
-  const queryFn = useCallback(async () => getValidators(endpoint), [endpoint]);
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const queryFn = useCallback(
+    async () => getValidators(lcdEndpoint),
+    [lcdEndpoint]
+  );
 
-  return useQuery(["query", "validators", endpoint], queryFn, {
-    retry: 1,
+  return useQuery(["query", "validators", lcdEndpoint], queryFn, {
     refetchOnWindowFocus: false,
   });
 };

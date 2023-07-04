@@ -15,7 +15,7 @@ const WasmPageContainer = ({
     align="center"
     width={width}
     mx="auto"
-    py="48px"
+    py={12}
     direction="column"
   >
     {children}

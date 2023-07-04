@@ -75,7 +75,7 @@ export const PoolAssetsGrid = ({
       border="1px solid"
       borderColor="transparent"
       borderRadius="8px"
-      bgColor="pebble.900"
+      bgColor="gray.900"
     >
       <Text variant="body2" textColor="text.dark">
         {isJoin ? "Provided Assets" : "Receiving Assets"}

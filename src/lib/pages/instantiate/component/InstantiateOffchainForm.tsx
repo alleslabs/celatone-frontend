@@ -1,9 +1,8 @@
 import { Text, Flex, Heading, Button } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
@@ -29,7 +28,7 @@ export const InstantiateOffChainForm = observer(
     contractAddress,
     contractLabel,
   }: InstantiateOffChainFormProps) => {
-    const { address = "" } = useWallet();
+    const { address = "" } = useCurrentChain();
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();
     const userKey = useUserKey();

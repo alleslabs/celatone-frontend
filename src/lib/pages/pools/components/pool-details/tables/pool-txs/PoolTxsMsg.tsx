@@ -44,11 +44,11 @@ export const PoolTxsMsg = ({
       w="full"
       minW="min-content"
       borderY="0.5px solid"
-      borderColor="pebble.700"
-      _hover={{ background: "pebble.900" }}
+      borderColor="gray.700"
+      _hover={{ background: "gray.900" }}
       sx={{
         "&:hover .pool-msg-detail-container": {
-          borderColor: "pebble.700",
+          borderColor: "gray.700",
         },
       }}
     >
@@ -90,7 +90,7 @@ export const PoolTxsMsg = ({
               />
               {transaction.messages.length > 1 && (
                 <Tooltip label="There are at least one messages within this transaction that related to this pool.">
-                  <Badge variant="lilac" ml="6px">
+                  <Badge variant="secondary" ml="6px">
                     {transaction.messages.length}
                   </Badge>
                 </Tooltip>

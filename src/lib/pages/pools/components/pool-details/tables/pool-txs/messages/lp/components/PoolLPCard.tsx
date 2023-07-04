@@ -53,7 +53,7 @@ export const PoolLPCard = ({
       border="1px solid"
       borderColor="transparent"
       borderRadius="8px"
-      bgColor="pebble.900"
+      bgColor="gray.900"
     >
       <PoolAssetCard
         poolId={Number(poolId)}

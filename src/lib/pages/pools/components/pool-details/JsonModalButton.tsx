@@ -33,12 +33,12 @@ export const JsonModalButton = ({
         height="24px"
         p="4px"
         size="sm"
-        variant="ghost-lilac"
+        variant="ghost-secondary"
         rightIcon={
           <CustomIcon
             name="chevron-right"
             boxSize={3}
-            color="lilac.main"
+            color="secondary.main"
             m={0}
           />
         }
@@ -58,7 +58,7 @@ export const JsonModalButton = ({
               {modalHeader}
             </Heading>
           </ModalHeader>
-          <ModalCloseButton color="pebble.600" />
+          <ModalCloseButton color="gray.600" />
           <ModalBody p={4} maxH="640px" overflow="scroll">
             <Box
               bgColor="background.main"

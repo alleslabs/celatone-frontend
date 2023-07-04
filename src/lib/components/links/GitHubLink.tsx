@@ -21,14 +21,14 @@ export const GitHubLink = ({ github }: GitHubLinkProps) => {
         rel="noreferrer noopener"
         style={{ display: "flex" }}
       >
-        <Text color="lilac.main" variant="body2" wordBreak="break-all">
+        <Text color="secondary.main" variant="body2" wordBreak="break-all">
           {org}/{repo}
         </Text>
         <CustomIcon
           name="launch"
           boxSize="12px"
           marginLeft="8px"
-          color="pebble.600"
+          color="gray.600"
         />
       </a>
     </Flex>

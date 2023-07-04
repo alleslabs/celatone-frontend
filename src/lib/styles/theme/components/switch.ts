@@ -6,8 +6,9 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 const baseStyle = definePartsStyle({
   track: {
+    bg: "gray.500",
     _checked: {
-      bg: "violet.main",
+      bg: "primary.main",
     },
   },
 });

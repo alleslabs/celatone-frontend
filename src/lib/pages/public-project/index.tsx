@@ -2,6 +2,7 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { usePublicProjectConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
@@ -10,6 +11,7 @@ import { AllProject } from "./components/AllProject";
 export const AllPublicProjectsPage = () => {
   const router = useRouter();
 
+  usePublicProjectConfig({ shouldRedirect: true });
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_ALL_PROJECTS);
   }, [router.isReady]);

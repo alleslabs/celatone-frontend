@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import {
   getAdminByContractAddressesQueryDocument,
   getContractListByAdmin,
@@ -11,6 +11,7 @@ import {
   getContractListByWalletAddressPagination,
   getContractListCountByAdmin,
   getContractListCountByCodeId,
+  getContractListQueryDocument,
   getInstantiatedCountByUserQueryDocument,
   getInstantiateDetailByContractQueryDocument,
   getInstantiatedListByUserQueryDocument,
@@ -31,16 +32,45 @@ import type {
 import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
 interface InstantiateDetail {
+  createdHeight: Option<number>;
+  createdTime: Option<Date>;
   initMsg: Option<string>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
 }
 
+export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getContractListQueryDocument)
+        .then(({ contracts }) =>
+          contracts.map<ContractInfo>((contract) => ({
+            contractAddress: contract.address as ContractAddr,
+            instantiator: contract.init_by.at(0)?.account.address as Addr,
+            label: contract.label,
+            admin: contract.admin?.address as Addr,
+            latestUpdater: undefined,
+            latestUpdated: parseDateOpt(
+              contract.init_by.at(0)?.block.timestamp
+            ),
+            remark: undefined,
+          }))
+        ),
+    [indexerGraphClient]
+  );
+
+  return useQuery(["recent_contracts", indexerGraphClient], queryFn);
+};
+
 export const useInstantiatedCountByUserQuery = (
   walletAddr: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   const queryFn = useCallback(async () => {
     if (!walletAddr)
@@ -60,7 +90,7 @@ export const useInstantiatedCountByUserQuery = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!walletAddr,
+      enabled: wasm.enabled && !!walletAddr,
     }
   );
 };
@@ -91,7 +121,7 @@ export const useInstantiatedListByUserQuery = (
   return useQuery(
     ["instantiated_list_by_user", walletAddr, indexerGraphClient],
     queryFn,
-    { enabled: !!walletAddr }
+    { enabled: !!walletAddr, refetchOnWindowFocus: false }
   );
 };
 
@@ -136,6 +166,10 @@ export const useInstantiateDetailByContractQuery = (
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
       .then(({ contracts_by_pk }) => ({
+        createdHeight: contracts_by_pk?.transaction?.block_height,
+        createdTime: parseDateOpt(
+          contracts_by_pk?.transaction?.block.timestamp
+        ),
         initMsg: contracts_by_pk?.init_msg,
         initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
         initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
@@ -336,6 +370,8 @@ export const useContractListByWalletAddressPagination = (
   pageSize: number
 ): UseQueryResult<ContractInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
@@ -373,7 +409,11 @@ export const useContractListByWalletAddressPagination = (
       walletAddress,
     ],
     createQueryFnWithTimeout(queryFn),
-    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
+    {
+      enabled: wasm.enabled && !!walletAddress,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 
@@ -383,6 +423,8 @@ export const useContractListByAdminPagination = (
   pageSize: number
 ): UseQueryResult<ContractInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
@@ -419,7 +461,11 @@ export const useContractListByAdminPagination = (
       walletAddress,
     ],
     createQueryFnWithTimeout(queryFn),
-    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
+    {
+      enabled: wasm.enabled && !!walletAddress,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 
@@ -427,6 +473,8 @@ export const useContractListCountByAdmin = (
   walletAddress: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error("Wallet address not found (useContractListCountByAdmin)");
@@ -443,7 +491,7 @@ export const useContractListCountByAdmin = (
     createQueryFnWithTimeout(queryFn),
     {
       keepPreviousData: true,
-      enabled: !!walletAddress,
+      enabled: wasm.enabled && !!walletAddress,
     }
   );
 };

@@ -2,18 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 
-import { useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute } from "lib/app-provider";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
 export const useQueryCmds = (contractAddress: ContractAddr) => {
   const [queryCmds, setQueryCmds] = useState<[string, string][]>([]);
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
+    ["query", "cmds", lcdEndpoint, contractAddress, '{"": {}}'],
     async () =>
-      queryData(endpoint, contractAddress as ContractAddr, '{"": {}}'),
+      queryData(lcdEndpoint, contractAddress as ContractAddr, '{"": {}}'),
     {
       enabled: !!contractAddress,
       retry: false,

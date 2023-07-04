@@ -69,7 +69,7 @@ export const PoolAssetCard = ({
         px={3}
         py={2}
         borderRadius="8px"
-        background="pebble.800"
+        background="gray.800"
       >
         <PoolLogo
           tokens={tokens}
@@ -95,7 +95,7 @@ export const PoolAssetCard = ({
                 color="text.main"
               >
                 {token.symbol ?? getTokenLabel(token.denom)}
-                <Text as="span" fontWeight={400} color="honeydew.main">
+                <Text as="span" fontWeight={400} color="accent.main">
                   {" "}
                   /
                 </Text>

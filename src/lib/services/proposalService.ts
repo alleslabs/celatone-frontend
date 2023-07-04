@@ -3,7 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import big from "big.js";
 import { useCallback } from "react";
 
-import { useCelatoneApp, useLCDEndpoint } from "lib/app-provider";
+import {
+  useBaseApiRoute,
+  useCelatoneApp,
+  useChainRecordAsset,
+} from "lib/app-provider";
 import {
   getProposalList,
   getProposalListCount,
@@ -26,7 +30,7 @@ import type {
   Token,
 } from "lib/types";
 import {
-  demicrofy,
+  deexponentify,
   formatBalanceWithDenom,
   getTokenLabel,
   parseDate,
@@ -275,70 +279,80 @@ export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
   return useQuery(["proposal_types", indexerGraphClient], queryFn);
 };
 
+export interface MinDeposit {
+  amount: U<Token>;
+  denom: string;
+  formattedAmount: Token;
+  formattedDenom: string;
+  formattedToken: string;
+  precision: number;
+}
+
 interface DepositParamsReturn
   extends Omit<DepositParamsInternal, "minDeposit"> {
-  minDeposit: {
-    amount: U<Token>;
-    denom: string;
-    formattedAmount: Token;
-    formattedDenom: string;
-    formattedToken: string;
-  };
+  minDeposit: MinDeposit;
   minInitialDeposit: Token;
 }
 
-export const useGovParams = (): UseQueryResult<{
+export interface GovParams {
   depositParams: DepositParamsReturn;
   uploadAccess: UploadAccess;
   votingParams: VotingParamsInternal;
-}> => {
-  const lcdEndpoint = useLCDEndpoint();
-  const queryFn = useCallback(() => {
-    return Promise.all([
-      fetchGovDepositParams(lcdEndpoint),
-      fetchGovUploadAccessParams(lcdEndpoint),
-      fetchGovVotingParams(lcdEndpoint),
-    ]).then<{
-      depositParams: DepositParamsReturn;
-      uploadAccess: UploadAccess;
-      votingParams: VotingParamsInternal;
-    }>((params) => {
-      const minDepositParam = params[0].minDeposit[0];
-      const [minDepositAmount, minDepositDenom] = [
-        demicrofy(minDepositParam.amount as U<Token>).toFixed(),
-        getTokenLabel(minDepositParam.denom),
-      ];
-      return {
-        depositParams: {
-          ...params[0],
-          minDeposit: {
-            ...minDepositParam,
-            amount: minDepositParam.amount as U<Token>,
-            formattedAmount: minDepositAmount as Token,
-            formattedDenom: minDepositDenom,
-            formattedToken: formatBalanceWithDenom({
-              coin: minDepositParam,
-              precision: 6,
-              decimalPoints: 2,
-            }),
+}
+
+export const useGovParams = (): UseQueryResult<GovParams> => {
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const getAssetInfo = useChainRecordAsset();
+  const queryFn = useCallback(
+    () =>
+      Promise.all([
+        fetchGovDepositParams(lcdEndpoint),
+        fetchGovUploadAccessParams(lcdEndpoint),
+        fetchGovVotingParams(lcdEndpoint),
+      ]).then<GovParams>((params) => {
+        const minDepositParam = params[0].minDeposit[0];
+        const assetInfo = getAssetInfo(minDepositParam.denom);
+        const [minDepositAmount, minDepositDenom] = [
+          deexponentify(
+            minDepositParam.amount as U<Token>,
+            assetInfo?.precision
+          ).toFixed(),
+          getTokenLabel(minDepositParam.denom, assetInfo?.symbol),
+        ];
+        return {
+          depositParams: {
+            ...params[0],
+            minDeposit: {
+              ...minDepositParam,
+              amount: minDepositParam.amount as U<Token>,
+              formattedAmount: minDepositAmount as Token,
+              formattedDenom: minDepositDenom,
+              formattedToken: formatBalanceWithDenom({
+                coin: minDepositParam,
+                precision: assetInfo?.precision,
+                symbol: assetInfo?.symbol,
+              }),
+              precision: assetInfo?.precision ?? 0,
+            },
+            minInitialDeposit: big(params[0].minInitialDepositRatio)
+              .times(minDepositAmount)
+              .toFixed(2) as Token,
           },
-          minInitialDeposit: big(params[0].minInitialDepositRatio)
-            .times(minDepositAmount)
-            .toFixed(2) as Token,
-        },
-        uploadAccess: params[1],
-        votingParams: params[2],
-      };
-    });
-  }, [lcdEndpoint]);
+          uploadAccess: params[1],
+          votingParams: params[2],
+        };
+      }),
+    [lcdEndpoint, getAssetInfo]
+  );
 
   return useQuery(["gov_params", lcdEndpoint], queryFn, {
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   });
 };
 
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
   return useQuery(
     ["upload_access", lcdEndpoint],
     () => fetchGovUploadAccessParams(lcdEndpoint),

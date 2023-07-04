@@ -1,12 +1,11 @@
 import { Flex, IconButton, SimpleGrid, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import type { Big } from "big.js";
 import big from "big.js";
 import Link from "next/link";
+import { useMemo } from "react";
 
 import { PoolHeader } from "../PoolHeader";
-import { getPoolUrl } from "lib/app-fns/explorer";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { AmpTrackWebsite } from "lib/services/amplitude";
@@ -15,7 +14,7 @@ import { formatPrice } from "lib/utils";
 
 import { AllocationBadge } from "./AllocationBadge";
 
-const hoverBgColor = "pebble.700";
+const hoverBgColor = "gray.700";
 
 interface PoolCardProps {
   item: Pool;
@@ -23,7 +22,13 @@ interface PoolCardProps {
 }
 
 export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
-  const { currentChainName } = useWallet();
+  const poolConfig = usePoolConfig({ shouldRedirect: true });
+  const poolUrl = useMemo(() => {
+    if (!poolConfig.enabled) return "";
+    return poolConfig.url;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poolConfig.enabled]);
+
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
@@ -40,7 +45,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
       gap={4}
       flexDirection="column"
       onClick={handleOnClick}
-      bg="pebble.900"
+      bg="gray.900"
       borderRadius="8px"
       p={4}
       transition="all .25s ease-in-out"
@@ -48,10 +53,10 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
       sx={{
         _hover: {
           "> div:last-child > div": {
-            borderColor: "pebble.600",
+            borderColor: "gray.600",
             backgroundColor: hoverBgColor,
           },
-          backgroundColor: "pebble.800",
+          backgroundColor: "gray.800",
         },
       }}
     >
@@ -64,9 +69,9 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
         />
         <Tooltip label="See in osmosis.zone">
           <Link
-            href={`${getPoolUrl(currentChainName)}/${item.id}`}
+            href={`${poolUrl}/${item.id}`}
             onClick={(e) => {
-              AmpTrackWebsite(`${getPoolUrl(currentChainName)}/${item.id}`);
+              AmpTrackWebsite(`${poolUrl}/${item.id}`);
               e.stopPropagation();
             }}
             target="_blank"
@@ -77,7 +82,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
               variant="none"
               aria-label="external"
               _hover={{ backgroundColor: hoverBgColor }}
-              color="pebble.600"
+              color="gray.600"
               icon={<CustomIcon name="launch" />}
             />
           </Link>

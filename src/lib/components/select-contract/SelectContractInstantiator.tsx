@@ -19,8 +19,8 @@ import { useState } from "react";
 
 import { CustomIcon } from "../icon";
 import {
+  useBaseApiRoute,
   useCelatoneApp,
-  useLCDEndpoint,
   useValidateAddress,
 } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -43,7 +43,9 @@ export const SelectContractInstantiator = ({
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
   const {
-    appContractAddress: { example: exampleContractAddress },
+    chainConfig: {
+      exampleAddresses: { contract: exampleContractAddress },
+    },
   } = useCelatoneApp();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
@@ -61,7 +63,7 @@ export const SelectContractInstantiator = ({
   const contractLists = [instantiatedListInfo, ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const resetOnClose = () => {
     setListSlug("");
@@ -78,8 +80,8 @@ export const SelectContractInstantiator = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", searchContract, endpoint],
-    async () => queryContract(endpoint, searchContract as ContractAddr),
+    ["query", "contract", lcdEndpoint, searchContract],
+    async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
     {
       enabled: false,
       retry: false,
@@ -102,9 +104,9 @@ export const SelectContractInstantiator = ({
     <>
       <Button
         variant={notSelected ? "primary" : "outline-primary"}
-        py="6px"
+        py={1}
         size="sm"
-        px="16px"
+        px={4}
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
@@ -123,8 +125,8 @@ export const SelectContractInstantiator = ({
               <DrawerHeader>
                 <CustomIcon
                   name="contract-address-solid"
-                  boxSize="5"
-                  color="pebble.600"
+                  boxSize={5}
+                  color="gray.600"
                 />
                 <Heading as="h5" variant="h5">
                   Select Contract
@@ -132,11 +134,11 @@ export const SelectContractInstantiator = ({
               </DrawerHeader>
               <DrawerCloseButton />
 
-              <DrawerBody p="24px" overflowY="scroll">
+              <DrawerBody p={6} overflowY="scroll">
                 <Heading as="h6" variant="h6" mb={4}>
                   Fill contract address manually
                 </Heading>
-                <Flex gap="8px" alignItems="center">
+                <Flex gap={2} alignItems="center">
                   <Input
                     isInvalid={invalid !== ""}
                     value={searchContract}
@@ -168,10 +170,10 @@ export const SelectContractInstantiator = ({
                   {invalid}
                 </Text>
 
-                <Flex my="24px" gap="8px" alignItems="center">
-                  <Divider borderColor="pebble.700" />
+                <Flex my={6} gap={2} alignItems="center">
+                  <Divider borderColor="gray.700" />
                   <Text variant="body1">OR</Text>
-                  <Divider borderColor="pebble.700" />
+                  <Divider borderColor="gray.700" />
                 </Flex>
 
                 <Heading as="h6" variant="h6" mb={4}>
@@ -181,7 +183,7 @@ export const SelectContractInstantiator = ({
                   contractLists={contractLists}
                   handleListSelect={handleListSelect}
                   isReadOnly
-                  formLabelBgColor="pebble.900"
+                  formLabelBgColor="gray.900"
                 />
               </DrawerBody>
             </>
@@ -190,10 +192,10 @@ export const SelectContractInstantiator = ({
               <DrawerHeader>
                 <CustomIcon
                   name="chevron-left"
-                  boxSize="5"
+                  boxSize={5}
                   onClick={() => setListSlug("")}
                   cursor="pointer"
-                  color="pebble.600"
+                  color="gray.600"
                 />
                 <Heading as="h5" variant="h5">
                   {contractList.name}

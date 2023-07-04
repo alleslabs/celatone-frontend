@@ -7,14 +7,14 @@ interface LoadingProps {
 export const Loading = ({ withBorder = true }: LoadingProps) => (
   <Flex
     borderY={withBorder ? "1px solid" : undefined}
-    borderColor="pebble.700"
+    borderColor="gray.700"
     width="full"
-    py="60px"
+    py={15}
     my={12}
     flexDirection="column"
     alignItems="center"
   >
     <Spinner size="xl" />
-    <Text mt="20px">Loading ...</Text>
+    <Text mt={5}>Loading ...</Text>
   </Flex>
 );

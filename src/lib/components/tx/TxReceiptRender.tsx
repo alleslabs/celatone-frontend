@@ -52,7 +52,7 @@ const ReceiptRow = ({ title, value, html }: TxReceipt) => (
       <Text
         variant="body2"
         wordBreak="break-word"
-        color={value === null ? "pebble.600" : "text.main"}
+        color={value === null ? "gray.600" : "text.main"}
       >
         {value === null ? String(value) : value}
       </Text>

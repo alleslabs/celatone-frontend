@@ -35,7 +35,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
   switch (true) {
     case value === null:
       return (
-        <Text variant="body2" color="pebble.600">
+        <Text variant="body2" color="gray.600">
           null
         </Text>
       );

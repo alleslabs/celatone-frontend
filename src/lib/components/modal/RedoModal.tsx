@@ -12,9 +12,9 @@ import {
   Heading,
   ModalFooter,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
+import { useCurrentChain } from "lib/app-provider";
 import { useRedo } from "lib/hooks";
 import type { Message, Msg } from "lib/types";
 import { extractMsgType } from "lib/utils";
@@ -26,13 +26,15 @@ interface RedoModalProps {
 export const RedoModal = ({ message }: RedoModalProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onClickRedo = useRedo();
-  const { currentChainName } = useWallet();
+  const {
+    chain: { chain_name: chainName },
+  } = useCurrentChain();
 
   return (
     <>
       <Button
         leftIcon={<CustomIcon name="redo" />}
-        variant="outline"
+        variant="outline-gray"
         iconSpacing="2"
         size="sm"
         onClick={onOpen}
@@ -44,13 +46,13 @@ export const RedoModal = ({ message }: RedoModalProps) => {
         <ModalContent w="640px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name="redo" boxSize="5" color="pebble.600" />
+              <CustomIcon name="redo" boxSize={5} color="gray.600" />
               <Heading variant="h5" as="h5">
                 Redo Instantiate
               </Heading>
             </Flex>
           </ModalHeader>
-          <ModalCloseButton color="pebble.600" />
+          <ModalCloseButton color="gray.600" />
           <ModalBody maxH="400px" overflow="overlay">
             <Flex direction="column" gap={5}>
               <Flex direction="row" gap={4}>
@@ -75,9 +77,13 @@ export const RedoModal = ({ message }: RedoModalProps) => {
               direction="row"
               align="center"
               justifyContent="end"
-              gap="4"
+              gap={4}
             >
-              <Button cursor="pointer" variant="ghost-lilac" onClick={onClose}>
+              <Button
+                cursor="pointer"
+                variant="ghost-secondary"
+                onClick={onClose}
+              >
                 Cancel
               </Button>
               <Button
@@ -86,7 +92,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
                     e,
                     extractMsgType(message.type),
                     message.detail as Msg,
-                    currentChainName
+                    chainName
                   )
                 }
               >{`Redo with \u2018MsgInstantiateContract\u2019`}</Button>

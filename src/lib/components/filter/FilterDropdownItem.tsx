@@ -23,13 +23,13 @@ export const FilterDropdownItem = ({
 }: FilterDropdownItemProps) => (
   <ListItem
     style={listItemProps}
-    _hover={{ bg: "pebble.800" }}
+    _hover={{ bg: "gray.800" }}
     transition="all .25s ease-in-out"
     onClick={onSelect}
   >
     <Flex alignItems="center" justifyContent="space-between">
       {filterDropdownComponent}
-      {isOptionSelected && <CustomIcon name="check" color="pebble.600" />}
+      {isOptionSelected && <CustomIcon name="check" color="gray.600" />}
     </Flex>
   </ListItem>
 );

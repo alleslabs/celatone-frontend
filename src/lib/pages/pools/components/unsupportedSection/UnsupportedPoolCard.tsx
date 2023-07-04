@@ -9,19 +9,18 @@ import {
   Image,
   Button,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import Link from "next/link";
+import { useMemo } from "react";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
-import { getPoolUrl } from "lib/app-fns/explorer";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { AmpTrackExpand, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Pool } from "lib/types";
-import { formatUTokenWithPrecision } from "lib/utils";
+import { formatUTokenWithPrecision, openNewTab } from "lib/utils";
 
 interface UnsupportedPoolCardProps {
   item: Pool;
@@ -31,14 +30,20 @@ const StyledIconButton = chakra(IconButton, {
     display: "flex",
     alignItems: "center",
     fontSize: "24px",
-    color: "pebble.600",
+    color: "gray.600",
   },
 });
 
-const hoverBgColor = "pebble.700";
+const hoverBgColor = "gray.700";
 
 export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
-  const { currentChainName } = useWallet();
+  const poolConfig = usePoolConfig({ shouldRedirect: true });
+  const poolUrl = useMemo(() => {
+    if (!poolConfig.enabled) return "";
+    return poolConfig.url;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poolConfig.enabled]);
+
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
     navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
@@ -47,8 +52,8 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
   return (
     <AccordionItem
       mt={4}
-      bg="pebble.900"
-      _hover={{ bg: "pebble.800" }}
+      bg="gray.900"
+      _hover={{ bg: "gray.800" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
     >
@@ -75,11 +80,9 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                 <Flex>
                   <Tooltip label="See in osmosis.zone">
                     <Link
-                      href={`${getPoolUrl(currentChainName)}/${item.id}`}
+                      href={`${poolUrl}/${item.id}`}
                       onClick={(e) => {
-                        AmpTrackWebsite(
-                          `${getPoolUrl(currentChainName)}/${item.id}`
-                        );
+                        AmpTrackWebsite(`${poolUrl}/${item.id}`);
                         e.stopPropagation();
                       }}
                       target="_blank"
@@ -157,14 +160,8 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                   </Button>
                   <Button
                     onClick={() => {
-                      AmpTrackWebsite(
-                        `${getPoolUrl(currentChainName)}/${item.id}`
-                      );
-                      window.open(
-                        `${getPoolUrl(currentChainName)}/${item.id}`,
-                        "_blank",
-                        "noopener,noreferrer"
-                      );
+                      AmpTrackWebsite(`${poolUrl}/${item.id}`);
+                      openNewTab(`${poolUrl}/${item.id}`);
                     }}
                     size="sm"
                     variant="outline-primary"

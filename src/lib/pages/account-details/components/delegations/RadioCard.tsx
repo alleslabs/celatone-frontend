@@ -25,7 +25,7 @@ export const RadioCard = ({
     <Radio variant="card" value={value} overflowX="hidden">
       <Flex alignItems="center" gap={2} justifyContent="space-between">
         <Flex direction="column" gap={1}>
-          <Text variant="body2" textColor="pebble.400" fontWeight="500">
+          <Text variant="body2" textColor="gray.400" fontWeight={500}>
             {value}
           </Text>
           {isLoading ? (
@@ -36,7 +36,7 @@ export const RadioCard = ({
                 {formatUTokenWithPrecision(token.amount, token.precision || 0)}
               </Heading>
               <Text variant="body2" textColor="text.main">
-                {token.symbol ?? getTokenLabel(token.denom)}
+                {getTokenLabel(token.denom, token.symbol)}
               </Text>
             </Flex>
           )}

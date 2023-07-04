@@ -9,8 +9,8 @@ import {
   DrawerCloseButton,
   DrawerBody,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/providers/store";
@@ -32,7 +32,7 @@ export const SelectContractAdmin = ({
   onContractSelect,
 }: SelectContractAdminProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { getContractLocalInfo } = useContractStore();
 
   const { data: contracts = [], isLoading } = useContractListByAdmin(
@@ -59,8 +59,8 @@ export const SelectContractAdmin = ({
     <>
       <Button
         variant={notSelected ? "primary" : "outline-primary"}
-        py="6px"
-        px="16px"
+        py={1}
+        px={4}
         size="sm"
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_MODAL);
@@ -80,8 +80,8 @@ export const SelectContractAdmin = ({
           <DrawerHeader>
             <CustomIcon
               name="contract-address-solid"
-              boxSize="5"
-              color="pebble.600"
+              boxSize={5}
+              color="gray.600"
             />
             <Heading as="h5" variant="h5">
               Select contract which you have permission

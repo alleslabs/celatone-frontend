@@ -9,10 +9,10 @@ interface UploadIconProps {
 const getVariantStyle = (variant: UploadIconProps["variant"]) => {
   switch (variant) {
     case "muted":
-      return { bgColor: "pebble.700", color: "text.dark" };
+      return { bgColor: "gray.700", color: "text.dark" };
     case "primary":
     default:
-      return { bgColor: "lilac.background", color: "lilac.main" };
+      return { bgColor: "secondary.background", color: "secondary.main" };
   }
 };
 

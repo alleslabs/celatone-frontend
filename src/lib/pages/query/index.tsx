@@ -4,8 +4,11 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
+import {
+  useBaseApiRoute,
+  useInternalNavigate,
+  useWasmConfig,
+} from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -23,9 +26,10 @@ import {
 import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");
@@ -51,8 +55,8 @@ const Query = () => {
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
-    async () => queryData(endpoint, contractAddress, '{"": {}}'),
+    ["query", "cmds", lcdEndpoint, contractAddress, '{"": {}}'],
+    async () => queryData(lcdEndpoint, contractAddress, '{"": {}}'),
     {
       enabled: !!contractAddress,
       retry: false,
@@ -93,21 +97,20 @@ const Query = () => {
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
-      <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
         <Heading as="h5" variant="h5">
           Query Contract
         </Heading>
         <Box>
           <Button
-            variant="ghost-lilac"
+            variant="ghost-secondary"
             size="sm"
             p="unset"
-            pl="2"
+            pl={2}
             onClick={goToExecute}
           >
             Go To Execute
-            <CustomIcon name="chevron-right" boxSize="3" />
+            <CustomIcon name="chevron-right" boxSize={3} />
           </Button>
         </Box>
       </Flex>
