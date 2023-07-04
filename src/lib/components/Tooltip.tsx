@@ -26,7 +26,7 @@ export const TooltipInfo = ({
   <Tooltip {...tooltipProps}>
     <Flex cursor="pointer">
       <CustomIcon
-        color="pebble.600"
+        color="gray.600"
         name={iconVariant === "solid" ? "info-circle-solid" : "info-circle"}
         boxSize={3}
         m={0}

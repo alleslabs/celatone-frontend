@@ -36,7 +36,7 @@ export const AssetCard = ({
         minH="100px"
         gap={2}
         p={3}
-        background="pebble.800"
+        background="gray.800"
         borderRadius="8px"
         {...cardProps}
       >
@@ -44,7 +44,7 @@ export const AssetCard = ({
           gap={1}
           alignItems="center"
           borderBottom="1px solid"
-          borderBottomColor="pebble.700"
+          borderBottomColor="gray.700"
           pb={2}
         >
           <Image

@@ -49,18 +49,18 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
           {result.receiptInfo.headerIcon}
           {result.receiptInfo.header}
         </ModalHeader>
-        {isUpdateAdminSucceed && <ModalCloseButton color="pebble.600" />}
+        {isUpdateAdminSucceed && <ModalCloseButton color="gray.600" />}
         {(result.receiptInfo.description || result.receipts.length > 0) && (
           <ModalBody>
             {result.receiptInfo.description && (
-              <Text variant="body1" mb="16px">
+              <Text variant="body1" mb={4}>
                 {result.receiptInfo.description}
               </Text>
             )}
             <TxReceiptRender receipts={result.receipts} />
           </ModalBody>
         )}
-        <ModalFooter gap="8px">
+        <ModalFooter gap={2}>
           <ButtonSection
             actionVariant={result.actionVariant}
             onClose={onClose}

@@ -1,21 +1,23 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useCallback } from "react";
 
+import { useCurrentChain } from "lib/app-provider";
 import type { CodeInfo, HumanAddr } from "lib/types";
-import { AccessConfigPermission } from "lib/types";
+import { resolvePermission } from "lib/utils";
 
 export type PermissionFilterValue =
   | "all"
   | "without-proposal"
   | "with-proposal";
 
-export const usePermissionFilter = (filterValue: PermissionFilterValue) => {
-  const { address } = useWallet();
+export const useCodePermissionFilter = (filterValue: PermissionFilterValue) => {
+  const { address } = useCurrentChain();
   return useCallback(
     ({ instantiatePermission, permissionAddresses }: CodeInfo) => {
-      const isAllowed =
-        permissionAddresses.includes(address as HumanAddr) ||
-        instantiatePermission === AccessConfigPermission.EVERYBODY;
+      const isAllowed = resolvePermission(
+        address as HumanAddr,
+        instantiatePermission,
+        permissionAddresses
+      );
 
       switch (filterValue) {
         case "with-proposal":
@@ -31,7 +33,7 @@ export const usePermissionFilter = (filterValue: PermissionFilterValue) => {
   );
 };
 
-export const useSearchFilter = (keyword: string) =>
+export const useCodeSearchFilter = (keyword: string) =>
   useCallback(
     (code: CodeInfo) => {
       const computedKeyword = keyword.trim();

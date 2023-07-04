@@ -25,7 +25,7 @@ export const PoolOtherMsgs = ({ otherMsgs, isIbc }: PoolOtherMsgsProps) => {
         );
       })}
       {isIbc && (
-        <Tag variant="honeydew-dark" size="sm">
+        <Tag variant="accent-dark" size="sm">
           IBC
         </Tag>
       )}

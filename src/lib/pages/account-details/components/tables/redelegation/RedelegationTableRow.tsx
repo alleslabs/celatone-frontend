@@ -18,7 +18,7 @@ export const RedelegationTableRow = ({
 }: RedelegationTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
-    _hover={{ bg: "pebble.900" }}
+    _hover={{ bg: "gray.900" }}
     transition="all .25s ease-in-out"
     minW="min-content"
   >
@@ -26,7 +26,7 @@ export const RedelegationTableRow = ({
       <ValidatorBadge validator={redelegation.srcValidator} />
     </TableRow>
     <TableRow>
-      <CustomIcon name="arrow-right" boxSize={6} color="pebble.600" />
+      <CustomIcon name="arrow-right" boxSize={6} color="gray.600" />
     </TableRow>
     <TableRow>
       <ValidatorBadge validator={redelegation.dstValidator} />

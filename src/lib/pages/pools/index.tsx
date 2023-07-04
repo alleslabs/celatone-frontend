@@ -65,7 +65,7 @@ export const PoolIndex = () => {
         Osmosis Pools
       </Heading>
       <Tabs index={tabIndex}>
-        <TabList my={8} borderBottom="1px" borderColor="pebble.800">
+        <TabList my={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab
             count={supportedPoolCount ?? 0}
             onClick={() => handleTabChange(TabIndex.Supported)}

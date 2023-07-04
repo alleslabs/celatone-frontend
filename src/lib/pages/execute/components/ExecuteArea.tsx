@@ -1,11 +1,14 @@
 import { Box, Flex, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
-import { useFabricateFee, useExecuteContractTx } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useExecuteContractTx,
+  useCurrentChain,
+} from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
@@ -58,7 +61,7 @@ export const ExecuteArea = ({
   initialFunds,
   cmds,
 }: ExecuteAreaProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const executeTx = useExecuteContractTx();
   const { broadcast } = useTxBroadcast();
@@ -216,14 +219,14 @@ export const ExecuteArea = ({
   return (
     <Box my={4}>
       {contractAddress && (
-        <Text variant="body3" mb="8px">
+        <Text variant="body3" mb={4}>
           Message Suggestions:
         </Text>
       )}
       {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
-          rowGap="8px"
+          rowGap={4}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
@@ -244,12 +247,12 @@ export const ExecuteArea = ({
         </ButtonGroup>
       ) : (
         contractAddress && (
-          <Text mt="8px" variant="body2" color="text.dark">
+          <Text mt={2} variant="body2" color="text.dark">
             No ExecuteMsgs suggestion available
           </Text>
         )
       )}
-      <Flex gap="32px" mt={8} direction={{ sm: "column", lg: "row" }}>
+      <Flex gap={8} mt={8} direction={{ sm: "column", lg: "row" }}>
         <Box w={{ sm: "full", lg: "50%" }}>
           <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
           {error && <ErrorMessageRender error={error} mb={4} />}

@@ -1,10 +1,13 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
+import { DotSeparator } from "../DotSeparator";
+import { PermissionChip } from "../PermissionChip";
 import type { FormStatus } from "lib/components/forms";
 import { UploadIcon } from "lib/components/icon";
-import { useUserKey } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
+import { useCodeDataByCodeId } from "lib/services/codeService";
+import { AccessConfigPermission } from "lib/types";
 
 import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
@@ -20,22 +23,22 @@ export const CodeSelect = ({
   status,
   ...componentProps
 }: CodeSelectProps) => {
-  const { codeInfo } = useCodeStore();
-  const userKey = useUserKey();
-  const name = codeInfo?.[userKey]?.[Number(codeId)]?.name;
+  const { getCodeLocalInfo } = useCodeStore();
+  const name = getCodeLocalInfo(Number(codeId))?.name;
+  const { data: codeInfo } = useCodeDataByCodeId(codeId);
 
   const isError = status.state === "error";
   return (
     <Flex direction="column" {...componentProps}>
       <Flex
         align="center"
-        p="16px"
-        gap="16px"
+        p={4}
+        gap={4}
         w="100%"
-        bgColor="pebble.900"
+        bgColor="gray.900"
         borderRadius="8px"
         borderWidth="1px"
-        borderColor={isError ? "error.main" : "pebble.700"}
+        borderColor={isError ? "error.main" : "gray.700"}
       >
         <UploadIcon variant={codeId ? "primary" : "muted"} />
         {codeId ? (
@@ -49,9 +52,19 @@ export const CodeSelect = ({
             >
               {name ?? "Untitled Name"}
             </Text>
-            <Text variant="body2" color="text.dark">
-              Code ID {codeId}
-            </Text>
+            <Flex alignItems="center" gap={2}>
+              <Text variant="body2" color="text.dark">
+                Code ID {codeId}
+              </Text>
+              <DotSeparator />
+              <PermissionChip
+                instantiatePermission={
+                  codeInfo?.instantiatePermission ??
+                  AccessConfigPermission.UNKNOWN
+                }
+                permissionAddresses={codeInfo?.permissionAddresses ?? []}
+              />
+            </Flex>
           </Flex>
         ) : (
           <Text variant="body1" fontWeight={500}>
@@ -63,6 +76,7 @@ export const CodeSelect = ({
           buttonText={codeId ? "Change Code" : "Select Code"}
         />
       </Flex>
+
       {isError && (
         <Text variant="body3" color="error.main" mt={1} ml={3}>
           {status.message}

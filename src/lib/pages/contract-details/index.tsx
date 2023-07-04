@@ -10,8 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useValidateAddress } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
+import { useValidateAddress, useWasmConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -92,12 +91,11 @@ const ContractDetailsBody = observer(
           History
         </Heading>
         <Tabs>
-          <TabList borderBottom="1px solid" borderColor="pebble.700">
+          <TabList borderBottom="1px solid" borderColor="gray.700">
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>
-            {/* <CustomTab count={tableCounts.executeCount}>Executes</CustomTab> */}
-            <CustomTab count={tableCounts.migrationCount}>Migration</CustomTab>
+            <CustomTab count={tableCounts.migrationCount}>Migrations</CustomTab>
             <CustomTab count={tableCounts.relatedProposalsCount}>
               Related Proposals
             </CustomTab>
@@ -135,6 +133,7 @@ const ContractDetailsBody = observer(
 );
 
 const ContractDetails = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const { validateContractAddress } = useValidateAddress();
   const contractAddressParam = getFirstQueryParam(
@@ -149,7 +148,6 @@ const ContractDetails = observer(() => {
   if (isLoading) return <Loading />;
   return (
     <PageContainer>
-      <BackButton />
       {validateContractAddress(contractAddressParam) ? (
         <InvalidContract />
       ) : (

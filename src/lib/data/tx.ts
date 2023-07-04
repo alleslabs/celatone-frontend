@@ -64,6 +64,8 @@ export type TypeUrl =
   | "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut"
   | "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn"
   | "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut"
+  | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn"
+  | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut"
   | "/osmosis.incentives.MsgCreateGauge"
   | "/osmosis.incentives.MsgAddToGauge"
   | "/osmosis.lockup.MsgLockTokens"

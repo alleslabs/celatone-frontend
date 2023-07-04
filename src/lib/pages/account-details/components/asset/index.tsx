@@ -1,12 +1,15 @@
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 import type { Big } from "big.js";
 import big from "big.js";
 
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { TokenCard } from "lib/components/TokenCard";
+import { useOpenAssetTab } from "lib/hooks/useOpenTab";
 import { useUserAssetInfos } from "lib/pages/account-details/data";
+import { AmpTrackViewJson } from "lib/services/amplitude";
 import type { BalanceWithAssetInfo, HumanAddr, Option, USD } from "lib/types";
 import { calTotalValue, formatPrice } from "lib/utils";
 
@@ -55,6 +58,7 @@ export const AssetsSection = ({
   walletAddress,
   onViewMore,
 }: AssetsSectionProps) => {
+  const openAssetTab = useOpenAssetTab();
   const { supportedAssets, unsupportedAssets, isLoading, error } =
     useUserAssetInfos(walletAddress);
 
@@ -63,19 +67,14 @@ export const AssetsSection = ({
 
   if (isLoading) return <Loading />;
 
+  const totalAsset =
+    (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
+
   return (
     <Flex direction="column" gap={4} my={8} width="full">
-      {onViewMore && (
-        <TableTitle
-          title="Assets"
-          count={
-            (supportedAssets?.length || 0) + (unsupportedAssets?.length || 0)
-          }
-          mb={0}
-        />
-      )}
+      {onViewMore && <TableTitle title="Assets" count={totalAsset} mb={0} />}
       <Flex justify="space-between" width="full" align="center">
-        <Flex gap="50px">
+        <Flex gap={12}>
           <UserAssetInfoCard
             value={
               totalValue && supportedAssets ? formatPrice(totalValue) : "N/A"
@@ -84,14 +83,29 @@ export const AssetsSection = ({
             helperText="Total Asset Value"
           />
         </Flex>
-        {unsupportedAssets && (
-          <Flex>
+        <Flex>
+          {totalAsset > 0 && (
+            <Button
+              variant="ghost-gray"
+              size="sm"
+              rightIcon={
+                <CustomIcon name="launch" boxSize={3} color="text.dark" />
+              }
+              onClick={() => {
+                AmpTrackViewJson("account_details_page_assets");
+                openAssetTab(walletAddress);
+              }}
+            >
+              View in JSON
+            </Button>
+          )}
+          {unsupportedAssets && (
             <UnsupportedTokensModal
               unsupportedAssets={unsupportedAssets}
               address={walletAddress}
             />
-          </Flex>
-        )}
+          )}
+        </Flex>
       </Flex>
       <AssetSectionContent
         supportedAssets={supportedAssets}

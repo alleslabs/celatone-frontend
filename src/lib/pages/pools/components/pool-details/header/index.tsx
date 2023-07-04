@@ -1,13 +1,12 @@
 import { Button, Flex } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
+import { useMemo } from "react";
 
 import { PoolHeader } from "../../PoolHeader";
-import { getPoolUrl } from "lib/app-fns/explorer";
-import { useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { openNewTab } from "lib/hooks";
 import { AmpTrackViewJson, AmpTrackWebsite } from "lib/services/amplitude";
 import type { PoolDetail } from "lib/types";
+import { openNewTab } from "lib/utils";
 
 import { PoolInfo } from "./PoolInfo";
 
@@ -16,16 +15,21 @@ interface PoolTopSectionProps {
 }
 
 export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
-  const { currentChainName } = useWallet();
-  const lcdEndpoint = useLCDEndpoint();
+  const poolConfig = usePoolConfig({ shouldRedirect: true });
+  const poolUrl = useMemo(() => {
+    if (!poolConfig.enabled) return "";
+    return poolConfig.url;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poolConfig.enabled]);
 
+  const lcdEndpoint = useBaseApiRoute("rest");
   const openPoolLcd = () => {
     AmpTrackViewJson("pool_page_pool_lcd");
     openNewTab(`${lcdEndpoint}/osmosis/gamm/v1beta1/pools/${pool.id}`);
   };
   const openOsmosisPool = () => {
-    AmpTrackWebsite(`${getPoolUrl(currentChainName)}/${pool.id}`);
-    openNewTab(`${getPoolUrl(currentChainName)}/${pool.id}`);
+    AmpTrackWebsite(`${poolUrl}/${pool.id}`);
+    openNewTab(`${poolUrl}/${pool.id}`);
   };
   return (
     <>
@@ -40,7 +44,7 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
           <Button
             variant="ghost-gray"
             rightIcon={
-              <CustomIcon name="launch" boxSize={3} color="pebble.400" />
+              <CustomIcon name="launch" boxSize={3} color="gray.400" />
             }
             onClick={openPoolLcd}
           >
@@ -49,7 +53,7 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
           <Button
             variant="outline-primary"
             rightIcon={
-              <CustomIcon name="launch" boxSize={3} color="violet.light" />
+              <CustomIcon name="launch" boxSize={3} color="primary.light" />
             }
             onClick={openOsmosisPool}
           >

@@ -56,8 +56,8 @@ export const CodeSelectSection = <T extends FieldValues>({
       <form style={{ width: "100%" }}>
         {method === "select-existing" ? (
           <CodeSelect
-            mt="16px"
-            mb="32px"
+            mt={4}
+            mb={8}
             onCodeSelect={onCodeSelect}
             codeId={codeId}
             status={status}
@@ -72,7 +72,7 @@ export const CodeSelectSection = <T extends FieldValues>({
             label="Code ID"
             helperText="Input existing Code ID manually"
             variant="floating"
-            my="32px"
+            my={8}
             rules={{ required: "Code ID is required" }}
           />
         )}

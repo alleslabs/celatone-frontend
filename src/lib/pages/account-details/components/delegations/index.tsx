@@ -63,7 +63,6 @@ export const DelegationsSection = ({
   if (!stakingParams)
     return <EmptyState message="Error fetching delegation data" />;
 
-  const bondDenomLabel = getTokenLabel(stakingParams.bondDenom);
   // TODO: support more than one Asset?
   const defaultToken: TokenWithValue = {
     denom: stakingParams.bondDenom,
@@ -73,6 +72,8 @@ export const DelegationsSection = ({
     precision: stakingParams.precision,
     value: stakingParams.logo ? (big(0) as USD<Big>) : undefined,
   };
+
+  const bondDenomLabel = getTokenLabel(defaultToken.denom, defaultToken.symbol);
 
   const [totalBondedBondDenom, totalRewardBondDenom, totalCommissionBondDenom] =
     getTotalBondDenom(

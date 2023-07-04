@@ -68,7 +68,7 @@ export const PoolHeader = ({
                   id="separator"
                   fontWeight="600"
                   variant="h6"
-                  color="honeydew.main"
+                  color="accent.main"
                 >
                   /
                 </Heading>
@@ -83,7 +83,7 @@ export const PoolHeader = ({
                   as="h6"
                   fontWeight="600"
                   variant="h6"
-                  color="honeydew.main"
+                  color="accent.main"
                 >
                   /
                 </Heading>
@@ -97,13 +97,13 @@ export const PoolHeader = ({
             )}
           </Flex>
           <Flex alignItems="center" gap={2} mt={1}>
-            <Text variant="body2" color="lilac.main">
+            <Text variant="body2" color="secondary.main">
               #{poolId}
             </Text>
             {poolType && (
               <Flex alignItems="center" gap={2}>
                 <Flex
-                  backgroundColor="pebble.600"
+                  backgroundColor="gray.600"
                   borderRadius="full"
                   w="6px"
                   h="6px"

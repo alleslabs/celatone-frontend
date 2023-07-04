@@ -307,7 +307,7 @@ export const TxMsgExpand = ({
         });
         onClick();
       }}
-      _hover={{ backgroundColor: "pebble.800" }}
+      _hover={{ backgroundColor: "gray.800" }}
       _after={{
         content: '""',
         position: "absolute",
@@ -316,17 +316,17 @@ export const TxMsgExpand = ({
         transform: "translateX(-50%)",
         h: "1px",
         w: "99%",
-        bg: "pebble.700",
+        bg: "gray.700",
       }}
     >
       <Flex align="center" gap={2} fontSize="16px" fontWeight={500}>
-        <CustomIcon name={msgIcon} boxSize={4} color="lilac.main" m={0} />
+        <CustomIcon name={msgIcon} boxSize={4} color="secondary.main" m={0} />
         {content}
-        {isIBC && <Tag variant="honeydew-dark">IBC</Tag>}
+        {isIBC && <Tag variant="accent-dark">IBC</Tag>}
       </Flex>
       <CustomIcon
         name="chevron-down"
-        color="pebble.600"
+        color="gray.600"
         boxSize={4}
         transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
         transition="all .25s ease-in-out"

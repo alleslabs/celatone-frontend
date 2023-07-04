@@ -32,7 +32,7 @@ export const TokenCard = ({
         minH="101px"
         gap={2}
         p={3}
-        background="pebble.900"
+        background="gray.900"
         borderRadius="8px"
         {...cardProps}
       >
@@ -40,7 +40,7 @@ export const TokenCard = ({
           gap={1}
           alignItems="center"
           borderBottom="1px solid"
-          borderBottomColor="pebble.700"
+          borderBottomColor="gray.700"
           pb={2}
         >
           <Image
@@ -58,7 +58,7 @@ export const TokenCard = ({
           >
             {symbol}
           </Text>
-          <Badge variant="gray" ml="6px">
+          <Badge variant="gray" ml={2}>
             {price ? formatPrice(price as USD<number>) : "N/A"}
           </Badge>
           <Copier
@@ -66,13 +66,13 @@ export const TokenCard = ({
             value={id}
             copyLabel="Token ID Copied!"
             display="none"
-            ml="1px"
+            ml={1}
             amptrackSection={amptrackSection}
           />
         </Flex>
 
         <Flex direction="column">
-          <Text fontWeight="700" variant="body2">
+          <Text fontWeight={700} variant="body2">
             {formatUTokenWithPrecision(amount as U<Token>, precision, false)}
           </Text>
           <Text variant="body3" color="text.dark">

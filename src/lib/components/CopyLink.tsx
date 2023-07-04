@@ -1,8 +1,8 @@
 import type { FlexProps, IconProps } from "@chakra-ui/react";
 import { Flex, Text, useClipboard } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useMemo, useState } from "react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { AmpTrackCopier } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
@@ -22,7 +22,7 @@ export const CopyLink = ({
   showCopyOnHover = false,
   ...flexProps
 }: CopyLinkProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { onCopy, hasCopied } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
 
@@ -50,8 +50,8 @@ export const CopyLink = ({
         }}
         _hover={{
           textDecoration: "underline",
-          textDecorationColor: "lilac.light",
-          "& > p": { color: "lilac.light" },
+          textDecorationColor: "secondary.light",
+          "& > p": { color: "secondary.light" },
         }}
         cursor="pointer"
         onMouseEnter={() => setIsHover(true)}
@@ -60,7 +60,7 @@ export const CopyLink = ({
       >
         <Text
           variant="body2"
-          color="lilac.main"
+          color="secondary.main"
           transition="all .25s ease-in-out"
         >
           {value === address ? `${value} (Me)` : value}
@@ -71,7 +71,7 @@ export const CopyLink = ({
           marginLeft={2}
           name="copy"
           boxSize={3}
-          color="pebble.600"
+          color="gray.600"
         />
       </Flex>
     </Tooltip>

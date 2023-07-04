@@ -21,9 +21,9 @@ export const EmptyState = ({
     py={12}
     direction="column"
     borderY={withBorder ? "1px solid" : undefined}
-    borderColor="pebble.700"
+    borderColor="gray.700"
   >
-    <Flex alignItems="center" flexDir="column" gap="4" width="full">
+    <Flex alignItems="center" flexDir="column" gap={4} width="full">
       {imageVariant && <StateImage imageVariant={imageVariant} />}
       {heading && (
         <Heading as="h5" variant="h5">

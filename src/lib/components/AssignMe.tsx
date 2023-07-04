@@ -1,21 +1,29 @@
 import { Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
+import type { TextProps } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
-interface AssginMeProps {
+import { useCurrentChain } from "lib/app-provider";
+
+interface AssignMeProps {
   onClick?: MouseEventHandler<HTMLParagraphElement>;
   isDisable?: boolean;
+  textAlign?: TextProps["textAlign"];
 }
 
-export const AssignMe = ({ onClick, isDisable = false }: AssginMeProps) => {
-  const { address: walletAddress } = useWallet();
+export const AssignMe = ({
+  onClick,
+  isDisable = false,
+  textAlign = "right",
+}: AssignMeProps) => {
+  const { address: walletAddress } = useCurrentChain();
   const enabled = Boolean(!isDisable && walletAddress);
+
   return (
     <Text
-      textAlign="right"
+      textAlign={textAlign}
       mr={3}
-      color={enabled ? "honeydew.main" : "pebble.500"}
-      fontWeight="600"
+      color={enabled ? "accent.main" : "text.disabled"}
+      fontWeight={700}
       variant="body3"
       cursor={enabled ? "pointer" : "not-allowed"}
       minW={16}

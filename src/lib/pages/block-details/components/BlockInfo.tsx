@@ -15,7 +15,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
       <Heading as="h6" variant="h6" mb={6}>
         Block Information
       </Heading>
-      <Flex gap="64px">
+      <Flex gap={16}>
         <LabelText label="Network">{blockData.network}</LabelText>
         <LabelText label="Gas (Used/Wanted)">
           {`${blockData.gasUsed ? formatInteger(blockData.gasUsed) : 0} / ${

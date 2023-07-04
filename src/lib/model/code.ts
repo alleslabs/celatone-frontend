@@ -1,10 +1,19 @@
-import { useWallet } from "@cosmos-kit/react";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { useChainId } from "lib/app-provider";
+import {
+  useBaseApiRoute,
+  useCelatoneApp,
+  useCurrentChain,
+} from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
-import { useUserKey, usePermissionFilter, useSearchFilter } from "lib/hooks";
+import {
+  useUserKey,
+  useCodePermissionFilter,
+  useCodeSearchFilter,
+} from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
+import { getCodeIdInfo } from "lib/services/code";
 import {
   useCodeDataByCodeId,
   useCodeListByCodeIds,
@@ -28,25 +37,45 @@ export interface CodeDataState {
   isLoading: boolean;
   chainId: string;
   codeData: Option<CodeData>;
+  lcdCodeData: {
+    codeHash: Option<string>;
+    isLcdCodeLoading: boolean;
+    isLcdCodeError: unknown;
+  };
   publicProject: {
     publicCodeData: Option<PublicCode>;
     publicDetail: Option<PublicDetail>;
   };
 }
 
-export const useCodeData = (codeId: number): CodeDataState => {
+export const useCodeData = (codeId: string): CodeDataState => {
+  const { currentChainId } = useCelatoneApp();
+  const lcdEndpoint = useBaseApiRoute("rest");
+
   const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(
     publicCodeInfo?.slug
   );
-
-  const chainId = useChainId();
+  const {
+    data: lcdCode,
+    isLoading: isLcdCodeLoading,
+    error: isLcdCodeError,
+  } = useQuery(
+    ["query", "code_data", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
+    { enabled: Boolean(lcdEndpoint) && Boolean(codeId), retry: false }
+  );
 
   return {
     isLoading,
-    chainId,
+    chainId: currentChainId,
     codeData: codeInfo as CodeData,
+    lcdCodeData: {
+      codeHash: lcdCode?.code_info.data_hash,
+      isLcdCodeLoading,
+      isLcdCodeError,
+    },
     publicProject: {
       publicCodeData: publicCodeInfo,
       publicDetail: publicInfoBySlug?.details,
@@ -55,7 +84,7 @@ export const useCodeData = (codeId: number): CodeDataState => {
 };
 
 const useStoredCodes = () => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
   const { data: rawStoredCodes, isLoading } = useCodeListByWalletAddress(
@@ -112,8 +141,8 @@ export const useMyCodesData = (
   keyword: string,
   permissionValue: PermissionFilterValue
 ): MyCodesData => {
-  const permissionFilterFn = usePermissionFilter(permissionValue);
-  const searchFilterFn = useSearchFilter(keyword);
+  const permissionFilterFn = useCodePermissionFilter(permissionValue);
+  const searchFilterFn = useCodeSearchFilter(keyword);
 
   const { storedCodes, isLoading: isStoredCodesLoading } = useStoredCodes();
   const { savedCodes, isLoading: isSavedCodesLoading } = useSavedCodes();

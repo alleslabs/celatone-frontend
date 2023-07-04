@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useLCDEndpoint } from "lib/app-provider";
+import { useBaseApiRoute } from "lib/app-provider";
 import type { Addr, ValidatorAddr } from "lib/types";
 
 import type {
@@ -23,15 +23,14 @@ import {
 } from "./delegation";
 
 export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
-    async () => getStakingParams(endpoint),
-    [endpoint]
+    async () => getStakingParams(lcdEndpoint),
+    [lcdEndpoint]
   );
 
-  return useQuery(["query", "staking_params", endpoint], queryFn, {
-    retry: 1,
+  return useQuery(["query", "staking_params", lcdEndpoint], queryFn, {
     refetchOnWindowFocus: false,
   });
 };
@@ -39,15 +38,14 @@ export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
 export const useDelegations = (
   address: Addr
 ): UseQueryResult<RawDelegation[]> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
-    async () => getDelegations(endpoint, address),
-    [address, endpoint]
+    async () => getDelegations(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "delegations", endpoint, address], queryFn, {
-    retry: 1,
+  return useQuery(["query", "delegations", lcdEndpoint, address], queryFn, {
     refetchOnWindowFocus: false,
   });
 };
@@ -55,15 +53,14 @@ export const useDelegations = (
 export const useUnbondings = (
   address: Addr
 ): UseQueryResult<RawUnbonding[]> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
-    async () => getUnbondings(endpoint, address),
-    [address, endpoint]
+    async () => getUnbondings(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "unbondings", endpoint, address], queryFn, {
-    retry: 1,
+  return useQuery(["query", "unbondings", lcdEndpoint, address], queryFn, {
     refetchOnWindowFocus: false,
   });
 };
@@ -71,31 +68,33 @@ export const useUnbondings = (
 export const useDelegationRewards = (
   address: Addr
 ): UseQueryResult<RawDelegationRewards> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
-    async () => getDelegationRewards(endpoint, address),
-    [address, endpoint]
+    async () => getDelegationRewards(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "delegation_rewards", endpoint, address], queryFn, {
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    ["query", "delegation_rewards", lcdEndpoint, address],
+    queryFn,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useRedelegations = (
   address: Addr
 ): UseQueryResult<RawRedelegation[]> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
-    async () => getRedelegations(endpoint, address),
-    [address, endpoint]
+    async () => getRedelegations(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "redelegations", endpoint, address], queryFn, {
-    retry: 1,
+  return useQuery(["query", "redelegations", lcdEndpoint, address], queryFn, {
     refetchOnWindowFocus: false,
   });
 };
@@ -103,15 +102,14 @@ export const useRedelegations = (
 export const useCommission = (
   address: ValidatorAddr
 ): UseQueryResult<RawCommission> => {
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(
-    async () => getCommission(endpoint, address),
-    [address, endpoint]
+    async () => getCommission(lcdEndpoint, address),
+    [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "commission", endpoint, address], queryFn, {
-    retry: 1,
+  return useQuery(["query", "commission", lcdEndpoint, address], queryFn, {
     refetchOnWindowFocus: false,
   });
 };

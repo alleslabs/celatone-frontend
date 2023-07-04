@@ -37,7 +37,7 @@ export const PoolRoute = ({
     );
   return (
     <Flex direction="column">
-      <Text variant="body2" textColor="pebble.500" fontWeight={500}>
+      <Text variant="body2" textColor="gray.500" fontWeight={500}>
         Pool Route
       </Text>
       {routes.map((pool) => {
@@ -77,12 +77,12 @@ export const PoolRoute = ({
                       }
                       color={
                         token.denom === pool.tokenOutDenom
-                          ? "honeydew.main"
+                          ? "accent.main"
                           : "text.main"
                       }
                     >
                       {token.symbol ?? getTokenLabel(token.denom)}
-                      <Text as="span" fontWeight={400} color="honeydew.main">
+                      <Text as="span" fontWeight={400} color="accent.main">
                         {" "}
                         /
                       </Text>

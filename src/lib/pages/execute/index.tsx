@@ -3,8 +3,7 @@ import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
@@ -23,6 +22,7 @@ import {
 import { ExecuteArea } from "./components/ExecuteArea";
 
 const Execute = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const [initialMsg, setInitialMsg] = useState("");
@@ -85,21 +85,20 @@ const Execute = () => {
   return (
     <PageContainer>
       {isFetching && <LoadingOverlay />}
-      <BackButton />
       <Flex mt={1} mb={8} justify="space-between">
         <Heading as="h5" variant="h5">
           Execute Contract
         </Heading>
         <Box>
           <Button
-            variant="ghost-lilac"
+            variant="ghost-secondary"
             size="sm"
             p="unset"
-            pl="2"
+            pl={2}
             onClick={goToQuery}
           >
             Go To Query
-            <CustomIcon name="chevron-right" boxSize="3" />
+            <CustomIcon name="chevron-right" boxSize={3} />
           </Button>
         </Box>
       </Flex>

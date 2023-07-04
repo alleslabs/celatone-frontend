@@ -22,7 +22,7 @@ const baseStyle = definePartsStyle({
   },
   dialog: {
     borderRadius: "8px",
-    bg: "pebble.900",
+    bg: "gray.900",
   },
   closeButton: {
     top: "14px",

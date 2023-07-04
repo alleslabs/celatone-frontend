@@ -26,7 +26,7 @@ export const useAccountDetailsTableCounts = (
     useInstantiatedCountByUserQuery(walletAddress);
   const { data: proposalsCount, refetch: refetchProposalsCount } =
     useProposalsCountByWalletAddress(walletAddress);
-  const { data: txsCount } = useTxsCountByAddress(
+  const { data: txsCount, isFetching: txCountFetching } = useTxsCountByAddress(
     undefined,
     accountId,
     "",
@@ -44,6 +44,9 @@ export const useAccountDetailsTableCounts = (
       txsCount,
       proposalsCount,
       assetsCount,
+    },
+    loadingState: {
+      txCountLoading: txCountFetching,
     },
     refetchCodesCount,
     refetchContractsAdminCount,

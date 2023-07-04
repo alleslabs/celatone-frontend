@@ -1,3 +1,3 @@
-import RecentCodes from "lib/pages/recent-codes";
+import RecentCodes from "lib/pages/codes";
 
 export default RecentCodes;

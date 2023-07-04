@@ -45,7 +45,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           id={tableHeaderId}
           mt={4}
           borderBottom="1px"
-          borderColor="pebble.800"
+          borderColor="gray.800"
         >
           <CustomTab
             count={countDisplayAllTxs}

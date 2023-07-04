@@ -39,17 +39,17 @@ export const AddToOtherListModal = observer(
         title="Add or remove from other lists"
         icon="bookmark-solid"
         headerContent={
-          <Flex pt="6" gap="36px">
-            <Flex direction="column" gap="8px">
-              <Text variant="body2" fontWeight="600">
+          <Flex pt={6} gap={9}>
+            <Flex direction="column" gap={2}>
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Contract Name
               </Text>
-              <Text variant="body2" fontWeight="600">
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Contract Address
               </Text>
             </Flex>
 
-            <Flex direction="column" gap="8px">
+            <Flex direction="column" gap={2}>
               <Text variant="body2">
                 {contractLocalInfo.name ?? contractLocalInfo.label}
               </Text>
@@ -65,14 +65,14 @@ export const AddToOtherListModal = observer(
         mainAction={handleSave}
         otherBtnTitle="Cancel"
       >
-        <Box my="16px">
+        <Box my={4}>
           <ListSelection
             result={contractLists}
             placeholder="Not listed"
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
             setResult={setContractLists}
-            labelBgColor="pebble.900"
+            labelBgColor="gray.900"
           />
         </Box>
       </ActionModal>

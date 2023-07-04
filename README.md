@@ -15,8 +15,8 @@ The Celatone frontend uses the following technologies:
 
 ### Prerequisites
 
-1. [Node.js](https://nodejs.org/en/) (version >= 14) or nvm installed.
-2. [`Yarn`](https://yarnpkg.com/) installed.
+1. [Node.js](https://nodejs.org/en/) (version >= 16) or using node version manager [nvm](https://github.com/nvm-sh/nvm#intro) (recommended, installation guide for nvm [here](https://collabnix.com/how-to-install-and-configure-nvm-on-mac-os/)).
+2. [`Yarn`](https://yarnpkg.com/getting-started/install) installed.
 
 ### Develop
 
@@ -41,7 +41,15 @@ cd celatone-frontend
 yarn
 ```
 
-3. Finally, run the development server
+3. Create a `.env.local` file in the root of the project and add the following environment variables
+
+```bash
+# The mnemonic of the wallet that will be used for estimate gas fees
+NEXT_PUBLIC_DUMMY_MNEMONIC="your mnemonic here"
+NEXT_PUBLIC_SUPPORTED_CHAIN_IDS=osmosis-1,osmo-test-5
+```
+
+4. Finally, run the development server
 
 ```bash
 yarn dev

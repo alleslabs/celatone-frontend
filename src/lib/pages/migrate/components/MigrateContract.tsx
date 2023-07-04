@@ -1,6 +1,5 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useCallback, useEffect, useState } from "react";
@@ -9,7 +8,8 @@ import { useForm } from "react-hook-form";
 import {
   useFabricateFee,
   useSimulateFeeQuery,
-  useLCDEndpoint,
+  useCurrentChain,
+  useBaseApiRoute,
 } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -35,9 +35,10 @@ export const MigrateContract = ({
   codeIdParam,
   handleBack,
 }: MigrateContractProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
+
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
 
@@ -79,8 +80,8 @@ export const MigrateContract = ({
   });
 
   const { refetch } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    ["query", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,
       retry: false,
@@ -182,7 +183,7 @@ export const MigrateContract = ({
         <Flex gap={2} mb={4}>
           <CustomIcon
             name="alert-circle-solid"
-            boxSize="3"
+            boxSize={3}
             color="error.main"
           />
           <Text variant="body3" color="error.main">
@@ -196,7 +197,7 @@ export const MigrateContract = ({
         alignSelf="flex-start"
         alignItems="center"
         display="flex"
-        gap="4px"
+        gap={1}
       >
         <p>Transaction Fee:</p>
         <EstimatedFeeRender
@@ -204,7 +205,7 @@ export const MigrateContract = ({
           loading={isSimulating}
         />
       </Flex>
-      <Flex justify="space-between" w="100%" mt="32px">
+      <Flex justify="space-between" w="100%" mt={8}>
         <Button
           variant="outline-gray"
           w="128px"

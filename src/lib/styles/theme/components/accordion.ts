@@ -9,9 +9,9 @@ export const Accordion: ComponentStyleConfig = {
       borderWidth: "0",
       borderColor: "transparent",
       p: 0,
-      bg: "pebble.900",
+      bg: "gray.900",
       hover: {
-        bg: "pebble.800",
+        bg: "gray.800",
       },
       borderRadius: "8px",
     },

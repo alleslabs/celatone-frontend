@@ -43,7 +43,7 @@ export const TransactionsTableRow = ({
         className="copier-wrapper"
         templateColumns={templateColumns}
         onClick={isAccordion ? onToggle : undefined}
-        _hover={{ background: "pebble.900" }}
+        _hover={{ background: "gray.900" }}
         transition="all .25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
       >
@@ -53,6 +53,7 @@ export const TransactionsTableRow = ({
               name="chevron-down"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
               transition="all .25s ease-in-out"
+              color="gray.600"
             />
           )}
         </TableRow>
@@ -64,7 +65,7 @@ export const TransactionsTableRow = ({
               showCopyOnHover
             />
             {transaction.messages.length > 1 && (
-              <Badge variant="lilac" ml="6px">
+              <Badge variant="secondary" ml={2}>
                 {transaction.messages.length}
               </Badge>
             )}
@@ -81,7 +82,7 @@ export const TransactionsTableRow = ({
           <Flex gap={1} flexWrap="wrap">
             <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
-              <Tag variant="honeydew-dark" size="sm">
+              <Tag variant="accent-dark" size="sm">
                 IBC
               </Tag>
             )}

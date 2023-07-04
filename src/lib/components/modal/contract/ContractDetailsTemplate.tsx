@@ -91,8 +91,8 @@ export const ContractDetailsTemplateModal = ({
       title={title}
       subtitle={subtitle}
       headerContent={
-        <Flex gap={4} alignItems="center" pt="6">
-          <Text variant="body2" fontWeight="600">
+        <Flex gap={4} alignItems="center" pt={6}>
+          <Text variant="body2" fontWeight={500} color="text.dark">
             Contract Address
           </Text>
           <ExplorerLink
@@ -116,7 +116,7 @@ export const ContractDetailsTemplateModal = ({
         setTagsValue={setTagsValue}
         setContractListsValue={setContractListsValue}
         errors={errors}
-        labelBgColor="pebble.900"
+        labelBgColor="gray.900"
       />
     </ActionModal>
   );

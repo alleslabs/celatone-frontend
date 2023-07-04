@@ -1,10 +1,9 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { CustomIcon } from "../icon";
 import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { Tooltip } from "../Tooltip";
-import { useInternalNavigate } from "lib/app-provider";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
 interface AdminButtonProps {
@@ -13,7 +12,7 @@ interface AdminButtonProps {
 }
 
 export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === admin;
@@ -34,7 +33,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
       </Tooltip>
       <MenuList>
         <MenuItem
-          icon={<CustomIcon name="migrate" color="pebble.600" />}
+          icon={<CustomIcon name="migrate" color="gray.600" />}
           onClick={() => {
             navigate({
               pathname: "/migrate",
@@ -45,7 +44,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           Migrate
         </MenuItem>
         <MenuItem
-          icon={<CustomIcon name="admin" color="pebble.600" />}
+          icon={<CustomIcon name="admin" color="gray.600" />}
           onClick={() => {
             navigate({
               pathname: "/admin",
@@ -58,9 +57,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
-            <MenuItem
-              icon={<CustomIcon name="admin-clear" color="pebble.600" />}
-            >
+            <MenuItem icon={<CustomIcon name="admin-clear" color="gray.600" />}>
               Clear Admin
             </MenuItem>
           }

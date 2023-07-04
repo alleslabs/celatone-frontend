@@ -29,7 +29,7 @@ export const MsgSwapExactAmountOutAction = ({
         fontWeight={400}
         ampCopierSection={ampCopierSection}
       />
-      <CustomIcon name="arrow-right" boxSize={4} color="honeydew.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
       <MsgToken
         coin={msg.token_out}
         symbol={outAssetInfo?.symbol}

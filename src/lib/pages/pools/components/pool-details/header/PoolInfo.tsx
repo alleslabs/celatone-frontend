@@ -14,10 +14,12 @@ interface PoolInfoProps {
 
 export const PoolInfo = ({ pool }: PoolInfoProps) => {
   const getAddressType = useGetAddressType();
-  const futurePoolGovernorType = getAddressType(pool.futurePoolGovernor);
+  const futurePoolGovernorType = getAddressType(
+    pool.futurePoolGovernor ?? undefined
+  );
   return (
     <Flex
-      background="pebble.900"
+      background="gray.900"
       borderRadius="8px"
       px={4}
       py={3}

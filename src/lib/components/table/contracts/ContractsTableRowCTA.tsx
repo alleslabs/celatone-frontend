@@ -11,10 +11,9 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
 import { TableRow } from "../tableComponents";
-import { useInternalNavigate } from "lib/app-provider";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -49,7 +48,7 @@ export const ContractsTableRowCTA = ({
   contractInfo,
   withCTA,
 }: ContractsTableRowCTAProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === contractInfo.admin;
@@ -87,7 +86,7 @@ export const ContractsTableRowCTA = ({
             as={Button}
             onClick={(e) => e.stopPropagation()}
           >
-            <CustomIcon name="more" boxSize="16px" color="pebble.600" />
+            <CustomIcon name="more" boxSize="16px" color="gray.600" />
           </MenuButton>
           <MenuList onClick={(e) => e.stopPropagation()}>
             <EditContractDetailsModal
@@ -95,7 +94,7 @@ export const ContractsTableRowCTA = ({
               triggerElement={
                 <MenuItem
                   icon={
-                    <CustomIcon name="edit" boxSize="16px" color="pebble.600" />
+                    <CustomIcon name="edit" boxSize="16px" color="gray.600" />
                   }
                 >
                   Edit details
@@ -110,7 +109,7 @@ export const ContractsTableRowCTA = ({
                     <CustomIcon
                       name="bookmark"
                       boxSize="16px"
-                      color="pebble.600"
+                      color="gray.600"
                     />
                   }
                 >
@@ -119,9 +118,7 @@ export const ContractsTableRowCTA = ({
               }
             />
             <MenuItem
-              icon={
-                <CustomIcon name="admin" boxSize="16px" color="pebble.600" />
-              }
+              icon={<CustomIcon name="admin" boxSize="16px" color="gray.600" />}
               onClick={() => {
                 navigate({
                   pathname: "/admin",
@@ -140,7 +137,7 @@ export const ContractsTableRowCTA = ({
                     <CustomIcon
                       name="admin-clear"
                       boxSize="16px"
-                      color="pebble.600"
+                      color="gray.600"
                     />
                   }
                   isDisabled={!isAdmin}
