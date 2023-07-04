@@ -40,7 +40,14 @@ export const FailedModal = ({ errorLog, onClose }: FailedModalProps) => (
       <ModalCloseButton />
       <ModalBody>
         Something went wrong. Here are the error logs.
-        <Box bg="background.main" borderRadius="8px" p={2} mt={4}>
+        <Box
+          bg="background.main"
+          borderRadius="8px"
+          p={2}
+          mt={4}
+          maxH="240px"
+          overflowY="scroll"
+        >
           <Text>{errorLog}</Text>
         </Box>
       </ModalBody>

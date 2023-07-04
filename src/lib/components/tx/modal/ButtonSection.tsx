@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import {
@@ -6,6 +6,7 @@ import {
   useCelatoneApp,
   useLCDEndpoint,
 } from "lib/app-provider";
+import { CopyButton } from "lib/components/copy";
 import { getNavigationUrl } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
@@ -17,12 +18,14 @@ interface ButtonSectionProps {
   actionVariant?: ActionVariant;
   onClose?: () => void;
   receipts: TxReceipt[];
+  errorMsg?: string;
 }
 
 export const ButtonSection = ({
   actionVariant,
   onClose,
   receipts,
+  errorMsg = "",
 }: ButtonSectionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -153,6 +156,25 @@ export const ButtonSection = ({
             <CustomIcon name="chevron-right" boxSize={3} ml={2} />
           </Button>
         </>
+      );
+    case "failed":
+      return (
+        <Flex justify="space-between" w="full">
+          <CopyButton
+            buttonText="Copy Error Log"
+            value={errorMsg}
+            amptrackSection="tx_error_log"
+            size="md"
+          />
+          <Flex gap={2}>
+            <Button variant="outline-primary" onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={openTxExplorer}>
+              See Transaction
+            </Button>
+          </Flex>
+        </Flex>
       );
     default:
       return (
