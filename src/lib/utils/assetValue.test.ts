@@ -142,14 +142,14 @@ describe("calAssetValueWithPrecision", () => {
       expect(calAssetValueWithPrecision(balance)).toEqual(big("0.0001002"));
     });
 
-    test("negative amount", () => {
+    test("negative amount should return 0", () => {
       const balance = {
         amount: "-100",
         id: "udenom",
         precision: 6,
         price: 1,
       } as Balance;
-      expect(calAssetValueWithPrecision(balance)).toEqual(big("-0.0001"));
+      expect(calAssetValueWithPrecision(balance)).toEqual(big("0"));
     });
   });
 });
