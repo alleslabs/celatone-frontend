@@ -27,9 +27,10 @@ export const formatUTC = (date: Date) =>
 export const dateFromNow = (date: Date) => dayjs.utc(date).fromNow();
 
 export const formatSeconds = (sec: Option<string>) => {
-  if (!sec) return "N/A";
+  if (sec === undefined || Number.isNaN(parseInt(sec, 10))) return "N/A";
   const formatSec = big(sec.replace("s", ""));
 
+  // TODO: use `pluralize` here
   switch (true) {
     case formatSec.gte(86400): {
       const days = formatSec.div(86400).round(0, 0).toNumber();
@@ -43,7 +44,9 @@ export const formatSeconds = (sec: Option<string>) => {
       const mins = formatSec.div(60).round(0, 0).toNumber();
       return `${mins} minute`.concat(mins > 1 ? "s" : "");
     }
+    case formatSec.lt(0):
+      return "N/A";
     default:
-      return `${formatSec.toFixed()} seconds`;
+      return `${formatSec.toFixed()} second`.concat(formatSec.gt(1) ? "s" : "");
   }
 };

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#398](https://github.com/alleslabs/celatone-frontend/pull/398) Setup Jest and sample tests
 - [#411](https://github.com/alleslabs/celatone-frontend/pull/411) Add override api endpoint
 - [#385](https://github.com/alleslabs/celatone-frontend/pull/385) Upgrade cosmos kit major version and replace hooks
 - [#380](https://github.com/alleslabs/celatone-frontend/pull/380) Support local network
@@ -57,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#412](https://github.com/alleslabs/celatone-frontend/pull/412) Refactor contract detail data loading
+- [#413](https://github.com/alleslabs/celatone-frontend/pull/413) Add jest test cases for date utils
 - [#404](https://github.com/alleslabs/celatone-frontend/pull/404) Use internal navigate instead of app link for block navigation
 - [#396](https://github.com/alleslabs/celatone-frontend/pull/396) Refactor useConfig, disable wasm related tabs on the public project page
 - [#392](https://github.com/alleslabs/celatone-frontend/pull/392) Refactor proposal table and fix empty state of the proposal list table
