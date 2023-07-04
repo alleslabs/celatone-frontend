@@ -262,9 +262,9 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   if (rawStakingParams && assetInfos && validators) {
     const stakingParams = {
       ...rawStakingParams,
-      symbol: assetInfos[rawStakingParams.bondDenom].symbol,
-      logo: assetInfos[rawStakingParams.bondDenom].logo,
-      precision: assetInfos[rawStakingParams.bondDenom].precision,
+      symbol: assetInfos[rawStakingParams.bondDenom]?.symbol,
+      logo: assetInfos[rawStakingParams.bondDenom]?.logo,
+      precision: assetInfos[rawStakingParams.bondDenom]?.precision,
     };
     data.stakingParams = stakingParams;
 

@@ -7,14 +7,12 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { useLCDEndpoint } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
+import { useBaseApiRoute, useInternalNavigate } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
-import { openNewTab } from "lib/hooks";
 import type { BlockDetails } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { dateFromNow, formatUTC, openNewTab } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
@@ -30,7 +28,8 @@ interface BlockDetailsTopProps {
 
 export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const block = Number(blockData.height);
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const navigate = useInternalNavigate();
   const openLcdPage = () =>
     openNewTab(
       `${lcdEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
@@ -54,19 +53,27 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
           </Flex>
           <Flex gap={2}>
             {!disablePrevious && (
-              <AppLink href={`/block/${block - 1}`}>
-                <StyledIconButton
-                  icon={<CustomIcon name="chevron-left" />}
-                  variant="ghost-gray"
-                />
-              </AppLink>
-            )}
-            <AppLink href={`/block/${block + 1}`}>
               <StyledIconButton
-                icon={<CustomIcon name="chevron-right" />}
+                icon={<CustomIcon name="chevron-left" />}
                 variant="ghost-gray"
+                onClick={() =>
+                  navigate({
+                    pathname: "/blocks/[height]",
+                    query: { height: block - 1 },
+                  })
+                }
               />
-            </AppLink>
+            )}
+            <StyledIconButton
+              icon={<CustomIcon name="chevron-right" />}
+              variant="ghost-gray"
+              onClick={() =>
+                navigate({
+                  pathname: "/blocks/[height]",
+                  query: { height: block + 1 },
+                })
+              }
+            />
             <Button
               variant="ghost-gray"
               padding={2}

@@ -1745,7 +1745,7 @@ export const generateReceipts = (
           value: details.duration,
         },
         {
-          title: "Coins",
+          title: "Coin",
           html: getCoinComponent(details.coins, assetInfos),
         },
       ];

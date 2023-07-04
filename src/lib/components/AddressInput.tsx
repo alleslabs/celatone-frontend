@@ -44,7 +44,9 @@ export const AddressInput = <T extends FieldValues>({
   requiredText = "Address is empty",
 }: AddressInputProps<T>) => {
   const {
-    appHumanAddress: { example: exampleAddr },
+    chainConfig: {
+      exampleAddresses: { user: exampleAddr },
+    },
   } = useCelatoneApp();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const validateAddress = useCallback(

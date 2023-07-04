@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 
+
 # testing
 /coverage
 
@@ -50,3 +51,7 @@ next.config.original.js
 .sentryclirc
 next.config.original.js
 next.config.wizardcopy.js
+
+# yarn 
+/.yarn
+.yarnrc.yml
