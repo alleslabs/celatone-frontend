@@ -48,6 +48,7 @@ export const ValidatorBadge = ({
               alt={validator.moniker}
               borderRadius="50%"
               fallbackSrc={validatorDefaultImg.src}
+              fallbackStrategy="onError"
             />
           )}
           <ExplorerLink
