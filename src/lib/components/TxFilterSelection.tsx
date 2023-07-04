@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
-import { useState, useRef, forwardRef } from "react";
+import { useMemo, useState, useRef, forwardRef } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import { displayActionValue, mergeRefs } from "lib/utils";
@@ -39,6 +39,17 @@ const listItemProps: CSSProperties = {
   cursor: "pointer",
 };
 
+const OPTIONS = [
+  "isUpload",
+  "isInstantiate",
+  "isExecute",
+  "isSend",
+  "isIbc",
+  "isMigrate",
+  "isClearAdmin",
+  "isUpdateAdmin",
+];
+
 // TODO - Refactor this along with TagSelection
 export const TxFilterSelection = forwardRef<
   HTMLInputElement,
@@ -58,32 +69,20 @@ export const TxFilterSelection = forwardRef<
     }: TxFilterSelectionProps,
     ref
   ) => {
-    const options = [
-      "isUpload",
-      "isInstantiate",
-      "isExecute",
-      "isSend",
-      "isIbc",
-      "isMigrate",
-      "isClearAdmin",
-      "isUpdateAdmin",
-    ];
-
-    const [partialResult, setPartialResult] = useState<string[]>([]);
+    const [keyword, setKeyword] = useState("");
     const [displayOptions, setDisplayOptions] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
 
-    const filterOptions = (value: string) => {
-      setDisplayOptions(true);
-      setPartialResult(
-        value
-          ? matchSorter(options, value, {
+    const partialResults = useMemo(
+      () =>
+        keyword
+          ? matchSorter(OPTIONS, keyword, {
               threshold: matchSorter.rankings.CONTAINS,
             })
-          : options
-      );
-    };
+          : OPTIONS,
+      [keyword]
+    );
 
     const isOptionSelected = (option: string) =>
       result.some((selectedOption) => selectedOption === option);
@@ -147,9 +146,9 @@ export const TxFilterSelection = forwardRef<
               minW="200px"
               size="lg"
               placeholder={result.length ? "" : placeholder}
-              onChange={(e) => filterOptions(e.currentTarget.value)}
+              onClick={() => setDisplayOptions(true)}
+              onChange={(e) => setKeyword(e.currentTarget.value)}
               onFocus={() => {
-                setPartialResult(options);
                 setDisplayOptions(true);
               }}
               ref={mergeRefs([inputRef, ref])}
@@ -194,7 +193,7 @@ export const TxFilterSelection = forwardRef<
               top="60px"
             >
               {/* option selection section */}
-              {partialResult.map((option) => (
+              {partialResults.map((option) => (
                 <ListItem
                   key={option}
                   style={listItemProps}
