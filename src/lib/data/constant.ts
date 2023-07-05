@@ -23,13 +23,6 @@ export const DEFAULT_ADDRESS = "default-address";
 
 export const MICRO = 1_000_000;
 
-export const EXAMPLE_ADDRESSES_BYTES = {
-  module: new Uint8Array([
-    11, 194, 111, 255, 96, 146, 62, 165, 229, 36, 242, 6, 64, 174, 53, 147, 66,
-    223, 173, 17, 183, 74, 121, 159, 147, 159, 226, 165, 56, 1, 135, 190,
-  ]),
-};
-
 export const typeUrlDict = {
   [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
   [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
