@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#420](https://github.com/alleslabs/celatone-frontend/pull/420) Unify create proposal page layout
 - [#413](https://github.com/alleslabs/celatone-frontend/pull/413) Add jest test cases for date utils
 - [#404](https://github.com/alleslabs/celatone-frontend/pull/404) Use internal navigate instead of app link for block navigation
 - [#396](https://github.com/alleslabs/celatone-frontend/pull/396) Refactor useConfig, disable wasm related tabs on the public project page
