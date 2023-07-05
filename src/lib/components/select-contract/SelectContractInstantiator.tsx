@@ -20,7 +20,7 @@ import { useState } from "react";
 import { CustomIcon } from "../icon";
 import {
   useBaseApiRoute,
-  useCelatoneApp,
+  useExampleAddresses,
   useValidateAddress,
 } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -42,11 +42,7 @@ export const SelectContractInstantiator = ({
   notSelected,
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
-  const {
-    chainConfig: {
-      exampleAddresses: { contract: exampleContractAddress },
-    },
-  } = useCelatoneApp();
+  const { contract: exampleContractAddress } = useExampleAddresses();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();

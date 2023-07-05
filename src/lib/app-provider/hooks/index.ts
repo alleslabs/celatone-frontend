@@ -1,6 +1,7 @@
 export * from "./useAddress";
 export * from "./useAmplitude";
 export * from "./useDummyWallet";
+export * from "./useExampleAddresses";
 export * from "./useFabricateFee";
 export * from "./useInternalNavigate";
 export * from "./useLCDEndpoint";

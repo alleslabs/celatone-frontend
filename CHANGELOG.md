@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#421](https://github.com/alleslabs/celatone-frontend/pull/421) Generate example addresses from a fixed-bytes array
 - [#418](https://github.com/alleslabs/celatone-frontend/pull/418) Add gitignore for new yarn version
 - [#406](https://github.com/alleslabs/celatone-frontend/pull/406) add test cases for `utils/formatter/token.ts`
 - [#398](https://github.com/alleslabs/celatone-frontend/pull/398) Setup Jest and sample tests
