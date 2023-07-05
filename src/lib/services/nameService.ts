@@ -23,9 +23,24 @@ export const useICNSNamesByAddress = (
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(address);
 
+  const queryFn = async ({
+    queryKey,
+  }: QueryFunctionContext<string[]>): Promise<ICNSNamesResponse> => {
+    const icnsNames = await queryICNSNamesByAddress(
+      queryKey[1],
+      queryKey[2] as Addr
+    );
+    const primaryIndex = icnsNames.names.indexOf(icnsNames.primary_name);
+    if (primaryIndex > -1) {
+      icnsNames.names.splice(primaryIndex, 1);
+      icnsNames.names.unshift(icnsNames.primary_name);
+    }
+    return icnsNames;
+  };
+
   return useQuery({
     queryKey: ["icns_names", resolverEndpoint, address],
-    queryFn: async () => queryICNSNamesByAddress(resolverEndpoint, address),
+    queryFn,
     refetchOnWindowFocus: false,
     enabled:
       addressType === "contract_address" || addressType === "user_address",
@@ -51,9 +66,11 @@ export const useAddressByICNSName = (
   const queryFn = async ({
     queryKey,
   }: QueryFunctionContext<string[]>): Promise<AddressByICNSInternal> => {
+    // Strip bech32 prefix to allow searching with .prefix (e.g. example.osmo)
+    const [stripPrefixName] = queryKey[2].split(`.${bech32Prefix}`);
     const icnsAddress = await queryAddressByICNSName(
       queryKey[1],
-      queryKey[2],
+      stripPrefixName,
       queryKey[3]
     );
     let addressType = getAddressType(icnsAddress);

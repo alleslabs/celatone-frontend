@@ -16,14 +16,14 @@ import type { ChangeEvent, KeyboardEvent } from "react";
 
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
-import { useICNSNamesByAddress } from "lib/services/nameService";
 import type {
   ResultMetadata,
   SearchResultType,
 } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { Addr, Option } from "lib/types";
+import type { Option } from "lib/types";
 
 const NOT_FOUND_MSG =
   "Matches not found. Please check your spelling or make sure you have selected the correct network.";
@@ -80,7 +80,6 @@ const ResultItem = ({
   handleSelectResult,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
-  const { data: icnsNames } = useICNSNamesByAddress(value as Addr);
   return (
     <StyledListItem id={`item-${index}`}>
       <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
@@ -98,15 +97,31 @@ const ResultItem = ({
           onMouseMove={() => index !== cursor && setCursor(index)}
           onClick={() => handleSelectResult(type, true)}
         >
-          {metadata.icns.address || icnsNames ? (
-            <>
-              <Text variant="body2">{metadata.icns.address || value}</Text>
-              <Text variant="body3" color="text.dark">
-                {icnsNames ? icnsNames.primary_name : value}
-              </Text>
-            </>
-          ) : (
-            <Text variant="body2">{value}</Text>
+          <Text variant="body2">{metadata.icns.address || value}</Text>
+          {metadata.icns.icnsNames?.primary_name && (
+            <Flex gap={1} align="center" flexWrap="wrap">
+              <Flex gap={1} align="center">
+                <PrimaryNameMark />
+                <Text variant="body3" color="text.dark">
+                  {metadata.icns.icnsNames.primary_name}
+                </Text>
+              </Flex>
+              {value !== metadata.icns.address &&
+                value !== metadata.icns.icnsNames?.primary_name && (
+                  <Text
+                    variant="body3"
+                    color="text.dark"
+                    _before={{
+                      content: '"/"',
+                      fontSize: "12px",
+                      color: "text.dark",
+                      mr: 1,
+                    }}
+                  >
+                    {value}
+                  </Text>
+                )}
+            </Flex>
           )}
         </Flex>
       )}

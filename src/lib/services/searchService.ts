@@ -12,7 +12,8 @@ import { isBlock, isCodeId, isTxHash } from "lib/utils";
 import { useBlockDetailsQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
-import { useAddressByICNSName } from "./nameService";
+import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
+import type { ICNSNamesResponse } from "./ns";
 import { useTxData } from "./txService";
 
 export type SearchResultType =
@@ -24,10 +25,39 @@ export type SearchResultType =
   | "Block";
 
 export interface ResultMetadata {
-  icns: {
-    address: Option<Addr>;
-  };
+  icns: { icnsNames: Option<ICNSNamesResponse>; address: Option<Addr> };
 }
+
+const resolveLoadingState = ({
+  keyword,
+  txLoading,
+  codeLoading,
+  contractLoading,
+  blockLoading,
+  icnsAddressLoading,
+  isWasm,
+}: {
+  keyword: string;
+  txLoading: boolean;
+  codeLoading: boolean;
+  contractLoading: boolean;
+  blockLoading: boolean;
+  icnsAddressLoading: boolean;
+  isWasm: boolean;
+}) => {
+  const txDataLoading = isTxHash(keyword) && txLoading;
+  const codeDataLoading = isWasm && isCodeId(keyword) && codeLoading;
+  const contractDataLoading = isWasm && contractLoading;
+  const blockDataLoading = isBlock(keyword) && blockLoading;
+
+  return (
+    txDataLoading ||
+    codeDataLoading ||
+    contractDataLoading ||
+    blockDataLoading ||
+    icnsAddressLoading
+  );
+};
 
 // TODO: Add Proposal ID
 export const useSearchHandler = (
@@ -68,18 +98,18 @@ export const useSearchHandler = (
   const { data: icnsAddressData, isLoading: icnsAddressLoading } =
     useAddressByICNSName(debouncedKeyword);
 
-  const txDataLoading = isTxHash(debouncedKeyword) && txLoading;
-  const codeDataLoading = isWasm && isCodeId(debouncedKeyword) && codeLoading;
-  const contractDataLoading = isWasm && contractLoading;
-  const blockDataLoading = isBlock(debouncedKeyword) && blockLoading;
   const isAddr =
     addressType === "user_address" || addressType === "contract_address";
+
+  // provide ICNS metadata result
+  const { data: icnsNames } = useICNSNamesByAddress(
+    (isAddr ? debouncedKeyword : icnsAddressData?.address) as Addr
+  );
 
   const addressResult = useMemo(() => {
     if (isAddr) {
       return contractData ? "Contract Address" : "Wallet Address";
     }
-
     return (
       icnsAddressData?.address &&
       (icnsAddressData.addressType === "contract_address"
@@ -103,15 +133,19 @@ export const useSearchHandler = (
       codeData && "Code ID",
       blockData && "Block",
     ].filter((res) => Boolean(res)) as SearchResultType[],
-    isLoading:
-      txDataLoading ||
-      codeDataLoading ||
-      contractDataLoading ||
-      blockDataLoading ||
+    isLoading: resolveLoadingState({
+      keyword: debouncedKeyword,
+      txLoading,
+      codeLoading,
+      contractLoading,
+      blockLoading,
       icnsAddressLoading,
+      isWasm,
+    }),
     metadata: {
       icns: {
-        address: icnsAddressData?.address,
+        icnsNames,
+        address: (isAddr ? debouncedKeyword : icnsAddressData?.address) as Addr,
       },
     },
   };

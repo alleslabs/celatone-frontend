@@ -2,10 +2,9 @@ import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
+import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import type { ICNSNamesResponse } from "lib/services/ns";
 import type { HumanAddr, Option, PublicDetail } from "lib/types";
-
-import { PrimaryNameMark } from "./PrimaryNameMark";
 
 interface AccounHeaderProps {
   publicName: Option<string>;
@@ -66,15 +65,15 @@ export const AccountHeader = ({
                   value={name}
                   type="icns_names"
                   withoutIcon
-                  _last={{
-                    _after: {
-                      display: "none",
-                    },
-                  }}
                   _after={{
                     content: '"/"',
                     fontSize: "14px",
                     ml: 1,
+                  }}
+                  _last={{
+                    _after: {
+                      display: "none",
+                    },
                   }}
                 />
               </>
