@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { useBaseApiRoute } from "lib/app-provider";
-import { getAssetInfos } from "lib/services/asset";
+import { getAssetInfos, getNativeAssetInfos } from "lib/services/asset";
 import type { AssetInfo, Option } from "lib/types";
 
 export type AssetInfosOpt = Option<{ [key: string]: AssetInfo }>;
@@ -36,15 +36,15 @@ export const useAssetInfoList = () => {
   );
 };
 
-// export const useNativeTokensInfo = () => {
-//   const nativeTokensApiRoute = useBaseApiRoute("native_tokens");
+export const useNativeTokensInfo = () => {
+  const nativeTokensApiRoute = useBaseApiRoute("native_tokens");
 
-//   return useQuery(
-//     ["query", "nativeTokensInfo", nativeTokensApiRoute],
-//     async () => getNativeAssetInfos(nativeTokensApiRoute),
-//     {
-//       enabled: !!nativeTokensApiRoute,
-//       refetchOnWindowFocus: false,
-//     }
-//   );
-// };
+  return useQuery(
+    ["query", "nativeTokensInfo", nativeTokensApiRoute],
+    async () => getNativeAssetInfos(nativeTokensApiRoute),
+    {
+      enabled: !!nativeTokensApiRoute,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
