@@ -61,7 +61,6 @@ export const MigrateContract = ({
   const enableMigrate =
     !!address &&
     codeId.length > 0 &&
-    migrateMsg.trim().length > 0 &&
     jsonValidate(migrateMsg) === null &&
     status.state === "success";
 
