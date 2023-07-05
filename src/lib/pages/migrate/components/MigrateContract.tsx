@@ -58,13 +58,11 @@ export const MigrateContract = ({
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
 
-  const enableMigrate = !!(
-    address &&
-    codeId.length &&
-    migrateMsg.trim().length &&
+  const enableMigrate =
+    !!address &&
+    codeId.length > 0 &&
     jsonValidate(migrateMsg) === null &&
-    status.state === "success"
-  );
+    status.state === "success";
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
