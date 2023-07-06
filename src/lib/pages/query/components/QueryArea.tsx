@@ -4,7 +4,11 @@ import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-import { useBaseApiRoute, useCurrentChain } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCurrentChain,
+} from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -50,7 +54,7 @@ export const QueryArea = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", lcdEndpoint, contractAddress, msg],
+    [CELATONE_QUERY_KEYS.CONTRACT_QUERY, lcdEndpoint, contractAddress, msg],
     async () => queryData(lcdEndpoint, contractAddress, msg),
     {
       enabled: false,

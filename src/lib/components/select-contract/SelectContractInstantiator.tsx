@@ -19,6 +19,7 @@ import { useState } from "react";
 
 import { CustomIcon } from "../icon";
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useValidateAddress,
@@ -80,7 +81,7 @@ export const SelectContractInstantiator = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", lcdEndpoint, searchContract],
+    [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, searchContract],
     async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
     {
       enabled: false,

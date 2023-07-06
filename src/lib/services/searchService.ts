@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useGetAddressType,
@@ -9,7 +10,7 @@ import {
 import type { ContractAddr } from "lib/types";
 import { isBlock, isCodeId, isTxHash } from "lib/utils";
 
-import { useBlockDetailsQuery } from "./blockService";
+import { useBlockInfoQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
 import { useTxData } from "./txService";
@@ -44,7 +45,7 @@ export const useSearchHandler = (
     isWasm
   );
   const { data: contractData, isLoading: contractLoading } = useQuery(
-    ["query", "contract", lcdEndpoint, debouncedKeyword],
+    [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, debouncedKeyword],
     async () => queryContract(lcdEndpoint, debouncedKeyword as ContractAddr),
     {
       enabled: isWasm && Boolean(debouncedKeyword),
@@ -53,7 +54,7 @@ export const useSearchHandler = (
     }
   );
   const { data: blockData, isLoading: blockLoading } =
-    useBlockDetailsQuery(debouncedKeyword);
+    useBlockInfoQuery(debouncedKeyword);
   const txDataLoading = isTxHash(debouncedKeyword) && txLoading;
   const codeDataLoading = isWasm && isCodeId(debouncedKeyword) && codeLoading;
   const contractDataLoading = isWasm && contractLoading;

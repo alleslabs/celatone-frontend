@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useInternalNavigate,
   useWasmConfig,
@@ -55,7 +56,12 @@ const Query = () => {
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", "cmds", lcdEndpoint, contractAddress, '{"": {}}'],
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_QUERY_CMDS,
+      lcdEndpoint,
+      contractAddress,
+      '{"": {}}',
+    ],
     async () => queryData(lcdEndpoint, contractAddress, '{"": {}}'),
     {
       enabled: !!contractAddress,

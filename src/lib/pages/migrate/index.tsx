@@ -5,6 +5,7 @@ import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
@@ -73,7 +74,11 @@ const Migrate = () => {
   );
 
   useQuery(
-    ["query", "instantiate_info", lcdEndpoint, contractAddress],
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_INFO,
+      lcdEndpoint,
+      contractAddress,
+    ],
     async () =>
       queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
     {

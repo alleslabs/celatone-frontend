@@ -10,6 +10,7 @@ import {
   useSimulateFeeQuery,
   useCurrentChain,
   useBaseApiRoute,
+  CELATONE_QUERY_KEYS,
 } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -78,7 +79,7 @@ export const MigrateContract = ({
   });
 
   const { refetch } = useQuery(
-    ["query", lcdEndpoint, codeId],
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
     async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,

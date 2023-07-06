@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#422](https://github.com/alleslabs/celatone-frontend/pull/422) Create query keys enum
 - [#420](https://github.com/alleslabs/celatone-frontend/pull/420) Unify create proposal page layout
 - [#416](https://github.com/alleslabs/celatone-frontend/pull/416) Remove the old redundant useSimulateFee hook
 - [#413](https://github.com/alleslabs/celatone-frontend/pull/413) Add jest test cases for date utils

@@ -1,7 +1,11 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { useCelatoneApp, useBaseApiRoute } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useBaseApiRoute,
+  CELATONE_QUERY_KEYS,
+} from "lib/app-provider";
 import { getAccountIdByAddressQueryDocument } from "lib/query";
 import type { Addr, Balance, Option } from "lib/types";
 
@@ -13,7 +17,7 @@ export const useAccountBalances = (
   const balancesApiRoute = useBaseApiRoute("balances");
 
   return useQuery(
-    ["account_balance_info", address, balancesApiRoute],
+    [CELATONE_QUERY_KEYS.ACCOUNT_BALANCES_INFO, address, balancesApiRoute],
     async () => getAccountBalanceInfo(balancesApiRoute, address as Addr),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
@@ -30,9 +34,13 @@ export const useAccountId = (
       .request(getAccountIdByAddressQueryDocument, { address: walletAddress })
       .then<Option<number>>(({ accounts_by_pk }) => accounts_by_pk?.id);
   };
-  return useQuery(["account_id", indexerGraphClient, walletAddress], queryFn, {
-    enabled: Boolean(walletAddress),
-    retry: 1,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ACCOUNT_ID, indexerGraphClient, walletAddress],
+    queryFn,
+    {
+      enabled: Boolean(walletAddress),
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 };

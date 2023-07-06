@@ -4,6 +4,7 @@ import big from "big.js";
 import { useCallback } from "react";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useChainRecordAsset,
@@ -80,7 +81,7 @@ export const useRelatedProposalsByContractAddressPagination = (
 
   return useQuery(
     [
-      "related_proposals_by_contract_address_pagination",
+      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS_PAGINATION,
       contractAddress,
       offset,
       pageSize,
@@ -112,7 +113,7 @@ export const useRelatedProposalsCountByContractAddress = (
 
   return useQuery(
     [
-      "related_proposals_count_by_contract_address",
+      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS_COUNT,
       contractAddress,
       indexerGraphClient,
     ],
@@ -154,7 +155,7 @@ export const useProposalsByWalletAddressPagination = (
 
   return useQuery(
     [
-      "proposals_by_wallet_address_pagination",
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_PAGINATION,
       walletAddress,
       indexerGraphClient,
       offset,
@@ -182,7 +183,11 @@ export const useProposalsCountByWalletAddress = (
   }, [walletAddress, indexerGraphClient]);
 
   return useQuery(
-    ["proposals_count_by_wallet_address", walletAddress, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_COUNT,
+      walletAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -231,7 +236,13 @@ export const useProposalList = (
     [indexerGraphClient, offset, pageSize, expression]
   );
   return useQuery(
-    ["proposal_list", indexerGraphClient, expression, offset, pageSize],
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS,
+      indexerGraphClient,
+      expression,
+      offset,
+      pageSize,
+    ],
     queryFn
   );
 };
@@ -260,7 +271,7 @@ export const useProposalListCount = (
   );
 
   return useQuery(
-    ["proposal_list_count", indexerGraphClient, expression],
+    [CELATONE_QUERY_KEYS.PROPOSALS_COUNT, indexerGraphClient, expression],
     queryFn
   );
 };
@@ -276,7 +287,10 @@ export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
         ),
     [indexerGraphClient]
   );
-  return useQuery(["proposal_types", indexerGraphClient], queryFn);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, indexerGraphClient],
+    queryFn
+  );
 };
 
 export interface MinDeposit {
@@ -345,7 +359,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
     [lcdEndpoint, getAssetInfo]
   );
 
-  return useQuery(["gov_params", lcdEndpoint], queryFn, {
+  return useQuery([CELATONE_QUERY_KEYS.GOV_PARAMS, lcdEndpoint], queryFn, {
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
@@ -354,7 +368,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   return useQuery(
-    ["upload_access", lcdEndpoint],
+    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, lcdEndpoint],
     () => fetchGovUploadAccessParams(lcdEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
   );

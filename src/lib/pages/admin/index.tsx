@@ -15,6 +15,7 @@ import {
   useWasmConfig,
   useCurrentChain,
   useBaseApiRoute,
+  CELATONE_QUERY_KEYS,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -116,8 +117,7 @@ const UpdateAdmin = () => {
    */
   useQuery(
     [
-      "query",
-      "instantiate_info",
+      CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_INFO,
       lcdEndpoint,
       indexerGraphClient,
       contractAddressParam,

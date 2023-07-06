@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useValidateAddress,
@@ -103,7 +104,11 @@ export function SaveNewContractModal({
 
   // TODO: Abstract query
   const { refetch } = useQuery(
-    ["query", "instantiate_info", lcdEndpoint, contractAddressState],
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_INFO,
+      lcdEndpoint,
+      contractAddressState,
+    ],
     async () =>
       queryInstantiateInfo(
         lcdEndpoint,

@@ -4,7 +4,12 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { useBaseApiRoute, useCelatoneApp, useMobile } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+  useMobile,
+} from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
@@ -152,8 +157,7 @@ export const ContractSelectSection = observer(
 
     const { refetch } = useQuery(
       [
-        "query",
-        "instantiate_info",
+        CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_INFO,
         lcdEndpoint,
         indexerGraphClient,
         contractAddress,

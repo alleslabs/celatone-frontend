@@ -15,6 +15,7 @@ import {
   useSimulateFeeQuery,
   useCurrentChain,
   useBaseApiRoute,
+  CELATONE_QUERY_KEYS,
 } from "lib/app-provider";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -152,7 +153,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
 
   const { refetch } = useQuery(
-    ["query", lcdEndpoint, codeId],
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
     async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,

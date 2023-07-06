@@ -5,7 +5,11 @@ import type {
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+} from "lib/app-provider";
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
@@ -51,7 +55,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
   );
 
   return useQuery({
-    queryKey: ["tx_data", txsApiRoute, txHash] as string[],
+    queryKey: [CELATONE_QUERY_KEYS.TX_DATA, txsApiRoute, txHash] as string[],
     queryFn,
     enabled: Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,
@@ -125,7 +129,7 @@ export const useTxsByAddressPagination = (
   }, [accountId, address, expression, indexerGraphClient, offset, pageSize]);
   return useQuery(
     [
-      "transactions_by_address_pagination",
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION,
       address,
       accountId,
       search,
@@ -174,7 +178,7 @@ export const useTxsCountByAddress = (
 
   return useQuery(
     [
-      "transactions_count_by_address",
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_COUNT,
       address,
       search,
       filters,
@@ -230,7 +234,7 @@ export const useTxs = (
   );
 
   return useQuery(
-    ["transaction_list", offset, pageSize, indexerGraphClient],
+    [CELATONE_QUERY_KEYS.TXS, offset, pageSize, indexerGraphClient],
     queryFn
   );
 };
@@ -245,7 +249,7 @@ export const useTxsCount = (): UseQueryResult<Option<number>> => {
     [indexerGraphClient]
   );
 
-  return useQuery(["transaction_list_count", indexerGraphClient], queryFn);
+  return useQuery([CELATONE_QUERY_KEYS.TXS_COUNT, indexerGraphClient], queryFn);
 };
 
 export const useTxsByBlockHeightPagination = (
@@ -291,7 +295,7 @@ export const useTxsByBlockHeightPagination = (
 
   return useQuery(
     [
-      "transactions_by_block_height_pagination",
+      CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_PAGINATION,
       indexerGraphClient,
       limit,
       offset,
@@ -324,7 +328,7 @@ export const useTxsCountByBlockHeight = (
   );
 
   return useQuery(
-    ["transactions_count_by_block_height", indexerGraphClient, height],
+    [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_COUNT, indexerGraphClient, height],
     queryFn,
     {
       keepPreviousData: true,

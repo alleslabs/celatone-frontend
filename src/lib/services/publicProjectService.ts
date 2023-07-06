@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCallback } from "react";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   usePublicProjectConfig,
   useWasmConfig,
@@ -51,10 +52,14 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
       );
   }, [projectsApiRoute]);
 
-  return useQuery(["public_project", projectsApiRoute], queryFn, {
-    keepPreviousData: true,
-    enabled: projectConfig.enabled,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.PUBLIC_PROJECTS, projectsApiRoute],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: projectConfig.enabled,
+    }
+  );
 };
 
 export const usePublicProjectBySlug = (
@@ -74,9 +79,13 @@ export const usePublicProjectBySlug = (
       }));
   }, [projectsApiRoute, slug]);
 
-  return useQuery(["public_project_by_slug", projectsApiRoute, slug], queryFn, {
-    enabled: !!slug && projectConfig.enabled,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_SLUG, projectsApiRoute, slug],
+    queryFn,
+    {
+      enabled: !!slug && projectConfig.enabled,
+    }
+  );
 };
 
 export const usePublicProjectByContractAddress = (
@@ -97,7 +106,11 @@ export const usePublicProjectByContractAddress = (
   }, [projectsApiRoute, contractAddress]);
 
   return useQuery(
-    ["public_project_by_contract_address", projectsApiRoute, contractAddress],
+    [
+      CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CONTRACT_ADDRESS,
+      projectsApiRoute,
+      contractAddress,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -125,7 +138,7 @@ export const usePublicProjectByCodeId = (
   }, [projectsApiRoute, codeId]);
 
   return useQuery(
-    ["public_project_by_code_id", projectsApiRoute, codeId],
+    [CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CODE_ID, projectsApiRoute, codeId],
     queryFn,
     {
       keepPreviousData: true,
@@ -152,7 +165,11 @@ export const usePublicProjectByAccountAddress = (
       .then(({ data: projectInfo }) => projectInfo);
   }, [accountAddress, projectsApiRoute]);
   return useQuery(
-    ["public_project_by_account_address", projectsApiRoute, accountAddress],
+    [
+      CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_WALLET_ADDRESS,
+      projectsApiRoute,
+      accountAddress,
+    ],
     queryFn,
     {
       keepPreviousData: true,

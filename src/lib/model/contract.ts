@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
@@ -107,7 +108,11 @@ export const useContractData = (
 
   const { data: instantiateInfo, isLoading: isInstantiateInfoLoading } =
     useQuery(
-      ["query", "instantiate_info", lcdEndpoint, contractAddress],
+      [
+        CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_INFO,
+        lcdEndpoint,
+        contractAddress,
+      ],
       async () =>
         queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
       { enabled: !!contractAddress, retry: false }
@@ -115,14 +120,18 @@ export const useContractData = (
 
   const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
     useQuery(
-      ["query", "contract_cw2_info", lcdEndpoint, contractAddress],
+      [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO, lcdEndpoint, contractAddress],
       async () => queryContractCw2Info(lcdEndpoint, contractAddress),
       { enabled: !!contractAddress, retry: false }
     );
 
   const { data: contractBalances, isLoading: isContractBalancesLoading } =
     useQuery(
-      ["query", "contractBalances", balancesApiRoute, contractAddress],
+      [
+        CELATONE_QUERY_KEYS.CONTRACT_BALANCES_INFO,
+        balancesApiRoute,
+        contractAddress,
+      ],
       async () => queryContractBalances(balancesApiRoute, contractAddress),
       { enabled: !!contractAddress, retry: false }
     );

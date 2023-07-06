@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useBaseApiRoute } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 
 import type { RawValidator } from "./validator";
 import { getValidators } from "./validator";
@@ -17,7 +17,7 @@ export const useValidators = (): UseQueryResult<
     [lcdEndpoint]
   );
 
-  return useQuery(["query", "validators", lcdEndpoint], queryFn, {
+  return useQuery([CELATONE_QUERY_KEYS.VALIDATORS, lcdEndpoint], queryFn, {
     refetchOnWindowFocus: false,
   });
 };

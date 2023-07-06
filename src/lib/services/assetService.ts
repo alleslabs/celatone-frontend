@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { useBaseApiRoute } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import { getAssetInfos } from "lib/services/asset";
 import type { AssetInfo, Option } from "lib/types";
 
@@ -13,7 +13,7 @@ export const useAssetInfos = (): {
   const assetsApiRoute = useBaseApiRoute("assets");
 
   const { data: assets, isLoading } = useQuery(
-    ["query", "assetInfos", assetsApiRoute],
+    [CELATONE_QUERY_KEYS.ASSET_INFOS, assetsApiRoute],
     async () => getAssetInfos(assetsApiRoute),
     { enabled: !!assetsApiRoute, retry: 1, refetchOnWindowFocus: false }
   );

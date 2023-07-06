@@ -2,7 +2,11 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import big from "big.js";
 
-import { useChainRecordAsset, useFaucetConfig } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useChainRecordAsset,
+  useFaucetConfig,
+} from "lib/app-provider";
 import type { Token, U } from "lib/types";
 import { deexponentify, getTokenLabel } from "lib/utils";
 
@@ -31,7 +35,7 @@ export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
   };
 
   return useQuery({
-    queryKey: ["query", "faucet_info", faucet],
+    queryKey: [CELATONE_QUERY_KEYS.FAUCET_INFO, faucet],
     queryFn,
     enabled: faucet.enabled,
     retry: 2,
