@@ -115,49 +115,45 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
         </Text>
       </Flex>
       <SimpleGrid columns={4} gap={2}>
-        <>
-          {item.poolLiquidity.slice(0, 3).map((asset) => (
-            <AllocationBadge
-              key={asset.denom}
-              denom={asset.denom}
-              logo={asset.logo}
-              symbol={asset.symbol}
-              precision={asset.precision}
-              amount={asset.amount}
-              value={asset.value}
-              liquidity={liquidity}
-              mode={mode}
-            />
-          ))}
-          {item.poolLiquidity.length >= 4 && (
-            <AllocationBadge
-              key="OTHERS"
-              denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
-              logo={is4Assets ? item.poolLiquidity[3].logo : undefined}
-              symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
-              precision={
-                is4Assets ? item.poolLiquidity[3].precision : undefined
-              }
-              amount={
-                item.poolLiquidity
-                  .slice(3)
-                  .reduce((prev, asset) => prev.add(asset.amount), big(0)) as U<
-                  Token<Big>
-                >
-              }
-              value={
-                item.poolLiquidity
-                  .slice(3)
-                  .reduce(
-                    (prev, asset) => prev.add(asset.value ?? big(0)),
-                    big(0)
-                  ) as USD<Big>
-              }
-              liquidity={liquidity}
-              mode={mode}
-            />
-          )}
-        </>
+        {item.poolLiquidity.slice(0, 3).map((asset) => (
+          <AllocationBadge
+            key={asset.denom}
+            denom={asset.denom}
+            logo={asset.logo}
+            symbol={asset.symbol}
+            precision={asset.precision}
+            amount={asset.amount}
+            value={asset.value}
+            liquidity={liquidity}
+            mode={mode}
+          />
+        ))}
+        {item.poolLiquidity.length >= 4 && (
+          <AllocationBadge
+            key="OTHERS"
+            denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
+            logo={is4Assets ? item.poolLiquidity[3].logo : undefined}
+            symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
+            precision={is4Assets ? item.poolLiquidity[3].precision : undefined}
+            amount={
+              item.poolLiquidity
+                .slice(3)
+                .reduce((prev, asset) => prev.add(asset.amount), big(0)) as U<
+                Token<Big>
+              >
+            }
+            value={
+              item.poolLiquidity
+                .slice(3)
+                .reduce(
+                  (prev, asset) => prev.add(asset.value ?? big(0)),
+                  big(0)
+                ) as USD<Big>
+            }
+            liquidity={liquidity}
+            mode={mode}
+          />
+        )}
       </SimpleGrid>
     </Flex>
   );

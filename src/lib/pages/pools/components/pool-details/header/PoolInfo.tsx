@@ -84,10 +84,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           {futurePoolGovernorType !== "invalid_address" ? (
             <ExplorerLink
               type={futurePoolGovernorType}
-              value={
-                pool.futurePoolGovernor.length ? pool.futurePoolGovernor : "N/A"
-              }
-              isReadOnly={!pool.futurePoolGovernor}
+              value={pool.futurePoolGovernor}
               showCopyOnHover
               textFormat="truncate"
               w="140px"
