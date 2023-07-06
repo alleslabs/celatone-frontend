@@ -12,6 +12,7 @@ interface PoolInfoProps {
   pool: PoolDetail;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export const PoolInfo = ({ pool }: PoolInfoProps) => {
   const getAddressType = useGetAddressType();
   const futurePoolGovernorType = getAddressType(
@@ -78,19 +79,28 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           </Text>
         </LabelText>
       )}
-      {pool.futurePoolGovernor && (
+      {pool.futurePoolGovernor !== null && (
         <LabelText label="Future Governor">
           {futurePoolGovernorType !== "invalid_address" ? (
             <ExplorerLink
               type={futurePoolGovernorType}
-              value={pool.futurePoolGovernor}
+              value={
+                pool.futurePoolGovernor.length ? pool.futurePoolGovernor : "N/A"
+              }
+              isReadOnly={!pool.futurePoolGovernor}
               showCopyOnHover
               textFormat="truncate"
               w="140px"
             />
           ) : (
-            <Text as="p" color="text.main" variant="body2">
-              {pool.futurePoolGovernor}
+            <Text
+              as="p"
+              color={
+                pool.futurePoolGovernor.length ? "text.main" : "text.disabled"
+              }
+              variant="body2"
+            >
+              {pool.futurePoolGovernor.length ? pool.futurePoolGovernor : "N/A"}
             </Text>
           )}
         </LabelText>

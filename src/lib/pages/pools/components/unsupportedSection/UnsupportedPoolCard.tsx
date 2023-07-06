@@ -14,7 +14,6 @@ import { useMemo } from "react";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
-import { UnderDevAlert } from "../UnderDevAlert";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -51,8 +50,8 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
     // First version, navigate to contract details page if pool type is CosmWasm
     if (item?.type === PoolType.COSMWASM && item.contractAddress)
       navigate({
-        pathname: `/contracts/${item.contractAddress}`,
-        replace: true,
+        pathname: `/contracts/[contractAddress]`,
+        query: { contractAddress: item.contractAddress },
       });
     else {
       navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
@@ -123,78 +122,67 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
             </Flex>
           </AccordionButton>
           <AccordionPanel pb={4}>
-            {/* TODO - Revisit later */}
-            {item.poolLiquidity.some((coin) => !coin.amount) ? (
-              <UnderDevAlert poolType={item.type} />
-            ) : (
-              <Flex>
-                <Text
-                  color="text.dark"
-                  variant="body2"
-                  fontWeight="600"
-                  w="144px"
-                >
-                  Tokens in Pool
-                </Text>
-                <Flex gap={4} flexDirection="column">
-                  <Flex gap={2} flexDirection="column">
-                    {item.poolLiquidity.map((asset) => (
-                      <Flex
-                        className="copier-wrapper"
-                        key={asset.denom}
-                        gap={3}
-                        alignItems="center"
-                      >
-                        <Image
-                          boxSize={6}
-                          src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
-                        />
-                        <Text
-                          variant="body2"
-                          color="text.main"
-                          fontWeight="bold"
-                        >
-                          {formatUTokenWithPrecision(
-                            asset.amount,
-                            asset.precision ?? 0
-                          )}
-                        </Text>
-                        <Flex>{asset.symbol ?? asset.denom}</Flex>
-                        <Copier
-                          type={
-                            asset.symbol
-                              ? "supported_asset"
-                              : "unsupported_asset"
-                          }
-                          value={asset.denom}
-                          copyLabel="Token ID Copied!"
-                          display="none"
-                          ml="1px"
-                        />
-                      </Flex>
-                    ))}
-                  </Flex>
-                  <Flex gap={3}>
-                    <Button onClick={handleOnClick} size="sm">
-                      View Pool Details
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        AmpTrackWebsite(`${poolUrl}/${item.id}`);
-                        openNewTab(`${poolUrl}/${item.id}`);
-                      }}
-                      size="sm"
-                      variant="outline-primary"
-                      rightIcon={
-                        <CustomIcon name="launch" color="outline-primary" />
-                      }
+            <Flex>
+              <Text
+                color="text.dark"
+                variant="body2"
+                fontWeight="600"
+                w="144px"
+              >
+                Tokens in Pool
+              </Text>
+              <Flex gap={4} flexDirection="column">
+                <Flex gap={2} flexDirection="column">
+                  {item.poolLiquidity.map((asset) => (
+                    <Flex
+                      className="copier-wrapper"
+                      key={asset.denom}
+                      gap={3}
+                      alignItems="center"
                     >
-                      View in Osmosis
-                    </Button>
-                  </Flex>
+                      <Image
+                        boxSize={6}
+                        src={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
+                      />
+                      <Text variant="body2" color="text.main" fontWeight="bold">
+                        {formatUTokenWithPrecision(
+                          asset.amount,
+                          asset.precision ?? 0
+                        )}
+                      </Text>
+                      <Flex>{asset.symbol ?? asset.denom}</Flex>
+                      <Copier
+                        type={
+                          asset.symbol ? "supported_asset" : "unsupported_asset"
+                        }
+                        value={asset.denom}
+                        copyLabel="Token ID Copied!"
+                        display="none"
+                        ml="1px"
+                      />
+                    </Flex>
+                  ))}
+                </Flex>
+                <Flex gap={3}>
+                  <Button onClick={handleOnClick} size="sm">
+                    View Pool Details
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      AmpTrackWebsite(`${poolUrl}/${item.id}`);
+                      openNewTab(`${poolUrl}/${item.id}`);
+                    }}
+                    size="sm"
+                    variant="outline-primary"
+                    rightIcon={
+                      <CustomIcon name="launch" color="outline-primary" />
+                    }
+                  >
+                    View in Osmosis
+                  </Button>
                 </Flex>
               </Flex>
-            )}
+            </Flex>
           </AccordionPanel>
         </>
       )}

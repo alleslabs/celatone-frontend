@@ -3,7 +3,6 @@ import type { Big } from "big.js";
 
 import type { Addr, ContractAddr, Option, TokenWithValue } from "lib/types";
 
-// TODO - Recheck type name
 export enum PoolType {
   ALL = "All",
   BALANCER = "Balancer",
@@ -30,7 +29,6 @@ export interface Pool<
   contractAddress: Option<ContractAddr | null>;
 }
 
-// TODO - Revisit when backend finished
 export interface PoolDetail<
   TWeight extends string | Big = Big,
   TLiquidity extends Coin | TokenWithValue = TokenWithValue

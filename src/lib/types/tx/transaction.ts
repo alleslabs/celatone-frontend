@@ -50,7 +50,6 @@ export interface TxFilters {
   isClearAdmin: boolean;
 }
 
-// TODO - Revisit when backend finished
 export type PoolTxFilter =
   | "is_all"
   | "is_swap"
