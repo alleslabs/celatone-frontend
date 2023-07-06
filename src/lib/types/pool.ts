@@ -48,5 +48,5 @@ export interface PoolDetail<
   scalingFactorController: string | null;
   spreadFactor: string | null;
   tickSpacing: number | null;
-  contractAddress: ContractAddr;
+  contractAddress: ContractAddr | null;
 }

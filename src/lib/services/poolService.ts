@@ -152,6 +152,7 @@ export const usePoolByPoolId = (
         poolId,
       })
       .then(({ pools_by_pk }) =>
+        // TODO: revisit to remove this assertion later
         pools_by_pk
           ? ({
               id: pools_by_pk.id,

@@ -119,7 +119,7 @@ export const PoolHeader = ({
             {isSuperfluid && (
               <Flex alignItems="center" gap={2}>
                 <Flex
-                  backgroundColor="pebble.600"
+                  backgroundColor="gray.600"
                   borderRadius="full"
                   w="6px"
                   h="6px"

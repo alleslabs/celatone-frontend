@@ -84,7 +84,6 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
             <ExplorerLink
               type={futurePoolGovernorType}
               value={pool.futurePoolGovernor}
-              isReadOnly={!pool.futurePoolGovernor}
               showCopyOnHover
               textFormat="truncate"
               w="140px"

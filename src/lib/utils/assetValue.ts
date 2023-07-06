@@ -41,6 +41,9 @@ export const coinToTokenWithValue = (
   amount: string,
   assetInfo: Option<AssetInfo>
 ): TokenWithValue => {
+  /**
+   * @remarks Assuming if liquidty amount does not exist, it will result in empty string
+   */
   const tokenAmount = (amount.length === 0 ? 0 : big(amount)) as U<Token<Big>>;
   return {
     denom,

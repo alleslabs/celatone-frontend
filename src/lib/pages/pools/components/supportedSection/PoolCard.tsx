@@ -113,6 +113,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
             : formatPrice(liquidity)}
         </Text>
       </Flex>
+      {/* TODO - Revisit later */}
       {item.poolLiquidity.some((coin) => !coin.amount) ? (
         <UnderDevAlert poolType={item.type} />
       ) : (
