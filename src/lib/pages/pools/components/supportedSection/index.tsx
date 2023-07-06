@@ -32,6 +32,7 @@ import {
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
+import { PoolType } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
 import { SupportedPoolList } from "./SupportedPoolList";
@@ -58,7 +59,7 @@ export const SupportedSection = ({
 
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
-      poolTypeValue: "All",
+      poolTypeValue: PoolType.ALL,
       keyword: "",
       isSuperfluidOnly: false,
     },

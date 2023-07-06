@@ -7,9 +7,11 @@ import { useMemo } from "react";
 import { PoolHeader } from "../PoolHeader";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
 import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { USD, Pool, Token, U } from "lib/types";
+import { PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { AllocationBadge } from "./AllocationBadge";
@@ -31,17 +33,27 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
 
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
-    navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
+    // First version, navigate to contract details page if pool type is CosmWasm
+    if (item?.type === PoolType.COSMWASM && item.contractAddress)
+      navigate({
+        pathname: `/contracts/[contractAddress]`,
+        query: { contractAddress: item.contractAddress },
+      });
+    else {
+      navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
+    }
   };
 
   const liquidity = item.poolLiquidity.reduce(
     (total, asset) => total.add(asset.value ?? big(0)) as USD<Big>,
     big(0) as USD<Big>
   );
+
   const is4Assets = item.poolLiquidity.length === 4;
 
   return (
     <Flex
+      justifyContent="space-between"
       gap={4}
       flexDirection="column"
       onClick={handleOnClick}
@@ -89,59 +101,59 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
         </Tooltip>
       </Flex>
       <Flex justifyContent="space-between">
-        <Flex alignItems="center">
-          <Text variant="body2" color="text.dark" fontWeight="600">
-            Liquidity
-          </Text>
-        </Flex>
+        <LabelText
+          label="Liquidity"
+          tooltipText="The total amount of asset liquidity provided in the pool."
+        >
+          {" "}
+        </LabelText>
+
         <Text variant="body2" color="text.main">
-          {formatPrice(liquidity)}
+          {item.poolLiquidity.some((coin) => !coin.amount)
+            ? "N/A"
+            : formatPrice(liquidity)}
         </Text>
       </Flex>
       <SimpleGrid columns={4} gap={2}>
-        <>
-          {item.poolLiquidity.slice(0, 3).map((asset) => (
-            <AllocationBadge
-              key={asset.denom}
-              denom={asset.denom}
-              logo={asset.logo}
-              symbol={asset.symbol}
-              precision={asset.precision}
-              amount={asset.amount}
-              value={asset.value}
-              liquidity={liquidity}
-              mode={mode}
-            />
-          ))}
-          {item.poolLiquidity.length >= 4 && (
-            <AllocationBadge
-              key="OTHERS"
-              denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
-              logo={is4Assets ? item.poolLiquidity[3].logo : undefined}
-              symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
-              precision={
-                is4Assets ? item.poolLiquidity[3].precision : undefined
-              }
-              amount={
-                item.poolLiquidity
-                  .slice(3)
-                  .reduce((prev, asset) => prev.add(asset.amount), big(0)) as U<
-                  Token<Big>
-                >
-              }
-              value={
-                item.poolLiquidity
-                  .slice(3)
-                  .reduce(
-                    (prev, asset) => prev.add(asset.value ?? big(0)),
-                    big(0)
-                  ) as USD<Big>
-              }
-              liquidity={liquidity}
-              mode={mode}
-            />
-          )}
-        </>
+        {item.poolLiquidity.slice(0, 3).map((asset) => (
+          <AllocationBadge
+            key={asset.denom}
+            denom={asset.denom}
+            logo={asset.logo}
+            symbol={asset.symbol}
+            precision={asset.precision}
+            amount={asset.amount}
+            value={asset.value}
+            liquidity={liquidity}
+            mode={mode}
+          />
+        ))}
+        {item.poolLiquidity.length >= 4 && (
+          <AllocationBadge
+            key="OTHERS"
+            denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
+            logo={is4Assets ? item.poolLiquidity[3].logo : undefined}
+            symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
+            precision={is4Assets ? item.poolLiquidity[3].precision : undefined}
+            amount={
+              item.poolLiquidity
+                .slice(3)
+                .reduce((prev, asset) => prev.add(asset.amount), big(0)) as U<
+                Token<Big>
+              >
+            }
+            value={
+              item.poolLiquidity
+                .slice(3)
+                .reduce(
+                  (prev, asset) => prev.add(asset.value ?? big(0)),
+                  big(0)
+                ) as USD<Big>
+            }
+            liquidity={liquidity}
+            mode={mode}
+          />
+        )}
       </SimpleGrid>
     </Flex>
   );

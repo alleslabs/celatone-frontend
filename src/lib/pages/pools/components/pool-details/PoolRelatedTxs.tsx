@@ -12,6 +12,7 @@ import { usePoolTxsCount } from "../../data";
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpTrackUseTab } from "lib/services/amplitude";
 import type { PoolDetail } from "lib/types";
+import { PoolType } from "lib/types";
 
 import { PoolRelatedTxsTable } from "./tables/pool-txs";
 
@@ -30,6 +31,12 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
     usePoolTxsCount(pool.id, "is_bond");
   const { count: countSuperfluidTxs, countDisplay: countDisplaySuperfluidTxs } =
     usePoolTxsCount(pool.id, "is_superfluid");
+  const { count: countClpTxs, countDisplay: countDisplayClpTxs } =
+    usePoolTxsCount(pool.id, "is_clp");
+  const { count: countCollectTxs, countDisplay: countDisplayCollectTxs } =
+    usePoolTxsCount(pool.id, "is_collect");
+  const { count: countMigrateTxs, countDisplay: countDisplayMigrateTxs } =
+    usePoolTxsCount(pool.id, "is_migrate");
 
   const tableHeaderId = "poolTableHeader";
   return (
@@ -58,12 +65,21 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           >
             Swap
           </CustomTab>
-          <CustomTab
-            count={countDisplayLpTxs}
-            onClick={() => AmpTrackUseTab("LP")}
-          >
-            LP
-          </CustomTab>
+          {pool.type === PoolType.CL ? (
+            <CustomTab
+              count={countDisplayClpTxs}
+              onClick={() => AmpTrackUseTab("CLP")}
+            >
+              CLP
+            </CustomTab>
+          ) : (
+            <CustomTab
+              count={countDisplayLpTxs}
+              onClick={() => AmpTrackUseTab("LP")}
+            >
+              LP
+            </CustomTab>
+          )}
           <CustomTab
             count={countDisplayBondTxs}
             onClick={() => AmpTrackUseTab("Bonding")}
@@ -76,6 +92,22 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
               onClick={() => AmpTrackUseTab("Superfluid")}
             >
               Superfluid
+            </CustomTab>
+          )}
+          {pool.type === PoolType.CL && (
+            <CustomTab
+              count={countDisplayCollectTxs}
+              onClick={() => AmpTrackUseTab("Collect")}
+            >
+              Collect
+            </CustomTab>
+          )}
+          {pool.type === PoolType.CL && (
+            <CustomTab
+              count={countDisplayMigrateTxs}
+              onClick={() => AmpTrackUseTab("Migrate")}
+            >
+              Migrate
             </CustomTab>
           )}
         </TabList>
@@ -96,14 +128,25 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
               scrollComponentId={tableHeaderId}
             />
           </TabPanel>
-          <TabPanel p={0}>
-            <PoolRelatedTxsTable
-              pool={pool}
-              countTxs={countLpTxs}
-              type="is_lp"
-              scrollComponentId={tableHeaderId}
-            />
-          </TabPanel>
+          {pool.type === PoolType.CL ? (
+            <TabPanel p={0}>
+              <PoolRelatedTxsTable
+                pool={pool}
+                countTxs={countClpTxs}
+                type="is_clp"
+                scrollComponentId={tableHeaderId}
+              />
+            </TabPanel>
+          ) : (
+            <TabPanel p={0}>
+              <PoolRelatedTxsTable
+                pool={pool}
+                countTxs={countLpTxs}
+                type="is_lp"
+                scrollComponentId={tableHeaderId}
+              />
+            </TabPanel>
+          )}
           <TabPanel p={0}>
             <PoolRelatedTxsTable
               pool={pool}
@@ -118,6 +161,26 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
                 pool={pool}
                 countTxs={countSuperfluidTxs}
                 type="is_superfluid"
+                scrollComponentId={tableHeaderId}
+              />
+            </TabPanel>
+          )}
+          {pool.type === PoolType.CL && (
+            <TabPanel p={0}>
+              <PoolRelatedTxsTable
+                pool={pool}
+                countTxs={countCollectTxs}
+                type="is_collect"
+                scrollComponentId={tableHeaderId}
+              />
+            </TabPanel>
+          )}
+          {pool.type === PoolType.CL && (
+            <TabPanel p={0}>
+              <PoolRelatedTxsTable
+                pool={pool}
+                countTxs={countMigrateTxs}
+                type="is_migrate"
                 scrollComponentId={tableHeaderId}
               />
             </TabPanel>

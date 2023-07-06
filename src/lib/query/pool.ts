@@ -17,6 +17,7 @@ export const getPoolList = graphql(`
       type
       is_superfluid
       liquidity
+      contract_address
     }
   }
 `);
@@ -50,6 +51,7 @@ export const getPoolListByDenoms = graphql(`
       type
       is_superfluid
       liquidity
+      contract_address
     }
   }
 `);
@@ -92,6 +94,9 @@ export const getPoolByPoolId = graphql(`
       smooth_weight_change_params
       scaling_factors
       scaling_factor_controller
+      spread_factor
+      tick_spacing
+      contract_address
     }
   }
 `);

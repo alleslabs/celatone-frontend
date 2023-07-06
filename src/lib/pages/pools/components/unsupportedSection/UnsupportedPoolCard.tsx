@@ -20,6 +20,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { AmpTrackExpand, AmpTrackWebsite } from "lib/services/amplitude";
 import type { Pool } from "lib/types";
+import { PoolType } from "lib/types";
 import { formatUTokenWithPrecision, openNewTab } from "lib/utils";
 
 interface UnsupportedPoolCardProps {
@@ -46,7 +47,15 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
 
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
-    navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
+    // First version, navigate to contract details page if pool type is CosmWasm
+    if (item?.type === PoolType.COSMWASM && item.contractAddress)
+      navigate({
+        pathname: `/contracts/[contractAddress]`,
+        query: { contractAddress: item.contractAddress },
+      });
+    else {
+      navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
+    }
   };
 
   return (

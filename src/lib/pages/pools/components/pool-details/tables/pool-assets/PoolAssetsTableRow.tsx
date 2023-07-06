@@ -7,6 +7,7 @@ import { TableRow } from "lib/components/table/tableComponents";
 import { TooltipInfo } from "lib/components/Tooltip";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
 import type { USD, PoolDetail, TokenWithValue, Ratio } from "lib/types";
+import { PoolType } from "lib/types";
 import {
   formatInteger,
   formatPrice,
@@ -82,7 +83,7 @@ export const PoolAssetsTableRow = ({
         </Flex>
       </TableRow>
       <TableRow fontWeight={700} justifyContent="flex-end">
-        {poolType === "Stableswap" ? scalingFactor : tokenWeight}
+        {poolType === PoolType.STABLESWAP ? scalingFactor : tokenWeight}
       </TableRow>
       <TableRow fontWeight={700} justifyContent="flex-end">
         {isSupported && allocation}

@@ -44,6 +44,7 @@ export const usePools = (
     poolLiquidity: pool.poolLiquidity.map<TokenWithValue>((coin) =>
       coinToTokenWithValue(coin.denom, coin.amount, assetInfos?.[coin.denom])
     ),
+    contractAddress: pool.contractAddress,
   }));
 
   return {
@@ -97,6 +98,9 @@ export const usePool = (
       smoothWeightChangeParams: pool.smoothWeightChangeParams,
       scalingFactors: pool.scalingFactors,
       scalingFactorController: pool.scalingFactorController,
+      spreadFactor: pool.spreadFactor,
+      tickSpacing: pool.tickSpacing,
+      contractAddress: pool.contractAddress,
     },
     isLoading: false,
   };

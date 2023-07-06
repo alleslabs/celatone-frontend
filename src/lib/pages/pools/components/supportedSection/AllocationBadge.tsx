@@ -8,6 +8,7 @@ import {
   getTokenLabel,
   formatUTokenWithPrecision,
   formatRatio,
+  divWithDefault,
 } from "lib/utils";
 
 interface AllocationBadgeProps {
@@ -32,7 +33,7 @@ export const AllocationBadge = ({
   mode,
 }: AllocationBadgeProps) => {
   const formattedValue = formatRatio(
-    (value ?? big(0)).div(liquidity) as Ratio<Big>
+    divWithDefault(value ?? big(0), liquidity, 0) as Ratio<Big>
   );
   const formattedAmount = denom
     ? formatUTokenWithPrecision(amount, precision ?? 0)
