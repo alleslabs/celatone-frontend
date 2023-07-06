@@ -16,9 +16,9 @@ const generateVariantStyle = (
       borderColor = `${variant}.dark`;
       break;
     case "info":
-      mainColor = "pebble.400";
-      bgColor = "pebble.800";
-      borderColor = "pebble.700";
+      mainColor = "gray.400";
+      bgColor = "gray.800";
+      borderColor = "gray.700";
       break;
     case "accent":
     case "error":

@@ -21,16 +21,16 @@ export const PoolId = () => {
   const navigate = useInternalNavigate();
   const poolId = Number(getFirstQueryParam(router.query.poolId));
   const { pool, isLoading } = usePool(poolId);
-  // TODO - Remove this and get from usePool
-  const contractAddress =
-    "osmo1e2c7qawyjk40acehzjpk6fl0gf0xwxrvck88ruc6j4zspr4splxqf8c07y";
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_POOL_DETAIL);
     // First version, navigate to contract details page if pool type is CosmWasm
     if (pool?.type === PoolType.COSMWASM)
-      navigate({ pathname: `/contracts/${contractAddress}`, replace: true });
-  }, [navigate, pool?.type, router.isReady]);
+      navigate({
+        pathname: `/contracts/${pool.contractAddress}`,
+        replace: true,
+      });
+  }, [navigate, pool, pool?.contractAddress, pool?.type, router.isReady]);
 
   if (isLoading) return <Loading />;
   if (!pool) return navigate({ pathname: `/pool` });

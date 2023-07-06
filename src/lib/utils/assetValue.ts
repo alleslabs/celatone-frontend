@@ -41,7 +41,7 @@ export const coinToTokenWithValue = (
   amount: string,
   assetInfo: Option<AssetInfo>
 ): TokenWithValue => {
-  const tokenAmount = big(amount) as U<Token<Big>>;
+  const tokenAmount = (amount.length === 0 ? 0 : big(amount)) as U<Token<Big>>;
   return {
     denom,
     amount: tokenAmount,
@@ -49,12 +49,13 @@ export const coinToTokenWithValue = (
     logo: assetInfo?.logo,
     precision: assetInfo?.precision,
     price: assetInfo ? (big(assetInfo.price).toFixed() as USD) : undefined,
-    value: assetInfo
-      ? calculateAssetValue(
-          toToken(tokenAmount, assetInfo.precision),
-          assetInfo.price as USD<number>
-        )
-      : undefined,
+    value:
+      assetInfo && tokenAmount
+        ? calculateAssetValue(
+            toToken(tokenAmount, assetInfo.precision),
+            assetInfo.price as USD<number>
+          )
+        : undefined,
   };
 };
 

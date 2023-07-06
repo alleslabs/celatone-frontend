@@ -16,7 +16,7 @@ export const UnderDevAlert = ({ poolType }: UnderDevAlertProps) => (
   <Alert status="info" variant="info">
     <CustomIcon name="alert-circle-solid" boxSize={4} mr={2} />
     <Text color="text.dark">
-      Information for pool {poolText(poolType)} is under development
+      Information for {poolText(poolType)} pool is under development
     </Text>
   </Alert>
 );

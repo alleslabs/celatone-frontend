@@ -97,9 +97,9 @@ export const usePool = (
       smoothWeightChangeParams: pool.smoothWeightChangeParams,
       scalingFactors: pool.scalingFactors,
       scalingFactorController: pool.scalingFactorController,
-      // TODO - Get data
-      spreadFactor: "",
-      tickSpacing: "",
+      spreadFactor: pool.spreadFactor,
+      tickSpacing: pool.tickSpacing,
+      contractAddress: pool.contractAddress,
     },
     isLoading: false,
   };

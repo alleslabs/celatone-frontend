@@ -1,6 +1,7 @@
 import type { Coin } from "@cosmjs/stargate";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import type { RequestDocument } from "graphql-request";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
@@ -140,8 +141,9 @@ export const usePoolByPoolId = (
 
   const queryFn = useCallback(async () => {
     if (!poolId) throw new Error("Pool ID is undefined.");
+    // TODO - Remove assertion when backend is implemented
     return indexerGraphClient
-      .request(getPoolByPoolId, {
+      .request(getPoolByPoolId as RequestDocument, {
         poolId,
       })
       .then(({ pools_by_pk }) =>
@@ -155,13 +157,16 @@ export const usePoolByPoolId = (
               blockHeight: pools_by_pk.transaction?.block_height,
               creator: pools_by_pk.account?.address,
               poolAddress: pools_by_pk.address,
-              swapFee: Number(pools_by_pk.swap_fee),
-              exitFee: Number(pools_by_pk.exit_fee),
+              swapFee: pools_by_pk.swap_fee,
+              exitFee: pools_by_pk.exit_fee,
               futurePoolGovernor: pools_by_pk.future_pool_governor,
               weight: pools_by_pk.weight,
               smoothWeightChangeParams: pools_by_pk.smooth_weight_change_params,
               scalingFactors: pools_by_pk.scaling_factors,
               scalingFactorController: pools_by_pk.scaling_factor_controller,
+              spreadFactor: pools_by_pk.spread_factor,
+              tickSpacing: pools_by_pk.tick_spacing,
+              contractAddress: pools_by_pk.contract_address,
             } as PoolDetail<string, Coin>)
           : undefined
       );

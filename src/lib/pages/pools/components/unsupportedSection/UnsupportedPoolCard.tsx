@@ -114,7 +114,9 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
             </Flex>
           </AccordionButton>
           <AccordionPanel pb={4}>
-            {item.poolLiquidity ? (
+            {item.poolLiquidity.some((coin) => !coin.amount) ? (
+              <UnderDevAlert poolType={item.type} />
+            ) : (
               <Flex>
                 <Text
                   color="text.dark"
@@ -182,8 +184,6 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                   </Flex>
                 </Flex>
               </Flex>
-            ) : (
-              <UnderDevAlert poolType={item.type} />
             )}
           </AccordionPanel>
         </>

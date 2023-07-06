@@ -8,6 +8,7 @@ import { PoolHeader } from "../PoolHeader";
 import { UnderDevAlert } from "../UnderDevAlert";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
 import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { USD, Pool, Token, U } from "lib/types";
@@ -43,6 +44,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
 
   return (
     <Flex
+      justifyContent="space-between"
       gap={4}
       flexDirection="column"
       onClick={handleOnClick}
@@ -90,16 +92,22 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
         </Tooltip>
       </Flex>
       <Flex justifyContent="space-between">
-        <Flex alignItems="center">
-          <Text variant="body2" color="text.dark" fontWeight="600">
-            Liquidity
-          </Text>
-        </Flex>
+        <LabelText
+          label="Liquidity"
+          tooltipText="The total amount of asset liquidity provided in the pool."
+        >
+          {" "}
+        </LabelText>
+
         <Text variant="body2" color="text.main">
-          {item.poolLiquidity ? formatPrice(liquidity) : "N/A"}
+          {item.poolLiquidity.some((coin) => !coin.amount)
+            ? "N/A"
+            : formatPrice(liquidity)}
         </Text>
       </Flex>
-      {item.poolLiquidity ? (
+      {item.poolLiquidity.some((coin) => !coin.amount) ? (
+        <UnderDevAlert poolType={item.type} />
+      ) : (
         <SimpleGrid columns={4} gap={2}>
           <>
             {item.poolLiquidity.slice(0, 3).map((asset) => (
@@ -146,8 +154,6 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
             )}
           </>
         </SimpleGrid>
-      ) : (
-        <UnderDevAlert poolType={item.type} />
       )}
     </Flex>
   );

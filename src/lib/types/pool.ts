@@ -1,13 +1,7 @@
 import type { Coin } from "@cosmjs/stargate";
 import type { Big } from "big.js";
 
-import type {
-  Addr,
-  ContractAddr,
-  Option,
-  Ratio,
-  TokenWithValue,
-} from "lib/types";
+import type { Addr, ContractAddr, Option, TokenWithValue } from "lib/types";
 
 // TODO - Recheck type name
 export enum PoolType {
@@ -44,8 +38,8 @@ export interface PoolDetail<
   blockHeight: Option<number>;
   creator: Option<Addr>;
   poolAddress: ContractAddr;
-  swapFee: Ratio<number>;
-  exitFee: Ratio<number>;
+  swapFee: string | null;
+  exitFee: string | null;
   futurePoolGovernor: string | null;
   weight: PoolWeight<TWeight>[] | null;
   smoothWeightChangeParams: object | null;
@@ -53,4 +47,5 @@ export interface PoolDetail<
   scalingFactorController: string | null;
   spreadFactor: string | null;
   tickSpacing: string | null;
+  contractAddress: ContractAddr;
 }

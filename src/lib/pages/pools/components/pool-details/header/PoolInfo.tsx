@@ -5,7 +5,7 @@ import { useGetAddressType } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { PoolDetail } from "lib/types";
+import type { PoolDetail, Ratio } from "lib/types";
 import { formatRatio } from "lib/utils";
 
 interface PoolInfoProps {
@@ -23,7 +23,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       borderRadius="8px"
       px={4}
       py={3}
-      columnGap={12}
+      columnGap="43px"
       rowGap={6}
       mt={6}
       wrap="wrap"
@@ -58,51 +58,66 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
         />
       </LabelText>
       <Divider orientation="vertical" h="46px" />
-      <LabelText
-        label="Swap Fee"
-        tooltipText="The fee charged for making a swap in a pool, defined by the pool creator, and paid by traders in the form of a percentage the input swap asset amount"
-      >
-        <Text variant="body2">{formatRatio(pool.swapFee)}</Text>
-      </LabelText>
-      <LabelText
-        label="Exit Fee"
-        tooltipText="The fee charged when withdrawing from a pool, defined by the pool creator, and paid by the withdrawer in the form of LP tokens"
-      >
-        <Text variant="body2">{formatRatio(pool.exitFee)}</Text>
-      </LabelText>
-      <LabelText label="Future Governor">
-        {futurePoolGovernorType !== "invalid_address" ? (
-          <ExplorerLink
-            type={futurePoolGovernorType}
-            value={pool.futurePoolGovernor ?? "N/A"}
-            isReadOnly={!pool.futurePoolGovernor}
-            showCopyOnHover
-            textFormat="truncate"
-            w="140px"
-          />
-        ) : (
-          <Text
-            as="p"
-            color={pool.futurePoolGovernor ? "text.main" : "text.disabled"}
-            variant="body2"
-          >
-            {pool.futurePoolGovernor ?? "N/A"}
+      {pool.swapFee !== null && (
+        <LabelText
+          label="Swap Fee"
+          tooltipText="The fee charged for making a swap in a pool, defined by the pool creator, and paid by traders in the form of a percentage the input swap asset amount"
+        >
+          <Text variant="body2">
+            {formatRatio(Number(pool.swapFee) as Ratio<number>)}
           </Text>
-        )}
-      </LabelText>
-      {/* TODO - Change value */}
-      {pool.tickSpacing && (
-        <LabelText label="Tick Spacing" tooltipText="">
-          <Text variant="body2">100</Text>
         </LabelText>
       )}
-      {/* TODO - Change value */}
-      {pool.spreadFactor && (
-        <LabelText label="Spread Factor" tooltipText="">
-          <Text variant="body2">{formatRatio(pool.exitFee)}</Text>
+      {pool.exitFee !== null && (
+        <LabelText
+          label="Exit Fee"
+          tooltipText="The fee charged when withdrawing from a pool, defined by the pool creator, and paid by the withdrawer in the form of LP tokens"
+        >
+          <Text variant="body2">
+            {formatRatio(Number(pool.exitFee) as Ratio<number>)}
+          </Text>
         </LabelText>
       )}
-      {pool.smoothWeightChangeParams && (
+      {pool.futurePoolGovernor !== null && (
+        <LabelText label="Future Governor">
+          {futurePoolGovernorType !== "invalid_address" ? (
+            <ExplorerLink
+              type={futurePoolGovernorType}
+              value={pool.futurePoolGovernor ?? "N/A"}
+              isReadOnly={!pool.futurePoolGovernor}
+              showCopyOnHover
+              textFormat="truncate"
+              w="140px"
+            />
+          ) : (
+            <Text
+              as="p"
+              color={pool.futurePoolGovernor ? "text.main" : "text.disabled"}
+              variant="body2"
+            >
+              {pool.futurePoolGovernor ?? "N/A"}
+            </Text>
+          )}
+        </LabelText>
+      )}
+
+      {pool.tickSpacing !== null && (
+        <LabelText
+          label="Tick Spacing"
+          tooltipText="The distance between two ticks."
+        >
+          <Text variant="body2">{pool.tickSpacing}</Text>
+        </LabelText>
+      )}
+      {pool.spreadFactor !== null && (
+        <LabelText
+          label="Spread Factor"
+          tooltipText="Swap fee to be paid by swapper."
+        >
+          <Text variant="body2">{pool.spreadFactor}</Text>
+        </LabelText>
+      )}
+      {pool.smoothWeightChangeParams !== null && (
         <LabelText label="Smooth weight change params">
           <JsonModalButton
             modalHeader="Smooth weight change params"
@@ -110,7 +125,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           />
         </LabelText>
       )}
-      {pool.scalingFactors && (
+      {pool.scalingFactors !== null && (
         <LabelText label="Scaling Factors">
           <JsonModalButton
             modalHeader="Scaling Factors"
