@@ -20,7 +20,7 @@ const calculateAssetValue = (
 ): USD<Big> => big(amount).mul(price) as USD<Big>;
 
 export const calAssetValueWithPrecision = (balance: Balance): USD<Big> => {
-  if (Number.isNaN(Number(balance.amount)))
+  if (Number.isNaN(Number(balance.amount)) || !balance.amount.length)
     throw new Error("Error balance amount is not a number");
 
   if (balance.price) {
