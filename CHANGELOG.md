@@ -46,12 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#296](https://github.com/alleslabs/celatone-frontend/pull/296) Add pool header and pool assets section for pool details page
 - [#295](https://github.com/alleslabs/celatone-frontend/pull/295) Add expand/collapse all for unsupported pool list
 - [#277](https://github.com/alleslabs/celatone-frontend/pull/277) Wire up data for pool navigation page
-- [#275](https://github.com/alleslabs/celatone-frontend/pull/275) Add Pool navigation and pool detail data
+- [#276](https://github.com/alleslabs/celatone-frontend/pull/276) Add Pool navigation and pool detail data
 - [#270](https://github.com/alleslabs/celatone-frontend/pull/270) Add Pool navigation and detail page
-
-### Improvements
-
-- [#283](https://github.com/alleslabs/celatone-frontend/pull/283) Change unsupported token icon render logic
 - [#418](https://github.com/alleslabs/celatone-frontend/pull/418) Add gitignore for new yarn version
 - [#406](https://github.com/alleslabs/celatone-frontend/pull/406) add test cases for `utils/formatter/token.ts`
 - [#398](https://github.com/alleslabs/celatone-frontend/pull/398) Setup Jest and sample tests
@@ -72,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#283](https://github.com/alleslabs/celatone-frontend/pull/283) Change unsupported token icon render logic
 - [#413](https://github.com/alleslabs/celatone-frontend/pull/413) Add jest test cases for date utils
 - [#404](https://github.com/alleslabs/celatone-frontend/pull/404) Use internal navigate instead of app link for block navigation
 - [#396](https://github.com/alleslabs/celatone-frontend/pull/396) Refactor useConfig, disable wasm related tabs on the public project page
