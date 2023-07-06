@@ -1,7 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import type { RequestDocument } from "graphql-request";
 import { useCallback } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
@@ -141,9 +140,8 @@ export const usePoolByPoolId = (
 
   const queryFn = useCallback(async () => {
     if (!poolId) throw new Error("Pool ID is undefined.");
-    // TODO - Remove assertion when backend is implemented
     return indexerGraphClient
-      .request(getPoolByPoolId as RequestDocument, {
+      .request(getPoolByPoolId, {
         poolId,
       })
       .then(({ pools_by_pk }) =>

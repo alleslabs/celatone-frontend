@@ -94,7 +94,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
               Superfluid
             </CustomTab>
           )}
-          {/* TODO - Fix count  */}
           {pool.type === PoolType.CL && (
             <CustomTab
               count={countDisplayCollectTxs}

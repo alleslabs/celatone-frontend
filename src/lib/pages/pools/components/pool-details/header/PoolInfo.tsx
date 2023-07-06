@@ -78,7 +78,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           </Text>
         </LabelText>
       )}
-      {pool.futurePoolGovernor !== null && (
+      {pool.futurePoolGovernor && (
         <LabelText label="Future Governor">
           {futurePoolGovernorType !== "invalid_address" ? (
             <ExplorerLink
