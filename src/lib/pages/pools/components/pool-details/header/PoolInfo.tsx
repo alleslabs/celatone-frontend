@@ -23,7 +23,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       borderRadius="8px"
       px={4}
       py={3}
-      columnGap="43px"
+      columnGap={12}
       rowGap={6}
       mt={6}
       wrap="wrap"
@@ -83,19 +83,15 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           {futurePoolGovernorType !== "invalid_address" ? (
             <ExplorerLink
               type={futurePoolGovernorType}
-              value={pool.futurePoolGovernor ?? "N/A"}
+              value={pool.futurePoolGovernor}
               isReadOnly={!pool.futurePoolGovernor}
               showCopyOnHover
               textFormat="truncate"
               w="140px"
             />
           ) : (
-            <Text
-              as="p"
-              color={pool.futurePoolGovernor ? "text.main" : "text.disabled"}
-              variant="body2"
-            >
-              {pool.futurePoolGovernor ?? "N/A"}
+            <Text as="p" color="text.main" variant="body2">
+              {pool.futurePoolGovernor}
             </Text>
           )}
         </LabelText>

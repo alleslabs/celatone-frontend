@@ -12,6 +12,7 @@ import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
 import { AmpTrackWebsite } from "lib/services/amplitude";
 import type { USD, Pool, Token, U } from "lib/types";
+import { PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { AllocationBadge } from "./AllocationBadge";
@@ -33,7 +34,14 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
 
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
-    navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
+    // First version, navigate to contract details page if pool type is CosmWasm
+    if (item?.type === PoolType.COSMWASM && item.contractAddress)
+      navigate({
+        pathname: `/contracts/${item.contractAddress}`,
+      });
+    else {
+      navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
+    }
   };
 
   const liquidity = item.poolLiquidity.reduce(

@@ -6,7 +6,6 @@ import { BackButton } from "lib/components/button";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { PoolType } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
 import {
@@ -24,13 +23,7 @@ export const PoolId = () => {
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_POOL_DETAIL);
-    // First version, navigate to contract details page if pool type is CosmWasm
-    if (pool?.type === PoolType.COSMWASM)
-      navigate({
-        pathname: `/contracts/${pool.contractAddress}`,
-        replace: true,
-      });
-  }, [navigate, pool, pool?.contractAddress, pool?.type, router.isReady]);
+  }, [router.isReady]);
 
   if (isLoading) return <Loading />;
   if (!pool) return navigate({ pathname: `/pool` });

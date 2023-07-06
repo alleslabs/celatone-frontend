@@ -44,6 +44,7 @@ export const usePools = (
     poolLiquidity: pool.poolLiquidity.map<TokenWithValue>((coin) =>
       coinToTokenWithValue(coin.denom, coin.amount, assetInfos?.[coin.denom])
     ),
+    contractAddress: pool.contractAddress,
   }));
 
   return {

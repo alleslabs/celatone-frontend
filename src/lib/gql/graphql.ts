@@ -12312,6 +12312,7 @@ export type GetPoolListQuery = {
     type: any;
     is_superfluid: boolean;
     liquidity: any;
+    contract_address?: string | null;
   }>;
 };
 
@@ -12343,6 +12344,7 @@ export type GetPoolListByDenomsQuery = {
     type: any;
     is_superfluid: boolean;
     liquidity: any;
+    contract_address?: string | null;
   }>;
 };
 
@@ -16076,6 +16078,10 @@ export const GetPoolListDocument = {
                   name: { kind: "Name", value: "is_superfluid" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "liquidity" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_address" },
+                },
               ],
             },
           },
@@ -16285,6 +16291,10 @@ export const GetPoolListByDenomsDocument = {
                   name: { kind: "Name", value: "is_superfluid" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "liquidity" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_address" },
+                },
               ],
             },
           },

@@ -27,6 +27,7 @@ export interface Pool<
   type: PoolType;
   isSuperfluid: boolean;
   poolLiquidity: TLiquidity[];
+  contractAddress: Option<ContractAddr | null>;
 }
 
 // TODO - Revisit when backend finished

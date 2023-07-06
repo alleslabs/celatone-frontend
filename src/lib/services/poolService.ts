@@ -13,7 +13,13 @@ import {
   getPoolListCount,
   getPoolsByPoolIds,
 } from "lib/query";
-import type { Option, Pool, PoolDetail, PoolTypeFilter } from "lib/types";
+import type {
+  ContractAddr,
+  Option,
+  Pool,
+  PoolDetail,
+  PoolTypeFilter,
+} from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
 import { usePoolExpression } from "./expression/poolExpression";
@@ -65,6 +71,7 @@ export const usePoolListQuery = ({
         type: pool.type,
         isSuperfluid: pool.is_superfluid,
         poolLiquidity: pool.liquidity,
+        contractAddress: pool.contract_address as ContractAddr,
       }))
     );
   }, [expression, indexerGraphClient, offset, order, pageSize, search]);
