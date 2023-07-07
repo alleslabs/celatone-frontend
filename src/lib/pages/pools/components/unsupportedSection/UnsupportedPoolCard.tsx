@@ -10,7 +10,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useMemo } from "react";
 
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
@@ -39,11 +38,8 @@ const hoverBgColor = "gray.700";
 
 export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
   const poolConfig = usePoolConfig({ shouldRedirect: true });
-  const poolUrl = useMemo(() => {
-    if (!poolConfig.enabled) return "";
-    return poolConfig.url;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poolConfig.enabled]);
+  // Remark: the empty string has never been used when poolConfig is disabled
+  const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
   const navigate = useInternalNavigate();
   const handleOnClick = () => {

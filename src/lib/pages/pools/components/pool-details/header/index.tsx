@@ -1,5 +1,4 @@
 import { Button, Flex } from "@chakra-ui/react";
-import { useMemo } from "react";
 
 import { PoolHeader } from "../../PoolHeader";
 import { useBaseApiRoute, usePoolConfig } from "lib/app-provider";
@@ -16,11 +15,8 @@ interface PoolTopSectionProps {
 
 export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
   const poolConfig = usePoolConfig({ shouldRedirect: true });
-  const poolUrl = useMemo(() => {
-    if (!poolConfig.enabled) return "";
-    return poolConfig.url;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poolConfig.enabled]);
+  // Remark: the empty string has never been used when poolConfig is disabled
+  const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
   const lcdEndpoint = useBaseApiRoute("rest");
   const openPoolLcd = () => {

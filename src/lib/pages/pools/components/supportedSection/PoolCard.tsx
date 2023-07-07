@@ -2,7 +2,6 @@ import { Flex, IconButton, SimpleGrid, Text } from "@chakra-ui/react";
 import type { Big } from "big.js";
 import big from "big.js";
 import Link from "next/link";
-import { useMemo } from "react";
 
 import { PoolHeader } from "../PoolHeader";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
@@ -25,11 +24,8 @@ interface PoolCardProps {
 
 export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
   const poolConfig = usePoolConfig({ shouldRedirect: true });
-  const poolUrl = useMemo(() => {
-    if (!poolConfig.enabled) return "";
-    return poolConfig.url;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poolConfig.enabled]);
+  // Remark: the empty string has never been used when poolConfig is disabled
+  const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
   const navigate = useInternalNavigate();
   const handleOnClick = () => {
