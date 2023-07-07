@@ -60,7 +60,7 @@ export const AllocationBadge = ({
           color="text.dark"
           fontWeight="600"
         >
-          {denom ? symbol ?? getTokenLabel(denom) : "OTHERS"}
+          {denom ? getTokenLabel(denom, symbol) : "OTHERS"}
         </Text>
         <Text variant="body3" color="text.main">
           {mode === "percent-value"

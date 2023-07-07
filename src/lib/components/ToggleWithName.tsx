@@ -13,7 +13,7 @@ export const ToggleWithName = ({
   options,
   selectOption,
 }: ToggleWithNameProps) => (
-  <Flex p="1" borderRadius={4} border="1px" borderColor="gray.700">
+  <Flex p={1} borderRadius={4} border="1px" borderColor="gray.700">
     {options.map((item) => (
       <Button
         key={item.value}

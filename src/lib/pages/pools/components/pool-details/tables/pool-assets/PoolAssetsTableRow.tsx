@@ -58,7 +58,7 @@ export const PoolAssetsTableRow = ({
           <Flex flexDirection="column">
             <Flex align="center" gap={1}>
               <Text variant="body2" fontWeight={600} color="text.main">
-                {token.symbol ?? getTokenLabel(token.denom)}
+                {getTokenLabel(token.denom, token.symbol)}
               </Text>
               <Flex className="widget" display="none" align="center" gap={1}>
                 <TooltipInfo

@@ -59,7 +59,7 @@ export const PoolHeader = ({
         <Box>
           <Flex gap={1} flexWrap="wrap">
             <Heading as="h6" fontWeight="600" variant="h6">
-              {poolLiquidity[0].symbol ?? getTokenLabel(poolLiquidity[0].denom)}
+              {getTokenLabel(poolLiquidity[0].denom, poolLiquidity[0].symbol)}
             </Heading>
             {poolLiquidity.slice(1, 3).map((item) => (
               <Flex key={item.denom} gap={1}>
@@ -73,7 +73,7 @@ export const PoolHeader = ({
                   /
                 </Heading>
                 <Heading as="h6" fontWeight="600" variant="h6">
-                  {item.symbol ?? getTokenLabel(item.denom)}
+                  {getTokenLabel(item.denom, item.symbol)}
                 </Heading>
               </Flex>
             ))}
@@ -89,8 +89,10 @@ export const PoolHeader = ({
                 </Heading>
                 <Heading as="h6" fontWeight="600" variant="h6">
                   {poolLiquidity.length === 4
-                    ? poolLiquidity[3].symbol ??
-                      getTokenLabel(poolLiquidity[3].denom)
+                    ? getTokenLabel(
+                        poolLiquidity[3].denom,
+                        poolLiquidity[3].symbol
+                      )
                     : `+${poolLiquidity.length - 3}`}
                 </Heading>
               </Flex>

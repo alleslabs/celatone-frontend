@@ -94,7 +94,7 @@ export const PoolAssetCard = ({
                 fontWeight={400}
                 color="text.main"
               >
-                {token.symbol ?? getTokenLabel(token.denom)}
+                {getTokenLabel(token.denom, token.symbol)}
                 <Text as="span" fontWeight={400} color="accent.main">
                   {" "}
                   /
