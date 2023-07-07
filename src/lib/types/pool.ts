@@ -37,9 +37,9 @@ export interface PoolDetail<
   blockHeight: Option<number>;
   creator: Option<Addr>;
   poolAddress: ContractAddr;
-  swapFee: string | null;
-  exitFee: string | null;
-  futurePoolGovernor: string | null;
+  swapFee: string;
+  exitFee: string;
+  futurePoolGovernor: string;
   weight: PoolWeight<TWeight>[] | null;
   smoothWeightChangeParams: object | null;
   scalingFactors: string[] | null;

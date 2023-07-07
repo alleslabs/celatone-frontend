@@ -6,6 +6,7 @@ import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import type { PoolDetail, Ratio } from "lib/types";
+import { PoolType } from "lib/types";
 import { formatRatio } from "lib/utils";
 
 interface PoolInfoProps {
@@ -59,7 +60,8 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
         />
       </LabelText>
       <Divider orientation="vertical" h="46px" />
-      {pool.swapFee !== null && (
+      {(pool.type === PoolType.BALANCER ||
+        pool.type === PoolType.STABLESWAP) && (
         <LabelText
           label="Swap Fee"
           tooltipText="The fee charged for making a swap in a pool, defined by the pool creator, and paid by traders in the form of a percentage the input swap asset amount"
@@ -69,7 +71,8 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           </Text>
         </LabelText>
       )}
-      {pool.exitFee !== null && (
+      {(pool.type === PoolType.BALANCER ||
+        pool.type === PoolType.STABLESWAP) && (
         <LabelText
           label="Exit Fee"
           tooltipText="The fee charged when withdrawing from a pool, defined by the pool creator, and paid by the withdrawer in the form of LP tokens"
@@ -79,7 +82,8 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           </Text>
         </LabelText>
       )}
-      {pool.futurePoolGovernor !== null && (
+      {(pool.type === PoolType.BALANCER ||
+        pool.type === PoolType.STABLESWAP) && (
         <LabelText label="Future Governor">
           {futurePoolGovernorType !== "invalid_address" ? (
             <ExplorerLink
