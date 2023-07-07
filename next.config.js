@@ -45,6 +45,7 @@ const nextConfig = {
       "contract-list",
       "past-tx",
       "my-code",
+      "pool",
     ];
 
     return routes.reduce((acc, route) => {
