@@ -6,13 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { useBaseApiRoute } from "lib/app-provider";
-import type { Option, ValidatorAddr } from "lib/types";
+import type { ValidatorAddr } from "lib/types";
 
 import type { RawValidator } from "./validator";
 import { getValidator, getValidators } from "./validator";
 
 export const useValidator = (
-  validatorAddr: Option<ValidatorAddr>,
+  validatorAddr: ValidatorAddr,
   enabled = true
 ): UseQueryResult<RawValidator> => {
   const lcdEndpoint = useBaseApiRoute("rest");

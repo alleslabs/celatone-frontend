@@ -203,7 +203,7 @@ export const useTxsCountByAddress = (
 };
 
 export const useTxsByPoolIdPagination = (
-  poolId: Option<number>,
+  poolId: number,
   type: PoolTxFilter,
   offset: number,
   pageSize: number
@@ -219,9 +219,10 @@ export const useTxsByPoolIdPagination = (
         pageSize,
       })
       .then(({ pool_transactions }) =>
-        pool_transactions.map((transaction) => ({
+        pool_transactions.map<Transaction>((transaction) => ({
           hash: parseTxHash(transaction.transaction.hash),
-          messages: snakeToCamel(transaction.transaction.messages),
+          // TODO: revisit this
+          messages: snakeToCamel(transaction.transaction.messages) as Message[],
           sender: transaction.transaction.account.address as Addr,
           isSigner: true,
           height: transaction.block.height,
@@ -252,7 +253,7 @@ export const useTxsByPoolIdPagination = (
 };
 
 export const useTxsCountByPoolId = (
-  poolId: Option<number>,
+  poolId: number,
   type: PoolTxFilter
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
