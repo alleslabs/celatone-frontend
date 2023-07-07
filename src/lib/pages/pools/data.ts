@@ -15,7 +15,7 @@ import type {
   Ratio,
   TokenWithValue,
 } from "lib/types";
-import { coinToTokenWithValue, formatRatio } from "lib/utils";
+import { coinToTokenWithValue, divWithDefault, formatRatio } from "lib/utils";
 
 export const usePools = (
   isSupported: boolean,
@@ -91,7 +91,9 @@ export const usePool = (
             weight: bigWeight,
             percentWeight:
               totalPoolWeight && totalPoolWeight.gt(0)
-                ? formatRatio(bigWeight.div(totalPoolWeight) as Ratio<Big>)
+                ? formatRatio(
+                    divWithDefault(bigWeight, totalPoolWeight, 0) as Ratio<Big>
+                  )
                 : null,
           };
         }) ?? null,

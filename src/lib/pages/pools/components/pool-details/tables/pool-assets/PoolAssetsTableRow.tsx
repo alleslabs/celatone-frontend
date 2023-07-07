@@ -14,6 +14,7 @@ import {
   formatUTokenWithPrecision,
   getTokenLabel,
   formatRatio,
+  divWithDefault,
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {
@@ -32,7 +33,7 @@ export const PoolAssetsTableRow = ({
   liquidityIndex,
 }: PoolAssetsTableRowProps) => {
   const allocation = token.value
-    ? formatRatio(token.value.div(totalLiquidity) as Ratio<Big>)
+    ? formatRatio(divWithDefault(token.value, totalLiquidity, 0) as Ratio<Big>)
     : undefined;
   const tokenWeight = weight?.find(
     (w) => w.denom === token.denom
