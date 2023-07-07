@@ -38,7 +38,7 @@ export const MsgJoinSwapShareAmountOutAction = ({
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
       <MsgToken
-        coin={{ amount: msg.share_amount_out, denom: poolDenom }}
+        coin={{ amount: msg.share_out_amount, denom: poolDenom }}
         symbol={poolAssetInfo?.symbol}
         precision={poolAssetInfo?.precision}
         fontWeight={700}

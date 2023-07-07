@@ -26,6 +26,7 @@ export const CopyLink = ({
   const { onCopy, hasCopied } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
 
+  // TODO - Refactor
   const displayIcon = useMemo<IconProps["display"]>(() => {
     if (showCopyOnHover) {
       if (isHover) {

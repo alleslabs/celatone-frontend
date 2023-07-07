@@ -413,7 +413,7 @@ export interface MsgJoinSwapShareAmountOutDetails extends MsgBaseDetails {
   sender: Addr;
   pool_id: string;
   token_in_denom: string;
-  share_amount_out: string;
+  share_out_amount: string;
   token_in_max_amount: string;
 }
 export interface MsgExitSwapShareAmountInDetails extends MsgBaseDetails {

@@ -51,7 +51,7 @@ export const MsgJoinSwapShareAmountOutDetail = ({
       <LiquidityDivider />
       <PoolLPCard
         msgIndex={msgIndex}
-        msgShareAmount={msg.share_amount_out}
+        msgShareAmount={msg.share_out_amount}
         poolId={msg.pool_id}
         assetInfos={assetInfos}
         isJoin

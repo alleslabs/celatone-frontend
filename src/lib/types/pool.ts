@@ -7,8 +7,8 @@ export enum PoolType {
   ALL = "All",
   BALANCER = "Balancer",
   STABLESWAP = "Stableswap",
-  COSMWASM = "Cosmwasm",
-  CL = "ConcentratedLiquidity",
+  COSMWASM = "CosmWasm",
+  CL = "Concentrated",
 }
 
 export type PoolTypeFilter = PoolType;
