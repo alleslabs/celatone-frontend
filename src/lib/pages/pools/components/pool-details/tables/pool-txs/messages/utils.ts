@@ -60,10 +60,13 @@ export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
         break;
       }
 
+      case "/osmosis.poolmanager.v1beta1.MsgSplitRouteSwapExactAmountIn":
+      case "/osmosis.poolmanager.v1beta1.MsgSplitRouteSwapExactAmountOut":
       case "/osmosis.lockup.MsgBeginUnlockingAll":
       case "/osmosis.lockup.MsgBeginUnlocking":
       case "/osmosis.lockup.MsgForceUnlock":
       case "/osmosis.lockup.MsgExtendLockup":
+      case "/osmosis.lockup.MsgSetRewardReceiverAddress":
       case "/osmosis.superfluid.MsgSuperfluidDelegate":
       case "/osmosis.superfluid.MsgSuperfluidUndelegate":
       case "/osmosis.superfluid.MsgSuperfluidUnbondLock":
