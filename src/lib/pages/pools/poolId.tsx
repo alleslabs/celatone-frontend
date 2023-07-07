@@ -26,7 +26,7 @@ export const PoolId = () => {
   }, [router.isReady]);
 
   if (isLoading) return <Loading />;
-  if (!pool) return navigate({ pathname: `/pool` });
+  if (!pool) return navigate({ pathname: `/pools` });
   return (
     <PageContainer>
       <BackButton />

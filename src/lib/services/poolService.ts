@@ -13,13 +13,7 @@ import {
   getPoolListCount,
   getPoolsByPoolIds,
 } from "lib/query";
-import type {
-  ContractAddr,
-  Option,
-  Pool,
-  PoolDetail,
-  PoolTypeFilter,
-} from "lib/types";
+import type { ContractAddr, Pool, PoolDetail, PoolTypeFilter } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
 import { usePoolExpression } from "./expression/poolExpression";
@@ -141,7 +135,7 @@ export const usePoolListCountQuery = ({
 };
 
 export const usePoolByPoolId = (
-  poolId: Option<number>
+  poolId: number
 ): UseQueryResult<PoolDetail<string, Coin>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -178,9 +172,7 @@ export const usePoolByPoolId = (
       );
   }, [poolId, indexerGraphClient]);
 
-  return useQuery(["pool_by_pool_id", poolId, indexerGraphClient], queryFn, {
-    enabled: !!poolId,
-  });
+  return useQuery(["pool_by_pool_id", poolId, indexerGraphClient], queryFn);
 };
 
 export const usePoolAssetsbyPoolIds = (

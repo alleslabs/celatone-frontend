@@ -54,10 +54,13 @@ export const usePools = (
 };
 
 export const usePool = (
-  poolId: Option<number>
+  poolId: number
 ): { pool: Option<PoolDetail>; isLoading: boolean } => {
   const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
   const { data: pool, isLoading: isLoadingPoolInfo } = usePoolByPoolId(poolId);
+
+  if (!Number.isInteger(poolId) || poolId <= 0)
+    return { pool: undefined, isLoading: false };
 
   if (!assetInfos || !pool)
     return {
