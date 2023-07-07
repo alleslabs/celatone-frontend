@@ -69,6 +69,16 @@ export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
       case "/osmosis.superfluid.MsgSuperfluidUnbondLock":
       case "/osmosis.superfluid.MsgUnPoolWhitelistedPool":
       case "/osmosis.superfluid.MsgSuperfluidUndelegateAndUnbondLock":
+      case "/osmosis.superfluid.MsgLockExistingFullRangePositionAndSFStake":
+      case "/osmosis.superfluid.MsgAddToConcentratedLiquiditySuperfluidPosition":
+      case "/osmosis.superfluid.MsgUnlockAndMigrateSharesToFullRangeConcentratedPosition":
+      case "/osmosis.superfluid.MsgCreateFullRangePositionAndSuperfluidDelegate":
+      case "/osmosis.concentratedliquidity.v1beta1.MsgCreatePosition":
+      case "/osmosis.concentratedliquidity.v1beta1.MsgAddToPosition":
+      case "/osmosis.concentratedliquidity.v1beta1.MsgWithdrawPosition":
+      case "/osmosis.concentratedliquidity.v1beta1.MsgCollectSpreadRewards":
+      case "/osmosis.concentratedliquidity.v1beta1.MsgFungifyChargedPositions":
+      case "/osmosis.concentratedliquidity.v1beta1.MsgCollectIncentives":
       case "/cosmos.authz.v1beta1.MsgExec":
       case "/ibc.core.channel.v1.MsgRecvPacket":
       case "/cosmwasm.wasm.v1.MsgInstantiateContract1":
