@@ -8,6 +8,6 @@ export interface TokenWithValue {
   symbol: Option<string>;
   logo: Option<string>;
   precision: Option<number>;
-  price?: Option<USD>;
+  price?: Option<USD<Big>>;
   value: Option<USD<Big>>;
 }

@@ -58,6 +58,7 @@ export const SingleMsg = ({
           }
           symbol={token.symbol}
           precision={token.precision}
+          // TODO: add `ampCopierSection` later
         />
       ))}
       {/* Tags  */}
