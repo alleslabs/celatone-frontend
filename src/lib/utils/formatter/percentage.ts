@@ -5,9 +5,6 @@ import type { Percent, Ratio } from "lib/types";
 
 import { d2Formatter, d6Formatter } from "./token";
 
-export const toPercent = (value: BigSource): string =>
-  big(value).times(100).toFixed();
-
 export const formatPercent = (value: Percent<BigSource>): string => {
   const x = big(value);
   const lowestThreshold = 0.000001;

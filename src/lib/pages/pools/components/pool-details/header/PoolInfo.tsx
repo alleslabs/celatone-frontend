@@ -7,7 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import type { PoolDetail, Ratio } from "lib/types";
 import { PoolType } from "lib/types";
-import { formatRatio, toPercent } from "lib/utils";
+import { formatRatio } from "lib/utils";
 
 interface PoolInfoProps {
   pool: PoolDetail;
@@ -120,7 +120,9 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           label="Spread Factor"
           tooltipText="Swap fee to be paid by swapper."
         >
-          <Text variant="body2">{toPercent(pool.spreadFactor)}%</Text>
+          <Text variant="body2">
+            {formatRatio(Number(pool.spreadFactor) as Ratio<number>)}
+          </Text>
         </LabelText>
       )}
       {pool.smoothWeightChangeParams !== null && (
