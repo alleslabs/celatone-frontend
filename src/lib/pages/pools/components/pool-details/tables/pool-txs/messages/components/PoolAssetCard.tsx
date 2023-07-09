@@ -5,6 +5,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
+import type { AssetInfosOpt } from "lib/services/assetService";
 import { usePoolAssetsbyPoolIds } from "lib/services/poolService";
 import type { AssetInfo, Option, TokenWithValue } from "lib/types";
 import {
@@ -19,6 +20,7 @@ interface PoolAssetCardProps {
   assetText: string;
   poolAsset: Coin;
   poolAssetInfo: Option<AssetInfo>;
+  assetInfos: AssetInfosOpt;
   isOpened: boolean;
   ampCopierSection?: string;
 }
@@ -29,6 +31,7 @@ export const PoolAssetCard = ({
   assetText,
   poolAsset,
   poolAssetInfo,
+  assetInfos,
   isOpened,
   ampCopierSection,
 }: PoolAssetCardProps) => {
@@ -44,7 +47,7 @@ export const PoolAssetCard = ({
     );
 
   const tokens = poolAssets[poolId].map<TokenWithValue>((denom) =>
-    coinToTokenWithValue(denom, "0", poolAssetInfo)
+    coinToTokenWithValue(denom, "0", assetInfos?.[denom])
   );
   return (
     <>

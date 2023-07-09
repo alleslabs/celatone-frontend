@@ -61,6 +61,7 @@ export const PoolLPCard = ({
         assetText={isJoin ? "Received" : "Burn"}
         poolAsset={{ amount: shareAmount, denom: poolDenom }}
         poolAssetInfo={assetInfos?.[poolDenom]}
+        assetInfos={assetInfos}
         isOpened={isOpened}
         ampCopierSection={ampCopierSection}
       />

@@ -83,6 +83,7 @@ export const MsgLockTokensDetail = ({
           assetText="Bonded"
           poolAsset={poolAsset}
           poolAssetInfo={poolAssetInfo}
+          assetInfos={assetInfos}
           isOpened={isOpened}
           ampCopierSection={ampCopierSection}
         />
