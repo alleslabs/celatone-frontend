@@ -32,22 +32,24 @@ export const CollapseNavMenu = ({
           }}
         >
           <Flex justifyContent="space-between" alignItems="center">
-            {!isMobile && item.category === "Your Account" && (
-              <Tooltip label="Expand" placement="right">
-                <IconButton
-                  aria-label="overview"
-                  variant="ghost-accent"
-                  fontSize="24px"
-                  height="fit-content"
-                  minW="fit-content"
-                  p={1}
-                  mt={2}
-                  mx={2}
-                  icon={<CustomIcon name="double-chevron-right" />}
-                  onClick={() => setIsExpand(true)}
-                />
-              </Tooltip>
-            )}
+            {!isMobile &&
+              (item.category === "Your Account" ||
+                item.category === "Overview") && (
+                <Tooltip label="Expand" placement="right">
+                  <IconButton
+                    aria-label="overview"
+                    variant="ghost-accent"
+                    fontSize="24px"
+                    height="fit-content"
+                    minW="fit-content"
+                    p={1}
+                    mt={2}
+                    mx={2}
+                    icon={<CustomIcon name="double-chevron-right" />}
+                    onClick={() => setIsExpand(true)}
+                  />
+                </Tooltip>
+              )}
           </Flex>
           {item.submenu.map((submenu) => (
             <AppLink

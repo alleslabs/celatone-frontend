@@ -32,7 +32,8 @@ export const ExpandNavMenu = ({
           <Text py={2} variant="body3" fontWeight={700}>
             {item.category}
           </Text>
-          {item.category === "Your Account" && (
+          {(item.category === "Your Account" ||
+            item.category === "Overview") && (
             <Button
               variant="ghost-accent"
               size="xs"
