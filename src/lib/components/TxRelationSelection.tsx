@@ -30,28 +30,44 @@ const relationOptions = [
 ];
 
 interface TxRelationSelectionProps extends BoxProps {
+  value: Option<boolean>;
   setValue: (value: Option<boolean>) => void;
   size?: string | object;
 }
 
 export const TxRelationSelection = ({
+  value,
   setValue,
   size = "lg",
   ...props
-}: TxRelationSelectionProps) => (
-  <Box {...props}>
-    <SelectInput
-      formLabel="Filter by Relation"
-      size={size}
-      options={relationOptions}
-      onChange={(value: RelationType) =>
-        setValue(
-          value === RelationType.ALL
-            ? undefined
-            : value === RelationType.SIGNING
-        )
-      }
-      initialSelected={RelationType.ALL}
-    />
-  </Box>
-);
+}: TxRelationSelectionProps) => {
+  let initialValue;
+  switch (value) {
+    case undefined:
+      initialValue = RelationType.ALL;
+      break;
+    case false:
+      initialValue = RelationType.SIGNING;
+      break;
+    default:
+      initialValue = RelationType.RELATED;
+  }
+
+  return (
+    <Box {...props}>
+      <SelectInput
+        formLabel="Filter by Relation"
+        size={size}
+        options={relationOptions}
+        onChange={(newValue: RelationType) =>
+          setValue(
+            newValue === RelationType.ALL
+              ? undefined
+              : newValue === RelationType.SIGNING
+          )
+        }
+        initialSelected={initialValue}
+      />
+    </Box>
+  );
+};

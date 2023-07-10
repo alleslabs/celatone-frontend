@@ -72,7 +72,8 @@ export function ActionModal({
   return (
     <>
       <Flex
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           AmpTrackUseOtherModal(title);
           onOpen();
         }}
