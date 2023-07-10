@@ -11,7 +11,7 @@ import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr } from "lib/types";
 import type { VoteOption } from "lib/utils";
-import { formatBalanceWithDenom, voteOption } from "lib/utils";
+import { extractMsgType, formatBalanceWithDenom, voteOption } from "lib/utils";
 
 import type { TxMsgData } from ".";
 
@@ -284,8 +284,7 @@ export const TxMsgExpand = ({
       );
       break;
     default: {
-      const msgType = type.split(".");
-      content = msgType[msgType.length - 1];
+      content = extractMsgType(type);
       break;
     }
   }

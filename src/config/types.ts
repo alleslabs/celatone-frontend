@@ -17,7 +17,12 @@ type WasmConfig =
       enabled: false;
     };
 
-type PoolConfig = { enabled: boolean };
+type PoolConfig =
+  | {
+      enabled: true;
+      url: string;
+    }
+  | { enabled: false };
 
 type PublicProjectConfig = { enabled: boolean };
 

@@ -10,6 +10,7 @@ import { removeSpecialChars } from "lib/utils";
 interface ValidatorBadgeProps {
   validator: ValidatorInfo | null;
   badgeSize?: ImageProps["boxSize"];
+  ampCopierSection?: string;
 }
 
 const FallbackRender = ({
@@ -33,6 +34,7 @@ const FallbackRender = ({
 export const ValidatorBadge = ({
   validator,
   badgeSize = 10,
+  ampCopierSection,
 }: ValidatorBadgeProps) => {
   const {
     chainConfig: { chain },
@@ -59,6 +61,7 @@ export const ValidatorBadge = ({
             type="validator_address"
             textFormat="ellipsis"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         </>
       ) : (

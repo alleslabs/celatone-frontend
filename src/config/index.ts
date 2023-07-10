@@ -63,6 +63,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       },
       pool: {
         enabled: true,
+        url: "https://app.osmosis.zone/pool",
       },
       publicProject: {
         enabled: true,
@@ -108,6 +109,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       },
       pool: {
         enabled: true,
+        url: "https://testnet.osmosis.zone/pool",
       },
       publicProject: {
         enabled: false,

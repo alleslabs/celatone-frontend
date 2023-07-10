@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { usePublicProjectConfig } from "lib/app-provider";
+import { usePoolConfig, usePublicProjectConfig } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { useContractStore, usePublicProjectStore } from "lib/providers/store";
@@ -19,6 +19,7 @@ interface NavbarProps {
 
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { getContractLists } = useContractStore();
+  const poolConfig = usePoolConfig({ shouldRedirect: false });
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
@@ -38,11 +39,15 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           slug: "/proposals",
           icon: "proposal",
         },
-        // {
-        //   name: "Osmosis Pools",
-        //   slug: "/pools",
-        //   icon: "pool",
-        // },
+        ...(poolConfig.enabled
+          ? ([
+              {
+                name: "Osmosis Pools",
+                slug: "/pools",
+                icon: "pool",
+              },
+            ] as const)
+          : []),
       ],
     },
     {

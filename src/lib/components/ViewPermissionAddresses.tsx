@@ -37,11 +37,11 @@ export const ViewPermissionAddresses = ({
         <Button
           variant="ghost-secondary"
           onClick={() => {
-            AmpTrackExpand(
-              viewAll ? "collapse" : "expand",
-              "permission_address",
-              amptrackSection
-            );
+            AmpTrackExpand({
+              action: viewAll ? "collapse" : "expand",
+              component: "permission_address",
+              section: amptrackSection,
+            });
             setViewAll((prev) => !prev);
           }}
           size="sm"

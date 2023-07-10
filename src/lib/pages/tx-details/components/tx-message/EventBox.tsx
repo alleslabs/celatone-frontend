@@ -114,11 +114,11 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         justify="space-between"
         cursor="pointer"
         onClick={() => {
-          AmpTrackExpand(
-            expand ? "collapse" : "expand",
-            "event_box",
-            "tx_page"
-          );
+          AmpTrackExpand({
+            action: expand ? "collapse" : "expand",
+            component: "event_box",
+            section: "tx_page",
+          });
           setExpand((prev) => !prev);
         }}
         p={4}
