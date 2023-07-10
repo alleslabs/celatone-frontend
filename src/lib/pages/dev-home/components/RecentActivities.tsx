@@ -20,28 +20,23 @@ export const RecentActivities = observer(() => {
   }, [getRecentActivities, userKey, isHydrated]);
 
   return (
-    <Box py={8}>
-      <Heading
-        px={{ sm: 8, md: 12 }}
-        as="h5"
-        variant={{ sm: "h6", md: "h5" }}
-        mb={4}
-      >
+    <Box py={8} px={{ base: 6, md: 0 }}>
+      <Heading as="h5" variant="h5" mb={4} px={{ md: 12 }}>
         Recent Queries and Executes on this device
       </Heading>
       {activities.length ? (
         <Flex
-          px={{ sm: 8, md: 12 }}
+          px={{ md: 12 }}
           gap={4}
           overflowX={{ md: "scroll" }}
           w="100%"
-          direction={{ sm: "column", md: "row" }}
+          direction={{ base: "column", md: "row" }}
         >
           {activities.map((item) => (
             <Flex
               direction="column"
               gap={3}
-              minW="360px"
+              minW={{ md: "360px" }}
               cursor="pointer"
               p={6}
               bg="gray.900"
@@ -65,7 +60,11 @@ export const RecentActivities = observer(() => {
                   {item.type === "query" ? "Query" : "Execute"}
                 </Text>
               </Flex>
-              <Flex alignItems="center" gap={1}>
+              <Flex
+                alignItems={{ base: "start", md: "center" }}
+                gap={1}
+                direction={{ base: "column", md: "row" }}
+              >
                 <Text
                   variant="body3"
                   padding="4px 8px"
@@ -74,12 +73,14 @@ export const RecentActivities = observer(() => {
                 >
                   {item.action}
                 </Text>
-                <Text variant="body3">on</Text>
-                <ExplorerLink
-                  value={item.contractAddress}
-                  type="contract_address"
-                  showCopyOnHover
-                />
+                <Flex alignItems="center" gap={1}>
+                  <Text variant="body3">on</Text>
+                  <ExplorerLink
+                    value={item.contractAddress}
+                    type="contract_address"
+                    showCopyOnHover
+                  />
+                </Flex>
               </Flex>
               <Flex gap={1}>
                 <Text variant="body2">{dateFromNow(item.timestamp)}</Text>

@@ -1,7 +1,6 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -12,7 +11,7 @@ import {
 } from "lib/app-provider";
 import { StoredCodeCard } from "lib/components/card/StoredCodeCard";
 import { FilterByPermission } from "lib/components/forms";
-import InputWithIcon from "lib/components/InputWithIcon";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
@@ -52,8 +51,26 @@ const RecentCodes = observer(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
   }, [router.isReady]);
 
-  const isSearching = Boolean(keyword) || permissionValue !== "all";
+  const emptyState = (
+    <EmptyState
+      imageVariant="empty"
+      message="Most recent 100 code IDs will display here."
+      withBorder
+    />
+  );
   const isMobile = useMobile();
+  const MobileSection = () => {
+    if (isLoading) return <Loading />;
+    if (!recentCodes?.length) return emptyState;
+    return (
+      <Flex direction="column" gap={4} w="full" mt={4}>
+        {recentCodes.map((code) => (
+          <StoredCodeCard codeInfo={code} />
+        ))}
+      </Flex>
+    );
+  };
+
   return (
     <PageContainer>
       <Box pb={{ base: 0, md: 12 }}>
@@ -68,15 +85,8 @@ const RecentCodes = observer(() => {
           mt={8}
           direction={{ base: "column", md: "row" }}
         >
-          <InputWithIcon
-            placeholder="Search with Code ID or Code Name"
-            value={keyword}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setValue("keyword", e.target.value)
-            }
-            size="lg"
-          />
           <FilterByPermission
+            maxWidth="full"
             initialSelected="all"
             setPermissionValue={(newVal: PermissionFilterValue) => {
               if (newVal === permissionValue) return;
@@ -86,26 +96,12 @@ const RecentCodes = observer(() => {
         </Flex>
       </Box>
       {isMobile ? (
-        <Flex direction="column" gap={4} w="full" mt={4}>
-          {recentCodes.map((code) => (
-            <StoredCodeCard codeInfo={code} />
-          ))}
-        </Flex>
+        <MobileSection />
       ) : (
         <CodesTable
           codes={recentCodes}
           isLoading={isLoading}
-          emptyState={
-            <EmptyState
-              imageVariant={isSearching ? "not-found" : "empty"}
-              message={
-                isSearching
-                  ? "No matched codes found"
-                  : "Most recent 100 code IDs will display here."
-              }
-              withBorder
-            />
-          }
+          emptyState={emptyState}
           onRowSelect={onRowSelect}
         />
       )}

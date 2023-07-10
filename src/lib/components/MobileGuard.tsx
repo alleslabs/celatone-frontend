@@ -17,12 +17,13 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`account`) ||
     pathName.includes(`/txs`) ||
     pathName.includes(`/blocks`) ||
-    pathName.includes(`/contract`) ||
+    pathName.includes(`/contracts/`) ||
     pathName.includes(`/projects`) ||
     pathName.includes(`/code`) ||
     pathName.includes(`/query`) ||
     pathName.includes(`/network-overview`) ||
     pathName.includes(`/dev-home`) ||
+    pathName === `/${currentChainId}/contracts` ||
     pathName === `/${currentChainId}`;
 
   if (isResponsive && isMobile) return <>{children}</>;

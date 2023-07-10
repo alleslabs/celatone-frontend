@@ -28,7 +28,7 @@ export const CodesTable = ({
     : "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px 180px";
 
   return (
-    <TableContainer>
+    <TableContainer pb={6}>
       <CodesTableHeader
         templateColumns={templateColumns}
         isReadOnly={isReadOnly}

@@ -35,7 +35,7 @@ export const PageGoTo = ({ lastPage, onPageChange }: PageGoToProps) => {
       <Button
         variant="ghost-primary"
         margin={0}
-        paddingX={2}
+        px={2}
         onClick={handleGoTo}
         rightIcon={<CustomIcon name="chevron-right" />}
       >

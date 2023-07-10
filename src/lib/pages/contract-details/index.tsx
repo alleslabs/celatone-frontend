@@ -104,13 +104,15 @@ const ContractDetailsBody = observer(
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX={{ base: "scroll", md: "auto" }}
-            w={{ base: "max-content", md: "auto" }}
           >
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>
             <CustomTab count={tableCounts.migrationCount}>Migrations</CustomTab>
-            <CustomTab count={tableCounts.relatedProposalsCount}>
+            <CustomTab
+              count={tableCounts.relatedProposalsCount}
+              whiteSpace="nowrap"
+            >
               Related Proposals
             </CustomTab>
           </TabList>

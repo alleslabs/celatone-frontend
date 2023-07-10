@@ -124,7 +124,7 @@ export const InstantiateInfo = ({
 
   return (
     <Container w={{ base: "full", md: "auto" }}>
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
+      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
         <LabelText flex="1" label="Network">
           {chainId}
         </LabelText>
@@ -137,10 +137,10 @@ export const InstantiateInfo = ({
           />
         </LabelText>
       </Flex>
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
+      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
         <LabelText flex="1" label="CW2 Info">
           {contractCw2Info ? (
-            <Text variant="body2">
+            <Text variant="body2" wordBreak="break-all">
               {contractCw2Info.contract} ({contractCw2Info.version})
             </Text>
           ) : (
@@ -173,6 +173,7 @@ export const InstantiateInfo = ({
       <Divider border="1px solid" borderColor="gray.700" />
       {createdHeight ? (
         <LabelText
+          flex="1"
           label="Instantiated Block Height"
           helperText1={createdTime ? formatUTC(createdTime) : undefined}
           helperText2={createdTime ? dateFromNow(createdTime) : undefined}

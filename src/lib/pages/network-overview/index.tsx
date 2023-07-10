@@ -147,7 +147,11 @@ const NetworkOverview = () => {
         mb={5}
         direction={{ base: "column", md: "row" }}
       >
-        <Heading as="h4" variant="h4" mb={{ base: 4, md: 0 }}>
+        <Heading
+          as="h4"
+          variant={{ base: "h5", md: "h4" }}
+          mb={{ base: 4, md: 0 }}
+        >
           Network Overview
         </Heading>
         {isLoadingLatestBlockInfo ? (

@@ -163,7 +163,12 @@ export const QueryArea = ({
             </Button>
           </Flex>
         </Box>
-        <Spacer />
+        <Spacer
+          border={{ base: "1px solid", md: "0px" }}
+          borderColor="gray.700"
+          my={4}
+        />
+
         <Box w="full">
           <JsonReadOnly
             topic="Return Output"

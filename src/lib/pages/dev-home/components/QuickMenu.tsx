@@ -52,7 +52,7 @@ const secondaryMenu: SecondaryMenuType[] = [
 export const QuickMenu = () => {
   const isMobile = useMobile();
   return (
-    <Flex direction="column" gap={4} bg="gray.900" p={{ sm: 8, md: 12 }}>
+    <Flex direction="column" gap={4} bg="gray.900" p={{ base: 6, md: 12 }}>
       <Heading as="h5" variant="h5">
         Start using {CURR_THEME.branding.seo.appName}
       </Heading>
@@ -85,7 +85,7 @@ export const QuickMenu = () => {
                 <CustomIcon
                   name="chevron-right"
                   color="text.main"
-                  boxSize="24px"
+                  boxSize={{ base: 5, md: 6 }}
                 />
               </Flex>
             </AppLink>
@@ -106,7 +106,7 @@ export const QuickMenu = () => {
                     <Flex alignItems="center" gap={3}>
                       <CustomIcon
                         name={item.icon}
-                        boxSize="24px"
+                        boxSize={{ base: 5, md: 6 }}
                         color="gray.600"
                       />
                       <Box>
@@ -124,7 +124,7 @@ export const QuickMenu = () => {
                     </Flex>
                     <CustomIcon
                       name="chevron-right"
-                      boxSize="24px"
+                      boxSize={{ base: 5, md: 6 }}
                       color="gray.600"
                     />
                   </Flex>
@@ -133,15 +133,13 @@ export const QuickMenu = () => {
                 <Flex
                   opacity={0.5}
                   style={cardProps}
-                  _hover={{ bg: "gray.700" }}
-                  transition="all .25s ease-in-out"
                   bg="gray.800"
                   alignItems="center"
                 >
                   <Flex alignItems="center" gap={3}>
                     <CustomIcon
                       name={item.icon}
-                      boxSize="24px"
+                      boxSize={{ base: 5, md: 6 }}
                       color="gray.600"
                     />
                     <Box>
@@ -157,15 +155,20 @@ export const QuickMenu = () => {
                       </Text>
                     </Box>
                   </Flex>
-                  <Text variant="body2" color="text.primary">
+                  {/* <Text variant="body2" color="text.primary">
                     On Mobile Soon
-                  </Text>
+                  </Text> */}
                 </Flex>
               )}
             </>
           ))}
         </SimpleGrid>
       </Flex>
+      {isMobile && (
+        <Text variant="body3" color="text.primary" textAlign="center">
+          Some features will available on mobile soon
+        </Text>
+      )}
     </Flex>
   );
 };

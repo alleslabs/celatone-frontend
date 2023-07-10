@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 import type { Delegation } from "../../data";
 import { MobileLabel } from "../mobile/MobileLabel";
@@ -7,6 +7,7 @@ import { TokenCell } from "../tables/TokenCell";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
+import { TableTitle } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { Option, TokenWithValue } from "lib/types";
 
@@ -26,16 +27,25 @@ export const DelegationsTab = ({
   if (isLoading) return <Loading />;
   if (!delegations?.length)
     return (
-      <EmptyState
-        message="This account did not delegate their assets to any validators."
-        withBorder
-      />
+      <Box>
+        <TableTitle title="Delegated to" count={delegations?.length ?? 0} />
+        <EmptyState
+          my={0}
+          message="This account did not delegate their assets to any validators."
+          withBorder
+        />
+      </Box>
     );
 
   return (
     <Flex w="full">
       {isMobile ? (
         <Flex direction="column" gap={4} w="full">
+          <TableTitle
+            title="Delegated to"
+            count={delegations?.length ?? 0}
+            mb={2}
+          />
           {delegations.map((delegation) => (
             <Flex
               key={
@@ -50,10 +60,7 @@ export const DelegationsTab = ({
               gap={3}
               w="full"
             >
-              <ValidatorBadge
-                validator={delegation.validator}
-                badgeSize={{ sm: 8, md: 6 }}
-              />
+              <ValidatorBadge validator={delegation.validator} />
               <Flex
                 direction="column"
                 gap={3}

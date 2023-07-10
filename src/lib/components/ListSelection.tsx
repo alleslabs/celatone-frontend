@@ -144,7 +144,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <Tag
                       cursor="pointer"
                       whiteSpace="nowrap"
-                      variant="primary-dark"
+                      variant="primary-light"
                       gap={1}
                       mr={1}
                     >

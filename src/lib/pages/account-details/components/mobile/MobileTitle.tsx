@@ -8,16 +8,20 @@ interface MobileTitleProps {
   count: string | number;
   onViewMore?: () => void;
 }
-
+const cardProps = {
+  width: "100%",
+  justifyContent: "space-between",
+  background: "gray.900",
+  padding: "16px",
+  borderRadius: "8px",
+};
 export const MobileTitle = ({ onViewMore, title, count }: MobileTitleProps) => {
   return (
     <Flex
-      justify="space-between"
-      w="full"
+      style={cardProps}
+      onClick={count === 0 ? undefined : onViewMore}
       bg="gray.900"
-      borderRadius="8px"
-      p={4}
-      onClick={onViewMore}
+      opacity={count === 0 ? 0.5 : 1}
     >
       <TableTitle title={title} count={count} mb={0} />
       <CustomIcon name="chevron-right" color="gray.600" />
