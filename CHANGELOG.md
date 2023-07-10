@@ -68,7 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#417](https://github.com/alleslabs/celatone-frontend/pull/417) Config responsive design for tx detail and account detail page
+- [#417](https://github.com/alleslabs/celatone-frontend/pull/417) Support responsive and add new theme
 - [#283](https://github.com/alleslabs/celatone-frontend/pull/283) Change unsupported token icon render logic
 - [#420](https://github.com/alleslabs/celatone-frontend/pull/420) Unify create proposal page layout
 - [#416](https://github.com/alleslabs/celatone-frontend/pull/416) Remove the old redundant useSimulateFee hook
