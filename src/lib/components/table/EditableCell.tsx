@@ -163,6 +163,7 @@ export const EditableCell = ({
               variant="body2"
               className="ellipsis"
               maxW="full"
+              onClick={(e) => e.stopPropagation()}
               onMouseOver={handleMouseEnterText}
               ref={textRef}
               {...getInputValueTextProps(

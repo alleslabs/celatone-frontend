@@ -21,11 +21,22 @@ export const RecentActivities = observer(() => {
 
   return (
     <Box py={8}>
-      <Heading px={12} as="h5" variant="h5" mb={4}>
+      <Heading
+        px={{ sm: 8, md: 12 }}
+        as="h5"
+        variant={{ sm: "h6", md: "h5" }}
+        mb={4}
+      >
         Recent Queries and Executes on this device
       </Heading>
       {activities.length ? (
-        <Flex px={12} gap={4} overflowX="scroll" w="100%">
+        <Flex
+          px={{ sm: 8, md: 12 }}
+          gap={4}
+          overflowX={{ md: "scroll" }}
+          w="100%"
+          direction={{ sm: "column", md: "row" }}
+        >
           {activities.map((item) => (
             <Flex
               direction="column"

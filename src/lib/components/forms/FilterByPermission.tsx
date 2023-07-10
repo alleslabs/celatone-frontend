@@ -44,7 +44,7 @@ export const FilterByPermission = ({
   initialSelected,
   labelBgColor = "background.main",
 }: FilterByPermissionProps) => (
-  <Grid columnGap={4} w="full" mb={4} maxW="360px">
+  <Grid columnGap={4} w="full" mb={4} maxW={{ md: "360px" }}>
     <SelectInput<PermissionFilterValue>
       formLabel="Filter by Instantiate Permission"
       options={options}

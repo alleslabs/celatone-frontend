@@ -35,6 +35,7 @@ interface SelectInputProps<T extends string> {
   hasDivider?: boolean;
   helperTextComponent?: ReactNode;
   labelBgColor?: string;
+  size?: string | object;
 }
 
 interface SelectItemProps {
@@ -69,6 +70,7 @@ export const SelectInput = <T extends string>({
   hasDivider = false,
   helperTextComponent,
   labelBgColor = "background.main",
+  size = "lg",
 }: SelectInputProps<T>) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
@@ -132,7 +134,7 @@ export const SelectInput = <T extends string>({
           )}
           <Input
             ref={inputRef}
-            size="lg"
+            size={size}
             textAlign="start"
             type="button"
             value={selected || placeholder}

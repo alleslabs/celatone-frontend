@@ -1,8 +1,10 @@
-import { TableContainer, Grid, Box } from "@chakra-ui/react";
+import { TableContainer, Grid, Box, Flex } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
+import { StoredCodeCard } from "lib/components/card/StoredCodeCard";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
@@ -49,7 +51,7 @@ export const PublicProjectCodeTable = observer(
             threshold: matchSorter.rankings.CONTAINS,
           });
     }, [codes, onViewMore, searchKeyword]);
-
+    const isMobile = useMobile();
     const publicCodes: Option<PublicCodeInfo[]> = filteredCodes?.map(
       (code) => ({
         localInfo: {
@@ -69,8 +71,24 @@ export const PublicProjectCodeTable = observer(
       })
     );
 
+    if (!publicCodes.length)
+      return (
+        <>
+          <TableTitle
+            title="Codes"
+            count={codes.length}
+            mt={{ base: 8, md: 12 }}
+          />
+          <EmptyState
+            my={4}
+            message="There is currently no code related to this project."
+            imageVariant={onViewMore && "empty"}
+            withBorder
+          />
+        </>
+      );
     return (
-      <Box mt={12} mb={4}>
+      <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Codes" count={codes.length} />
         {!onViewMore && (
           <TextInput
@@ -78,33 +96,32 @@ export const PublicProjectCodeTable = observer(
             value={searchKeyword}
             setInputState={setSearchKeyword}
             placeholder="Search with Code ID or Code Name"
-            size="lg"
+            size={{ base: "md", md: "lg" }}
             mb={6}
           />
         )}
-        {!publicCodes.length ? (
-          <EmptyState
-            message="There is currently no code related to this project."
-            imageVariant={onViewMore && "empty"}
-            withBorder
-          />
+        {isMobile ? (
+          <Flex direction="column" gap={4} w="full" mt={4}>
+            {publicCodes.map((code) => (
+              <StoredCodeCard
+                key={code.publicInfo.id}
+                codeInfo={code.publicInfo}
+              />
+            ))}
+          </Flex>
         ) : (
-          <>
-            <TableContainer>
-              <CodeTableHeader />
-              {publicCodes.map((code) => (
-                <PublicProjectCodeRow
-                  key={code.publicInfo.id}
-                  publicCodeInfo={code}
-                  templateColumns={TEMPLATE_COLUMNS}
-                />
-              ))}
-            </TableContainer>
-            {codes.length > 5 && onViewMore && (
-              <ViewMore onClick={onViewMore} />
-            )}
-          </>
+          <TableContainer>
+            <CodeTableHeader />
+            {publicCodes.map((code) => (
+              <PublicProjectCodeRow
+                key={code.publicInfo.id}
+                publicCodeInfo={code}
+                templateColumns={TEMPLATE_COLUMNS}
+              />
+            ))}
+          </TableContainer>
         )}
+        {codes.length > 5 && onViewMore && <ViewMore onClick={onViewMore} />}
       </Box>
     );
   }

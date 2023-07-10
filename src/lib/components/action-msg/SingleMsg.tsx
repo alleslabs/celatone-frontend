@@ -43,10 +43,15 @@ export const SingleMsg = ({
   text3,
   link2,
 }: SingleMsgProps) => {
-  if (!type) return <Text>Message Unavailable</Text>;
+  if (!type)
+    return (
+      <Text variant={{ base: "body2", md: "body1" }}>Message Unavailable</Text>
+    );
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
-      {type} {text1}
+      <Text variant={{ base: "body2", md: "body1" }}>
+        {type} {text1}
+      </Text>
       {tokens?.map((token: Token, index: number) => (
         <MsgToken
           key={index.toString() + token}
@@ -80,7 +85,7 @@ export const SingleMsg = ({
         </Tag>
       )}
       {/* Text2 */}
-      {text2}
+      <Text variant={{ base: "body2", md: "body1" }}>{text2}</Text>
       {/* Link */}
       {link1 && (
         <ExplorerLink
@@ -93,7 +98,7 @@ export const SingleMsg = ({
         />
       )}
       {/* Text3 */}
-      {text3}
+      <Text variant={{ base: "body2", md: "body1" }}>{text3}</Text>
       {/* Link2 */}
       {link2 && (
         <ExplorerLink

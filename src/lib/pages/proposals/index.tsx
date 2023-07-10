@@ -63,7 +63,6 @@ const Proposals = () => {
     search,
     proposer
   );
-
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_LIST);
   }, [router.isReady]);

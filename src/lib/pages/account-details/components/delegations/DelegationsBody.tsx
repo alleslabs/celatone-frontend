@@ -1,11 +1,12 @@
 import { Flex, RadioGroup, Stack } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { DelegationsTable, UnbondingsTable } from "../tables";
+import { UnbondingsTable } from "../tables";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
 import { AmpTrackUseRadio } from "lib/services/amplitude";
 import type { Option, TokenWithValue } from "lib/types";
 
+import { DelegationsTab } from "./DelegationsTab";
 import { RadioCard } from "./RadioCard";
 
 interface DelegationsBodyProps {
@@ -31,7 +32,6 @@ export const DelegationsBody = ({
 }: DelegationsBodyProps) => {
   // NOTE: set between "Delegated" and "Unbonding"
   const [value, setValue] = useState("Delegated");
-
   return (
     <Flex direction="column" gap={8}>
       <RadioGroup
@@ -42,7 +42,7 @@ export const DelegationsBody = ({
         value={value}
         overflowX="scroll"
       >
-        <Stack direction="row">
+        <Stack direction={{ base: "column", md: "row" }}>
           <RadioCard
             value="Delegated"
             total={totalDelegations}
@@ -58,7 +58,7 @@ export const DelegationsBody = ({
         </Stack>
       </RadioGroup>
       {value === "Delegated" ? (
-        <DelegationsTable
+        <DelegationsTab
           delegations={delegations}
           rewards={rewards}
           defaultToken={defaultToken}

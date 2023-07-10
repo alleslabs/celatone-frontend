@@ -57,3 +57,16 @@ export const getLatestBlockInfoQueryDocument = graphql(`
     }
   }
 `);
+
+export const getBlockTimeQueryDocument = graphql(`
+  query getBlockTime {
+    hundred: blocks(order_by: { height: desc }, offset: 100, limit: 1) {
+      height
+      timestamp
+    }
+    latest: blocks(order_by: { height: desc }, limit: 1) {
+      height
+      timestamp
+    }
+  }
+`);

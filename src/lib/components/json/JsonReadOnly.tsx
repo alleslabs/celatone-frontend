@@ -55,6 +55,7 @@ const JsonReadOnly = ({
 
   return (
     <Box
+      minH={{ base: "360px", md: "auto" }}
       position="relative"
       borderWidth="thin"
       borderColor={!isJsonValid ? "error.main" : "gray.700"}

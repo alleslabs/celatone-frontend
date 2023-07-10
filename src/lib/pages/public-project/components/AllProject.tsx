@@ -73,8 +73,8 @@ export const AllProject = observer(() => {
         setInputState={setSearchKeyword}
         labelBgColor="background"
         placeholder="Search for existing public projects by project name"
-        size="lg"
-        mb={12}
+        size={{ base: "md", md: "lg" }}
+        mb={{ base: 6, md: 12 }}
       />
       {!filteredPublicProjects.length ? (
         <EmptyState
@@ -92,7 +92,13 @@ export const AllProject = observer(() => {
           ))}
         </SimpleGrid>
       )}
-      <Flex justifyContent="center" gap={2} w="100%" mt={16}>
+      <Flex
+        justifyContent="center"
+        gap={2}
+        w="100%"
+        mt={{ base: 8, md: 16 }}
+        mb={{ base: 4, md: 0 }}
+      >
         <Text color="text.dark" variant="body2">
           Want your project here?
         </Text>

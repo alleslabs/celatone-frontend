@@ -5,7 +5,12 @@ import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useWasmConfig,
+  useMobile,
+} from "lib/app-provider";
+import { StoredCodeCard } from "lib/components/card/StoredCodeCard";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -48,23 +53,21 @@ const RecentCodes = observer(() => {
   }, [router.isReady]);
 
   const isSearching = Boolean(keyword) || permissionValue !== "all";
-
+  const isMobile = useMobile();
   return (
     <PageContainer>
-      <Box pb={12}>
-        <Heading
-          variant="h5"
-          as="h5"
-          minH="36px"
-          display="flex"
-          alignItems="center"
-        >
+      <Box pb={{ base: 0, md: 12 }}>
+        <Heading variant="h5" as="h5" minH="36px">
           Recent Codes
         </Heading>
-        <Text variant="body2" color="text.dark" fontWeight="500">
+        <Text variant="body2" color="text.dark" fontWeight="500" mb={8}>
           These codes are the most recently stored on this network
         </Text>
-        <Flex gap={3} mt={8}>
+        <Flex
+          gap={{ base: 6, md: 3 }}
+          mt={8}
+          direction={{ base: "column", md: "row" }}
+        >
           <InputWithIcon
             placeholder="Search with Code ID or Code Name"
             value={keyword}
@@ -82,22 +85,30 @@ const RecentCodes = observer(() => {
           />
         </Flex>
       </Box>
-      <CodesTable
-        codes={recentCodes}
-        isLoading={isLoading}
-        emptyState={
-          <EmptyState
-            imageVariant={isSearching ? "not-found" : "empty"}
-            message={
-              isSearching
-                ? "No matched codes found"
-                : "Most recent 100 code IDs will display here."
-            }
-            withBorder
-          />
-        }
-        onRowSelect={onRowSelect}
-      />
+      {isMobile ? (
+        <Flex direction="column" gap={4} w="full" mt={4}>
+          {recentCodes.map((code) => (
+            <StoredCodeCard codeInfo={code} />
+          ))}
+        </Flex>
+      ) : (
+        <CodesTable
+          codes={recentCodes}
+          isLoading={isLoading}
+          emptyState={
+            <EmptyState
+              imageVariant={isSearching ? "not-found" : "empty"}
+              message={
+                isSearching
+                  ? "No matched codes found"
+                  : "Most recent 100 code IDs will display here."
+              }
+              withBorder
+            />
+          }
+          onRowSelect={onRowSelect}
+        />
+      )}
     </PageContainer>
   );
 });

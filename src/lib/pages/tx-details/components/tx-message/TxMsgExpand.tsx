@@ -4,7 +4,7 @@ import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
 
-import { useGetAddressType } from "lib/app-provider";
+import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -30,22 +30,22 @@ export const TxMsgExpand = ({
 }: TxMsgExpandProps) => {
   const getAddressType = useGetAddressType();
   const { "@type": type, ...body } = msgBody;
+  const isMobile = useMobile();
   const isIBC =
     Boolean(log?.events?.find((event) => event.type === "send_packet")) ||
     type.startsWith("/ibc");
   let msgIcon: IconKeys = "info-circle";
   let content: ReactNode;
-
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode":
       msgIcon = "upload";
       content = (
-        <>
-          Upload Wasm
+        <Flex display="inline">
+          Upload Wasm{" "}
           {log && (
             <>
               {" "}
-              and stored as
+              and stored as{" "}
               <ExplorerLink
                 type="code_id"
                 value={findAttribute([log], "store_code", "code_id").value}
@@ -56,14 +56,14 @@ export const TxMsgExpand = ({
               />
             </>
           )}
-        </>
+        </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
       msgIcon = "instantiate";
       content = (
-        <>
-          Instantiate
+        <Flex display="inline">
+          Instantiate{" "}
           {log && (
             <ExplorerLink
               type="contract_address"
@@ -74,8 +74,8 @@ export const TxMsgExpand = ({
               textVariant="body1"
               ampCopierSection="tx_page_message_header_contract"
             />
-          )}
-          <p>from</p>
+          )}{" "}
+          from{" "}
           <ExplorerLink
             type="code_id"
             value={body.code_id}
@@ -83,14 +83,14 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
           />
-        </>
+        </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
       msgIcon = "instantiate";
       content = (
-        <>
-          Instantiate2
+        <Flex display="inline">
+          Instantiate2{" "}
           {log && (
             <ExplorerLink
               type="contract_address"
@@ -101,8 +101,8 @@ export const TxMsgExpand = ({
               textVariant="body1"
               ampCopierSection="tx_page_message_header_contract"
             />
-          )}
-          <p>from</p>
+          )}{" "}
+          from{" "}
           <ExplorerLink
             type="code_id"
             value={body.code_id}
@@ -110,16 +110,16 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
           />
-        </>
+        </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
       msgIcon = "execute";
       content = (
-        <>
-          Execute
-          <span style={{ fontWeight: 700 }}>{Object.keys(body.msg).at(0)}</span>
-          on
+        <Flex display="inline">
+          Execute{" "}
+          <span style={{ fontWeight: 700 }}>{Object.keys(body.msg).at(0)}</span>{" "}
+          on{" "}
           <ExplorerLink
             type="contract_address"
             value={body.contract}
@@ -127,13 +127,13 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_contract"
           />
-        </>
+        </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
       msgIcon = "migrate";
       content = (
-        <>
+        <Flex display="inline">
           Migrate{" "}
           <ExplorerLink
             type="contract_address"
@@ -150,13 +150,13 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
           />
-        </>
+        </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
       msgIcon = "admin-edit";
       content = (
-        <>
+        <Flex display="inline">
           Update admin on{" "}
           <ExplorerLink
             type="contract_address"
@@ -173,13 +173,13 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_admin"
           />
-        </>
+        </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
       msgIcon = "admin-clear";
       content = (
-        <>
+        <Flex display="inline">
           Clear admin on{" "}
           <ExplorerLink
             type="contract_address"
@@ -188,7 +188,7 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_contract"
           />
-        </>
+        </Flex>
       );
       break;
     case "/cosmos.bank.v1beta1.MsgSend":
@@ -206,8 +206,8 @@ export const TxMsgExpand = ({
               });
         msgIcon = "send";
         content = (
-          <>
-            Send {assetText} to
+          <Flex display="inline">
+            Send {assetText} to{" "}
             <ExplorerLink
               type={getAddressType(toAddress)}
               value={toAddress}
@@ -215,18 +215,18 @@ export const TxMsgExpand = ({
               textVariant="body1"
               ampCopierSection="tx_page_message_header_send_address"
             />
-          </>
+          </Flex>
         );
       }
       break;
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
       content = (
-        <>
+        <Flex display="inline">
           Submit Proposal {body.is_expedited && " Expedited "}
           {log && (
             <>
-              <p>ID</p>
+              ID{" "}
               <ExplorerLink
                 type="proposal_id"
                 value={
@@ -238,13 +238,13 @@ export const TxMsgExpand = ({
               />
             </>
           )}
-        </>
+        </Flex>
       );
       break;
     case "/cosmos.gov.v1beta1.MsgVote":
       msgIcon = "vote";
       content = (
-        <>
+        <Flex display="inline">
           Vote{" "}
           <span style={{ fontWeight: 700 }}>
             {voteOption[body.option as VoteOption]}
@@ -257,13 +257,13 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_proposal"
           />
-        </>
+        </Flex>
       );
       break;
     case "/cosmos.staking.v1beta1.MsgDelegate":
       msgIcon = "delegate";
       content = (
-        <>
+        <Flex display="inline">
           Delegate by{" "}
           <ExplorerLink
             type={getAddressType(body.delegator_address)}
@@ -280,7 +280,7 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_validator"
           />
-        </>
+        </Flex>
       );
       break;
     default: {
@@ -319,19 +319,41 @@ export const TxMsgExpand = ({
         bg: "gray.700",
       }}
     >
-      <Flex align="center" gap={2} fontSize="16px" fontWeight={500}>
-        <CustomIcon name={msgIcon} boxSize={4} color="secondary.main" m={0} />
+      <Flex
+        align={{ base: "start", md: "center" }}
+        gap={2}
+        fontSize="16px"
+        fontWeight={500}
+      >
+        <CustomIcon
+          name={msgIcon}
+          boxSize={4}
+          color="secondary.main"
+          m={0}
+          mt={{ base: 1, md: 0 }}
+        />
         {content}
-        {isIBC && <Tag variant="accent-dark">IBC</Tag>}
+        {isIBC && !isMobile && (
+          <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
+            IBC
+          </Tag>
+        )}
       </Flex>
-      <CustomIcon
-        name="chevron-down"
-        color="gray.600"
-        boxSize={4}
-        transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
-        transition="all .25s ease-in-out"
-        m={0}
-      />
+      <Flex>
+        {isIBC && isMobile && (
+          <Tag mx={2} variant="accent-dark" size="sm" minW="hug-content">
+            IBC
+          </Tag>
+        )}
+        <CustomIcon
+          name="chevron-down"
+          color="gray.600"
+          boxSize={4}
+          transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
+          transition="all .25s ease-in-out"
+          m={0}
+        />
+      </Flex>
     </Flex>
   );
 };

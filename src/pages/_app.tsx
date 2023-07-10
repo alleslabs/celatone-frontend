@@ -16,6 +16,7 @@ import {
   localosmosis,
   localosmosisAsset,
 } from "lib/chain-registry/localosmosis";
+import { sei, seiAssets } from "lib/chain-registry/sei";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -76,8 +77,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
       <QueryClientProvider client={queryClient}>
         <ChainProvider
-          chains={[...chains, localosmosis]}
-          assetLists={[...assets, localosmosisAsset]}
+          chains={[...chains, localosmosis, sei]}
+          assetLists={[...assets, localosmosisAsset, seiAssets]}
           wallets={wallets}
           endpointOptions={{
             isLazy: true,
