@@ -30,12 +30,14 @@ export const useValidator = (
   );
 };
 
-export const useValidators = (): UseQueryResult<Record<string, Validator>> => {
+export const useValidators = (): UseQueryResult<
+  Record<ValidatorAddr, Validator>
+> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient.request(getValidators).then(({ validators }) =>
-      validators.reduce<Record<string, Validator>>(
+      validators.reduce<Record<ValidatorAddr, Validator>>(
         (all, validator) => ({
           ...all,
           [validator.operator_address]: {
