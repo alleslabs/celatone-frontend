@@ -55,10 +55,11 @@ export const formatSeconds = (sec: Option<string>) => {
 export const formatDuration = (duration: string | number) => {
   if (typeof duration === "number" || Number.isInteger(duration))
     return formatSeconds(big(duration).div(1e9).toFixed());
+
   let value = big(duration.slice(0, -1));
   switch (true) {
     case duration.endsWith("h"):
-      value = value.mul(360);
+      value = value.mul(3600);
       break;
     case duration.endsWith("m"):
       value = value.mul(60);
@@ -66,7 +67,7 @@ export const formatDuration = (duration: string | number) => {
     case duration.endsWith("s"):
       break;
     default:
-      break;
+      return "N/A";
   }
   return formatSeconds(value.toFixed());
 };
