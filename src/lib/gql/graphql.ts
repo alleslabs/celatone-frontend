@@ -12683,6 +12683,26 @@ export type GetBlockTransactionCountByHeightQueryQuery = {
   };
 };
 
+export type GetValidatorsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetValidatorsQuery = {
+  __typename?: "query_root";
+  validators: Array<{
+    __typename?: "validators";
+    commission_max_change: string;
+    commission_max_rate: string;
+    commission_rate: string;
+    consensus_address: string;
+    details: string;
+    identity: string;
+    jailed: boolean;
+    min_self_delegation: string;
+    moniker: string;
+    operator_address: string;
+    website: string;
+  }>;
+};
+
 export const GetAccountIdByAddressQueryDocumentDocument = {
   kind: "Document",
   definitions: [
@@ -18336,3 +18356,56 @@ export const GetBlockTransactionCountByHeightQueryDocument = {
   GetBlockTransactionCountByHeightQueryQuery,
   GetBlockTransactionCountByHeightQueryQueryVariables
 >;
+export const GetValidatorsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getValidators" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "validators" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_max_change" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_max_rate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_rate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "consensus_address" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "details" } },
+                { kind: "Field", name: { kind: "Name", value: "identity" } },
+                { kind: "Field", name: { kind: "Name", value: "jailed" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "min_self_delegation" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "moniker" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "operator_address" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "website" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetValidatorsQuery, GetValidatorsQueryVariables>;
