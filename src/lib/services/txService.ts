@@ -44,27 +44,27 @@ export interface TxData extends TxResponse {
   isTxFailed: boolean;
 }
 
+export const useTxDataQueryFn = async ({
+  queryKey,
+}: QueryFunctionContext<string[]>): Promise<TxData> => {
+  const txData = await queryTxData(queryKey[1], queryKey[2]);
+  return {
+    ...txData,
+    chainId: queryKey[3],
+    isTxFailed: Boolean(txData.code),
+  };
+};
+
 export const useTxData = (
   txHash: Option<string>,
   enabled = true
 ): UseQueryResult<TxData> => {
   const { currentChainId } = useCelatoneApp();
   const txsApiRoute = useBaseApiRoute("txs");
-  const queryFn = useCallback(
-    async ({ queryKey }: QueryFunctionContext<string[]>): Promise<TxData> => {
-      const txData = await queryTxData(queryKey[1], queryKey[2]);
-      return {
-        ...txData,
-        chainId: currentChainId,
-        isTxFailed: Boolean(txData.code),
-      };
-    },
-    [currentChainId]
-  );
 
   return useQuery({
-    queryKey: ["tx_data", txsApiRoute, txHash] as string[],
-    queryFn,
+    queryKey: ["tx_data", txsApiRoute, txHash, currentChainId] as string[],
+    queryFn: useTxDataQueryFn,
     enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,
     retry: false,

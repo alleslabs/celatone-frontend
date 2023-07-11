@@ -1,7 +1,11 @@
 import type { EndpointOptions } from "@cosmos-kit/core";
 import { wallets } from "@cosmos-kit/keplr";
 import { ChainProvider } from "@cosmos-kit/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  Hydrate,
+} from "@tanstack/react-query";
 import { assets, chains } from "chain-registry";
 import localforage from "localforage";
 import { configurePersistable } from "mobx-persist-store";
@@ -9,6 +13,7 @@ import { enableStaticRendering } from "mobx-react-lite";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
+import { useState } from "react";
 
 import { CHAIN_CONFIGS } from "config";
 import { AppProvider } from "lib/app-provider/contexts/app";
@@ -54,7 +59,7 @@ const availableChainsEndpoints = Object.values(CHAIN_CONFIGS).reduce<
 );
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <Chakra>
@@ -75,38 +80,40 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </Script>
 
       <QueryClientProvider client={queryClient}>
-        <ChainProvider
-          chains={[...chains, localosmosis]}
-          assetLists={[...assets, localosmosisAsset]}
-          wallets={wallets}
-          endpointOptions={{
-            isLazy: true,
-            endpoints: availableChainsEndpoints,
-          }}
-          signerOptions={{
-            preferredSignType: () => "direct",
-          }}
-          wrappedWithChakra
-        >
-          <StoreProvider>
-            <AppProvider>
-              <TxBroadcastProvider>
-                <Head>
-                  <meta
-                    name="viewport"
-                    content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
-                  />
-                </Head>
-                <CelatoneSeo />
-                <Layout>
-                  <MobileGuard>
-                    <Component {...pageProps} />
-                  </MobileGuard>
-                </Layout>
-              </TxBroadcastProvider>
-            </AppProvider>
-          </StoreProvider>
-        </ChainProvider>
+        <Hydrate state={pageProps.dehydratedState}>
+          <ChainProvider
+            chains={[...chains, localosmosis]}
+            assetLists={[...assets, localosmosisAsset]}
+            wallets={wallets}
+            endpointOptions={{
+              isLazy: true,
+              endpoints: availableChainsEndpoints,
+            }}
+            signerOptions={{
+              preferredSignType: () => "direct",
+            }}
+            wrappedWithChakra
+          >
+            <StoreProvider>
+              <AppProvider>
+                <TxBroadcastProvider>
+                  <Head>
+                    <meta
+                      name="viewport"
+                      content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
+                    />
+                  </Head>
+                  <CelatoneSeo />
+                  <Layout>
+                    <MobileGuard>
+                      <Component {...pageProps} />
+                    </MobileGuard>
+                  </Layout>
+                </TxBroadcastProvider>
+              </AppProvider>
+            </StoreProvider>
+          </ChainProvider>
+        </Hydrate>
       </QueryClientProvider>
     </Chakra>
   );

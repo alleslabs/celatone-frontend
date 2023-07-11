@@ -6,7 +6,7 @@ import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
 import { AmpTrackViewJson } from "lib/services/amplitude";
 import type { TxData } from "lib/services/txService";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { dateFromNow, formatUTC, parseDateOpt } from "lib/utils";
 
 interface TxHeaderProps extends FlexProps {
   txData: TxData;
@@ -18,6 +18,7 @@ const DotSeparator = () => (
 
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
   const openLcdTab = useOpenTxTab("lcd");
+  const parsedTimestamp = parseDateOpt(txData.timestamp);
   return (
     <Flex direction="column" gap={2} {...flexProps}>
       <Flex justify="space-between" align="center">
@@ -76,11 +77,11 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
             )}
           </Flex>
           <DotSeparator />
-          {txData.timestamp ? (
+          {parsedTimestamp ? (
             <>
-              <p>{dateFromNow(txData.timestamp)}</p>
+              <p>{dateFromNow(parsedTimestamp)}</p>
               <DotSeparator />
-              <p>{formatUTC(txData.timestamp)}</p>
+              <p>{formatUTC(parsedTimestamp)}</p>
             </>
           ) : (
             <p>N/A</p>

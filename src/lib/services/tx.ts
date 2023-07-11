@@ -5,8 +5,7 @@ import type { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import type { Any } from "cosmjs-types/google/protobuf/any";
 
 import type { TypeUrl } from "lib/data";
-import type { Option, Fee } from "lib/types";
-import { parseDateOpt } from "lib/utils";
+import type { Fee } from "lib/types";
 
 // ----------------------------------------
 // --------------AuthInfo------------------
@@ -74,7 +73,7 @@ export interface TxResponse {
   gas_wanted: string;
   gas_used: string;
   tx: Tx;
-  timestamp: Option<Date>;
+  timestamp: string;
   events: Event[];
 }
 
@@ -83,9 +82,5 @@ export const queryTxData = async (
   txHash: string
 ): Promise<TxResponse> => {
   const { data } = await axios.get(`${txsApiRoute}/${txHash.toUpperCase()}`);
-
-  return {
-    ...data.tx_response,
-    timestamp: parseDateOpt(data.tx_response.timestamp),
-  };
+  return data.tx_response;
 };
