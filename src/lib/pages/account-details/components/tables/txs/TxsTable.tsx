@@ -17,15 +17,14 @@ import {
   useTxsByAddressPagination,
   useTxsCountByAddress,
 } from "lib/services/txService";
-import type { HumanAddr, Option, Transaction, TxFilters } from "lib/types";
+import type { Option, Transaction, TxFilters } from "lib/types";
 
 import { TxsAlert } from "./TxsAlert";
 import { TxsBody } from "./TxsBody";
 import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
-  walletAddress: HumanAddr;
-  accountId?: Option<number>;
+  accountId?: Option<number | null>;
   scrollComponentId: string;
   onViewMore?: () => void;
 }
@@ -49,12 +48,10 @@ const getEmptyStateProps = (
 
 const TxTitle = ({
   onViewMore,
-  failureReason,
   txsCount,
 }: {
   onViewMore: TxsTableProps["onViewMore"];
-  failureReason: unknown;
-  txsCount: number;
+  txsCount: Option<number>;
 }) => {
   const isMobile = useMobile();
 
@@ -62,20 +59,13 @@ const TxTitle = ({
     return (
       <MobileTitle
         title="Transactions"
-        count={failureReason ? "N/A" : txsCount}
+        count={txsCount}
         onViewMore={onViewMore}
       />
     );
-  return (
-    <TableTitle
-      title="Transactions"
-      count={failureReason ? "N/A" : txsCount}
-      mb={2}
-    />
-  );
+  return <TableTitle title="Transactions" count={txsCount} mb={0} />;
 };
 export const TxsTable = ({
-  walletAddress,
   accountId,
   scrollComponentId,
   onViewMore,
@@ -92,7 +82,13 @@ export const TxsTable = ({
     refetch: refetchTxsCount,
     isLoading: txsCountLoading,
     failureReason,
-  } = useTxsCountByAddress(walletAddress, accountId, "", filters, isSigner);
+  } = useTxsCountByAddress({
+    address: undefined,
+    accountId,
+    search: "",
+    filters,
+    isSigner,
+  });
 
   const {
     pagesQuantity,
@@ -158,13 +154,7 @@ export const TxsTable = ({
   return (
     <Box mt={{ base: 4, md: 8 }}>
       <TxsTop
-        title={
-          <TxTitle
-            onViewMore={onViewMore}
-            failureReason={failureReason}
-            txsCount={10} // TODO: txsCount
-          />
-        }
+        title={<TxTitle onViewMore={onViewMore} txsCount={txsCount} />}
         onViewMore={onViewMore}
         relationSelection={
           <TxRelationSelection
@@ -188,7 +178,9 @@ export const TxsTable = ({
           />
         }
       />
-      {Boolean(failureReason) && transactions?.length && <TxsAlert />}
+      {Boolean(failureReason) && Number(transactions?.length) > 0 && (
+        <TxsAlert />
+      )}
       <TxsBody
         transactions={transactions}
         isLoading={isLoading || txsCountLoading}

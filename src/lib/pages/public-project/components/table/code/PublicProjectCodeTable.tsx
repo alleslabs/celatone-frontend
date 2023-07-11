@@ -38,6 +38,32 @@ const CodeTableHeader = () => (
   </Grid>
 );
 
+const ContentRender = ({
+  publicCodes,
+  isMobile,
+}: {
+  publicCodes: PublicCodeInfo[];
+  isMobile: boolean;
+}) =>
+  isMobile ? (
+    <Flex direction="column" gap={4} w="full" mt={4}>
+      {publicCodes.map((code) => (
+        <StoredCodeCard key={code.publicInfo.id} codeInfo={code.publicInfo} />
+      ))}
+    </Flex>
+  ) : (
+    <TableContainer>
+      <CodeTableHeader />
+      {publicCodes.map((code) => (
+        <PublicProjectCodeRow
+          key={code.publicInfo.id}
+          publicCodeInfo={code}
+          templateColumns={TEMPLATE_COLUMNS}
+        />
+      ))}
+    </TableContainer>
+  );
+
 export const PublicProjectCodeTable = observer(
   ({ codes = [], onViewMore }: PublicProjectCodeTableProps) => {
     const [searchKeyword, setSearchKeyword] = useState("");
@@ -71,22 +97,6 @@ export const PublicProjectCodeTable = observer(
       })
     );
 
-    if (!publicCodes.length)
-      return (
-        <>
-          <TableTitle
-            title="Codes"
-            count={codes.length}
-            mt={{ base: 8, md: 12 }}
-          />
-          <EmptyState
-            my={4}
-            message="There is currently no code related to this project."
-            imageVariant={onViewMore && "empty"}
-            withBorder
-          />
-        </>
-      );
     return (
       <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Codes" count={codes.length} />
@@ -100,26 +110,19 @@ export const PublicProjectCodeTable = observer(
             mb={6}
           />
         )}
-        {isMobile ? (
-          <Flex direction="column" gap={4} w="full" mt={4}>
-            {publicCodes.map((code) => (
-              <StoredCodeCard
-                key={code.publicInfo.id}
-                codeInfo={code.publicInfo}
-              />
-            ))}
-          </Flex>
+        {publicCodes.length ? (
+          <ContentRender publicCodes={publicCodes} isMobile={isMobile} />
         ) : (
-          <TableContainer>
-            <CodeTableHeader />
-            {publicCodes.map((code) => (
-              <PublicProjectCodeRow
-                key={code.publicInfo.id}
-                publicCodeInfo={code}
-                templateColumns={TEMPLATE_COLUMNS}
-              />
-            ))}
-          </TableContainer>
+          <EmptyState
+            my={4}
+            message={
+              codes.length
+                ? "No matching code found for this project. Make sure you are searching with Code ID or Code Name"
+                : "There is currently no code related to this project."
+            }
+            imageVariant={onViewMore && "empty"}
+            withBorder
+          />
         )}
         {codes.length > 5 && onViewMore && <ViewMore onClick={onViewMore} />}
       </Box>

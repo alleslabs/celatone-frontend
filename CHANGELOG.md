@@ -103,6 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#427](https://github.com/alleslabs/celatone-frontend/pull/427) Fix upload access endpoint, Public project searchbar bug, account tx bug
 - [#425](https://github.com/alleslabs/celatone-frontend/pull/425) Fix reset past tx filter state and permission alert on migration page
 - [#365](https://github.com/alleslabs/celatone-frontend/pull/365) Fix pool page UI including helper text gap, icon alignment in pool asset table, empty state border, add message type, input selection icon, and accordion alignment
 - [#362](https://github.com/alleslabs/celatone-frontend/pull/362) Fix missed out hard-coded osmosis testnet 4 in code
