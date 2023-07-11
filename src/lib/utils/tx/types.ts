@@ -448,7 +448,7 @@ export interface MsgAddToGaugeDetails extends MsgBaseDetails {
 // osmosis/lockup
 export interface MsgLockTokensDetails extends MsgBaseDetails {
   owner: Addr;
-  duration: string;
+  duration: string | number;
   coins: Coin[];
 }
 export interface MsgBeginUnlockingAllDetails extends MsgBaseDetails {
@@ -462,7 +462,7 @@ export interface MsgBeginUnlockingDetails extends MsgBaseDetails {
 export interface MsgExtendLockupDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
-  duration: string;
+  duration: string | number;
 }
 export interface MsgForceUnlockDetails extends MsgBaseDetails {
   owner: Addr;
