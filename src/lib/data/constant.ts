@@ -44,3 +44,5 @@ export const DEFAULT_TX_FILTERS = {
   isUpdateAdmin: false,
   isClearAdmin: false,
 };
+
+export const UPPERBOUND_COUNT = 10000;

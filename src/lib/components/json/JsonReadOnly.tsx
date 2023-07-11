@@ -17,6 +17,7 @@ interface JsonReadOnlyProps {
   text: string;
   canCopy?: boolean;
   isExpandable?: boolean;
+  showLines?: number;
   fullWidth?: boolean;
   amptrackSection?: string;
 }
@@ -28,6 +29,7 @@ const JsonReadOnly = ({
   text,
   canCopy,
   isExpandable,
+  showLines,
   fullWidth,
   amptrackSection,
 }: JsonReadOnlyProps) => {
@@ -37,8 +39,8 @@ const JsonReadOnly = ({
     return jsonValidate(text) === null || text.length === 0;
   }, [text]);
 
-  const showLines = useMemo(() => {
-    const lineCount = jsonLineCount(text);
+  const actualShowLines = useMemo(() => {
+    const lineCount = showLines ?? jsonLineCount(text);
 
     if (isExpandable) {
       return viewFull ? lineCount : Math.min(lineCount, THRESHOLD_LINES);
@@ -46,7 +48,7 @@ const JsonReadOnly = ({
 
     // for query response json viewer
     return Math.max(lineCount, THRESHOLD_LINES);
-  }, [isExpandable, text, viewFull]);
+  }, [isExpandable, showLines, text, viewFull]);
 
   const showExpandButton =
     isExpandable && jsonLineCount(text) > THRESHOLD_LINES;
@@ -69,7 +71,7 @@ const JsonReadOnly = ({
           value={text}
           readOnly
           isValid={isJsonValid}
-          showLines={showLines}
+          showLines={actualShowLines}
         />
       </Box>
       {!!topic && (
@@ -86,11 +88,11 @@ const JsonReadOnly = ({
       {showExpandButton && (
         <ViewFullMsgButton
           onClick={() => {
-            AmpTrackExpand(
-              viewFull ? "collapse" : "expand",
-              "json",
-              amptrackSection
-            );
+            AmpTrackExpand({
+              action: viewFull ? "collapse" : "expand",
+              component: "json",
+              section: amptrackSection,
+            });
             setViewFull((prev) => !prev);
           }}
           viewFull={viewFull}

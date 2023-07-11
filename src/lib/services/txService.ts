@@ -11,12 +11,21 @@ import {
   getTxsCountByAddress,
   getTxs,
   getTxsCount,
+  getTxsCountByPoolId,
+  getTxsByPoolIdPagination,
   getBlockTransactionCountByHeightQueryDocument,
   getBlockTransactionsByHeightQueryDocument,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
-import type { Addr, Option, Transaction, TxFilters, Message } from "lib/types";
-import { MsgFurtherAction } from "lib/types";
+import type {
+  Addr,
+  Option,
+  Transaction,
+  TxFilters,
+  Message,
+  PoolTxFilter,
+} from "lib/types";
+import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
   getActionMsgType,
   getMsgFurtherAction,
@@ -26,7 +35,7 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-import { useTxExpression } from "./expression";
+import { usePoolTxExpression, useTxExpression } from "./expression";
 import type { TxResponse } from "./tx";
 import { queryTxData } from "./tx";
 
@@ -35,7 +44,10 @@ export interface TxData extends TxResponse {
   isTxFailed: boolean;
 }
 
-export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
+export const useTxData = (
+  txHash: Option<string>,
+  enabled = true
+): UseQueryResult<TxData> => {
   const { currentChainId } = useCelatoneApp();
   const txsApiRoute = useBaseApiRoute("txs");
   const queryFn = useCallback(
@@ -53,7 +65,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
   return useQuery({
     queryKey: ["tx_data", txsApiRoute, txHash] as string[],
     queryFn,
-    enabled: Boolean(txHash && isTxHash(txHash)),
+    enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -185,6 +197,85 @@ export const useTxsCountByAddress = (
     {
       enabled: !!address || !!accountId,
       retry: 0,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useTxsByPoolIdPagination = (
+  poolId: number,
+  type: PoolTxFilter,
+  offset: number,
+  pageSize: number
+): UseQueryResult<Transaction[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const expression = usePoolTxExpression(poolId, type);
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getTxsByPoolIdPagination, {
+        expression,
+        offset,
+        pageSize,
+      })
+      .then(({ pool_transactions }) =>
+        pool_transactions.map<Transaction>((transaction) => ({
+          hash: parseTxHash(transaction.transaction.hash),
+          // TODO: revisit this
+          messages: snakeToCamel(transaction.transaction.messages) as Message[],
+          sender: transaction.transaction.account.address as Addr,
+          isSigner: true,
+          height: transaction.block.height,
+          created: parseDate(transaction.block.timestamp),
+          success: transaction.transaction.success,
+          actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+          furtherAction: MsgFurtherAction.NONE,
+          isIbc: transaction.transaction.is_ibc,
+          isInstantiate: false,
+        }))
+      );
+  }, [expression, indexerGraphClient, offset, pageSize]);
+
+  return useQuery(
+    [
+      "transactions_by_pool_id",
+      poolId,
+      type,
+      offset,
+      pageSize,
+      indexerGraphClient,
+    ],
+    queryFn,
+    {
+      enabled: !!poolId,
+    }
+  );
+};
+
+export const useTxsCountByPoolId = (
+  poolId: number,
+  type: PoolTxFilter
+): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const expression = usePoolTxExpression(poolId, type);
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getTxsCountByPoolId, {
+        expression,
+      })
+      .then(
+        ({ pool_transactions_aggregate }) =>
+          pool_transactions_aggregate.aggregate?.count
+      );
+  }, [expression, indexerGraphClient]);
+
+  return useQuery(
+    ["transactions_count_by_pool_id", poolId, type, indexerGraphClient],
+    createQueryFnWithTimeout(queryFn, 5000),
+    {
+      enabled: !!poolId,
+      retry: false,
       refetchOnWindowFocus: false,
     }
   );

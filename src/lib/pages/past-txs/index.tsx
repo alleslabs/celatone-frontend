@@ -173,17 +173,14 @@ const PastTxs = () => {
           filterSelected.length > 0 ? (
             <EmptyState
               imageVariant="not-found"
-              message={`
-      No past transaction matches found with your input.
-      You can search with transaction hash, and contract address.
-      `}
+              message="No past transaction matches found with your input. You can search with transaction hash, and contract address."
+              withBorder
             />
           ) : (
             <EmptyState
               imageVariant="empty"
-              message={`
-    Past transactions will display here.
-    `}
+              message="Past transactions will display here."
+              withBorder
             />
           )
         }

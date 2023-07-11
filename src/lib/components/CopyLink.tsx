@@ -1,5 +1,6 @@
+import type { FlexProps, IconProps } from "@chakra-ui/react";
 import { Flex, Text, useClipboard } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useCurrentChain } from "lib/app-provider";
 import { AmpTrackCopier } from "lib/services/amplitude";
@@ -7,16 +8,35 @@ import { AmpTrackCopier } from "lib/services/amplitude";
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
 
-interface CopyLinkProps {
+interface CopyLinkProps extends FlexProps {
   value: string;
   amptrackSection?: string;
   type: string;
+  showCopyOnHover?: boolean;
 }
 
-export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
+export const CopyLink = ({
+  value,
+  amptrackSection,
+  type,
+  showCopyOnHover = false,
+  ...flexProps
+}: CopyLinkProps) => {
   const { address } = useCurrentChain();
   const { onCopy, hasCopied } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
+
+  // TODO - Refactor
+  const displayIcon = useMemo<IconProps["display"]>(() => {
+    if (showCopyOnHover) {
+      if (isHover) {
+        return "flex";
+      }
+      return "none";
+    }
+    return undefined;
+  }, [showCopyOnHover, isHover]);
+
   return (
     <Tooltip
       isOpen={isHover || hasCopied}
@@ -37,6 +57,7 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
         cursor="pointer"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
+        {...flexProps}
       >
         <Text
           variant="body2"
@@ -46,6 +67,7 @@ export const CopyLink = ({ value, amptrackSection, type }: CopyLinkProps) => {
           {value === address ? `${value} (Me)` : value}
         </Text>
         <CustomIcon
+          display={displayIcon}
           cursor="pointer"
           marginLeft={2}
           name="copy"

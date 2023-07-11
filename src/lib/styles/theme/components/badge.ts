@@ -21,6 +21,7 @@ export const Badge: ComponentStyleConfig = {
       background: "secondary.main",
       color: "background.main",
     },
+    accent: { background: "accent.dark", color: "background.main" },
   },
   defaultProps: {
     variant: "gray",
