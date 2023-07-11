@@ -200,6 +200,7 @@ export const useTxsCountByAddress = ({
     ],
     queryFn,
     {
+      enabled: !!address || accountId !== undefined,
       retry: 0,
       refetchOnWindowFocus: false,
     }
