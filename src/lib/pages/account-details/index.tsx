@@ -88,7 +88,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           id={tableHeaderId}
         >
           <CustomTab onClick={() => handleTabChange(TabIndex.Overview)}>
-            Overall
+            Overview
           </CustomTab>
           <CustomTab
             count={tableCounts.assetsCount}
@@ -161,7 +161,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
               />
             </Flex>
             <TxsTable
-              walletAddress={accountAddress}
               accountId={accountId}
               scrollComponentId={tableHeaderId}
               onViewMore={() => handleTabChange(TabIndex.Txs)}
@@ -206,11 +205,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <TxsTable
-              walletAddress={accountAddress}
-              accountId={accountId}
-              scrollComponentId={tableHeaderId}
-            />
+            <TxsTable accountId={accountId} scrollComponentId={tableHeaderId} />
           </TabPanel>
           <TabPanel p={0}>
             <StoredCodesTable

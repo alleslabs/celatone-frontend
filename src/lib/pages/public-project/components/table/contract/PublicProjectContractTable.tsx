@@ -34,10 +34,40 @@ const ContractTableHeader = () => (
   </Grid>
 );
 
+const ContentRender = ({
+  publicContracts,
+  isMobile,
+}: {
+  publicContracts: PublicContractInfo[];
+  isMobile: boolean;
+}) =>
+  isMobile ? (
+    <Flex direction="column" gap={4} w="full" mt={4}>
+      {publicContracts.map((contract) => (
+        <PublicContractCard
+          publicInfo={contract.publicInfo}
+          key={contract.publicInfo.contractAddress}
+        />
+      ))}
+    </Flex>
+  ) : (
+    <TableContainer>
+      <ContractTableHeader />
+      {publicContracts.map((contract) => (
+        <PublicProjectContractRow
+          key={contract.publicInfo.contractAddress}
+          publicContractInfo={contract}
+          templateColumns={TEMPLATE_COLUMNS}
+        />
+      ))}
+    </TableContainer>
+  );
+
 export const PublicProjectContractTable = observer(
   ({ contracts = [], onViewMore }: PublicProjectContractTableProps) => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const { getContractLocalInfo } = useContractStore();
+    const isMobile = useMobile();
 
     const filteredContracts = useMemo(() => {
       return onViewMore
@@ -60,23 +90,7 @@ export const PublicProjectContractTable = observer(
           ...contract,
         },
       }));
-    const isMobile = useMobile();
-    if (!publicContracts.length)
-      return (
-        <>
-          <TableTitle
-            title="Contracts"
-            count={contracts.length}
-            mt={{ base: 8, md: 12 }}
-          />
-          <EmptyState
-            my={4}
-            message="There is currently no contracts related to this project."
-            imageVariant={onViewMore && "empty"}
-            withBorder
-          />
-        </>
-      );
+
     return (
       <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Contracts" count={contracts.length} />
@@ -90,26 +104,22 @@ export const PublicProjectContractTable = observer(
             mb={6}
           />
         )}
-        {isMobile ? (
-          <Flex direction="column" gap={4} w="full" mt={4}>
-            {publicContracts.map((contract) => (
-              <PublicContractCard
-                publicInfo={contract.publicInfo}
-                key={contract.publicInfo.contractAddress}
-              />
-            ))}
-          </Flex>
+        {publicContracts.length ? (
+          <ContentRender
+            publicContracts={publicContracts}
+            isMobile={isMobile}
+          />
         ) : (
-          <TableContainer>
-            <ContractTableHeader />
-            {publicContracts.map((contract) => (
-              <PublicProjectContractRow
-                key={contract.publicInfo.contractAddress}
-                publicContractInfo={contract}
-                templateColumns={TEMPLATE_COLUMNS}
-              />
-            ))}
-          </TableContainer>
+          <EmptyState
+            my={4}
+            message={
+              contracts.length
+                ? "No matching contract found for this project. Make sure you are searching with Contract Address or Contract Name"
+                : "There is currently no contracts related to this project."
+            }
+            imageVariant={onViewMore && "empty"}
+            withBorder
+          />
         )}
         {contracts.length > 5 && onViewMore && (
           <ViewMore onClick={onViewMore} />

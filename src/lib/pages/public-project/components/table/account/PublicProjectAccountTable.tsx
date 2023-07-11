@@ -26,11 +26,39 @@ const AccountTableHeader = () => (
   </Grid>
 );
 
+const ContentRender = ({
+  filteredAccounts,
+  isMobile,
+}: {
+  filteredAccounts: Account[];
+  isMobile: boolean;
+}) =>
+  isMobile ? (
+    <Flex direction="column" gap={4} w="full" mt={4}>
+      {filteredAccounts.map((account) => (
+        <AccountCard key={account.address} accountInfo={account} />
+      ))}
+    </Flex>
+  ) : (
+    <TableContainer mb={4}>
+      <AccountTableHeader />
+      {filteredAccounts.map((account) => (
+        <PublicProjectAccountRow
+          key={account.address}
+          accountInfo={account}
+          templateColumns={TEMPLATE_COLUMNS}
+        />
+      ))}
+    </TableContainer>
+  );
+
 export const PublicProjectAccountTable = ({
   accounts = [],
   onViewMore,
 }: PublicProjectAccountTableProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const isMobile = useMobile();
+
   const filteredAccounts = useMemo(() => {
     return onViewMore
       ? accounts.slice(0, 5)
@@ -40,22 +68,6 @@ export const PublicProjectAccountTable = ({
         });
   }, [accounts, onViewMore, searchKeyword]);
 
-  const isMobile = useMobile();
-  if (!filteredAccounts.length)
-    return (
-      <>
-        <TableTitle
-          title="Accounts"
-          count={accounts.length}
-          mt={{ base: 8, md: 12 }}
-        />
-        <EmptyState
-          message="There is currently no accounts related to this project."
-          imageVariant={onViewMore && "empty"}
-          withBorder
-        />
-      </>
-    );
   return (
     <Box mt={{ base: 8, md: 12 }} mb={4}>
       <TableTitle title="Accounts" count={accounts.length} />
@@ -69,23 +81,21 @@ export const PublicProjectAccountTable = ({
           mb={6}
         />
       )}
-      {isMobile ? (
-        <Flex direction="column" gap={4} w="full" mt={4}>
-          {filteredAccounts.map((account) => (
-            <AccountCard key={account.address} accountInfo={account} />
-          ))}
-        </Flex>
+      {filteredAccounts.length ? (
+        <ContentRender
+          filteredAccounts={filteredAccounts}
+          isMobile={isMobile}
+        />
       ) : (
-        <TableContainer mb={4}>
-          <AccountTableHeader />
-          {filteredAccounts.map((account) => (
-            <PublicProjectAccountRow
-              key={account.address}
-              accountInfo={account}
-              templateColumns={TEMPLATE_COLUMNS}
-            />
-          ))}
-        </TableContainer>
+        <EmptyState
+          message={
+            accounts.length
+              ? "No matching account found for this project. Make sure you are searching with Account Address or Account Name"
+              : "There is currently no accounts related to this project."
+          }
+          imageVariant={onViewMore && "empty"}
+          withBorder
+        />
       )}
       {accounts.length > 5 && onViewMore && <ViewMore onClick={onViewMore} />}
     </Box>

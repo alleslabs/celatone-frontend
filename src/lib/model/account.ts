@@ -16,7 +16,7 @@ import type { HumanAddr, Option } from "lib/types";
  */
 export const useAccountDetailsTableCounts = (
   walletAddress: HumanAddr,
-  accountId: Option<number>
+  accountId: Option<number | null>
 ) => {
   const { data: codesCount, refetch: refetchCodesCount } =
     useCodeListCountByWalletAddress(walletAddress);

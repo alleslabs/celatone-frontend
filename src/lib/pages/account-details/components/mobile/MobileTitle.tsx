@@ -2,10 +2,11 @@ import { Flex } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
+import type { Option } from "lib/types";
 
 interface MobileTitleProps {
   title: string;
-  count: string | number;
+  count: Option<number>;
   onViewMore?: () => void;
 }
 
