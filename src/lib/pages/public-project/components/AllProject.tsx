@@ -72,7 +72,7 @@ export const AllProject = observer(() => {
         value={searchKeyword}
         setInputState={setSearchKeyword}
         labelBgColor="background"
-        placeholder="Search for existing public projects by project name"
+        placeholder="Search for Existing Public Projects by Project Name"
         size={{ base: "md", md: "lg" }}
         mb={{ base: 6, md: 12 }}
       />
