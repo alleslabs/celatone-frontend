@@ -40,7 +40,10 @@ const RecentContracts = observer(() => {
     return (
       <Flex direction="column" gap={4} w="full" mt={4}>
         {recentContracts.map((contract) => (
-          <InstantiatedContractCard contractInfo={contract} />
+          <InstantiatedContractCard
+            contractInfo={contract}
+            key={contract.contractAddress}
+          />
         ))}
       </Flex>
     );

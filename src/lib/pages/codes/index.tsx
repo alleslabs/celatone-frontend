@@ -65,7 +65,7 @@ const RecentCodes = observer(() => {
     return (
       <Flex direction="column" gap={4} w="full" mt={4}>
         {recentCodes.map((code) => (
-          <StoredCodeCard codeInfo={code} />
+          <StoredCodeCard codeInfo={code} key={code.uploader + code.id} />
         ))}
       </Flex>
     );
