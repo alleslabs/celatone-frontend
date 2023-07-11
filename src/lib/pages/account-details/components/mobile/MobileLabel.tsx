@@ -12,7 +12,12 @@ export const MobileLabel = ({
   variant = "body3",
 }: MobileLabelProps) => {
   return (
-    <Text color="text.dark" variant={variant} fontWeight={fontWeight}>
+    <Text
+      color="text.dark"
+      variant={variant}
+      fontWeight={fontWeight}
+      textTransform="capitalize"
+    >
       {label}
     </Text>
   );
