@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { ErrorFetching } from "../../ErrorFetching";
 import { MobileTitle } from "../../mobile/MobileTitle";
-import { useMobile } from "lib/app-provider";
+import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import type { EmptyStateProps } from "lib/components/state";
@@ -80,8 +80,12 @@ export const TxsTable = ({
   scrollComponentId,
   onViewMore,
 }: TxsTableProps) => {
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   const [isSigner, setIsSigner] = useState<Option<boolean>>();
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
+  const isMobile = useMobile();
 
   const {
     data: txsCount,
@@ -145,7 +149,12 @@ export const TxsTable = ({
   useEffect(() => {
     if (failureReason) setPageSize(50);
   }, [failureReason, setPageSize]);
-  const isMobile = useMobile();
+
+  useEffect(() => {
+    setIsSigner(undefined);
+    setFilters(DEFAULT_TX_FILTERS);
+  }, [chainId]);
+
   return (
     <Box mt={{ base: 4, md: 8 }}>
       <TxsTop
@@ -159,6 +168,7 @@ export const TxsTable = ({
         onViewMore={onViewMore}
         relationSelection={
           <TxRelationSelection
+            value={isSigner}
             setValue={(value: Option<boolean>) => {
               resetPagination();
               setIsSigner(value);
