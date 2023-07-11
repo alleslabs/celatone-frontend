@@ -26,13 +26,13 @@ export const useAccountDetailsTableCounts = (
     useInstantiatedCountByUserQuery(walletAddress);
   const { data: proposalsCount, refetch: refetchProposalsCount } =
     useProposalsCountByWalletAddress(walletAddress);
-  const { data: txsCount, isFetching: txCountFetching } = useTxsCountByAddress(
-    undefined,
+  const { data: txsCount, isFetching: txCountFetching } = useTxsCountByAddress({
+    address: undefined,
     accountId,
-    "",
-    DEFAULT_TX_FILTERS,
-    undefined
-  );
+    search: "",
+    filters: DEFAULT_TX_FILTERS,
+    isSigner: undefined,
+  });
 
   const { totalData: assetsCount } = useUserAssetInfos(walletAddress);
 

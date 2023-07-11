@@ -52,13 +52,13 @@ const PastTxs = () => {
   const pastTxsState = watch();
 
   const { data: accountId } = useAccountId(address as HumanAddr);
-  const { data: countTxs = 0 } = useTxsCountByAddress(
-    undefined,
+  const { data: countTxs = 0 } = useTxsCountByAddress({
+    address: undefined,
     accountId,
-    pastTxsState.search,
-    pastTxsState.filters,
-    pastTxsState.isSigner
-  );
+    search: pastTxsState.search,
+    filters: pastTxsState.filters,
+    isSigner: pastTxsState.isSigner,
+  });
 
   const {
     pagesQuantity,

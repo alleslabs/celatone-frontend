@@ -155,13 +155,19 @@ export const useTxsByAddressPagination = (
   );
 };
 
-export const useTxsCountByAddress = (
-  address: Option<Addr>,
-  accountId: Option<number | null>,
-  search: string,
-  filters: TxFilters,
-  isSigner: Option<boolean>
-): UseQueryResult<Option<number>> => {
+export const useTxsCountByAddress = ({
+  address,
+  accountId,
+  search,
+  filters,
+  isSigner,
+}: {
+  address: Option<Addr>;
+  accountId: Option<number | null>;
+  search: string;
+  filters: TxFilters;
+  isSigner: Option<boolean>;
+}): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useTxExpression({
     address,
@@ -194,7 +200,6 @@ export const useTxsCountByAddress = (
     ],
     queryFn,
     {
-      enabled: !!address || accountId !== undefined,
       retry: 0,
       refetchOnWindowFocus: false,
     }

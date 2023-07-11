@@ -78,7 +78,13 @@ export const TxsTable = ({
     refetch: refetchTxsCount,
     isLoading: txsCountLoading,
     failureReason,
-  } = useTxsCountByAddress(undefined, accountId, "", filters, isSigner);
+  } = useTxsCountByAddress({
+    address: undefined,
+    accountId,
+    search: "",
+    filters,
+    isSigner,
+  });
 
   const {
     pagesQuantity,
