@@ -1,11 +1,12 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 
 import type { ExplorerConfig } from "config/types";
 import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
+import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
 import { AmpTrackMintscan } from "lib/services/amplitude";
 import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -32,6 +33,7 @@ interface ExplorerLinkProps extends BoxProps {
   textVariant?: TextProps["variant"];
   ampCopierSection?: string;
   openNewTab?: boolean;
+  fixedHeight?: boolean;
 }
 
 export const getNavigationUrl = (
@@ -124,6 +126,9 @@ const LinkRender = ({
       className={isEllipsis ? "ellipsis" : undefined}
       maxW={maxWidth}
       pointerEvents={hrefLink ? "auto" : "none"}
+      wordBreak={{ base: "break-all", md: "inherit" }}
+      display={{ base: "inline", md: "flex" }}
+      align={{ base: "start", md: "center" }}
     >
       {textValue}
     </Text>
@@ -160,6 +165,7 @@ export const ExplorerLink = ({
   textVariant = "body2",
   ampCopierSection,
   openNewTab,
+  fixedHeight = true,
   ...componentProps
 }: ExplorerLinkProps) => {
   const { address } = useCurrentChain();
@@ -182,7 +188,7 @@ export const ExplorerLink = ({
   ];
 
   const readOnly = isReadOnly || !hrefLink;
-
+  const isMobile = useMobile();
   return (
     <Box
       className="copier-wrapper"
@@ -202,7 +208,11 @@ export const ExplorerLink = ({
           {textValue}
         </Text>
       ) : (
-        <>
+        <Flex
+          display={{ base: "inline-flex", md: "flex" }}
+          align="center"
+          h={fixedHeight ? "24px" : "auto"}
+        >
           <LinkRender
             type={type}
             isInternal={isInternal}
@@ -217,11 +227,11 @@ export const ExplorerLink = ({
             type={type}
             value={copyValue || value}
             copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
-            display={showCopyOnHover ? "none" : "block"}
+            display={showCopyOnHover && !isMobile ? "none" : "inline"}
             ml={2}
             amptrackSection={ampCopierSection}
           />
-        </>
+        </Flex>
       )}
     </Box>
   );

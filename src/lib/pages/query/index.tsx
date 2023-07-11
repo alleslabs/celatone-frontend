@@ -8,6 +8,7 @@ import {
   useBaseApiRoute,
   useInternalNavigate,
   useWasmConfig,
+  useMobile,
 } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
@@ -34,7 +35,7 @@ const Query = () => {
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");
   const [cmds, setCmds] = useState<[string, string][]>([]);
-
+  const isMobile = useMobile();
   const goToExecute = () => {
     navigate({
       pathname: "/execute",
@@ -101,18 +102,20 @@ const Query = () => {
         <Heading as="h5" variant="h5">
           Query Contract
         </Heading>
-        <Box>
-          <Button
-            variant="ghost-secondary"
-            size="sm"
-            p="unset"
-            pl={2}
-            onClick={goToExecute}
-          >
-            Go To Execute
-            <CustomIcon name="chevron-right" boxSize={3} />
-          </Button>
-        </Box>
+        {!isMobile && (
+          <Box>
+            <Button
+              variant="ghost-secondary"
+              size="sm"
+              p="unset"
+              pl={2}
+              onClick={goToExecute}
+            >
+              Go To Execute
+              <CustomIcon name="chevron-right" boxSize={3} />
+            </Button>
+          </Box>
+        )}
       </Flex>
 
       <ContractSelectSection

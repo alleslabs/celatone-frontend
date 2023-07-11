@@ -8,6 +8,7 @@ import {
   useFabricateFee,
   useExecuteContractTx,
   useCurrentChain,
+  useMobile,
 } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
@@ -216,6 +217,7 @@ export const ExecuteArea = ({
     };
   });
 
+  const isMobile = useMobile();
   return (
     <Box my={4}>
       {contractAddress && (
@@ -293,7 +295,7 @@ export const ExecuteArea = ({
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >
-            Execute (Ctrl + Enter)
+            Execute {!isMobile && "(Ctrl + Enter)"}
           </Button>
         </Flex>
       </Flex>

@@ -1,5 +1,8 @@
+import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { useMobile } from "lib/app-provider";
+import { BlockCard } from "lib/components/card/BlockCard";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -56,7 +59,7 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     setPageSize(size);
     setCurrentPage(1);
   };
-
+  const isMobile = useMobile();
   if (isLoading) return <Loading />;
   if (error)
     return (
@@ -78,15 +81,23 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
 
   return (
     <>
-      <TableContainer>
-        <BlocksHeader
-          templateColumns={TEMPLATE_COLUMNS}
-          scrollComponentId={scrollComponentId}
-        />
-        {blocksData.map((block) => (
-          <BlocksRow templateColumns={TEMPLATE_COLUMNS} blockData={block} />
-        ))}
-      </TableContainer>
+      {isMobile ? (
+        <Flex direction="column" gap={4} w="full" mt={4}>
+          {blocksData.map((block) => (
+            <BlockCard blockData={block} />
+          ))}
+        </Flex>
+      ) : (
+        <TableContainer>
+          <BlocksHeader
+            templateColumns={TEMPLATE_COLUMNS}
+            scrollComponentId={scrollComponentId}
+          />
+          {blocksData.map((block) => (
+            <BlocksRow templateColumns={TEMPLATE_COLUMNS} blockData={block} />
+          ))}
+        </TableContainer>
+      )}
       {!isViewMore && blockCount > 10 && (
         <Pagination
           currentPage={currentPage}

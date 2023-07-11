@@ -11919,6 +11919,14 @@ export type GetLatestBlockInfoQuery = {
   blocks: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
 };
 
+export type GetBlockTimeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetBlockTimeQuery = {
+  __typename?: "query_root";
+  hundred: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
+  latest: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
+};
+
 export type GetCodeListQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCodeListQueryQuery = {
@@ -12675,6 +12683,26 @@ export type GetBlockTransactionCountByHeightQueryQuery = {
   };
 };
 
+export type GetValidatorsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetValidatorsQuery = {
+  __typename?: "query_root";
+  validators: Array<{
+    __typename?: "validators";
+    commission_max_change: string;
+    commission_max_rate: string;
+    commission_rate: string;
+    consensus_address: string;
+    details: string;
+    identity: string;
+    jailed: boolean;
+    min_self_delegation: string;
+    moniker: string;
+    operator_address: string;
+    website: string;
+  }>;
+};
+
 export const GetAccountIdByAddressQueryDocumentDocument = {
   kind: "Document",
   definitions: [
@@ -13060,6 +13088,92 @@ export const GetLatestBlockInfoDocument = {
   GetLatestBlockInfoQuery,
   GetLatestBlockInfoQueryVariables
 >;
+export const GetBlockTimeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTime" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hundred" },
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: { kind: "IntValue", value: "100" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "latest" },
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetBlockTimeQuery, GetBlockTimeQueryVariables>;
 export const GetCodeListQueryDocument = {
   kind: "Document",
   definitions: [
@@ -18242,3 +18356,56 @@ export const GetBlockTransactionCountByHeightQueryDocument = {
   GetBlockTransactionCountByHeightQueryQuery,
   GetBlockTransactionCountByHeightQueryQueryVariables
 >;
+export const GetValidatorsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getValidators" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "validators" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_max_change" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_max_rate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_rate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "consensus_address" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "details" } },
+                { kind: "Field", name: { kind: "Name", value: "identity" } },
+                { kind: "Field", name: { kind: "Name", value: "jailed" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "min_self_delegation" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "moniker" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "operator_address" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "website" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetValidatorsQuery, GetValidatorsQueryVariables>;
