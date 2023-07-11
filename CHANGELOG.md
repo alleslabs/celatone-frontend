@@ -68,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Add new Osmosis v16 tx messages
 - [#283](https://github.com/alleslabs/celatone-frontend/pull/283) Change unsupported token icon render logic
 - [#420](https://github.com/alleslabs/celatone-frontend/pull/420) Unify create proposal page layout
 - [#416](https://github.com/alleslabs/celatone-frontend/pull/416) Remove the old redundant useSimulateFee hook
