@@ -23,6 +23,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/query`) ||
     pathName.includes(`/network-overview`) ||
     pathName.includes(`/dev-home`) ||
+    pathName.includes(`/404`) ||
     pathName === `/${currentChainId}/contracts` ||
     pathName === `/${currentChainId}`;
 

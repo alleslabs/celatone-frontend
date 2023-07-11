@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 
 import { AppLink } from "../AppLink";
 import { ExplorerLink } from "../ExplorerLink";
@@ -58,6 +58,9 @@ export const PublicContractCard = ({ publicInfo }: PublicContractCardProps) => {
             <Flex direction="column">
               <MobileLabel label="Contract Name" />
               <ContractNameCell contractLocalInfo={publicInfo} isReadOnly />
+              <Text variant="body3" color="text.dark" pt={1}>
+                {publicInfo.description}
+              </Text>
             </Flex>
           </Flex>
           <Flex flex="1" direction="column">

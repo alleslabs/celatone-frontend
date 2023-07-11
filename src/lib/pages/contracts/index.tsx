@@ -47,7 +47,7 @@ const RecentContracts = observer(() => {
   };
   return (
     <PageContainer>
-      <Box pb={{ base: 0, md: 12 }}>
+      <Box>
         <Heading variant="h5" as="h5" minH="36px">
           Recent Contracts
         </Heading>

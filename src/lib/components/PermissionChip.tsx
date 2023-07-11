@@ -1,6 +1,6 @@
 import { Flex, Tag } from "@chakra-ui/react";
 
-import { useCurrentChain } from "lib/app-provider";
+import { useCurrentChain, useMobile } from "lib/app-provider";
 import type {
   HumanAddr,
   PermissionAddresses,
@@ -34,10 +34,18 @@ export const PermissionChip = ({
     instantiatePermission,
     permissionAddresses
   );
-
-  return (
-    <Tooltip label={message}>
-      <Flex onClick={(e) => e.stopPropagation()}>
+  const isMobile = useMobile();
+  return isMobile ? (
+    <Tooltip label={message} placement="top-start">
+      <Flex w="fit-content">
+        <Tag size={tagSize} variant={isAllowed ? "accent-darker" : "gray"}>
+          {instantiatePermission}
+        </Tag>
+      </Flex>
+    </Tooltip>
+  ) : (
+    <Tooltip label={message} placement="top-start">
+      <Flex onClick={(e) => e.stopPropagation()} w="fit-content">
         <Tag size={tagSize} variant={isAllowed ? "accent-darker" : "gray"}>
           {instantiatePermission}
         </Tag>
