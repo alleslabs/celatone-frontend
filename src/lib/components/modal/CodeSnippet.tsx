@@ -55,7 +55,13 @@ const CodeSnippet = ({
   const isDisabled = !contractAddress || !message.length;
   const lcdEndpoint = useLCDEndpoint();
   const rpcEndpoint = useRPCEndpoint();
-  const { currentChainId } = useCelatoneApp();
+  const {
+    currentChainId,
+    chainConfig: {
+      gas: { gasPrice },
+    },
+  } = useCelatoneApp();
+
   const codeSnippets: Record<
     string,
     { name: string; mode: string; snippet: string }[]
@@ -156,7 +162,7 @@ const execute = async () => {
     rpcEndpoint,
     signer,
     {
-      gasPrice: GasPrice.fromString("0.025uosmo"),
+      gasPrice: GasPrice.fromString("${gasPrice.tokenPerGas}${gasPrice.denom}"),
     }
   );
 
