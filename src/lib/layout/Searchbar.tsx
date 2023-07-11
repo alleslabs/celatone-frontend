@@ -337,7 +337,7 @@ const Searchbar = () => {
       </Drawer>
     </>
   ) : (
-    <FormControl ref={boxRef}>
+    <FormControl ref={boxRef} zIndex={3}>
       <InputGroup>
         <Input
           value={keyword}
