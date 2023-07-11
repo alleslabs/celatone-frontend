@@ -13,6 +13,7 @@ import {
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
+import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpTrackToMigrate } from "lib/services/amplitude";
@@ -39,7 +40,7 @@ const Migrate = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const lcdEndpoint = useBaseApiRoute("rest");
-  const { data: uploadAccess } = useUploadAccessParams();
+  const { data: uploadAccess, isFetching } = useUploadAccessParams();
 
   const { address = "" } = useCurrentChain();
 
@@ -135,6 +136,7 @@ const Migrate = () => {
     }
   };
 
+  if (isFetching) return <Loading withBorder={false} />;
   return (
     <WasmPageContainer>
       {firstStep ? (

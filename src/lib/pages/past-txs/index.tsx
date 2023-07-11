@@ -36,7 +36,10 @@ interface PastTxsState {
 
 const PastTxs = () => {
   const router = useRouter();
-  const { address } = useCurrentChain();
+  const {
+    address,
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
 
   const defaultValues: PastTxsState = {
     search: "",
@@ -44,7 +47,7 @@ const PastTxs = () => {
     isSigner: undefined,
   };
 
-  const { watch, setValue } = useForm({
+  const { watch, setValue, reset } = useForm({
     defaultValues,
     mode: "all",
   });
@@ -52,13 +55,13 @@ const PastTxs = () => {
   const pastTxsState = watch();
 
   const { data: accountId } = useAccountId(address as HumanAddr);
-  const { data: countTxs = 0 } = useTxsCountByAddress(
-    undefined,
+  const { data: countTxs = 0 } = useTxsCountByAddress({
+    address: undefined,
     accountId,
-    pastTxsState.search,
-    pastTxsState.filters,
-    pastTxsState.isSigner
-  );
+    search: pastTxsState.search,
+    filters: pastTxsState.filters,
+    isSigner: pastTxsState.isSigner,
+  });
 
   const {
     pagesQuantity,
@@ -122,6 +125,22 @@ const PastTxs = () => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PAST_TXS);
   }, [router.isReady]);
 
+  useEffect(() => {
+    setPageSize(10);
+    setCurrentPage(1);
+  }, [
+    chainId,
+    setCurrentPage,
+    setPageSize,
+    pastTxsState.search,
+    pastTxsState.isSigner,
+    pastTxsState.filters,
+  ]);
+
+  useEffect(() => {
+    reset();
+  }, [chainId, address, reset]);
+
   return (
     <PageContainer>
       <Heading
@@ -150,6 +169,7 @@ const PastTxs = () => {
         </InputGroup>
         <Flex gap={3}>
           <TxRelationSelection
+            value={pastTxsState.isSigner}
             setValue={(value) => {
               resetPagination();
               setValue("isSigner", value);

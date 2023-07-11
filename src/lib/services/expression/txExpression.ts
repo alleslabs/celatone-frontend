@@ -42,7 +42,7 @@ export const useTxExpression = ({
   isSigner,
 }: {
   address?: Option<Addr>;
-  accountId?: Option<number>;
+  accountId?: Option<number | null>;
   search: string;
   filters: TxFilters;
   isSigner: Option<boolean>;
