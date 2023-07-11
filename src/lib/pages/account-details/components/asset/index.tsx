@@ -73,7 +73,11 @@ const AssetCta = ({ walletAddress }: AssetCtaProps) => {
   const totalAsset =
     (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
   return (
-    <Flex>
+    <Flex
+      w={{ base: "full", md: "auto" }}
+      justify="center"
+      mb={{ base: 4, md: 0 }}
+    >
       {totalAsset > 0 && (
         <Button
           variant="ghost-gray"
@@ -169,15 +173,21 @@ export const AssetsSection = ({
       </AssetTitle>
       {isMobileDetail && (
         <>
-          <Flex justify="space-between" width="full" align="center">
+          <Flex
+            justify={{ base: "flex-start", md: "space-between" }}
+            width="full"
+            align={{ base: "start", md: "center" }}
+            direction={{ base: "column", md: "row" }}
+          >
             <Flex gap="50px">{TotalAssetValueInfo}</Flex>
-            <AssetCta walletAddress={walletAddress} />
+            {!isMobile && <AssetCta walletAddress={walletAddress} />}
           </Flex>
           <AssetSectionContent
             supportedAssets={supportedAssets}
             onViewMore={onViewMore}
             error={error}
           />
+          {isMobile && <AssetCta walletAddress={walletAddress} />}
         </>
       )}
       {!isMobile ||

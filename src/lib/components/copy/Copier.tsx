@@ -38,6 +38,7 @@ export const Copier = ({
         name="copy"
         boxSize={3}
         color="gray.600"
+        minH={{ base: 6, md: "auto" }}
       />
     }
   />

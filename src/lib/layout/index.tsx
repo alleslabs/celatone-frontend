@@ -104,19 +104,26 @@ const Layout = ({ children }: LayoutProps) => {
             bg={{ base: "background.main", md: "gray.900" }}
             area="subheader"
             mb="1"
-            overflowY={isMobile ? "visible" : "auto"}
             py={{ base: 2, md: 0 }}
             px={{ base: 4, md: 0 }}
           >
             {mode.subHeader}
           </GridItem>
-          <GridItem bg={{ base: "background.main", md: "gray.900" }} area="nav">
+          <GridItem
+            bg={{ base: "background.main", md: "gray.900" }}
+            area="nav"
+            overflowY="auto"
+          >
             <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
           </GridItem>
         </>
       )}
       <GridItem area="main" overflowX="hidden" id="content">
-        <div style={{ minHeight: `calc(100vh - 129px)` }}>{children}</div>
+        <div
+          style={{ minHeight: `calc(100vh - ${hasSubHeader ? 129 : 66}px)` }}
+        >
+          {children}
+        </div>
         <Footer />
       </GridItem>
     </Grid>

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { TransactionCard } from "lib/components/card/TransactionCard";
+import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -58,6 +59,21 @@ export const TxsTable = ({ isViewMore }: TxsTableProps) => {
         imageVariant="not-found"
         message="There is an error during fetching transactions."
       />
+    );
+  if (isMobile && isLoading)
+    return (
+      <>
+        <Loading />
+        <Pagination
+          currentPage={currentPage}
+          pagesQuantity={pagesQuantity}
+          offset={offset}
+          totalData={countTxs}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      </>
     );
   if (isMobile)
     return (

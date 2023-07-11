@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
+import { useMobile } from "lib/app-provider";
 
 interface EditableCellProps {
   initialValue?: string;
@@ -85,6 +86,7 @@ export const EditableCell = ({
 
   useEffect(() => setInputValue(initialValue), [initialValue]);
 
+  const isMobile = useMobile();
   return (
     <>
       {isEditCellOpen && (
@@ -188,7 +190,7 @@ export const EditableCell = ({
                 {inputValue}
               </Text>
             )}
-            {!!tooltip && (
+            {!isMobile && !!tooltip && (
               <Tooltip label={tooltip}>
                 <p>
                   <CustomIcon

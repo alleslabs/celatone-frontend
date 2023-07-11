@@ -137,6 +137,7 @@ export const NavDrawer = () => {
                         key={chainId}
                         onClick={() => {
                           selectChain(chainId);
+                          onClose();
                         }}
                         flexDirection="column"
                         alignItems="flex-start"

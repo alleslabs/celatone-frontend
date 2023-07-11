@@ -1,4 +1,4 @@
-import { Box, TableContainer } from "@chakra-ui/react";
+import { Box, Flex, TableContainer } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -26,10 +26,17 @@ const DelegationsTableBody = ({
   if (isLoading) return <Loading />;
   if (!delegations?.length)
     return (
-      <EmptyState
-        message="This account did not delegate their assets to any validators."
-        withBorder
-      />
+      <Flex>
+        <TableTitle
+          title="Delegated to"
+          count={delegations?.length ?? 0}
+          mb={2}
+        />
+        <EmptyState
+          message="This account did not delegate their assets to any validators."
+          withBorder
+        />
+      </Flex>
     );
 
   return (

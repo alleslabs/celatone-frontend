@@ -1,13 +1,13 @@
 import { Flex, RadioGroup, Stack } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { UnbondingsTable } from "../tables";
 import type { Delegation, Unbonding } from "lib/pages/account-details/data";
 import { AmpTrackUseRadio } from "lib/services/amplitude";
 import type { Option, TokenWithValue } from "lib/types";
 
 import { DelegationsTab } from "./DelegationsTab";
 import { RadioCard } from "./RadioCard";
+import { UnbondingTab } from "./UnbondingTab";
 
 interface DelegationsBodyProps {
   totalDelegations: Option<Record<string, TokenWithValue>>;
@@ -65,10 +65,7 @@ export const DelegationsBody = ({
           isLoading={isLoadingDelegations}
         />
       ) : (
-        <UnbondingsTable
-          unbondings={unbondings}
-          isLoading={isLoadingUnbondings}
-        />
+        <UnbondingTab unbondings={unbondings} isLoading={isLoadingUnbondings} />
       )}
     </Flex>
   );
