@@ -5,16 +5,16 @@ import type {
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useBaseApiRoute } from "lib/app-provider";
-import type { ValidatorAddr } from "lib/types";
+import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
+import { getValidators } from "lib/query/validator";
+import type { Validator, ValidatorAddr } from "lib/types";
 
-import type { RawValidator } from "./validator";
-import { getValidator, getValidators } from "./validator";
+import { getValidator } from "./validator";
 
 export const useValidator = (
   validatorAddr: ValidatorAddr,
   enabled = true
-): UseQueryResult<RawValidator> => {
+): UseQueryResult<Validator> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const queryFn = async ({ queryKey }: QueryFunctionContext<string[]>) =>
     getValidator(queryKey[2], queryKey[3] as ValidatorAddr);
@@ -30,16 +30,26 @@ export const useValidator = (
   );
 };
 
-export const useValidators = (): UseQueryResult<
-  Record<string, RawValidator>
-> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
-  const queryFn = useCallback(
-    async () => getValidators(lcdEndpoint),
-    [lcdEndpoint]
-  );
+export const useValidators = (): UseQueryResult<Record<string, Validator>> => {
+  const { indexerGraphClient } = useCelatoneApp();
 
-  return useQuery(["query", "validators", lcdEndpoint], queryFn, {
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient.request(getValidators).then(({ validators }) =>
+      validators.reduce<Record<string, Validator>>(
+        (all, validator) => ({
+          ...all,
+          [validator.operator_address]: {
+            validatorAddress: validator.operator_address,
+            moniker: validator.moniker,
+            identity: validator.identity,
+          } as Validator,
+        }),
+        {}
+      )
+    );
+  }, [indexerGraphClient]);
+
+  return useQuery(["query", "validators", indexerGraphClient], queryFn, {
     refetchOnWindowFocus: false,
   });
 };
