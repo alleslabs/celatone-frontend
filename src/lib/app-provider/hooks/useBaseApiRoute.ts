@@ -11,6 +11,7 @@ export const useBaseApiRoute = (
     | "codes"
     | "accounts"
     | "rest"
+    | "native_tokens"
     | "cosmwasm"
 ): string => {
   const {
@@ -42,6 +43,8 @@ export const useBaseApiRoute = (
       return `${api}/accounts/${chain}/${currentChainId}`;
     case "rest":
       return `${api}/rest/${chain}/${currentChainId}`;
+    case "native_tokens":
+      return `${api}/native-assets/${chain}/${currentChainId}`;
     case "cosmwasm":
       return `${api}/cosmwasm/${chain}/${currentChainId}`;
     default:
