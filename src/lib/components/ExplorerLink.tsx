@@ -1,7 +1,7 @@
 import type { BoxProps, TextProps } from "@chakra-ui/react";
 import { Box, Text, Flex } from "@chakra-ui/react";
 
-import type { ExplorerConfig } from "config/types";
+import type { ExplorerConfig } from "config/chain/types";
 import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
