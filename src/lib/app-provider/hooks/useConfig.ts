@@ -1,5 +1,5 @@
 import { useCelatoneApp } from "../contexts";
-import type { ChainConfig } from "config/types";
+import type { ChainConfig } from "config/chain/types";
 
 import { useInternalNavigate } from "./useInternalNavigate";
 

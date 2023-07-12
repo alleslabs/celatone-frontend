@@ -10,7 +10,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
 
-import { CHAIN_CONFIGS } from "config";
+import { CHAIN_CONFIGS } from "config/chain";
 import { AppProvider } from "lib/app-provider/contexts/app";
 import {
   localosmosis,

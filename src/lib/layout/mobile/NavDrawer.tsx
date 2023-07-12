@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 
 import type { MenuInfo } from "../navbar/type";
-import { CHAIN_CONFIGS } from "config";
+import { CHAIN_CONFIGS } from "config/chain";
 import {
   useCelatoneApp,
   usePublicProjectConfig,

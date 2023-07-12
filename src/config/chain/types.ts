@@ -65,14 +65,3 @@ export interface ChainConfig {
 export interface ChainConfigs {
   [chainId: string]: ChainConfig;
 }
-
-export interface ProjectConstants {
-  // wasm
-  maxListNameLength: number;
-  maxContractNameLength: number;
-  maxContractDescriptionLength: number;
-  maxCodeNameLength: number;
-
-  // proposal
-  maxProposalTitleLength: number;
-}

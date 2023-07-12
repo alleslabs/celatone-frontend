@@ -8,7 +8,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-import { CHAIN_CONFIGS } from "config";
+import { CHAIN_CONFIGS } from "config/chain";
 import { CURR_THEME } from "env";
 import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
