@@ -2,13 +2,11 @@ import { Tag, Text, Flex } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { snakeCase } from "snake-case";
 
-import { Copier } from "../copy";
-import { CustomIcon } from "../icon";
-import { Tooltip } from "../Tooltip";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Option } from "lib/types";
-import { formatBalanceWithDenom } from "lib/utils";
+
+import { MsgToken } from "./MsgToken";
 
 interface LinkElement {
   type: LinkType;
@@ -45,40 +43,28 @@ export const SingleMsg = ({
   text3,
   link2,
 }: SingleMsgProps) => {
-  if (!type) return <Text>Message Unavailable</Text>;
+  if (!type)
+    return (
+      <Text variant={{ base: "body2", md: "body1" }}>Message Unavailable</Text>
+    );
   return (
     <Flex gap={1} alignItems="center" flexWrap="wrap">
-      {type} {text1}
+      <Text variant={{ base: "body2", md: "body1" }}>
+        {type} {text1}
+      </Text>
       {tokens?.map((token: Token, index: number) => (
-        <Flex
+        <MsgToken
           key={index.toString() + token}
-          role="group"
-          align="center"
-          gap={1}
-        >
-          <Text fontWeight="medium">
-            {formatBalanceWithDenom({
-              coin: {
-                denom: token.id,
-                amount: token.amount,
-              } as Coin,
-              symbol: token.symbol,
-              precision: token.precision,
-            })}
-          </Text>
-          <Tooltip label={`Token ID: ${token.id}`} maxW="240px">
-            <Flex cursor="pointer">
-              <CustomIcon name="info-circle" boxSize="3" color="pebble.600" />
-            </Flex>
-          </Tooltip>
-          <Copier
-            type={token.symbol ? "supported_asset" : "unsupported_asset"}
-            value={token.id}
-            copyLabel="Token ID Copied!"
-            display="none"
-            ml="4px"
-          />
-        </Flex>
+          coin={
+            {
+              denom: token.id,
+              amount: token.amount,
+            } as Coin
+          }
+          symbol={token.symbol}
+          precision={token.precision}
+          // TODO: add `ampCopierSection` later
+        />
       ))}
       {/* Tags  */}
       {tags?.map((tag: string, index: number) => (
@@ -99,7 +85,7 @@ export const SingleMsg = ({
         </Tag>
       )}
       {/* Text2 */}
-      {text2}
+      <Text variant={{ base: "body2", md: "body1" }}>{text2}</Text>
       {/* Link */}
       {link1 && (
         <ExplorerLink
@@ -112,7 +98,7 @@ export const SingleMsg = ({
         />
       )}
       {/* Text3 */}
-      {text3}
+      <Text variant={{ base: "body2", md: "body1" }}>{text3}</Text>
       {/* Link2 */}
       {link2 && (
         <ExplorerLink

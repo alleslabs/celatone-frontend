@@ -2,10 +2,14 @@ import { Button } from "@chakra-ui/react";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import { useCallback, useState } from "react";
 
-import { useFabricateFee, useResendTx, useSimulateFee } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useResendTx,
+  useSimulateFeeQuery,
+} from "lib/app-provider";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { Message, Msg } from "lib/types";
+import type { Gas, Message, Msg, Option } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
 
 interface ResendButtonProps {
@@ -29,38 +33,45 @@ const formatMsgs = (messages: Message[]) =>
 
 export const ResendButton = ({ messages }: ResendButtonProps) => {
   const fabricateFee = useFabricateFee();
-  const { simulate } = useSimulateFee();
   const resendTx = useResendTx();
   const { broadcast } = useTxBroadcast();
 
   const [isProcessing, setIsProcessing] = useState(false);
+  const composedMsgs = formatMsgs(messages);
 
-  const proceed = useCallback(async () => {
-    AmpTrack(AmpEvent.ACTION_RESEND);
-    const formatedMsgs = formatMsgs(messages);
-    const estimatedGasUsed = await simulate(formatedMsgs);
+  const proceed = useCallback(
+    async (estimatedGasUsed: Option<Gas<number>>) => {
+      AmpTrack(AmpEvent.ACTION_RESEND);
+      const stream = await resendTx({
+        onTxSucceed: () => setIsProcessing(false),
+        onTxFailed: () => setIsProcessing(false),
+        estimatedFee: estimatedGasUsed
+          ? fabricateFee(estimatedGasUsed)
+          : undefined,
+        messages: composedMsgs,
+      });
+      if (stream) broadcast(stream);
+    },
+    [broadcast, composedMsgs, fabricateFee, resendTx]
+  );
 
-    const stream = await resendTx({
-      onTxSucceed: () => setIsProcessing(false),
-      onTxFailed: () => setIsProcessing(false),
-      estimatedFee: estimatedGasUsed
-        ? fabricateFee(estimatedGasUsed)
-        : undefined,
-      messages: formatedMsgs,
-    });
-    if (stream) broadcast(stream);
-  }, [broadcast, fabricateFee, messages, resendTx, simulate]);
+  const { isFetching: isSimulating } = useSimulateFeeQuery({
+    enabled: isProcessing,
+    messages: composedMsgs,
+    onSuccess: (estimatedGasUsed) => proceed(estimatedGasUsed),
+    onError: () => setIsProcessing(false),
+  });
 
   return (
     <Button
-      variant="outline"
+      variant="outline-gray"
       iconSpacing="0"
       size="sm"
       onClick={(e) => {
         e.stopPropagation();
         setIsProcessing(true);
-        proceed();
       }}
+      isLoading={isSimulating}
       isDisabled={isProcessing}
     >
       Resend

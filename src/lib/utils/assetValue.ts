@@ -48,6 +48,7 @@ export const coinToTokenWithValue = (
     symbol: assetInfo?.symbol,
     logo: assetInfo?.logo,
     precision: assetInfo?.precision,
+    price: assetInfo ? (big(assetInfo.price) as USD<Big>) : undefined,
     value: assetInfo
       ? calculateAssetValue(
           toToken(tokenAmount, assetInfo.precision),
@@ -58,13 +59,13 @@ export const coinToTokenWithValue = (
 };
 
 export const addTokenWithValue = (
-  oldTotal: Option<TokenWithValue>,
+  oldToken: Option<TokenWithValue>,
   token: TokenWithValue
 ): TokenWithValue =>
-  !oldTotal
+  !oldToken
     ? token
     : {
-        ...oldTotal,
-        amount: oldTotal.amount.add(token.amount) as U<Token<Big>>,
-        value: oldTotal.value?.add(token.value ?? 0) as USD<Big>,
+        ...oldToken,
+        amount: oldToken.amount.add(token.amount) as U<Token<Big>>,
+        value: oldToken.value?.add(token.value ?? 0) as USD<Big>,
       };

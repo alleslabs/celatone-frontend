@@ -9,7 +9,7 @@ import type { ContractAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
 
 import type { InstantiateTxInfo } from ".";
-import { InstantiateOffChainForm } from "./component/InstantiateOffchainForm";
+import { InstantiateOffChainForm } from "./component";
 
 interface CompletedProps {
   txInfo: InstantiateTxInfo;
@@ -20,7 +20,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
   const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
     <WasmPageContainer>
-      <CustomIcon name="check-circle-solid" color="success.main" boxSize="12" />
+      <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
       <Heading as="h5" variant="h5" mt={3} mb={12}>
         Instantiate Complete!
       </Heading>
@@ -53,7 +53,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
         gap={6}
         w="full"
         borderBottomWidth={1}
-        borderBottomColor="pebble.700"
+        borderBottomColor="gray.700"
         pb={8}
         my={8}
       >

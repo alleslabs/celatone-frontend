@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { ReactElement } from "react";
 
 import type { ImageVariant } from "./StateImage";
@@ -9,6 +9,7 @@ export interface EmptyStateProps {
   message: string | ReactElement;
   heading?: string;
   withBorder?: boolean;
+  my?: number;
 }
 
 export const EmptyState = ({
@@ -16,24 +17,25 @@ export const EmptyState = ({
   imageVariant,
   heading,
   withBorder = false,
+  my = 12,
 }: EmptyStateProps) => (
   <Flex
     py={8}
-    my={12}
+    my={my}
     direction="column"
     borderY={withBorder ? "1px solid" : undefined}
-    borderColor="pebble.700"
+    borderColor="gray.700"
   >
-    <Flex alignItems="center" flexDir="column" gap="4" width="full">
+    <Flex alignItems="center" flexDir="column" gap={4} width="full">
       {imageVariant && <StateImage imageVariant={imageVariant} />}
       {heading && (
         <Heading as="h5" variant="h5">
           {heading}
         </Heading>
       )}
-      <Flex fontSize="16px" color="text.dark">
+      <Text color="text.dark" textAlign="center" whiteSpace="pre-wrap">
         {message}
-      </Flex>
+      </Text>
     </Flex>
   </Flex>
 );

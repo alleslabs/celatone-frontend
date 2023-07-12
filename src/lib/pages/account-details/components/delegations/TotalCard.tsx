@@ -29,11 +29,11 @@ export const TotalCard = ({
     ) : (
       <>
         <Flex alignItems="center" gap={1}>
-          <Text variant="body2" fontWeight="500" textColor="text.dark">
+          <Text variant="body2" fontWeight={500} textColor="text.dark">
             {title}
           </Text>
           <Tooltip label={message}>
-            <InfoIcon color="pebble.600" boxSize={3} cursor="pointer" />
+            <InfoIcon color="gray.600" boxSize={3} cursor="pointer" />
           </Tooltip>
         </Flex>
         {!token ? (
@@ -43,17 +43,16 @@ export const TotalCard = ({
         ) : (
           <Flex alignItems="center" gap={1}>
             <Heading variant="h6" as="h6">
-              {formatUTokenWithPrecision(token.amount, token.precision || 0)}
+              {formatUTokenWithPrecision(token.amount, token.precision ?? 0)}
             </Heading>
             <Text variant="body1" textColor="text.main">
-              {token.symbol ?? getTokenLabel(token.denom)}
+              {getTokenLabel(token.denom, token.symbol)}
             </Text>
             <Image
               boxSize={6}
               src={token.logo}
-              alt={token.symbol ?? getTokenLabel(token.denom)}
+              alt={getTokenLabel(token.denom, token.symbol)}
               fallback={<NAToken />}
-              fallbackStrategy="onError"
             />
           </Flex>
         )}

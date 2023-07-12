@@ -1,6 +1,8 @@
+import { Accordion } from "./accordion";
 import { Alert } from "./alert";
 import { Badge } from "./badge";
 import { Button } from "./button";
+import { Checkbox } from "./checkbox";
 import { Drawer } from "./drawer";
 import { Form } from "./form";
 import { Heading } from "./heading";
@@ -19,6 +21,7 @@ import { Textarea } from "./textarea";
 import { Tooltip } from "./tooltip";
 
 export const components = {
+  Accordion,
   Button,
   Drawer,
   Heading,
@@ -36,6 +39,7 @@ export const components = {
   Textarea,
   Table,
   Switch,
+  Checkbox,
   Spinner,
   Tag,
 };

@@ -58,4 +58,6 @@ export interface ContractData {
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
+  createdHeight: Option<number>;
+  createdTime: Option<Date>;
 }

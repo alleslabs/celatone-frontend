@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp, useLCDEndpoint, useMobile } from "lib/app-provider";
+import { useBaseApiRoute, useCelatoneApp, useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
 import { queryInstantiateInfo } from "lib/services/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
@@ -92,7 +92,9 @@ const ContractDetailsButton = ({
   instantiator,
   label,
 }: ContractDetailsButtonProps) => {
+  const isMobile = useMobile();
   const isExist = !!contractLocalInfo?.lists;
+  if (isMobile) return null;
   return isExist ? (
     <EditContractDetailsModal
       contractLocalInfo={contractLocalInfo}
@@ -134,7 +136,7 @@ export const ContractSelectSection = observer(
     const { getContractLocalInfo } = useContractStore();
     const { indexerGraphClient } = useCelatoneApp();
     const isMobile = useMobile();
-    const endpoint = useLCDEndpoint();
+    const lcdEndpoint = useBaseApiRoute("rest");
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
@@ -154,12 +156,12 @@ export const ContractSelectSection = observer(
       [
         "query",
         "instantiate_info",
-        endpoint,
+        lcdEndpoint,
         indexerGraphClient,
         contractAddress,
       ],
       async () =>
-        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
+        queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
       {
         enabled: false,
         retry: false,
@@ -186,7 +188,7 @@ export const ContractSelectSection = observer(
           label: contractLocalInfo.label,
         });
       }
-    }, [contractAddress, contractLocalInfo, endpoint, reset, refetch]);
+    }, [contractAddress, contractLocalInfo, lcdEndpoint, reset, refetch]);
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;
@@ -196,16 +198,19 @@ export const ContractSelectSection = observer(
       <Flex
         mb={style.container}
         borderWidth="thin"
-        borderColor="pebble.800"
-        p="16px"
+        borderColor="gray.800"
+        p={4}
         borderRadius="8px"
         fontSize="12px"
         justify="space-between"
         align="center"
         width="full"
       >
-        <Flex gap={4} width="100%">
-          <Flex direction="column" width={style.contractAddrContainer}>
+        <Flex gap={4} width="100%" direction={{ base: "column", md: "row" }}>
+          <Flex
+            direction="column"
+            width={{ base: "auto", md: style.contractAddrContainer }}
+          >
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -226,7 +231,10 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex direction="column" width={style.contractNameContainer}>
+          <Flex
+            direction="column"
+            width={{ base: "auto", md: style.contractNameContainer }}
+          >
             Contract Name
             <DisplayName
               notSelected={notSelected}
@@ -235,7 +243,7 @@ export const ContractSelectSection = observer(
               label={contractState.label}
             />
           </Flex>
-          <Flex gap="8px" alignItems="center">
+          <Flex gap={2} alignItems="center">
             {mode === "all-lists" && contractState.isValid && (
               <ContractDetailsButton
                 contractAddress={contractAddress}

@@ -12,14 +12,13 @@ import {
   Button,
   Heading,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useMemo } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
-import { useGetAddressType, getAddressTypeByLength } from "lib/app-provider";
+import { useGetAddressType, useGetAddressTypeByLength } from "lib/app-provider";
 import type { AddressReturnType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { AmpTrackUnsupportedToken } from "lib/services/amplitude";
@@ -55,7 +54,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
   const getAddressType = useGetAddressType();
   // TODO - Move this to utils
   const [tokenLabel, tokenType] = useMemo(() => {
-    const label = getTokenLabel(balance.id);
+    const label = getTokenLabel(balance.id, balance.symbol);
     const type = !balance.id.includes("/")
       ? getTokenTypeWithAddress(balance.type, getAddressType(balance.id))
       : getTokenType(balance.id.split("/")[0]);
@@ -66,7 +65,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
     <Flex
       className="copier-wrapper"
       borderRadius="8px"
-      bg="pebble.800"
+      bg="gray.800"
       direction="column"
       px={4}
       py={3}
@@ -89,7 +88,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
           </Text>
           <Tooltip label={`Token ID: ${balance.id}`} maxW="500px">
             <Flex cursor="pointer" className="info" display="none">
-              <CustomIcon name="info-circle" boxSize="3" color="pebble.600" />
+              <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
             </Flex>
           </Tooltip>
           <Copier
@@ -97,7 +96,7 @@ const UnsupportedToken = ({ balance }: UnsupportedTokenProps) => {
             value={balance.id}
             copyLabel="Token ID Copied!"
             display="none"
-            ml="1px"
+            ml={1}
             amptrackSection="unsupported_token_copy"
           />
         </Flex>
@@ -146,44 +145,45 @@ export const UnsupportedTokensModal = ({
   buttonProps,
   amptrackSection,
 }: UnsupportedTokensModalProps) => {
-  const { currentChainName } = useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const getAddressTypeByLength = useGetAddressTypeByLength();
 
   if (unsupportedAssets.length === 0) return null;
 
-  const addressType = getAddressTypeByLength(currentChainName, address);
+  const addressType = getAddressTypeByLength(address);
   const content = unsupportedTokensContent(addressType);
 
   return (
     <>
-      <Flex
+      <Button
+        variant="ghost-gray"
+        mb={1}
+        size="sm"
+        {...buttonProps}
         onClick={() => {
           AmpTrackUnsupportedToken(amptrackSection);
           onOpen();
         }}
       >
-        <Button variant="ghost-gray" mb={1} size="sm" {...buttonProps}>
-          {`View ${unsupportedAssets.length} Unsupported Assets`}
-        </Button>
-      </Flex>
+        {`View ${unsupportedAssets.length} Unsupported Assets`}
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent w="800px">
           <ModalHeader>
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name={content.icon} boxSize="5" color="pebble.600" />
+              <CustomIcon name={content.icon} boxSize={5} color="gray.600" />
               <Heading variant="h5" as="h5">
                 Unsupported Assets
               </Heading>
             </Flex>
           </ModalHeader>
-
-          <ModalCloseButton color="pebble.600" />
+          <ModalCloseButton color="gray.600" />
           <ModalBody maxH="400px" overflow="overlay" pb={6}>
             <Flex direction="column" gap={5}>
               {address && (
                 <Flex direction="row" gap={4}>
-                  <Text variant="body2" fontWeight="700">
+                  <Text variant="body2" fontWeight={700}>
                     {content.header}
                   </Text>
                   <ExplorerLink value={address} type={addressType} />

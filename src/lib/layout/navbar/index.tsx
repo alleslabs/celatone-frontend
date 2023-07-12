@@ -1,12 +1,16 @@
 import { Flex } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { observer } from "mobx-react-lite";
 
-import { INSTANTIATED_LIST_NAME, getListIcon, SAVED_LIST_NAME } from "lib/data";
+import {
+  usePoolConfig,
+  useCelatoneApp,
+  usePublicProjectConfig,
+} from "lib/app-provider";
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { useContractStore, usePublicProjectStore } from "lib/providers/store";
 import { cmpContractListInfo } from "lib/stores/contract";
-import { formatSlugName } from "lib/utils";
+import { formatSlugName, getListIcon } from "lib/utils";
 
 import { CollapseNavMenu } from "./Collapse";
 import { ExpandNavMenu } from "./Expand";
@@ -19,30 +23,43 @@ interface NavbarProps {
 
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { getContractLists } = useContractStore();
+  const poolConfig = usePoolConfig({ shouldRedirect: false });
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const { currentChainRecord } = useWallet();
+  const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
-
+  const {
+    chainConfig: { hasSubHeader },
+  } = useCelatoneApp();
   const navMenu: MenuInfo[] = [
     {
-      category: "Overview",
+      category: hasSubHeader ? "Your Account" : "Overview",
       submenu: [
-        { name: "Overview", slug: "/", icon: "home" },
+        hasSubHeader
+          ? { name: "Developer Home", slug: "/dev-home", icon: "home" }
+          : { name: "Overview", slug: "/", icon: "home" },
         {
           name: "Past Transactions",
           slug: "/past-txs",
           icon: "history",
         },
-        // {
-        //   name: "Proposals",
-        //   slug: "/proposals",
-        //   icon: "proposal",
-        // },
-        // {
-        //   name: "Osmosis Pools",
-        //   slug: "/pools",
-        //   icon: "pool",
-        // },
+        ...(!hasSubHeader
+          ? [
+              {
+                name: "Proposals",
+                slug: "/proposals",
+                icon: "proposal" as const,
+              },
+            ]
+          : []),
+        ...(poolConfig.enabled
+          ? ([
+              {
+                name: "Osmosis Pools",
+                slug: "/pools",
+                icon: "pool",
+              },
+            ] as const)
+          : []),
       ],
     },
     {
@@ -73,13 +90,18 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     {
       category: "Codes",
       submenu: [
-        { name: "My Codes", slug: "/my-codes", icon: "code" },
         { name: "Recent Codes", slug: "/codes", icon: "website" },
+        { name: "My Codes", slug: "/my-codes", icon: "code" },
       ],
     },
     {
       category: "Contracts",
       submenu: [
+        {
+          name: "Recent Contracts",
+          slug: "/contracts",
+          icon: "website",
+        },
         {
           name: INSTANTIATED_LIST_NAME,
           slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
@@ -108,7 +130,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     },
   ];
 
-  if (currentChainRecord?.chain.network_type === "mainnet") {
+  if (publicProject.enabled) {
     navMenu.push({
       category: "Public Projects",
       submenu: [

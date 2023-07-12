@@ -5,12 +5,12 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
+import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { Pagination } from "lib/components/pagination";
@@ -36,7 +36,10 @@ interface PastTxsState {
 
 const PastTxs = () => {
   const router = useRouter();
-  const { address } = useWallet();
+  const {
+    address,
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
 
   const defaultValues: PastTxsState = {
     search: "",
@@ -44,7 +47,7 @@ const PastTxs = () => {
     isSigner: undefined,
   };
 
-  const { watch, setValue } = useForm({
+  const { watch, setValue, reset } = useForm({
     defaultValues,
     mode: "all",
   });
@@ -52,13 +55,13 @@ const PastTxs = () => {
   const pastTxsState = watch();
 
   const { data: accountId } = useAccountId(address as HumanAddr);
-  const { data: countTxs = 0 } = useTxsCountByAddress(
-    undefined,
+  const { data: countTxs = 0 } = useTxsCountByAddress({
+    address: undefined,
     accountId,
-    pastTxsState.search,
-    pastTxsState.filters,
-    pastTxsState.isSigner
-  );
+    search: pastTxsState.search,
+    filters: pastTxsState.filters,
+    isSigner: pastTxsState.isSigner,
+  });
 
   const {
     pagesQuantity,
@@ -122,6 +125,22 @@ const PastTxs = () => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PAST_TXS);
   }, [router.isReady]);
 
+  useEffect(() => {
+    setPageSize(10);
+    setCurrentPage(1);
+  }, [
+    chainId,
+    setCurrentPage,
+    setPageSize,
+    pastTxsState.search,
+    pastTxsState.isSigner,
+    pastTxsState.filters,
+  ]);
+
+  useEffect(() => {
+    reset();
+  }, [chainId, address, reset]);
+
   return (
     <PageContainer>
       <Heading
@@ -141,15 +160,16 @@ const PastTxs = () => {
               setCurrentPage(1);
               setValue("search", e.target.value);
             }}
-            placeholder="Search with transaction hash or contract address"
+            placeholder="Search with Transaction Hash or Contract Address"
             h="full"
           />
-          <InputRightElement pointerEvents="none" h="full" mr="1">
-            <CustomIcon name="search" color="pebble.600" />
+          <InputRightElement pointerEvents="none" h="full" mr={1}>
+            <CustomIcon name="search" color="gray.600" />
           </InputRightElement>
         </InputGroup>
         <Flex gap={3}>
           <TxRelationSelection
+            value={pastTxsState.isSigner}
             setValue={(value) => {
               resetPagination();
               setValue("isSigner", value);
@@ -168,20 +188,19 @@ const PastTxs = () => {
         transactions={txs}
         isLoading={isLoading}
         emptyState={
-          !pastTxsState.search.trim().length || !filterSelected.length ? (
+          pastTxsState.search.trim().length > 0 ||
+          pastTxsState.isSigner !== undefined ||
+          filterSelected.length > 0 ? (
             <EmptyState
               imageVariant="not-found"
-              message={`
-      No past transaction matches found with your input.
-      You can search with transaction hash, and contract address.
-      `}
+              message="No past transaction matches found with your input. You can search with transaction hash, and contract address."
+              withBorder
             />
           ) : (
             <EmptyState
               imageVariant="empty"
-              message={`
-    Past transactions will display here.
-    `}
+              message="Past transactions will display here."
+              withBorder
             />
           )
         }

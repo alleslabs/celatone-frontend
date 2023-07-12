@@ -35,13 +35,13 @@ export const ViewPermissionAddresses = ({
         ))}
       {permissionAddresses.length > 1 && (
         <Button
-          variant="ghost-lilac"
+          variant="ghost-secondary"
           onClick={() => {
-            AmpTrackExpand(
-              viewAll ? "collapse" : "expand",
-              "permission_address",
-              amptrackSection
-            );
+            AmpTrackExpand({
+              action: viewAll ? "collapse" : "expand",
+              component: "permission_address",
+              section: amptrackSection,
+            });
             setViewAll((prev) => !prev);
           }}
           size="sm"
@@ -50,7 +50,7 @@ export const ViewPermissionAddresses = ({
           rightIcon={
             <CustomIcon
               name={viewAll ? "chevron-up" : "chevron-down"}
-              boxSize="3"
+              boxSize={3}
             />
           }
         >

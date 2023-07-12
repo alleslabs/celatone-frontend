@@ -1,11 +1,16 @@
 import { Box, Flex, Button, ButtonGroup, Text } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 
-import { useFabricateFee, useExecuteContractTx } from "lib/app-provider";
+import {
+  useFabricateFee,
+  useExecuteContractTx,
+  useCurrentChain,
+  useMobile,
+} from "lib/app-provider";
+import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
@@ -28,12 +33,7 @@ import { AmpEvent, AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import {
-  composeMsg,
-  getAttachFunds,
-  jsonPrettify,
-  jsonValidate,
-} from "lib/utils";
+import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -58,11 +58,12 @@ export const ExecuteArea = ({
   initialFunds,
   cmds,
 }: ExecuteAreaProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const executeTx = useExecuteContractTx();
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
+  const getAttachFunds = useAttachFunds();
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(initialMsg);
 
@@ -138,13 +139,12 @@ export const ExecuteArea = ({
     },
   });
 
-  const funds = getAttachFunds({
-    attachFundsOption,
-    assetsJsonStr,
-    assetsSelect,
-  });
-
   const proceed = useCallback(async () => {
+    const funds = getAttachFunds(
+      attachFundsOption,
+      assetsJsonStr,
+      assetsSelect
+    );
     AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await executeTx({
       onTxSucceed: (userKey: string, activity: Activity) => {
@@ -162,12 +162,14 @@ export const ExecuteArea = ({
       broadcast(stream);
     }
   }, [
-    funds,
+    attachFundsOption,
     executeTx,
     fee,
     contractAddress,
     msg,
-    attachFundsOption,
+    getAttachFunds,
+    assetsJsonStr,
+    assetsSelect,
     addActivity,
     broadcast,
   ]);
@@ -181,7 +183,7 @@ export const ExecuteArea = ({
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds,
+        funds: getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect),
       });
 
       const timeoutId = setTimeout(() => {
@@ -195,9 +197,11 @@ export const ExecuteArea = ({
     contractAddress,
     enableExecute,
     msg,
-    funds,
     assetsJsonStr,
     assetsSelectString,
+    getAttachFunds,
+    attachFundsOption,
+    assetsSelect,
   ]);
 
   useEffect(() => {
@@ -213,17 +217,18 @@ export const ExecuteArea = ({
     };
   });
 
+  const isMobile = useMobile();
   return (
     <Box my={4}>
       {contractAddress && (
-        <Text variant="body3" mb="8px">
+        <Text variant="body3" mb={4}>
           Message Suggestions:
         </Text>
       )}
       {cmds.length ? (
         <ButtonGroup
           flexWrap="wrap"
-          rowGap="8px"
+          rowGap={4}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
@@ -244,12 +249,12 @@ export const ExecuteArea = ({
         </ButtonGroup>
       ) : (
         contractAddress && (
-          <Text mt="8px" variant="body2" color="text.dark">
+          <Text mt={2} variant="body2" color="text.dark">
             No ExecuteMsgs suggestion available
           </Text>
         )
       )}
-      <Flex gap="32px" mt={8} direction={{ sm: "column", lg: "row" }}>
+      <Flex gap={8} mt={8} direction={{ sm: "column", lg: "row" }}>
         <Box w={{ sm: "full", lg: "50%" }}>
           <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
           {error && <ErrorMessageRender error={error} mb={4} />}
@@ -290,7 +295,7 @@ export const ExecuteArea = ({
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >
-            Execute (Ctrl + Enter)
+            Execute {!isMobile && "(Ctrl + Enter)"}
           </Button>
         </Flex>
       </Flex>

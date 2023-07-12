@@ -88,17 +88,17 @@ export const CodeSelectDrawerButton = ({
       <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay />
         <DrawerContent h="80%">
-          <DrawerHeader borderBottom="1px solid" borderColor="pebble.700">
-            <CustomIcon name="code" boxSize="6" color="pebble.600" />
+          <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+            <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
               Select Code ID
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody px={0} overflow="scroll">
+          <DrawerBody px={0} overflow="scroll" py={4}>
             <Flex gap={2} px={6} py={2}>
               <InputWithIcon
-                placeholder="Search with code ID or code name"
+                placeholder="Search with Code ID or Code Name"
                 value={keyword}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)
@@ -115,7 +115,7 @@ export const CodeSelectDrawerButton = ({
               />
             </Flex>
             <Tabs px={6}>
-              <TabList borderBottom="1px" borderColor="pebble.800">
+              <TabList borderBottom="1px" borderColor="gray.800">
                 <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
                 <CustomTab count={savedCodesCount}>My Saved Codes </CustomTab>
               </TabList>

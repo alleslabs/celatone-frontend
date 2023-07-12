@@ -46,13 +46,20 @@ const variantStyle: Record<
 };
 
 const ReceiptRow = ({ title, value, html }: TxReceipt) => (
-  <Flex fontSize="14px" w="full">
-    <Text variant="body2">{title}</Text>
+  <Flex
+    fontSize="14px"
+    w="full"
+    gap={title.includes("Event Log") ? 2 : 0}
+    direction={{ base: "column", md: "row" }}
+  >
+    <Text variant="body2" mb={{ base: 1, md: 0 }}>
+      {title}
+    </Text>
     {html || (
       <Text
         variant="body2"
         wordBreak="break-word"
-        color={value === null ? "pebble.600" : "text.main"}
+        color={value === null ? "gray.600" : "text.main"}
       >
         {value === null ? String(value) : value}
       </Text>

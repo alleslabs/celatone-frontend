@@ -19,7 +19,7 @@ export const ConnectWalletButton = ({
     isDisabled={isDisabled}
     onClick={onClickConnectBtn}
     variant={variant}
-    gap="1"
+    gap={1}
   >
     <CustomIcon name="connect" />
     {buttonText || "Connect"}

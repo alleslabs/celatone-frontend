@@ -16,6 +16,7 @@ interface FilterByPermissionProps {
   setPermissionValue: (newVal: PermissionFilterValue) => void;
   initialSelected: string;
   labelBgColor?: string;
+  maxWidth?: string;
 }
 
 const options: PermissionOption[] = [
@@ -43,8 +44,9 @@ export const FilterByPermission = ({
   setPermissionValue,
   initialSelected,
   labelBgColor = "background.main",
+  maxWidth = "360px",
 }: FilterByPermissionProps) => (
-  <Grid columnGap="16px" w="full" mb="16px" maxW="360px">
+  <Grid columnGap={4} w="full" mb={4} maxW={{ md: maxWidth }}>
     <SelectInput<PermissionFilterValue>
       formLabel="Filter by Instantiate Permission"
       options={options}

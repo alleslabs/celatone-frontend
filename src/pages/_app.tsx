@@ -1,5 +1,6 @@
+import type { EndpointOptions } from "@cosmos-kit/core";
 import { wallets } from "@cosmos-kit/keplr";
-import { WalletProvider } from "@cosmos-kit/react";
+import { ChainProvider } from "@cosmos-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { assets, chains } from "chain-registry";
 import localforage from "localforage";
@@ -9,13 +10,13 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
 
-import {
-  CELATONE_CONSTANTS,
-  CELATONE_APP_CONTRACT_ADDRESS,
-  CELATONE_FALLBACK_GAS_PRICE,
-  CELATONE_APP_HUMAN_ADDRESS,
-} from "env";
+import { CHAIN_CONFIGS } from "config";
 import { AppProvider } from "lib/app-provider/contexts/app";
+import {
+  localosmosis,
+  localosmosisAsset,
+} from "lib/chain-registry/localosmosis";
+import { sei, seiAssets } from "lib/chain-registry/sei";
 import { Chakra } from "lib/components/Chakra";
 import { MobileGuard } from "lib/components/MobileGuard";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -40,6 +41,19 @@ configurePersistable({
   stringify: false,
 });
 
+const availableChainsEndpoints = Object.values(CHAIN_CONFIGS).reduce<
+  EndpointOptions["endpoints"]
+>(
+  (endpoints, config) => ({
+    ...endpoints,
+    [config.registryChainName]: {
+      rpc: [config.rpc],
+      rest: [config.lcd],
+    },
+  }),
+  {}
+);
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const queryClient = new QueryClient();
 
@@ -62,36 +76,21 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </Script>
 
       <QueryClientProvider client={queryClient}>
-        <WalletProvider
-          chains={chains}
-          assetLists={assets}
+        <ChainProvider
+          chains={[...chains, localosmosis, sei]}
+          assetLists={[...assets, localosmosisAsset, seiAssets]}
           wallets={wallets}
           endpointOptions={{
-            osmosis: {
-              rpc: ["https://rpc.osmosis.zone/"],
-              rest: ["https://lcd.osmosis.zone/"],
-            },
-            osmosistestnet5: {
-              rpc: ["https://rpc.osmotest5.osmosis.zone/"],
-              rest: ["https://lcd.osmotest5.osmosis.zone/"],
-            },
-            terra2: {
-              rpc: ["https://terra-rpc.lavenderfive.com/"],
-              rest: ["https://phoenix-lcd.terra.dev/"],
-            },
-            terra2testnet: {
-              rpc: ["https://terra-testnet-rpc.polkachu.com/"],
-              rest: ["https://pisco-lcd.terra.dev/"],
-            },
+            isLazy: true,
+            endpoints: availableChainsEndpoints,
           }}
+          signerOptions={{
+            preferredSignType: () => "direct",
+          }}
+          wrappedWithChakra
         >
           <StoreProvider>
-            <AppProvider
-              fallbackGasPrice={CELATONE_FALLBACK_GAS_PRICE}
-              appContractAddressMap={CELATONE_APP_CONTRACT_ADDRESS}
-              appHumanAddressMap={CELATONE_APP_HUMAN_ADDRESS}
-              constants={CELATONE_CONSTANTS}
-            >
+            <AppProvider>
               <TxBroadcastProvider>
                 <Head>
                   <meta
@@ -108,7 +107,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               </TxBroadcastProvider>
             </AppProvider>
           </StoreProvider>
-        </WalletProvider>
+        </ChainProvider>
       </QueryClientProvider>
     </Chakra>
   );

@@ -4,11 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import { ActionModal } from "../ActionModal";
+import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { getMaxListNameLengthError, MAX_LIST_NAME_LENGTH } from "lib/data";
-import { useUserKey } from "lib/hooks";
+import { useGetMaxLengthError, useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { shortenName } from "lib/utils";
@@ -28,6 +28,8 @@ export function CreateNewListModal({
   onCreate,
   onClose,
 }: CreateNewListModalProps) {
+  const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
   const userKey = useUserKey();
   const { createNewList, isContractListExist } = useContractStore();
 
@@ -44,15 +46,21 @@ export function CreateNewListModal({
     const trimedListName = listName.trim();
     if (trimedListName.length === 0) {
       setStatus({ state: "init" });
-    } else if (trimedListName.length > MAX_LIST_NAME_LENGTH)
+    } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
         state: "error",
-        message: getMaxListNameLengthError(trimedListName.length),
+        message: getMaxLengthError(trimedListName.length, "list_name"),
       });
     else if (isContractListExist(userKey, trimedListName))
       setStatus({ state: "error", message: "Already existed" });
     else setStatus({ state: "success" });
-  }, [isContractListExist, listName, userKey]);
+  }, [
+    constants.maxListNameLength,
+    getMaxLengthError,
+    isContractListExist,
+    listName,
+    userKey,
+  ]);
 
   const toast = useToast();
   const handleCreate = useCallback(() => {
@@ -90,7 +98,7 @@ export function CreateNewListModal({
     <ActionModal
       title="Create a New List"
       icon="add-new-solid"
-      trigger={trigger || <Button {...buttonProps} />}
+      trigger={trigger || <Button {...buttonProps} as="button" />}
       mainBtnTitle="Create"
       mainAction={handleCreate}
       disabledMain={status.state !== "success"}
@@ -102,7 +110,7 @@ export function CreateNewListModal({
           variant="floating"
           value={listName}
           setInputState={setListName}
-          labelBgColor="pebble.900"
+          labelBgColor="gray.900"
           status={status}
           label="List Name"
         />

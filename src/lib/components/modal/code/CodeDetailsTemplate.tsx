@@ -2,12 +2,11 @@ import { Flex, Text, useToast } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { useGetAddressType } from "lib/app-provider";
+import { useCelatoneApp, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { PermissionChip } from "lib/components/PermissionChip";
-import { MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { Addr, CodeInfo } from "lib/types";
@@ -29,6 +28,7 @@ export const CodeDetailsTemplateModal = ({
   codeInfo,
   triggerElement,
 }: CodeDetailsTemplateModalProps) => {
+  const { constants } = useCelatoneApp();
   const { saveNewCode, updateCodeInfo } = useCodeStore();
   const toast = useToast();
   const getAddressType = useGetAddressType();
@@ -119,8 +119,8 @@ export const CodeDetailsTemplateModal = ({
         size="lg"
         helperText="Fill in code name to define its use as a reminder"
         label="Code Name"
-        labelBgColor="pebble.900"
-        maxLength={MAX_CODE_NAME_LENGTH}
+        labelBgColor="gray.900"
+        maxLength={constants.maxCodeNameLength}
       />
     </ActionModal>
   );

@@ -8,6 +8,7 @@ import {
   useDisclosure,
   useOutsideClick,
   Flex,
+  Image,
   InputLeftElement,
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
@@ -25,6 +26,8 @@ interface SelectInputProps<T extends string> {
     value: T;
     disabled: boolean;
     icon?: IconKeys;
+    iconColor?: string;
+    image?: string;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
@@ -32,6 +35,7 @@ interface SelectInputProps<T extends string> {
   hasDivider?: boolean;
   helperTextComponent?: ReactNode;
   labelBgColor?: string;
+  size?: string | object;
 }
 
 interface SelectItemProps {
@@ -49,7 +53,7 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
     cursor="pointer"
     gap={2}
     aria-disabled={disabled}
-    _hover={{ bg: "pebble.800" }}
+    _hover={{ bg: "gray.800" }}
     transition="all .25s ease-in-out"
     _disabled={{ opacity: 0.4, pointerEvents: "none" }}
   >
@@ -66,6 +70,7 @@ export const SelectInput = <T extends string>({
   hasDivider = false,
   helperTextComponent,
   labelBgColor = "background.main",
+  size = "lg",
 }: SelectInputProps<T>) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
@@ -97,7 +102,7 @@ export const SelectInput = <T extends string>({
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
-                borderColor: "lilac.main",
+                borderColor: "secondary.main",
               },
             },
             "& .form-label": {
@@ -114,30 +119,38 @@ export const SelectInput = <T extends string>({
           }}
         >
           <div className="form-label">{formLabel}</div>
+          {selectedOption?.image && (
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
+              <Image boxSize={6} src={selectedOption.image} />
+            </InputLeftElement>
+          )}
           {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full" ml="1">
-              <CustomIcon name={selectedOption.icon} color="pebble.600" />
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
+              <CustomIcon
+                name={selectedOption.icon}
+                color={selectedOption.iconColor}
+              />
             </InputLeftElement>
           )}
           <Input
             ref={inputRef}
-            size="lg"
+            size={size}
             textAlign="start"
             type="button"
             value={selected || placeholder}
             fontSize="14px"
             color={selected ? "text.main" : "text.dark"}
-            pl={selectedOption?.icon ? 9 : 4}
+            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
-            <CustomIcon name="chevron-down" color="pebble.600" />
+            <CustomIcon name="chevron-down" color="gray.600" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
         ref={optionRef}
         border="unset"
-        bg="pebble.900"
+        bg="gray.900"
         w={inputRef.current?.clientWidth}
         maxH={`${ITEM_HEIGHT * 4}px`}
         overflow="scroll"
@@ -148,11 +161,11 @@ export const SelectInput = <T extends string>({
         sx={{
           "> div:not(:last-of-type)": {
             borderBottom: hasDivider && "1px solid",
-            borderBottomColor: hasDivider && "pebble.700",
+            borderBottomColor: hasDivider && "gray.700",
           },
         }}
       >
-        {options.map(({ label, value, disabled, icon }) => (
+        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
           <SelectItem
             key={value}
             onSelect={() => {
@@ -162,7 +175,8 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {icon && <CustomIcon name={icon} color="pebble.600" />}
+            {image && <Image boxSize={6} src={image} />}
+            {icon && <CustomIcon name={icon} color={iconColor} />}
             {label}
           </SelectItem>
         ))}
@@ -172,7 +186,7 @@ export const SelectInput = <T extends string>({
             h={`${ITEM_HEIGHT}px`}
             align="center"
             borderTop={!hasDivider ? "1px solid" : "none"}
-            borderTopColor="pebble.700"
+            borderTopColor="gray.700"
           >
             {helperTextComponent}
           </Flex>

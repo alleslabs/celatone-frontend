@@ -11,7 +11,7 @@ interface AccountTableRowProps {
   templateColumns: string;
 }
 
-const getNavigationArgs = (accountInfo: Account): NavigationArgs => {
+export const getNavigationArgs = (accountInfo: Account): NavigationArgs => {
   switch (accountInfo.type) {
     case "account":
       return {
@@ -43,7 +43,7 @@ export const PublicProjectAccountRow = ({
     <Grid
       templateColumns={templateColumns}
       onClick={goToDetail}
-      _hover={{ bg: "pebble.900" }}
+      _hover={{ bg: "gray.900" }}
       transition="all .25s ease-in-out"
       cursor="pointer"
       minW="min-content"

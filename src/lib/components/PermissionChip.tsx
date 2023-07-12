@@ -1,26 +1,33 @@
 import { Flex, Tag } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
-import type { HumanAddr, PermissionAddresses } from "lib/types";
-import { AccessConfigPermission } from "lib/types";
-import { getPermissionHelper } from "lib/utils";
+import { useCurrentChain } from "lib/app-provider";
+import type {
+  HumanAddr,
+  PermissionAddresses,
+  AccessConfigPermission,
+} from "lib/types";
+import { getPermissionHelper, resolvePermission } from "lib/utils";
 
 import { Tooltip } from "./Tooltip";
 
 interface PermissionChipProps {
   instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
+  tagSize?: string;
 }
 
 export const PermissionChip = ({
   instantiatePermission,
   permissionAddresses,
+  tagSize = "md",
 }: PermissionChipProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
 
-  const isAllowed =
-    permissionAddresses.includes(address as HumanAddr) ||
-    instantiatePermission === AccessConfigPermission.EVERYBODY;
+  const isAllowed = resolvePermission(
+    address as HumanAddr,
+    instantiatePermission,
+    permissionAddresses
+  );
 
   const { message } = getPermissionHelper(
     address as HumanAddr,
@@ -30,8 +37,8 @@ export const PermissionChip = ({
 
   return (
     <Tooltip label={message}>
-      <Flex>
-        <Tag size="md" variant={isAllowed ? "honeydew-darker" : "gray"}>
+      <Flex onClick={(e) => e.stopPropagation()} w="fit-content">
+        <Tag size={tagSize} variant={isAllowed ? "accent-darker" : "gray"}>
           {instantiatePermission}
         </Tag>
       </Flex>

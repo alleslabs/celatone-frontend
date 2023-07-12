@@ -15,11 +15,11 @@ const Txs = () => {
 
   return (
     <PageContainer>
-      <Heading variant="h5" as="h5">
+      <Heading variant="h5" as="h5" minH="36px">
         Transactions
       </Heading>
-      <Text variant="body2" color="text.dark" mb={8} mt={1}>
-        This page displays all transactions in this network sorted by recency
+      <Text variant="body2" color="text.dark" mb={8}>
+        This page displays all transactions on this network sorted by recency
       </Text>
       <TxsTable isViewMore={false} />
     </PageContainer>

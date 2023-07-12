@@ -2,7 +2,7 @@ import type { TabProps } from "@chakra-ui/react";
 import { Button, useTab, Badge, useMultiStyleConfig } from "@chakra-ui/react";
 
 interface CustomTabProps extends TabProps {
-  count?: number;
+  count?: number | string;
 }
 
 export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
@@ -16,14 +16,17 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       display="flex"
       alignItems="center"
       fontSize="14px"
-      fontWeight="700"
+      fontWeight={700}
       lineHeight="24px"
       letterSpacing="0.4px"
       variant="ghost-gray"
       mb={0}
       sx={{
         "&[aria-selected=true]": {
-          color: "violet.light",
+          color: "primary.light",
+        },
+        "&[aria-selected=false]": {
+          color: "gray.500",
         },
       }}
       _active={{
@@ -34,7 +37,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       {tabProps.children}
 
       {count !== undefined && (
-        <Badge variant={isSelected ? "violet" : "gray"} ml="6px">
+        <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
           {count}
         </Badge>
       )}

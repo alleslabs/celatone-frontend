@@ -1,13 +1,17 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 import { Tooltip } from "../Tooltip";
-import { useCurrentNetwork, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import { useGovParams } from "lib/services/proposalService";
+import { AccessConfigPermission } from "lib/types";
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
-  const { isTestnet } = useCurrentNetwork();
+  const { data: govParams } = useGovParams();
+  const isPermissionless =
+    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
 
   return (
     <Menu>
@@ -21,7 +25,7 @@ export const NewProposalButton = () => {
       </MenuButton>
       <MenuList>
         <MenuItem
-          icon={<CustomIcon name="code" color="pebble.600" />}
+          icon={<CustomIcon name="code" color="gray.600" />}
           onClick={() => {
             navigate({
               pathname: "/proposals/store-code",
@@ -31,7 +35,7 @@ export const NewProposalButton = () => {
           To Store Code
         </MenuItem>
         {/* <MenuItem
-          icon={<CustomIcon name="contract-address" color="pebble.600"/>}
+          icon={<CustomIcon name="contract-address" color="gray.600"/>}
           onClick={() => {
             navigate({
               pathname: "/proposals/instantiate",
@@ -41,12 +45,15 @@ export const NewProposalButton = () => {
           To Instantiate Contract
         </MenuItem> */}
         <Tooltip
-          label={isTestnet ? "Not available in testnet" : undefined}
-          placement="left"
+          label={
+            isPermissionless
+              ? "Not available in permissionless network"
+              : undefined
+          }
         >
           <MenuItem
-            isDisabled={isTestnet}
-            icon={<CustomIcon name="admin" color="pebble.600" />}
+            isDisabled={isPermissionless}
+            icon={<CustomIcon name="admin" color="gray.600" />}
             onClick={() => {
               navigate({
                 pathname: "/proposals/whitelist",

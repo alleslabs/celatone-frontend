@@ -3,19 +3,24 @@ import type { ColorProps, ComponentStyleConfig } from "@chakra-ui/react";
 const dupStyleKeys = ["title", "container", "description"];
 
 const generateVariantStyle = (
-  variant: "honeydew" | "violet" | "success" | "warning" | "error"
+  variant: "accent" | "primary" | "success" | "warning" | "error" | "info"
 ) => {
   let mainColor: ColorProps["color"];
   let bgColor: ColorProps["color"];
   let borderColor: ColorProps["color"];
 
   switch (variant) {
-    case "violet":
+    case "primary":
       mainColor = `${variant}.light`;
       bgColor = `${variant}.background`;
       borderColor = `${variant}.dark`;
       break;
-    case "honeydew":
+    case "info":
+      mainColor = "gray.400";
+      bgColor = "gray.800";
+      borderColor = "gray.700";
+      break;
+    case "accent":
     case "error":
     default:
       mainColor = `${variant}.main`;
@@ -46,7 +51,7 @@ export const Alert: ComponentStyleConfig = {
       letterSpacing: "0.4px",
     },
     container: {
-      bg: "pebble.800",
+      bg: "gray.800",
       border: "1px solid",
       borderRadius: "8px",
     },
@@ -57,10 +62,11 @@ export const Alert: ComponentStyleConfig = {
     },
   },
   variants: {
-    honeydew: generateVariantStyle("honeydew"),
-    violet: generateVariantStyle("violet"),
+    accent: generateVariantStyle("accent"),
+    primary: generateVariantStyle("primary"),
     success: generateVariantStyle("success"),
     warning: generateVariantStyle("warning"),
     error: generateVariantStyle("error"),
+    info: generateVariantStyle("info"),
   },
 };

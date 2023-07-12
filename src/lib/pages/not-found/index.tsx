@@ -2,6 +2,7 @@ import { Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { CURR_THEME } from "env";
 import { BackButton } from "lib/components/button";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -17,26 +18,25 @@ const NotFoundPage = () => {
       <BackButton />
       <Flex
         borderY="1px solid"
-        borderColor="pebble.700"
+        borderColor="gray.700"
         justify="center"
         align="center"
         direction="column"
         gap={2}
-        py={6}
+        py={12}
         mt={6}
       >
         <Image
-          src="https://assets.alleslabs.dev/illustration/404.svg"
+          src={CURR_THEME.illustration.error}
           alt="page not found"
           width="404px"
         />
-        <Heading variant="h5" as="h5" color="text.dark">
+        <Heading variant="h5" as="h5" color="text.main" mt={8}>
           This page is not found
         </Heading>
         <Text
-          color="text.disabled"
+          color="text.dark"
           variant="body2"
-          fontWeight={500}
           textAlign="center"
           lineHeight="24px"
         >

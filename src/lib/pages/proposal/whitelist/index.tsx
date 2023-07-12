@@ -9,21 +9,22 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
-import big from "big.js";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { AssetBox, Footer } from "../components";
-import { TestnetAlert } from "../components/TestnetAlert";
-import { SIDEBAR_DETAILS } from "../constants";
+import { InitialDeposit } from "../components/InitialDeposit";
+import { PermissionlessAlert } from "../components/PermissionlessAlert";
+import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 import {
-  useCurrentNetwork,
+  useCelatoneApp,
+  useCurrentChain,
   useFabricateFee,
-  useInternalNavigate,
   useSimulateFeeQuery,
-  useSubmitProposalTx,
+  useSubmitWhitelistProposalTx,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
@@ -34,19 +35,19 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
-import {
-  getMaxProposalTitleLengthError,
-  MAX_PROPOSAL_TITLE_LENGTH,
-} from "lib/data/proposalWhitelist";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { useGovParams } from "lib/services/proposalService";
-import type { Addr } from "lib/types";
 import {
-  composeSubmitWhitelistProposalMsg,
-  d2Formatter,
-  formatSeconds,
-} from "lib/utils";
+  AmpEvent,
+  AmpTrack,
+  AmpTrackUseSubmitProposal,
+  AmpTrackUseWhitelistedAddresses,
+  AmpTrackUseDepositFill,
+} from "lib/services/amplitude";
+import { useGovParams } from "lib/services/proposalService";
+import { AccessConfigPermission } from "lib/types";
+import type { Addr } from "lib/types";
+import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
 
 interface WhiteListState {
   title: string;
@@ -62,11 +63,20 @@ const defaultValues: WhiteListState = {
   initialDeposit: { denom: "", amount: "" } as Coin,
 };
 
+const ampPage = "proposal_whitelist";
+
 const ProposalToWhitelist = () => {
-  const { address: walletAddress = "" } = useWallet();
+  useWasmConfig({ shouldRedirect: true });
+  const router = useRouter();
+  const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
+  const { address: walletAddress = "" } = useCurrentChain();
+  const {
+    chainConfig: { prettyName },
+  } = useCelatoneApp();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
-  const submitProposalTx = useSubmitProposalTx();
+  const submitProposalTx = useSubmitWhitelistProposalTx();
   const { broadcast } = useTxBroadcast();
   const {
     control,
@@ -88,9 +98,10 @@ const ProposalToWhitelist = () => {
     control,
     name: "addresses",
   });
-  const { isTestnet } = useCurrentNetwork();
-  const navigate = useInternalNavigate();
 
+  const minDeposit = govParams?.depositParams.minDeposit;
+  const isPermissionless =
+    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
   const enabledTx = useMemo(
@@ -120,18 +131,24 @@ const ProposalToWhitelist = () => {
         description,
         changesValue: JSON.stringify({
           ...govParams?.uploadAccess,
+          permission: !isPermissionless
+            ? AccessConfigPermission.ANY_OF_ADDRESSES
+            : AccessConfigPermission.EVERYBODY,
           addresses: govParams?.uploadAccess.addresses?.concat(addressesArray),
         }),
         initialDeposit,
         proposer: walletAddress as Addr,
+        precision: minDeposit?.precision,
       }),
     [
       addressesArray,
       description,
       govParams?.uploadAccess,
       initialDeposit,
+      minDeposit,
       title,
       walletAddress,
+      isPermissionless,
     ]
   );
 
@@ -149,7 +166,7 @@ const ProposalToWhitelist = () => {
       setEstimatedFee(undefined);
     },
   });
-  const minDeposit = govParams?.depositParams.minDeposit;
+
   const {
     variant,
     description: alertDesc,
@@ -162,39 +179,48 @@ const ProposalToWhitelist = () => {
   );
 
   const proceed = useCallback(async () => {
-    const minDepositAmount = big(minDeposit?.formattedAmount || 0);
     const stream = await submitProposalTx({
       estimatedFee,
       messages: [submitWhitelistProposalMsg],
       whitelistNumber: addressesArray.length,
-      amountToVote: minDepositAmount.lte(initialDeposit.amount)
-        ? null
-        : // TODO: Refactor this logic into utils?
-          `${d2Formatter(
-            minDepositAmount.minus(initialDeposit.amount),
-            "NaN"
-          )} ${minDeposit?.formattedDenom}`,
+      amountToVote: getAmountToVote(initialDeposit, minDeposit),
+
       onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
+    });
+    AmpTrackUseSubmitProposal(ampPage, {
+      initialDeposit: initialDeposit.amount,
+      assetDenom: initialDeposit.denom,
+      minDeposit: minDeposit?.formattedAmount,
+      addressesCount: addresses.length,
     });
     if (stream) {
       setProcessing(true);
       broadcast(stream);
     }
   }, [
-    addressesArray.length,
-    submitWhitelistProposalMsg,
-    estimatedFee,
-    initialDeposit.amount,
+    addresses.length,
     minDeposit,
-    broadcast,
     submitProposalTx,
+    estimatedFee,
+    submitWhitelistProposalMsg,
+    addressesArray.length,
+    initialDeposit,
+    broadcast,
   ]);
 
   useEffect(() => {
-    // remark: disable proposal whitelist and redirect to home page
-    navigate({ pathname: "/" });
-  }, [navigate]);
+    const emptyAddressesLength = addresses.filter(
+      (addr) => addr.address.trim().length === 0
+    ).length;
+    AmpTrackUseWhitelistedAddresses(
+      ampPage,
+      emptyAddressesLength,
+      addresses.length - emptyAddressesLength
+    );
+    // Run this effect only when the amount of address input changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addresses.length]);
 
   useEffect(() => {
     if (minDeposit)
@@ -204,6 +230,12 @@ const ProposalToWhitelist = () => {
       });
   }, [minDeposit, reset]);
 
+  useEffect(() => {
+    if (router.isReady) {
+      AmpTrack(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
+    }
+  }, [router.isReady]);
+
   return (
     <>
       <PageContainer>
@@ -211,9 +243,9 @@ const ProposalToWhitelist = () => {
           templateAreas={`"prespace alert alert postspace" "prespace main sidebar postspace"`}
           templateColumns="1fr 6fr 4fr 1fr"
           sx={
-            isTestnet
+            isPermissionless
               ? {
-                  "> div:not(.testnet-alert)": {
+                  "> div:not(.permissionless-alert)": {
                     opacity: 0.5,
                     pointerEvents: "none",
                   },
@@ -221,9 +253,9 @@ const ProposalToWhitelist = () => {
               : undefined
           }
         >
-          {isTestnet && (
-            <GridItem area="alert" className="testnet-alert" mb={10}>
-              <TestnetAlert />
+          {isPermissionless && (
+            <GridItem area="alert" className="permissionless-alert" mb={10}>
+              <PermissionlessAlert />
             </GridItem>
           )}
           <GridItem area="main">
@@ -237,18 +269,19 @@ const ProposalToWhitelist = () => {
             <ConnectWalletAlert
               subtitle="You need to connect wallet to proceed this action"
               mt={12}
+              page={ampPage}
             />
             <form>
               <Flex
                 mt={12}
                 p={4}
                 gap={6}
-                bgColor="pebble.900"
+                bgColor="gray.900"
                 flexDirection="column"
                 borderRadius="8px"
               >
                 <Flex gap={2} alignItems="center">
-                  <CustomIcon name="proposal-solid" color="pebble.600" />
+                  <CustomIcon name="proposal-solid" color="gray.600" />
                   <Heading as="h6" variant="h6">
                     Fill in Proposal Details
                   </Heading>
@@ -258,15 +291,16 @@ const ProposalToWhitelist = () => {
                   control={control}
                   placeholder="ex. Allow XYZ to store code without proposal"
                   label="Proposal Title"
-                  labelBgColor="pebble.900"
+                  labelBgColor="gray.900"
                   variant="floating"
                   rules={{
                     required: "Proposal Title is required",
-                    maxLength: MAX_PROPOSAL_TITLE_LENGTH,
+                    maxLength: constants.maxProposalTitleLength,
                   }}
                   error={
-                    formErrors.title?.message ||
-                    getMaxProposalTitleLengthError(title.length)
+                    title.length > constants.maxProposalTitleLength
+                      ? getMaxLengthError(title.length, "proposal_title")
+                      : formErrors.title?.message
                   }
                 />
                 <ControllerTextarea
@@ -276,7 +310,7 @@ const ProposalToWhitelist = () => {
                   label="Proposal Description"
                   placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
                   variant="floating"
-                  labelBgColor="pebble.900"
+                  labelBgColor="gray.900"
                   rules={{
                     required: "Proposal Description is required",
                   }}
@@ -350,20 +384,7 @@ const ProposalToWhitelist = () => {
               >
                 Add More Address
               </Button>
-              <Heading as="h6" variant="h6" mt={12}>
-                Initial Deposit
-              </Heading>
-              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start{" "}
-                {formatSeconds(govParams?.depositParams.maxDepositPeriod)}{" "}
-                deposit period: {govParams?.depositParams.minInitialDeposit}{" "}
-                {minDeposit?.formattedDenom}
-              </Text>
-              <Text color="text.dark" mt={2} fontWeight={500} variant="body2">
-                Minimum deposit required to start{" "}
-                {formatSeconds(govParams?.votingParams.votingPeriod)} voting
-                period: {minDeposit?.formattedToken}
-              </Text>
+              <InitialDeposit govParams={govParams} />
               <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                 <AssetBox baseDenom={initialDeposit.denom} />
                 <ControllerInput
@@ -377,13 +398,17 @@ const ProposalToWhitelist = () => {
                     <Text
                       textAlign="right"
                       mr={3}
-                      fontWeight="600"
+                      fontWeight={700}
                       cursor="pointer"
                       variant="body3"
                       minW={16}
-                      color="honeydew.main"
+                      color="accent.main"
                       onClick={() => {
                         if (!minDeposit) return;
+                        AmpTrackUseDepositFill(
+                          ampPage,
+                          minDeposit.formattedAmount
+                        );
                         setValue(
                           "initialDeposit.amount",
                           minDeposit.formattedAmount
@@ -420,7 +445,13 @@ const ProposalToWhitelist = () => {
             </form>
           </GridItem>
           <GridItem area="sidebar">
-            <StickySidebar marginTop="128px" metadata={SIDEBAR_DETAILS} />
+            <StickySidebar
+              marginTop="128px"
+              metadata={SIDEBAR_WHITELIST_DETAILS(
+                prettyName,
+                isPermissionless ? "permissionless" : "permissioned"
+              )}
+            />
           </GridItem>
         </Grid>
       </PageContainer>

@@ -21,7 +21,7 @@ export const CopyButton = ({
   size = "sm",
   copyLabel,
   hasIcon = true,
-  variant = "outline-info",
+  variant = "outline-accent",
   buttonText = "Copy",
   amptrackSection,
   ...buttonProps
@@ -39,7 +39,7 @@ export const CopyButton = ({
         onClick={() =>
           AmpTrack(AmpEvent.USE_COPY_BUTTON, { section: amptrackSection })
         }
-        leftIcon={hasIcon ? <CustomIcon name="copy" boxSize="4" /> : undefined}
+        leftIcon={hasIcon ? <CustomIcon name="copy" boxSize={4} /> : undefined}
         {...buttonProps}
       >
         {buttonText}

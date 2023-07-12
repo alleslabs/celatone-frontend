@@ -16,7 +16,6 @@ interface BookmarkButtonProps {
 }
 
 const buttonTextProps: CSSProperties = {
-  padding: "6px 16px",
   minWidth: "auto",
   height: "auto",
   borderRadius: "8px",
@@ -51,13 +50,15 @@ const StyledButton = ({
     style={hasText ? buttonTextProps : buttonIconProps}
     gap={2}
     onClick={action}
+    padding={{ base: "4px", md: "6px 16px" }}
+    size={{ base: "xs", md: "md" }}
   >
     <CustomIcon
       name={icon}
-      color={icon === "bookmark" ? "pebble.600" : "violet.light"}
+      color={icon === "bookmark" ? "gray.600" : "primary.light"}
     />
     {hasText && (
-      <Text color={icon === "bookmark" ? "text.dark" : "violet.light"}>
+      <Text color={icon === "bookmark" ? "text.dark" : "primary.light"}>
         {actionText}
       </Text>
     )}

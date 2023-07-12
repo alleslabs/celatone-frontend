@@ -1,6 +1,5 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
@@ -11,9 +10,11 @@ import {
   useInternalNavigate,
   useSimulateFeeQuery,
   useUpdateAdminTx,
-  useLCDEndpoint,
   useGetAddressType,
   useValidateAddress,
+  useWasmConfig,
+  useCurrentChain,
+  useBaseApiRoute,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -34,15 +35,17 @@ import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
 
 const UpdateAdmin = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const getAddressType = useGetAddressType();
   const navigate = useInternalNavigate();
   const fabricateFee = useFabricateFee();
   const updateAdminTx = useUpdateAdminTx();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
+
   const { indexerGraphClient } = useCelatoneApp();
 
   const [adminAddress, setAdminAddress] = useState("");
@@ -115,12 +118,16 @@ const UpdateAdmin = () => {
     [
       "query",
       "instantiate_info",
-      endpoint,
+      lcdEndpoint,
       indexerGraphClient,
       contractAddressParam,
     ],
     async () =>
-      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddressParam),
+      queryInstantiateInfo(
+        lcdEndpoint,
+        indexerGraphClient,
+        contractAddressParam
+      ),
     {
       enabled: !!contractAddressParam,
       refetchOnWindowFocus: false,
@@ -187,11 +194,11 @@ const UpdateAdmin = () => {
 
   return (
     <WasmPageContainer>
-      <Heading as="h5" variant="h5" mb="24px">
+      <Heading as="h5" variant="h5" mb={6}>
         Update Admin
       </Heading>
       <ConnectWalletAlert
-        mb="24px"
+        mb={6}
         subtitle="You need to connect your wallet to perform this action"
       />
       <ContractSelectSection
@@ -205,7 +212,6 @@ const UpdateAdmin = () => {
         helperText="This address will be an admin for the deployed smart contract."
         value={adminAddress}
         setInputState={setAdminAddress}
-        mt="48px"
         status={adminFormStatus}
       />
       <Flex
@@ -214,7 +220,7 @@ const UpdateAdmin = () => {
         alignItems="center"
         alignSelf="flex-start"
         gap={1}
-        mt="48px"
+        mt={12}
       >
         <p>Transaction Fee:</p>
         <EstimatedFeeRender estimatedFee={estimatedFee} loading={isFetching} />
@@ -226,11 +232,7 @@ const UpdateAdmin = () => {
           alignSelf="flex-start"
         />
       )}
-      <Button
-        disabled={!estimatedFee || isFetching}
-        onClick={proceed}
-        mt="48px"
-      >
+      <Button disabled={!estimatedFee || isFetching} onClick={proceed} mt={12}>
         Update Admin
       </Button>
     </WasmPageContainer>

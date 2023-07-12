@@ -47,6 +47,45 @@ export const getTxsCountByAddress = graphql(`
   }
 `);
 
+export const getTxsByPoolIdPagination = graphql(`
+  query getTxsByPoolIdPagination(
+    $expression: pool_transactions_bool_exp
+    $offset: Int!
+    $pageSize: Int!
+  ) {
+    pool_transactions(
+      where: $expression
+      order_by: { block_height: desc, transaction_id: desc }
+      offset: $offset
+      limit: $pageSize
+    ) {
+      block {
+        height
+        timestamp
+      }
+      transaction {
+        account {
+          address
+        }
+        hash
+        success
+        messages
+        is_ibc
+      }
+    }
+  }
+`);
+
+export const getTxsCountByPoolId = graphql(`
+  query getTxsCountByPoolId($expression: pool_transactions_bool_exp) {
+    pool_transactions_aggregate(where: $expression) {
+      aggregate {
+        count
+      }
+    }
+  }
+`);
+
 export const getTxs = graphql(`
   query getTxs($offset: Int!, $pageSize: Int!) {
     transactions(
@@ -96,12 +135,16 @@ export const getBlockTransactionsByHeightQueryDocument = graphql(`
       where: { block_height: { _eq: $height } }
       order_by: { id: asc }
     ) {
-      hash
-      success
-      messages
+      block {
+        height
+        timestamp
+      }
       account {
         address
       }
+      hash
+      success
+      messages
       is_clear_admin
       is_execute
       is_ibc

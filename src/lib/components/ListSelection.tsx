@@ -46,7 +46,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       setResult,
       placeholder,
       helperText,
-      labelBgColor = "pebble.900",
+      labelBgColor = "gray.900",
       ...rest
     }: ListSelectionProps,
     ref
@@ -127,14 +127,14 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
             alignItems="center"
             color="text.main"
             border="1px solid"
-            borderColor="pebble.700"
+            borderColor="gray.700"
             background="none"
             borderRadius="8px"
             maxW="100%"
             overflowX="scroll"
           >
             {result.length > 0 && (
-              <Flex alignItems="center" pl="2">
+              <Flex alignItems="center" pl={2}>
                 {[...result].map((option) => (
                   <Flex
                     display="inline-block"
@@ -144,12 +144,12 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <Tag
                       cursor="pointer"
                       whiteSpace="nowrap"
-                      variant="violet-light"
+                      variant="primary-light"
                       gap={1}
                       mr={1}
                     >
                       {option.label}
-                      <CustomIcon name="close" boxSize="3" />
+                      <CustomIcon name="close" boxSize={3} />
                     </Tag>
                   </Flex>
                 ))}
@@ -175,7 +175,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               position="absolute"
               top={0}
               left={0}
-              fontWeight="400"
+              fontWeight={400}
               color="text.dark"
               bgColor={labelBgColor}
               pointerEvents="none"
@@ -194,9 +194,9 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
           {displayOptions && (
             <List
               borderRadius="8px"
-              bg="pebble.800"
-              px="2"
-              py="1"
+              bg="gray.800"
+              px={2}
+              py={1}
               mt={0}
               position="absolute"
               zIndex="2"
@@ -210,7 +210,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                 <ListItem
                   key={option.value}
                   style={listItemProps}
-                  _hover={{ bg: "pebble.700" }}
+                  _hover={{ bg: "gray.700" }}
                   transition="all .25s ease-in-out"
                   onClick={() => selectOptionFromList(option)}
                 >
@@ -221,8 +221,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                         data-label={option.label}
                         mr={2}
                         name="check"
-                        color="pebble.600"
-                        boxSize="3"
+                        color="gray.600"
+                        boxSize={3}
                       />
                     )}
                   </Flex>
@@ -235,13 +235,13 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <ListItem
                       w="full"
                       style={listItemProps}
-                      _hover={{ bg: "pebble.700" }}
+                      _hover={{ bg: "gray.700" }}
                       transition="all .25s ease-in-out"
                       data-testid="create-option"
                       onClick={() => setEnableOutside(false)}
                     >
                       <Flex alignItems="center" gap={2}>
-                        <CustomIcon name="plus" color="text.dark" boxSize="3" />
+                        <CustomIcon name="plus" color="text.dark" boxSize={3} />
                         <Text variant="body2">Create New List </Text>
                       </Flex>
                     </ListItem>

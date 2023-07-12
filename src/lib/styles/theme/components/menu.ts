@@ -9,20 +9,20 @@ const baseStyle = definePartsStyle({
     py: "2",
     borderRadius: "8px",
     border: "none",
-    bg: "pebble.900",
+    bg: "gray.900",
   },
   item: {
     color: "text.main",
     _hover: {
-      bg: "pebble.800",
+      bg: "gray.800",
     },
     _focus: {
-      bg: "pebble.800",
+      bg: "gray.800",
     },
     fontSize: "14px",
   },
   divider: {
-    borderColor: "pebble.700",
+    borderColor: "gray.700",
   },
 });
 

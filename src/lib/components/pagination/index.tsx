@@ -1,14 +1,13 @@
-import { Flex, Select, Text } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo } from "react";
 
-import { CustomIcon } from "../icon";
-import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
 
-import { Next } from "./Next";
+import { PageDetail } from "./PageDetail";
+import { PageGoTo } from "./PageGoTo";
+import { PageList } from "./PageList";
 import { Paginator } from "./Paginator";
-import { Previous } from "./Previous";
 
 interface PaginationProps {
   currentPage: number;
@@ -41,11 +40,12 @@ export const Pagination = ({
     }
   }, [currentPage, pageSize, scrollComponentId]);
 
-  const { offsetData, lastDataInPage } = useMemo(() => {
+  const { offsetData, lastDataInPage, lastPage } = useMemo(() => {
     return {
       offsetData: offset + 1,
       lastDataInPage:
         currentPage !== pagesQuantity ? pageSize * currentPage : totalData,
+      lastPage: Math.ceil(totalData / pageSize),
     };
   }, [currentPage, offset, pageSize, pagesQuantity, totalData]);
 
@@ -55,39 +55,27 @@ export const Pagination = ({
       pagesQuantity={pagesQuantity}
       onPageChange={onPageChange}
     >
-      <Flex align="center" justify="center" w="full" px={4}>
-        <Text variant="body3" color="text.dark">
-          Items per page:
-        </Text>
-        <Select
-          border="none"
-          w="70px"
-          fontSize="12px"
-          focusBorderColor="none"
-          cursor="pointer"
-          value={pageSize}
-          onChange={(e) => {
-            AmpTrack(AmpEvent.USE_PAGINATION_PAGE_SIZE, {
-              pageSize: e.target.value,
-            });
-            onPageSizeChange(e);
-          }}
-        >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <CustomIcon name="chevron-down" color="pebble.600" />
-        </Select>
-        <Text variant="body3" mx="30px">
-          {`${offsetData.toLocaleString()} - ${lastDataInPage.toLocaleString()} of ${totalData.toLocaleString()}`}
-        </Text>
-        <Previous pageSize={pageSize} variant="unstyled" display="flex">
-          <CustomIcon name="chevron-left" color="text.dark" />
-        </Previous>
-        <Next pageSize={pageSize} variant="unstyled" display="flex">
-          <CustomIcon name="chevron-right" color="text.dark" />
-        </Next>
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        gap={{ base: 4, md: 8 }}
+        w="full"
+        pt={6}
+      >
+        <PageDetail
+          pageSize={pageSize}
+          offsetData={offsetData}
+          lastDataInPage={lastDataInPage}
+          totalData={totalData}
+          onPageSizeChange={onPageSizeChange}
+        />
+        <Spacer />
+        <PageList
+          pageSize={pageSize}
+          currentPage={currentPage}
+          lastPage={lastPage}
+          onPageChange={onPageChange}
+        />
+        <PageGoTo lastPage={lastPage} onPageChange={onPageChange} />
       </Flex>
     </Paginator>
   );

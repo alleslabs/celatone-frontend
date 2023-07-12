@@ -41,6 +41,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           <ExplorerLink
             type={addrType}
             value={value}
+            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             maxWidth="full"
@@ -56,6 +57,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             value={value}
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
             maxWidth="full"
             ampCopierSection="tx_page_event_logs"
           />
@@ -68,6 +70,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             value={value}
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
             maxWidth="full"
             ampCopierSection="tx_page_event_logs"
           />
@@ -106,35 +109,30 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
       direction="column"
       borderRadius="8px"
       transition="all .25s ease-in-out"
-      backgroundColor="pebble.900"
-      _hover={{ backgroundColor: "pebble.800" }}
+      backgroundColor="gray.900"
+      _hover={{ backgroundColor: "gray.800" }}
     >
       <Flex
         align="center"
         justify="space-between"
         cursor="pointer"
         onClick={() => {
-          AmpTrackExpand(
-            expand ? "collapse" : "expand",
-            "event_box",
-            "tx_page"
-          );
+          AmpTrackExpand({
+            action: expand ? "collapse" : "expand",
+            component: "event_box",
+            section: "tx_page",
+          });
           setExpand((prev) => !prev);
         }}
         p={4}
       >
         <Flex fontSize="14px" gap={2} fontWeight={500} align="center">
-          <CustomIcon
-            name="contract-list"
-            boxSize={4}
-            color="pebble.600"
-            m={0}
-          />
+          <CustomIcon name="contract-list" boxSize={4} color="gray.600" m={0} />
           {`[${msgIndex}] ${event.type}`}
         </Flex>
         <CustomIcon
           name="chevron-down"
-          color="pebble.600"
+          color="gray.600"
           boxSize={4}
           transform={expand ? "rotate(180deg)" : "rotate(0)"}
           transition="all .25s ease-in-out"
@@ -147,7 +145,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         transition="all .25s ease-in-out"
       >
         <Flex direction="column" p={4} pt={0} ref={measuredRef}>
-          <Box mb={4} h="1px" bgColor="pebble.700" />
+          <Box mb={4} h="1px" bgColor="gray.700" />
           <TxReceiptRender
             keyPrefix={msgIndex.toString() + event.type}
             variant="tx-page"

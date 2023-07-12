@@ -1,4 +1,6 @@
-import type { BlockTransaction, Transaction } from "lib/types";
+import plur from "plur";
+
+import type { Transaction } from "lib/types";
 import { ActionMsgType } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
@@ -7,7 +9,7 @@ import { SingleActionMsg } from "./SingleActionMsg";
 import { SingleMsg } from "./SingleMsg";
 
 interface RenderActionMessagesProps {
-  transaction: Transaction | BlockTransaction;
+  transaction: Transaction;
 }
 
 export const RenderActionMessages = ({
@@ -27,7 +29,7 @@ export const RenderActionMessages = ({
   }
   return (
     <SingleMsg
-      type="Message"
+      type={plur("Message", transaction.messages.length)}
       tags={
         transaction.messages.length === 1
           ? [extractMsgType(transaction.messages[0].type).substring(3)]

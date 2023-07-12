@@ -8,7 +8,7 @@ interface UploadNewCodeProps {
 
 export const UploadNewCode = ({ handleBack }: UploadNewCodeProps) => (
   <>
-    <Heading as="h6" variant="h6" mb="24px">
+    <Heading as="h6" variant="h6" mb={6}>
       Migrate to new code
     </Heading>
     <UploadSection handleBack={handleBack} isMigrate />

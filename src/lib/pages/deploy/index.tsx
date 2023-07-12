@@ -7,11 +7,15 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useCurrentChain,
+  useInternalNavigate,
+  useWasmConfig,
+} from "lib/app-provider";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -24,7 +28,8 @@ import type { HumanAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 const getAlertContent = (
-  enabled: boolean
+  enabled: boolean,
+  chainPrettyName: string
 ): { variant: AlertProps["variant"]; icon: JSX.Element; description: string } =>
   enabled
     ? {
@@ -39,53 +44,59 @@ const getAlertContent = (
         description: "Your address is allowed to directly upload Wasm files",
       }
     : {
-        variant: "violet",
+        variant: "primary",
         icon: (
           <CustomIcon
             name="info-circle-solid"
-            color="violet.light"
+            color="primary.light"
             boxSize={4}
           />
         ),
-        description:
-          "The current network is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.",
+        description: `${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`,
       };
 
 const Deploy = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
+  const {
+    chainConfig: { prettyName: chainPrettyName },
+  } = useCelatoneApp();
   const { data, isFetching } = useUploadAccessParams();
 
   const isPermissionedNetwork =
     data?.permission !== AccessConfigPermission.EVERYBODY;
 
-  const enableUpload = useMemo(() => {
-    if (!isPermissionedNetwork) return true;
-    return Boolean(data?.addresses?.includes(address as HumanAddr));
-  }, [data, address, isPermissionedNetwork]);
+  const enableUpload =
+    !isPermissionedNetwork ||
+    Boolean(data?.addresses?.includes(address as HumanAddr));
+
+  useWasmConfig({ shouldRedirect: true });
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
   }, [router.isReady]);
 
-  if (isFetching) return <Loading />;
+  if (isFetching) return <Loading withBorder={false} />;
 
-  const { variant, icon, description } = getAlertContent(enableUpload);
+  const { variant, icon, description } = getAlertContent(
+    enableUpload,
+    chainPrettyName
+  );
   return (
     <WasmPageContainer>
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
         DEPLOY NEW CONTRACT
       </Text>
       <Stepper mode="deploy" currentStep={1} />
-      <Heading as="h5" variant="h5" my="48px">
+      <Heading as="h5" variant="h5" my={12}>
         Select Deploy Option
       </Heading>
       <ConnectWalletAlert
         subtitle="You need to connect wallet to proceed this action"
         mb={4}
       />
-      {address && (
+      {address && isPermissionedNetwork && (
         <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
           {icon}
           <AlertDescription>{description}</AlertDescription>
@@ -100,15 +111,14 @@ const Deploy = () => {
         }
         disabled={!enableUpload || !address}
         onClick={() => navigate({ pathname: "/upload" })}
-        mb="16px"
+        mb={4}
       />
       <ButtonCard
         title="Use existing Code IDs"
         description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
-        disabled={!address}
       />
-      <Flex justify="center" w="100%" mt="32px">
+      <Flex justify="center" w="100%" mt={8}>
         <Button
           onClick={() => {
             router.back();

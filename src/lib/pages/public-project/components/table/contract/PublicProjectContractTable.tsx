@@ -1,8 +1,10 @@
-import { TableContainer, Grid, Box } from "@chakra-ui/react";
+import { TableContainer, Grid, Box, Flex } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
+import { PublicContractCard } from "lib/components/card/PublicContractCard";
 import { TextInput } from "lib/components/forms";
 import { EmptyState } from "lib/components/state";
 import { TableHeader, TableTitle, ViewMore } from "lib/components/table";
@@ -32,10 +34,40 @@ const ContractTableHeader = () => (
   </Grid>
 );
 
+const ContentRender = ({
+  publicContracts,
+  isMobile,
+}: {
+  publicContracts: PublicContractInfo[];
+  isMobile: boolean;
+}) =>
+  isMobile ? (
+    <Flex direction="column" gap={4} w="full" mt={4}>
+      {publicContracts.map((contract) => (
+        <PublicContractCard
+          publicInfo={contract.publicInfo}
+          key={contract.publicInfo.contractAddress}
+        />
+      ))}
+    </Flex>
+  ) : (
+    <TableContainer>
+      <ContractTableHeader />
+      {publicContracts.map((contract) => (
+        <PublicProjectContractRow
+          key={contract.publicInfo.contractAddress}
+          publicContractInfo={contract}
+          templateColumns={TEMPLATE_COLUMNS}
+        />
+      ))}
+    </TableContainer>
+  );
+
 export const PublicProjectContractTable = observer(
   ({ contracts = [], onViewMore }: PublicProjectContractTableProps) => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const { getContractLocalInfo } = useContractStore();
+    const isMobile = useMobile();
 
     const filteredContracts = useMemo(() => {
       return onViewMore
@@ -60,40 +92,37 @@ export const PublicProjectContractTable = observer(
       }));
 
     return (
-      <Box mt={12} mb={4}>
+      <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
           <TextInput
             variant="floating"
             value={searchKeyword}
             setInputState={setSearchKeyword}
-            placeholder="Search with contract address or contract name"
-            size="lg"
+            placeholder="Search with Contract Address or Contract Name"
+            size={{ base: "md", md: "lg" }}
             mb={6}
           />
         )}
-        {!publicContracts.length ? (
+        {publicContracts.length ? (
+          <ContentRender
+            publicContracts={publicContracts}
+            isMobile={isMobile}
+          />
+        ) : (
           <EmptyState
-            message="There is currently no contracts related to this project."
+            my={4}
+            message={
+              contracts.length
+                ? "No matching contract found for this project. Make sure you are searching with Contract Address or Contract Name"
+                : "There is currently no contracts related to this project."
+            }
             imageVariant={onViewMore && "empty"}
             withBorder
           />
-        ) : (
-          <>
-            <TableContainer>
-              <ContractTableHeader />
-              {publicContracts.map((contract) => (
-                <PublicProjectContractRow
-                  key={contract.publicInfo.contractAddress}
-                  publicContractInfo={contract}
-                  templateColumns={TEMPLATE_COLUMNS}
-                />
-              ))}
-            </TableContainer>
-            {contracts.length > 5 && onViewMore && (
-              <ViewMore onClick={onViewMore} />
-            )}
-          </>
+        )}
+        {contracts.length > 5 && onViewMore && (
+          <ViewMore onClick={onViewMore} />
         )}
       </Box>
     );
