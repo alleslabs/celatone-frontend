@@ -13,12 +13,10 @@ import {
 
 import { useAmplitude } from "../hooks/useAmplitude";
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import {
-  CHAIN_CONFIGS,
-  DEFAULT_CHAIN_CONFIG,
-  PROJECT_CONSTANTS,
-} from "config/chain";
-import type { ChainConfig, ProjectConstants } from "config/chain/types";
+import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
+import type { ChainConfig } from "config/chain";
+import { PROJECT_CONSTANTS } from "config/project";
+import type { ProjectConstants } from "config/project";
 import { SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
