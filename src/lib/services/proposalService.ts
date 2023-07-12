@@ -299,12 +299,13 @@ export interface GovParams {
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
+  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
   const { assetInfos } = useAssetInfos();
   const queryFn = useCallback(
     () =>
       Promise.all([
         fetchGovDepositParams(lcdEndpoint),
-        fetchGovUploadAccessParams(lcdEndpoint),
+        fetchGovUploadAccessParams(cosmwasmEndpoint),
         fetchGovVotingParams(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
@@ -339,7 +340,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [lcdEndpoint, assetInfos]
+    [lcdEndpoint, cosmwasmEndpoint, assetInfos]
   );
 
   return useQuery(["gov_params", lcdEndpoint, assetInfos], queryFn, {
@@ -349,10 +350,10 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
 };
 
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
   return useQuery(
-    ["upload_access", lcdEndpoint],
-    () => fetchGovUploadAccessParams(lcdEndpoint),
+    ["upload_access", cosmwasmEndpoint],
+    () => fetchGovUploadAccessParams(cosmwasmEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
   );
 };

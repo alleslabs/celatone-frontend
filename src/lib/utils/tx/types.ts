@@ -393,13 +393,13 @@ export interface MsgExitPoolDetails extends MsgBaseDetails {
 }
 export interface MsgSwapExactAmountInDetails extends MsgBaseDetails {
   sender: Addr;
-  routes: object;
+  routes: { poolId: number; tokenOutDenom: string }[];
   token_in: Coin;
   token_out_min_amount: string;
 }
 export interface MsgSwapExactAmountOutDetails extends MsgBaseDetails {
   sender: Addr;
-  routes: object;
+  routes: { poolId: number; tokenInDenom: string }[];
   token_in_max_amount: string;
   token_out: Coin;
 }
@@ -448,7 +448,7 @@ export interface MsgAddToGaugeDetails extends MsgBaseDetails {
 // osmosis/lockup
 export interface MsgLockTokensDetails extends MsgBaseDetails {
   owner: Addr;
-  duration: string;
+  duration: string | number;
   coins: Coin[];
 }
 export interface MsgBeginUnlockingAllDetails extends MsgBaseDetails {
@@ -462,7 +462,7 @@ export interface MsgBeginUnlockingDetails extends MsgBaseDetails {
 export interface MsgExtendLockupDetails extends MsgBaseDetails {
   owner: Addr;
   ID: string;
-  duration: string;
+  duration: string | number;
 }
 export interface MsgForceUnlockDetails extends MsgBaseDetails {
   owner: Addr;

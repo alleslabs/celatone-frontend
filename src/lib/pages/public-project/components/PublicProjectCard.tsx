@@ -77,7 +77,7 @@ export const PublicProjectCard = observer(
             </Flex>
             <Text
               ref={ref as React.MutableRefObject<HTMLParagraphElement>}
-              variant="body3"
+              variant="body2"
               color="text.dark"
               pt={3}
             >

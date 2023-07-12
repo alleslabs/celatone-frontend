@@ -13,7 +13,11 @@ import {
 } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useInternalNavigate,
+  useMobile,
+} from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -42,16 +46,19 @@ export interface CTAInfo {
 interface ContractsTableRowCTAProps {
   contractInfo: ContractInfo;
   withCTA?: CTAInfo;
+  showLastUpdate?: boolean;
 }
 
 export const ContractsTableRowCTA = ({
   contractInfo,
   withCTA,
+  showLastUpdate = true,
 }: ContractsTableRowCTAProps) => {
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === contractInfo.admin;
+  const isMobile = useMobile();
   return withCTA ? (
     <>
       <TableRow>
@@ -77,7 +84,6 @@ export const ContractsTableRowCTA = ({
           </AppLink>
         </Flex>
       </TableRow>
-
       <TableRow>
         <Menu>
           <MenuButton
@@ -165,55 +171,58 @@ export const ContractsTableRowCTA = ({
     </>
   ) : (
     <>
-      <TableRow>
-        <Flex
-          direction="column"
-          gap={1}
-          onClick={(e) => e.stopPropagation()}
-          cursor="text"
-        >
-          {contractInfo.latestUpdated ? (
-            <>
-              <Text variant="body2">
-                {formatUTC(contractInfo.latestUpdated)}
+      {showLastUpdate && (
+        <TableRow>
+          <Flex
+            direction="column"
+            gap={1}
+            onClick={(e) => e.stopPropagation()}
+            cursor="text"
+          >
+            {contractInfo.latestUpdated ? (
+              <>
+                <Text variant="body2">
+                  {formatUTC(contractInfo.latestUpdated)}
+                </Text>
+                <Text variant="body3" color="text.dark">
+                  {`(${dateFromNow(contractInfo.latestUpdated)})`}
+                </Text>
+              </>
+            ) : (
+              <Text variant="body2" color="text.dark">
+                N/A
               </Text>
-              <Text variant="body3" color="text.dark">
-                {`(${dateFromNow(contractInfo.latestUpdated)})`}
-              </Text>
-            </>
-          ) : (
-            <Text variant="body2" color="text.dark">
-              N/A
-            </Text>
-          )}
-        </Flex>
-      </TableRow>
-
-      <TableRow>
-        <Box onClick={(e) => e.stopPropagation()}>
-          {contractInfo.lists ? (
-            <AddToOtherListModal
-              contractLocalInfo={contractInfo}
-              triggerElement={
-                <StyledIconButton
-                  icon={<CustomIcon name="bookmark-solid" />}
-                  variant="ghost-primary"
-                />
-              }
-            />
-          ) : (
-            <SaveContractDetailsModal
-              contractLocalInfo={contractInfo}
-              triggerElement={
-                <StyledIconButton
-                  icon={<CustomIcon name="bookmark" />}
-                  variant="ghost-gray"
-                />
-              }
-            />
-          )}
-        </Box>
-      </TableRow>
+            )}
+          </Flex>
+        </TableRow>
+      )}
+      {!isMobile && (
+        <TableRow>
+          <Box onClick={(e) => e.stopPropagation()}>
+            {contractInfo.lists ? (
+              <AddToOtherListModal
+                contractLocalInfo={contractInfo}
+                triggerElement={
+                  <StyledIconButton
+                    icon={<CustomIcon name="bookmark-solid" />}
+                    variant="ghost-primary"
+                  />
+                }
+              />
+            ) : (
+              <SaveContractDetailsModal
+                contractLocalInfo={contractInfo}
+                triggerElement={
+                  <StyledIconButton
+                    icon={<CustomIcon name="bookmark" />}
+                    variant="ghost-gray"
+                  />
+                }
+              />
+            )}
+          </Box>
+        </TableRow>
+      )}
     </>
   );
 };

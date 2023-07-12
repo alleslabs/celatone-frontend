@@ -9,6 +9,7 @@ export * from "./contract";
 export * from "./projects";
 export * from "./addrs";
 export * from "./proposal";
+export * from "./pool";
 export * from "./validator";
 export * from "./upload";
 export * from "./block";

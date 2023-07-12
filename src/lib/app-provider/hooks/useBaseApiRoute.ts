@@ -1,4 +1,5 @@
 import { useCelatoneApp } from "../contexts";
+import { CELATONE_API_OVERRIDE } from "env";
 
 export const useBaseApiRoute = (
   type:
@@ -11,15 +12,20 @@ export const useBaseApiRoute = (
     | "accounts"
     | "rest"
     | "native_tokens"
+    | "cosmwasm"
 ): string => {
   const {
-    chainConfig: { chain, api },
+    chainConfig: { chain, api: configApi },
     currentChainId,
   } = useCelatoneApp();
-  if (!chain || !api || !currentChainId)
+
+  if (!chain || !currentChainId || !configApi)
     throw new Error(
       "Error retrieving chain, api, or currentChainId from chain config."
     );
+
+  const api = CELATONE_API_OVERRIDE || configApi;
+
   switch (type) {
     case "txs":
       return `${api}/txs/${chain}/${currentChainId}`;
@@ -39,6 +45,8 @@ export const useBaseApiRoute = (
       return `${api}/rest/${chain}/${currentChainId}`;
     case "native_tokens":
       return `${api}/native-assets/${chain}/${currentChainId}`;
+    case "cosmwasm":
+      return `${api}/cosmwasm/${chain}/${currentChainId}`;
     default:
       throw new Error(
         "Error retrieving chain, api, or currentChainId from chain config."

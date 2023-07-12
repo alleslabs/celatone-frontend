@@ -23,6 +23,7 @@ interface InstantiateTxParams {
   funds: Coin[];
   client: SigningCosmWasmClient;
   onTxSucceed?: (txInfo: InstantiateResult, contractLabel: string) => void;
+  onTxFailed?: () => void;
 }
 
 export const instantiateContractTx = ({
@@ -35,6 +36,7 @@ export const instantiateContractTx = ({
   funds,
   client,
   onTxSucceed,
+  onTxFailed,
 }: InstantiateTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
@@ -51,5 +53,5 @@ export const instantiateContractTx = ({
       // TODO: this is type hack
       return null as unknown as TxResultRendering;
     }
-  )().pipe(catchTxError());
+  )().pipe(catchTxError(onTxFailed));
 };

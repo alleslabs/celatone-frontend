@@ -132,6 +132,7 @@ const IconLink = ({
   >
     <Flex
       gap={1}
+      mr={{ base: 6, md: 0 }}
       align="center"
       _hover={{
         "& svg": {
@@ -166,37 +167,54 @@ const Footer = () => {
   return isThemed ? (
     <Flex
       as="footer"
-      align="end"
+      direction={{ base: "column", md: "row" }}
+      align={{ base: "center", md: "end" }}
       justifyContent="space-between"
-      px={12}
+      px={{ base: 6, md: 12 }}
       py={6}
-      mx={1}
+      mx={{ md: 1 }}
       background="background.overlay"
     >
-      <Flex direction="column" gap={2}>
-        <Flex direction="row" gap={1} align="center">
+      <Flex direction="column" gap={2} align={{ base: "center", md: "start" }}>
+        <Flex direction={{ base: "column", md: "row" }} gap={1} align="center">
           <Link
             href={CURR_THEME.socialMedia?.website ?? ""}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image src={isThemed.logo} h={8} mr={2} />
+            <Image src={isThemed.logo} h={{ base: 6, md: 8 }} mr={2} />
           </Link>
-          <SocialMenuRender isThemed iconSize={5} />
+          <Flex mt={{ base: 2, md: 0 }}>
+            <SocialMenuRender isThemed iconSize={5} />
+          </Flex>
         </Flex>
-        <Text variant="body3" color="gray.400">
+        <Text
+          variant="body3"
+          color="gray.400"
+          textAlign={{ base: "center", md: "left" }}
+        >
           {isThemed.description}
         </Text>
       </Flex>
-      <Flex align="end" justifyContent="flex-end" gap={1}>
-        <IconLink
-          href="https://celat.one/"
-          icon="celatone"
-          text1="Powered by"
-          text2="Celatone"
-        />
-        <AllesFeedback />
-        <SocialMenuRender iconSize={4} />
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        align={{ base: "center", md: "end" }}
+        justifyContent={{ base: "center", md: "flex-end" }}
+        gap={1}
+        mt={{ base: 6, md: 0 }}
+      >
+        <Flex gap={1}>
+          <IconLink
+            href="https://celat.one/"
+            icon="celatone"
+            text1="Powered by"
+            text2="Celatone"
+          />
+        </Flex>
+        <Flex gap={1}>
+          <AllesFeedback />
+          <SocialMenuRender iconSize={4} />
+        </Flex>
       </Flex>
     </Flex>
   ) : (
@@ -207,8 +225,9 @@ const Footer = () => {
       px={12}
       py={4}
       mx={1}
+      direction={{ base: "column", md: "row" }}
     >
-      <Flex direction="row" gap={1} align="center">
+      <Flex direction="row" gap={1} align="center" mb={{ base: 2, md: 0 }}>
         <SocialMenuRender iconSize={5} />
         <AllesFeedback />
       </Flex>

@@ -10,6 +10,11 @@ export type Token<T = string> = T & NominalType<string>;
 
 export type USD<T = string> = T & NominalType<"usd">;
 
+// Percentage
+export type Ratio<T = string> = T & NominalType<"ratio">;
+
+export type Percent<T = string> = T & NominalType<"percent">;
+
 export interface ChainGasPrice {
   denom: string;
   gasPrice: U<Token>;

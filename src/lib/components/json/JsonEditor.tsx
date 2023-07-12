@@ -35,7 +35,6 @@ const JsonEditor = ({
       readOnly={readOnly}
       style={{
         width: "100%",
-        height: "100%",
         background: "transparent",
         color: readOnly && !isValid ? "error.light" : "text.main",
         offset: 0,
