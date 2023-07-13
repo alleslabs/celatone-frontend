@@ -6,7 +6,7 @@ import { exponentify } from "./formatter";
 
 export const sortDenoms = (assets: Coin[]): Coin[] =>
   assets.sort(({ denom: aDenom }, { denom: bDenom }) =>
-    aDenom.localeCompare(bDenom)
+    aDenom.localeCompare(bDenom, undefined, { sensitivity: "base" })
   );
 
 interface CoinWithPrecision extends Coin {
