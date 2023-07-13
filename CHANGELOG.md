@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 ### Improvements
+
 - [#414](https://github.com/alleslabs/celatone-frontend/pull/414) Add jest test cases for funds and assetValue in utils, and remove isDecimalNumber in utils
 - [#435](https://github.com/alleslabs/celatone-frontend/pull/435) Refactor chain's config, add new chain configs
 
