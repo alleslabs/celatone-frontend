@@ -13,6 +13,8 @@ const documents = {
     types.GetBlockDetailsByHeightDocument,
   "\n  query getLatestBlockInfo {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n      timestamp\n    }\n  }\n":
     types.GetLatestBlockInfoDocument,
+  "\n  query getBlockTime {\n    hundred: blocks(order_by: { height: desc }, offset: 100, limit: 1) {\n      height\n      timestamp\n    }\n    latest: blocks(order_by: { height: desc }, limit: 1) {\n      height\n      timestamp\n    }\n  }\n":
+    types.GetBlockTimeDocument,
   "\n  query getCodeListQuery {\n    codes(limit: 100, offset: 0, order_by: { id: desc }) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n":
     types.GetCodeListQueryDocument,
   "\n  query getCodeListByUserQuery($walletAddr: String!) {\n    codes(\n      where: { account: { address: { _eq: $walletAddr } } }\n      limit: 100\n      offset: 0\n      order_by: { id: desc }\n    ) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n":
@@ -93,6 +95,8 @@ const documents = {
     types.GetBlockTransactionsByHeightQueryDocument,
   "\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n":
     types.GetBlockTransactionCountByHeightQueryDocument,
+  "\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      min_self_delegation\n      moniker\n      operator_address\n      website\n    }\n  }\n":
+    types.GetValidatorsDocument,
 };
 
 export function graphql(
@@ -110,6 +114,9 @@ export function graphql(
 export function graphql(
   source: "\n  query getLatestBlockInfo {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n      timestamp\n    }\n  }\n"
 ): typeof documents["\n  query getLatestBlockInfo {\n    blocks(limit: 1, order_by: { height: desc }) {\n      height\n      timestamp\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getBlockTime {\n    hundred: blocks(order_by: { height: desc }, offset: 100, limit: 1) {\n      height\n      timestamp\n    }\n    latest: blocks(order_by: { height: desc }, limit: 1) {\n      height\n      timestamp\n    }\n  }\n"
+): typeof documents["\n  query getBlockTime {\n    hundred: blocks(order_by: { height: desc }, offset: 100, limit: 1) {\n      height\n      timestamp\n    }\n    latest: blocks(order_by: { height: desc }, limit: 1) {\n      height\n      timestamp\n    }\n  }\n"];
 export function graphql(
   source: "\n  query getCodeListQuery {\n    codes(limit: 100, offset: 0, order_by: { id: desc }) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n"
 ): typeof documents["\n  query getCodeListQuery {\n    codes(limit: 100, offset: 0, order_by: { id: desc }) {\n      id\n      contracts_aggregate {\n        aggregate {\n          count\n        }\n      }\n      account {\n        uploader: address\n      }\n      access_config_permission\n      access_config_addresses\n      cw2_contract\n      cw2_version\n    }\n  }\n"];
@@ -230,6 +237,9 @@ export function graphql(
 export function graphql(
   source: "\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"
 ): typeof documents["\n  query getBlockTransactionCountByHeightQuery($height: Int!) {\n    transactions_aggregate(where: { block_height: { _eq: $height } }) {\n      aggregate {\n        count\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      min_self_delegation\n      moniker\n      operator_address\n      website\n    }\n  }\n"
+): typeof documents["\n  query getValidators {\n    validators {\n      commission_max_change\n      commission_max_rate\n      commission_rate\n      consensus_address\n      details\n      identity\n      jailed\n      min_self_delegation\n      moniker\n      operator_address\n      website\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
 export function graphql(source: string) {

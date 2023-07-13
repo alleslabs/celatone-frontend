@@ -36,7 +36,10 @@ export const TokenSection = ({ balances, amptrackPage }: TokenSectionProps) => {
     }
     return (
       <>
-        <Grid gridGap={4} gridTemplateColumns="repeat(4, 1fr)">
+        <Grid
+          gridGap={4}
+          gridTemplateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
+        >
           {supportedAssets.map((balance, index) => {
             if (!showMore && index >= 4) {
               return null;
@@ -58,8 +61,8 @@ export const TokenSection = ({ balances, amptrackPage }: TokenSectionProps) => {
 
   return (
     <>
-      <Flex justify="space-between">
-        <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
+      <Flex justify="space-between" align="center" mb={{ base: 2, md: 1 }}>
+        <Text variant="body2" color="text.dark" fontWeight={500}>
           Assets
         </Text>
         <UnsupportedTokensModal

@@ -59,19 +59,9 @@ export interface ChainConfig {
     contract: ContractAddr;
   };
   explorerLink: ExplorerConfig;
+  hasSubHeader: boolean;
 }
 
 export interface ChainConfigs {
   [chainId: string]: ChainConfig;
-}
-
-export interface ProjectConstants {
-  // wasm
-  maxListNameLength: number;
-  maxContractNameLength: number;
-  maxContractDescriptionLength: number;
-  maxCodeNameLength: number;
-
-  // proposal
-  maxProposalTitleLength: number;
 }

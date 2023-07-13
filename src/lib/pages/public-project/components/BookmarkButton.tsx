@@ -16,7 +16,6 @@ interface BookmarkButtonProps {
 }
 
 const buttonTextProps: CSSProperties = {
-  padding: "6px 16px",
   minWidth: "auto",
   height: "auto",
   borderRadius: "8px",
@@ -51,6 +50,8 @@ const StyledButton = ({
     style={hasText ? buttonTextProps : buttonIconProps}
     gap={2}
     onClick={action}
+    padding={{ base: "4px", md: "6px 16px" }}
+    size={{ base: "xs", md: "md" }}
   >
     <CustomIcon
       name={icon}

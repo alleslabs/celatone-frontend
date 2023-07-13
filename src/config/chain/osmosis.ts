@@ -1,49 +1,8 @@
 import type { ContractAddr, HumanAddr, ValidatorAddr } from "lib/types";
 
-import type { ChainConfig, ChainConfigs, ProjectConstants } from "./types";
+import type { ChainConfigs } from "./types";
 
-export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
-  chain: "",
-  registryChainName: "",
-  prettyName: "",
-  lcd: "",
-  rpc: "",
-  indexer: "",
-  api: "",
-  features: {
-    faucet: {
-      enabled: false,
-    },
-    wasm: {
-      enabled: false,
-    },
-    pool: {
-      enabled: false,
-    },
-    publicProject: {
-      enabled: false,
-    },
-  },
-  gas: {
-    gasPrice: {
-      tokenPerGas: 0,
-      denom: "",
-    },
-    gasAdjustment: 1.0,
-    maxGasLimit: 0,
-  },
-  exampleAddresses: {
-    user: "" as HumanAddr,
-    contract: "" as ContractAddr,
-    validator: "" as ValidatorAddr,
-  },
-  explorerLink: {
-    validator: "",
-    proposal: "",
-  },
-};
-
-export const CHAIN_CONFIGS: ChainConfigs = {
+export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
   "osmosis-1": {
     chain: "osmosis",
     registryChainName: "osmosis",
@@ -88,6 +47,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/osmosis/validators",
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
+    hasSubHeader: false,
   },
   "osmo-test-5": {
     chain: "osmosis",
@@ -134,6 +94,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
+    hasSubHeader: false,
   },
   localosmosis: {
     chain: "osmosis",
@@ -179,13 +140,6 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       validator: "",
       proposal: "",
     },
+    hasSubHeader: false,
   },
-};
-
-export const PROJECT_CONSTANTS: ProjectConstants = {
-  maxListNameLength: 50,
-  maxContractNameLength: 50,
-  maxContractDescriptionLength: 250,
-  maxCodeNameLength: 50,
-  maxProposalTitleLength: 255,
 };

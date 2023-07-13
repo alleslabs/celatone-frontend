@@ -1,14 +1,15 @@
-import { Alert, AlertDescription, Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 
-import { ErrorFetching } from "../ErrorFetching";
-import { CustomIcon } from "lib/components/icon";
+import { ErrorFetching } from "../../ErrorFetching";
+import { MobileTitle } from "../../mobile/MobileTitle";
+import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import type { EmptyStateProps } from "lib/components/state";
 import { EmptyState } from "lib/components/state";
-import { TableTitle, TransactionsTable, ViewMore } from "lib/components/table";
+import { TableTitle, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
@@ -16,11 +17,14 @@ import {
   useTxsByAddressPagination,
   useTxsCountByAddress,
 } from "lib/services/txService";
-import type { HumanAddr, Option, Transaction, TxFilters } from "lib/types";
+import type { Option, Transaction, TxFilters } from "lib/types";
+
+import { TxsAlert } from "./TxsAlert";
+import { TxsBody } from "./TxsBody";
+import { TxsTop } from "./TxsTop";
 
 interface TxsTableProps {
-  walletAddress: HumanAddr;
-  accountId?: Option<number>;
+  accountId?: Option<number | null>;
   scrollComponentId: string;
   onViewMore?: () => void;
 }
@@ -42,21 +46,49 @@ const getEmptyStateProps = (
   };
 };
 
+const TxTitle = ({
+  onViewMore,
+  txsCount,
+}: {
+  onViewMore: TxsTableProps["onViewMore"];
+  txsCount: Option<number>;
+}) => {
+  const isMobile = useMobile();
+
+  if (isMobile && onViewMore)
+    return (
+      <MobileTitle
+        title="Transactions"
+        count={txsCount}
+        onViewMore={onViewMore}
+      />
+    );
+  return <TableTitle title="Transactions" count={txsCount} mb={0} />;
+};
 export const TxsTable = ({
-  walletAddress,
   accountId,
   scrollComponentId,
   onViewMore,
 }: TxsTableProps) => {
+  const {
+    chain: { chain_id: chainId },
+  } = useCurrentChain();
   const [isSigner, setIsSigner] = useState<Option<boolean>>();
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
+  const isMobile = useMobile();
 
   const {
     data: txsCount,
     refetch: refetchTxsCount,
     isLoading: txsCountLoading,
     failureReason,
-  } = useTxsCountByAddress(walletAddress, accountId, "", filters, isSigner);
+  } = useTxsCountByAddress({
+    address: undefined,
+    accountId,
+    search: "",
+    filters,
+    isSigner,
+  });
 
   const {
     pagesQuantity,
@@ -114,49 +146,42 @@ export const TxsTable = ({
     if (failureReason) setPageSize(50);
   }, [failureReason, setPageSize]);
 
+  useEffect(() => {
+    setIsSigner(undefined);
+    setFilters(DEFAULT_TX_FILTERS);
+  }, [chainId]);
+
   return (
-    <Box mt={8}>
-      <Flex direction="row" justify="space-between" alignItems="center">
-        <TableTitle
-          title="Transactions"
-          count={txsCount === undefined ? "N/A" : txsCount}
-          mb={2}
-        />
-        {!onViewMore && (
-          <Flex gap={4}>
-            <TxRelationSelection
-              setValue={(value: Option<boolean>) => {
-                resetPagination();
-                setIsSigner(value);
-              }}
-              w="200px"
-            />
-            <TxFilterSelection
-              result={filterSelected}
-              setResult={handleSetFilters}
-              boxWidth="285px"
-              placeholder="All"
-            />
-          </Flex>
-        )}
-      </Flex>
-      {Boolean(failureReason) && transactions?.length && (
-        <Alert my={6} variant="error" gap={4}>
-          <CustomIcon
-            name="alert-circle-solid"
-            boxSize={4}
-            color="error.main"
+    <Box mt={{ base: 4, md: 8 }}>
+      <TxsTop
+        title={<TxTitle onViewMore={onViewMore} txsCount={txsCount} />}
+        onViewMore={onViewMore}
+        relationSelection={
+          <TxRelationSelection
+            value={isSigner}
+            setValue={(value: Option<boolean>) => {
+              resetPagination();
+              setIsSigner(value);
+            }}
+            w={{ base: "full", md: "200px" }}
+            size={{ base: "md", md: "lg" }}
           />
-          <AlertDescription>
-            This account has a high volume of transactions. Kindly note that{" "}
-            <span style={{ fontWeight: 700 }}>
-              we are only able to display up to 50 recent filtered transactions
-            </span>{" "}
-            at the time due to the large number of transactions.
-          </AlertDescription>
-        </Alert>
+        }
+        txTypeSelection={
+          <TxFilterSelection
+            result={filterSelected}
+            setResult={handleSetFilters}
+            boxWidth={{ base: "full", md: "285px" }}
+            placeholder="All"
+            size={{ base: "md", md: "lg" }}
+            tagSize={{ base: "sm", md: "md" }}
+          />
+        }
+      />
+      {Boolean(failureReason) && Number(transactions?.length) > 0 && (
+        <TxsAlert />
       )}
-      <TransactionsTable
+      <TxsBody
         transactions={transactions}
         isLoading={isLoading || txsCountLoading}
         emptyState={
@@ -166,13 +191,13 @@ export const TxsTable = ({
           />
         }
         showRelations
+        onViewMore={onViewMore}
       />
       {Boolean(transactions?.length) &&
         (onViewMore
           ? !txsCountLoading &&
-            (txsCount === undefined || txsCount > 5) && (
-              <ViewMore onClick={onViewMore} />
-            )
+            (txsCount === undefined || txsCount > 5) &&
+            !isMobile && <ViewMore onClick={onViewMore} />
           : txsCount &&
             txsCount > 10 && (
               <Pagination

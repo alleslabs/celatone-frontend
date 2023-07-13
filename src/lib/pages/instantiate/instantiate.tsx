@@ -16,6 +16,7 @@ import {
   useCurrentChain,
   useBaseApiRoute,
 } from "lib/app-provider";
+import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -40,13 +41,7 @@ import {
 import { getCodeIdInfo } from "lib/services/code";
 import type { ComposedMsg, HumanAddr } from "lib/types";
 import { AccessConfigPermission, MsgType } from "lib/types";
-import {
-  composeMsg,
-  getAttachFunds,
-  jsonPrettify,
-  jsonValidate,
-  libDecode,
-} from "lib/utils";
+import { composeMsg, jsonPrettify, jsonValidate, libDecode } from "lib/utils";
 
 import { Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
@@ -81,6 +76,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const getAttachFunds = useAttachFunds();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -123,6 +119,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
+  const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
   const enableInstantiate = useMemo(
     () =>
       !!address &&
@@ -131,12 +128,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       status.state === "success",
     [address, codeId.length, initMsg, status.state]
   );
-
-  const funds = getAttachFunds({
-    attachFundsOption,
-    assetsJsonStr,
-    assetsSelect,
-  });
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
@@ -205,16 +196,16 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       broadcast(stream);
     }
   }, [
-    adminAddress,
-    attachFundsOption,
-    broadcast,
-    codeId,
-    estimatedFee,
     funds,
+    attachFundsOption,
+    postInstantiateTx,
+    codeId,
     initMsg,
     label,
+    adminAddress,
+    estimatedFee,
     onComplete,
-    postInstantiateTx,
+    broadcast,
   ]);
 
   // ------------------------------------------//

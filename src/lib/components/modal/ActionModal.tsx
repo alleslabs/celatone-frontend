@@ -72,7 +72,8 @@ export function ActionModal({
   return (
     <>
       <Flex
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           AmpTrackUseOtherModal(title);
           onOpen();
         }}
@@ -94,7 +95,7 @@ export function ActionModal({
             <Box w="full">
               <Flex alignItems="center" gap={3}>
                 <CustomIcon name={icon} color={iconColor} boxSize={5} />
-                <Heading as="h5" variant="h5">
+                <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
                   {title}
                 </Heading>
               </Flex>

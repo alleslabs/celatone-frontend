@@ -102,7 +102,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
               Collect
             </CustomTab>
           )}
-          {pool.type === PoolType.CL && (
+          {(pool.type === PoolType.CL || pool.type === PoolType.BALANCER) && (
             <CustomTab
               count={countDisplayMigrateTxs}
               onClick={() => AmpTrackUseTab("Migrate")}
@@ -175,7 +175,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
               />
             </TabPanel>
           )}
-          {pool.type === PoolType.CL && (
+          {(pool.type === PoolType.CL || pool.type === PoolType.BALANCER) && (
             <TabPanel p={0}>
               <PoolRelatedTxsTable
                 pool={pool}

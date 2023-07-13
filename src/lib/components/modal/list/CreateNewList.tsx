@@ -98,7 +98,7 @@ export function CreateNewListModal({
     <ActionModal
       title="Create a New List"
       icon="add-new-solid"
-      trigger={trigger || <Button {...buttonProps} />}
+      trigger={trigger || <Button {...buttonProps} as="button" />}
       mainBtnTitle="Create"
       mainAction={handleCreate}
       disabledMain={status.state !== "success"}

@@ -39,6 +39,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+- [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Add new Osmosis v16 tx messages
+- [#414](https://github.com/alleslabs/celatone-frontend/pull/414) Add jest test cases for funds and assetValue in utils, and remove isDecimalNumber in utils
+- [#435](https://github.com/alleslabs/celatone-frontend/pull/435) Refactor chain's config, add new chain configs
+
+### Bug fixes
+
+## v1.1.0
+
+### Features
+
 - [#397](https://github.com/alleslabs/celatone-frontend/pull/397) Implement first version of Osmosis v16 pool
 - [#358](https://github.com/alleslabs/celatone-frontend/pull/358) Add Amp for Pool Detail page
 - [#355](https://github.com/alleslabs/celatone-frontend/pull/355) Add Amp for Pool List page
@@ -68,7 +80,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Add new Osmosis v16 tx messages
+- [#428](https://github.com/alleslabs/celatone-frontend/pull/428) Get all validators from graphql
+- [#417](https://github.com/alleslabs/celatone-frontend/pull/417) Support responsive and add new theme
 - [#283](https://github.com/alleslabs/celatone-frontend/pull/283) Change unsupported token icon render logic
 - [#420](https://github.com/alleslabs/celatone-frontend/pull/420) Unify create proposal page layout
 - [#416](https://github.com/alleslabs/celatone-frontend/pull/416) Remove the old redundant useSimulateFee hook
@@ -102,6 +115,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#410](https://github.com/alleslabs/celatone-frontend/pull/410) Remove hardcode precision in attach funds dropdown selection and get assets from API, delete microfy and demicrofy function, remove useChainRecordAsset
+- [#434](https://github.com/alleslabs/celatone-frontend/pull/434) Fix stepper item bg color
+- [#429](https://github.com/alleslabs/celatone-frontend/pull/429) Fix duration formatter, type and add migrate tab to balancer pool
+- [#427](https://github.com/alleslabs/celatone-frontend/pull/427) Fix upload access endpoint, Public project searchbar bug, account tx bug
+- [#425](https://github.com/alleslabs/celatone-frontend/pull/425) Fix reset past tx filter state and permission alert on migration page
 - [#365](https://github.com/alleslabs/celatone-frontend/pull/365) Fix pool page UI including helper text gap, icon alignment in pool asset table, empty state border, add message type, input selection icon, and accordion alignment
 - [#362](https://github.com/alleslabs/celatone-frontend/pull/362) Fix missed out hard-coded osmosis testnet 4 in code
 - [#361](https://github.com/alleslabs/celatone-frontend/pull/361) Fix incorrect assigned message index for each pool message in pool tx tables
