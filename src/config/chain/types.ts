@@ -59,7 +59,6 @@ export interface ChainConfig {
     contract: ContractAddr;
   };
   explorerLink: ExplorerConfig;
-  hasSubHeader: boolean;
 }
 
 export interface ChainConfigs {

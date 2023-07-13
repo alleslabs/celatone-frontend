@@ -46,7 +46,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       validator: "",
       proposal: "",
     },
-    hasSubHeader: true,
   },
   "atlantic-2": {
     chain: "sei",
@@ -91,6 +90,5 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://testnet.mintscan.io/sei-testnet/validators",
       proposal: "https://testnet.mintscan.io/sei-testnet/proposals",
     },
-    hasSubHeader: true,
   },
 };

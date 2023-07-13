@@ -47,7 +47,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/osmosis/validators",
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
-    hasSubHeader: false,
   },
   "osmo-test-5": {
     chain: "osmosis",
@@ -94,7 +93,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
-    hasSubHeader: false,
   },
   localosmosis: {
     chain: "osmosis",
@@ -140,6 +138,5 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "",
       proposal: "",
     },
-    hasSubHeader: false,
   },
 };
