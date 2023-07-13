@@ -9,7 +9,8 @@ import {
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
-import { useIsCurrentPage, useReadLocalStorage } from "lib/hooks";
+import { useIsCurrentPage } from "lib/hooks";
+import { useLocalStorage } from "lib/hooks/useLocalStorage";
 import { usePublicProjectStore } from "lib/providers/store";
 import { formatSlugName, getListIcon } from "lib/utils";
 
@@ -26,7 +27,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
-  const isDevMode = useReadLocalStorage("devMode") as boolean;
+  const [isDevMode] = useLocalStorage("devMode", false);
   const wasm = useWasmConfig({ shouldRedirect: false });
 
   const prevIsDevModeRef = useRef<boolean>(isDevMode);
@@ -93,11 +94,11 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                 slug: "/migrate",
                 icon: "migrate" as IconKeys,
               },
-              {
-                name: "Recent Activities",
-                slug: "/",
-                icon: "list" as IconKeys,
-              },
+              // {
+              //   name: "Recent Activities",
+              //   slug: "/",
+              //   icon: "list" as IconKeys,
+              // },
             ],
           },
         ]
