@@ -9,11 +9,24 @@ import {
   useOutsideClick,
   Spinner,
   chakra,
+  useDisclosure,
+  Button,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerBody,
+  IconButton,
+  Flex,
 } from "@chakra-ui/react";
 import { useCallback, useRef, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 
-import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
+import { CURR_THEME } from "env";
+import {
+  useCelatoneApp,
+  useInternalNavigate,
+  useMobile,
+} from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
 import type { SearchResultType } from "lib/services/searchService";
@@ -37,6 +50,7 @@ interface ResultItemProps {
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
+  onClose?: () => void;
 }
 
 const getRouteOptions = (
@@ -71,6 +85,7 @@ const ResultItem = ({
   cursor,
   setCursor,
   handleSelectResult,
+  onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
 
@@ -89,7 +104,10 @@ const ResultItem = ({
           transition="all 0.25s ease-in-out"
           bg={index === cursor ? "gray.800" : undefined}
           onMouseMove={() => index !== cursor && setCursor(index)}
-          onClick={() => handleSelectResult(type, true)}
+          onClick={() => {
+            handleSelectResult(type, true);
+            onClose?.();
+          }}
         >
           {value}
         </Text>
@@ -104,12 +122,14 @@ const ResultRender = ({
   cursor,
   setCursor,
   handleSelectResult,
+  onClose,
 }: {
   results: SearchResultType[];
   keyword: string;
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
+  onClose?: () => void;
 }) => (
   <>
     {!results.length ? (
@@ -128,6 +148,7 @@ const ResultRender = ({
           cursor={cursor}
           setCursor={setCursor}
           handleSelectResult={handleSelectResult}
+          onClose={onClose}
         />
       ))
     )}
@@ -157,6 +178,7 @@ const getPlaceholder = (isWasm: boolean) => {
   return `Search by Wallet Address / Tx Hash / Block ${wasmText}`;
 };
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const Searchbar = () => {
   const [keyword, setKeyword] = useState("");
   const [displayResults, setDisplayResults] = useState(false);
@@ -201,7 +223,7 @@ const Searchbar = () => {
   );
 
   const handleOnKeyEnter = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
+    (e: KeyboardEvent<HTMLInputElement>, onClose?: () => void) => {
       if (!results.length) return;
       switch (e.key) {
         case "ArrowUp":
@@ -216,6 +238,7 @@ const Searchbar = () => {
         }
         case "Enter":
           handleSelectResult(results.at(cursor ?? 0));
+          onClose?.();
           break;
         default:
           break;
@@ -228,9 +251,93 @@ const Searchbar = () => {
     ref: boxRef,
     handler: () => setDisplayResults(false),
   });
-
-  return (
-    <FormControl ref={boxRef}>
+  const isMobile = useMobile();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return isMobile ? (
+    <>
+      <Button variant="outline-gray" size="sm" onClick={onOpen}>
+        <CustomIcon name="search" boxSize={3} />
+      </Button>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="top">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerBody overflowY="scroll" p={2} m={2}>
+            <FormControl ref={boxRef}>
+              <InputGroup mb={4} alignItems="center">
+                <IconButton
+                  fontSize="24px"
+                  variant="gray"
+                  aria-label="back"
+                  onClick={() => onClose()}
+                  color="gray.600"
+                  icon={<CustomIcon name="chevron-left" />}
+                />
+                <Input
+                  value={keyword}
+                  h="36px"
+                  onChange={handleSearchChange}
+                  placeholder="Type your keyword ..."
+                  focusBorderColor="secondary.main"
+                  autoFocus
+                  onFocus={() => setDisplayResults(keyword.length > 0)}
+                  onKeyDown={(e) => handleOnKeyEnter(e, onClose)}
+                  autoComplete="off"
+                />
+                <InputRightElement pointerEvents="none" h="full">
+                  <CustomIcon name="search" color="gray.600" />
+                </InputRightElement>
+              </InputGroup>
+              {displayResults ? (
+                <List borderRadius="8px" bg="gray.900" w="full">
+                  {isLoading || isTyping ? (
+                    <StyledListItem
+                      display="flex"
+                      alignItems="center"
+                      gap={2}
+                      p={4}
+                    >
+                      <Spinner color="gray.600" size="sm" />
+                      <Text
+                        color="text.disabled"
+                        variant="body2"
+                        fontWeight={500}
+                      >
+                        Looking for results ...
+                      </Text>
+                    </StyledListItem>
+                  ) : (
+                    <ResultRender
+                      cursor={cursor}
+                      setCursor={setCursor}
+                      results={results}
+                      keyword={keyword}
+                      handleSelectResult={handleSelectResult}
+                      onClose={onClose}
+                    />
+                  )}
+                </List>
+              ) : (
+                <Flex
+                  bg="background.main"
+                  p={5}
+                  justify="center"
+                  borderRadius={CURR_THEME.borderRadius.default}
+                >
+                  <Text variant="body2" color="text.dark">
+                    Your result will display here
+                  </Text>
+                </Flex>
+              )}
+            </FormControl>
+            <Text variant="body3" color="text.dark" textAlign="center" mt={2}>
+              {getPlaceholder(isWasm)}
+            </Text>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
+  ) : (
+    <FormControl ref={boxRef} zIndex={3}>
       <InputGroup>
         <Input
           value={keyword}

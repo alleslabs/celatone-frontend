@@ -17,3 +17,10 @@ export const getAssetInfos = async (
   const { data } = await axios.get<AssetInfo[]>(`${baseApiRoute}/prices`);
   return data;
 };
+
+export const getNativeAssetInfos = async (
+  baseApiRoute: string
+): Promise<AssetInfo[]> => {
+  const { data } = await axios.get<AssetInfo[]>(`${baseApiRoute}`);
+  return data;
+};

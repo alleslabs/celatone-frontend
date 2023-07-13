@@ -14,7 +14,7 @@ import type {
 
 import { toToken } from "./formatter";
 
-const calculateAssetValue = (
+export const calculateAssetValue = (
   amount: Token<BigSource>,
   price: USD<number>
 ): USD<Big> => big(amount).mul(price) as USD<Big>;
@@ -51,6 +51,7 @@ export const coinToTokenWithValue = (
     symbol: assetInfo?.symbol,
     logo: assetInfo?.logo,
     precision: assetInfo?.precision,
+    price: assetInfo ? (big(assetInfo.price) as USD<Big>) : undefined,
     value: assetInfo
       ? calculateAssetValue(
           toToken(tokenAmount, assetInfo.precision),
@@ -61,15 +62,15 @@ export const coinToTokenWithValue = (
 };
 
 export const addTokenWithValue = (
-  oldTotal: Option<TokenWithValue>,
+  oldToken: Option<TokenWithValue>,
   token: TokenWithValue
 ): TokenWithValue => {
-  if (!oldTotal) return token;
-  return oldTotal.denom === token.denom
+  if (!oldToken) return token;
+  return oldToken.denom === token.denom
     ? {
-        ...oldTotal,
-        amount: oldTotal.amount.add(token.amount) as U<Token<Big>>,
-        value: oldTotal.value?.add(token.value ?? 0) as USD<Big>,
+        ...oldToken,
+        amount: oldToken.amount.add(token.amount) as U<Token<Big>>,
+        value: oldToken.value?.add(token.value ?? 0) as USD<Big>,
       }
     : {
         denom: "",

@@ -67,8 +67,8 @@ export const OSMOSIS_THEME: ThemeConfig = {
       background: "#201865",
     },
     secondary: {
-      main: "#9895FF",
-      light: "#ACA9FF",
+      main: "#8481F8",
+      light: "#9B99FF",
       dark: "#6A67EA",
       darker: "#5855DB",
       background: "#2F306A",
@@ -91,6 +91,27 @@ export const OSMOSIS_THEME: ThemeConfig = {
       900: "#140F34",
     },
   },
+  tag: {
+    signer: {
+      bg: "accent.darker",
+      color: "inherit",
+    },
+    related: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+  },
+  borderRadius: {
+    default: "8px",
+    iconButton: "36px",
+    viewButton: "0 0 8px 8px",
+    uploadButton: "50%",
+    tag: "full",
+    badge: "16px",
+    radio: "12px",
+    indicator: "2px",
+    stepper: "full",
+  },
   jsonTheme: "pastel_on_dark",
   illustration: {
     error:
@@ -106,6 +127,7 @@ export const OSMOSIS_THEME: ThemeConfig = {
     logo: "https://assets.alleslabs.dev/integrations/osmosis/logo.png",
     description:
       "A Smart Contract Explorer for Osmosis | Explore, deploy, execute, and query smart contracts on Osmosis from a user-friendly web UI",
+    iconStyle: "rounded",
   },
   socialMedia: {
     website: "https://osmosis.zone/",

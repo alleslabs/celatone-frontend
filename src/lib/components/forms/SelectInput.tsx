@@ -8,6 +8,7 @@ import {
   useDisclosure,
   useOutsideClick,
   Flex,
+  Image,
   InputLeftElement,
 } from "@chakra-ui/react";
 import type { MutableRefObject, ReactNode } from "react";
@@ -25,6 +26,8 @@ interface SelectInputProps<T extends string> {
     value: T;
     disabled: boolean;
     icon?: IconKeys;
+    iconColor?: string;
+    image?: string;
   }[];
   onChange: (newVal: T) => void;
   placeholder?: string;
@@ -32,6 +35,7 @@ interface SelectInputProps<T extends string> {
   hasDivider?: boolean;
   helperTextComponent?: ReactNode;
   labelBgColor?: string;
+  size?: string | object;
 }
 
 interface SelectItemProps {
@@ -66,6 +70,7 @@ export const SelectInput = <T extends string>({
   hasDivider = false,
   helperTextComponent,
   labelBgColor = "background.main",
+  size = "lg",
 }: SelectInputProps<T>) => {
   const optionRef = useRef() as MutableRefObject<HTMLElement>;
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
@@ -114,20 +119,28 @@ export const SelectInput = <T extends string>({
           }}
         >
           <div className="form-label">{formLabel}</div>
+          {selectedOption?.image && (
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
+              <Image boxSize={6} src={selectedOption.image} />
+            </InputLeftElement>
+          )}
           {selectedOption?.icon && (
             <InputLeftElement pointerEvents="none" h="full" ml={1}>
-              <CustomIcon name={selectedOption.icon} color="gray.600" />
+              <CustomIcon
+                name={selectedOption.icon}
+                color={selectedOption.iconColor}
+              />
             </InputLeftElement>
           )}
           <Input
             ref={inputRef}
-            size="lg"
+            size={size}
             textAlign="start"
             type="button"
             value={selected || placeholder}
             fontSize="14px"
             color={selected ? "text.main" : "text.dark"}
-            pl={selectedOption?.icon ? 9 : 4}
+            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
           />
           <InputRightElement pointerEvents="none" h="full">
             <CustomIcon name="chevron-down" color="gray.600" />
@@ -152,7 +165,7 @@ export const SelectInput = <T extends string>({
           },
         }}
       >
-        {options.map(({ label, value, disabled, icon }) => (
+        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
           <SelectItem
             key={value}
             onSelect={() => {
@@ -162,7 +175,8 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            {icon && <CustomIcon name={icon} color="gray.600" />}
+            {image && <Image boxSize={6} src={image} />}
+            {icon && <CustomIcon name={icon} color={iconColor} />}
             {label}
           </SelectItem>
         ))}

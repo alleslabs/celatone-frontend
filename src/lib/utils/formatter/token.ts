@@ -19,6 +19,8 @@ export const formatDecimal =
   }) =>
   (n: BigSource, fallbackValue: string): string => {
     try {
+      // TODO: fix after having unit test for this fn
+      // const num = big(n).toFixed(decimalPoints, big.roundHalfUp);
       const num = big(
         big(n)
           .mul(10 ** decimalPoints)

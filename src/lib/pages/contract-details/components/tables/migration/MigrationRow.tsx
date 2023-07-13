@@ -13,7 +13,7 @@ interface MigrationRowProps {
   history: ContractMigrationHistory;
 }
 
-const RemarkRender = ({
+export const RemarkRender = ({
   remark,
 }: {
   remark: ContractMigrationHistory["remark"];
@@ -38,9 +38,9 @@ const RemarkRender = ({
         "& > p:first-of-type": {
           color: "text.dark",
           fontSize: "12px",
-          mb: "2px",
         },
       }}
+      mb={{ base: 0, md: "2px" }}
     >
       <p>{isGovernance ? `${prefix} Proposal ID` : `${prefix} Tx`}</p>
       <ExplorerLink

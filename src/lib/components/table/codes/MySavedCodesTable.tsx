@@ -27,6 +27,7 @@ export const MySavedCodesTable = ({
       <EmptyState
         imageVariant={isSearching ? "not-found" : "empty"}
         message={isSearching ? "No matched codes found" : emptyMessage}
+        withBorder
       />
     }
     onRowSelect={onRowSelect}

@@ -6,13 +6,14 @@ import { useCurrentChain } from "../hooks";
 import { instantiateContractTx } from "lib/app-fns/tx/instantiate";
 
 export interface InstantiateStreamParams {
-  onTxSucceed?: (txResult: InstantiateResult, contractLabel: string) => void;
   estimatedFee: StdFee | undefined;
   codeId: number;
   initMsg: object;
   label: string;
   admin: string;
   funds: Coin[];
+  onTxSucceed?: (txResult: InstantiateResult, contractLabel: string) => void;
+  onTxFailed?: () => void;
 }
 
 export const useInstantiateTx = () => {
@@ -20,13 +21,14 @@ export const useInstantiateTx = () => {
 
   return useCallback(
     async ({
-      onTxSucceed,
       estimatedFee,
       codeId,
       initMsg,
       label,
       admin,
       funds,
+      onTxSucceed,
+      onTxFailed,
     }: InstantiateStreamParams) => {
       const client = await getSigningCosmWasmClient();
       if (!address || !client)
@@ -43,6 +45,7 @@ export const useInstantiateTx = () => {
         funds,
         client,
         onTxSucceed,
+        onTxFailed,
       });
     },
     [address, getSigningCosmWasmClient]

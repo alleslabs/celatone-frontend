@@ -20,16 +20,18 @@ interface MessageSectionProps {
 export const MessageSection = ({ txData, assetInfos }: MessageSectionProps) => {
   const msgs = txData.tx.body.messages;
   return (
-    <Flex direction="column" flex={1} gap={4}>
+    <Flex direction="column" flex={1} gap={4} w="full">
       {txData.isTxFailed && (
         <Alert variant="error" mb={2} alignItems="center">
-          <Flex gap={2} align="center">
+          <Flex gap={2} align="start">
             <CustomIcon
               name="alert-circle-solid"
               color="error.main"
               boxSize={4}
             />
-            <AlertDescription>{txData.raw_log}</AlertDescription>
+            <AlertDescription wordBreak="break-word">
+              {txData.raw_log}
+            </AlertDescription>
           </Flex>
         </Alert>
       )}
