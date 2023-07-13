@@ -1,15 +1,16 @@
 import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useEffect, useRef } from "react";
 
 import {
-  usePoolConfig,
-  useCelatoneApp,
   usePublicProjectConfig,
+  useCurrentChain,
+  useWasmConfig,
 } from "lib/app-provider";
+import type { IconKeys } from "lib/components/icon";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
-import { useIsCurrentPage } from "lib/hooks";
-import { useContractStore, usePublicProjectStore } from "lib/providers/store";
-import { cmpContractListInfo } from "lib/stores/contract";
+import { useIsCurrentPage, useReadLocalStorage } from "lib/hooks";
+import { usePublicProjectStore } from "lib/providers/store";
 import { formatSlugName, getListIcon } from "lib/utils";
 
 import { CollapseNavMenu } from "./Collapse";
@@ -22,131 +23,135 @@ interface NavbarProps {
 }
 
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
-  const { getContractLists } = useContractStore();
-  const poolConfig = usePoolConfig({ shouldRedirect: false });
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
-  const {
-    chainConfig: { hasSubHeader },
-  } = useCelatoneApp();
+  const isDevMode = useReadLocalStorage("devMode");
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
+  const prevIsExpandRef = useRef<boolean>(isExpand);
+
+  const { address } = useCurrentChain();
+
   const navMenu: MenuInfo[] = [
     {
-      category: hasSubHeader ? "Your Account" : "Overview",
+      category: "Your Account",
       submenu: [
-        hasSubHeader
-          ? { name: "Developer Home", slug: "/dev-home", icon: "home" }
-          : { name: "Overview", slug: "/", icon: "home" },
         {
           name: "Past Transactions",
           slug: "/past-txs",
-          icon: "history",
+          icon: "history" as IconKeys,
         },
-        ...(!hasSubHeader
+        {
+          name: "Your Account Details",
+          slug: `/accounts/${address}`,
+          icon: "admin" as IconKeys,
+          isDisable: !address,
+          tooltipText:
+            "You need to connect wallet to view your account details.",
+        },
+        ...(isDevMode && wasm.enabled
           ? [
               {
-                name: "Proposals",
-                slug: "/proposals",
-                icon: "proposal" as const,
+                name: "My Codes",
+                slug: "/codes",
+                icon: "code" as IconKeys,
+              },
+              {
+                name: INSTANTIATED_LIST_NAME,
+                slug: `/contract-lists/${formatSlugName(
+                  INSTANTIATED_LIST_NAME
+                )}`,
+                icon: getListIcon(INSTANTIATED_LIST_NAME),
               },
             ]
           : []),
-        ...(poolConfig.enabled
-          ? ([
+      ],
+    },
+    ...(isDevMode && wasm.enabled
+      ? [
+          {
+            category: "Quick Actions",
+            submenu: [
               {
-                name: "Osmosis Pools",
-                slug: "/pools",
-                icon: "pool",
+                name: "Deploy Contract",
+                slug: "/deploy",
+                icon: "add-new" as IconKeys,
               },
-            ] as const)
-          : []),
-      ],
-    },
-    {
-      category: "Quick Actions",
-      submenu: [
-        {
-          name: "Deploy Contract",
-          slug: "/deploy",
-          icon: "add-new",
-        },
-        {
-          name: "Query",
-          slug: "/query",
-          icon: "query",
-        },
-        {
-          name: "Execute",
-          slug: "/execute",
-          icon: "execute",
-        },
-        {
-          name: "Migrate",
-          slug: "/migrate",
-          icon: "migrate",
-        },
-      ],
-    },
-    {
-      category: "Codes",
-      submenu: [
-        { name: "Recent Codes", slug: "/codes", icon: "website" },
-        { name: "My Codes", slug: "/my-codes", icon: "code" },
-      ],
-    },
-    {
-      category: "Contracts",
-      submenu: [
-        {
-          name: "Recent Contracts",
-          slug: "/contracts",
-          icon: "website",
-        },
-        {
-          name: INSTANTIATED_LIST_NAME,
-          slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
-          icon: getListIcon(INSTANTIATED_LIST_NAME),
-        },
-        {
-          name: SAVED_LIST_NAME,
-          slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
-          icon: getListIcon(SAVED_LIST_NAME),
-        },
-        ...getContractLists()
-          .filter((list) => list.slug !== formatSlugName(SAVED_LIST_NAME))
-          .sort(cmpContractListInfo)
-          .slice(0, 3)
-          .map((list) => ({
-            name: list.name,
-            slug: `/contract-lists/${list.slug}`,
-            icon: getListIcon(list.name),
-          })),
-        {
-          name: "View All Lists",
-          slug: "/contract-lists",
-          icon: "more",
-        },
-      ],
-    },
+              {
+                name: "Query",
+                slug: "/query",
+                icon: "query" as IconKeys,
+              },
+              {
+                name: "Execute",
+                slug: "/execute",
+                icon: "execute" as IconKeys,
+              },
+              {
+                name: "Migrate",
+                slug: "/migrate",
+                icon: "migrate" as IconKeys,
+              },
+              {
+                name: "Recent Activities",
+                slug: "/",
+                icon: "list" as IconKeys,
+              },
+            ],
+          },
+        ]
+      : []),
+    ...(wasm.enabled
+      ? [
+          {
+            category: "This Device",
+            submenu: [
+              {
+                name: "Saved Codes",
+                slug: "/my-codes",
+                icon: "code" as IconKeys,
+              },
+              {
+                name: SAVED_LIST_NAME,
+                slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
+                icon: "contract-address" as IconKeys,
+              },
+              {
+                name: "View All Contract List",
+                slug: "/contract-lists",
+                icon: "more" as IconKeys,
+              },
+            ],
+          },
+        ]
+      : []),
+
+    ...(publicProject.enabled
+      ? [
+          {
+            category: "Public Projects",
+            submenu: [
+              ...getSavedPublicProjects().map((list) => ({
+                name: list.name,
+                slug: `/projects/${list.slug}`,
+                logo: list.logo as IconKeys,
+              })),
+              {
+                name: "View All Projects",
+                slug: "/projects",
+                icon: "public-project" as IconKeys,
+              },
+            ],
+          },
+        ]
+      : []),
   ];
 
-  if (publicProject.enabled) {
-    navMenu.push({
-      category: "Public Projects",
-      submenu: [
-        ...getSavedPublicProjects().map((list) => ({
-          name: list.name,
-          slug: `/projects/${list.slug}`,
-          logo: list.logo,
-        })),
-        {
-          name: "View All Projects",
-          slug: "/projects",
-          icon: "public-project",
-        },
-      ],
-    });
-  }
+  useEffect(() => {
+    if (!prevIsExpandRef.current && isDevMode) setIsExpand(true);
+    prevIsExpandRef.current = isExpand;
+  }, [isDevMode, isExpand, setIsExpand]);
 
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">

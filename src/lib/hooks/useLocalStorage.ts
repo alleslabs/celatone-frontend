@@ -60,6 +60,7 @@ export const useLocalStorage = <T>(
 
         // Save state
         setStoredValue(newValue);
+        window.dispatchEvent(new Event("local-storage"));
       } catch (error) {
         console.warn(`Error setting localStorage key “${key}”:`, error);
       }
