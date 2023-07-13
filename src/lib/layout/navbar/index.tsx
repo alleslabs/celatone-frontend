@@ -150,10 +150,10 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   ];
 
   useEffect(() => {
-    // Currently in dev mode and want to change to basic and nav is collapse -> should expand
+    // Currently in basic mode and want to change from dev and nav is open -> should close
     if (isDevMode && !prevIsDevModeRef.current && !isExpand) {
       setIsExpand(true);
-      // Currently in basic mode and want to change from dev and nav is open -> should close
+      // Currently in dev mode and want to change to basic and nav is collapse -> should expand
     } else if (!isDevMode && prevIsDevModeRef.current && isExpand) {
       setIsExpand(false);
     }
