@@ -28,5 +28,5 @@ export * from "./proposal";
 export * from "./codeHash";
 export * from "./icon";
 export * from "./window";
-export * from "./math";
 export * from "./number";
+export * from "./math";
