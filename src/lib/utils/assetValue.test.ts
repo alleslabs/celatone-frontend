@@ -160,6 +160,16 @@ describe("calAssetValueWithPrecision", () => {
       } as Balance;
       expect(calAssetValueWithPrecision(balance)).toEqual(big("0"));
     });
+
+    test("amount with space should trim", () => {
+      const balance = {
+        amount: " 100 ",
+        id: "udenom",
+        precision: 6,
+        price: 1,
+      } as Balance;
+      expect(calAssetValueWithPrecision(balance)).toEqual(big("0.0001"));
+    });
   });
 });
 
