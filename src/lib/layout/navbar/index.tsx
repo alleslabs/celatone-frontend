@@ -26,10 +26,10 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
-  const isDevMode = useReadLocalStorage("devMode");
+  const isDevMode = useReadLocalStorage("devMode") as boolean;
   const wasm = useWasmConfig({ shouldRedirect: false });
 
-  const prevIsExpandRef = useRef<boolean>(isExpand);
+  const prevIsDevModeRef = useRef<boolean>(isDevMode);
 
   const { address } = useCurrentChain();
 
@@ -149,8 +149,14 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   ];
 
   useEffect(() => {
-    if (!prevIsExpandRef.current && isDevMode) setIsExpand(true);
-    prevIsExpandRef.current = isExpand;
+    // Currentlt at dev mode and want to change to basic and nav is collapse -> should expand
+    if (isDevMode && !prevIsDevModeRef.current && !isExpand) {
+      setIsExpand(true);
+      // Currentlt at basic mode and want to change from dev and nav is open -> should close
+    } else if (!isDevMode && prevIsDevModeRef.current && isExpand) {
+      setIsExpand(false);
+    }
+    prevIsDevModeRef.current = isDevMode;
   }, [isDevMode, isExpand, setIsExpand]);
 
   return (
