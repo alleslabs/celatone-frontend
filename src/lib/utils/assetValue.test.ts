@@ -35,6 +35,15 @@ describe("calAssetValueWithPrecision", () => {
       } as Balance;
       expect(() => calAssetValueWithPrecision(balance)).toThrow();
     });
+
+    test("space string as an amount", () => {
+      const balance = {
+        amount: " ",
+        id: "udenom",
+        precision: 1,
+      } as Balance;
+      expect(() => calAssetValueWithPrecision(balance)).toThrow();
+    });
   });
 
   describe("undefined balance price", () => {

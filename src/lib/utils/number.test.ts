@@ -23,12 +23,12 @@ describe("isPositiveInt", () => {
     test("space string", () => {
       expect(isPositiveInt(" ")).toBeFalsy();
     });
+    test("0 string", () => {
+      expect(isPositiveInt("0")).toBeFalsy();
+    });
   });
 
   describe("positive integer", () => {
-    test("0 string", () => {
-      expect(isPositiveInt("0")).toBeTruthy();
-    });
     test("integer string", () => {
       expect(isPositiveInt("22")).toBeTruthy();
     });
