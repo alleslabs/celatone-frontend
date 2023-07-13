@@ -470,6 +470,12 @@ export interface MsgForceUnlockDetails extends MsgBaseDetails {
   coins?: Coin[];
 }
 
+export interface MsgSetRewardReceiverAddressDetails extends MsgBaseDetails {
+  owner: Addr;
+  lock_id: string;
+  reward_receiver: Addr;
+}
+
 // osmosis/superfluid
 export interface MsgSuperfluidDelegateDetails extends MsgBaseDetails {
   sender: Addr;
@@ -500,6 +506,34 @@ export interface MsgSuperfluidUndelegateAndUnbondLockDetails
   coin: Coin;
 }
 
+export interface MsgCreateFullRangePositionAndSuperfluidDelegateDetails
+  extends MsgBaseDetails {
+  sender: Addr;
+  coins: Coin[];
+  val_addr: ValidatorAddr;
+  pool_id: string;
+}
+export interface MsgUnlockAndMigrateSharesToFullRangeConcentratedPositionDetails
+  extends MsgBaseDetails {
+  sender: Addr;
+  lock_id: string;
+  shares_to_migrate: Coin;
+  token_out_mins: Coin[];
+}
+export interface MsgAddToConcentratedLiquiditySuperfluidPositionDetails
+  extends MsgBaseDetails {
+  position_id: string;
+  sender: Addr;
+  token_desired0: Coin;
+  token_desired1: Coin;
+}
+export interface MsgLockExistingFullRangePositionAndSFStakeDetails
+  extends MsgBaseDetails {
+  position_id: string;
+  sender: Addr;
+  val_addr: ValidatorAddr;
+}
+
 // osmosis/tokenfactory
 export interface MsgCreateDenomDetails extends MsgBaseDetails {
   sender: Addr;
@@ -521,6 +555,18 @@ export interface MsgChangeAdminDetails extends MsgBaseDetails {
 export interface MsgSetDenomMetadataDetails extends MsgBaseDetails {
   sender: Addr;
   metadata: object;
+}
+
+export interface MsgForceTransferDetails extends MsgBaseDetails {
+  sender: Addr;
+  amount: Coin;
+  transfer_from_address: Addr;
+  transfer_to_address: Addr;
+}
+export interface MsgSetBeforeSendHookDetails extends MsgBaseDetails {
+  sender: Addr;
+  denom: string;
+  cosmwasm_address: string;
 }
 
 // osmosis/protorev
@@ -572,6 +618,66 @@ export interface MsgDelegateBondedTokensDetails extends MsgBaseDetails {
 export interface MsgSetValidatorSetPreferenceDetails extends MsgBaseDetails {
   delegator: Addr;
   preferences: object[];
+}
+
+// osmosis/poolmanager
+export interface MsgSplitRouteSwapExactAmountInDetails extends MsgBaseDetails {
+  sender: Addr;
+  routes: object[];
+  token_in_denom: string;
+  token_out_min_amount: string;
+}
+export interface MsgSplitRouteSwapExactAmountOutDetails extends MsgBaseDetails {
+  sender: Addr;
+  routes: object[];
+  token_out_denom: string;
+  token_in_max_amount: string;
+}
+
+// osmosis/concentratedliquidity
+export interface MsgCreatePositionDetails extends MsgBaseDetails {
+  pool_id: string;
+  sender: Addr;
+  lower_tick: string;
+  upper_tick: string;
+  tokens_provided: Coin[];
+  token_min_amount0: string;
+  token_min_amount1: string;
+}
+export interface MsgAddToPositionDetails extends MsgBaseDetails {
+  position_id: string;
+  sender: Addr;
+  amount0: string;
+  amount1: string;
+  token_min_amount0: string;
+  token_min_amount1: string;
+}
+export interface MsgWithdrawPositionDetails extends MsgBaseDetails {
+  position_id: string;
+  sender: Addr;
+  liquidity_amount: string;
+}
+export interface MsgCollectSpreadRewardsDetails extends MsgBaseDetails {
+  position_ids: string[];
+  sender: Addr;
+}
+export interface MsgCollectIncentivesDetails extends MsgBaseDetails {
+  position_ids: string[];
+  sender: Addr;
+}
+export interface MsgCreateConcentratedPoolDetails extends MsgBaseDetails {
+  sender: Addr;
+  denom0: string;
+  denom1: string;
+  tick_spacing: string;
+  spread_factor: string;
+}
+
+// osmosis/cosmwasmpool
+export interface MsgCreateCosmWasmPoolDetails extends MsgBaseDetails {
+  code_id: string;
+  instantiate_msg: string;
+  sender: string;
 }
 
 export type MsgReturnType<T extends TypeUrl> =
@@ -691,6 +797,10 @@ export type MsgReturnType<T extends TypeUrl> =
         | "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut"
         | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut"
     ? MsgSwapExactAmountOutDetails
+    : T extends "/osmosis.poolmanager.v1beta1.MsgSplitRouteSwapExactAmountIn"
+    ? MsgSplitRouteSwapExactAmountInDetails
+    : T extends "/osmosis.poolmanager.v1beta1.MsgSplitRouteSwapExactAmountOut"
+    ? MsgSplitRouteSwapExactAmountOutDetails
     : T extends "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn"
     ? MsgJoinSwapExternAmountInDetails
     : T extends "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut"
@@ -713,6 +823,8 @@ export type MsgReturnType<T extends TypeUrl> =
     ? MsgForceUnlockDetails
     : T extends "/osmosis.lockup.MsgExtendLockup"
     ? MsgExtendLockupDetails
+    : T extends "/osmosis.lockup.MsgSetRewardReceiverAddress"
+    ? MsgSetRewardReceiverAddressDetails
     : T extends "/osmosis.superfluid.MsgSuperfluidDelegate"
     ? MsgSuperfluidDelegateDetails
     : T extends "/osmosis.superfluid.MsgSuperfluidUndelegate"
@@ -725,6 +837,14 @@ export type MsgReturnType<T extends TypeUrl> =
     ? MsgUnPoolWhitelistedPoolDetails
     : T extends "/osmosis.superfluid.MsgSuperfluidUndelegateAndUnbondLock"
     ? MsgSuperfluidUndelegateAndUnbondLockDetails
+    : T extends "/osmosis.superfluid.MsgCreateFullRangePositionAndSuperfluidDelegate"
+    ? MsgCreateFullRangePositionAndSuperfluidDelegateDetails
+    : T extends "/osmosis.superfluid.MsgUnlockAndMigrateSharesToFullRangeConcentratedPosition"
+    ? MsgUnlockAndMigrateSharesToFullRangeConcentratedPositionDetails
+    : T extends "/osmosis.superfluid.MsgAddToConcentratedLiquiditySuperfluidPosition"
+    ? MsgAddToConcentratedLiquiditySuperfluidPositionDetails
+    : T extends "/osmosis.superfluid.MsgLockExistingFullRangePositionAndSFStake"
+    ? MsgLockExistingFullRangePositionAndSFStakeDetails
     : T extends "/osmosis.tokenfactory.v1beta1.MsgCreateDenom"
     ? MsgCreateDenomDetails
     : T extends "/osmosis.tokenfactory.v1beta1.MsgMint"
@@ -735,6 +855,10 @@ export type MsgReturnType<T extends TypeUrl> =
     ? MsgChangeAdminDetails
     : T extends "/osmosis.tokenfactory.v1beta1.MsgSetDenomMetadata"
     ? MsgSetDenomMetadataDetails
+    : T extends "/osmosis.tokenfactory.v1beta1.MsgForceTransfer"
+    ? MsgForceTransferDetails
+    : T extends "/osmosis.tokenfactory.v1beta1.MsgSetBeforeSendHook"
+    ? MsgSetBeforeSendHookDetails
     : T extends "/osmosis.protorev.v1beta1.MsgSetHotRoutes"
     ? MsgSetHotRoutesDetails
     : T extends "/osmosis.protorev.v1beta1.MsgSetBaseDenoms"
@@ -759,4 +883,18 @@ export type MsgReturnType<T extends TypeUrl> =
     ? MsgDelegateBondedTokensDetails
     : T extends "/osmosis.valsetpref.v1beta1.MsgSetValidatorSetPreference"
     ? MsgSetValidatorSetPreferenceDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgCreatePosition"
+    ? MsgCreatePositionDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgAddToPosition"
+    ? MsgAddToPositionDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgWithdrawPosition"
+    ? MsgWithdrawPositionDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgCollectSpreadRewards"
+    ? MsgCollectSpreadRewardsDetails
+    : T extends "/osmosis.valsetpref.v1beta1.MsgCollectIncentives"
+    ? MsgCollectIncentivesDetails
+    : T extends "/osmosis.concentratedliquidity.poolmodel.concentrated.v1beta1.MsgCreateConcentratedPool"
+    ? MsgCreateConcentratedPoolDetails
+    : T extends "/osmosis.cosmwasmpool.v1beta1.MsgCreateCosmWasmPool"
+    ? MsgCreateCosmWasmPoolDetails
     : MsgBaseDetails;
