@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
-import { usePoolConfig, useWasmConfig } from "lib/app-provider";
+import { useMobile, usePoolConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -63,9 +63,10 @@ const FirstLandPrompt = ({
 );
 
 const SubHeader = () => {
+  const isMobile = useMobile();
   const [isDevMode, setIsDevMode] = useLocalStorage<Option<boolean>>(
     "devMode",
-    undefined
+    isMobile ? false : undefined
   );
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
