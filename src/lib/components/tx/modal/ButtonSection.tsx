@@ -1,12 +1,16 @@
 import { Button } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 
-import { getExplorerProposalUrl } from "lib/app-fns/explorer";
-import { useInternalNavigate } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useCelatoneApp,
+  useBaseApiRoute,
+} from "lib/app-provider";
+import { getNavigationUrl } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { openNewTab, useOpenTxTab } from "lib/hooks";
+import { useOpenTxTab } from "lib/hooks";
 import type { ActionVariant, TxReceipt } from "lib/types";
+import { openNewTab } from "lib/utils";
 
 // TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
@@ -23,7 +27,10 @@ export const ButtonSection = ({
   const router = useRouter();
   const navigate = useInternalNavigate();
   const openTxTab = useOpenTxTab("tx-page");
-  const { currentChainName } = useWallet();
+  const {
+    chainConfig: { explorerLink },
+  } = useCelatoneApp();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const openTxExplorer = () => {
     const txHash = receipts
@@ -37,7 +44,15 @@ export const ButtonSection = ({
     const proposalId = receipts
       .find((r) => r.title === "Proposal ID")
       ?.value?.toString();
-    openNewTab(`${getExplorerProposalUrl(currentChainName)}/${proposalId}`);
+    // TOOD: revisit retrieving url (make a proper hook)
+    openNewTab(
+      getNavigationUrl(
+        "proposal_id",
+        explorerLink,
+        proposalId ?? "",
+        lcdEndpoint
+      )
+    );
     onClose?.();
   };
 

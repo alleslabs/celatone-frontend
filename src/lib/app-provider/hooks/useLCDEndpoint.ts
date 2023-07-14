@@ -1,12 +1,13 @@
-import { useWallet } from "@cosmos-kit/react";
+import { useCelatoneApp } from "../contexts";
 
-import { FALLBACK_LCD_ENDPOINT } from "env";
+import { useCurrentChain } from "./useCurrentChain";
 
 export const useLCDEndpoint = () => {
-  const { currentChainRecord, currentChainName } = useWallet();
+  const { chainWallet } = useCurrentChain();
+  const { chainConfig } = useCelatoneApp();
+  const restRecord = chainWallet?.chainRecord.preferredEndpoints?.rest?.[0];
+  const endpoint =
+    typeof restRecord === "string" ? restRecord : restRecord?.url;
 
-  return (
-    currentChainRecord?.preferredEndpoints?.rest?.[0] ??
-    FALLBACK_LCD_ENDPOINT[currentChainName]
-  );
+  return endpoint ?? chainConfig.lcd;
 };

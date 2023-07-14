@@ -1,13 +1,17 @@
 import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useInternalNavigate } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useWasmConfig,
+  useMobile,
+} from "lib/app-provider";
+import { StoredCodeCard } from "lib/components/card/StoredCodeCard";
 import { FilterByPermission } from "lib/components/forms";
-import InputWithIcon from "lib/components/InputWithIcon";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
@@ -22,6 +26,7 @@ interface RecentCodesState {
 }
 
 const RecentCodes = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
@@ -46,33 +51,42 @@ const RecentCodes = observer(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_RECENT_CODES);
   }, [router.isReady]);
 
-  const isSearching = Boolean(keyword) || permissionValue !== "all";
+  const emptyState = (
+    <EmptyState
+      imageVariant="empty"
+      message="Most recent 100 code IDs will display here."
+      withBorder
+    />
+  );
+  const isMobile = useMobile();
+  const MobileSection = () => {
+    if (isLoading) return <Loading />;
+    if (!recentCodes?.length) return emptyState;
+    return (
+      <Flex direction="column" gap={4} w="full" mt={4}>
+        {recentCodes.map((code) => (
+          <StoredCodeCard codeInfo={code} key={code.uploader + code.id} />
+        ))}
+      </Flex>
+    );
+  };
 
   return (
     <PageContainer>
-      <Box pb={12}>
-        <Heading
-          variant="h5"
-          as="h5"
-          minH="36px"
-          display="flex"
-          alignItems="center"
-        >
+      <Box>
+        <Heading variant="h5" as="h5" minH="36px">
           Recent Codes
         </Heading>
-        <Text variant="body2" color="text.dark" fontWeight="500">
+        <Text variant="body2" color="text.dark" fontWeight="500" mb={8}>
           These codes are the most recently stored on this network
         </Text>
-        <Flex gap={3} mt={8}>
-          <InputWithIcon
-            placeholder="Search with code ID or code name"
-            value={keyword}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setValue("keyword", e.target.value)
-            }
-            size="lg"
-          />
+        <Flex
+          gap={{ base: 6, md: 3 }}
+          mt={8}
+          direction={{ base: "column", md: "row" }}
+        >
           <FilterByPermission
+            maxWidth="full"
             initialSelected="all"
             setPermissionValue={(newVal: PermissionFilterValue) => {
               if (newVal === permissionValue) return;
@@ -81,22 +95,16 @@ const RecentCodes = observer(() => {
           />
         </Flex>
       </Box>
-      <CodesTable
-        codes={recentCodes}
-        isLoading={isLoading}
-        emptyState={
-          <EmptyState
-            imageVariant={isSearching ? "not-found" : "empty"}
-            message={
-              isSearching
-                ? "No matched codes found"
-                : "Most recent 100 code IDs will display here."
-            }
-            withBorder
-          />
-        }
-        onRowSelect={onRowSelect}
-      />
+      {isMobile ? (
+        <MobileSection />
+      ) : (
+        <CodesTable
+          codes={recentCodes}
+          isLoading={isLoading}
+          emptyState={emptyState}
+          onRowSelect={onRowSelect}
+        />
+      )}
     </PageContainer>
   );
 });

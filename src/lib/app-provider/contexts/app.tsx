@@ -1,156 +1,124 @@
-import { useWallet } from "@cosmos-kit/react";
-import big from "big.js";
+import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
-import { useEffect, useContext, useMemo, createContext } from "react";
+import {
+  useCallback,
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+  createContext,
+} from "react";
 
 import { useAmplitude } from "../hooks/useAmplitude";
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import { getIndexerGraphClient } from "../query-client";
-import type { AppConstants } from "../types";
+import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
+import type { ChainConfig } from "config/chain";
+import { PROJECT_CONSTANTS } from "config/project";
+import type { ProjectConstants } from "config/project";
+import { SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
   useCodeStore,
   useContractStore,
   usePublicProjectStore,
 } from "lib/providers/store";
-import type { ChainGasPrice, Token, U } from "lib/types";
 import { formatUserKey } from "lib/utils";
 
-interface AppProviderProps<
-  AppContractAddress,
-  AppHumanAddress,
-  Constants extends AppConstants
-> {
+interface AppProviderProps {
   children: ReactNode;
-
-  fallbackGasPrice: Record<string, ChainGasPrice>;
-
-  appContractAddressMap: (currentChainName: string) => AppContractAddress;
-  appHumanAddressMap: (currentChainName: string) => AppHumanAddress;
-
-  constants: Constants;
 }
 
-interface AppContextInterface<
-  ContractAddress,
-  HumanAddress,
-  Constants extends AppConstants = AppConstants
-> {
-  chainGasPrice: ChainGasPrice;
-  appContractAddress: ContractAddress;
-  appHumanAddress: HumanAddress;
-  constants: Constants;
+interface AppContextInterface {
+  availableChainIds: string[];
+  currentChainId: string;
+  chainConfig: ChainConfig;
   indexerGraphClient: GraphQLClient;
+  constants: ProjectConstants;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const AppContext = createContext<AppContextInterface<any, any, any>>({
-  chainGasPrice: { denom: "", gasPrice: "0" as U<Token> },
-  appContractAddress: {},
-  appHumanAddress: {},
-  constants: { gasAdjustment: 0 },
-  indexerGraphClient: new GraphQLClient(""),
+const AppContext = createContext<AppContextInterface>({
+  availableChainIds: [],
+  currentChainId: "",
+  chainConfig: DEFAULT_CHAIN_CONFIG,
+  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer),
+  constants: PROJECT_CONSTANTS,
 });
 
-export const AppProvider = observer(
-  <ContractAddress, HumanAddress, Constants extends AppConstants>({
-    children,
-    fallbackGasPrice,
-    appContractAddressMap,
-    appHumanAddressMap,
-    constants,
-  }: AppProviderProps<ContractAddress, HumanAddress, Constants>) => {
-    const { currentChainName, currentChainRecord } = useWallet();
-    const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
-    const { setContractUserKey, isContractUserKeyExist } = useContractStore();
-    const { setProjectUserKey, isProjectUserKeyExist } =
-      usePublicProjectStore();
+export const AppProvider = observer(({ children }: AppProviderProps) => {
+  const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
+  const { setContractUserKey, isContractUserKeyExist } = useContractStore();
+  const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
+  const { setModalTheme } = useModalTheme();
 
-    useEffect(() => {
-      const handler = (e: BeforeUnloadEvent) => {
-        e.stopImmediatePropagation();
-      };
+  const [currentChainName, setCurrentChainName] = useState<string>();
+  const [currentChainId, setCurrentChainId] = useState("");
 
-      window.addEventListener("beforeunload", handler);
-      return () => window.removeEventListener("beforeunload", handler);
-    }, []);
+  // Remark: this function is only used in useSelectChain. Do not use in other places.
+  const handleOnChainIdChange = useCallback((newChainId: string) => {
+    const config = CHAIN_CONFIGS[newChainId];
+    setCurrentChainId(newChainId);
+    setCurrentChainName(config?.registryChainName);
+  }, []);
 
-    const chainGasPrice = useMemo(() => {
-      if (
-        !currentChainRecord ||
-        !currentChainRecord.chain.fees ||
-        !currentChainRecord.chain.fees.fee_tokens[0].average_gas_price
-      )
-        return fallbackGasPrice[currentChainName];
-      return {
-        denom: currentChainRecord.chain.fees?.fee_tokens[0].denom as string,
-        gasPrice: big(
-          currentChainRecord.chain.fees?.fee_tokens[0].average_gas_price ?? "0"
-        ).toFixed() as U<Token>,
-      };
-    }, [currentChainName, currentChainRecord, fallbackGasPrice]);
+  const states = useMemo<AppContextInterface>(() => {
+    const chainConfig = CHAIN_CONFIGS[currentChainId] ?? DEFAULT_CHAIN_CONFIG;
 
-    const chainBoundStates = useMemo(() => {
-      return {
-        indexerGraphClient: getIndexerGraphClient(currentChainName),
-      };
-    }, [currentChainName]);
+    return {
+      availableChainIds: SUPPORTED_CHAIN_IDS,
+      currentChainId,
+      chainConfig,
+      indexerGraphClient: new GraphQLClient(chainConfig.indexer),
+      constants: PROJECT_CONSTANTS,
+    };
+  }, [currentChainId]);
 
-    const states = useMemo<
-      AppContextInterface<ContractAddress, HumanAddress, Constants>
-    >(
-      () => ({
-        chainGasPrice,
-        appContractAddress: appContractAddressMap(currentChainName),
-        appHumanAddress: appHumanAddressMap(currentChainName),
-        constants,
-        ...chainBoundStates,
-      }),
-      [
-        chainGasPrice,
-        appContractAddressMap,
-        currentChainName,
-        appHumanAddressMap,
-        constants,
-        chainBoundStates,
-      ]
-    );
+  useEffect(() => {
+    if (currentChainName) {
+      const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
+      setCodeUserKey(userKey);
+      setContractUserKey(userKey);
+      setProjectUserKey(userKey);
+    }
+  }, [currentChainName, setCodeUserKey, setContractUserKey, setProjectUserKey]);
 
-    useEffect(() => {
-      if (currentChainName) {
-        const userKey = formatUserKey(currentChainName, DEFAULT_ADDRESS);
-        setCodeUserKey(userKey);
-        setContractUserKey(userKey);
-        setProjectUserKey(userKey);
-      }
-    }, [
-      currentChainName,
-      setCodeUserKey,
-      setContractUserKey,
-      setProjectUserKey,
-    ]);
+  // Disable "Leave page" alert
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      e.stopImmediatePropagation();
+    };
 
-    useNetworkChange();
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
 
-    useAmplitude();
+  useEffect(() => {
+    if (localStorage.getItem("cosmology-ui-theme") !== "dark") {
+      setModalTheme("dark");
+    }
+  }, [setModalTheme]);
 
-    return isCodeUserKeyExist() &&
-      isContractUserKeyExist() &&
-      isProjectUserKeyExist() ? (
-      <AppContext.Provider value={states}>{children}</AppContext.Provider>
-    ) : (
-      <LoadingOverlay />
-    );
-  }
-);
+  useNetworkChange(handleOnChainIdChange);
 
-export const useApp = <
-  ContractAddress,
-  HumanAddress,
-  Constants extends AppConstants
->(): AppContextInterface<ContractAddress, HumanAddress, Constants> => {
+  useAmplitude(currentChainName);
+
+  if (currentChainId && !(currentChainId in CHAIN_CONFIGS))
+    return <NetworkErrorState />;
+
+  if (
+    !isCodeUserKeyExist() ||
+    !isContractUserKeyExist() ||
+    !isProjectUserKeyExist() ||
+    !currentChainId
+  )
+    return <LoadingOverlay />;
+
+  return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
+});
+
+export const useCelatoneApp = (): AppContextInterface => {
   return useContext(AppContext);
 };

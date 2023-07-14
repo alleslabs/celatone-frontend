@@ -1,7 +1,6 @@
 import axios from "axios";
 import type { GraphQLClient } from "graphql-request";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
 import { getBlockTimestampByHeightQueryDocument } from "lib/query";
 import type {
   Addr,
@@ -64,7 +63,7 @@ export const queryData = async (
 ) => {
   const b64 = encode(msg);
   const { data } = await axios.get(
-    `${endpoint}cosmwasm/wasm/v1/contract/${contractAddress}/smart/${b64}`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/smart/${b64}`
   );
   return data;
 };
@@ -74,7 +73,7 @@ export const queryContract = async (
   contractAddress: ContractAddr
 ) => {
   const { data } = await axios.get<ContractResponse>(
-    `${endpoint}cosmwasm/wasm/v1/contract/${contractAddress}`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`
   );
   return data;
 };
@@ -84,7 +83,7 @@ export const queryContractCw2Info = async (
   contractAddress: ContractAddr
 ) => {
   const { data } = await axios.get<ContractCw2InfoRaw>(
-    `${endpoint}cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
   );
   return JSON.parse(libDecode(data.data)) as ContractCw2Info;
 };
@@ -127,16 +126,11 @@ export const queryInstantiateInfo = async (
 };
 
 export const queryContractBalances = async (
-  chainName: Option<string>,
-  chainId: Option<string>,
+  balancesApiRoute: string,
   contractAddress: ContractAddr
 ): Promise<Balance[]> => {
-  if (!chainName || !chainId)
-    throw new Error("Invalid chain (queryContractBalances)");
   const { data } = await axios.get<Balance[]>(
-    `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
-      chainName
-    )}/${chainId}/${contractAddress}`
+    `${balancesApiRoute}/${contractAddress}`
   );
   return data;
 };

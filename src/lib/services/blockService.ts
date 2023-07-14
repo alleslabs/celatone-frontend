@@ -2,25 +2,27 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp, useChainId } from "lib/app-provider";
+import { useCelatoneApp } from "lib/app-provider";
 import {
   getLatestBlockInfoQueryDocument,
   getBlockDetailsByHeightQueryDocument,
   getBlockListQueryDocument,
+  getBlockTimeQueryDocument,
 } from "lib/query";
 import type {
   BlockDetails,
   BlockInfo,
+  BlockTimeInfo,
   LatestBlock,
   ValidatorAddr,
 } from "lib/types";
-import { parseDate, parseDateOpt, parseTxHash } from "lib/utils";
+import { isBlock, parseDate, parseDateOpt, parseTxHash } from "lib/utils";
 
 export const useBlocklistQuery = (
   limit: number,
   offset: number
 ): UseQueryResult<BlockInfo[]> => {
-  const chainId = useChainId();
+  const { currentChainId } = useCelatoneApp();
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = useCallback(
     async () =>
@@ -35,7 +37,7 @@ export const useBlocklistQuery = (
               transactions_aggregate,
               validator,
             }) => ({
-              network: chainId,
+              network: currentChainId,
               hash: parseTxHash(hash),
               height,
               timestamp: parseDate(timestamp),
@@ -50,7 +52,7 @@ export const useBlocklistQuery = (
             })
           )
         ),
-    [indexerGraphClient, chainId, limit, offset]
+    [indexerGraphClient, currentChainId, limit, offset]
   );
 
   return useQuery(["blocks", indexerGraphClient, limit, offset], queryFn);
@@ -70,18 +72,21 @@ export const useBlockCountQuery = (): UseQueryResult<number> => {
 };
 
 export const useBlockDetailsQuery = (
-  height: number
+  height: string
 ): UseQueryResult<BlockDetails | null> => {
-  const chainId = useChainId();
+  const { currentChainId } = useCelatoneApp();
   const { indexerGraphClient } = useCelatoneApp();
+
   const queryFn = useCallback(
     async () =>
       indexerGraphClient
-        .request(getBlockDetailsByHeightQueryDocument, { height })
+        .request(getBlockDetailsByHeightQueryDocument, {
+          height: Number(height),
+        })
         .then<BlockDetails | null>(({ blocks_by_pk }) =>
           blocks_by_pk
             ? {
-                network: chainId,
+                network: currentChainId,
                 hash: parseTxHash(blocks_by_pk.hash),
                 height: blocks_by_pk.height,
                 timestamp: parseDate(blocks_by_pk.timestamp),
@@ -99,11 +104,11 @@ export const useBlockDetailsQuery = (
               }
             : null
         ),
-    [indexerGraphClient, chainId, height]
+    [indexerGraphClient, currentChainId, height]
   );
 
   return useQuery(["block_details", indexerGraphClient, height], queryFn, {
-    keepPreviousData: true,
+    enabled: isBlock(height),
     retry: false,
     refetchOnWindowFocus: false,
   });
@@ -123,4 +128,22 @@ export const useLatestBlockInfo = (): UseQueryResult<LatestBlock> => {
   );
 
   return useQuery(["latest_block_info", indexerGraphClient], queryFn);
+};
+
+export const useAverageBlockTime = (): UseQueryResult<BlockTimeInfo> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const queryFn = useCallback(
+    async () =>
+      indexerGraphClient
+        .request(getBlockTimeQueryDocument)
+        .then(({ hundred, latest }) => {
+          return {
+            hundred: parseDateOpt(hundred[0].timestamp),
+            latest: parseDateOpt(latest[0].timestamp),
+          };
+        }),
+    [indexerGraphClient]
+  );
+
+  return useQuery(["average_block_time", indexerGraphClient], queryFn);
 };

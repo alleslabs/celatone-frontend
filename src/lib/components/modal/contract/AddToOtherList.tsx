@@ -54,6 +54,7 @@ export const AddToOtherListModal = observer(
                 {contractLocalInfo.name ?? contractLocalInfo.label}
               </Text>
               <ExplorerLink
+                fixedHeight
                 value={contractLocalInfo.contractAddress}
                 type="contract_address"
               />

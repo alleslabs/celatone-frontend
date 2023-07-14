@@ -1,11 +1,11 @@
-import type { ThemeConfig } from "config/type";
+import type { ThemeConfig } from "./types";
 
 export const DEFAULT_THEME: ThemeConfig = {
   branding: {
     logo: "https://assets.alleslabs.dev/branding/logo/logo.svg",
     favicon: "https://assets.alleslabs.dev/branding/favicon.ico",
     seo: {
-      appName: "celatone",
+      appName: "Celatone",
       title: "Celatone Explorer for Cosmos chain",
       description: "A smart contract powered explorer for the Cosmos.",
       image: "https://assets.alleslabs.dev/branding/celatone-cover.jpg",
@@ -27,7 +27,7 @@ export const DEFAULT_THEME: ThemeConfig = {
   },
   colors: {
     gradient: {
-      main: "linear(to-tr, #5235EF, #6145FC)",
+      main: "linear(to-tr, #5942F3, #9793F3)",
     },
     error: {
       main: "#FF666E",
@@ -88,6 +88,27 @@ export const DEFAULT_THEME: ThemeConfig = {
       800: "#272734",
       900: "#1A1A22",
     },
+  },
+  tag: {
+    signer: {
+      bg: "accent.darker",
+      color: "inherit",
+    },
+    related: {
+      bg: "primary.dark",
+      color: "text.main",
+    },
+  },
+  borderRadius: {
+    default: "8px",
+    iconButton: "36px",
+    viewButton: "0 0 8px 8px",
+    uploadButton: "50%",
+    tag: "full",
+    badge: "16px",
+    radio: "12px",
+    indicator: "2px",
+    stepper: "full",
   },
   jsonTheme: "monokai",
   illustration: {

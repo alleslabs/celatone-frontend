@@ -1,8 +1,10 @@
+import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
+import { InstantiatedContractCard } from "lib/components/card/ContractCard";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ContractsTable, TableTitle } from "lib/components/table";
@@ -64,7 +66,8 @@ export const CodeContractsTable = observer(
     };
 
     const tableHeaderId = "contractTableHeader";
-
+    const isMobile = useMobile();
+    if (!contracts?.length) return <NoContracts />;
     return (
       <>
         <TableTitle
@@ -72,12 +75,29 @@ export const CodeContractsTable = observer(
           count={totalData ?? 0}
           id={tableHeaderId}
         />
-        <ContractsTable
-          contracts={contracts}
-          isLoading={isLoading}
-          emptyState={<NoContracts />}
-          onRowSelect={onRowSelect}
-        />
+        {isMobile ? (
+          <Flex direction="column" gap={4} w="full" mt={4}>
+            {contracts.map((contractInfo) => (
+              <InstantiatedContractCard
+                contractInfo={contractInfo}
+                key={
+                  contractInfo.name +
+                  contractInfo.contractAddress +
+                  contractInfo.description +
+                  contractInfo.tags +
+                  contractInfo.lists
+                }
+              />
+            ))}
+          </Flex>
+        ) : (
+          <ContractsTable
+            contracts={contracts}
+            isLoading={isLoading}
+            emptyState={<NoContracts />}
+            onRowSelect={onRowSelect}
+          />
+        )}
         {!!totalData && totalData > 10 && (
           <Pagination
             currentPage={currentPage}

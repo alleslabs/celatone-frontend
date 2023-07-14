@@ -1,10 +1,13 @@
-import { CURR_THEME, SELECTED_CHAIN } from "env";
+import { CURR_THEME } from "env";
+import { useCelatoneApp } from "lib/app-provider";
 
 const APP_NAME = CURR_THEME.branding.seo.appName;
 
 const Meta = () => {
-  const chainName = SELECTED_CHAIN || "";
-  const title = `${chainName.charAt(0).toUpperCase() + chainName.slice(1)}`;
+  const {
+    chainConfig: { prettyName },
+  } = useCelatoneApp();
+  const title = `${prettyName} Explorer | ${CURR_THEME.branding.seo.title}`;
   return (
     <>
       <meta name="application-name" content={APP_NAME} />
@@ -14,15 +17,12 @@ const Meta = () => {
       <meta name="format-detection" content="telephone=no" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="theme-color" content={CURR_THEME.colors.background.main} />
-      <title>{`${title} Explorer | ${CURR_THEME.branding.seo.title}`}</title>
+      <title>{title}</title>
       <meta name="description" content={CURR_THEME.branding.seo.description} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta
-        property="og:title"
-        content={`${title} Explorer | ${CURR_THEME.branding.seo.title}`}
-      />
+      <meta property="og:title" content={title} />
       <meta
         property="og:description"
         content={CURR_THEME.branding.seo.description}
@@ -34,10 +34,7 @@ const Meta = () => {
         property="twitter:card"
         content={CURR_THEME.branding.seo.twitter.cardType}
       />
-      <meta
-        property="twitter:title"
-        content={`${title} Explorer | ${CURR_THEME.branding.seo.title}`}
-      />
+      <meta property="twitter:title" content={title} />
       <meta
         property="twitter:description"
         content={CURR_THEME.branding.seo.description}

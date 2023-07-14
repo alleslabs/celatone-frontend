@@ -36,7 +36,7 @@ export const RadioCard = ({
                 {formatUTokenWithPrecision(token.amount, token.precision || 0)}
               </Heading>
               <Text variant="body2" textColor="text.main">
-                {token.symbol ?? getTokenLabel(token.denom)}
+                {getTokenLabel(token.denom, token.symbol)}
               </Text>
             </Flex>
           )}
