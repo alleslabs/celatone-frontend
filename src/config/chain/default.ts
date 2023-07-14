@@ -41,5 +41,4 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     validator: "",
     proposal: "",
   },
-  hasSubHeader: false,
 };
