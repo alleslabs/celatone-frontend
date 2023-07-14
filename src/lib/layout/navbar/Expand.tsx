@@ -94,7 +94,11 @@ export const ExpandNavMenu = ({
         </Flex>
         {item.submenu.map((submenu) =>
           submenu.isDisable ? (
-            <Tooltip label={submenu.tooltipText} maxW="240px">
+            <Tooltip
+              key={submenu.slug}
+              label={submenu.tooltipText}
+              maxW="240px"
+            >
               <div>
                 <NavInfo submenu={submenu} isCurrentPage={isCurrentPage} />
               </div>

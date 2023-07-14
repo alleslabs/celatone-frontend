@@ -97,6 +97,7 @@ export const CollapseNavMenu = ({
           {item.submenu.map((submenu) =>
             submenu.isDisable ? (
               <CollapseNavInfo
+                key={submenu.slug}
                 submenu={submenu}
                 isCurrentPage={isCurrentPage}
               />
