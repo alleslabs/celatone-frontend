@@ -52,18 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-### Improvements
-
-- [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Add new Osmosis v16 tx messages
-- [#414](https://github.com/alleslabs/celatone-frontend/pull/414) Add jest test cases for funds and assetValue in utils, and remove isDecimalNumber in utils
-- [#435](https://github.com/alleslabs/celatone-frontend/pull/435) Refactor chain's config, add new chain configs
-
-### Bug fixes
-
-## v1.1.0
-
-### Features
-
 - [#397](https://github.com/alleslabs/celatone-frontend/pull/397) Implement first version of Osmosis v16 pool
 - [#358](https://github.com/alleslabs/celatone-frontend/pull/358) Add Amp for Pool Detail page
 - [#355](https://github.com/alleslabs/celatone-frontend/pull/355) Add Amp for Pool List page
