@@ -80,7 +80,7 @@ const ContractsByList = observer(() => {
     <PageContainer>
       <Breadcrumb
         items={[
-          { text: "Contract Lists", href: "/contract-list" },
+          { text: "Contract Lists", href: "/contract-lists" },
           { text: contractListInfo.name },
         ]}
       />

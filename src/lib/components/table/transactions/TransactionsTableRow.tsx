@@ -79,7 +79,7 @@ export const TransactionsTableRow = ({
           )}
         </TableRow>
         <TableRow>
-          <Flex gap={1} flexWrap="wrap">
+          <Flex gap={1} flexWrap="wrap" align="center">
             <RenderActionMessages transaction={transaction} />
             {transaction.isIbc && (
               <Tag variant="accent-dark" size="sm">

@@ -115,9 +115,16 @@ export const CodeInfoSection = ({
   return (
     <Box mb={12}>
       <Heading as="h6" variant="h6" mb={6}>
-        Code Information
+        Code Info
       </Heading>
-      <Grid templateColumns="repeat(5, 1fr)" columnGap={12}>
+      <Grid
+        templateColumns={{
+          base: "1fr 1fr",
+          md: "repeat(5, 1fr)",
+        }}
+        columnGap={12}
+        rowGap={{ base: 6, md: 0 }}
+      >
         <LabelText label="Network">{chainId}</LabelText>
         <LabelText label="Uploaded by">
           <Flex direction="column" gap={1}>
@@ -144,7 +151,10 @@ export const CodeInfoSection = ({
             />
           </Flex>
         </LabelText>
-        <LabelText label="Stored on block">
+        <LabelText
+          label="Stored on block"
+          gridColumn={{ base: "1 / span 2", md: "5 / span 1" }}
+        >
           <Flex direction="column" gap={1}>
             {storedBlockRender}
           </Flex>

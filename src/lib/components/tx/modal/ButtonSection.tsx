@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import {
   useInternalNavigate,
   useCelatoneApp,
-  useLCDEndpoint,
+  useBaseApiRoute,
 } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { getNavigationUrl } from "lib/components/ExplorerLink";
@@ -33,7 +33,7 @@ export const ButtonSection = ({
   const {
     chainConfig: { explorerLink },
   } = useCelatoneApp();
-  const lcdEndpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const openTxExplorer = () => {
     const txHash = receipts

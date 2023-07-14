@@ -21,8 +21,6 @@ export const DEFAULT_LIST: LVPair[] = [
 
 export const DEFAULT_ADDRESS = "default-address";
 
-export const MICRO = 1_000_000;
-
 export const typeUrlDict = {
   [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
   [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
@@ -44,3 +42,5 @@ export const DEFAULT_TX_FILTERS = {
   isUpdateAdmin: false,
   isClearAdmin: false,
 };
+
+export const UPPERBOUND_COUNT = 10000;

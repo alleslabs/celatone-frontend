@@ -1,8 +1,8 @@
 export const jsonValidate = (text: string) => {
   try {
-    if (text !== "") JSON.parse(text);
     if (text.trim().length === 0)
       throw new SyntaxError(`Can't use empty string`);
+    JSON.parse(text);
     return null;
   } catch (error) {
     return (error as SyntaxError).message;
