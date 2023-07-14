@@ -19,3 +19,8 @@ export interface LatestBlock {
   height: Option<number>;
   timestamp: Option<Date>;
 }
+
+export interface BlockTimeInfo {
+  hundred: Date;
+  latest: Date;
+}

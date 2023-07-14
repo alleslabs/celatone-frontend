@@ -1,4 +1,6 @@
-import type { Addr } from "lib/types";
+import type { Log } from "@cosmjs/stargate/build/logs";
+
+import type { Addr, Option } from "lib/types";
 
 export enum ActionMsgType {
   SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
@@ -14,12 +16,8 @@ export enum MsgFurtherAction {
 
 export interface Message {
   detail: object;
-  logs: Logs;
+  log: Option<Log>;
   type: string;
-}
-
-interface Logs {
-  events: object[];
 }
 
 export interface Msg {
@@ -51,3 +49,13 @@ export interface TxFilters {
   isUpdateAdmin: boolean;
   isClearAdmin: boolean;
 }
+
+export type PoolTxFilter =
+  | "is_all"
+  | "is_swap"
+  | "is_lp"
+  | "is_bond"
+  | "is_superfluid"
+  | "is_clp"
+  | "is_collect"
+  | "is_migrate";

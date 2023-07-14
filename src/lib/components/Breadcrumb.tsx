@@ -24,7 +24,9 @@ export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
     w="full"
     spacing="4px"
     mb={mb}
-    separator={<CustomIcon name="chevron-right" boxSize={3} color="gray.600" />}
+    separator={
+      <CustomIcon name="chevron-right" boxSize={3} color="gray.600" mb="6px" />
+    }
   >
     {items.map((item) =>
       item.href ? (
@@ -42,7 +44,7 @@ export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
       ) : (
         <ChakraBreadcrumbItem isCurrentPage key={`bc-${item.href}`}>
           <Text
-            variant="body2"
+            variant={{ base: "body3", md: "body2" }}
             className="ellipsis"
             fontWeight={600}
             width="250px"

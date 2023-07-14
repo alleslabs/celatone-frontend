@@ -1,6 +1,5 @@
 import {
   Flex,
-  Heading,
   TabList,
   TabPanel,
   TabPanels,
@@ -14,7 +13,6 @@ import { useValidateAddress, useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
@@ -26,12 +24,7 @@ import {
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
 import type { HumanAddr } from "lib/types";
-import {
-  formatPrice,
-  getFirstQueryParam,
-  scrollToTop,
-  truncate,
-} from "lib/utils";
+import { getFirstQueryParam, scrollToTop, truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
@@ -43,7 +36,7 @@ import {
   StoredCodesTable,
   TxsTable,
 } from "./components/tables";
-import { useAccountTotalValue } from "./data";
+import { TotalAccountValue } from "./components/TotalAccountValue";
 
 enum TabIndex {
   Overview,
@@ -73,7 +66,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const { data: icnsName } = useICNSNamesByAddress(accountAddress);
 
   const publicDetail = publicInfoBySlug?.details;
-
   const {
     tableCounts,
     refetchCodesCount,
@@ -82,8 +74,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchProposalsCount,
     loadingState: { txCountLoading },
   } = useAccountDetailsTableCounts(accountAddress, accountId);
-
-  const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
 
   const handleTabChange = (tab: TabIndex) => {
     AmpTrackUseTab(TabIndex[tab]);
@@ -145,7 +135,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           id={tableHeaderId}
         >
           <CustomTab onClick={() => handleTabChange(TabIndex.Overview)}>
-            Overall
+            Overview
           </CustomTab>
           <CustomTab
             count={tableCounts.assetsCount}
@@ -198,46 +188,26 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
+            <TotalAccountValue accountAddress={accountAddress} />
             <Flex
-              mt={8}
-              pb={8}
-              direction="column"
-              borderBottom="1px solid"
-              borderBottomColor="gray.700"
+              borderBottom={{ base: "0px", md: "1px solid" }}
+              borderBottomColor={{ base: "transparent", md: "gray.700" }}
             >
-              <Text variant="body2" fontWeight={500} color="text.dark">
-                Total Account Value
-              </Text>
-              {isLoading ? (
-                <Loading />
-              ) : (
-                <Heading
-                  as="h5"
-                  variant="h5"
-                  color={
-                    !totalAccountValue || totalAccountValue.eq(0)
-                      ? "text.dark"
-                      : "text.main"
-                  }
-                >
-                  {totalAccountValue ? formatPrice(totalAccountValue) : "N/A"}
-                </Heading>
-              )}
-            </Flex>
-            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}
                 onViewMore={() => handleTabChange(TabIndex.Assets)}
               />
             </Flex>
-            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
+            <Flex
+              borderBottom={{ base: "0px", md: "1px solid" }}
+              borderBottomColor={{ base: "transparent", md: "gray.700" }}
+            >
               <DelegationsSection
                 walletAddress={accountAddress}
                 onViewMore={() => handleTabChange(TabIndex.Delegations)}
               />
             </Flex>
             <TxsTable
-              walletAddress={accountAddress}
               accountId={accountId}
               scrollComponentId={tableHeaderId}
               onViewMore={() => handleTabChange(TabIndex.Txs)}
@@ -282,11 +252,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <TxsTable
-              walletAddress={accountAddress}
-              accountId={accountId}
-              scrollComponentId={tableHeaderId}
-            />
+            <TxsTable accountId={accountId} scrollComponentId={tableHeaderId} />
           </TabPanel>
           <TabPanel p={0}>
             <StoredCodesTable
@@ -337,7 +303,6 @@ const AccountDetails = () => {
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL);
   }, [router.isReady]);
-
   return (
     <PageContainer>
       {validateUserAddress(accountAddressParam) &&

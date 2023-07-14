@@ -38,11 +38,15 @@ export const AccountHeader = ({
         ) : (
           <CustomIcon name="wallet" boxSize={5} color="secondary.main" />
         )}
-        <Heading as="h5" variant="h5">
+        <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
           {publicName ?? displayName}
         </Heading>
       </Flex>
-      <Flex gap={2}>
+      <Flex
+        gap={{ base: 0, md: 2 }}
+        mt={{ base: 1, md: 0 }}
+        direction={{ base: "column", md: "row" }}
+      >
         <Text fontWeight={500} color="text.dark" variant="body2">
           Wallet Address:
         </Text>

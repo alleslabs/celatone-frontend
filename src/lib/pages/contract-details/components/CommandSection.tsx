@@ -67,7 +67,11 @@ export const CommandSection = () => {
   };
 
   return (
-    <Flex gap={6}>
+    <Flex
+      gap={{ base: 4, md: 6 }}
+      direction={{ base: "column", md: "row" }}
+      mt={{ base: 4, md: 0 }}
+    >
       <Flex
         direction="column"
         bg="gray.900"

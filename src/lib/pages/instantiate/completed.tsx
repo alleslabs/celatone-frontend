@@ -9,7 +9,7 @@ import type { ContractAddr } from "lib/types";
 import { formatUFee } from "lib/utils";
 
 import type { InstantiateTxInfo } from ".";
-import { InstantiateOffChainForm } from "./component/InstantiateOffchainForm";
+import { InstantiateOffChainForm } from "./component";
 
 interface CompletedProps {
   txInfo: InstantiateTxInfo;

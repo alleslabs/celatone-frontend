@@ -1,6 +1,8 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
 import { defineStyle } from "@chakra-ui/react";
 
+import { CURR_THEME } from "env";
+
 const gray500 = "gray.500";
 const gray600 = "gray.600";
 const gray700 = "gray.700";
@@ -70,24 +72,43 @@ export const Button: ComponentStyleConfig = {
     },
   },
   variants: {
-    primary: generateStyle({
-      basic: {
-        background: "primary.main",
-        color: "text.main",
-        "& span": {
-          color: "text.main",
-        },
-      },
-      disabled: {
-        background: primaryBg,
-        color: gray600,
-        "& span": {
-          color: gray600,
-        },
-      },
-      hoverBg: primaryDark,
-      activeBg: primaryLight,
-    }),
+    primary: CURR_THEME.button?.primary
+      ? generateStyle({
+          basic: {
+            background: CURR_THEME.button.primary.background,
+            color: CURR_THEME.button.primary.color,
+            "& span": {
+              color: CURR_THEME.button.primary.color,
+            },
+          },
+          disabled: {
+            background: CURR_THEME.button.primary.disabledBackground,
+            color: CURR_THEME.button.primary.disabledColor,
+            "& span": {
+              color: CURR_THEME.button.primary.disabledColor,
+            },
+          },
+          hoverBg: primaryDark,
+          activeBg: primaryLight,
+        })
+      : generateStyle({
+          basic: {
+            background: "primary.main",
+            color: "text.main",
+            "& span": {
+              color: "text.main",
+            },
+          },
+          disabled: {
+            background: primaryBg,
+            color: gray600,
+            "& span": {
+              color: gray600,
+            },
+          },
+          hoverBg: primaryDark,
+          activeBg: primaryLight,
+        }),
     "gray-solid": generateStyle({
       basic: {
         background: gray800,
@@ -109,29 +130,53 @@ export const Button: ComponentStyleConfig = {
       hoverBg: errorDark,
       activeBg: "error.light",
     }),
-    "outline-primary": generateStyle({
-      basic: {
-        border: borderDefualt,
-        borderColor: primaryLight,
-        color: primaryLight,
-        "> div": {
-          color: primaryLight,
-        },
-        "> svg": {
-          color: primaryLight,
-        },
-      },
-      disabled: {
-        border: borderDefualt,
-        borderColor: gray700,
-        color: gray600,
-        "> svg": {
-          color: gray600,
-        },
-      },
-      hoverBg: primaryBg,
-      activeBg: "transparent",
-    }),
+    "outline-primary": CURR_THEME.button?.outlinePrimary
+      ? generateStyle({
+          basic: {
+            border: borderDefualt,
+            borderColor: CURR_THEME.button.outlinePrimary.borderColor,
+            color: CURR_THEME.button.outlinePrimary.color,
+            "> div": {
+              color: CURR_THEME.button.outlinePrimary.color,
+            },
+            "> svg": {
+              color: CURR_THEME.button.outlinePrimary.color,
+            },
+          },
+          disabled: {
+            border: borderDefualt,
+            borderColor: CURR_THEME.button.outlinePrimary.disabledBorderColor,
+            color: CURR_THEME.button.outlinePrimary.disabledColor,
+            "& span": {
+              color: CURR_THEME.button.outlinePrimary.disabledColor,
+            },
+          },
+          hoverBg: primaryDark,
+          activeBg: primaryLight,
+        })
+      : generateStyle({
+          basic: {
+            border: borderDefualt,
+            borderColor: primaryLight,
+            color: primaryLight,
+            "> div": {
+              color: primaryLight,
+            },
+            "> svg": {
+              color: primaryLight,
+            },
+          },
+          disabled: {
+            border: borderDefualt,
+            borderColor: gray700,
+            color: gray600,
+            "> svg": {
+              color: gray600,
+            },
+          },
+          hoverBg: primaryBg,
+          activeBg: "transparent",
+        }),
     "outline-gray": generateStyle({
       basic: {
         border: borderDefualt,

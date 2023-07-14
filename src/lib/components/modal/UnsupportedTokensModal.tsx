@@ -178,7 +178,6 @@ export const UnsupportedTokensModal = ({
               </Heading>
             </Flex>
           </ModalHeader>
-
           <ModalCloseButton color="gray.600" />
           <ModalBody maxH="400px" overflow="overlay" pb={6}>
             <Flex direction="column" gap={5}>

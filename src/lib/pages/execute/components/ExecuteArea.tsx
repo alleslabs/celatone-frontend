@@ -8,7 +8,9 @@ import {
   useFabricateFee,
   useExecuteContractTx,
   useCurrentChain,
+  useMobile,
 } from "lib/app-provider";
+import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
@@ -31,12 +33,7 @@ import { AmpEvent, AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import {
-  composeMsg,
-  getAttachFunds,
-  jsonPrettify,
-  jsonValidate,
-} from "lib/utils";
+import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -66,6 +63,7 @@ export const ExecuteArea = ({
   const executeTx = useExecuteContractTx();
   const { broadcast } = useTxBroadcast();
   const { addActivity } = useContractStore();
+  const getAttachFunds = useAttachFunds();
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(initialMsg);
 
@@ -141,13 +139,12 @@ export const ExecuteArea = ({
     },
   });
 
-  const funds = getAttachFunds({
-    attachFundsOption,
-    assetsJsonStr,
-    assetsSelect,
-  });
-
   const proceed = useCallback(async () => {
+    const funds = getAttachFunds(
+      attachFundsOption,
+      assetsJsonStr,
+      assetsSelect
+    );
     AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await executeTx({
       onTxSucceed: (userKey: string, activity: Activity) => {
@@ -165,12 +162,14 @@ export const ExecuteArea = ({
       broadcast(stream);
     }
   }, [
-    funds,
+    attachFundsOption,
     executeTx,
     fee,
     contractAddress,
     msg,
-    attachFundsOption,
+    getAttachFunds,
+    assetsJsonStr,
+    assetsSelect,
     addActivity,
     broadcast,
   ]);
@@ -184,7 +183,7 @@ export const ExecuteArea = ({
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds,
+        funds: getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect),
       });
 
       const timeoutId = setTimeout(() => {
@@ -198,9 +197,11 @@ export const ExecuteArea = ({
     contractAddress,
     enableExecute,
     msg,
-    funds,
     assetsJsonStr,
     assetsSelectString,
+    getAttachFunds,
+    attachFundsOption,
+    assetsSelect,
   ]);
 
   useEffect(() => {
@@ -216,6 +217,7 @@ export const ExecuteArea = ({
     };
   });
 
+  const isMobile = useMobile();
   return (
     <Box my={4}>
       {contractAddress && (
@@ -293,7 +295,7 @@ export const ExecuteArea = ({
             isLoading={processing}
             sx={{ pointerEvents: processing && "none" }}
           >
-            Execute (Ctrl + Enter)
+            Execute {!isMobile && "(Ctrl + Enter)"}
           </Button>
         </Flex>
       </Flex>

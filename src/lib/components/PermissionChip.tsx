@@ -13,11 +13,13 @@ import { Tooltip } from "./Tooltip";
 interface PermissionChipProps {
   instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
+  tagSize?: string;
 }
 
 export const PermissionChip = ({
   instantiatePermission,
   permissionAddresses,
+  tagSize = "md",
 }: PermissionChipProps) => {
   const { address } = useCurrentChain();
 
@@ -35,8 +37,8 @@ export const PermissionChip = ({
 
   return (
     <Tooltip label={message}>
-      <Flex>
-        <Tag size="md" variant={isAllowed ? "accent-darker" : "gray"}>
+      <Flex onClick={(e) => e.stopPropagation()} w="fit-content">
+        <Tag size={tagSize} variant={isAllowed ? "accent-darker" : "gray"}>
           {instantiatePermission}
         </Tag>
       </Flex>
