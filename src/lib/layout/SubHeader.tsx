@@ -81,7 +81,7 @@ const SubHeader = () => {
         ))}
       </Flex>
       <FormControl display="flex" alignItems="center" width="fit-content">
-        <FormLabel mb={0} cursor="pointer">
+        <FormLabel cursor="pointer">
           <Text variant="body2" color="text.dark">
             Dev Mode
           </Text>
