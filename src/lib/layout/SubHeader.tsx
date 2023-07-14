@@ -48,10 +48,10 @@ const FirstLandPrompt = ({
       },
     }}
   >
-    <header>Are you developers?</header>
+    <header>Looking for developer features?</header>
     <div>
-      Try query, execute, or deploy contracts with our Dev Mode. You can change
-      it later anytime.
+      For quick access to our deploy, query, and other developer features, try
+      our Dev Mode. You can change it back at any time
     </div>
     <footer>
       <Button variant="outline-primary" onClick={() => setIsDevMode(false)}>
