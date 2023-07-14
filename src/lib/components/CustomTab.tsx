@@ -2,7 +2,7 @@ import type { TabProps } from "@chakra-ui/react";
 import { Button, useTab, Badge, useMultiStyleConfig } from "@chakra-ui/react";
 
 interface CustomTabProps extends TabProps {
-  count?: number;
+  count?: number | string;
 }
 
 export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
@@ -24,6 +24,9 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
       sx={{
         "&[aria-selected=true]": {
           color: "primary.light",
+        },
+        "&[aria-selected=false]": {
+          color: "gray.500",
         },
       }}
       _active={{

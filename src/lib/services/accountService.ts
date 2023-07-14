@@ -25,14 +25,14 @@ export const useAccountBalances = (
 
 export const useAccountId = (
   walletAddress: Option<Addr>
-): UseQueryResult<Option<number>> => {
+): UseQueryResult<number | null> => {
   const { indexerGraphClient } = useCelatoneApp();
   const queryFn = () => {
     if (!walletAddress)
       throw new Error("Error fetching account id: failed to retrieve address.");
     return indexerGraphClient
       .request(getAccountIdByAddressQueryDocument, { address: walletAddress })
-      .then<Option<number>>(({ accounts_by_pk }) => accounts_by_pk?.id);
+      .then<number | null>(({ accounts_by_pk }) => accounts_by_pk?.id ?? null);
   };
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_ID, indexerGraphClient, walletAddress],

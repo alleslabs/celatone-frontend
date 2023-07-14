@@ -88,7 +88,7 @@ export const SelectContractAdmin = ({
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton />
-          <DrawerBody overflowY="scroll">
+          <DrawerBody overflowY="scroll" py={4}>
             <ContractListDetail
               contractListInfo={contractList}
               isLoading={isLoading}

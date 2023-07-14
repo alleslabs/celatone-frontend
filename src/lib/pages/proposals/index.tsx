@@ -63,7 +63,6 @@ const Proposals = () => {
     search,
     proposer
   );
-
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_LIST);
   }, [router.isReady]);
@@ -115,7 +114,6 @@ const Proposals = () => {
             isDisabled={!!address}
             label="You need to connect your wallet to see your proposals"
             maxW="240px"
-            whiteSpace="pre-line"
             textAlign="center"
           >
             <div>

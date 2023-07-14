@@ -6195,7 +6195,10 @@ export type Pool_Transactions = {
   block: Blocks;
   block_height: Scalars["Int"];
   is_bond: Scalars["Boolean"];
+  is_clp: Scalars["Boolean"];
+  is_collect: Scalars["Boolean"];
   is_lp: Scalars["Boolean"];
+  is_migrate: Scalars["Boolean"];
   is_superfluid: Scalars["Boolean"];
   is_swap: Scalars["Boolean"];
   /** An object relationship */
@@ -6305,7 +6308,10 @@ export type Pool_Transactions_Bool_Exp = {
   block?: InputMaybe<Blocks_Bool_Exp>;
   block_height?: InputMaybe<Int_Comparison_Exp>;
   is_bond?: InputMaybe<Boolean_Comparison_Exp>;
+  is_clp?: InputMaybe<Boolean_Comparison_Exp>;
+  is_collect?: InputMaybe<Boolean_Comparison_Exp>;
   is_lp?: InputMaybe<Boolean_Comparison_Exp>;
+  is_migrate?: InputMaybe<Boolean_Comparison_Exp>;
   is_superfluid?: InputMaybe<Boolean_Comparison_Exp>;
   is_swap?: InputMaybe<Boolean_Comparison_Exp>;
   pool?: InputMaybe<Pools_Bool_Exp>;
@@ -6326,7 +6332,10 @@ export type Pool_Transactions_Insert_Input = {
   block?: InputMaybe<Blocks_Obj_Rel_Insert_Input>;
   block_height?: InputMaybe<Scalars["Int"]>;
   is_bond?: InputMaybe<Scalars["Boolean"]>;
+  is_clp?: InputMaybe<Scalars["Boolean"]>;
+  is_collect?: InputMaybe<Scalars["Boolean"]>;
   is_lp?: InputMaybe<Scalars["Boolean"]>;
+  is_migrate?: InputMaybe<Scalars["Boolean"]>;
   is_superfluid?: InputMaybe<Scalars["Boolean"]>;
   is_swap?: InputMaybe<Scalars["Boolean"]>;
   pool?: InputMaybe<Pools_Obj_Rel_Insert_Input>;
@@ -6379,7 +6388,10 @@ export type Pool_Transactions_Order_By = {
   block?: InputMaybe<Blocks_Order_By>;
   block_height?: InputMaybe<Order_By>;
   is_bond?: InputMaybe<Order_By>;
+  is_clp?: InputMaybe<Order_By>;
+  is_collect?: InputMaybe<Order_By>;
   is_lp?: InputMaybe<Order_By>;
+  is_migrate?: InputMaybe<Order_By>;
   is_superfluid?: InputMaybe<Order_By>;
   is_swap?: InputMaybe<Order_By>;
   pool?: InputMaybe<Pools_Order_By>;
@@ -6395,7 +6407,13 @@ export enum Pool_Transactions_Select_Column {
   /** column name */
   IsBond = "is_bond",
   /** column name */
+  IsClp = "is_clp",
+  /** column name */
+  IsCollect = "is_collect",
+  /** column name */
   IsLp = "is_lp",
+  /** column name */
+  IsMigrate = "is_migrate",
   /** column name */
   IsSuperfluid = "is_superfluid",
   /** column name */
@@ -6411,7 +6429,13 @@ export enum Pool_Transactions_Select_Column_Pool_Transactions_Aggregate_Bool_Exp
   /** column name */
   IsBond = "is_bond",
   /** column name */
+  IsClp = "is_clp",
+  /** column name */
+  IsCollect = "is_collect",
+  /** column name */
   IsLp = "is_lp",
+  /** column name */
+  IsMigrate = "is_migrate",
   /** column name */
   IsSuperfluid = "is_superfluid",
   /** column name */
@@ -6423,7 +6447,13 @@ export enum Pool_Transactions_Select_Column_Pool_Transactions_Aggregate_Bool_Exp
   /** column name */
   IsBond = "is_bond",
   /** column name */
+  IsClp = "is_clp",
+  /** column name */
+  IsCollect = "is_collect",
+  /** column name */
   IsLp = "is_lp",
+  /** column name */
+  IsMigrate = "is_migrate",
   /** column name */
   IsSuperfluid = "is_superfluid",
   /** column name */
@@ -6434,7 +6464,10 @@ export enum Pool_Transactions_Select_Column_Pool_Transactions_Aggregate_Bool_Exp
 export type Pool_Transactions_Set_Input = {
   block_height?: InputMaybe<Scalars["Int"]>;
   is_bond?: InputMaybe<Scalars["Boolean"]>;
+  is_clp?: InputMaybe<Scalars["Boolean"]>;
+  is_collect?: InputMaybe<Scalars["Boolean"]>;
   is_lp?: InputMaybe<Scalars["Boolean"]>;
+  is_migrate?: InputMaybe<Scalars["Boolean"]>;
   is_superfluid?: InputMaybe<Scalars["Boolean"]>;
   is_swap?: InputMaybe<Scalars["Boolean"]>;
   pool_id?: InputMaybe<Scalars["Int"]>;
@@ -6498,7 +6531,10 @@ export type Pool_Transactions_Stream_Cursor_Input = {
 export type Pool_Transactions_Stream_Cursor_Value_Input = {
   block_height?: InputMaybe<Scalars["Int"]>;
   is_bond?: InputMaybe<Scalars["Boolean"]>;
+  is_clp?: InputMaybe<Scalars["Boolean"]>;
+  is_collect?: InputMaybe<Scalars["Boolean"]>;
   is_lp?: InputMaybe<Scalars["Boolean"]>;
+  is_migrate?: InputMaybe<Scalars["Boolean"]>;
   is_superfluid?: InputMaybe<Scalars["Boolean"]>;
   is_swap?: InputMaybe<Scalars["Boolean"]>;
   pool_id?: InputMaybe<Scalars["Int"]>;
@@ -6580,6 +6616,7 @@ export type Pools = {
   /** An object relationship */
   account?: Maybe<Accounts>;
   address: Scalars["String"];
+  contract_address?: Maybe<Scalars["String"]>;
   create_tx_id?: Maybe<Scalars["Int"]>;
   creator?: Maybe<Scalars["Int"]>;
   exit_fee: Scalars["String"];
@@ -6595,7 +6632,9 @@ export type Pools = {
   scaling_factor_controller?: Maybe<Scalars["String"]>;
   scaling_factors?: Maybe<Scalars["json"]>;
   smooth_weight_change_params?: Maybe<Scalars["json"]>;
+  spread_factor?: Maybe<Scalars["String"]>;
   swap_fee: Scalars["String"];
+  tick_spacing?: Maybe<Scalars["Int"]>;
   total_shares: Scalars["json"];
   /** An object relationship */
   transaction?: Maybe<Transactions>;
@@ -6730,6 +6769,7 @@ export type Pools_Avg_Fields = {
   create_tx_id?: Maybe<Scalars["Float"]>;
   creator?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  tick_spacing?: Maybe<Scalars["Float"]>;
 };
 
 /** order by avg() on columns of table "pools" */
@@ -6737,6 +6777,7 @@ export type Pools_Avg_Order_By = {
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "pools". All fields are combined with a logical 'AND'. */
@@ -6746,6 +6787,7 @@ export type Pools_Bool_Exp = {
   _or?: InputMaybe<Array<Pools_Bool_Exp>>;
   account?: InputMaybe<Accounts_Bool_Exp>;
   address?: InputMaybe<String_Comparison_Exp>;
+  contract_address?: InputMaybe<String_Comparison_Exp>;
   create_tx_id?: InputMaybe<Int_Comparison_Exp>;
   creator?: InputMaybe<Int_Comparison_Exp>;
   exit_fee?: InputMaybe<String_Comparison_Exp>;
@@ -6759,7 +6801,9 @@ export type Pools_Bool_Exp = {
   scaling_factor_controller?: InputMaybe<String_Comparison_Exp>;
   scaling_factors?: InputMaybe<Json_Comparison_Exp>;
   smooth_weight_change_params?: InputMaybe<Json_Comparison_Exp>;
+  spread_factor?: InputMaybe<String_Comparison_Exp>;
   swap_fee?: InputMaybe<String_Comparison_Exp>;
+  tick_spacing?: InputMaybe<Int_Comparison_Exp>;
   total_shares?: InputMaybe<Json_Comparison_Exp>;
   transaction?: InputMaybe<Transactions_Bool_Exp>;
   type?: InputMaybe<Pooltype_Comparison_Exp>;
@@ -6777,12 +6821,14 @@ export type Pools_Inc_Input = {
   create_tx_id?: InputMaybe<Scalars["Int"]>;
   creator?: InputMaybe<Scalars["Int"]>;
   id?: InputMaybe<Scalars["Int"]>;
+  tick_spacing?: InputMaybe<Scalars["Int"]>;
 };
 
 /** input type for inserting data into table "pools" */
 export type Pools_Insert_Input = {
   account?: InputMaybe<Accounts_Obj_Rel_Insert_Input>;
   address?: InputMaybe<Scalars["String"]>;
+  contract_address?: InputMaybe<Scalars["String"]>;
   create_tx_id?: InputMaybe<Scalars["Int"]>;
   creator?: InputMaybe<Scalars["Int"]>;
   exit_fee?: InputMaybe<Scalars["String"]>;
@@ -6795,7 +6841,9 @@ export type Pools_Insert_Input = {
   scaling_factor_controller?: InputMaybe<Scalars["String"]>;
   scaling_factors?: InputMaybe<Scalars["json"]>;
   smooth_weight_change_params?: InputMaybe<Scalars["json"]>;
+  spread_factor?: InputMaybe<Scalars["String"]>;
   swap_fee?: InputMaybe<Scalars["String"]>;
+  tick_spacing?: InputMaybe<Scalars["Int"]>;
   total_shares?: InputMaybe<Scalars["json"]>;
   transaction?: InputMaybe<Transactions_Obj_Rel_Insert_Input>;
   type?: InputMaybe<Scalars["pooltype"]>;
@@ -6806,26 +6854,32 @@ export type Pools_Insert_Input = {
 export type Pools_Max_Fields = {
   __typename?: "pools_max_fields";
   address?: Maybe<Scalars["String"]>;
+  contract_address?: Maybe<Scalars["String"]>;
   create_tx_id?: Maybe<Scalars["Int"]>;
   creator?: Maybe<Scalars["Int"]>;
   exit_fee?: Maybe<Scalars["String"]>;
   future_pool_governor?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["Int"]>;
   scaling_factor_controller?: Maybe<Scalars["String"]>;
+  spread_factor?: Maybe<Scalars["String"]>;
   swap_fee?: Maybe<Scalars["String"]>;
+  tick_spacing?: Maybe<Scalars["Int"]>;
   type?: Maybe<Scalars["pooltype"]>;
 };
 
 /** order by max() on columns of table "pools" */
 export type Pools_Max_Order_By = {
   address?: InputMaybe<Order_By>;
+  contract_address?: InputMaybe<Order_By>;
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   exit_fee?: InputMaybe<Order_By>;
   future_pool_governor?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   scaling_factor_controller?: InputMaybe<Order_By>;
+  spread_factor?: InputMaybe<Order_By>;
   swap_fee?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
 };
 
@@ -6833,26 +6887,32 @@ export type Pools_Max_Order_By = {
 export type Pools_Min_Fields = {
   __typename?: "pools_min_fields";
   address?: Maybe<Scalars["String"]>;
+  contract_address?: Maybe<Scalars["String"]>;
   create_tx_id?: Maybe<Scalars["Int"]>;
   creator?: Maybe<Scalars["Int"]>;
   exit_fee?: Maybe<Scalars["String"]>;
   future_pool_governor?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["Int"]>;
   scaling_factor_controller?: Maybe<Scalars["String"]>;
+  spread_factor?: Maybe<Scalars["String"]>;
   swap_fee?: Maybe<Scalars["String"]>;
+  tick_spacing?: Maybe<Scalars["Int"]>;
   type?: Maybe<Scalars["pooltype"]>;
 };
 
 /** order by min() on columns of table "pools" */
 export type Pools_Min_Order_By = {
   address?: InputMaybe<Order_By>;
+  contract_address?: InputMaybe<Order_By>;
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   exit_fee?: InputMaybe<Order_By>;
   future_pool_governor?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   scaling_factor_controller?: InputMaybe<Order_By>;
+  spread_factor?: InputMaybe<Order_By>;
   swap_fee?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
 };
 
@@ -6883,6 +6943,7 @@ export type Pools_On_Conflict = {
 export type Pools_Order_By = {
   account?: InputMaybe<Accounts_Order_By>;
   address?: InputMaybe<Order_By>;
+  contract_address?: InputMaybe<Order_By>;
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   exit_fee?: InputMaybe<Order_By>;
@@ -6895,7 +6956,9 @@ export type Pools_Order_By = {
   scaling_factor_controller?: InputMaybe<Order_By>;
   scaling_factors?: InputMaybe<Order_By>;
   smooth_weight_change_params?: InputMaybe<Order_By>;
+  spread_factor?: InputMaybe<Order_By>;
   swap_fee?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
   total_shares?: InputMaybe<Order_By>;
   transaction?: InputMaybe<Transactions_Order_By>;
   type?: InputMaybe<Order_By>;
@@ -6911,6 +6974,8 @@ export type Pools_Pk_Columns_Input = {
 export enum Pools_Select_Column {
   /** column name */
   Address = "address",
+  /** column name */
+  ContractAddress = "contract_address",
   /** column name */
   CreateTxId = "create_tx_id",
   /** column name */
@@ -6934,7 +6999,11 @@ export enum Pools_Select_Column {
   /** column name */
   SmoothWeightChangeParams = "smooth_weight_change_params",
   /** column name */
+  SpreadFactor = "spread_factor",
+  /** column name */
   SwapFee = "swap_fee",
+  /** column name */
+  TickSpacing = "tick_spacing",
   /** column name */
   TotalShares = "total_shares",
   /** column name */
@@ -6962,6 +7031,7 @@ export enum Pools_Select_Column_Pools_Aggregate_Bool_Exp_Bool_Or_Arguments_Colum
 /** input type for updating data in table "pools" */
 export type Pools_Set_Input = {
   address?: InputMaybe<Scalars["String"]>;
+  contract_address?: InputMaybe<Scalars["String"]>;
   create_tx_id?: InputMaybe<Scalars["Int"]>;
   creator?: InputMaybe<Scalars["Int"]>;
   exit_fee?: InputMaybe<Scalars["String"]>;
@@ -6973,7 +7043,9 @@ export type Pools_Set_Input = {
   scaling_factor_controller?: InputMaybe<Scalars["String"]>;
   scaling_factors?: InputMaybe<Scalars["json"]>;
   smooth_weight_change_params?: InputMaybe<Scalars["json"]>;
+  spread_factor?: InputMaybe<Scalars["String"]>;
   swap_fee?: InputMaybe<Scalars["String"]>;
+  tick_spacing?: InputMaybe<Scalars["Int"]>;
   total_shares?: InputMaybe<Scalars["json"]>;
   type?: InputMaybe<Scalars["pooltype"]>;
   weight?: InputMaybe<Scalars["json"]>;
@@ -6985,6 +7057,7 @@ export type Pools_Stddev_Fields = {
   create_tx_id?: Maybe<Scalars["Float"]>;
   creator?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  tick_spacing?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev() on columns of table "pools" */
@@ -6992,6 +7065,7 @@ export type Pools_Stddev_Order_By = {
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -7000,6 +7074,7 @@ export type Pools_Stddev_Pop_Fields = {
   create_tx_id?: Maybe<Scalars["Float"]>;
   creator?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  tick_spacing?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_pop() on columns of table "pools" */
@@ -7007,6 +7082,7 @@ export type Pools_Stddev_Pop_Order_By = {
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -7015,6 +7091,7 @@ export type Pools_Stddev_Samp_Fields = {
   create_tx_id?: Maybe<Scalars["Float"]>;
   creator?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  tick_spacing?: Maybe<Scalars["Float"]>;
 };
 
 /** order by stddev_samp() on columns of table "pools" */
@@ -7022,6 +7099,7 @@ export type Pools_Stddev_Samp_Order_By = {
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "pools" */
@@ -7035,6 +7113,7 @@ export type Pools_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Pools_Stream_Cursor_Value_Input = {
   address?: InputMaybe<Scalars["String"]>;
+  contract_address?: InputMaybe<Scalars["String"]>;
   create_tx_id?: InputMaybe<Scalars["Int"]>;
   creator?: InputMaybe<Scalars["Int"]>;
   exit_fee?: InputMaybe<Scalars["String"]>;
@@ -7046,7 +7125,9 @@ export type Pools_Stream_Cursor_Value_Input = {
   scaling_factor_controller?: InputMaybe<Scalars["String"]>;
   scaling_factors?: InputMaybe<Scalars["json"]>;
   smooth_weight_change_params?: InputMaybe<Scalars["json"]>;
+  spread_factor?: InputMaybe<Scalars["String"]>;
   swap_fee?: InputMaybe<Scalars["String"]>;
+  tick_spacing?: InputMaybe<Scalars["Int"]>;
   total_shares?: InputMaybe<Scalars["json"]>;
   type?: InputMaybe<Scalars["pooltype"]>;
   weight?: InputMaybe<Scalars["json"]>;
@@ -7058,6 +7139,7 @@ export type Pools_Sum_Fields = {
   create_tx_id?: Maybe<Scalars["Int"]>;
   creator?: Maybe<Scalars["Int"]>;
   id?: Maybe<Scalars["Int"]>;
+  tick_spacing?: Maybe<Scalars["Int"]>;
 };
 
 /** order by sum() on columns of table "pools" */
@@ -7065,12 +7147,15 @@ export type Pools_Sum_Order_By = {
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "pools" */
 export enum Pools_Update_Column {
   /** column name */
   Address = "address",
+  /** column name */
+  ContractAddress = "contract_address",
   /** column name */
   CreateTxId = "create_tx_id",
   /** column name */
@@ -7094,7 +7179,11 @@ export enum Pools_Update_Column {
   /** column name */
   SmoothWeightChangeParams = "smooth_weight_change_params",
   /** column name */
+  SpreadFactor = "spread_factor",
+  /** column name */
   SwapFee = "swap_fee",
+  /** column name */
+  TickSpacing = "tick_spacing",
   /** column name */
   TotalShares = "total_shares",
   /** column name */
@@ -7118,6 +7207,7 @@ export type Pools_Var_Pop_Fields = {
   create_tx_id?: Maybe<Scalars["Float"]>;
   creator?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  tick_spacing?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_pop() on columns of table "pools" */
@@ -7125,6 +7215,7 @@ export type Pools_Var_Pop_Order_By = {
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -7133,6 +7224,7 @@ export type Pools_Var_Samp_Fields = {
   create_tx_id?: Maybe<Scalars["Float"]>;
   creator?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  tick_spacing?: Maybe<Scalars["Float"]>;
 };
 
 /** order by var_samp() on columns of table "pools" */
@@ -7140,6 +7232,7 @@ export type Pools_Var_Samp_Order_By = {
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -7148,6 +7241,7 @@ export type Pools_Variance_Fields = {
   create_tx_id?: Maybe<Scalars["Float"]>;
   creator?: Maybe<Scalars["Float"]>;
   id?: Maybe<Scalars["Float"]>;
+  tick_spacing?: Maybe<Scalars["Float"]>;
 };
 
 /** order by variance() on columns of table "pools" */
@@ -7155,6 +7249,7 @@ export type Pools_Variance_Order_By = {
   create_tx_id?: InputMaybe<Order_By>;
   creator?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  tick_spacing?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "pooltype". All fields are combined with logical 'AND'. */
@@ -11824,6 +11919,14 @@ export type GetLatestBlockInfoQuery = {
   blocks: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
 };
 
+export type GetBlockTimeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetBlockTimeQuery = {
+  __typename?: "query_root";
+  hundred: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
+  latest: Array<{ __typename?: "blocks"; height: number; timestamp: any }>;
+};
+
 export type GetCodeListQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCodeListQueryQuery = {
@@ -12202,6 +12305,108 @@ export type GetContractListCountByAdminQuery = {
   };
 };
 
+export type GetPoolListQueryVariables = Exact<{
+  expression?: InputMaybe<Pools_Bool_Exp>;
+  order?: InputMaybe<Order_By>;
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetPoolListQuery = {
+  __typename?: "query_root";
+  pools: Array<{
+    __typename?: "pools";
+    id: number;
+    type: any;
+    is_superfluid: boolean;
+    liquidity: any;
+    contract_address?: string | null;
+  }>;
+};
+
+export type GetPoolListCountQueryVariables = Exact<{
+  expression?: InputMaybe<Pools_Bool_Exp>;
+}>;
+
+export type GetPoolListCountQuery = {
+  __typename?: "query_root";
+  pools_aggregate: {
+    __typename?: "pools_aggregate";
+    aggregate?: { __typename?: "pools_aggregate_fields"; count: number } | null;
+  };
+};
+
+export type GetPoolListByDenomsQueryVariables = Exact<{
+  denoms?: InputMaybe<Scalars["_varchar"]>;
+  expression?: InputMaybe<Pools_Bool_Exp>;
+  order?: InputMaybe<Order_By>;
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetPoolListByDenomsQuery = {
+  __typename?: "query_root";
+  pools: Array<{
+    __typename?: "pools";
+    id: number;
+    type: any;
+    is_superfluid: boolean;
+    liquidity: any;
+    contract_address?: string | null;
+  }>;
+};
+
+export type GetPoolListByDenomsCountQueryVariables = Exact<{
+  denoms?: InputMaybe<Scalars["_varchar"]>;
+  expression?: InputMaybe<Pools_Bool_Exp>;
+}>;
+
+export type GetPoolListByDenomsCountQuery = {
+  __typename?: "query_root";
+  pools_aggregate: {
+    __typename?: "pools_aggregate";
+    aggregate?: { __typename?: "pools_aggregate_fields"; count: number } | null;
+  };
+};
+
+export type GetPoolByPoolIdQueryVariables = Exact<{
+  poolId: Scalars["Int"];
+}>;
+
+export type GetPoolByPoolIdQuery = {
+  __typename?: "query_root";
+  pools_by_pk?: {
+    __typename?: "pools";
+    id: number;
+    type: any;
+    is_superfluid: boolean;
+    is_supported: boolean;
+    liquidity: any;
+    address: string;
+    swap_fee: string;
+    exit_fee: string;
+    future_pool_governor: string;
+    weight?: any | null;
+    smooth_weight_change_params?: any | null;
+    scaling_factors?: any | null;
+    scaling_factor_controller?: string | null;
+    spread_factor?: string | null;
+    tick_spacing?: number | null;
+    contract_address?: string | null;
+    transaction?: { __typename?: "transactions"; block_height: number } | null;
+    account?: { __typename?: "accounts"; address: string } | null;
+  } | null;
+};
+
+export type GetPoolsByPoolIdsQueryVariables = Exact<{
+  poolIds: Array<Scalars["Int"]> | Scalars["Int"];
+}>;
+
+export type GetPoolsByPoolIdsQuery = {
+  __typename?: "query_root";
+  pools: Array<{ __typename?: "pools"; id: number; liquidity: any }>;
+};
+
 export type GetRelatedProposalsByContractAddressPaginationQueryVariables =
   Exact<{
     contractAddress: Scalars["String"];
@@ -12368,6 +12573,43 @@ export type GetTxsCountByAddressQuery = {
   };
 };
 
+export type GetTxsByPoolIdPaginationQueryVariables = Exact<{
+  expression?: InputMaybe<Pool_Transactions_Bool_Exp>;
+  offset: Scalars["Int"];
+  pageSize: Scalars["Int"];
+}>;
+
+export type GetTxsByPoolIdPaginationQuery = {
+  __typename?: "query_root";
+  pool_transactions: Array<{
+    __typename?: "pool_transactions";
+    block: { __typename?: "blocks"; height: number; timestamp: any };
+    transaction: {
+      __typename?: "transactions";
+      hash: any;
+      success: boolean;
+      messages: any;
+      is_ibc: boolean;
+      account: { __typename?: "accounts"; address: string };
+    };
+  }>;
+};
+
+export type GetTxsCountByPoolIdQueryVariables = Exact<{
+  expression?: InputMaybe<Pool_Transactions_Bool_Exp>;
+}>;
+
+export type GetTxsCountByPoolIdQuery = {
+  __typename?: "query_root";
+  pool_transactions_aggregate: {
+    __typename?: "pool_transactions_aggregate";
+    aggregate?: {
+      __typename?: "pool_transactions_aggregate_fields";
+      count: number;
+    } | null;
+  };
+};
+
 export type GetTxsQueryVariables = Exact<{
   offset: Scalars["Int"];
   pageSize: Scalars["Int"];
@@ -12439,6 +12681,26 @@ export type GetBlockTransactionCountByHeightQueryQuery = {
       count: number;
     } | null;
   };
+};
+
+export type GetValidatorsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetValidatorsQuery = {
+  __typename?: "query_root";
+  validators: Array<{
+    __typename?: "validators";
+    commission_max_change: string;
+    commission_max_rate: string;
+    commission_rate: string;
+    consensus_address: string;
+    details: string;
+    identity: string;
+    jailed: boolean;
+    min_self_delegation: string;
+    moniker: string;
+    operator_address: string;
+    website: string;
+  }>;
 };
 
 export const GetAccountIdByAddressQueryDocumentDocument = {
@@ -12826,6 +13088,92 @@ export const GetLatestBlockInfoDocument = {
   GetLatestBlockInfoQuery,
   GetLatestBlockInfoQueryVariables
 >;
+export const GetBlockTimeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getBlockTime" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hundred" },
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: { kind: "IntValue", value: "100" },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "latest" },
+            name: { kind: "Name", value: "blocks" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "height" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetBlockTimeQuery, GetBlockTimeQueryVariables>;
 export const GetCodeListQueryDocument = {
   kind: "Document",
   definitions: [
@@ -15732,6 +16080,633 @@ export const GetContractListCountByAdminDocument = {
   GetContractListCountByAdminQuery,
   GetContractListCountByAdminQueryVariables
 >;
+export const GetPoolListDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolList" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "pools_bool_exp" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "order" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "order_by" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pools" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "order" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_superfluid" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "liquidity" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_address" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetPoolListQuery, GetPoolListQueryVariables>;
+export const GetPoolListCountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolListCount" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "pools_bool_exp" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pools_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPoolListCountQuery,
+  GetPoolListCountQueryVariables
+>;
+export const GetPoolListByDenomsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolListByDenoms" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "denoms" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "_varchar" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "pools_bool_exp" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "order" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "order_by" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "pools" },
+            name: { kind: "Name", value: "search_pools_with_denoms" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "args" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "denoms" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "denoms" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "order" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_superfluid" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "liquidity" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_address" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPoolListByDenomsQuery,
+  GetPoolListByDenomsQueryVariables
+>;
+export const GetPoolListByDenomsCountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolListByDenomsCount" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "denoms" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "_varchar" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "pools_bool_exp" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "pools_aggregate" },
+            name: { kind: "Name", value: "search_pools_with_denoms_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "args" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "denoms" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "denoms" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPoolListByDenomsCountQuery,
+  GetPoolListByDenomsCountQueryVariables
+>;
+export const GetPoolByPoolIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolByPoolId" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "poolId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pools_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "poolId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "type" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_superfluid" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "is_supported" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "liquidity" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block_height" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "swap_fee" } },
+                { kind: "Field", name: { kind: "Name", value: "exit_fee" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "future_pool_governor" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "weight" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "smooth_weight_change_params" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "scaling_factors" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "scaling_factor_controller" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "spread_factor" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "tick_spacing" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_address" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPoolByPoolIdQuery,
+  GetPoolByPoolIdQueryVariables
+>;
+export const GetPoolsByPoolIdsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getPoolsByPoolIds" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "poolIds" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "Int" },
+                },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pools" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_in" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "poolIds" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "liquidity" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPoolsByPoolIdsQuery,
+  GetPoolsByPoolIdsQueryVariables
+>;
 export const GetRelatedProposalsByContractAddressPaginationDocument = {
   kind: "Document",
   definitions: [
@@ -16732,6 +17707,225 @@ export const GetTxsCountByAddressDocument = {
   GetTxsCountByAddressQuery,
   GetTxsCountByAddressQueryVariables
 >;
+export const GetTxsByPoolIdPaginationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getTxsByPoolIdPagination" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "pool_transactions_bool_exp" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "offset" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pool_transactions" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "block_height" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "transaction_id" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "offset" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "offset" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "block" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "address" },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "success" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "messages" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "is_ibc" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetTxsByPoolIdPaginationQuery,
+  GetTxsByPoolIdPaginationQueryVariables
+>;
+export const GetTxsCountByPoolIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getTxsCountByPoolId" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "expression" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "pool_transactions_bool_exp" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pool_transactions_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "expression" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "count" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetTxsCountByPoolIdQuery,
+  GetTxsCountByPoolIdQueryVariables
+>;
 export const GetTxsDocument = {
   kind: "Document",
   definitions: [
@@ -17162,3 +18356,56 @@ export const GetBlockTransactionCountByHeightQueryDocument = {
   GetBlockTransactionCountByHeightQueryQuery,
   GetBlockTransactionCountByHeightQueryQueryVariables
 >;
+export const GetValidatorsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getValidators" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "validators" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_max_change" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_max_rate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "commission_rate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "consensus_address" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "details" } },
+                { kind: "Field", name: { kind: "Name", value: "identity" } },
+                { kind: "Field", name: { kind: "Name", value: "jailed" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "min_self_delegation" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "moniker" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "operator_address" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "website" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetValidatorsQuery, GetValidatorsQueryVariables>;

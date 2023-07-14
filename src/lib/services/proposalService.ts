@@ -7,7 +7,6 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
-  useChainRecordAsset,
 } from "lib/app-provider";
 import {
   getProposalList,
@@ -38,6 +37,7 @@ import {
   parseProposalStatus,
 } from "lib/utils";
 
+import { useAssetInfos } from "./assetService";
 import { useProposalListExpression } from "./expression";
 import type {
   DepositParamsInternal,
@@ -316,16 +316,17 @@ export interface GovParams {
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
   const lcdEndpoint = useBaseApiRoute("rest");
-  const getAssetInfo = useChainRecordAsset();
+  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
+  const { assetInfos } = useAssetInfos();
   const queryFn = useCallback(
     () =>
       Promise.all([
         fetchGovDepositParams(lcdEndpoint),
-        fetchGovUploadAccessParams(lcdEndpoint),
+        fetchGovUploadAccessParams(cosmwasmEndpoint),
         fetchGovVotingParams(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
-        const assetInfo = getAssetInfo(minDepositParam.denom);
+        const assetInfo = assetInfos?.[minDepositParam.denom];
         const [minDepositAmount, minDepositDenom] = [
           deexponentify(
             minDepositParam.amount as U<Token>,
@@ -356,20 +357,24 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [lcdEndpoint, getAssetInfo]
+    [lcdEndpoint, cosmwasmEndpoint, assetInfos]
   );
 
-  return useQuery([CELATONE_QUERY_KEYS.GOV_PARAMS, lcdEndpoint], queryFn, {
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.GOV_PARAMS, lcdEndpoint, assetInfos],
+    queryFn,
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
   return useQuery(
-    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, lcdEndpoint],
-    () => fetchGovUploadAccessParams(lcdEndpoint),
+    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, cosmwasmEndpoint],
+    () => fetchGovUploadAccessParams(cosmwasmEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
   );
 };
