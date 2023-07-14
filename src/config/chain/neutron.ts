@@ -46,7 +46,6 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/neutron/validators",
       proposal: "",
     },
-    hasSubHeader: false,
   },
   "pion-1": {
     chain: "neutron",
@@ -91,6 +90,5 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/neutron/validators",
       proposal: "",
     },
-    hasSubHeader: false,
   },
 };

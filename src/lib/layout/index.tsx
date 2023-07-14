@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
-import { useCelatoneApp, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import { useLocalStorage } from "lib/hooks/useLocalStorage";
 import { scrollToTop } from "lib/utils";
 
@@ -18,9 +18,6 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
-  const {
-    chainConfig: { hasSubHeader },
-  } = useCelatoneApp();
   const router = useRouter();
   const isMobile = useMobile();
 
@@ -83,11 +80,7 @@ const Layout = ({ children }: LayoutProps) => {
         </>
       )}
       <GridItem area="main" overflowX="hidden" id="content">
-        <div
-          style={{ minHeight: `calc(100vh - ${hasSubHeader ? 129 : 66}px)` }}
-        >
-          {children}
-        </div>
+        <div style={{ minHeight: "calc(100vh - 129px)" }}>{children}</div>
         <Footer />
       </GridItem>
     </Grid>
