@@ -10,7 +10,7 @@ interface GitHubLinkProps {
 export const GitHubLink = ({ github }: GitHubLinkProps) => {
   const [, , , org, repo] = github.split("/");
   return (
-    <Flex gap={2}>
+    <Flex gap={{ base: 0, md: 2 }} direction={{ base: "column", md: "row" }}>
       <Text fontWeight={500} color="text.dark" variant="body2">
         GitHub:
       </Text>

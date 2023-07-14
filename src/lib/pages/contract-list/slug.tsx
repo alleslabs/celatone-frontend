@@ -10,7 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -28,6 +28,7 @@ import type { ContractAddr } from "lib/types";
 import { formatSlugName, getFirstQueryParam } from "lib/utils";
 
 const ContractsByList = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const listSlug = getFirstQueryParam(router.query.slug);
@@ -79,7 +80,7 @@ const ContractsByList = observer(() => {
     <PageContainer>
       <Breadcrumb
         items={[
-          { text: "Contract Lists", href: "/contract-list" },
+          { text: "Contract Lists", href: "/contract-lists" },
           { text: contractListInfo.name },
         ]}
       />

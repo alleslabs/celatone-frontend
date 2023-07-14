@@ -1,4 +1,3 @@
-import { useWallet } from "@cosmos-kit/react";
 import type {
   QueryFunctionContext,
   UseQueryResult,
@@ -6,18 +5,27 @@ import type {
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp, useChainId } from "lib/app-provider";
+import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
 import {
   getTxsByAddressPagination,
   getTxsCountByAddress,
   getTxs,
   getTxsCount,
+  getTxsCountByPoolId,
+  getTxsByPoolIdPagination,
   getBlockTransactionCountByHeightQueryDocument,
   getBlockTransactionsByHeightQueryDocument,
 } from "lib/query";
 import { createQueryFnWithTimeout } from "lib/query-utils";
-import type { Addr, Option, Transaction, TxFilters } from "lib/types";
-import { MsgFurtherAction } from "lib/types";
+import type {
+  Addr,
+  Option,
+  Transaction,
+  TxFilters,
+  Message,
+  PoolTxFilter,
+} from "lib/types";
+import { ActionMsgType, MsgFurtherAction } from "lib/types";
 import {
   getActionMsgType,
   getMsgFurtherAction,
@@ -27,7 +35,7 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-import { useTxExpression } from "./expression";
+import { usePoolTxExpression, useTxExpression } from "./expression";
 import type { TxResponse } from "./tx";
 import { queryTxData } from "./tx";
 
@@ -36,25 +44,28 @@ export interface TxData extends TxResponse {
   isTxFailed: boolean;
 }
 
-export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
-  const { currentChainName } = useWallet();
-  const chainId = useChainId();
+export const useTxData = (
+  txHash: Option<string>,
+  enabled = true
+): UseQueryResult<TxData> => {
+  const { currentChainId } = useCelatoneApp();
+  const txsApiRoute = useBaseApiRoute("txs");
   const queryFn = useCallback(
     async ({ queryKey }: QueryFunctionContext<string[]>): Promise<TxData> => {
-      const txData = await queryTxData(queryKey[1], queryKey[2], queryKey[3]);
+      const txData = await queryTxData(queryKey[1], queryKey[2]);
       return {
         ...txData,
-        chainId,
+        chainId: currentChainId,
         isTxFailed: Boolean(txData.code),
       };
     },
-    [chainId]
+    [currentChainId]
   );
 
   return useQuery({
-    queryKey: ["tx_data", currentChainName, chainId, txHash] as string[],
+    queryKey: ["tx_data", txsApiRoute, txHash] as string[],
     queryFn,
-    enabled: Boolean(txHash && isTxHash(txHash)),
+    enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -62,7 +73,7 @@ export const useTxData = (txHash: Option<string>): UseQueryResult<TxData> => {
 
 export const useTxsByAddressPagination = (
   address: Option<Addr>,
-  accountId: Option<number>,
+  accountId: Option<number | null>,
   search: string,
   filters: TxFilters,
   isSigner: Option<boolean>,
@@ -144,13 +155,19 @@ export const useTxsByAddressPagination = (
   );
 };
 
-export const useTxsCountByAddress = (
-  address: Option<Addr>,
-  accountId: Option<number>,
-  search: string,
-  filters: TxFilters,
-  isSigner: Option<boolean>
-): UseQueryResult<Option<number>> => {
+export const useTxsCountByAddress = ({
+  address,
+  accountId,
+  search,
+  filters,
+  isSigner,
+}: {
+  address: Option<Addr>;
+  accountId: Option<number | null>;
+  search: string;
+  filters: TxFilters;
+  isSigner: Option<boolean>;
+}): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
   const expression = useTxExpression({
     address,
@@ -160,18 +177,17 @@ export const useTxsCountByAddress = (
     isSigner,
   });
 
-  const queryFn = useCallback(
-    async () =>
-      indexerGraphClient
-        .request(getTxsCountByAddress, {
-          expression,
-        })
-        .then(
-          ({ account_transactions_aggregate }) =>
-            account_transactions_aggregate.aggregate?.count
-        ),
-    [expression, indexerGraphClient]
-  );
+  const queryFn = useCallback(async () => {
+    if (!address && !accountId) return 0;
+    return indexerGraphClient
+      .request(getTxsCountByAddress, {
+        expression,
+      })
+      .then(
+        ({ account_transactions_aggregate }) =>
+          account_transactions_aggregate.aggregate?.count
+      );
+  }, [expression, indexerGraphClient, accountId, address]);
 
   return useQuery(
     [
@@ -184,8 +200,87 @@ export const useTxsCountByAddress = (
     ],
     queryFn,
     {
-      enabled: !!address || !!accountId,
+      enabled: !!address || accountId !== undefined,
       retry: 0,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useTxsByPoolIdPagination = (
+  poolId: number,
+  type: PoolTxFilter,
+  offset: number,
+  pageSize: number
+): UseQueryResult<Transaction[]> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const expression = usePoolTxExpression(poolId, type);
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getTxsByPoolIdPagination, {
+        expression,
+        offset,
+        pageSize,
+      })
+      .then(({ pool_transactions }) =>
+        pool_transactions.map<Transaction>((transaction) => ({
+          hash: parseTxHash(transaction.transaction.hash),
+          // TODO: revisit this
+          messages: snakeToCamel(transaction.transaction.messages) as Message[],
+          sender: transaction.transaction.account.address as Addr,
+          isSigner: true,
+          height: transaction.block.height,
+          created: parseDate(transaction.block.timestamp),
+          success: transaction.transaction.success,
+          actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+          furtherAction: MsgFurtherAction.NONE,
+          isIbc: transaction.transaction.is_ibc,
+          isInstantiate: false,
+        }))
+      );
+  }, [expression, indexerGraphClient, offset, pageSize]);
+
+  return useQuery(
+    [
+      "transactions_by_pool_id",
+      poolId,
+      type,
+      offset,
+      pageSize,
+      indexerGraphClient,
+    ],
+    queryFn,
+    {
+      enabled: !!poolId,
+    }
+  );
+};
+
+export const useTxsCountByPoolId = (
+  poolId: number,
+  type: PoolTxFilter
+): UseQueryResult<Option<number>> => {
+  const { indexerGraphClient } = useCelatoneApp();
+  const expression = usePoolTxExpression(poolId, type);
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getTxsCountByPoolId, {
+        expression,
+      })
+      .then(
+        ({ pool_transactions_aggregate }) =>
+          pool_transactions_aggregate.aggregate?.count
+      );
+  }, [expression, indexerGraphClient]);
+
+  return useQuery(
+    ["transactions_count_by_pool_id", poolId, type, indexerGraphClient],
+    createQueryFnWithTimeout(queryFn, 5000),
+    {
+      enabled: !!poolId,
+      retry: false,
       refetchOnWindowFocus: false,
     }
   );

@@ -17,18 +17,16 @@ export const TokenCell = ({ token }: TokenCellProps) => (
     <Image
       boxSize={6}
       src={token.logo}
-      alt={token.symbol ?? getTokenLabel(token.denom)}
+      alt={getTokenLabel(token.denom, token.symbol)}
       fallback={<NAToken />}
       fallbackStrategy="onError"
     />
     <Flex direction="column">
       <Flex gap={1} alignItems="center">
         <Text variant="body2" fontWeight={700}>
-          {formatUTokenWithPrecision(token.amount, token.precision || 0)}
+          {formatUTokenWithPrecision(token.amount, token.precision ?? 0)}
         </Text>
-        <Text variant="body2">
-          {token.symbol ?? getTokenLabel(token.denom)}
-        </Text>
+        <Text variant="body2">{getTokenLabel(token.denom, token.symbol)}</Text>
       </Flex>
       <Text variant="body3" textColor="text.dark">
         ({token.value ? formatPrice(token.value) : "-"})

@@ -11,7 +11,7 @@ interface AccountTableRowProps {
   templateColumns: string;
 }
 
-const getNavigationArgs = (accountInfo: Account): NavigationArgs => {
+export const getNavigationArgs = (accountInfo: Account): NavigationArgs => {
   switch (accountInfo.type) {
     case "account":
       return {

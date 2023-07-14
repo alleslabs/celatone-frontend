@@ -9,8 +9,8 @@ import {
   DrawerCloseButton,
   DrawerBody,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/providers/store";
@@ -32,7 +32,7 @@ export const SelectContractAdmin = ({
   onContractSelect,
 }: SelectContractAdminProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { getContractLocalInfo } = useContractStore();
 
   const { data: contracts = [], isLoading } = useContractListByAdmin(
@@ -88,7 +88,7 @@ export const SelectContractAdmin = ({
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton />
-          <DrawerBody overflowY="scroll">
+          <DrawerBody overflowY="scroll" py={4}>
             <ContractListDetail
               contractListInfo={contractList}
               isLoading={isLoading}

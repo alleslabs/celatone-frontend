@@ -10,13 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import {
-  useCurrentNetwork,
-  useInternalNavigate,
-  useSelectChain,
-} from "lib/app-provider";
-import type { Network } from "lib/data";
-import { getChainNameByNetwork } from "lib/data";
+import { useInternalNavigate } from "lib/app-provider";
 import { AmpTrackUseRightHelperPanel } from "lib/services/amplitude";
 
 import { CustomIcon } from "./icon";
@@ -25,16 +19,13 @@ export interface SidebarMetadata {
   page: string;
   title: string;
   description: React.ReactElement;
-  toNetwork?: boolean;
   toPagePath?: string;
   toPageTitle?: string;
   toPage?: boolean;
 }
 
-export type SidebarDetails = Record<Network, SidebarMetadata>;
-
 interface StickySidebarProps extends BoxProps {
-  metadata: SidebarDetails;
+  metadata: SidebarMetadata;
 }
 
 interface ToPageProps {
@@ -69,27 +60,22 @@ export const StickySidebar = ({
   ...boxProps
 }: StickySidebarProps) => {
   const navigate = useInternalNavigate();
-  const selectChain = useSelectChain();
-  const { isMainnet } = useCurrentNetwork();
-  const { network } = useCurrentNetwork();
-  const {
-    title,
-    description,
-    toNetwork,
-    toPagePath,
-    toPageTitle,
-    toPage,
-    page,
-  } = metadata[network];
+  const { title, description, toPagePath, toPageTitle, toPage, page } =
+    metadata;
   const hasAction = toPage;
   return (
     <Box flex="4" px={8} position="relative" {...boxProps}>
       <Flex position="fixed" width="full">
-        <Accordion allowToggle width={96} defaultIndex={[0]}>
+        <Accordion
+          allowToggle
+          width={96}
+          defaultIndex={[0]}
+          variant="transparent"
+        >
           <AccordionItem borderTop="none" borderColor="gray.700">
             <AccordionButton py={3} px={0}>
               <Text
-                variant="body2"
+                variant="body1"
                 fontWeight={700}
                 color="text.main"
                 textAlign="start"
@@ -99,6 +85,7 @@ export const StickySidebar = ({
               <AccordionIcon color="gray.600" ml="auto" />
             </AccordionButton>
             <AccordionPanel
+              bg="transparent"
               py={3}
               px={0}
               borderTop="1px solid"
@@ -112,17 +99,6 @@ export const StickySidebar = ({
               >
                 {description}
               </Text>
-              {toNetwork && (
-                <ToPage
-                  onClick={() => {
-                    AmpTrackUseRightHelperPanel(page, "change-network");
-                    selectChain(
-                      getChainNameByNetwork(isMainnet ? "testnet" : "mainnet")
-                    );
-                  }}
-                  title={isMainnet ? "Switch To Testnet" : "Switch To Mainnet"}
-                />
-              )}
               {toPage && toPagePath && toPageTitle && (
                 <ToPage
                   onClick={() => {

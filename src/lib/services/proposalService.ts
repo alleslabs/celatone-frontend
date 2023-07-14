@@ -3,11 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import big from "big.js";
 import { useCallback } from "react";
 
-import {
-  useCelatoneApp,
-  useChainRecordAsset,
-  useLCDEndpoint,
-} from "lib/app-provider";
+import { useBaseApiRoute, useCelatoneApp } from "lib/app-provider";
 import {
   getProposalList,
   getProposalListCount,
@@ -37,6 +33,7 @@ import {
   parseProposalStatus,
 } from "lib/utils";
 
+import { useAssetInfos } from "./assetService";
 import { useProposalListExpression } from "./expression";
 import type {
   DepositParamsInternal,
@@ -301,23 +298,24 @@ export interface GovParams {
 }
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
-  const lcdEndpoint = useLCDEndpoint();
-  const getAssetInfo = useChainRecordAsset();
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
+  const { assetInfos } = useAssetInfos();
   const queryFn = useCallback(
     () =>
       Promise.all([
         fetchGovDepositParams(lcdEndpoint),
-        fetchGovUploadAccessParams(lcdEndpoint),
+        fetchGovUploadAccessParams(cosmwasmEndpoint),
         fetchGovVotingParams(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
-        const assetInfo = getAssetInfo(minDepositParam.denom);
+        const assetInfo = assetInfos?.[minDepositParam.denom];
         const [minDepositAmount, minDepositDenom] = [
           deexponentify(
             minDepositParam.amount as U<Token>,
             assetInfo?.precision
           ).toFixed(),
-          getTokenLabel(minDepositParam.denom),
+          getTokenLabel(minDepositParam.denom, assetInfo?.symbol),
         ];
         return {
           depositParams: {
@@ -330,7 +328,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
               formattedToken: formatBalanceWithDenom({
                 coin: minDepositParam,
                 precision: assetInfo?.precision,
-                decimalPoints: 2,
+                symbol: assetInfo?.symbol,
               }),
               precision: assetInfo?.precision ?? 0,
             },
@@ -342,20 +340,20 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [lcdEndpoint, getAssetInfo]
+    [lcdEndpoint, cosmwasmEndpoint, assetInfos]
   );
 
-  return useQuery(["gov_params", lcdEndpoint], queryFn, {
+  return useQuery(["gov_params", lcdEndpoint, assetInfos], queryFn, {
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
 };
 
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
   return useQuery(
-    ["upload_access", lcdEndpoint],
-    () => fetchGovUploadAccessParams(lcdEndpoint),
+    ["upload_access", cosmwasmEndpoint],
+    () => fetchGovUploadAccessParams(cosmwasmEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
   );
 };

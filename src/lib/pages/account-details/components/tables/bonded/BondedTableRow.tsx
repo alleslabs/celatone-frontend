@@ -6,7 +6,7 @@ import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type { TokenWithValue, ValidatorInfo } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-interface BondedInfo {
+export interface BondedInfo {
   validator: ValidatorInfo;
   amount: TokenWithValue;
   reward?: TokenWithValue;

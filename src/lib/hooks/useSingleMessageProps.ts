@@ -1,7 +1,7 @@
-import { useWallet } from "@cosmos-kit/react";
 import router from "next/router";
 
-import { getAddressTypeByLength } from "lib/app-provider";
+import type { GetAddressTypeByLengthFn } from "lib/app-provider";
+import { useGetAddressTypeByLength } from "lib/app-provider";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
 import { useContractStore } from "lib/providers/store";
@@ -34,7 +34,6 @@ import { getFirstQueryParam, getExecuteMsgTags } from "lib/utils";
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param getContractLocalInfo - contract local info
  * @param isInstantiate2 - boolean of whether the message is instantiate2 or not
  *
@@ -44,11 +43,11 @@ import { getFirstQueryParam, getExecuteMsgTags } from "lib/utils";
 const instantiateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   getContractLocalInfo: (
     contractAddress: ContractAddr
   ) => Option<ContractLocalInfo>,
-  isInstantiate2: boolean
+  isInstantiate2: boolean,
+  getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   const detail = messages[0].detail as DetailInstantiate;
   // TODO - revisit, instantiate detail response when query from contract transaction table doesn't contain contract addr
@@ -79,7 +78,7 @@ const instantiateSingleMsgProps = (
         type,
         text1: "contract",
         link1: {
-          type: getAddressTypeByLength(chainName, contractAddress),
+          type: getAddressTypeByLength(contractAddress),
           value: contractLocalInfo?.name || contractAddress,
           copyValue: contractAddress,
         },
@@ -114,7 +113,6 @@ const instantiateSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param singleMsg - true when use in accordion
  * @param getContractLocalInfo - contract local info
  *
@@ -124,11 +122,11 @@ const instantiateSingleMsgProps = (
 const executeSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   singleMsg: Option<boolean>,
   getContractLocalInfo: (
     contractAddress: ContractAddr
-  ) => Option<ContractLocalInfo>
+  ) => Option<ContractLocalInfo>,
+  getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   const detail = messages[0].detail as DetailExecute;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
@@ -160,7 +158,7 @@ const executeSingleMsgProps = (
           length: messages.length,
           text2: "messages on",
           link2: {
-            type: getAddressTypeByLength(chainName, detail.contract),
+            type: getAddressTypeByLength(detail.contract),
             value: contractLocalInfo?.name || detail.contract,
             copyValue: detail.contract,
           },
@@ -171,7 +169,7 @@ const executeSingleMsgProps = (
           length: messages.length,
           text2: "messages on",
           link2: {
-            type: getAddressTypeByLength(chainName, detail.contract),
+            type: getAddressTypeByLength(detail.contract),
             value: contractLocalInfo?.name || detail.contract,
             copyValue: detail.contract,
           },
@@ -184,7 +182,7 @@ const executeSingleMsgProps = (
         tags: getExecuteMsgTags(messages, singleMsg ? 1 : 2),
         text2: "on",
         link2: {
-          type: getAddressTypeByLength(chainName, detail.contract),
+          type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
@@ -193,7 +191,7 @@ const executeSingleMsgProps = (
         type: "Failed",
         text1: "to execute message from",
         link1: {
-          type: getAddressTypeByLength(chainName, detail.contract),
+          type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
@@ -215,7 +213,6 @@ const executeSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param assetInfos - information of assets
  * @param getContractLocalInfo - contract local info
  *
@@ -225,11 +222,11 @@ const executeSingleMsgProps = (
 const sendSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   assetInfos: Option<Record<string, AssetInfo>>,
   getContractLocalInfo: (
     contractAddress: ContractAddr
-  ) => Option<ContractLocalInfo>
+  ) => Option<ContractLocalInfo>,
+  getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   const detail = messages[0].detail as DetailSend;
   const contractLocalInfo = getContractLocalInfo(
@@ -272,7 +269,7 @@ const sendSingleMsgProps = (
           type: "Send",
           text1: "assets to",
           link2: {
-            type: getAddressTypeByLength(chainName, detail.toAddress),
+            type: getAddressTypeByLength(detail.toAddress),
             value: contractLocalInfo?.name || detail.toAddress,
             copyValue: detail.toAddress,
           },
@@ -281,7 +278,7 @@ const sendSingleMsgProps = (
           type: "Failed",
           text1: "to send assets to",
           link2: {
-            type: getAddressTypeByLength(chainName, detail.toAddress),
+            type: getAddressTypeByLength(detail.toAddress),
             value: contractLocalInfo?.name || detail.toAddress,
             copyValue: detail.toAddress,
           },
@@ -293,7 +290,7 @@ const sendSingleMsgProps = (
         tokens,
         text2: "to",
         link1: {
-          type: getAddressTypeByLength(chainName, detail.toAddress),
+          type: getAddressTypeByLength(detail.toAddress),
           value: detail.toAddress,
         },
       }
@@ -301,7 +298,7 @@ const sendSingleMsgProps = (
         type: "Failed",
         text1: "to send assets to",
         link1: {
-          type: getAddressTypeByLength(chainName, detail.toAddress),
+          type: getAddressTypeByLength(detail.toAddress),
           value: detail.toAddress,
         },
       };
@@ -318,7 +315,6 @@ const sendSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param getContractLocalInfo - contract local info
  *
  * @returns msgProps use in <SingleMsg />
@@ -327,10 +323,10 @@ const sendSingleMsgProps = (
 const migrateSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   getContractLocalInfo: (
     contractAddress: ContractAddr
-  ) => Option<ContractLocalInfo>
+  ) => Option<ContractLocalInfo>,
+  getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   const detail = messages[0].detail as DetailMigrate;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
@@ -353,7 +349,7 @@ const migrateSingleMsgProps = (
     ? {
         type: "Migrate",
         link1: {
-          type: getAddressTypeByLength(chainName, detail.contract),
+          type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
@@ -385,7 +381,6 @@ const migrateSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param getContractLocalInfo - contract local info
  * 
  * @returns msgProps use in <SingleMsg />
@@ -394,10 +389,10 @@ const migrateSingleMsgProps = (
 const updateAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   getContractLocalInfo: (
     contractAddress: ContractAddr
-  ) => Option<ContractLocalInfo>
+  ) => Option<ContractLocalInfo>,
+  getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   const detail = messages[0].detail as DetailUpdateAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
@@ -422,13 +417,13 @@ const updateAdminSingleMsgProps = (
         type: "Update admin",
         text1: "on",
         link1: {
-          type: getAddressTypeByLength(chainName, detail.contract),
+          type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
         text3: "to",
         link2: {
-          type: getAddressTypeByLength(chainName, detail.newAdmin),
+          type: getAddressTypeByLength(detail.newAdmin),
           value: adminLocalInfo?.name || detail.newAdmin,
         },
       }
@@ -436,13 +431,13 @@ const updateAdminSingleMsgProps = (
         type: "Failed",
         text1: "to update admin on",
         link1: {
-          type: getAddressTypeByLength(chainName, detail.contract),
+          type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
         text3: "to",
         link2: {
-          type: getAddressTypeByLength(chainName, detail.newAdmin),
+          type: getAddressTypeByLength(detail.newAdmin),
           value: adminLocalInfo?.name || detail.newAdmin,
         },
       };
@@ -459,7 +454,6 @@ const updateAdminSingleMsgProps = (
  *
  * @param isSuccess - boolean of whether tx is succeed or not
  * @param messages - list of messages
- * @param chainName - chain name
  * @param getContractLocalInfo - contract local info
  *
  * @returns msgProps use in <SingleMsg />
@@ -468,10 +462,10 @@ const updateAdminSingleMsgProps = (
 const clearAdminSingleMsgProps = (
   isSuccess: boolean,
   messages: Message[],
-  chainName: string,
   getContractLocalInfo: (
     contractAddress: ContractAddr
-  ) => Option<ContractLocalInfo>
+  ) => Option<ContractLocalInfo>,
+  getAddressTypeByLength: GetAddressTypeByLengthFn
 ) => {
   const detail = messages[0].detail as DetailClearAdmin;
   const contractLocalInfo = getContractLocalInfo(detail.contract);
@@ -496,7 +490,7 @@ const clearAdminSingleMsgProps = (
         type: "Clear admin",
         text1: "on",
         link1: {
-          type: getAddressTypeByLength(chainName, detail.contract),
+          type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
@@ -505,7 +499,7 @@ const clearAdminSingleMsgProps = (
         type: "Failed",
         text1: "to clear admin on",
         link1: {
-          type: getAddressTypeByLength(chainName, detail.contract),
+          type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
@@ -597,63 +591,63 @@ export const useSingleActionMsgProps = (
   messages: Message[],
   singleMsg: Option<boolean>
 ): SingleMsgProps => {
-  const { currentChainName } = useWallet();
   const { getContractLocalInfo } = useContractStore();
   const { assetInfos } = useAssetInfos();
+  const getAddressTypeByLength = useGetAddressTypeByLength();
 
   switch (type) {
     case "MsgExecuteContract":
       return executeSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         singleMsg,
-        getContractLocalInfo
+        getContractLocalInfo,
+        getAddressTypeByLength
       );
     case "MsgSend":
       return sendSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         assetInfos,
-        getContractLocalInfo
+        getContractLocalInfo,
+        getAddressTypeByLength
       );
     case "MsgMigrateContract":
       return migrateSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
-        getContractLocalInfo
+        getContractLocalInfo,
+        getAddressTypeByLength
       );
     case "MsgInstantiateContract":
       return instantiateSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         getContractLocalInfo,
-        false
+        false,
+        getAddressTypeByLength
       );
     case "MsgInstantiateContract2":
       return instantiateSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
         getContractLocalInfo,
-        true
+        true,
+        getAddressTypeByLength
       );
     case "MsgUpdateAdmin":
       return updateAdminSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
-        getContractLocalInfo
+        getContractLocalInfo,
+        getAddressTypeByLength
       );
     case "MsgClearAdmin":
       return clearAdminSingleMsgProps(
         isSuccess,
         messages,
-        currentChainName,
-        getContractLocalInfo
+        getContractLocalInfo,
+        getAddressTypeByLength
       );
     case "MsgStoreCode":
       return storeCodeSingleMsgProps(isSuccess, messages);

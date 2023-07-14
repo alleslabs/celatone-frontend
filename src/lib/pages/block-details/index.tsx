@@ -14,14 +14,11 @@ import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
 const BlockDetail = () => {
   const router = useRouter();
   const heightParam = getFirstQueryParam(router.query.height);
-  const { data: blockData, isLoading } = useBlockDetailsQuery(
-    Number(heightParam)
-  );
+  const { data: blockData, isLoading } = useBlockDetailsQuery(heightParam);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_BLOCK_DETAIL);
   }, [router.isReady]);
-
   if (isLoading) return <Loading />;
 
   return (

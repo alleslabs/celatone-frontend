@@ -11,9 +11,9 @@ import {
 
 import { CustomIcon } from "../icon";
 import { EditListNameModal, RemoveListModal } from "lib/components/modal";
-import { getListIcon, INSTANTIATED_LIST_NAME } from "lib/data";
+import { INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
-import { dateFromNow, formatSlugName } from "lib/utils";
+import { dateFromNow, formatSlugName, getListIcon } from "lib/utils";
 
 interface ContractListCardProps {
   item: ContractListInfo;
@@ -58,7 +58,10 @@ export const ContractListCard = ({
           <Badge>{item.contracts.length}</Badge>
         </Flex>
         {isInstantiatedByMe && (
-          <Text variant="body3" color="text.dark">
+          <Text
+            variant="body3"
+            textColor={isDisabled ? "text.disabled" : "text.dark"}
+          >
             Updated {dateFromNow(item.lastUpdated)}
           </Text>
         )}

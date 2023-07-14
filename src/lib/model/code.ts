@@ -1,8 +1,11 @@
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { useChainId, useLCDEndpoint } from "lib/app-provider";
+import {
+  useBaseApiRoute,
+  useCelatoneApp,
+  useCurrentChain,
+} from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import {
   useUserKey,
@@ -45,8 +48,9 @@ export interface CodeDataState {
   };
 }
 
-export const useCodeData = (codeId: number): CodeDataState => {
-  const endpoint = useLCDEndpoint();
+export const useCodeData = (codeId: string): CodeDataState => {
+  const { currentChainId } = useCelatoneApp();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { data: codeInfo, isLoading } = useCodeDataByCodeId(codeId);
   const { data: publicCodeInfo } = usePublicProjectByCodeId(codeId);
@@ -58,16 +62,14 @@ export const useCodeData = (codeId: number): CodeDataState => {
     isLoading: isLcdCodeLoading,
     error: isLcdCodeError,
   } = useQuery(
-    ["query", "code_data", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, codeId),
-    { enabled: Boolean(endpoint) && Boolean(codeId), retry: false }
+    ["query", "code_data", lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
+    { enabled: Boolean(lcdEndpoint) && Boolean(codeId), retry: false }
   );
-
-  const chainId = useChainId();
 
   return {
     isLoading,
-    chainId,
+    chainId: currentChainId,
     codeData: codeInfo as CodeData,
     lcdCodeData: {
       codeHash: lcdCode?.code_info.data_hash,
@@ -82,7 +84,7 @@ export const useCodeData = (codeId: number): CodeDataState => {
 };
 
 const useStoredCodes = () => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
 
   const { data: rawStoredCodes, isLoading } = useCodeListByWalletAddress(

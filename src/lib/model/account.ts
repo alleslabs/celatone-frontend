@@ -16,7 +16,7 @@ import type { HumanAddr, Option } from "lib/types";
  */
 export const useAccountDetailsTableCounts = (
   walletAddress: HumanAddr,
-  accountId: Option<number>
+  accountId: Option<number | null>
 ) => {
   const { data: codesCount, refetch: refetchCodesCount } =
     useCodeListCountByWalletAddress(walletAddress);
@@ -26,13 +26,13 @@ export const useAccountDetailsTableCounts = (
     useInstantiatedCountByUserQuery(walletAddress);
   const { data: proposalsCount, refetch: refetchProposalsCount } =
     useProposalsCountByWalletAddress(walletAddress);
-  const { data: txsCount } = useTxsCountByAddress(
-    undefined,
+  const { data: txsCount, isFetching: txCountFetching } = useTxsCountByAddress({
+    address: undefined,
     accountId,
-    "",
-    DEFAULT_TX_FILTERS,
-    undefined
-  );
+    search: "",
+    filters: DEFAULT_TX_FILTERS,
+    isSigner: undefined,
+  });
 
   const { totalData: assetsCount } = useUserAssetInfos(walletAddress);
 
@@ -44,6 +44,9 @@ export const useAccountDetailsTableCounts = (
       txsCount,
       proposalsCount,
       assetsCount,
+    },
+    loadingState: {
+      txCountLoading: txCountFetching,
     },
     refetchCodesCount,
     refetchContractsAdminCount,
