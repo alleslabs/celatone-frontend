@@ -102,9 +102,6 @@ export const DevShortcut = () => {
                   </Text>
                 </Box>
               </Flex>
-              {/* <Text variant="body2" color="text.primary">
-                    On Mobile Soon
-                  </Text> */}
             </Flex>
           )}
         </>

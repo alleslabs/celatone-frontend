@@ -134,6 +134,10 @@ export const SEI_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/sei/illustration/search-empty.svg",
     disconnected:
       "https://assets.alleslabs.dev/integrations/sei/illustration/disconnected.svg",
+    overview: {
+      // Fill image url
+      main: "",
+    },
   },
   footer: {
     logo: "https://www.sei.io/_next/static/media/logo-light.1249fa55.svg",

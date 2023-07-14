@@ -166,7 +166,7 @@ const Home = () => {
         overflow="hidden"
         sx={{ "& > div": { zIndex: 1 } }}
       >
-        <TopDecorations chain={chain} />
+        <TopDecorations />
         <Flex
           justifyContent={{ base: "start", md: "space-between" }}
           align={{ base: "start", md: "start" }}
@@ -235,7 +235,7 @@ const Home = () => {
       {isDevMode && (
         <section style={{ marginBottom: "48px" }}>
           <Flex gap={4} direction="column">
-            <Heading as="h6" variant="h6">
+            <Heading as="h5" variant="h5">
               Dev Shortcuts
             </Heading>
             <ConnectWalletAlert
