@@ -45,6 +45,7 @@ export const CopyLink = ({
     >
       <Flex
         align="center"
+        display={{ base: "inline", md: "flex" }}
         onClick={() => {
           AmpTrackCopier(amptrackSection, type);
           onCopy();
@@ -60,9 +61,11 @@ export const CopyLink = ({
         {...flexProps}
       >
         <Text
+          wordBreak={{ base: "break-all", md: "inherit" }}
           variant="body2"
           color="secondary.main"
           transition="all .25s ease-in-out"
+          display="inline"
         >
           {value === address ? `${value} (Me)` : value}
         </Text>

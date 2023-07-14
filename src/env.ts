@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, OSMOSIS_THEME } from "config/theme";
+import { DEFAULT_THEME, OSMOSIS_THEME, SEI_THEME } from "config/theme";
 
 export const SUPPORTED_CHAIN_IDS: string[] = (() => {
   const chainIds = process.env.NEXT_PUBLIC_SUPPORTED_CHAIN_IDS?.split(",");
@@ -35,6 +35,7 @@ export const CURR_THEME = (() => {
     case "osmosis":
       return OSMOSIS_THEME;
     case "sei":
+      return SEI_THEME;
     default:
       return DEFAULT_THEME;
   }

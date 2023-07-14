@@ -18,7 +18,7 @@ export const Copier = ({
   type,
   value,
   copyLabel,
-  display = "block",
+  display = "inline",
   ml = 2,
   amptrackSection,
 }: CopierProps) => (
@@ -28,6 +28,7 @@ export const Copier = ({
     triggerElement={
       <CustomIcon
         id={type}
+        h={6}
         className="copier"
         display={display}
         cursor="pointer"
@@ -35,8 +36,9 @@ export const Copier = ({
         marginLeft={ml}
         onClick={() => AmpTrackCopier(amptrackSection, type)}
         name="copy"
-        boxSize={4}
+        boxSize={3}
         color="gray.600"
+        minH={{ base: 6, md: "auto" }}
       />
     }
   />

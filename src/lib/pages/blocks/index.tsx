@@ -15,10 +15,10 @@ const BlocksPage = () => {
 
   return (
     <PageContainer>
-      <Heading as="h5" variant="h5">
+      <Heading as="h5" variant="h5" minH="36px">
         Blocks
       </Heading>
-      <Text variant="body2" fontWeight={500} color="text.dark" mt={1} mb={8}>
+      <Text variant="body2" fontWeight={500} color="text.dark" mb={8}>
         This page displays all blocks on this network sorted by recency
       </Text>
       <BlocksTable />

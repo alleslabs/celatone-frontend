@@ -65,7 +65,7 @@ export const TokenCard = ({
             type={price ? "supported_asset" : "unsupported_asset"}
             value={id}
             copyLabel="Token ID Copied!"
-            display="none"
+            display={{ base: "flex", md: "none" }}
             ml={1}
             amptrackSection={amptrackSection}
           />

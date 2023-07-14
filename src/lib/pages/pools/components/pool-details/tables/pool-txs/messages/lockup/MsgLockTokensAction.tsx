@@ -5,6 +5,7 @@ import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import type { PoolDetail } from "lib/types";
+import { formatDuration } from "lib/utils";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
 
 interface MsgLockTokensActionProps {
@@ -39,10 +40,8 @@ export const MsgLockTokensAction = ({
       to
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       with
-      <span style={{ fontWeight: 700 }}>
-        {Number(msg.duration) / (24 * 60 * 60 * 1e9)}
-      </span>
-      days unbonding
+      <span style={{ fontWeight: 700 }}>{formatDuration(msg.duration)}</span>
+      unbonding
     </Flex>
   );
 };

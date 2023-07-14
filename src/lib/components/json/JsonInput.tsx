@@ -112,6 +112,7 @@ const JsonInput = ({
         borderColor="gray.700"
         borderRadius="8px"
         position="relative"
+        minH={32}
         transition="all .25s ease-in-out"
         _hover={{
           borderColor: "gray.600",
