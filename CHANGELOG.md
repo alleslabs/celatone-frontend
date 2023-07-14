@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#438](https://github.com/alleslabs/celatone-frontend/pull/438) Add new home page
 - [#436](https://github.com/alleslabs/celatone-frontend/pull/436) Implement merge navigation
 
 ### Improvements
