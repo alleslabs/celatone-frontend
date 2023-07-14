@@ -5,6 +5,7 @@ import { useEffect, useMemo } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { useLocalStorage } from "lib/hooks/useLocalStorage";
+import type { Option } from "lib/types";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
@@ -20,7 +21,12 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
+  type NewType = Option<boolean>;
 
+  const [isDevMode, setIsDevMode] = useLocalStorage<NewType>(
+    "devMode",
+    isMobile ? false : undefined
+  );
   const [isExpand, setIsExpand] = useLocalStorage("navbar", !isMobile);
   const defaultRow = "70px 48px 1fr";
   const mode = useMemo(() => {
@@ -38,9 +44,16 @@ const Layout = ({ children }: LayoutProps) => {
       templateRows: defaultRow,
       templateCols: isExpand ? "250px 1fr" : "48px 1fr",
       header: <Header />,
-      subHeader: <SubHeader />,
+      subHeader: (
+        <SubHeader
+          isExpand={isExpand}
+          isDevMode={isDevMode}
+          setIsDevMode={setIsDevMode}
+          setIsExpand={setIsExpand}
+        />
+      ),
     };
-  }, [isMobile, isExpand]);
+  }, [isMobile, isExpand, isDevMode, setIsDevMode, setIsExpand]);
 
   useEffect(() => {
     scrollToTop();
@@ -75,7 +88,11 @@ const Layout = ({ children }: LayoutProps) => {
             area="nav"
             overflowY="auto"
           >
-            <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
+            <Navbar
+              isExpand={isExpand}
+              setIsExpand={setIsExpand}
+              isDevMode={isDevMode}
+            />
           </GridItem>
         </>
       )}

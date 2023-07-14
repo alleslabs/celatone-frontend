@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useEffect, useRef } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 import {
   usePublicProjectConfig,
@@ -10,8 +9,8 @@ import {
 import type { IconKeys } from "lib/components/icon";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
-import { useLocalStorage } from "lib/hooks/useLocalStorage";
 import { usePublicProjectStore } from "lib/providers/store";
+import type { Option } from "lib/types";
 import { formatSlugName, getListIcon } from "lib/utils";
 
 import { CollapseNavMenu } from "./Collapse";
@@ -20,17 +19,15 @@ import type { MenuInfo } from "./type";
 
 interface NavbarProps {
   isExpand: boolean;
-  setIsExpand: (value: boolean) => void;
+  isDevMode: Option<boolean>;
+  setIsExpand: Dispatch<SetStateAction<boolean>>;
 }
 
-const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
+const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
-  const [isDevMode] = useLocalStorage("devMode", false);
   const wasm = useWasmConfig({ shouldRedirect: false });
-
-  const prevIsDevModeRef = useRef<boolean>(isDevMode);
 
   const { address } = useCurrentChain();
 
@@ -149,17 +146,6 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       : []),
   ];
 
-  useEffect(() => {
-    // Basic to dev and nav is  collapse -> should exapnd
-    if (isDevMode && !prevIsDevModeRef.current && !isExpand) {
-      setIsExpand(true);
-      // Dev to basic and nav is exapnd -> should collapse
-    } else if (!isDevMode && prevIsDevModeRef.current && isExpand) {
-      setIsExpand(false);
-    }
-    prevIsDevModeRef.current = isDevMode;
-  }, [isDevMode, isExpand, setIsExpand]);
-
   return (
     <Flex direction="column" h="full" overflow="hidden" position="relative">
       {isExpand ? (
@@ -177,6 +163,6 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
       )}
     </Flex>
   );
-});
+};
 
 export default Navbar;

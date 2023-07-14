@@ -7,13 +7,13 @@ import {
   Button,
 } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useRef } from "react";
 
-import { useMobile, usePoolConfig, useWasmConfig } from "lib/app-provider";
+import { usePoolConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
-import { useLocalStorage } from "lib/hooks/useLocalStorage";
 import type { Option } from "lib/types";
 
 interface SubHeaderMenuInfo {
@@ -62,14 +62,23 @@ const FirstLandPrompt = ({
   </Flex>
 );
 
-const SubHeader = () => {
-  const isMobile = useMobile();
-  const [isDevMode, setIsDevMode] = useLocalStorage<Option<boolean>>(
-    "devMode",
-    isMobile ? false : undefined
-  );
+interface SubHeaderProps {
+  isExpand: boolean;
+  isDevMode: Option<boolean>;
+  setIsDevMode: Dispatch<SetStateAction<Option<boolean>>>;
+  setIsExpand: Dispatch<SetStateAction<boolean>>;
+}
+const SubHeader = ({
+  isExpand,
+  isDevMode,
+  setIsDevMode,
+  setIsExpand,
+}: SubHeaderProps) => {
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
+
+  const prevIsDevModeRef = useRef<boolean>(Boolean(isDevMode));
+
   const subHeaderMenu: SubHeaderMenuInfo[] = [
     { name: "Overview", slug: "/", icon: "home" },
     { name: "Transactions", slug: "/txs", icon: "file" },
@@ -88,6 +97,17 @@ const SubHeader = () => {
   const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "primary.light";
+
+  useEffect(() => {
+    // Basic to dev and nav is  collapse -> should exapnd
+    if (isDevMode && !prevIsDevModeRef.current && !isExpand) {
+      setIsExpand(true);
+      // Dev to basic and nav is exapnd -> should collapse
+    } else if (!isDevMode && prevIsDevModeRef.current && isExpand) {
+      setIsExpand(false);
+    }
+    prevIsDevModeRef.current = Boolean(isDevMode);
+  }, [isDevMode, isExpand, setIsExpand]);
 
   return (
     <>
