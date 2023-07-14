@@ -43,6 +43,13 @@ export const Tag = defineMultiStyleConfig({
     },
   },
   sizes: {
+    xs: {
+      container: {
+        maxH: "18px",
+        height: "18px",
+        fontSize: "12px",
+      },
+    },
     sm: {
       container: {
         maxH: "20px",

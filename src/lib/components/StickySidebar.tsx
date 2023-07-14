@@ -66,11 +66,16 @@ export const StickySidebar = ({
   return (
     <Box flex="4" px={8} position="relative" {...boxProps}>
       <Flex position="fixed" width="full">
-        <Accordion allowToggle width={96} defaultIndex={[0]}>
+        <Accordion
+          allowToggle
+          width={96}
+          defaultIndex={[0]}
+          variant="transparent"
+        >
           <AccordionItem borderTop="none" borderColor="gray.700">
             <AccordionButton py={3} px={0}>
               <Text
-                variant="body2"
+                variant="body1"
                 fontWeight={700}
                 color="text.main"
                 textAlign="start"
@@ -80,6 +85,7 @@ export const StickySidebar = ({
               <AccordionIcon color="gray.600" ml="auto" />
             </AccordionButton>
             <AccordionPanel
+              bg="transparent"
               py={3}
               px={0}
               borderTop="1px solid"

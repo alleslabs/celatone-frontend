@@ -19,7 +19,6 @@ const BlockDetail = () => {
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_BLOCK_DETAIL);
   }, [router.isReady]);
-
   if (isLoading) return <Loading />;
 
   return (

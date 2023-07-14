@@ -41,6 +41,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           <ExplorerLink
             type={addrType}
             value={value}
+            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             maxWidth="full"
@@ -56,6 +57,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             value={value}
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
             maxWidth="full"
             ampCopierSection="tx_page_event_logs"
           />
@@ -68,6 +70,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             value={value}
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
             maxWidth="full"
             ampCopierSection="tx_page_event_logs"
           />
@@ -114,11 +117,11 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         justify="space-between"
         cursor="pointer"
         onClick={() => {
-          AmpTrackExpand(
-            expand ? "collapse" : "expand",
-            "event_box",
-            "tx_page"
-          );
+          AmpTrackExpand({
+            action: expand ? "collapse" : "expand",
+            component: "event_box",
+            section: "tx_page",
+          });
           setExpand((prev) => !prev);
         }}
         p={4}

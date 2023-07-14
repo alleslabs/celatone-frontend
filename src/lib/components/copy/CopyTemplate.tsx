@@ -22,6 +22,7 @@ export const CopyTemplate = ({
   return (
     <Tooltip isOpen={!isDisabled && hasCopied} label={copyLabel}>
       <Box
+        display="inline"
         onClick={(e) => {
           onCopy();
           e.stopPropagation();

@@ -1,22 +1,9 @@
-import {
-  Flex,
-  Heading,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  Image,
-} from "@chakra-ui/react";
+import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useValidateAddress, useWasmConfig } from "lib/app-provider";
-import { Breadcrumb } from "lib/components/Breadcrumb";
-import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
-import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
@@ -27,13 +14,9 @@ import {
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
 import type { HumanAddr } from "lib/types";
-import {
-  formatPrice,
-  getFirstQueryParam,
-  scrollToTop,
-  truncate,
-} from "lib/utils";
+import { getFirstQueryParam, scrollToTop } from "lib/utils";
 
+import { AccountTop } from "./components/AccountTop";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
 import {
@@ -43,7 +26,7 @@ import {
   StoredCodesTable,
   TxsTable,
 } from "./components/tables";
-import { useAccountTotalValue } from "./data";
+import { TotalAccountValue } from "./components/TotalAccountValue";
 
 enum TabIndex {
   Overview,
@@ -72,7 +55,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const { data: accountId } = useAccountId(accountAddress);
 
   const publicDetail = publicInfoBySlug?.details;
-
   const {
     tableCounts,
     refetchCodesCount,
@@ -81,8 +63,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchProposalsCount,
     loadingState: { txCountLoading },
   } = useAccountDetailsTableCounts(accountAddress, accountId);
-
-  const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
 
   const handleTabChange = (tab: TabIndex) => {
     AmpTrackUseTab(TabIndex[tab]);
@@ -94,72 +74,13 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   return (
     <>
-      <Flex direction="column" mb={6}>
-        {publicDetail && (
-          <Breadcrumb
-            items={[
-              { text: "Public Projects", href: "/projects" },
-              {
-                text: publicDetail?.name,
-                href: `/projects/${publicInfo?.slug}`,
-              },
-              { text: truncate(accountAddress) },
-            ]}
-            mb={6}
-          />
-        )}
-        <Flex direction="column" gap={2}>
-          <Flex gap={1} minH="36px" align="center">
-            <CustomIcon name="wallet" boxSize={5} color="secondary.main" />
-            {publicDetail?.logo && (
-              <Image
-                src={publicDetail.logo}
-                borderRadius="full"
-                alt={publicDetail.name}
-                width={7}
-                height={7}
-              />
-            )}
-            <Heading as="h5" variant="h5">
-              {displayName}
-            </Heading>
-          </Flex>
-          <Flex gap={2}>
-            <Text fontWeight={500} color="text.dark" variant="body2">
-              Wallet Address:
-            </Text>
-            <CopyLink
-              value={accountAddress}
-              amptrackSection="account_top"
-              type="user_address"
-            />
-          </Flex>
-        </Flex>
-      </Flex>
-      {publicInfo?.description && (
-        <Flex
-          direction="column"
-          bg="gray.900"
-          maxW="100%"
-          borderRadius="8px"
-          py={4}
-          px={4}
-          my={6}
-          flex="1"
-        >
-          <Flex alignItems="center" gap={1} minH="32px">
-            <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
-            <Text variant="body2" fontWeight={500} color="text.dark">
-              Public Account Description
-            </Text>
-          </Flex>
-          <Text variant="body2" color="text.main" mb={1}>
-            {publicInfo?.description}
-          </Text>
-        </Flex>
-      )}
-
-      <Tabs index={tabIndex} isLazy lazyBehavior="keepMounted">
+      <AccountTop
+        accountAddress={accountAddress}
+        publicDetail={publicDetail}
+        displayName={displayName}
+        publicInfo={publicInfo}
+      />
+      <Tabs index={tabIndex}>
         <TabList
           borderBottom="1px solid"
           borderColor="gray.700"
@@ -167,7 +88,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
           id={tableHeaderId}
         >
           <CustomTab onClick={() => handleTabChange(TabIndex.Overview)}>
-            Overall
+            Overview
           </CustomTab>
           <CustomTab
             count={tableCounts.assetsCount}
@@ -220,46 +141,26 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
+            <TotalAccountValue accountAddress={accountAddress} />
             <Flex
-              mt={8}
-              pb={8}
-              direction="column"
-              borderBottom="1px solid"
-              borderBottomColor="gray.700"
+              borderBottom={{ base: "0px", md: "1px solid" }}
+              borderBottomColor={{ base: "transparent", md: "gray.700" }}
             >
-              <Text variant="body2" fontWeight={500} color="text.dark">
-                Total Account Value
-              </Text>
-              {isLoading ? (
-                <Loading />
-              ) : (
-                <Heading
-                  as="h5"
-                  variant="h5"
-                  color={
-                    !totalAccountValue || totalAccountValue.eq(0)
-                      ? "text.dark"
-                      : "text.main"
-                  }
-                >
-                  {totalAccountValue ? formatPrice(totalAccountValue) : "N/A"}
-                </Heading>
-              )}
-            </Flex>
-            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}
                 onViewMore={() => handleTabChange(TabIndex.Assets)}
               />
             </Flex>
-            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
+            <Flex
+              borderBottom={{ base: "0px", md: "1px solid" }}
+              borderBottomColor={{ base: "transparent", md: "gray.700" }}
+            >
               <DelegationsSection
                 walletAddress={accountAddress}
                 onViewMore={() => handleTabChange(TabIndex.Delegations)}
               />
             </Flex>
             <TxsTable
-              walletAddress={accountAddress}
               accountId={accountId}
               scrollComponentId={tableHeaderId}
               onViewMore={() => handleTabChange(TabIndex.Txs)}
@@ -304,11 +205,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
             <DelegationsSection walletAddress={accountAddress} />
           </TabPanel>
           <TabPanel p={0}>
-            <TxsTable
-              walletAddress={accountAddress}
-              accountId={accountId}
-              scrollComponentId={tableHeaderId}
-            />
+            <TxsTable accountId={accountId} scrollComponentId={tableHeaderId} />
           </TabPanel>
           <TabPanel p={0}>
             <StoredCodesTable
@@ -359,7 +256,6 @@ const AccountDetails = () => {
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_ACCOUNT_DETAIL);
   }, [router.isReady]);
-
   return (
     <PageContainer>
       {validateUserAddress(accountAddressParam) &&

@@ -14,9 +14,7 @@ export const PageButton = ({
   const isCurrentPage = pageNumber === currentPage;
   return (
     <Button
-      bgColor={isCurrentPage ? "primary.dark" : "transparent"}
-      border={isCurrentPage ? "2px solid" : "1px solid"}
-      borderColor={isCurrentPage ? "primary.main" : "gray.700"}
+      variant={isCurrentPage ? "primary" : "outline-gray"}
       onClick={isCurrentPage ? undefined : () => onPageChange(pageNumber)}
       _hover={
         isCurrentPage ? { cursor: "default" } : { background: "gray.700" }

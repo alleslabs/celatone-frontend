@@ -1,24 +1,61 @@
-import type { UseQueryResult } from "@tanstack/react-query";
+import type {
+  QueryFunctionContext,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useBaseApiRoute, useCurrentChain } from "lib/app-provider";
-import type { ValidatorInfo } from "lib/types";
+import {
+  useBaseApiRoute,
+  useCurrentChain,
+  useCelatoneApp,
+} from "lib/app-provider";
+import { getValidators } from "lib/query/validator";
+import type { ValidatorInfo, Validator, ValidatorAddr } from "lib/types";
 
-import type { RawValidator } from "./validator";
-import { resolveValIdentity, getValidators } from "./validator";
+import { resolveValIdentity, getValidator } from "./validator";
+
+export const useValidator = (
+  validatorAddr: ValidatorAddr,
+  enabled = true
+): UseQueryResult<Validator> => {
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const queryFn = async ({ queryKey }: QueryFunctionContext<string[]>) =>
+    getValidator(queryKey[2], queryKey[3] as ValidatorAddr);
+
+  return useQuery(
+    ["query", "validator", lcdEndpoint, validatorAddr] as string[],
+    queryFn,
+    {
+      enabled: enabled && !!validatorAddr,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
 
 export const useValidators = (): UseQueryResult<
-  Record<string, RawValidator>
+  Record<ValidatorAddr, Validator>
 > => {
-  const lcdEndpoint = useBaseApiRoute("rest");
+  const { indexerGraphClient } = useCelatoneApp();
 
-  const queryFn = useCallback(
-    async () => getValidators(lcdEndpoint),
-    [lcdEndpoint]
-  );
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient.request(getValidators).then(({ validators }) =>
+      validators.reduce<Record<ValidatorAddr, Validator>>(
+        (all, validator) => ({
+          ...all,
+          [validator.operator_address]: {
+            validatorAddress: validator.operator_address,
+            moniker: validator.moniker,
+            identity: validator.identity,
+          } as Validator,
+        }),
+        {}
+      )
+    );
+  }, [indexerGraphClient]);
 
-  return useQuery(["query", "validators", lcdEndpoint], queryFn, {
+  return useQuery(["query", "validators", indexerGraphClient], queryFn, {
     refetchOnWindowFocus: false,
   });
 };
