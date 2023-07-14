@@ -46,18 +46,9 @@ const blockTimeInfo = {
 };
 
 const blockInfo = {
-  title: "Latest Block Height",
-  tooltip:
-    "Latest Block Height tracks transactions and network growth for a healthy blockchain ecosystem.",
-};
-
-const indexedBlockInfo = {
   title: "Latest Indexed Block Height",
   tooltip: "The latest block height indexed by the indexer.",
 };
-
-const getBlockInfo = (chain: string) =>
-  chain === "sei" ? indexedBlockInfo : blockInfo;
 
 interface CardInfoProps {
   title: string;
@@ -120,7 +111,7 @@ const Home = () => {
   const { isDevMode } = useCelatoneApp();
 
   const {
-    chainConfig: { chain, prettyName },
+    chainConfig: { prettyName },
   } = useCelatoneApp();
   const {
     data: latestBlockInfo,
@@ -133,8 +124,6 @@ const Home = () => {
     data?.hundred
   );
   const { data: txsCount, isLoading: isLoadingTxsCount } = useTxsCount();
-
-  const chainBlockInfo = getBlockInfo(chain);
 
   const toTxs = () =>
     navigate({
@@ -215,8 +204,8 @@ const Home = () => {
             navigate={toTxs}
           />
           <CardInfo
-            title={chainBlockInfo.title}
-            tooltip={chainBlockInfo.tooltip}
+            title={blockInfo.title}
+            tooltip={blockInfo.tooltip}
             value={latestBlockInfo?.height?.toString() ?? "N/A"}
             isLoading={isLoadingLatestBlockInfo}
             navigate={toBlocks}
