@@ -3,9 +3,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
-import { useMobile } from "lib/app-provider";
-import { useLocalStorage } from "lib/hooks/useLocalStorage";
-import type { Option } from "lib/types";
+import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
@@ -21,13 +19,8 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
-  type NewType = Option<boolean>;
+  const { isExpand, isDevMode, setIsExpand, setIsDevMode } = useCelatoneApp();
 
-  const [isDevMode, setIsDevMode] = useLocalStorage<NewType>(
-    "devMode",
-    isMobile ? false : undefined
-  );
-  const [isExpand, setIsExpand] = useLocalStorage("navbar", !isMobile);
   const defaultRow = "70px 48px 1fr";
   const mode = useMemo(() => {
     if (isMobile)

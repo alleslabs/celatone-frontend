@@ -86,7 +86,7 @@ const SubHeader = ({
     ...(wasmConfig.enabled
       ? ([
           { name: "Codes", slug: "/codes", icon: "code" },
-          { name: "Contracts", slug: "/contracts", icon: "website" },
+          { name: "Contracts", slug: "/contracts", icon: "contract-address" },
         ] as const)
       : []),
     { name: "Proposals", slug: "/proposals", icon: "proposal" },

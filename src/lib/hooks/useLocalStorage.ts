@@ -8,9 +8,12 @@ export const useLocalStorage = <T>(
   defaultValue: T
 ): PersistedState<T> => {
   const [storedValue, setStoredValue] = useState<T>(() => {
-    const value = window.localStorage.getItem(key);
-
-    return value ? (JSON.parse(value) as T) : defaultValue;
+    try {
+      const value = window.localStorage.getItem(key);
+      return value ? (JSON.parse(value) as T) : defaultValue;
+    } catch (e) {
+      return [] as T;
+    }
   });
 
   useEffect(() => {

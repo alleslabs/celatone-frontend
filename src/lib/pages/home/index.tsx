@@ -10,7 +10,6 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
-import { useLocalStorage } from "lib/hooks/useLocalStorage";
 import { BlocksTable } from "lib/pages/blocks/components/BlocksTable";
 import { TxsTable } from "lib/pages/txs/components/TxsTable";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -118,7 +117,7 @@ const calculateAverageBlockTime = (
 const Home = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const [isDevMode] = useLocalStorage("devMode", undefined);
+  const { isDevMode } = useCelatoneApp();
 
   const {
     chainConfig: { chain, prettyName },
