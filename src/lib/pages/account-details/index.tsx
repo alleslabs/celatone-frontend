@@ -1,18 +1,9 @@
-import {
-  Flex,
-  Heading,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useValidateAddress, useWasmConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
@@ -23,7 +14,7 @@ import {
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
 import type { HumanAddr } from "lib/types";
-import { formatPrice, getFirstQueryParam, scrollToTop } from "lib/utils";
+import { getFirstQueryParam, scrollToTop } from "lib/utils";
 
 import { AccountTop } from "./components/AccountTop";
 import { AssetsSection } from "./components/asset";
@@ -36,7 +27,6 @@ import {
   TxsTable,
 } from "./components/tables";
 import { TotalAccountValue } from "./components/TotalAccountValue";
-import { useAccountTotalValue } from "./data";
 
 enum TabIndex {
   Overview,
@@ -73,8 +63,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     refetchProposalsCount,
     loadingState: { txCountLoading },
   } = useAccountDetailsTableCounts(accountAddress, accountId);
-
-  const { totalAccountValue, isLoading } = useAccountTotalValue(accountAddress);
 
   const handleTabChange = (tab: TabIndex) => {
     AmpTrackUseTab(TabIndex[tab]);
@@ -154,29 +142,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <TotalAccountValue accountAddress={accountAddress} />
-            <Flex
-              borderBottom={{ base: "0px", md: "1px solid" }}
-              borderBottomColor={{ base: "transparent", md: "gray.700" }}
-            >
-              <Text variant="body2" fontWeight={500} color="text.dark">
-                Total Account Value
-              </Text>
-              {isLoading ? (
-                <Loading withBorder />
-              ) : (
-                <Heading
-                  as="h5"
-                  variant="h5"
-                  color={
-                    !totalAccountValue || totalAccountValue.eq(0)
-                      ? "text.dark"
-                      : "text.main"
-                  }
-                >
-                  {totalAccountValue ? formatPrice(totalAccountValue) : "N/A"}
-                </Heading>
-              )}
-            </Flex>
             <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}
