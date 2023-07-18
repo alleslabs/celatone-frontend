@@ -46,6 +46,5 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/stargaze/validators",
       proposal: "https://www.mintscan.io/stargaze/proposals",
     },
-    hasSubHeader: false,
   },
 };

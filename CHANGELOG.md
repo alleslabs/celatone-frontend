@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#415](https://github.com/alleslabs/celatone-frontend/pull/415) Search by icns names feature and Show registered icns names on account details page
+- [#438](https://github.com/alleslabs/celatone-frontend/pull/438) Add new home page
+- [#437](https://github.com/alleslabs/celatone-frontend/pull/437) Add first landing prompt for dev mode
+- [#436](https://github.com/alleslabs/celatone-frontend/pull/436) Implement merge navigation
 
 ### Improvements
 
