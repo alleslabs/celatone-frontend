@@ -79,13 +79,13 @@ export const useContractDetailsTableCounts = (
   const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
   const { data: transactionsCount, refetch: refetchTransactions } =
-    useTxsCountByAddress(
-      contractAddress,
-      undefined,
-      "",
-      DEFAULT_TX_FILTERS,
-      undefined
-    );
+    useTxsCountByAddress({
+      address: contractAddress,
+      accountId: undefined,
+      search: "",
+      filters: DEFAULT_TX_FILTERS,
+      isSigner: undefined,
+    });
   const { data: relatedProposalsCount, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
 

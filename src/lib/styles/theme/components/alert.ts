@@ -3,7 +3,7 @@ import type { ColorProps, ComponentStyleConfig } from "@chakra-ui/react";
 const dupStyleKeys = ["title", "container", "description"];
 
 const generateVariantStyle = (
-  variant: "accent" | "primary" | "success" | "warning" | "error"
+  variant: "accent" | "primary" | "success" | "warning" | "error" | "info"
 ) => {
   let mainColor: ColorProps["color"];
   let bgColor: ColorProps["color"];
@@ -14,6 +14,11 @@ const generateVariantStyle = (
       mainColor = `${variant}.light`;
       bgColor = `${variant}.background`;
       borderColor = `${variant}.dark`;
+      break;
+    case "info":
+      mainColor = "gray.400";
+      bgColor = "gray.800";
+      borderColor = "gray.700";
       break;
     case "accent":
     case "error":
@@ -62,5 +67,6 @@ export const Alert: ComponentStyleConfig = {
     success: generateVariantStyle("success"),
     warning: generateVariantStyle("warning"),
     error: generateVariantStyle("error"),
+    info: generateVariantStyle("info"),
   },
 };

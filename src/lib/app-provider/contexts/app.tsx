@@ -1,7 +1,7 @@
 import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
-import type { ReactNode } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import {
   useCallback,
   useState,
@@ -13,17 +13,21 @@ import {
 
 import { useAmplitude } from "../hooks/useAmplitude";
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG, PROJECT_CONSTANTS } from "config";
-import type { ChainConfig, ProjectConstants } from "config/types";
+import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
+import type { ChainConfig } from "config/chain";
+import { PROJECT_CONSTANTS } from "config/project";
+import type { ProjectConstants } from "config/project";
 import { SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
+import { useLocalStorage } from "lib/hooks/useLocalStorage";
 import {
   useCodeStore,
   useContractStore,
   usePublicProjectStore,
 } from "lib/providers/store";
+import type { Option } from "lib/types";
 import { formatUserKey } from "lib/utils";
 
 interface AppProviderProps {
@@ -36,6 +40,10 @@ interface AppContextInterface {
   chainConfig: ChainConfig;
   indexerGraphClient: GraphQLClient;
   constants: ProjectConstants;
+  isExpand: boolean;
+  isDevMode: Option<boolean>;
+  setIsExpand: Dispatch<SetStateAction<boolean>>;
+  setIsDevMode: Dispatch<SetStateAction<Option<boolean>>>;
 }
 
 const AppContext = createContext<AppContextInterface>({
@@ -44,6 +52,10 @@ const AppContext = createContext<AppContextInterface>({
   chainConfig: DEFAULT_CHAIN_CONFIG,
   indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer),
   constants: PROJECT_CONSTANTS,
+  isExpand: false,
+  isDevMode: undefined,
+  setIsExpand: () => {},
+  setIsDevMode: () => {},
 });
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
@@ -54,6 +66,13 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
 
   const [currentChainName, setCurrentChainName] = useState<string>();
   const [currentChainId, setCurrentChainId] = useState("");
+
+  // TODO - Revisit localstorage
+  const [isDevMode, setIsDevMode] = useLocalStorage<Option<boolean>>(
+    "devMode",
+    undefined
+  );
+  const [isExpand, setIsExpand] = useLocalStorage("navbar", false);
 
   // Remark: this function is only used in useSelectChain. Do not use in other places.
   const handleOnChainIdChange = useCallback((newChainId: string) => {
@@ -71,8 +90,12 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       chainConfig,
       indexerGraphClient: new GraphQLClient(chainConfig.indexer),
       constants: PROJECT_CONSTANTS,
+      isDevMode,
+      isExpand,
+      setIsDevMode,
+      setIsExpand,
     };
-  }, [currentChainId]);
+  }, [currentChainId, isDevMode, isExpand, setIsDevMode, setIsExpand]);
 
   useEffect(() => {
     if (currentChainName) {

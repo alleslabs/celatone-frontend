@@ -1,5 +1,8 @@
+import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { useMobile } from "lib/app-provider";
+import { ProposalCard } from "lib/components/card/ProposalCard";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -54,19 +57,29 @@ export const RelatedProposalsTable = ({
     setPageSize(size);
     setCurrentPage(1);
   };
-
+  const isMobile = useMobile();
+  const emptyState = (
+    <EmptyState
+      imageVariant="empty"
+      message="This contract does not have related proposals yet."
+    />
+  );
+  if (!relatedProposals?.length) return emptyState;
   return (
     <>
-      <ProposalsTable
-        proposals={relatedProposals}
-        isLoading={isLoading}
-        emptyState={
-          <EmptyState
-            imageVariant="empty"
-            message="This contract does not have related proposals yet."
-          />
-        }
-      />
+      {isMobile ? (
+        <Flex direction="column" gap={4} w="full" mt={4}>
+          {relatedProposals.map((proposal) => (
+            <ProposalCard key={proposal.proposalId} proposal={proposal} />
+          ))}
+        </Flex>
+      ) : (
+        <ProposalsTable
+          proposals={relatedProposals}
+          isLoading={isLoading}
+          emptyState={emptyState}
+        />
+      )}
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}

@@ -10,7 +10,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useValidateAddress, useWasmConfig } from "lib/app-provider";
+import { useValidateAddress, useWasmConfig, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -50,14 +50,14 @@ const ContractDetailsBody = observer(
       refetchTransactions,
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress);
-
+    const isMobile = useMobile();
     if (!contractData.contractDetail) return <InvalidContract />;
 
     return (
       <>
         <ContractTop contractAddress={contractAddress} {...contractData} />
         {/* Tokens Section */}
-        <Flex direction="column">
+        <Flex direction="column" mt={{ base: 8, md: 4 }}>
           <TokenSection contractAddress={contractAddress} {...contractData} />
         </Flex>
         {/* Contract Description Section */}
@@ -65,8 +65,17 @@ const ContractDetailsBody = observer(
         {/* Query/Execute commands section */}
         <CommandSection contractAddress={contractAddress} />
         {/* Instantiate/Contract Info Section */}
-        <Flex my={12} justify="space-between">
+        <Flex
+          my={12}
+          justify="space-between"
+          direction={{ base: "column", md: "row" }}
+        >
           {/* Instantiate Info */}
+          {isMobile && (
+            <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
+              Instantiate Info
+            </Heading>
+          )}
           <InstantiateInfo
             isLoading={
               contractData.isContractDetailLoading ||
@@ -76,7 +85,7 @@ const ContractDetailsBody = observer(
             {...contractData}
           />
           {/* Contract Info (Expand) */}
-          <Flex direction="column" flex={0.8} gap={4}>
+          <Flex direction="column" flex={0.8} gap={4} mt={{ base: 12, md: 0 }}>
             <JsonInfo
               header="Contract Info"
               jsonString={jsonPrettify(
@@ -98,13 +107,20 @@ const ContractDetailsBody = observer(
         <Heading as="h6" variant="h6" mb={6} id={tableHeaderId}>
           History
         </Heading>
-        <Tabs>
-          <TabList borderBottom="1px solid" borderColor="gray.700">
+        <Tabs isLazy lazyBehavior="keepMounted">
+          <TabList
+            borderBottom="1px solid"
+            borderColor="gray.700"
+            overflowX={{ base: "scroll", md: "auto" }}
+          >
             <CustomTab count={tableCounts.transactionsCount}>
               Transactions
             </CustomTab>
             <CustomTab count={tableCounts.migrationCount}>Migrations</CustomTab>
-            <CustomTab count={tableCounts.relatedProposalsCount}>
+            <CustomTab
+              count={tableCounts.relatedProposalsCount}
+              whiteSpace="nowrap"
+            >
               Related Proposals
             </CustomTab>
           </TabList>

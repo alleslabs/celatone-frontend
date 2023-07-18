@@ -58,7 +58,10 @@ export const ContractListCard = ({
           <Badge>{item.contracts.length}</Badge>
         </Flex>
         {isInstantiatedByMe && (
-          <Text variant="body3" color="text.dark">
+          <Text
+            variant="body3"
+            textColor={isDisabled ? "text.disabled" : "text.dark"}
+          >
             Updated {dateFromNow(item.lastUpdated)}
           </Text>
         )}

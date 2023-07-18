@@ -1,4 +1,4 @@
-import { TableContainer } from "@chakra-ui/react";
+import { Box, Flex, TableContainer } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -26,14 +26,21 @@ const DelegationsTableBody = ({
   if (isLoading) return <Loading withBorder />;
   if (!delegations?.length)
     return (
-      <EmptyState
-        message="This account did not delegate their assets to any validators."
-        withBorder
-      />
+      <Flex>
+        <TableTitle
+          title="Delegated to"
+          count={delegations?.length ?? 0}
+          mb={2}
+        />
+        <EmptyState
+          message="This account did not delegate their assets to any validators."
+          withBorder
+        />
+      </Flex>
     );
 
   return (
-    <TableContainer>
+    <TableContainer width="100%">
       <BondedTableHeader templateColumns={TEMPLATE_COLUMNS} isDelegation />
       {delegations.map((delegation) => (
         <BondedTableRow
@@ -63,7 +70,7 @@ export const DelegationsTable = ({
   defaultToken,
   isLoading,
 }: DelegationsTableProps) => (
-  <div>
+  <Box width="100%">
     <TableTitle title="Delegated to" count={delegations?.length ?? 0} mb={2} />
     <DelegationsTableBody
       delegations={delegations}
@@ -71,5 +78,5 @@ export const DelegationsTable = ({
       defaultToken={defaultToken}
       isLoading={isLoading}
     />
-  </div>
+  </Box>
 );

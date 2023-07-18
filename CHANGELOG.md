@@ -39,6 +39,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#438](https://github.com/alleslabs/celatone-frontend/pull/438) Add new home page
+- [#437](https://github.com/alleslabs/celatone-frontend/pull/437) Add first landing prompt for dev mode
+- [#436](https://github.com/alleslabs/celatone-frontend/pull/436) Implement merge navigation
+
+### Improvements
+
+- [#412](https://github.com/alleslabs/celatone-frontend/pull/412) Refactor contract detail data loading
+- [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Add new Osmosis v16 tx messages
+- [#414](https://github.com/alleslabs/celatone-frontend/pull/414) Add jest test cases for funds and assetValue in utils, and remove isDecimalNumber in utils
+- [#435](https://github.com/alleslabs/celatone-frontend/pull/435) Refactor chain's config, add new chain configs
+
+### Bug fixes
+
+## v1.1.0
+
+### Features
+
+- [#397](https://github.com/alleslabs/celatone-frontend/pull/397) Implement first version of Osmosis v16 pool
+- [#358](https://github.com/alleslabs/celatone-frontend/pull/358) Add Amp for Pool Detail page
+- [#355](https://github.com/alleslabs/celatone-frontend/pull/355) Add Amp for Pool List page
+- [#294](https://github.com/alleslabs/celatone-frontend/pull/294) Add Pool related txs table
+- [#296](https://github.com/alleslabs/celatone-frontend/pull/296) Add pool header and pool assets section for pool details page
+- [#295](https://github.com/alleslabs/celatone-frontend/pull/295) Add expand/collapse all for unsupported pool list
+- [#277](https://github.com/alleslabs/celatone-frontend/pull/277) Wire up data for pool navigation page
+- [#276](https://github.com/alleslabs/celatone-frontend/pull/276) Add Pool navigation and pool detail data
+- [#270](https://github.com/alleslabs/celatone-frontend/pull/270) Add Pool navigation and detail page
+- [#418](https://github.com/alleslabs/celatone-frontend/pull/418) Add gitignore for new yarn version
+- [#406](https://github.com/alleslabs/celatone-frontend/pull/406) add test cases for `utils/formatter/token.ts`
 - [#398](https://github.com/alleslabs/celatone-frontend/pull/398) Setup Jest and sample tests
 - [#411](https://github.com/alleslabs/celatone-frontend/pull/411) Add override api endpoint
 - [#385](https://github.com/alleslabs/celatone-frontend/pull/385) Upgrade cosmos kit major version and replace hooks
@@ -57,7 +85,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#412](https://github.com/alleslabs/celatone-frontend/pull/412) Refactor contract detail data loading
+- [#428](https://github.com/alleslabs/celatone-frontend/pull/428) Get all validators from graphql
+- [#417](https://github.com/alleslabs/celatone-frontend/pull/417) Support responsive and add new theme
+- [#283](https://github.com/alleslabs/celatone-frontend/pull/283) Change unsupported token icon render logic
+- [#420](https://github.com/alleslabs/celatone-frontend/pull/420) Unify create proposal page layout
+- [#416](https://github.com/alleslabs/celatone-frontend/pull/416) Remove the old redundant useSimulateFee hook
 - [#413](https://github.com/alleslabs/celatone-frontend/pull/413) Add jest test cases for date utils
 - [#404](https://github.com/alleslabs/celatone-frontend/pull/404) Use internal navigate instead of app link for block navigation
 - [#396](https://github.com/alleslabs/celatone-frontend/pull/396) Refactor useConfig, disable wasm related tabs on the public project page
@@ -88,6 +120,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#410](https://github.com/alleslabs/celatone-frontend/pull/410) Remove hardcode precision in attach funds dropdown selection and get assets from API, delete microfy and demicrofy function, remove useChainRecordAsset
+- [#434](https://github.com/alleslabs/celatone-frontend/pull/434) Fix stepper item bg color
+- [#429](https://github.com/alleslabs/celatone-frontend/pull/429) Fix duration formatter, type and add migrate tab to balancer pool
+- [#427](https://github.com/alleslabs/celatone-frontend/pull/427) Fix upload access endpoint, Public project searchbar bug, account tx bug
+- [#425](https://github.com/alleslabs/celatone-frontend/pull/425) Fix reset past tx filter state and permission alert on migration page
+- [#365](https://github.com/alleslabs/celatone-frontend/pull/365) Fix pool page UI including helper text gap, icon alignment in pool asset table, empty state border, add message type, input selection icon, and accordion alignment
+- [#362](https://github.com/alleslabs/celatone-frontend/pull/362) Fix missed out hard-coded osmosis testnet 4 in code
+- [#361](https://github.com/alleslabs/celatone-frontend/pull/361) Fix incorrect assigned message index for each pool message in pool tx tables
+- [#360](https://github.com/alleslabs/celatone-frontend/pull/360) Fix supported pool list cannot be searched with token ID and should not show pagination when data is less than 10
 - [#403](https://github.com/alleslabs/celatone-frontend/pull/403) Retrieve faucet information from api and use api instead of lcd to prevent CORS
 - [#400](https://github.com/alleslabs/celatone-frontend/pull/400) Fallback explorer link for validator/proposal and gov params token symbol
 - [#395](https://github.com/alleslabs/celatone-frontend/pull/395) Disable wasm related tabs on the account detail page

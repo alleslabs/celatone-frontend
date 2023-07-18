@@ -64,6 +64,4 @@ export interface UploadAccess {
 export const fetchGovUploadAccessParams = async (
   lcdEndpoint: string
 ): Promise<UploadAccess> =>
-  axios
-    .get(`${lcdEndpoint}/cosmwasm/wasm/v1/codes/params`)
-    .then(({ data }) => data.params.code_upload_access);
+  axios.get(`${lcdEndpoint}/upload_access`).then(({ data }) => data);

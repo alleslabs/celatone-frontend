@@ -39,7 +39,7 @@ export const ContractsTable = ({
       "160px minmax(300px, 3fr) minmax(200px, 2fr) 150px 260px 80px";
 
   return (
-    <TableContainer>
+    <TableContainer pb={6}>
       <ContractsTableHeader
         templateColumns={templateColumns}
         isReadOnly={isReadOnly}

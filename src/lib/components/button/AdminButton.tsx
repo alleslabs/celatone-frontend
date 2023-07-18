@@ -24,6 +24,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
       >
         <MenuButton
           variant="outline-gray"
+          size={{ base: "sm", md: "md" }}
           as={Button}
           isDisabled={!isAdmin}
           rightIcon={<CustomIcon name="chevron-down" />}
