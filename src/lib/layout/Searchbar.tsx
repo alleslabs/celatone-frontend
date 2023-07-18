@@ -73,6 +73,8 @@ const getRouteOptions = (
       };
     case "Block":
       return { pathname: "/blocks/[height]", query: "height" };
+    case "Pool ID":
+      return { pathname: "/pools/[poolId]", query: "poolId" };
     default:
       return null;
   }
@@ -361,7 +363,6 @@ const Searchbar = () => {
           zIndex={2}
           w="full"
           top="50px"
-          maxH="195px"
           overflowY="scroll"
           shadow="dark-lg"
         >

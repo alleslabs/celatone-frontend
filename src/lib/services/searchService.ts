@@ -12,6 +12,7 @@ import { isBlock, isCodeId, isTxHash } from "lib/utils";
 import { useBlockDetailsQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
+import { usePoolByPoolId } from "./poolService";
 import { useTxData } from "./txService";
 
 export type SearchResultType =
@@ -20,7 +21,42 @@ export type SearchResultType =
   | "Wallet Address"
   | "Transaction Hash"
   | "Proposal ID"
-  | "Block";
+  | "Block"
+  | "Pool ID";
+
+const loadingStateResolver = ({
+  debouncedKeyword,
+  isWasm,
+  isPool,
+  txLoading,
+  codeLoading,
+  contractLoading,
+  blockLoading,
+  poolFetching,
+}: {
+  debouncedKeyword: string;
+  isWasm: boolean;
+  isPool: boolean;
+  txLoading: boolean;
+  codeLoading: boolean;
+  contractLoading: boolean;
+  blockLoading: boolean;
+  poolFetching: boolean;
+}) => {
+  const txDataLoading = isTxHash(debouncedKeyword) && txLoading;
+  const codeDataLoading = isWasm && isCodeId(debouncedKeyword) && codeLoading;
+  const contractDataLoading = isWasm && contractLoading;
+  const blockDataLoading = isBlock(debouncedKeyword) && blockLoading;
+  const poolLoading = isPool && poolFetching;
+
+  return (
+    txDataLoading ||
+    codeDataLoading ||
+    contractDataLoading ||
+    blockDataLoading ||
+    poolLoading
+  );
+};
 
 // TODO: Add Proposal ID, ICNS query
 export const useSearchHandler = (
@@ -32,6 +68,7 @@ export const useSearchHandler = (
     chainConfig: {
       features: {
         wasm: { enabled: isWasm },
+        pool: { enabled: isPool },
       },
     },
   } = useCelatoneApp();
@@ -54,10 +91,13 @@ export const useSearchHandler = (
   );
   const { data: blockData, isLoading: blockLoading } =
     useBlockDetailsQuery(debouncedKeyword);
-  const txDataLoading = isTxHash(debouncedKeyword) && txLoading;
-  const codeDataLoading = isWasm && isCodeId(debouncedKeyword) && codeLoading;
-  const contractDataLoading = isWasm && contractLoading;
-  const blockDataLoading = isBlock(debouncedKeyword) && blockLoading;
+  const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
+    Number(debouncedKeyword),
+    isPool &&
+      Number.isInteger(Number(debouncedKeyword)) &&
+      Number(debouncedKeyword) > 0
+  );
+
   const isAddr =
     addressType === "user_address" || addressType === "contract_address";
 
@@ -75,11 +115,17 @@ export const useSearchHandler = (
       txData && "Transaction Hash",
       codeData && "Code ID",
       blockData && "Block",
+      poolData && "Pool ID",
     ].filter((res) => Boolean(res)) as SearchResultType[],
-    isLoading:
-      txDataLoading ||
-      codeDataLoading ||
-      contractDataLoading ||
-      blockDataLoading,
+    isLoading: loadingStateResolver({
+      debouncedKeyword,
+      isWasm,
+      isPool,
+      txLoading,
+      codeLoading,
+      contractLoading,
+      blockLoading,
+      poolFetching,
+    }),
   };
 };
