@@ -37,7 +37,7 @@ export const InstantiatorRender = ({
     return instantiator ? (
       <ExplorerLink
         value={instantiator}
-        type="user_address"
+        type={getAddressType(instantiator)}
         showCopyOnHover
         isReadOnly={isReadOnly}
       />
