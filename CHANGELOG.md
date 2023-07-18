@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#402](https://github.com/alleslabs/celatone-frontend/pull/402) Add validator image resolver hook (add keybase as a fallback option)
 - [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Add new Osmosis v16 tx messages
 - [#414](https://github.com/alleslabs/celatone-frontend/pull/414) Add jest test cases for funds and assetValue in utils, and remove isDecimalNumber in utils
 - [#435](https://github.com/alleslabs/celatone-frontend/pull/435) Refactor chain's config, add new chain configs
@@ -80,7 +81,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#402](https://github.com/alleslabs/celatone-frontend/pull/402) Add validator image resolver hook (add keybase as a fallback option)
 - [#428](https://github.com/alleslabs/celatone-frontend/pull/428) Get all validators from graphql
 - [#417](https://github.com/alleslabs/celatone-frontend/pull/417) Support responsive and add new theme
 - [#283](https://github.com/alleslabs/celatone-frontend/pull/283) Change unsupported token icon render logic

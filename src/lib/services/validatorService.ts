@@ -27,7 +27,7 @@ export const useValidator = (
     ["query", "validator", lcdEndpoint, validatorAddr] as string[],
     queryFn,
     {
-      enabled: enabled && !!validatorAddr,
+      enabled: enabled && Boolean(validatorAddr),
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -80,6 +80,6 @@ export const useValidatorImage = (
     },
     retry: false,
     refetchOnWindowFocus: false,
-    enabled: !!validator,
+    enabled: Boolean(validator),
   });
 };

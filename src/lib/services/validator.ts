@@ -1,12 +1,7 @@
 import axios from "axios";
 
 import { CURR_THEME } from "env";
-import type {
-  Option,
-  Validator,
-  ValidatorAddr,
-  ValidatorInfo,
-} from "lib/types";
+import type { Validator, ValidatorAddr, ValidatorInfo } from "lib/types";
 import { removeSpecialChars } from "lib/utils";
 
 interface ValidatorResponse {
@@ -54,10 +49,10 @@ export const getValidator = async (
 };
 
 export const resolveValIdentity = async (
-  apiPath: Option<string>,
+  chainName: string,
   validator: ValidatorInfo
 ): Promise<string> => {
-  const githubUrl = `https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${apiPath}/moniker/${validator.validatorAddress}.png`;
+  const githubUrl = `https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${chainName}/moniker/${validator.validatorAddress}.png`;
   const keybaseUrl = `https://keybase.io/_/api/1.0/user/lookup.json?key_suffix=${validator.identity}&fields=pictures`;
   const uiAvatarsUrl = `https://ui-avatars.com/api/?name=${removeSpecialChars(
     validator.moniker ?? ""
