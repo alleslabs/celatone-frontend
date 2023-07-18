@@ -63,7 +63,7 @@ export const AccountHeader = ({
           </Text>
           <Flex gap={1} align="center">
             {icnsName.names.map((name) => (
-              <>
+              <div key={name}>
                 {name === icnsName.primary_name && <PrimaryNameMark />}
                 <CopyLink
                   value={name}
@@ -80,7 +80,7 @@ export const AccountHeader = ({
                     },
                   }}
                 />
-              </>
+              </div>
             ))}
           </Flex>
         </Flex>

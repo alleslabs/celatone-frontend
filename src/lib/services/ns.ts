@@ -10,8 +10,10 @@ export interface ICNSNamesResponse {
 export const queryICNSNamesByAddress = async (
   baseEndpoint: string,
   address: Addr
-): Promise<ICNSNamesResponse> => {
-  const { data } = await axios.get(`${baseEndpoint}/${address}`);
+) => {
+  const { data } = await axios.get<ICNSNamesResponse>(
+    `${baseEndpoint}/${address}`
+  );
   return data;
 };
 
