@@ -21,6 +21,7 @@ import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { mergeRefs } from "lib/utils";
 
+import { DropdownChevron } from "./DropdownChevron";
 import { CustomIcon } from "./icon";
 
 export interface TagSelectionProps extends InputProps {
@@ -177,6 +178,13 @@ export const TagSelection = observer(
                 autoComplete="off"
                 {...rest}
                 style={{ border: 0, maxHeight: "54px" }}
+              />
+              <DropdownChevron
+                isOpen={displayOptions}
+                bg={labelBgColor}
+                // input max height 54px + border top and bottom 2px
+                height="56px"
+                onClick={() => setDisplayOptions((prev) => !prev)}
               />
               <FormLabel
                 position="absolute"
