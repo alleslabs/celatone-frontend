@@ -1,6 +1,7 @@
 import { Text, Grid, HStack } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
+import { useGetAddressType } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SaveOrRemoveCodeModal } from "lib/components/modal";
@@ -23,6 +24,7 @@ export const CodesTableRow = ({
   onRowSelect,
   isReadOnly,
 }: CodesTableRowProps) => {
+  const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(codeInfo.cw2Contract, codeInfo.cw2Version);
   return (
     <Grid
@@ -64,7 +66,7 @@ export const CodesTableRow = ({
       <TableRow>
         <ExplorerLink
           value={codeInfo.uploader}
-          type="user_address"
+          type={getAddressType(codeInfo.uploader)}
           showCopyOnHover
           isReadOnly={isReadOnly}
         />
