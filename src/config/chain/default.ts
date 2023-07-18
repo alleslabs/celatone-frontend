@@ -1,5 +1,3 @@
-import type { ContractAddr, HumanAddr, ValidatorAddr } from "lib/types";
-
 import type { ChainConfig } from "./types";
 
 export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
@@ -31,11 +29,6 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     },
     gasAdjustment: 1.0,
     maxGasLimit: 0,
-  },
-  exampleAddresses: {
-    user: "" as HumanAddr,
-    contract: "" as ContractAddr,
-    validator: "" as ValidatorAddr,
   },
   explorerLink: {
     validator: "",
