@@ -168,7 +168,7 @@ export const useUserAssetInfos = (
     isLoading,
     error,
   } = useAccountBalances(walletAddress);
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: true });
 
   const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
     (balance): BalanceWithAssetInfo => ({
@@ -222,7 +222,9 @@ const calBonded = (
 export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
-  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
+  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
+    withPrices: true,
+  });
   const { data: validators, isLoading: isLoadingValidators } = useValidators();
 
   const { data: rawDelegations, isLoading: isLoadingRawDelegations } =

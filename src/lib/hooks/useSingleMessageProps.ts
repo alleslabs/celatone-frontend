@@ -592,7 +592,7 @@ export const useSingleActionMsgProps = (
   singleMsg: Option<boolean>
 ): SingleMsgProps => {
   const { getContractLocalInfo } = useContractStore();
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: false });
   const getAddressTypeByLength = useGetAddressTypeByLength();
 
   switch (type) {

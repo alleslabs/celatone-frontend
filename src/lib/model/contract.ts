@@ -100,7 +100,7 @@ export const useContractData = (
   const { getContractLocalInfo } = useContractStore();
   const lcdEndpoint = useBaseApiRoute("rest");
 
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: true });
   const { data: publicInfo } =
     usePublicProjectByContractAddress(contractAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);

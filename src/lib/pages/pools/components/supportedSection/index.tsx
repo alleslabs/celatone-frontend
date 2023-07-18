@@ -55,7 +55,7 @@ interface SupportedSectionProp {
 export const SupportedSection = ({
   scrollComponentId,
 }: SupportedSectionProp) => {
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: false });
 
   const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
