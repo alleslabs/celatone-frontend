@@ -13,7 +13,6 @@ export const useLocalStorage = <T>(
       const value = window.localStorage.getItem(key);
       return value ? (JSON.parse(value) as T) : defaultValue;
     } catch (e) {
-      console.warn(`Error reading localStorage key “${key}”:`, e);
       return defaultValue as T;
     }
   });
@@ -22,7 +21,7 @@ export const useLocalStorage = <T>(
     try {
       window.localStorage.setItem(key, JSON.stringify(storedValue));
     } catch (e) {
-      console.warn(`Error setting localStorage key “${key}”:`, e);
+      // I want application to not crush, but don't care about the message
     }
   }, [key, storedValue]);
 
