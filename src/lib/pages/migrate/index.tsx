@@ -1,21 +1,24 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import {
+  useBaseApiRoute,
   useCelatoneApp,
+  useCurrentChain,
   useInternalNavigate,
-  useLCDEndpoint,
+  useWasmConfig,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
+import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpTrackToMigrate } from "lib/services/amplitude";
 import { queryInstantiateInfo } from "lib/services/contract";
+import { useUploadAccessParams } from "lib/services/proposalService";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -32,16 +35,20 @@ const defaultValues: MigratePageState = {
 };
 
 const Migrate = () => {
+  useWasmConfig({ shouldRedirect: true });
   const { indexerGraphClient } = useCelatoneApp();
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const endpoint = useLCDEndpoint();
-  const { address = "" } = useWallet();
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const { data: uploadAccess, isFetching } = useUploadAccessParams();
+
+  const { address = "" } = useCurrentChain();
 
   const { setValue, watch } = useForm<MigratePageState>({
     mode: "all",
     defaultValues,
   });
+
   const { migrateStep, contractAddress, admin, codeId } = watch();
 
   const firstStep = migrateStep !== "migrate_contract";
@@ -67,9 +74,9 @@ const Migrate = () => {
   );
 
   useQuery(
-    ["query", "instantiate_info", endpoint, contractAddress],
+    ["query", "instantiate_info", lcdEndpoint, contractAddress],
     async () =>
-      queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
+      queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
     {
       enabled: !!contractAddress,
       retry: 0,
@@ -117,6 +124,7 @@ const Migrate = () => {
         return (
           <MigrateOptions
             isAdmin={admin === address}
+            uploadAccess={uploadAccess}
             uploadHandler={() => {
               setValue("migrateStep", "upload_new_code");
             }}
@@ -128,6 +136,7 @@ const Migrate = () => {
     }
   };
 
+  if (isFetching) return <Loading withBorder={false} />;
   return (
     <WasmPageContainer>
       {firstStep ? (

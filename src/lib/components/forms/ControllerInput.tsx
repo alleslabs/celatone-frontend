@@ -60,6 +60,7 @@ export const ControllerInput = <T extends FieldValues>({
 
   const isError = !!error;
   const isRequired = "required" in rules;
+
   return (
     <FormControl
       size={size}

@@ -2,29 +2,33 @@ import type { StdFee } from "@cosmjs/stargate";
 import big from "big.js";
 import { useCallback } from "react";
 
+import { useCelatoneApp } from "../contexts/app";
 import type { Gas } from "lib/types";
 
-import { useCelatoneApp } from "./useCelatoneApp";
-
 export const useFabricateFee = () => {
-  const { constants, chainGasPrice } = useCelatoneApp();
+  const {
+    chainConfig: {
+      gas: { gasPrice, gasAdjustment, maxGasLimit },
+    },
+  } = useCelatoneApp();
 
   return useCallback(
     (estimatedGas: number): StdFee => {
-      const adjustedGas = big(estimatedGas)
-        .mul(constants.gasAdjustment)
-        .toFixed(0);
+      const adjustedGas = Math.min(
+        Number(big(estimatedGas).mul(gasAdjustment).toFixed(0)),
+        maxGasLimit
+      );
 
       return {
         amount: [
           {
-            denom: chainGasPrice.denom,
-            amount: big(adjustedGas).mul(chainGasPrice.gasPrice).toFixed(0),
+            denom: gasPrice.denom,
+            amount: big(adjustedGas).mul(gasPrice.tokenPerGas).toFixed(0),
           },
         ],
-        gas: adjustedGas as Gas<string>,
+        gas: adjustedGas.toString() as Gas<string>,
       };
     },
-    [chainGasPrice, constants.gasAdjustment]
+    [gasAdjustment, gasPrice.denom, gasPrice.tokenPerGas, maxGasLimit]
   );
 };

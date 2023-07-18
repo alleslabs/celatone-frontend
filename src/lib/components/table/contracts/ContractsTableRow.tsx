@@ -1,7 +1,7 @@
 import { Flex, Text, Grid } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import { useGetAddressType } from "lib/app-provider";
+import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ContractAddr, ContractInfo } from "lib/types";
 import { RemarkOperation } from "lib/types";
@@ -17,15 +17,17 @@ interface ContractsTableRowProps {
   onRowSelect: (contract: ContractAddr) => void;
   isReadOnly: boolean;
   withCTA?: CTAInfo;
+  withoutTag?: boolean;
 }
 
-const InstantiatorRender = ({
+export const InstantiatorRender = ({
   contractInfo: { instantiator, remark, latestUpdater },
   isReadOnly,
 }: {
   contractInfo: ContractInfo;
   isReadOnly: boolean;
 }) => {
+  const isMobile = useMobile();
   const getAddressType = useGetAddressType();
 
   /**
@@ -57,9 +59,11 @@ const InstantiatorRender = ({
     case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE:
       return (
         <Flex direction="column" onClick={(e) => e.stopPropagation()}>
-          <Text variant="body3" color="text.dark">
-            Migrated by
-          </Text>
+          {!isMobile && (
+            <Text variant="body3" color="text.dark">
+              Migrated by
+            </Text>
+          )}
           <ExplorerLink
             value={latestUpdater}
             type={updaterType}
@@ -92,6 +96,7 @@ export const ContractsTableRow = ({
   onRowSelect,
   isReadOnly,
   withCTA,
+  withoutTag,
 }: ContractsTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
@@ -117,10 +122,11 @@ export const ContractsTableRow = ({
       />
     </TableRow>
 
-    <TableRow>
-      <TagsCell contractLocalInfo={contractInfo} isReadOnly={isReadOnly} />
-    </TableRow>
-
+    {!withoutTag && (
+      <TableRow>
+        <TagsCell contractLocalInfo={contractInfo} isReadOnly={isReadOnly} />
+      </TableRow>
+    )}
     <TableRow>
       <InstantiatorRender contractInfo={contractInfo} isReadOnly={isReadOnly} />
     </TableRow>

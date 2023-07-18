@@ -1,5 +1,28 @@
 import { graphql } from "lib/gql";
 
+export const getContractListQueryDocument = graphql(`
+  query getContractListQuery {
+    contracts(limit: 100, offset: 0, order_by: { id: desc }) {
+      address
+      label
+      admin: account {
+        address
+      }
+      init_by: contract_histories(
+        order_by: { block: { timestamp: asc } }
+        limit: 1
+      ) {
+        block {
+          timestamp
+        }
+        account {
+          address
+        }
+      }
+    }
+  }
+`);
+
 export const getInstantiatedListByUserQueryDocument = graphql(`
   query getInstantiatedListByUserQueryDocument($walletAddr: String!) {
     contracts(
@@ -35,6 +58,10 @@ export const getInstantiateDetailByContractQueryDocument = graphql(`
       init_msg
       transaction {
         hash
+        block_height
+        block {
+          timestamp
+        }
       }
       contract_proposals(
         where: {

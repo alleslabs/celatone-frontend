@@ -1,11 +1,13 @@
 import { Image } from "@chakra-ui/react";
 
+import { CURR_THEME } from "env";
+
 export type ImageVariant = "empty" | "not-found" | "disconnected";
 
 const imageSourceMap: Record<ImageVariant, string> = {
-  empty: "https://assets.alleslabs.dev/illustration/search-empty.svg",
-  "not-found": "https://assets.alleslabs.dev/illustration/search-not-found.svg",
-  disconnected: "https://assets.alleslabs.dev/illustration/disconnected.svg",
+  empty: CURR_THEME.illustration.searchEmpty,
+  "not-found": CURR_THEME.illustration.searchNotFound,
+  disconnected: CURR_THEME.illustration.disconnected,
 };
 
 interface StateImageProps {

@@ -1,3 +1,5 @@
+import plur from "plur";
+
 import type { Transaction } from "lib/types";
 import { ActionMsgType } from "lib/types";
 import { extractMsgType } from "lib/utils";
@@ -27,7 +29,7 @@ export const RenderActionMessages = ({
   }
   return (
     <SingleMsg
-      type="Message"
+      type={plur("Message", transaction.messages.length)}
       tags={
         transaction.messages.length === 1
           ? [extractMsgType(transaction.messages[0].type).substring(3)]

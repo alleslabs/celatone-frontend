@@ -1504,7 +1504,8 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn": {
+    case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
       const details = extractTxDetails(type, body, log);
       return [
         {
@@ -1532,7 +1533,8 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut": {
+    case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut": {
       const details = extractTxDetails(type, body, log);
       return [
         {
@@ -1743,7 +1745,7 @@ export const generateReceipts = (
           value: details.duration,
         },
         {
-          title: "Coins",
+          title: "Coin",
           html: getCoinComponent(details.coins, assetInfos),
         },
       ];

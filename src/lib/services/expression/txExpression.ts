@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { Addr, Option, TxFilters } from "lib/types";
+import type { Addr, Option, PoolTxFilter, TxFilters } from "lib/types";
 import { isTxHash } from "lib/utils";
 
 const actions = {
@@ -42,7 +42,7 @@ export const useTxExpression = ({
   isSigner,
 }: {
   address?: Option<Addr>;
-  accountId?: Option<number>;
+  accountId?: Option<number | null>;
   search: string;
   filters: TxFilters;
   isSigner: Option<boolean>;
@@ -75,3 +75,15 @@ export const useTxExpression = ({
       ...filterExp,
     };
   }, [address, accountId, filters, isSigner, search]);
+
+export const usePoolTxExpression = (
+  poolId: Option<number>,
+  type: PoolTxFilter
+) =>
+  useMemo(
+    () => ({
+      ...(poolId ? { pool_id: { _eq: poolId } } : {}),
+      ...(type !== "is_all" ? { [type]: { _eq: true } } : {}),
+    }),
+    [poolId, type]
+  );

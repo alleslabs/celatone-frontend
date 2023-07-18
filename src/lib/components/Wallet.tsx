@@ -1,6 +1,6 @@
-import { useWallet } from "@cosmos-kit/react";
 import type { MouseEventHandler } from "react";
 
+import { useCurrentChain } from "lib/app-provider";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { truncate } from "lib/utils";
 
@@ -13,9 +13,7 @@ import {
 } from "./wallet/index";
 
 export const WalletSection = () => {
-  const walletManager = useWallet();
-  const { address } = useWallet();
-  const { connect, openView, walletStatus } = walletManager;
+  const { address, connect, openView, status } = useCurrentChain();
 
   // Events
   const onClickConnect: MouseEventHandler = async (e) => {
@@ -32,7 +30,7 @@ export const WalletSection = () => {
 
   return (
     <WalletConnectComponent
-      walletStatus={walletStatus}
+      walletStatus={status}
       disconnect={
         <Disconnected
           buttonText="Connect"

@@ -25,7 +25,7 @@ export const NonRedelegatableTableRow = ({
 
     <TableRow>
       <Flex direction="column" gap={1} color="text.dark">
-        <Text variant="body2">
+        <Text variant="body2" color="text.dark">
           {formatUTC(nonRedelegatable.completionTime)}
         </Text>
         <Text variant="body3" color="text.disabled">

@@ -2,7 +2,11 @@ import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import {
+  usePublicProjectConfig,
+  useWasmConfig,
+  useInternalNavigate,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -24,6 +28,7 @@ enum TabIndex {
 
 const ProjectDetail = () => {
   const router = useRouter();
+  const wasm = useWasmConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const {
@@ -49,6 +54,8 @@ const ProjectDetail = () => {
     });
   };
 
+  usePublicProjectConfig({ shouldRedirect: true });
+
   useEffect(() => {
     if (router.isReady) {
       if (!tab || !Object.values(TabIndex).includes(tab)) {
@@ -67,19 +74,28 @@ const ProjectDetail = () => {
     }
   }, [router.isReady, tab, slug, navigate]);
 
+  const overviewCount =
+    publicAccounts.length +
+    (wasm.enabled ? publicCodes.length + publicContracts.length : 0);
+
   if (isLoading) return <Loading />;
 
   return (
     <PageContainer>
       <DetailHeader details={projectDetail} slug={slug} />
-      <Tabs index={Object.values(TabIndex).indexOf(tab)}>
-        <TabList my={6} borderBottom="1px" borderColor="gray.800">
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
+        <TabList
+          my={6}
+          borderBottom="1px solid"
+          borderColor="gray.700"
+          overflowX="scroll"
+        >
           <CustomTab
-            count={
-              publicCodes.length +
-              publicContracts.length +
-              publicAccounts.length
-            }
+            count={overviewCount}
             onClick={handleTabChange(TabIndex.Overview)}
           >
             Overview
@@ -88,6 +104,7 @@ const ProjectDetail = () => {
             count={publicCodes.length}
             isDisabled={!publicCodes.length}
             onClick={handleTabChange(TabIndex.Codes)}
+            hidden={!wasm.enabled}
           >
             Codes
           </CustomTab>
@@ -95,6 +112,7 @@ const ProjectDetail = () => {
             count={publicContracts.length}
             isDisabled={!publicContracts.length}
             onClick={handleTabChange(TabIndex.Contracts)}
+            hidden={!wasm.enabled}
           >
             Contracts
           </CustomTab>
@@ -106,17 +124,20 @@ const ProjectDetail = () => {
             Accounts
           </CustomTab>
         </TabList>
-
         <TabPanels my={8}>
           <TabPanel p={0}>
-            <PublicProjectCodeTable
-              codes={publicCodes}
-              onViewMore={handleTabChange(TabIndex.Codes)}
-            />
-            <PublicProjectContractTable
-              contracts={publicContracts}
-              onViewMore={handleTabChange(TabIndex.Contracts)}
-            />
+            {wasm.enabled && (
+              <>
+                <PublicProjectCodeTable
+                  codes={publicCodes}
+                  onViewMore={handleTabChange(TabIndex.Codes)}
+                />
+                <PublicProjectContractTable
+                  contracts={publicContracts}
+                  onViewMore={handleTabChange(TabIndex.Contracts)}
+                />
+              </>
+            )}
             <PublicProjectAccountTable
               accounts={publicAccounts}
               onViewMore={handleTabChange(TabIndex.Accounts)}

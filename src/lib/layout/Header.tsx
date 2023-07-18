@@ -7,22 +7,20 @@ import {
   MenuItem,
   Image,
 } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 
-import { useSelectChain } from "lib/app-provider";
+import { CHAIN_CONFIGS } from "config/chain";
+import { CURR_THEME } from "env";
+import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { FaucetBtn } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { WalletSection } from "lib/components/Wallet";
-import { getSupportedChainNames } from "lib/data";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 import Searchbar from "./Searchbar";
 
 const Header = () => {
-  const { currentChainRecord, currentChainName, getChainRecord } = useWallet();
+  const { availableChainIds, currentChainId } = useCelatoneApp();
   const selectChain = useSelectChain();
-
   return (
     <Flex
       as="header"
@@ -36,7 +34,7 @@ const Header = () => {
     >
       <AppLink href="/">
         <Image
-          src="https://assets.alleslabs.dev/branding/logo/logo.svg"
+          src={CURR_THEME.branding.logo}
           alt="Celatone"
           minWidth="152px"
           width="152px"
@@ -48,7 +46,7 @@ const Header = () => {
       </AppLink>
       <Searchbar />
       <Flex gap={4}>
-        <FaucetBtn />
+        {/* <FaucetBtn /> */}
         <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
           <MenuButton
             pl={4}
@@ -73,40 +71,44 @@ const Header = () => {
                 whiteSpace="nowrap"
                 maxW="170px"
               >
-                {currentChainRecord?.chain.chain_id}
+                {currentChainId}
               </Text>
               <CustomIcon name="chevron-down" color="gray.600" />
             </Flex>
           </MenuButton>
           <MenuList zIndex="dropdown">
-            {getSupportedChainNames().map((chainName) => (
-              <MenuItem
-                key={chainName}
-                onClick={() => {
-                  selectChain(chainName);
-                }}
-                flexDirection="column"
-                alignItems="flex-start"
-                _hover={{
-                  backgroundColor: "gray.800",
-                }}
-                transition="all .25s ease-in-out"
-              >
-                <Flex justify="space-between" align="center" w="full">
-                  <Flex direction="column">
-                    <Text variant="body2">
-                      {getChainRecord(chainName)?.chain.pretty_name}
-                    </Text>
-                    <Text color="text.dark" variant="body3">
-                      {getChainRecord(chainName)?.chain.chain_id}
-                    </Text>
+            {availableChainIds.map((chainId) => {
+              const noConfig = !(chainId in CHAIN_CONFIGS);
+              return (
+                <MenuItem
+                  key={chainId}
+                  onClick={() => {
+                    selectChain(chainId);
+                  }}
+                  flexDirection="column"
+                  alignItems="flex-start"
+                  _hover={{
+                    backgroundColor: "gray.800",
+                  }}
+                  transition="all .25s ease-in-out"
+                  isDisabled={noConfig}
+                >
+                  <Flex justify="space-between" align="center" w="full">
+                    <Flex direction="column">
+                      <Text variant="body2">
+                        {CHAIN_CONFIGS[chainId]?.prettyName || chainId}
+                      </Text>
+                      <Text color="text.dark" variant="body3">
+                        {chainId}
+                      </Text>
+                    </Flex>
+                    {chainId === currentChainId && (
+                      <CustomIcon name="check" boxSize={3} color="gray.600" />
+                    )}
                   </Flex>
-                  {chainName === currentChainName && (
-                    <CustomIcon name="check" boxSize={3} color="gray.600" />
-                  )}
-                </Flex>
-              </MenuItem>
-            ))}
+                </MenuItem>
+              );
+            })}
           </MenuList>
         </Menu>
         <WalletSection />

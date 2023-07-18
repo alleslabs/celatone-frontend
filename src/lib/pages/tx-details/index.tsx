@@ -2,22 +2,23 @@ import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { BackButton } from "lib/components/button";
+import { useMobile } from "lib/app-provider";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { useAssetInfos } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, truncate } from "lib/utils";
 
-import { TxHeader, TxInfo } from "./components";
+import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
 
 const TxDetails = () => {
   const router = useRouter();
   const hashParam = getFirstQueryParam(router.query.txHash);
-
+  const isMobile = useMobile();
   const {
     data: txData,
     isLoading: txLoading,
@@ -44,12 +45,18 @@ const TxDetails = () => {
 
   return (
     <PageContainer>
-      <BackButton />
+      <Breadcrumb
+        items={[
+          { text: "Transactions", href: "/txs" },
+          { text: truncate(txData?.txhash) },
+        ]}
+      />
       {txData ? (
         <>
           <TxHeader mt={2} txData={txData} />
-          <Flex my={12} justify="space-between">
-            <TxInfo txData={txData} assetInfos={assetInfos} />
+          {isMobile && <TxInfoMobile txData={txData} assetInfos={assetInfos} />}
+          <Flex my={{ base: 0, md: 12 }} justify="space-between">
+            {!isMobile && <TxInfo txData={txData} assetInfos={assetInfos} />}
             <MessageSection txData={txData} assetInfos={assetInfos} />
           </Flex>
         </>

@@ -1,9 +1,11 @@
 import type { BoxProps } from "@chakra-ui/react";
 import { Badge, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
+import type { Option } from "lib/types";
+
 interface TableTitleProps extends BoxProps {
   title: string;
-  count: number | string;
+  count: Option<number>;
   helperText?: string;
 }
 
@@ -19,12 +21,8 @@ export const TableTitle = ({
       <Heading as="h6" variant="h6">
         {title}
       </Heading>
-      <Badge
-        textColor={
-          count && typeof count !== "string" ? "text.main" : "text.disabled"
-        }
-      >
-        {count}
+      <Badge textColor={count ? "text.main" : "text.disabled"}>
+        {count ?? "N/A"}
       </Badge>
     </Flex>
     <Text variant="body2" textColor="text.dark">

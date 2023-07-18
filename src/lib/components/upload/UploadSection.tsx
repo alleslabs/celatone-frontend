@@ -1,27 +1,37 @@
-import { Button, Flex } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
-import { useCallback, useEffect } from "react";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import type { StdFee } from "@cosmjs/stargate";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { CustomIcon } from "../icon";
+import { DropZone } from "../dropzone";
+import { ControllerInput } from "../forms";
 import {
+  useCelatoneApp,
+  useCurrentChain,
   useFabricateFee,
-  useSimulateFee,
+  useSimulateFeeForStoreCode,
   useUploadContractTx,
+  useValidateAddress,
 } from "lib/app-provider";
-import { DropZone } from "lib/components/dropzone";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import { ControllerInput } from "lib/components/forms";
-import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
+import { CustomIcon } from "lib/components/icon";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { HumanAddr } from "lib/types";
-import { MsgType } from "lib/types";
-import { composeMsg } from "lib/utils";
+import type {
+  Addr,
+  HumanAddr,
+  SimulateStatus,
+  UploadSectionState,
+} from "lib/types";
+import { AccessType } from "lib/types";
+import { getCodeHash } from "lib/utils";
 
-import { UploadCard } from "./components/UploadCard";
-import type { UploadSectionState } from "./types";
+import { CodeHashBox } from "./CodeHashBox";
+import { InstantiatePermissionRadio } from "./InstantiatePermissionRadio";
+import { SimulateMessageRender } from "./SimulateMessageRender";
+import { UploadCard } from "./UploadCard";
 
 interface UploadSectionProps {
   handleBack: () => void;
@@ -32,31 +42,95 @@ export const UploadSection = ({
   handleBack,
   isMigrate = false,
 }: UploadSectionProps) => {
-  const { simulate, loading } = useSimulateFee();
+  const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
   const fabricateFee = useFabricateFee();
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();
+  const postUploadTx = useUploadContractTx(isMigrate);
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+
+  const [codeHash, setCodeHash] = useState<string>();
+  const [estimatedFee, setEstimatedFee] = useState<StdFee>();
+  const [simulateStatus, setSimulateStatus] = useState<SimulateStatus>({
+    status: "default",
+    message: "",
+  });
 
   const {
     control,
-    watch,
     setValue,
+    watch,
     formState: { errors },
+    trigger,
   } = useForm<UploadSectionState>({
     defaultValues: {
       wasmFile: undefined,
-      codeDesc: "",
-      estimatedFee: undefined,
-      simulateStatus: "pending",
-      simulateError: "",
+      codeName: "",
+      permission: AccessType.ACCESS_TYPE_EVERYBODY,
+      addresses: [{ address: "" as Addr }],
     },
     mode: "all",
   });
-  const { wasmFile, codeDesc, estimatedFee, simulateStatus, simulateError } =
-    watch();
 
-  const postUploadTx = useUploadContractTx(isMigrate);
+  const { wasmFile, codeName, addresses, permission } = watch();
+
+  const setDefaultBehavior = () => {
+    setSimulateStatus({ status: "default", message: "" });
+    setEstimatedFee(undefined);
+  };
+
+  // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
+  const shouldNotSimulate = useMemo(
+    () =>
+      permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES &&
+      (addresses.some((addr) => addr.address.trim().length === 0) ||
+        addresses.some((addr) =>
+          Boolean(
+            validateUserAddress(addr.address) &&
+              validateContractAddress(addr.address)
+          )
+        )),
+
+    [
+      addresses,
+      permission,
+      validateContractAddress,
+      validateUserAddress,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      JSON.stringify(addresses),
+    ]
+  );
+
+  const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
+    enabled: Boolean(wasmFile && address && !shouldNotSimulate),
+    wasmFile,
+    permission,
+    addresses: addresses.map((addr) => addr.address),
+    onSuccess: (fee) => {
+      if (wasmFile && address) {
+        if (shouldNotSimulate) {
+          setDefaultBehavior();
+        }
+        if (fee) {
+          setSimulateStatus({
+            status: "succeeded",
+            message: "Valid Wasm file and instantiate permission",
+          });
+          setEstimatedFee(fabricateFee(fee));
+        }
+      }
+    },
+    onError: (e) => {
+      if (shouldNotSimulate) {
+        setDefaultBehavior();
+      } else {
+        setSimulateStatus({ status: "failed", message: e.message });
+        setEstimatedFee(undefined);
+      }
+    },
+  });
 
   const proceed = useCallback(async () => {
     if (address) {
@@ -64,13 +138,15 @@ export const UploadSection = ({
       const stream = await postUploadTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),
-        codeDesc,
+        addresses: addresses.map((addr) => addr.address),
+        permission,
+        codeName,
         estimatedFee,
         onTxSucceed: (codeId: number) => {
           updateCodeInfo(
             codeId,
             address as HumanAddr,
-            codeDesc || `${wasmFile?.name}(${codeId})`
+            codeName || `${wasmFile?.name}(${codeId})`
           );
         },
       });
@@ -78,80 +154,104 @@ export const UploadSection = ({
       if (stream) broadcast(stream);
     }
   }, [
+    address,
     postUploadTx,
     wasmFile,
-    codeDesc,
+    addresses,
+    permission,
+    codeName,
     estimatedFee,
     broadcast,
     updateCodeInfo,
-    address,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(addresses),
   ]);
 
-  useEffect(() => {
-    (async () => {
-      if (wasmFile) {
-        setValue("simulateStatus", "pending");
-        setValue("simulateError", "");
-        const msg = composeMsg(MsgType.STORE_CODE, {
-          sender: address as HumanAddr,
-          wasmByteCode: new Uint8Array(await wasmFile.arrayBuffer()),
-        });
-        try {
-          const estimatedGasUsed = await simulate([msg]);
-          if (estimatedGasUsed) {
-            setValue("estimatedFee", fabricateFee(estimatedGasUsed));
-            setValue("simulateStatus", "completed");
-          }
-        } catch (err) {
-          setValue("simulateStatus", "failed");
-          setValue("simulateError", (err as Error).message);
-        }
-      }
-    })();
-  }, [wasmFile, address, simulate, fabricateFee, setValue]);
+  // Generate hash value from wasm file
+  const setHashValue = useCallback(async () => {
+    setCodeHash(await getCodeHash(wasmFile));
+  }, [wasmFile]);
 
-  const isDisabled =
-    !estimatedFee || !wasmFile || !!errors.codeDesc || !address;
+  useEffect(() => {
+    setHashValue();
+  }, [setHashValue]);
+
+  useEffect(() => {
+    if (!wasmFile) {
+      setDefaultBehavior();
+      setValue("addresses", [{ address: "" as Addr }]);
+    }
+  }, [setValue, wasmFile]);
+
+  useEffect(() => {
+    if (wasmFile && address && shouldNotSimulate) setDefaultBehavior();
+  }, [wasmFile, address, shouldNotSimulate, permission, setValue]);
+
   return (
-    <>
+    <Flex direction="column" gap={8} maxW="550px">
       {wasmFile ? (
         <UploadCard
           file={wasmFile}
           deleteFile={() => {
             setValue("wasmFile", undefined);
-            setValue("estimatedFee", undefined);
+            setEstimatedFee(undefined);
           }}
-          simulateStatus={simulateStatus}
-          simulateError={simulateError}
         />
       ) : (
         <DropZone setFile={(file) => setValue("wasmFile", file)} />
       )}
+      <CodeHashBox codeHash={codeHash} />
       <ControllerInput
-        name="codeDesc"
+        name="codeName"
         control={control}
         label="Code Name (Optional)"
         placeholder="Untitled Name"
         helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
         rules={{
-          maxLength: MAX_CODE_NAME_LENGTH,
+          maxLength: constants.maxCodeNameLength,
         }}
-        error={errors.codeDesc && getMaxCodeNameLengthError(codeDesc.length)}
+        error={
+          errors.codeName && getMaxLengthError(codeName.length, "code_name")
+        }
         variant="floating"
-        my={8}
       />
-      <Flex
-        fontSize="14px"
-        color="text.dark"
-        alignSelf="flex-start"
-        alignItems="center"
-        display="flex"
-        gap={1}
-      >
-        <p>Transaction Fee:</p>
-        <EstimatedFeeRender estimatedFee={estimatedFee} loading={loading} />
-      </Flex>
-      <Flex justify="space-between" w="100%" mt={8}>
+      <InstantiatePermissionRadio
+        control={control}
+        setValue={setValue}
+        trigger={trigger}
+      />
+
+      <Box width="full">
+        {(simulateStatus.status !== "default" || isSimulating) && (
+          <SimulateMessageRender
+            value={
+              isSimulating
+                ? "Checking Wasm and permission validity"
+                : simulateStatus.message
+            }
+            isLoading={isSimulating}
+            mb={2}
+            isSuccess={simulateStatus.status === "succeeded"}
+          />
+        )}
+
+        <Flex
+          fontSize="14px"
+          color="text.dark"
+          alignSelf="flex-start"
+          alignItems="center"
+          display="flex"
+          gap={1}
+        >
+          <p>Transaction Fee:</p>
+          <EstimatedFeeRender
+            estimatedFee={estimatedFee}
+            loading={isSimulating}
+          />
+        </Flex>
+      </Box>
+
+      <Flex justify="space-between" w="100%" mt="32px">
         <Button
           variant="outline-gray"
           w="128px"
@@ -163,12 +263,16 @@ export const UploadSection = ({
         <Button
           variant="primary"
           w="128px"
-          disabled={isDisabled}
+          disabled={
+            isSimulating ||
+            shouldNotSimulate ||
+            simulateStatus.status !== "succeeded"
+          }
           onClick={proceed}
         >
           Upload
         </Button>
       </Flex>
-    </>
+    </Flex>
   );
 };

@@ -1,15 +1,6 @@
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  Text,
-  Flex,
-  Heading,
-  Image,
-} from "@chakra-ui/react";
+import { Box, Text, Flex, Heading, Image } from "@chakra-ui/react";
 
-import { AppLink } from "lib/components/AppLink";
-import { CustomIcon } from "lib/components/icon";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import type { Option, PublicDetail } from "lib/types";
 import { getNameAndDescriptionDefault } from "lib/utils";
 
@@ -23,48 +14,28 @@ interface DetailHeaderProps {
 export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
   <>
     <Breadcrumb
-      w="full"
-      spacing={1}
-      separator={
-        <CustomIcon name="chevron-right" boxSize={3} color="gray.600" />
-      }
-    >
-      <BreadcrumbItem
-        _hover={{ opacity: 0.8 }}
-        transition="all 0.25s ease-in-out"
-      >
-        <AppLink color="text.dark" href="/projects">
-          Public Projects
-        </AppLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem isCurrentPage>
-        <Text
-          variant="body2"
-          className="ellipsis"
-          width="250px"
-          fontWeight={700}
-          color="text.dark"
-        >
-          {details?.name}
-        </Text>
-      </BreadcrumbItem>
-    </Breadcrumb>
+      items={[
+        { text: "Public Projects", href: "/projects" },
+        { text: details?.name },
+      ]}
+    />
     <Flex
       justifyContent="space-between"
       alignItems="flex-start"
       w="full"
-      mt={2}
+      mt={6}
       gap={5}
+      direction={{ base: "column", md: "row" }}
     >
       <Box>
-        <Flex gap={2} align="center">
+        <Flex gap={1} align="center" minH="36px">
           {details?.logo && (
             <Image
               src={details?.logo}
               borderRadius="full"
               alt="Celatone"
-              width={8}
-              height={8}
+              width={7}
+              height={7}
             />
           )}
           <Heading as="h5" variant="h5" className="ellipsis">
@@ -75,7 +46,12 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
           {getNameAndDescriptionDefault(details?.description)}
         </Text>
       </Box>
-      <Flex alignItems="center" gap={4}>
+      <Flex
+        alignItems="center"
+        justify="space-between"
+        gap={4}
+        w={{ base: "full", md: "auto" }}
+      >
         <SocialMedia details={details} />
         <BookmarkButton details={details} slug={slug} />
       </Flex>
