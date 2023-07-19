@@ -1,11 +1,9 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
 import {
-  useCelatoneApp,
   useFabricateFee,
   useInternalNavigate,
   useSimulateFeeQuery,
@@ -14,7 +12,6 @@ import {
   useValidateAddress,
   useWasmConfig,
   useCurrentChain,
-  useBaseApiRoute,
 } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -29,7 +26,7 @@ import {
   AmpTrack,
   AmpTrackToAdminUpdate,
 } from "lib/services/amplitude";
-import { queryInstantiateInfo } from "lib/services/contract";
+import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { Addr, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, getFirstQueryParam } from "lib/utils";
@@ -44,9 +41,6 @@ const UpdateAdmin = () => {
   const fabricateFee = useFabricateFee();
   const updateAdminTx = useUpdateAdminTx();
   const { broadcast } = useTxBroadcast();
-  const lcdEndpoint = useBaseApiRoute("rest");
-
-  const { indexerGraphClient } = useCelatoneApp();
 
   const [adminAddress, setAdminAddress] = useState("");
   const [adminFormStatus, setAdminFormStatus] = useState<FormStatus>({
@@ -114,29 +108,12 @@ const UpdateAdmin = () => {
   /**
    * @remarks Contract admin validation
    */
-  useQuery(
-    [
-      "query",
-      "instantiate_info",
-      lcdEndpoint,
-      indexerGraphClient,
-      contractAddressParam,
-    ],
-    async () =>
-      queryInstantiateInfo(
-        lcdEndpoint,
-        indexerGraphClient,
-        contractAddressParam
-      ),
-    {
-      enabled: !!contractAddressParam,
-      refetchOnWindowFocus: false,
-      retry: false,
-      onSuccess: (contractInfo) => {
-        if (contractInfo.admin !== address) onContractPathChange();
-      },
-      onError: () => onContractPathChange(),
-    }
+  useContractDetailByContractAddress(
+    contractAddressParam as ContractAddr,
+    (contractDetail) => {
+      if (contractDetail.admin !== address) onContractPathChange();
+    },
+    () => onContractPathChange()
   );
 
   useEffect(() => {

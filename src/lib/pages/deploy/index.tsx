@@ -77,7 +77,7 @@ const Deploy = () => {
     if (router.isReady) AmpTrack(AmpEvent.TO_DEPLOY);
   }, [router.isReady]);
 
-  if (isFetching) return <Loading withBorder={false} />;
+  if (isFetching) return <Loading />;
 
   const { variant, icon, description } = getAlertContent(
     enableUpload,

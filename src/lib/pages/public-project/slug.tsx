@@ -49,7 +49,7 @@ export const ProjectDetail = () => {
     publicAccounts.length +
     (wasm.enabled ? publicCodes.length + publicContracts.length : 0);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   return (
     <PageContainer>
       <DetailHeader details={projectDetail} slug={slug} />

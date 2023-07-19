@@ -60,7 +60,8 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
     setCurrentPage(1);
   };
   const isMobile = useMobile();
-  if (isLoading) return <Loading />;
+
+  if (isLoading) return <Loading withBorder />;
   if (error)
     return (
       <EmptyState

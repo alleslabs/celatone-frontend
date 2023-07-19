@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#412](https://github.com/alleslabs/celatone-frontend/pull/412) Refactor contract detail data loading
 - [#402](https://github.com/alleslabs/celatone-frontend/pull/402) Add validator image resolver hook (add keybase as a fallback option)
 - [#408](https://github.com/alleslabs/celatone-frontend/pull/408) Improve dropdown and combo box interaction
 - [#421](https://github.com/alleslabs/celatone-frontend/pull/421) Generate example addresses from a fixed-bytes array
