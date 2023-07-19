@@ -2,8 +2,11 @@ import big from "big.js";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
+import plur from "plur";
 
 import type { Option } from "lib/types";
+
+import { isNumeric } from "./number";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -30,34 +33,39 @@ export const formatSeconds = (sec: Option<string>) => {
   if (sec === undefined || Number.isNaN(parseInt(sec, 10))) return "N/A";
   const formatSec = big(sec.replace("s", ""));
 
-  // TODO: use `pluralize` here
   switch (true) {
     case formatSec.gte(86400): {
       const days = formatSec.div(86400).round(0, 0).toNumber();
-      return `${days} day`.concat(days > 1 ? "s" : "");
+      return `${days} ${plur("day", days)}`;
     }
     case formatSec.gte(3600): {
       const hours = formatSec.div(3600).round(0, 0).toNumber();
-      return `${hours} hour`.concat(hours > 1 ? "s" : "");
+      return `${hours} ${plur("hour", hours)}`;
     }
     case formatSec.gte(60): {
       const mins = formatSec.div(60).round(0, 0).toNumber();
-      return `${mins} minute`.concat(mins > 1 ? "s" : "");
+      return `${mins} ${plur("minute", mins)}`;
     }
     case formatSec.lt(0):
       return "N/A";
     default:
-      return `${formatSec.toFixed()} second`.concat(formatSec.gt(1) ? "s" : "");
+      return `${formatSec.toFixed()} ${plur("second", formatSec.toNumber())}`;
   }
 };
 
-// TODO - Add unit test
 export const formatDuration = (duration: string | number) => {
-  if (typeof duration === "number" || Number.isInteger(duration))
+  if (typeof duration === "number" || isNumeric(duration))
     return formatSeconds(big(duration).div(1e9).toFixed());
 
-  let value = big(duration.slice(0, -1));
+  const sliceValue = duration.slice(0, -1);
+  if (Number.isNaN(Number(sliceValue)) || !sliceValue.trim().length)
+    return "N/A";
+  let value = big(sliceValue);
+
   switch (true) {
+    case duration.endsWith("d"):
+      value = value.mul(86400);
+      break;
     case duration.endsWith("h"):
       value = value.mul(3600);
       break;
