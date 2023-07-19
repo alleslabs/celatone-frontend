@@ -43,7 +43,7 @@ export const useContractData = (
     useQuery(
       ["query", "contractBalances", balancesApiRoute, contractAddress],
       async () => queryContractBalances(balancesApiRoute, contractAddress),
-      { enabled: !!contractAddress, retry: false }
+      { enabled: Boolean(contractAddress), retry: false }
     );
 
   const balances = contractBalances
@@ -68,7 +68,7 @@ export const useContractData = (
     useQuery(
       ["query", "contract_cw2_info", lcdEndpoint, contractAddress],
       async () => queryContractCw2Info(lcdEndpoint, contractAddress),
-      { enabled: !!contractAddress, retry: false }
+      { enabled: Boolean(contractAddress), retry: false }
     );
 
   const codeLocalInfo = contractDetail
@@ -83,7 +83,7 @@ export const useContractData = (
     useQuery(
       ["query", "contract", lcdEndpoint, contractAddress],
       async () => queryContract(lcdEndpoint, contractAddress),
-      { enabled: !!contractAddress, retry: false }
+      { enabled: Boolean(contractAddress), retry: false }
     );
 
   return {

@@ -40,7 +40,7 @@ export interface ContractDetail extends ContractLocalInfo {
 interface InstantiateDetail {
   createdHeight: Option<number>;
   createdTime: Option<Date>;
-  initMsg: Option<string>;
+  initMsg: Option<string | null>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
@@ -56,14 +56,16 @@ export const useContractDetailByContractAddress = (
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getContractByContractAddressQueryDocument, { contractAddress })
-      .then(({ contracts_by_pk }) => {
+      .then(({ contracts_by_pk }): ContractDetail => {
         if (!contracts_by_pk) throw Error("Contract not found");
         return {
           contractAddress,
           codeId: contracts_by_pk.code_id,
           label: contracts_by_pk.label,
           instantiator: contracts_by_pk.accountByInitBy?.address as Addr,
-          admin: contracts_by_pk.admin?.address as Addr,
+          admin: contracts_by_pk.admin
+            ? (contracts_by_pk.admin.address as Addr)
+            : undefined,
         };
       });
   }, [contractAddress, indexerGraphClient]);
@@ -73,7 +75,7 @@ export const useContractDetailByContractAddress = (
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled: !!contractAddress,
+      enabled: Boolean(contractAddress),
       onSuccess,
       onError,
     }
@@ -88,24 +90,27 @@ export const useInstantiateDetailByContractQuery = (
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
-      .then(({ contracts_by_pk }) => ({
-        createdHeight: contracts_by_pk?.transaction?.block_height,
-        createdTime: parseDateOpt(
-          contracts_by_pk?.transaction?.block.timestamp
-        ),
-        initMsg: contracts_by_pk?.init_msg,
-        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
-        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
-        initProposalTitle:
-          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
-      }));
+      .then(
+        ({ contracts_by_pk }): InstantiateDetail => ({
+          createdHeight: contracts_by_pk?.transaction?.block_height,
+          createdTime: parseDateOpt(
+            contracts_by_pk?.transaction?.block.timestamp
+          ),
+          initMsg: contracts_by_pk?.init_msg,
+          initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
+          initProposalId:
+            contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
+          initProposalTitle:
+            contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
+        })
+      );
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
     ["instantiate_detail_by_contract", contractAddress, indexerGraphClient],
     queryFn,
     {
-      enabled: !!contractAddress,
+      enabled: Boolean(contractAddress),
     }
   );
 };
@@ -160,7 +165,7 @@ export const useInstantiatedCountByUserQuery = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: wasm.enabled && !!walletAddr,
+      enabled: wasm.enabled && Boolean(walletAddr),
     }
   );
 };
@@ -191,7 +196,7 @@ export const useInstantiatedListByUserQuery = (
   return useQuery(
     ["instantiated_list_by_user", walletAddr, indexerGraphClient],
     queryFn,
-    { enabled: !!walletAddr, refetchOnWindowFocus: false }
+    { enabled: Boolean(walletAddr), refetchOnWindowFocus: false }
   );
 };
 
@@ -222,7 +227,7 @@ export const useContractListByAdmin = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!adminAddress,
+      enabled: Boolean(adminAddress),
     }
   );
 };
@@ -302,7 +307,7 @@ export const useMigrationHistoriesByContractAddressPagination = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!contractAddress,
+      enabled: Boolean(contractAddress),
     }
   );
 };
@@ -328,7 +333,7 @@ export const useMigrationHistoriesCountByContractAddress = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!contractAddress,
+      enabled: Boolean(contractAddress),
     }
   );
 };
@@ -372,7 +377,7 @@ export const useContractListByCodeIdPagination = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!codeId,
+      enabled: Boolean(codeId),
     }
   );
 };
@@ -398,7 +403,7 @@ export const useContractListCountByCodeId = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!codeId,
+      enabled: Boolean(codeId),
     }
   );
 };
@@ -449,7 +454,7 @@ export const useContractListByWalletAddressPagination = (
     ],
     createQueryFnWithTimeout(queryFn),
     {
-      enabled: wasm.enabled && !!walletAddress,
+      enabled: wasm.enabled && Boolean(walletAddress),
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -501,7 +506,7 @@ export const useContractListByAdminPagination = (
     ],
     createQueryFnWithTimeout(queryFn),
     {
-      enabled: wasm.enabled && !!walletAddress,
+      enabled: wasm.enabled && Boolean(walletAddress),
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -530,7 +535,7 @@ export const useContractListCountByAdmin = (
     createQueryFnWithTimeout(queryFn),
     {
       keepPreviousData: true,
-      enabled: wasm.enabled && !!walletAddress,
+      enabled: wasm.enabled && Boolean(walletAddress),
     }
   );
 };

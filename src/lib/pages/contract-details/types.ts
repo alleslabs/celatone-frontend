@@ -23,7 +23,7 @@ export interface ContractData {
   isBalancesLoading: boolean;
   contractCw2Info: Option<ContractCw2Info>;
   isContractCw2InfoLoading: boolean;
-  initMsg: Option<string>;
+  initMsg: Option<string | null>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
