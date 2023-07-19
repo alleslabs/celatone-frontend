@@ -122,6 +122,10 @@ export const OSMOSIS_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/osmosis/illustration/search-empty.svg",
     disconnected:
       "https://assets.alleslabs.dev/integrations/osmosis/illustration/disconnected.svg",
+    overview: {
+      // Fill image url
+      main: "",
+    },
   },
   footer: {
     logo: "https://assets.alleslabs.dev/integrations/osmosis/logo.png",

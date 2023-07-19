@@ -28,8 +28,12 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { AmpTrackUseMainSearch } from "lib/services/amplitude";
-import type { SearchResultType } from "lib/services/searchService";
+import type {
+  ResultMetadata,
+  SearchResultType,
+} from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
 import type { Option } from "lib/types";
 
@@ -48,6 +52,7 @@ interface ResultItemProps {
   type: SearchResultType;
   value: string;
   cursor: Option<number>;
+  metadata: ResultMetadata;
   setCursor: (index: Option<number>) => void;
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
   onClose?: () => void;
@@ -83,20 +88,20 @@ const ResultItem = ({
   type,
   value,
   cursor,
+  metadata,
   setCursor,
   handleSelectResult,
   onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
-
   return (
     <StyledListItem id={`item-${index}`}>
       <Text variant="body2" fontWeight={500} color="text.dark" p={2}>
         {type}
       </Text>
       {route && (
-        <Text
-          variant="body2"
+        <Flex
+          direction="column"
           p={2}
           borderRadius="8px"
           _hover={{ bg: "gray.800", cursor: "pointer" }}
@@ -109,8 +114,33 @@ const ResultItem = ({
             onClose?.();
           }}
         >
-          {value}
-        </Text>
+          <Text variant="body2">{metadata.icns.address || value}</Text>
+          {metadata.icns.icnsNames?.primary_name && (
+            <Flex gap={1} align="center" flexWrap="wrap">
+              <Flex gap={1} align="center">
+                <PrimaryNameMark />
+                <Text variant="body3" color="text.dark">
+                  {metadata.icns.icnsNames.primary_name}
+                </Text>
+              </Flex>
+              {value !== metadata.icns.address &&
+                value !== metadata.icns.icnsNames?.primary_name && (
+                  <Text
+                    variant="body3"
+                    color="text.dark"
+                    _before={{
+                      content: '"/"',
+                      fontSize: "12px",
+                      color: "text.dark",
+                      mr: 1,
+                    }}
+                  >
+                    {value}
+                  </Text>
+                )}
+            </Flex>
+          )}
+        </Flex>
       )}
     </StyledListItem>
   );
@@ -120,6 +150,7 @@ const ResultRender = ({
   results,
   keyword,
   cursor,
+  metadata,
   setCursor,
   handleSelectResult,
   onClose,
@@ -127,6 +158,7 @@ const ResultRender = ({
   results: SearchResultType[];
   keyword: string;
   cursor: Option<number>;
+  metadata: ResultMetadata;
   setCursor: (index: Option<number>) => void;
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
   onClose?: () => void;
@@ -146,6 +178,7 @@ const ResultRender = ({
           type={type}
           value={keyword}
           cursor={cursor}
+          metadata={metadata}
           setCursor={setCursor}
           handleSelectResult={handleSelectResult}
           onClose={onClose}
@@ -193,7 +226,7 @@ const Searchbar = () => {
     },
   } = useCelatoneApp();
   const navigate = useInternalNavigate();
-  const { results, isLoading } = useSearchHandler(keyword, () =>
+  const { results, isLoading, metadata } = useSearchHandler(keyword, () =>
     setIsTyping(false)
   );
   const boxRef = useRef<HTMLDivElement>(null);
@@ -213,13 +246,13 @@ const Searchbar = () => {
       if (routeOptions) {
         navigate({
           pathname: routeOptions.pathname,
-          query: { [routeOptions.query]: keyword },
+          query: { [routeOptions.query]: metadata.icns.address || keyword },
         });
         setDisplayResults(false);
         setKeyword("");
       }
     },
-    [keyword, navigate]
+    [metadata.icns.address, keyword, navigate]
   );
 
   const handleOnKeyEnter = useCallback(
@@ -313,6 +346,7 @@ const Searchbar = () => {
                       keyword={keyword}
                       handleSelectResult={handleSelectResult}
                       onClose={onClose}
+                      metadata={metadata}
                     />
                   )}
                 </List>
@@ -374,10 +408,11 @@ const Searchbar = () => {
             </StyledListItem>
           ) : (
             <ResultRender
-              cursor={cursor}
-              setCursor={setCursor}
               results={results}
               keyword={keyword}
+              cursor={cursor}
+              metadata={metadata}
+              setCursor={setCursor}
               handleSelectResult={handleSelectResult}
             />
           )}
