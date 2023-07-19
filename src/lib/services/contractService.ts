@@ -56,7 +56,7 @@ export const useContractDetailByContractAddress = (
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getContractByContractAddressQueryDocument, { contractAddress })
-      .then(({ contracts_by_pk }): ContractDetail => {
+      .then<ContractDetail>(({ contracts_by_pk }) => {
         if (!contracts_by_pk) throw Error("Contract not found");
         return {
           contractAddress,
@@ -90,20 +90,17 @@ export const useInstantiateDetailByContractQuery = (
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
-      .then(
-        ({ contracts_by_pk }): InstantiateDetail => ({
-          createdHeight: contracts_by_pk?.transaction?.block_height,
-          createdTime: parseDateOpt(
-            contracts_by_pk?.transaction?.block.timestamp
-          ),
-          initMsg: contracts_by_pk?.init_msg,
-          initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
-          initProposalId:
-            contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
-          initProposalTitle:
-            contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
-        })
-      );
+      .then<InstantiateDetail>(({ contracts_by_pk }) => ({
+        createdHeight: contracts_by_pk?.transaction?.block_height,
+        createdTime: parseDateOpt(
+          contracts_by_pk?.transaction?.block.timestamp
+        ),
+        initMsg: contracts_by_pk?.init_msg,
+        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
+        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
+        initProposalTitle:
+          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
+      }));
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
