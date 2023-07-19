@@ -4,20 +4,27 @@ import { catchError } from "rxjs";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { TxResultRendering } from "lib/types";
+import type {
+  ActionVariant,
+  ReceiptInfo,
+  TxReceipt,
+  TxResultRendering,
+} from "lib/types";
 import { TxStreamPhase } from "lib/types";
 
-const getReceiptInfo = (error: Error) =>
+const getReceiptInfo = (
+  error: Error
+): Pick<ReceiptInfo, "header" | "errorMsg"> =>
   error.message === "Request rejected"
     ? {
         header: "Rejected by user",
       }
     : {
         header: "Transaction Failed",
-        description: error.message,
+        errorMsg: error.message,
       };
 
-const getTxHashReceipt = (txHash?: string) =>
+const getTxHashReceipts = (txHash?: string): TxReceipt[] =>
   txHash
     ? [
         {
@@ -28,8 +35,8 @@ const getTxHashReceipt = (txHash?: string) =>
       ]
     : [];
 
-const getActionVariant = (isRejected: boolean) =>
-  isRejected ? "rejected" : undefined;
+const getActionVariant = (isRejected: boolean): ActionVariant =>
+  isRejected ? "rejected" : "failed";
 
 export const catchTxError = (
   onTxFailed?: () => void
@@ -55,7 +62,7 @@ export const catchTxError = (
           />
         ),
       },
-      receipts: getTxHashReceipt(txHash),
+      receipts: getTxHashReceipts(txHash),
       actionVariant: getActionVariant(!txHash),
     });
   });

@@ -21,7 +21,7 @@ import { CustomIcon } from "../icon";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCelatoneApp,
+  useExampleAddresses,
   useMobile,
   useValidateAddress,
 } from "lib/app-provider";
@@ -44,11 +44,7 @@ export const SelectContractInstantiator = ({
   notSelected,
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
-  const {
-    chainConfig: {
-      exampleAddresses: { contract: exampleContractAddress },
-    },
-  } = useCelatoneApp();
+  const { contract: exampleContractAddress } = useExampleAddresses();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();

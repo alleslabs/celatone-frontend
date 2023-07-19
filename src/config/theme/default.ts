@@ -117,6 +117,10 @@ export const DEFAULT_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/illustration/search-not-found.svg",
     searchEmpty: "https://assets.alleslabs.dev/illustration/search-empty.svg",
     disconnected: "https://assets.alleslabs.dev/illustration/disconnected.svg",
+    overview: {
+      main: "https://assets.alleslabs.dev/illustration/bg-left.svg",
+      secondary: "https://assets.alleslabs.dev/illustration/bg-right.svg",
+    },
   },
   socialMedia: {
     website: "https://celat.one/",

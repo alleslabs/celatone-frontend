@@ -10,12 +10,12 @@ import { useForm } from "react-hook-form";
 import {
   useFabricateFee,
   useInstantiateTx,
-  useCelatoneApp,
   useValidateAddress,
   useSimulateFeeQuery,
   useCurrentChain,
   useBaseApiRoute,
   CELATONE_QUERY_KEYS,
+  useExampleAddresses,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
@@ -65,11 +65,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const router = useRouter();
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
-  const {
-    chainConfig: {
-      exampleAddresses: { contract: exampleContractAddress },
-    },
-  } = useCelatoneApp();
+  const { user: exampleUserAddress } = useExampleAddresses();
+
   const { address = "" } = useCurrentChain();
   const lcdEndpoint = useBaseApiRoute("rest");
 
@@ -330,7 +327,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             name="adminAddress"
             control={control}
             label="Admin Address (optional)"
-            placeholder={`ex. ${exampleContractAddress}`}
+            placeholder={`ex. ${exampleUserAddress}`}
             helperText="The contract's admin will be able to migrate and update future admins."
             variant="floating"
             error={validateAdmin(adminAddress)}

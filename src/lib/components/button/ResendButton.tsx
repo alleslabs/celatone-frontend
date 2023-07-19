@@ -58,7 +58,7 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: isProcessing,
     messages: composedMsgs,
-    onSuccess: (estimatedGasUsed) => proceed(estimatedGasUsed),
+    onSuccess: proceed,
     onError: () => setIsProcessing(false),
   });
 

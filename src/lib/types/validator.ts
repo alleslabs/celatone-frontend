@@ -10,4 +10,5 @@ export interface Validator {
 export interface ValidatorInfo {
   validatorAddress: ValidatorAddr;
   moniker: Option<string>;
+  identity?: string;
 }

@@ -10,6 +10,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useExampleAddresses,
   useValidateAddress,
 } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
@@ -48,11 +49,7 @@ export function SaveNewContractModal({
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 
-  const {
-    chainConfig: {
-      exampleAddresses: { contract: exampleContractAddress },
-    },
-  } = useCelatoneApp();
+  const { contract: exampleContractAddress } = useExampleAddresses();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 

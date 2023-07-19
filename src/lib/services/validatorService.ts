@@ -8,12 +8,13 @@ import { useCallback } from "react";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCurrentChain,
   useCelatoneApp,
 } from "lib/app-provider";
 import { getValidators } from "lib/query/validator";
-import type { Validator, ValidatorAddr } from "lib/types";
+import type { ValidatorInfo, Validator, ValidatorAddr } from "lib/types";
 
-import { getValidator } from "./validator";
+import { resolveValIdentity, getValidator } from "./validator";
 
 export const useValidator = (
   validatorAddr: ValidatorAddr,
@@ -27,7 +28,7 @@ export const useValidator = (
     ["query", "validator", lcdEndpoint, validatorAddr] as string[],
     queryFn,
     {
-      enabled: enabled && !!validatorAddr,
+      enabled: enabled && Boolean(validatorAddr),
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -62,4 +63,28 @@ export const useValidators = (): UseQueryResult<
       refetchOnWindowFocus: false,
     }
   );
+};
+
+export const useValidatorImage = (
+  validator: ValidatorInfo | null
+): UseQueryResult<string> => {
+  const {
+    chain: { chain_name: chainName },
+  } = useCurrentChain();
+
+  return useQuery({
+    queryKey: [
+      "query",
+      "validator_identity",
+      chainName,
+      validator?.validatorAddress,
+    ],
+    queryFn: async () => {
+      if (!validator) return Promise.resolve("");
+      return resolveValIdentity(chainName, validator);
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+    enabled: Boolean(validator),
+  });
 };
