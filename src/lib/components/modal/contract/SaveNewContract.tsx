@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
-import { useCelatoneApp, useValidateAddress } from "lib/app-provider";
+import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import type { OffchainDetail } from "lib/components/OffChainForm";
@@ -38,11 +38,7 @@ export function SaveNewContractModal({
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 
-  const {
-    chainConfig: {
-      exampleAddresses: { contract: exampleContractAddress },
-    },
-  } = useCelatoneApp();
+  const { contract: exampleContractAddress } = useExampleAddresses();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 

@@ -12,6 +12,7 @@ interface CopyLinkProps extends FlexProps {
   value: string;
   amptrackSection?: string;
   type: string;
+  withoutIcon?: boolean;
   showCopyOnHover?: boolean;
 }
 
@@ -19,6 +20,7 @@ export const CopyLink = ({
   value,
   amptrackSection,
   type,
+  withoutIcon,
   showCopyOnHover = false,
   ...flexProps
 }: CopyLinkProps) => {
@@ -69,14 +71,16 @@ export const CopyLink = ({
         >
           {value === address ? `${value} (Me)` : value}
         </Text>
-        <CustomIcon
-          display={displayIcon}
-          cursor="pointer"
-          marginLeft={2}
-          name="copy"
-          boxSize={3}
-          color="gray.600"
-        />
+        {!withoutIcon && (
+          <CustomIcon
+            display={displayIcon}
+            cursor="pointer"
+            marginLeft={2}
+            name="copy"
+            boxSize={3}
+            color="gray.600"
+          />
+        )}
       </Flex>
     </Tooltip>
   );

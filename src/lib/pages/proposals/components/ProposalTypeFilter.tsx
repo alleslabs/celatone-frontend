@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { Dispatch, SetStateAction } from "react";
-import { useState, useRef, forwardRef } from "react";
+import { useMemo, useState, useRef, forwardRef } from "react";
 
 import { FilterChip } from "lib/components/filter/FilterChip";
 import { DropdownContainer } from "lib/components/filter/FilterComponents";
@@ -45,7 +45,7 @@ export const ProposalTypeFilter = forwardRef<
     ref
   ) => {
     const { data: proposalTypes } = useProposalTypes();
-    const [dropdownValue, setDropdownValue] = useState<ProposalType[]>([]);
+    const [keyword, setKeyword] = useState("");
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
@@ -55,25 +55,23 @@ export const ProposalTypeFilter = forwardRef<
       handler: () => setIsDropdown(false),
     });
 
-    if (!proposalTypes) return null;
+    const dropdownValue = useMemo(() => {
+      if (!proposalTypes) return [];
+      return keyword
+        ? matchSorter(proposalTypes, keyword, {
+            threshold: matchSorter.rankings.CONTAINS,
+          })
+        : proposalTypes;
+    }, [keyword, proposalTypes]);
 
-    const filterDropdown = (value: string) => {
-      setIsDropdown(true);
-      setDropdownValue(
-        value
-          ? matchSorter(proposalTypes, value, {
-              threshold: matchSorter.rankings.CONTAINS,
-            })
-          : proposalTypes
-      );
-    };
+    if (!proposalTypes) return null;
 
     const isOptionSelected = (option: ProposalType) =>
       result.some((selectedOption) => selectedOption === option);
 
     const selectOption = (option: ProposalType) => {
       if (inputRef.current) {
-        inputRef.current.value = "";
+        setKeyword("");
       }
       if (result.includes(option)) {
         AmpTrackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_TYPE, result, "remove");
@@ -95,13 +93,14 @@ export const ProposalTypeFilter = forwardRef<
     return (
       <FormControl w="full" h={8} ref={boxRef} minW={minW}>
         <FilterInput
+          keyword={keyword}
           placeholder={placeholder}
           result={result}
           label={label}
           inputRef={inputRef}
           ref={ref}
           isDropdown={isDropdown}
-          filterDropdown={filterDropdown}
+          setKeyword={setKeyword}
           setIsDropdown={setIsDropdown}
           chipContainerComponent={
             <Flex alignItems="center" pl={2} gap={2}>

@@ -1,5 +1,3 @@
-import type { ContractAddr, HumanAddr, ValidatorAddr } from "lib/types";
-
 import type { ChainConfigs } from "./types";
 
 export const SEI_CHAIN_CONFIGS: ChainConfigs = {
@@ -34,13 +32,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    exampleAddresses: {
-      user: "sei1acqpnvg2t4wmqfdv8hq47d3petfksjs5xjfnyj" as HumanAddr,
-      contract:
-        "sei18l6zzyyhrl7j9zw2lew50677va25rtsa2s4yy5gdpg4nxz3y3j9se47f0k" as ContractAddr,
-      validator:
-        "seivaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
     },
     explorerLink: {
       validator: "",
@@ -78,13 +69,6 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    exampleAddresses: {
-      user: "sei1acqpnvg2t4wmqfdv8hq47d3petfksjs5xjfnyj" as HumanAddr,
-      contract:
-        "sei18l6zzyyhrl7j9zw2lew50677va25rtsa2s4yy5gdpg4nxz3y3j9se47f0k" as ContractAddr,
-      validator:
-        "seivaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
     },
     explorerLink: {
       validator: "https://testnet.mintscan.io/sei-testnet/validators",
