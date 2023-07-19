@@ -52,7 +52,6 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
   }, [projectsApiRoute]);
 
   return useQuery(["public_project", projectsApiRoute], queryFn, {
-    keepPreviousData: true,
     enabled: projectConfig.enabled,
   });
 };
@@ -75,7 +74,7 @@ export const usePublicProjectBySlug = (
   }, [projectsApiRoute, slug]);
 
   return useQuery(["public_project_by_slug", projectsApiRoute, slug], queryFn, {
-    enabled: !!slug && projectConfig.enabled,
+    enabled: Boolean(slug) && projectConfig.enabled,
   });
 };
 
@@ -100,8 +99,8 @@ export const usePublicProjectByContractAddress = (
     ["public_project_by_contract_address", projectsApiRoute, contractAddress],
     queryFn,
     {
-      keepPreviousData: true,
-      enabled: !!contractAddress && projectConfig.enabled && wasmConfig.enabled,
+      enabled:
+        Boolean(contractAddress) && projectConfig.enabled && wasmConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }
@@ -128,7 +127,6 @@ export const usePublicProjectByCodeId = (
     ["public_project_by_code_id", projectsApiRoute, codeId],
     queryFn,
     {
-      keepPreviousData: true,
       enabled: isCodeId(codeId) && projectConfig.enabled && wasmConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
@@ -155,8 +153,7 @@ export const usePublicProjectByAccountAddress = (
     ["public_project_by_account_address", projectsApiRoute, accountAddress],
     queryFn,
     {
-      keepPreviousData: true,
-      enabled: !!accountAddress && projectConfig.enabled,
+      enabled: Boolean(accountAddress) && projectConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }
