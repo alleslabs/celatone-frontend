@@ -1,5 +1,3 @@
-import type { HumanAddr, ValidatorAddr, ContractAddr } from "lib/types";
-
 type FaucetConfig =
   | {
       enabled: true;
@@ -52,11 +50,6 @@ export interface ChainConfig {
     };
     gasAdjustment: number;
     maxGasLimit: number;
-  };
-  exampleAddresses: {
-    user: HumanAddr;
-    validator: ValidatorAddr;
-    contract: ContractAddr;
   };
   explorerLink: ExplorerConfig;
 }

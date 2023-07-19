@@ -21,6 +21,7 @@ export interface ReceiptInfo {
   header: string;
   headerIcon?: ReactNode;
   description?: ReactNode;
+  errorMsg?: string;
 }
 
 export type ActionVariant =
@@ -31,7 +32,8 @@ export type ActionVariant =
   | "rejected"
   | "resend"
   | "update-admin"
-  | "proposal";
+  | "proposal"
+  | "failed";
 
 export interface TxResultRendering<T = unknown> {
   /**

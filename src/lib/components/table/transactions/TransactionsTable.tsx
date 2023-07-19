@@ -22,7 +22,7 @@ export const TransactionsTable = ({
   showTimestamp = true,
   showAction = false,
 }: TransactionsTableProps) => {
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!transactions?.length) return emptyState;
 
   const templateColumns = `25px 180px 40px minmax(360px, 1fr) ${

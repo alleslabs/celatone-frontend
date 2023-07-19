@@ -7,7 +7,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableContainer } from "lib/components/table";
-import { useMigrationHistories } from "lib/pages/contract-details/model/data";
+import { useMigrationHistories } from "lib/pages/contract-details/data";
 import type { ContractAddr, Option } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";

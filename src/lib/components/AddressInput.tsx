@@ -8,7 +8,7 @@ import type {
 } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 
-import { useCelatoneApp, useValidateAddress } from "lib/app-provider";
+import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
 import type { FormStatus, TextInputProps } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import type { Option } from "lib/types";
@@ -43,11 +43,7 @@ export const AddressInput = <T extends FieldValues>({
   helperAction,
   requiredText = "Address is empty",
 }: AddressInputProps<T>) => {
-  const {
-    chainConfig: {
-      exampleAddresses: { user: exampleAddr },
-    },
-  } = useCelatoneApp();
+  const { user: exampleUserAddress } = useExampleAddresses();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const validateAddress = useCallback(
     (input: string) =>
@@ -69,7 +65,7 @@ export const AddressInput = <T extends FieldValues>({
       name={name}
       control={control}
       label={label}
-      placeholder={placeholder ?? exampleAddr}
+      placeholder={placeholder ?? exampleUserAddress}
       type="text"
       variant="floating"
       status={status}

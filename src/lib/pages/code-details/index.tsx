@@ -214,7 +214,7 @@ const CodeDetails = observer(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CODE_DETAIL);
   }, [router.isReady]);
 
-  if (data.isLoading) return <Loading />;
+  if (data.isLoading) return <Loading withBorder />;
   return (
     <PageContainer>
       {!isCodeId(codeIdParam) ? (

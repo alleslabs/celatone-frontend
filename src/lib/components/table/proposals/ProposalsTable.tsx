@@ -16,7 +16,7 @@ export const ProposalsTable = ({
   isLoading,
   emptyState,
 }: ProposalsTableProps) => {
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!proposals?.length) return emptyState;
 
   const templateColumns =

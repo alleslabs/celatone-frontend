@@ -1,5 +1,3 @@
-import type { ContractAddr, HumanAddr, ValidatorAddr } from "lib/types";
-
 import type { ChainConfigs } from "./types";
 
 export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
@@ -35,13 +33,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    exampleAddresses: {
-      user: "osmo14wk9zecqam9jsac7xwtf8e349ckquzzlx9k8c3" as HumanAddr,
-      contract:
-        "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
-      validator:
-        "osmovaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
     },
     explorerLink: {
       validator: "https://www.mintscan.io/osmosis/validators",
@@ -82,13 +73,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    exampleAddresses: {
-      user: "osmo14wk9zecqam9jsac7xwtf8e349ckquzzlx9k8c3" as HumanAddr,
-      contract:
-        "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
-      validator:
-        "osmovaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
-    },
     explorerLink: {
       validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
@@ -126,13 +110,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
-    },
-    exampleAddresses: {
-      user: "osmo14wk9zecqam9jsac7xwtf8e349ckquzzlx9k8c3" as HumanAddr,
-      contract:
-        "osmo1p0pxllmqjgl2tefy7grypt34jdpdltg3ka98n8unnl322wqps7lqtu576h" as ContractAddr,
-      validator:
-        "osmovaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
     },
     explorerLink: {
       validator: "",

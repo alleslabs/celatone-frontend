@@ -29,16 +29,17 @@ interface AssetSectionContentProps {
 
 interface AssetCtaProps {
   walletAddress: HumanAddr;
+  totalAsset: number;
 }
 const MaxAssetsShow = 12;
 
 const AssetTitle = ({
   onViewMore,
-  assetCount,
+  totalAsset,
   children,
 }: {
   onViewMore: AssetsSectionProps["onViewMore"];
-  assetCount: number;
+  totalAsset: number;
   children: JSX.Element;
 }) => {
   const isMobile = useMobile();
@@ -56,22 +57,20 @@ const AssetTitle = ({
         onClick={onViewMore}
       >
         <Flex direction="column" gap={2}>
-          <TableTitle title="Assets" count={assetCount} mb={0} />
+          <TableTitle title="Assets" count={totalAsset} mb={0} />
           {children}
         </Flex>
         <CustomIcon name="chevron-right" color="gray.600" />
       </Flex>
     );
 
-  return <TableTitle title="Assets" count={assetCount} mb={0} />;
+  return <TableTitle title="Assets" count={totalAsset} mb={0} />;
 };
 
-const AssetCta = ({ walletAddress }: AssetCtaProps) => {
-  const { supportedAssets, unsupportedAssets } =
-    useUserAssetInfos(walletAddress);
+const AssetCta = ({ walletAddress, totalAsset }: AssetCtaProps) => {
+  const { unsupportedAssets } = useUserAssetInfos(walletAddress);
   const openAssetTab = useOpenAssetTab();
-  const totalAsset =
-    (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
+
   return (
     <Flex
       w={{ base: "full", md: "auto" }}
@@ -154,7 +153,11 @@ export const AssetsSection = ({
     isMobileDetail = true;
   }
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
+
+  const totalAsset =
+    (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0);
+
   return (
     <Flex
       direction="column"
@@ -163,12 +166,7 @@ export const AssetsSection = ({
       mb={{ base: 0, md: 8 }}
       width="full"
     >
-      <AssetTitle
-        onViewMore={onViewMore}
-        assetCount={
-          (supportedAssets?.length ?? 0) + (unsupportedAssets?.length ?? 0)
-        }
-      >
+      <AssetTitle onViewMore={onViewMore} totalAsset={totalAsset}>
         {TotalAssetValueInfo}
       </AssetTitle>
       {isMobileDetail && (
@@ -180,14 +178,18 @@ export const AssetsSection = ({
             direction={{ base: "column", md: "row" }}
           >
             <Flex gap="50px">{TotalAssetValueInfo}</Flex>
-            {!isMobile && <AssetCta walletAddress={walletAddress} />}
+            {!isMobile && (
+              <AssetCta walletAddress={walletAddress} totalAsset={totalAsset} />
+            )}
           </Flex>
           <AssetSectionContent
             supportedAssets={supportedAssets}
             onViewMore={onViewMore}
             error={error}
           />
-          {isMobile && <AssetCta walletAddress={walletAddress} />}
+          {isMobile && (
+            <AssetCta walletAddress={walletAddress} totalAsset={totalAsset} />
+          )}
         </>
       )}
       {!isMobile ||

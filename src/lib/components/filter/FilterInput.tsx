@@ -1,32 +1,34 @@
 import { Flex, FormLabel, Input } from "@chakra-ui/react";
 import type { Dispatch, ForwardedRef, RefObject, SetStateAction } from "react";
 
-import { CustomIcon } from "lib/components/icon";
+import { DropdownChevron } from "../DropdownChevron";
 import type { ProposalStatus, ProposalType } from "lib/types";
 import { mergeRefs } from "lib/utils";
 
 type Result = ProposalType | ProposalStatus;
 
 interface FilterInputProps {
+  keyword: string;
   result: Result[];
   isDropdown: boolean;
   chipContainerComponent: JSX.Element;
   inputRef: RefObject<HTMLInputElement>;
   ref: ForwardedRef<HTMLInputElement>;
-  setIsDropdown: Dispatch<SetStateAction<boolean>>;
   placeholder?: string;
   label?: string;
-  filterDropdown: (value: string) => void;
+  setIsDropdown: Dispatch<SetStateAction<boolean>>;
+  setKeyword: Dispatch<SetStateAction<string>>;
 }
 export const FilterInput = ({
+  keyword,
   placeholder,
   result,
   isDropdown,
   label,
   inputRef,
   ref,
-  filterDropdown,
   setIsDropdown,
+  setKeyword,
   chipContainerComponent,
 }: FilterInputProps) => (
   <>
@@ -42,6 +44,7 @@ export const FilterInput = ({
     >
       {chipContainerComponent}
       <Input
+        value={keyword}
         w="full"
         autoComplete="off"
         size="lg"
@@ -50,21 +53,15 @@ export const FilterInput = ({
         ref={mergeRefs([inputRef, ref])}
         maxLength={36}
         style={{ border: 0, maxHeight: "54px" }}
-        onFocus={(e) => filterDropdown(e.currentTarget.value)}
-        onChange={(e) => filterDropdown(e.currentTarget.value)}
+        onFocus={() => setIsDropdown(true)}
+        onChange={(e) => setKeyword(e.currentTarget.value)}
         onClick={() => setIsDropdown(true)}
       />
-      <CustomIcon
-        name={isDropdown ? "chevron-up" : "chevron-down"}
-        position="absolute"
-        mr={1}
-        px={3}
-        boxSize="40px"
-        right="0px"
-        minH="full"
-        color="gray.600"
-        backgroundColor="background.main"
-        onClick={() => setIsDropdown(!isDropdown)}
+      <DropdownChevron
+        isOpen={isDropdown}
+        // input max height 54px + border top and bottom 2px
+        height="56px"
+        onClick={() => setIsDropdown((prev) => !prev)}
       />
     </Flex>
 
