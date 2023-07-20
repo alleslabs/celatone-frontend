@@ -7,7 +7,7 @@ import {
   useGetAddressType,
 } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
-import { isCodeId, isTxHash } from "lib/utils";
+import { isCodeId } from "lib/utils";
 
 import { useBlockDetailsQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
@@ -52,10 +52,7 @@ export const useSearchHandler = (
   const lcdEndpoint = useBaseApiRoute("rest");
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(debouncedKeyword);
-  const { data: txData, isFetching: txFetching } = useTxData(
-    debouncedKeyword,
-    isTxHash(debouncedKeyword)
-  );
+  const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
   const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId(
     debouncedKeyword,
     isWasm && isCodeId(debouncedKeyword)

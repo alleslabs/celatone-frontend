@@ -73,8 +73,7 @@ export const useBlockCountQuery = (): UseQueryResult<number> => {
 };
 
 export const useBlockDetailsQuery = (
-  height: string,
-  enabled = true
+  height: string
 ): UseQueryResult<BlockDetails | null> => {
   const { currentChainId } = useCelatoneApp();
   const { indexerGraphClient } = useCelatoneApp();
@@ -111,7 +110,7 @@ export const useBlockDetailsQuery = (
   );
 
   return useQuery(["block_details", indexerGraphClient, height], queryFn, {
-    enabled: enabled && isBlock(height),
+    enabled: isBlock(height),
     retry: false,
     refetchOnWindowFocus: false,
   });
