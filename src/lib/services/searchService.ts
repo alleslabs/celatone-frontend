@@ -1,17 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   useBaseApiRoute,
   useCelatoneApp,
   useGetAddressType,
 } from "lib/app-provider";
-import type { ContractAddr } from "lib/types";
+import type { Addr, ContractAddr, Option } from "lib/types";
 import { isBlock, isCodeId, isTxHash } from "lib/utils";
 
 import { useBlockDetailsQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
+import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
+import type { ICNSNamesResponse } from "./ns";
 import { usePoolByPoolId } from "./poolService";
 import { useTxData } from "./txService";
 
@@ -33,6 +35,7 @@ const loadingStateResolver = ({
   contractLoading,
   blockLoading,
   poolFetching,
+  icnsAddressLoading,
 }: {
   debouncedKeyword: string;
   isWasm: boolean;
@@ -42,6 +45,7 @@ const loadingStateResolver = ({
   contractLoading: boolean;
   blockLoading: boolean;
   poolFetching: boolean;
+  icnsAddressLoading: boolean;
 }) => {
   const txDataLoading = isTxHash(debouncedKeyword) && txLoading;
   const codeDataLoading = isWasm && isCodeId(debouncedKeyword) && codeLoading;
@@ -54,15 +58,25 @@ const loadingStateResolver = ({
     codeDataLoading ||
     contractDataLoading ||
     blockDataLoading ||
+    icnsAddressLoading ||
     poolLoading
   );
 };
 
-// TODO: Add Proposal ID, ICNS query
+export interface ResultMetadata {
+  icns: { icnsNames: Option<ICNSNamesResponse>; address: Option<Addr> };
+}
+
+// TODO: Add Proposal ID
 export const useSearchHandler = (
   keyword: string,
   resetHandlerStates: () => void
-): { results: SearchResultType[]; isLoading: boolean } => {
+): {
+  results: SearchResultType[];
+  isLoading: boolean;
+  metadata: ResultMetadata;
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+} => {
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const {
     chainConfig: {
@@ -97,9 +111,28 @@ export const useSearchHandler = (
       Number.isInteger(Number(debouncedKeyword)) &&
       Number(debouncedKeyword) > 0
   );
+  const { data: icnsAddressData, isLoading: icnsAddressLoading } =
+    useAddressByICNSName(debouncedKeyword);
 
   const isAddr =
     addressType === "user_address" || addressType === "contract_address";
+
+  // provide ICNS metadata result
+  const { data: icnsNames } = useICNSNamesByAddress(
+    (isAddr ? debouncedKeyword : icnsAddressData?.address) as Addr
+  );
+
+  const addressResult = useMemo(() => {
+    if (isAddr) {
+      return contractData ? "Contract Address" : "Wallet Address";
+    }
+    return (
+      icnsAddressData?.address &&
+      (icnsAddressData.addressType === "contract_address"
+        ? "Contract Address"
+        : "Wallet Address")
+    );
+  }, [isAddr, contractData, icnsAddressData]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -111,7 +144,7 @@ export const useSearchHandler = (
 
   return {
     results: [
-      isAddr && (contractData ? "Contract Address" : "Wallet Address"),
+      addressResult,
       txData && "Transaction Hash",
       codeData && "Code ID",
       blockData && "Block",
@@ -126,6 +159,13 @@ export const useSearchHandler = (
       contractLoading,
       blockLoading,
       poolFetching,
+      icnsAddressLoading,
     }),
+    metadata: {
+      icns: {
+        icnsNames,
+        address: (isAddr ? debouncedKeyword : icnsAddressData?.address) as Addr,
+      },
+    },
   };
 };

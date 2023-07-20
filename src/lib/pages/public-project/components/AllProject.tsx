@@ -43,7 +43,7 @@ export const AllProject = observer(() => {
     return [];
   }, [publicProjectInfo, savedProjects, searchKeyword]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!publicProjectInfo)
     return (
       <Flex flexDirection="column" alignItems="center">

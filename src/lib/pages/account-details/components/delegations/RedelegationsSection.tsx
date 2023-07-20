@@ -52,7 +52,7 @@ export const RedelegationsSection = ({
         />
       </Flex>
       {isLoading ? (
-        <Loading />
+        <Loading withBorder />
       ) : (
         <>
           <NonRedelegatableSection redelegations={redelegations} />

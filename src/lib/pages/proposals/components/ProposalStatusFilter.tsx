@@ -2,7 +2,7 @@ import type { InputProps } from "@chakra-ui/react";
 import { FormControl, Flex, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { Dispatch, SetStateAction } from "react";
-import { useState, useRef, forwardRef } from "react";
+import { useMemo, useState, useRef, forwardRef } from "react";
 
 import { FilterChip } from "lib/components/filter/FilterChip";
 import { DropdownContainer } from "lib/components/filter/FilterComponents";
@@ -36,28 +36,27 @@ export const ProposalStatusFilter = forwardRef<
     }: ProposalStatusFilterProps,
     ref
   ) => {
-    const [dropdownValue, setDropdownValue] = useState<ProposalStatus[]>([]);
+    const [keyword, setKeyword] = useState("");
     const [isDropdown, setIsDropdown] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
 
-    const filterDropdown = (value: string) => {
-      setIsDropdown(true);
-      setDropdownValue(
-        value
-          ? matchSorter(OPTIONS, value, {
+    const dropdownValue = useMemo(
+      () =>
+        keyword
+          ? matchSorter(OPTIONS, keyword, {
               threshold: matchSorter.rankings.CONTAINS,
             })
-          : OPTIONS
-      );
-    };
+          : OPTIONS,
+      [keyword]
+    );
 
     const isOptionSelected = (option: ProposalStatus) =>
       result.some((selectedOption) => selectedOption === option);
 
     const selectOption = (option: ProposalStatus) => {
       if (inputRef.current) {
-        inputRef.current.value = "";
+        setKeyword("");
       }
       if (result.includes(option)) {
         AmpTrackUseFilter(
@@ -80,13 +79,14 @@ export const ProposalStatusFilter = forwardRef<
     return (
       <FormControl ref={boxRef} minW={minW} maxW="full" h={8}>
         <FilterInput
+          keyword={keyword}
           placeholder={placeholder}
           result={result}
           label={label}
           inputRef={inputRef}
           ref={ref}
           isDropdown={isDropdown}
-          filterDropdown={filterDropdown}
+          setKeyword={setKeyword}
           setIsDropdown={setIsDropdown}
           chipContainerComponent={
             <Flex alignItems="center" pl={2} gap={2}>

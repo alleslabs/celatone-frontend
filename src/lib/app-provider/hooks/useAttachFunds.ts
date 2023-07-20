@@ -6,7 +6,7 @@ import { useAssetInfos } from "lib/services/assetService";
 import { fabricateFunds, sortDenoms } from "lib/utils";
 
 export const useAttachFunds = () => {
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: false });
 
   return useCallback(
     (

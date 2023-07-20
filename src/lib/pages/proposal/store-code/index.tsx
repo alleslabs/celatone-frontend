@@ -25,6 +25,7 @@ import { getAlert } from "../utils";
 import {
   useCelatoneApp,
   useCurrentChain,
+  useExampleAddresses,
   useFabricateFee,
   useSimulateFeeForProposalStoreCode,
   useSubmitStoreCodeProposalTx,
@@ -96,8 +97,9 @@ const StoreCodeProposal = () => {
   useWasmConfig({ shouldRedirect: true });
   const {
     constants,
-    chainConfig: { prettyName, exampleAddresses },
+    chainConfig: { prettyName },
   } = useCelatoneApp();
+  const { user: exampleUserAddress } = useExampleAddresses();
   const getMaxLengthError = useGetMaxLengthError();
   const { address: walletAddress = "" } = useCurrentChain();
   const fabricateFee = useFabricateFee();
@@ -404,7 +406,7 @@ const StoreCodeProposal = () => {
                   control={control}
                   label={PROPOSAL_STORE_CODE_TEXT.runAsLabel}
                   labelBgColor="background.main"
-                  placeholder={`ex. ${exampleAddresses.user}`}
+                  placeholder={`ex. ${exampleUserAddress}`}
                   variant="floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.runAsHelperText}
                   requiredText={PROPOSAL_STORE_CODE_TEXT.runAsRequired}

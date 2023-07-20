@@ -25,7 +25,7 @@ export const ContractsTable = ({
   withCTA,
   withoutTag,
 }: ContractsTableProps) => {
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!contracts?.length) return emptyState;
 
   let templateColumns: string;

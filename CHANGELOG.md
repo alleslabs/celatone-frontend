@@ -40,17 +40,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Support searching with pool id
+- [#419](https://github.com/alleslabs/celatone-frontend/pull/419) Add error message box for tx failed modal and enhance styling
+- [#415](https://github.com/alleslabs/celatone-frontend/pull/415) Search by icns names feature and Show registered icns names on account details page
 - [#438](https://github.com/alleslabs/celatone-frontend/pull/438) Add new home page
 - [#437](https://github.com/alleslabs/celatone-frontend/pull/437) Add first landing prompt for dev mode
 - [#436](https://github.com/alleslabs/celatone-frontend/pull/436) Implement merge navigation
 
 ### Improvements
 
+- [#450](https://github.com/alleslabs/celatone-frontend/pull/450) Retrieve asset prices only when necessary (/prices url path)
+- [#451](https://github.com/alleslabs/celatone-frontend/pull/451) Add jest test cases for json, date, and number in utils
+- [#412](https://github.com/alleslabs/celatone-frontend/pull/412) Refactor contract detail data loading
+- [#402](https://github.com/alleslabs/celatone-frontend/pull/402) Add validator image resolver hook (add keybase as a fallback option)
+- [#408](https://github.com/alleslabs/celatone-frontend/pull/408) Improve dropdown and combo box interaction
+- [#421](https://github.com/alleslabs/celatone-frontend/pull/421) Generate example addresses from a fixed-bytes array
 - [#431](https://github.com/alleslabs/celatone-frontend/pull/431) Add new Osmosis v16 tx messages
 - [#414](https://github.com/alleslabs/celatone-frontend/pull/414) Add jest test cases for funds and assetValue in utils, and remove isDecimalNumber in utils
 - [#435](https://github.com/alleslabs/celatone-frontend/pull/435) Refactor chain's config, add new chain configs
 
 ### Bug fixes
+
+- [#452](https://github.com/alleslabs/celatone-frontend/pull/452) Fix public project data on the account details and code details page still remains when switching network
 
 ## v1.1.0
 

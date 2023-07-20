@@ -59,7 +59,7 @@ export const DelegationsSection = ({
     isLoadingTotalCommission,
   } = useUserDelegationInfos(walletAddress);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!stakingParams)
     return <EmptyState message="Error fetching delegation data" />;
 
