@@ -30,6 +30,7 @@ const ProjectDetail = () => {
   const router = useRouter();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
+  // TODO: remove assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const {
     publicCodes,

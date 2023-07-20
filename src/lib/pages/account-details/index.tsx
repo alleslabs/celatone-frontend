@@ -66,6 +66,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const router = useRouter();
+  // TODO: remove assertion later
   const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
