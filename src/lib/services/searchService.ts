@@ -7,13 +7,14 @@ import {
   useGetAddressType,
 } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
-import { isBlock, isCodeId, isTxHash } from "lib/utils";
+import { isCodeId } from "lib/utils";
 
 import { useBlockDetailsQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
 import type { ICNSNamesResponse } from "./ns";
+import { usePoolByPoolId } from "./poolService";
 import { useTxData } from "./txService";
 
 export type SearchResultType =
@@ -22,42 +23,12 @@ export type SearchResultType =
   | "Wallet Address"
   | "Transaction Hash"
   | "Proposal ID"
-  | "Block";
+  | "Block"
+  | "Pool ID";
 
 export interface ResultMetadata {
   icns: { icnsNames: Option<ICNSNamesResponse>; address: Option<Addr> };
 }
-
-const resolveLoadingState = ({
-  keyword,
-  txLoading,
-  codeLoading,
-  contractLoading,
-  blockLoading,
-  icnsAddressLoading,
-  isWasm,
-}: {
-  keyword: string;
-  txLoading: boolean;
-  codeLoading: boolean;
-  contractLoading: boolean;
-  blockLoading: boolean;
-  icnsAddressLoading: boolean;
-  isWasm: boolean;
-}) => {
-  const txDataLoading = isTxHash(keyword) && txLoading;
-  const codeDataLoading = isWasm && isCodeId(keyword) && codeLoading;
-  const contractDataLoading = isWasm && contractLoading;
-  const blockDataLoading = isBlock(keyword) && blockLoading;
-
-  return (
-    txDataLoading ||
-    codeDataLoading ||
-    contractDataLoading ||
-    blockDataLoading ||
-    icnsAddressLoading
-  );
-};
 
 // TODO: Add Proposal ID
 export const useSearchHandler = (
@@ -67,24 +38,26 @@ export const useSearchHandler = (
   results: SearchResultType[];
   isLoading: boolean;
   metadata: ResultMetadata;
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 } => {
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const {
     chainConfig: {
       features: {
         wasm: { enabled: isWasm },
+        pool: { enabled: isPool },
       },
     },
   } = useCelatoneApp();
   const lcdEndpoint = useBaseApiRoute("rest");
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(debouncedKeyword);
-  const { data: txData, isLoading: txLoading } = useTxData(debouncedKeyword);
-  const { data: codeData, isLoading: codeLoading } = useCodeDataByCodeId(
+  const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
+  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId(
     debouncedKeyword,
-    isWasm
+    isWasm && isCodeId(debouncedKeyword)
   );
-  const { data: contractData, isLoading: contractLoading } = useQuery(
+  const { data: contractData, isFetching: contractFetching } = useQuery(
     ["query", "contract", lcdEndpoint, debouncedKeyword],
     async () => queryContract(lcdEndpoint, debouncedKeyword as ContractAddr),
     {
@@ -93,9 +66,15 @@ export const useSearchHandler = (
       retry: false,
     }
   );
-  const { data: blockData, isLoading: blockLoading } =
+  const { data: blockData, isFetching: blockFetching } =
     useBlockDetailsQuery(debouncedKeyword);
-  const { data: icnsAddressData, isLoading: icnsAddressLoading } =
+  const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
+    Number(debouncedKeyword),
+    isPool &&
+      Number.isInteger(Number(debouncedKeyword)) &&
+      Number(debouncedKeyword) > 0
+  );
+  const { data: icnsAddressData, isFetching: icnsAddressFetching } =
     useAddressByICNSName(debouncedKeyword);
 
   const isAddr =
@@ -132,16 +111,15 @@ export const useSearchHandler = (
       txData && "Transaction Hash",
       codeData && "Code ID",
       blockData && "Block",
+      poolData && "Pool ID",
     ].filter((res) => Boolean(res)) as SearchResultType[],
-    isLoading: resolveLoadingState({
-      keyword: debouncedKeyword,
-      txLoading,
-      codeLoading,
-      contractLoading,
-      blockLoading,
-      icnsAddressLoading,
-      isWasm,
-    }),
+    isLoading:
+      txFetching ||
+      codeFetching ||
+      contractFetching ||
+      blockFetching ||
+      icnsAddressFetching ||
+      poolFetching,
     metadata: {
       icns: {
         icnsNames,
