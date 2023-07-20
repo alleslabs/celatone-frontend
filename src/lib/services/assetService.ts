@@ -1,21 +1,28 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { useBaseApiRoute } from "lib/app-provider";
-import { getAssetInfos, getNativeAssetInfos } from "lib/services/asset";
+import {
+  getAssetInfos,
+  getAssetInfosWithoutPricesPath,
+} from "lib/services/asset";
 import type { AssetInfo, Option } from "lib/types";
 
 export type AssetInfosOpt = Option<{ [key: string]: AssetInfo }>;
 
-export const useAssetInfos = (): {
+export const useAssetInfos = ({
+  withPrices,
+}: {
+  withPrices: boolean;
+}): {
   assetInfos: AssetInfosOpt;
   isLoading: boolean;
 } => {
   const assetsApiRoute = useBaseApiRoute("assets");
-
+  const fetchFn = withPrices ? getAssetInfos : getAssetInfosWithoutPricesPath;
   const { data: assets, isLoading } = useQuery(
     ["query", "assetInfos", assetsApiRoute],
-    async () => getAssetInfos(assetsApiRoute),
-    { enabled: !!assetsApiRoute, retry: 1, refetchOnWindowFocus: false }
+    async () => fetchFn(assetsApiRoute),
+    { enabled: Boolean(assetsApiRoute), retry: 1, refetchOnWindowFocus: false }
   );
 
   return {
@@ -31,8 +38,8 @@ export const useAssetInfoList = () => {
   const assetsApiRoute = useBaseApiRoute("assets");
   return useQuery(
     ["query", "assetInfosList", assetsApiRoute],
-    async () => getAssetInfos(assetsApiRoute),
-    { enabled: !!assetsApiRoute, retry: 1, refetchOnWindowFocus: false }
+    async () => getAssetInfosWithoutPricesPath(assetsApiRoute),
+    { enabled: Boolean(assetsApiRoute), retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -41,9 +48,9 @@ export const useNativeTokensInfo = () => {
 
   return useQuery(
     ["query", "nativeTokensInfo", nativeTokensApiRoute],
-    async () => getNativeAssetInfos(nativeTokensApiRoute),
+    async () => getAssetInfosWithoutPricesPath(nativeTokensApiRoute),
     {
-      enabled: !!nativeTokensApiRoute,
+      enabled: Boolean(nativeTokensApiRoute),
       refetchOnWindowFocus: false,
     }
   );

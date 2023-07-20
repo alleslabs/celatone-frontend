@@ -17,7 +17,7 @@ interface FaucetInfo extends FaucetResponse {
 
 export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
   const faucet = useFaucetConfig({ shouldRedirect: false });
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: false });
   const queryFn = async (): Promise<FaucetInfo> => {
     const faucetInfo = await queryFaucetInfo(faucet.enabled ? faucet.url : "");
     const assetInfo = assetInfos?.[faucetInfo.Denom];
