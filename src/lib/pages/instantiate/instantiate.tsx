@@ -14,6 +14,7 @@ import {
   useSimulateFeeQuery,
   useCurrentChain,
   useBaseApiRoute,
+  CELATONE_QUERY_KEYS,
   useExampleAddresses,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
@@ -140,7 +141,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
 
   const { refetch } = useQuery(
-    ["query", lcdEndpoint, codeId],
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
     async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,

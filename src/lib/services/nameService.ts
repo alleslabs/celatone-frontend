@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { AddressReturnType } from "lib/app-provider";
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCurrentChain,
   useGetAddressType,
@@ -39,7 +40,11 @@ export const useICNSNamesByAddress = (
   };
 
   return useQuery({
-    queryKey: ["icns_names", resolverEndpoint, address],
+    queryKey: [
+      CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS,
+      resolverEndpoint,
+      address,
+    ],
     queryFn,
     refetchOnWindowFocus: false,
     enabled:
@@ -88,7 +93,12 @@ export const useAddressByICNSName = (
   };
 
   return useQuery({
-    queryKey: ["icns_address", resolverEndpoint, name, bech32Prefix],
+    queryKey: [
+      CELATONE_QUERY_KEYS.ADDRESS_BY_ICNS_NAME,
+      resolverEndpoint,
+      name,
+      bech32Prefix,
+    ],
     queryFn,
     refetchOnWindowFocus: false,
     enabled: Boolean(name),

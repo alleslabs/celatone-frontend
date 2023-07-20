@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useGetAddressType,
@@ -9,7 +10,7 @@ import {
 import type { Addr, ContractAddr, Option } from "lib/types";
 import { isCodeId } from "lib/utils";
 
-import { useBlockDetailsQuery } from "./blockService";
+import { useBlockInfoQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
 import { queryContract } from "./contract";
 import { useAddressByICNSName, useICNSNamesByAddress } from "./nameService";
@@ -58,7 +59,7 @@ export const useSearchHandler = (
     isWasm && isCodeId(debouncedKeyword)
   );
   const { data: contractData, isFetching: contractFetching } = useQuery(
-    ["query", "contract", lcdEndpoint, debouncedKeyword],
+    [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, debouncedKeyword],
     async () => queryContract(lcdEndpoint, debouncedKeyword as ContractAddr),
     {
       enabled: isWasm && Boolean(debouncedKeyword),
@@ -67,7 +68,7 @@ export const useSearchHandler = (
     }
   );
   const { data: blockData, isFetching: blockFetching } =
-    useBlockDetailsQuery(debouncedKeyword);
+    useBlockInfoQuery(debouncedKeyword);
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
     Number(debouncedKeyword),
     isPool &&

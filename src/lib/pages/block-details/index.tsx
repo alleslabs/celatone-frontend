@@ -6,7 +6,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { useBlockDetailsQuery } from "lib/services/blockService";
+import { useBlockInfoQuery } from "lib/services/blockService";
 import { getFirstQueryParam } from "lib/utils";
 
 import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
@@ -14,7 +14,7 @@ import { BlockDetailsTop, BlockInfo, BlockTxsTable } from "./components";
 const BlockDetail = () => {
   const router = useRouter();
   const heightParam = getFirstQueryParam(router.query.height);
-  const { data: blockData, isLoading } = useBlockDetailsQuery(heightParam);
+  const { data: blockData, isLoading } = useBlockInfoQuery(heightParam);
 
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_BLOCK_DETAIL);
