@@ -56,7 +56,6 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
     [CELATONE_QUERY_KEYS.PUBLIC_PROJECTS, projectsApiRoute],
     queryFn,
     {
-      keepPreviousData: true,
       enabled: projectConfig.enabled,
     }
   );
@@ -83,7 +82,7 @@ export const usePublicProjectBySlug = (
     [CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_SLUG, projectsApiRoute, slug],
     queryFn,
     {
-      enabled: !!slug && projectConfig.enabled,
+      enabled: Boolean(slug) && projectConfig.enabled,
     }
   );
 };
@@ -113,8 +112,8 @@ export const usePublicProjectByContractAddress = (
     ],
     queryFn,
     {
-      keepPreviousData: true,
-      enabled: !!contractAddress && projectConfig.enabled && wasmConfig.enabled,
+      enabled:
+        Boolean(contractAddress) && projectConfig.enabled && wasmConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }
@@ -141,7 +140,6 @@ export const usePublicProjectByCodeId = (
     [CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CODE_ID, projectsApiRoute, codeId],
     queryFn,
     {
-      keepPreviousData: true,
       enabled: isCodeId(codeId) && projectConfig.enabled && wasmConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
@@ -172,8 +170,7 @@ export const usePublicProjectByAccountAddress = (
     ],
     queryFn,
     {
-      keepPreviousData: true,
-      enabled: !!accountAddress && projectConfig.enabled,
+      enabled: Boolean(accountAddress) && projectConfig.enabled,
       retry: false,
       refetchOnWindowFocus: false,
     }

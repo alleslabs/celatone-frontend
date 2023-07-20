@@ -3,7 +3,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type { Order_By } from "lib/gql/graphql";
 import {
   getPoolByPoolId,
@@ -72,7 +72,7 @@ export const usePoolListQuery = ({
 
   return useQuery(
     [
-      "pool_list_query",
+      CELATONE_QUERY_KEYS.POOL_LIST,
       isSupported,
       poolType,
       isSuperfluidOnly,
@@ -123,7 +123,7 @@ export const usePoolListCountQuery = ({
 
   return useQuery(
     [
-      "pool_list_count_query",
+      CELATONE_QUERY_KEYS.POOL_LIST_COUNT,
       isSupported,
       poolType,
       isSuperfluidOnly,
@@ -135,7 +135,8 @@ export const usePoolListCountQuery = ({
 };
 
 export const usePoolByPoolId = (
-  poolId: number
+  poolId: number,
+  enabled = true
 ): UseQueryResult<PoolDetail<string, Coin>> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -172,7 +173,13 @@ export const usePoolByPoolId = (
       );
   }, [poolId, indexerGraphClient]);
 
-  return useQuery(["pool_by_pool_id", poolId, indexerGraphClient], queryFn);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.POOL_INFO_BY_ID, poolId, indexerGraphClient],
+    queryFn,
+    {
+      enabled,
+    }
+  );
 };
 
 export const usePoolAssetsbyPoolIds = (
@@ -199,7 +206,11 @@ export const usePoolAssetsbyPoolIds = (
       );
   }, [poolIds, indexerGraphClient]);
 
-  return useQuery(["pools_by_pool_ids", poolIds, indexerGraphClient], queryFn, {
-    enabled,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.POOL_INFO_BY_ID_LIST, poolIds, indexerGraphClient],
+    queryFn,
+    {
+      enabled,
+    }
+  );
 };

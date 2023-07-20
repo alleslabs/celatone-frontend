@@ -9,6 +9,7 @@ import {
 } from "lib/app-provider";
 import {
   getAdminByContractAddressesQueryDocument,
+  getContractByContractAddressQueryDocument,
   getContractListByAdmin,
   getContractListByAdminPagination,
   getContractListByCodeIdPagination,
@@ -35,14 +36,93 @@ import type {
 } from "lib/types";
 import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
+export interface ContractDetail extends ContractLocalInfo {
+  codeId: number;
+  admin: Option<Addr>;
+}
+
 interface InstantiateDetail {
   createdHeight: Option<number>;
   createdTime: Option<Date>;
-  initMsg: Option<string>;
+  initMsg: Option<string | null>;
   initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
 }
+
+export const useContractDetailByContractAddress = (
+  contractAddress: ContractAddr,
+  onSuccess?: (data: ContractDetail) => void,
+  onError?: (err: Error) => void
+): UseQueryResult<ContractDetail> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getContractByContractAddressQueryDocument, { contractAddress })
+      .then<ContractDetail>(({ contracts_by_pk }) => {
+        if (!contracts_by_pk) throw Error("Contract not found");
+        return {
+          contractAddress,
+          codeId: contracts_by_pk.code_id,
+          label: contracts_by_pk.label,
+          instantiator: contracts_by_pk.accountByInitBy?.address as Addr,
+          admin: contracts_by_pk.admin
+            ? (contracts_by_pk.admin.address as Addr)
+            : undefined,
+        };
+      });
+  }, [contractAddress, indexerGraphClient]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_DETAIL_BY_CONTRACT_ADDRESS,
+      contractAddress,
+      indexerGraphClient,
+    ],
+    queryFn,
+    {
+      refetchOnWindowFocus: false,
+      enabled: Boolean(contractAddress),
+      onSuccess,
+      onError,
+    }
+  );
+};
+
+export const useInstantiateDetailByContractQuery = (
+  contractAddress: ContractAddr
+): UseQueryResult<InstantiateDetail> => {
+  const { indexerGraphClient } = useCelatoneApp();
+
+  const queryFn = useCallback(async () => {
+    return indexerGraphClient
+      .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
+      .then<InstantiateDetail>(({ contracts_by_pk }) => ({
+        createdHeight: contracts_by_pk?.transaction?.block_height,
+        createdTime: parseDateOpt(
+          contracts_by_pk?.transaction?.block.timestamp
+        ),
+        initMsg: contracts_by_pk?.init_msg,
+        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
+        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
+        initProposalTitle:
+          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
+      }));
+  }, [contractAddress, indexerGraphClient]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_DETAIL,
+      contractAddress,
+      indexerGraphClient,
+    ],
+    queryFn,
+    {
+      enabled: Boolean(contractAddress),
+    }
+  );
+};
 
 export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -98,7 +178,7 @@ export const useInstantiatedCountByUserQuery = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: wasm.enabled && !!walletAddr,
+      enabled: wasm.enabled && Boolean(walletAddr),
     }
   );
 };
@@ -133,7 +213,7 @@ export const useInstantiatedListByUserQuery = (
       indexerGraphClient,
     ],
     queryFn,
-    { enabled: !!walletAddr, refetchOnWindowFocus: false }
+    { enabled: Boolean(walletAddr), refetchOnWindowFocus: false }
   );
 };
 
@@ -164,42 +244,7 @@ export const useContractListByAdmin = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!adminAddress,
-    }
-  );
-};
-
-export const useInstantiateDetailByContractQuery = (
-  contractAddress: ContractAddr
-): UseQueryResult<InstantiateDetail> => {
-  const { indexerGraphClient } = useCelatoneApp();
-
-  const queryFn = useCallback(async () => {
-    return indexerGraphClient
-      .request(getInstantiateDetailByContractQueryDocument, { contractAddress })
-      .then(({ contracts_by_pk }) => ({
-        createdHeight: contracts_by_pk?.transaction?.block_height,
-        createdTime: parseDateOpt(
-          contracts_by_pk?.transaction?.block.timestamp
-        ),
-        initMsg: contracts_by_pk?.init_msg,
-        initTxHash: parseTxHashOpt(contracts_by_pk?.transaction?.hash),
-        initProposalId: contracts_by_pk?.contract_proposals.at(0)?.proposal.id,
-        initProposalTitle:
-          contracts_by_pk?.contract_proposals.at(0)?.proposal.title,
-      }));
-  }, [contractAddress, indexerGraphClient]);
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_DETAIL,
-      contractAddress,
-      indexerGraphClient,
-    ],
-    queryFn,
-    {
-      keepPreviousData: true,
-      enabled: !!contractAddress,
+      enabled: Boolean(adminAddress),
     }
   );
 };
@@ -283,7 +328,7 @@ export const useMigrationHistoriesByContractAddressPagination = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!contractAddress,
+      enabled: Boolean(contractAddress),
     }
   );
 };
@@ -313,7 +358,7 @@ export const useMigrationHistoriesCountByContractAddress = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!contractAddress,
+      enabled: Boolean(contractAddress),
     }
   );
 };
@@ -357,7 +402,7 @@ export const useContractListByCodeIdPagination = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!codeId,
+      enabled: Boolean(codeId),
     }
   );
 };
@@ -387,7 +432,7 @@ export const useContractListCountByCodeId = (
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!codeId,
+      enabled: Boolean(codeId),
     }
   );
 };
@@ -438,7 +483,7 @@ export const useContractListByWalletAddressPagination = (
     ],
     createQueryFnWithTimeout(queryFn),
     {
-      enabled: wasm.enabled && !!walletAddress,
+      enabled: wasm.enabled && Boolean(walletAddress),
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -490,7 +535,7 @@ export const useContractListByAdminPagination = (
     ],
     createQueryFnWithTimeout(queryFn),
     {
-      enabled: wasm.enabled && !!walletAddress,
+      enabled: wasm.enabled && Boolean(walletAddress),
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -523,7 +568,7 @@ export const useContractListCountByAdmin = (
     createQueryFnWithTimeout(queryFn),
     {
       keepPreviousData: true,
-      enabled: wasm.enabled && !!walletAddress,
+      enabled: wasm.enabled && Boolean(walletAddress),
     }
   );
 };

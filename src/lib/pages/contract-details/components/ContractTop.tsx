@@ -6,8 +6,8 @@ import {
   IconButton,
   Image,
 } from "@chakra-ui/react";
-import router from "next/router";
 
+import type { ContractData } from "../types";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { AdminButton } from "lib/components/button";
@@ -19,21 +19,29 @@ import {
   EditContractDetailsModal,
   SaveContractDetailsModal,
 } from "lib/components/modal";
-import type { ContractAddr, ContractData } from "lib/types";
-import { getFirstQueryParam, truncate } from "lib/utils";
+import type { ContractAddr } from "lib/types";
+import { truncate } from "lib/utils";
 
 interface ContractTopProps {
-  contractData: ContractData;
+  contractAddress: ContractAddr;
+  contractLocalInfo: ContractData["contractLocalInfo"];
+  publicProject: ContractData["publicProject"];
+  contractDetail: ContractData["contractDetail"];
+  rawContractResponse: ContractData["rawContractResponse"];
 }
-export const ContractTop = ({ contractData }: ContractTopProps) => {
+export const ContractTop = ({
+  contractAddress,
+  contractLocalInfo,
+  publicProject,
+  contractDetail,
+  rawContractResponse,
+}: ContractTopProps) => {
   const navigate = useInternalNavigate();
-  const { contractLocalInfo, instantiateInfo, publicProject } = contractData;
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
   const isMobile = useMobile();
   const displayName =
     contractLocalInfo?.name ||
     publicProject.publicInfo?.name ||
-    instantiateInfo?.label;
+    contractDetail?.label;
 
   const publicName = publicProject.publicDetail?.name;
   const goToQuery = () => {
@@ -73,13 +81,13 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
         />
       );
     }
-    if (instantiateInfo) {
+    if (contractDetail) {
       return (
         <SaveContractDetailsModal
           contractLocalInfo={{
             contractAddress: contractAddress as ContractAddr,
-            instantiator: instantiateInfo.instantiator,
-            label: instantiateInfo.label,
+            instantiator: contractDetail.instantiator,
+            label: contractDetail.label,
           }}
           triggerElement={
             <IconButton
@@ -178,7 +186,8 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
               Label:
             </Text>
             <Text variant="body2" className="ellipsis">
-              {contractData.instantiateInfo?.label}
+              {contractDetail?.label ??
+                rawContractResponse?.contract_info.label}
             </Text>
           </Flex>
           {publicProject.publicInfo?.name && (
@@ -206,9 +215,10 @@ export const ContractTop = ({ contractData }: ContractTopProps) => {
           {!isMobile && (
             <AdminButton
               contractAddress={contractAddress as ContractAddr}
-              admin={instantiateInfo?.admin}
+              admin={contractDetail?.admin}
             />
           )}
+
           <Button
             variant="outline-primary"
             w={{ base: "full", md: "auto" }}

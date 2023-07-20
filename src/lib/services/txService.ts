@@ -247,7 +247,7 @@ export const useTxsByPoolIdPagination = (
 
   return useQuery(
     [
-      "transactions_by_pool_id",
+      CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID,
       poolId,
       type,
       offset,
@@ -280,7 +280,12 @@ export const useTxsCountByPoolId = (
   }, [expression, indexerGraphClient]);
 
   return useQuery(
-    ["transactions_count_by_pool_id", poolId, type, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID_COUNT,
+      poolId,
+      type,
+      indexerGraphClient,
+    ],
     createQueryFnWithTimeout(queryFn, 5000),
     {
       enabled: !!poolId,

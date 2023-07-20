@@ -12,6 +12,7 @@ import { CHAIN_CONFIGS } from "config/chain";
 import { CURR_THEME } from "env";
 import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { FaucetBtn } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { WalletSection } from "lib/components/Wallet";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -46,7 +47,7 @@ const Header = () => {
       </AppLink>
       <Searchbar />
       <Flex gap={4}>
-        {/* <FaucetBtn /> */}
+        <FaucetBtn />
         <Menu onOpen={() => AmpTrack(AmpEvent.USE_SELECT_NETWORK)}>
           <MenuButton
             pl={4}

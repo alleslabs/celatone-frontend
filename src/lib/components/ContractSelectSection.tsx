@@ -1,17 +1,11 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useMobile,
-} from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
-import { queryInstantiateInfo } from "lib/services/contract";
+import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
@@ -139,9 +133,7 @@ const ContractDetailsButton = ({
 export const ContractSelectSection = observer(
   ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
-    const { indexerGraphClient } = useCelatoneApp();
     const isMobile = useMobile();
-    const lcdEndpoint = useBaseApiRoute("rest");
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
@@ -157,28 +149,17 @@ export const ContractSelectSection = observer(
       mode: "all",
     });
 
-    const { refetch } = useQuery(
-      [
-        CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_INFO,
-        lcdEndpoint,
-        indexerGraphClient,
-        contractAddress,
-      ],
-      async () =>
-        queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
-      {
-        enabled: false,
-        retry: false,
-        onSuccess(data) {
-          reset({
-            isValid: true,
-            instantiator: data.instantiator,
-            label: data.label,
-          });
-        },
-        onError() {
-          reset(defaultValues);
-        },
+    const { refetch } = useContractDetailByContractAddress(
+      contractAddress,
+      (data) => {
+        reset({
+          isValid: true,
+          instantiator: data.instantiator,
+          label: data.label,
+        });
+      },
+      () => {
+        reset(defaultValues);
       }
     );
 
@@ -192,7 +173,7 @@ export const ContractSelectSection = observer(
           label: contractLocalInfo.label,
         });
       }
-    }, [contractAddress, contractLocalInfo, lcdEndpoint, reset, refetch]);
+    }, [contractAddress, contractLocalInfo, reset, refetch]);
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;

@@ -160,5 +160,8 @@ export const useAverageBlockTime = (): UseQueryResult<BlockTimeInfo> => {
     [indexerGraphClient]
   );
 
-  return useQuery(["average_block_time", indexerGraphClient], queryFn);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.AVERAGE_BLOCK_TIME, indexerGraphClient],
+    queryFn
+  );
 };

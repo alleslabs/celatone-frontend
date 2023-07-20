@@ -15,12 +15,9 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
-import {
-  useContractData,
-  useContractDetailsTableCounts,
-} from "lib/model/contract";
+import { useContractDetailsTableCounts } from "lib/model/contract";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { ContractAddr, ContractData } from "lib/types";
+import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
 
 import { CommandSection } from "./components/CommandSection";
@@ -34,16 +31,18 @@ import {
   MigrationTable,
 } from "./components/tables";
 import { TokenSection } from "./components/TokenSection";
+import { useContractData } from "./data";
+import type { ContractData } from "./types";
 
 interface ContractDetailsBodyProps {
-  contractData: ContractData;
   contractAddress: ContractAddr;
+  contractData: ContractData;
 }
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
 const ContractDetailsBody = observer(
-  ({ contractData, contractAddress }: ContractDetailsBodyProps) => {
+  ({ contractAddress, contractData }: ContractDetailsBodyProps) => {
     const tableHeaderId = "contractDetailsTableHeader";
     const {
       tableCounts,
@@ -52,19 +51,19 @@ const ContractDetailsBody = observer(
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress);
     const isMobile = useMobile();
-    if (!contractData.instantiateInfo) return <InvalidContract />;
+    if (!contractData.contractDetail) return <InvalidContract />;
 
     return (
       <>
-        <ContractTop contractData={contractData} />
+        <ContractTop contractAddress={contractAddress} {...contractData} />
         {/* Tokens Section */}
         <Flex direction="column" mt={{ base: 8, md: 4 }}>
-          <TokenSection balances={contractData.balances} />
+          <TokenSection contractAddress={contractAddress} {...contractData} />
         </Flex>
         {/* Contract Description Section */}
-        <ContractDesc contractData={contractData} />
+        <ContractDesc {...contractData} />
         {/* Query/Execute commands section */}
-        <CommandSection />
+        <CommandSection contractAddress={contractAddress} />
         {/* Instantiate/Contract Info Section */}
         <Flex
           my={12}
@@ -77,20 +76,29 @@ const ContractDetailsBody = observer(
               Instantiate Info
             </Heading>
           )}
-          <InstantiateInfo contractData={contractData} />
+          <InstantiateInfo
+            isLoading={
+              contractData.isContractDetailLoading ||
+              contractData.isContractCw2InfoLoading ||
+              contractData.isInstantiateDetailLoading
+            }
+            {...contractData}
+          />
           {/* Contract Info (Expand) */}
           <Flex direction="column" flex={0.8} gap={4} mt={{ base: 12, md: 0 }}>
             <JsonInfo
               header="Contract Info"
               jsonString={jsonPrettify(
                 JSON.stringify(
-                  contractData.instantiateInfo?.raw.contract_info ?? {}
+                  contractData.rawContractResponse?.contract_info ?? {}
                 )
               )}
+              isLoading={contractData.isRawContractResponseLoading}
             />
             <JsonInfo
               header="Instantiate Message"
               jsonString={jsonPrettify(contractData.initMsg ?? "")}
+              isLoading={contractData.isInstantiateDetailLoading}
               defaultExpand
             />
           </Flex>
@@ -155,20 +163,21 @@ const ContractDetails = observer(() => {
   const contractAddressParam = getFirstQueryParam(
     router.query.contractAddress
   ) as ContractAddr;
-  const { isLoading, contractData } = useContractData(contractAddressParam);
+  const contractData = useContractData(contractAddressParam);
+
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_CONTRACT_DETAIL);
   }, [router.isReady]);
 
-  if (isLoading) return <Loading />;
+  if (contractData.isContractDetailLoading) return <Loading withBorder />;
   return (
     <PageContainer>
       {validateContractAddress(contractAddressParam) ? (
         <InvalidContract />
       ) : (
         <ContractDetailsBody
-          contractData={contractData}
           contractAddress={contractAddressParam}
+          contractData={contractData}
         />
       )}
     </PageContainer>
