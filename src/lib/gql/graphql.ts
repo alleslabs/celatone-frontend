@@ -12064,6 +12064,44 @@ export type GetCodeListCountByWalletAddressQuery = {
   };
 };
 
+export type GetContractByContractAddressQueryDocumentQueryVariables = Exact<{
+  contractAddress: Scalars["String"];
+}>;
+
+export type GetContractByContractAddressQueryDocumentQuery = {
+  __typename?: "query_root";
+  contracts_by_pk?: {
+    __typename?: "contracts";
+    address: string;
+    code_id: number;
+    label: string;
+    accountByInitBy?: { __typename?: "accounts"; address: string } | null;
+    admin?: { __typename?: "accounts"; address: string } | null;
+  } | null;
+};
+
+export type GetInstantiateDetailByContractQueryDocumentQueryVariables = Exact<{
+  contractAddress: Scalars["String"];
+}>;
+
+export type GetInstantiateDetailByContractQueryDocumentQuery = {
+  __typename?: "query_root";
+  contracts_by_pk?: {
+    __typename?: "contracts";
+    init_msg?: string | null;
+    transaction?: {
+      __typename?: "transactions";
+      hash: any;
+      block_height: number;
+      block: { __typename?: "blocks"; timestamp: any };
+    } | null;
+    contract_proposals: Array<{
+      __typename?: "contract_proposals";
+      proposal: { __typename?: "proposals"; id: number; title: string };
+    }>;
+  } | null;
+};
+
 export type GetContractListQueryQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -12110,28 +12148,6 @@ export type GetInstantiatedCountByUserQueryDocumentQuery = {
       count: number;
     } | null;
   };
-};
-
-export type GetInstantiateDetailByContractQueryDocumentQueryVariables = Exact<{
-  contractAddress: Scalars["String"];
-}>;
-
-export type GetInstantiateDetailByContractQueryDocumentQuery = {
-  __typename?: "query_root";
-  contracts_by_pk?: {
-    __typename?: "contracts";
-    init_msg?: string | null;
-    transaction?: {
-      __typename?: "transactions";
-      hash: any;
-      block_height: number;
-      block: { __typename?: "blocks"; timestamp: any };
-    } | null;
-    contract_proposals: Array<{
-      __typename?: "contract_proposals";
-      proposal: { __typename?: "proposals"; id: number; title: string };
-    }>;
-  } | null;
 };
 
 export type GetAdminByContractAddressesQueryDocumentQueryVariables = Exact<{
@@ -13984,6 +14000,283 @@ export const GetCodeListCountByWalletAddressDocument = {
   GetCodeListCountByWalletAddressQuery,
   GetCodeListCountByWalletAddressQueryVariables
 >;
+export const GetContractByContractAddressQueryDocumentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: {
+        kind: "Name",
+        value: "getContractByContractAddressQueryDocument",
+      },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "contractAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "contractAddress" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "code_id" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "accountByInitBy" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "admin" },
+                  name: { kind: "Name", value: "account" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetContractByContractAddressQueryDocumentQuery,
+  GetContractByContractAddressQueryDocumentQueryVariables
+>;
+export const GetInstantiateDetailByContractQueryDocumentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: {
+        kind: "Name",
+        value: "getInstantiateDetailByContractQueryDocument",
+      },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "contractAddress" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "contracts_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "contractAddress" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "init_msg" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "hash" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block_height" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "block" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "timestamp" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "contract_proposals" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "proposal" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "type" },
+                                  value: {
+                                    kind: "ObjectValue",
+                                    fields: [
+                                      {
+                                        kind: "ObjectField",
+                                        name: { kind: "Name", value: "_in" },
+                                        value: {
+                                          kind: "ListValue",
+                                          values: [
+                                            {
+                                              kind: "StringValue",
+                                              value: "InstantiateContract",
+                                              block: false,
+                                            },
+                                            {
+                                              kind: "StringValue",
+                                              value: "InstantiateContract2",
+                                              block: false,
+                                            },
+                                            {
+                                              kind: "StringValue",
+                                              value: "SoftwareUpgrade",
+                                              block: false,
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "proposal" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "id" },
+                                  value: { kind: "EnumValue", value: "asc" },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "proposal" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetInstantiateDetailByContractQueryDocumentQuery,
+  GetInstantiateDetailByContractQueryDocumentQueryVariables
+>;
 export const GetContractListQueryDocument = {
   kind: "Document",
   definitions: [
@@ -14345,197 +14638,6 @@ export const GetInstantiatedCountByUserQueryDocumentDocument = {
 } as unknown as DocumentNode<
   GetInstantiatedCountByUserQueryDocumentQuery,
   GetInstantiatedCountByUserQueryDocumentQueryVariables
->;
-export const GetInstantiateDetailByContractQueryDocumentDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: {
-        kind: "Name",
-        value: "getInstantiateDetailByContractQueryDocument",
-      },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "contractAddress" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "contracts_by_pk" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "address" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "contractAddress" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "init_msg" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "transaction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "hash" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block_height" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "block" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "timestamp" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "contract_proposals" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "proposal" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "type" },
-                                  value: {
-                                    kind: "ObjectValue",
-                                    fields: [
-                                      {
-                                        kind: "ObjectField",
-                                        name: { kind: "Name", value: "_in" },
-                                        value: {
-                                          kind: "ListValue",
-                                          values: [
-                                            {
-                                              kind: "StringValue",
-                                              value: "InstantiateContract",
-                                              block: false,
-                                            },
-                                            {
-                                              kind: "StringValue",
-                                              value: "InstantiateContract2",
-                                              block: false,
-                                            },
-                                            {
-                                              kind: "StringValue",
-                                              value: "SoftwareUpgrade",
-                                              block: false,
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "proposal" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "id" },
-                                  value: { kind: "EnumValue", value: "asc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "limit" },
-                      value: { kind: "IntValue", value: "1" },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "proposal" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "title" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetInstantiateDetailByContractQueryDocumentQuery,
-  GetInstantiateDetailByContractQueryDocumentQueryVariables
 >;
 export const GetAdminByContractAddressesQueryDocumentDocument = {
   kind: "Document",

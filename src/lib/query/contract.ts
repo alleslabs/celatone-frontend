@@ -1,5 +1,56 @@
 import { graphql } from "lib/gql";
 
+export const getContractByContractAddressQueryDocument = graphql(`
+  query getContractByContractAddressQueryDocument($contractAddress: String!) {
+    contracts_by_pk(address: $contractAddress) {
+      address
+      code_id
+      label
+      accountByInitBy {
+        address
+      }
+      admin: account {
+        address
+      }
+    }
+  }
+`);
+
+export const getInstantiateDetailByContractQueryDocument = graphql(`
+  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {
+    contracts_by_pk(address: $contractAddress) {
+      init_msg
+      transaction {
+        hash
+        block_height
+        block {
+          timestamp
+        }
+      }
+      contract_proposals(
+        where: {
+          proposal: {
+            type: {
+              _in: [
+                "InstantiateContract"
+                "InstantiateContract2"
+                "SoftwareUpgrade"
+              ]
+            }
+          }
+        }
+        order_by: { proposal: { id: asc } }
+        limit: 1
+      ) {
+        proposal {
+          id
+          title
+        }
+      }
+    }
+  }
+`);
+
 export const getContractListQueryDocument = graphql(`
   query getContractListQuery {
     contracts(limit: 100, offset: 0, order_by: { id: desc }) {
@@ -47,41 +98,6 @@ export const getInstantiatedCountByUserQueryDocument = graphql(`
     ) {
       aggregate {
         count
-      }
-    }
-  }
-`);
-
-export const getInstantiateDetailByContractQueryDocument = graphql(`
-  query getInstantiateDetailByContractQueryDocument($contractAddress: String!) {
-    contracts_by_pk(address: $contractAddress) {
-      init_msg
-      transaction {
-        hash
-        block_height
-        block {
-          timestamp
-        }
-      }
-      contract_proposals(
-        where: {
-          proposal: {
-            type: {
-              _in: [
-                "InstantiateContract"
-                "InstantiateContract2"
-                "SoftwareUpgrade"
-              ]
-            }
-          }
-        }
-        order_by: { proposal: { id: asc } }
-        limit: 1
-      ) {
-        proposal {
-          id
-          title
-        }
       }
     }
   }

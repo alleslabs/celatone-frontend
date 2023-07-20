@@ -1,17 +1,24 @@
 import { Flex } from "@chakra-ui/react";
 
+import type { ContractData } from "../../types";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { PublicDescription } from "lib/components/PublicDescription";
-import type { ContractData } from "lib/types";
 
 import { UserContractDesc } from "./UserContractDesc";
 
 interface ContractDescProps {
-  contractData: ContractData;
+  contractDetail: ContractData["contractDetail"];
+  contractLocalInfo: ContractData["contractLocalInfo"];
+  publicProject: ContractData["publicProject"];
 }
-export const ContractDesc = ({ contractData }: ContractDescProps) => {
+export const ContractDesc = ({
+  contractDetail,
+  contractLocalInfo,
+  publicProject,
+}: ContractDescProps) => {
   const isMobile = useMobile();
+
   return (
     <Flex
       gap={{ base: 4, md: 6 }}
@@ -19,15 +26,21 @@ export const ContractDesc = ({ contractData }: ContractDescProps) => {
       mt={{ base: 4, md: 0 }}
       mb={4}
     >
-      {contractData.publicProject.publicInfo?.description && (
+      {publicProject.publicInfo?.description && (
         <PublicDescription
           title="Public Contract Description"
-          description={contractData.publicProject.publicInfo.description}
-          textLine={contractData.contractLocalInfo?.description ? 4 : 2}
+          description={publicProject.publicInfo.description}
+          textLine={contractLocalInfo?.description ? 4 : 2}
           icon={<CustomIcon name="public-project" color="gray.600" />}
         />
       )}
-      {!isMobile && <UserContractDesc contractData={contractData} />}
+      {!isMobile && (
+        <UserContractDesc
+          contractDetail={contractDetail}
+          contractLocalInfo={contractLocalInfo}
+          publicProject={publicProject}
+        />
+      )}
     </Flex>
   );
 };
