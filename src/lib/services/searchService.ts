@@ -7,7 +7,7 @@ import {
   useGetAddressType,
 } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
-import { isBlock, isCodeId, isTxHash } from "lib/utils";
+import { isCodeId, isTxHash } from "lib/utils";
 
 import { useBlockDetailsQuery } from "./blockService";
 import { useCodeDataByCodeId } from "./codeService";
@@ -25,43 +25,6 @@ export type SearchResultType =
   | "Proposal ID"
   | "Block"
   | "Pool ID";
-
-const loadingStateResolver = ({
-  debouncedKeyword,
-  isWasm,
-  isPool,
-  txLoading,
-  codeLoading,
-  contractLoading,
-  blockLoading,
-  poolFetching,
-  icnsAddressLoading,
-}: {
-  debouncedKeyword: string;
-  isWasm: boolean;
-  isPool: boolean;
-  txLoading: boolean;
-  codeLoading: boolean;
-  contractLoading: boolean;
-  blockLoading: boolean;
-  poolFetching: boolean;
-  icnsAddressLoading: boolean;
-}) => {
-  const txDataLoading = isTxHash(debouncedKeyword) && txLoading;
-  const codeDataLoading = isWasm && isCodeId(debouncedKeyword) && codeLoading;
-  const contractDataLoading = isWasm && contractLoading;
-  const blockDataLoading = isBlock(debouncedKeyword) && blockLoading;
-  const poolLoading = isPool && poolFetching;
-
-  return (
-    txDataLoading ||
-    codeDataLoading ||
-    contractDataLoading ||
-    blockDataLoading ||
-    icnsAddressLoading ||
-    poolLoading
-  );
-};
 
 export interface ResultMetadata {
   icns: { icnsNames: Option<ICNSNamesResponse>; address: Option<Addr> };
@@ -89,12 +52,15 @@ export const useSearchHandler = (
   const lcdEndpoint = useBaseApiRoute("rest");
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(debouncedKeyword);
-  const { data: txData, isLoading: txLoading } = useTxData(debouncedKeyword);
-  const { data: codeData, isLoading: codeLoading } = useCodeDataByCodeId(
+  const { data: txData, isFetching: txFetching } = useTxData(
     debouncedKeyword,
-    isWasm
+    isTxHash(debouncedKeyword)
   );
-  const { data: contractData, isLoading: contractLoading } = useQuery(
+  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId(
+    debouncedKeyword,
+    isWasm && isCodeId(debouncedKeyword)
+  );
+  const { data: contractData, isFetching: contractFetching } = useQuery(
     ["query", "contract", lcdEndpoint, debouncedKeyword],
     async () => queryContract(lcdEndpoint, debouncedKeyword as ContractAddr),
     {
@@ -103,7 +69,7 @@ export const useSearchHandler = (
       retry: false,
     }
   );
-  const { data: blockData, isLoading: blockLoading } =
+  const { data: blockData, isFetching: blockFetching } =
     useBlockDetailsQuery(debouncedKeyword);
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
     Number(debouncedKeyword),
@@ -111,7 +77,7 @@ export const useSearchHandler = (
       Number.isInteger(Number(debouncedKeyword)) &&
       Number(debouncedKeyword) > 0
   );
-  const { data: icnsAddressData, isLoading: icnsAddressLoading } =
+  const { data: icnsAddressData, isFetching: icnsAddressFetching } =
     useAddressByICNSName(debouncedKeyword);
 
   const isAddr =
@@ -150,17 +116,13 @@ export const useSearchHandler = (
       blockData && "Block",
       poolData && "Pool ID",
     ].filter((res) => Boolean(res)) as SearchResultType[],
-    isLoading: loadingStateResolver({
-      debouncedKeyword,
-      isWasm,
-      isPool,
-      txLoading,
-      codeLoading,
-      contractLoading,
-      blockLoading,
+    isLoading:
+      txFetching ||
+      codeFetching ||
+      contractFetching ||
+      blockFetching ||
+      icnsAddressFetching ||
       poolFetching,
-      icnsAddressLoading,
-    }),
     metadata: {
       icns: {
         icnsNames,
