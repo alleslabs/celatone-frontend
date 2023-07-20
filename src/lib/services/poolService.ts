@@ -207,7 +207,7 @@ export const usePoolAssetsbyPoolIds = (
   }, [poolIds, indexerGraphClient]);
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.POOL_INFO_BY_ID_LIST, poolIds, indexerGraphClient],
+    [CELATONE_QUERY_KEYS.POOL_INFO_BY_IDS, poolIds, indexerGraphClient],
     queryFn,
     {
       enabled,
