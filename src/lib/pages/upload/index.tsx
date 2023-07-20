@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import type { UploadTxInternalResult } from "lib/app-provider";
 import { useWasmConfig } from "lib/app-provider";
+import { scrollToTop } from "lib/utils";
 
 import { UploadComplete } from "./completed";
 import { Upload } from "./upload";
@@ -24,6 +25,7 @@ const UploadIndex = () => {
       onComplete={(txResult: UploadTxInternalResult) => {
         setTxInfo(txResult);
         setCompleted(true);
+        scrollToTop();
       }}
     />
   );
