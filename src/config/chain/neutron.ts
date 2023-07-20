@@ -1,5 +1,3 @@
-import type { ContractAddr, HumanAddr, ValidatorAddr } from "lib/types";
-
 import type { ChainConfigs } from "./types";
 
 export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
@@ -35,18 +33,10 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    exampleAddresses: {
-      user: "neutron19glux3jzdfyyz6ylmuksgxfj5phdaxfr2uhy86" as HumanAddr,
-      contract:
-        "neutron1suhgf5svhu4usrurvxzlgn54ksxmn8gljarjtxqnapv8kjnp4nrstdxvff" as ContractAddr,
-      validator:
-        "neutronvaloper1c4k24jzduc365kywrsvf5ujz4ya6mwym69umfr" as ValidatorAddr,
-    },
     explorerLink: {
       validator: "https://www.mintscan.io/neutron/validators",
       proposal: "",
     },
-    hasSubHeader: false,
   },
   "pion-1": {
     chain: "neutron",
@@ -80,17 +70,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
-    exampleAddresses: {
-      user: "neutron19glux3jzdfyyz6ylmuksgxfj5phdaxfr2uhy86" as HumanAddr,
-      contract:
-        "neutron1suhgf5svhu4usrurvxzlgn54ksxmn8gljarjtxqnapv8kjnp4nrstdxvff" as ContractAddr,
-      validator:
-        "neutronvaloper1c4k24jzduc365kywrsvf5ujz4ya6mwym69umfr" as ValidatorAddr,
-    },
     explorerLink: {
       validator: "https://www.mintscan.io/neutron/validators",
       proposal: "",
     },
-    hasSubHeader: false,
   },
 };

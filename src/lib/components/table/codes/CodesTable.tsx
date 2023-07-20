@@ -20,7 +20,7 @@ export const CodesTable = ({
   onRowSelect,
   isReadOnly = false,
 }: CodesTableProps) => {
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!codes?.length) return emptyState;
 
   const templateColumns = isReadOnly

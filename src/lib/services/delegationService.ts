@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useBaseApiRoute } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import type { Addr, ValidatorAddr } from "lib/types";
 
 import type {
@@ -30,7 +30,7 @@ export const useStakingParams = (): UseQueryResult<RawStakingParams> => {
     [lcdEndpoint]
   );
 
-  return useQuery(["query", "staking_params", lcdEndpoint], queryFn, {
+  return useQuery([CELATONE_QUERY_KEYS.STAKING_PARAMS, lcdEndpoint], queryFn, {
     refetchOnWindowFocus: false,
   });
 };
@@ -45,9 +45,13 @@ export const useDelegations = (
     [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "delegations", lcdEndpoint, address], queryFn, {
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS, lcdEndpoint, address],
+    queryFn,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useUnbondings = (
@@ -60,9 +64,13 @@ export const useUnbondings = (
     [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "unbondings", lcdEndpoint, address], queryFn, {
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.UNBONDINGS_BY_ADDRESS, lcdEndpoint, address],
+    queryFn,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useDelegationRewards = (
@@ -76,7 +84,7 @@ export const useDelegationRewards = (
   );
 
   return useQuery(
-    ["query", "delegation_rewards", lcdEndpoint, address],
+    [CELATONE_QUERY_KEYS.DELEGATION_REWARDS_BY_ADDRESS, lcdEndpoint, address],
     queryFn,
     {
       refetchOnWindowFocus: false,
@@ -94,9 +102,13 @@ export const useRedelegations = (
     [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "redelegations", lcdEndpoint, address], queryFn, {
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.REDELEGATIONS_BY_ADDRESS, lcdEndpoint, address],
+    queryFn,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useCommission = (
@@ -109,7 +121,11 @@ export const useCommission = (
     [address, lcdEndpoint]
   );
 
-  return useQuery(["query", "commission", lcdEndpoint, address], queryFn, {
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.COMMISSION_BY_VAL_ADDRESS, lcdEndpoint, address],
+    queryFn,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 };

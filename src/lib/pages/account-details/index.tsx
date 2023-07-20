@@ -1,4 +1,11 @@
-import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import {
+  Flex,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
@@ -7,21 +14,24 @@ import {
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { InvalidState } from "lib/components/state";
 import { useAccountDetailsTableCounts } from "lib/model/account";
 import { useAccountId } from "lib/services/accountService";
 import { AmpEvent, AmpTrack, AmpTrackUseTab } from "lib/services/amplitude";
+import { useICNSNamesByAddress } from "lib/services/nameService";
 import {
   usePublicProjectByAccountAddress,
   usePublicProjectBySlug,
 } from "lib/services/publicProjectService";
 import type { HumanAddr } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import { getFirstQueryParam, truncate } from "lib/utils";
 
-import { AccountTop } from "./components/AccountTop";
+import { AccountHeader } from "./components/AccountHeader";
 import { AssetsSection } from "./components/asset";
 import { DelegationsSection } from "./components/delegations";
 import {
@@ -60,6 +70,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   const { data: publicInfo } = usePublicProjectByAccountAddress(accountAddress);
   const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
   const { data: accountId } = useAccountId(accountAddress);
+  const { data: icnsName } = useICNSNamesByAddress(accountAddress);
 
   const publicDetail = publicInfoBySlug?.details;
   const {
@@ -89,8 +100,6 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
     [accountAddress, tab, navigate]
   );
 
-  const displayName = publicInfo?.name ?? "Account Details";
-
   useEffect(() => {
     if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
       navigate({
@@ -108,13 +117,55 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
 
   return (
     <>
-      <AccountTop
-        accountAddress={accountAddress}
-        publicDetail={publicDetail}
-        displayName={displayName}
-        publicInfo={publicInfo}
-      />
-      <Tabs index={Object.values(TabIndex).indexOf(tab)}>
+      <Flex direction="column" mb={6}>
+        {publicDetail && (
+          <Breadcrumb
+            items={[
+              { text: "Public Projects", href: "/projects" },
+              {
+                text: publicDetail?.name,
+                href: `/projects/${publicInfo?.slug}`,
+              },
+              { text: truncate(accountAddress) },
+            ]}
+            mb={6}
+          />
+        )}
+        <AccountHeader
+          publicName={publicInfo?.name}
+          publicDetail={publicDetail}
+          icnsName={icnsName}
+          accountAddress={accountAddress}
+        />
+      </Flex>
+      {publicInfo?.description && (
+        <Flex
+          direction="column"
+          bg="gray.900"
+          maxW="100%"
+          borderRadius="8px"
+          py={4}
+          px={4}
+          my={6}
+          flex="1"
+        >
+          <Flex alignItems="center" gap={1} minH="32px">
+            <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
+            <Text variant="body2" fontWeight={500} color="text.dark">
+              Public Account Description
+            </Text>
+          </Flex>
+          <Text variant="body2" color="text.main" mb={1}>
+            {publicInfo?.description}
+          </Text>
+        </Flex>
+      )}
+
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
         <TabList
           borderBottom="1px solid"
           borderColor="gray.700"
@@ -176,10 +227,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <TotalAccountValue accountAddress={accountAddress} />
-            <Flex
-              borderBottom={{ base: "0px", md: "1px solid" }}
-              borderBottomColor={{ base: "transparent", md: "gray.700" }}
-            >
+            <Flex borderBottom="1px solid" borderBottomColor="gray.700">
               <AssetsSection
                 walletAddress={accountAddress}
                 onViewMore={handleTabChange(TabIndex.Assets)}

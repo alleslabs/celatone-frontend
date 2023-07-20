@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 
-import { useBaseApiRoute } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 
@@ -11,7 +11,12 @@ export const useQueryCmds = (contractAddress: ContractAddr) => {
   const lcdEndpoint = useBaseApiRoute("rest");
 
   const { isFetching } = useQuery(
-    ["query", "cmds", lcdEndpoint, contractAddress, '{"": {}}'],
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_QUERY_CMDS,
+      lcdEndpoint,
+      contractAddress,
+      '{"": {}}',
+    ],
     async () =>
       queryData(lcdEndpoint, contractAddress as ContractAddr, '{"": {}}'),
     {

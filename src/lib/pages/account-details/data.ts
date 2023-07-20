@@ -168,7 +168,7 @@ export const useUserAssetInfos = (
     isLoading,
     error,
   } = useAccountBalances(walletAddress);
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: true });
 
   const contractBalancesWithAssetInfos = balances?.map<BalanceWithAssetInfo>(
     (balance): BalanceWithAssetInfo => ({
@@ -222,7 +222,9 @@ const calBonded = (
 export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
   const { data: rawStakingParams, isLoading: isLoadingRawStakingParams } =
     useStakingParams();
-  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
+  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
+    withPrices: true,
+  });
   const { data: validators, isLoading: isLoadingValidators } = useValidators();
 
   const { data: rawDelegations, isLoading: isLoadingRawDelegations } =
@@ -276,6 +278,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       validator: {
         validatorAddress: raw.validatorAddress,
         moniker: validators[raw.validatorAddress]?.moniker,
+        identity: raw.identity,
       },
       token: coinToTokenWithValue(raw.denom, raw.amount, assetInfos[raw.denom]),
     }));
@@ -296,6 +299,7 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       validator: {
         validatorAddress: raw.validatorAddress,
         moniker: validators[raw.validatorAddress]?.moniker,
+        identity: raw.identity,
       },
       completionTime: raw.completionTime,
       token: coinToTokenWithValue(
@@ -344,10 +348,12 @@ export const useUserDelegationInfos = (walletAddress: HumanAddr) => {
       srcValidator: {
         validatorAddress: raw.srcValidatorAddress,
         moniker: validators[raw.srcValidatorAddress]?.moniker,
+        identity: raw.srcIdentity,
       },
       dstValidator: {
         validatorAddress: raw.dstValidatorAddress,
         moniker: validators[raw.dstValidatorAddress]?.moniker,
+        identity: raw.dstIdentity,
       },
       completionTime: raw.completionTime,
       token: coinToTokenWithValue(

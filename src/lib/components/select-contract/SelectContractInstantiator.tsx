@@ -19,8 +19,9 @@ import { useState } from "react";
 
 import { CustomIcon } from "../icon";
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCelatoneApp,
+  useExampleAddresses,
   useMobile,
   useValidateAddress,
 } from "lib/app-provider";
@@ -43,11 +44,7 @@ export const SelectContractInstantiator = ({
   notSelected,
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
-  const {
-    chainConfig: {
-      exampleAddresses: { contract: exampleContractAddress },
-    },
-  } = useCelatoneApp();
+  const { contract: exampleContractAddress } = useExampleAddresses();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();
@@ -81,7 +78,7 @@ export const SelectContractInstantiator = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", lcdEndpoint, searchContract],
+    [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, searchContract],
     async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
     {
       enabled: false,

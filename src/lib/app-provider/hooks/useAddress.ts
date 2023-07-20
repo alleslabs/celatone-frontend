@@ -1,10 +1,10 @@
 import { fromBech32 } from "@cosmjs/encoding";
 import { useCallback, useMemo } from "react";
 
-import { useCelatoneApp } from "../contexts";
 import type { Option } from "lib/types";
 
 import { useCurrentChain } from "./useCurrentChain";
+import { useExampleAddresses } from "./useExampleAddresses";
 
 export type AddressReturnType =
   | "user_address"
@@ -13,9 +13,8 @@ export type AddressReturnType =
   | "invalid_address";
 
 export const useGetAddressTypeByLength = () => {
-  const {
-    chainConfig: { exampleAddresses },
-  } = useCelatoneApp();
+  const exampleAddresses = useExampleAddresses();
+
   const addressLengthMap = useMemo(
     () =>
       Object.entries(exampleAddresses).reduce<{

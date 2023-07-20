@@ -24,7 +24,9 @@ const TxDetails = () => {
     isLoading: txLoading,
     isFetching: txFetching,
   } = useTxData(hashParam);
-  const { assetInfos, isLoading: assetLoading } = useAssetInfos();
+  const { assetInfos, isLoading: assetLoading } = useAssetInfos({
+    withPrices: true,
+  });
 
   useEffect(() => {
     if (router.isReady && !(txLoading && txFetching)) {
@@ -41,7 +43,7 @@ const TxDetails = () => {
   }, [router.isReady, txData, txLoading, txFetching]);
 
   if ((txLoading && txFetching) || assetLoading || !hashParam)
-    return <Loading />;
+    return <Loading withBorder />;
 
   return (
     <PageContainer>

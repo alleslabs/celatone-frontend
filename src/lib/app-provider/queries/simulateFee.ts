@@ -3,6 +3,7 @@ import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { useQuery } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
+import { CELATONE_QUERY_KEYS } from "../env";
 import { useCurrentChain, useDummyWallet, useRPCEndpoint } from "../hooks";
 import type {
   AccessType,
@@ -57,7 +58,7 @@ export const useSimulateFeeQuery = ({
 
   return useQuery({
     queryKey: [
-      "simulate",
+      CELATONE_QUERY_KEYS.SIMULATE_FEE,
       chain.chain_name,
       userAddress,
       messages,
@@ -111,7 +112,7 @@ export const useSimulateFeeForStoreCode = ({
   };
   return useQuery({
     queryKey: [
-      "simulate_fee_store_code",
+      CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE,
       chain.chain_name,
       wasmFile,
       permission,
@@ -194,7 +195,7 @@ export const useSimulateFeeForProposalStoreCode = ({
 
   return useQuery({
     queryKey: [
-      "simulate_fee_store_code_proposal",
+      CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE_PROPOSAL,
       chain.chain_name,
       runAs,
       initialDeposit,

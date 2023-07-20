@@ -1,12 +1,9 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import {
-  useBaseApiRoute,
-  useCelatoneApp,
   useCurrentChain,
   useInternalNavigate,
   useWasmConfig,
@@ -17,7 +14,7 @@ import { Loading } from "lib/components/Loading";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { AmpTrackToMigrate } from "lib/services/amplitude";
-import { queryInstantiateInfo } from "lib/services/contract";
+import { useContractDetailByContractAddress } from "lib/services/contractService";
 import { useUploadAccessParams } from "lib/services/proposalService";
 import type { ContractAddr } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
@@ -36,10 +33,8 @@ const defaultValues: MigratePageState = {
 
 const Migrate = () => {
   useWasmConfig({ shouldRedirect: true });
-  const { indexerGraphClient } = useCelatoneApp();
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const lcdEndpoint = useBaseApiRoute("rest");
   const { data: uploadAccess, isFetching } = useUploadAccessParams();
 
   const { address = "" } = useCurrentChain();
@@ -73,25 +68,19 @@ const Migrate = () => {
     [codeIdParam, firstStep, navigate]
   );
 
-  useQuery(
-    ["query", "instantiate_info", lcdEndpoint, contractAddress],
-    async () =>
-      queryInstantiateInfo(lcdEndpoint, indexerGraphClient, contractAddress),
-    {
-      enabled: !!contractAddress,
-      retry: 0,
-      onSuccess(data) {
-        if (data.admin === address) {
-          setValue("admin", data.admin);
-        } else {
-          setValue("admin", defaultValues.admin);
-          setValue("contractAddress", defaultValues.contractAddress);
-        }
-      },
-      onError() {
+  useContractDetailByContractAddress(
+    contractAddress,
+    (data) => {
+      if (data.admin === address) {
+        setValue("admin", data.admin);
+      } else {
         setValue("admin", defaultValues.admin);
         setValue("contractAddress", defaultValues.contractAddress);
-      },
+      }
+    },
+    () => {
+      setValue("admin", defaultValues.admin);
+      setValue("contractAddress", defaultValues.contractAddress);
     }
   );
 

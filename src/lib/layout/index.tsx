@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
-import { useCelatoneApp, useMobile, useWasmConfig } from "lib/app-provider";
-import { useLocalStorage } from "lib/hooks/useLocalStorage";
+import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
@@ -18,43 +17,12 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
-  const {
-    chainConfig: { hasSubHeader },
-  } = useCelatoneApp();
   const router = useRouter();
   const isMobile = useMobile();
-  const wasm = useWasmConfig({ shouldRedirect: false });
+  const { isExpand, isDevMode, setIsExpand, setIsDevMode } = useCelatoneApp();
 
-  const [isExpand, setIsExpand] = useLocalStorage("navbar", !isMobile);
   const defaultRow = "70px 48px 1fr";
   const mode = useMemo(() => {
-    if (hasSubHeader) {
-      if (isMobile)
-        return {
-          templateAreas: `"header""main"`,
-          templateRows: "60px 1fr",
-          templateCols: "1fr",
-          header: <MobileHeader />,
-          subHeader: undefined,
-        };
-
-      if (wasm.enabled)
-        return {
-          templateAreas: `"header header""subheader subheader""nav main"`,
-          templateRows: defaultRow,
-          templateCols: isExpand ? "224px 1fr" : "48px 1fr",
-          header: <Header />,
-          subHeader: <SubHeader />,
-        };
-
-      return {
-        templateAreas: `"header""nav""main"`,
-        templateRows: defaultRow,
-        templateCols: "1fr",
-        navBar: <SubHeader />,
-      };
-    }
-
     if (isMobile)
       return {
         templateAreas: `"header""main"`,
@@ -64,22 +32,21 @@ const Layout = ({ children }: LayoutProps) => {
         subHeader: undefined,
       };
 
-    if (wasm.enabled)
-      return {
-        templateAreas: `"header header""nav main"`,
-        templateRows: "70px 1fr",
-        templateCols: isExpand ? "224px 1fr" : "48px 1fr",
-        header: <Header />,
-        subHeader: undefined,
-      };
-
     return {
-      templateAreas: `"header""nav""main"`,
+      templateAreas: `"header header""subheader subheader""nav main"`,
       templateRows: defaultRow,
-      templateCols: "1fr",
-      navBar: <SubHeader />,
+      templateCols: isExpand ? "250px 1fr" : "48px 1fr",
+      header: <Header />,
+      subHeader: (
+        <SubHeader
+          isExpand={isExpand}
+          isDevMode={isDevMode}
+          setIsDevMode={setIsDevMode}
+          setIsExpand={setIsExpand}
+        />
+      ),
     };
-  }, [isMobile, wasm.enabled, isExpand, hasSubHeader]);
+  }, [isMobile, isExpand, isDevMode, setIsDevMode, setIsExpand]);
 
   useEffect(() => {
     scrollToTop();
@@ -114,16 +81,16 @@ const Layout = ({ children }: LayoutProps) => {
             area="nav"
             overflowY="auto"
           >
-            <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
+            <Navbar
+              isExpand={isExpand}
+              setIsExpand={setIsExpand}
+              isDevMode={isDevMode}
+            />
           </GridItem>
         </>
       )}
       <GridItem area="main" overflowX="hidden" id="content">
-        <div
-          style={{ minHeight: `calc(100vh - ${hasSubHeader ? 129 : 66}px)` }}
-        >
-          {children}
-        </div>
+        <div style={{ minHeight: "calc(100vh - 129px)" }}>{children}</div>
         <Footer />
       </GridItem>
     </Grid>
