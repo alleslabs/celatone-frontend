@@ -103,6 +103,7 @@ const AccountDetailsBody = ({ accountAddress }: AccountDetailsBodyProps) => {
   useEffect(() => {
     if (router.isReady && (!tab || !Object.values(TabIndex).includes(tab))) {
       navigate({
+        replace: true,
         pathname: "/accounts/[accountAddress]/[tab]",
         query: {
           accountAddress,
