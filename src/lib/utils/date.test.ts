@@ -10,6 +10,7 @@ import {
   formatUTC,
   dateFromNow,
   formatSeconds,
+  formatDuration,
 } from "./date";
 
 const MOCK_CURRENT_ISO = "2026-06-06T06:00:00.000Z";
@@ -208,12 +209,107 @@ describe("formatSeconds", () => {
     s = "1s";
     expect(formatSeconds(s)).toEqual("1 second");
     s = "0s";
-    expect(formatSeconds(s)).toEqual("0 second");
+    expect(formatSeconds(s)).toEqual("0 seconds");
   });
   test("should correctly return fallback for undefined/NaN/lesser than 0 parameter", () => {
     expect(formatSeconds(undefined)).toEqual("N/A");
     expect(formatSeconds("")).toEqual("N/A");
     expect(formatSeconds("ABCDEs")).toEqual("N/A");
     expect(formatSeconds("-1s")).toEqual("N/A");
+  });
+});
+
+describe("formatDuration", () => {
+  describe("should return N/A", () => {
+    test("empty string", () => {
+      expect(formatDuration("")).toEqual("N/A");
+    });
+    test("space string", () => {
+      expect(formatDuration(" ")).toEqual("N/A");
+    });
+    test("text string", () => {
+      expect(formatDuration("invalid value")).toEqual("N/A");
+    });
+    test("duration doesn't end with h, m, or s", () => {
+      expect(formatDuration("1000p")).toEqual("N/A");
+    });
+    test("duration contains both number and characters", () => {
+      expect(formatDuration("123j123n")).toEqual("N/A");
+    });
+    test("negative number as string", () => {
+      expect(formatDuration("-123")).toEqual("N/A");
+    });
+    test("negative number as number", () => {
+      expect(formatDuration(-123)).toEqual("N/A");
+    });
+    test("duration contains both number and characters", () => {
+      expect(formatDuration("123j123n")).toEqual("N/A");
+    });
+    test("negative number with suffix h", () => {
+      expect(formatDuration("-1h")).toEqual("N/A");
+    });
+    test("duration with capitalize suffix", () => {
+      expect(formatDuration("1H")).toEqual("N/A");
+    });
+    test("duration with valid suffix, but invalid to parse number", () => {
+      expect(formatDuration("1fdfh")).toEqual("N/A");
+    });
+  });
+
+  describe("duration string", () => {
+    test("integer number as string", () => {
+      expect(formatDuration("1000000000")).toEqual("1 second");
+    });
+    test("decimal number as string", () => {
+      expect(formatDuration("123.123")).toEqual("0.000000123123 seconds");
+    });
+    test("zero as string", () => {
+      expect(formatDuration("0")).toEqual("0 seconds");
+    });
+    test("1 hour as string with suffix", () => {
+      expect(formatDuration("1h")).toEqual("1 hour");
+    });
+    test("2 hours as string with suffix", () => {
+      expect(formatDuration("2h")).toEqual("2 hours");
+    });
+    test("1 minute as string with suffix", () => {
+      expect(formatDuration("1m")).toEqual("1 minute");
+    });
+    test("2 minutes as string with suffix", () => {
+      expect(formatDuration("2m")).toEqual("2 minutes");
+    });
+    test("1 second as string with suffix", () => {
+      expect(formatDuration("1s")).toEqual("1 second");
+    });
+    test("2 seconds as string with suffix", () => {
+      expect(formatDuration("2s")).toEqual("2 seconds");
+    });
+    test("1 day as string with suffix", () => {
+      expect(formatDuration("1d")).toEqual("1 day");
+    });
+    test("2 days as string with suffix", () => {
+      expect(formatDuration("2d")).toEqual("2 days");
+    });
+  });
+
+  describe("duration number", () => {
+    test("zero", () => {
+      expect(formatDuration(0)).toEqual("0 seconds");
+    });
+    test("integer number as number", () => {
+      expect(formatDuration(1000000000)).toEqual("1 second");
+    });
+    test("integer number as exponential", () => {
+      expect(formatDuration(1e9)).toEqual("1 second");
+    });
+    test("decimal number as number", () => {
+      expect(formatDuration(123.123)).toEqual("0.000000123123 seconds");
+    });
+    test("decimal number as binary", () => {
+      expect(formatDuration(0b1)).toEqual("0.000000001 seconds");
+    });
+    test("decimal number as hex", () => {
+      expect(formatDuration(0x14)).toEqual("0.00000002 seconds");
+    });
   });
 });

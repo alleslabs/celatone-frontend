@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCurrentChain,
   useCelatoneApp,
@@ -24,7 +25,11 @@ export const useValidator = (
     getValidator(queryKey[2], queryKey[3] as ValidatorAddr);
 
   return useQuery(
-    ["query", "validator", lcdEndpoint, validatorAddr] as string[],
+    [
+      CELATONE_QUERY_KEYS.VALIDATOR_INFO_BY_ADDRESS,
+      lcdEndpoint,
+      validatorAddr,
+    ] as string[],
     queryFn,
     {
       enabled: enabled && Boolean(validatorAddr),
@@ -55,9 +60,13 @@ export const useValidators = (): UseQueryResult<
     );
   }, [indexerGraphClient]);
 
-  return useQuery(["query", "validators", indexerGraphClient], queryFn, {
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.VALIDATORS, indexerGraphClient],
+    queryFn,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useValidatorImage = (
@@ -69,8 +78,7 @@ export const useValidatorImage = (
 
   return useQuery({
     queryKey: [
-      "query",
-      "validator_identity",
+      CELATONE_QUERY_KEYS.VALIDATOR_IDENTITY_BY_ADDRESS,
       chainName,
       validator?.validatorAddress,
     ],

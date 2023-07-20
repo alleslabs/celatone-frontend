@@ -4,7 +4,7 @@ interface LoadingProps {
   withBorder?: boolean;
 }
 
-export const Loading = ({ withBorder = true }: LoadingProps) => (
+export const Loading = ({ withBorder = false }: LoadingProps) => (
   <Flex
     borderY={withBorder ? "1px solid" : undefined}
     borderColor="gray.700"

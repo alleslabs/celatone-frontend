@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#322](https://github.com/alleslabs/celatone-frontend/pull/322) Tab url path for account details and public project details pages
+- [#449](https://github.com/alleslabs/celatone-frontend/pull/449) Support searching with pool id
 - [#419](https://github.com/alleslabs/celatone-frontend/pull/419) Add error message box for tx failed modal and enhance styling
 - [#415](https://github.com/alleslabs/celatone-frontend/pull/415) Search by icns names feature and Show registered icns names on account details page
 - [#438](https://github.com/alleslabs/celatone-frontend/pull/438) Add new home page
@@ -48,6 +50,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#381](https://github.com/alleslabs/celatone-frontend/pull/381) Correctly infer output type from snake-camel utils
+- [#422](https://github.com/alleslabs/celatone-frontend/pull/422) Create query keys enum
+- [#450](https://github.com/alleslabs/celatone-frontend/pull/450) Retrieve asset prices only when necessary (/prices url path)
+- [#451](https://github.com/alleslabs/celatone-frontend/pull/451) Add jest test cases for json, date, and number in utils
+- [#412](https://github.com/alleslabs/celatone-frontend/pull/412) Refactor contract detail data loading
 - [#402](https://github.com/alleslabs/celatone-frontend/pull/402) Add validator image resolver hook (add keybase as a fallback option)
 - [#408](https://github.com/alleslabs/celatone-frontend/pull/408) Improve dropdown and combo box interaction
 - [#421](https://github.com/alleslabs/celatone-frontend/pull/421) Generate example addresses from a fixed-bytes array
@@ -56,6 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#435](https://github.com/alleslabs/celatone-frontend/pull/435) Refactor chain's config, add new chain configs
 
 ### Bug fixes
+
+- [#452](https://github.com/alleslabs/celatone-frontend/pull/452) Fix public project data on the account details and code details page still remains when switching network
 
 ## v1.1.0
 

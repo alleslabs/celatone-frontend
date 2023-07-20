@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import big from "big.js";
 
-import { useFaucetConfig } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useFaucetConfig } from "lib/app-provider";
 import type { Token, U } from "lib/types";
 import { deexponentify, getTokenLabel } from "lib/utils";
 
@@ -17,7 +17,7 @@ interface FaucetInfo extends FaucetResponse {
 
 export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
   const faucet = useFaucetConfig({ shouldRedirect: false });
-  const { assetInfos } = useAssetInfos();
+  const { assetInfos } = useAssetInfos({ withPrices: false });
   const queryFn = async (): Promise<FaucetInfo> => {
     const faucetInfo = await queryFaucetInfo(faucet.enabled ? faucet.url : "");
     const assetInfo = assetInfos?.[faucetInfo.Denom];
@@ -32,7 +32,7 @@ export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
   };
 
   return useQuery({
-    queryKey: ["query", "faucet_info", faucet, assetInfos],
+    queryKey: [CELATONE_QUERY_KEYS.FAUCET_INFO, faucet],
     queryFn,
     enabled: faucet.enabled,
     retry: 2,

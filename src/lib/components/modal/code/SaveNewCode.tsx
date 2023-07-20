@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
@@ -63,7 +64,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const lcdEndpoint = useBaseApiRoute("rest");
 
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", lcdEndpoint, codeId],
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
     async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: false,

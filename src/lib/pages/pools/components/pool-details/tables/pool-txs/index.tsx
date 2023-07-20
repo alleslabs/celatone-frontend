@@ -22,7 +22,9 @@ export const PoolRelatedTxsTable = ({
   type,
   scrollComponentId,
 }: PoolRelatedTxsTableProps) => {
-  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos();
+  const { assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
+    withPrices: true,
+  });
 
   const {
     pagesQuantity,
