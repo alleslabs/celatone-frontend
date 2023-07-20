@@ -1,37 +1,48 @@
 import camelCase from "camelcase";
-import mapObject from "map-obj";
+
+import type { SnakeToCamelCaseNested } from "lib/types";
+
+type Resolver<T> = T extends Array<infer U>
+  ? SnakeToCamelCaseNested<U>[]
+  : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  T extends Record<string, any>
+  ? SnakeToCamelCaseNested<T>
+  : T;
 
 // Convert snake case to camel case of an object
-// Todo - Might have to fix type
-export const snakeToCamel = (obj: unknown): unknown => {
+export const snakeToCamel = <T>(obj: T): Resolver<T> => {
   // Any falsy, which includes `null` whose typeof is `object`.
   if (!obj) {
-    return obj;
+    return obj as Resolver<T>;
   }
 
   // Ignore Date, whose typeof is `object` too.
   if (obj instanceof Date) {
-    return obj;
+    return obj as Resolver<T>;
   }
   // Array of object
   if (Array.isArray(obj)) {
     return obj.map((element) => {
       return snakeToCamel(element);
-    });
+    }) as Resolver<T>;
   }
 
   if (typeof obj === "object") {
-    return mapObject(obj, (key, value) => {
-      const newKey = camelCase(key) || key;
-      if (key !== newKey && newKey in obj) {
-        throw new Error(
-          `Snake case key ${newKey} would overwrite existing key of the given JSON object`
-        );
+    return Object.entries(obj).reduce((acc, [key, value]) => {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const newKey = camelCase(key) || key;
+        if (key !== newKey && newKey in obj) {
+          throw new Error(
+            `Camel case key ${newKey} would overwrite existing key of the given JSON object`
+          );
+        }
+        acc[newKey as keyof SnakeToCamelCaseNested<T>] = snakeToCamel(value);
+        return acc;
       }
-      return [newKey, snakeToCamel(value)];
-    });
+      return acc;
+    }, {} as SnakeToCamelCaseNested<T>) as Resolver<T>;
   }
 
   // Something else like a String or Number.
-  return obj;
+  return obj as Resolver<T>;
 };
