@@ -63,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#454](https://github.com/alleslabs/celatone-frontend/pull/454) Fix contract selection loading state for other folders
 - [#452](https://github.com/alleslabs/celatone-frontend/pull/452) Fix public project data on the account details and code details page still remains when switching network
 
 ## v1.1.0
