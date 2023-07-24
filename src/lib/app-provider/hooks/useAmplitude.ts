@@ -14,13 +14,14 @@ export const useAmplitude = (chainName: Option<string>) => {
   if (typeof window !== "undefined") {
     init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY ?? "", undefined, {
       trackingOptions: {
-        deviceManufacturer: false,
-        deviceModel: false,
-        ipAddress: false,
-        language: false,
-        osName: false,
-        osVersion: false,
-        platform: false,
+        deviceManufacturer: true,
+        deviceModel: true,
+        ipAddress: true,
+        language: true,
+        osName: true,
+        osVersion: true,
+        platform: true,
+        attribution: true,
       },
       serverUrl: "/amplitude",
     });
