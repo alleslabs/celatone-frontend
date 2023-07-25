@@ -5,6 +5,8 @@ export interface SubmenuInfo {
   slug: string;
   icon?: IconKeys;
   logo?: string;
+  isDisable?: boolean;
+  tooltipText?: string;
 }
 
 export interface MenuInfo {

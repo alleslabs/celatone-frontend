@@ -1,11 +1,11 @@
 import { Text, Box, Radio, RadioGroup, Button, Flex } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useEffect } from "react";
 import type { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 
 import { AddressInput } from "../AddressInput";
 import { AssignMe } from "../AssignMe";
+import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import {
   AmpEvent,
@@ -40,7 +40,7 @@ export const InstantiatePermissionRadio = ({
   trigger,
   page,
 }: InstantiatePermissionRadioProps) => {
-  const { address: walletAddress } = useWallet();
+  const { address: walletAddress } = useCurrentChain();
 
   const { fields, append, remove } = useFieldArray({
     control,

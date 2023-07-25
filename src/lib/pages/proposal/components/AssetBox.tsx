@@ -1,7 +1,7 @@
 import { Box, chakra, Flex, Image, Text } from "@chakra-ui/react";
 
-import { useNativeTokensInfo } from "lib/app-provider";
 import { NAToken } from "lib/icon";
+import { useAssetInfos } from "lib/services/assetService";
 import type { Option } from "lib/types";
 
 const AssetLabel = chakra(Text, {
@@ -26,8 +26,9 @@ const AssetLabel = chakra(Text, {
 });
 
 export const AssetBox = ({ baseDenom }: { baseDenom: Option<string> }) => {
-  const nativeTokensInfo = useNativeTokensInfo();
-  const tokenInfo = nativeTokensInfo.find((asset) => asset.base === baseDenom);
+  const { assetInfos } = useAssetInfos({ withPrices: false });
+  const tokenInfo = baseDenom ? assetInfos?.[baseDenom] : undefined;
+
   return (
     <Box
       h="56px"
@@ -42,12 +43,7 @@ export const AssetBox = ({ baseDenom }: { baseDenom: Option<string> }) => {
     >
       <AssetLabel>Asset</AssetLabel>
       <Flex align="center" gap={1}>
-        <Image
-          h="24px"
-          w="24px"
-          src={tokenInfo?.logo_URIs?.png}
-          fallback={<NAToken />}
-        />
+        <Image h="24px" w="24px" src={tokenInfo?.logo} fallback={<NAToken />} />
         {tokenInfo?.symbol ?? "N/A"}
       </Flex>
     </Box>

@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { ReactElement } from "react";
 
 import type { ImageVariant } from "./StateImage";
@@ -33,9 +33,9 @@ export const EmptyState = ({
           {heading}
         </Heading>
       )}
-      <Flex fontSize="16px" color="text.dark">
+      <Text color="text.dark" textAlign="center" whiteSpace="pre-wrap">
         {message}
-      </Flex>
+      </Text>
     </Flex>
   </Flex>
 );

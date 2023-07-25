@@ -24,9 +24,7 @@ export const fetchGovDepositParams = (
     .get<{ deposit_params: DepositParams }>(
       `${lcdEndpoint}/cosmos/gov/v1beta1/params/deposit`
     )
-    .then(
-      ({ data }) => snakeToCamel(data.deposit_params) as DepositParamsInternal
-    );
+    .then(({ data }) => snakeToCamel(data.deposit_params));
 
 interface ProposalVotingPeriod {
   proposal_type: string;
@@ -48,12 +46,7 @@ export const fetchGovVotingParams = (
     .get<{ voting_params: VotingParams }>(
       `${lcdEndpoint}/cosmos/gov/v1beta1/params/voting`
     )
-    .then(
-      ({ data }) =>
-        snakeToCamel(
-          data.voting_params
-        ) as SnakeToCamelCaseNested<VotingParamsInternal>
-    );
+    .then(({ data }) => snakeToCamel(data.voting_params));
 
 export interface UploadAccess {
   permission: AccessConfigPermission;
@@ -64,6 +57,4 @@ export interface UploadAccess {
 export const fetchGovUploadAccessParams = async (
   lcdEndpoint: string
 ): Promise<UploadAccess> =>
-  axios
-    .get(`${lcdEndpoint}/cosmwasm/wasm/v1/codes/params`)
-    .then(({ data }) => data.params.code_upload_access);
+  axios.get(`${lcdEndpoint}/upload_access`).then(({ data }) => data);

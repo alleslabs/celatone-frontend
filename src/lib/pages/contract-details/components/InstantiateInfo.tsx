@@ -1,15 +1,27 @@
 import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
+import type { ContractData } from "../types";
 import { useGetAddressType } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { ContractData, Option } from "lib/types";
+import { Loading } from "lib/components/Loading";
+import type { Option } from "lib/types";
 import { formatUTC, dateFromNow } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {
-  contractData: ContractData;
+  chainId: ContractData["chainId"];
+  codeLocalInfo: ContractData["codeLocalInfo"];
+  contractDetail: ContractData["contractDetail"];
+  contractCw2Info: ContractData["contractCw2Info"];
+  initTxHash: ContractData["initTxHash"];
+  initProposalId: ContractData["initProposalId"];
+  initProposalTitle: ContractData["initProposalTitle"];
+  createdHeight: ContractData["createdHeight"];
+  createdTime: ContractData["createdTime"];
+  rawContractResponse: ContractData["rawContractResponse"];
+  isLoading: boolean;
 }
 
 const Container = chakra(Flex, {
@@ -61,6 +73,7 @@ const InitRender = ({
           type="tx_hash"
           value={initTxHash.toUpperCase()}
           showCopyOnHover
+          fixedHeight
         />
       </LabelText>
     );
@@ -76,6 +89,7 @@ const InitRender = ({
           type="proposal_id"
           value={initProposalId.toString()}
           showCopyOnHover
+          fixedHeight
         />
       </LabelText>
     );
@@ -93,21 +107,28 @@ const InitRender = ({
 };
 
 export const InstantiateInfo = ({
-  contractData: {
-    contractCw2Info,
-    instantiateInfo,
-    chainId,
-    codeInfo,
-    initTxHash,
-    initProposalId,
-    initProposalTitle,
-    createdHeight,
-    createdTime,
-  },
+  chainId,
+  codeLocalInfo,
+  contractDetail,
+  contractCw2Info,
+  initTxHash,
+  initProposalId,
+  initProposalTitle,
+  createdHeight,
+  createdTime,
+  rawContractResponse,
+  isLoading,
 }: InstantiateInfoProps) => {
   const getAddressType = useGetAddressType();
 
-  if (!instantiateInfo) {
+  if (isLoading)
+    return (
+      <Container>
+        <Loading />
+      </Container>
+    );
+
+  if (!contractDetail) {
     return (
       <Container>
         <Text variant="body2" color="text.dark">
@@ -117,56 +138,64 @@ export const InstantiateInfo = ({
     );
   }
 
-  const instantiatorType = getAddressType(instantiateInfo.instantiator);
-  const adminType = getAddressType(instantiateInfo.admin);
+  const instantiatorType = getAddressType(contractDetail.instantiator);
+  const adminType = getAddressType(contractDetail.admin);
 
   return (
-    <Container>
-      <LabelText label="Network">{chainId}</LabelText>
+    <Container w={{ base: "full", md: "auto" }}>
+      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
+        <LabelText flex="1" label="Network">
+          {chainId}
+        </LabelText>
 
-      <LabelText label="From Code" helperText1={codeInfo?.name}>
-        <ExplorerLink
-          type="code_id"
-          value={instantiateInfo.codeId}
-          showCopyOnHover
-        />
-      </LabelText>
-
-      <LabelText label="CW2 Info">
-        {contractCw2Info ? (
-          <Text variant="body2">
-            {contractCw2Info.contract} ({contractCw2Info.version})
-          </Text>
-        ) : (
-          <Text variant="body2" color="text.dark">
-            No Info
-          </Text>
-        )}
-      </LabelText>
-
-      {instantiateInfo.admin ? (
-        <LabelText
-          label="Admin Address"
-          helperText1={getAddressTypeText(adminType)}
-        >
+        <LabelText flex="1" label="From Code" helperText1={codeLocalInfo?.name}>
           <ExplorerLink
-            type={adminType}
-            value={instantiateInfo.admin}
+            type="code_id"
+            value={contractDetail.codeId.toString()}
             showCopyOnHover
+            fixedHeight
           />
         </LabelText>
-      ) : (
-        <LabelText label="Admin Address">
-          <Text variant="body2" color="text.dark">
-            No Admin
-          </Text>
+      </Flex>
+      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
+        <LabelText flex="1" label="CW2 Info">
+          {contractCw2Info ? (
+            <Text variant="body2" wordBreak="break-all">
+              {contractCw2Info.contract} ({contractCw2Info.version})
+            </Text>
+          ) : (
+            <Text variant="body2" color="text.dark">
+              No Info
+            </Text>
+          )}
         </LabelText>
-      )}
+
+        {contractDetail.admin ? (
+          <LabelText
+            flex="1"
+            label="Admin Address"
+            helperText1={getAddressTypeText(adminType)}
+          >
+            <ExplorerLink
+              type={adminType}
+              value={contractDetail.admin}
+              showCopyOnHover
+              fixedHeight
+            />
+          </LabelText>
+        ) : (
+          <LabelText flex="1" label="Admin Address">
+            <Text variant="body2" color="text.dark">
+              No Admin
+            </Text>
+          </LabelText>
+        )}
+      </Flex>
 
       <Divider border="1px solid" borderColor="gray.700" />
-
       {createdHeight ? (
         <LabelText
+          flex="1"
           label="Instantiated Block Height"
           helperText1={createdTime ? formatUTC(createdTime) : undefined}
           helperText2={createdTime ? dateFromNow(createdTime) : undefined}
@@ -175,35 +204,43 @@ export const InstantiateInfo = ({
             type="block_height"
             value={createdHeight.toString()}
             showCopyOnHover
+            fixedHeight
           />
         </LabelText>
       ) : (
         <LabelText label="Instantiated Block Height">N/A</LabelText>
       )}
-
-      <LabelText
-        label="Instantiated by"
-        helperText1={getAddressTypeText(instantiatorType)}
-      >
-        <ExplorerLink
-          type={instantiatorType}
-          value={instantiateInfo.instantiator}
-          showCopyOnHover
-        />
-      </LabelText>
-
-      <InitRender
-        initTxHash={initTxHash}
-        initProposalId={initProposalId}
-        initProposalTitle={initProposalTitle}
-        createdHeight={instantiateInfo.createdHeight}
-      />
-
-      {instantiateInfo.ibcPortId && (
-        <LabelText label="IBC Port ID">
-          <PortIdRender portId={instantiateInfo.ibcPortId} />
+      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
+        <LabelText
+          flex="1"
+          label="Instantiated by"
+          helperText1={getAddressTypeText(instantiatorType)}
+        >
+          <ExplorerLink
+            type={instantiatorType}
+            value={contractDetail.instantiator ?? "N/A"}
+            showCopyOnHover
+            fixedHeight
+          />
         </LabelText>
-      )}
+        <Flex flex="1">
+          <InitRender
+            initTxHash={initTxHash}
+            initProposalId={initProposalId}
+            initProposalTitle={initProposalTitle}
+            createdHeight={createdHeight}
+          />
+        </Flex>
+      </Flex>
+      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
+        {rawContractResponse?.contract_info.ibc_port_id && (
+          <LabelText label="IBC Port ID">
+            <PortIdRender
+              portId={rawContractResponse.contract_info.ibc_port_id}
+            />
+          </LabelText>
+        )}
+      </Flex>
     </Container>
   );
 };

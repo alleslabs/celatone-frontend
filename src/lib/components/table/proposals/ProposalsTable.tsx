@@ -16,20 +16,25 @@ export const ProposalsTable = ({
   isLoading,
   emptyState,
 }: ProposalsTableProps) => {
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!proposals?.length) return emptyState;
 
   const templateColumns =
-    "100px minmax(300px, 1fr) 150px 280px 180px 190px 160px";
+    "100px minmax(360px, 2fr) minmax(150px, 1fr) 330px 180px 160px";
+  const boxShadow = "16px 0 32px -10px";
 
   return (
     <TableContainer>
-      <ProposalsTableHeader templateColumns={templateColumns} />
+      <ProposalsTableHeader
+        templateColumns={templateColumns}
+        boxShadow={boxShadow}
+      />
       {proposals.map((proposal) => (
         <ProposalsTableRow
           key={proposal.proposalId}
           proposal={proposal}
           templateColumns={templateColumns}
+          boxShadow={boxShadow}
         />
       ))}
     </TableContainer>

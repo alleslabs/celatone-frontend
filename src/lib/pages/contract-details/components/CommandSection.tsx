@@ -1,18 +1,17 @@
 import { ButtonGroup, Flex, Spinner, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { useExecuteCmds, useQueryCmds } from "lib/hooks";
 import type { ContractAddr } from "lib/types";
-import { encode, getFirstQueryParam, jsonPrettify } from "lib/utils";
+import { encode, jsonPrettify } from "lib/utils";
 
-export const CommandSection = () => {
-  const router = useRouter();
+interface CommandSectionProps {
+  contractAddress: ContractAddr;
+}
+
+export const CommandSection = ({ contractAddress }: CommandSectionProps) => {
   const navigate = useInternalNavigate();
-  const contractAddress = getFirstQueryParam(
-    router.query.contractAddress
-  ) as ContractAddr;
 
   const { isFetching: isQueryCmdsFetching, queryCmds } =
     useQueryCmds(contractAddress);
@@ -67,7 +66,11 @@ export const CommandSection = () => {
   };
 
   return (
-    <Flex gap={6}>
+    <Flex
+      gap={{ base: 4, md: 6 }}
+      direction={{ base: "column", md: "row" }}
+      mt={{ base: 4, md: 0 }}
+    >
       <Flex
         direction="column"
         bg="gray.900"

@@ -4,7 +4,13 @@ import type { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useInternalNavigate, useLCDEndpoint } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useInternalNavigate,
+  useWasmConfig,
+  useMobile,
+} from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
@@ -22,14 +28,15 @@ import {
 import { QueryArea } from "./components/QueryArea";
 
 const Query = () => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [initialMsg, setInitialMsg] = useState("");
   const [cmds, setCmds] = useState<[string, string][]>([]);
-
+  const isMobile = useMobile();
   const goToExecute = () => {
     navigate({
       pathname: "/execute",
@@ -50,8 +57,13 @@ const Query = () => {
 
   // TODO: Abstract query and make query key
   const { isFetching } = useQuery(
-    ["query", "cmds", endpoint, contractAddress, '{"": {}}'],
-    async () => queryData(endpoint, contractAddress, '{"": {}}'),
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_QUERY_CMDS,
+      lcdEndpoint,
+      contractAddress,
+      '{"": {}}',
+    ],
+    async () => queryData(lcdEndpoint, contractAddress, '{"": {}}'),
     {
       enabled: !!contractAddress,
       retry: false,
@@ -96,18 +108,20 @@ const Query = () => {
         <Heading as="h5" variant="h5">
           Query Contract
         </Heading>
-        <Box>
-          <Button
-            variant="ghost-secondary"
-            size="sm"
-            p="unset"
-            pl={2}
-            onClick={goToExecute}
-          >
-            Go To Execute
-            <CustomIcon name="chevron-right" boxSize={3} />
-          </Button>
-        </Box>
+        {!isMobile && (
+          <Box>
+            <Button
+              variant="ghost-secondary"
+              size="sm"
+              p="unset"
+              pl={2}
+              onClick={goToExecute}
+            >
+              Go To Execute
+              <CustomIcon name="chevron-right" boxSize={3} />
+            </Button>
+          </Box>
+        )}
       </Flex>
 
       <ContractSelectSection

@@ -14,10 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
-import { useState, useRef, forwardRef } from "react";
+import { useMemo, useState, useRef, forwardRef } from "react";
 
 import { CustomIcon } from "lib/components/icon";
 import { displayActionValue, mergeRefs } from "lib/utils";
+
+import { DropdownChevron } from "./DropdownChevron";
 
 export interface TxFilterSelectionProps extends InputProps {
   placeholder?: string;
@@ -28,6 +30,8 @@ export interface TxFilterSelectionProps extends InputProps {
   label?: string;
   boxWidth?: LayoutProps["width"];
   boxHeight?: LayoutProps["height"];
+  size?: string | object;
+  tagSize?: string | object;
 }
 
 const listItemProps: CSSProperties = {
@@ -36,6 +40,17 @@ const listItemProps: CSSProperties = {
   padding: "8px",
   cursor: "pointer",
 };
+
+const OPTIONS = [
+  "isUpload",
+  "isInstantiate",
+  "isExecute",
+  "isSend",
+  "isIbc",
+  "isMigrate",
+  "isClearAdmin",
+  "isUpdateAdmin",
+];
 
 // TODO - Refactor this along with TagSelection
 export const TxFilterSelection = forwardRef<
@@ -52,36 +67,26 @@ export const TxFilterSelection = forwardRef<
       label = "Filter by Action",
       boxWidth = "full",
       boxHeight = "56px",
+      size = "lg",
+      tagSize = "md",
       ...rest
     }: TxFilterSelectionProps,
     ref
   ) => {
-    const options = [
-      "isUpload",
-      "isInstantiate",
-      "isExecute",
-      "isSend",
-      "isIbc",
-      "isMigrate",
-      "isClearAdmin",
-      "isUpdateAdmin",
-    ];
-
-    const [partialResult, setPartialResult] = useState<string[]>([]);
+    const [keyword, setKeyword] = useState("");
     const [displayOptions, setDisplayOptions] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
 
-    const filterOptions = (value: string) => {
-      setDisplayOptions(true);
-      setPartialResult(
-        value
-          ? matchSorter(options, value, {
+    const partialResults = useMemo(
+      () =>
+        keyword
+          ? matchSorter(OPTIONS, keyword, {
               threshold: matchSorter.rankings.CONTAINS,
             })
-          : options
-      );
-    };
+          : OPTIONS,
+      [keyword]
+    );
 
     const isOptionSelected = (option: string) =>
       result.some((selectedOption) => selectedOption === option);
@@ -130,6 +135,7 @@ export const TxFilterSelection = forwardRef<
                       mr={1}
                       whiteSpace="nowrap"
                       cursor="pointer"
+                      size={tagSize}
                     >
                       {displayActionValue(option)}
                       <CustomIcon name="close" boxSize={3} />
@@ -143,17 +149,21 @@ export const TxFilterSelection = forwardRef<
               autoComplete="off"
               w="100%"
               minW="200px"
-              size="lg"
+              size={size}
               placeholder={result.length ? "" : placeholder}
-              onChange={(e) => filterOptions(e.currentTarget.value)}
+              onClick={() => setDisplayOptions(true)}
+              onChange={(e) => setKeyword(e.currentTarget.value)}
               onFocus={() => {
-                setPartialResult(options);
                 setDisplayOptions(true);
               }}
               ref={mergeRefs([inputRef, ref])}
               maxLength={36}
               style={{ border: 0, maxHeight: "54px" }}
               {...rest}
+            />
+            <DropdownChevron
+              isOpen={displayOptions}
+              onClick={() => setDisplayOptions((prev) => !prev)}
             />
             <FormLabel
               position="absolute"
@@ -188,7 +198,7 @@ export const TxFilterSelection = forwardRef<
               top="60px"
             >
               {/* option selection section */}
-              {partialResult.map((option) => (
+              {partialResults.map((option) => (
                 <ListItem
                   key={option}
                   style={listItemProps}
@@ -198,7 +208,6 @@ export const TxFilterSelection = forwardRef<
                 >
                   <Flex alignItems="center" justifyContent="space-between">
                     <Text>{displayActionValue(option)}</Text>
-
                     {isOptionSelected(option) && (
                       <CustomIcon
                         name="check"

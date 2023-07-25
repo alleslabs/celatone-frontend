@@ -19,8 +19,10 @@ import { useState } from "react";
 
 import { CustomIcon } from "../icon";
 import {
-  useCelatoneApp,
-  useLCDEndpoint,
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useExampleAddresses,
+  useMobile,
   useValidateAddress,
 } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
@@ -42,9 +44,7 @@ export const SelectContractInstantiator = ({
   notSelected,
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
-  const {
-    appContractAddress: { example: exampleContractAddress },
-  } = useCelatoneApp();
+  const { contract: exampleContractAddress } = useExampleAddresses();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [listSlug, setListSlug] = useState("");
   const { validateContractAddress } = useValidateAddress();
@@ -61,7 +61,7 @@ export const SelectContractInstantiator = ({
   const contractLists = [instantiatedListInfo, ...getContractLists()];
   const contractList = contractLists.find((item) => item.slug === listSlug);
 
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const resetOnClose = () => {
     setListSlug("");
@@ -78,8 +78,8 @@ export const SelectContractInstantiator = ({
 
   // TODO: Abstract query
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", "contract", searchContract, endpoint],
-    async () => queryContract(endpoint, searchContract as ContractAddr),
+    [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, searchContract],
+    async () => queryContract(lcdEndpoint, searchContract as ContractAddr),
     {
       enabled: false,
       retry: false,
@@ -98,6 +98,7 @@ export const SelectContractInstantiator = ({
     setListSlug(slug);
   };
 
+  const isMobile = useMobile();
   return (
     <>
       <Button
@@ -115,9 +116,13 @@ export const SelectContractInstantiator = ({
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
-      <Drawer isOpen={isOpen} onClose={resetOnClose} placement="bottom">
+      <Drawer
+        isOpen={isOpen}
+        onClose={resetOnClose}
+        placement={isMobile ? "top" : "bottom"}
+      >
         <DrawerOverlay />
-        <DrawerContent h="80%">
+        <DrawerContent h={{ base: "auto", md: "80%" }}>
           {listSlug.length === 0 || !contractList ? (
             <>
               <DrawerHeader>
@@ -167,22 +172,25 @@ export const SelectContractInstantiator = ({
                 <Text variant="body3" color="error.main" mt={1} ml={3}>
                   {invalid}
                 </Text>
+                {!isMobile && (
+                  <>
+                    <Flex my={6} gap={2} alignItems="center">
+                      <Divider borderColor="gray.700" />
+                      <Text variant="body1">OR</Text>
+                      <Divider borderColor="gray.700" />
+                    </Flex>
 
-                <Flex my={6} gap={2} alignItems="center">
-                  <Divider borderColor="gray.700" />
-                  <Text variant="body1">OR</Text>
-                  <Divider borderColor="gray.700" />
-                </Flex>
-
-                <Heading as="h6" variant="h6" mb={4}>
-                  Select from your Contract List
-                </Heading>
-                <AllContractLists
-                  contractLists={contractLists}
-                  handleListSelect={handleListSelect}
-                  isReadOnly
-                  formLabelBgColor="gray.900"
-                />
+                    <Heading as="h6" variant="h6" mb={4}>
+                      Select from your Contract List
+                    </Heading>
+                    <AllContractLists
+                      contractLists={contractLists}
+                      handleListSelect={handleListSelect}
+                      isReadOnly
+                      formLabelBgColor="gray.900"
+                    />
+                  </>
+                )}
               </DrawerBody>
             </>
           ) : (

@@ -1,4 +1,5 @@
 import {
+  Box,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -52,21 +53,34 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
           {result.receiptInfo.header}
         </ModalHeader>
         {showCloseButton && <ModalCloseButton color="gray.600" />}
-        {(result.receiptInfo.description || result.receipts.length > 0) && (
-          <ModalBody>
-            {result.receiptInfo.description && (
-              <Text variant="body1" mb={4}>
-                {result.receiptInfo.description}
-              </Text>
-            )}
+        <ModalBody>
+          {result.receiptInfo.description && (
+            <Text variant="body1" mb={4}>
+              {result.receiptInfo.description}
+            </Text>
+          )}
+          {result.receipts.length > 0 && (
             <TxReceiptRender receipts={result.receipts} />
-          </ModalBody>
-        )}
+          )}
+          {result.receiptInfo.errorMsg && (
+            <Box
+              bg="background.main"
+              borderRadius="8px"
+              p={2}
+              mt={4}
+              maxH="240px"
+              overflowY="scroll"
+            >
+              <Text>{result.receiptInfo.errorMsg}</Text>
+            </Box>
+          )}
+        </ModalBody>
         <ModalFooter gap={2}>
           <ButtonSection
             actionVariant={result.actionVariant}
             onClose={onClose}
             receipts={result.receipts}
+            errorMsg={result.receiptInfo.errorMsg}
           />
         </ModalFooter>
       </ModalContent>

@@ -3,7 +3,11 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useCelatoneApp,
+  useWasmConfig,
+} from "lib/app-provider";
 import {
   getCodeDataByCodeId,
   getCodeListByIDsQueryDocument,
@@ -22,7 +26,7 @@ import type {
   Addr,
   HumanAddr,
 } from "lib/types";
-import { parseDateOpt, parseTxHashOpt } from "lib/utils";
+import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
 
 export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -45,7 +49,7 @@ export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
       );
   }, [indexerGraphClient]);
 
-  return useQuery(["recents_codes", indexerGraphClient], queryFn);
+  return useQuery([CELATONE_QUERY_KEYS.CODES, indexerGraphClient], queryFn);
 };
 
 export const useCodeListByWalletAddress = (
@@ -76,7 +80,11 @@ export const useCodeListByWalletAddress = (
   }, [walletAddr, indexerGraphClient]);
 
   return useQuery(
-    ["code_list_by_user", walletAddr, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS,
+      walletAddr,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -111,14 +119,19 @@ export const useCodeListByCodeIds = (
       );
   }, [ids, indexerGraphClient]);
 
-  return useQuery(["code_list_by_ids", ids, indexerGraphClient], queryFn, {
-    keepPreviousData: true,
-    enabled: !!ids,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODES_BY_IDS, ids, indexerGraphClient],
+    queryFn,
+    {
+      keepPreviousData: true,
+      enabled: !!ids,
+    }
+  );
 };
 
 export const useCodeDataByCodeId = (
-  codeId: Option<number>
+  codeId: string,
+  enabled = true
 ): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
 
@@ -127,7 +140,7 @@ export const useCodeDataByCodeId = (
 
     return indexerGraphClient
       .request(getCodeDataByCodeId, {
-        codeId,
+        codeId: Number(codeId),
       })
       .then(({ codes_by_pk }) => {
         if (!codes_by_pk) return null;
@@ -155,10 +168,13 @@ export const useCodeDataByCodeId = (
         };
       });
   }, [codeId, indexerGraphClient]);
-  return useQuery(["code_data_by_id", codeId, indexerGraphClient], queryFn, {
-    keepPreviousData: true,
-    enabled: !!codeId,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODE_DATA_BY_ID, codeId, indexerGraphClient],
+    queryFn,
+    {
+      enabled: enabled && isCodeId(codeId),
+    }
+  );
 };
 
 export const useCodeListByWalletAddressPagination = (
@@ -167,6 +183,8 @@ export const useCodeListByWalletAddressPagination = (
   pageSize: number
 ): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
@@ -195,14 +213,18 @@ export const useCodeListByWalletAddressPagination = (
 
   return useQuery(
     [
-      "code_list_by_wallet_address_pagination",
+      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS_PAGINATION,
       indexerGraphClient,
       offset,
       pageSize,
       walletAddress,
     ],
     createQueryFnWithTimeout(queryFn),
-    { enabled: !!walletAddress, retry: 1, refetchOnWindowFocus: false }
+    {
+      enabled: wasm.enabled && !!walletAddress,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 
@@ -210,6 +232,8 @@ export const useCodeListCountByWalletAddress = (
   walletAddress: Option<HumanAddr>
 ): UseQueryResult<Option<number>> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+
   const queryFn = useCallback(async () => {
     if (!walletAddress)
       throw new Error(
@@ -224,11 +248,15 @@ export const useCodeListCountByWalletAddress = (
   }, [walletAddress, indexerGraphClient]);
 
   return useQuery(
-    ["code_list_count_by_wallet_address", walletAddress, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CODES_BY_WALLET_ADDRESS_COUNT,
+      walletAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
-      enabled: !!walletAddress,
+      enabled: wasm.enabled && !!walletAddress,
     }
   );
 };

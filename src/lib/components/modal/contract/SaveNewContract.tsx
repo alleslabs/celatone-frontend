@@ -1,26 +1,20 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { VStack, Button } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { ActionModal } from "../ActionModal";
-import {
-  useCelatoneApp,
-  useLCDEndpoint,
-  useValidateAddress,
-} from "lib/app-provider";
+import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
-import { DEFAULT_RPC_ERROR, INSTANTIATED_LIST_NAME } from "lib/data";
+import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useHandleContractSave } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { queryInstantiateInfo } from "lib/services/contract";
-import type { Addr, ContractAddr, LVPair, RpcQueryError } from "lib/types";
+import { useContractDetailByContractAddress } from "lib/services/contractService";
+import type { Addr, ContractAddr, LVPair } from "lib/types";
 import {
   formatSlugName,
   getNameAndDescriptionDefault,
@@ -41,14 +35,10 @@ export function SaveNewContractModal({
   list,
   buttonProps,
 }: SaveNewContractModalProps) {
-  const endpoint = useLCDEndpoint();
-  const { indexerGraphClient } = useCelatoneApp();
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 
-  const {
-    appContractAddress: { example: exampleContractAddress },
-  } = useCelatoneApp();
+  const { contract: exampleContractAddress } = useExampleAddresses();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 
@@ -98,50 +88,37 @@ export function SaveNewContractModal({
     });
   };
 
-  // TODO: Abstract query
-  const { refetch } = useQuery(
-    ["query", "instantiate_info", endpoint, contractAddressState],
-    async () =>
-      queryInstantiateInfo(
-        endpoint,
-        indexerGraphClient,
-        contractAddressState as ContractAddr
-      ),
-    {
-      enabled: false,
-      retry: false,
-      cacheTime: 0,
-      refetchOnReconnect: false,
-      onSuccess(data) {
-        const contractLocalInfo = getContractLocalInfo(contractAddressState);
-        reset({
-          contractAddress: contractAddressState,
-          instantiator: data.instantiator,
-          label: data.label,
-          name: contractLocalInfo?.name ?? data.label,
-          description: getNameAndDescriptionDefault(
-            contractLocalInfo?.description
+  const { refetch } = useContractDetailByContractAddress(
+    contractAddressState as ContractAddr,
+    (data) => {
+      const contractLocalInfo = getContractLocalInfo(contractAddressState);
+      reset({
+        contractAddress: contractAddressState,
+        instantiator: data.instantiator,
+        label: data.label,
+        name: contractLocalInfo?.name ?? data.label,
+        description: getNameAndDescriptionDefault(
+          contractLocalInfo?.description
+        ),
+        tags: getTagsDefault(contractLocalInfo?.tags),
+        lists: [
+          ...initialList,
+          ...(contractLocalInfo?.lists ?? []).filter(
+            (item) => item.value !== list.value
           ),
-          tags: getTagsDefault(contractLocalInfo?.tags),
-          lists: [
-            ...initialList,
-            ...(contractLocalInfo?.lists ?? []).filter(
-              (item) => item.value !== list.value
-            ),
-          ],
-        });
-        setStatus({
-          state: "success",
-          message: "Valid Contract Address",
-        });
-      },
-      onError(err: AxiosError<RpcQueryError>) {
-        resetForm(false);
-        setStatus({
-          state: "error",
-          message: err.response?.data.message || DEFAULT_RPC_ERROR,
-        });
-      },
+        ],
+      });
+      setStatus({
+        state: "success",
+        message: "Valid Contract Address",
+      });
+    },
+    (err) => {
+      resetForm(false);
+      setStatus({
+        state: "error",
+        message: err.message,
+      });
     }
   );
 
@@ -189,7 +166,7 @@ export function SaveNewContractModal({
     <ActionModal
       title="Save New Contract"
       icon="bookmark-solid"
-      trigger={<Button {...buttonProps} />}
+      trigger={<Button as="button" {...buttonProps} />}
       mainBtnTitle="Save"
       mainAction={handleSave}
       disabledMain={

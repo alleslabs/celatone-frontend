@@ -1,6 +1,6 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
-import { useWallet } from "@cosmos-kit/react";
+import type { StdFee } from "@cosmjs/stargate";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useRouter } from "next/router";
@@ -9,20 +9,25 @@ import { useForm } from "react-hook-form";
 
 import {
   useFabricateFee,
-  useSimulateFee,
   useInstantiateTx,
-  useCelatoneApp,
-  useLCDEndpoint,
   useValidateAddress,
+  useSimulateFeeQuery,
+  useCurrentChain,
+  useBaseApiRoute,
+  CELATONE_QUERY_KEYS,
+  useExampleAddresses,
 } from "lib/app-provider";
+import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import { AttachFund } from "lib/components/fund";
 import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
+import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
@@ -35,17 +40,11 @@ import {
   AmpTrackToInstantiate,
 } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
-import type { HumanAddr } from "lib/types";
+import type { ComposedMsg, HumanAddr } from "lib/types";
 import { AccessConfigPermission, MsgType } from "lib/types";
-import {
-  composeMsg,
-  getAttachFunds,
-  jsonPrettify,
-  jsonValidate,
-  libDecode,
-} from "lib/utils";
+import { composeMsg, jsonPrettify, jsonValidate, libDecode } from "lib/utils";
 
-import { FailedModal, Footer } from "./component";
+import { Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageState {
@@ -66,23 +65,25 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const router = useRouter();
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
-  const {
-    appContractAddress: { example: exampleContractAddress },
-  } = useCelatoneApp();
-  const { address = "" } = useWallet();
-  const endpoint = useLCDEndpoint();
+  const { user: exampleUserAddress } = useExampleAddresses();
+
+  const { address = "" } = useCurrentChain();
+  const lcdEndpoint = useBaseApiRoute("rest");
+
   const postInstantiateTx = useInstantiateTx();
-  const { simulate } = useSimulateFee();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const getAttachFunds = useAttachFunds();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
-  const [simulating, setSimulating] = useState(false);
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
-
+  const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
+  const [estimatedFee, setEstimatedFee] = useState<StdFee>();
+  const [simulateError, setSimulateError] = useState("");
+  const [processing, setProcessing] = useState(false);
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
@@ -91,7 +92,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     formState: { errors: formErrors },
     setValue,
     watch,
-    handleSubmit,
   } = useForm<InstantiatePageState>({
     mode: "all",
     defaultValues: {
@@ -99,16 +99,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       label: "",
       adminAddress: "",
       initMsg: "",
-      simulateError: "",
     },
   });
-
-  const {
-    codeId,
-    adminAddress: watchAdminAddress,
-    initMsg: watchInitMsg,
-    simulateError,
-  } = watch();
+  const { codeId, label, adminAddress, initMsg } = watch();
 
   const {
     control: assetsControl,
@@ -122,30 +115,34 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
     },
   });
-
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
-  const disableInstantiate = useMemo(() => {
-    return (
-      !codeId ||
-      !address ||
-      !!jsonValidate(watchInitMsg) ||
-      Object.keys(formErrors).length > 0 ||
-      status.state !== "success"
-    );
-    // formErrors change doesnt trigger this effect
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [codeId, address, watchInitMsg, Object.keys(formErrors), status.state]);
+  const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
+  const enableInstantiate = useMemo(
+    () =>
+      !!address &&
+      codeId.length > 0 &&
+      jsonValidate(initMsg) === null &&
+      status.state === "success",
+    [address, codeId.length, initMsg, status.state]
+  );
 
-  const funds = getAttachFunds({
-    attachFundsOption,
-    assetsJsonStr,
-    assetsSelect,
+  const { isFetching: isSimulating } = useSimulateFeeQuery({
+    enabled: composedTxMsg.length > 0,
+    messages: composedTxMsg,
+    onSuccess: (gasRes) => {
+      if (gasRes) setEstimatedFee(fabricateFee(gasRes));
+      else setEstimatedFee(undefined);
+    },
+    onError: (e) => {
+      setSimulateError(e.message);
+      setEstimatedFee(undefined);
+    },
   });
 
   const { refetch } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,
       retry: false,
@@ -176,51 +173,37 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   // ----------------FUNCTIONS-----------------//
   // ------------------------------------------//
-  const proceed = useCallback(() => {
-    handleSubmit(async ({ adminAddress, label, initMsg }) => {
-      AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
+  const proceed = useCallback(async () => {
+    AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
+    const stream = await postInstantiateTx({
+      codeId: Number(codeId),
+      initMsg: JSON.parse(initMsg),
+      label,
+      admin: adminAddress,
+      funds,
+      estimatedFee,
+      onTxSucceed: (txResult, contractLabel) => {
+        setProcessing(false);
+        onComplete(txResult, contractLabel);
+      },
+      onTxFailed: () => setProcessing(false),
+    });
 
-      setSimulating(true);
-
-      const msg = composeMsg(MsgType.INSTANTIATE, {
-        sender: address as HumanAddr,
-        admin: adminAddress as HumanAddr,
-        codeId: Long.fromString(codeId),
-        label,
-        msg: Buffer.from(initMsg),
-        funds,
-      });
-      try {
-        const estimatedFee = await simulate([msg]);
-        const stream = await postInstantiateTx({
-          estimatedFee: estimatedFee ? fabricateFee(estimatedFee) : undefined,
-          codeId: Number(codeId),
-          initMsg: JSON.parse(initMsg),
-          label,
-          admin: adminAddress,
-          funds,
-          onTxSucceed: onComplete,
-        });
-
-        if (stream) broadcast(stream);
-        setSimulating(false);
-      } catch (e) {
-        setValue("simulateError", (e as Error).message);
-        setSimulating(false);
-      }
-    })();
+    if (stream) {
+      setProcessing(true);
+      broadcast(stream);
+    }
   }, [
     funds,
-    handleSubmit,
     attachFundsOption,
-    address,
-    codeId,
-    simulate,
     postInstantiateTx,
-    fabricateFee,
+    codeId,
+    initMsg,
+    label,
+    adminAddress,
+    estimatedFee,
     onComplete,
     broadcast,
-    setValue,
   ]);
 
   // ------------------------------------------//
@@ -238,6 +221,35 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
 
     return () => {};
   }, [address, codeId, refetch]);
+
+  useEffect(() => {
+    if (enableInstantiate) {
+      setSimulateError("");
+      const composedMsg = composeMsg(MsgType.INSTANTIATE, {
+        sender: address as HumanAddr,
+        admin: adminAddress as HumanAddr,
+        codeId: Long.fromString(codeId),
+        label,
+        msg: Buffer.from(initMsg),
+        funds,
+      });
+      const timeoutId = setTimeout(() => {
+        setComposedTxMsg([composedMsg]);
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    address,
+    adminAddress,
+    codeId,
+    enableInstantiate,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(funds),
+    initMsg,
+    label,
+  ]);
 
   useEffect(() => {
     if (codeIdQuery) setValue("codeId", codeIdQuery);
@@ -315,17 +327,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             name="adminAddress"
             control={control}
             label="Admin Address (optional)"
-            placeholder={`ex. ${exampleContractAddress}`}
+            placeholder={`ex. ${exampleUserAddress}`}
             helperText="The contract's admin will be able to migrate and update future admins."
             variant="floating"
-            error={validateAdmin(watchAdminAddress)}
+            error={validateAdmin(adminAddress)}
             helperAction={
               <AssignMe
                 onClick={() => {
                   AmpTrack(AmpEvent.USE_ASSIGN_ME);
                   setValue("adminAddress", address);
                 }}
-                isDisable={watchAdminAddress === address}
+                isDisable={adminAddress === address}
               />
             }
           />
@@ -333,7 +345,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             Instantiate Message
           </Heading>
           <JsonInput
-            text={watchInitMsg}
+            text={initMsg}
             setText={(newVal: string) => setValue("initMsg", newVal)}
             minLines={10}
           />
@@ -346,18 +358,38 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             attachFundsOption={attachFundsOption}
           />
         </form>
+        {simulateError && (
+          <Flex gap={2} mb={4}>
+            <CustomIcon
+              name="alert-circle-solid"
+              boxSize={3}
+              color="error.main"
+            />
+            <Text variant="body3" color="error.main">
+              {simulateError}
+            </Text>
+          </Flex>
+        )}
+        <Flex
+          fontSize="14px"
+          color="text.dark"
+          alignSelf="flex-start"
+          alignItems="center"
+          display="flex"
+          gap={1}
+        >
+          <p>Transaction Fee:</p>
+          <EstimatedFeeRender
+            estimatedFee={estimatedFee}
+            loading={isSimulating}
+          />
+        </Flex>
       </WasmPageContainer>
       <Footer
         onInstantiate={proceed}
-        disabled={disableInstantiate}
-        loading={simulating}
+        disabled={!enableInstantiate || isSimulating}
+        loading={processing}
       />
-      {simulateError && (
-        <FailedModal
-          errorLog={simulateError}
-          onClose={() => setValue("simulateError", "")}
-        />
-      )}
     </>
   );
 };

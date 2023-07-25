@@ -1,12 +1,16 @@
 import { init, setDeviceId, setUserId } from "@amplitude/analytics-browser";
-import { useWallet } from "@cosmos-kit/react";
+import { useChain } from "@cosmos-kit/react";
 import { createHash } from "crypto";
 import { useEffect } from "react";
 import * as uuid from "uuid";
 
-export const useAmplitude = () => {
-  const { address, currentChainName } = useWallet();
+import type { Option } from "lib/types";
 
+export const useAmplitude = (chainName: Option<string>) => {
+  /**
+   * @remarks Revisit default chain name
+   */
+  const { address } = useChain(chainName ?? "osmosis");
   if (typeof window !== "undefined") {
     init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY ?? "", undefined, {
       trackingOptions: {
@@ -31,13 +35,13 @@ export const useAmplitude = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (currentChainName) {
+      if (chainName) {
         const userId = address
           ? createHash("sha256").update(address).digest("hex")
           : undefined;
-        setUserId(`${currentChainName}/${userId}`);
+        setUserId(`${chainName}/${userId}`);
       }
     }, 300);
     return () => clearTimeout(timeoutId);
-  }, [address, currentChainName]);
+  }, [address, chainName]);
 };

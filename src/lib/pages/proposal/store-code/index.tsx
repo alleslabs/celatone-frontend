@@ -10,7 +10,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useRouter } from "next/router";
 import { gzip } from "node-gzip";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -25,10 +24,13 @@ import {
 import { getAlert } from "../utils";
 import {
   useCelatoneApp,
+  useCurrentChain,
+  useExampleAddresses,
   useFabricateFee,
   useSimulateFeeForProposalStoreCode,
   useSubmitStoreCodeProposalTx,
   useValidateAddress,
+  useWasmConfig,
 } from "lib/app-provider";
 import { AddressInput } from "lib/components/AddressInput";
 import { AssignMe } from "lib/components/AssignMe";
@@ -44,10 +46,7 @@ import { CodeHashBox } from "lib/components/upload/CodeHashBox";
 import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePermissionRadio";
 import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
 import { UploadCard } from "lib/components/upload/UploadCard";
-import {
-  getMaxProposalTitleLengthError,
-  MAX_PROPOSAL_TITLE_LENGTH,
-} from "lib/data";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
@@ -63,7 +62,7 @@ import type {
   SimulateStatus,
   UploadSectionState,
 } from "lib/types";
-import { AccessType } from "lib/types";
+import { AccessType, AccessConfigPermission } from "lib/types";
 import {
   composeStoreCodeProposalMsg,
   getAmountToVote,
@@ -95,13 +94,19 @@ const defaultValues: StoreCodeProposalState = {
 const page = "proposal-store-code";
 
 const StoreCodeProposal = () => {
+  useWasmConfig({ shouldRedirect: true });
   const {
-    appHumanAddress: { example: exampleHumanAddress },
+    constants,
+    chainConfig: { prettyName },
   } = useCelatoneApp();
-  const { address: walletAddress = "" } = useWallet();
+  const { user: exampleUserAddress } = useExampleAddresses();
+  const getMaxLengthError = useGetMaxLengthError();
+  const { address: walletAddress = "" } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParams();
   const minDeposit = govParams?.depositParams.minDeposit;
+  const isPermissionless =
+    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();
@@ -341,8 +346,7 @@ const StoreCodeProposal = () => {
       <PageContainer>
         <Grid
           templateAreas={`"prespace main sidebar postspace"`}
-          templateColumns="1fr 45% 4fr 1fr"
-          gap={4}
+          templateColumns="1fr 6fr 4fr 1fr"
         >
           <GridItem area="main">
             <Heading as="h5" variant="h5">
@@ -372,11 +376,12 @@ const StoreCodeProposal = () => {
                   variant="floating"
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.titleRequired,
-                    maxLength: MAX_PROPOSAL_TITLE_LENGTH,
+                    maxLength: constants.maxProposalTitleLength,
                   }}
                   error={
-                    errors.title?.message ||
-                    getMaxProposalTitleLengthError(title.length)
+                    title.length > constants.maxProposalTitleLength
+                      ? getMaxLengthError(title.length, "proposal_title")
+                      : errors.title?.message
                   }
                 />
 
@@ -401,7 +406,7 @@ const StoreCodeProposal = () => {
                   control={control}
                   label={PROPOSAL_STORE_CODE_TEXT.runAsLabel}
                   labelBgColor="background.main"
-                  placeholder={`ex. ${exampleHumanAddress}`}
+                  placeholder={`ex. ${exampleUserAddress}`}
                   variant="floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.runAsHelperText}
                   requiredText={PROPOSAL_STORE_CODE_TEXT.runAsRequired}
@@ -603,7 +608,10 @@ const StoreCodeProposal = () => {
           <GridItem area="sidebar">
             <StickySidebar
               marginTop="128px"
-              metadata={SIDEBAR_STORE_CODE_DETAILS}
+              metadata={SIDEBAR_STORE_CODE_DETAILS(
+                prettyName,
+                isPermissionless ? "permissionless" : "permissioned"
+              )}
             />
           </GridItem>
         </Grid>

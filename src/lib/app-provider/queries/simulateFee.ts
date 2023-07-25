@@ -1,10 +1,10 @@
 import type { Coin } from "@cosmjs/amino";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
-import { useDummyWallet } from "../hooks";
+import { CELATONE_QUERY_KEYS } from "../env";
+import { useCurrentChain, useDummyWallet, useRPCEndpoint } from "../hooks";
 import type {
   AccessType,
   Addr,
@@ -30,25 +30,24 @@ export const useSimulateFeeQuery = ({
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
-  const { address, getCosmWasmClient, currentChainName, currentChainRecord } =
-    useWallet();
+  const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
   const { dummyWallet, dummyAddress } = useDummyWallet();
-
+  const rpcEndpoint = useRPCEndpoint();
   const userAddress = isDummyUser ? dummyAddress : address || dummyAddress;
 
   const simulateFn = async (msgs: ComposedMsg[]) => {
     // TODO: revisit this logic
-    if (!currentChainRecord?.preferredEndpoints?.rpc?.[0] || !userAddress) {
-      throw new Error("No RPC endpoint or user address");
+    if (!userAddress) {
+      throw new Error("No user address");
     }
 
     const client =
       dummyWallet && (isDummyUser || !address)
         ? await SigningCosmWasmClient.connectWithSigner(
-            currentChainRecord.preferredEndpoints.rpc[0],
+            rpcEndpoint,
             dummyWallet
           )
-        : await getCosmWasmClient();
+        : await getSigningCosmWasmClient();
 
     if (!client) {
       throw new Error("Fail to get SigningCosmWasmClient");
@@ -58,11 +57,16 @@ export const useSimulateFeeQuery = ({
   };
 
   return useQuery({
-    queryKey: ["simulate", currentChainName, userAddress, messages],
+    queryKey: [
+      CELATONE_QUERY_KEYS.SIMULATE_FEE,
+      chain.chain_name,
+      userAddress,
+      messages,
+      rpcEndpoint,
+    ],
     queryFn: async ({ queryKey }) => simulateFn(queryKey[3] as ComposedMsg[]),
     enabled,
-    keepPreviousData: true,
-    retry: false,
+    retry: 2,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     onSuccess,
@@ -87,13 +91,12 @@ export const useSimulateFeeForStoreCode = ({
   onSuccess,
   onError,
 }: SimulateQueryParamsForStoreCode) => {
-  const { address, getCosmWasmClient, currentChainName } = useWallet();
-
+  const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
   const simulateFn = async () => {
     if (!address) throw new Error("Please check your wallet connection.");
     if (!wasmFile) throw new Error("Fail to get Wasm file");
 
-    const client = await getCosmWasmClient();
+    const client = await getSigningCosmWasmClient();
     if (!client) throw new Error("Fail to get client");
 
     const submitStoreCodeMsg = async () => {
@@ -109,15 +112,15 @@ export const useSimulateFeeForStoreCode = ({
   };
   return useQuery({
     queryKey: [
-      "simulate_fee_store_code",
-      currentChainName,
+      CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE,
+      chain.chain_name,
       wasmFile,
       permission,
       addresses,
     ],
     queryFn: async () => simulateFn(),
     enabled,
-    retry: false,
+    retry: 2,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     onSuccess,
@@ -160,13 +163,12 @@ export const useSimulateFeeForProposalStoreCode = ({
   onSuccess,
   onError,
 }: SimulateQueryParamsForProposalStoreCode) => {
-  const { address, getCosmWasmClient, currentChainName } = useWallet();
-
+  const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
   const simulateFn = async () => {
     if (!address) throw new Error("Please check your wallet connection.");
     if (!wasmFile) throw new Error("Fail to get Wasm file");
 
-    const client = await getCosmWasmClient();
+    const client = await getSigningCosmWasmClient();
     if (!client) throw new Error("Fail to get client");
 
     const submitStoreCodeProposalMsg = async () => {
@@ -193,8 +195,8 @@ export const useSimulateFeeForProposalStoreCode = ({
 
   return useQuery({
     queryKey: [
-      "simulate_fee_store_code_proposal",
-      currentChainName,
+      CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE_PROPOSAL,
+      chain.chain_name,
       runAs,
       initialDeposit,
       unpinCode,
@@ -208,7 +210,7 @@ export const useSimulateFeeForProposalStoreCode = ({
     ],
     queryFn: async () => simulateFn(),
     enabled,
-    retry: false,
+    retry: 2,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     onSuccess,

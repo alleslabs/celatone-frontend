@@ -1,6 +1,5 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useCallback, useEffect, useState } from "react";
@@ -9,7 +8,9 @@ import { useForm } from "react-hook-form";
 import {
   useFabricateFee,
   useSimulateFeeQuery,
-  useLCDEndpoint,
+  useCurrentChain,
+  useBaseApiRoute,
+  CELATONE_QUERY_KEYS,
 } from "lib/app-provider";
 import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -35,9 +36,10 @@ export const MigrateContract = ({
   codeIdParam,
   handleBack,
 }: MigrateContractProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
+
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
 
@@ -57,13 +59,11 @@ export const MigrateContract = ({
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
 
-  const enableMigrate = !!(
-    address &&
-    codeId.length &&
-    migrateMsg.trim().length &&
+  const enableMigrate =
+    !!address &&
+    codeId.length > 0 &&
     jsonValidate(migrateMsg) === null &&
-    status.state === "success"
-  );
+    status.state === "success";
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
@@ -79,8 +79,8 @@ export const MigrateContract = ({
   });
 
   const { refetch } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: !!address && !!codeId.length,
       retry: false,

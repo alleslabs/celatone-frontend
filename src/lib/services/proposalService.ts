@@ -4,9 +4,9 @@ import big from "big.js";
 import { useCallback } from "react";
 
 import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
   useCelatoneApp,
-  useChainRecordAsset,
-  useLCDEndpoint,
 } from "lib/app-provider";
 import {
   getProposalList,
@@ -37,6 +37,7 @@ import {
   parseProposalStatus,
 } from "lib/utils";
 
+import { useAssetInfos } from "./assetService";
 import { useProposalListExpression } from "./expression";
 import type {
   DepositParamsInternal,
@@ -80,7 +81,7 @@ export const useRelatedProposalsByContractAddressPagination = (
 
   return useQuery(
     [
-      "related_proposals_by_contract_address_pagination",
+      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS_PAGINATION,
       contractAddress,
       offset,
       pageSize,
@@ -112,7 +113,7 @@ export const useRelatedProposalsCountByContractAddress = (
 
   return useQuery(
     [
-      "related_proposals_count_by_contract_address",
+      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS_COUNT,
       contractAddress,
       indexerGraphClient,
     ],
@@ -154,7 +155,7 @@ export const useProposalsByWalletAddressPagination = (
 
   return useQuery(
     [
-      "proposals_by_wallet_address_pagination",
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_PAGINATION,
       walletAddress,
       indexerGraphClient,
       offset,
@@ -182,7 +183,11 @@ export const useProposalsCountByWalletAddress = (
   }, [walletAddress, indexerGraphClient]);
 
   return useQuery(
-    ["proposals_count_by_wallet_address", walletAddress, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS_BY_WALLET_ADDRESS_COUNT,
+      walletAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -231,7 +236,13 @@ export const useProposalList = (
     [indexerGraphClient, offset, pageSize, expression]
   );
   return useQuery(
-    ["proposal_list", indexerGraphClient, expression, offset, pageSize],
+    [
+      CELATONE_QUERY_KEYS.PROPOSALS,
+      indexerGraphClient,
+      expression,
+      offset,
+      pageSize,
+    ],
     queryFn
   );
 };
@@ -260,7 +271,7 @@ export const useProposalListCount = (
   );
 
   return useQuery(
-    ["proposal_list_count", indexerGraphClient, expression],
+    [CELATONE_QUERY_KEYS.PROPOSALS_COUNT, indexerGraphClient, expression],
     queryFn
   );
 };
@@ -276,7 +287,10 @@ export const useProposalTypes = (): UseQueryResult<ProposalType[]> => {
         ),
     [indexerGraphClient]
   );
-  return useQuery(["proposal_types", indexerGraphClient], queryFn);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, indexerGraphClient],
+    queryFn
+  );
 };
 
 export interface MinDeposit {
@@ -301,23 +315,24 @@ export interface GovParams {
 }
 
 export const useGovParams = (): UseQueryResult<GovParams> => {
-  const lcdEndpoint = useLCDEndpoint();
-  const getAssetInfo = useChainRecordAsset();
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
+  const { assetInfos } = useAssetInfos({ withPrices: false });
   const queryFn = useCallback(
     () =>
       Promise.all([
         fetchGovDepositParams(lcdEndpoint),
-        fetchGovUploadAccessParams(lcdEndpoint),
+        fetchGovUploadAccessParams(cosmwasmEndpoint),
         fetchGovVotingParams(lcdEndpoint),
       ]).then<GovParams>((params) => {
         const minDepositParam = params[0].minDeposit[0];
-        const assetInfo = getAssetInfo(minDepositParam.denom);
+        const assetInfo = assetInfos?.[minDepositParam.denom];
         const [minDepositAmount, minDepositDenom] = [
           deexponentify(
             minDepositParam.amount as U<Token>,
             assetInfo?.precision
           ).toFixed(),
-          getTokenLabel(minDepositParam.denom),
+          getTokenLabel(minDepositParam.denom, assetInfo?.symbol),
         ];
         return {
           depositParams: {
@@ -330,7 +345,7 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
               formattedToken: formatBalanceWithDenom({
                 coin: minDepositParam,
                 precision: assetInfo?.precision,
-                decimalPoints: 2,
+                symbol: assetInfo?.symbol,
               }),
               precision: assetInfo?.precision ?? 0,
             },
@@ -342,20 +357,24 @@ export const useGovParams = (): UseQueryResult<GovParams> => {
           votingParams: params[2],
         };
       }),
-    [lcdEndpoint, getAssetInfo]
+    [lcdEndpoint, cosmwasmEndpoint, assetInfos]
   );
 
-  return useQuery(["gov_params", lcdEndpoint], queryFn, {
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.GOV_PARAMS, lcdEndpoint, assetInfos],
+    queryFn,
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useUploadAccessParams = (): UseQueryResult<UploadAccess> => {
-  const lcdEndpoint = useLCDEndpoint();
+  const cosmwasmEndpoint = useBaseApiRoute("cosmwasm");
   return useQuery(
-    ["upload_access", lcdEndpoint],
-    () => fetchGovUploadAccessParams(lcdEndpoint),
+    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS, cosmwasmEndpoint],
+    () => fetchGovUploadAccessParams(cosmwasmEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false }
   );
 };

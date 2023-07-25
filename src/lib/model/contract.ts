@@ -1,44 +1,24 @@
-import { useWallet } from "@cosmos-kit/react";
-import { useQuery } from "@tanstack/react-query";
-
-import { useCelatoneApp, useChainId, useLCDEndpoint } from "lib/app-provider";
+import { useCurrentChain } from "lib/app-provider";
 import { DEFAULT_TX_FILTERS, INSTANTIATED_LIST_NAME } from "lib/data";
-import { useCodeStore, useContractStore } from "lib/providers/store";
-import { useAssetInfos } from "lib/services/assetService";
-import {
-  queryContractCw2Info,
-  queryContractBalances,
-  queryInstantiateInfo,
-} from "lib/services/contract";
+import { useContractStore } from "lib/providers/store";
+import {} from "lib/services/contract";
 import {
   useContractListByCodeIdPagination,
   useInstantiatedCountByUserQuery,
-  useInstantiateDetailByContractQuery,
   useInstantiatedListByUserQuery,
   useMigrationHistoriesCountByContractAddress,
 } from "lib/services/contractService";
 import { useRelatedProposalsCountByContractAddress } from "lib/services/proposalService";
-import {
-  usePublicProjectByContractAddress,
-  usePublicProjectBySlug,
-} from "lib/services/publicProjectService";
 import { useTxsCountByAddress } from "lib/services/txService";
 import type { ContractListInfo } from "lib/stores/contract";
 import type {
   Addr,
-  BalanceWithAssetInfo,
   ContractAddr,
   HumanAddr,
-  ContractData,
   ContractInfo,
   Option,
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getDefaultDate } from "lib/utils";
-
-export interface ContractDataState {
-  contractData: ContractData;
-  isLoading: boolean;
-}
 
 interface InstantiatedByMeState {
   instantiatedListInfo: ContractListInfo;
@@ -46,7 +26,7 @@ interface InstantiatedByMeState {
 }
 
 export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { data: contracts = [], isLoading } = useInstantiatedListByUserQuery(
     enable ? (address as HumanAddr) : undefined
   );
@@ -70,7 +50,7 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
 };
 
 export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const { data: count } = useInstantiatedCountByUserQuery(address as HumanAddr);
 
   return {
@@ -88,97 +68,6 @@ export const useInstantiatedMockInfoByMe = (): ContractListInfo => {
   };
 };
 
-export const useContractData = (
-  contractAddress: ContractAddr
-): ContractDataState => {
-  const { indexerGraphClient } = useCelatoneApp();
-  const { currentChainRecord } = useWallet();
-  const { getCodeLocalInfo } = useCodeStore();
-  const { getContractLocalInfo } = useContractStore();
-  const endpoint = useLCDEndpoint();
-  const { assetInfos } = useAssetInfos();
-  const { data: publicInfo } =
-    usePublicProjectByContractAddress(contractAddress);
-  const { data: publicInfoBySlug } = usePublicProjectBySlug(publicInfo?.slug);
-  const chainId = useChainId();
-
-  const { data: instantiateInfo, isLoading: isInstantiateInfoLoading } =
-    useQuery(
-      ["query", "instantiate_info", endpoint, contractAddress],
-      async () =>
-        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
-    );
-
-  const { data: contractCw2Info, isLoading: isContractCw2InfoLoading } =
-    useQuery(
-      ["query", "contract_cw2_info", endpoint, contractAddress],
-      async () => queryContractCw2Info(endpoint, contractAddress),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
-    );
-
-  const { data: contractBalances, isLoading: isContractBalancesLoading } =
-    useQuery(
-      ["query", "contractBalances", contractAddress, chainId],
-      async () =>
-        queryContractBalances(
-          currentChainRecord?.name,
-          currentChainRecord?.chain.chain_id,
-          contractAddress
-        ),
-      { enabled: !!currentChainRecord && !!contractAddress, retry: false }
-    );
-
-  const contractBalancesWithAssetInfos = contractBalances
-    ?.map(
-      (balance): BalanceWithAssetInfo => ({
-        balance,
-        assetInfo: assetInfos?.[balance.id],
-      })
-    )
-    .sort((a, b) => {
-      if (a.balance.symbol && b.balance.symbol) {
-        return a.balance.symbol.localeCompare(b.balance.symbol);
-      }
-      return -1;
-    });
-
-  const codeInfo = instantiateInfo
-    ? getCodeLocalInfo(Number(instantiateInfo.codeId))
-    : undefined;
-  const contractLocalInfo = getContractLocalInfo(contractAddress);
-
-  const { data: instantiateDetail } =
-    useInstantiateDetailByContractQuery(contractAddress);
-
-  return {
-    contractData: {
-      chainId,
-      codeInfo,
-      contractLocalInfo,
-      contractCw2Info,
-      instantiateInfo,
-      publicProject: {
-        publicInfo,
-        publicDetail: publicInfoBySlug?.details,
-      },
-      balances: contractBalancesWithAssetInfos,
-      initMsg: instantiateDetail?.initMsg,
-      initTxHash: instantiateDetail?.initTxHash,
-      initProposalId: instantiateDetail?.initProposalId,
-      initProposalTitle: instantiateDetail?.initProposalTitle,
-      createdHeight:
-        instantiateInfo?.createdHeight ?? instantiateDetail?.createdHeight,
-      createdTime:
-        instantiateInfo?.createdTime ?? instantiateDetail?.createdTime,
-    },
-    isLoading:
-      isInstantiateInfoLoading ||
-      isContractCw2InfoLoading ||
-      isContractBalancesLoading,
-  };
-};
-
 /**
  * @remark
  * Remove execute table for now
@@ -190,13 +79,13 @@ export const useContractDetailsTableCounts = (
   const { data: migrationCount, refetch: refetchMigration } =
     useMigrationHistoriesCountByContractAddress(contractAddress);
   const { data: transactionsCount, refetch: refetchTransactions } =
-    useTxsCountByAddress(
-      contractAddress,
-      undefined,
-      "",
-      DEFAULT_TX_FILTERS,
-      undefined
-    );
+    useTxsCountByAddress({
+      address: contractAddress,
+      accountId: undefined,
+      search: "",
+      filters: DEFAULT_TX_FILTERS,
+      isSigner: undefined,
+    });
   const { data: relatedProposalsCount, refetch: refetchRelatedProposals } =
     useRelatedProposalsCountByContractAddress(contractAddress);
 

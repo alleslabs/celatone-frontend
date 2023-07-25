@@ -20,9 +20,12 @@ export const calculateAssetValue = (
 ): USD<Big> => big(amount).mul(price) as USD<Big>;
 
 export const calAssetValueWithPrecision = (balance: Balance): USD<Big> => {
+  if (Number.isNaN(Number(balance.amount)) || !balance.amount.trim().length)
+    throw new Error("Error balance amount is not a number");
+
   if (balance.price) {
     return calculateAssetValue(
-      toToken(balance.amount as U<Token>, balance.precision),
+      toToken(balance.amount.trim() as U<Token>, balance.precision),
       balance.price as USD<number>
     );
   }
@@ -48,6 +51,7 @@ export const coinToTokenWithValue = (
     symbol: assetInfo?.symbol,
     logo: assetInfo?.logo,
     precision: assetInfo?.precision,
+    price: assetInfo ? (big(assetInfo.price) as USD<Big>) : undefined,
     value: assetInfo
       ? calculateAssetValue(
           toToken(tokenAmount, assetInfo.precision),
@@ -58,13 +62,22 @@ export const coinToTokenWithValue = (
 };
 
 export const addTokenWithValue = (
-  oldTotal: Option<TokenWithValue>,
+  oldToken: Option<TokenWithValue>,
   token: TokenWithValue
-): TokenWithValue =>
-  !oldTotal
-    ? token
+): TokenWithValue => {
+  if (!oldToken) return token;
+  return oldToken.denom === token.denom
+    ? {
+        ...oldToken,
+        amount: oldToken.amount.add(token.amount) as U<Token<Big>>,
+        value: oldToken.value?.add(token.value ?? 0) as USD<Big>,
+      }
     : {
-        ...oldTotal,
-        amount: oldTotal.amount.add(token.amount) as U<Token<Big>>,
-        value: oldTotal.value?.add(token.value ?? 0) as USD<Big>,
+        denom: "",
+        amount: big(0) as U<Token<Big>>,
+        symbol: undefined,
+        logo: undefined,
+        precision: undefined,
+        value: big(0) as USD<Big>,
       };
+};

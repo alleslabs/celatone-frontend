@@ -1,4 +1,4 @@
-import { TableContainer } from "@chakra-ui/react";
+import { Box, TableContainer } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -19,7 +19,7 @@ const UnbondingsTableBody = ({
   unbondings,
   isLoading,
 }: UnbondingsTableProps) => {
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading withBorder />;
   if (!unbondings?.length)
     return (
       <EmptyState
@@ -29,7 +29,7 @@ const UnbondingsTableBody = ({
     );
 
   return (
-    <TableContainer>
+    <TableContainer width="100%">
       <BondedTableHeader
         templateColumns={TEMPLATE_COLUMNS}
         isDelegation={false}
@@ -58,8 +58,8 @@ export const UnbondingsTable = ({
   unbondings,
   isLoading,
 }: UnbondingsTableProps) => (
-  <div>
+  <Box width="100%">
     <TableTitle title="Unbonding" count={unbondings?.length ?? 0} mb={2} />
     <UnbondingsTableBody unbondings={unbondings} isLoading={isLoading} />
-  </div>
+  </Box>
 );

@@ -25,12 +25,7 @@ export const TokenCard = ({
   const { symbol, price, amount, precision, id } = userBalance.balance;
 
   return (
-    <Tooltip
-      label={`Token ID: ${id}`}
-      maxW="240px"
-      whiteSpace="pre-line"
-      textAlign="center"
-    >
+    <Tooltip label={`Token ID: ${id}`} maxW="240px" textAlign="center">
       <Flex
         className="copier-wrapper"
         direction="column"
@@ -70,7 +65,7 @@ export const TokenCard = ({
             type={price ? "supported_asset" : "unsupported_asset"}
             value={id}
             copyLabel="Token ID Copied!"
-            display="none"
+            display={{ base: "flex", md: "none" }}
             ml={1}
             amptrackSection={amptrackSection}
           />

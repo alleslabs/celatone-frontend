@@ -3,37 +3,43 @@ import { useMemo, useState } from "react";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
+import type { ContractData } from "../../types";
 import { ShowMoreButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { EditContractDetailsModal } from "lib/components/modal";
-import type { ContractData } from "lib/types";
 
 interface UserContractDescProps {
-  contractData: ContractData;
+  contractDetail: ContractData["contractDetail"];
+  contractLocalInfo: ContractData["contractLocalInfo"];
+  publicProject: ContractData["publicProject"];
 }
-export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
+export const UserContractDesc = ({
+  contractDetail,
+  contractLocalInfo,
+  publicProject,
+}: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
-  const description = contractData.contractLocalInfo?.description;
+  const description = contractLocalInfo?.description;
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
     text: description || "No Contract description",
     ellipsis: "...",
-    lines: contractData.publicProject.publicInfo?.description ? 4 : 2,
+    lines: publicProject.publicInfo?.description ? 4 : 2,
   });
 
   const renderEditContractButton = () => {
-    if (!contractData.instantiateInfo) return null;
+    if (!contractDetail) return null;
     return (
       <EditContractDetailsModal
         contractLocalInfo={{
-          contractAddress: contractData.instantiateInfo.contractAddress,
-          instantiator: contractData.instantiateInfo.instantiator,
-          label: contractData.instantiateInfo.label,
-          name: contractData.contractLocalInfo?.name,
+          contractAddress: contractDetail.contractAddress,
+          instantiator: contractDetail.instantiator,
+          label: contractDetail.label,
+          name: contractLocalInfo?.name,
           description,
-          tags: contractData.contractLocalInfo?.tags,
-          lists: contractData.contractLocalInfo?.lists,
+          tags: contractLocalInfo?.tags,
+          lists: contractLocalInfo?.lists,
         }}
         triggerElement={
           <Button
@@ -63,7 +69,7 @@ export const UserContractDesc = ({ contractData }: UserContractDescProps) => {
       maxW="100%"
       borderRadius="8px"
       p={4}
-      my={6}
+      my={{ base: 0, md: 6 }}
       flex="1"
       role="group"
     >

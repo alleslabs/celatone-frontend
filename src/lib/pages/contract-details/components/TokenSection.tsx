@@ -1,20 +1,26 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import router from "next/router";
 import { useMemo, useState } from "react";
 
+import type { ContractData } from "../types";
 import { ShowMoreButton } from "lib/components/button";
+import { Loading } from "lib/components/Loading";
 import { UnsupportedTokensModal } from "lib/components/modal";
 import { TokenCard } from "lib/components/TokenCard";
-import type { BalanceWithAssetInfo, ContractAddr, Option } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import type { ContractAddr } from "lib/types";
 
 interface TokenSectionProps {
-  balances: Option<BalanceWithAssetInfo[]>;
+  contractAddress: ContractAddr;
+  balances: ContractData["balances"];
+  isBalancesLoading: ContractData["isBalancesLoading"];
   amptrackPage?: string;
 }
-export const TokenSection = ({ balances, amptrackPage }: TokenSectionProps) => {
+export const TokenSection = ({
+  contractAddress,
+  balances,
+  isBalancesLoading,
+  amptrackPage,
+}: TokenSectionProps) => {
   const [showMore, setShowMore] = useState(false);
-  const contractAddress = getFirstQueryParam(router.query.contractAddress);
 
   const unsupportedAssets = useMemo(
     () => balances?.filter((balance) => !balance.assetInfo) ?? [],
@@ -27,6 +33,7 @@ export const TokenSection = ({ balances, amptrackPage }: TokenSectionProps) => {
   );
 
   const renderContext = () => {
+    if (isBalancesLoading) return <Loading />;
     if (!balances?.length) {
       return (
         <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
@@ -36,7 +43,10 @@ export const TokenSection = ({ balances, amptrackPage }: TokenSectionProps) => {
     }
     return (
       <>
-        <Grid gridGap={4} gridTemplateColumns="repeat(4, 1fr)">
+        <Grid
+          gridGap={4}
+          gridTemplateColumns={{ base: "1fr", md: "repeat(4, 1fr)" }}
+        >
           {supportedAssets.map((balance, index) => {
             if (!showMore && index >= 4) {
               return null;
@@ -58,8 +68,8 @@ export const TokenSection = ({ balances, amptrackPage }: TokenSectionProps) => {
 
   return (
     <>
-      <Flex justify="space-between">
-        <Text variant="body2" color="text.dark" mb={1} fontWeight={500}>
+      <Flex justify="space-between" align="center" mb={{ base: 2, md: 1 }}>
+        <Text variant="body2" color="text.dark" fontWeight={500}>
           Assets
         </Text>
         <UnsupportedTokensModal

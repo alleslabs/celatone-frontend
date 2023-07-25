@@ -1,12 +1,17 @@
 import { Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
+import {
+  usePublicProjectConfig,
+  useWasmConfig,
+  useInternalNavigate,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { scrollToTop } from "lib/utils";
+import { getFirstQueryParam } from "lib/utils";
 
 import { DetailHeader } from "./components/DetailHeader";
 import { PublicProjectAccountTable } from "./components/table/account/PublicProjectAccountTable";
@@ -15,15 +20,18 @@ import { PublicProjectContractTable } from "./components/table/contract/PublicPr
 import { usePublicData } from "./data";
 
 enum TabIndex {
-  Overview,
-  Codes,
-  Contracts,
-  Accounts,
+  Overview = "overview",
+  Codes = "codes",
+  Contracts = "contracts",
+  Accounts = "accounts",
 }
 
-export const ProjectDetail = () => {
+const ProjectDetail = () => {
   const router = useRouter();
-  const [tabIndex, setTabIndex] = useState(TabIndex.Overview);
+  const wasm = useWasmConfig({ shouldRedirect: false });
+  const navigate = useInternalNavigate();
+  // TODO: remove assertion later
+  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
   const {
     publicCodes,
     publicContracts,
@@ -33,67 +41,106 @@ export const ProjectDetail = () => {
     isLoading,
   } = usePublicData();
 
-  useEffect(() => {
-    if (router.isReady) AmpTrack(AmpEvent.TO_PROJECT_DETAIL);
-  }, [router.isReady]);
-
-  const handleOnViewMore = (tab: TabIndex) => {
-    setTabIndex(tab);
-    scrollToTop();
+  const handleTabChange = (nextTab: TabIndex) => () => {
+    if (nextTab === tab) return;
+    navigate({
+      pathname: "/projects/[slug]/[tab]",
+      query: {
+        slug,
+        tab: nextTab,
+      },
+      options: {
+        shallow: true,
+      },
+    });
   };
 
-  if (isLoading) return <Loading />;
+  usePublicProjectConfig({ shouldRedirect: true });
+
+  useEffect(() => {
+    if (router.isReady) {
+      if (!tab || !Object.values(TabIndex).includes(tab)) {
+        navigate({
+          pathname: "/projects/[slug]/[tab]",
+          query: {
+            slug,
+            tab: TabIndex.Overview,
+          },
+          options: {
+            shallow: true,
+          },
+        });
+      }
+      AmpTrack(AmpEvent.TO_PROJECT_DETAIL, { ...(tab && { tab }) });
+    }
+  }, [router.isReady, tab, slug, navigate]);
+
+  const overviewCount =
+    publicAccounts.length +
+    (wasm.enabled ? publicCodes.length + publicContracts.length : 0);
+
+  if (isLoading) return <Loading withBorder />;
   return (
     <PageContainer>
       <DetailHeader details={projectDetail} slug={slug} />
-      <Tabs index={tabIndex}>
-        <TabList my={6} borderBottom="1px" borderColor="gray.800">
+      <Tabs
+        index={Object.values(TabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
+        <TabList
+          my={6}
+          borderBottom="1px solid"
+          borderColor="gray.700"
+          overflowX="scroll"
+        >
           <CustomTab
-            count={
-              publicCodes.length +
-              publicContracts.length +
-              publicAccounts.length
-            }
-            onClick={() => setTabIndex(TabIndex.Overview)}
+            count={overviewCount}
+            onClick={handleTabChange(TabIndex.Overview)}
           >
             Overview
           </CustomTab>
           <CustomTab
             count={publicCodes.length}
             isDisabled={!publicCodes.length}
-            onClick={() => setTabIndex(TabIndex.Codes)}
+            onClick={handleTabChange(TabIndex.Codes)}
+            hidden={!wasm.enabled}
           >
             Codes
           </CustomTab>
           <CustomTab
             count={publicContracts.length}
             isDisabled={!publicContracts.length}
-            onClick={() => setTabIndex(TabIndex.Contracts)}
+            onClick={handleTabChange(TabIndex.Contracts)}
+            hidden={!wasm.enabled}
           >
             Contracts
           </CustomTab>
           <CustomTab
             count={publicAccounts.length}
             isDisabled={!publicAccounts.length}
-            onClick={() => setTabIndex(TabIndex.Accounts)}
+            onClick={handleTabChange(TabIndex.Accounts)}
           >
             Accounts
           </CustomTab>
         </TabList>
-
         <TabPanels my={8}>
           <TabPanel p={0}>
-            <PublicProjectCodeTable
-              codes={publicCodes}
-              onViewMore={() => handleOnViewMore(TabIndex.Codes)}
-            />
-            <PublicProjectContractTable
-              contracts={publicContracts}
-              onViewMore={() => handleOnViewMore(TabIndex.Contracts)}
-            />
+            {wasm.enabled && (
+              <>
+                <PublicProjectCodeTable
+                  codes={publicCodes}
+                  onViewMore={handleTabChange(TabIndex.Codes)}
+                />
+                <PublicProjectContractTable
+                  contracts={publicContracts}
+                  onViewMore={handleTabChange(TabIndex.Contracts)}
+                />
+              </>
+            )}
             <PublicProjectAccountTable
               accounts={publicAccounts}
-              onViewMore={() => handleOnViewMore(TabIndex.Accounts)}
+              onViewMore={handleTabChange(TabIndex.Accounts)}
             />
           </TabPanel>
           <TabPanel p={0}>
@@ -110,3 +157,5 @@ export const ProjectDetail = () => {
     </PageContainer>
   );
 };
+
+export default ProjectDetail;

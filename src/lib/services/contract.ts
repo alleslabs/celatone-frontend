@@ -1,8 +1,5 @@
 import axios from "axios";
-import type { GraphQLClient } from "graphql-request";
 
-import { CELATONE_API_ENDPOINT, getChainApiPath } from "env";
-import { getBlockTimestampByHeightQueryDocument } from "lib/query";
 import type {
   Addr,
   Balance,
@@ -10,7 +7,7 @@ import type {
   Option,
   PublicInfo,
 } from "lib/types";
-import { encode, libDecode, parseDateOpt } from "lib/utils";
+import { encode, libDecode } from "lib/utils";
 
 export interface ContractCw2InfoRaw {
   data: string;
@@ -21,7 +18,7 @@ export interface ContractCw2Info {
   version: string;
 }
 
-interface ContractResponse {
+export interface ContractResponse {
   address: ContractAddr;
   contract_info: {
     code_id: string;
@@ -45,18 +42,6 @@ interface PublicInfoResponse {
   github: string;
 }
 
-export interface InstantiateInfo {
-  contractAddress: ContractAddr;
-  codeId: string;
-  instantiator: Addr;
-  admin: Option<Addr>;
-  label: string;
-  createdHeight: Option<number>;
-  createdTime: Option<Date>;
-  ibcPortId: string;
-  raw: ContractResponse;
-}
-
 export const queryData = async (
   endpoint: string,
   contractAddress: ContractAddr,
@@ -64,7 +49,7 @@ export const queryData = async (
 ) => {
   const b64 = encode(msg);
   const { data } = await axios.get(
-    `${endpoint}cosmwasm/wasm/v1/contract/${contractAddress}/smart/${b64}`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/smart/${b64}`
   );
   return data;
 };
@@ -74,7 +59,7 @@ export const queryContract = async (
   contractAddress: ContractAddr
 ) => {
   const { data } = await axios.get<ContractResponse>(
-    `${endpoint}cosmwasm/wasm/v1/contract/${contractAddress}`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}`
   );
   return data;
 };
@@ -84,59 +69,17 @@ export const queryContractCw2Info = async (
   contractAddress: ContractAddr
 ) => {
   const { data } = await axios.get<ContractCw2InfoRaw>(
-    `${endpoint}cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
+    `${endpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/raw/Y29udHJhY3RfaW5mbw%3D%3D`
   );
   return JSON.parse(libDecode(data.data)) as ContractCw2Info;
 };
 
-export const queryInstantiateInfo = async (
-  endpoint: string,
-  indexerGraphClient: GraphQLClient,
-  contractAddress: ContractAddr
-): Promise<InstantiateInfo> => {
-  const res = await queryContract(endpoint, contractAddress);
-
-  // TODO: query height from gql instead when supporting Terra
-  let createdHeight: Option<number>;
-  let createdTime: Option<Date>;
-  if (res.contract_info.created) {
-    createdHeight = Number(res.contract_info.created.block_height);
-    if (createdHeight) {
-      await indexerGraphClient
-        .request(getBlockTimestampByHeightQueryDocument, {
-          height: createdHeight,
-        })
-        .then(({ blocks_by_pk }) => {
-          createdTime = parseDateOpt(blocks_by_pk?.timestamp);
-        })
-        .catch(() => {});
-    }
-  }
-
-  return {
-    contractAddress: res.address,
-    codeId: res.contract_info.code_id,
-    instantiator: res.contract_info.creator,
-    admin: res.contract_info.admin,
-    label: res.contract_info.label,
-    createdHeight,
-    createdTime,
-    ibcPortId: res.contract_info.ibc_port_id,
-    raw: res,
-  };
-};
-
 export const queryContractBalances = async (
-  chainName: Option<string>,
-  chainId: Option<string>,
+  balancesApiRoute: string,
   contractAddress: ContractAddr
 ): Promise<Balance[]> => {
-  if (!chainName || !chainId)
-    throw new Error("Invalid chain (queryContractBalances)");
   const { data } = await axios.get<Balance[]>(
-    `${CELATONE_API_ENDPOINT}/balances/${getChainApiPath(
-      chainName
-    )}/${chainId}/${contractAddress}`
+    `${balancesApiRoute}/${contractAddress}`
   );
   return data;
 };

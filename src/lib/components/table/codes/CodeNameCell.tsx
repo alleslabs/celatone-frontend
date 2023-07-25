@@ -1,8 +1,8 @@
 import { useToast } from "@chakra-ui/react";
 
 import { EditableCell } from "../EditableCell";
+import { useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { MAX_CODE_NAME_LENGTH } from "lib/data";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeLocalInfo } from "lib/stores/code";
@@ -16,6 +16,7 @@ export const CodeNameCell = ({
   code,
   isReadOnly = false,
 }: CodeNameCellProps) => {
+  const { constants } = useCelatoneApp();
   const toast = useToast();
   const { updateCodeInfo } = useCodeStore();
 
@@ -35,7 +36,7 @@ export const CodeNameCell = ({
     <EditableCell
       initialValue={code.name}
       defaultValue="Untitled Name"
-      maxLength={MAX_CODE_NAME_LENGTH}
+      maxLength={constants.maxCodeNameLength}
       onSave={onSave}
       isReadOnly={isReadOnly}
     />

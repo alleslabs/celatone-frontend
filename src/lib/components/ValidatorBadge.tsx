@@ -1,15 +1,19 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Flex, Image, Text } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
+import { Spinner, Flex, Image, Text } from "@chakra-ui/react";
 
-import { CURR_THEME, getChainApiPath } from "env";
+import validatorDefaultImg from "../../../public/validator.svg";
+import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { MobileLabel } from "lib/pages/account-details/components/mobile/MobileLabel";
+import { useValidatorImage } from "lib/services/validatorService";
 import type { ValidatorInfo } from "lib/types";
-import { removeSpecialChars } from "lib/utils";
 
 interface ValidatorBadgeProps {
   validator: ValidatorInfo | null;
   badgeSize?: ImageProps["boxSize"];
+  ampCopierSection?: string;
+  maxWidth?: string;
+  hasLabel?: boolean;
 }
 
 const FallbackRender = ({
@@ -33,33 +37,41 @@ const FallbackRender = ({
 export const ValidatorBadge = ({
   validator,
   badgeSize = 10,
+  ampCopierSection,
+  maxWidth = "160px",
+  hasLabel = true,
 }: ValidatorBadgeProps) => {
-  const { currentChainName } = useWallet();
+  const { data: valImgSrc, isLoading } = useValidatorImage(validator);
+  const isMobile = useMobile();
   return (
     <Flex alignItems="center" gap={2}>
       {validator ? (
         <>
-          <Image
-            boxSize={badgeSize}
-            src={`https://raw.githubusercontent.com/cosmostation/chainlist/master/chain/${getChainApiPath(
-              currentChainName
-            )}/moniker/${validator.validatorAddress}.png`}
-            alt={validator.moniker}
-            fallbackSrc={`https://ui-avatars.com/api/?name=${removeSpecialChars(
-              validator.moniker ?? ""
-            )}&background=${CURR_THEME.colors.secondary.main.replace(
-              "#",
-              ""
-            )}&color=fff`}
-            borderRadius="50%"
-          />
-          <ExplorerLink
-            value={validator.moniker ?? validator.validatorAddress}
-            copyValue={validator.validatorAddress}
-            type="validator_address"
-            textFormat="ellipsis"
-            showCopyOnHover
-          />
+          {isLoading ? (
+            <Spinner boxSize={badgeSize} />
+          ) : (
+            <Image
+              boxSize={badgeSize}
+              src={valImgSrc}
+              alt={validator.moniker}
+              borderRadius="50%"
+              fallbackSrc={validatorDefaultImg.src}
+              fallbackStrategy="onError"
+            />
+          )}
+          <Flex direction="column">
+            {isMobile && hasLabel && <MobileLabel label="Validator" />}
+            <ExplorerLink
+              value={validator.moniker ?? validator.validatorAddress}
+              copyValue={validator.validatorAddress}
+              type="validator_address"
+              textFormat="ellipsis"
+              showCopyOnHover
+              ampCopierSection={ampCopierSection}
+              maxWidth={maxWidth}
+              fixedHeight
+            />
+          </Flex>
         </>
       ) : (
         <FallbackRender badgeSize={badgeSize} />

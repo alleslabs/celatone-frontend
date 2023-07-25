@@ -1,12 +1,11 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp, useLCDEndpoint, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
-import { queryInstantiateInfo } from "lib/services/contract";
+import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
 
@@ -92,7 +91,9 @@ const ContractDetailsButton = ({
   instantiator,
   label,
 }: ContractDetailsButtonProps) => {
+  const isMobile = useMobile();
   const isExist = !!contractLocalInfo?.lists;
+  if (isMobile) return null;
   return isExist ? (
     <EditContractDetailsModal
       contractLocalInfo={contractLocalInfo}
@@ -132,9 +133,7 @@ const ContractDetailsButton = ({
 export const ContractSelectSection = observer(
   ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
-    const { indexerGraphClient } = useCelatoneApp();
     const isMobile = useMobile();
-    const endpoint = useLCDEndpoint();
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
@@ -150,29 +149,17 @@ export const ContractSelectSection = observer(
       mode: "all",
     });
 
-    const { refetch } = useQuery(
-      [
-        "query",
-        "instantiate_info",
-        endpoint,
-        indexerGraphClient,
-        contractAddress,
-      ],
-      async () =>
-        queryInstantiateInfo(endpoint, indexerGraphClient, contractAddress),
-      {
-        enabled: false,
-        retry: false,
-        onSuccess(data) {
-          reset({
-            isValid: true,
-            instantiator: data.instantiator,
-            label: data.label,
-          });
-        },
-        onError() {
-          reset(defaultValues);
-        },
+    const { refetch } = useContractDetailByContractAddress(
+      contractAddress,
+      (data) => {
+        reset({
+          isValid: true,
+          instantiator: data.instantiator,
+          label: data.label,
+        });
+      },
+      () => {
+        reset(defaultValues);
       }
     );
 
@@ -186,7 +173,7 @@ export const ContractSelectSection = observer(
           label: contractLocalInfo.label,
         });
       }
-    }, [contractAddress, contractLocalInfo, endpoint, reset, refetch]);
+    }, [contractAddress, contractLocalInfo, reset, refetch]);
 
     const contractState = watch();
     const notSelected = contractAddress.length === 0;
@@ -204,8 +191,11 @@ export const ContractSelectSection = observer(
         align="center"
         width="full"
       >
-        <Flex gap={4} width="100%">
-          <Flex direction="column" width={style.contractAddrContainer}>
+        <Flex gap={4} width="100%" direction={{ base: "column", md: "row" }}>
+          <Flex
+            direction="column"
+            width={{ base: "auto", md: style.contractAddrContainer }}
+          >
             Contract Address
             {!notSelected ? (
               <ExplorerLink
@@ -226,7 +216,10 @@ export const ContractSelectSection = observer(
               </Text>
             )}
           </Flex>
-          <Flex direction="column" width={style.contractNameContainer}>
+          <Flex
+            direction="column"
+            width={{ base: "auto", md: style.contractNameContainer }}
+          >
             Contract Name
             <DisplayName
               notSelected={notSelected}

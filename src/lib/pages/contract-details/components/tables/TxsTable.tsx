@@ -1,5 +1,8 @@
+import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { useMobile } from "lib/app-provider";
+import { TransactionCard } from "lib/components/card/TransactionCard";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
@@ -58,20 +61,34 @@ export const TxsTable = ({
     setPageSize(size);
     setCurrentPage(1);
   };
-
+  const isMobile = useMobile();
+  const emptyState = (
+    <EmptyState
+      imageVariant="empty"
+      message="This contract does not have any transactions"
+    />
+  );
+  if (!transactions?.length) return emptyState;
   return (
     <>
-      <TransactionsTable
-        transactions={transactions}
-        isLoading={isLoading}
-        emptyState={
-          <EmptyState
-            imageVariant="empty"
-            message="This contract does not have any transactions"
-          />
-        }
-        showRelations={false}
-      />
+      {isMobile ? (
+        <Flex direction="column" gap={4} w="full" mt={4}>
+          {transactions.map((transaction) => (
+            <TransactionCard
+              transaction={transaction}
+              key={`contract-detail-txs-${transaction.hash}`}
+              showRelations={false}
+            />
+          ))}
+        </Flex>
+      ) : (
+        <TransactionsTable
+          transactions={transactions}
+          isLoading={isLoading}
+          emptyState={emptyState}
+          showRelations={false}
+        />
+      )}
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}

@@ -1,10 +1,13 @@
+import { Flex } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { useMobile } from "lib/app-provider";
+import { MigrationCard } from "lib/components/card/MigrationCard";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableContainer } from "lib/components/table";
-import { useMigrationHistories } from "lib/pages/contract-details/model/data";
+import { useMigrationHistories } from "lib/pages/contract-details/data";
 import type { ContractAddr, Option } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
@@ -56,12 +59,13 @@ export const MigrationTable = ({
     setPageSize(size);
     setCurrentPage(1);
   };
-
+  const isMobile = useMobile();
   if (!migrationHistories?.length)
     return (
       <EmptyState
         imageVariant="empty"
         message="This contract does not have any migration history yet."
+        withBorder
       />
     );
 
@@ -69,21 +73,41 @@ export const MigrationTable = ({
     "90px minmax(300px, 1fr) minmax(220px, 1fr) repeat(2, max(150px)) max(232px) max(180px)";
 
   return (
-    <TableContainer>
-      <MigrationHeader templateColumns={templateColumns} />
-      {migrationHistories.map((history, idx) => (
-        <MigrationRow
-          key={
-            history.codeId +
-            history.remark.operation +
-            history.remark.type +
-            history.remark.value +
-            idx.toString()
-          }
-          history={history}
-          templateColumns={templateColumns}
-        />
-      ))}
+    <>
+      {isMobile ? (
+        <Flex direction="column" gap={4} w="full" mt={4}>
+          {migrationHistories.map((history, idx) => (
+            <MigrationCard
+              key={`mobile-${
+                history.codeId +
+                history.remark.operation +
+                history.remark.type +
+                history.remark.value +
+                idx.toString()
+              }`}
+              history={history}
+            />
+          ))}
+        </Flex>
+      ) : (
+        <TableContainer>
+          <MigrationHeader templateColumns={templateColumns} />
+          {migrationHistories.map((history, idx) => (
+            <MigrationRow
+              key={
+                history.codeId +
+                history.remark.operation +
+                history.remark.type +
+                history.remark.value +
+                idx.toString()
+              }
+              history={history}
+              templateColumns={templateColumns}
+            />
+          ))}
+        </TableContainer>
+      )}
+
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
@@ -96,6 +120,6 @@ export const MigrationTable = ({
           onPageSizeChange={onPageSizeChange}
         />
       )}
-    </TableContainer>
+    </>
   );
 };

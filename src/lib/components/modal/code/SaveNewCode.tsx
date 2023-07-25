@@ -1,15 +1,19 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button, useToast, FormControl } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
-import { useLCDEndpoint } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+  useCurrentChain,
+} from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput, NumberInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { getMaxCodeNameLengthError, MAX_CODE_NAME_LENGTH } from "lib/data";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
@@ -21,7 +25,11 @@ interface SaveNewCodeModalProps {
 }
 
 export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
+
+  const { constants } = useCelatoneApp();
+  const getMaxLengthError = useGetMaxLengthError();
+
   /* STATE */
   const [codeId, setCodeId] = useState("");
   const [codeIdStatus, setCodeIdStatus] = useState<FormStatus>({
@@ -41,23 +49,23 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     const trimedName = name.trim();
     if (trimedName.length === 0) {
       setNameStatus({ state: "init" });
-    } else if (trimedName.length > MAX_CODE_NAME_LENGTH)
+    } else if (trimedName.length > constants.maxCodeNameLength)
       setNameStatus({
         state: "error",
-        message: getMaxCodeNameLengthError(trimedName.length),
+        message: getMaxLengthError(trimedName.length, "code_name"),
       });
     else setNameStatus({ state: "success" });
-  }, [name]);
+  }, [constants.maxCodeNameLength, getMaxLengthError, name]);
 
   /* DEPENDENCY */
   const toast = useToast();
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
-  const endpoint = useLCDEndpoint();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", endpoint, codeId],
-    async () => getCodeIdInfo(endpoint, Number(codeId)),
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
+    async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: false,
       retry: false,
@@ -173,7 +181,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
     <ActionModal
       title="Save New Code"
       icon="bookmark-solid"
-      trigger={<Button {...buttonProps} />}
+      trigger={<Button {...buttonProps} as="button" />}
       mainBtnTitle="Save New Code"
       mainAction={handleSave}
       otherAction={reset}

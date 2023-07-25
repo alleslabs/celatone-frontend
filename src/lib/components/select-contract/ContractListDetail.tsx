@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useWallet } from "@cosmos-kit/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
 import { ContractsTable } from "../table";
+import { useCurrentChain } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import { DisconnectedState, EmptyState, ZeroState } from "lib/components/state";
 import { TagSelection } from "lib/components/TagSelection";
@@ -28,7 +28,7 @@ const ContractListContent = ({
   onContractSelect,
   isReadOnly,
 }: ContractListContentProps) => {
-  const { address } = useWallet();
+  const { address } = useCurrentChain();
   const isInstantiatedByMe =
     contractListInfo.slug === formatSlugName(INSTANTIATED_LIST_NAME);
 
@@ -41,7 +41,7 @@ const ContractListContent = ({
   return (
     <ContractsTable
       contracts={filteredContracts}
-      isLoading={isLoading}
+      isLoading={isInstantiatedByMe && isLoading}
       emptyState={
         !contractListInfo.contracts.length ? (
           <ZeroState

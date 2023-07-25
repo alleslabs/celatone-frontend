@@ -1,7 +1,7 @@
 import { Flex, Text, Grid } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import { useGetAddressType } from "lib/app-provider";
+import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ContractAddr, ContractInfo } from "lib/types";
 import { RemarkOperation } from "lib/types";
@@ -20,13 +20,14 @@ interface ContractsTableRowProps {
   withoutTag?: boolean;
 }
 
-const InstantiatorRender = ({
+export const InstantiatorRender = ({
   contractInfo: { instantiator, remark, latestUpdater },
   isReadOnly,
 }: {
   contractInfo: ContractInfo;
   isReadOnly: boolean;
 }) => {
+  const isMobile = useMobile();
   const getAddressType = useGetAddressType();
 
   /**
@@ -36,7 +37,7 @@ const InstantiatorRender = ({
     return instantiator ? (
       <ExplorerLink
         value={instantiator}
-        type="user_address"
+        type={getAddressType(instantiator)}
         showCopyOnHover
         isReadOnly={isReadOnly}
       />
@@ -58,9 +59,11 @@ const InstantiatorRender = ({
     case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE:
       return (
         <Flex direction="column" onClick={(e) => e.stopPropagation()}>
-          <Text variant="body3" color="text.dark">
-            Migrated by
-          </Text>
+          {!isMobile && (
+            <Text variant="body3" color="text.dark">
+              Migrated by
+            </Text>
+          )}
           <ExplorerLink
             value={latestUpdater}
             type={updaterType}

@@ -95,7 +95,7 @@ export const CodeSelectDrawerButton = ({
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody px={0} overflow="scroll">
+          <DrawerBody px={0} overflow="scroll" py={4}>
             <Flex gap={2} px={6} py={2}>
               <InputWithIcon
                 placeholder="Search with Code ID or Code Name"

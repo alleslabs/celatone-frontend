@@ -20,6 +20,7 @@ export const SaveOrEditCodeModal = observer(
         triggerElement={
           <Button
             variant="outline-gray"
+            size={{ base: "sm", md: "md" }}
             leftIcon={<CustomIcon name="bookmark" />}
           >
             Save Code
@@ -30,7 +31,11 @@ export const SaveOrEditCodeModal = observer(
       <EditCodeDetailsModal
         codeInfo={codeInfo}
         triggerElement={
-          <Button variant="ghost-gray" leftIcon={<CustomIcon name="edit" />}>
+          <Button
+            variant="ghost-gray"
+            size={{ base: "sm", md: "md" }}
+            leftIcon={<CustomIcon name="edit" />}
+          >
             Edit
           </Button>
         }
