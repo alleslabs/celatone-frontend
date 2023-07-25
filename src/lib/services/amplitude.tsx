@@ -1,8 +1,9 @@
 import { track } from "@amplitude/analytics-browser";
 import big from "big.js";
+import { createHash } from "crypto";
 
 import type { AttachFundsType } from "lib/components/fund/types";
-import type { Option, Token, Dict } from "lib/types";
+import type { Option, Token, Dict, Addr } from "lib/types";
 
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
@@ -132,9 +133,14 @@ export enum AmpEvent {
   CELATONE = "Celatone",
   FEEDBACK = "Feedback",
   ALLESLABS = "AllesLabs",
+
+  TEST = "Test",
 }
 
-type ActionAmpEvent = AmpEvent.ACTION_INSTANTIATE | AmpEvent.ACTION_EXECUTE;
+type ActionAmpEvent =
+  | AmpEvent.ACTION_INSTANTIATE
+  | AmpEvent.ACTION_EXECUTE
+  | AmpEvent.TEST;
 
 type SpecialAmpEvent =
   | AmpEvent.INVALID_STATE
@@ -178,6 +184,36 @@ export const AmpTrack = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   properties?: Record<string, any>
 ) => track(event, properties);
+
+export const Amp = ({
+  event,
+  address,
+  page,
+  section,
+  isExpand,
+  isDevMode,
+  currentChainId,
+}: {
+  event: ActionAmpEvent;
+  address: Option<Addr>;
+  page: string;
+  section: string;
+  isExpand: boolean;
+  isDevMode: Option<boolean>;
+  currentChainId: Option<string>;
+}) => {
+  const walletAddress = address
+    ? createHash("sha256").update(address).digest("hex")
+    : "Not Connected";
+  track(event, {
+    chain: currentChainId,
+    walletAddress,
+    page,
+    section,
+    navOpen: isExpand,
+    devMode: isDevMode,
+  });
+};
 
 export const AmpTrackAction = (
   event: ActionAmpEvent,

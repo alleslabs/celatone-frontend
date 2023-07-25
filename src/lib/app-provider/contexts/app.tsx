@@ -124,7 +124,11 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
 
   useNetworkChange(handleOnChainIdChange);
 
-  useAmplitude(currentChainName);
+  useAmplitude({
+    chainName: currentChainName,
+    navOpen: isExpand,
+    devMode: isDevMode,
+  });
 
   if (currentChainId && !(currentChainId in CHAIN_CONFIGS))
     return <NetworkErrorState />;

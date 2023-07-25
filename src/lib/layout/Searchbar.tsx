@@ -24,18 +24,19 @@ import type { ChangeEvent, KeyboardEvent } from "react";
 import { CURR_THEME } from "env";
 import {
   useCelatoneApp,
+  useCurrentChain,
   useInternalNavigate,
   useMobile,
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
-import { AmpTrackUseMainSearch } from "lib/services/amplitude";
+import { Amp, AmpEvent, AmpTrackUseMainSearch } from "lib/services/amplitude";
 import type {
   ResultMetadata,
   SearchResultType,
 } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { Option } from "lib/types";
+import type { Addr, Option } from "lib/types";
 
 const NOT_FOUND_MSG =
   "Matches not found. Please check your spelling or make sure you have selected the correct network.";
@@ -226,6 +227,8 @@ const Searchbar = () => {
   const [displayResults, setDisplayResults] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
+  const { address } = useCurrentChain();
+  const { isExpand, isDevMode, currentChainId } = useCelatoneApp();
 
   const {
     chainConfig: {
@@ -251,6 +254,15 @@ const Searchbar = () => {
 
   const handleSelectResult = useCallback(
     (type?: SearchResultType, isClick = false) => {
+      Amp({
+        event: AmpEvent.TEST,
+        address: address as Addr,
+        page: "",
+        section: "",
+        isExpand,
+        isDevMode,
+        currentChainId,
+      });
       AmpTrackUseMainSearch(isClick);
       const routeOptions = getRouteOptions(type);
       if (routeOptions) {
@@ -262,7 +274,15 @@ const Searchbar = () => {
         setKeyword("");
       }
     },
-    [metadata.icns.address, keyword, navigate]
+    [
+      address,
+      isExpand,
+      isDevMode,
+      currentChainId,
+      navigate,
+      metadata.icns.address,
+      keyword,
+    ]
   );
 
   const handleOnKeyEnter = useCallback(
