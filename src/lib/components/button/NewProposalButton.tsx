@@ -4,14 +4,14 @@ import { Tooltip } from "../Tooltip";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import { useGovParams } from "lib/services/proposalService";
-import { AccessConfigPermission } from "lib/types";
+// import { useGovParams } from "lib/services/proposalService";
+// import { AccessConfigPermission } from "lib/types";
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
-  const { data: govParams } = useGovParams();
-  const isPermissionless =
-    govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
+  // const { data: govParams } = useGovParams();
+  // const isPermissionless =
+  //   govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
 
   return (
     <Menu>
@@ -24,16 +24,19 @@ export const NewProposalButton = () => {
         Create New Proposal
       </MenuButton>
       <MenuList>
-        <MenuItem
-          icon={<CustomIcon name="code" color="gray.600" />}
-          onClick={() => {
-            navigate({
-              pathname: "/proposals/store-code",
-            });
-          }}
-        >
-          To Store Code
-        </MenuItem>
+        <Tooltip label="Coming soon!">
+          <MenuItem
+            icon={<CustomIcon name="code" color="gray.600" />}
+            isDisabled
+            onClick={() => {
+              navigate({
+                pathname: "/proposals/store-code",
+              });
+            }}
+          >
+            To Store Code
+          </MenuItem>
+        </Tooltip>
         {/* <MenuItem
           icon={<CustomIcon name="contract-address" color="gray.600"/>}
           onClick={() => {
@@ -44,15 +47,9 @@ export const NewProposalButton = () => {
         >
           To Instantiate Contract
         </MenuItem> */}
-        <Tooltip
-          label={
-            isPermissionless
-              ? "Not available in permissionless network"
-              : undefined
-          }
-        >
+        <Tooltip label="Coming soon!">
           <MenuItem
-            isDisabled={isPermissionless}
+            isDisabled
             icon={<CustomIcon name="admin" color="gray.600" />}
             onClick={() => {
               navigate({

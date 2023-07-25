@@ -26,6 +26,7 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
+  useInternalNavigate,
   useSimulateFeeForProposalStoreCode,
   useSubmitStoreCodeProposalTx,
   useValidateAddress,
@@ -153,12 +154,16 @@ const StoreCodeProposal = () => {
     codeHash,
   } = watch();
   const { wasmFile, permission, addresses } = uploadSectionWatch();
+  const navigate = useInternalNavigate();
 
   // Amp
   const router = useRouter();
   useEffect(() => {
+    navigate({
+      pathname: "/",
+    });
     if (router.isReady) AmpTrack(AmpEvent.TO_PROPOSAL_TO_STORE_CODE);
-  }, [router.isReady]);
+  }, [router.isReady, navigate]);
 
   const { variant, description, icon } = getAlert(
     initialDeposit.amount,
