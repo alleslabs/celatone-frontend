@@ -128,7 +128,7 @@ export const usePoolTxsCount = (
   if (isLoading) return { count: 0, countDisplay: "0", isLoading };
 
   if (error && txs?.length === 0)
-    return { count: 0, countDisplay: "N/A", isLoading };
+    return { count: 0, countDisplay: "0", isLoading };
 
   const upperboundCount = 10000;
   const showActualCount = data !== undefined && data <= upperboundCount;
