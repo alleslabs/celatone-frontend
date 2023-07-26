@@ -1,5 +1,7 @@
 import { SchemaProperties, SchemaStore } from "./schema";
-import exampleSchema from "./schema-example.json";
+import executeSchemaOutput from "./schema-test-suite/execute-schema-output.json";
+import querySchemaOutput from "./schema-test-suite/query-schema-output.json";
+import exampleSchema from "./schema-test-suite/schema-example.json";
 
 let schemaStore: SchemaStore;
 const codeHash = "a1b2c3d4e5f6g7";
@@ -72,5 +74,34 @@ describe("getSchemaProperty", () => {
         SchemaProperties.CONTRACT_NAME
       )
     ).toBeUndefined();
+  });
+});
+
+describe("getQuerySchemaFormArray", () => {
+  beforeAll(() => {
+    schemaStore.saveNewSchema(codeHash, exampleSchema);
+  });
+  test("correctly get form array for query schema", () => {
+    expect(schemaStore.getQuerySchemaFormArray(codeHash)).toEqual(
+      querySchemaOutput
+    );
+  });
+
+  test("correctly return undefined for non-existent code hash", () => {
+    expect(schemaStore.getQuerySchemaFormArray("randomHash")).toBeUndefined();
+  });
+});
+
+describe("getExecuteSchemaFormArray", () => {
+  beforeAll(() => {
+    schemaStore.saveNewSchema(codeHash, exampleSchema);
+  });
+  test("correctly get form array for execute schema", () => {
+    expect(schemaStore.getExecuteSchemaFormArray(codeHash)).toEqual(
+      executeSchemaOutput
+    );
+  });
+  test("correctly return undefined for non-existent code hash", () => {
+    expect(schemaStore.getExecuteSchemaFormArray("randomHash")).toBeUndefined();
   });
 });
