@@ -43,7 +43,7 @@ export function RemoveContractModal({
       mainVariant="error"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
-      trigger={<MenuItem {...menuItemProps} />}
+      trigger={<MenuItem {...menuItemProps} as="button" />}
     >
       <Text>
         <Highlight
