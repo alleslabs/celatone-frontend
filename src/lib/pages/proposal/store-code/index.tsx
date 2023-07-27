@@ -607,6 +607,7 @@ const StoreCodeProposal = () => {
           {/* Sticky Sidebar  */}
           <GridItem area="sidebar">
             <StickySidebar
+              hasForumAlert
               marginTop="128px"
               metadata={SIDEBAR_STORE_CODE_DETAILS(
                 prettyName,
