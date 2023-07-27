@@ -86,7 +86,7 @@ export const uploadContractTx = ({
           },
         ],
         receiptInfo: {
-          header: "Upload Wasm Complete",
+          header: "Upload Wasm Complete!",
           description: (
             <>
               <span style={{ fontWeight: 700 }}>
@@ -97,7 +97,11 @@ export const uploadContractTx = ({
             </>
           ),
           headerIcon: (
-            <CustomIcon name="upload-cloud" boxSize={5} color="gray.600" />
+            <CustomIcon
+              name="upload-cloud-solid"
+              boxSize={5}
+              color="gray.600"
+            />
           ),
         },
         actionVariant: isMigrate ? "upload-migrate" : "upload",
