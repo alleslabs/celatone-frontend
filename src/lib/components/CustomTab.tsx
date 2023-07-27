@@ -9,9 +9,14 @@ import {
 
 interface CustomTabProps extends TabProps {
   count?: number | string;
+  isLoading?: boolean;
 }
 
-export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
+export const CustomTab = ({
+  count,
+  isLoading,
+  ...restProps
+}: CustomTabProps) => {
   const tabProps = useTab({ ...restProps });
   const isSelected = tabProps["aria-selected"];
   const styles = useMultiStyleConfig("Tabs", tabProps);
@@ -42,7 +47,7 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
     >
       {tabProps.children}
 
-      {!count ? (
+      {isLoading ? (
         <Skeleton
           ml={2}
           h={4}
@@ -52,9 +57,11 @@ export const CustomTab = ({ count, ...restProps }: CustomTabProps) => {
           endColor="gray.700"
         />
       ) : (
-        <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
-          {count}
-        </Badge>
+        count !== undefined && (
+          <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
+            {count}
+          </Badge>
+        )
       )}
     </Button>
   );
