@@ -63,11 +63,12 @@ export const useAmplitudeTrack = () => {
 
   // To query
   const ampTrackToQuery = useCallback(
-    (contract: boolean, msg: boolean, section?: string) => {
+    (contract: boolean, msg: boolean, fromPage?: string, section?: string) => {
       track(AmpEvent.TO_QUERY, {
         ...mandatoryEvents,
         contract,
         msg,
+        fromPage,
         section,
       });
     },
@@ -76,11 +77,12 @@ export const useAmplitudeTrack = () => {
 
   // To execute
   const ampTrackToExecute = useCallback(
-    (contract: boolean, msg: boolean, section?: string) => {
+    (contract: boolean, msg: boolean, fromPage?: string, section?: string) => {
       track(AmpEvent.TO_EXECUTE, {
         ...mandatoryEvents,
         contract,
         msg,
+        fromPage,
         section,
       });
     },
