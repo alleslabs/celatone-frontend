@@ -122,7 +122,7 @@ export const usePool = (
 export const usePoolTxsCount = (
   poolId: number,
   type: PoolTxFilter
-): { count: number; countDisplay: Option<string>; isLoading: boolean } => {
+): { count: number; countDisplay: Option<string> } => {
   const { data, isLoading, error } = useTxsCountByPoolId(poolId, type);
   const { data: txs, isLoading: txsIsLoading } = useTxsByPoolIdPagination(
     poolId,
@@ -130,17 +130,13 @@ export const usePoolTxsCount = (
     0,
     1
   );
-  if (isLoading || txsIsLoading)
-    return { count: 0, countDisplay: undefined, isLoading };
 
-  if (error && txs?.length === 0)
-    return { count: 0, countDisplay: "0", isLoading };
-
+  if (isLoading || txsIsLoading) return { count: 0, countDisplay: undefined };
+  if (error && txs?.length === 0) return { count: 0, countDisplay: "0" };
   const upperboundCount = 10000;
   const showActualCount = data !== undefined && data <= upperboundCount;
   return {
     count: showActualCount ? data : upperboundCount,
     countDisplay: showActualCount ? data.toString() : `${upperboundCount}+`,
-    isLoading: false,
   };
 };
