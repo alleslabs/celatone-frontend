@@ -1,10 +1,3 @@
-// TODO - Remove this file
-import { track } from "@amplitude/analytics-browser";
-import big from "big.js";
-
-import type { AttachFundsType } from "lib/components/fund/types";
-import type { Option, Token, Dict } from "lib/types";
-
 export enum AmpEvent {
   INVALID_STATE = "To Invalid State",
   // CODE
@@ -133,16 +126,13 @@ export enum AmpEvent {
   CELATONE = "Celatone",
   FEEDBACK = "Feedback",
   ALLESLABS = "AllesLabs",
-
-  TEST = "Test",
 }
 
-type ActionAmpEvent =
+export type ActionAmpEvent =
   | AmpEvent.ACTION_INSTANTIATE
-  | AmpEvent.ACTION_EXECUTE
-  | AmpEvent.TEST;
+  | AmpEvent.ACTION_EXECUTE;
 
-type SpecialAmpEvent =
+export type SpecialAmpEvent =
   | AmpEvent.INVALID_STATE
   | AmpEvent.TO_QUERY
   | AmpEvent.TO_EXECUTE
@@ -175,170 +165,3 @@ type SpecialAmpEvent =
   | AmpEvent.USE_SORT
   | AmpEvent.USE_VIEW
   | AmpEvent.USE_TOGGLE;
-
-export const AmpTrackInvalidState = (title: string) =>
-  track(AmpEvent.INVALID_STATE, { title });
-
-export const AmpTrack = (
-  event: Exclude<AmpEvent, ActionAmpEvent | SpecialAmpEvent>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  properties?: Record<string, any>
-) => track(event, properties);
-
-export const AmpTrackAction = (
-  event: ActionAmpEvent,
-  funds: number,
-  attachFundsOption: AttachFundsType
-) => track(event, { funds, attachFundsOption });
-
-export const AmpTrackToQuery = (contract: boolean, msg: boolean) =>
-  track(AmpEvent.TO_QUERY, { contract, msg });
-
-export const AmpTrackToExecute = (contract: boolean, msg: boolean) =>
-  track(AmpEvent.TO_EXECUTE, { contract, msg });
-
-export const AmpTrackToInstantiate = (msg: boolean, codeId: boolean) =>
-  track(AmpEvent.TO_INSTANTIATE, { msg, codeId });
-
-export const AmpTrackToMigrate = (contract: boolean, codeId: boolean) =>
-  track(AmpEvent.TO_MIGRATE, { contract, codeId });
-
-export const AmpTrackToAdminUpdate = (contract: boolean) =>
-  track(AmpEvent.TO_ADMIN_UPDATE, { contract });
-
-export const AmpTrackUseMainSearch = (isClick: boolean) =>
-  track(AmpEvent.USE_MAIN_SEARCH, { isClick });
-
-export const AmpTrackUseTab = (tab: string) => track(AmpEvent.USE_TAB, { tab });
-
-export const AmpTrackUseRadio = (radio: string) =>
-  track(AmpEvent.USE_RADIO, { radio });
-
-export const AmpTrackUseOtherModal = (title: string) =>
-  track(AmpEvent.USE_OTHER_MODAL, { title });
-
-export const AmpTrackMintscan = (
-  type: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  properties?: Dict<string, any>
-) => track(AmpEvent.MINTSCAN, { type, properties });
-
-export const AmpTrackWebsite = (url: string) =>
-  track(AmpEvent.WEBSITE, { url });
-
-export const AmpTrackSocial = (url: string) => track(AmpEvent.SOCIAL, { url });
-
-export const AmpTrackCelatone = (url: string) =>
-  track(AmpEvent.CELATONE, { url });
-
-export const AmpTrackViewJson = (page: string) =>
-  track(AmpEvent.USE_VIEW_JSON, { page });
-
-export const AmpTrackUnsupportedToken = (page: Option<string>) =>
-  track(AmpEvent.USE_UNSUPPORTED_ASSETS, { page });
-
-export const AmpTrackCopier = (section: Option<string>, type: string) =>
-  track(AmpEvent.USE_COPIER, { section, type });
-
-export const AmpTrackExpand = ({
-  action,
-  component,
-  info,
-  section,
-}: {
-  action: "expand" | "collapse";
-  component:
-    | "assets"
-    | "json"
-    | "permission_address"
-    | "event_box"
-    | "unsupported_pool"
-    | "pool_tx_msg";
-  info?: object;
-  section?: string;
-}) => track(AmpEvent.USE_EXPAND, { action, component, info, section });
-
-export const AmpTrackExpandAll = (action: "expand" | "collapse") =>
-  track(AmpEvent.USE_EXPAND, { action });
-
-export const AmpTrackUseClickWallet = (page?: string, component?: string) =>
-  track(AmpEvent.USE_CLICK_WALLET, { page, component });
-
-export const AmpTrackUseRightHelperPanel = (page: string, action: string) =>
-  track(AmpEvent.USE_RIGHT_HELPER_PANEL, { page, action });
-
-export const AmpTrackUseUnpin = (page: string, check: boolean) =>
-  track(AmpEvent.USE_UNPIN, { page, check });
-
-export const AmpTrackUseInstantiatePermission = (
-  page: string,
-  type: string,
-  emptyAddressesLength: number,
-  addressesLength: number
-) =>
-  track(AmpEvent.USE_INSTANTIATE_PERMISSION, {
-    page,
-    type,
-    emptyAddressesLength,
-    addressesLength,
-  });
-
-export const AmpTrackUseWhitelistedAddresses = (
-  page: string,
-  emptyAddressesLength: number,
-  filledAddressesLength: number
-) =>
-  track(AmpEvent.USE_WHITELISTED_ADDRESSES, {
-    page,
-    emptyAddressesLength,
-    filledAddressesLength,
-  });
-
-export const AmpTrackUseDepositFill = (page: string, amount: Token) =>
-  track(AmpEvent.USE_DEPOSIT_FILL, { page, amount });
-
-export const AmpTrackUseSubmitProposal = (
-  page: string,
-  properties: {
-    initialDeposit: string;
-    minDeposit: Option<string>;
-    assetDenom: Option<string>;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
-  }
-) => {
-  const proposalPeriod = big(properties.initialDeposit).lt(
-    properties.minDeposit || "0"
-  )
-    ? "Deposit"
-    : "Voting";
-  track(AmpEvent.USE_SUBMIT_PROPOSAL, { page, proposalPeriod, ...properties });
-};
-export const AmpTrackUseFilter = (
-  ampEvent: AmpEvent,
-  filters: string[],
-  action: string
-) => track(ampEvent, { action, filters });
-
-export const AmpTrackPaginationNavigate = (
-  navigate: string,
-  pageSize: number,
-  currentPage: number
-) =>
-  track(AmpEvent.USE_PAGINATION_NAVIGATION, {
-    navigate,
-    pageSize,
-    currentPage,
-  });
-
-export const AmpTrackUseSort = (order: "ascending" | "descending") =>
-  track(AmpEvent.USE_SORT, { order });
-
-export const AmpTrackUseView = (view: string) =>
-  track(AmpEvent.USE_VIEW, { view });
-
-export const AmpTrackUseToggle = (name: string, isActive: boolean) =>
-  track(AmpEvent.USE_TOGGLE, { name, isActive });
-
-export const AmpTrackUseAlertCTA = (page: string, action: string) =>
-  track(AmpEvent.USE_ALERT_CTA, { page, action });

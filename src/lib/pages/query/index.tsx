@@ -100,7 +100,6 @@ const Query = () => {
       if (!contractAddressParam) setCmds([]);
 
       ampTrackToQuery(!!contractAddressParam, !!msgParam);
-      // AmpTrackToQuery(!!contractAddressParam, !!msgParam);
     }
   }, [router, onContractSelect, ampTrackToQuery]);
 

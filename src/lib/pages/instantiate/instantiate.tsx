@@ -16,6 +16,7 @@ import {
   useBaseApiRoute,
   CELATONE_QUERY_KEYS,
   useExampleAddresses,
+  useAmplitudeTrack,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { AssignMe } from "lib/components/AssignMe";
@@ -33,15 +34,10 @@ import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
-import {
-  AmpEvent,
-  AmpTrack,
-  AmpTrackAction,
-  AmpTrackToInstantiate,
-} from "lib/services/amplitude";
+import { AmpTrack, AmpTrackAction } from "lib/services/amplitude";
 import { getCodeIdInfo } from "lib/services/code";
 import type { ComposedMsg, HumanAddr } from "lib/types";
-import { AccessConfigPermission, MsgType } from "lib/types";
+import { AmpEvent, AccessConfigPermission, MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate, libDecode } from "lib/utils";
 
 import { Footer } from "./component";
@@ -75,6 +71,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
+  const { ampTrackToInstantiate } = useAmplitudeTrack();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -278,8 +275,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   }, [codeIdQuery, msgQuery, setAssets, setValue]);
 
   useEffect(() => {
-    if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
-  }, [router.isReady, msgQuery, codeIdQuery]);
+    if (router.isReady) ampTrackToInstantiate(!!msgQuery, !!codeIdQuery);
+  }, [router.isReady, msgQuery, codeIdQuery, ampTrackToInstantiate]);
 
   const validateAdmin = useCallback(
     (input: string) =>

@@ -3,14 +3,17 @@ import type { Coin } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
+import {
+  useAmplitudeTrack,
+  useInternalNavigate,
+  useWasmConfig,
+} from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
 import { useExecuteCmds } from "lib/hooks";
-import { AmpTrackToExecute } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
 import {
   getFirstQueryParam,
@@ -28,6 +31,7 @@ const Execute = () => {
   const [initialMsg, setInitialMsg] = useState("");
   const [contractAddress, setContractAddress] = useState("");
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
+  const { ampTrackToExecute } = useAmplitudeTrack();
 
   const { isFetching, execCmds } = useExecuteCmds(
     contractAddress as ContractAddr
@@ -78,9 +82,9 @@ const Execute = () => {
       }
 
       setContractAddress(contractAddressParam);
-      AmpTrackToExecute(!!contractAddressParam, !!msgParam);
+      ampTrackToExecute(!!contractAddressParam, !!msgParam);
     }
-  }, [router, onContractSelect]);
+  }, [router, onContractSelect, ampTrackToExecute]);
 
   return (
     <PageContainer>
