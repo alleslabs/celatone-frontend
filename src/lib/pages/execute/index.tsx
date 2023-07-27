@@ -32,17 +32,12 @@ const Execute = () => {
   const [contractAddress, setContractAddress] = useState("");
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
   const { ampTrackToExecute } = useAmplitudeTrack();
-  const contractAddressParam = getFirstQueryParam(
-    router.query.contract
-  ) as ContractAddr;
-  const msgParam = getFirstQueryParam(router.query.msg);
 
   const { isFetching, execCmds } = useExecuteCmds(
     contractAddress as ContractAddr
   );
 
   const goToQuery = () => {
-    ampTrackToExecute(!!contractAddressParam, !!msgParam, "Execute Page");
     navigate({
       pathname: "/query",
       query: {
@@ -64,6 +59,10 @@ const Execute = () => {
 
   useEffect(() => {
     if (router.isReady) {
+      const contractAddressParam = getFirstQueryParam(
+        router.query.contract
+      ) as ContractAddr;
+      const msgParam = getFirstQueryParam(router.query.msg);
       if (!msgParam.length) {
         setInitialMsg("");
         setInitialFunds([]);
@@ -84,13 +83,7 @@ const Execute = () => {
       setContractAddress(contractAddressParam);
       ampTrackToExecute(!!contractAddressParam, !!msgParam);
     }
-  }, [
-    router,
-    onContractSelect,
-    ampTrackToExecute,
-    msgParam,
-    contractAddressParam,
-  ]);
+  }, [router, onContractSelect, ampTrackToExecute]);
 
   return (
     <PageContainer>

@@ -38,14 +38,8 @@ const Query = () => {
   const [cmds, setCmds] = useState<[string, string][]>([]);
   const isMobile = useMobile();
   const { ampTrackToQuery } = useAmplitudeTrack();
-  const contractAddressParam = getFirstQueryParam(
-    router.query.contract
-  ) as ContractAddr;
-
-  const msgParam = getFirstQueryParam(router.query.msg);
 
   const goToExecute = () => {
-    ampTrackToQuery(!!contractAddressParam, !!msgParam, "Query Page");
     navigate({
       pathname: "/execute",
       query: { ...(contractAddress && { contract: contractAddress }) },
@@ -89,6 +83,11 @@ const Query = () => {
 
   useEffect(() => {
     if (router.isReady) {
+      const contractAddressParam = getFirstQueryParam(
+        router.query.contract
+      ) as ContractAddr;
+
+      const msgParam = getFirstQueryParam(router.query.msg);
       let decodeMsg = decode(msgParam);
       if (decodeMsg && jsonValidate(decodeMsg) !== null) {
         onContractSelect(contractAddressParam);
@@ -102,13 +101,7 @@ const Query = () => {
 
       ampTrackToQuery(!!contractAddressParam, !!msgParam);
     }
-  }, [
-    router,
-    onContractSelect,
-    ampTrackToQuery,
-    msgParam,
-    contractAddressParam,
-  ]);
+  }, [router, onContractSelect, ampTrackToQuery]);
 
   return (
     <PageContainer>
