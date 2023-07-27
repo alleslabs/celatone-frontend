@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#457](https://github.com/alleslabs/celatone-frontend/pull/457) Add alert for proposal forum review
 - [#389](https://github.com/alleslabs/celatone-frontend/pull/389) Fix modal consistency
 - [#381](https://github.com/alleslabs/celatone-frontend/pull/381) Correctly infer output type from snake-camel utils
 - [#422](https://github.com/alleslabs/celatone-frontend/pull/422) Create query keys enum

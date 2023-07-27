@@ -5,10 +5,12 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Alert,
   Box,
   Flex,
   Text,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AmpTrackUseRightHelperPanel } from "lib/services/amplitude";
@@ -26,6 +28,7 @@ export interface SidebarMetadata {
 
 interface StickySidebarProps extends BoxProps {
   metadata: SidebarMetadata;
+  hasForumAlert?: boolean;
 }
 
 interface ToPageProps {
@@ -57,6 +60,7 @@ const ToPage = ({ onClick, title }: ToPageProps) => (
 
 export const StickySidebar = ({
   metadata,
+  hasForumAlert = false,
   ...boxProps
 }: StickySidebarProps) => {
   const navigate = useInternalNavigate();
@@ -65,7 +69,32 @@ export const StickySidebar = ({
   const hasAction = toPage;
   return (
     <Box flex="4" px={8} position="relative" {...boxProps}>
-      <Flex position="fixed" width="full">
+      <Flex position="fixed" width="full" direction="column">
+        {hasForumAlert && (
+          <Alert variant="secondary" gap="2" w={96} mb={2}>
+            <Box>
+              <Text variant="body2" fontWeight={600} color="secondary">
+                Forum Posting Required for Proposals
+              </Text>
+              <Text variant="body3" color="secondary" mt={1}>
+                Governance proposals must be posted as a draft on
+                <Flex align="center" display="inline-flex">
+                  <Link
+                    href="https://forum.osmosis.zone"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    https://forum.osmosis.zone
+                    <CustomIcon name="launch" boxSize={2} />
+                  </Link>
+                </Flex>{" "}
+                for <b>at least three days</b> before being submitted to chain
+                to allow feedback. Proposals that have not met these criteria
+                should be met with `NoWithVeto`.
+              </Text>
+            </Box>
+          </Alert>
+        )}
         <Accordion
           allowToggle
           width={96}
