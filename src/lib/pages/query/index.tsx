@@ -10,12 +10,12 @@ import {
   useInternalNavigate,
   useWasmConfig,
   useMobile,
+  useAmplitudeTrack,
 } from "lib/app-provider";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import PageContainer from "lib/components/PageContainer";
-import { AmpTrackToQuery } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { ContractAddr, RpcQueryError } from "lib/types";
 import {
@@ -37,6 +37,8 @@ const Query = () => {
   const [initialMsg, setInitialMsg] = useState("");
   const [cmds, setCmds] = useState<[string, string][]>([]);
   const isMobile = useMobile();
+  const { ampTrackToQuery } = useAmplitudeTrack();
+
   const goToExecute = () => {
     navigate({
       pathname: "/execute",
@@ -97,9 +99,10 @@ const Query = () => {
       setInitialMsg(jsonMsg);
       if (!contractAddressParam) setCmds([]);
 
-      AmpTrackToQuery(!!contractAddressParam, !!msgParam);
+      ampTrackToQuery(!!contractAddressParam, !!msgParam);
+      // AmpTrackToQuery(!!contractAddressParam, !!msgParam);
     }
-  }, [router, onContractSelect]);
+  }, [router, onContractSelect, ampTrackToQuery]);
 
   return (
     <PageContainer>

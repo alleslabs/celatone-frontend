@@ -1,10 +1,6 @@
 import { track } from "@amplitude/analytics-browser";
 import big from "big.js";
-import { createHash } from "crypto";
-import { useRouter } from "next/router";
 
-import { useCelatoneApp } from "lib/app-provider/contexts/app";
-import { useCurrentChain } from "lib/app-provider/hooks";
 import type { AttachFundsType } from "lib/components/fund/types";
 import type { Option, Token, Dict } from "lib/types";
 
@@ -188,41 +184,14 @@ export const AmpTrack = (
   properties?: Record<string, any>
 ) => track(event, properties);
 
-export const Amp = (
-  event: AmpEvent,
-  section?: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  properties?: Record<string, any>
-) => {
-  const router = useRouter();
-  const { isExpand, isDevMode, currentChainId } = useCelatoneApp();
-  const { address } = useCurrentChain();
-
-  const walletAddress = address
-    ? createHash("sha256").update(address).digest("hex")
-    : "Not Connected";
-  track(event, {
-    chain: currentChainId,
-    walletAddress,
-    page: router.pathname.replace("/[network]", ""),
-    section,
-    navOpen: isExpand,
-    devMode: isDevMode,
-    properties,
-  });
-};
-
 export const AmpTrackAction = (
   event: ActionAmpEvent,
   funds: number,
   attachFundsOption: AttachFundsType
 ) => track(event, { funds, attachFundsOption });
 
-export const AmpTrackToQuery = (
-  contract: boolean,
-  msg: boolean,
-  section?: string
-) => Amp(AmpEvent.TO_QUERY, section, { contract, msg });
+export const AmpTrackToQuery = (contract: boolean, msg: boolean) =>
+  track(AmpEvent.TO_QUERY, { contract, msg });
 
 export const AmpTrackToExecute = (contract: boolean, msg: boolean) =>
   track(AmpEvent.TO_EXECUTE, { contract, msg });
