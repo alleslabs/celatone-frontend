@@ -18,7 +18,8 @@ import { useCurrentChain } from "./useCurrentChain";
 import { useMobile } from "./useMediaQuery";
 
 export const useAmplitudeTrack = () => {
-  const { isExpand, isDevMode, currentChainId } = useCelatoneApp();
+  const { isExpand, isDevMode, currentChainId, prevPathname } =
+    useCelatoneApp();
   const { address } = useCurrentChain();
   const isMobile = useMobile();
   const router = useRouter();
@@ -30,6 +31,7 @@ export const useAmplitudeTrack = () => {
   const mandatoryEvents = useMemo(
     () => ({
       page: router.pathname.replace("/[network]", ""),
+      prevPathname,
       walletAddress,
       chain: currentChainId,
       mobile: isMobile,
@@ -41,6 +43,7 @@ export const useAmplitudeTrack = () => {
       isDevMode,
       isExpand,
       isMobile,
+      prevPathname,
       router.pathname,
       walletAddress,
     ]

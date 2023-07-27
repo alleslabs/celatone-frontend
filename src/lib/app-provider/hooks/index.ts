@@ -14,3 +14,4 @@ export * from "./useRPCEndpoint";
 export * from "./useConfig";
 export * from "./useCurrentChain";
 export * from "./useAmplitudeTrack";
+export * from "./usePreviousPathname";

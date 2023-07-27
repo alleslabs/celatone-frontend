@@ -13,6 +13,7 @@ import {
 
 import { useAmplitude } from "../hooks/useAmplitude";
 import { useNetworkChange } from "../hooks/useNetworkChange";
+import { usePreviousPathname } from "../hooks/usePreviousPathname";
 import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
 import { PROJECT_CONSTANTS } from "config/project";
@@ -42,6 +43,7 @@ interface AppContextInterface {
   constants: ProjectConstants;
   isExpand: boolean;
   isDevMode: Option<boolean>;
+  prevPathname: string | null;
   setIsExpand: Dispatch<SetStateAction<boolean>>;
   setIsDevMode: Dispatch<SetStateAction<Option<boolean>>>;
 }
@@ -54,6 +56,7 @@ const AppContext = createContext<AppContextInterface>({
   constants: PROJECT_CONSTANTS,
   isExpand: false,
   isDevMode: undefined,
+  prevPathname: null,
   setIsExpand: () => {},
   setIsDevMode: () => {},
 });
@@ -74,6 +77,8 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   );
   const [isExpand, setIsExpand] = useLocalStorage("navbar", false);
 
+  const prevPathname = usePreviousPathname();
+
   // Remark: this function is only used in useSelectChain. Do not use in other places.
   const handleOnChainIdChange = useCallback((newChainId: string) => {
     const config = CHAIN_CONFIGS[newChainId];
@@ -92,10 +97,18 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       constants: PROJECT_CONSTANTS,
       isDevMode,
       isExpand,
+      prevPathname,
       setIsDevMode,
       setIsExpand,
     };
-  }, [currentChainId, isDevMode, isExpand, setIsDevMode, setIsExpand]);
+  }, [
+    currentChainId,
+    isDevMode,
+    isExpand,
+    prevPathname,
+    setIsDevMode,
+    setIsExpand,
+  ]);
 
   useEffect(() => {
     if (currentChainName) {
