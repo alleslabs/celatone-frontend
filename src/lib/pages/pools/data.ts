@@ -4,7 +4,10 @@ import big from "big.js";
 import type { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolByPoolId, usePoolListQuery } from "lib/services/poolService";
-import { useTxsCountByPoolId } from "lib/services/txService";
+import {
+  useTxsByPoolIdPagination,
+  useTxsCountByPoolId,
+} from "lib/services/txService";
 import type {
   Option,
   Pool,
@@ -115,18 +118,27 @@ export const usePool = (
   };
 };
 
+// TODO - Revisit pool counts
 export const usePoolTxsCount = (
   poolId: number,
   type: PoolTxFilter
 ): { count: number; countDisplay: string; isLoading: boolean } => {
-  const { data, isLoading } = useTxsCountByPoolId(poolId, type);
-  if (isLoading) return { count: 0, countDisplay: "0", isLoading };
+  const { data, isLoading, error } = useTxsCountByPoolId(poolId, type);
+  const { data: txs, isLoading: txsIsLoading } = useTxsByPoolIdPagination(
+    poolId,
+    type,
+    0,
+    1
+  );
 
+  const loading = isLoading || txsIsLoading;
+  if (error && txs?.length === 0)
+    return { count: 0, countDisplay: "0", isLoading: loading };
   const upperboundCount = 10000;
   const showActualCount = data !== undefined && data <= upperboundCount;
   return {
     count: showActualCount ? data : upperboundCount,
     countDisplay: showActualCount ? data.toString() : `${upperboundCount}+`,
-    isLoading: false,
+    isLoading: loading,
   };
 };

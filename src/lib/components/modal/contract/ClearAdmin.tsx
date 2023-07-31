@@ -28,14 +28,14 @@ export const ClearAdminModal = ({
   return (
     <ActionModal
       title="You'll no longer have admin access"
-      icon="delete"
+      icon="delete-solid"
       iconColor="error.light"
       trigger={triggerElement}
       mainBtnTitle="Yes, clear it"
       mainAction={proceed}
       mainVariant="error"
       otherBtnTitle="No, keep it"
-      otherVariant="ghost-secondary"
+      otherVariant="outline-primary"
     >
       <Text>
         Clearing the admin is a permanent action. You&apos;ll not be able to

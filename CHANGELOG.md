@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#455](https://github.com/alleslabs/celatone-frontend/pull/455) Implement schema store and unit test
 - [#453](https://github.com/alleslabs/celatone-frontend/pull/453) Attach schema feature on upload complete
+- [#322](https://github.com/alleslabs/celatone-frontend/pull/322) Tab url path for account details and public project details pages
+- [#449](https://github.com/alleslabs/celatone-frontend/pull/449) Support searching with pool id
 - [#419](https://github.com/alleslabs/celatone-frontend/pull/419) Add error message box for tx failed modal and enhance styling
 - [#415](https://github.com/alleslabs/celatone-frontend/pull/415) Search by icns names feature and Show registered icns names on account details page
 - [#438](https://github.com/alleslabs/celatone-frontend/pull/438) Add new home page
@@ -49,6 +51,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#457](https://github.com/alleslabs/celatone-frontend/pull/457) Add alert for proposal forum review
+- [#389](https://github.com/alleslabs/celatone-frontend/pull/389) Fix modal consistency
+- [#381](https://github.com/alleslabs/celatone-frontend/pull/381) Correctly infer output type from snake-camel utils
+- [#422](https://github.com/alleslabs/celatone-frontend/pull/422) Create query keys enum
 - [#450](https://github.com/alleslabs/celatone-frontend/pull/450) Retrieve asset prices only when necessary (/prices url path)
 - [#451](https://github.com/alleslabs/celatone-frontend/pull/451) Add jest test cases for json, date, and number in utils
 - [#412](https://github.com/alleslabs/celatone-frontend/pull/412) Refactor contract detail data loading
@@ -61,6 +67,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#456](https://github.com/alleslabs/celatone-frontend/pull/456) Fix pool count chip in pool transaction table
+- [#454](https://github.com/alleslabs/celatone-frontend/pull/454) Fix contract selection loading state for other folders
 - [#452](https://github.com/alleslabs/celatone-frontend/pull/452) Fix public project data on the account details and code details page still remains when switching network
 
 ## v1.1.0

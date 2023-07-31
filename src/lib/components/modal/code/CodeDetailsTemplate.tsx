@@ -5,6 +5,7 @@ import { ActionModal } from "../ActionModal";
 import { useCelatoneApp, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextInput } from "lib/components/forms";
+import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useCodeStore } from "lib/providers/store";
@@ -18,6 +19,7 @@ interface CodeDetailsTemplateModalProps {
   isNewCode: boolean;
   codeInfo: CodeInfo;
   triggerElement: JSX.Element;
+  icon?: IconKeys;
 }
 
 export const CodeDetailsTemplateModal = ({
@@ -27,6 +29,7 @@ export const CodeDetailsTemplateModal = ({
   isNewCode,
   codeInfo,
   triggerElement,
+  icon = "bookmark-solid",
 }: CodeDetailsTemplateModalProps) => {
   const { constants } = useCelatoneApp();
   const { saveNewCode, updateCodeInfo } = useCodeStore();
@@ -76,10 +79,9 @@ export const CodeDetailsTemplateModal = ({
     <ActionModal
       title={title}
       trigger={triggerElement}
-      icon="bookmark-solid"
-      noHeaderBorder
-      noCloseButton
+      icon={icon}
       mainBtnTitle={mainBtnTitle}
+      closeOnOverlayClick={false}
       mainAction={handleAction}
       headerContent={
         <Flex direction="column" gap={2}>
