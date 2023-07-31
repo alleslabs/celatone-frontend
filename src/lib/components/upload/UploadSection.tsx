@@ -206,7 +206,10 @@ export const UploadSection = ({
           }}
         />
       ) : (
-        <DropZone setFile={(file) => setValue("wasmFile", file)} />
+        <DropZone
+          setFile={(file) => setValue("wasmFile", file)}
+          fileType="wasm"
+        />
       )}
       <CodeHashBox codeHash={codeHash} />
       <ControllerInput

@@ -10,6 +10,7 @@ import { composeStoreCodeMsg } from "lib/utils";
 export interface UploadTxInternalResult {
   codeDisplayName: string;
   codeId: string;
+  codeHash: string;
   txHash: string;
   formattedFee: string;
 }

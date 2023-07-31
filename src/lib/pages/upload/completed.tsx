@@ -17,8 +17,13 @@ interface UploadCompleteProps {
 
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
-  // Retrieve attached state from local storage
-  const attached = false;
+  // Retrieve schema from local storage
+  const schema = {
+    wow: "asdasdsad",
+    wowza: "xzkcnzxlkczxnc",
+    instantiate: "sadkasdkamdaskldks",
+  };
+  const attached = Boolean(schema);
   return (
     <WasmPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
@@ -69,7 +74,13 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       <Text color="text.disabled" variant="body2" fontWeight={500} mb={4}>
         Your attached JSON schema will be stored locally on your device
       </Text>
-      <UploadSchema attached={attached} />
+
+      <UploadSchema
+        attached={attached}
+        schema={schema}
+        codeId={txResult.codeId}
+      />
+
       {!attached && (
         <Flex my={8} gap={4} alignItems="center" w="full">
           <Divider borderColor="gray.600" />
