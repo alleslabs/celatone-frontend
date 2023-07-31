@@ -1,22 +1,9 @@
+import type { RJSFSchema as JsonSchema } from "@rjsf/utils";
+import type { JSONSchema7 } from "json-schema";
 import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 
 import type { Dict, Option } from "lib/types";
-
-type JsonSchema = Dict<string, unknown>;
-
-// InternalMsg interface assists with accessing certain known properties without getting type errors when writing getter functions
-interface InternalSchema {
-  $schema: string;
-  oneOf: Array<Dict<string, unknown>>;
-  definitions: Dict<string, unknown>;
-  [key: string]: unknown;
-}
-
-interface InternalQueryMsg {
-  required: string[];
-  [key: string]: unknown;
-}
 
 // TODO: this is derived from an example schema, ensure that the properties are comprehensively defined
 export enum SchemaProperties {
@@ -31,6 +18,20 @@ export enum SchemaProperties {
   RESPONSES = "responses",
 }
 
+type NullableJsonSchema = JsonSchema | null;
+
+export interface CodeSchema {
+  [SchemaProperties.CONTRACT_NAME]: string;
+  [SchemaProperties.CONTRACT_VERSION]: string;
+  [SchemaProperties.IDL_VERSION]: string;
+  [SchemaProperties.INSTANTIATE]: NonNullable<JsonSchema>;
+  [SchemaProperties.EXECUTE]: NullableJsonSchema;
+  [SchemaProperties.QUERY]: NullableJsonSchema;
+  [SchemaProperties.MIGRATE]: NullableJsonSchema;
+  [SchemaProperties.SUDO]: NullableJsonSchema;
+  [SchemaProperties.RESPONSES]: { [key: string]: JsonSchema };
+}
+
 export class SchemaStore {
   /**
    * @remarks code hash as key and json schema as value (annotated as Dict<string, unknown>>)
@@ -43,7 +44,7 @@ export class SchemaStore {
    *      }
    * }
    */
-  jsonSchemas: Dict<string, JsonSchema>;
+  jsonSchemas: Dict<string, CodeSchema>;
 
   constructor() {
     this.jsonSchemas = {};
@@ -56,56 +57,61 @@ export class SchemaStore {
     });
   }
 
-  saveNewSchema(codeHash: string, schema: JsonSchema) {
+  saveNewSchema(codeHash: string, schema: CodeSchema) {
     this.jsonSchemas[codeHash] = schema;
   }
 
-  getSchemaByCodeHash(codeHash: string): Option<JsonSchema> {
+  getSchemaByCodeHash(codeHash: string): Option<CodeSchema> {
     return this.jsonSchemas[codeHash];
   }
 
-  getSchemaProperty(codeHash: string, property: SchemaProperties) {
+  getSchemaProperty<T extends SchemaProperties>(codeHash: string, property: T) {
     return this.jsonSchemas[codeHash]?.[property];
   }
 
-  getQuerySchemaFormArray(codeHash: string) {
+  getQuerySchema(codeHash: string): Option<Array<[JSONSchema7, JsonSchema]>> {
     const responsesSchema = this.getSchemaProperty(
       codeHash,
       SchemaProperties.RESPONSES
-    ) as { [key: string]: object };
+    );
     const querySchema = this.getSchemaProperty(
       codeHash,
       SchemaProperties.QUERY
-    ) as InternalSchema;
+    );
 
     if (!querySchema || !responsesSchema) return undefined;
 
-    return querySchema.oneOf.map((msg) => {
-      const response = responsesSchema[(msg as InternalQueryMsg).required[0]];
-      return [
-        {
-          ...msg,
-          $schema: querySchema.$schema,
-          definitions: querySchema.definitions,
-        },
-        {
-          ...response,
-          readOnly: true,
-        },
-      ];
-    });
+    return querySchema.oneOf
+      ?.map((msg) => {
+        const schema7 = msg as JSONSchema7;
+        const { required } = schema7;
+        return (
+          required !== undefined && [
+            {
+              ...schema7,
+              $schema: querySchema.$schema,
+              definitions: querySchema.definitions,
+            },
+            {
+              ...responsesSchema[required[0]],
+              readOnly: true,
+            },
+          ]
+        );
+      })
+      .filter((tuple) => Boolean(tuple)) as Array<[JSONSchema7, JsonSchema]>;
   }
 
-  getExecuteSchemaFormArray(codeHash: string) {
+  getExecuteSchema(codeHash: string): Option<Array<JSONSchema7>> {
     const executeSchema = this.getSchemaProperty(
       codeHash,
       SchemaProperties.EXECUTE
-    ) as InternalSchema;
+    );
 
     if (!executeSchema) return undefined;
 
-    return executeSchema.oneOf.map((msg) => ({
-      ...msg,
+    return executeSchema.oneOf?.map((msg) => ({
+      ...(msg as JSONSchema7),
       $schema: executeSchema.$schema,
       definitions: executeSchema.definitions,
     }));
