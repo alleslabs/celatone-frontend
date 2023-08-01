@@ -22,7 +22,6 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
-  useInternalNavigate,
   useSimulateFeeQuery,
   useSubmitWhitelistProposalTx,
   useWasmConfig,
@@ -69,7 +68,6 @@ const ampPage = "proposal_whitelist";
 const ProposalToWhitelist = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
-  const navigate = useInternalNavigate();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const { address: walletAddress = "" } = useCurrentChain();
@@ -233,11 +231,10 @@ const ProposalToWhitelist = () => {
   }, [minDeposit, reset]);
 
   useEffect(() => {
-    navigate({ pathname: "/" });
     if (router.isReady) {
       AmpTrack(AmpEvent.TO_PROPOSAL_TO_WHITELIST);
     }
-  }, [router.isReady, navigate]);
+  }, [router.isReady]);
 
   return (
     <>
