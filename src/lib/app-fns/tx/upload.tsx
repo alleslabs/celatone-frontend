@@ -110,7 +110,8 @@ export const uploadContractTx = ({
             },
             actionVariant: "upload-migrate",
           } as TxResultRendering)
-        : (null as unknown as TxResultRendering);
+        : // TODO: this is type hack
+          (null as unknown as TxResultRendering);
     }
   )().pipe(catchTxError());
 };

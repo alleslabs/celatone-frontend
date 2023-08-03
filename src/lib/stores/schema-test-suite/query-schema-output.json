@@ -1,40 +1,48 @@
 [
   [
     {
+      "title": "config",
       "description": "Get config",
-      "type": "object",
-      "required": ["config"],
-      "properties": {
-        "config": {
-          "type": "object",
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false,
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "definitions": {
-        "MarsAddressType": {
-          "oneOf": [
-            {
-              "type": "string",
-              "enum": ["incentives", "oracle", "red_bank", "rewards_collector"]
-            },
-            {
-              "description": "Protocol admin is an ICS-27 interchain account controlled by Mars Hub's x/gov module. This account will take the owner and admin roles of red-bank contracts.\n\nOwner means the account who can invoke certain priviliged execute methods on a contract, such as updating the config. Admin means the account who can migrate a contract.",
-              "type": "string",
-              "enum": ["protocol_admin"]
-            },
-            {
-              "description": "The `fee_collector` module account controlled by Mars Hub's x/distribution module. Funds sent to this account will be distributed as staking rewards.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
-              "type": "string",
-              "enum": ["fee_collector"]
-            },
-            {
-              "description": "The module account controlled by the by Mars Hub's x/safety module. Funds sent to this account will be deposited into the safety fund.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
-              "type": "string",
-              "enum": ["safety_fund"]
-            }
-          ]
+      "schema": {
+        "type": "object",
+        "required": ["config"],
+        "properties": {
+          "config": {
+            "type": "object",
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "definitions": {
+          "MarsAddressType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "incentives",
+                  "oracle",
+                  "red_bank",
+                  "rewards_collector"
+                ]
+              },
+              {
+                "description": "Protocol admin is an ICS-27 interchain account controlled by Mars Hub's x/gov module. This account will take the owner and admin roles of red-bank contracts.\n\nOwner means the account who can invoke certain priviliged execute methods on a contract, such as updating the config. Admin means the account who can migrate a contract.",
+                "type": "string",
+                "enum": ["protocol_admin"]
+              },
+              {
+                "description": "The `fee_collector` module account controlled by Mars Hub's x/distribution module. Funds sent to this account will be distributed as staking rewards.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
+                "type": "string",
+                "enum": ["fee_collector"]
+              },
+              {
+                "description": "The module account controlled by the by Mars Hub's x/safety module. Funds sent to this account will be deposited into the safety fund.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
+                "type": "string",
+                "enum": ["safety_fund"]
+              }
+            ]
+          }
         }
       }
     },
@@ -63,39 +71,47 @@
   ],
   [
     {
+      "title": "address",
       "description": "Get a single address",
-      "type": "object",
-      "required": ["address"],
-      "properties": {
-        "address": {
-          "$ref": "#/definitions/MarsAddressType"
-        }
-      },
-      "additionalProperties": false,
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "definitions": {
-        "MarsAddressType": {
-          "oneOf": [
-            {
-              "type": "string",
-              "enum": ["incentives", "oracle", "red_bank", "rewards_collector"]
-            },
-            {
-              "description": "Protocol admin is an ICS-27 interchain account controlled by Mars Hub's x/gov module. This account will take the owner and admin roles of red-bank contracts.\n\nOwner means the account who can invoke certain priviliged execute methods on a contract, such as updating the config. Admin means the account who can migrate a contract.",
-              "type": "string",
-              "enum": ["protocol_admin"]
-            },
-            {
-              "description": "The `fee_collector` module account controlled by Mars Hub's x/distribution module. Funds sent to this account will be distributed as staking rewards.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
-              "type": "string",
-              "enum": ["fee_collector"]
-            },
-            {
-              "description": "The module account controlled by the by Mars Hub's x/safety module. Funds sent to this account will be deposited into the safety fund.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
-              "type": "string",
-              "enum": ["safety_fund"]
-            }
-          ]
+      "schema": {
+        "type": "object",
+        "required": ["address"],
+        "properties": {
+          "address": {
+            "$ref": "#/definitions/MarsAddressType"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "definitions": {
+          "MarsAddressType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "incentives",
+                  "oracle",
+                  "red_bank",
+                  "rewards_collector"
+                ]
+              },
+              {
+                "description": "Protocol admin is an ICS-27 interchain account controlled by Mars Hub's x/gov module. This account will take the owner and admin roles of red-bank contracts.\n\nOwner means the account who can invoke certain priviliged execute methods on a contract, such as updating the config. Admin means the account who can migrate a contract.",
+                "type": "string",
+                "enum": ["protocol_admin"]
+              },
+              {
+                "description": "The `fee_collector` module account controlled by Mars Hub's x/distribution module. Funds sent to this account will be distributed as staking rewards.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
+                "type": "string",
+                "enum": ["fee_collector"]
+              },
+              {
+                "description": "The module account controlled by the by Mars Hub's x/safety module. Funds sent to this account will be deposited into the safety fund.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
+                "type": "string",
+                "enum": ["safety_fund"]
+              }
+            ]
+          }
         }
       }
     },
@@ -149,42 +165,50 @@
   ],
   [
     {
+      "title": "addresses",
       "description": "Get a list of addresses",
-      "type": "object",
-      "required": ["addresses"],
-      "properties": {
-        "addresses": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MarsAddressType"
-          }
-        }
-      },
-      "additionalProperties": false,
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "definitions": {
-        "MarsAddressType": {
-          "oneOf": [
-            {
-              "type": "string",
-              "enum": ["incentives", "oracle", "red_bank", "rewards_collector"]
-            },
-            {
-              "description": "Protocol admin is an ICS-27 interchain account controlled by Mars Hub's x/gov module. This account will take the owner and admin roles of red-bank contracts.\n\nOwner means the account who can invoke certain priviliged execute methods on a contract, such as updating the config. Admin means the account who can migrate a contract.",
-              "type": "string",
-              "enum": ["protocol_admin"]
-            },
-            {
-              "description": "The `fee_collector` module account controlled by Mars Hub's x/distribution module. Funds sent to this account will be distributed as staking rewards.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
-              "type": "string",
-              "enum": ["fee_collector"]
-            },
-            {
-              "description": "The module account controlled by the by Mars Hub's x/safety module. Funds sent to this account will be deposited into the safety fund.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
-              "type": "string",
-              "enum": ["safety_fund"]
+      "schema": {
+        "type": "object",
+        "required": ["addresses"],
+        "properties": {
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/MarsAddressType"
             }
-          ]
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "definitions": {
+          "MarsAddressType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "incentives",
+                  "oracle",
+                  "red_bank",
+                  "rewards_collector"
+                ]
+              },
+              {
+                "description": "Protocol admin is an ICS-27 interchain account controlled by Mars Hub's x/gov module. This account will take the owner and admin roles of red-bank contracts.\n\nOwner means the account who can invoke certain priviliged execute methods on a contract, such as updating the config. Admin means the account who can migrate a contract.",
+                "type": "string",
+                "enum": ["protocol_admin"]
+              },
+              {
+                "description": "The `fee_collector` module account controlled by Mars Hub's x/distribution module. Funds sent to this account will be distributed as staking rewards.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
+                "type": "string",
+                "enum": ["fee_collector"]
+              },
+              {
+                "description": "The module account controlled by the by Mars Hub's x/safety module. Funds sent to this account will be deposited into the safety fund.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
+                "type": "string",
+                "enum": ["safety_fund"]
+              }
+            ]
+          }
         }
       }
     },
@@ -244,57 +268,65 @@
   ],
   [
     {
+      "title": "all_addresses",
       "description": "Query all stored addresses with pagination",
-      "type": "object",
-      "required": ["all_addresses"],
-      "properties": {
-        "all_addresses": {
-          "type": "object",
-          "properties": {
-            "limit": {
-              "type": ["integer", "null"],
-              "format": "uint32",
-              "minimum": 0
+      "schema": {
+        "type": "object",
+        "required": ["all_addresses"],
+        "properties": {
+          "all_addresses": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": ["integer", "null"],
+                "format": "uint32",
+                "minimum": 0
+              },
+              "start_after": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/MarsAddressType"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
             },
-            "start_after": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/MarsAddressType"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false,
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "definitions": {
-        "MarsAddressType": {
-          "oneOf": [
-            {
-              "type": "string",
-              "enum": ["incentives", "oracle", "red_bank", "rewards_collector"]
-            },
-            {
-              "description": "Protocol admin is an ICS-27 interchain account controlled by Mars Hub's x/gov module. This account will take the owner and admin roles of red-bank contracts.\n\nOwner means the account who can invoke certain priviliged execute methods on a contract, such as updating the config. Admin means the account who can migrate a contract.",
-              "type": "string",
-              "enum": ["protocol_admin"]
-            },
-            {
-              "description": "The `fee_collector` module account controlled by Mars Hub's x/distribution module. Funds sent to this account will be distributed as staking rewards.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
-              "type": "string",
-              "enum": ["fee_collector"]
-            },
-            {
-              "description": "The module account controlled by the by Mars Hub's x/safety module. Funds sent to this account will be deposited into the safety fund.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
-              "type": "string",
-              "enum": ["safety_fund"]
-            }
-          ]
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "definitions": {
+          "MarsAddressType": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "incentives",
+                  "oracle",
+                  "red_bank",
+                  "rewards_collector"
+                ]
+              },
+              {
+                "description": "Protocol admin is an ICS-27 interchain account controlled by Mars Hub's x/gov module. This account will take the owner and admin roles of red-bank contracts.\n\nOwner means the account who can invoke certain priviliged execute methods on a contract, such as updating the config. Admin means the account who can migrate a contract.",
+                "type": "string",
+                "enum": ["protocol_admin"]
+              },
+              {
+                "description": "The `fee_collector` module account controlled by Mars Hub's x/distribution module. Funds sent to this account will be distributed as staking rewards.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
+                "type": "string",
+                "enum": ["fee_collector"]
+              },
+              {
+                "description": "The module account controlled by the by Mars Hub's x/safety module. Funds sent to this account will be deposited into the safety fund.\n\nNOTE: This is a Mars Hub address with the `mars` bech32 prefix, which may not be recognized by the `api.addr_validate` method.",
+                "type": "string",
+                "enum": ["safety_fund"]
+              }
+            ]
+          }
         }
       }
     },

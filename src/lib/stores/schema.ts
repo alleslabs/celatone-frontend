@@ -18,7 +18,7 @@ export enum SchemaProperties {
 
 type NullableJsonSchema = JsonSchema | null;
 
-interface ExecuteSchema {
+interface QueryExecuteSchema {
   title: Option<string>;
   description: Option<string>;
   schema: JsonSchema;
@@ -73,31 +73,42 @@ export class SchemaStore {
     return this.jsonSchemas[codeHash]?.[property];
   }
 
-  getQuerySchema(codeHash: string): Option<Array<[JsonSchema, JsonSchema]>> {
-    const responsesSchema = this.getSchemaProperty(
-      codeHash,
-      SchemaProperties.RESPONSES
-    );
+  getQuerySchema(
+    codeHash: string
+  ): Option<Array<[QueryExecuteSchema, JsonSchema]>> {
     const querySchema = this.getSchemaProperty(
       codeHash,
       SchemaProperties.QUERY
     );
 
+    const responsesSchema = this.getSchemaProperty(
+      codeHash,
+      SchemaProperties.RESPONSES
+    );
+
     if (!querySchema || !responsesSchema) return undefined;
 
-    return querySchema.oneOf?.reduce<Array<[JsonSchema, JsonSchema]>>(
+    return querySchema.oneOf?.reduce<Array<[QueryExecuteSchema, JsonSchema]>>(
       (acc, msg) => {
-        const schema7 = msg as JsonSchema;
-        const { required } = schema7;
+        const eachQuerySchema = msg as JsonSchema;
+        const { required } = eachQuerySchema;
 
         if (required) {
+          const desc1 = eachQuerySchema.description;
+
+          delete eachQuerySchema.description;
+
           return [
             ...acc,
             [
               {
-                ...schema7,
-                $schema: querySchema.$schema,
-                definitions: querySchema.definitions,
+                title: required[0],
+                description: desc1,
+                schema: {
+                  ...eachQuerySchema,
+                  $schema: querySchema.$schema,
+                  definitions: querySchema.definitions,
+                },
               },
               {
                 ...responsesSchema[required[0]],
@@ -113,7 +124,7 @@ export class SchemaStore {
     );
   }
 
-  getExecuteSchema(codeHash: string): Option<Array<ExecuteSchema>> {
+  getExecuteSchema(codeHash: string): Option<Array<QueryExecuteSchema>> {
     const executeSchema = this.getSchemaProperty(
       codeHash,
       SchemaProperties.EXECUTE
@@ -121,7 +132,7 @@ export class SchemaStore {
 
     if (!executeSchema) return undefined;
 
-    return executeSchema.oneOf?.map<ExecuteSchema>((msg) => {
+    return executeSchema.oneOf?.map<QueryExecuteSchema>((msg) => {
       const eachSchema = msg as JsonSchema;
       const { required, description } = eachSchema;
 
