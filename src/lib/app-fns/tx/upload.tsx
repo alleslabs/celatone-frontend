@@ -95,7 +95,7 @@ export const uploadContractTx = ({
               },
             ],
             receiptInfo: {
-              header: "Upload Wasm Complete",
+              header: "Upload Wasm Complete!",
               description: (
                 <>
                   <span style={{ fontWeight: 700 }}>

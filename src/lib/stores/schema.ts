@@ -1,11 +1,9 @@
 import type { RJSFSchema as JsonSchema } from "@rjsf/utils";
-import type { JSONSchema7 } from "json-schema";
 import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 
 import type { Dict, Option } from "lib/types";
 
-// TODO: this is derived from an example schema, ensure that the properties are comprehensively defined
 export enum SchemaProperties {
   CONTRACT_NAME = "contract_name",
   CONTRACT_VERSION = "contract_version",
@@ -20,11 +18,17 @@ export enum SchemaProperties {
 
 type NullableJsonSchema = JsonSchema | null;
 
+interface ExecuteSchema {
+  title: Option<string>;
+  description: Option<string>;
+  schema: JsonSchema;
+}
+
 export interface CodeSchema {
   [SchemaProperties.CONTRACT_NAME]: string;
   [SchemaProperties.CONTRACT_VERSION]: string;
   [SchemaProperties.IDL_VERSION]: string;
-  [SchemaProperties.INSTANTIATE]: NonNullable<JsonSchema>;
+  [SchemaProperties.INSTANTIATE]: JsonSchema;
   [SchemaProperties.EXECUTE]: NullableJsonSchema;
   [SchemaProperties.QUERY]: NullableJsonSchema;
   [SchemaProperties.MIGRATE]: NullableJsonSchema;
@@ -69,7 +73,7 @@ export class SchemaStore {
     return this.jsonSchemas[codeHash]?.[property];
   }
 
-  getQuerySchema(codeHash: string): Option<Array<[JSONSchema7, JsonSchema]>> {
+  getQuerySchema(codeHash: string): Option<Array<[JsonSchema, JsonSchema]>> {
     const responsesSchema = this.getSchemaProperty(
       codeHash,
       SchemaProperties.RESPONSES
@@ -81,28 +85,35 @@ export class SchemaStore {
 
     if (!querySchema || !responsesSchema) return undefined;
 
-    return querySchema.oneOf
-      ?.map((msg) => {
-        const schema7 = msg as JSONSchema7;
+    return querySchema.oneOf?.reduce<Array<[JsonSchema, JsonSchema]>>(
+      (acc, msg) => {
+        const schema7 = msg as JsonSchema;
         const { required } = schema7;
-        return (
-          required !== undefined && [
-            {
-              ...schema7,
-              $schema: querySchema.$schema,
-              definitions: querySchema.definitions,
-            },
-            {
-              ...responsesSchema[required[0]],
-              readOnly: true,
-            },
-          ]
-        );
-      })
-      .filter((tuple) => Boolean(tuple)) as Array<[JSONSchema7, JsonSchema]>;
+
+        if (required) {
+          return [
+            ...acc,
+            [
+              {
+                ...schema7,
+                $schema: querySchema.$schema,
+                definitions: querySchema.definitions,
+              },
+              {
+                ...responsesSchema[required[0]],
+                readOnly: true,
+              },
+            ],
+          ];
+        }
+
+        return acc;
+      },
+      []
+    );
   }
 
-  getExecuteSchema(codeHash: string): Option<Array<JSONSchema7>> {
+  getExecuteSchema(codeHash: string): Option<Array<ExecuteSchema>> {
     const executeSchema = this.getSchemaProperty(
       codeHash,
       SchemaProperties.EXECUTE
@@ -110,10 +121,21 @@ export class SchemaStore {
 
     if (!executeSchema) return undefined;
 
-    return executeSchema.oneOf?.map((msg) => ({
-      ...(msg as JSONSchema7),
-      $schema: executeSchema.$schema,
-      definitions: executeSchema.definitions,
-    }));
+    return executeSchema.oneOf?.map<ExecuteSchema>((msg) => {
+      const eachSchema = msg as JsonSchema;
+      const { required, description } = eachSchema;
+
+      delete eachSchema.description;
+
+      return {
+        title: required?.[0],
+        description,
+        schema: {
+          ...eachSchema,
+          $schema: executeSchema.$schema,
+          definitions: executeSchema.definitions,
+        },
+      };
+    });
   }
 }
