@@ -160,7 +160,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
       formData={formData}
       schema={schema}
       // we use no validate because the schemas are too complicated to be auto validated
-      noValidate
+      // noValidate
       uiSchema={{
         // "ui:submitButtonOptions": {
         //   norender: true,

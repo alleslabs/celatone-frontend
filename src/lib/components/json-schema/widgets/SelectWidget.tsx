@@ -115,6 +115,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
         label: valueLabelMap[selectedIndex as string] || "",
         value: selectedIndex,
       };
+
   return (
     <FormControl
       mb={2}
