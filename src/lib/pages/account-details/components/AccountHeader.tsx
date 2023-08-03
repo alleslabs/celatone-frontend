@@ -63,24 +63,24 @@ export const AccountHeader = ({
           </Text>
           <Flex gap={1} align="center">
             {icnsName.names.map((name) => (
-              <div key={name}>
+              <Flex
+                key={name}
+                align="center"
+                direction="row"
+                _after={{
+                  content: '"/"',
+                  fontSize: "14px",
+                }}
+                _last={{
+                  _after: {
+                    display: "none",
+                  },
+                }}
+                gap={1}
+              >
                 {name === icnsName.primary_name && <PrimaryNameMark />}
-                <CopyLink
-                  value={name}
-                  type="icns_names"
-                  withoutIcon
-                  _after={{
-                    content: '"/"',
-                    fontSize: "14px",
-                    ml: 1,
-                  }}
-                  _last={{
-                    _after: {
-                      display: "none",
-                    },
-                  }}
-                />
-              </div>
+                <CopyLink value={name} type="icns_names" withoutIcon />
+              </Flex>
             ))}
           </Flex>
         </Flex>
