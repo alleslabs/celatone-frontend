@@ -19,6 +19,7 @@ import {
   useContractData,
   useContractDetailsTableCounts,
 } from "lib/model/contract";
+import { useAccountId } from "lib/services/accountService";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr, ContractData } from "lib/types";
 import { getFirstQueryParam, jsonPrettify } from "lib/utils";
@@ -51,6 +52,7 @@ const ContractDetailsBody = observer(
       refetchTransactions,
       refetchRelatedProposals,
     } = useContractDetailsTableCounts(contractAddress);
+    const { data: contractAccountId } = useAccountId(contractAddress);
     const isMobile = useMobile();
     if (!contractData.instantiateInfo) return <InvalidContract />;
 
@@ -119,7 +121,7 @@ const ContractDetailsBody = observer(
           <TabPanels>
             <TabPanel p={0}>
               <TxsTable
-                contractAddress={contractAddress}
+                contractAccountId={contractAccountId}
                 scrollComponentId={tableHeaderId}
                 totalData={tableCounts.transactionsCount}
                 refetchCount={refetchTransactions}
