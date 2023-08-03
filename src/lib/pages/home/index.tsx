@@ -7,6 +7,7 @@ import { CURR_THEME } from "env";
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
+import { DummyJsonSchema } from "lib/components/json-schema";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
@@ -219,7 +220,7 @@ const Home = () => {
           />
         </Flex>
       </Flex>
-
+      <DummyJsonSchema />
       {isDevMode && (
         <section style={{ marginBottom: "48px" }}>
           <Flex gap={4} direction="column">
