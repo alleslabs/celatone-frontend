@@ -296,7 +296,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       publicProject: {
-        enabled: false,
+        enabled: true,
       },
     },
     gas: {
