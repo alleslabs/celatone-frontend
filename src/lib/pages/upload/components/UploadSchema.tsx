@@ -62,17 +62,12 @@ const Content = ({
                 if (jsonWindow) {
                   // Modify styling later
                   jsonWindow.document.write(
-                    "<html><head><title>JSON Window</title>"
+                    `<html><head><title>JSON Schema | Code ID ${codeId}</title>`
                   );
 
                   // Add styling
                   jsonWindow.document.write(
                     "<style>body { background-color: #f0f0f0; color: #333; }</style>"
-                  );
-
-                  // Change the URL of the new window
-                  jsonWindow.document.write(
-                    '<script>history.replaceState({}, "JSON Window", "https://example.com/json-window");</script>'
                   );
 
                   jsonWindow.document.write(

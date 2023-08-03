@@ -1,6 +1,6 @@
 import { Button, Flex, Heading, Radio, RadioGroup } from "@chakra-ui/react";
 import type { Dispatch } from "react";
-import { useCallback, useReducer, useState } from "react";
+import { useMemo, useCallback, useReducer, useState } from "react";
 
 import { DropZone } from "lib/components/dropzone";
 import type { ResponseState } from "lib/components/forms";
@@ -57,6 +57,15 @@ const reducer = (state: JsonState, action: Action): JsonState => {
   }
 };
 
+const validateSchema = (schemaString: string): string | null => {
+  return (
+    jsonValidate(schemaString) ??
+    ("instantiate" in JSON.parse(schemaString)
+      ? null
+      : "`instantiate` field is missing in JSON Schema")
+  );
+};
+
 const MethodRender = ({
   method,
   state,
@@ -92,19 +101,19 @@ const MethodRender = ({
           setFile={async (file: File) => {
             const reader = new FileReader();
             reader.onload = () => {
-              try {
-                const content = reader.result as string;
-                dispatch({
-                  type: ActionType.SET_SCHEMA,
-                  method,
-                  schemaString: content,
-                });
-              } catch (err) {
-                throw new Error("Error reading or parsing json schema file");
-              }
+              const content = reader.result as string;
+              dispatch({
+                type: ActionType.SET_SCHEMA,
+                method,
+                schemaString: content,
+              });
             };
-            reader.readAsText(file);
-            setJsonFile(file);
+            try {
+              reader.readAsText(file);
+              setJsonFile(file);
+            } catch (err) {
+              //
+            }
           }}
         />
       );
@@ -149,6 +158,7 @@ const MethodRender = ({
                 schemaString: value,
               })
             }
+            validateFn={validateSchema}
           />
         </>
       );
@@ -198,15 +208,14 @@ export const UploadMethod = ({ closeDrawer }: UploadMethodInterface) => {
         });
       }
     }
-    const validSchema =
-      !jsonValidate(schemaString) && "instantiate" in JSON.parse(schemaString);
+    const schemaValidateError = validateSchema(schemaString);
 
-    if (!validSchema) {
+    if (schemaValidateError) {
       setUrlLoading(false);
       return dispatchJsonState({
         type: ActionType.SET_ERROR,
         method,
-        error: "JSON Schema validation failed.",
+        error: schemaValidateError,
       });
     }
     // ***Save schema to local storage***
@@ -214,6 +223,19 @@ export const UploadMethod = ({ closeDrawer }: UploadMethodInterface) => {
     closeDrawer();
     return dispatchJsonState({ type: ActionType.RESET, method });
   }, [method, jsonState, closeDrawer]);
+
+  const disabledState = useMemo(() => {
+    switch (method) {
+      case Method.UPLOAD_FILE:
+        return !jsonState[method].schemaString;
+      case Method.LOAD_URL:
+        return !jsonState[method].schemaString || urlLoading;
+      case Method.FILL_MANUALLY:
+        return Boolean(validateSchema(jsonState[method].schemaString));
+      default:
+        return false;
+    }
+  }, [method, jsonState, urlLoading]);
 
   return (
     <Flex direction="column">
@@ -234,7 +256,13 @@ export const UploadMethod = ({ closeDrawer }: UploadMethodInterface) => {
         urlLoading={urlLoading}
         dispatch={dispatchJsonState}
       />
-      <Button w="400px" alignSelf="center" mt={6} onClick={handleSave}>
+      <Button
+        w="400px"
+        alignSelf="center"
+        mt={6}
+        onClick={handleSave}
+        disabled={disabledState}
+      >
         Save JSON Schema
       </Button>
     </Flex>
