@@ -209,6 +209,7 @@ export const ContractSelectSection = observer(
                 maxWidth="none"
                 minWidth={style.contractAddrW}
                 wordBreak="break-all"
+                fixedHeight={false}
               />
             ) : (
               <Text color="text.disabled" variant="body2">

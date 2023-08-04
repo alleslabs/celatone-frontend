@@ -128,7 +128,6 @@ const LinkRender = ({
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
       display={{ base: "inline", md: "flex" }}
-      align={{ base: "start", md: "center" }}
     >
       {textValue}
     </Text>
