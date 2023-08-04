@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#462](https://github.com/alleslabs/celatone-frontend/pull/462) Fix validator query dependencies
 - [#460](https://github.com/alleslabs/celatone-frontend/pull/460) Fix icns names and contract address alignment
 - [#459](https://github.com/alleslabs/celatone-frontend/pull/459) Fix contract txs by using contract account id instead of contract address
 - [#456](https://github.com/alleslabs/celatone-frontend/pull/456) Fix pool count chip in pool transaction table
