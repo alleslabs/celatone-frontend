@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#464](https://github.com/alleslabs/celatone-frontend/pull/464) Fix `useFaucetInfo` hook by adding `assetInfos` to its dependencies
 - [#462](https://github.com/alleslabs/celatone-frontend/pull/462) Fix validator query dependencies
 - [#460](https://github.com/alleslabs/celatone-frontend/pull/460) Fix icns names and contract address alignment
 - [#459](https://github.com/alleslabs/celatone-frontend/pull/459) Fix contract txs by using contract account id instead of contract address
