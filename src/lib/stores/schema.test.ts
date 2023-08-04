@@ -18,12 +18,14 @@ describe("SchemaStore initialization", () => {
   });
 });
 
-describe("saveNewSchema", () => {
-  test("correctly save new schema", () => {
+describe("saveNewSchema and deleteSchema", () => {
+  test("correctly save new schema and delete schema by codeHash", () => {
     schemaStore.saveNewSchema(codeHash, exampleSchema);
     expect(schemaStore.jsonSchemas).toStrictEqual({
       [codeHash]: exampleSchema,
     });
+    schemaStore.deleteSchema(codeHash);
+    expect(schemaStore.jsonSchemas[codeHash]).toBeUndefined();
   });
 });
 

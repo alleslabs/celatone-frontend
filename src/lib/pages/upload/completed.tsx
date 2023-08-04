@@ -8,6 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useSchemaStore } from "lib/providers/store";
 
 import { UploadSchema } from "./components/UploadSchema";
 
@@ -17,12 +18,8 @@ interface UploadCompleteProps {
 
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
-  // Retrieve schema from local storage
-  const schema = {
-    wow: "asdasdsad",
-    wowza: "xzkcnzxlkczxnc",
-    instantiate: "sadkasdkamdaskldks",
-  };
+  const { getSchemaByCodeHash } = useSchemaStore();
+  const schema = getSchemaByCodeHash(txResult.codeHash);
   const attached = Boolean(schema);
   return (
     <WasmPageContainer>
@@ -79,6 +76,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         attached={attached}
         schema={schema}
         codeId={txResult.codeId}
+        codeHash={txResult.codeHash}
       />
 
       {!attached && (

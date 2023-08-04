@@ -13,25 +13,29 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 
 import { CustomIcon } from "lib/components/icon";
+import { useSchemaStore } from "lib/providers/store";
+import type { CodeSchema } from "lib/stores/schema";
+import type { Option } from "lib/types";
 
 import { UploadMethod } from "./UploadMethod";
 
 interface UploadSchemaContentInterface {
   attached: boolean;
-  // fix type
-  schema: object;
+  schema: Option<CodeSchema>;
   codeId: string;
+  codeHash: string;
 }
 
 const Content = ({
   attached,
   schema,
   codeId,
+  codeHash,
 }: UploadSchemaContentInterface) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { deleteSchema } = useSchemaStore();
   return (
     <>
       {!attached ? (
@@ -91,8 +95,7 @@ const Content = ({
               size="sm"
               variant="gray"
               aria-label="delete_schema"
-              // onClick={() => onClose()}
-              // implement delete function for json schema store
+              onClick={() => deleteSchema(codeHash)}
               icon={
                 <CustomIcon name="delete" color="gray.600" boxSize={4} m={0} />
               }
@@ -132,7 +135,7 @@ const Content = ({
                 others.
               </Text>
             </Box>
-            <UploadMethod closeDrawer={onClose} />
+            <UploadMethod closeDrawer={onClose} codeHash={codeHash} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -140,7 +143,7 @@ const Content = ({
   );
 };
 
-export const UploadSchema = observer((props: UploadSchemaContentInterface) => {
+export const UploadSchema = (props: UploadSchemaContentInterface) => {
   return (
     <Flex
       border="1px solid var(--chakra-colors-gray-700)"
@@ -150,9 +153,10 @@ export const UploadSchema = observer((props: UploadSchemaContentInterface) => {
       p={4}
       w="full"
       borderRadius="4px"
+      // eslint-disable-next-line react/destructuring-assignment
       mb={props.attached ? 8 : 0}
     >
       <Content {...props} />
     </Flex>
   );
-});
+};

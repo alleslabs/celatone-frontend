@@ -7,6 +7,7 @@ import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { UploadCard } from "lib/components/upload/UploadCard";
+import { useSchemaStore } from "lib/providers/store";
 import { jsonValidate } from "lib/utils";
 
 enum Method {
@@ -168,10 +169,15 @@ const MethodRender = ({
 };
 
 interface UploadMethodInterface {
+  codeHash: string;
   closeDrawer: () => void;
 }
 
-export const UploadMethod = ({ closeDrawer }: UploadMethodInterface) => {
+export const UploadMethod = ({
+  codeHash,
+  closeDrawer,
+}: UploadMethodInterface) => {
+  const { saveNewSchema } = useSchemaStore();
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
   const [jsonState, dispatchJsonState] = useReducer(reducer, initialJsonState);
   const [urlLoading, setUrlLoading] = useState(false);
@@ -218,20 +224,21 @@ export const UploadMethod = ({ closeDrawer }: UploadMethodInterface) => {
         error: schemaValidateError,
       });
     }
-    // ***Save schema to local storage***
+    saveNewSchema(codeHash, JSON.parse(schemaString));
     setUrlLoading(false);
     closeDrawer();
     return dispatchJsonState({ type: ActionType.RESET, method });
-  }, [method, jsonState, closeDrawer]);
+  }, [codeHash, method, jsonState, closeDrawer, saveNewSchema]);
 
   const disabledState = useMemo(() => {
+    const methodSchemaString = jsonState[method].schemaString;
     switch (method) {
       case Method.UPLOAD_FILE:
-        return !jsonState[method].schemaString;
+        return !methodSchemaString;
       case Method.LOAD_URL:
-        return !jsonState[method].schemaString || urlLoading;
+        return !methodSchemaString || urlLoading;
       case Method.FILL_MANUALLY:
-        return Boolean(validateSchema(jsonState[method].schemaString));
+        return Boolean(validateSchema(methodSchemaString));
       default:
         return false;
     }
