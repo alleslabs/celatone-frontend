@@ -81,6 +81,8 @@ export const useValidatorImage = (
       CELATONE_QUERY_KEYS.VALIDATOR_IDENTITY_BY_ADDRESS,
       chainName,
       validator?.validatorAddress,
+      validator?.identity,
+      validator?.moniker,
     ],
     queryFn: async () => {
       if (!validator) return Promise.resolve("");
