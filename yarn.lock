@@ -4388,15 +4388,15 @@
   resolved "https://registry.npmjs.org/@repeaterjs/repeater/-/repeater-3.0.4.tgz"
   integrity sha512-AW8PKd6iX3vAZ0vA43nOUOnbq/X5ihgU+mSXXqunMkeQADGiqw/PY0JNeYtD5sr0PAy51YPgAPbDoeapv9r8WA==
 
-"@rjsf/utils@^5.10.0":
-  version "5.10.0"
-  resolved "https://registry.yarnpkg.com/@rjsf/utils/-/utils-5.10.0.tgz#502eaa8db3ba2a8f31a3c963158e62fd96f8980a"
-  integrity sha512-HGytUxCGtV6OCOw4PbjFcksxrPIxUt0y3T9oqCTsP4xiqnLfve4ZfY9FkbHzPSGOXVp57yCNNEZTWiK6tcV9uA==
+"@rjsf/utils@v5.0.0-beta.10":
+  version "5.0.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@rjsf/utils/-/utils-5.0.0-beta.10.tgz#61a32e1b085f756d00e35b72bfb84de2a0cbd1c9"
+  integrity sha512-cXXD9KHILJKk80ma69RN/53hxyPNxpJvyxEVXN1C9xg/VVhjrDTevTgvsfsVshqc8xTevbxVt6P8pm8ITG5QPw==
   dependencies:
     json-schema-merge-allof "^0.8.1"
     jsonpointer "^5.0.1"
-    lodash "^4.17.21"
-    lodash-es "^4.17.21"
+    lodash "^4.17.15"
+    lodash-es "^4.17.15"
     react-is "^18.2.0"
 
 "@rollup/plugin-commonjs@24.0.0":
@@ -9446,7 +9446,7 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@^4.17.21:
+lodash-es@^4.17.15:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
