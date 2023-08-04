@@ -2,7 +2,11 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
+import {
+  CELATONE_QUERY_KEYS,
+  useCelatoneApp,
+  useWasmConfig,
+} from "lib/app-provider";
 import {
   getAdminByContractAddressesQueryDocument,
   getContractByContractAddressQueryDocument,
@@ -71,7 +75,11 @@ export const useContractDetailByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["contract_detail_by_contract", contractAddress, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_DETAIL_BY_CONTRACT_ADDRESS,
+      contractAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       refetchOnWindowFocus: false,
@@ -104,7 +112,11 @@ export const useInstantiateDetailByContractQuery = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["instantiate_detail_by_contract", contractAddress, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_INSTANTIATE_DETAIL,
+      contractAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       enabled: Boolean(contractAddress),
@@ -135,7 +147,7 @@ export const useContractListQuery = (): UseQueryResult<ContractInfo[]> => {
     [indexerGraphClient]
   );
 
-  return useQuery(["recent_contracts", indexerGraphClient], queryFn);
+  return useQuery([CELATONE_QUERY_KEYS.CONTRACTS, indexerGraphClient], queryFn);
 };
 
 export const useInstantiatedCountByUserQuery = (
@@ -158,7 +170,11 @@ export const useInstantiatedCountByUserQuery = (
   }, [indexerGraphClient, walletAddr]);
 
   return useQuery(
-    ["instantiated_count_by_user", walletAddr, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.INSTANTIATED_COUNT_BY_WALLET_ADDRESS,
+      walletAddr,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -191,7 +207,11 @@ export const useInstantiatedListByUserQuery = (
   }, [indexerGraphClient, walletAddr]);
 
   return useQuery(
-    ["instantiated_list_by_user", walletAddr, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.INSTANTIATED_LIST_BY_WALLET_ADDRESS,
+      walletAddr,
+      indexerGraphClient,
+    ],
     queryFn,
     { enabled: Boolean(walletAddr), refetchOnWindowFocus: false }
   );
@@ -220,7 +240,7 @@ export const useContractListByAdmin = (
   }, [adminAddress, indexerGraphClient]);
 
   return useQuery(
-    ["contract_list_by_admin", adminAddress, indexerGraphClient],
+    [CELATONE_QUERY_KEYS.CONTRACTS_BY_ADMIN, adminAddress, indexerGraphClient],
     queryFn,
     {
       keepPreviousData: true,
@@ -254,7 +274,11 @@ export const useAdminByContractAddresses = (
   );
 
   return useQuery(
-    ["admin_by_contracts", contractAddresses, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.ADMINS_BY_CONTRACTS,
+      contractAddresses,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -295,7 +319,7 @@ export const useMigrationHistoriesByContractAddressPagination = (
 
   return useQuery(
     [
-      "migration_histories_by_contract_address_pagination",
+      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_PAGINATION,
       contractAddress,
       offset,
       pageSize,
@@ -326,7 +350,11 @@ export const useMigrationHistoriesCountByContractAddress = (
   }, [contractAddress, indexerGraphClient]);
 
   return useQuery(
-    ["migration_histories_count", contractAddress, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_COUNT,
+      contractAddress,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -365,7 +393,7 @@ export const useContractListByCodeIdPagination = (
 
   return useQuery(
     [
-      "contract_list_by_code_id_pagination",
+      CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_PAGINATION,
       codeId,
       indexerGraphClient,
       offset,
@@ -396,7 +424,11 @@ export const useContractListCountByCodeId = (
   }, [codeId, indexerGraphClient]);
 
   return useQuery(
-    ["contract_list_count_by_user", codeId, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_COUNT,
+      codeId,
+      indexerGraphClient,
+    ],
     queryFn,
     {
       keepPreviousData: true,
@@ -443,7 +475,7 @@ export const useContractListByWalletAddressPagination = (
 
   return useQuery(
     [
-      "contract_list_by_wallet_address_pagination",
+      CELATONE_QUERY_KEYS.CONTRACTS_BY_INIT_WALLET_ADDRESS,
       indexerGraphClient,
       offset,
       pageSize,
@@ -495,7 +527,7 @@ export const useContractListByAdminPagination = (
 
   return useQuery(
     [
-      "contract_list_by_admin_pagination",
+      CELATONE_QUERY_KEYS.CONTRACTS_BY_ADMIN_PAGINATION,
       indexerGraphClient,
       offset,
       pageSize,
@@ -528,7 +560,11 @@ export const useContractListCountByAdmin = (
   }, [walletAddress, indexerGraphClient]);
 
   return useQuery(
-    ["contract_list_count_by_admin", walletAddress, indexerGraphClient],
+    [
+      CELATONE_QUERY_KEYS.CONTRACTS_BY_ADMIN_COUNT,
+      walletAddress,
+      indexerGraphClient,
+    ],
     createQueryFnWithTimeout(queryFn),
     {
       keepPreviousData: true,

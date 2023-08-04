@@ -97,7 +97,7 @@ export const uploadContractTx = ({
               },
             ],
             receiptInfo: {
-              header: "Upload Wasm Complete",
+              header: "Upload Wasm Complete!",
               description: (
                 <>
                   <span style={{ fontWeight: 700 }}>
@@ -112,7 +112,8 @@ export const uploadContractTx = ({
             },
             actionVariant: "upload-migrate",
           } as TxResultRendering)
-        : (null as unknown as TxResultRendering);
+        : // TODO: this is type hack
+          (null as unknown as TxResultRendering);
     }
   )().pipe(catchTxError());
 };

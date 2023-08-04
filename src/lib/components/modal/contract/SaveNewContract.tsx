@@ -174,7 +174,6 @@ export function SaveNewContractModal({
       }
       otherBtnTitle="Cancel"
       otherAction={resetForm}
-      closeOnOverlayClick={false}
     >
       <VStack gap={4}>
         <ControllerInput

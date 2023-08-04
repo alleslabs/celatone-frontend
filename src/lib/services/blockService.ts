@@ -2,7 +2,7 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import {
   getLatestBlockInfoQueryDocument,
   getBlockDetailsByHeightQueryDocument,
@@ -56,7 +56,10 @@ export const useBlocklistQuery = (
     [indexerGraphClient, currentChainId, limit, offset]
   );
 
-  return useQuery(["blocks", indexerGraphClient, limit, offset], queryFn);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.BLOCKS, indexerGraphClient, limit, offset],
+    queryFn
+  );
 };
 
 export const useBlockCountQuery = (): UseQueryResult<number> => {
@@ -69,10 +72,13 @@ export const useBlockCountQuery = (): UseQueryResult<number> => {
     [indexerGraphClient]
   );
 
-  return useQuery(["block_count", indexerGraphClient], queryFn);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.BLOCK_COUNT, indexerGraphClient],
+    queryFn
+  );
 };
 
-export const useBlockDetailsQuery = (
+export const useBlockInfoQuery = (
   height: string
 ): UseQueryResult<BlockDetails | null> => {
   const { currentChainId } = useCelatoneApp();
@@ -109,11 +115,15 @@ export const useBlockDetailsQuery = (
     [indexerGraphClient, currentChainId, height]
   );
 
-  return useQuery(["block_details", indexerGraphClient, height], queryFn, {
-    enabled: isBlock(height),
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    [CELATONE_QUERY_KEYS.BLOCK_INFO, indexerGraphClient, height],
+    queryFn,
+    {
+      enabled: isBlock(height),
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useLatestBlockInfo = (): UseQueryResult<LatestBlock> => {
@@ -129,7 +139,10 @@ export const useLatestBlockInfo = (): UseQueryResult<LatestBlock> => {
     [indexerGraphClient]
   );
 
-  return useQuery(["latest_block_info", indexerGraphClient], queryFn);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.LATEST_BLOCK_INFO, indexerGraphClient],
+    queryFn
+  );
 };
 
 export const useAverageBlockTime = (): UseQueryResult<BlockTimeInfo> => {
@@ -147,5 +160,8 @@ export const useAverageBlockTime = (): UseQueryResult<BlockTimeInfo> => {
     [indexerGraphClient]
   );
 
-  return useQuery(["average_block_time", indexerGraphClient], queryFn);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.AVERAGE_BLOCK_TIME, indexerGraphClient],
+    queryFn
+  );
 };

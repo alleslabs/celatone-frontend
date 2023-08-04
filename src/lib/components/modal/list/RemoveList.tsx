@@ -28,7 +28,7 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
     // TODO: show toast after removed and redirect to /contract-lists
     setTimeout(() => {
       toast({
-        title: `Removed ${shortenName(list.label)}`,
+        title: `Removed '${shortenName(list.label)}'`,
         status: "success",
         duration: 5000,
         isClosable: false,
@@ -41,10 +41,11 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   return (
     <ActionModal
       title={`Remove ${shortenName(list.label)}?`}
-      icon="delete"
+      icon="delete-solid"
       iconColor="error.light"
       trigger={<MenuItem {...menuItemProps} as="button" />}
       mainBtnTitle="Yes, Remove list"
+      mainVariant="error"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
     >

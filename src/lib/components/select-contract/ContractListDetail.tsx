@@ -41,7 +41,7 @@ const ContractListContent = ({
   return (
     <ContractsTable
       contracts={filteredContracts}
-      isLoading={isLoading}
+      isLoading={isInstantiatedByMe && isLoading}
       emptyState={
         !contractListInfo.contracts.length ? (
           <ZeroState

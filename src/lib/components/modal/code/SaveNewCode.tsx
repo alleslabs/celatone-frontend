@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ActionModal } from "../ActionModal";
 import {
+  CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
@@ -63,7 +64,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const lcdEndpoint = useBaseApiRoute("rest");
 
   const { refetch, isFetching, isRefetching } = useQuery(
-    ["query", lcdEndpoint, codeId],
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
     async () => getCodeIdInfo(lcdEndpoint, codeId),
     {
       enabled: false,
@@ -186,7 +187,6 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       otherAction={reset}
       disabledMain={disableMain}
       otherBtnTitle="Cancel"
-      closeOnOverlayClick={false}
     >
       <FormControl display="flex" flexDir="column" gap={9}>
         Save other stored codes to your &ldquo;Saved Codes&rdquo; list
