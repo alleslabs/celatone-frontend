@@ -72,8 +72,14 @@ export const TxReceiptRender = ({
   variant = "packed",
   gap = 2,
   keyPrefix = "",
+  ...containerProps
 }: TxReceiptRenderProps) => (
-  <Flex direction="column" gap={gap} sx={variantStyle[variant]}>
+  <Flex
+    direction="column"
+    gap={gap}
+    sx={variantStyle[variant]}
+    {...containerProps}
+  >
     {receipts.map((receipt, idx) => (
       <ReceiptRow
         key={keyPrefix + idx.toString() + receipt.title + receipt.value}
