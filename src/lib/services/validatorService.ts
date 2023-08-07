@@ -22,7 +22,7 @@ export const useValidator = (
 ): UseQueryResult<Validator> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const queryFn = async ({ queryKey }: QueryFunctionContext<string[]>) =>
-    getValidator(queryKey[2], queryKey[3] as ValidatorAddr);
+    getValidator(queryKey[1], queryKey[2] as ValidatorAddr);
 
   return useQuery(
     [
