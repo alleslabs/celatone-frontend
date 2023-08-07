@@ -35,7 +35,6 @@ export interface ActionModalProps {
   otherBtnTitle?: string;
   otherAction?: () => void;
   otherVariant?: string;
-  noHeaderBorder?: boolean;
   noCloseButton?: boolean;
   closeOnOverlayClick?: boolean;
 }
@@ -54,7 +53,6 @@ export function ActionModal({
   otherBtnTitle = "Cancel",
   otherAction,
   otherVariant = "outline-primary",
-  noHeaderBorder = false,
   noCloseButton = false,
   closeOnOverlayClick = true,
 }: ActionModalProps) {
@@ -88,10 +86,7 @@ export function ActionModal({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader
-            borderBottomWidth={noHeaderBorder ? 0 : 1}
-            borderColor="gray.700"
-          >
+          <ModalHeader>
             <Box w="full">
               <Flex alignItems="center" gap={3}>
                 <CustomIcon name={icon} color={iconColor} boxSize={5} />

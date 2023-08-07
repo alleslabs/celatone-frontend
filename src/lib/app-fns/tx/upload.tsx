@@ -3,6 +3,7 @@ import type { DeliverTxResponse, logs, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { UploadSucceedCallback } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -23,7 +24,7 @@ interface UploadTxParams {
   fee: StdFee;
   memo?: string;
   client: SigningCosmWasmClient;
-  onTxSucceed?: (codeId: number) => void;
+  onTxSucceed: UploadSucceedCallback;
   isMigrate: boolean;
 }
 
@@ -52,56 +53,65 @@ export const uploadContractTx = ({
       };
 
       const codeId = findAttr(mimicLog, "store_code", "code_id") ?? "0";
-
-      onTxSucceed?.(parseInt(codeId, 10));
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
-      return {
-        value: null,
-        phase: TxStreamPhase.SUCCEED,
-        receipts: [
-          {
-            title: "Code ID",
-            value: codeId,
-            html: (
-              <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <ExplorerLink type="code_id" value={codeId} openNewTab />
-              </div>
-            ),
-          },
-          {
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
-            html: (
-              <ExplorerLink
-                type="tx_hash"
-                value={txInfo.transactionHash}
-                openNewTab
-              />
-            ),
-          },
-          {
-            title: "Tx Fee",
-            value: txFee ? formatUFee(txFee) : "N/A",
-          },
-        ],
-        receiptInfo: {
-          header: "Upload Wasm Complete",
-          description: (
-            <>
-              <span style={{ fontWeight: 700 }}>
-                ‘{codeName || `${wasmFileName}(${codeId})`}’
-              </span>{" "}
-              is has been uploaded. Would you like to{" "}
-              {isMigrate ? "migrate" : "instantiate"} your code now?
-            </>
-          ),
-          headerIcon: (
-            <CustomIcon name="upload-cloud" boxSize={5} color="gray.600" />
-          ),
-        },
-        actionVariant: isMigrate ? "upload-migrate" : "upload",
-      } as TxResultRendering;
+      const formattedFee = txFee ? formatUFee(txFee) : "N/A";
+
+      onTxSucceed({
+        codeId: parseInt(codeId, 10).toString(),
+        codeDisplayName: codeName || `${wasmFileName}(${codeId})`,
+        txHash: txInfo.transactionHash,
+        formattedFee,
+      });
+
+      return isMigrate
+        ? ({
+            value: null,
+            phase: TxStreamPhase.SUCCEED,
+            receipts: [
+              {
+                title: "Code ID",
+                value: codeId,
+                html: (
+                  <div style={{ display: "inline-flex", alignItems: "center" }}>
+                    <ExplorerLink type="code_id" value={codeId} openNewTab />
+                  </div>
+                ),
+              },
+              {
+                title: "Tx Hash",
+                value: txInfo.transactionHash,
+                html: (
+                  <ExplorerLink
+                    type="tx_hash"
+                    value={txInfo.transactionHash}
+                    openNewTab
+                  />
+                ),
+              },
+              {
+                title: "Tx Fee",
+                value: formattedFee,
+              },
+            ],
+            receiptInfo: {
+              header: "Upload Wasm Complete!",
+              description: (
+                <>
+                  <span style={{ fontWeight: 700 }}>
+                    ‘{codeName || `${wasmFileName}(${codeId})`}’
+                  </span>{" "}
+                  is has been uploaded. Would you like to migrate your code now?
+                </>
+              ),
+              headerIcon: (
+                <CustomIcon name="upload-cloud" boxSize={5} color="gray.600" />
+              ),
+            },
+            actionVariant: "upload-migrate",
+          } as TxResultRendering)
+        : // TODO: this is type hack
+          (null as unknown as TxResultRendering);
     }
   )().pipe(catchTxError());
 };

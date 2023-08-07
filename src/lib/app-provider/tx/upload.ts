@@ -7,6 +7,15 @@ import { uploadContractTx } from "lib/app-fns/tx/upload";
 import type { AccessType, Addr, HumanAddr, Option } from "lib/types";
 import { composeStoreCodeMsg } from "lib/utils";
 
+export interface UploadTxInternalResult {
+  codeDisplayName: string;
+  codeId: string;
+  txHash: string;
+  formattedFee: string;
+}
+
+export type UploadSucceedCallback = (txResult: UploadTxInternalResult) => void;
+
 export interface UploadStreamParams {
   wasmFileName: Option<string>;
   wasmCode: Option<Promise<ArrayBuffer>>;
@@ -14,7 +23,7 @@ export interface UploadStreamParams {
   permission: AccessType;
   codeName: string;
   estimatedFee: Option<StdFee>;
-  onTxSucceed?: (codeId: number) => void;
+  onTxSucceed: UploadSucceedCallback;
 }
 
 export const useUploadContractTx = (isMigrate: boolean) => {

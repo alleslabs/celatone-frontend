@@ -77,7 +77,7 @@ export const migrateContractTx = ({
           },
         ],
         receiptInfo: {
-          header: "Migration Completed",
+          header: "Migration Complete!",
           headerIcon: (
             <CustomIcon name="check-circle-solid" color="success.main" />
           ),
