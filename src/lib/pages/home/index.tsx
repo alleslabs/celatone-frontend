@@ -219,7 +219,6 @@ const Home = () => {
           />
         </Flex>
       </Flex>
-
       {isDevMode && (
         <section style={{ marginBottom: "48px" }}>
           <Flex gap={4} direction="column">
