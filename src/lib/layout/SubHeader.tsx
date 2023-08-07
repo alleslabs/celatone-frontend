@@ -6,7 +6,7 @@ import {
   FormLabel,
   Button,
 } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
+import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import { useEffect, useRef } from "react";
 
 import { usePoolConfig, useWasmConfig } from "lib/app-provider";
@@ -100,6 +100,12 @@ const SubHeader = ({
 
   const activeColor = "primary.light";
 
+  const switchHighlight: CSSProperties = {
+    borderRadius: "8px",
+    padding: "6px 8px",
+    backgroundColor: "var(--chakra-colors-gray-800)",
+  };
+
   useEffect(() => {
     // Basic to dev and nav is  collapse -> should exapnd
     if (isDevMode && !prevIsDevModeRef.current && !isExpand) {
@@ -155,8 +161,13 @@ const SubHeader = ({
             </AppLink>
           ))}
         </Flex>
-        <FormControl display="flex" alignItems="center" width="fit-content">
-          <FormLabel mb={0} cursor="pointer">
+        <FormControl
+          display="flex"
+          alignItems="center"
+          width="fit-content"
+          style={isDevMode === undefined ? switchHighlight : undefined}
+        >
+          <FormLabel mb={0} cursor="pointer" mr={2}>
             <Text variant="body2" color="text.dark">
               Dev Mode
             </Text>
