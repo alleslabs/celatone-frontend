@@ -22,6 +22,7 @@ interface SubHeaderMenuInfo {
   icon: IconKeys;
 }
 
+const boxShadow = "0px 1px 5px 0px var(--chakra-colors-gray-900)";
 const FirstLandPrompt = ({
   setIsDevMode,
 }: {
@@ -35,7 +36,8 @@ const FirstLandPrompt = ({
     bg="gray.800"
     color="text.main"
     w="430px"
-    borderRadius={1}
+    borderRadius={4}
+    boxShadow={boxShadow}
     zIndex="popover"
     sx={{
       "& > header": { p: "16px 24px", fontSize: "18px", fontWeight: 500 },
