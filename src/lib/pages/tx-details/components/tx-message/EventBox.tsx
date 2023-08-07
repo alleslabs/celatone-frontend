@@ -1,7 +1,8 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, chakra, shouldForwardProp } from "@chakra-ui/react";
 import type { Event } from "@cosmjs/stargate";
+import { isValidMotionProp, motion } from "framer-motion";
 import type { ReactNode } from "react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import { useGetAddressType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
@@ -13,6 +14,11 @@ import { AmpTrackExpand } from "lib/services/amplitude";
 import type { TxReceipt } from "lib/types";
 import { jsonPrettify, jsonValidate } from "lib/utils";
 
+const MotionBox = chakra(motion.div, {
+  shouldForwardProp: (prop) =>
+    isValidMotionProp(prop) || shouldForwardProp(prop),
+});
+
 interface EventBoxProps {
   event: Event;
   msgIndex: number;
@@ -21,15 +27,6 @@ interface EventBoxProps {
 export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
   const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(true);
-  const [receiptHeight, setReceiptHeight] = useState(0);
-
-  const measuredRef = useCallback((node: HTMLDivElement | null) => {
-    if (node !== null) {
-      setTimeout(() => {
-        setReceiptHeight(node.clientHeight);
-      }, 100);
-    }
-  }, []);
 
   const receipts = event.attributes.map<TxReceipt>(({ key, value }) => {
     const addrType = getAddressType(value);
@@ -108,7 +105,6 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
       position="relative"
       direction="column"
       borderRadius="8px"
-      transition="all .25s ease-in-out"
       backgroundColor="gray.900"
       _hover={{ backgroundColor: "gray.800" }}
     >
@@ -139,21 +135,30 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           m={0}
         />
       </Flex>
-      <Box
+      <MotionBox
+        display="flex"
+        flexDir="column"
+        variants={{
+          expanded: { opacity: 1, height: "auto" },
+          collapsed: { opacity: 0, height: 0 },
+        }}
         overflow="hidden"
-        h={expand ? `${receiptHeight}px` : 0}
-        transition="all .25s ease-in-out"
+        initial="collapsed"
+        animate={expand ? "expanded" : "collapsed"}
+        transition={{
+          duration: "0.25",
+          ease: "easeInOut",
+        }}
       >
-        <Flex direction="column" p={4} pt={0} ref={measuredRef}>
-          <Box mb={4} h="1px" bgColor="gray.700" />
-          <TxReceiptRender
-            keyPrefix={msgIndex.toString() + event.type}
-            variant="tx-page"
-            receipts={receipts}
-            gap={3}
-          />
-        </Flex>
-      </Box>
+        <Box borderTop="1px solid var(--chakra-colors-gray-700)" mx={4} />
+        <TxReceiptRender
+          keyPrefix={msgIndex.toString() + event.type}
+          variant="tx-page"
+          receipts={receipts}
+          gap={3}
+          p={4}
+        />
+      </MotionBox>
     </Flex>
   );
 };
