@@ -66,6 +66,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#465](https://github.com/alleslabs/celatone-frontend/pull/465) Fix wrong access queryKey in validator info
+- [#464](https://github.com/alleslabs/celatone-frontend/pull/464) Fix `useFaucetInfo` hook by adding `assetInfos` to its dependencies
 - [#463](https://github.com/alleslabs/celatone-frontend/pull/463) Fix event box content clipping and improve animation
 - [#462](https://github.com/alleslabs/celatone-frontend/pull/462) Fix validator query dependencies
 - [#460](https://github.com/alleslabs/celatone-frontend/pull/460) Fix icns names and contract address alignment
