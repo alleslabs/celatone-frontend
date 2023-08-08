@@ -1,3 +1,5 @@
+import { wallets as keplrWallets } from "@cosmos-kit/keplr";
+
 import type { ChainConfigs } from "./types";
 
 export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
@@ -9,6 +11,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://rpc.stargaze-apis.com",
     indexer: "https://stargaze-mainnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -37,5 +40,6 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/stargaze/validators",
       proposal: "https://www.mintscan.io/stargaze/proposals",
     },
+    extra: {},
   },
 };

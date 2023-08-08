@@ -1,3 +1,5 @@
+import { wallets as keplrWallets } from "@cosmos-kit/keplr";
+
 import type { ChainConfigs } from "./types";
 
 export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
@@ -9,6 +11,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://rpc.osmosis.zone",
     indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -38,6 +41,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/osmosis/validators",
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
+    extra: {},
   },
   "osmo-test-5": {
     chain: "osmosis",
@@ -47,6 +51,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://rpc.osmotest5.osmosis.zone",
     indexer: "https://osmo-test-5-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: true,
@@ -77,6 +82,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
+    extra: {},
   },
   localosmosis: {
     chain: "osmosis",
@@ -86,6 +92,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     rpc: "http://localhost/rpc/",
     indexer: "http://localhost/hasura/v1/graphql",
     api: "http://localhost/api",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: true,
@@ -115,5 +122,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "",
       proposal: "",
     },
+    extra: {},
   },
 };

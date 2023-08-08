@@ -6,5 +6,6 @@ export const useCurrentChain = () => {
   const {
     chainConfig: { registryChainName },
   } = useCelatoneApp();
+
   return useChain(registryChainName);
 };

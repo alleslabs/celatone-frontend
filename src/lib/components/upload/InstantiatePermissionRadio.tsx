@@ -5,7 +5,7 @@ import { useController, useFieldArray, useWatch } from "react-hook-form";
 
 import { AddressInput } from "../AddressInput";
 import { AssignMe } from "../AssignMe";
-import { useCurrentChain } from "lib/app-provider";
+import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import {
   AmpEvent,
@@ -41,6 +41,11 @@ export const InstantiatePermissionRadio = ({
   page,
 }: InstantiatePermissionRadioProps) => {
   const { address: walletAddress } = useCurrentChain();
+  const {
+    chainConfig: {
+      extra: { disableAnyOfAddresses },
+    },
+  } = useCelatoneApp();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -95,79 +100,83 @@ export const InstantiatePermissionRadio = ({
           value={AccessType.ACCESS_TYPE_NOBODY}
           text="Instantiate through governance only (Nobody)"
         />
-        <Box>
-          <PermissionRadio
-            isSelected={permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES}
-            value={AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES}
-            text="Only a set of addresses can instantiate (AnyOfAddresses)"
-          />
-          {permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES && (
-            <Box>
-              {fields.map((field, idx) => (
-                <Flex gap={2} my={6} key={field.id}>
-                  <AddressInput
-                    name={`addresses.${idx}.address`}
-                    control={control}
-                    label="Address"
-                    variant="floating"
-                    error={
-                      (addresses[idx]?.address &&
-                        addresses.find(
-                          ({ address }, i) =>
-                            i < idx && address === addresses[idx]?.address
-                        ) &&
-                        "You already input this address") ||
-                      errors.addresses?.[idx]?.address?.message
-                    }
-                    helperAction={
-                      <AssignMe
-                        onClick={() => {
-                          AmpTrack(AmpEvent.USE_ASSIGN_ME);
-                          setValue(
-                            `addresses.${idx}.address`,
-                            walletAddress as Addr
-                          );
-                          trigger(`addresses.${idx}.address`);
-                        }}
-                        isDisable={
-                          addresses.findIndex(
-                            (x) => x.address === walletAddress
-                          ) > -1
-                        }
-                      />
-                    }
-                  />
-                  <Button
-                    w="56px"
-                    h="56px"
-                    variant="outline-gray"
-                    size="lg"
-                    disabled={fields.length <= 1}
-                    onClick={() => {
-                      remove(idx);
-                    }}
-                  >
-                    <CustomIcon
-                      name="delete"
-                      color={fields.length <= 1 ? "gray.600" : "text.dark"}
+        {!disableAnyOfAddresses && (
+          <Box>
+            <PermissionRadio
+              isSelected={
+                permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES
+              }
+              value={AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES}
+              text="Only a set of addresses can instantiate (AnyOfAddresses)"
+            />
+            {permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES && (
+              <Box>
+                {fields.map((field, idx) => (
+                  <Flex gap={2} my={6} key={field.id}>
+                    <AddressInput
+                      name={`addresses.${idx}.address`}
+                      control={control}
+                      label="Address"
+                      variant="floating"
+                      error={
+                        (addresses[idx]?.address &&
+                          addresses.find(
+                            ({ address }, i) =>
+                              i < idx && address === addresses[idx]?.address
+                          ) &&
+                          "You already input this address") ||
+                        errors.addresses?.[idx]?.address?.message
+                      }
+                      helperAction={
+                        <AssignMe
+                          onClick={() => {
+                            AmpTrack(AmpEvent.USE_ASSIGN_ME);
+                            setValue(
+                              `addresses.${idx}.address`,
+                              walletAddress as Addr
+                            );
+                            trigger(`addresses.${idx}.address`);
+                          }}
+                          isDisable={
+                            addresses.findIndex(
+                              (x) => x.address === walletAddress
+                            ) > -1
+                          }
+                        />
+                      }
                     />
-                  </Button>
-                </Flex>
-              ))}
-              <Button
-                variant="outline-primary"
-                mt={3}
-                mx="auto"
-                onClick={() => {
-                  append({ address: "" as Addr });
-                }}
-                leftIcon={<CustomIcon name="plus" color="primary.light" />}
-              >
-                Add More Address
-              </Button>
-            </Box>
-          )}
-        </Box>
+                    <Button
+                      w="56px"
+                      h="56px"
+                      variant="outline-gray"
+                      size="lg"
+                      disabled={fields.length <= 1}
+                      onClick={() => {
+                        remove(idx);
+                      }}
+                    >
+                      <CustomIcon
+                        name="delete"
+                        color={fields.length <= 1 ? "gray.600" : "text.dark"}
+                      />
+                    </Button>
+                  </Flex>
+                ))}
+                <Button
+                  variant="outline-primary"
+                  mt={3}
+                  mx="auto"
+                  onClick={() => {
+                    append({ address: "" as Addr });
+                  }}
+                  leftIcon={<CustomIcon name="plus" color="primary.light" />}
+                >
+                  Add More Address
+                </Button>
+              </Box>
+            )}
+          </Box>
+        )}
       </Box>
     </RadioGroup>
   );

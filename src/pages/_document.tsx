@@ -1,7 +1,7 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { ColorModeScript } from "@chakra-ui/react";
 import type { DocumentContext } from "next/document";
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 import { CURR_THEME } from "env";
 import Meta from "lib/components/Meta";
@@ -27,6 +27,21 @@ class MyDocument extends Document {
           />
           <Main />
           <NextScript />
+          <Script
+            strategy="lazyOnload"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+          />
+          <Script strategy="lazyOnload" id="google-tag-manager">
+            {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+            page_path: window.location.pathname,
+            debug_mode: true
+          });
+        `}
+          </Script>
         </body>
       </Html>
     );
