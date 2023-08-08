@@ -1,3 +1,6 @@
+import { wallets as compassWallets } from "@cosmos-kit/compass";
+import { wallets as keplrWallets } from "@cosmos-kit/keplr";
+
 import type { ContractAddr, HumanAddr, ValidatorAddr } from "lib/types";
 
 import type { ChainConfig, ChainConfigs, ProjectConstants } from "./types";
@@ -10,6 +13,7 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   rpc: "",
   indexer: "",
   api: "",
+  wallets: [],
   features: {
     faucet: {
       enabled: false,
@@ -42,6 +46,7 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     proposal: "",
   },
   hasSubHeader: false,
+  extra: {},
 };
 
 const DEFAULT_CELATONE_API_ENDPOINT = "https://celatone-api.alleslabs.dev";
@@ -55,6 +60,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://rpc.osmosis.zone",
     indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
     api: DEFAULT_CELATONE_API_ENDPOINT,
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -92,6 +98,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
     hasSubHeader: false,
+    extra: {},
   },
   "osmo-test-5": {
     chain: "osmosis",
@@ -101,6 +108,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://rpc.osmotest5.osmosis.zone",
     indexer: "https://osmo-test-5-graphql.alleslabs.dev/v1/graphql",
     api: DEFAULT_CELATONE_API_ENDPOINT,
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: true,
@@ -139,6 +147,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
     hasSubHeader: false,
+    extra: {},
   },
   "pacific-1": {
     chain: "sei",
@@ -148,6 +157,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://sei-rpc.polkachu.com",
     indexer: "https://pacific-1-graphql.alleslabs.dev/v1/graphql",
     api: DEFAULT_CELATONE_API_ENDPOINT,
+    wallets: [...compassWallets, ...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -184,6 +194,9 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       proposal: "",
     },
     hasSubHeader: true,
+    extra: {
+      disableAnyOfAddresses: true,
+    },
   },
   "atlantic-2": {
     chain: "sei",
@@ -193,6 +206,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://rpc.atlantic-2.seinetwork.io",
     indexer: "https://atlantic-2-graphql.alleslabs.dev/v1/graphql",
     api: DEFAULT_CELATONE_API_ENDPOINT,
+    wallets: [...compassWallets, ...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -229,6 +243,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       proposal: "https://testnet.mintscan.io/sei-testnet/proposals",
     },
     hasSubHeader: true,
+    extra: { disableAnyOfAddresses: true },
   },
   localosmosis: {
     chain: "osmosis",
@@ -238,6 +253,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     rpc: "http://localhost/rpc/",
     indexer: "http://localhost/hasura/v1/graphql",
     api: "http://localhost/api",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: true,
@@ -275,6 +291,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
       proposal: "",
     },
     hasSubHeader: false,
+    extra: {},
   },
 };
 

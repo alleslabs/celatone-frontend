@@ -10,7 +10,7 @@ import { composeStoreCodeMsg } from "lib/utils";
 export interface UploadStreamParams {
   wasmFileName: Option<string>;
   wasmCode: Option<Promise<ArrayBuffer>>;
-  addresses: Addr[];
+  addresses?: Addr[];
   permission: AccessType;
   codeName: string;
   estimatedFee: Option<StdFee>;

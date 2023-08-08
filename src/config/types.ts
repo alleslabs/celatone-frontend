@@ -1,3 +1,5 @@
+import type { MainWalletBase } from "@cosmos-kit/core";
+
 import type { HumanAddr, ValidatorAddr, ContractAddr } from "lib/types";
 
 type FaucetConfig =
@@ -39,6 +41,7 @@ export interface ChainConfig {
   rpc: string;
   indexer: string;
   api: string;
+  wallets: MainWalletBase[];
   features: {
     faucet: FaucetConfig;
     wasm: WasmConfig;
@@ -60,6 +63,9 @@ export interface ChainConfig {
   };
   explorerLink: ExplorerConfig;
   hasSubHeader: boolean;
+  extra: {
+    disableAnyOfAddresses?: boolean;
+  };
 }
 
 export interface ChainConfigs {

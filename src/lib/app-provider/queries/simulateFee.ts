@@ -77,7 +77,7 @@ interface SimulateQueryParamsForStoreCode {
   enabled: boolean;
   wasmFile: Option<File>;
   permission: AccessType;
-  addresses: Addr[];
+  addresses?: Addr[];
   onSuccess?: (gas: Gas<number> | undefined) => void;
   onError?: (err: Error) => void;
 }
