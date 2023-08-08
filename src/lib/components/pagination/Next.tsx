@@ -1,6 +1,5 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
-import type react from "react";
 import { useContext } from "react";
 
 import { AmpTrackPaginationNavigate } from "lib/services/amplitude";
@@ -8,7 +7,7 @@ import { AmpTrackPaginationNavigate } from "lib/services/amplitude";
 import { PaginatorContext } from "./PaginatorProvider";
 
 interface NextProps extends ButtonProps {
-  children: react.ReactNode;
+  children: React.ReactNode;
   pageSize: number;
 }
 

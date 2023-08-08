@@ -51,7 +51,7 @@ export const DevShortcut = () => {
   return (
     <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={4} w="full">
       {shortcutList.map((item) => (
-        <>
+        <div key={item.slug}>
           {!isMobile || item.slug === "query" ? (
             <AppLink href={`/${item.slug}`} key={item.slug}>
               <Flex
@@ -104,7 +104,7 @@ export const DevShortcut = () => {
               </Flex>
             </Flex>
           )}
-        </>
+        </div>
       ))}
     </SimpleGrid>
   );

@@ -1,3 +1,5 @@
+import type { MainWalletBase } from "@cosmos-kit/core";
+
 type FaucetConfig =
   | {
       enabled: true;
@@ -37,6 +39,7 @@ export interface ChainConfig {
   rpc: string;
   indexer: string;
   api: string;
+  wallets: MainWalletBase[];
   features: {
     faucet: FaucetConfig;
     wasm: WasmConfig;
@@ -52,6 +55,9 @@ export interface ChainConfig {
     maxGasLimit: number;
   };
   explorerLink: ExplorerConfig;
+  extra: {
+    disableAnyOfAddresses?: boolean;
+  };
 }
 
 export interface ChainConfigs {

@@ -11,7 +11,6 @@ import {
   createContext,
 } from "react";
 
-import { useAmplitude } from "../hooks/useAmplitude";
 import { useNetworkChange } from "../hooks/useNetworkChange";
 import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
@@ -123,8 +122,6 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   }, [setModalTheme]);
 
   useNetworkChange(handleOnChainIdChange);
-
-  useAmplitude(currentChainName);
 
   if (currentChainId && !(currentChainId in CHAIN_CONFIGS))
     return <NetworkErrorState />;
