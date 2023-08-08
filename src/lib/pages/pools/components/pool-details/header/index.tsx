@@ -33,7 +33,7 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
       <Breadcrumb
         items={[
           { text: "Pools", href: "/pools" },
-          { text: `#${pool?.id.toString()}` },
+          { text: `#${pool.id.toString()}` },
         ]}
       />
       <Flex justifyContent="space-between" align="center" w="full" mt={4}>
