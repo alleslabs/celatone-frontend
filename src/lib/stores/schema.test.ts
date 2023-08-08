@@ -12,6 +12,10 @@ beforeAll(() => {
   schemaStore = new SchemaStore();
 });
 
+beforeEach(() => {
+  schemaStore.saveNewSchema(codeHash, exampleSchema);
+});
+
 describe("SchemaStore initialization", () => {
   test("Correctly initialize SchemaStore", () => {
     expect(schemaStore instanceof SchemaStore).toBeTruthy();
@@ -20,7 +24,6 @@ describe("SchemaStore initialization", () => {
 
 describe("saveNewSchema and deleteSchema", () => {
   test("correctly save new schema and delete schema by codeHash", () => {
-    schemaStore.saveNewSchema(codeHash, exampleSchema);
     expect(schemaStore.jsonSchemas).toStrictEqual({
       [codeHash]: exampleSchema,
     });
@@ -82,9 +85,6 @@ describe("getSchemaProperty", () => {
 });
 
 describe("getQuerySchemaFormArray", () => {
-  beforeAll(() => {
-    schemaStore.saveNewSchema(codeHash, exampleSchema);
-  });
   test("correctly get form array for query schema", () => {
     expect(schemaStore.getQuerySchema(codeHash)).toEqual(querySchemaOutput);
   });
@@ -95,9 +95,6 @@ describe("getQuerySchemaFormArray", () => {
 });
 
 describe("getExecuteSchemaFormArray", () => {
-  beforeAll(() => {
-    schemaStore.saveNewSchema(codeHash, exampleSchema);
-  });
   test("correctly get form array for execute schema", () => {
     expect(schemaStore.getExecuteSchema(codeHash)).toEqual(executeSchemaOutput);
   });
