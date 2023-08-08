@@ -205,7 +205,6 @@ export const ContractsTableRowCTA = ({
                 triggerElement={
                   <StyledIconButton
                     icon={<CustomIcon name="bookmark-solid" />}
-                    aria-label="Add to other list"
                     variant="ghost-primary"
                   />
                 }
@@ -216,7 +215,6 @@ export const ContractsTableRowCTA = ({
                 triggerElement={
                   <StyledIconButton
                     icon={<CustomIcon name="bookmark" />}
-                    aria-label="Save contract details"
                     variant="ghost-gray"
                   />
                 }
