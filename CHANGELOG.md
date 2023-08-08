@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#468](https://github.com/alleslabs/celatone-frontend/pull/468) Add breadcrumb to pool id page
 - [#466](https://github.com/alleslabs/celatone-frontend/pull/466) Fix developer mode alert
 - [#457](https://github.com/alleslabs/celatone-frontend/pull/457) Add alert for proposal forum review
 - [#389](https://github.com/alleslabs/celatone-frontend/pull/389) Fix modal consistency
