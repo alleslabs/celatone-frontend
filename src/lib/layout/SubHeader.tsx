@@ -101,7 +101,7 @@ const SubHeader = ({
   const activeColor = "primary.light";
 
   const switchHighlight: CSSProperties = {
-    borderRadius: "8px",
+    borderRadius: "4px",
     padding: "6px 8px",
     backgroundColor: "var(--chakra-colors-gray-800)",
   };
@@ -168,7 +168,10 @@ const SubHeader = ({
           style={isDevMode === undefined ? switchHighlight : undefined}
         >
           <FormLabel mb={0} cursor="pointer" mr={2}>
-            <Text variant="body2" color="text.dark">
+            <Text
+              variant="body2"
+              color={isDevMode === undefined ? "text.main" : "text.dark"}
+            >
               Dev Mode
             </Text>
           </FormLabel>
