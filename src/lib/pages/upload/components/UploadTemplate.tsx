@@ -39,7 +39,7 @@ const initialJsonState: JsonState = {
 
 const reducer = (state: JsonState, action: Action): JsonState => {
   switch (action.type) {
-    case "set-error":
+    case ActionType.SET_ERROR:
       return {
         ...state,
         [action.method]: {
@@ -47,12 +47,12 @@ const reducer = (state: JsonState, action: Action): JsonState => {
           error: action.error,
         },
       };
-    case "set-schema":
+    case ActionType.SET_SCHEMA:
       return {
         ...state,
         [action.method]: { schemaString: action.schemaString, error: null },
       };
-    case "reset":
+    case ActionType.RESET:
     default:
       return initialJsonState;
   }
@@ -168,15 +168,15 @@ const MethodRender = ({
   }
 };
 
-interface UploadMethodInterface {
+interface UploadTemplateInterface {
   codeHash: string;
   closeDrawer: () => void;
 }
 
-export const UploadMethod = ({
+export const UploadTemplate = ({
   codeHash,
   closeDrawer,
-}: UploadMethodInterface) => {
+}: UploadTemplateInterface) => {
   const { saveNewSchema } = useSchemaStore();
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
   const [jsonState, dispatchJsonState] = useReducer(reducer, initialJsonState);

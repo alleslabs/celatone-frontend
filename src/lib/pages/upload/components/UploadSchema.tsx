@@ -19,7 +19,7 @@ import { useSchemaStore } from "lib/providers/store";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
 
-import { UploadMethod } from "./UploadMethod";
+import { UploadTemplate } from "./UploadTemplate";
 
 interface UploadSchemaContentInterface {
   attached: boolean;
@@ -135,7 +135,7 @@ const Content = ({
                 others.
               </Text>
             </Box>
-            <UploadMethod closeDrawer={onClose} codeHash={codeHash} />
+            <UploadTemplate closeDrawer={onClose} codeHash={codeHash} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -144,6 +144,7 @@ const Content = ({
 };
 
 export const UploadSchema = (props: UploadSchemaContentInterface) => {
+  const { attached } = props;
   return (
     <Flex
       border="1px solid var(--chakra-colors-gray-700)"
@@ -153,8 +154,7 @@ export const UploadSchema = (props: UploadSchemaContentInterface) => {
       p={4}
       w="full"
       borderRadius="4px"
-      // eslint-disable-next-line react/destructuring-assignment
-      mb={props.attached ? 8 : 0}
+      mb={attached ? 8 : 0}
     >
       <Content {...props} />
     </Flex>
