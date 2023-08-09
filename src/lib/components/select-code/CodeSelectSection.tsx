@@ -45,12 +45,8 @@ export const CodeSelectSection = <T extends FieldValues>({
         w="100%"
       >
         <Flex justify="space-around">
-          <Radio value="select-existing" size="lg">
-            Select from your code
-          </Radio>
-          <Radio value="fill-manually" size="lg">
-            Fill Code ID manually
-          </Radio>
+          <Radio value="select-existing">Select from your code</Radio>
+          <Radio value="fill-manually">Fill Code ID manually</Radio>
         </Flex>
       </RadioGroup>
       <form style={{ width: "100%" }}>

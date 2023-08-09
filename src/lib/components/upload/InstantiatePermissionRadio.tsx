@@ -29,7 +29,7 @@ interface PermissionRadioProps {
 }
 
 const PermissionRadio = ({ isSelected, value, text }: PermissionRadioProps) => (
-  <Radio value={value} py={2} width="100%" size="lg">
+  <Radio value={value} py={2} width="100%">
     <Text fontWeight={isSelected ? "600" : "400"}>{text} </Text>
   </Radio>
 );
