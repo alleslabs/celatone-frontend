@@ -13,12 +13,29 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 
 import { CustomIcon } from "lib/components/icon";
+import { useSchemaStore } from "lib/providers/store";
+import type { CodeSchema } from "lib/stores/schema";
+import type { Option } from "lib/types";
 
-const Content = ({ attached }: { attached: boolean }) => {
+import { UploadTemplate } from "./UploadTemplate";
+
+interface UploadSchemaContentInterface {
+  attached: boolean;
+  schema: Option<CodeSchema>;
+  codeId: string;
+  codeHash: string;
+}
+
+const Content = ({
+  attached,
+  schema,
+  codeId,
+  codeHash,
+}: UploadSchemaContentInterface) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { deleteSchema } = useSchemaStore();
   return (
     <>
       {!attached ? (
@@ -39,7 +56,30 @@ const Content = ({ attached }: { attached: boolean }) => {
             <Text variant="body2">JSON Schema attached</Text>
           </Flex>
           <Flex align="center">
-            <Button variant="outline-gray" size="sm" mr={2}>
+            <Button
+              variant="outline-gray"
+              size="sm"
+              mr={2}
+              onClick={() => {
+                const jsonString = JSON.stringify(schema, null, 2);
+                const jsonWindow = window.open();
+                if (jsonWindow) {
+                  // Modify styling later
+                  jsonWindow.document.write(
+                    `<html><head><title>JSON Schema | Code ID ${codeId}</title>`
+                  );
+
+                  // Add styling
+                  jsonWindow.document.write(
+                    "<style>body { background-color: #f0f0f0; color: #333; }</style>"
+                  );
+
+                  jsonWindow.document.write(
+                    `</head><body><pre>${jsonString}</pre></body></html>`
+                  );
+                }
+              }}
+            >
               View JSON
             </Button>
             <IconButton
@@ -55,7 +95,7 @@ const Content = ({ attached }: { attached: boolean }) => {
               size="sm"
               variant="gray"
               aria-label="delete_schema"
-              // onClick={() => onClose()}
+              onClick={() => deleteSchema(codeHash)}
               icon={
                 <CustomIcon name="delete" color="gray.600" boxSize={4} m={0} />
               }
@@ -71,7 +111,7 @@ const Content = ({ attached }: { attached: boolean }) => {
               <Flex align="center" gap={3}>
                 <CustomIcon name="upload" boxSize={5} color="gray.600" />
                 <Heading as="h5" variant="h5">
-                  Attach JSON Schema for code ID “1”
+                  Attach JSON Schema for code ID “{codeId}”
                 </Heading>
               </Flex>
               <Text variant="body3" color="text.dark">
@@ -86,6 +126,7 @@ const Content = ({ attached }: { attached: boolean }) => {
               borderRadius="8px"
               border="1px solid var(--chakra-colors-gray-700)"
               bg="gray.800"
+              mb={6}
             >
               <Text variant="body2" color="text.dark">
                 Please note that the JSON schema you upload on our website will
@@ -94,6 +135,7 @@ const Content = ({ attached }: { attached: boolean }) => {
                 others.
               </Text>
             </Box>
+            <UploadTemplate closeDrawer={onClose} codeHash={codeHash} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -101,8 +143,8 @@ const Content = ({ attached }: { attached: boolean }) => {
   );
 };
 
-export const UploadSchema = observer(({ attached }: { attached: boolean }) => {
-  // Check attachment state from local storage
+export const UploadSchema = (props: UploadSchemaContentInterface) => {
+  const { attached } = props;
   return (
     <Flex
       border="1px solid var(--chakra-colors-gray-700)"
@@ -114,7 +156,7 @@ export const UploadSchema = observer(({ attached }: { attached: boolean }) => {
       borderRadius="4px"
       mb={attached ? 8 : 0}
     >
-      <Content attached={attached} />
+      <Content {...props} />
     </Flex>
   );
-});
+};

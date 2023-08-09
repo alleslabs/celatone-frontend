@@ -53,12 +53,14 @@ export const uploadContractTx = ({
       };
 
       const codeId = findAttr(mimicLog, "store_code", "code_id") ?? "0";
+      const codeHash = findAttr(mimicLog, "store_code", "code_checksum") ?? "";
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
       const formattedFee = txFee ? formatUFee(txFee) : "N/A";
 
       onTxSucceed({
         codeId: parseInt(codeId, 10).toString(),
+        codeHash,
         codeDisplayName: codeName || `${wasmFileName}(${codeId})`,
         txHash: txInfo.transactionHash,
         formattedFee,

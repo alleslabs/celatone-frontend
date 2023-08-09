@@ -8,6 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useSchemaStore } from "lib/providers/store";
 
 import { UploadSchema } from "./components/UploadSchema";
 
@@ -17,8 +18,9 @@ interface UploadCompleteProps {
 
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
-  // Retrieve attached state from local storage
-  const attached = false;
+  const { getSchemaByCodeHash } = useSchemaStore();
+  const schema = getSchemaByCodeHash(txResult.codeHash);
+  const attached = Boolean(schema);
   return (
     <WasmPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
@@ -69,7 +71,14 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       <Text color="text.disabled" variant="body2" fontWeight={500} mb={4}>
         Your attached JSON schema will be stored locally on your device
       </Text>
-      <UploadSchema attached={attached} />
+
+      <UploadSchema
+        attached={attached}
+        schema={schema}
+        codeId={txResult.codeId}
+        codeHash={txResult.codeHash}
+      />
+
       {!attached && (
         <Flex my={8} gap={4} alignItems="center" w="full">
           <Divider borderColor="gray.600" />

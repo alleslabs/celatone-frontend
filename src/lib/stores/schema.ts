@@ -65,6 +65,10 @@ export class SchemaStore {
     this.jsonSchemas[codeHash] = schema;
   }
 
+  deleteSchema(codeHash: string) {
+    delete this.jsonSchemas[codeHash];
+  }
+
   getSchemaByCodeHash(codeHash: string): Option<CodeSchema> {
     return this.jsonSchemas[codeHash];
   }

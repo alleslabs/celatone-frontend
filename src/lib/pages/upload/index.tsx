@@ -12,6 +12,7 @@ const UploadIndex = () => {
   const [txInfo, setTxInfo] = useState<UploadTxInternalResult>({
     codeDisplayName: "",
     codeId: "",
+    codeHash: "",
     txHash: "",
     formattedFee: "",
   });
