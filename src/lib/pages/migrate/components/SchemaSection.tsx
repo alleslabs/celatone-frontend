@@ -1,9 +1,11 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { ViewSchemaButton } from "lib/components/json-schema/common";
-import { AttachSchemaCard } from "lib/components/json-schema/common/AttachSchemaCard";
-import { JsonSchemaDrawer } from "lib/components/json-schema/common/JsonSchemaDrawer";
+import {
+  ViewSchemaButton,
+  AttachSchemaCard,
+  JsonSchemaDrawer,
+} from "lib/components/json-schema/";
 import { JsonSchemaForm } from "lib/components/json-schema/form";
 import { useSchemaStore } from "lib/providers/store";
 
@@ -36,7 +38,7 @@ export const SchemaSection = observer(
               <Flex gap={3}>
                 <ViewSchemaButton schema={jsonSchema} codeId={codeId} />
                 <Button variant="outline-gray" size="sm" onClick={onOpen}>
-                  Edit
+                  Reattach
                 </Button>
               </Flex>
             </Flex>

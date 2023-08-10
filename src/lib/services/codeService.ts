@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-identical-functions */
-import type { UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -273,11 +273,11 @@ export const useCodeListCountByWalletAddress = (
   );
 };
 
-export type LcdCodeInfoSuccessCallback = (data: CodeIdInfoResponse) => void;
+export type LCDCodeInfoSuccessCallback = (data: CodeIdInfoResponse) => void;
 
-export const useLcdCodeInfo = (
+export const useLCDCodeInfo = (
   codeId: string,
-  options?: Parameters<typeof useQuery<CodeIdInfoResponse>>[2]
+  options?: Omit<UseQueryOptions<CodeIdInfoResponse>, "queryKey">
 ): UseQueryResult<CodeIdInfoResponse> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const queryFn = async () => getCodeIdInfo(lcdEndpoint, codeId);

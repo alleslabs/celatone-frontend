@@ -154,44 +154,49 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   );
 
   return (
-    <Form
-      id={formId}
-      formContext={formContext}
-      formData={formData}
-      schema={schema}
-      // we use no validate because the schemas are too complicated to be auto validated
-      // noValidate
-      uiSchema={{
-        "ui:submitButtonOptions": {
-          norender: true,
-        },
-        ...uiSchema,
-      }}
-      widgets={{
-        ...DefaultWidgets,
-        ...Widgets,
-        ...widgets,
-      }}
-      fields={{
-        ...Fields,
-        ...fields,
-      }}
-      templates={{
-        ...DefaultTemplates,
-        ...Templates,
-        ...templates,
-      }}
-      validator={v8Validator}
-      onChange={({ formData: values }) => {
-        // log.info(values)
-        onChange?.(values);
-      }}
-      onSubmit={({ formData: values }) => {
-        // log.info(values)
-        onSubmit(values);
-      }}
-      onError={() => console.error("errors")}
-    />
+    <Box w="full">
+      <Form
+        id={formId}
+        formContext={formContext}
+        formData={formData}
+        schema={schema}
+        // we use no validate because the schemas are too complicated to be auto validated
+        // noValidate
+        uiSchema={{
+          "ui:submitButtonOptions": {
+            norender: true,
+          },
+          "ui:form": {
+            width: "100%",
+          },
+          ...uiSchema,
+        }}
+        widgets={{
+          ...DefaultWidgets,
+          ...Widgets,
+          ...widgets,
+        }}
+        fields={{
+          ...Fields,
+          ...fields,
+        }}
+        templates={{
+          ...DefaultTemplates,
+          ...Templates,
+          ...templates,
+        }}
+        validator={v8Validator}
+        onChange={({ formData: values }) => {
+          // log.info(values)
+          onChange?.(values);
+        }}
+        onSubmit={({ formData: values }) => {
+          // log.info(values)
+          onSubmit(values);
+        }}
+        onError={() => console.error("errors")}
+      />
+    </Box>
   );
 };
 

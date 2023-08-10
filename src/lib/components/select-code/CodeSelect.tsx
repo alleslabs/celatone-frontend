@@ -6,8 +6,8 @@ import { PermissionChip } from "../PermissionChip";
 import type { FormStatus } from "lib/components/forms";
 import { UploadIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
-import type { LcdCodeInfoSuccessCallback } from "lib/services/codeService";
-import { useLcdCodeInfo } from "lib/services/codeService";
+import type { LCDCodeInfoSuccessCallback } from "lib/services/codeService";
+import { useLCDCodeInfo } from "lib/services/codeService";
 import { AccessConfigPermission } from "lib/types";
 import { isCodeId } from "lib/utils";
 
@@ -15,7 +15,7 @@ import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
 interface CodeSelectProps extends Omit<FlexProps, "onSelect"> {
   onCodeSelect: (code: string) => void;
-  setCodeHash?: LcdCodeInfoSuccessCallback;
+  setCodeHash?: LCDCodeInfoSuccessCallback;
   codeId: string;
   status: FormStatus;
 }
@@ -29,7 +29,7 @@ export const CodeSelect = ({
 }: CodeSelectProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const name = getCodeLocalInfo(Number(codeId))?.name;
-  const { data: codeInfo } = useLcdCodeInfo(codeId, {
+  const { data: codeInfo } = useLCDCodeInfo(codeId, {
     onSuccess: setCodeHash,
     enabled: isCodeId(codeId),
   });

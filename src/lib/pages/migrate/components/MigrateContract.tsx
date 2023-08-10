@@ -1,5 +1,5 @@
-import type { BoxProps } from "@chakra-ui/react";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import type { BoxProps } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import Long from "long";
 import { observer } from "mobx-react-lite";
@@ -17,10 +17,11 @@ import type { FormStatus } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
+import { Tooltip } from "lib/components/Tooltip";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
-import type { LcdCodeInfoSuccessCallback } from "lib/services/codeService";
-import { useLcdCodeInfo } from "lib/services/codeService";
+import type { CodeIdInfoResponse } from "lib/services/code";
+import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, jsonValidate, resolvePermission } from "lib/utils";
@@ -98,7 +99,7 @@ export const MigrateContract = observer(
       },
     });
 
-    const { refetch } = useLcdCodeInfo(codeId, {
+    const { refetch } = useLCDCodeInfo(codeId, {
       enabled: !!address && !!codeId.length,
       retry: false,
       cacheTime: 0,
@@ -151,6 +152,7 @@ export const MigrateContract = observer(
       currentInput,
       estimatedFee,
       broadcast,
+      setProcessing,
     ]);
 
     useEffect(() => {
@@ -196,7 +198,7 @@ export const MigrateContract = observer(
           onCodeSelect={(code: string) => {
             setValue("codeId", code);
           }}
-          setCodeHash={(data: Parameters<LcdCodeInfoSuccessCallback>[0]) => {
+          setCodeHash={(data: CodeIdInfoResponse) => {
             setValue("codeHash", data.code_info.data_hash.toLowerCase());
           }}
           codeId={codeId}
@@ -205,11 +207,19 @@ export const MigrateContract = observer(
           <Heading as="h6" variant="h6">
             Migrate Message
           </Heading>
-          <MessageInputSwitch
-            tabs={Object.values(MessageTabs)}
-            currentTab={tab}
-            onTabChange={setTab}
-          />
+          <Tooltip
+            label="Select or fill code id first"
+            isDisabled={Boolean(codeHash)}
+          >
+            <div>
+              <MessageInputSwitch
+                tabs={Object.values(MessageTabs)}
+                currentTab={tab}
+                onTabChange={setTab}
+                disabled={!codeHash}
+              />
+            </div>
+          </Tooltip>
         </Flex>
         <Box
           sx={{

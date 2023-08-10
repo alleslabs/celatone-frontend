@@ -7,12 +7,14 @@ import { MotionBox } from "lib/components/MotionBox";
 interface MessageInputSwitchProps<T> {
   currentTab: T;
   tabs: T[];
+  disabled?: boolean;
   onTabChange: Dispatch<SetStateAction<T>>;
 }
 
 export const MessageInputSwitch = <T extends string>({
   currentTab,
   tabs,
+  disabled = false,
   onTabChange,
 }: MessageInputSwitchProps<T>) => {
   const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -25,6 +27,7 @@ export const MessageInputSwitch = <T extends string>({
       direction="row"
       align="center"
       position="relative"
+      sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
     >
       {tabs.map((tab, idx) => (
         <MotionBox

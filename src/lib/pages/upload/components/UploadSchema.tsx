@@ -1,7 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react";
 
-import { AttachSchemaCard } from "lib/components/json-schema/common/AttachSchemaCard";
-import { JsonSchemaDrawer } from "lib/components/json-schema/common/JsonSchemaDrawer";
+import { AttachSchemaCard, JsonSchemaDrawer } from "lib/components/json-schema";
 import type { CodeSchema } from "lib/stores/schema";
 import type { Option } from "lib/types";
 

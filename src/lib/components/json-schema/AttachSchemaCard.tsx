@@ -53,15 +53,9 @@ export const AttachSchemaCard = ({
           </Flex>
           <Flex align="center">
             <ViewSchemaButton codeId={codeId} schema={schema} mr={2} />
-            <IconButton
-              size="sm"
-              variant="gray"
-              aria-label="edit_schema"
-              onClick={openDrawer}
-              icon={
-                <CustomIcon name="edit" color="gray.600" boxSize={4} m={0} />
-              }
-            />
+            <Button variant="outline-gray" size="sm" onClick={openDrawer}>
+              Reattach
+            </Button>
             <IconButton
               size="sm"
               variant="gray"
