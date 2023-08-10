@@ -40,3 +40,6 @@ export const CURR_THEME = (() => {
       return DEFAULT_THEME;
   }
 })();
+
+export const HASURA_ADMIN_SECRET =
+  process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET ?? "";
