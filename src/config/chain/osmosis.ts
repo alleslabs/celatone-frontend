@@ -28,6 +28,10 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: true,
       },
+      proposal: {
+        enabled: true,
+        hideCreateBtn: true,
+      },
     },
     gas: {
       gasPrice: {
@@ -69,6 +73,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: false,
       },
+      proposal: {
+        enabled: true,
+      },
     },
     gas: {
       gasPrice: {
@@ -108,6 +115,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       },
       publicProject: {
         enabled: false,
+      },
+      proposal: {
+        enabled: true,
       },
     },
     gas: {

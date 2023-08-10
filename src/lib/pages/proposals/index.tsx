@@ -3,7 +3,11 @@ import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useState, useEffect } from "react";
 
-import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useCurrentChain,
+  useProposalConfig,
+} from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -24,6 +28,7 @@ import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 
 const Proposals = () => {
   const { currentChainId } = useCelatoneApp();
+  useProposalConfig({ shouldRedirect: true });
   const router = useRouter();
   const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
   const [types, setTypes] = useState<ProposalType[]>([]);

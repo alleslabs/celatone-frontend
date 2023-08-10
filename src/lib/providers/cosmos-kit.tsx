@@ -9,6 +9,10 @@ import {
   localosmosisAsset,
 } from "lib/chain-registry/localosmosis";
 import { sei, seiAssets } from "lib/chain-registry/sei";
+import {
+  terra2testnet,
+  terra2testnetAssets,
+} from "lib/chain-registry/terra2testnet";
 
 // Remark: The avaliable wallet list won't change after the app is loaded.
 // So we have to revisit this later if we have another solution.
@@ -31,8 +35,13 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Provider
-      chains={[...chains, localosmosis, sei]}
-      assetLists={[...assets, localosmosisAsset, seiAssets]}
+      chains={[...chains, localosmosis, sei, terra2testnet]}
+      assetLists={[
+        ...assets,
+        localosmosisAsset,
+        seiAssets,
+        terra2testnetAssets,
+      ]}
       wallets={wallets}
       endpointOptions={{
         isLazy: true,

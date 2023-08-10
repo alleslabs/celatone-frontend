@@ -22,6 +22,9 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     publicProject: {
       enabled: false,
     },
+    proposal: {
+      enabled: false,
+    },
   },
   gas: {
     gasPrice: {

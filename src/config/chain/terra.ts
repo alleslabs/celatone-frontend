@@ -2,14 +2,14 @@ import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
 import type { ChainConfigs } from "./types";
 
-export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
-  "neutron-1": {
-    chain: "neutron",
-    registryChainName: "neutron",
-    prettyName: "Neutron",
-    lcd: "https://rest-kralum.neutron-1.neutron.org",
-    rpc: "https://rpc-kralum.neutron-1.neutron.org",
-    indexer: "https://neutron-1-graphql.alleslabs.dev/v1/graphql",
+export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
+  "phoenix-1": {
+    chain: "terra",
+    registryChainName: "terra2",
+    prettyName: "Terra",
+    lcd: "https://phoenix-lcd.terra.dev:443",
+    rpc: "https://terra-rpc.polkachu.com",
+    indexer: "https://phoenix-1-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
@@ -28,30 +28,30 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
       },
       proposal: {
-        enabled: true,
+        enabled: false,
       },
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.025,
-        denom: "untrn",
+        tokenPerGas: 0.0125,
+        denom: "uluna",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "https://www.mintscan.io/neutron/validators",
-      proposal: "",
+      validator: "https://finder.terra.money/mainnet/validator",
+      proposal: "https://station.terra.money/proposal/phoenix-1",
     },
     extra: {},
   },
-  "pion-1": {
-    chain: "neutron",
-    registryChainName: "neutrontestnet",
-    prettyName: "Neutron Testnet",
-    lcd: "https://rest-palvus.pion-1.ntrn.tech:443",
-    rpc: "https://rpc-palvus.pion-1.ntrn.tech:443",
-    indexer: "https://pion-1-graphql.alleslabs.dev/v1/graphql",
+  "pisco-1": {
+    chain: "terra",
+    registryChainName: "terra2testnet",
+    prettyName: "Terra Testnet",
+    lcd: "https://pisco-lcd.terra.dev:443",
+    rpc: "https://terra-testnet-rpc.polkachu.com:443",
+    indexer: "https://pisco-1-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
     features: {
@@ -70,20 +70,20 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       proposal: {
-        enabled: true,
+        enabled: false,
       },
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 0.025,
-        denom: "untrn",
+        tokenPerGas: 0.0125,
+        denom: "uluna",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
     explorerLink: {
-      validator: "https://www.mintscan.io/neutron/validators",
-      proposal: "",
+      validator: "https://finder.terra.money/testnet/validator",
+      proposal: "https://station.terra.money/proposal/pisco-1",
     },
     extra: {},
   },
