@@ -92,7 +92,7 @@ export const uploadContractTx = ({
               <span style={{ fontWeight: 700 }}>
                 ‘{codeName || `${wasmFileName}(${codeId})`}’
               </span>{" "}
-              is has been uploaded. Would you like to{" "}
+              has been uploaded. Would you like to{" "}
               {isMigrate ? "migrate" : "instantiate"} your code now?
             </>
           ),
