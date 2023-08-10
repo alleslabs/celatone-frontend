@@ -33,7 +33,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: true,
       },
-      proposal: {
+      gov: {
         enabled: false,
       },
     },
@@ -77,7 +77,7 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: false,
       },
-      proposal: {
+      gov: {
         enabled: false,
       },
     },

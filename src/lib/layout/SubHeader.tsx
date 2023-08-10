@@ -9,11 +9,7 @@ import {
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import { useEffect, useRef } from "react";
 
-import {
-  usePoolConfig,
-  useProposalConfig,
-  useWasmConfig,
-} from "lib/app-provider";
+import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -82,7 +78,7 @@ const SubHeader = ({
 }: SubHeaderProps) => {
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
-  const proposalConfig = useProposalConfig({ shouldRedirect: false });
+  const govConfig = useGovConfig({ shouldRedirect: false });
 
   const prevIsDevModeRef = useRef<boolean>(Boolean(isDevMode));
 
@@ -96,7 +92,7 @@ const SubHeader = ({
           { name: "Contracts", slug: "/contracts", icon: "contract-address" },
         ] as const)
       : []),
-    ...(proposalConfig.enabled
+    ...(govConfig.enabled
       ? ([{ name: "Proposals", slug: "/proposals", icon: "proposal" }] as const)
       : []),
     ...(poolConfig.enabled

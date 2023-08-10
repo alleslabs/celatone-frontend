@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import {
   useCelatoneApp,
   useCurrentChain,
-  useProposalConfig,
+  useGovConfig,
 } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -28,7 +28,7 @@ import { ProposalTypeFilter } from "./components/ProposalTypeFilter";
 
 const Proposals = () => {
   const { currentChainId } = useCelatoneApp();
-  useProposalConfig({ shouldRedirect: true });
+  useGovConfig({ shouldRedirect: true });
   const router = useRouter();
   const [statuses, setStatuses] = useState<ProposalStatus[]>([]);
   const [types, setTypes] = useState<ProposalType[]>([]);

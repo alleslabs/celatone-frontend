@@ -22,7 +22,7 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     publicProject: {
       enabled: false,
     },
-    proposal: {
+    gov: {
       enabled: false,
     },
   },

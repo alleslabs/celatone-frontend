@@ -26,10 +26,10 @@ type PoolConfig =
 
 type PublicProjectConfig = { enabled: boolean };
 
-type ProposalConfig =
+type GovConfig =
   | {
       enabled: true;
-      hideCreateBtn?: boolean;
+      disableOpenProposal?: boolean;
     }
   | {
       enabled: false;
@@ -54,7 +54,7 @@ export interface ChainConfig {
     wasm: WasmConfig;
     pool: PoolConfig;
     publicProject: PublicProjectConfig;
-    proposal: ProposalConfig;
+    gov: GovConfig;
   };
   gas: {
     gasPrice: {

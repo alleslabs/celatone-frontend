@@ -1,7 +1,7 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 import { Tooltip } from "../Tooltip";
-import { useInternalNavigate, useProposalConfig } from "lib/app-provider";
+import { useInternalNavigate, useGovConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 // import { useGovParams } from "lib/services/proposalService";
@@ -9,12 +9,12 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
-  const proposalConfig = useProposalConfig({ shouldRedirect: false });
+  const govConfig = useGovConfig({ shouldRedirect: false });
   // const { data: govParams } = useGovParams();
   // const isPermissionless =
   //   govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
 
-  if (proposalConfig.enabled && proposalConfig.hideCreateBtn) return null;
+  if (govConfig.enabled && govConfig.disableOpenProposal) return null;
 
   return (
     <Menu>

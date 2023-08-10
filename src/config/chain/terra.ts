@@ -27,8 +27,9 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: true,
       },
-      proposal: {
-        enabled: false,
+      gov: {
+        enabled: true,
+        disableOpenProposal: true,
       },
     },
     gas: {
@@ -69,8 +70,9 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: false,
       },
-      proposal: {
-        enabled: false,
+      gov: {
+        enabled: true,
+        disableOpenProposal: true,
       },
     },
     gas: {
