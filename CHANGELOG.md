@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#471](https://github.com/alleslabs/celatone-frontend/pull/471) Add proposal config, use Hasura admin secret
 - [#467](https://github.com/alleslabs/celatone-frontend/pull/467) Dynamic wallet by network, add disableAnyofAddress config
 - [#322](https://github.com/alleslabs/celatone-frontend/pull/322) Tab url path for account details and public project details pages
 - [#449](https://github.com/alleslabs/celatone-frontend/pull/449) Support searching with pool id
