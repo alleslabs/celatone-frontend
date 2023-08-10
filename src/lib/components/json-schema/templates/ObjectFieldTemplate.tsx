@@ -62,7 +62,7 @@ const ObjectFieldTemplate = <T = any, F = any>(
             typeof elementType === "string" &&
             elementType === "array" &&
             elementRequired &&
-            !(element.name in (formData as Record<string, object>))
+            !Array.isArray((formData as Record<string, object>)[element.name])
           )
             (formData as Record<string, object>)[element.name] = [];
 
