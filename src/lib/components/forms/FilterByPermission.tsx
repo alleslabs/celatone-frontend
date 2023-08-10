@@ -10,6 +10,7 @@ interface PermissionOption {
   value: PermissionFilterValue;
   disabled: boolean;
   icon?: IconKeys;
+  iconColor?: string;
 }
 
 interface FilterByPermissionProps {
@@ -25,18 +26,21 @@ const options: PermissionOption[] = [
     value: "all",
     disabled: false,
     icon: "check",
+    iconColor: "gray.600",
   },
   {
     label: "Can Instantiate without proposal",
     value: "without-proposal",
     disabled: false,
     icon: "instantiate",
+    iconColor: "gray.600",
   },
   {
     label: "Instantiate through proposal only",
     value: "with-proposal",
     disabled: false,
     icon: "vote",
+    iconColor: "gray.600",
   },
 ];
 
