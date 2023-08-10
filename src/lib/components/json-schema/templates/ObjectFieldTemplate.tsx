@@ -1,7 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Grid, GridItem } from "@chakra-ui/react";
-import type { ObjectFieldTemplateProps } from "@rjsf/utils";
-import { canExpand, getTemplate, getUiOptions } from "@rjsf/utils";
+import type {
+  ObjectFieldTemplatePropertyType,
+  ObjectFieldTemplateProps,
+} from "@rjsf/utils";
+import {
+  canExpand,
+  getSchemaType,
+  getTemplate,
+  getUiOptions,
+} from "@rjsf/utils";
+
+interface ObjectFieldTemplatePropertyTypeWithRequired
+  extends ObjectFieldTemplatePropertyType {
+  required?: boolean;
+}
 
 const ObjectFieldTemplate = <T = any, F = any>(
   props: ObjectFieldTemplateProps<T, F>
@@ -39,8 +52,21 @@ const ObjectFieldTemplate = <T = any, F = any>(
         />
       )}
       <Grid gap={4} my={2}>
-        {properties.map((element, index) =>
-          element.hidden ? (
+        {properties.map((element, index) => {
+          // NOTE: required array field doesn't create an empty array as a default
+          const elementType = getSchemaType(element.content.props.schema);
+          const elementRequired = (
+            element as ObjectFieldTemplatePropertyTypeWithRequired
+          ).required;
+          if (
+            typeof elementType === "string" &&
+            elementType === "array" &&
+            elementRequired &&
+            !Array.isArray((formData as Record<string, object>)[element.name])
+          )
+            (formData as Record<string, object>)[element.name] = [];
+
+          return element.hidden ? (
             element.content
           ) : (
             <GridItem
@@ -48,8 +74,8 @@ const ObjectFieldTemplate = <T = any, F = any>(
             >
               {element.content}
             </GridItem>
-          )
-        )}
+          );
+        })}
         {canExpand<T, F>(schema, uiSchema, formData) && (
           <GridItem justifySelf="flex-end">
             <AddButton
