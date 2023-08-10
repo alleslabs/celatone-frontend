@@ -122,7 +122,13 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
     >
       {displayLabel && (
         <Flex>
-          <FormLabel htmlFor={id} id={`${id}-label`} fontSize="12px">
+          <FormLabel
+            htmlFor={id}
+            id={`${id}-label`}
+            fontSize="12px"
+            fontWeight={700}
+            marginInlineEnd={1}
+          >
             {label}
           </FormLabel>
           <FieldTypeTag type={schema.type} />
@@ -164,7 +170,7 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
         </datalist>
       ) : null}
       {!!schema.description && (
-        <Box pl={3}>
+        <Box mt={1}>
           <DescriptionFieldTemplate
             id={`${id}-description`}
             description={schema.description}

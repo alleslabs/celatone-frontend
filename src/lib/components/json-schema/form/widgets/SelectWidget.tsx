@@ -123,6 +123,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
       isRequired={required}
       isReadOnly={readonly}
       isInvalid={rawErrors && rawErrors.length > 0}
+      sx={{ "& > p": { mt: 4, mb: 2 } }}
     >
       {!!schema.description && (
         <DescriptionFieldTemplate
@@ -144,7 +145,16 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
         autoFocus={autofocus}
         value={formValue}
         menuPosition="fixed"
-        selectedOptionColorScheme="gray"
+        chakraStyles={{
+          option: (provided, state) => ({
+            ...provided,
+            bg: state.isSelected ? "gray.800" : undefined,
+            color: "text.main",
+            _hover: {
+              bg: "gray.700",
+            },
+          }),
+        }}
       />
     </FormControl>
   );

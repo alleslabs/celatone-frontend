@@ -23,7 +23,7 @@ import isEqual from "lodash/isEqual";
 import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
 
-import JsonReadOnly from "../json/JsonReadOnly";
+import JsonReadOnly from "../../json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
 
 import contractSchema from "./contract_schema.json";
@@ -102,7 +102,7 @@ export interface JsonSchemaFormProps
   > {
   schema: RJSFSchema;
   formId: string;
-  onSubmit: (data: Record<string, unknown>) => void;
+  onSubmit?: (data: Record<string, unknown>) => void;
   /** Onchange callback is with BROKEN data */
   onChange?: (data: Record<string, unknown>) => void;
   formContext?: Record<string, unknown>;
@@ -136,7 +136,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
     fixOneOfKeysCallback(values);
     console.log("onSubmit", values);
 
-    propsOnSubmit(values);
+    propsOnSubmit?.(values);
   };
 
   const onChange = useCallback(
@@ -162,9 +162,9 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
       // we use no validate because the schemas are too complicated to be auto validated
       // noValidate
       uiSchema={{
-        // "ui:submitButtonOptions": {
-        //   norender: true,
-        // },
+        "ui:submitButtonOptions": {
+          norender: true,
+        },
         ...uiSchema,
       }}
       widgets={{

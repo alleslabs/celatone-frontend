@@ -5,6 +5,7 @@ import { useCallback } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
   useCelatoneApp,
   useWasmConfig,
 } from "lib/app-provider";
@@ -27,6 +28,9 @@ import type {
   HumanAddr,
 } from "lib/types";
 import { isCodeId, parseDateOpt, parseTxHashOpt } from "lib/utils";
+
+import type { CodeIdInfoResponse } from "./code";
+import { getCodeIdInfo } from "./code";
 
 export const useCodeListQuery = (): UseQueryResult<CodeInfo[]> => {
   const { indexerGraphClient } = useCelatoneApp();
@@ -129,10 +133,18 @@ export const useCodeListByCodeIds = (
   );
 };
 
-export const useCodeDataByCodeId = (
-  codeId: string,
-  enabled = true
-): UseQueryResult<Omit<CodeData, "chainId"> | null> => {
+interface CodeDataByCodeIdParams {
+  codeId: string;
+  enabled?: boolean;
+}
+
+export const useCodeDataByCodeId = ({
+  codeId,
+  enabled = true,
+}: CodeDataByCodeIdParams): UseQueryResult<Omit<
+  CodeData,
+  "chainId"
+> | null> => {
   const { indexerGraphClient } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
@@ -258,5 +270,20 @@ export const useCodeListCountByWalletAddress = (
       keepPreviousData: true,
       enabled: wasm.enabled && !!walletAddress,
     }
+  );
+};
+
+export type LcdCodeInfoSuccessCallback = (data: CodeIdInfoResponse) => void;
+
+export const useLcdCodeInfo = (
+  codeId: string,
+  options?: Parameters<typeof useQuery<CodeIdInfoResponse>>[2]
+): UseQueryResult<CodeIdInfoResponse> => {
+  const lcdEndpoint = useBaseApiRoute("rest");
+  const queryFn = async () => getCodeIdInfo(lcdEndpoint, codeId);
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
+    queryFn,
+    options
   );
 };

@@ -5,6 +5,7 @@ import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { ControllerInput } from "lib/components/forms";
 import type { FormStatus } from "lib/components/forms";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
+import type { LcdCodeInfoSuccessCallback } from "lib/services/codeService";
 import type { Option } from "lib/types";
 
 import { CodeSelect } from "./CodeSelect";
@@ -15,6 +16,7 @@ interface CodeSelectSectionProps<T extends FieldValues> {
   control: Control<T>;
   error: Option<string>;
   onCodeSelect: (codeId: string) => void;
+  setCodeHash?: LcdCodeInfoSuccessCallback;
   status: FormStatus;
 }
 
@@ -24,6 +26,7 @@ export const CodeSelectSection = <T extends FieldValues>({
   control,
   error,
   onCodeSelect,
+  setCodeHash,
   status,
 }: CodeSelectSectionProps<T>) => {
   const [method, setMethod] = useState<"select-existing" | "fill-manually">(
@@ -55,6 +58,7 @@ export const CodeSelectSection = <T extends FieldValues>({
             mt={4}
             mb={8}
             onCodeSelect={onCodeSelect}
+            setCodeHash={setCodeHash}
             codeId={codeId}
             status={status}
           />

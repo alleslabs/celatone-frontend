@@ -54,10 +54,10 @@ export const useSearchHandler = (
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(debouncedKeyword);
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
-  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId(
-    debouncedKeyword,
-    isWasm && isCodeId(debouncedKeyword)
-  );
+  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
+    codeId: debouncedKeyword,
+    enabled: isWasm && isCodeId(debouncedKeyword),
+  });
   const { data: contractData, isFetching: contractFetching } = useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, debouncedKeyword],
     async () => queryContract(lcdEndpoint, debouncedKeyword as ContractAddr),
