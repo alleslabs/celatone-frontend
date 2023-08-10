@@ -23,7 +23,7 @@ import isEqual from "lodash/isEqual";
 import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
 
-import JsonReadOnly from "../json/JsonReadOnly";
+import JsonReadOnly from "../../json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
 
 import contractSchema from "./contract_schema.json";
@@ -102,7 +102,7 @@ export interface JsonSchemaFormProps
   > {
   schema: RJSFSchema;
   formId: string;
-  onSubmit: (data: Record<string, unknown>) => void;
+  onSubmit?: (data: Record<string, unknown>) => void;
   /** Onchange callback is with BROKEN data */
   onChange?: (data: Record<string, unknown>) => void;
   formContext?: Record<string, unknown>;
@@ -136,7 +136,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
     fixOneOfKeysCallback(values);
     console.log("onSubmit", values);
 
-    propsOnSubmit(values);
+    propsOnSubmit?.(values);
   };
 
   const onChange = useCallback(
@@ -154,44 +154,49 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   );
 
   return (
-    <Form
-      id={formId}
-      formContext={formContext}
-      formData={formData}
-      schema={schema}
-      // we use no validate because the schemas are too complicated to be auto validated
-      // noValidate
-      uiSchema={{
-        // "ui:submitButtonOptions": {
-        //   norender: true,
-        // },
-        ...uiSchema,
-      }}
-      widgets={{
-        ...DefaultWidgets,
-        ...Widgets,
-        ...widgets,
-      }}
-      fields={{
-        ...Fields,
-        ...fields,
-      }}
-      templates={{
-        ...DefaultTemplates,
-        ...Templates,
-        ...templates,
-      }}
-      validator={v8Validator}
-      onChange={({ formData: values }) => {
-        // log.info(values)
-        onChange?.(values);
-      }}
-      onSubmit={({ formData: values }) => {
-        // log.info(values)
-        onSubmit(values);
-      }}
-      onError={() => console.error("errors")}
-    />
+    <Box w="full">
+      <Form
+        id={formId}
+        formContext={formContext}
+        formData={formData}
+        schema={schema}
+        // we use no validate because the schemas are too complicated to be auto validated
+        // noValidate
+        uiSchema={{
+          "ui:submitButtonOptions": {
+            norender: true,
+          },
+          "ui:form": {
+            width: "100%",
+          },
+          ...uiSchema,
+        }}
+        widgets={{
+          ...DefaultWidgets,
+          ...Widgets,
+          ...widgets,
+        }}
+        fields={{
+          ...Fields,
+          ...fields,
+        }}
+        templates={{
+          ...DefaultTemplates,
+          ...Templates,
+          ...templates,
+        }}
+        validator={v8Validator}
+        onChange={({ formData: values }) => {
+          // log.info(values)
+          onChange?.(values);
+        }}
+        onSubmit={({ formData: values }) => {
+          // log.info(values)
+          onSubmit(values);
+        }}
+        onError={() => console.error("errors")}
+      />
+    </Box>
   );
 };
 

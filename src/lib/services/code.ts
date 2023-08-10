@@ -2,7 +2,7 @@ import axios from "axios";
 
 import type { Addr, AccessConfigPermission } from "lib/types";
 
-interface CodeIdInfoResponse {
+export interface CodeIdInfoResponse {
   code_info: {
     code_id: string;
     creator: Addr;

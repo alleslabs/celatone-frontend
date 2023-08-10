@@ -19,10 +19,10 @@ export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
     },
   },
   schema: {
-    accept: { "application/json": [".schema.json"] },
+    accept: { "application/json": [".json"] },
     text: {
       prettyFileType: "JSON Schema",
-      rawFileType: ".schema.json",
+      rawFileType: ".json",
     },
   },
 };

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#472](https://github.com/alleslabs/celatone-frontend/pull/472) Add json schema functionality to migrate contract
 - [#461](https://github.com/alleslabs/celatone-frontend/pull/461) Add json schema form
 - [#455](https://github.com/alleslabs/celatone-frontend/pull/455) Implement schema store and unit test
 - [#453](https://github.com/alleslabs/celatone-frontend/pull/453) Attach schema feature on upload complete

@@ -21,6 +21,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const { getSchemaByCodeHash } = useSchemaStore();
   const schema = getSchemaByCodeHash(txResult.codeHash);
   const attached = Boolean(schema);
+
   return (
     <WasmPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
@@ -93,6 +94,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           <CustomIcon name="chevron-right" boxSize={4} color="text.dark" />
         }
         w="full"
+        mt={attached ? 8 : 0}
         mb={4}
         onClick={() => {
           navigate({

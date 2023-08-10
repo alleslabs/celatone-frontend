@@ -63,7 +63,14 @@ export default function ArrayFieldTemplate<T = any, F = any>(
         uiSchema={uiSchema}
         registry={registry}
       />
-      <Grid key={`array-item-list-${idSchema.$id}`} my={2} gap={4}>
+      <Grid
+        key={`array-item-list-${idSchema.$id}`}
+        my={2}
+        gap={4}
+        bgColor="gray.800"
+        borderRadius="8px"
+        p="8px 12px"
+      >
         {items.length > 0 &&
           items.map(
             ({ key, ...itemProps }: ArrayFieldTemplateItemType<T, F>) => (
