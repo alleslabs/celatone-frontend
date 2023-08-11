@@ -109,7 +109,6 @@ export interface JsonSchemaFormProps
   formContext?: Record<string, unknown>;
 }
 
-// TODO: create JsonSchemaFormProps
 export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   formId,
   schema,
