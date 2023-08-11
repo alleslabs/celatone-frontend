@@ -102,16 +102,17 @@ export interface JsonSchemaFormProps
   > {
   schema: RJSFSchema;
   formId: string;
+  initialFormData?: Record<string, unknown>;
   onSubmit?: (data: Record<string, unknown>) => void;
   /** Onchange callback is with BROKEN data */
   onChange?: (data: Record<string, unknown>) => void;
   formContext?: Record<string, unknown>;
 }
 
-// TODO: create JsonSchemaFormProps
 export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   formId,
   schema,
+  initialFormData = {},
   onSubmit: propsOnSubmit,
   onChange: propsOnChange,
   widgets,
@@ -120,7 +121,8 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   uiSchema,
   formContext,
 }) => {
-  const [formData, setFormData] = useState<Record<string, unknown>>({});
+  const [formData, setFormData] =
+    useState<Record<string, unknown>>(initialFormData);
 
   const collapsedSchema = useMemo(
     () => createSchemaUtils(v8Validator, schema).retrieveSchema(schema),

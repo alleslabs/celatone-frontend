@@ -1,25 +1,35 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import type { RJSFSchema } from "@rjsf/utils";
+import { capitalize } from "lodash";
 import { observer } from "mobx-react-lite";
 
-import {
-  ViewSchemaButton,
-  AttachSchemaCard,
-  JsonSchemaDrawer,
-} from "lib/components/json-schema/";
-import { JsonSchemaForm } from "lib/components/json-schema/form";
+import { AttachSchemaCard } from "../AttachSchemaCard";
+import { JsonSchemaForm } from "../form";
+import { JsonSchemaDrawer } from "../JsonSchemaDrawer";
+import { ViewSchemaButton } from "../ViewSchemaButton";
 import { useSchemaStore } from "lib/providers/store";
 
 interface SchemaSectionProps {
+  type: "migrate" | "instantiate";
   codeHash: string;
   codeId: string;
+  initialFormData?: Record<string, unknown>;
   setSchemaInput: (input: string) => void;
 }
 
-export const SchemaSection = observer(
-  ({ codeHash, codeId, setSchemaInput }: SchemaSectionProps) => {
+export const SchemaInputSection = observer(
+  ({
+    type,
+    codeHash,
+    codeId,
+    initialFormData,
+    setSchemaInput,
+  }: SchemaSectionProps) => {
     const { getSchemaByCodeHash } = useSchemaStore();
     const jsonSchema = getSchemaByCodeHash(codeHash);
     const { isOpen, onClose, onOpen } = useDisclosure();
+    const prettyType = capitalize(type);
+
     return (
       <Flex
         direction="column"
@@ -27,9 +37,9 @@ export const SchemaSection = observer(
         borderRadius="8px"
         p="24px 16px"
         mb={4}
-        align={jsonSchema?.migrate ? "flex-start" : "center"}
+        align={jsonSchema?.[type] ? "flex-start" : "center"}
       >
-        {jsonSchema?.migrate ? (
+        {jsonSchema?.[type] ? (
           <>
             <Flex align="center" justify="space-between" w="full" mb={4}>
               <Text color="text.main" fontWeight={700} variant="body2">
@@ -42,9 +52,11 @@ export const SchemaSection = observer(
                 </Button>
               </Flex>
             </Flex>
+            {/* TODO: revisit type assertion later */}
             <JsonSchemaForm
-              schema={jsonSchema.migrate}
-              formId="migrate"
+              schema={jsonSchema[type] as RJSFSchema}
+              formId={type}
+              initialFormData={initialFormData}
               onChange={(data) => setSchemaInput(JSON.stringify(data))}
             />
           </>
@@ -52,7 +64,7 @@ export const SchemaSection = observer(
           <>
             <Text color="text.main" fontWeight={700} variant="body1">
               {jsonSchema
-                ? "Attached JSON Schema doesn’t have MigrateMsg"
+                ? `Attached JSON Schema doesn’t have ${prettyType}Msg`
                 : `You haven't attached the JSON Schema for code ${codeId} yet`}
             </Text>
             <Text
@@ -63,7 +75,7 @@ export const SchemaSection = observer(
               mb={4}
             >
               {jsonSchema
-                ? "Please fill in Migrate Message manually or change the schema"
+                ? `Please fill in ${prettyType} Message manually or change the schema`
                 : "Your attached JSON schema will be stored locally on your device"}
             </Text>
             <AttachSchemaCard
