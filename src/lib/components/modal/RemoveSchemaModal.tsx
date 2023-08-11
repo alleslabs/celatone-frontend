@@ -25,7 +25,7 @@ export function RemoveSchemaModal({
 
     setTimeout(() => {
       toast({
-        title: `Removed schema`,
+        title: `Removed JSON Schema`,
         status: "success",
         duration: 5000,
         isClosable: false,
@@ -41,7 +41,7 @@ export function RemoveSchemaModal({
       icon="delete-solid"
       iconColor="error.light"
       trigger={trigger}
-      mainBtnTitle="Yes, Remove list"
+      mainBtnTitle="Yes, Remove JSON Schema"
       mainVariant="error"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
