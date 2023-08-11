@@ -9,8 +9,8 @@ interface PermissionOption {
   label: string;
   value: PermissionFilterValue;
   disabled: boolean;
-  icon?: IconKeys;
-  iconColor?: string;
+  icon: IconKeys;
+  iconColor: string;
 }
 
 interface FilterByPermissionProps {
