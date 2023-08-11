@@ -320,6 +320,96 @@ export const CHAIN_CONFIGS: ChainConfigs = {
     },
     hasSubHeader: false,
   },
+  "phoenix-1": {
+    chain: "terra",
+    registryChainName: "terra2",
+    prettyName: "Terra",
+    lcd: "https://phoenix-lcd.terra.dev:443",
+    rpc: "https://terra2-rpc.lavenderfive.com:443",
+    indexer: "https://phoenix-1-graphql.alleslabs.dev/v1/graphql",
+    api: DEFAULT_CELATONE_API_ENDPOINT,
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: true,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.0125,
+        denom: "uluna",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    exampleAddresses: {
+      user: "terra1s6j9wxyprdsxmdf6mvsegsldvmtk0p92pjjqfh" as HumanAddr,
+      contract:
+        "terra1un27xdwxcdt44xgeez7r5ysmc53tmfzyr7km0ydecqj7h5cuxcus5qk5uz" as ContractAddr,
+      validator:
+        "terravaloper1s6j9wxyprdsxmdf6mvsegsldvmtk0p92pa7aey" as ValidatorAddr,
+    },
+    explorerLink: {
+      validator: "https://finder.terra.money/mainnet/validator",
+      proposal: "https://station.terra.money/proposal/phoenix-1",
+    },
+    hasSubHeader: false,
+  },
+  "pisco-1": {
+    chain: "terra",
+    registryChainName: "terra2testnet",
+    prettyName: "Terra Testnet",
+    lcd: "https://pisco-lcd.terra.dev:443",
+    rpc: "https://terra-testnet-rpc.polkachu.com:443",
+    indexer: "https://pisco-1-graphql.alleslabs.dev/v1/graphql",
+    api: DEFAULT_CELATONE_API_ENDPOINT,
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: true,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: false,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.0125,
+        denom: "uluna",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    exampleAddresses: {
+      user: "terra1s6j9wxyprdsxmdf6mvsegsldvmtk0p92pjjqfh" as HumanAddr,
+      contract:
+        "terra1un27xdwxcdt44xgeez7r5ysmc53tmfzyr7km0ydecqj7h5cuxcus5qk5uz" as ContractAddr,
+      validator:
+        "terravaloper1s6j9wxyprdsxmdf6mvsegsldvmtk0p92pa7aey" as ValidatorAddr,
+    },
+    explorerLink: {
+      validator: "https://finder.terra.money/testnet/validator",
+      proposal: "https://station.terra.money/proposal/pisco-1",
+    },
+    hasSubHeader: false,
+  },
   localosmosis: {
     chain: "osmosis",
     registryChainName: "localosmosis",
