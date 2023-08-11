@@ -27,16 +27,18 @@ export const NewProposalButton = () => {
         Create New Proposal
       </MenuButton>
       <MenuList>
-        <MenuItem
-          icon={<CustomIcon name="code" color="gray.600" />}
-          onClick={() => {
-            navigate({
-              pathname: "/proposals/store-code",
-            });
-          }}
-        >
-          To Store Code
-        </MenuItem>
+        {govConfig.enabled && !govConfig.disableStoreCodeProposal && (
+          <MenuItem
+            icon={<CustomIcon name="code" color="gray.600" />}
+            onClick={() => {
+              navigate({
+                pathname: "/proposals/store-code",
+              });
+            }}
+          >
+            To Store Code
+          </MenuItem>
+        )}
         {/* <MenuItem
           icon={<CustomIcon name="contract-address" color="gray.600"/>}
           onClick={() => {

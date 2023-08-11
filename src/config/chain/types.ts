@@ -30,6 +30,7 @@ type GovConfig =
   | {
       enabled: true;
       disableOpenProposal?: boolean;
+      disableStoreCodeProposal?: boolean;
     }
   | {
       enabled: false;

@@ -1,11 +1,15 @@
-import { Heading, Flex, Badge } from "@chakra-ui/react";
+import { Heading, Flex, Badge, Skeleton } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import type { ChangeEvent } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useGovConfig,
+  useInternalNavigate,
+} from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -27,6 +31,7 @@ interface CodeFilterState {
 
 const StoredCodes = observer(() => {
   const router = useRouter();
+  const govConfig = useGovConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
   const onRowSelect = (codeId: number) =>
     navigate({
@@ -53,7 +58,7 @@ const StoredCodes = observer(() => {
   useEffect(() => {
     if (router.isReady) AmpTrack(AmpEvent.TO_MY_CODES);
   }, [router.isReady]);
-  const { data } = useUploadAccessParams();
+  const { data, isFetching: isUploadAccessFetching } = useUploadAccessParams();
   const { address } = useCurrentChain();
   const isAllowed = Boolean(data?.addresses?.includes(address as Addr));
 
@@ -77,16 +82,25 @@ const StoredCodes = observer(() => {
             {storedCodesCount}
           </Badge>
         </Flex>
-        <Flex gap={2}>
+        <Skeleton
+          isLoaded={!isUploadAccessFetching}
+          display="flex"
+          gap={2}
+          borderRadius={8}
+        >
           {isPermissionedNetwork ? (
             <>
               <UploadButton isAllowed={isAllowed} />
-              <ProposalButton />
+              {govConfig.enabled &&
+                !(
+                  govConfig.disableStoreCodeProposal ||
+                  govConfig.disableOpenProposal
+                ) && <ProposalButton />}
             </>
           ) : (
             <UploadButton isAllowed />
           )}
-        </Flex>
+        </Skeleton>
       </Flex>
       <Flex gap={3} pb={4} mt={8}>
         <InputWithIcon
