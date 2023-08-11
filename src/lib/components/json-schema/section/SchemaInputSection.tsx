@@ -13,11 +13,18 @@ interface SchemaSectionProps {
   type: "migrate" | "instantiate";
   codeHash: string;
   codeId: string;
+  initialFormData?: Record<string, unknown>;
   setSchemaInput: (input: string) => void;
 }
 
 export const SchemaInputSection = observer(
-  ({ type, codeHash, codeId, setSchemaInput }: SchemaSectionProps) => {
+  ({
+    type,
+    codeHash,
+    codeId,
+    initialFormData,
+    setSchemaInput,
+  }: SchemaSectionProps) => {
     const { getSchemaByCodeHash } = useSchemaStore();
     const jsonSchema = getSchemaByCodeHash(codeHash);
     const { isOpen, onClose, onOpen } = useDisclosure();
@@ -49,6 +56,7 @@ export const SchemaInputSection = observer(
             <JsonSchemaForm
               schema={jsonSchema[type] as RJSFSchema}
               formId={type}
+              initialFormData={initialFormData}
               onChange={(data) => setSchemaInput(JSON.stringify(data))}
             />
           </>

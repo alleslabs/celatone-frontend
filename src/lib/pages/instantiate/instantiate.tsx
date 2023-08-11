@@ -288,6 +288,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           `msgInput.${jsonInputFormKey}`,
           JSON.stringify(msgObject.msg, null, 2)
         );
+        setValue(
+          `msgInput.${yourSchemaInputFormKey}`,
+          JSON.stringify(msgObject.msg)
+        );
 
         if (msgObject.funds.length) {
           setAssets("assetsSelect", defaultAsset);
@@ -399,6 +403,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                 setSchemaInput={(msg: string) =>
                   setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
                 }
+                initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
               />
             }
           />
