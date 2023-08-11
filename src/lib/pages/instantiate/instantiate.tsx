@@ -44,11 +44,13 @@ import {
   AmpTrackAction,
   AmpTrackToInstantiate,
 } from "lib/services/amplitude";
+import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
+  isCodeId,
   jsonPrettify,
   jsonValidate,
   libDecode,
@@ -140,11 +142,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
   const enableInstantiate = useMemo(
     () =>
-      !!address &&
-      codeId.length > 0 &&
+      Boolean(address) &&
+      Boolean(label) &&
+      isCodeId(codeId) &&
       jsonValidate(currentInput) === null &&
       status.state === "success",
-    [address, codeId.length, currentInput, status.state]
+    [address, label, codeId, currentInput, status.state]
   );
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
@@ -310,6 +313,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     [validateContractAddress, validateUserAddress]
   );
 
+  useEffect(() => {
+    if (!isCodeId(codeId)) {
+      setValue("codeHash", "");
+      setTab(MessageTabs.JSON_INPUT);
+    }
+  }, [codeId, setValue]);
+
   return (
     <>
       <WasmPageContainer>
@@ -330,6 +340,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           status={status}
           error={formErrors.codeId?.message}
           onCodeSelect={(code: string) => setValue("codeId", code)}
+          setCodeHash={(data: CodeIdInfoResponse) => {
+            setValue("codeHash", data.code_info.data_hash.toLowerCase());
+          }}
           codeId={codeId}
         />
         <form style={{ width: "100%" }}>
@@ -368,8 +381,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             </Heading>
             <MessageInputSwitch
               currentTab={tab}
-              disabled={!codeHash}
               onTabChange={setTab}
+              disabled={!codeHash}
             />
           </Flex>
           <MessageInputContent

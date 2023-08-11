@@ -30,7 +30,12 @@ import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, jsonValidate, resolvePermission } from "lib/utils";
+import {
+  composeMsg,
+  isCodeId,
+  jsonValidate,
+  resolvePermission,
+} from "lib/utils";
 
 interface MigrateContractProps {
   contractAddress: ContractAddr;
@@ -74,7 +79,7 @@ export const MigrateContract = observer(
 
     const enableMigrate =
       !!address &&
-      codeId.length > 0 &&
+      isCodeId(codeId) &&
       jsonValidate(currentInput) === null &&
       status.state === "success";
 
@@ -176,6 +181,13 @@ export const MigrateContract = observer(
       }
       return () => {};
     }, [address, codeId, contractAddress, enableMigrate, currentInput]);
+
+    useEffect(() => {
+      if (!isCodeId(codeId)) {
+        setValue("codeHash", "");
+        setTab(MessageTabs.JSON_INPUT);
+      }
+    }, [codeId, setValue]);
 
     return (
       <>
