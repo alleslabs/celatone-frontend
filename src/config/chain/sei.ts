@@ -33,6 +33,9 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: true,
       },
+      gov: {
+        enabled: false,
+      },
     },
     gas: {
       gasPrice: {
@@ -72,6 +75,9 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       publicProject: {
+        enabled: false,
+      },
+      gov: {
         enabled: false,
       },
     },

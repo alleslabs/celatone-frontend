@@ -26,6 +26,16 @@ type PoolConfig =
 
 type PublicProjectConfig = { enabled: boolean };
 
+type GovConfig =
+  | {
+      enabled: true;
+      disableOpenProposal?: boolean;
+      disableStoreCodeProposal?: boolean;
+    }
+  | {
+      enabled: false;
+    };
+
 export interface ExplorerConfig {
   validator: string;
   proposal: string;
@@ -45,6 +55,7 @@ export interface ChainConfig {
     wasm: WasmConfig;
     pool: PoolConfig;
     publicProject: PublicProjectConfig;
+    gov: GovConfig;
   };
   gas: {
     gasPrice: {

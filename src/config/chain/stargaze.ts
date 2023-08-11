@@ -27,6 +27,9 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: true,
       },
+      gov: {
+        enabled: true,
+      },
     },
     gas: {
       gasPrice: {

@@ -1,7 +1,7 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
 import { Tooltip } from "../Tooltip";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useGovConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 // import { useGovParams } from "lib/services/proposalService";
@@ -9,9 +9,12 @@ import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 
 export const NewProposalButton = () => {
   const navigate = useInternalNavigate();
+  const govConfig = useGovConfig({ shouldRedirect: false });
   // const { data: govParams } = useGovParams();
   // const isPermissionless =
   //   govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
+
+  if (govConfig.enabled && govConfig.disableOpenProposal) return null;
 
   return (
     <Menu>
@@ -24,16 +27,18 @@ export const NewProposalButton = () => {
         Create New Proposal
       </MenuButton>
       <MenuList>
-        <MenuItem
-          icon={<CustomIcon name="code" color="gray.600" />}
-          onClick={() => {
-            navigate({
-              pathname: "/proposals/store-code",
-            });
-          }}
-        >
-          To Store Code
-        </MenuItem>
+        {govConfig.enabled && !govConfig.disableStoreCodeProposal && (
+          <MenuItem
+            icon={<CustomIcon name="code" color="gray.600" />}
+            onClick={() => {
+              navigate({
+                pathname: "/proposals/store-code",
+              });
+            }}
+          >
+            To Store Code
+          </MenuItem>
+        )}
         {/* <MenuItem
           icon={<CustomIcon name="contract-address" color="gray.600"/>}
           onClick={() => {

@@ -16,7 +16,7 @@ import { CHAIN_CONFIGS, DEFAULT_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
 import { PROJECT_CONSTANTS } from "config/project";
 import type { ProjectConstants } from "config/project";
-import { SUPPORTED_CHAIN_IDS } from "env";
+import { HASURA_ADMIN_SECRET, SUPPORTED_CHAIN_IDS } from "env";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { NetworkErrorState } from "lib/components/state/NetworkErrorState";
 import { DEFAULT_ADDRESS } from "lib/data";
@@ -87,7 +87,11 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       availableChainIds: SUPPORTED_CHAIN_IDS,
       currentChainId,
       chainConfig,
-      indexerGraphClient: new GraphQLClient(chainConfig.indexer),
+      indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
+        headers: {
+          "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
+        },
+      }),
       constants: PROJECT_CONSTANTS,
       isDevMode,
       isExpand,
