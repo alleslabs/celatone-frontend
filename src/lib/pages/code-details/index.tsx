@@ -40,6 +40,11 @@ interface CodeDetailsBodyProps {
   codeId: number;
 }
 
+enum TabIndex {
+  CodeInfo,
+  JsonSchema,
+}
+
 const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
 const CodeHashInfo = ({
@@ -77,7 +82,7 @@ const CodeDetailsBody = observer(
     const jsonSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
     const isMobile = useMobile();
 
-    const [tabIndex, setTabIndex] = useState(0);
+    const [tabIndex, setTabIndex] = useState(TabIndex.CodeInfo);
 
     if (!codeData) return <InvalidCode />;
 
@@ -234,7 +239,7 @@ const CodeDetailsBody = observer(
                 codeHash={codeHash}
                 isCodeHashLoading={isLcdCodeLoading}
                 attached={!!jsonSchema}
-                toJsonSchemaTab={() => setTabIndex(1)}
+                toJsonSchemaTab={() => setTabIndex(TabIndex.JsonSchema)}
               />
               <CodeContractsTable codeId={codeId} />
             </TabPanel>

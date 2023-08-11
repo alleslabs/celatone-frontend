@@ -50,7 +50,6 @@ export const CodeSchemaSection = ({
   jsonSchema,
 }: CodeSchemaSectionProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const attached = jsonSchema !== undefined;
 
   if (isCodeHashLoading) return <Loading />;
   return codeHash ? (
@@ -106,7 +105,6 @@ export const CodeSchemaSection = ({
             <SchemaPanel
               codeId={codeId}
               codeHash={codeHash}
-              attached={attached}
               schema={jsonSchema}
               openDrawer={onOpen}
             />
@@ -115,7 +113,6 @@ export const CodeSchemaSection = ({
             <SchemaPanel
               codeId={codeId}
               codeHash={codeHash}
-              attached={attached}
               schema={jsonSchema?.[SchemaProperties.INSTANTIATE]}
               openDrawer={onOpen}
             />
@@ -124,8 +121,7 @@ export const CodeSchemaSection = ({
             <SchemaPanel
               codeId={codeId}
               codeHash={codeHash}
-              attached={attached}
-              schema={jsonSchema?.[SchemaProperties.EXECUTE] ?? undefined}
+              schema={jsonSchema?.[SchemaProperties.EXECUTE]}
               openDrawer={onOpen}
             />
           </StyledTabPanel>
@@ -133,8 +129,7 @@ export const CodeSchemaSection = ({
             <SchemaPanel
               codeId={codeId}
               codeHash={codeHash}
-              attached={attached}
-              schema={jsonSchema?.[SchemaProperties.QUERY] ?? undefined}
+              schema={jsonSchema?.[SchemaProperties.QUERY]}
               openDrawer={onOpen}
             />
           </StyledTabPanel>
@@ -142,8 +137,7 @@ export const CodeSchemaSection = ({
             <SchemaPanel
               codeId={codeId}
               codeHash={codeHash}
-              attached={attached}
-              schema={jsonSchema?.[SchemaProperties.MIGRATE] ?? undefined}
+              schema={jsonSchema?.[SchemaProperties.MIGRATE]}
               openDrawer={onOpen}
             />
           </StyledTabPanel>

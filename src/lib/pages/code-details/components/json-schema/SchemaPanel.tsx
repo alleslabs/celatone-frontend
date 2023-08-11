@@ -8,49 +8,47 @@ import { jsonPrettify } from "lib/utils";
 interface SchemaPanelProps {
   codeId: number;
   codeHash: string;
-  attached: boolean;
-  schema: Option<object>;
+  schema: Option<object | null>;
   openDrawer: () => void;
 }
 
 export const SchemaPanel = ({
   codeId,
   codeHash,
-  attached,
   schema,
   openDrawer,
-}: SchemaPanelProps) => {
-  if (!attached)
-    return (
-      <Flex
-        p="24px 16px"
-        direction="column"
-        alignItems="center"
-        bgColor="gray.900"
-        borderRadius="8px"
+}: SchemaPanelProps) =>
+  schema === undefined ? (
+    <Flex
+      p="24px 16px"
+      direction="column"
+      alignItems="center"
+      bgColor="gray.900"
+      borderRadius="8px"
+    >
+      <Text variant="body1" fontWeight={700}>
+        You haven&apos;t attached the JSON Schema for code {codeId} yet
+      </Text>
+      <Text
+        variant="body2"
+        textColor="text.disabled"
+        fontWeight={500}
+        mt={2}
+        mb={4}
       >
-        <Text variant="body1" fontWeight={700}>
-          You haven&apos;t attached the JSON Schema for code {codeId} yet
-        </Text>
-        <Text
-          variant="body2"
-          textColor="text.disabled"
-          fontWeight={500}
-          mt={2}
-          mb={4}
-        >
-          Your attached JSON schema will be stored locally on your device
-        </Text>
-        <AttachSchemaCard
-          attached={false}
-          codeId={String(codeId)}
-          codeHash={codeHash}
-          schema={undefined}
-          openDrawer={openDrawer}
-        />
-      </Flex>
-    );
-  return (
-    <JsonReadOnly text={jsonPrettify(JSON.stringify(schema ?? {}))} canCopy />
+        Your attached JSON schema will be stored locally on your device
+      </Text>
+      <AttachSchemaCard
+        attached={false}
+        codeId={String(codeId)}
+        codeHash={codeHash}
+        schema={undefined}
+        openDrawer={openDrawer}
+      />
+    </Flex>
+  ) : (
+    <JsonReadOnly
+      text={schema ? jsonPrettify(JSON.stringify(schema)) : "null"}
+      canCopy
+    />
   );
-};
