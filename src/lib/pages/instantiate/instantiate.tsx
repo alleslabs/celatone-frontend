@@ -164,7 +164,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
 
   const { refetch } = useLCDCodeInfo(codeId, {
-    enabled: !!address && !!codeId.length,
+    enabled: false,
     retry: false,
     cacheTime: 0,
     onSuccess(data) {
@@ -232,6 +232,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // --------------SIDE EFFECTS----------------//
   // ------------------------------------------//
   useEffect(() => {
+    setValue("codeHash", "");
+    setTab(MessageTabs.JSON_INPUT);
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
@@ -242,7 +244,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     setStatus({ state: "init" });
 
     return () => {};
-  }, [address, codeId, refetch]);
+  }, [address, codeId, refetch, setValue, setTab]);
 
   useEffect(() => {
     if (enableInstantiate) {
@@ -312,13 +314,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         : undefined,
     [validateContractAddress, validateUserAddress]
   );
-
-  useEffect(() => {
-    if (!isCodeId(codeId)) {
-      setValue("codeHash", "");
-      setTab(MessageTabs.JSON_INPUT);
-    }
-  }, [codeId, setValue]);
 
   return (
     <>

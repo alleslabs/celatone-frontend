@@ -1,11 +1,12 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import type { RJSFSchema } from "@rjsf/utils";
+import { capitalize } from "lodash";
 import { observer } from "mobx-react-lite";
 
-import { AttachSchemaCard } from "lib/components/json-schema/AttachSchemaCard";
-import { JsonSchemaForm } from "lib/components/json-schema/form";
-import { JsonSchemaDrawer } from "lib/components/json-schema/JsonSchemaDrawer";
-import { ViewSchemaButton } from "lib/components/json-schema/ViewSchemaButton";
+import { AttachSchemaCard } from "../AttachSchemaCard";
+import { JsonSchemaForm } from "../form";
+import { JsonSchemaDrawer } from "../JsonSchemaDrawer";
+import { ViewSchemaButton } from "../ViewSchemaButton";
 import { useSchemaStore } from "lib/providers/store";
 
 interface SchemaSectionProps {
@@ -20,7 +21,8 @@ export const SchemaInputSection = observer(
     const { getSchemaByCodeHash } = useSchemaStore();
     const jsonSchema = getSchemaByCodeHash(codeHash);
     const { isOpen, onClose, onOpen } = useDisclosure();
-    const prettyType = type[0].toUpperCase() + type.slice(1);
+    const prettyType = capitalize(type);
+
     return (
       <Flex
         direction="column"
@@ -43,6 +45,7 @@ export const SchemaInputSection = observer(
                 </Button>
               </Flex>
             </Flex>
+            {/* TODO: revisit type assertion later */}
             <JsonSchemaForm
               schema={jsonSchema[type] as RJSFSchema}
               formId={type}

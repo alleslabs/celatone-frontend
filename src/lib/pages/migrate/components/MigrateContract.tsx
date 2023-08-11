@@ -97,7 +97,7 @@ export const MigrateContract = observer(
     });
 
     const { refetch } = useLCDCodeInfo(codeId, {
-      enabled: !!address && !!codeId.length,
+      enabled: false,
       retry: false,
       cacheTime: 0,
       onSuccess(data) {
@@ -153,6 +153,8 @@ export const MigrateContract = observer(
     ]);
 
     useEffect(() => {
+      setValue("codeHash", "");
+      setTab(MessageTabs.JSON_INPUT);
       if (codeId.length) {
         setStatus({ state: "loading" });
         const timer = setTimeout(() => {
@@ -163,7 +165,7 @@ export const MigrateContract = observer(
       setStatus({ state: "init" });
 
       return () => {};
-    }, [address, codeId, refetch]);
+    }, [address, codeId, refetch, setValue, setTab]);
 
     useEffect(() => {
       if (enableMigrate) {
@@ -181,13 +183,6 @@ export const MigrateContract = observer(
       }
       return () => {};
     }, [address, codeId, contractAddress, enableMigrate, currentInput]);
-
-    useEffect(() => {
-      if (!isCodeId(codeId)) {
-        setValue("codeHash", "");
-        setTab(MessageTabs.JSON_INPUT);
-      }
-    }, [codeId, setValue]);
 
     return (
       <>
