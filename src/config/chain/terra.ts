@@ -8,7 +8,7 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "terra2",
     prettyName: "Terra",
     lcd: "https://phoenix-lcd.terra.dev:443",
-    rpc: "https://terra-rpc.polkachu.com",
+    rpc: "https://terra2-rpc.lavenderfive.com:443",
     indexer: "https://phoenix-1-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],
