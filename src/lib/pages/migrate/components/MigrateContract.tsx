@@ -1,5 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import type { BoxProps } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import Long from "long";
 import { observer } from "mobx-react-lite";
@@ -15,9 +14,16 @@ import { useMigrateTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import {
+  MessageInputContent,
+  MessageInputSwitch,
+  MessageTabs,
+  SchemaInputSection,
+  jsonInputFormKey,
+  yourSchemaInputFormKey,
+} from "lib/components/json-schema";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
-import { Tooltip } from "lib/components/Tooltip";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeIdInfoResponse } from "lib/services/code";
@@ -26,26 +32,11 @@ import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, jsonValidate, resolvePermission } from "lib/utils";
 
-import { MessageInputSwitch } from "./MessageInputSwitch";
-import { SchemaSection } from "./SchemaSection";
-
 interface MigrateContractProps {
   contractAddress: ContractAddr;
   codeIdParam: string;
   handleBack: () => void;
 }
-
-enum MessageTabs {
-  JSON_INPUT = "JSON Input",
-  YOUR_SCHEMA = "Your Schema",
-}
-
-const resolveTabDisplay = (
-  current: MessageTabs,
-  target: MessageTabs
-): BoxProps["display"] => {
-  return current === target ? "block" : "none";
-};
 
 export const MigrateContract = observer(
   ({ contractAddress, codeIdParam, handleBack }: MigrateContractProps) => {
@@ -64,12 +55,13 @@ export const MigrateContract = observer(
         codeId: codeIdParam,
         codeHash: "",
         msgInput: {
-          [MessageTabs.JSON_INPUT]: "{}",
-          [MessageTabs.YOUR_SCHEMA]: "{}",
+          [jsonInputFormKey]: "{}",
+          [yourSchemaInputFormKey]: "{}",
         },
       },
       mode: "all",
     });
+
     const { codeId, codeHash, msgInput } = watch();
     const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
     const [status, setStatus] = useState<FormStatus>({ state: "init" });
@@ -207,55 +199,34 @@ export const MigrateContract = observer(
           <Heading as="h6" variant="h6">
             Migrate Message
           </Heading>
-          <Tooltip
-            label="Select or fill code id first"
-            isDisabled={Boolean(codeHash)}
-          >
-            <div>
-              <MessageInputSwitch
-                tabs={Object.values(MessageTabs)}
-                currentTab={tab}
-                onTabChange={setTab}
-                disabled={!codeHash}
-              />
-            </div>
-          </Tooltip>
+          <MessageInputSwitch
+            currentTab={tab}
+            onTabChange={setTab}
+            disabled={!codeHash}
+          />
         </Flex>
-        <Box
-          sx={{
-            "& .json-input": {
-              display: resolveTabDisplay(tab, MessageTabs.JSON_INPUT),
-            },
-            "& .your-schema": {
-              display: resolveTabDisplay(tab, MessageTabs.YOUR_SCHEMA),
-            },
-          }}
-        >
-          <div className="json-input">
+        <MessageInputContent
+          currentTab={tab}
+          jsonContent={
             <JsonInput
               text={msgInput[MessageTabs.JSON_INPUT]}
               setText={(msg: string) =>
-                setValue("msgInput", {
-                  ...msgInput,
-                  [MessageTabs.JSON_INPUT]: msg,
-                })
+                setValue(`msgInput.${jsonInputFormKey}`, msg)
               }
               minLines={10}
             />
-          </div>
-          <div className="your-schema">
-            <SchemaSection
+          }
+          schemaContent={
+            <SchemaInputSection
+              type="migrate"
               codeHash={codeHash}
               codeId={codeId}
               setSchemaInput={(msg: string) =>
-                setValue("msgInput", {
-                  ...msgInput,
-                  [MessageTabs.YOUR_SCHEMA]: msg,
-                })
+                setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
               }
             />
-          </div>
-        </Box>
+          }
+        />
         {simulateError && (
           <Flex gap={2} mb={4}>
             <CustomIcon

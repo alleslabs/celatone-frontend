@@ -1,7 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
-import { useQuery } from "@tanstack/react-query";
 import Long from "long";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -13,8 +12,6 @@ import {
   useValidateAddress,
   useSimulateFeeQuery,
   useCurrentChain,
-  useBaseApiRoute,
-  CELATONE_QUERY_KEYS,
   useExampleAddresses,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
@@ -28,6 +25,14 @@ import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import { CustomIcon } from "lib/components/icon";
+import {
+  jsonInputFormKey,
+  MessageInputContent,
+  MessageInputSwitch,
+  MessageTabs,
+  SchemaInputSection,
+  yourSchemaInputFormKey,
+} from "lib/components/json-schema";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
@@ -39,19 +44,29 @@ import {
   AmpTrackAction,
   AmpTrackToInstantiate,
 } from "lib/services/amplitude";
-import { getCodeIdInfo } from "lib/services/code";
+import { useLCDCodeInfo } from "lib/services/codeService";
 import type { ComposedMsg, HumanAddr } from "lib/types";
-import { AccessConfigPermission, MsgType } from "lib/types";
-import { composeMsg, jsonPrettify, jsonValidate, libDecode } from "lib/utils";
+import { MsgType } from "lib/types";
+import {
+  composeMsg,
+  jsonPrettify,
+  jsonValidate,
+  libDecode,
+  resolvePermission,
+} from "lib/utils";
 
 import { Footer } from "./component";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageState {
   codeId: string;
+  codeHash: string;
   label: string;
   adminAddress: string;
-  initMsg: string;
+  msgInput: {
+    [jsonInputFormKey]: string;
+    [yourSchemaInputFormKey]: string;
+  };
   simulateError: string;
 }
 interface InstantiatePageProps {
@@ -68,7 +83,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { user: exampleUserAddress } = useExampleAddresses();
 
   const { address = "" } = useCurrentChain();
-  const lcdEndpoint = useBaseApiRoute("rest");
 
   const postInstantiateTx = useInstantiateTx();
   const fabricateFee = useFabricateFee();
@@ -84,6 +98,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
@@ -96,12 +111,17 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     mode: "all",
     defaultValues: {
       codeId: "",
+      codeHash: "",
       label: "",
       adminAddress: "",
-      initMsg: "",
+      msgInput: {
+        [jsonInputFormKey]: "{}",
+        [yourSchemaInputFormKey]: "{}",
+      },
     },
   });
-  const { codeId, label, adminAddress, initMsg } = watch();
+  const { codeId, codeHash, label, adminAddress, msgInput } = watch();
+  const currentInput = msgInput[tab];
 
   const {
     control: assetsControl,
@@ -122,9 +142,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     () =>
       !!address &&
       codeId.length > 0 &&
-      jsonValidate(initMsg) === null &&
+      jsonValidate(currentInput) === null &&
       status.state === "success",
-    [address, codeId.length, initMsg, status.state]
+    [address, codeId.length, currentInput, status.state]
   );
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
@@ -140,35 +160,34 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
 
-  const { refetch } = useQuery(
-    [CELATONE_QUERY_KEYS.CODE_INFO, lcdEndpoint, codeId],
-    async () => getCodeIdInfo(lcdEndpoint, codeId),
-    {
-      enabled: !!address && !!codeId.length,
-      retry: false,
-      cacheTime: 0,
-      onSuccess(data) {
-        const permission = data.code_info.instantiate_permission;
-        if (
-          address &&
-          (permission.permission === AccessConfigPermission.EVERYBODY ||
-            permission.addresses.includes(address as HumanAddr) ||
-            permission.address === address)
+  const { refetch } = useLCDCodeInfo(codeId, {
+    enabled: !!address && !!codeId.length,
+    retry: false,
+    cacheTime: 0,
+    onSuccess(data) {
+      const permission = data.code_info.instantiate_permission;
+      setValue("codeHash", data.code_info.data_hash.toLowerCase());
+      if (
+        resolvePermission(
+          address as HumanAddr,
+          permission.permission,
+          permission.addresses,
+          permission.address
         )
-          setStatus({ state: "success" });
-        else {
-          setStatus({
-            state: "error",
-            message:
-              "This wallet does not have permission to instantiate to this code",
-          });
-        }
-      },
-      onError() {
-        setStatus({ state: "error", message: "This code ID does not exist" });
-      },
-    }
-  );
+      )
+        setStatus({ state: "success" });
+      else {
+        setStatus({
+          state: "error",
+          message:
+            "This wallet does not have permission to instantiate to this code",
+        });
+      }
+    },
+    onError() {
+      setStatus({ state: "error", message: "This code ID does not exist" });
+    },
+  });
 
   // ------------------------------------------//
   // ----------------FUNCTIONS-----------------//
@@ -177,7 +196,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await postInstantiateTx({
       codeId: Number(codeId),
-      initMsg: JSON.parse(initMsg),
+      initMsg: JSON.parse(currentInput),
       label,
       admin: adminAddress,
       funds,
@@ -198,7 +217,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     attachFundsOption,
     postInstantiateTx,
     codeId,
-    initMsg,
+    currentInput,
     label,
     adminAddress,
     estimatedFee,
@@ -230,7 +249,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         admin: adminAddress as HumanAddr,
         codeId: Long.fromString(codeId),
         label,
-        msg: Buffer.from(initMsg),
+        msg: Buffer.from(currentInput),
         funds,
       });
       const timeoutId = setTimeout(() => {
@@ -247,7 +266,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     enableInstantiate,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(funds),
-    initMsg,
+    currentInput,
     label,
   ]);
 
@@ -257,11 +276,13 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       const decodedMsg = libDecode(msgQuery);
       try {
         const msgObject = JSON.parse(decodedMsg) as InstantiateRedoMsg;
-
         setValue("codeId", msgObject.code_id.toString());
         setValue("label", msgObject.label);
         setValue("adminAddress", msgObject.admin);
-        setValue("initMsg", JSON.stringify(msgObject.msg, null, 2));
+        setValue(
+          `msgInput.${jsonInputFormKey}`,
+          JSON.stringify(msgObject.msg, null, 2)
+        );
 
         if (msgObject.funds.length) {
           setAssets("assetsSelect", defaultAsset);
@@ -341,13 +362,37 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               />
             }
           />
-          <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
-            Instantiate Message
-          </Heading>
-          <JsonInput
-            text={initMsg}
-            setText={(newVal: string) => setValue("initMsg", newVal)}
-            minLines={10}
+          <Flex align="center" justify="space-between">
+            <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
+              Instantiate Message
+            </Heading>
+            <MessageInputSwitch
+              currentTab={tab}
+              disabled={!codeHash}
+              onTabChange={setTab}
+            />
+          </Flex>
+          <MessageInputContent
+            currentTab={tab}
+            jsonContent={
+              <JsonInput
+                text={msgInput[jsonInputFormKey]}
+                setText={(newVal: string) =>
+                  setValue(`msgInput.${jsonInputFormKey}`, newVal)
+                }
+                minLines={10}
+              />
+            }
+            schemaContent={
+              <SchemaInputSection
+                type="instantiate"
+                codeHash={codeHash}
+                codeId={codeId}
+                setSchemaInput={(msg: string) =>
+                  setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
+                }
+              />
+            }
           />
           <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
             Send asset to contract

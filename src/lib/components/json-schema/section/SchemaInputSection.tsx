@@ -1,25 +1,26 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import type { RJSFSchema } from "@rjsf/utils";
 import { observer } from "mobx-react-lite";
 
-import {
-  ViewSchemaButton,
-  AttachSchemaCard,
-  JsonSchemaDrawer,
-} from "lib/components/json-schema/";
+import { AttachSchemaCard } from "lib/components/json-schema/AttachSchemaCard";
 import { JsonSchemaForm } from "lib/components/json-schema/form";
+import { JsonSchemaDrawer } from "lib/components/json-schema/JsonSchemaDrawer";
+import { ViewSchemaButton } from "lib/components/json-schema/ViewSchemaButton";
 import { useSchemaStore } from "lib/providers/store";
 
 interface SchemaSectionProps {
+  type: "migrate" | "instantiate";
   codeHash: string;
   codeId: string;
   setSchemaInput: (input: string) => void;
 }
 
-export const SchemaSection = observer(
-  ({ codeHash, codeId, setSchemaInput }: SchemaSectionProps) => {
+export const SchemaInputSection = observer(
+  ({ type, codeHash, codeId, setSchemaInput }: SchemaSectionProps) => {
     const { getSchemaByCodeHash } = useSchemaStore();
     const jsonSchema = getSchemaByCodeHash(codeHash);
     const { isOpen, onClose, onOpen } = useDisclosure();
+    const prettyType = type[0].toUpperCase() + type.slice(1);
     return (
       <Flex
         direction="column"
@@ -27,9 +28,9 @@ export const SchemaSection = observer(
         borderRadius="8px"
         p="24px 16px"
         mb={4}
-        align={jsonSchema?.migrate ? "flex-start" : "center"}
+        align={jsonSchema?.[type] ? "flex-start" : "center"}
       >
-        {jsonSchema?.migrate ? (
+        {jsonSchema?.[type] ? (
           <>
             <Flex align="center" justify="space-between" w="full" mb={4}>
               <Text color="text.main" fontWeight={700} variant="body2">
@@ -43,8 +44,8 @@ export const SchemaSection = observer(
               </Flex>
             </Flex>
             <JsonSchemaForm
-              schema={jsonSchema.migrate}
-              formId="migrate"
+              schema={jsonSchema[type] as RJSFSchema}
+              formId={type}
               onChange={(data) => setSchemaInput(JSON.stringify(data))}
             />
           </>
@@ -52,7 +53,7 @@ export const SchemaSection = observer(
           <>
             <Text color="text.main" fontWeight={700} variant="body1">
               {jsonSchema
-                ? "Attached JSON Schema doesn’t have MigrateMsg"
+                ? `Attached JSON Schema doesn’t have ${prettyType}Msg`
                 : `You haven't attached the JSON Schema for code ${codeId} yet`}
             </Text>
             <Text
@@ -63,7 +64,7 @@ export const SchemaSection = observer(
               mb={4}
             >
               {jsonSchema
-                ? "Please fill in Migrate Message manually or change the schema"
+                ? `Please fill in ${prettyType} Message manually or change the schema`
                 : "Your attached JSON schema will be stored locally on your device"}
             </Text>
             <AttachSchemaCard
