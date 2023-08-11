@@ -10,6 +10,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { capitalize } from "lodash";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
@@ -42,6 +43,13 @@ interface CodeSchemaSectionProps {
   isCodeHashLoading: boolean;
   jsonSchema: Option<CodeSchema>;
 }
+
+const SchemaMsgTabList = [
+  SchemaProperties.INSTANTIATE as "instantiate",
+  SchemaProperties.EXECUTE as "execute",
+  SchemaProperties.QUERY as "query",
+  SchemaProperties.MIGRATE as "migrate",
+];
 
 export const CodeSchemaSection = ({
   codeId,
@@ -95,10 +103,9 @@ export const CodeSchemaSection = ({
       <Tabs variant="unstyled" orientation="vertical" mt={6}>
         <TabList>
           <StyledCustomTab>Full Schema</StyledCustomTab>
-          <StyledCustomTab>InstantiateMsg</StyledCustomTab>
-          <StyledCustomTab>ExecuteMsg</StyledCustomTab>
-          <StyledCustomTab>QueryMsg</StyledCustomTab>
-          <StyledCustomTab>MigrateMsg</StyledCustomTab>
+          {SchemaMsgTabList.map((schemaProperty) => (
+            <StyledCustomTab>{capitalize(schemaProperty)}Msg</StyledCustomTab>
+          ))}
         </TabList>
         <TabPanels pl={6}>
           <StyledTabPanel>
@@ -109,38 +116,16 @@ export const CodeSchemaSection = ({
               openDrawer={onOpen}
             />
           </StyledTabPanel>
-          <StyledTabPanel>
-            <SchemaPanel
-              codeId={codeId}
-              codeHash={codeHash}
-              schema={jsonSchema?.[SchemaProperties.INSTANTIATE]}
-              openDrawer={onOpen}
-            />
-          </StyledTabPanel>
-          <StyledTabPanel>
-            <SchemaPanel
-              codeId={codeId}
-              codeHash={codeHash}
-              schema={jsonSchema?.[SchemaProperties.EXECUTE]}
-              openDrawer={onOpen}
-            />
-          </StyledTabPanel>
-          <StyledTabPanel>
-            <SchemaPanel
-              codeId={codeId}
-              codeHash={codeHash}
-              schema={jsonSchema?.[SchemaProperties.QUERY]}
-              openDrawer={onOpen}
-            />
-          </StyledTabPanel>
-          <StyledTabPanel>
-            <SchemaPanel
-              codeId={codeId}
-              codeHash={codeHash}
-              schema={jsonSchema?.[SchemaProperties.MIGRATE]}
-              openDrawer={onOpen}
-            />
-          </StyledTabPanel>
+          {SchemaMsgTabList.map((schemaProperty) => (
+            <StyledTabPanel>
+              <SchemaPanel
+                codeId={codeId}
+                codeHash={codeHash}
+                schema={jsonSchema?.[schemaProperty]}
+                openDrawer={onOpen}
+              />
+            </StyledTabPanel>
+          ))}
         </TabPanels>
       </Tabs>
       <JsonSchemaDrawer
