@@ -68,11 +68,11 @@ export const ButtonSection = ({
           <Button
             variant="ghost-secondary"
             onClick={() => {
-              navigate({ pathname: "/my-codes" });
+              navigate({ pathname: "/stored-codes" });
               onClose?.();
             }}
           >
-            See my codes list
+            See my stored codes
           </Button>
           <Button
             variant="primary"

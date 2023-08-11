@@ -51,8 +51,8 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
         ...(isDevMode && wasm.enabled
           ? [
               {
-                name: "My Codes",
-                slug: "/codes",
+                name: "My Stored Codes",
+                slug: "/stored-codes",
                 icon: "code" as IconKeys,
               },
               {
@@ -107,7 +107,7 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
             submenu: [
               {
                 name: "Saved Codes",
-                slug: "/my-codes",
+                slug: "/saved-codes",
                 icon: "code" as IconKeys,
               },
               {
