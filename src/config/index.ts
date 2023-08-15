@@ -190,7 +190,7 @@ export const CHAIN_CONFIGS: ChainConfigs = {
         "seivaloper1hh0g5xf23e5zekg45cmerc97hs4n2004dy2t26" as ValidatorAddr,
     },
     explorerLink: {
-      validator: "",
+      validator: "https://mintscan.io/sei/validators",
       proposal: "",
     },
     hasSubHeader: true,
