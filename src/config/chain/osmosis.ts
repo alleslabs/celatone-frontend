@@ -48,7 +48,7 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
   },
   "osmo-test-5": {
     chain: "osmosis",
-    registryChainName: "osmosistestnet5",
+    registryChainName: "osmosistestnet",
     prettyName: "Osmosis Testnet",
     lcd: "https://lcd.osmotest5.osmosis.zone",
     rpc: "https://rpc.osmotest5.osmosis.zone",

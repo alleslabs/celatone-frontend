@@ -29,6 +29,7 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { ContractAddr } from "lib/types";
+import { coinsToStr, jsonPrettify } from "lib/utils";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-sh";
@@ -138,7 +139,7 @@ export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export EXECUTE_MSG='${message}'\n
-export FUNDS=${funds}
+export FUNDS='${coinsToStr(funds)}'\n
 ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --from celatone \\
   --chain-id $CHAIN_ID \\
@@ -159,7 +160,8 @@ const mnemonic =
 const chain = chains.find(({ chain_name }) => chain_name === '${chainName}');
 const contractAddress =
   '${contractAddress}';
-const funds = ${funds};
+const msg = ${message};
+const funds = [${funds.map((coin) => jsonPrettify(JSON.stringify(coin)))}];
 
 const execute = async () => {
   const rpcEndpoint = '${rpcEndpoint}';
@@ -178,7 +180,7 @@ const execute = async () => {
   const tx = await client.execute(
     sender.address,
     contractAddress,
-    ${message},
+    msg,
     fee,
     undefined,
     funds
@@ -188,7 +190,7 @@ const execute = async () => {
 };
 
 execute();
-;`,
+`,
       },
     ],
   };
