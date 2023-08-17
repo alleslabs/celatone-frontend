@@ -45,4 +45,46 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {},
   },
+  "elgafar-1": {
+    chain: "stargaze",
+    registryChainName: "stargazetestnet",
+    prettyName: "Stargaze Testnet",
+    lcd: "https://rest.elgafar-1.stargaze-apis.com",
+    rpc: "https://rpc.elgafar-1.stargaze-apis.com",
+    indexer: "https://elgafar-1-graphql.alleslabs.dev/v1/graphql",
+    api: "https://celatone-api.alleslabs.dev",
+    wallets: [...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: true,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: true,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 1.1,
+        denom: "ustars",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 50_000_000,
+    },
+    explorerLink: {
+      validator: "https://testnet-explorer.publicawesome.dev/stargaze/staking",
+      proposal: "https://testnet-explorer.publicawesome.dev/stargaze/gov",
+    },
+    extra: {},
+  },
 };
