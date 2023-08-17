@@ -20,7 +20,7 @@ import type { RJSFSchema } from "@rjsf/utils";
 import { createSchemaUtils, type GenericObjectType } from "@rjsf/utils";
 import v8Validator from "@rjsf/validator-ajv8";
 import isEqual from "lodash/isEqual";
-import type { FC } from "react";
+import { FC, useEffect } from "react";
 import { useCallback, useMemo, useState } from "react";
 
 import JsonReadOnly from "../../json/JsonReadOnly";
@@ -153,6 +153,11 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
       }
     },
     [fixOneOfKeysCallback, formData, propsOnChange]
+  );
+
+  useEffect(
+    () => setFormData(initialFormData),
+    [JSON.stringify(initialFormData)]
   );
 
   return (

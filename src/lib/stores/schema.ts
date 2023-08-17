@@ -18,10 +18,11 @@ export enum SchemaProperties {
 
 type NullableJsonSchema = JsonSchema | null;
 
-interface QueryExecuteSchema {
+export interface QueryExecuteSchema {
   title: Option<string>;
   description: Option<string>;
   schema: JsonSchema;
+  inputRequired?: boolean;
 }
 
 export interface CodeSchema {
@@ -35,6 +36,8 @@ export interface CodeSchema {
   [SchemaProperties.SUDO]: NullableJsonSchema;
   [SchemaProperties.RESPONSES]: { [key: string]: JsonSchema };
 }
+
+export type QuerySchema = Array<[QueryExecuteSchema, JsonSchema]>;
 
 export class SchemaStore {
   /**
@@ -77,9 +80,7 @@ export class SchemaStore {
     return this.jsonSchemas[codeHash]?.[property];
   }
 
-  getQuerySchema(
-    codeHash: string
-  ): Option<Array<[QueryExecuteSchema, JsonSchema]>> {
+  getQuerySchema(codeHash: string): Option<QuerySchema> {
     const querySchema = this.getSchemaProperty(
       codeHash,
       SchemaProperties.QUERY
@@ -102,17 +103,23 @@ export class SchemaStore {
 
           delete eachQuerySchema.description;
 
+          const title = required[0];
+          const queryInputStruct = (
+            eachQuerySchema.properties?.[title] as JsonSchema
+          ).properties;
+
           return [
             ...acc,
             [
               {
-                title: required[0],
+                title,
                 description: desc1,
                 schema: {
                   ...eachQuerySchema,
                   $schema: querySchema.$schema,
                   definitions: querySchema.definitions,
                 },
+                inputRequired: Boolean(queryInputStruct),
               },
               {
                 ...responsesSchema[required[0]],

@@ -1,5 +1,6 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
@@ -35,6 +36,7 @@ interface ContractSelectSectionProps {
   mode: "all-lists" | "only-admin";
   contractAddress: ContractAddr;
   onContractSelect: (contract: ContractAddr) => void;
+  setCodeHash?: Dispatch<SetStateAction<string>>;
 }
 
 const modeStyle = (mode: string) => {
@@ -131,7 +133,12 @@ const ContractDetailsButton = ({
 };
 
 export const ContractSelectSection = observer(
-  ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
+  ({
+    mode,
+    contractAddress,
+    onContractSelect,
+    setCodeHash,
+  }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
     const isMobile = useMobile();
 
@@ -152,6 +159,7 @@ export const ContractSelectSection = observer(
     const { refetch } = useContractDetailByContractAddress(
       contractAddress,
       (data) => {
+        setCodeHash?.(data.codeHash.toLowerCase());
         reset({
           isValid: true,
           instantiator: data.instantiator,
