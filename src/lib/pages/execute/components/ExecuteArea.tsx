@@ -96,6 +96,12 @@ export const ExecuteArea = ({
   const { errors } = useFormState({ control });
 
   const { assetsJsonStr, assetsSelect, attachFundsOption } = watch();
+  const assetsSelectString = JSON.stringify(assetsSelect);
+  const funds = useMemo(
+    () => getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [assetsJsonStr, assetsSelectString, attachFundsOption, getAttachFunds]
+  );
 
   const isValidAssetsSelect = !errors.assetsSelect;
   const isValidAssetsJsonStr =
@@ -140,11 +146,6 @@ export const ExecuteArea = ({
   });
 
   const proceed = useCallback(async () => {
-    const funds = getAttachFunds(
-      attachFundsOption,
-      assetsJsonStr,
-      assetsSelect
-    );
     AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await executeTx({
       onTxSucceed: (userKey: string, activity: Activity) => {
@@ -162,28 +163,25 @@ export const ExecuteArea = ({
       broadcast(stream);
     }
   }, [
+    funds,
     attachFundsOption,
     executeTx,
     fee,
     contractAddress,
     msg,
-    getAttachFunds,
-    assetsJsonStr,
-    assetsSelect,
     addActivity,
     broadcast,
   ]);
 
   useEffect(() => setMsg(initialMsg), [initialMsg]);
 
-  const assetsSelectString = JSON.stringify(assetsSelect);
   useEffect(() => {
     if (enableExecute) {
       const composedMsg = composeMsg(MsgType.EXECUTE, {
         sender: address as HumanAddr,
         contract: contractAddress as ContractAddr,
         msg: Buffer.from(msg),
-        funds: getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect),
+        funds,
       });
 
       const timeoutId = setTimeout(() => {
@@ -192,17 +190,7 @@ export const ExecuteArea = ({
       return () => clearTimeout(timeoutId);
     }
     return () => {};
-  }, [
-    address,
-    contractAddress,
-    enableExecute,
-    msg,
-    assetsJsonStr,
-    assetsSelectString,
-    getAttachFunds,
-    attachFundsOption,
-    assetsSelect,
-  ]);
+  }, [address, contractAddress, enableExecute, funds, msg]);
 
   useEffect(() => {
     const keydownHandler = (e: KeyboardEvent) => {
@@ -278,6 +266,7 @@ export const ExecuteArea = ({
             type="execute"
             contractAddress={contractAddress}
             message={msg}
+            funds={funds}
           />
         </Flex>
         <Flex direction="row" align="center" gap={2}>

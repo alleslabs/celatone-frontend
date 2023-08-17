@@ -14,6 +14,7 @@ import {
   Heading,
   Box,
 } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
 import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
@@ -41,12 +42,14 @@ interface CodeSnippetProps {
   contractAddress: ContractAddr;
   message: string;
   type: "query" | "execute";
+  funds?: Coin[];
 }
 
 const CodeSnippet = ({
   contractAddress,
   message,
   type = "query",
+  funds = [],
 }: CodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
@@ -135,10 +138,12 @@ export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export EXECUTE_MSG='${message}'\n
+export FUNDS=${funds}
 ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --from celatone \\
   --chain-id $CHAIN_ID \\
-  --node $RPC_URL`,
+  --node $RPC_URL \\
+  --amount $FUNDS`,
       },
       {
         name: "CosmJS",
@@ -154,6 +159,7 @@ const mnemonic =
 const chain = chains.find(({ chain_name }) => chain_name === '${chainName}');
 const contractAddress =
   '${contractAddress}';
+const funds = ${funds};
 
 const execute = async () => {
   const rpcEndpoint = '${rpcEndpoint}';
@@ -173,7 +179,9 @@ const execute = async () => {
     sender.address,
     contractAddress,
     ${message},
-    fee
+    fee,
+    undefined,
+    funds
   );
 
   console.log(tx.transactionHash);
