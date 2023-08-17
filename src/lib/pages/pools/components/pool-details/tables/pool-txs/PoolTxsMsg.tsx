@@ -43,7 +43,7 @@ export const PoolTxsMsg = ({
     <Box
       w="full"
       minW="min-content"
-      borderY="0.5px solid"
+      borderBottom="1px solid"
       borderColor="gray.700"
       _hover={{ background: "gray.900" }}
       sx={{
