@@ -75,7 +75,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
     },
     gas: {
       gasPrice: {
-        tokenPerGas: 1.1,
+        tokenPerGas: 0.04,
         denom: "ustars",
       },
       gasAdjustment: 1.5,
