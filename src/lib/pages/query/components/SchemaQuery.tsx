@@ -4,6 +4,8 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Alert,
+  AlertDescription,
   Box,
   Button,
   Flex,
@@ -60,6 +62,7 @@ const QueryComponent = ({
 }: QueryComponentInterface) => {
   const [msg, setMsg] = useState("{}");
   const [res, setRes] = useState("{}");
+  const [queryError, setQueryError] = useState("");
 
   // TODO: Abstract query
   const {
@@ -87,6 +90,7 @@ const QueryComponent = ({
       retry: false,
       cacheTime: 0,
       onSuccess(data) {
+        setQueryError("");
         setRes(JSON.stringify(data.data, null, 2));
         addActivity({
           type: "query",
@@ -98,7 +102,7 @@ const QueryComponent = ({
         });
       },
       onError(err: AxiosError<RpcQueryError>) {
-        setRes(err.response?.data.message || DEFAULT_RPC_ERROR);
+        setQueryError(err.response?.data.message || DEFAULT_RPC_ERROR);
       },
     }
   );
@@ -139,7 +143,6 @@ const QueryComponent = ({
               />
               <Flex gap={2} justify="flex-start">
                 <CopyButton
-                  isDisable={!msg.length}
                   value={msg}
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
@@ -173,13 +176,20 @@ const QueryComponent = ({
                   Query response will display here
                 </Text>
                 <CopyButton
-                  isDisable={!res.length}
+                  isDisable={res === "{}" || Boolean(queryError)}
                   value={res}
                   amptrackSection="query_response"
                   buttonText="Copy Output"
                   ml="auto"
                 />
               </Flex>
+            )}
+            {queryError && (
+              <Alert variant="error" mb={3} alignItems="center">
+                <AlertDescription wordBreak="break-word">
+                  {queryError}
+                </AlertDescription>
+              </Alert>
             )}
             <Box bg="gray.800" p={4} borderRadius="8px">
               <JsonSchemaForm
@@ -208,7 +218,7 @@ const QueryComponent = ({
                 />
                 <Flex gap={2} ml="auto">
                   <CopyButton
-                    isDisable={!res.length}
+                    isDisable={res === "{}" || Boolean(queryError)}
                     value={res}
                     amptrackSection="query_response"
                     buttonText="Copy Output"
