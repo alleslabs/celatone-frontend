@@ -8,7 +8,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "neutron",
     prettyName: "Neutron",
     lcd: "https://rest-kralum.neutron-1.neutron.org",
-    rpc: "https://rpc-kralum.neutron-1.neutron.org",
+    rpc: "https://rpc-kralum.neutron-1.neutron.org:443",
     indexer: "https://neutron-1-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],

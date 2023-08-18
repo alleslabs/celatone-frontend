@@ -144,7 +144,10 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --from celatone \\
   --chain-id $CHAIN_ID \\
   --node $RPC_URL \\
-  --amount $FUNDS`,
+  --amount $FUNDS \\
+  --gas auto \\
+  --gas-prices ${gasPrice.tokenPerGas}${gasPrice.denom} \\
+  --gas-adjustment 1.5`,
       },
       {
         name: "CosmJS",
