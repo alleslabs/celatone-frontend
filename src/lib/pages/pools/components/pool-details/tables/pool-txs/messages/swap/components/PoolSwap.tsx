@@ -1,12 +1,12 @@
 import { Grid, Text } from "@chakra-ui/react";
 
 import { AssetCard } from "../../components";
-import { coinsFromStr } from "../../utils";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
+import { coinsFromStr } from "lib/utils";
 
 interface PoolSwapInterface {
   txHash: string;

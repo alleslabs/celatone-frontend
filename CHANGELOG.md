@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#480](https://github.com/alleslabs/celatone-frontend/pull/480) Update chain registry package and add attach funds in code snippet
 - [#478](https://github.com/alleslabs/celatone-frontend/pull/478) Fix pool txs icon and style
 - [#474](https://github.com/alleslabs/celatone-frontend/pull/474) Refactor stored and saved codes pages
 - [#468](https://github.com/alleslabs/celatone-frontend/pull/468) Add breadcrumb to pool id page

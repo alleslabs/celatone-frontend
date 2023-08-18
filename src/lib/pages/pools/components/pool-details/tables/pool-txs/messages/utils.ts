@@ -1,18 +1,7 @@
-import type { Coin } from "@cosmjs/stargate";
-import { parseCoins } from "@cosmjs/stargate";
-
 import type { Message } from "lib/types";
 import { extractTxDetails } from "lib/utils";
 
 export const getPoolDenom = (poolId: string) => `gamm/pool/${poolId}`;
-
-export const coinsFromStr = (str: string): Coin[] => {
-  try {
-    return parseCoins(str);
-  } catch {
-    return [];
-  }
-};
 
 export const extractPoolMsgs = (msgs: Message[], poolId: number) => {
   const result: {

@@ -8,7 +8,7 @@ export const STARGAZE_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "stargaze",
     prettyName: "Stargaze",
     lcd: "https://rest.stargaze-apis.com",
-    rpc: "https://rpc.stargaze-apis.com",
+    rpc: "https://rpc.stargaze-apis.com:443",
     indexer: "https://stargaze-mainnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
     wallets: [...keplrWallets],

@@ -3,11 +3,11 @@ import type { Coin } from "@cosmjs/stargate";
 import big from "big.js";
 
 import { AssetCard } from "../../components";
-import { coinsFromStr } from "../../utils";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import type { AssetInfosOpt } from "lib/services/assetService";
 import { useTxData } from "lib/services/txService";
+import { coinsFromStr } from "lib/utils";
 
 interface PoolAssetsGridProps {
   txHash?: string;
