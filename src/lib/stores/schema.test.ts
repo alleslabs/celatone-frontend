@@ -38,6 +38,11 @@ describe("getSchemaByCodeHash", () => {
       exampleSchema
     );
   });
+  test("correctly get schema by uppercase code hash", () => {
+    expect(
+      schemaStore.getSchemaByCodeHash(codeHash.toUpperCase())
+    ).toStrictEqual(exampleSchema);
+  });
   test("return undefined on code hash not found", () => {
     expect(schemaStore.getSchemaByCodeHash("randomHash")).toBeUndefined();
   });
@@ -74,6 +79,15 @@ describe("getSchemaProperty", () => {
     ).toStrictEqual(exampleSchema.responses);
   });
 
+  test("correctly retrieve schema property from uppercase code hash", () => {
+    expect(
+      schemaStore.getSchemaProperty(
+        codeHash.toUpperCase(),
+        SchemaProperties.CONTRACT_NAME
+      )
+    ).toStrictEqual(exampleSchema.contract_name);
+  });
+
   test("correctly return undefined on code hash not found", () => {
     expect(
       schemaStore.getSchemaProperty(
@@ -89,6 +103,12 @@ describe("getQuerySchemaFormArray", () => {
     expect(schemaStore.getQuerySchema(codeHash)).toEqual(querySchemaOutput);
   });
 
+  test("correctly get form array for query schema from uppercase code hash", () => {
+    expect(schemaStore.getQuerySchema(codeHash.toUpperCase())).toEqual(
+      querySchemaOutput
+    );
+  });
+
   test("correctly return undefined for non-existent code hash", () => {
     expect(schemaStore.getQuerySchema("randomHash")).toBeUndefined();
   });
@@ -97,6 +117,11 @@ describe("getQuerySchemaFormArray", () => {
 describe("getExecuteSchemaFormArray", () => {
   test("correctly get form array for execute schema", () => {
     expect(schemaStore.getExecuteSchema(codeHash)).toEqual(executeSchemaOutput);
+  });
+  test("correctly get form array for execute schema from uppercase code hash", () => {
+    expect(schemaStore.getExecuteSchema(codeHash.toUpperCase())).toEqual(
+      executeSchemaOutput
+    );
   });
   test("correctly return undefined for non-existent code hash", () => {
     expect(schemaStore.getExecuteSchema("randomHash")).toBeUndefined();

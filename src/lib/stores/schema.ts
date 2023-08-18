@@ -65,29 +65,29 @@ export class SchemaStore {
   }
 
   saveNewSchema(codeHash: string, schema: CodeSchema) {
-    this.jsonSchemas[codeHash] = schema;
+    this.jsonSchemas[codeHash.toLowerCase()] = schema;
   }
 
   deleteSchema(codeHash: string) {
-    delete this.jsonSchemas[codeHash];
+    delete this.jsonSchemas[codeHash.toLowerCase()];
   }
 
   getSchemaByCodeHash(codeHash: string): Option<CodeSchema> {
-    return this.jsonSchemas[codeHash];
+    return this.jsonSchemas[codeHash.toLowerCase()];
   }
 
   getSchemaProperty<T extends SchemaProperties>(codeHash: string, property: T) {
-    return this.jsonSchemas[codeHash]?.[property];
+    return this.jsonSchemas[codeHash.toLowerCase()]?.[property];
   }
 
   getQuerySchema(codeHash: string): Option<QuerySchema> {
     const querySchema = this.getSchemaProperty(
-      codeHash,
+      codeHash.toLowerCase(),
       SchemaProperties.QUERY
     );
 
     const responsesSchema = this.getSchemaProperty(
-      codeHash,
+      codeHash.toLowerCase(),
       SchemaProperties.RESPONSES
     );
 
@@ -104,9 +104,9 @@ export class SchemaStore {
           delete eachQuerySchema.description;
 
           const title = required[0];
-          const queryInputStruct = (
-            eachQuerySchema.properties?.[title] as JsonSchema
-          ).properties;
+          const propertyKey = eachQuerySchema.properties?.[title] as JsonSchema;
+          const noInputRequired =
+            propertyKey.type === "object" && !("properties" in propertyKey);
 
           return [
             ...acc,
@@ -119,7 +119,7 @@ export class SchemaStore {
                   $schema: querySchema.$schema,
                   definitions: querySchema.definitions,
                 },
-                inputRequired: Boolean(queryInputStruct),
+                inputRequired: !noInputRequired,
               },
               {
                 ...responsesSchema[required[0]],
@@ -137,7 +137,7 @@ export class SchemaStore {
 
   getExecuteSchema(codeHash: string): Option<Array<QueryExecuteSchema>> {
     const executeSchema = this.getSchemaProperty(
-      codeHash,
+      codeHash.toLowerCase(),
       SchemaProperties.EXECUTE
     );
 

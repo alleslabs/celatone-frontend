@@ -13,6 +13,7 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { useSchemaStore } from "lib/providers/store";
 import { AmpTrackToQuery } from "lib/services/amplitude";
+import type { ContractDetail } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
 import {
   jsonPrettify,
@@ -31,6 +32,7 @@ const Query = observer(() => {
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [codeHash, setCodeHash] = useState("");
+  const [codeId, setCodeId] = useState("");
   const [initialMsg, setInitialMsg] = useState("");
   const isMobile = useMobile();
   const schema = getQuerySchema(codeHash);
@@ -100,13 +102,18 @@ const Query = observer(() => {
         mode="all-lists"
         contractAddress={contractAddress}
         onContractSelect={onContractSelect}
-        setCodeHash={setCodeHash}
+        successCallback={(data: ContractDetail) => {
+          setCodeHash(data.codeHash);
+          setCodeId(String(data.codeId));
+        }}
       />
 
       <QueryArea
         contractAddress={contractAddress}
         schema={schema}
         initialMsg={initialMsg}
+        codeId={codeId}
+        codeHash={codeHash}
       />
     </PageContainer>
   );

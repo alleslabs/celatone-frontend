@@ -3,6 +3,7 @@
     {
       "title": "config",
       "description": "Get config",
+      "inputRequired": false,
       "schema": {
         "type": "object",
         "required": ["config"],
@@ -73,6 +74,7 @@
     {
       "title": "address",
       "description": "Get a single address",
+      "inputRequired": true,
       "schema": {
         "type": "object",
         "required": ["address"],
@@ -167,6 +169,7 @@
     {
       "title": "addresses",
       "description": "Get a list of addresses",
+      "inputRequired": true,
       "schema": {
         "type": "object",
         "required": ["addresses"],
@@ -270,6 +273,7 @@
     {
       "title": "all_addresses",
       "description": "Query all stored addresses with pagination",
+      "inputRequired": true,
       "schema": {
         "type": "object",
         "required": ["all_addresses"],

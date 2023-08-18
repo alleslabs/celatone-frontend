@@ -67,6 +67,7 @@ export const useContractDetailByContractAddress = (
       .request(getContractByContractAddressQueryDocument, { contractAddress })
       .then<ContractDetail>(async ({ contracts_by_pk }) => {
         if (!contracts_by_pk) throw Error("Contract not found");
+        // TODO: retrieve code hash from gql instead when available
         const codeHash = await getCodeIdInfo(
           lcdEndpoint,
           String(contracts_by_pk.code_id)

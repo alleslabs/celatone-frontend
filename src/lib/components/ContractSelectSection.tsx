@@ -1,11 +1,11 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
+import type { ContractDetail } from "lib/services/contractService";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
@@ -36,7 +36,7 @@ interface ContractSelectSectionProps {
   mode: "all-lists" | "only-admin";
   contractAddress: ContractAddr;
   onContractSelect: (contract: ContractAddr) => void;
-  setCodeHash?: Dispatch<SetStateAction<string>>;
+  successCallback?: (data: ContractDetail) => void;
 }
 
 const modeStyle = (mode: string) => {
@@ -137,7 +137,7 @@ export const ContractSelectSection = observer(
     mode,
     contractAddress,
     onContractSelect,
-    setCodeHash,
+    successCallback,
   }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
     const isMobile = useMobile();
@@ -159,7 +159,7 @@ export const ContractSelectSection = observer(
     const { refetch } = useContractDetailByContractAddress(
       contractAddress,
       (data) => {
-        setCodeHash?.(data.codeHash.toLowerCase());
+        successCallback?.(data);
         reset({
           isValid: true,
           instantiator: data.instantiator,

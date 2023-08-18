@@ -9,9 +9,6 @@ import {
   Flex,
   Grid,
   GridItem,
-  Input,
-  InputGroup,
-  InputRightElement,
   Text,
 } from "@chakra-ui/react";
 import type { RJSFSchema } from "@rjsf/utils";
@@ -19,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { encode } from "js-base64";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -28,7 +25,9 @@ import {
 } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { JsonSchemaForm } from "lib/components/json-schema";
+import { EmptyState } from "lib/components/state";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import { AmpTrack, AmpEvent, AmpTrackExpandAll } from "lib/services/amplitude";
@@ -61,7 +60,7 @@ const QueryComponent = ({
 }: QueryComponentInterface) => {
   const [msg, setMsg] = useState("{}");
   const [res, setRes] = useState("{}");
-  // console.log(JSON.stringify({ [msgSchema.title]: {} }));
+
   // TODO: Abstract query
   const {
     refetch,
@@ -126,7 +125,7 @@ const QueryComponent = ({
           <AccordionIcon />
         </AccordionButton>
       </h6>
-      <AccordionPanel py={4} px={0}>
+      <AccordionPanel p="16px 0 0 0">
         <Grid
           templateColumns={msgSchema.inputRequired ? "1fr 1fr" : "1fr"}
           columnGap={6}
@@ -165,13 +164,69 @@ const QueryComponent = ({
             </GridItem>
           )}
           <GridItem>
+            {msgSchema.inputRequired && (
+              <Flex align="center" gap={2} mb={3}>
+                <Text variant="body1" fontWeight={700}>
+                  Return Output
+                </Text>
+                <Text variant="body3" color="text.dark">
+                  Query response will display here
+                </Text>
+                <CopyButton
+                  isDisable={!res.length}
+                  value={res}
+                  amptrackSection="query_response"
+                  buttonText="Copy Output"
+                  ml="auto"
+                />
+              </Flex>
+            )}
             <Box bg="gray.800" p={4} borderRadius="8px">
               <JsonSchemaForm
                 formId={`response-${msgSchema.title}`}
                 schema={resSchema}
-                initialFormData={JSON.parse(res)}
+                initialFormData={(() => {
+                  try {
+                    return JSON.parse(res);
+                  } catch (_) {
+                    return {};
+                  }
+                })()}
               />
             </Box>
+            {!msgSchema.inputRequired && (
+              <Flex gap={2} justify="flex-start" mt={3}>
+                <CopyButton
+                  value={JSON.stringify({ [msgSchema.title ?? ""]: {} })}
+                  amptrackSection="query_msg"
+                  buttonText="Copy QueryMsg"
+                />
+                <CodeSnippet
+                  type="query"
+                  contractAddress={contractAddress}
+                  message={JSON.stringify({ [msgSchema.title ?? ""]: {} })}
+                />
+                <Flex gap={2} ml="auto">
+                  <CopyButton
+                    isDisable={!res.length}
+                    value={res}
+                    amptrackSection="query_response"
+                    buttonText="Copy Output"
+                  />
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handleQuery}
+                    isDisabled={jsonValidate(msg) !== null}
+                    isLoading={queryFetching || queryRefetching}
+                    leftIcon={<CustomIcon name="query" />}
+                    ml="auto"
+                  >
+                    Query Again
+                  </Button>
+                </Flex>
+              </Flex>
+            )}
           </GridItem>
         </Grid>
       </AccordionPanel>
@@ -192,23 +247,22 @@ export const SchemaQuery = ({ schema, contractAddress }: SchemaQueryProps) => {
   const [keyword, setKeyword] = useState("");
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
+  const filteredMsgs = useMemo(
+    () =>
+      schema?.filter((querySchema) => querySchema[0].title?.includes(keyword)),
+    [schema, keyword]
+  );
+
   if (!schema) return null;
 
   return (
     <>
       <Flex gap={6} mb={6}>
-        <InputGroup>
-          <Input
-            autoComplete="off"
-            placeholder="Search by command"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            h="40px"
-          />
-          <InputRightElement pointerEvents="none" h="full">
-            <CustomIcon name="search" color="gray.600" />
-          </InputRightElement>
-        </InputGroup>
+        <InputWithIcon
+          placeholder="Search by command"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+        />
         <Button
           variant="outline-gray"
           rightIcon={<CustomIcon name="chevron-down" boxSize={3} />}
@@ -223,18 +277,17 @@ export const SchemaQuery = ({ schema, contractAddress }: SchemaQueryProps) => {
           {expandedIndexes.length ? "Collapse All" : "Expand All"}
         </Button>
       </Flex>
-      <Accordion
-        allowMultiple
-        rowGap={4}
-        display="flex"
-        flexDir="column"
-        index={expandedIndexes}
-        onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
-        sx={{ ".chakra-accordion__icon": { color: "gray.600" } }}
-      >
-        {schema
-          .filter((querySchema) => querySchema[0].title?.includes(keyword))
-          .map(([msg, res]) => (
+      {filteredMsgs?.length ? (
+        <Accordion
+          allowMultiple
+          rowGap={4}
+          display="flex"
+          flexDir="column"
+          index={expandedIndexes}
+          onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
+          sx={{ ".chakra-accordion__icon": { color: "gray.600" } }}
+        >
+          {filteredMsgs.map(([msg, res]) => (
             <QueryComponent
               key={JSON.stringify(msg.schema) + JSON.stringify(res)}
               msgSchema={msg}
@@ -245,7 +298,13 @@ export const SchemaQuery = ({ schema, contractAddress }: SchemaQueryProps) => {
               addActivity={addActivity}
             />
           ))}
-      </Accordion>
+        </Accordion>
+      ) : (
+        <EmptyState
+          imageVariant="not-found"
+          message="No matched message found."
+        />
+      )}
     </>
   );
 };

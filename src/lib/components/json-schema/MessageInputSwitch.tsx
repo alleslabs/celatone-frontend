@@ -16,6 +16,7 @@ export const yourSchemaInputFormKey = MessageTabs.YOUR_SCHEMA as "Your Schema";
 interface MessageInputSwitchProps {
   currentTab: MessageTabs;
   disabled?: boolean;
+  tooltipLabel?: string;
   onTabChange: Dispatch<SetStateAction<MessageTabs>>;
 }
 
@@ -24,12 +25,13 @@ const tabs = Object.values(MessageTabs);
 export const MessageInputSwitch = ({
   currentTab,
   disabled = false,
+  tooltipLabel = "Select or fill code id first",
   onTabChange,
 }: MessageInputSwitchProps) => {
   const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
   const activeIndex = tabs.indexOf(currentTab);
   return (
-    <Tooltip label="Select or fill code id first" isDisabled={!disabled}>
+    <Tooltip label={tooltipLabel} isDisabled={!disabled}>
       <div>
         <Flex
           border="1px solid var(--chakra-colors-gray-700)"
