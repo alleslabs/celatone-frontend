@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
+import type { ContractDetail } from "lib/services/contractService";
 import { useContractDetailByContractAddress } from "lib/services/contractService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Addr, ContractAddr, Option } from "lib/types";
@@ -35,6 +36,7 @@ interface ContractSelectSectionProps {
   mode: "all-lists" | "only-admin";
   contractAddress: ContractAddr;
   onContractSelect: (contract: ContractAddr) => void;
+  successCallback?: (data: ContractDetail) => void;
 }
 
 const modeStyle = (mode: string) => {
@@ -131,7 +133,12 @@ const ContractDetailsButton = ({
 };
 
 export const ContractSelectSection = observer(
-  ({ mode, contractAddress, onContractSelect }: ContractSelectSectionProps) => {
+  ({
+    mode,
+    contractAddress,
+    onContractSelect,
+    successCallback,
+  }: ContractSelectSectionProps) => {
     const { getContractLocalInfo } = useContractStore();
     const isMobile = useMobile();
 
@@ -152,6 +159,7 @@ export const ContractSelectSection = observer(
     const { refetch } = useContractDetailByContractAddress(
       contractAddress,
       (data) => {
+        successCallback?.(data);
         reset({
           isValid: true,
           instantiator: data.instantiator,

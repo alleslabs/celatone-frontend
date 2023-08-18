@@ -1,3 +1,4 @@
+import type { ButtonProps } from "@chakra-ui/react";
 import {
   Modal,
   ModalOverlay,
@@ -41,12 +42,14 @@ interface CodeSnippetProps {
   contractAddress: ContractAddr;
   message: string;
   type: "query" | "execute";
+  ml?: ButtonProps["ml"];
 }
 
 const CodeSnippet = ({
   contractAddress,
   message,
   type = "query",
+  ml,
 }: CodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
@@ -191,7 +194,7 @@ execute();
         isDisabled={isDisabled}
         variant="outline-accent"
         size="sm"
-        ml="auto"
+        ml={ml}
         gap={1}
         onClick={() => {
           AmpTrack(AmpEvent.USE_CONTRACT_SNIPPET);

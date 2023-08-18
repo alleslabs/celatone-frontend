@@ -23,8 +23,7 @@ interface ExecuteTxParams {
   msg: object;
   funds: Coin[];
   client: SigningCosmWasmClient;
-  userKey: string;
-  onTxSucceed?: (userKey: string, activity: Activity) => void;
+  onTxSucceed?: (activity: Activity) => void;
   onTxFailed?: () => void;
 }
 
@@ -35,7 +34,6 @@ export const executeContractTx = ({
   msg,
   funds,
   client,
-  userKey,
   onTxSucceed,
   onTxFailed,
 }: ExecuteTxParams): Observable<TxResultRendering> => {
@@ -47,7 +45,7 @@ export const executeContractTx = ({
     }),
     ({ value: txInfo }) => {
       AmpTrack(AmpEvent.TX_SUCCEED);
-      onTxSucceed?.(userKey, {
+      onTxSucceed?.({
         type: "execute",
         action: Object.keys(msg)[0],
         sender: address,

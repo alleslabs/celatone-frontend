@@ -18,10 +18,11 @@ export enum SchemaProperties {
 
 type NullableJsonSchema = JsonSchema | null;
 
-interface QueryExecuteSchema {
+export interface QueryExecuteSchema {
   title: Option<string>;
   description: Option<string>;
   schema: JsonSchema;
+  inputRequired?: boolean;
 }
 
 export interface CodeSchema {
@@ -35,6 +36,12 @@ export interface CodeSchema {
   [SchemaProperties.SUDO]: NullableJsonSchema;
   [SchemaProperties.RESPONSES]: { [key: string]: JsonSchema };
 }
+
+export type QuerySchema = Array<[QueryExecuteSchema, JsonSchema]>;
+
+const normalize = (codeHash: string) => {
+  return codeHash.toLowerCase();
+};
 
 export class SchemaStore {
   /**
@@ -62,31 +69,29 @@ export class SchemaStore {
   }
 
   saveNewSchema(codeHash: string, schema: CodeSchema) {
-    this.jsonSchemas[codeHash] = schema;
+    this.jsonSchemas[normalize(codeHash)] = schema;
   }
 
   deleteSchema(codeHash: string) {
-    delete this.jsonSchemas[codeHash];
+    delete this.jsonSchemas[normalize(codeHash)];
   }
 
   getSchemaByCodeHash(codeHash: string): Option<CodeSchema> {
-    return this.jsonSchemas[codeHash];
+    return this.jsonSchemas[normalize(codeHash)];
   }
 
   getSchemaProperty<T extends SchemaProperties>(codeHash: string, property: T) {
-    return this.jsonSchemas[codeHash]?.[property];
+    return this.jsonSchemas[normalize(codeHash)]?.[property];
   }
 
-  getQuerySchema(
-    codeHash: string
-  ): Option<Array<[QueryExecuteSchema, JsonSchema]>> {
+  getQuerySchema(codeHash: string): Option<QuerySchema> {
     const querySchema = this.getSchemaProperty(
-      codeHash,
+      normalize(codeHash),
       SchemaProperties.QUERY
     );
 
     const responsesSchema = this.getSchemaProperty(
-      codeHash,
+      normalize(codeHash),
       SchemaProperties.RESPONSES
     );
 
@@ -102,17 +107,23 @@ export class SchemaStore {
 
           delete eachQuerySchema.description;
 
+          const title = required[0];
+          const propertyKey = eachQuerySchema.properties?.[title] as JsonSchema;
+          const noInputRequired =
+            propertyKey.type === "object" && !("properties" in propertyKey);
+
           return [
             ...acc,
             [
               {
-                title: required[0],
+                title,
                 description: desc1,
                 schema: {
                   ...eachQuerySchema,
                   $schema: querySchema.$schema,
                   definitions: querySchema.definitions,
                 },
+                inputRequired: !noInputRequired,
               },
               {
                 ...responsesSchema[required[0]],
@@ -130,7 +141,7 @@ export class SchemaStore {
 
   getExecuteSchema(codeHash: string): Option<Array<QueryExecuteSchema>> {
     const executeSchema = this.getSchemaProperty(
-      codeHash,
+      normalize(codeHash),
       SchemaProperties.EXECUTE
     );
 

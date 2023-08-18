@@ -147,8 +147,8 @@ export const ExecuteArea = ({
     );
     AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await executeTx({
-      onTxSucceed: (userKey: string, activity: Activity) => {
-        addActivity(userKey, activity);
+      onTxSucceed: (activity: Activity) => {
+        addActivity(activity);
         setProcessing(false);
       },
       onTxFailed: () => setProcessing(false),
