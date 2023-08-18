@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#486](https://github.com/alleslabs/celatone-frontend/pull/486) Switch to schema tab when available and prefill,expand,and scroll to the prefill msg
+- [#483](https://github.com/alleslabs/celatone-frontend/pull/483) Add json schema functionality to execute page
 - [#482](https://github.com/alleslabs/celatone-frontend/pull/482) Add json schema functionality to query page
 - [#477](https://github.com/alleslabs/celatone-frontend/pull/477) Add json schema section on code detail page
 - [#475](https://github.com/alleslabs/celatone-frontend/pull/475) Add json schema functionality to instantiate contract
