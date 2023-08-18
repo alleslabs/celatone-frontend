@@ -63,7 +63,7 @@ export const QueryArea = ({
           />
         }
         schemaContent={
-          codeHash ? (
+          codeHash && schema ? (
             <SchemaQuery
               schema={schema}
               contractAddress={contractAddress}

@@ -248,7 +248,7 @@ const QueryComponent = ({
 };
 
 interface SchemaQueryProps {
-  schema: Option<QuerySchema>;
+  schema: QuerySchema;
   contractAddress: ContractAddr;
   initialMsg: string;
 }
@@ -306,8 +306,6 @@ export const SchemaQuery = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schema, initialMsg, accordionRef.current]);
 
-  if (!schema) return null;
-
   return (
     <>
       <Flex gap={6} mb={6}>
@@ -315,6 +313,7 @@ export const SchemaQuery = ({
           placeholder="Search by command"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
+          action="query-message-search"
         />
         <Button
           variant="outline-gray"

@@ -39,6 +39,8 @@ export interface CodeSchema {
 
 export type QuerySchema = Array<[QueryExecuteSchema, JsonSchema]>;
 
+export type ExecuteSchema = Array<QueryExecuteSchema>;
+
 const normalize = (codeHash: string) => {
   return codeHash.toLowerCase();
 };
@@ -139,7 +141,7 @@ export class SchemaStore {
     );
   }
 
-  getExecuteSchema(codeHash: string): Option<Array<QueryExecuteSchema>> {
+  getExecuteSchema(codeHash: string): Option<ExecuteSchema> {
     const executeSchema = this.getSchemaProperty(
       normalize(codeHash),
       SchemaProperties.EXECUTE
