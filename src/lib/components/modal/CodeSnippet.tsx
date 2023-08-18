@@ -66,6 +66,9 @@ const CodeSnippet = ({
     },
   } = useCelatoneApp();
 
+  const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
+  const fundsFlags = funds.length ? `\n  --amount ${coinsToStr(funds)} \\` : "";
+
   const codeSnippets: Record<
     string,
     { name: string; mode: string; snippet: string }[]
@@ -139,14 +142,12 @@ export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
 export CONTRACT_ADDRESS='${contractAddress}'\n
 export EXECUTE_MSG='${message}'\n
-export FUNDS='${coinsToStr(funds)}'\n
 ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --from celatone \\
   --chain-id $CHAIN_ID \\
-  --node $RPC_URL \\
-  --amount $FUNDS \\
+  --node $RPC_URL \\${fundsFlags}
   --gas auto \\
-  --gas-prices ${gasPrice.tokenPerGas}${gasPrice.denom} \\
+  --gas-prices ${gasPriceStr} \\
   --gas-adjustment 1.5`,
       },
       {
@@ -173,7 +174,7 @@ const execute = async () => {
     rpcEndpoint,
     signer,
     {
-      gasPrice: GasPrice.fromString("${gasPrice.tokenPerGas}${gasPrice.denom}"),
+      gasPrice: GasPrice.fromString("${gasPriceStr}"),
     }
   );
 
