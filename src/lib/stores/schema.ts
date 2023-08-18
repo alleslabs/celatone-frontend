@@ -39,6 +39,10 @@ export interface CodeSchema {
 
 export type QuerySchema = Array<[QueryExecuteSchema, JsonSchema]>;
 
+const normalize = (codeHash: string) => {
+  return codeHash.toLowerCase();
+};
+
 export class SchemaStore {
   /**
    * @remarks code hash as key and json schema as value (annotated as Dict<string, unknown>>)
@@ -65,29 +69,29 @@ export class SchemaStore {
   }
 
   saveNewSchema(codeHash: string, schema: CodeSchema) {
-    this.jsonSchemas[codeHash.toLowerCase()] = schema;
+    this.jsonSchemas[normalize(codeHash)] = schema;
   }
 
   deleteSchema(codeHash: string) {
-    delete this.jsonSchemas[codeHash.toLowerCase()];
+    delete this.jsonSchemas[normalize(codeHash)];
   }
 
   getSchemaByCodeHash(codeHash: string): Option<CodeSchema> {
-    return this.jsonSchemas[codeHash.toLowerCase()];
+    return this.jsonSchemas[normalize(codeHash)];
   }
 
   getSchemaProperty<T extends SchemaProperties>(codeHash: string, property: T) {
-    return this.jsonSchemas[codeHash.toLowerCase()]?.[property];
+    return this.jsonSchemas[normalize(codeHash)]?.[property];
   }
 
   getQuerySchema(codeHash: string): Option<QuerySchema> {
     const querySchema = this.getSchemaProperty(
-      codeHash.toLowerCase(),
+      normalize(codeHash),
       SchemaProperties.QUERY
     );
 
     const responsesSchema = this.getSchemaProperty(
-      codeHash.toLowerCase(),
+      normalize(codeHash),
       SchemaProperties.RESPONSES
     );
 
@@ -137,7 +141,7 @@ export class SchemaStore {
 
   getExecuteSchema(codeHash: string): Option<Array<QueryExecuteSchema>> {
     const executeSchema = this.getSchemaProperty(
-      codeHash.toLowerCase(),
+      normalize(codeHash),
       SchemaProperties.EXECUTE
     );
 
