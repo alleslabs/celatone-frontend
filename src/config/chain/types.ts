@@ -17,6 +17,8 @@ type WasmConfig =
       enabled: false;
     };
 
+type MoveConfig = { enabled: boolean };
+
 type PoolConfig =
   | {
       enabled: true;
@@ -53,6 +55,7 @@ export interface ChainConfig {
   features: {
     faucet: FaucetConfig;
     wasm: WasmConfig;
+    move: MoveConfig;
     pool: PoolConfig;
     publicProject: PublicProjectConfig;
     gov: GovConfig;
