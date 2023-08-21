@@ -27,6 +27,9 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: false,
       },
@@ -70,6 +73,9 @@ export const SEI_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
+      },
+      move: {
+        enabled: false,
       },
       pool: {
         enabled: false,

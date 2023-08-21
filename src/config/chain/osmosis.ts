@@ -21,6 +21,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: true,
         url: "https://app.osmosis.zone/pool",
@@ -65,6 +68,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
       },
+      move: {
+        enabled: false,
+      },
       pool: {
         enabled: true,
         url: "https://testnet.osmosis.zone/pool",
@@ -108,6 +114,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
         enabled: true,
         storeCodeMaxFileSize: 800_000,
         clearAdminGas: 50_000,
+      },
+      move: {
+        enabled: false,
       },
       pool: {
         enabled: false,
