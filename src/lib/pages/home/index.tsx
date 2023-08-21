@@ -4,7 +4,11 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { CURR_THEME } from "env";
-import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useInternalNavigate,
+  useNavContext,
+} from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
@@ -108,7 +112,7 @@ const calculateAverageBlockTime = (
 const Home = () => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { isDevMode } = useCelatoneApp();
+  const { isDevMode } = useNavContext();
 
   const {
     chainConfig: { prettyName },

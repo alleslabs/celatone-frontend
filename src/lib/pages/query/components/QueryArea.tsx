@@ -32,6 +32,9 @@ export const QueryArea = ({
 
   useEffect(() => {
     if (!schema) setTab(MessageTabs.JSON_INPUT);
+    else {
+      setTab(MessageTabs.YOUR_SCHEMA);
+    }
   }, [schema]);
 
   return (
@@ -61,7 +64,11 @@ export const QueryArea = ({
         }
         schemaContent={
           codeHash ? (
-            <SchemaQuery schema={schema} contractAddress={contractAddress} />
+            <SchemaQuery
+              schema={schema}
+              contractAddress={contractAddress}
+              initialMsg={initialMsg}
+            />
           ) : (
             <EmptyState
               imageVariant="not-found"

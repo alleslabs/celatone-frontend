@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
-import { useCelatoneApp, useMobile } from "lib/app-provider";
+import { useMobile, useNavContext } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
@@ -19,7 +19,7 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
-  const { isExpand, isDevMode, setIsExpand, setIsDevMode } = useCelatoneApp();
+  const { isExpand, isDevMode, setIsExpand, setIsDevMode } = useNavContext();
 
   const defaultRow = "70px 48px 1fr";
   const mode = useMemo(() => {
