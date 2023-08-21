@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
@@ -116,7 +117,7 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
   return (
     <FormControl
       isDisabled={disabled || readonly}
-      isRequired={required}
+      isRequired={readonly ? false : required}
       isReadOnly={readonly}
       isInvalid={rawErrors && rawErrors.length > 0}
     >
@@ -128,10 +129,13 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
             fontSize="12px"
             fontWeight={700}
             marginInlineEnd={1}
+            _disabled={{
+              color: "text.main",
+            }}
           >
             {label}
           </FormLabel>
-          <FieldTypeTag type={schema.type} />
+          <FieldTypeTag type={schema.type} format={schema.format} />
         </Flex>
       )}
       <InputGroup>
@@ -151,6 +155,16 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
           }
           {...inputProps}
           list={schema.examples ? `examples_${id}` : undefined}
+          _disabled={{
+            color: "text.main",
+            cursor: "not-allowed",
+            _hover: {
+              borderColor: "gray.700",
+            },
+            _active: {
+              border: "1px solid var(--chakra-colors-gray-700)",
+            },
+          }}
         />
         {rightAddon && <InputRightAddon>{rightAddon}</InputRightAddon>}
       </InputGroup>

@@ -1,20 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Grid, GridItem } from "@chakra-ui/react";
-import type {
-  ObjectFieldTemplatePropertyType,
-  ObjectFieldTemplateProps,
-} from "@rjsf/utils";
+import type { ObjectFieldTemplateProps } from "@rjsf/utils";
 import {
   canExpand,
   getSchemaType,
   getTemplate,
   getUiOptions,
 } from "@rjsf/utils";
-
-interface ObjectFieldTemplatePropertyTypeWithRequired
-  extends ObjectFieldTemplatePropertyType {
-  required?: boolean;
-}
 
 const ObjectFieldTemplate = <T = any, F = any>(
   props: ObjectFieldTemplateProps<T, F>
@@ -55,10 +47,10 @@ const ObjectFieldTemplate = <T = any, F = any>(
         {properties.map((element, index) => {
           // NOTE: required array field doesn't create an empty array as a default
           const elementType = getSchemaType(element.content.props.schema);
-          const elementRequired = (
-            element as ObjectFieldTemplatePropertyTypeWithRequired
-          ).required;
+          const elementRequired =
+            (element.content.props.required as boolean) ?? false;
           if (
+            formData &&
             typeof elementType === "string" &&
             elementType === "array" &&
             elementRequired &&

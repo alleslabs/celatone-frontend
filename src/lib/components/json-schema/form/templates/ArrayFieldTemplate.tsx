@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import type {
   ArrayFieldTemplateItemType,
   ArrayFieldTemplateProps,
@@ -63,33 +63,47 @@ export default function ArrayFieldTemplate<T = any, F = any>(
         uiSchema={uiSchema}
         registry={registry}
       />
-      <Grid
-        key={`array-item-list-${idSchema.$id}`}
-        my={2}
-        gap={4}
-        bgColor="gray.800"
-        borderRadius="8px"
-        p="8px 12px"
-      >
-        {items.length > 0 &&
-          items.map(
+      {readonly && items.length === 0 ? (
+        <Text
+          variant="body3"
+          fontWeight={700}
+          textColor="text.disabled"
+          textAlign="center"
+          my={2}
+          p={4}
+          bgColor="gray.700"
+          borderRadius="8px"
+        >
+          Empty
+        </Text>
+      ) : (
+        <Grid
+          key={`array-item-list-${idSchema.$id}`}
+          my={2}
+          gap={4}
+          bgColor="gray.800"
+          borderRadius="8px"
+          p={4}
+        >
+          {items.map(
             ({ key, ...itemProps }: ArrayFieldTemplateItemType<T, F>) => (
               <GridItem key={key}>
                 <ArrayFieldItemTemplate key={key} {...itemProps} />
               </GridItem>
             )
           )}
-        {canAdd && (
-          <GridItem display="flex" justifyContent="center">
-            <AddButton
-              className="array-item-add"
-              onClick={onAddClick}
-              disabled={disabled || readonly}
-              uiSchema={uiSchema}
-            />
-          </GridItem>
-        )}
-      </Grid>
+          {canAdd && !readonly && (
+            <GridItem display="flex" justifyContent="center">
+              <AddButton
+                className="array-item-add"
+                onClick={onAddClick}
+                disabled={disabled || readonly}
+                uiSchema={uiSchema}
+              />
+            </GridItem>
+          )}
+        </Grid>
+      )}
     </Box>
   );
 }

@@ -117,9 +117,9 @@ const QueryComponent = ({
   }, [msgSchema.inputRequired, refetch]);
 
   return (
-    <AccordionItem p={4}>
+    <AccordionItem>
       <h6>
-        <AccordionButton>
+        <AccordionButton p={4}>
           <Box w="full" textAlign="start">
             <Text variant="body1" fontWeight={700}>
               {msgSchema.title}
@@ -129,7 +129,7 @@ const QueryComponent = ({
           <AccordionIcon />
         </AccordionButton>
       </h6>
-      <AccordionPanel p="16px 0 0 0">
+      <AccordionPanel p={4}>
         <Grid
           templateColumns={msgSchema.inputRequired ? "1fr 1fr" : "1fr"}
           columnGap={6}
@@ -202,6 +202,9 @@ const QueryComponent = ({
                     return {};
                   }
                 })()}
+                formContext={{
+                  isResponse: true,
+                }}
               />
             </Box>
             {!msgSchema.inputRequired && (
