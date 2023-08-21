@@ -95,7 +95,7 @@ const SubHeader = ({
       { name: "Overview", slug: "/", icon: "home" },
       { name: "Transactions", slug: "/txs", icon: "file" },
       { name: "Blocks", slug: "/blocks", icon: "block" },
-      { name: "Modules", slug: "/modules", icon: "block" },
+      { name: "Modules", slug: "/modules", icon: "contract-address" },
       ...(govConfig.enabled
         ? ([
             { name: "Proposals", slug: "/proposals", icon: "proposal" },
