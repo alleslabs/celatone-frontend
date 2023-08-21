@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#488](https://github.com/alleslabs/celatone-frontend/pull/488) Add initia navigation and sidebar
 - [#481](https://github.com/alleslabs/celatone-frontend/pull/481) Support Stargaze testnet
 - [#471](https://github.com/alleslabs/celatone-frontend/pull/471) Add proposal config, use Hasura admin secret
 - [#467](https://github.com/alleslabs/celatone-frontend/pull/467) Dynamic wallet by network, add disableAnyofAddress config
