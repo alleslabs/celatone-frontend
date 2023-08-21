@@ -129,7 +129,7 @@ const QueryComponent = ({
           <AccordionIcon />
         </AccordionButton>
       </h6>
-      <AccordionPanel p={4}>
+      <AccordionPanel p="0px 16px 16px 16px">
         <Grid
           templateColumns={msgSchema.inputRequired ? "1fr 1fr" : "1fr"}
           columnGap={6}
