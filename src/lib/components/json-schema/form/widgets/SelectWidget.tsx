@@ -127,7 +127,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     <FormControl
       mb={2}
       isDisabled={disabled || isReadonly}
-      isRequired={isReadonly ? false : required}
+      isRequired={required && !isReadonly}
       isReadOnly={isReadonly}
       isInvalid={rawErrors && rawErrors.length > 0}
       sx={{ "& > p": { mt: 4, mb: 2 } }}

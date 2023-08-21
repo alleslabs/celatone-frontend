@@ -117,7 +117,7 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
   return (
     <FormControl
       isDisabled={disabled || readonly}
-      isRequired={readonly ? false : required}
+      isRequired={required && !readonly}
       isReadOnly={readonly}
       isInvalid={rawErrors && rawErrors.length > 0}
     >
