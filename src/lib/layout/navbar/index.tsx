@@ -5,6 +5,7 @@ import {
   usePublicProjectConfig,
   useCurrentChain,
   useWasmConfig,
+  useMoveConfig,
 } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
@@ -28,6 +29,7 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
 
   const { address } = useCurrentChain();
 
@@ -96,6 +98,41 @@ const Navbar = ({ isExpand, isDevMode, setIsExpand }: NavbarProps) => {
               //   slug: "/",
               //   icon: "list" as IconKeys,
               // },
+            ],
+          },
+        ]
+      : []),
+    ...(isDevMode && move.enabled
+      ? [
+          {
+            category: "Quick Actions",
+            submenu: [
+              // TODO change path to /account/0x1
+              {
+                name: "0x1 Page",
+                slug: "/deploy",
+                icon: "home" as IconKeys,
+              },
+              {
+                name: "Publish Module",
+                slug: "/publish-module",
+                icon: "add-new" as IconKeys,
+              },
+              {
+                name: "View",
+                slug: "/interaction/view",
+                icon: "query" as IconKeys,
+              },
+              {
+                name: "Execute",
+                slug: "/interaction/execute",
+                icon: "execute" as IconKeys,
+              },
+              {
+                name: "Deploy Script",
+                slug: "/deploy-script",
+                icon: "code" as IconKeys,
+              },
             ],
           },
         ]

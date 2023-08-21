@@ -38,6 +38,20 @@ export const useWasmConfig = ({
   return useBaseConfig({ feature: wasm, shouldRedirect });
 };
 
+export const useMoveConfig = ({
+  shouldRedirect,
+}: {
+  shouldRedirect: boolean;
+}) => {
+  const {
+    chainConfig: {
+      features: { move },
+    },
+  } = useCelatoneApp();
+
+  return useBaseConfig({ feature: move, shouldRedirect });
+};
+
 export const useFaucetConfig = ({
   shouldRedirect,
 }: {
