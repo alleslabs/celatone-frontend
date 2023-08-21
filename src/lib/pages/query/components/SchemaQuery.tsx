@@ -70,6 +70,10 @@ const QueryComponent = ({
   const [res, setRes] = useState("{}");
   const [queryError, setQueryError] = useState("");
 
+  useEffect(() => {
+    if (Object.keys(initialMsg).length) setMsg(JSON.stringify(initialMsg));
+  }, [initialMsg]);
+
   // TODO: Abstract query
   const {
     refetch,
