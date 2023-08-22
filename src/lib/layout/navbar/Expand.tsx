@@ -48,7 +48,7 @@ const NavInfo = ({ submenu, isCurrentPage }: NavInfoProps) => (
     <Text
       variant="body2"
       className="ellipsis"
-      color={submenu.isDisable ? "text.dark" : "text.main"}
+      color={submenu.isDisable ? "text.disabled" : "text.main"}
     >
       {submenu.name}
     </Text>

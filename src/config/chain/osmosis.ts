@@ -1,3 +1,5 @@
+import { wallets as keplrWallets } from "@cosmos-kit/keplr";
+
 import type { ChainConfigs } from "./types";
 
 export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
@@ -6,9 +8,10 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "osmosis",
     prettyName: "Osmosis",
     lcd: "https://lcd.osmosis.zone",
-    rpc: "https://rpc.osmosis.zone",
+    rpc: "https://rpc.osmosis.zone:443",
     indexer: "https://osmosis-mainnet-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -25,6 +28,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: true,
       },
+      gov: {
+        enabled: true,
+      },
     },
     gas: {
       gasPrice: {
@@ -38,15 +44,17 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/osmosis/validators",
       proposal: "https://www.mintscan.io/osmosis/proposals",
     },
+    extra: {},
   },
   "osmo-test-5": {
     chain: "osmosis",
-    registryChainName: "osmosistestnet5",
+    registryChainName: "osmosistestnet",
     prettyName: "Osmosis Testnet",
     lcd: "https://lcd.osmotest5.osmosis.zone",
-    rpc: "https://rpc.osmotest5.osmosis.zone",
+    rpc: "https://rpc.osmotest5.osmosis.zone:443",
     indexer: "https://osmo-test-5-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: true,
@@ -64,6 +72,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: false,
       },
+      gov: {
+        enabled: true,
+      },
     },
     gas: {
       gasPrice: {
@@ -77,15 +88,17 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://testnet.mintscan.io/osmosis-testnet/validators",
       proposal: "https://testnet.mintscan.io/osmosis-testnet/proposals",
     },
+    extra: {},
   },
   localosmosis: {
     chain: "osmosis",
     registryChainName: "localosmosis",
     prettyName: "Local Osmosis",
     lcd: "http://localhost/rest",
-    rpc: "http://localhost/rpc/",
+    rpc: "http://localhost:80/rpc/",
     indexer: "http://localhost/hasura/v1/graphql",
     api: "http://localhost/api",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: true,
@@ -102,6 +115,9 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: false,
       },
+      gov: {
+        enabled: true,
+      },
     },
     gas: {
       gasPrice: {
@@ -115,5 +131,6 @@ export const OSMOSIS_CHAIN_CONFIGS: ChainConfigs = {
       validator: "",
       proposal: "",
     },
+    extra: {},
   },
 };

@@ -79,3 +79,17 @@ export const usePublicProjectConfig = ({
 
   return useBaseConfig({ feature: publicProject, shouldRedirect });
 };
+
+export const useGovConfig = ({
+  shouldRedirect,
+}: {
+  shouldRedirect: boolean;
+}) => {
+  const {
+    chainConfig: {
+      features: { gov },
+    },
+  } = useCelatoneApp();
+
+  return useBaseConfig({ feature: gov, shouldRedirect });
+};

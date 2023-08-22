@@ -95,7 +95,11 @@ export const BlocksTable = ({ isViewMore }: BlocksTableProps) => {
             scrollComponentId={scrollComponentId}
           />
           {blocksData.map((block) => (
-            <BlocksRow templateColumns={TEMPLATE_COLUMNS} blockData={block} />
+            <BlocksRow
+              key={block.hash}
+              templateColumns={TEMPLATE_COLUMNS}
+              blockData={block}
+            />
           ))}
         </TableContainer>
       )}

@@ -32,7 +32,7 @@ export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
   };
 
   return useQuery({
-    queryKey: [CELATONE_QUERY_KEYS.FAUCET_INFO, faucet],
+    queryKey: [CELATONE_QUERY_KEYS.FAUCET_INFO, faucet, assetInfos],
     queryFn,
     enabled: faucet.enabled,
     retry: 2,

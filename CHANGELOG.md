@@ -48,6 +48,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#461](https://github.com/alleslabs/celatone-frontend/pull/461) Add json schema form
 - [#455](https://github.com/alleslabs/celatone-frontend/pull/455) Implement schema store and unit test
 - [#453](https://github.com/alleslabs/celatone-frontend/pull/453) Attach schema feature on upload complete
+- [#481](https://github.com/alleslabs/celatone-frontend/pull/481) Support Stargaze testnet
+- [#471](https://github.com/alleslabs/celatone-frontend/pull/471) Add proposal config, use Hasura admin secret
+- [#467](https://github.com/alleslabs/celatone-frontend/pull/467) Dynamic wallet by network, add disableAnyofAddress config
 - [#322](https://github.com/alleslabs/celatone-frontend/pull/322) Tab url path for account details and public project details pages
 - [#449](https://github.com/alleslabs/celatone-frontend/pull/449) Support searching with pool id
 - [#419](https://github.com/alleslabs/celatone-frontend/pull/419) Add error message box for tx failed modal and enhance styling
@@ -60,6 +63,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#491](https://github.com/alleslabs/celatone-frontend/pull/491) Improve scrolling into view by delaying scroll function
 - [#489](https://github.com/alleslabs/celatone-frontend/pull/489) Improve jsonschema query response UI and fix jsonschema incorrect oneOf behavior
+- [#484](https://github.com/alleslabs/celatone-frontend/pull/484) Fix text size consistency in txs message
+- [#480](https://github.com/alleslabs/celatone-frontend/pull/480) Update chain registry package and add attach funds in code snippet
+- [#478](https://github.com/alleslabs/celatone-frontend/pull/478) Fix pool txs icon and style
+- [#474](https://github.com/alleslabs/celatone-frontend/pull/474) Refactor stored and saved codes pages
+- [#468](https://github.com/alleslabs/celatone-frontend/pull/468) Add breadcrumb to pool id page
+- [#466](https://github.com/alleslabs/celatone-frontend/pull/466) Fix developer mode alert
 - [#457](https://github.com/alleslabs/celatone-frontend/pull/457) Add alert for proposal forum review
 - [#389](https://github.com/alleslabs/celatone-frontend/pull/389) Fix modal consistency
 - [#381](https://github.com/alleslabs/celatone-frontend/pull/381) Correctly infer output type from snake-camel utils
@@ -77,6 +86,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#470](https://github.com/alleslabs/celatone-frontend/pull/470) Fix json schema array field default behavior
+- [#476](https://github.com/alleslabs/celatone-frontend/pull/476) Fix terra rpc
+- [#473](https://github.com/alleslabs/celatone-frontend/pull/473) Fix wording on upload code modal
+- [#465](https://github.com/alleslabs/celatone-frontend/pull/465) Fix wrong access queryKey in validator info
+- [#464](https://github.com/alleslabs/celatone-frontend/pull/464) Fix `useFaucetInfo` hook by adding `assetInfos` to its dependencies
+- [#463](https://github.com/alleslabs/celatone-frontend/pull/463) Fix event box content clipping and improve animation
+- [#462](https://github.com/alleslabs/celatone-frontend/pull/462) Fix validator query dependencies
+- [#460](https://github.com/alleslabs/celatone-frontend/pull/460) Fix icns names and contract address alignment
+- [#459](https://github.com/alleslabs/celatone-frontend/pull/459) Fix contract txs by using contract account id instead of contract address
 - [#456](https://github.com/alleslabs/celatone-frontend/pull/456) Fix pool count chip in pool transaction table
 - [#454](https://github.com/alleslabs/celatone-frontend/pull/454) Fix contract selection loading state for other folders
 - [#452](https://github.com/alleslabs/celatone-frontend/pull/452) Fix public project data on the account details and code details page still remains when switching network

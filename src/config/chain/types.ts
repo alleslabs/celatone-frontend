@@ -1,3 +1,5 @@
+import type { MainWalletBase } from "@cosmos-kit/core";
+
 type FaucetConfig =
   | {
       enabled: true;
@@ -24,6 +26,16 @@ type PoolConfig =
 
 type PublicProjectConfig = { enabled: boolean };
 
+type GovConfig =
+  | {
+      enabled: true;
+      disableOpenProposal?: boolean;
+      disableStoreCodeProposal?: boolean;
+    }
+  | {
+      enabled: false;
+    };
+
 export interface ExplorerConfig {
   validator: string;
   proposal: string;
@@ -37,11 +49,13 @@ export interface ChainConfig {
   rpc: string;
   indexer: string;
   api: string;
+  wallets: MainWalletBase[];
   features: {
     faucet: FaucetConfig;
     wasm: WasmConfig;
     pool: PoolConfig;
     publicProject: PublicProjectConfig;
+    gov: GovConfig;
   };
   gas: {
     gasPrice: {
@@ -52,6 +66,9 @@ export interface ChainConfig {
     maxGasLimit: number;
   };
   explorerLink: ExplorerConfig;
+  extra: {
+    disableAnyOfAddresses?: boolean;
+  };
 }
 
 export interface ChainConfigs {

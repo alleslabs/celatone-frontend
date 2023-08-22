@@ -48,7 +48,12 @@ export const UploadSection = ({
   onComplete,
   isMigrate = false,
 }: UploadSectionProps) => {
-  const { constants } = useCelatoneApp();
+  const {
+    constants,
+    chainConfig: {
+      extra: { disableAnyOfAddresses },
+    },
+  } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const fabricateFee = useFabricateFee();
   const { address } = useCurrentChain();
@@ -113,7 +118,10 @@ export const UploadSection = ({
     enabled: Boolean(wasmFile && address && !shouldNotSimulate),
     wasmFile,
     permission,
-    addresses: addresses.map((addr) => addr.address),
+    // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
+    addresses: disableAnyOfAddresses
+      ? undefined
+      : addresses.map((addr) => addr.address),
     onSuccess: (fee) => {
       if (wasmFile && address) {
         if (shouldNotSimulate) {
@@ -144,7 +152,10 @@ export const UploadSection = ({
       const stream = await postUploadTx({
         wasmFileName: wasmFile?.name,
         wasmCode: wasmFile?.arrayBuffer(),
-        addresses: addresses.map((addr) => addr.address),
+        // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
+        addresses: disableAnyOfAddresses
+          ? undefined
+          : addresses.map((addr) => addr.address),
         permission,
         codeName,
         estimatedFee,
@@ -171,6 +182,7 @@ export const UploadSection = ({
     broadcast,
     updateCodeInfo,
     onComplete,
+    disableAnyOfAddresses,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(addresses),
   ]);

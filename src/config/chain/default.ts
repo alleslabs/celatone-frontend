@@ -8,6 +8,7 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   rpc: "",
   indexer: "",
   api: "",
+  wallets: [],
   features: {
     faucet: {
       enabled: false,
@@ -19,6 +20,9 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
       enabled: false,
     },
     publicProject: {
+      enabled: false,
+    },
+    gov: {
       enabled: false,
     },
   },
@@ -34,4 +38,5 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     validator: "",
     proposal: "",
   },
+  extra: {},
 };

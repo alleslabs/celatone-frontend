@@ -1,3 +1,5 @@
+import { wallets as keplrWallets } from "@cosmos-kit/keplr";
+
 import type { ChainConfigs } from "./types";
 
 export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
@@ -6,9 +8,10 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "neutron",
     prettyName: "Neutron",
     lcd: "https://rest-kralum.neutron-1.neutron.org",
-    rpc: "https://rpc-kralum.neutron-1.neutron.org",
+    rpc: "https://rpc-kralum.neutron-1.neutron.org:443",
     indexer: "https://neutron-1-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -24,6 +27,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: true,
       },
+      gov: {
+        enabled: true,
+      },
     },
     gas: {
       gasPrice: {
@@ -37,6 +43,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/neutron/validators",
       proposal: "",
     },
+    extra: {},
   },
   "pion-1": {
     chain: "neutron",
@@ -46,6 +53,7 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
     rpc: "https://rpc-palvus.pion-1.ntrn.tech:443",
     indexer: "https://pion-1-graphql.alleslabs.dev/v1/graphql",
     api: "https://celatone-api.alleslabs.dev",
+    wallets: [...keplrWallets],
     features: {
       faucet: {
         enabled: false,
@@ -61,6 +69,9 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       publicProject: {
         enabled: false,
       },
+      gov: {
+        enabled: true,
+      },
     },
     gas: {
       gasPrice: {
@@ -74,5 +85,6 @@ export const NEUTRON_CHAIN_CONFIGS: ChainConfigs = {
       validator: "https://www.mintscan.io/neutron/validators",
       proposal: "",
     },
+    extra: {},
   },
 };

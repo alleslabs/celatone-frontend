@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { BackButton } from "lib/components/button";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
@@ -29,7 +28,6 @@ export const PoolId = () => {
   if (!pool) return navigate({ pathname: `/pools` });
   return (
     <PageContainer>
-      <BackButton />
       <PoolTopSection pool={pool} />
       <PoolAssets pool={pool} />
       <PoolRelatedTxs pool={pool} />

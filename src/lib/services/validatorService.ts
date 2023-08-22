@@ -22,7 +22,7 @@ export const useValidator = (
 ): UseQueryResult<Validator> => {
   const lcdEndpoint = useBaseApiRoute("rest");
   const queryFn = async ({ queryKey }: QueryFunctionContext<string[]>) =>
-    getValidator(queryKey[2], queryKey[3] as ValidatorAddr);
+    getValidator(queryKey[1], queryKey[2] as ValidatorAddr);
 
   return useQuery(
     [
@@ -81,6 +81,8 @@ export const useValidatorImage = (
       CELATONE_QUERY_KEYS.VALIDATOR_IDENTITY_BY_ADDRESS,
       chainName,
       validator?.validatorAddress,
+      validator?.identity,
+      validator?.moniker,
     ],
     queryFn: async () => {
       if (!validator) return Promise.resolve("");

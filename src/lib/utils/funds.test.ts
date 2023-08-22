@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
 
-import { sortDenoms } from "./funds";
+import { coinsFromStr, coinsToStr, sortDenoms } from "./funds";
 
 describe("sortDenoms", () => {
   const sortedCoins = [
@@ -96,5 +96,35 @@ describe("sortDenoms", () => {
         amount: "10",
       },
     ]);
+  });
+
+  test("parse Coins from empty string", () => {
+    expect(coinsFromStr("")).toEqual([]);
+  });
+
+  test("parse Coins from string", () => {
+    expect(coinsFromStr("1000adenom, 1ibc/bdenom")).toEqual([
+      { denom: "adenom", amount: "1000" },
+      {
+        denom: "ibc/bdenom",
+        amount: "1",
+      },
+    ]);
+  });
+
+  test("parse empty Coins to string", () => {
+    expect(coinsToStr([])).toEqual("");
+  });
+
+  test("parse Coins to string", () => {
+    expect(
+      coinsToStr([
+        {
+          denom: "ibc/bdenom",
+          amount: "1",
+        },
+        { denom: "adenom", amount: "1000" },
+      ])
+    ).toEqual("1ibc/bdenom,1000adenom");
   });
 });

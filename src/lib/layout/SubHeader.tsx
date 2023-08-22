@@ -6,10 +6,10 @@ import {
   FormLabel,
   Button,
 } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
+import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import { useEffect, useRef } from "react";
 
-import { usePoolConfig, useWasmConfig } from "lib/app-provider";
+import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -22,6 +22,7 @@ interface SubHeaderMenuInfo {
   icon: IconKeys;
 }
 
+const boxShadow = "0px 1px 5px 0px var(--chakra-colors-gray-900)";
 const FirstLandPrompt = ({
   setIsDevMode,
 }: {
@@ -35,7 +36,8 @@ const FirstLandPrompt = ({
     bg="gray.800"
     color="text.main"
     w="430px"
-    borderRadius={1}
+    borderRadius={4}
+    boxShadow={boxShadow}
     zIndex="popover"
     sx={{
       "& > header": { p: "16px 24px", fontSize: "18px", fontWeight: 500 },
@@ -76,6 +78,7 @@ const SubHeader = ({
 }: SubHeaderProps) => {
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
+  const govConfig = useGovConfig({ shouldRedirect: false });
 
   const prevIsDevModeRef = useRef<boolean>(Boolean(isDevMode));
 
@@ -89,7 +92,9 @@ const SubHeader = ({
           { name: "Contracts", slug: "/contracts", icon: "contract-address" },
         ] as const)
       : []),
-    { name: "Proposals", slug: "/proposals", icon: "proposal" },
+    ...(govConfig.enabled
+      ? ([{ name: "Proposals", slug: "/proposals", icon: "proposal" }] as const)
+      : []),
     ...(poolConfig.enabled
       ? ([{ name: "Osmosis Pools", slug: "/pools", icon: "pool" }] as const)
       : []),
@@ -97,6 +102,12 @@ const SubHeader = ({
   const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "primary.light";
+
+  const switchHighlight: CSSProperties = {
+    borderRadius: "4px",
+    padding: "6px 8px",
+    backgroundColor: "var(--chakra-colors-gray-800)",
+  };
 
   useEffect(() => {
     // Basic to dev and nav is  collapse -> should exapnd
@@ -153,9 +164,17 @@ const SubHeader = ({
             </AppLink>
           ))}
         </Flex>
-        <FormControl display="flex" alignItems="center" width="fit-content">
-          <FormLabel mb={0} cursor="pointer">
-            <Text variant="body2" color="text.dark">
+        <FormControl
+          display="flex"
+          alignItems="center"
+          width="fit-content"
+          style={isDevMode === undefined ? switchHighlight : undefined}
+        >
+          <FormLabel mb={0} cursor="pointer" mr={2}>
+            <Text
+              variant="body2"
+              color={isDevMode === undefined ? "text.main" : "text.dark"}
+            >
               Dev Mode
             </Text>
           </FormLabel>
