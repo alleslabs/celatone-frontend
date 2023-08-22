@@ -89,39 +89,34 @@ const SubHeader = ({
 
   const prevIsDevModeRef = useRef<boolean>(Boolean(isDevMode));
 
-  let subHeaderMenu: SubHeaderMenuInfo[] = [];
-  if (moveConfig)
-    subHeaderMenu = [
-      { name: "Overview", slug: "/", icon: "home" },
-      { name: "Transactions", slug: "/txs", icon: "file" },
-      { name: "Blocks", slug: "/blocks", icon: "block" },
-      { name: "Modules", slug: "/modules", icon: "contract-address" },
-      ...(govConfig.enabled
-        ? ([
-            { name: "Proposals", slug: "/proposals", icon: "proposal" },
-          ] as const)
-        : []),
-    ];
-  else
-    subHeaderMenu = [
-      { name: "Overview", slug: "/", icon: "home" },
-      { name: "Transactions", slug: "/txs", icon: "file" },
-      { name: "Blocks", slug: "/blocks", icon: "block" },
-      ...(wasmConfig.enabled
-        ? ([
-            { name: "Codes", slug: "/codes", icon: "code" },
-            { name: "Contracts", slug: "/contracts", icon: "contract-address" },
-          ] as const)
-        : []),
-      ...(govConfig.enabled
-        ? ([
-            { name: "Proposals", slug: "/proposals", icon: "proposal" },
-          ] as const)
-        : []),
-      ...(poolConfig.enabled
-        ? ([{ name: "Osmosis Pools", slug: "/pools", icon: "pool" }] as const)
-        : []),
-    ];
+  const subHeaderMenu: SubHeaderMenuInfo[] = [
+    { name: "Overview", slug: "/", icon: "home" },
+    { name: "Transactions", slug: "/txs", icon: "file" },
+    { name: "Blocks", slug: "/blocks", icon: "block" },
+  ];
+
+  if (moveConfig.enabled)
+    subHeaderMenu.push({
+      name: "Modules",
+      slug: "/modules",
+      icon: "contract-address",
+    });
+
+  if (wasmConfig.enabled)
+    subHeaderMenu.push(
+      { name: "Codes", slug: "/codes", icon: "code" },
+      { name: "Contracts", slug: "/contracts", icon: "contract-address" }
+    );
+
+  if (govConfig.enabled)
+    subHeaderMenu.push({
+      name: "Proposals",
+      slug: "/proposals",
+      icon: "proposal",
+    });
+
+  if (poolConfig.enabled)
+    subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
 
   const isCurrentPage = useIsCurrentPage();
 
