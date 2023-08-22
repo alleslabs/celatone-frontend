@@ -100,14 +100,16 @@ export const INITIA_THEME: ThemeConfig = {
       color: "inherit",
     },
   },
-  //   button: {
-  //     primary: {
-  //       background: "#F5F5F5",
-  //       color: "#151617",
-  //       disabledBackground: "#A1A6AA",
-  //       disabledColor: "#151617",
-  //     },
-  //   },
+  button: {
+    primary: {
+      background: "#F5F5F5",
+      color: "#151617",
+      disabledBackground: "#A1A6AA",
+      disabledColor: "#151617",
+      hoverBackground: "#B7B7B7",
+      activeBackground: "#B7B7B7",
+    },
+  },
   borderRadius: {
     default: "4px",
     iconButton: "36px",
