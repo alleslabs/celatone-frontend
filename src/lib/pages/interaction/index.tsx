@@ -46,7 +46,7 @@ export const Interaction = () => {
             <Text variant="body2" fontWeight={600}>
               Available functions
             </Text>
-            <Badge variant="gray" color="text.main" textColor="text.main">
+            <Badge variant="gray" textColor="text.main">
               <s>0</s>
             </Badge>
           </Flex>
