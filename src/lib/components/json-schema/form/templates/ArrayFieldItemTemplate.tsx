@@ -42,16 +42,13 @@ export default function ArrayFieldItemTemplate<T = any, F = any>(
     <HStack alignItems="center" gap={2}>
       <Box
         w="100%"
-        borderLeft="1px solid"
-        borderColor="primary.light"
-        borderRadius="4px"
-        ml={2}
-        pl={2}
-        sx={{ "> div > div > div": { gap: "4px" } }}
+        border="1px solid var(--chakra-colors-gray-600)"
+        borderRadius="8px"
+        p={4}
       >
         {children}
       </Box>
-      {hasToolbar && (
+      {hasToolbar && !readonly && (
         <ButtonGroup isAttached mb={1}>
           {(hasMoveUp || hasMoveDown) && (
             <MoveUpButton

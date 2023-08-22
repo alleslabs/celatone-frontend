@@ -1,15 +1,9 @@
-/* eslint-disable */
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Heading,
-  Text,
-  useToast,
-} from "@chakra-ui/react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable sonarjs/cognitive-complexity */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-continue */
+/* eslint-disable no-console */
+/* eslint-disable no-restricted-syntax */
 import {
   Form,
   Templates as DefaultTemplates,
@@ -17,19 +11,21 @@ import {
 } from "@rjsf/chakra-ui";
 import type { FormProps } from "@rjsf/core";
 import type { RJSFSchema } from "@rjsf/utils";
-import { createSchemaUtils, type GenericObjectType } from "@rjsf/utils";
-import v8Validator from "@rjsf/validator-ajv8";
+import { createSchemaUtils } from "@rjsf/utils";
+import { customizeValidator } from "@rjsf/validator-ajv8";
 import isEqual from "lodash/isEqual";
-import { FC, useEffect } from "react";
-import { useCallback, useMemo, useState } from "react";
+import type { FC } from "react";
+import { useEffect, useCallback, useMemo, useState } from "react";
 
-import JsonReadOnly from "../../json/JsonReadOnly";
-import { jsonPrettify } from "lib/utils";
-
-import contractSchema from "./contract_schema.json";
 import { Fields } from "./fields";
 import { Templates } from "./templates";
 import { Widgets } from "./widgets";
+
+// NOTE: Set `validateFormats` to false, since some custom format
+// e.g. `uint32` causing an unexpected behavior
+const v8Validator = customizeValidator({
+  ajvOptionsOverrides: { validateFormats: false },
+});
 
 function deleteExtraneousOneOfKeys(value: Record<string, unknown>) {
   const actualOneOfOptions = Object.keys(value);
@@ -54,8 +50,6 @@ function fixOneOfKeys(
   formData: Record<string, unknown>,
   collapsedSchema: RJSFSchema
 ) {
-  // console.log(collapsedSchema);
-
   // if the entry is supposed to be a oneof *itself*, then check that it only has one key
   if (collapsedSchema.oneOf) {
     deleteExtraneousOneOfKeys(formData);
@@ -161,123 +155,44 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   );
 
   return (
-    <Box w="full">
-      <Form
-        id={formId}
-        formContext={formContext}
-        formData={formData}
-        schema={schema}
-        // we use no validate because the schemas are too complicated to be auto validated
-        // noValidate
-        uiSchema={{
-          "ui:submitButtonOptions": {
-            norender: true,
-          },
-          "ui:form": {
-            width: "100%",
-          },
-          ...uiSchema,
-        }}
-        widgets={{
-          ...DefaultWidgets,
-          ...Widgets,
-          ...widgets,
-        }}
-        fields={{
-          ...Fields,
-          ...fields,
-        }}
-        templates={{
-          ...DefaultTemplates,
-          ...Templates,
-          ...templates,
-        }}
-        validator={v8Validator}
-        onChange={({ formData: values }) => {
-          // log.info(values)
-          onChange?.(values);
-        }}
-        onSubmit={({ formData: values }) => {
-          // log.info(values)
-          onSubmit(values);
-        }}
-        onError={() => console.error("errors")}
-      />
-    </Box>
-  );
-};
-
-export const DummyJsonSchema = () => {
-  // TODO: remove mock data
-  const toast = useToast({ containerStyle: { width: "fit-content" } });
-  const { oneOf: msgs, definitions } = contractSchema.execute;
-
-  // const schema = contractSchema.execute as GenericObjectType;
-
-  return (
-    <Accordion allowToggle>
-      {msgs.map((msg, index) => (
-        <AccordionItem key={index.toString() + msg.required[0]} mb={4}>
-          <h2>
-            <AccordionButton p={2}>
-              <Box w="full">
-                <Heading variant="h5" textAlign="left">
-                  {msg.required[0]}
-                </Heading>
-                <Text variant="body2" textAlign="left">
-                  {msg.description}
-                </Text>
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            <JsonSchemaForm
-              formId="execute"
-              schema={
-                {
-                  $schema: contractSchema.execute.$schema,
-                  ...msg,
-                  definitions,
-                  description: undefined,
-                } as GenericObjectType
-              }
-              onSubmit={(data) =>
-                toast({
-                  title: "Form Data",
-                  description: (
-                    <Box w={256}>
-                      <JsonReadOnly text={jsonPrettify(JSON.stringify(data))} />
-                    </Box>
-                  ),
-                  status: "success",
-                  isClosable: true,
-                })
-              }
-              onChange={(data) => console.log("data", data)}
-            />
-          </AccordionPanel>
-        </AccordionItem>
-      ))}
-    </Accordion>
-    // <JsonSchemaForm
-    //   formId="execute"
-    //   schema={schema}
-    //   onSubmit={(data) =>
-    //     toast({
-    //       title: "Form Data",
-    //       description: (
-    //         <Box w={256}>
-    //           <JsonReadOnly text={jsonPrettify(JSON.stringify(data))} />
-    //         </Box>
-    //       ),
-    //       status: "success",
-    //       isClosable: true,
-    //     })
-    //   }
-    //   onChange={(data) => {
-    //     console.log("data", data);
-    //   }}
-    // />
+    <Form
+      id={formId}
+      formContext={formContext}
+      formData={formData}
+      schema={schema}
+      uiSchema={{
+        "ui:submitButtonOptions": {
+          norender: true,
+        },
+        "ui:form": {
+          width: "100%",
+        },
+        ...uiSchema,
+      }}
+      widgets={{
+        ...DefaultWidgets,
+        ...Widgets,
+        ...widgets,
+      }}
+      fields={{
+        ...Fields,
+        ...fields,
+      }}
+      templates={{
+        ...DefaultTemplates,
+        ...Templates,
+        ...templates,
+      }}
+      validator={v8Validator}
+      onChange={({ formData: values }) => {
+        // log.info(values)
+        onChange?.(values);
+      }}
+      onSubmit={({ formData: values }) => {
+        // log.info(values)
+        onSubmit(values);
+      }}
+      onError={() => console.error("errors")}
+    />
   );
 };

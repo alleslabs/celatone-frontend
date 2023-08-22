@@ -12,6 +12,7 @@ import isEmpty from "lodash/isEmpty";
 import omit from "lodash/omit";
 import unset from "lodash/unset";
 import { Component } from "react";
+import { getMatchingOptionFixed } from "../utils";
 
 /** Type used for the state of the `AnyOfField` component */
 type AnyOfFieldState = {
@@ -91,11 +92,16 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
     options: RJSFSchema[]
   ) {
     const {
-      registry: { schemaUtils },
+      registry: { schemaUtils, rootSchema },
     } = this.props;
 
-    const option = schemaUtils.getMatchingOption(formData, options);
-    if (option !== 0) {
+    const option = getMatchingOptionFixed(
+      schemaUtils.getValidator(),
+      formData,
+      options,
+      rootSchema
+    );
+    if (option !== -1) {
       return option;
     }
     // If the form data matches none of the options, use the currently selected
@@ -177,6 +183,8 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
       registry,
       uiSchema,
       schema,
+      required,
+      readonly,
     } = this.props;
 
     const { widgets, fields, schemaUtils } = registry;
@@ -246,6 +254,8 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
               schema.oneOf ? "__oneof_select" : "__anyof_select"
             }`}
             schema={{ type: "number", default: 0 }}
+            required={required}
+            readonly={readonly}
             onChange={this.onOptionChange}
             onBlur={onBlur}
             onFocus={onFocus}

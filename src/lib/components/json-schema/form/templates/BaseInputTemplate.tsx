@@ -1,67 +1,65 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
-  Button,
   Flex,
   FormControl,
   FormLabel,
-  HStack,
   Input,
   InputGroup,
-  InputRightAddon,
 } from "@chakra-ui/react";
-import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
+// import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
 import type { WidgetProps } from "@rjsf/utils";
 import { getInputProps, getTemplate, getUiOptions } from "@rjsf/utils";
 import type { ChangeEvent, FocusEvent } from "react";
 
 import { FieldTypeTag } from "./FieldTypeTag";
 
-const PLACEHOLDERS = {
-  addr: "cosmos1...",
-  code_id: "1",
-  contract: "cosmos1...",
-};
+// const PLACEHOLDERS = {
+//   addr: "cosmos1...",
+//   code_id: "1",
+//   contract: "cosmos1...",
+// };
 
-const renderRightAddOn = <T = any, F = any>(
-  value: WidgetProps<T, F>["value"],
-  label: WidgetProps<T, F>["label"],
-  schema: WidgetProps<T, F>["schema"],
-  onChange: WidgetProps<T, F>["onChange"],
-  formContext: WidgetProps<T, F>["formContext"]
-) => {
-  // console.log(formContext, "formContext");
-  if (schema.description?.includes("Binary is a wrapper around Vec<u8>")) {
-    return (
-      <HStack>
-        <Button size="sm" onClick={() => onChange(toBase64(toUtf8(value)))}>
-          base64
-        </Button>
-        <Button
-          size="sm"
-          onClick={() => onChange(fromUtf8(fromBase64(value)))}
-          textDecoration="line-through"
-        >
-          base64
-        </Button>
-      </HStack>
-    );
-  }
-  if (
-    label.includes("addr") &&
-    formContext &&
-    typeof formContext === "object" &&
-    "address" in formContext
-  ) {
-    return (
-      <Button size="sm" onClick={() => onChange(formContext.address)}>
-        Me
-      </Button>
-    );
-  }
-  return null;
-};
+// const renderRightAddOn = <T = any, F = any>(
+//   value: WidgetProps<T, F>["value"],
+//   label: WidgetProps<T, F>["label"],
+//   schema: WidgetProps<T, F>["schema"],
+//   onChange: WidgetProps<T, F>["onChange"],
+//   formContext: WidgetProps<T, F>["formContext"]
+// ) => {
+//   // console.log(formContext, "formContext");
+//   if (schema.description?.includes("Binary is a wrapper around Vec<u8>")) {
+//     return (
+//       <HStack>
+//         <Button size="sm" onClick={() => onChange(toBase64(toUtf8(value)))}>
+//           base64
+//         </Button>
+//         <Button
+//           size="sm"
+//           onClick={() => onChange(fromUtf8(fromBase64(value)))}
+//           textDecoration="line-through"
+//         >
+//           base64
+//         </Button>
+//       </HStack>
+//     );
+//   }
+//   if (
+//     label.includes("addr") &&
+//     formContext &&
+//     typeof formContext === "object" &&
+//     "address" in formContext
+//   ) {
+//     return (
+//       <Button size="sm" onClick={() => onChange(formContext.address)}>
+//         Me
+//       </Button>
+//     );
+//   }
+//   return null;
+// };
 
 const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
   const {
@@ -79,9 +77,9 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
     readonly,
     rawErrors,
     autofocus,
-    placeholder,
+    // placeholder,
     disabled,
-    formContext,
+    // formContext,
     registry,
   } = props;
   const inputProps = getInputProps<T, F>(schema, type, options);
@@ -105,18 +103,18 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
   const handleOnFocus = ({ target }: FocusEvent<HTMLInputElement>) =>
     onFocus(id, target.value);
 
-  const rightAddon = renderRightAddOn(
-    value,
-    label,
-    schema,
-    onChange,
-    formContext
-  );
+  // const rightAddon = renderRightAddOn(
+  //   value,
+  //   label,
+  //   schema,
+  //   onChange,
+  //   formContext
+  // );
 
   return (
     <FormControl
       isDisabled={disabled || readonly}
-      isRequired={required}
+      isRequired={required && !readonly}
       isReadOnly={readonly}
       isInvalid={rawErrors && rawErrors.length > 0}
     >
@@ -128,10 +126,13 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
             fontSize="12px"
             fontWeight={700}
             marginInlineEnd={1}
+            _disabled={{
+              color: "text.main",
+            }}
           >
             {label}
           </FormLabel>
-          <FieldTypeTag type={schema.type} />
+          <FieldTypeTag type={schema.type} format={schema.format} />
         </Flex>
       )}
       <InputGroup>
@@ -143,16 +144,26 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
           onBlur={handleOnBlur}
           onFocus={handleOnFocus}
           autoFocus={autofocus}
-          placeholder={
-            placeholder ||
-            Object.entries(PLACEHOLDERS).find(([key]) =>
-              label.includes(key)
-            )?.[1]
-          }
+          // placeholder={
+          //   placeholder ||
+          //   Object.entries(PLACEHOLDERS).find(([key]) =>
+          //     label.includes(key)
+          //   )?.[1]
+          // }
           {...inputProps}
           list={schema.examples ? `examples_${id}` : undefined}
+          _disabled={{
+            color: "text.main",
+            cursor: "not-allowed",
+            _hover: {
+              borderColor: "gray.700",
+            },
+            _active: {
+              border: "1px solid var(--chakra-colors-gray-700)",
+            },
+          }}
         />
-        {rightAddon && <InputRightAddon>{rightAddon}</InputRightAddon>}
+        {/* {rightAddon && <InputRightAddon>{rightAddon}</InputRightAddon>} */}
       </InputGroup>
       {Array.isArray(schema.examples) ? (
         <datalist id={`examples_${id}`}>

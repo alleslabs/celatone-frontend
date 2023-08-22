@@ -6,7 +6,7 @@ import type { OptionsOrGroups } from "chakra-react-select";
 import { Select } from "chakra-react-select";
 import type React from "react";
 
-import enumOptionsValueForIndex, { enumOptionsIndexForValue } from "../utils";
+import { enumOptionsIndexForValue, enumOptionsValueForIndex } from "../utils";
 
 /**
  * chakra-react-select option base.
@@ -48,7 +48,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     uiSchema,
     registry,
   } = props;
-  const uiOptions = getUiOptions<T>(uiSchema);
+  const uiOptions = getUiOptions<T, F>(uiSchema);
   const { enumOptions, enumDisabled, emptyValue } = options;
 
   const DescriptionFieldTemplate = getTemplate<"DescriptionFieldTemplate", T>(
@@ -120,7 +120,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     <FormControl
       mb={2}
       isDisabled={disabled || readonly}
-      isRequired={required}
+      isRequired={required && !readonly}
       isReadOnly={readonly}
       isInvalid={rawErrors && rawErrors.length > 0}
       sx={{ "& > p": { mt: 4, mb: 2 } }}
@@ -146,6 +146,10 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
         value={formValue}
         menuPosition="fixed"
         chakraStyles={{
+          control: (provided) => ({
+            ...provided,
+            _disabled: { color: "text.main" },
+          }),
           option: (provided, state) => ({
             ...provided,
             bg: state.isSelected ? "gray.800" : undefined,

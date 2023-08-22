@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { EnumOptionsType } from "@rjsf/utils";
+import type { EnumOptionsType, RJSFSchema, ValidatorType } from "@rjsf/utils";
 import isEqual from "lodash/isEqual";
 
 /** Determines whether the given `value` is (one of) the `selected` value(s).
@@ -56,7 +56,7 @@ export function enumOptionsIndexForValue(
  * @returns - The single or list of values specified by the single or list of indexes if they are valid. Otherwise,
  *        `emptyValue` or an empty list.
  */
-export default function enumOptionsValueForIndex(
+export function enumOptionsValueForIndex(
   valueIndex: string | number | Array<string | number>,
   allEnumOptions: EnumOptionsType[] = [],
   emptyValue?: EnumOptionsType["value"]
@@ -71,4 +71,70 @@ export default function enumOptionsValueForIndex(
     valueIndex === "" || valueIndex === null ? -1 : Number(valueIndex);
   const option = allEnumOptions[index];
   return option ? option.value : emptyValue;
+}
+
+/** Given the `formData` and list of `options`, attempts to find the index of the option that best matches the data.
+ *
+ * @param validator - An implementation of the `ValidatorType` interface that will be used when necessary
+ * @param formData - The current formData, if any, used to figure out a match
+ * @param options - The list of options to find a matching options from
+ * @param rootSchema - The root schema, used to primarily to look up `$ref`s
+ * @returns - The index of the matched option or 0 if none is available
+ */
+export function getMatchingOptionFixed<T = any>(
+  validator: ValidatorType,
+  formData: T | undefined,
+  options: RJSFSchema[],
+  rootSchema: RJSFSchema
+): number {
+  // For performance, skip validating subschemas if formData is undefined. We just
+  // want to get the first option in that case.
+  if (formData === undefined) {
+    return -1;
+  }
+  return options.findIndex((option) => {
+    // If the schema describes an object then we need to add slightly more
+    // strict matching to the schema, because unless the schema uses the
+    // "requires" keyword, an object will match the schema as long as it
+    // doesn't have matching keys with a conflicting type. To do this we use an
+    // "anyOf" with an array of requires. This augmentation expresses that the
+    // schema should match if any of the keys in the schema are present on the
+    // object and pass validation.
+    if (option.properties) {
+      // Create an "anyOf" schema that requires at least one of the keys in the
+      // "properties" object
+      const requiresAnyOf = {
+        anyOf: Object.keys(option.properties).map((key) => ({
+          required: [key],
+        })),
+      };
+
+      let augmentedSchema;
+      // If the "anyOf" keyword already exists, wrap the augmentation in an "allOf"
+      if (option.anyOf) {
+        // Create a shallow clone of the option
+        const { ...shallowClone } = option;
+
+        if (!shallowClone.allOf) {
+          shallowClone.allOf = [];
+        } else {
+          // If "allOf" already exists, shallow clone the array
+          shallowClone.allOf = shallowClone.allOf.slice();
+        }
+
+        shallowClone.allOf.push(requiresAnyOf);
+
+        augmentedSchema = shallowClone;
+      } else {
+        augmentedSchema = { ...option, ...requiresAnyOf };
+      }
+
+      // Remove the "required" field as it's likely that not all fields have
+      // been filled in yet, which will mean that the schema is not valid
+      delete augmentedSchema.required;
+
+      return validator.isValid(augmentedSchema, formData, rootSchema);
+    }
+    return validator.isValid(option, formData, rootSchema);
+  });
 }

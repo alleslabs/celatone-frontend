@@ -127,9 +127,9 @@ const QueryComponent = ({
   }, [msgSchema.inputRequired, refetch]);
 
   return (
-    <AccordionItem p={4} className={`msg-${msgSchema.schema.required?.[0]}`}>
+    <AccordionItem className={`msg-${msgSchema.schema.required?.[0]}`}>
       <h6>
-        <AccordionButton>
+        <AccordionButton p={4}>
           <Box w="full" textAlign="start">
             <Text variant="body1" fontWeight={700}>
               {msgSchema.title}
@@ -139,7 +139,7 @@ const QueryComponent = ({
           <AccordionIcon />
         </AccordionButton>
       </h6>
-      <AccordionPanel p="16px 0 0 0">
+      <AccordionPanel mx={2}>
         <Grid
           templateColumns={msgSchema.inputRequired ? "1fr 1fr" : "1fr"}
           columnGap={6}
@@ -178,23 +178,21 @@ const QueryComponent = ({
             </GridItem>
           )}
           <GridItem>
-            {msgSchema.inputRequired && (
-              <Flex align="center" gap={2} mb={3}>
-                <Text variant="body1" fontWeight={700}>
-                  Return Output
-                </Text>
-                <Text variant="body3" color="text.dark">
-                  Query response will display here
-                </Text>
-                <CopyButton
-                  isDisable={res === "{}" || Boolean(queryError)}
-                  value={res}
-                  amptrackSection="query_response"
-                  buttonText="Copy Output"
-                  ml="auto"
-                />
-              </Flex>
-            )}
+            <Flex align="center" gap={2} mb={3}>
+              <Text variant="body1" fontWeight={700}>
+                Return Output
+              </Text>
+              <Text variant="body3" color="text.dark">
+                Query response will display here
+              </Text>
+              <CopyButton
+                isDisable={res === "{}" || Boolean(queryError)}
+                value={res}
+                amptrackSection="query_response"
+                buttonText="Copy Output"
+                ml="auto"
+              />
+            </Flex>
             {queryError && (
               <Alert variant="error" mb={3} alignItems="center">
                 <AlertDescription wordBreak="break-word">

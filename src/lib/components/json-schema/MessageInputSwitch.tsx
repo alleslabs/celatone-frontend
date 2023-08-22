@@ -73,7 +73,9 @@ export const MessageInputSwitch = ({
             position="absolute"
             borderRadius="2px"
             backgroundColor="primary.dark"
-            animate={{ left: `${tabRefs.current[activeIndex]?.offsetLeft}px` }}
+            animate={{
+              left: `${tabRefs.current[activeIndex]?.offsetLeft ?? 0}px`,
+            }}
             transition={{
               type: "spring",
               stiffness: "250",
