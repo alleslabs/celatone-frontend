@@ -1,5 +1,4 @@
 import {
-  Button,
   chakra,
   Flex,
   Heading,
@@ -14,9 +13,11 @@ import { capitalize } from "lodash";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
-import { JsonSchemaDrawer } from "lib/components/json-schema";
+import {
+  JsonSchemaDrawer,
+  EditSchemaButtons,
+} from "lib/components/json-schema";
 import { Loading } from "lib/components/Loading";
-import { RemoveSchemaModal } from "lib/components/modal/RemoveSchemaModal";
 import type { CodeSchema } from "lib/stores/schema";
 import { SchemaProperties } from "lib/stores/schema";
 import type { Option } from "lib/types";
@@ -67,25 +68,11 @@ export const CodeSchemaSection = ({
           JSON Schema
         </Heading>
         {!!jsonSchema && (
-          <Flex gap={1}>
-            <Button
-              variant="outline-gray"
-              p="8px 6px"
-              leftIcon={<CustomIcon name="edit" boxSize={4} />}
-              onClick={onOpen}
-            >
-              Reattach Schema
-            </Button>
-            <RemoveSchemaModal
-              codeId={String(codeId)}
-              codeHash={codeHash}
-              trigger={
-                <Button variant="outline-gray" p={0}>
-                  <CustomIcon name="delete" boxSize={4} />
-                </Button>
-              }
-            />
-          </Flex>
+          <EditSchemaButtons
+            codeId={codeId}
+            codeHash={codeHash}
+            openDrawer={onOpen}
+          />
         )}
       </Flex>
       <Text

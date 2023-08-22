@@ -1,21 +1,46 @@
-import { ButtonGroup, Flex, Spinner, Text } from "@chakra-ui/react";
+import {
+  Button,
+  ButtonGroup,
+  Flex,
+  Heading,
+  Spinner,
+  Tag,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
+import { CustomIcon } from "lib/components/icon";
+import {
+  EditSchemaButtons,
+  JsonSchemaDrawer,
+} from "lib/components/json-schema";
+import { Tooltip } from "lib/components/Tooltip";
 import { useExecuteCmds, useQueryCmds } from "lib/hooks";
+import { useSchemaStore } from "lib/providers/store";
 import type { ContractAddr } from "lib/types";
 import { encode, jsonPrettify } from "lib/utils";
 
 interface CommandSectionProps {
   contractAddress: ContractAddr;
+  codeHash: string;
+  codeId: number;
 }
 
-export const CommandSection = ({ contractAddress }: CommandSectionProps) => {
+export const CommandSection = ({
+  contractAddress,
+  codeHash,
+  codeId,
+}: CommandSectionProps) => {
   const navigate = useInternalNavigate();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const { getSchemaByCodeHash } = useSchemaStore();
+  const attached = !!getSchemaByCodeHash(codeHash);
 
   const { isFetching: isQueryCmdsFetching, queryCmds } =
     useQueryCmds(contractAddress);
-
   const { isFetching: isExecuteCmdsFetching, execCmds } =
     useExecuteCmds(contractAddress);
 
@@ -66,35 +91,71 @@ export const CommandSection = ({ contractAddress }: CommandSectionProps) => {
   };
 
   return (
-    <Flex
-      gap={{ base: 4, md: 6 }}
-      direction={{ base: "column", md: "row" }}
-      mt={{ base: 4, md: 0 }}
-    >
-      <Flex
-        direction="column"
-        bg="gray.900"
-        p={4}
-        borderRadius="8px"
-        flex={0.5}
-      >
-        <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
-          Query Shortcuts
-        </Text>
-        {renderCmds(isQueryCmdsFetching, queryCmds, "query")}
+    <Flex direction="column" gap={6}>
+      <Flex gap={4} alignItems="center">
+        <Heading as="h6" variant="h6" minW="fit-content">
+          Available command shortcuts
+        </Heading>
+        {attached ? (
+          <Flex alignItems="center" justify="space-between" w="full">
+            <Tag variant="gray">
+              <CustomIcon name="check-circle" boxSize={3} color="gray.600" />
+              <Text variant="body3">Attached JSON Schema</Text>
+            </Tag>
+            <EditSchemaButtons
+              codeId={codeId}
+              codeHash={codeHash}
+              openDrawer={onOpen}
+            />
+          </Flex>
+        ) : (
+          <Tooltip
+            label={`Attached the JSON Schema for code ${codeId}.`}
+            minW="330px"
+            textAlign="center"
+          >
+            <Button size="sm" variant="outline-gray" onClick={onOpen}>
+              Attach JSON Schema
+            </Button>
+          </Tooltip>
+        )}
       </Flex>
       <Flex
-        direction="column"
-        bg="gray.900"
-        p={4}
-        borderRadius="8px"
-        flex={0.5}
+        gap={{ base: 4, md: 6 }}
+        direction={{ base: "column", md: "row" }}
+        mt={{ base: 4, md: 0 }}
       >
-        <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
-          Execute Shortcuts
-        </Text>
-        {renderCmds(isExecuteCmdsFetching, execCmds, "execute")}
+        <Flex
+          direction="column"
+          bg="gray.900"
+          p={4}
+          borderRadius="8px"
+          flex={0.5}
+        >
+          <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
+            Query Shortcuts
+          </Text>
+          {renderCmds(isQueryCmdsFetching, queryCmds, "query")}
+        </Flex>
+        <Flex
+          direction="column"
+          bg="gray.900"
+          p={4}
+          borderRadius="8px"
+          flex={0.5}
+        >
+          <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
+            Execute Shortcuts
+          </Text>
+          {renderCmds(isExecuteCmdsFetching, execCmds, "execute")}
+        </Flex>
       </Flex>
+      <JsonSchemaDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        codeId={String(codeId)}
+        codeHash={codeHash}
+      />
     </Flex>
   );
 };

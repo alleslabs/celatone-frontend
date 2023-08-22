@@ -59,7 +59,11 @@ export const JsonSchemaDrawer = ({
             JSON schemas, they will be visible and accessible to others.
           </Text>
         </Box>
-        <UploadTemplate closeDrawer={onClose} codeHash={codeHash} />
+        <UploadTemplate
+          codeHash={codeHash}
+          codeId={codeId}
+          closeDrawer={onClose}
+        />
       </DrawerBody>
     </DrawerContent>
   </Drawer>

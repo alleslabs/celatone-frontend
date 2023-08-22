@@ -63,7 +63,11 @@ const ContractDetailsBody = observer(
         {/* Contract Description Section */}
         <ContractDesc {...contractData} />
         {/* Query/Execute commands section */}
-        <CommandSection contractAddress={contractAddress} />
+        <CommandSection
+          contractAddress={contractAddress}
+          codeHash={contractData.contractDetail.codeHash}
+          codeId={contractData.contractDetail.codeId}
+        />
         {/* Instantiate/Contract Info Section */}
         <Flex
           my={12}

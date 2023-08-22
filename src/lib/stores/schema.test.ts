@@ -5,15 +5,19 @@ import querySchemaOutput from "./schema-test-suite/query-schema-output.json";
 import schema from "./schema-test-suite/schema-example.json";
 
 let schemaStore: SchemaStore;
-const exampleSchema = schema as unknown as CodeSchema;
 const codeHash = "a1b2c3d4e5f6g7";
+const codeId = "1234";
+const exampleSchema = {
+  ...schema,
+  [SchemaProperties.ATTACHED_CODE_ID]: codeId,
+} as unknown as CodeSchema;
 
 beforeAll(() => {
   schemaStore = new SchemaStore();
 });
 
 beforeEach(() => {
-  schemaStore.saveNewSchema(codeHash, exampleSchema);
+  schemaStore.saveNewSchema(codeHash, codeId, exampleSchema);
 });
 
 describe("SchemaStore initialization", () => {
@@ -77,6 +81,9 @@ describe("getSchemaProperty", () => {
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.RESPONSES)
     ).toStrictEqual(exampleSchema.responses);
+    expect(
+      schemaStore.getSchemaProperty(codeHash, SchemaProperties.ATTACHED_CODE_ID)
+    ).toStrictEqual(exampleSchema.attached_code_id);
   });
 
   test("correctly retrieve schema property from uppercase code hash", () => {

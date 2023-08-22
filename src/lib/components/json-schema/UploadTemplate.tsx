@@ -170,11 +170,13 @@ const MethodRender = ({
 
 interface UploadTemplateInterface {
   codeHash: string;
+  codeId: string;
   closeDrawer: () => void;
 }
 
 export const UploadTemplate = ({
   codeHash,
+  codeId,
   closeDrawer,
 }: UploadTemplateInterface) => {
   const { saveNewSchema } = useSchemaStore();
@@ -224,11 +226,11 @@ export const UploadTemplate = ({
         error: schemaValidateError,
       });
     }
-    saveNewSchema(codeHash, JSON.parse(schemaString));
+    saveNewSchema(codeHash, codeId, JSON.parse(schemaString));
     setUrlLoading(false);
     closeDrawer();
     return dispatchJsonState({ type: ActionType.RESET, method });
-  }, [codeHash, method, jsonState, closeDrawer, saveNewSchema]);
+  }, [closeDrawer, codeHash, codeId, jsonState, method, saveNewSchema]);
 
   const disabledState = useMemo(() => {
     const methodSchemaString = jsonState[method].schemaString;
