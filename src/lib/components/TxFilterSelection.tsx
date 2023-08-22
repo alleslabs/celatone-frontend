@@ -131,14 +131,13 @@ export const TxFilterSelection = forwardRef<
                   >
                     <Tag
                       variant="primary-light"
-                      gap={1}
                       mr={1}
                       whiteSpace="nowrap"
                       cursor="pointer"
                       size={tagSize}
                     >
                       {displayActionValue(option)}
-                      <CustomIcon name="close" boxSize={3} />
+                      <CustomIcon name="close" boxSize={2} mr={2} />
                     </Tag>
                   </Flex>
                 ))}

@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { Flex, Tag } from "@chakra-ui/react";
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
@@ -134,7 +134,7 @@ export const TxMsgExpand = ({
       msgIcon = "migrate";
       content = (
         <Flex display="inline">
-          Migrate{" "}
+          <Text variant="body1">Migrate </Text>
           <ExplorerLink
             type="contract_address"
             value={body.contract}
