@@ -2,10 +2,6 @@
 import type { EnumOptionsType, RJSFSchema, ValidatorType } from "@rjsf/utils";
 import isEqual from "lodash/isEqual";
 
-export function getIsResponse(formContext: any) {
-  return (formContext?.isResponse as boolean) ?? false;
-}
-
 /** Determines whether the given `value` is (one of) the `selected` value(s).
  *
  * @param value - The value being checked to see if it is selected

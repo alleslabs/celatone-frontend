@@ -159,7 +159,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
       id={formId}
       formContext={formContext}
       formData={formData}
-      schema={collapsedSchema}
+      schema={schema}
       uiSchema={{
         "ui:submitButtonOptions": {
           norender: true,
@@ -185,7 +185,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
       }}
       validator={v8Validator}
       onChange={({ formData: values }) => {
-        // log.info(formData)
+        // log.info(values)
         onChange?.(values);
       }}
       onSubmit={({ formData: values }) => {

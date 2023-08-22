@@ -183,6 +183,8 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
       registry,
       uiSchema,
       schema,
+      required,
+      readonly,
     } = this.props;
 
     const { widgets, fields, schemaUtils } = registry;
@@ -252,6 +254,8 @@ class MultiSchemaField<T extends object = any, F = any> extends Component<
               schema.oneOf ? "__oneof_select" : "__anyof_select"
             }`}
             schema={{ type: "number", default: 0 }}
+            required={required}
+            readonly={readonly}
             onChange={this.onOptionChange}
             onBlur={onBlur}
             onFocus={onFocus}

@@ -6,11 +6,7 @@ import type { OptionsOrGroups } from "chakra-react-select";
 import { Select } from "chakra-react-select";
 import type React from "react";
 
-import {
-  enumOptionsIndexForValue,
-  enumOptionsValueForIndex,
-  getIsResponse,
-} from "../utils";
+import { enumOptionsIndexForValue, enumOptionsValueForIndex } from "../utils";
 
 /**
  * chakra-react-select option base.
@@ -51,12 +47,9 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     rawErrors = [],
     uiSchema,
     registry,
-    formContext,
   } = props;
   const uiOptions = getUiOptions<T, F>(uiSchema);
   const { enumOptions, enumDisabled, emptyValue } = options;
-
-  const isReadonly = readonly || getIsResponse(formContext);
 
   const DescriptionFieldTemplate = getTemplate<"DescriptionFieldTemplate", T>(
     "DescriptionFieldTemplate",
@@ -126,9 +119,9 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
   return (
     <FormControl
       mb={2}
-      isDisabled={disabled || isReadonly}
-      isRequired={required && !isReadonly}
-      isReadOnly={isReadonly}
+      isDisabled={disabled || readonly}
+      isRequired={required && !readonly}
+      isReadOnly={readonly}
       isInvalid={rawErrors && rawErrors.length > 0}
       sx={{ "& > p": { mt: 4, mb: 2 } }}
     >

@@ -200,9 +200,6 @@ const QueryComponent = ({
                     return {};
                   }
                 })()}
-                formContext={{
-                  isResponse: true,
-                }}
               />
             </Box>
             {!msgSchema.inputRequired && (
