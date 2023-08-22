@@ -12,7 +12,7 @@ import {
   GridItem,
   Text,
 } from "@chakra-ui/react";
-import type { StdFee } from "@cosmjs/stargate";
+import type { Coin, StdFee } from "@cosmjs/stargate";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useForm, useFormState } from "react-hook-form";
@@ -27,7 +27,12 @@ import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { CopyButton } from "lib/components/copy";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { AttachFund } from "lib/components/fund";
-import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
+import {
+  ASSETS_JSON_STR,
+  ATTACH_FUNDS_OPTION,
+  defaultAsset,
+  defaultAssetJsonStr,
+} from "lib/components/fund/data";
 import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import { CustomIcon } from "lib/components/icon";
@@ -39,7 +44,7 @@ import type { Activity } from "lib/stores/contract";
 import type { QueryExecuteSchema } from "lib/stores/schema";
 import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, jsonValidate } from "lib/utils";
+import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -48,6 +53,8 @@ const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
 interface ExecuteBoxProps {
   msgSchema: QueryExecuteSchema;
   contractAddress: ContractAddr;
+  initialMsg: Record<string, unknown>;
+  initialFunds: Coin[];
   opened: boolean;
 }
 
@@ -60,6 +67,8 @@ const assetDefault = {
 export const ExecuteBox = ({
   msgSchema,
   contractAddress,
+  initialMsg,
+  initialFunds,
   opened,
 }: ExecuteBoxProps) => {
   // ------------------------------------------//
@@ -76,7 +85,6 @@ export const ExecuteBox = ({
   // ------------------STATES------------------//
   // ------------------------------------------//
   const [fee, setFee] = useState<StdFee>();
-  // TODO: add initial msg
   const [msg, setMsg] = useState("{}");
   const [error, setError] = useState<string>();
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
@@ -85,7 +93,7 @@ export const ExecuteBox = ({
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
-  const { control, setValue, watch } = useForm<AttachFundsState>({
+  const { control, setValue, watch, reset } = useForm<AttachFundsState>({
     mode: "all",
     defaultValues: assetDefault,
   });
@@ -186,6 +194,27 @@ export const ExecuteBox = ({
   // ------------------------------------------//
   // ----------------SIDE EFFECTS--------------//
   // ------------------------------------------//
+  /**
+   * @remarks
+   * Handle when there is an initialFunds
+   */
+  useEffect(() => {
+    try {
+      if (initialFunds.length) {
+        setValue(ASSETS_JSON_STR, jsonPrettify(JSON.stringify(initialFunds)));
+        setValue(ATTACH_FUNDS_OPTION, AttachFundsType.ATTACH_FUNDS_JSON);
+      } else {
+        reset(assetDefault);
+      }
+    } catch {
+      // comment just to avoid eslint no-empty
+    }
+  }, [initialFunds, reset, setValue]);
+
+  useEffect(() => {
+    if (Object.keys(initialMsg).length) setMsg(JSON.stringify(initialMsg));
+  }, [initialMsg]);
+
   useEffect(() => {
     if (enableExecute) {
       const composedMsg = composeMsg(MsgType.EXECUTE, {
@@ -214,9 +243,9 @@ export const ExecuteBox = ({
   ]);
 
   return (
-    <AccordionItem p={4}>
+    <AccordionItem className={`execute_msg_${msgSchema.schema.required?.[0]}`}>
       <h6>
-        <AccordionButton>
+        <AccordionButton p={4}>
           <Box w="full" textAlign="start">
             <Text variant="body1" fontWeight={700}>
               {msgSchema.title}
@@ -226,12 +255,13 @@ export const ExecuteBox = ({
           <AccordionIcon />
         </AccordionButton>
       </h6>
-      <AccordionPanel p="16px 0 0 0">
+      <AccordionPanel mx={2}>
         <Grid templateColumns="1fr 1fr" templateRows="auto auto" columnGap={6}>
           <GridItem>
             <JsonSchemaForm
               formId={`execute-${msgSchema.title}`}
               schema={msgSchema.schema}
+              initialFormData={initialMsg}
               onChange={(data) => setMsg(JSON.stringify(data))}
             />
             {error && (

@@ -127,7 +127,7 @@ const QueryComponent = ({
   }, [msgSchema.inputRequired, refetch]);
 
   return (
-    <AccordionItem className={`msg-${msgSchema.schema.required?.[0]}`}>
+    <AccordionItem className={`query_msg_${msgSchema.schema.required?.[0]}`}>
       <h6>
         <AccordionButton p={4}>
           <Box w="full" textAlign="start">
@@ -293,7 +293,7 @@ export const SchemaQuery = ({
           prev.includes(msgIndex) ? prev : prev.concat(msgIndex)
         );
         const el = document.querySelector(
-          `.msg-${schema[msgIndex][0].schema.required?.[0]}`
+          `.query_msg_${schema[msgIndex][0].schema.required?.[0]}`
         );
         // TODO: This is a workaround, refactor to a proper solution later
         const timeoutId = setTimeout(() => el?.scrollIntoView(), 200);

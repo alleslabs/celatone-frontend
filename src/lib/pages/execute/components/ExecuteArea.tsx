@@ -35,12 +35,15 @@ export const ExecuteArea = ({
 
   useEffect(() => {
     if (!schema) setTab(MessageTabs.JSON_INPUT);
+    else {
+      setTab(MessageTabs.YOUR_SCHEMA);
+    }
   }, [schema]);
 
   return (
     <Box my={4}>
-      <Flex align="center" justify="space-between">
-        <Heading variant="h6" as="h6" my={8} alignSelf="flex-start">
+      <Flex align="center" justify="space-between" my={8}>
+        <Heading variant="h6" as="h6">
           Execute Message
         </Heading>
         <MessageInputSwitch
@@ -65,7 +68,12 @@ export const ExecuteArea = ({
         }
         schemaContent={
           codeHash && schema ? (
-            <SchemaExecute schema={schema} contractAddress={contractAddress} />
+            <SchemaExecute
+              schema={schema}
+              contractAddress={contractAddress}
+              initialFunds={initialFunds}
+              initialMsg={initialMsg}
+            />
           ) : (
             <EmptyState
               imageVariant="not-found"
