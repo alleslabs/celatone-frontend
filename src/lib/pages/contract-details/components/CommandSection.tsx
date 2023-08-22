@@ -35,7 +35,7 @@ export const CommandSection = observer(
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     const { getSchemaByCodeHash } = useSchemaStore();
-    const attached = !!getSchemaByCodeHash(codeHash);
+    const attached = Boolean(getSchemaByCodeHash(codeHash));
 
     const { isFetching: isQueryCmdsFetching, queryCmds } =
       useQueryCmds(contractAddress);
