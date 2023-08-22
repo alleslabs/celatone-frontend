@@ -9,6 +9,7 @@ import {
   InteractionTypeSwitch,
   MessageTabs,
 } from "./component/InteractionTypeSwitch";
+import { ModuleSelectDrawerButton } from "./component/ModuleSelectDrawerButton";
 
 export const Interaction = () => {
   const { query, isReady } = useRouter();
@@ -37,7 +38,7 @@ export const Interaction = () => {
         my={8}
       >
         <Text>Select module to interact with ...</Text>
-        <Button variant="primary">Select Module</Button>
+        <ModuleSelectDrawerButton />
       </Flex>
       <Flex borderTop="1px solid" borderColor="gray.700" py={8} gap={8}>
         <Flex flexDirection="column" flex={1}>
