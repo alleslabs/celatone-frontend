@@ -18,3 +18,13 @@ export const jsonPrettify = (text: string) => {
 };
 
 export const jsonLineCount = (text: string) => text.split(/\n/).length;
+
+export const parseSchemaInitialData = (
+  json: string
+): Record<string, unknown> => {
+  try {
+    return JSON.parse(json);
+  } catch (_) {
+    return {};
+  }
+};

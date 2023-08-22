@@ -18,7 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { encode } from "js-base64";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -37,7 +37,11 @@ import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
 import type { QueryExecuteSchema, QuerySchema } from "lib/stores/schema";
 import type { ContractAddr, HumanAddr, Option, RpcQueryError } from "lib/types";
-import { getCurrentDate, jsonValidate } from "lib/utils";
+import {
+  getCurrentDate,
+  jsonValidate,
+  parseSchemaInitialData,
+} from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -49,6 +53,7 @@ interface QueryComponentInterface {
   contractAddress: ContractAddr;
   lcdEndpoint: string;
   walletAddress: Option<string>;
+  initialMsg: Record<string, unknown>;
   addActivity: (activity: Activity) => void;
 }
 
@@ -58,11 +63,16 @@ const QueryComponent = ({
   contractAddress,
   lcdEndpoint,
   walletAddress,
+  initialMsg,
   addActivity,
 }: QueryComponentInterface) => {
   const [msg, setMsg] = useState("{}");
   const [res, setRes] = useState("{}");
   const [queryError, setQueryError] = useState("");
+
+  useEffect(() => {
+    if (Object.keys(initialMsg).length) setMsg(JSON.stringify(initialMsg));
+  }, [initialMsg]);
 
   // TODO: Abstract query
   const {
@@ -117,7 +127,7 @@ const QueryComponent = ({
   }, [msgSchema.inputRequired, refetch]);
 
   return (
-    <AccordionItem>
+    <AccordionItem className={`msg-${msgSchema.schema.required?.[0]}`}>
       <h6>
         <AccordionButton p={4}>
           <Box w="full" textAlign="start">
@@ -140,6 +150,7 @@ const QueryComponent = ({
                 formId={`query-${msgSchema.title}`}
                 schema={msgSchema.schema}
                 onChange={(data) => setMsg(JSON.stringify(data))}
+                initialFormData={initialMsg}
               />
               <Flex gap={2} justify="flex-start">
                 <CopyButton
@@ -193,13 +204,7 @@ const QueryComponent = ({
               <JsonSchemaForm
                 formId={`response-${msgSchema.title}`}
                 schema={resSchema}
-                initialFormData={(() => {
-                  try {
-                    return JSON.parse(res);
-                  } catch (_) {
-                    return {};
-                  }
-                })()}
+                initialFormData={parseSchemaInitialData(res)}
               />
             </Box>
             {!msgSchema.inputRequired && (
@@ -245,13 +250,29 @@ const QueryComponent = ({
 interface SchemaQueryProps {
   schema: Option<QuerySchema>;
   contractAddress: ContractAddr;
+  initialMsg: string;
 }
 
-export const SchemaQuery = ({ schema, contractAddress }: SchemaQueryProps) => {
+const resolveInitialMsg = (
+  initialMsg: string,
+  msgSchema: QueryExecuteSchema
+) => {
+  const parsed = parseSchemaInitialData(initialMsg);
+  return Object.keys(parsed)[0] === msgSchema.schema.required?.[0]
+    ? parsed
+    : {};
+};
+
+export const SchemaQuery = ({
+  schema,
+  contractAddress,
+  initialMsg,
+}: SchemaQueryProps) => {
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
   const lcdEndpoint = useBaseApiRoute("rest");
 
+  const accordionRef = useRef<HTMLDivElement>(null);
   const [keyword, setKeyword] = useState("");
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
@@ -260,6 +281,27 @@ export const SchemaQuery = ({ schema, contractAddress }: SchemaQueryProps) => {
       schema?.filter((querySchema) => querySchema[0].title?.includes(keyword)),
     [schema, keyword]
   );
+
+  useEffect(() => {
+    if (schema && initialMsg && accordionRef.current) {
+      try {
+        const parsedMsg = JSON.parse(initialMsg);
+        const msgIndex = schema.findIndex(
+          ([msg]) => msg.schema.required?.[0] === Object.keys(parsedMsg)[0]
+        );
+        setExpandedIndexes((prev) =>
+          prev.includes(msgIndex) ? prev : prev.concat(msgIndex)
+        );
+        const el = document.querySelector(
+          `.msg-${schema[msgIndex][0].schema.required?.[0]}`
+        );
+        el?.scrollIntoView();
+      } catch (_) {
+        //
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [schema, initialMsg, accordionRef.current]);
 
   if (!schema) return null;
 
@@ -287,6 +329,7 @@ export const SchemaQuery = ({ schema, contractAddress }: SchemaQueryProps) => {
       </Flex>
       {filteredMsgs?.length ? (
         <Accordion
+          ref={accordionRef}
           allowMultiple
           rowGap={4}
           display="flex"
@@ -303,6 +346,7 @@ export const SchemaQuery = ({ schema, contractAddress }: SchemaQueryProps) => {
               contractAddress={contractAddress}
               lcdEndpoint={lcdEndpoint}
               walletAddress={address}
+              initialMsg={resolveInitialMsg(initialMsg, msg)}
               addActivity={addActivity}
             />
           ))}
