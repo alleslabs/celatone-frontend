@@ -7,8 +7,8 @@ import {
   MessageTabs,
 } from "lib/components/json-schema";
 import { EmptyState } from "lib/components/state";
-import type { QuerySchema } from "lib/stores/schema";
-import type { ContractAddr, Option } from "lib/types";
+import { useSchemaStore } from "lib/providers/store";
+import type { ContractAddr } from "lib/types";
 
 import { JsonQuery } from "./JsonQuery";
 import { SchemaQuery } from "./SchemaQuery";
@@ -17,7 +17,6 @@ interface QueryAreaProps {
   contractAddress: ContractAddr;
   codeId: string;
   codeHash: string;
-  schema: Option<QuerySchema>;
   initialMsg: string;
 }
 
@@ -25,10 +24,22 @@ export const QueryArea = ({
   contractAddress,
   codeId,
   codeHash,
-  schema,
   initialMsg,
 }: QueryAreaProps) => {
   const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
+
+  const { getQuerySchema, getSchemaByCodeHash } = useSchemaStore();
+  const schema = getQuerySchema(codeHash);
+  const attached = Boolean(getSchemaByCodeHash(codeHash));
+
+  const tooltipLabel = (() => {
+    if (!codeId) return "Please select contract first.";
+
+    if (!attached)
+      return `You haven't attached the JSON Schema for code id ${codeId}. \n To use the schema, please add it on the code detail page.`;
+
+    return "Attached JSON Schema doesn’t have query message.";
+  })();
 
   useEffect(() => {
     if (!schema) setTab(MessageTabs.JSON_INPUT);
@@ -45,11 +56,7 @@ export const QueryArea = ({
           currentTab={tab}
           onTabChange={setTab}
           disabled={!schema}
-          tooltipLabel={
-            codeId && !schema
-              ? `You haven't attached the JSON Schema for code id ${codeId}. \n To use the schema, please add it on the code detail page.`
-              : "Please select contract first."
-          }
+          tooltipLabel={tooltipLabel}
         />
       </Flex>
       <MessageInputContent
