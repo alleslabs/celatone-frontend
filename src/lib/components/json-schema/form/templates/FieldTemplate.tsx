@@ -50,7 +50,7 @@ export default function FieldTemplate<T = any, F = any>(
       registry={registry}
     >
       <FormControl
-        isRequired={readonly ? false : required}
+        isRequired={required && !readonly}
         isInvalid={rawErrors && rawErrors.length > 0}
       >
         {children}

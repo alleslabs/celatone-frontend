@@ -19,18 +19,18 @@ import type { ChangeEvent, FocusEvent } from "react";
 
 import { FieldTypeTag } from "./FieldTypeTag";
 
-const PLACEHOLDERS = {
-  addr: "cosmos1...",
-  code_id: "1",
-  contract: "cosmos1...",
-};
+// const PLACEHOLDERS = {
+//   addr: "cosmos1...",
+//   code_id: "1",
+//   contract: "cosmos1...",
+// };
 
 const renderRightAddOn = <T = any, F = any>(
   value: WidgetProps<T, F>["value"],
-  label: WidgetProps<T, F>["label"],
+  // label: WidgetProps<T, F>["label"],
   schema: WidgetProps<T, F>["schema"],
-  onChange: WidgetProps<T, F>["onChange"],
-  formContext: WidgetProps<T, F>["formContext"]
+  onChange: WidgetProps<T, F>["onChange"]
+  // formContext: WidgetProps<T, F>["formContext"]
 ) => {
   // console.log(formContext, "formContext");
   if (schema.description?.includes("Binary is a wrapper around Vec<u8>")) {
@@ -49,18 +49,18 @@ const renderRightAddOn = <T = any, F = any>(
       </HStack>
     );
   }
-  if (
-    label.includes("addr") &&
-    formContext &&
-    typeof formContext === "object" &&
-    "address" in formContext
-  ) {
-    return (
-      <Button size="sm" onClick={() => onChange(formContext.address)}>
-        Me
-      </Button>
-    );
-  }
+  // if (
+  //   label.includes("addr") &&
+  //   formContext &&
+  //   typeof formContext === "object" &&
+  //   "address" in formContext
+  // ) {
+  //   return (
+  //     <Button size="sm" onClick={() => onChange(formContext.address)}>
+  //       Me
+  //     </Button>
+  //   );
+  // }
   return null;
 };
 
@@ -80,9 +80,9 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
     readonly,
     rawErrors,
     autofocus,
-    placeholder,
+    // placeholder,
     disabled,
-    formContext,
+    // formContext,
     registry,
   } = props;
   const inputProps = getInputProps<T, F>(schema, type, options);
@@ -108,10 +108,10 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
 
   const rightAddon = renderRightAddOn(
     value,
-    label,
+    // label,
     schema,
-    onChange,
-    formContext
+    onChange
+    // formContext
   );
 
   return (
@@ -147,12 +147,12 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
           onBlur={handleOnBlur}
           onFocus={handleOnFocus}
           autoFocus={autofocus}
-          placeholder={
-            placeholder ||
-            Object.entries(PLACEHOLDERS).find(([key]) =>
-              label.includes(key)
-            )?.[1]
-          }
+          // placeholder={
+          //   placeholder ||
+          //   Object.entries(PLACEHOLDERS).find(([key]) =>
+          //     label.includes(key)
+          //   )?.[1]
+          // }
           {...inputProps}
           list={schema.examples ? `examples_${id}` : undefined}
           _disabled={{

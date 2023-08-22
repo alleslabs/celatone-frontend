@@ -45,7 +45,6 @@ export default function ArrayFieldItemTemplate<T = any, F = any>(
         border="1px solid var(--chakra-colors-gray-600)"
         borderRadius="8px"
         p={4}
-        sx={{ "> div > div > div": { gap: 2 } }}
       >
         {children}
       </Box>
