@@ -3,16 +3,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
-  Button,
   Flex,
   FormControl,
   FormLabel,
-  HStack,
   Input,
   InputGroup,
-  InputRightAddon,
 } from "@chakra-ui/react";
-import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
+// import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
 import type { WidgetProps } from "@rjsf/utils";
 import { getInputProps, getTemplate, getUiOptions } from "@rjsf/utils";
 import type { ChangeEvent, FocusEvent } from "react";
@@ -25,44 +22,44 @@ import { FieldTypeTag } from "./FieldTypeTag";
 //   contract: "cosmos1...",
 // };
 
-const renderRightAddOn = <T = any, F = any>(
-  value: WidgetProps<T, F>["value"],
-  // label: WidgetProps<T, F>["label"],
-  schema: WidgetProps<T, F>["schema"],
-  onChange: WidgetProps<T, F>["onChange"]
-  // formContext: WidgetProps<T, F>["formContext"]
-) => {
-  // console.log(formContext, "formContext");
-  if (schema.description?.includes("Binary is a wrapper around Vec<u8>")) {
-    return (
-      <HStack>
-        <Button size="sm" onClick={() => onChange(toBase64(toUtf8(value)))}>
-          base64
-        </Button>
-        <Button
-          size="sm"
-          onClick={() => onChange(fromUtf8(fromBase64(value)))}
-          textDecoration="line-through"
-        >
-          base64
-        </Button>
-      </HStack>
-    );
-  }
-  // if (
-  //   label.includes("addr") &&
-  //   formContext &&
-  //   typeof formContext === "object" &&
-  //   "address" in formContext
-  // ) {
-  //   return (
-  //     <Button size="sm" onClick={() => onChange(formContext.address)}>
-  //       Me
-  //     </Button>
-  //   );
-  // }
-  return null;
-};
+// const renderRightAddOn = <T = any, F = any>(
+//   value: WidgetProps<T, F>["value"],
+//   label: WidgetProps<T, F>["label"],
+//   schema: WidgetProps<T, F>["schema"],
+//   onChange: WidgetProps<T, F>["onChange"],
+//   formContext: WidgetProps<T, F>["formContext"]
+// ) => {
+//   // console.log(formContext, "formContext");
+//   if (schema.description?.includes("Binary is a wrapper around Vec<u8>")) {
+//     return (
+//       <HStack>
+//         <Button size="sm" onClick={() => onChange(toBase64(toUtf8(value)))}>
+//           base64
+//         </Button>
+//         <Button
+//           size="sm"
+//           onClick={() => onChange(fromUtf8(fromBase64(value)))}
+//           textDecoration="line-through"
+//         >
+//           base64
+//         </Button>
+//       </HStack>
+//     );
+//   }
+//   if (
+//     label.includes("addr") &&
+//     formContext &&
+//     typeof formContext === "object" &&
+//     "address" in formContext
+//   ) {
+//     return (
+//       <Button size="sm" onClick={() => onChange(formContext.address)}>
+//         Me
+//       </Button>
+//     );
+//   }
+//   return null;
+// };
 
 const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
   const {
@@ -106,13 +103,13 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
   const handleOnFocus = ({ target }: FocusEvent<HTMLInputElement>) =>
     onFocus(id, target.value);
 
-  const rightAddon = renderRightAddOn(
-    value,
-    // label,
-    schema,
-    onChange
-    // formContext
-  );
+  // const rightAddon = renderRightAddOn(
+  //   value,
+  //   label,
+  //   schema,
+  //   onChange,
+  //   formContext
+  // );
 
   return (
     <FormControl
@@ -166,7 +163,7 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
             },
           }}
         />
-        {rightAddon && <InputRightAddon>{rightAddon}</InputRightAddon>}
+        {/* {rightAddon && <InputRightAddon>{rightAddon}</InputRightAddon>} */}
       </InputGroup>
       {Array.isArray(schema.examples) ? (
         <datalist id={`examples_${id}`}>
