@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useRef } from "react";
 
 import { MotionBox } from "lib/components/MotionBox";
+import type { Option } from "lib/types";
 
 export enum MessageTabs {
   VIEW_MODULE = "View",
@@ -13,9 +14,9 @@ export const viewModuleFormKey = MessageTabs.VIEW_MODULE as "View";
 export const executeModuleFormKey = MessageTabs.EXECUTE_MODULE as "Execute";
 
 interface InteractionTypeSwitchProps {
-  currentTab: MessageTabs;
+  currentTab: Option<MessageTabs>;
   disabled?: boolean;
-  onTabChange: Dispatch<SetStateAction<MessageTabs>>;
+  onTabChange: Dispatch<SetStateAction<Option<MessageTabs>>>;
 }
 
 const tabs = Object.values(MessageTabs);
@@ -26,7 +27,7 @@ export const InteractionTypeSwitch = ({
   onTabChange,
 }: InteractionTypeSwitchProps) => {
   const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const activeIndex = tabs.indexOf(currentTab);
+  const activeIndex = currentTab ? tabs.indexOf(currentTab) : -1;
 
   return (
     <Flex

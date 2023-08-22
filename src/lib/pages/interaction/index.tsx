@@ -12,15 +12,16 @@ import {
 
 export const Interaction = () => {
   const { query, isReady } = useRouter();
-  const [tab, setTab] = useState(MessageTabs.VIEW_MODULE);
+  const [tab, setTab] = useState<MessageTabs>();
 
   useEffect(() => {
-    if (isReady)
+    if (isReady) {
       setTab(
         query.type === "execute"
           ? MessageTabs.EXECUTE_MODULE
           : MessageTabs.VIEW_MODULE
       );
+    }
   }, [isReady, query.type]);
 
   return (
