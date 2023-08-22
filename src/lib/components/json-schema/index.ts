@@ -1,5 +1,6 @@
 export * from "./form";
 export * from "./AttachSchemaCard";
+export * from "./EditSchemaButtons";
 export * from "./JsonSchemaDrawer";
 export * from "./UploadTemplate";
 export * from "./ViewSchemaButton";

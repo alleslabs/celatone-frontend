@@ -28,7 +28,12 @@ export const JsonSchemaDrawer = ({
   isOpen,
   onClose,
 }: JsonSchemaDrawerProps) => (
-  <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+  <Drawer
+    isOpen={isOpen}
+    onClose={onClose}
+    placement="bottom"
+    returnFocusOnClose={false}
+  >
     <DrawerOverlay />
     <DrawerContent h="80%">
       <DrawerHeader>
@@ -59,7 +64,11 @@ export const JsonSchemaDrawer = ({
             JSON schemas, they will be visible and accessible to others.
           </Text>
         </Box>
-        <UploadTemplate closeDrawer={onClose} codeHash={codeHash} />
+        <UploadTemplate
+          codeHash={codeHash}
+          codeId={codeId}
+          closeDrawer={onClose}
+        />
       </DrawerBody>
     </DrawerContent>
   </Drawer>

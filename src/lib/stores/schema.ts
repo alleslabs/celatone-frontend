@@ -14,6 +14,7 @@ export enum SchemaProperties {
   MIGRATE = "migrate",
   SUDO = "sudo",
   RESPONSES = "responses",
+  ATTACHED_CODE_ID = "attached_code_id",
 }
 
 type NullableJsonSchema = JsonSchema | null;
@@ -35,6 +36,7 @@ export interface CodeSchema {
   [SchemaProperties.MIGRATE]: NullableJsonSchema;
   [SchemaProperties.SUDO]: NullableJsonSchema;
   [SchemaProperties.RESPONSES]: { [key: string]: JsonSchema };
+  [SchemaProperties.ATTACHED_CODE_ID]: string;
 }
 
 export type QuerySchema = Array<[QueryExecuteSchema, JsonSchema]>;
@@ -70,8 +72,11 @@ export class SchemaStore {
     });
   }
 
-  saveNewSchema(codeHash: string, schema: CodeSchema) {
-    this.jsonSchemas[normalize(codeHash)] = schema;
+  saveNewSchema(codeHash: string, codeId: string, schema: CodeSchema) {
+    this.jsonSchemas[normalize(codeHash)] = {
+      ...schema,
+      [SchemaProperties.ATTACHED_CODE_ID]: codeId,
+    };
   }
 
   deleteSchema(codeHash: string) {
