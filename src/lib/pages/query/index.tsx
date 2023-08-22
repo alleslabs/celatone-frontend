@@ -11,7 +11,6 @@ import {
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
-import { useSchemaStore } from "lib/providers/store";
 import { AmpTrackToQuery } from "lib/services/amplitude";
 import type { ContractDetail } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
@@ -28,14 +27,12 @@ const Query = observer(() => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { getQuerySchema } = useSchemaStore();
 
   const [contractAddress, setContractAddress] = useState("" as ContractAddr);
   const [codeHash, setCodeHash] = useState("");
   const [codeId, setCodeId] = useState("");
   const [initialMsg, setInitialMsg] = useState("");
   const isMobile = useMobile();
-  const schema = getQuerySchema(codeHash);
 
   const goToExecute = () => {
     navigate({
@@ -110,7 +107,6 @@ const Query = observer(() => {
 
       <QueryArea
         contractAddress={contractAddress}
-        schema={schema}
         initialMsg={initialMsg}
         codeId={codeId}
         codeHash={codeHash}

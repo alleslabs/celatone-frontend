@@ -8,8 +8,8 @@ import {
   MessageTabs,
 } from "lib/components/json-schema";
 import { EmptyState } from "lib/components/state";
-import type { ExecuteSchema } from "lib/stores/schema";
-import type { ContractAddr, Option } from "lib/types";
+import { useSchemaStore } from "lib/providers/store";
+import type { ContractAddr } from "lib/types";
 
 import { JsonExecute } from "./JsonExecute";
 import { SchemaExecute } from "./schema-execute";
@@ -20,7 +20,6 @@ interface ExecuteAreaProps {
   initialFunds: Coin[];
   codeId: string;
   codeHash: string;
-  schema: Option<ExecuteSchema>;
 }
 
 export const ExecuteArea = ({
@@ -29,9 +28,21 @@ export const ExecuteArea = ({
   initialFunds,
   codeHash,
   codeId,
-  schema,
 }: ExecuteAreaProps) => {
   const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
+
+  const { getExecuteSchema, getSchemaByCodeHash } = useSchemaStore();
+  const schema = getExecuteSchema(codeHash);
+  const attached = Boolean(getSchemaByCodeHash(codeHash));
+
+  const tooltipLabel = (() => {
+    if (!codeId) return "Please select contract first.";
+
+    if (!attached)
+      return `You haven't attached the JSON Schema for code id ${codeId}. \n To use the schema, please add it on the code detail page.`;
+
+    return "Attached JSON Schema doesn’t have execute message.";
+  })();
 
   useEffect(() => {
     if (!schema) setTab(MessageTabs.JSON_INPUT);
@@ -48,11 +59,7 @@ export const ExecuteArea = ({
           currentTab={tab}
           onTabChange={setTab}
           disabled={!schema}
-          tooltipLabel={
-            codeId && !schema
-              ? `You haven't attached the JSON Schema for code id ${codeId}. \n To use the schema, please add it on the code detail page.`
-              : "Please select contract first."
-          }
+          tooltipLabel={tooltipLabel}
         />
       </Flex>
       <MessageInputContent

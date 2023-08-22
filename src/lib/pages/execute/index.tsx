@@ -8,7 +8,6 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
-import { useSchemaStore } from "lib/providers/store";
 import { AmpTrackToExecute } from "lib/services/amplitude";
 import type { ContractDetail } from "lib/services/contractService";
 import type { ContractAddr } from "lib/types";
@@ -29,7 +28,6 @@ const Execute = () => {
 
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const { getExecuteSchema } = useSchemaStore();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -39,11 +37,6 @@ const Execute = () => {
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
   const [codeHash, setCodeHash] = useState("");
   const [codeId, setCodeId] = useState("");
-
-  // ------------------------------------------//
-  // ------------------LOGICS------------------//
-  // ------------------------------------------//
-  const schema = getExecuteSchema(codeHash);
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
@@ -138,7 +131,6 @@ const Execute = () => {
         contractAddress={contractAddress}
         initialMsg={initialMsg}
         initialFunds={initialFunds}
-        schema={schema}
         codeId={codeId}
         codeHash={codeHash}
       />
