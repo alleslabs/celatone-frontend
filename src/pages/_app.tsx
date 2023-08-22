@@ -11,7 +11,7 @@ import Head from "next/head";
 import Script from "next/script";
 
 import { CHAIN_CONFIGS } from "config/chain";
-import { AppProvider } from "lib/app-provider/contexts/app";
+import { AppProvider, NavProvider } from "lib/app-provider";
 import {
   localosmosis,
   localosmosisAsset,
@@ -99,11 +99,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
                   />
                 </Head>
                 <CelatoneSeo />
-                <Layout>
-                  <MobileGuard>
-                    <Component {...pageProps} />
-                  </MobileGuard>
-                </Layout>
+                <NavProvider>
+                  <Layout>
+                    <MobileGuard>
+                      <Component {...pageProps} />
+                    </MobileGuard>
+                  </Layout>
+                </NavProvider>
               </TxBroadcastProvider>
             </AppProvider>
           </StoreProvider>

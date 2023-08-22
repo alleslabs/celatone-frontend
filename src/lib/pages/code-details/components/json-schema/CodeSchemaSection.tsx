@@ -104,7 +104,9 @@ export const CodeSchemaSection = ({
         <TabList>
           <StyledCustomTab>Full Schema</StyledCustomTab>
           {SchemaMsgTabList.map((schemaProperty) => (
-            <StyledCustomTab>{capitalize(schemaProperty)}Msg</StyledCustomTab>
+            <StyledCustomTab key={schemaProperty}>
+              {capitalize(schemaProperty)}Msg
+            </StyledCustomTab>
           ))}
         </TabList>
         <TabPanels pl={6}>
