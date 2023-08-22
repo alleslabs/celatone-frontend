@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#491](https://github.com/alleslabs/celatone-frontend/pull/491) Improve scrolling into view by delaying scroll function
 - [#489](https://github.com/alleslabs/celatone-frontend/pull/489) Improve jsonschema query response UI and fix jsonschema incorrect oneOf behavior
 - [#457](https://github.com/alleslabs/celatone-frontend/pull/457) Add alert for proposal forum review
 - [#389](https://github.com/alleslabs/celatone-frontend/pull/389) Fix modal consistency
