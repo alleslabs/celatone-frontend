@@ -127,7 +127,7 @@ const QueryComponent = ({
   }, [msgSchema.inputRequired, refetch]);
 
   return (
-    <AccordionItem className={`msg-${msgSchema.schema.required?.[0]}`}>
+    <AccordionItem className={`query_msg_${msgSchema.schema.required?.[0]}`}>
       <h6>
         <AccordionButton p={4}>
           <Box w="full" textAlign="start">
@@ -248,7 +248,7 @@ const QueryComponent = ({
 };
 
 interface SchemaQueryProps {
-  schema: Option<QuerySchema>;
+  schema: QuerySchema;
   contractAddress: ContractAddr;
   initialMsg: string;
 }
@@ -293,7 +293,7 @@ export const SchemaQuery = ({
           prev.includes(msgIndex) ? prev : prev.concat(msgIndex)
         );
         const el = document.querySelector(
-          `.msg-${schema[msgIndex][0].schema.required?.[0]}`
+          `.query_msg_${schema[msgIndex][0].schema.required?.[0]}`
         );
         // TODO: This is a workaround, refactor to a proper solution later
         const timeoutId = setTimeout(() => el?.scrollIntoView(), 200);
@@ -306,8 +306,6 @@ export const SchemaQuery = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schema, initialMsg, accordionRef.current]);
 
-  if (!schema) return null;
-
   return (
     <>
       <Flex gap={6} mb={6}>
@@ -315,6 +313,7 @@ export const SchemaQuery = ({
           placeholder="Search by command"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
+          action="query-message-search"
         />
         <Button
           variant="outline-gray"

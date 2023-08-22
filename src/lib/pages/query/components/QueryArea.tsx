@@ -32,15 +32,13 @@ export const QueryArea = ({
 
   useEffect(() => {
     if (!schema) setTab(MessageTabs.JSON_INPUT);
-    else {
-      setTab(MessageTabs.YOUR_SCHEMA);
-    }
+    else setTab(MessageTabs.YOUR_SCHEMA);
   }, [schema]);
 
   return (
     <>
-      <Flex align="center" justify="space-between" my={8}>
-        <Heading variant="h6" as="h6">
+      <Flex align="center" my={8}>
+        <Heading variant="h6" as="h6" mr={2}>
           Query Message
         </Heading>
         <MessageInputSwitch
@@ -63,7 +61,7 @@ export const QueryArea = ({
           />
         }
         schemaContent={
-          codeHash ? (
+          codeHash && schema ? (
             <SchemaQuery
               schema={schema}
               contractAddress={contractAddress}

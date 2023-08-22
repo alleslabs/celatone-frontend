@@ -21,20 +21,18 @@ export const MessageInputContent = ({
   currentTab,
   jsonContent,
   schemaContent,
-}: MessageInputContentProps) => {
-  return (
-    <Box
-      sx={{
-        "& .json-input": {
-          display: resolveTabDisplay(currentTab, MessageTabs.JSON_INPUT),
-        },
-        "& .your-schema": {
-          display: resolveTabDisplay(currentTab, MessageTabs.YOUR_SCHEMA),
-        },
-      }}
-    >
-      <div className="json-input">{jsonContent}</div>
-      <div className="your-schema">{schemaContent}</div>
-    </Box>
-  );
-};
+}: MessageInputContentProps) => (
+  <Box
+    sx={{
+      "& .json-input": {
+        display: resolveTabDisplay(currentTab, MessageTabs.JSON_INPUT),
+      },
+      "& .your-schema": {
+        display: resolveTabDisplay(currentTab, MessageTabs.YOUR_SCHEMA),
+      },
+    }}
+  >
+    <div className="json-input">{jsonContent}</div>
+    <div className="your-schema">{schemaContent}</div>
+  </Box>
+);
