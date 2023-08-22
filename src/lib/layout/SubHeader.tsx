@@ -9,7 +9,12 @@ import {
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import { useEffect, useRef } from "react";
 
-import { usePoolConfig, useGovConfig, useWasmConfig } from "lib/app-provider";
+import {
+  usePoolConfig,
+  useGovConfig,
+  useWasmConfig,
+  useMoveConfig,
+} from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -70,6 +75,7 @@ interface SubHeaderProps {
   setIsDevMode: Dispatch<SetStateAction<Option<boolean>>>;
   setIsExpand: Dispatch<SetStateAction<boolean>>;
 }
+
 const SubHeader = ({
   isExpand,
   isDevMode,
@@ -77,6 +83,7 @@ const SubHeader = ({
   setIsExpand,
 }: SubHeaderProps) => {
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
+  const moveConfig = useMoveConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: false });
   const govConfig = useGovConfig({ shouldRedirect: false });
 
@@ -86,19 +93,31 @@ const SubHeader = ({
     { name: "Overview", slug: "/", icon: "home" },
     { name: "Transactions", slug: "/txs", icon: "file" },
     { name: "Blocks", slug: "/blocks", icon: "block" },
-    ...(wasmConfig.enabled
-      ? ([
-          { name: "Codes", slug: "/codes", icon: "code" },
-          { name: "Contracts", slug: "/contracts", icon: "contract-address" },
-        ] as const)
-      : []),
-    ...(govConfig.enabled
-      ? ([{ name: "Proposals", slug: "/proposals", icon: "proposal" }] as const)
-      : []),
-    ...(poolConfig.enabled
-      ? ([{ name: "Osmosis Pools", slug: "/pools", icon: "pool" }] as const)
-      : []),
   ];
+
+  if (moveConfig.enabled)
+    subHeaderMenu.push({
+      name: "Modules",
+      slug: "/modules",
+      icon: "contract-address",
+    });
+
+  if (wasmConfig.enabled)
+    subHeaderMenu.push(
+      { name: "Codes", slug: "/codes", icon: "code" },
+      { name: "Contracts", slug: "/contracts", icon: "contract-address" }
+    );
+
+  if (govConfig.enabled)
+    subHeaderMenu.push({
+      name: "Proposals",
+      slug: "/proposals",
+      icon: "proposal",
+    });
+
+  if (poolConfig.enabled)
+    subHeaderMenu.push({ name: "Osmosis Pools", slug: "/pools", icon: "pool" });
+
   const isCurrentPage = useIsCurrentPage();
 
   const activeColor = "primary.light";

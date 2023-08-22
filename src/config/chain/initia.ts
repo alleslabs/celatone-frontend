@@ -5,7 +5,7 @@ import type { ChainConfigs } from "./types";
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "stone-9": {
     chain: "initia",
-    registryChainName: "initia",
+    registryChainName: "osmosis",
     prettyName: "Initia Testnet",
     // TODO change to initia
     lcd: "https://lcd.osmosis.zone",
@@ -27,7 +27,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       publicProject: {
-        enabled: false,
+        enabled: true,
       },
       gov: {
         enabled: true,
