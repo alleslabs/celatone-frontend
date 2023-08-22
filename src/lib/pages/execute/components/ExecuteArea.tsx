@@ -42,8 +42,8 @@ export const ExecuteArea = ({
 
   return (
     <Box my={4}>
-      <Flex align="center" justify="space-between" my={8}>
-        <Heading variant="h6" as="h6">
+      <Flex align="center" my={8}>
+        <Heading variant="h6" as="h6" mr={2}>
           Execute Message
         </Heading>
         <MessageInputSwitch
