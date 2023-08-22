@@ -148,7 +148,11 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
         chakraStyles={{
           control: (provided) => ({
             ...provided,
-            _disabled: { color: "text.main" },
+            _disabled: undefined,
+          }),
+          dropdownIndicator: (provided, state) => ({
+            ...provided,
+            color: state.isDisabled ? "gray.700" : undefined,
           }),
           option: (provided, state) => ({
             ...provided,
