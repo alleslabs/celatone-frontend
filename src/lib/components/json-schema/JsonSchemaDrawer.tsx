@@ -28,7 +28,12 @@ export const JsonSchemaDrawer = ({
   isOpen,
   onClose,
 }: JsonSchemaDrawerProps) => (
-  <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+  <Drawer
+    isOpen={isOpen}
+    onClose={onClose}
+    placement="bottom"
+    returnFocusOnClose={false}
+  >
     <DrawerOverlay />
     <DrawerContent h="80%">
       <DrawerHeader>

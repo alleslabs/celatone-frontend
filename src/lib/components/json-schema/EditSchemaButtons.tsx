@@ -17,8 +17,8 @@ export const EditSchemaButtons = ({
   <Flex gap={2}>
     <Button
       variant="outline-gray"
-      p="8px 6px"
-      leftIcon={<CustomIcon name="edit" boxSize={4} />}
+      size="sm"
+      leftIcon={<CustomIcon name="edit" boxSize={3} />}
       onClick={openDrawer}
     >
       Reattach Schema
@@ -29,8 +29,8 @@ export const EditSchemaButtons = ({
       trigger={
         <Button
           variant="outline-gray"
-          p="4px 8px"
-          leftIcon={<CustomIcon name="delete" boxSize={4} />}
+          size="sm"
+          leftIcon={<CustomIcon name="delete" boxSize={3} />}
         >
           Delete Schema
         </Button>
