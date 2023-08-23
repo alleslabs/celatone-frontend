@@ -111,12 +111,7 @@ const SubHeader = ({
 
   useEffect(() => {
     // Basic to dev and nav is  collapse -> should exapnd
-    if (isDevMode && !prevIsDevModeRef.current && !isExpand) {
-      setIsExpand(true);
-      // Dev to basic and nav is exapnd -> should collapse
-    } else if (!isDevMode && prevIsDevModeRef.current && isExpand) {
-      setIsExpand(false);
-    }
+    if (isDevMode && !prevIsDevModeRef.current && !isExpand) setIsExpand(true);
     prevIsDevModeRef.current = Boolean(isDevMode);
   }, [isDevMode, isExpand, setIsExpand]);
 
