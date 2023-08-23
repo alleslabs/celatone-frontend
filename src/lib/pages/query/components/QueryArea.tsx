@@ -44,7 +44,8 @@ export const QueryArea = ({
   useEffect(() => {
     if (!schema) setTab(MessageTabs.JSON_INPUT);
     else setTab(MessageTabs.YOUR_SCHEMA);
-  }, [schema]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(schema)]);
 
   return (
     <>
