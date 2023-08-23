@@ -2,6 +2,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import Long from "long";
+import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -37,6 +38,7 @@ import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
@@ -75,7 +77,7 @@ interface InstantiatePageProps {
   onComplete: (txResult: InstantiateResult, contractLabel: string) => void;
 }
 
-const Instantiate = ({ onComplete }: InstantiatePageProps) => {
+const Instantiate = observer(({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
@@ -91,7 +93,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
-
+  const { getSchemaByCodeHash } = useSchemaStore();
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
@@ -139,6 +141,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
+  const jsonSchema = getSchemaByCodeHash(codeHash);
   const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
   const enableInstantiate = useMemo(
     () =>
@@ -234,6 +237,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   useEffect(() => {
     setValue("codeHash", "");
     setTab(MessageTabs.JSON_INPUT);
+    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
@@ -306,6 +310,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       }
     }
   }, [codeIdQuery, msgQuery, setAssets, setValue]);
+
+  useEffect(() => {
+    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
+  }, [jsonSchema]);
 
   useEffect(() => {
     if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
@@ -400,6 +408,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                 type="instantiate"
                 codeHash={codeHash}
                 codeId={codeId}
+                jsonSchema={jsonSchema}
                 setSchemaInput={(msg: string) =>
                   setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
                 }
@@ -450,6 +459,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       />
     </>
   );
-};
+});
 
 export default Instantiate;

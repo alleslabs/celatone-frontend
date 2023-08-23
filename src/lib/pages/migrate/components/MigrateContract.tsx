@@ -24,6 +24,7 @@ import {
 } from "lib/components/json-schema";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
+import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeIdInfoResponse } from "lib/services/code";
@@ -49,6 +50,7 @@ export const MigrateContract = observer(
     const { broadcast } = useTxBroadcast();
     const migrateTx = useMigrateTx();
     const fabricateFee = useFabricateFee();
+    const { getSchemaByCodeHash } = useSchemaStore();
 
     const {
       control,
@@ -76,7 +78,7 @@ export const MigrateContract = observer(
     const [processing, setProcessing] = useState(false);
 
     const currentInput = msgInput[tab];
-
+    const jsonSchema = getSchemaByCodeHash(codeHash);
     const enableMigrate =
       !!address &&
       isCodeId(codeId) &&
@@ -155,6 +157,7 @@ export const MigrateContract = observer(
     useEffect(() => {
       setValue("codeHash", "");
       setTab(MessageTabs.JSON_INPUT);
+      setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
       if (codeId.length) {
         setStatus({ state: "loading" });
         const timer = setTimeout(() => {
@@ -183,6 +186,10 @@ export const MigrateContract = observer(
       }
       return () => {};
     }, [address, codeId, contractAddress, enableMigrate, currentInput]);
+
+    useEffect(() => {
+      if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
+    }, [jsonSchema]);
 
     return (
       <>
@@ -228,6 +235,7 @@ export const MigrateContract = observer(
               type="migrate"
               codeHash={codeHash}
               codeId={codeId}
+              jsonSchema={jsonSchema}
               setSchemaInput={(msg: string) =>
                 setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
               }
