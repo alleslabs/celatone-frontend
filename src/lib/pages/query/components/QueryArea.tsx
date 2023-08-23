@@ -26,7 +26,7 @@ export const QueryArea = ({
   codeHash,
   initialMsg,
 }: QueryAreaProps) => {
-  const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
+  const [tab, setTab] = useState<MessageTabs>();
 
   const { getQuerySchema, getSchemaByCodeHash } = useSchemaStore();
   const schema = getQuerySchema(codeHash);

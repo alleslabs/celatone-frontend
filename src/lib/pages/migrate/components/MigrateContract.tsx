@@ -28,7 +28,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
-import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
+import type { ComposedMsg, ContractAddr, HumanAddr, Option } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -42,6 +42,17 @@ interface MigrateContractProps {
   codeIdParam: string;
   handleBack: () => void;
 }
+
+const resolveEnable = (
+  address: Option<string>,
+  codeId: string,
+  currentInput: string,
+  status: FormStatus
+) =>
+  !!address &&
+  isCodeId(codeId) &&
+  jsonValidate(currentInput) === null &&
+  status.state === "success";
 
 export const MigrateContract = observer(
   ({ contractAddress, codeIdParam, handleBack }: MigrateContractProps) => {
@@ -68,28 +79,24 @@ export const MigrateContract = observer(
     });
 
     const { codeId, codeHash, msgInput } = watch();
-    const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
+    const [tab, setTab] = useState<MessageTabs>();
     const [status, setStatus] = useState<FormStatus>({ state: "init" });
     const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
     const [estimatedFee, setEstimatedFee] = useState<StdFee>();
     const [simulateError, setSimulateError] = useState("");
     const [processing, setProcessing] = useState(false);
 
-    const currentInput = msgInput[tab];
+    const currentInput = tab ? msgInput[tab] : "{}";
 
-    const enableMigrate =
-      !!address &&
-      isCodeId(codeId) &&
-      jsonValidate(currentInput) === null &&
-      status.state === "success";
+    const enableMigrate = resolveEnable(address, codeId, currentInput, status);
 
     const { isFetching: isSimulating } = useSimulateFeeQuery({
       enabled: composedTxMsg.length > 0,
       messages: composedTxMsg,
-      onSuccess: (gasRes) => {
-        if (gasRes) setEstimatedFee(fabricateFee(gasRes));
-        else setEstimatedFee(undefined);
-      },
+      onSuccess: (gasRes) =>
+        gasRes
+          ? setEstimatedFee(fabricateFee(gasRes))
+          : setEstimatedFee(undefined),
       onError: (e) => {
         setSimulateError(e.message);
         setEstimatedFee(undefined);

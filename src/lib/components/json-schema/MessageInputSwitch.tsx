@@ -4,6 +4,7 @@ import { useRef } from "react";
 
 import { Tooltip } from "../Tooltip";
 import { MotionBox } from "lib/components/MotionBox";
+import type { Option } from "lib/types";
 
 export enum MessageTabs {
   JSON_INPUT = "JSON Input",
@@ -14,10 +15,10 @@ export const jsonInputFormKey = MessageTabs.JSON_INPUT as "JSON Input";
 export const yourSchemaInputFormKey = MessageTabs.YOUR_SCHEMA as "Your Schema";
 
 interface MessageInputSwitchProps {
-  currentTab: MessageTabs;
+  currentTab: Option<MessageTabs>;
   disabled?: boolean;
   tooltipLabel?: string;
-  onTabChange: Dispatch<SetStateAction<MessageTabs>>;
+  onTabChange: Dispatch<SetStateAction<Option<MessageTabs>>>;
 }
 
 const tabs = Object.values(MessageTabs);
@@ -29,7 +30,7 @@ export const MessageInputSwitch = ({
   onTabChange,
 }: MessageInputSwitchProps) => {
   const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const activeIndex = tabs.indexOf(currentTab);
+  const activeIndex = currentTab ? tabs.indexOf(currentTab) : -1;
   return (
     <Tooltip label={tooltipLabel} isDisabled={!disabled}>
       <div>

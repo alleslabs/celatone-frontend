@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#496](https://github.com/alleslabs/celatone-frontend/pull/496) Fix icns bech32 prefix searchbar display and schema switch highlight on query page
 - [#470](https://github.com/alleslabs/celatone-frontend/pull/470) Fix json schema array field default behavior
 - [#476](https://github.com/alleslabs/celatone-frontend/pull/476) Fix terra rpc
 - [#473](https://github.com/alleslabs/celatone-frontend/pull/473) Fix wording on upload code modal
