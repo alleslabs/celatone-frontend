@@ -22,7 +22,7 @@ export const AccountHeader = ({
   const displayName = icnsName?.primary_name || "Account Details";
 
   return (
-    <Flex direction="column" gap={2}>
+    <Flex direction="column" gap={1}>
       <Flex gap={1} minH="36px" align="center">
         {publicDetail?.logo || icnsName?.primary_name ? (
           <Image
@@ -57,14 +57,19 @@ export const AccountHeader = ({
         />
       </Flex>
       {icnsName?.primary_name && (
-        <Flex gap={2} align="center">
+        <Flex
+          gap={{ base: 0, md: 2 }}
+          align={{ base: "flex-start", md: "center" }}
+          direction={{ base: "column", md: "row" }}
+        >
           <Text fontWeight={500} color="text.dark" variant="body2">
             Registered ICNS names:
           </Text>
-          <Flex gap={1} align="center">
+          <Flex align="center">
             {icnsName.names.map((name) => (
               <Flex
                 key={name}
+                display="inline-flex"
                 align="center"
                 direction="row"
                 _after={{
@@ -77,6 +82,7 @@ export const AccountHeader = ({
                   },
                 }}
                 gap={1}
+                mr={1}
               >
                 {name === icnsName.primary_name && <PrimaryNameMark />}
                 <CopyLink value={name} type="icns_names" withoutIcon />

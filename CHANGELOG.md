@@ -74,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#499](https://github.com/alleslabs/celatone-frontend/pull/499) Fix responsive for icns and add cl pool icon
 - [#476](https://github.com/alleslabs/celatone-frontend/pull/476) Fix terra rpc
 - [#473](https://github.com/alleslabs/celatone-frontend/pull/473) Fix wording on upload code modal
 - [#465](https://github.com/alleslabs/celatone-frontend/pull/465) Fix wrong access queryKey in validator info
