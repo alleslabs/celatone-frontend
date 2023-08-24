@@ -19,7 +19,7 @@ export default function FieldTemplate<T = any, F = any>(
     registry,
     required,
     rawErrors = [],
-    errors,
+    // errors,
     help,
     schema,
     uiSchema,
@@ -54,7 +54,7 @@ export default function FieldTemplate<T = any, F = any>(
         isInvalid={rawErrors && rawErrors.length > 0}
       >
         {children}
-        {errors}
+        {/* {errors} */}
         {help}
       </FormControl>
     </WrapIfAdditionalTemplate>
