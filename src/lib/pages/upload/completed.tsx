@@ -111,10 +111,10 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         variant="outline-primary"
         w="full"
         onClick={() => {
-          navigate({ pathname: "/my-codes" });
+          navigate({ pathname: "/stored-codes" });
         }}
       >
-        Go to my code list
+        Go to my stored codes
       </Button>
     </WasmPageContainer>
   );
