@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#497](https://github.com/alleslabs/celatone-frontend/pull/497) Fix stored codes route and navbar behavior from dev to normal mode
 - [#470](https://github.com/alleslabs/celatone-frontend/pull/470) Fix json schema array field default behavior
 - [#476](https://github.com/alleslabs/celatone-frontend/pull/476) Fix terra rpc
 - [#473](https://github.com/alleslabs/celatone-frontend/pull/473) Fix wording on upload code modal
