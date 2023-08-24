@@ -29,7 +29,7 @@ export const ExecuteArea = ({
   codeHash,
   codeId,
 }: ExecuteAreaProps) => {
-  const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
+  const [tab, setTab] = useState<MessageTabs>();
 
   const { getExecuteSchema, getSchemaByCodeHash } = useSchemaStore();
   const schema = getExecuteSchema(codeHash);

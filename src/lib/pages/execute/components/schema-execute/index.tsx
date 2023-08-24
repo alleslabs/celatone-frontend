@@ -84,7 +84,12 @@ export const SchemaExecute = ({
         />
         <Button
           variant="outline-gray"
-          rightIcon={<CustomIcon name="chevron-down" boxSize={3} />}
+          rightIcon={
+            <CustomIcon
+              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+              boxSize={3}
+            />
+          }
           minH="40px"
           onClick={() => {
             AmpTrackExpandAll(expandedIndexes.length ? "collapse" : "expand");

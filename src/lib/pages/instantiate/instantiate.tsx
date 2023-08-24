@@ -2,7 +2,6 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
 import Long from "long";
-import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -77,7 +76,7 @@ interface InstantiatePageProps {
   onComplete: (txResult: InstantiateResult, contractLabel: string) => void;
 }
 
-const Instantiate = observer(({ onComplete }: InstantiatePageProps) => {
+const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
@@ -102,7 +101,7 @@ const Instantiate = observer(({ onComplete }: InstantiatePageProps) => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
+  const [tab, setTab] = useState<MessageTabs>();
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
@@ -125,7 +124,7 @@ const Instantiate = observer(({ onComplete }: InstantiatePageProps) => {
     },
   });
   const { codeId, codeHash, label, adminAddress, msgInput } = watch();
-  const currentInput = msgInput[tab];
+  const currentInput = tab ? msgInput[tab] : "{}";
 
   const {
     control: assetsControl,
@@ -459,6 +458,6 @@ const Instantiate = observer(({ onComplete }: InstantiatePageProps) => {
       />
     </>
   );
-});
+};
 
 export default Instantiate;
