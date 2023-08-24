@@ -100,7 +100,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [tab, setTab] = useState(MessageTabs.JSON_INPUT);
+  const [tab, setTab] = useState<MessageTabs>();
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
@@ -123,7 +123,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
   });
   const { codeId, codeHash, label, adminAddress, msgInput } = watch();
-  const currentInput = msgInput[tab];
+  const currentInput = tab ? msgInput[tab] : "{}";
 
   const {
     control: assetsControl,
