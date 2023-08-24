@@ -96,7 +96,7 @@ const ResultItem = ({
   onClose,
 }: ResultItemProps) => {
   const route = getRouteOptions(type)?.pathname;
-  const normalizedIcnsValue = value.includes(`.${metadata.icns.bech32Prefix}`)
+  const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
     ? value
     : `${value}.${metadata.icns.bech32Prefix}`;
   return (

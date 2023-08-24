@@ -87,6 +87,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#496](https://github.com/alleslabs/celatone-frontend/pull/496) Fix icns bech32 prefix searchbar display and schema switch highlight on query page
+- [#499](https://github.com/alleslabs/celatone-frontend/pull/499) Fix sometimes select widget input not full, manual schema upload max lines, and expand/collapse all chevron
+- [#497](https://github.com/alleslabs/celatone-frontend/pull/497) Fix stored codes route and navbar behavior from dev to normal mode
 - [#470](https://github.com/alleslabs/celatone-frontend/pull/470) Fix json schema array field default behavior
 - [#476](https://github.com/alleslabs/celatone-frontend/pull/476) Fix terra rpc
 - [#473](https://github.com/alleslabs/celatone-frontend/pull/473) Fix wording on upload code modal

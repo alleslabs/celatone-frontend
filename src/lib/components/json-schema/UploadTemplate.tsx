@@ -160,6 +160,7 @@ const MethodRender = ({
               })
             }
             validateFn={validateSchema}
+            maxLines={25}
           />
         </>
       );

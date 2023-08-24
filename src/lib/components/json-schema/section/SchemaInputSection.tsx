@@ -53,12 +53,14 @@ export const SchemaInputSection = observer(
               </Flex>
             </Flex>
             {/* TODO: revisit type assertion later */}
-            <JsonSchemaForm
-              schema={jsonSchema[type] as RJSFSchema}
-              formId={type}
-              initialFormData={initialFormData}
-              onChange={(data) => setSchemaInput(JSON.stringify(data))}
-            />
+            <div style={{ width: "100%" }}>
+              <JsonSchemaForm
+                schema={jsonSchema[type] as RJSFSchema}
+                formId={type}
+                initialFormData={initialFormData}
+                onChange={(data) => setSchemaInput(JSON.stringify(data))}
+              />
+            </div>
           </>
         ) : (
           <>
