@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
+import { AnimatePresence } from "framer-motion";
 import { useRef } from "react";
+import type { CSSProperties, Dispatch, SetStateAction } from "react";
 
 import { Tooltip } from "../Tooltip";
 import { MotionBox } from "lib/components/MotionBox";
@@ -18,6 +19,7 @@ interface MessageInputSwitchProps {
   disabled?: boolean;
   tooltipLabel?: string;
   onTabChange: Dispatch<SetStateAction<MessageTabs>>;
+  ml?: CSSProperties["marginLeft"];
 }
 
 const tabs = Object.values(MessageTabs);
@@ -26,13 +28,15 @@ export const MessageInputSwitch = ({
   currentTab,
   disabled = false,
   tooltipLabel = "Select or fill code id first",
+  ml,
   onTabChange,
 }: MessageInputSwitchProps) => {
   const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const activeIndex = tabs.indexOf(currentTab);
+  const activeIndex = currentTab ? tabs.indexOf(currentTab) : -1;
+
   return (
     <Tooltip label={tooltipLabel} isDisabled={!disabled}>
-      <div>
+      <div style={{ marginLeft: ml }}>
         <Flex
           border="1px solid var(--chakra-colors-gray-700)"
           borderRadius="4px"
@@ -67,21 +71,23 @@ export const MessageInputSwitch = ({
               {tab}
             </MotionBox>
           ))}
-          <MotionBox
-            h={tabRefs.current[activeIndex]?.clientHeight}
-            w={tabRefs.current[activeIndex]?.clientWidth}
-            position="absolute"
-            borderRadius="2px"
-            backgroundColor="primary.dark"
-            animate={{
-              left: `${tabRefs.current[activeIndex]?.offsetLeft ?? 0}px`,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: "250",
-              damping: "30",
-            }}
-          />
+          <AnimatePresence>
+            <MotionBox
+              h={`${tabRefs.current[activeIndex]?.clientHeight}px`}
+              w={`${tabRefs.current[activeIndex]?.clientWidth}px`}
+              position="absolute"
+              borderRadius="2px"
+              backgroundColor="primary.dark"
+              animate={{
+                left: `${tabRefs.current[activeIndex]?.offsetLeft ?? 0}px`,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: "250",
+                damping: "30",
+              }}
+            />
+          </AnimatePresence>
         </Flex>
       </div>
     </Tooltip>

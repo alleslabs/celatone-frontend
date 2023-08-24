@@ -18,7 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { encode } from "js-base64";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -28,7 +28,12 @@ import {
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { JsonSchemaForm } from "lib/components/json-schema";
+import {
+  JsonSchemaForm,
+  MessageInputSwitch,
+  MessageTabs,
+} from "lib/components/json-schema";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { EmptyState } from "lib/components/state";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore } from "lib/providers/store";
@@ -38,6 +43,8 @@ import type { Activity } from "lib/stores/contract";
 import type { QueryExecuteSchema, QuerySchema } from "lib/stores/schema";
 import type { ContractAddr, HumanAddr, Option, RpcQueryError } from "lib/types";
 import {
+  dateFromNow,
+  formatUTC,
   getCurrentDate,
   jsonValidate,
   parseSchemaInitialData,
@@ -46,6 +53,35 @@ import {
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
 });
+
+const TimestampText = memo(
+  ({
+    timestamp,
+    inputRequired,
+  }: {
+    timestamp: Option<Date>;
+    inputRequired: Option<boolean>;
+  }) => {
+    const [, setRenderCount] = useState(0);
+    let text = "Query response will display here";
+    if (timestamp)
+      text = inputRequired
+        ? `Query Success (${dateFromNow(timestamp)})`
+        : `Last Queried at ${formatUTC(timestamp)} (${dateFromNow(timestamp)})`;
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setRenderCount((prev) => prev + 1);
+      }, 60 * 1000);
+      return () => clearInterval(interval);
+    }, []);
+
+    return (
+      <Text variant="body3" color="text.dark">
+        {text}
+      </Text>
+    );
+  }
+);
 
 interface QueryComponentInterface {
   msgSchema: QueryExecuteSchema;
@@ -66,13 +102,20 @@ const QueryComponent = ({
   initialMsg,
   addActivity,
 }: QueryComponentInterface) => {
+  const [resTab, setResTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
   const [msg, setMsg] = useState("{}");
   const [res, setRes] = useState("{}");
   const [queryError, setQueryError] = useState("");
+  const [timestamp, setTimestamp] = useState<Date>();
 
   useEffect(() => {
     if (Object.keys(initialMsg).length) setMsg(JSON.stringify(initialMsg));
   }, [initialMsg]);
+
+  useEffect(() => {
+    if (msgSchema.inputRequired) setResTab(MessageTabs.YOUR_SCHEMA);
+    else setResTab(MessageTabs.JSON_INPUT);
+  }, [msgSchema.inputRequired, setResTab]);
 
   // TODO: Abstract query
   const {
@@ -100,19 +143,23 @@ const QueryComponent = ({
       retry: false,
       cacheTime: 0,
       onSuccess(data) {
+        const currentDate = getCurrentDate();
         setQueryError("");
         setRes(JSON.stringify(data.data, null, 2));
+        setTimestamp(currentDate);
         addActivity({
           type: "query",
           action: msgSchema.title ?? "Unknown",
           sender: walletAddress as HumanAddr,
           contractAddress,
           msg: encode(msg),
-          timestamp: getCurrentDate(),
+          timestamp: currentDate,
         });
       },
       onError(err: AxiosError<RpcQueryError>) {
         setQueryError(err.response?.data.message || DEFAULT_RPC_ERROR);
+        setTimestamp(undefined);
+        setRes("{}");
       },
     }
   );
@@ -182,16 +229,25 @@ const QueryComponent = ({
               <Text variant="body1" fontWeight={700}>
                 Return Output
               </Text>
-              <Text variant="body3" color="text.dark">
-                Query response will display here
-              </Text>
-              <CopyButton
-                isDisable={res === "{}" || Boolean(queryError)}
-                value={res}
-                amptrackSection="query_response"
-                buttonText="Copy Output"
-                ml="auto"
+              <TimestampText
+                timestamp={timestamp}
+                inputRequired={msgSchema.inputRequired}
               />
+              {msgSchema.inputRequired ? (
+                <CopyButton
+                  isDisable={res === "{}" || Boolean(queryError)}
+                  value={res}
+                  amptrackSection="query_response"
+                  buttonText="Copy Output"
+                  ml="auto"
+                />
+              ) : (
+                <MessageInputSwitch
+                  currentTab={resTab}
+                  onTabChange={setResTab}
+                  ml="auto"
+                />
+              )}
             </Flex>
             {queryError && (
               <Alert variant="error" mb={3} alignItems="center">
@@ -200,13 +256,22 @@ const QueryComponent = ({
                 </AlertDescription>
               </Alert>
             )}
-            <Box bg="gray.800" p={4} borderRadius="8px">
-              <JsonSchemaForm
-                formId={`response-${msgSchema.title}`}
-                schema={resSchema}
-                initialFormData={parseSchemaInitialData(res)}
+            {resTab === MessageTabs.JSON_INPUT ? (
+              <JsonReadOnly
+                topic="Return Output"
+                labelBgColor="gray.900"
+                text={res}
+                canCopy={res !== "{}"}
               />
-            </Box>
+            ) : (
+              <Box bg="gray.800" p={4} borderRadius="8px">
+                <JsonSchemaForm
+                  formId={`response-${msgSchema.title}`}
+                  schema={resSchema}
+                  initialFormData={parseSchemaInitialData(res)}
+                />
+              </Box>
+            )}
             {!msgSchema.inputRequired && (
               <Flex gap={2} justify="flex-start" mt={3}>
                 <CopyButton
