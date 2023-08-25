@@ -133,7 +133,7 @@ const ReturnWidgets = ({
           isOutput
         />
         <CopyButton
-          isDisable={res === "{}" || Boolean(queryError)}
+          isDisable={res === "" || Boolean(queryError)}
           value={res}
           amptrackSection="query_response"
           buttonText="Copy Output"
@@ -288,7 +288,7 @@ export const SchemaQueryComponent = ({
                 topic="Return Output"
                 labelBgColor="gray.900"
                 text={res}
-                canCopy={res !== "{}"}
+                canCopy={res !== ""}
               />
             ) : (
               <Box bg="gray.800" p={4} borderRadius="8px">
