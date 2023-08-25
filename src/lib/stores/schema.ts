@@ -105,12 +105,12 @@ export class SchemaStore {
     if (!querySchema || !responsesSchema) return undefined;
 
     const getResponseSchema = (responseSchema: JsonSchema): SchemaInfo => {
-      const { title, description, ...msgSchema } = responseSchema;
+      const { title, description, ...resSchema } = responseSchema;
       return {
         title,
         description,
         schema: {
-          ...msgSchema,
+          ...resSchema,
           readOnly: true,
         },
       };
