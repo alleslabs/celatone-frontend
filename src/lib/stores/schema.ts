@@ -39,7 +39,7 @@ export interface CodeSchema {
   [SchemaProperties.ATTACHED_CODE_ID]: string;
 }
 
-export type QuerySchema = Array<[QueryExecuteSchema, JsonSchema]>;
+export type QuerySchema = Array<[QueryExecuteSchema, QueryExecuteSchema]>;
 
 export type ExecuteSchema = Array<QueryExecuteSchema>;
 
@@ -104,66 +104,73 @@ export class SchemaStore {
 
     if (!querySchema || !responsesSchema) return undefined;
 
-    return querySchema.oneOf?.reduce<Array<[QueryExecuteSchema, JsonSchema]>>(
-      (acc, msg) => {
-        const eachQuerySchema = msg as JsonSchema;
-        const { type, enum: enumOptions, required } = eachQuerySchema;
-        if (type === "string" && enumOptions) {
-          return [
-            ...acc,
-            ...enumOptions.map<[QueryExecuteSchema, JsonSchema]>(
-              (enumOption) => [
-                {
-                  title: enumOption as string,
-                  description: eachQuerySchema.description,
-                  schema: {
-                    $schema: querySchema.$schema,
-                    type,
-                    enum: [enumOption],
-                  },
-                  inputRequired: false,
-                },
-                {
-                  ...responsesSchema[enumOption as string],
-                  readOnly: true,
-                },
-              ]
-            ),
-          ];
-        }
-        if (required) {
-          const { description, ...msgSchema } = eachQuerySchema;
+    const getResponseSchema = (
+      responseSchema: JsonSchema
+    ): QueryExecuteSchema => {
+      const { title, description, ...msgSchema } = responseSchema;
+      return {
+        title,
+        description,
+        schema: {
+          ...msgSchema,
+          readOnly: true,
+        },
+      };
+    };
 
-          const title = required[0];
-          const propertyKey = eachQuerySchema.properties?.[title] as JsonSchema;
-          const noInputRequired =
-            propertyKey.type === "object" && !("properties" in propertyKey);
-
-          return [
-            ...acc,
-            [
+    return querySchema.oneOf?.reduce<
+      Array<[QueryExecuteSchema, QueryExecuteSchema]>
+    >((acc, msg) => {
+      const eachQuerySchema = msg as JsonSchema;
+      const { type, enum: enumOptions, required } = eachQuerySchema;
+      if (type === "string" && enumOptions) {
+        return [
+          ...acc,
+          ...enumOptions.map<[QueryExecuteSchema, QueryExecuteSchema]>(
+            (enumOption) => [
               {
-                title,
-                description,
+                title: enumOption as string,
+                description: eachQuerySchema.description,
                 schema: {
-                  ...msgSchema,
                   $schema: querySchema.$schema,
-                  definitions: querySchema.definitions,
+                  type,
+                  enum: [enumOption],
                 },
-                inputRequired: !noInputRequired,
+                inputRequired: false,
               },
-              {
-                ...responsesSchema[required[0]],
-                readOnly: true,
-              },
-            ],
-          ];
-        }
+              getResponseSchema(responsesSchema[enumOption as string]),
+            ]
+          ),
+        ];
+      }
+      if (required) {
+        const { description, ...msgSchema } = eachQuerySchema;
 
-        return acc;
-      },
-      []
-    );
+        const title = required[0];
+        const propertyKey = eachQuerySchema.properties?.[title] as JsonSchema;
+        const noInputRequired =
+          propertyKey.type === "object" && !("properties" in propertyKey);
+
+        return [
+          ...acc,
+          [
+            {
+              title,
+              description,
+              schema: {
+                ...msgSchema,
+                $schema: querySchema.$schema,
+                definitions: querySchema.definitions,
+              },
+              inputRequired: !noInputRequired,
+            },
+            getResponseSchema(responsesSchema[required[0]]),
+          ],
+        ];
+      }
+
+      return acc;
+    }, []);
   }
 
   getExecuteSchema(codeHash: string): Option<ExecuteSchema> {

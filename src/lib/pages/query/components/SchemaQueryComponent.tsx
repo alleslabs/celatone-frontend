@@ -12,11 +12,9 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
-import type { RJSFSchema } from "@rjsf/utils";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
-import type { SetStateAction, Dispatch } from "react";
 import { memo, useState, useEffect, useCallback } from "react";
 
 import { CELATONE_QUERY_KEYS } from "lib/app-provider";
@@ -43,7 +41,6 @@ import type {
 import {
   dateFromNow,
   encode,
-  formatUTC,
   getCurrentDate,
   getDefaultMsg,
   isNonEmptyJsonData,
@@ -55,18 +52,9 @@ const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
 });
 
-interface ReturnWidgetsProps {
-  timestamp: Option<Date>;
-  inputRequired: Option<boolean>;
-  res: string;
-  resTab: Option<OutputMessageTabs>;
-  queryError: string;
-  setResTab: Dispatch<SetStateAction<Option<OutputMessageTabs>>>;
-}
-
 interface SchemaQueryComponentProps {
   msgSchema: QueryExecuteSchema;
-  resSchema: RJSFSchema;
+  resSchema: QueryExecuteSchema;
   contractAddress: ContractAddr;
   lcdEndpoint: string;
   walletAddress: Option<string>;
@@ -76,11 +64,6 @@ interface SchemaQueryComponentProps {
 
 const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
   const [, setRenderCount] = useState(0);
-  let text = "Query response will display here";
-  if (timestamp)
-    text = `Last Queried at ${formatUTC(timestamp)} (${dateFromNow(
-      timestamp
-    )})`;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -90,58 +73,11 @@ const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
   }, []);
 
   return (
-    <Text variant="body3" color="text.dark">
-      {text}
+    <Text variant="body3" color="text.dark" opacity={timestamp ? 1 : 0}>
+      ({timestamp ? `Last queried ${dateFromNow(timestamp)}` : "N/A"})
     </Text>
   );
 });
-
-const ReturnWidgets = ({
-  timestamp,
-  inputRequired,
-  res,
-  resTab,
-  queryError,
-  setResTab,
-}: ReturnWidgetsProps) =>
-  !inputRequired ? (
-    <Flex align="center" gap={2} mb={3}>
-      <Text variant="body1" fontWeight={700}>
-        Return Output
-      </Text>
-      <TimestampText timestamp={timestamp} />
-      <MessageInputSwitch
-        currentTab={resTab}
-        onTabChange={setResTab}
-        ml="auto"
-        isOutput
-      />
-    </Flex>
-  ) : (
-    <Flex justify="space-between" mb={6}>
-      <Flex direction="column" gap={2} flex={0.6}>
-        <Text variant="body1" fontWeight={700}>
-          Return Output
-        </Text>
-        <TimestampText timestamp={timestamp} />
-      </Flex>
-      <Flex direction="column" gap={2}>
-        <MessageInputSwitch
-          currentTab={resTab}
-          onTabChange={setResTab}
-          ml="auto"
-          isOutput
-        />
-        <CopyButton
-          isDisable={res === "" || Boolean(queryError)}
-          value={res}
-          amptrackSection="query_response"
-          buttonText="Copy Output"
-          ml="auto"
-        />
-      </Flex>
-    </Flex>
-  );
 
 export const SchemaQueryComponent = ({
   msgSchema,
@@ -268,14 +204,23 @@ export const SchemaQueryComponent = ({
             </GridItem>
           )}
           <GridItem>
-            <ReturnWidgets
-              timestamp={timestamp}
-              inputRequired={msgSchema.inputRequired}
-              res={res}
-              resTab={resTab}
-              queryError={queryError}
-              setResTab={setResTab}
-            />
+            <Flex justify="space-between" mb={4}>
+              <Flex direction="column">
+                <Text variant="body1" fontWeight={700}>
+                  Return Output
+                </Text>
+                <Text variant="body3" textColor="text.dark">
+                  {resSchema.description}
+                </Text>
+                <TimestampText timestamp={timestamp} />
+              </Flex>
+              <MessageInputSwitch
+                currentTab={resTab}
+                onTabChange={setResTab}
+                ml="auto"
+                isOutput
+              />
+            </Flex>
             {queryError && (
               <Alert variant="error" mb={3} alignItems="center">
                 <AlertDescription wordBreak="break-word">
@@ -294,7 +239,7 @@ export const SchemaQueryComponent = ({
               <Box bg="gray.800" p={4} borderRadius="8px">
                 <JsonSchemaForm
                   formId={`response-${msgSchema.title}`}
-                  schema={resSchema}
+                  schema={resSchema.schema}
                   initialFormData={parseSchemaInitialData(res)}
                 />
               </Box>
