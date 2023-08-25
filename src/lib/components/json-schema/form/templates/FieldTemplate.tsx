@@ -39,7 +39,6 @@ export default function FieldTemplate<T = any, F = any>(
       if (required) {
         if (schema.type === "array") onChange([] as T);
         else if (schema.type === "boolean") onChange(false as T);
-        else if (schema.type === "string") onChange("" as T);
       } else onChange(null as T);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
