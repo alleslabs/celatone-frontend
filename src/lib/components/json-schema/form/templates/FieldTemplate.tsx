@@ -35,9 +35,11 @@ export default function FieldTemplate<T = any, F = any>(
   >("WrapIfAdditionalTemplate", registry, uiOptions);
 
   useEffect(() => {
-    if (required && formData === undefined) {
-      if (schema.type === "array") onChange([] as T);
-      else if (schema.type === "boolean") onChange(false as T);
+    if (formData === undefined) {
+      if (required) {
+        if (schema.type === "array") onChange([] as T);
+        else if (schema.type === "boolean") onChange(false as T);
+      } else onChange(null as T);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(formData), onChange, required, schema.type]);

@@ -97,7 +97,7 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
     (!!label || !!schema.title);
 
   const handleOnChange = ({ target }: ChangeEvent<HTMLInputElement>) =>
-    onChange(target.value === "" ? options.emptyValue : target.value);
+    onChange(target.value);
   const handleOnBlur = ({ target }: FocusEvent<HTMLInputElement>) =>
     onBlur(id, target.value);
   const handleOnFocus = ({ target }: FocusEvent<HTMLInputElement>) =>
