@@ -1,4 +1,4 @@
-import { AppProvider } from "lib/app-provider";
+import { AppProvider, NavProvider } from "lib/app-provider";
 
 import { AmplitudeProvider } from "./amplitude";
 import { ChakraProvider } from "./chakra";
@@ -14,7 +14,9 @@ export default ({ children }: { children: React.ReactNode }) => (
         <AppProvider>
           <ChainProvider>
             <AmplitudeProvider>
-              <TxBroadcastProvider>{children}</TxBroadcastProvider>
+              <NavProvider>
+                <TxBroadcastProvider>{children}</TxBroadcastProvider>
+              </NavProvider>
             </AmplitudeProvider>
           </ChainProvider>
         </AppProvider>

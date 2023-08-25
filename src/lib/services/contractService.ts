@@ -4,6 +4,7 @@ import { useCallback } from "react";
 
 import {
   CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
   useCelatoneApp,
   useWasmConfig,
 } from "lib/app-provider";
@@ -36,8 +37,11 @@ import type {
 } from "lib/types";
 import { parseDate, parseTxHashOpt, parseDateOpt } from "lib/utils";
 
+import { getCodeIdInfo } from "./code";
+
 export interface ContractDetail extends ContractLocalInfo {
   codeId: number;
+  codeHash: string;
   admin: Option<Addr>;
 }
 
@@ -56,15 +60,22 @@ export const useContractDetailByContractAddress = (
   onError?: (err: Error) => void
 ): UseQueryResult<ContractDetail> => {
   const { indexerGraphClient } = useCelatoneApp();
+  const lcdEndpoint = useBaseApiRoute("rest");
 
   const queryFn = useCallback(async () => {
     return indexerGraphClient
       .request(getContractByContractAddressQueryDocument, { contractAddress })
-      .then<ContractDetail>(({ contracts_by_pk }) => {
+      .then<ContractDetail>(async ({ contracts_by_pk }) => {
         if (!contracts_by_pk) throw Error("Contract not found");
+        // TODO: retrieve code hash from gql instead when available
+        const codeHash = await getCodeIdInfo(
+          lcdEndpoint,
+          String(contracts_by_pk.code_id)
+        ).then((data) => data.code_info.data_hash);
         return {
           contractAddress,
           codeId: contracts_by_pk.code_id,
+          codeHash,
           label: contracts_by_pk.label,
           instantiator: contracts_by_pk.accountByInitBy?.address as Addr,
           admin: contracts_by_pk.admin
@@ -72,7 +83,7 @@ export const useContractDetailByContractAddress = (
             : undefined,
         };
       });
-  }, [contractAddress, indexerGraphClient]);
+  }, [contractAddress, lcdEndpoint, indexerGraphClient]);
 
   return useQuery(
     [

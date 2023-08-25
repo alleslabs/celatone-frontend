@@ -39,6 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#492](https://github.com/alleslabs/celatone-frontend/pull/492) Add jsonschema actions on contract detail page
+- [#486](https://github.com/alleslabs/celatone-frontend/pull/486) Switch to schema tab when available and prefill,expand,and scroll to the prefill msg
+- [#483](https://github.com/alleslabs/celatone-frontend/pull/483) Add json schema functionality to execute page
+- [#482](https://github.com/alleslabs/celatone-frontend/pull/482) Add json schema functionality to query page
+- [#477](https://github.com/alleslabs/celatone-frontend/pull/477) Add json schema section on code detail page
+- [#475](https://github.com/alleslabs/celatone-frontend/pull/475) Add json schema functionality to instantiate contract
+- [#472](https://github.com/alleslabs/celatone-frontend/pull/472) Add json schema functionality to migrate contract
+- [#461](https://github.com/alleslabs/celatone-frontend/pull/461) Add json schema form
+- [#455](https://github.com/alleslabs/celatone-frontend/pull/455) Implement schema store and unit test
+- [#453](https://github.com/alleslabs/celatone-frontend/pull/453) Attach schema feature on upload complete
 - [#481](https://github.com/alleslabs/celatone-frontend/pull/481) Support Stargaze testnet
 - [#471](https://github.com/alleslabs/celatone-frontend/pull/471) Add proposal config, use Hasura admin secret
 - [#467](https://github.com/alleslabs/celatone-frontend/pull/467) Dynamic wallet by network, add disableAnyofAddress config
@@ -52,6 +62,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#500](https://github.com/alleslabs/celatone-frontend/pull/500) Disable estimated fee when input is invalid
+- [#498](https://github.com/alleslabs/celatone-frontend/pull/498) Automatically switch to schema tab and show 404 not found error
+- [#491](https://github.com/alleslabs/celatone-frontend/pull/491) Improve scrolling into view by delaying scroll function
+- [#489](https://github.com/alleslabs/celatone-frontend/pull/489) Improve jsonschema query response UI and fix jsonschema incorrect oneOf behavior
 - [#484](https://github.com/alleslabs/celatone-frontend/pull/484) Fix text size consistency in txs message
 - [#480](https://github.com/alleslabs/celatone-frontend/pull/480) Update chain registry package and add attach funds in code snippet
 - [#478](https://github.com/alleslabs/celatone-frontend/pull/478) Fix pool txs icon and style
@@ -74,7 +88,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+<<<<<<< HEAD
 - [#503](https://github.com/alleslabs/celatone-frontend/pull/503) Fix assets `view more` button in account detail and fix txs row
+=======
+- [#496](https://github.com/alleslabs/celatone-frontend/pull/496) Fix icns bech32 prefix searchbar display and schema switch highlight on query page
+- [#499](https://github.com/alleslabs/celatone-frontend/pull/499) Fix sometimes select widget input not full, manual schema upload max lines, and expand/collapse all chevron
+- [#497](https://github.com/alleslabs/celatone-frontend/pull/497) Fix stored codes route and navbar behavior from dev to normal mode
+- [#470](https://github.com/alleslabs/celatone-frontend/pull/470) Fix json schema array field default behavior
+>>>>>>> feat/json-schema
 - [#476](https://github.com/alleslabs/celatone-frontend/pull/476) Fix terra rpc
 - [#473](https://github.com/alleslabs/celatone-frontend/pull/473) Fix wording on upload code modal
 - [#465](https://github.com/alleslabs/celatone-frontend/pull/465) Fix wrong access queryKey in validator info

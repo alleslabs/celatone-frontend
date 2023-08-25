@@ -12,8 +12,10 @@ const JsonEditor = dynamic(() => import("./JsonEditor"), {
 interface JsonInputProps {
   topic?: string;
   text?: string;
-  setText: (value: string) => void;
   minLines?: number;
+  maxLines?: number;
+  setText: (value: string) => void;
+  validateFn?: (value: string) => string | null;
 }
 
 interface JsonState {
@@ -72,8 +74,10 @@ const getResponse = (jsonState: JsonState) => {
 const JsonInput = ({
   topic,
   text = "",
-  setText,
   minLines = 16,
+  maxLines = 100,
+  setText,
+  validateFn = jsonValidate,
 }: JsonInputProps) => {
   const [jsonState, setJsonState] = useState<JsonState>({ state: "empty" });
 
@@ -84,7 +88,7 @@ const JsonInput = ({
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      const error = jsonValidate(text);
+      const error = validateFn(text);
 
       if (text.trim().length === 0) setJsonState({ state: "empty" });
       else if (error) setJsonState({ state: "error", errMsg: error });
@@ -92,17 +96,17 @@ const JsonInput = ({
     }, 400);
 
     return () => clearTimeout(timeoutId);
-  }, [text]);
+  }, [text, validateFn]);
 
   const { color, response } = getResponse(jsonState);
-  const isValidJson = jsonValidate(text) === null;
+  const isValidJson = validateFn(text) === null;
 
   const showLines = useMemo(() => {
     const lines = jsonLineCount(text);
 
     // Limit the number of lines from minLines (default is 16) to 100
-    return Math.min(Math.max(lines, minLines), 100);
-  }, [text, minLines]);
+    return Math.min(Math.max(lines, minLines), maxLines);
+  }, [text, minLines, maxLines]);
 
   return (
     <>
