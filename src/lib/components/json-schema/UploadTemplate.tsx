@@ -160,6 +160,7 @@ const MethodRender = ({
               })
             }
             validateFn={validateSchema}
+            maxLines={25}
           />
         </>
       );
@@ -203,7 +204,8 @@ export const UploadTemplate = ({
           return dispatchJsonState({
             type: ActionType.SET_ERROR,
             method,
-            error: response.statusText,
+            error:
+              response.status === 404 ? "404 Not Found" : response.statusText,
           });
         }
         schemaString = JSON.stringify(await response.json());

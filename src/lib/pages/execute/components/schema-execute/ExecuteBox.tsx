@@ -86,7 +86,8 @@ export const ExecuteBox = ({
   // ------------------------------------------//
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState("{}");
-  const [error, setError] = useState<string>();
+  const [isValidForm, setIsValidForm] = useState(false);
+  const [simulateFeeError, setSimulateFeeError] = useState<string>();
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
 
@@ -97,15 +98,15 @@ export const ExecuteBox = ({
     mode: "all",
     defaultValues: assetDefault,
   });
-  const { errors } = useFormState({ control });
+  const { errors: attachFundErrors } = useFormState({ control });
   const { assetsJsonStr, assetsSelect, attachFundsOption } = watch();
 
   // ------------------------------------------//
   // -------------------LOGICS-----------------//
   // ------------------------------------------//
-  const isValidAssetsSelect = !errors.assetsSelect;
+  const isValidAssetsSelect = !attachFundErrors.assetsSelect;
   const isValidAssetsJsonStr =
-    !errors.assetsJsonStr && jsonValidate(assetsJsonStr) === null;
+    !attachFundErrors.assetsJsonStr && jsonValidate(assetsJsonStr) === null;
 
   const assetsSelectString = JSON.stringify(assetsSelect);
 
@@ -115,7 +116,8 @@ export const ExecuteBox = ({
       jsonValidate(msg) === null &&
       address &&
       contractAddress &&
-      opened
+      opened &&
+      isValidForm
     );
     switch (attachFundsOption) {
       case AttachFundsType.ATTACH_FUNDS_SELECT:
@@ -129,6 +131,7 @@ export const ExecuteBox = ({
     msg,
     address,
     opened,
+    isValidForm,
     contractAddress,
     attachFundsOption,
     isValidAssetsSelect,
@@ -142,12 +145,12 @@ export const ExecuteBox = ({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
     onSuccess: (gasRes) => {
-      setError(undefined);
+      setSimulateFeeError(undefined);
       if (gasRes) setFee(fabricateFee(gasRes));
       else setFee(undefined);
     },
     onError: (e) => {
-      setError(e.message);
+      setSimulateFeeError(e.message);
       setFee(undefined);
     },
   });
@@ -211,6 +214,10 @@ export const ExecuteBox = ({
     }
   }, [initialFunds, reset, setValue]);
 
+  /**
+   * @remarks
+   * Handle when there is an initialMsg
+   */
   useEffect(() => {
     if (Object.keys(initialMsg).length) setMsg(JSON.stringify(initialMsg));
   }, [initialMsg]);
@@ -229,6 +236,11 @@ export const ExecuteBox = ({
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
+
+    // reset when enableExecute is false
+    setComposedTxMsg([]);
+    setFee(undefined);
+
     return () => {};
   }, [
     address,
@@ -262,12 +274,15 @@ export const ExecuteBox = ({
               formId={`execute-${msgSchema.title}`}
               schema={msgSchema.schema}
               initialFormData={initialMsg}
-              onChange={(data) => setMsg(JSON.stringify(data))}
+              onChange={(data, errors) => {
+                setIsValidForm(errors.length === 0);
+                setMsg(JSON.stringify(data));
+              }}
             />
-            {error && (
+            {simulateFeeError && (
               <Alert variant="error" mb={3} alignItems="center">
                 <AlertDescription wordBreak="break-word">
-                  {error}
+                  {simulateFeeError}
                 </AlertDescription>
               </Alert>
             )}

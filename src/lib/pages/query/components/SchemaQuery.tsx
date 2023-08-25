@@ -102,7 +102,7 @@ const QueryComponent = ({
   initialMsg,
   addActivity,
 }: QueryComponentInterface) => {
-  const [resTab, setResTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
+  const [resTab, setResTab] = useState<MessageTabs>();
   const [msg, setMsg] = useState("{}");
   const [res, setRes] = useState("{}");
   const [queryError, setQueryError] = useState("");
@@ -382,7 +382,13 @@ export const SchemaQuery = ({
         />
         <Button
           variant="outline-gray"
-          rightIcon={<CustomIcon name="chevron-down" boxSize={3} />}
+          rightIcon={
+            <CustomIcon
+              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+              boxSize={3}
+              right={0}
+            />
+          }
           minH="40px"
           onClick={() => {
             AmpTrackExpandAll(expandedIndexes.length ? "collapse" : "expand");

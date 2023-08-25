@@ -60,8 +60,7 @@ export const JsonSchemaDrawer = ({
         >
           <Text variant="body2" color="text.dark">
             Please note that the JSON schema you upload on our website will only
-            be stored locally on your device. For public projects with verified
-            JSON schemas, they will be visible and accessible to others.
+            be stored locally on your device.
           </Text>
         </Box>
         <UploadTemplate

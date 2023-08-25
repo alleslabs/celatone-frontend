@@ -7,12 +7,14 @@ import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaForm } from "../form";
 import { JsonSchemaDrawer } from "../JsonSchemaDrawer";
 import { ViewSchemaButton } from "../ViewSchemaButton";
-import { useSchemaStore } from "lib/providers/store";
+import type { CodeSchema } from "lib/stores/schema";
+import type { Option } from "lib/types";
 
 interface SchemaSectionProps {
   type: "migrate" | "instantiate";
   codeHash: string;
   codeId: string;
+  jsonSchema: Option<CodeSchema>;
   initialFormData?: Record<string, unknown>;
   setSchemaInput: (input: string) => void;
 }
@@ -22,11 +24,10 @@ export const SchemaInputSection = observer(
     type,
     codeHash,
     codeId,
+    jsonSchema,
     initialFormData,
     setSchemaInput,
   }: SchemaSectionProps) => {
-    const { getSchemaByCodeHash } = useSchemaStore();
-    const jsonSchema = getSchemaByCodeHash(codeHash);
     const { isOpen, onClose, onOpen } = useDisclosure();
     const prettyType = capitalize(type);
 
@@ -53,12 +54,14 @@ export const SchemaInputSection = observer(
               </Flex>
             </Flex>
             {/* TODO: revisit type assertion later */}
-            <JsonSchemaForm
-              schema={jsonSchema[type] as RJSFSchema}
-              formId={type}
-              initialFormData={initialFormData}
-              onChange={(data) => setSchemaInput(JSON.stringify(data))}
-            />
+            <div style={{ width: "100%" }}>
+              <JsonSchemaForm
+                schema={jsonSchema[type] as RJSFSchema}
+                formId={type}
+                initialFormData={initialFormData}
+                onChange={(data) => setSchemaInput(JSON.stringify(data))}
+              />
+            </div>
           </>
         ) : (
           <>

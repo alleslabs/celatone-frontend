@@ -2,16 +2,18 @@ import type { BoxProps } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
+import type { Option } from "lib/types";
+
 import { MessageTabs } from "./MessageInputSwitch";
 
 interface MessageInputContentProps {
-  currentTab: MessageTabs;
+  currentTab: Option<MessageTabs>;
   jsonContent: ReactNode;
   schemaContent: ReactNode;
 }
 
 const resolveTabDisplay = (
-  current: MessageTabs,
+  current: Option<MessageTabs>,
   target: MessageTabs
 ): BoxProps["display"] => {
   return current === target ? "block" : "none";

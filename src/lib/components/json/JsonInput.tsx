@@ -13,6 +13,7 @@ interface JsonInputProps {
   topic?: string;
   text?: string;
   minLines?: number;
+  maxLines?: number;
   setText: (value: string) => void;
   validateFn?: (value: string) => string | null;
 }
@@ -74,6 +75,7 @@ const JsonInput = ({
   topic,
   text = "",
   minLines = 16,
+  maxLines = 100,
   setText,
   validateFn = jsonValidate,
 }: JsonInputProps) => {
@@ -103,8 +105,8 @@ const JsonInput = ({
     const lines = jsonLineCount(text);
 
     // Limit the number of lines from minLines (default is 16) to 100
-    return Math.min(Math.max(lines, minLines), 100);
-  }, [text, minLines]);
+    return Math.min(Math.max(lines, minLines), maxLines);
+  }, [text, minLines, maxLines]);
 
   return (
     <>

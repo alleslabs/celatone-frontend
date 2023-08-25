@@ -84,8 +84,7 @@ export const CodeSchemaSection = ({
         border="1px solid var(--chakra-colors-gray-700)"
         borderRadius="8px"
       >
-        Uploaded JSON schemas are stored locally on your device. Public projects
-        with verified JSON schemas are visible and accessible to others.
+        Uploaded JSON schemas are stored locally on your device.
       </Text>
       <Tabs variant="unstyled" orientation="vertical" mt={6}>
         <TabList>
