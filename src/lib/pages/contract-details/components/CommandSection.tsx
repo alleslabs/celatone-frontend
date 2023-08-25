@@ -96,7 +96,7 @@ export const CommandSection = observer(
           </Heading>
           {attached ? (
             <Flex alignItems="center" justify="space-between" w="full">
-              <Tag variant="gray">
+              <Tag variant="gray" gap={1}>
                 <CustomIcon name="check-circle" boxSize={3} color="gray.600" />
                 <Text variant="body3">Attached JSON Schema</Text>
               </Tag>
