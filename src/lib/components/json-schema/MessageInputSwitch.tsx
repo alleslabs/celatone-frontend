@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { AnimatePresence } from "framer-motion";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 
 import { Tooltip } from "../Tooltip";
@@ -12,26 +11,39 @@ export enum MessageTabs {
   YOUR_SCHEMA = "Your Schema",
 }
 
+export enum OutputMessageTabs {
+  JSON_OUTPUT = "JSON Output",
+  YOUR_SCHEMA = "Your Schema",
+}
+
 export const jsonInputFormKey = MessageTabs.JSON_INPUT as "JSON Input";
 export const yourSchemaInputFormKey = MessageTabs.YOUR_SCHEMA as "Your Schema";
 
-interface MessageInputSwitchProps {
-  currentTab: Option<MessageTabs>;
+interface MessageInputSwitchProps<
+  T extends Option<MessageTabs | OutputMessageTabs>
+> {
+  currentTab: T;
   disabled?: boolean;
   tooltipLabel?: string;
-  onTabChange: Dispatch<SetStateAction<Option<MessageTabs>>>;
   ml?: CSSProperties["marginLeft"];
+  isOutput?: boolean;
+  onTabChange: Dispatch<SetStateAction<T>>;
 }
 
-const tabs = Object.values(MessageTabs);
-
-export const MessageInputSwitch = ({
+export const MessageInputSwitch = <
+  T extends Option<MessageTabs | OutputMessageTabs>
+>({
   currentTab,
   disabled = false,
   tooltipLabel = "Select or fill code id first",
   ml,
+  isOutput = false,
   onTabChange,
-}: MessageInputSwitchProps) => {
+}: MessageInputSwitchProps<T>) => {
+  const tabs = useMemo(
+    () => Object.values(isOutput ? OutputMessageTabs : MessageTabs),
+    [isOutput]
+  );
   const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : -1;
   return (
@@ -46,48 +58,50 @@ export const MessageInputSwitch = ({
           position="relative"
           sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
         >
-          {tabs.map((tab, idx) => (
-            <MotionBox
-              key={tab}
-              ref={(el) => {
-                tabRefs.current[idx] = el;
-              }}
-              cursor="pointer"
-              p="2px 10px"
-              fontSize="12px"
-              fontWeight={700}
-              variants={{
-                active: { color: "var(--chakra-colors-text-main)" },
-                inactive: {
-                  color: "var(--chakra-colors-primary-light)",
-                },
-              }}
-              initial="inactive"
-              animate={currentTab === tab ? "active" : "inactive"}
-              onClick={() => onTabChange(tab)}
-              zIndex={1}
-              textAlign="center"
-            >
-              {tab}
-            </MotionBox>
-          ))}
-          <AnimatePresence>
-            <MotionBox
-              h={`${tabRefs.current[activeIndex]?.clientHeight}px`}
-              w={`${tabRefs.current[activeIndex]?.clientWidth}px`}
-              position="absolute"
-              borderRadius="2px"
-              backgroundColor="primary.dark"
-              animate={{
-                left: `${tabRefs.current[activeIndex]?.offsetLeft ?? 0}px`,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: "250",
-                damping: "30",
-              }}
-            />
-          </AnimatePresence>
+          {tabs.map((tab, idx) => {
+            const x = String(Math.random() * 100);
+            return (
+              <MotionBox
+                id={tab + x}
+                key={tab + x}
+                ref={(el) => {
+                  tabRefs.current[idx] = el;
+                }}
+                cursor="pointer"
+                p="2px 10px"
+                fontSize="12px"
+                fontWeight={700}
+                variants={{
+                  active: { color: "var(--chakra-colors-text-main)" },
+                  inactive: {
+                    color: "var(--chakra-colors-primary-light)",
+                  },
+                }}
+                initial="inactive"
+                animate={currentTab === tab ? "active" : "inactive"}
+                onClick={() => onTabChange(tab)}
+                zIndex={1}
+                textAlign="center"
+              >
+                {tab}
+              </MotionBox>
+            );
+          })}
+          <MotionBox
+            h={`${tabRefs.current[activeIndex]?.clientHeight}px`}
+            w={`${tabRefs.current[activeIndex]?.clientWidth}px`}
+            position="absolute"
+            borderRadius="2px"
+            backgroundColor="primary.dark"
+            animate={{
+              left: `${tabRefs.current[activeIndex]?.offsetLeft ?? 0}px`,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: "250",
+              damping: "30",
+            }}
+          />
         </Flex>
       </div>
     </Tooltip>

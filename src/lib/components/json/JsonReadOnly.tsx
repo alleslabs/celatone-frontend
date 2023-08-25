@@ -109,6 +109,7 @@ const JsonReadOnly = ({
           top="10px"
           right="10px"
           className="copy-button-box"
+          display="none"
         >
           <CopyButton value={text} amptrackSection={amptrackSection} />
         </Box>
