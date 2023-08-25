@@ -37,6 +37,7 @@ import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { Stepper } from "lib/components/stepper";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { useSchemaStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import {
   AmpEvent,
@@ -91,7 +92,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
-
+  const { getSchemaByCodeHash } = useSchemaStore();
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
@@ -139,6 +140,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
+  const jsonSchema = getSchemaByCodeHash(codeHash);
   const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
   const enableInstantiate = useMemo(
     () =>
@@ -234,6 +236,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   useEffect(() => {
     setValue("codeHash", "");
     setTab(MessageTabs.JSON_INPUT);
+    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
@@ -306,6 +309,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       }
     }
   }, [codeIdQuery, msgQuery, setAssets, setValue]);
+
+  useEffect(() => {
+    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
+  }, [jsonSchema]);
 
   useEffect(() => {
     if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
@@ -400,6 +407,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                 type="instantiate"
                 codeHash={codeHash}
                 codeId={codeId}
+                jsonSchema={jsonSchema}
                 setSchemaInput={(msg: string) =>
                   setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
                 }
