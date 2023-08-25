@@ -63,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#501](https://github.com/alleslabs/celatone-frontend/pull/501) Add more JSON Schema state, e.g. empty object state, boolean field
+- [#502](https://github.com/alleslabs/celatone-frontend/pull/502) Display queried time and add json/schema output switch
 - [#500](https://github.com/alleslabs/celatone-frontend/pull/500) Disable estimated fee when input is invalid
 - [#498](https://github.com/alleslabs/celatone-frontend/pull/498) Automatically switch to schema tab and show 404 not found error
 - [#491](https://github.com/alleslabs/celatone-frontend/pull/491) Improve scrolling into view by delaying scroll function
@@ -89,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#503](https://github.com/alleslabs/celatone-frontend/pull/503) Fix assets `view more` button in account detail and fix txs row
 - [#496](https://github.com/alleslabs/celatone-frontend/pull/496) Fix icns bech32 prefix searchbar display and schema switch highlight on query page
 - [#499](https://github.com/alleslabs/celatone-frontend/pull/499) Fix sometimes select widget input not full, manual schema upload max lines, and expand/collapse all chevron
 - [#497](https://github.com/alleslabs/celatone-frontend/pull/497) Fix stored codes route and navbar behavior from dev to normal mode

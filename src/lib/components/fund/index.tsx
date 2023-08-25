@@ -64,13 +64,15 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
 interface AttachFundProps {
   control: Control<AttachFundsState>;
   attachFundsOption: AttachFundsType;
+  labelBgColor?: string;
   setValue: UseFormSetValue<AttachFundsState>;
 }
 
 export const AttachFund = ({
   control,
-  setValue,
   attachFundsOption,
+  labelBgColor,
+  setValue,
 }: AttachFundProps) => (
   <>
     <Flex mb={5}>
@@ -90,6 +92,7 @@ export const AttachFund = ({
             option will be used.
           </Text>
         }
+        labelBgColor={labelBgColor}
       />
     </Flex>
     <AttachFundContent control={control} setValue={setValue} />

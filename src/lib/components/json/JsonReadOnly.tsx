@@ -14,6 +14,7 @@ const JsonEditor = dynamic(() => import("lib/components/json/JsonEditor"), {
 
 interface JsonReadOnlyProps {
   topic?: string;
+  labelBgColor?: string;
   text: string;
   canCopy?: boolean;
   isExpandable?: boolean;
@@ -26,6 +27,7 @@ const THRESHOLD_LINES = 16;
 
 const JsonReadOnly = ({
   topic,
+  labelBgColor = "background.main",
   text,
   canCopy,
   isExpandable,
@@ -80,7 +82,7 @@ const JsonReadOnly = ({
         <Text
           top="-10px"
           w="fit-content"
-          background="background.main"
+          background={labelBgColor}
           color={!isJsonValid ? "error.main" : "text.dark"}
           fontSize="12px"
           position="absolute"
@@ -107,6 +109,7 @@ const JsonReadOnly = ({
           top="10px"
           right="10px"
           className="copy-button-box"
+          display="none"
         >
           <CopyButton value={text} amptrackSection={amptrackSection} />
         </Box>

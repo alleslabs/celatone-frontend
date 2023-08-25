@@ -192,12 +192,12 @@ export const AssetsSection = ({
           )}
         </>
       )}
-      {!isMobile ||
-        (supportedAssets &&
-          onViewMore &&
-          supportedAssets.length > MaxAssetsShow && (
-            <ViewMore onClick={onViewMore} />
-          ))}
+      {!isMobile &&
+        supportedAssets &&
+        onViewMore &&
+        supportedAssets.length > MaxAssetsShow && (
+          <ViewMore onClick={onViewMore} />
+        )}
     </Flex>
   );
 };
