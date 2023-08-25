@@ -44,7 +44,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     onChange,
     onBlur,
     onFocus,
-    rawErrors = [],
+    // rawErrors = [],
     uiSchema,
     registry,
   } = props;
@@ -122,7 +122,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
       isDisabled={disabled || readonly}
       isRequired={required && !readonly}
       isReadOnly={readonly}
-      isInvalid={rawErrors && rawErrors.length > 0}
+      // isInvalid={rawErrors && rawErrors.length > 0}
       sx={{ "& > p": { mt: 4, mb: 2 } }}
     >
       {!!schema.description && (

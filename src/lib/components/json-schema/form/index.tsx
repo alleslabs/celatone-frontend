@@ -10,7 +10,7 @@ import {
   Widgets as DefaultWidgets,
 } from "@rjsf/chakra-ui";
 import type { FormProps } from "@rjsf/core";
-import type { RJSFSchema } from "@rjsf/utils";
+import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
 import { createSchemaUtils } from "@rjsf/utils";
 import { customizeValidator } from "@rjsf/validator-ajv8";
 import isEqual from "lodash/isEqual";
@@ -101,7 +101,7 @@ export interface JsonSchemaFormProps
   initialFormData?: JsonDataType;
   onSubmit?: (data: JsonDataType) => void;
   /** Onchange callback is with BROKEN data */
-  onChange?: (data: JsonDataType) => void;
+  onChange?: (data: JsonDataType, errors: RJSFValidationError[]) => void;
   formContext?: Record<string, unknown>;
 }
 
@@ -137,7 +137,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   };
 
   const onChange = useCallback(
-    (data: JsonDataType) => {
+    (data: JsonDataType, errors: RJSFValidationError[]) => {
       if (data) {
         const values: JsonDataType = structuredClone(data);
         if (typeof values === "object")
@@ -145,7 +145,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
 
         if (!isEqual(formData, values)) {
           setFormData(values);
-          propsOnChange?.(values);
+          propsOnChange?.(values, errors);
         }
       }
     },
@@ -184,9 +184,11 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
         ...templates,
       }}
       validator={v8Validator}
-      onChange={({ formData: values }) => {
+      liveValidate
+      showErrorList={false}
+      onChange={({ formData: values, errors }) => {
         // log.info(values)
-        onChange?.(values);
+        onChange?.(values, errors);
       }}
       onSubmit={({ formData: values }) => {
         // log.info(values)
