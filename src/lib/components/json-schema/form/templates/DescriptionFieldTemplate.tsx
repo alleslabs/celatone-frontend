@@ -21,6 +21,7 @@ const DescriptionFieldTemplate = <T = any, F = any>(
         className="field-description"
         variant="body3"
         textColor="text.dark"
+        wordBreak="break-word"
       >
         {description}
       </Text>

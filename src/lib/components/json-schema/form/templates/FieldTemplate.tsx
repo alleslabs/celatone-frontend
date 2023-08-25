@@ -2,6 +2,7 @@
 import { FormControl } from "@chakra-ui/react";
 import type { FieldTemplateProps } from "@rjsf/utils";
 import { getTemplate, getUiOptions } from "@rjsf/utils";
+import { useEffect } from "react";
 
 export default function FieldTemplate<T = any, F = any>(
   props: FieldTemplateProps<T, F>
@@ -23,6 +24,8 @@ export default function FieldTemplate<T = any, F = any>(
     help,
     schema,
     uiSchema,
+    formData,
+    onChange,
   } = props;
   const uiOptions = getUiOptions<T, F>(uiSchema);
   const WrapIfAdditionalTemplate = getTemplate<
@@ -31,11 +34,17 @@ export default function FieldTemplate<T = any, F = any>(
     F
   >("WrapIfAdditionalTemplate", registry, uiOptions);
 
-  if (hidden) {
-    return <div style={{ display: "none" }}>{children}</div>;
-  }
+  useEffect(() => {
+    if (required && formData === undefined) {
+      if (schema.type === "array") onChange([] as T);
+      else if (schema.type === "boolean") onChange(false as T);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(formData), onChange, required, schema.type]);
 
-  return (
+  return hidden ? (
+    <div style={{ display: "none" }}>{children}</div>
+  ) : (
     <WrapIfAdditionalTemplate
       classNames={classNames}
       disabled={disabled}

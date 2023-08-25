@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, Text } from "@chakra-ui/react";
 import type { ObjectFieldTemplateProps } from "@rjsf/utils";
-import {
-  canExpand,
-  getSchemaType,
-  getTemplate,
-  getUiOptions,
-} from "@rjsf/utils";
+import { canExpand, getTemplate, getUiOptions } from "@rjsf/utils";
 
 const ObjectFieldTemplate = <T = any, F = any>(
   props: ObjectFieldTemplateProps<T, F>
@@ -44,30 +39,31 @@ const ObjectFieldTemplate = <T = any, F = any>(
         />
       )}
       <Grid gap={4} my={2}>
-        {properties.map((element, index) => {
-          // NOTE: required array field doesn't create an empty array as a default
-          const elementType = getSchemaType(element.content.props.schema);
-          const elementRequired =
-            (element.content.props.required as boolean) ?? false;
-          if (
-            formData &&
-            typeof elementType === "string" &&
-            elementType === "array" &&
-            elementRequired &&
-            !Array.isArray((formData as Record<string, object>)[element.name])
+        {properties.length > 0 ? (
+          properties.map((element, index) =>
+            element.hidden ? (
+              element.content
+            ) : (
+              <GridItem
+                key={`${idSchema.$id}-${element.name}-${index.toString()}`}
+              >
+                {element.content}
+              </GridItem>
+            )
           )
-            (formData as Record<string, object>)[element.name] = [];
-
-          return element.hidden ? (
-            element.content
-          ) : (
-            <GridItem
-              key={`${idSchema.$id}-${element.name}-${index.toString()}`}
-            >
-              {element.content}
-            </GridItem>
-          );
-        })}
+        ) : (
+          <Text
+            variant="body3"
+            fontWeight={700}
+            textColor="text.disabled"
+            textAlign="center"
+            p={4}
+            bgColor="gray.700"
+            borderRadius="8px"
+          >
+            object with no properties
+          </Text>
+        )}
         {canExpand<T, F>(schema, uiSchema, formData) && (
           <GridItem justifySelf="flex-end">
             <AddButton

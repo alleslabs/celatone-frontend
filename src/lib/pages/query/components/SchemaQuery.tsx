@@ -36,11 +36,20 @@ import { AmpTrack, AmpEvent, AmpTrackExpandAll } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
 import type { QueryExecuteSchema, QuerySchema } from "lib/stores/schema";
-import type { ContractAddr, HumanAddr, Option, RpcQueryError } from "lib/types";
+import type {
+  ContractAddr,
+  JsonDataType,
+  HumanAddr,
+  Option,
+  RpcQueryError,
+} from "lib/types";
 import {
   getCurrentDate,
+  getDefaultMsg,
+  isNonEmptyJsonData,
   jsonValidate,
   parseSchemaInitialData,
+  resolveInitialMsg,
 } from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
@@ -53,7 +62,7 @@ interface QueryComponentInterface {
   contractAddress: ContractAddr;
   lcdEndpoint: string;
   walletAddress: Option<string>;
-  initialMsg: Record<string, unknown>;
+  initialMsg: JsonDataType;
   addActivity: (activity: Activity) => void;
 }
 
@@ -66,13 +75,9 @@ const QueryComponent = ({
   initialMsg,
   addActivity,
 }: QueryComponentInterface) => {
-  const [msg, setMsg] = useState("{}");
-  const [res, setRes] = useState("{}");
+  const [msg, setMsg] = useState(JSON.stringify(getDefaultMsg(msgSchema)));
+  const [res, setRes] = useState("");
   const [queryError, setQueryError] = useState("");
-
-  useEffect(() => {
-    if (Object.keys(initialMsg).length) setMsg(JSON.stringify(initialMsg));
-  }, [initialMsg]);
 
   // TODO: Abstract query
   const {
@@ -87,14 +92,7 @@ const QueryComponent = ({
       msgSchema.title,
       msg,
     ],
-    async () =>
-      queryData(
-        lcdEndpoint,
-        contractAddress,
-        msgSchema.inputRequired
-          ? msg
-          : JSON.stringify({ [msgSchema.title ?? ""]: {} })
-      ),
+    async () => queryData(lcdEndpoint, contractAddress, msg),
     {
       enabled: false,
       retry: false,
@@ -123,8 +121,12 @@ const QueryComponent = ({
   }, [refetch]);
 
   useEffect(() => {
-    if (!msgSchema.inputRequired) refetch();
-  }, [msgSchema.inputRequired, refetch]);
+    if (isNonEmptyJsonData(initialMsg)) {
+      setMsg(JSON.stringify(initialMsg));
+      if (!msgSchema.inputRequired) refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(initialMsg), msgSchema.inputRequired, refetch]);
 
   return (
     <AccordionItem className={`query_msg_${msgSchema.schema.required?.[0]}`}>
@@ -134,7 +136,9 @@ const QueryComponent = ({
             <Text variant="body1" fontWeight={700}>
               {msgSchema.title}
             </Text>
-            <Text variant="body1">{msgSchema.description}</Text>
+            <Text variant="body3" textColor="text.dark">
+              {msgSchema.description}
+            </Text>
           </Box>
           <AccordionIcon />
         </AccordionButton>
@@ -149,11 +153,12 @@ const QueryComponent = ({
               <JsonSchemaForm
                 formId={`query-${msgSchema.title}`}
                 schema={msgSchema.schema}
-                onChange={(data) => setMsg(JSON.stringify(data))}
                 initialFormData={initialMsg}
+                onChange={(data) => setMsg(JSON.stringify(data))}
               />
               <Flex gap={2} justify="flex-start">
                 <CopyButton
+                  isDisable={msg === ""}
                   value={msg}
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
@@ -186,7 +191,7 @@ const QueryComponent = ({
                 Query response will display here
               </Text>
               <CopyButton
-                isDisable={res === "{}" || Boolean(queryError)}
+                isDisable={res === "" || Boolean(queryError)}
                 value={res}
                 amptrackSection="query_response"
                 buttonText="Copy Output"
@@ -210,18 +215,19 @@ const QueryComponent = ({
             {!msgSchema.inputRequired && (
               <Flex gap={2} justify="flex-start" mt={3}>
                 <CopyButton
-                  value={JSON.stringify({ [msgSchema.title ?? ""]: {} })}
+                  isDisable={msg === ""}
+                  value={msg}
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
                 />
                 <CodeSnippet
                   type="query"
                   contractAddress={contractAddress}
-                  message={JSON.stringify({ [msgSchema.title ?? ""]: {} })}
+                  message={msg}
                 />
                 <Flex gap={2} ml="auto">
                   <CopyButton
-                    isDisable={res === "{}" || Boolean(queryError)}
+                    isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     amptrackSection="query_response"
                     buttonText="Copy Output"
@@ -252,16 +258,6 @@ interface SchemaQueryProps {
   contractAddress: ContractAddr;
   initialMsg: string;
 }
-
-const resolveInitialMsg = (
-  initialMsg: string,
-  msgSchema: QueryExecuteSchema
-) => {
-  const parsed = parseSchemaInitialData(initialMsg);
-  return Object.keys(parsed)[0] === msgSchema.schema.required?.[0]
-    ? parsed
-    : {};
-};
 
 export const SchemaQuery = ({
   schema,

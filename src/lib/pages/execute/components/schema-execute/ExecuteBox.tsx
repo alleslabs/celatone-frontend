@@ -42,9 +42,20 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
 import type { QueryExecuteSchema } from "lib/stores/schema";
-import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
+import type {
+  ComposedMsg,
+  ContractAddr,
+  HumanAddr,
+  JsonDataType,
+} from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
+import {
+  composeMsg,
+  getDefaultMsg,
+  isNonEmptyJsonData,
+  jsonPrettify,
+  jsonValidate,
+} from "lib/utils";
 
 const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
@@ -53,7 +64,7 @@ const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
 interface ExecuteBoxProps {
   msgSchema: QueryExecuteSchema;
   contractAddress: ContractAddr;
-  initialMsg: Record<string, unknown>;
+  initialMsg: JsonDataType;
   initialFunds: Coin[];
   opened: boolean;
 }
@@ -85,7 +96,7 @@ export const ExecuteBox = ({
   // ------------------STATES------------------//
   // ------------------------------------------//
   const [fee, setFee] = useState<StdFee>();
-  const [msg, setMsg] = useState("{}");
+  const [msg, setMsg] = useState(JSON.stringify(getDefaultMsg(msgSchema)));
   const [error, setError] = useState<string>();
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
@@ -212,8 +223,9 @@ export const ExecuteBox = ({
   }, [initialFunds, reset, setValue]);
 
   useEffect(() => {
-    if (Object.keys(initialMsg).length) setMsg(JSON.stringify(initialMsg));
-  }, [initialMsg]);
+    if (isNonEmptyJsonData(initialMsg)) setMsg(JSON.stringify(initialMsg));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(initialMsg)]);
 
   useEffect(() => {
     if (enableExecute) {
@@ -250,7 +262,9 @@ export const ExecuteBox = ({
             <Text variant="body1" fontWeight={700}>
               {msgSchema.title}
             </Text>
-            <Text variant="body1">{msgSchema.description}</Text>
+            <Text variant="body3" textColor="text.dark">
+              {msgSchema.description}
+            </Text>
           </Box>
           <AccordionIcon />
         </AccordionButton>
@@ -282,12 +296,13 @@ export const ExecuteBox = ({
           <GridItem>
             <Flex gap={2} justify="flex-start">
               <CopyButton
+                isDisable={msg === ""}
                 value={msg}
                 amptrackSection="execute_msg"
                 buttonText="Copy JSON"
               />
               <CodeSnippet
-                type="query"
+                type="execute"
                 contractAddress={contractAddress}
                 message={msg}
               />
