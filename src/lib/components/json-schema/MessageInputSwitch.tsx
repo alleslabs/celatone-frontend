@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 
 import { Tooltip } from "../Tooltip";
@@ -40,12 +40,15 @@ export const MessageInputSwitch = <
   isOutput = false,
   onTabChange,
 }: MessageInputSwitchProps<T>) => {
-  const tabs = useMemo(
+  const tabs = useMemo<T[]>(
     () => Object.values(isOutput ? OutputMessageTabs : MessageTabs),
     [isOutput]
   );
-  const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const activeIndex = currentTab ? tabs.indexOf(currentTab) : -1;
+  const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
+
+  /**
+   * @todos current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
+   */
   return (
     <Tooltip label={tooltipLabel} isDisabled={!disabled}>
       <div style={{ marginLeft: ml }}>
@@ -58,14 +61,12 @@ export const MessageInputSwitch = <
           position="relative"
           sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
         >
-          {tabs.map((tab, idx) => (
+          {tabs.map((tab) => (
             <MotionBox
               key={tab}
-              ref={(el) => {
-                tabRefs.current[idx] = el;
-              }}
               cursor="pointer"
               p="2px 10px"
+              w="96px"
               fontSize="12px"
               fontWeight={700}
               variants={{
@@ -84,13 +85,13 @@ export const MessageInputSwitch = <
             </MotionBox>
           ))}
           <MotionBox
-            h={`${tabRefs.current[activeIndex]?.clientHeight}px`}
-            w={`${tabRefs.current[activeIndex]?.clientWidth}px`}
+            w="96px"
+            h="22px"
             position="absolute"
             borderRadius="2px"
             backgroundColor="primary.dark"
             animate={{
-              left: `${tabRefs.current[activeIndex]?.offsetLeft ?? 0}px`,
+              left: activeIndex === 0 ? "4px" : "100px",
             }}
             transition={{
               type: "spring",
