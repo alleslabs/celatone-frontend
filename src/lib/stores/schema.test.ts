@@ -10,7 +10,7 @@ const codeId = "1234";
 const exampleSchema = {
   ...schema,
   [SchemaProperties.ATTACHED_CODE_ID]: codeId,
-};
+} as unknown as CodeSchema;
 
 beforeAll(() => {
   schemaStore = new SchemaStore();

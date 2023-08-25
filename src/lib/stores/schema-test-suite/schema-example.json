@@ -223,6 +223,7 @@
     "address": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "AddressResponseItem",
+      "description": "Response for get_address",
       "type": "object",
       "required": ["address", "address_type"],
       "properties": {
@@ -269,6 +270,7 @@
     "addresses": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Array_of_AddressResponseItem",
+      "description": "Response for get_addresses",
       "type": "array",
       "items": {
         "$ref": "#/definitions/AddressResponseItem"
@@ -321,6 +323,7 @@
     "all_addresses": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Array_of_AddressResponseItem",
+      "description": "Response for get_all_addresses",
       "type": "array",
       "items": {
         "$ref": "#/definitions/AddressResponseItem"
