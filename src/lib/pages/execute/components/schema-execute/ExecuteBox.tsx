@@ -41,7 +41,7 @@ import { useContractStore } from "lib/providers/store";
 import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrackAction } from "lib/services/amplitude";
 import type { Activity } from "lib/stores/contract";
-import type { QueryExecuteSchema } from "lib/stores/schema";
+import type { SchemaInfo } from "lib/stores/schema";
 import type {
   ComposedMsg,
   ContractAddr,
@@ -62,7 +62,7 @@ const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
 });
 
 interface ExecuteBoxProps {
-  msgSchema: QueryExecuteSchema;
+  msgSchema: SchemaInfo;
   contractAddress: ContractAddr;
   initialMsg: JsonDataType;
   initialFunds: Coin[];

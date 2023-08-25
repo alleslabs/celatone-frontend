@@ -1,6 +1,6 @@
 import type { RJSFSchema } from "@rjsf/utils";
 
-import type { QueryExecuteSchema } from "lib/stores/schema";
+import type { SchemaInfo } from "lib/stores/schema";
 import type { JsonDataType } from "lib/types";
 
 export const jsonValidate = (text: string) => {
@@ -40,7 +40,7 @@ export const isNonEmptyJsonData = (jsonData: JsonDataType): boolean => {
   return true;
 };
 
-export const getDefaultMsg = (msgSchema: QueryExecuteSchema) => {
+export const getDefaultMsg = (msgSchema: SchemaInfo) => {
   const { type, required, enum: enumOptions, properties } = msgSchema.schema;
   if (type === "object") {
     if (required && properties) {
@@ -57,7 +57,7 @@ export const getDefaultMsg = (msgSchema: QueryExecuteSchema) => {
 
 export const resolveInitialMsg = (
   initialMsg: string,
-  msgSchema: QueryExecuteSchema
+  msgSchema: SchemaInfo
 ) => {
   const parsed = parseSchemaInitialData(initialMsg);
   const { required, enum: enumOptions } = msgSchema.schema;

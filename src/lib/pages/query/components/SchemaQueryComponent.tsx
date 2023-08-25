@@ -30,7 +30,7 @@ import { DEFAULT_RPC_ERROR } from "lib/data";
 import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
-import type { QueryExecuteSchema } from "lib/stores/schema";
+import type { SchemaInfo } from "lib/stores/schema";
 import type {
   ContractAddr,
   HumanAddr,
@@ -53,8 +53,8 @@ const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
 });
 
 interface SchemaQueryComponentProps {
-  msgSchema: QueryExecuteSchema;
-  resSchema: QueryExecuteSchema;
+  msgSchema: SchemaInfo;
+  resSchema: SchemaInfo;
   contractAddress: ContractAddr;
   lcdEndpoint: string;
   walletAddress: Option<string>;

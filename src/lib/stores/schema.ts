@@ -19,7 +19,7 @@ export enum SchemaProperties {
 
 type NullableJsonSchema = JsonSchema | null;
 
-export interface QueryExecuteSchema {
+export interface SchemaInfo {
   title: Option<string>;
   description: Option<string>;
   schema: JsonSchema;
@@ -39,9 +39,9 @@ export interface CodeSchema {
   [SchemaProperties.ATTACHED_CODE_ID]: string;
 }
 
-export type QuerySchema = Array<[QueryExecuteSchema, QueryExecuteSchema]>;
+export type QuerySchema = Array<[SchemaInfo, SchemaInfo]>;
 
-export type ExecuteSchema = Array<QueryExecuteSchema>;
+export type ExecuteSchema = Array<SchemaInfo>;
 
 const normalize = (codeHash: string) => {
   return codeHash.toLowerCase();
@@ -104,9 +104,7 @@ export class SchemaStore {
 
     if (!querySchema || !responsesSchema) return undefined;
 
-    const getResponseSchema = (
-      responseSchema: JsonSchema
-    ): QueryExecuteSchema => {
+    const getResponseSchema = (responseSchema: JsonSchema): SchemaInfo => {
       const { title, description, ...msgSchema } = responseSchema;
       return {
         title,
@@ -118,16 +116,14 @@ export class SchemaStore {
       };
     };
 
-    return querySchema.oneOf?.reduce<
-      Array<[QueryExecuteSchema, QueryExecuteSchema]>
-    >((acc, msg) => {
-      const eachQuerySchema = msg as JsonSchema;
-      const { type, enum: enumOptions, required } = eachQuerySchema;
-      if (type === "string" && enumOptions) {
-        return [
-          ...acc,
-          ...enumOptions.map<[QueryExecuteSchema, QueryExecuteSchema]>(
-            (enumOption) => [
+    return querySchema.oneOf?.reduce<Array<[SchemaInfo, SchemaInfo]>>(
+      (acc, msg) => {
+        const eachQuerySchema = msg as JsonSchema;
+        const { type, enum: enumOptions, required } = eachQuerySchema;
+        if (type === "string" && enumOptions) {
+          return [
+            ...acc,
+            ...enumOptions.map<[SchemaInfo, SchemaInfo]>((enumOption) => [
               {
                 title: enumOption as string,
                 description: eachQuerySchema.description,
@@ -139,38 +135,39 @@ export class SchemaStore {
                 inputRequired: false,
               },
               getResponseSchema(responsesSchema[enumOption as string]),
-            ]
-          ),
-        ];
-      }
-      if (required) {
-        const { description, ...msgSchema } = eachQuerySchema;
+            ]),
+          ];
+        }
+        if (required) {
+          const { description, ...msgSchema } = eachQuerySchema;
 
-        const title = required[0];
-        const propertyKey = eachQuerySchema.properties?.[title] as JsonSchema;
-        const noInputRequired =
-          propertyKey.type === "object" && !("properties" in propertyKey);
+          const title = required[0];
+          const propertyKey = eachQuerySchema.properties?.[title] as JsonSchema;
+          const noInputRequired =
+            propertyKey.type === "object" && !("properties" in propertyKey);
 
-        return [
-          ...acc,
-          [
-            {
-              title,
-              description,
-              schema: {
-                ...msgSchema,
-                $schema: querySchema.$schema,
-                definitions: querySchema.definitions,
+          return [
+            ...acc,
+            [
+              {
+                title,
+                description,
+                schema: {
+                  ...msgSchema,
+                  $schema: querySchema.$schema,
+                  definitions: querySchema.definitions,
+                },
+                inputRequired: !noInputRequired,
               },
-              inputRequired: !noInputRequired,
-            },
-            getResponseSchema(responsesSchema[required[0]]),
-          ],
-        ];
-      }
+              getResponseSchema(responsesSchema[required[0]]),
+            ],
+          ];
+        }
 
-      return acc;
-    }, []);
+        return acc;
+      },
+      []
+    );
   }
 
   getExecuteSchema(codeHash: string): Option<ExecuteSchema> {
@@ -181,40 +178,37 @@ export class SchemaStore {
 
     if (!executeSchema) return undefined;
 
-    return executeSchema.oneOf?.reduce<Array<QueryExecuteSchema>>(
-      (acc, msg) => {
-        const eachExecuteSchema = msg as JsonSchema;
-        const { type, required, enum: enumOptions } = eachExecuteSchema;
-        const { description, ...msgSchema } = eachExecuteSchema;
+    return executeSchema.oneOf?.reduce<Array<SchemaInfo>>((acc, msg) => {
+      const eachExecuteSchema = msg as JsonSchema;
+      const { type, required, enum: enumOptions } = eachExecuteSchema;
+      const { description, ...msgSchema } = eachExecuteSchema;
 
-        if (type === "string" && enumOptions) {
-          return [
-            ...acc,
-            ...enumOptions.map<QueryExecuteSchema>((enumOption) => ({
-              title: enumOption as string,
-              description: eachExecuteSchema.description,
-              schema: {
-                $schema: eachExecuteSchema.$schema,
-                type,
-                enum: [enumOption],
-              },
-            })),
-          ];
-        }
+      if (type === "string" && enumOptions) {
         return [
           ...acc,
-          {
-            title: required?.[0],
-            description,
+          ...enumOptions.map<SchemaInfo>((enumOption) => ({
+            title: enumOption as string,
+            description: eachExecuteSchema.description,
             schema: {
-              ...msgSchema,
-              $schema: executeSchema.$schema,
-              definitions: executeSchema.definitions,
+              $schema: eachExecuteSchema.$schema,
+              type,
+              enum: [enumOption],
             },
-          },
+          })),
         ];
-      },
-      []
-    );
+      }
+      return [
+        ...acc,
+        {
+          title: required?.[0],
+          description,
+          schema: {
+            ...msgSchema,
+            $schema: executeSchema.$schema,
+            definitions: executeSchema.definitions,
+          },
+        },
+      ];
+    }, []);
   }
 }
