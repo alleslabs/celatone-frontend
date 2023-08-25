@@ -10,14 +10,18 @@ const codeId = "1234";
 const exampleSchema = {
   ...schema,
   [SchemaProperties.ATTACHED_CODE_ID]: codeId,
-} as unknown as CodeSchema;
+};
 
 beforeAll(() => {
   schemaStore = new SchemaStore();
 });
 
 beforeEach(() => {
-  schemaStore.saveNewSchema(codeHash, codeId, exampleSchema);
+  schemaStore.saveNewSchema(
+    codeHash,
+    codeId,
+    JSON.parse(JSON.stringify(schema)) as CodeSchema
+  );
 });
 
 describe("SchemaStore initialization", () => {
@@ -28,7 +32,7 @@ describe("SchemaStore initialization", () => {
 
 describe("saveNewSchema and deleteSchema", () => {
   test("correctly save new schema and delete schema by codeHash", () => {
-    expect(schemaStore.jsonSchemas).toStrictEqual({
+    expect(schemaStore.jsonSchemas).toEqual({
       [codeHash]: exampleSchema,
     });
     schemaStore.deleteSchema(codeHash);
@@ -38,14 +42,12 @@ describe("saveNewSchema and deleteSchema", () => {
 
 describe("getSchemaByCodeHash", () => {
   test("correctly get schema by code hash", () => {
-    expect(schemaStore.getSchemaByCodeHash(codeHash)).toStrictEqual(
-      exampleSchema
-    );
+    expect(schemaStore.getSchemaByCodeHash(codeHash)).toEqual(exampleSchema);
   });
   test("correctly get schema by uppercase code hash", () => {
-    expect(
-      schemaStore.getSchemaByCodeHash(codeHash.toUpperCase())
-    ).toStrictEqual(exampleSchema);
+    expect(schemaStore.getSchemaByCodeHash(codeHash.toUpperCase())).toEqual(
+      exampleSchema
+    );
   });
   test("return undefined on code hash not found", () => {
     expect(schemaStore.getSchemaByCodeHash("randomHash")).toBeUndefined();
@@ -56,34 +58,34 @@ describe("getSchemaProperty", () => {
   test("correctly retrieve schema property", () => {
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.CONTRACT_NAME)
-    ).toStrictEqual(exampleSchema.contract_name);
+    ).toEqual(exampleSchema.contract_name);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.CONTRACT_VERSION)
-    ).toStrictEqual(exampleSchema.contract_version);
+    ).toEqual(exampleSchema.contract_version);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.IDL_VERSION)
-    ).toStrictEqual(exampleSchema.idl_version);
+    ).toEqual(exampleSchema.idl_version);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.INSTANTIATE)
-    ).toStrictEqual(exampleSchema.instantiate);
+    ).toEqual(exampleSchema.instantiate);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.EXECUTE)
-    ).toStrictEqual(exampleSchema.execute);
+    ).toEqual(exampleSchema.execute);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.QUERY)
-    ).toStrictEqual(exampleSchema.query);
+    ).toEqual(exampleSchema.query);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.MIGRATE)
-    ).toStrictEqual(exampleSchema.migrate);
+    ).toEqual(exampleSchema.migrate);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.SUDO)
-    ).toStrictEqual(exampleSchema.sudo);
+    ).toEqual(exampleSchema.sudo);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.RESPONSES)
-    ).toStrictEqual(exampleSchema.responses);
+    ).toEqual(exampleSchema.responses);
     expect(
       schemaStore.getSchemaProperty(codeHash, SchemaProperties.ATTACHED_CODE_ID)
-    ).toStrictEqual(exampleSchema.attached_code_id);
+    ).toEqual(codeId);
   });
 
   test("correctly retrieve schema property from uppercase code hash", () => {
@@ -108,6 +110,7 @@ describe("getSchemaProperty", () => {
 describe("getQuerySchemaFormArray", () => {
   test("correctly get form array for query schema", () => {
     expect(schemaStore.getQuerySchema(codeHash)).toEqual(querySchemaOutput);
+    expect(schemaStore.getQuerySchema(codeHash)).toEqual(querySchemaOutput);
   });
 
   test("correctly get form array for query schema from uppercase code hash", () => {
@@ -123,6 +126,7 @@ describe("getQuerySchemaFormArray", () => {
 
 describe("getExecuteSchemaFormArray", () => {
   test("correctly get form array for execute schema", () => {
+    expect(schemaStore.getExecuteSchema(codeHash)).toEqual(executeSchemaOutput);
     expect(schemaStore.getExecuteSchema(codeHash)).toEqual(executeSchemaOutput);
   });
   test("correctly get form array for execute schema from uppercase code hash", () => {

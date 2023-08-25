@@ -184,7 +184,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
         ...templates,
       }}
       validator={v8Validator}
-      liveValidate
+      liveValidate={!schema.readOnly}
       showErrorList={false}
       onChange={({ formData: values, errors }) => {
         // log.info(values)

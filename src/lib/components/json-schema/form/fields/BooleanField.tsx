@@ -32,7 +32,7 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
   } = props;
   const { title } = schema;
   const { widgets, formContext } = registry;
-  const { widget = "checkbox", ...options } = getUiOptions<T, F>(uiSchema);
+  const { widget = "select", ...options } = getUiOptions<T, F>(uiSchema);
   const Widget = getWidget(schema, widget, widgets);
 
   let enumOptions: EnumOptionsType[] | undefined;
@@ -44,7 +44,7 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
           if (isObject(option)) {
             return {
               ...option,
-              title: option.title || (option.const === true ? "Yes" : "No"),
+              title: option.title || (option.const === true ? "True" : "False"),
             };
           }
           return undefined;
@@ -64,11 +64,11 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
       enumOptions = [
         {
           value: enums[0],
-          label: enums[0] ? "Yes" : "No",
+          label: enums[0] ? "True" : "False",
         },
         {
           value: enums[1],
-          label: enums[1] ? "Yes" : "No",
+          label: enums[1] ? "True" : "False",
         },
       ];
     } else {
