@@ -7,9 +7,9 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import { useContractStore } from "lib/providers/store";
 import { AmpTrackExpandAll } from "lib/services/amplitude";
-import type { QueryExecuteSchema, QuerySchema } from "lib/stores/schema";
+import type { QuerySchema } from "lib/stores/schema";
 import type { ContractAddr } from "lib/types";
-import { parseSchemaInitialData } from "lib/utils";
+import { resolveInitialMsg } from "lib/utils";
 
 import { SchemaQueryComponent } from "./SchemaQueryComponent";
 
@@ -18,16 +18,6 @@ interface SchemaQueryProps {
   contractAddress: ContractAddr;
   initialMsg: string;
 }
-
-const resolveInitialMsg = (
-  initialMsg: string,
-  msgSchema: QueryExecuteSchema
-) => {
-  const parsed = parseSchemaInitialData(initialMsg);
-  return Object.keys(parsed)[0] === msgSchema.schema.required?.[0]
-    ? parsed
-    : {};
-};
 
 export const SchemaQuery = ({
   schema,

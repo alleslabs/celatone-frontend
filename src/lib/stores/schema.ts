@@ -107,12 +107,32 @@ export class SchemaStore {
     return querySchema.oneOf?.reduce<Array<[QueryExecuteSchema, JsonSchema]>>(
       (acc, msg) => {
         const eachQuerySchema = msg as JsonSchema;
-        const { required } = eachQuerySchema;
-
+        const { type, enum: enumOptions, required } = eachQuerySchema;
+        if (type === "string" && enumOptions) {
+          return [
+            ...acc,
+            ...enumOptions.map<[QueryExecuteSchema, JsonSchema]>(
+              (enumOption) => [
+                {
+                  title: enumOption as string,
+                  description: eachQuerySchema.description,
+                  schema: {
+                    $schema: querySchema.$schema,
+                    type,
+                    enum: [enumOption],
+                  },
+                  inputRequired: false,
+                },
+                {
+                  ...responsesSchema[enumOption as string],
+                  readOnly: true,
+                },
+              ]
+            ),
+          ];
+        }
         if (required) {
-          const desc1 = eachQuerySchema.description;
-
-          delete eachQuerySchema.description;
+          const { description, ...msgSchema } = eachQuerySchema;
 
           const title = required[0];
           const propertyKey = eachQuerySchema.properties?.[title] as JsonSchema;
@@ -124,9 +144,9 @@ export class SchemaStore {
             [
               {
                 title,
-                description: desc1,
+                description,
                 schema: {
-                  ...eachQuerySchema,
+                  ...msgSchema,
                   $schema: querySchema.$schema,
                   definitions: querySchema.definitions,
                 },
@@ -154,21 +174,40 @@ export class SchemaStore {
 
     if (!executeSchema) return undefined;
 
-    return executeSchema.oneOf?.map<QueryExecuteSchema>((msg) => {
-      const eachSchema = msg as JsonSchema;
-      const { required, description } = eachSchema;
+    return executeSchema.oneOf?.reduce<Array<QueryExecuteSchema>>(
+      (acc, msg) => {
+        const eachExecuteSchema = msg as JsonSchema;
+        const { type, required, enum: enumOptions } = eachExecuteSchema;
+        const { description, ...msgSchema } = eachExecuteSchema;
 
-      delete eachSchema.description;
-
-      return {
-        title: required?.[0],
-        description,
-        schema: {
-          ...eachSchema,
-          $schema: executeSchema.$schema,
-          definitions: executeSchema.definitions,
-        },
-      };
-    });
+        if (type === "string" && enumOptions) {
+          return [
+            ...acc,
+            ...enumOptions.map<QueryExecuteSchema>((enumOption) => ({
+              title: enumOption as string,
+              description: eachExecuteSchema.description,
+              schema: {
+                $schema: eachExecuteSchema.$schema,
+                type,
+                enum: [enumOption],
+              },
+            })),
+          ];
+        }
+        return [
+          ...acc,
+          {
+            title: required?.[0],
+            description,
+            schema: {
+              ...msgSchema,
+              $schema: executeSchema.$schema,
+              definitions: executeSchema.definitions,
+            },
+          },
+        ];
+      },
+      []
+    );
   }
 }

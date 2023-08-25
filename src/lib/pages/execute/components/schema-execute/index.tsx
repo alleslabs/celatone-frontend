@@ -8,7 +8,7 @@ import { EmptyState } from "lib/components/state";
 import { AmpTrackExpandAll } from "lib/services/amplitude";
 import type { ExecuteSchema } from "lib/stores/schema";
 import type { ContractAddr } from "lib/types";
-import { parseSchemaInitialData } from "lib/utils";
+import { getDefaultMsg, resolveInitialMsg } from "lib/utils";
 
 import { ExecuteBox } from "./ExecuteBox";
 
@@ -113,17 +113,16 @@ export const SchemaExecute = ({
           sx={{ ".chakra-accordion__icon": { color: "gray.600" } }}
         >
           {filteredMsgs.map((msgSchema, idx) => {
-            const parsed = parseSchemaInitialData(initialMsg);
-            const hasPayload =
-              Object.keys(parsed)[0] === msgSchema.schema.required?.[0];
-
+            const parsed = resolveInitialMsg(initialMsg, msgSchema);
             return (
               <ExecuteBox
                 key={msgSchema.title}
                 msgSchema={msgSchema}
                 contractAddress={contractAddress}
-                initialMsg={hasPayload ? parsed : {}}
-                initialFunds={hasPayload ? initialFunds : []}
+                initialMsg={parsed}
+                initialFunds={
+                  parsed !== getDefaultMsg(msgSchema) ? initialFunds : []
+                }
                 opened={expandedIndexes.includes(idx)}
               />
             );

@@ -33,12 +33,20 @@ import { AmpTrack, AmpEvent } from "lib/services/amplitude";
 import { queryData } from "lib/services/contract";
 import type { Activity } from "lib/stores/contract";
 import type { QueryExecuteSchema } from "lib/stores/schema";
-import type { ContractAddr, HumanAddr, RpcQueryError, Option } from "lib/types";
+import type {
+  ContractAddr,
+  HumanAddr,
+  RpcQueryError,
+  Option,
+  JsonDataType,
+} from "lib/types";
 import {
   dateFromNow,
   encode,
   formatUTC,
   getCurrentDate,
+  getDefaultMsg,
+  isNonEmptyJsonData,
   jsonValidate,
   parseSchemaInitialData,
 } from "lib/utils";
@@ -47,13 +55,22 @@ const CodeSnippet = dynamic(() => import("lib/components/modal/CodeSnippet"), {
   ssr: false,
 });
 
-interface SchemaQueryComponentInterface {
+interface ReturnWidgetsProps {
+  timestamp: Option<Date>;
+  inputRequired: Option<boolean>;
+  res: string;
+  resTab: Option<OutputMessageTabs>;
+  queryError: string;
+  setResTab: Dispatch<SetStateAction<Option<OutputMessageTabs>>>;
+}
+
+interface SchemaQueryComponentProps {
   msgSchema: QueryExecuteSchema;
   resSchema: RJSFSchema;
   contractAddress: ContractAddr;
   lcdEndpoint: string;
   walletAddress: Option<string>;
-  initialMsg: Record<string, unknown>;
+  initialMsg: JsonDataType;
   addActivity: (activity: Activity) => void;
 }
 
@@ -79,15 +96,6 @@ const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
   );
 });
 
-interface ReturnWidgetsProps {
-  timestamp: Option<Date>;
-  inputRequired: Option<boolean>;
-  res: string;
-  resTab: Option<OutputMessageTabs>;
-  queryError: string;
-  setResTab: Dispatch<SetStateAction<Option<OutputMessageTabs>>>;
-}
-
 const ReturnWidgets = ({
   timestamp,
   inputRequired,
@@ -95,8 +103,8 @@ const ReturnWidgets = ({
   resTab,
   queryError,
   setResTab,
-}: ReturnWidgetsProps) => {
-  return !inputRequired ? (
+}: ReturnWidgetsProps) =>
+  !inputRequired ? (
     <Flex align="center" gap={2} mb={3}>
       <Text variant="body1" fontWeight={700}>
         Return Output
@@ -134,7 +142,6 @@ const ReturnWidgets = ({
       </Flex>
     </Flex>
   );
-};
 
 export const SchemaQueryComponent = ({
   msgSchema,
@@ -144,21 +151,14 @@ export const SchemaQueryComponent = ({
   walletAddress,
   initialMsg,
   addActivity,
-}: SchemaQueryComponentInterface) => {
-  const [resTab, setResTab] = useState<OutputMessageTabs>();
-  const [msg, setMsg] = useState("{}");
-  const [res, setRes] = useState("{}");
+}: SchemaQueryComponentProps) => {
+  const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
+    OutputMessageTabs.YOUR_SCHEMA
+  );
+  const [msg, setMsg] = useState(JSON.stringify(getDefaultMsg(msgSchema)));
+  const [res, setRes] = useState("");
   const [queryError, setQueryError] = useState("");
   const [timestamp, setTimestamp] = useState<Date>();
-
-  useEffect(() => {
-    if (Object.keys(initialMsg).length) setMsg(JSON.stringify(initialMsg));
-  }, [initialMsg]);
-
-  useEffect(() => {
-    if (msgSchema.inputRequired) setResTab(OutputMessageTabs.YOUR_SCHEMA);
-    else setResTab(OutputMessageTabs.JSON_OUTPUT);
-  }, [msgSchema.inputRequired, setResTab]);
 
   // TODO: Abstract query
   const {
@@ -173,14 +173,7 @@ export const SchemaQueryComponent = ({
       msgSchema.title,
       msg,
     ],
-    async () =>
-      queryData(
-        lcdEndpoint,
-        contractAddress,
-        msgSchema.inputRequired
-          ? msg
-          : JSON.stringify({ [msgSchema.title ?? ""]: {} })
-      ),
+    async () => queryData(lcdEndpoint, contractAddress, msg),
     {
       enabled: false,
       retry: false,
@@ -202,7 +195,7 @@ export const SchemaQueryComponent = ({
       onError(err: AxiosError<RpcQueryError>) {
         setQueryError(err.response?.data.message || DEFAULT_RPC_ERROR);
         setTimestamp(undefined);
-        setRes("{}");
+        setRes("");
       },
     }
   );
@@ -213,8 +206,12 @@ export const SchemaQueryComponent = ({
   }, [refetch]);
 
   useEffect(() => {
-    if (!msgSchema.inputRequired) refetch();
-  }, [msgSchema.inputRequired, refetch]);
+    if (isNonEmptyJsonData(initialMsg)) {
+      setMsg(JSON.stringify(initialMsg));
+      if (!msgSchema.inputRequired) refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(initialMsg), msgSchema.inputRequired, refetch]);
 
   return (
     <AccordionItem className={`query_msg_${msgSchema.schema.required?.[0]}`}>
@@ -224,7 +221,9 @@ export const SchemaQueryComponent = ({
             <Text variant="body1" fontWeight={700}>
               {msgSchema.title}
             </Text>
-            <Text variant="body1">{msgSchema.description}</Text>
+            <Text variant="body3" textColor="text.dark">
+              {msgSchema.description}
+            </Text>
           </Box>
           <AccordionIcon />
         </AccordionButton>
@@ -239,11 +238,12 @@ export const SchemaQueryComponent = ({
               <JsonSchemaForm
                 formId={`query-${msgSchema.title}`}
                 schema={msgSchema.schema}
-                onChange={(data) => setMsg(JSON.stringify(data))}
                 initialFormData={initialMsg}
+                onChange={(data) => setMsg(JSON.stringify(data))}
               />
               <Flex gap={2} justify="flex-start">
                 <CopyButton
+                  isDisable={msg === ""}
                   value={msg}
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
@@ -302,7 +302,8 @@ export const SchemaQueryComponent = ({
             {!msgSchema.inputRequired && (
               <Flex gap={2} justify="flex-start" mt={3}>
                 <CopyButton
-                  value={JSON.stringify({ [msgSchema.title ?? ""]: {} })}
+                  isDisable={msg === ""}
+                  value={msg}
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
                 />
@@ -313,7 +314,7 @@ export const SchemaQueryComponent = ({
                 />
                 <Flex gap={2} ml="auto">
                   <CopyButton
-                    isDisable={res === "{}" || Boolean(queryError)}
+                    isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     amptrackSection="query_response"
                     buttonText="Copy Output"

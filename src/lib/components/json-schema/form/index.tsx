@@ -17,6 +17,8 @@ import isEqual from "lodash/isEqual";
 import type { FC } from "react";
 import { useEffect, useCallback, useMemo, useState } from "react";
 
+import type { JsonDataType } from "lib/types";
+
 import { Fields } from "./fields";
 import { Templates } from "./templates";
 import { Widgets } from "./widgets";
@@ -96,20 +98,17 @@ export interface JsonSchemaFormProps
   > {
   schema: RJSFSchema;
   formId: string;
-  initialFormData?: Record<string, unknown>;
-  onSubmit?: (data: Record<string, unknown>) => void;
+  initialFormData?: JsonDataType;
+  onSubmit?: (data: JsonDataType) => void;
   /** Onchange callback is with BROKEN data */
-  onChange?: (
-    data: Record<string, unknown>,
-    errors: RJSFValidationError[]
-  ) => void;
+  onChange?: (data: JsonDataType, errors: RJSFValidationError[]) => void;
   formContext?: Record<string, unknown>;
 }
 
 export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   formId,
   schema,
-  initialFormData = {},
+  initialFormData = "",
   onSubmit: propsOnSubmit,
   onChange: propsOnChange,
   widgets,
@@ -118,8 +117,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   uiSchema,
   formContext,
 }) => {
-  const [formData, setFormData] =
-    useState<Record<string, unknown>>(initialFormData);
+  const [formData, setFormData] = useState<JsonDataType>(initialFormData);
 
   const collapsedSchema = useMemo(
     () => createSchemaUtils(v8Validator, schema).retrieveSchema(schema),
@@ -139,10 +137,12 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   };
 
   const onChange = useCallback(
-    (data: Record<string, unknown>, errors: RJSFValidationError[]) => {
-      const values = { ...data };
+    (data: JsonDataType, errors: RJSFValidationError[]) => {
       if (data) {
-        fixOneOfKeysCallback(values);
+        const values: JsonDataType = structuredClone(data);
+        if (typeof values === "object")
+          fixOneOfKeysCallback(values as Record<string, unknown>);
+
         if (!isEqual(formData, values)) {
           setFormData(values);
           propsOnChange?.(values, errors);
@@ -167,9 +167,6 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
         "ui:submitButtonOptions": {
           norender: true,
         },
-        "ui:form": {
-          width: "100%",
-        },
         ...uiSchema,
       }}
       widgets={{
@@ -187,7 +184,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
         ...templates,
       }}
       validator={v8Validator}
-      liveValidate
+      liveValidate={!schema.readOnly}
       showErrorList={false}
       onChange={({ formData: values, errors }) => {
         // log.info(values)

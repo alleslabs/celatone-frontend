@@ -29,6 +29,7 @@ export const SchemaInputSection = observer(
     setSchemaInput,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
+    const msgSchema = jsonSchema?.[type];
     const prettyType = capitalize(type);
 
     return (
@@ -38,9 +39,9 @@ export const SchemaInputSection = observer(
         borderRadius="8px"
         p="24px 16px"
         mb={4}
-        align={jsonSchema?.[type] ? "flex-start" : "center"}
+        align={msgSchema ? "flex-start" : "center"}
       >
-        {jsonSchema?.[type] ? (
+        {msgSchema ? (
           <>
             <Flex align="center" justify="space-between" w="full" mb={4}>
               <Text color="text.main" fontWeight={700} variant="body2">
@@ -54,14 +55,30 @@ export const SchemaInputSection = observer(
               </Flex>
             </Flex>
             {/* TODO: revisit type assertion later */}
-            <div style={{ width: "100%" }}>
-              <JsonSchemaForm
-                schema={jsonSchema[type] as RJSFSchema}
-                formId={type}
-                initialFormData={initialFormData}
-                onChange={(data) => setSchemaInput(JSON.stringify(data))}
-              />
-            </div>
+            {msgSchema.properties ? (
+              <div style={{ width: "100%" }}>
+                <JsonSchemaForm
+                  schema={jsonSchema[type] as RJSFSchema}
+                  formId={type}
+                  initialFormData={initialFormData}
+                  onChange={(data) => setSchemaInput(JSON.stringify(data))}
+                />
+              </div>
+            ) : (
+              <Text
+                variant="body2"
+                textColor="text.disabled"
+                fontWeight={500}
+                bgColor="gray.800"
+                w="full"
+                py={4}
+                border="1px solid var(--chakra-colors-gray-700)"
+                borderRadius="4px"
+                textAlign="center"
+              >
+                {`${prettyType}Msg in attached JSON Schema takes no input`}
+              </Text>
+            )}
           </>
         ) : (
           <>
