@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#500](https://github.com/alleslabs/celatone-frontend/pull/500) Disable estimated fee when input is invalid
 - [#498](https://github.com/alleslabs/celatone-frontend/pull/498) Automatically switch to schema tab and show 404 not found error
 - [#491](https://github.com/alleslabs/celatone-frontend/pull/491) Improve scrolling into view by delaying scroll function
 - [#489](https://github.com/alleslabs/celatone-frontend/pull/489) Improve jsonschema query response UI and fix jsonschema incorrect oneOf behavior
