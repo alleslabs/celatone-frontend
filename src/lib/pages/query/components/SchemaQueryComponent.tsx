@@ -173,14 +173,7 @@ export const SchemaQueryComponent = ({
       msgSchema.title,
       msg,
     ],
-    async () =>
-      queryData(
-        lcdEndpoint,
-        contractAddress,
-        msgSchema.inputRequired
-          ? msg
-          : JSON.stringify({ [msgSchema.title ?? ""]: {} })
-      ),
+    async () => queryData(lcdEndpoint, contractAddress, msg),
     {
       enabled: false,
       retry: false,
