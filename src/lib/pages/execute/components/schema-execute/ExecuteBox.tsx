@@ -13,6 +13,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
+import type { RJSFValidationError } from "@rjsf/utils";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useForm, useFormState } from "react-hook-form";
@@ -98,6 +99,7 @@ export const ExecuteBox = ({
   const [fee, setFee] = useState<StdFee>();
   const [msg, setMsg] = useState(JSON.stringify(getDefaultMsg(msgSchema)));
   const [isValidForm, setIsValidForm] = useState(false);
+  const [hasInitMsg, setHasInitMsg] = useState(false);
   const [simulateFeeError, setSimulateFeeError] = useState<string>();
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [processing, setProcessing] = useState(false);
@@ -122,13 +124,15 @@ export const ExecuteBox = ({
   const assetsSelectString = JSON.stringify(assetsSelect);
 
   const enableExecute = useMemo(() => {
-    const generalCheck = !!(
+    const generalCheck = Boolean(
       msg.trim().length &&
-      jsonValidate(msg) === null &&
-      address &&
-      contractAddress &&
-      opened &&
-      isValidForm
+        jsonValidate(msg) === null &&
+        address &&
+        contractAddress &&
+        opened &&
+        // In cases where there is an initial message, `isValidForm` isn't updated upon the component's first render.
+        // because `isValidForm` can be updated via form's onchange event only.
+        (hasInitMsg || isValidForm)
     );
     switch (attachFundsOption) {
       case AttachFundsType.ATTACH_FUNDS_SELECT:
@@ -143,6 +147,7 @@ export const ExecuteBox = ({
     address,
     opened,
     isValidForm,
+    hasInitMsg,
     contractAddress,
     attachFundsOption,
     isValidAssetsSelect,
@@ -169,6 +174,17 @@ export const ExecuteBox = ({
   // ------------------------------------------//
   // ------------------CALLBACKS---------------//
   // ------------------------------------------//
+  const handleOnChange = (data: unknown, errors: RJSFValidationError[]) => {
+    setIsValidForm(errors.length === 0);
+    setMsg(JSON.stringify(data));
+
+    // reset fee and error when user change the input
+    setSimulateFeeError(undefined);
+    setFee(undefined);
+
+    // reset hasInitalMsg after user change the input
+    setHasInitMsg(false);
+  };
 
   const proceed = useCallback(async () => {
     const funds = getAttachFunds(
@@ -230,7 +246,11 @@ export const ExecuteBox = ({
    * Handle when there is an initialMsg
    */
   useEffect(() => {
-    if (isNonEmptyJsonData(initialMsg)) setMsg(JSON.stringify(initialMsg));
+    if (isNonEmptyJsonData(initialMsg)) {
+      setMsg(JSON.stringify(initialMsg));
+      setHasInitMsg(true);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(initialMsg)]);
 
@@ -288,10 +308,7 @@ export const ExecuteBox = ({
               formId={`execute-${msgSchema.title}`}
               schema={msgSchema.schema}
               initialFormData={initialMsg}
-              onChange={(data, errors) => {
-                setIsValidForm(errors.length === 0);
-                setMsg(JSON.stringify(data));
-              }}
+              onChange={handleOnChange}
             />
             {simulateFeeError && (
               <Alert variant="error" mb={3} alignItems="center">
