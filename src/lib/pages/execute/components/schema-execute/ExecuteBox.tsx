@@ -174,17 +174,20 @@ export const ExecuteBox = ({
   // ------------------------------------------//
   // ------------------CALLBACKS---------------//
   // ------------------------------------------//
-  const handleOnChange = (data: unknown, errors: RJSFValidationError[]) => {
-    setIsValidForm(errors.length === 0);
-    setMsg(JSON.stringify(data));
+  const handleOnChange = useCallback(
+    (data: unknown, errors: RJSFValidationError[]) => {
+      setIsValidForm(errors.length === 0);
+      setMsg(JSON.stringify(data));
 
-    // reset fee and error when user change the input
-    setSimulateFeeError(undefined);
-    setFee(undefined);
+      // reset fee and error when user change the input
+      setSimulateFeeError(undefined);
+      setFee(undefined);
 
-    // reset hasInitalMsg after user change the input
-    setHasInitMsg(false);
-  };
+      // reset hasInitalMsg after user change the input
+      setHasInitMsg(false);
+    },
+    []
+  );
 
   const proceed = useCallback(async () => {
     const funds = getAttachFunds(
