@@ -10,9 +10,6 @@ export enum MessageTabs {
   EXECUTE_MODULE = "Execute",
 }
 
-export const viewModuleFormKey = MessageTabs.VIEW_MODULE as "View";
-export const executeModuleFormKey = MessageTabs.EXECUTE_MODULE as "Execute";
-
 interface InteractionTypeSwitchProps {
   currentTab: Option<MessageTabs>;
   disabled?: boolean;
@@ -27,7 +24,7 @@ export const InteractionTypeSwitch = ({
   onTabChange,
 }: InteractionTypeSwitchProps) => {
   const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const activeIndex = currentTab ? tabs.indexOf(currentTab) : -1;
+  const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
   return (
     <Flex
