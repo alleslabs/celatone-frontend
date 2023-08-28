@@ -64,7 +64,7 @@ export const useSimulateFeeQuery = ({
       CELATONE_QUERY_KEYS.SIMULATE_FEE,
       chain.chain_name,
       userAddress,
-      JSON.stringify(messages),
+      messages,
       rpcEndpoint,
     ],
     queryFn: async () => simulateFn(messages),
