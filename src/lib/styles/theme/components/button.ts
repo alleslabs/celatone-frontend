@@ -88,8 +88,8 @@ export const Button: ComponentStyleConfig = {
               color: CURR_THEME.button.primary.disabledColor,
             },
           },
-          hoverBg: primaryDark,
-          activeBg: primaryLight,
+          hoverBg: CURR_THEME.button.primary.hoverBackground,
+          activeBg: CURR_THEME.button.primary.activeBackground,
         })
       : generateStyle({
           basic: {

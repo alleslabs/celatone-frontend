@@ -103,6 +103,8 @@ export type ThemeConfig = {
       color: string;
       disabledBackground: string;
       disabledColor: string;
+      hoverBackground: string;
+      activeBackground: string;
     };
     outlinePrimary?: {
       borderColor: string;
