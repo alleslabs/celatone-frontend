@@ -13,6 +13,7 @@ import { AttachFundsType } from "./types";
 interface AttachFundContentProps {
   control: Control<AttachFundsState>;
   setValue: UseFormSetValue<AttachFundsState>;
+  labelBgColor?: string;
 }
 
 const attachFundsOptions = [
@@ -33,7 +34,11 @@ const attachFundsOptions = [
   },
 ];
 
-const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
+const AttachFundContent = ({
+  control,
+  setValue,
+  labelBgColor,
+}: AttachFundContentProps) => {
   const [assetsSelect, assetsJson, attachFundsOption] = useWatch({
     control,
     name: [ASSETS_SELECT, ASSETS_JSON_STR, ATTACH_FUNDS_OPTION],
@@ -46,6 +51,7 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
           assetsSelect={assetsSelect}
           control={control}
           setValue={setValue}
+          labelBgColor={labelBgColor}
         />
       );
     case AttachFundsType.ATTACH_FUNDS_JSON:
@@ -95,6 +101,10 @@ export const AttachFund = ({
         labelBgColor={labelBgColor}
       />
     </Flex>
-    <AttachFundContent control={control} setValue={setValue} />
+    <AttachFundContent
+      control={control}
+      setValue={setValue}
+      labelBgColor={labelBgColor}
+    />
   </>
 );

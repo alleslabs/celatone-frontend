@@ -14,6 +14,7 @@ interface SelectFundProps {
   control: Control<AttachFundsState>;
   setValue: UseFormSetValue<AttachFundsState>;
   assetsSelect: Coin[];
+  labelBgColor?: string;
 }
 
 /**
@@ -23,6 +24,7 @@ export const SelectFund = ({
   control,
   setValue,
   assetsSelect,
+  labelBgColor,
 }: SelectFundProps) => {
   const { data: assetInfos = [] } = useAssetInfoList();
   const { fields, append, remove } = useFieldArray({
@@ -61,6 +63,7 @@ export const SelectFund = ({
           }
           assetOptions={assetOptions}
           initialSelected={field.denom}
+          labelBgColor={labelBgColor}
           amountInput={
             <ControllerInput
               name={`${ASSETS_SELECT}.${idx}.amount`}
@@ -69,6 +72,7 @@ export const SelectFund = ({
               variant="floating"
               type="number"
               rules={rules}
+              labelBgColor={labelBgColor}
             />
           }
         />
