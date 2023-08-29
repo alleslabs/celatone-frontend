@@ -30,6 +30,7 @@ export const generateReceipts = (
   { msgBody, log }: Omit<TxMsgData, "assetInfos">,
   getAddressType: (address: string) => AddressReturnType,
   assetInfos: Option<{ [key: string]: AssetInfo }>
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Option<TxReceipt | null | false>[] => {
   const { "@type": type, ...body } = msgBody;
 
@@ -65,14 +66,14 @@ export const generateReceipts = (
                 permissionAddresses={
                   details.instantiate_permission.address
                     ? [details.instantiate_permission.address]
-                    : details.instantiate_permission.addresses
+                    : details.instantiate_permission.addresses ?? []
                 }
               />
               <ViewPermissionAddresses
                 permissionAddresses={
                   details.instantiate_permission.address
                     ? [details.instantiate_permission.address]
-                    : details.instantiate_permission.addresses
+                    : details.instantiate_permission.addresses ?? []
                 }
                 amptrackSection="tx_msg_receipts"
               />

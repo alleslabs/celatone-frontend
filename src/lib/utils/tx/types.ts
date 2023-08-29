@@ -23,7 +23,8 @@ export interface MsgUnknownDetails extends MsgBaseDetails {
 interface InstantiatePermissionResponse {
   permission: AccessConfigPermission;
   address: Addr;
-  addresses: Addr[];
+  // Remark: addresses will undefined in case of Cosmos SDK v0.26
+  addresses?: Addr[];
 }
 
 // cosmwasm/wasm
