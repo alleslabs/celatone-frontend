@@ -6,12 +6,15 @@ import type {
 } from "@rjsf/utils";
 import { getTemplate, getUiOptions } from "@rjsf/utils";
 
+import { isNullFormData } from "../utils";
+
 import { FieldTypeTag } from "./FieldTypeTag";
 
 export default function ArrayFieldTemplate<T = any, F = any>(
   props: ArrayFieldTemplateProps<T, F>
 ) {
   const {
+    formData,
     canAdd,
     disabled,
     idSchema,
@@ -74,7 +77,7 @@ export default function ArrayFieldTemplate<T = any, F = any>(
           bgColor="gray.700"
           borderRadius="8px"
         >
-          Empty
+          {isNullFormData(formData) ? "NULL" : "Empty"}
         </Text>
       ) : (
         <Grid

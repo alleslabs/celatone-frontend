@@ -34,7 +34,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     schema,
     id,
     options,
-    placeholder,
+    placeholder = "",
     multiple,
     required,
     disabled,
@@ -118,7 +118,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
 
   return (
     <FormControl
-      mb={2}
+      my={2}
       isDisabled={disabled || readonly}
       isRequired={required && !readonly}
       isReadOnly={readonly}
@@ -137,13 +137,15 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
         name={id}
         isMulti={isMultiple}
         options={displayEnumOptions}
-        placeholder={placeholder}
+        placeholder={
+          placeholder.length > 0 || readonly ? placeholder : "Select option"
+        }
         closeMenuOnSelect={!isMultiple}
         onBlur={handleOnBlur}
         onChange={isMultiple ? handleOnMultiChange : handleOnChange}
         onFocus={handleOnFocus}
         autoFocus={autofocus}
-        value={formValue}
+        value={selectedIndex === undefined ? undefined : formValue}
         menuPosition="fixed"
         chakraStyles={{
           control: (provided) => ({

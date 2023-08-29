@@ -72,6 +72,7 @@ interface AttachFundProps {
   attachFundsOption: AttachFundsType;
   labelBgColor?: string;
   setValue: UseFormSetValue<AttachFundsState>;
+  showLabel?: boolean;
 }
 
 export const AttachFund = ({
@@ -79,11 +80,12 @@ export const AttachFund = ({
   attachFundsOption,
   labelBgColor,
   setValue,
+  showLabel = true,
 }: AttachFundProps) => (
   <>
     <Flex mb={5}>
       <SelectInput
-        formLabel="Attach Funds"
+        formLabel={showLabel ? "Attach Funds" : undefined}
         options={attachFundsOptions}
         onChange={(value: AttachFundsType) =>
           setValue(ATTACH_FUNDS_OPTION, value)

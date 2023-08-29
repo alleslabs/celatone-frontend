@@ -307,6 +307,9 @@ export const ExecuteBox = ({
       <AccordionPanel mx={2}>
         <Grid templateColumns="1fr 1fr" templateRows="auto auto" columnGap={6}>
           <GridItem>
+            <Text variant="body2" color="text.dark" fontWeight={700}>
+              Execute Input
+            </Text>
             <JsonSchemaForm
               formId={`execute-${msgSchema.title}`}
               schema={msgSchema.schema}
@@ -321,12 +324,16 @@ export const ExecuteBox = ({
               </Alert>
             )}
           </GridItem>
-          <GridItem pt={5}>
+          <GridItem>
+            <Text variant="body2" color="text.dark" fontWeight={700} pb={3}>
+              Attach Funds
+            </Text>
             <AttachFund
               control={control}
               setValue={setValue}
               attachFundsOption={attachFundsOption}
               labelBgColor="gray.900"
+              showLabel={false}
             />
           </GridItem>
           <GridItem>

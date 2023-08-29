@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   FieldProps,
@@ -7,6 +8,7 @@ import type {
 } from "@rjsf/utils";
 import { getWidget, getUiOptions, optionsList } from "@rjsf/utils";
 import isObject from "lodash/isObject";
+import { useEffect } from "react";
 
 /** The `BooleanField` component is used to render a field in the schema is boolean. It constructs `enumOptions` for the
  * two boolean values based on the various alternatives in the schema.
@@ -35,6 +37,11 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
   const { widget = "select", ...options } = getUiOptions<T, F>(uiSchema);
   const Widget = getWidget(schema, widget, widgets);
 
+  useEffect(() => {
+    if (formData === undefined) onChange(false as T);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(formData), onChange]);
+
   let enumOptions: EnumOptionsType[] | undefined;
 
   if (Array.isArray(schema.oneOf)) {
@@ -54,7 +61,7 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
   } else {
     // We deprecated enumNames in v5. It's intentionally omitted from RSJFSchema type, so we need to cast here.
     const schemaWithEnumNames = schema as RJSFSchema & { enumNames?: string[] };
-    const enums = schema.enum ?? [true, false];
+    const enums = schema.enum ?? [false, true];
     if (
       !schemaWithEnumNames.enumNames &&
       enums &&
@@ -79,6 +86,9 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
       } as RJSFSchema);
     }
   }
+
+  if (!required)
+    enumOptions = [...(enumOptions ?? []), { value: null, label: "null" }];
 
   return (
     <Widget

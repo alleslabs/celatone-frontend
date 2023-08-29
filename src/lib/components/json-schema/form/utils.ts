@@ -138,3 +138,10 @@ export function getMatchingOptionFixed<T = any>(
     return validator.isValid(option, formData, rootSchema);
   });
 }
+
+export const isNullFormData = <T = any>(formData: T): boolean =>
+  formData === undefined || formData === null;
+
+export const isSchemaTypeString = (type: RJSFSchema["type"]) =>
+  (typeof type === "string" && type === "string") ||
+  (Array.isArray(type) && type.includes("string"));
