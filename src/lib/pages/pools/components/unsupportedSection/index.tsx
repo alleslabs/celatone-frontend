@@ -141,7 +141,7 @@ export const UnsupportedSection = ({
                 <Text display="flex" gap={2} alignItems="center">
                   Show only
                   <Image boxSize={4} src={SUPERFLUID_ICON} />
-                  Superfluid
+                  <Text color="#ee64e8">Superfluid</Text>
                 </Text>
               </FormLabel>
             </FormControl>
