@@ -16,7 +16,7 @@ import { ModuleSelectBody } from "./select-module/ModuleSelectBody";
 import {
   ModuleSelectorDisplay,
   ModuleSelectorInput,
-} from "./select-module/ModuleSeletor";
+} from "./select-module/ModuleSelector";
 // import { ModuleEmptyState } from "./select-module/ModuleEmptyState";
 
 interface ModuleSelectDrawerButtonProps {
@@ -29,13 +29,7 @@ export const ModuleSelectDrawerButton = ({
   const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
-      <Button
-        variant="primary"
-        ml="auto"
-        onClick={() => {
-          onOpen();
-        }}
-      >
+      <Button variant="primary" ml="auto" onClick={onOpen}>
         {buttonText}
       </Button>
       <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
@@ -48,12 +42,7 @@ export const ModuleSelectDrawerButton = ({
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody
-            p={6}
-            overflow="scroll"
-            display="flex"
-            flexDirection="column"
-          >
+          <DrawerBody p={6}>
             {/* Input */}
             <ModuleSelectorInput />
             {/* Selected Address */}

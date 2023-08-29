@@ -1,3 +1,4 @@
+import type { ImageProps } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 
 import { CURR_THEME } from "env";
@@ -12,16 +13,16 @@ const imageSourceMap: Record<ImageVariant, string> = {
 
 interface StateImageProps {
   imageVariant: ImageVariant;
-  width?: string;
+  imageWidth?: ImageProps["width"];
 }
 
 export const StateImage = ({
   imageVariant,
-  width = "200px",
+  imageWidth = "200px",
 }: StateImageProps) => (
   <Image
     src={imageSourceMap[imageVariant]}
     alt="result not found"
-    width={width}
+    width={imageWidth}
   />
 );

@@ -1,5 +1,7 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
+import { DotSeparator } from "../DotSeparator";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "lib/components/Tooltip";
 
@@ -20,6 +22,22 @@ const getIcon = (visibility: FunctionCardProps["visibility"]) => {
       return <CustomIcon name="website" color="text.main" boxSize={3} />;
   }
 };
+
+const disabledStyle: { [key in `${boolean}`]: FlexProps } = {
+  true: {
+    bgColor: "gray.900",
+    _hover: { bg: "gray.900" },
+    cursor: "not-allowed",
+    borderColor: "gray.700",
+  },
+  false: {
+    bgColor: "gray.800",
+    _hover: { bg: "gray.700" },
+    cursor: "pointer",
+    borderColor: "transparent",
+  },
+};
+
 export const FunctionCard = ({
   isView = true,
   disabled = false,
@@ -28,16 +46,13 @@ export const FunctionCard = ({
   return (
     <Flex
       borderRadius={8}
-      bgColor={disabled ? "gray.900" : "gray.800"}
       py={2}
       px={3}
-      _hover={disabled ? { bg: "gray.900" } : { bg: "gray.700" }}
       transition="all .25s ease-in-out"
       flexDirection="column"
       gap={1}
-      cursor={disabled ? "not-allowed" : "pointer"}
       border="1px solid"
-      borderColor={disabled ? "gray.700" : "transparent"}
+      {...disabledStyle[String(disabled) as `${boolean}`]}
     >
       <Flex gap={1} justifyContent="space-between" w="full">
         <Flex gap={1} alignItems="center">
@@ -55,11 +70,11 @@ export const FunctionCard = ({
             bg="primary.dark"
             label="Only functions with “is_entry: true” and “visibility: public” are able to interacted through Celatone’s module interactions."
           >
-            <Flex alignItems="center">
+            <Flex>
               <CustomIcon name="check" color="success.main" boxSize={3} />
             </Flex>
           </Tooltip>
-          <Flex w={1} h={1} bgColor="gray.600" borderRadius="full" />
+          <DotSeparator bg="gray.600" />
           <Flex alignItems="center" gap={1}>
             {getIcon(visibility)}
             <Text

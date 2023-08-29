@@ -1,32 +1,32 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 import { useRef } from "react";
 
 import { MotionBox } from "lib/components/MotionBox";
+import type { Option } from "lib/types";
 
-export enum MessageTabs {
+export enum InteractionTabs {
   VIEW_MODULE = "View",
   EXECUTE_MODULE = "Execute",
 }
 
-export const viewModuleFormKey = MessageTabs.VIEW_MODULE as "View";
-export const executeModuleFormKey = MessageTabs.EXECUTE_MODULE as "Execute";
-
-interface InteractionTypeSwitchProps {
-  currentTab: MessageTabs;
+interface InteractionTypeSwitchProps extends FlexProps {
+  currentTab: Option<InteractionTabs>;
   disabled?: boolean;
-  onTabChange: Dispatch<SetStateAction<MessageTabs>>;
+  onTabChange: Dispatch<SetStateAction<Option<InteractionTabs>>>;
 }
 
-const tabs = Object.values(MessageTabs);
+const tabs = Object.values(InteractionTabs);
 
 export const InteractionTypeSwitch = ({
   currentTab,
   disabled = false,
   onTabChange,
+  ...flexProps
 }: InteractionTypeSwitchProps) => {
   const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const activeIndex = tabs.indexOf(currentTab);
+  const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
   return (
     <Flex
@@ -37,6 +37,7 @@ export const InteractionTypeSwitch = ({
       align="center"
       position="relative"
       sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
+      {...flexProps}
     >
       {tabs.map((tab, idx) => (
         <MotionBox

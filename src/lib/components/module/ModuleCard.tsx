@@ -1,6 +1,8 @@
-import { Flex, Badge } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
+
+import { CountBadge } from "./CountBadge";
 
 export const ModuleCard = () => {
   return (
@@ -21,22 +23,8 @@ export const ModuleCard = () => {
         />
       </Flex>
       <Flex gap={1}>
-        <Badge
-          bgColor="transparent"
-          border="1px solid"
-          borderColor="primary.main"
-          textColor="text.main"
-        >
-          <s>0</s>
-        </Badge>
-        <Badge
-          bgColor="transparent"
-          border="1px solid"
-          borderColor="accent.dark"
-          textColor="text.main"
-        >
-          <s>0</s>
-        </Badge>
+        <CountBadge count={12} variant="view" />
+        <CountBadge count={0} variant="execute" />
       </Flex>
     </Flex>
   );

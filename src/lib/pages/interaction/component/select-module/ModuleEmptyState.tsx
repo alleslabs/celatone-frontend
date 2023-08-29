@@ -21,7 +21,7 @@ export const ModuleEmptyState = ({
       borderColor="gray.700"
     >
       <Flex flexDirection="column" gap={4} alignItems="center">
-        <StateImage imageVariant="empty" width={imageWidth} />
+        <StateImage imageVariant="empty" imageWidth={imageWidth} />
         <Text variant="body2" color="text.dark">
           {description}
         </Text>

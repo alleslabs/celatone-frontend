@@ -43,20 +43,23 @@ export const ModuleSelectorDisplay = () => {
       borderRadius={8}
       alignItems="center"
     >
-      <LabelText flex="1" label="Viewing Address">
+      <LabelText flex={1} label="Viewing Address">
         <CopyLink
           value="cltn1m9y7um59yxtmek68qkwg3ykm28s52rrell6prx"
           type="user_address"
         />
       </LabelText>
-      <LabelText flex="1" label="Hex">
+      <LabelText flex={1} label="Hex">
         <CopyLink
           value="0xe688b84b23f322a994A53dbF8E15FA82CDB71127"
           type="user_address"
         />
       </LabelText>
-      <Button variant="outline-white" size="sm">
-        <CustomIcon name="swap" boxSize={3} />
+      <Button
+        variant="outline-white"
+        size="sm"
+        leftIcon={<CustomIcon name="swap" boxSize={3} />}
+      >
         Change Address
       </Button>
     </Flex>
