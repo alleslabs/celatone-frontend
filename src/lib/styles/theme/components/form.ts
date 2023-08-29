@@ -1,10 +1,19 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
 
+const errorMain = "error.main";
+
 export const Form: ComponentStyleConfig = {
   baseStyle: {
     container: {
       label: {
-        _invalid: { color: "error.main" },
+        _invalid: { color: errorMain },
+      },
+      ".error-text": {
+        fontSize: "12px",
+        mt: 1,
+        "&.chakra-form__error-message": {
+          color: errorMain,
+        },
       },
     },
   },
@@ -45,7 +54,7 @@ export const Form: ComponentStyleConfig = {
             color: "text.disabled",
           },
           "&.chakra-form__error-message": {
-            color: "error.main",
+            color: errorMain,
           },
         },
       },

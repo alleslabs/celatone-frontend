@@ -182,11 +182,16 @@ export const UnsupportedSection = ({
           <Flex gap={2} alignItems="center">
             <Button
               variant="outline-gray"
-              w="94px"
               size="sm"
+              rightIcon={
+                <CustomIcon
+                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                  boxSize={3}
+                />
+              }
               onClick={() => {
                 AmpTrackExpandAll(
-                  !expandedIndexes.length ? "expand" : "collapse"
+                  expandedIndexes.length ? "collapse" : "expand"
                 );
                 setExpandedIndexes((prev) =>
                   !prev.length ? Array.from(Array(pageSize).keys()) : []

@@ -24,12 +24,14 @@ export const CopyButton = ({
   variant = "outline-accent",
   buttonText = "Copy",
   amptrackSection,
+  ml,
   ...buttonProps
 }: CopyButtonProps) => (
   <CopyTemplate
     value={value}
     copyLabel={copyLabel}
     isDisabled={isDisable}
+    ml={ml}
     triggerElement={
       <Button
         isDisabled={isDisable}

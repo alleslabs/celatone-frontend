@@ -1,16 +1,31 @@
-import { Heading, Flex, Text, Box, Grid } from "@chakra-ui/react";
+import {
+  Heading,
+  Flex,
+  Text,
+  Box,
+  Grid,
+  Button,
+  useDisclosure,
+  Spinner,
+} from "@chakra-ui/react";
 
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
+import { JsonSchemaDrawer } from "lib/components/json-schema";
 import { LabelText } from "lib/components/LabelText";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { CodeData } from "lib/types";
+import type { CodeData, Option } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 
 interface CodeInfoSectionProps {
   codeData: CodeData;
   chainId: string;
+  codeHash: Option<string>;
+  isCodeHashLoading: boolean;
+  attached: boolean;
+  toJsonSchemaTab: () => void;
 }
 
 const getMethodSpecificRender = (
@@ -91,7 +106,12 @@ const getMethodSpecificRender = (
 export const CodeInfoSection = ({
   codeData,
   chainId,
+  codeHash,
+  isCodeHashLoading,
+  attached,
+  toJsonSchemaTab,
 }: CodeInfoSectionProps) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const getAddressType = useGetAddressType();
   const {
     hash,
@@ -113,14 +133,14 @@ export const CodeInfoSection = ({
   const uploaderType = getAddressType(uploader);
 
   return (
-    <Box mb={12}>
+    <Box my={12}>
       <Heading as="h6" variant="h6" mb={6}>
         Code Info
       </Heading>
       <Grid
         templateColumns={{
           base: "1fr 1fr",
-          md: "repeat(5, 1fr)",
+          md: "repeat(6, 1fr)",
         }}
         columnGap={12}
         rowGap={{ base: 6, md: 0 }}
@@ -158,6 +178,38 @@ export const CodeInfoSection = ({
           <Flex direction="column" gap={1}>
             {storedBlockRender}
           </Flex>
+        </LabelText>
+        <LabelText label="JSON Schema">
+          {isCodeHashLoading ? (
+            <Spinner size="sm" ml={2} />
+          ) : (
+            <div>
+              {codeHash ? (
+                <>
+                  <Button
+                    variant="outline-primary"
+                    p="8px 6px"
+                    leftIcon={
+                      attached ? undefined : (
+                        <CustomIcon name="upload" boxSize={4} />
+                      )
+                    }
+                    onClick={attached ? toJsonSchemaTab : onOpen}
+                  >
+                    {attached ? "View Schema" : "Attach"}
+                  </Button>
+                  <JsonSchemaDrawer
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    codeId={String(codeData.codeId)}
+                    codeHash={codeHash}
+                  />
+                </>
+              ) : (
+                "Fetch fail"
+              )}
+            </div>
+          )}
         </LabelText>
       </Grid>
     </Box>

@@ -5,6 +5,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useCurrentChain,
   useGetAddressType,
 } from "lib/app-provider";
 import type { Addr, ContractAddr, Option } from "lib/types";
@@ -28,7 +29,11 @@ export type SearchResultType =
   | "Pool ID";
 
 export interface ResultMetadata {
-  icns: { icnsNames: Option<ICNSNamesResponse>; address: Option<Addr> };
+  icns: {
+    icnsNames: Option<ICNSNamesResponse>;
+    address: Option<Addr>;
+    bech32Prefix: string;
+  };
 }
 
 // TODO: Add Proposal ID
@@ -51,13 +56,16 @@ export const useSearchHandler = (
     },
   } = useCelatoneApp();
   const lcdEndpoint = useBaseApiRoute("rest");
+  const {
+    chain: { bech32_prefix: bech32Prefix },
+  } = useCurrentChain();
   const getAddressType = useGetAddressType();
   const addressType = getAddressType(debouncedKeyword);
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
-  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId(
-    debouncedKeyword,
-    isWasm && isCodeId(debouncedKeyword)
-  );
+  const { data: codeData, isFetching: codeFetching } = useCodeDataByCodeId({
+    codeId: debouncedKeyword,
+    enabled: isWasm && isCodeId(debouncedKeyword),
+  });
   const { data: contractData, isFetching: contractFetching } = useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_INFO, lcdEndpoint, debouncedKeyword],
     async () => queryContract(lcdEndpoint, debouncedKeyword as ContractAddr),
@@ -125,6 +133,7 @@ export const useSearchHandler = (
       icns: {
         icnsNames,
         address: (isAddr ? debouncedKeyword : icnsAddressData?.address) as Addr,
+        bech32Prefix,
       },
     },
   };
