@@ -2,7 +2,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Checkbox, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import type {
   ArrayFieldTemplateProps,
   ErrorSchema,
@@ -29,6 +29,7 @@ import type React from "react";
 import * as uuid from "uuid";
 
 import { isNullFormData } from "../utils";
+import { CustomIcon } from "lib/components/icon";
 
 /** Type used to represent the keyed form data used in the state */
 type KeyedFormDataType<T> = { key: string; item: T };
@@ -37,6 +38,8 @@ type KeyedFormDataType<T> = { key: string; item: T };
 type ArrayFieldState<T> = {
   /** The keyed form data elements */
   keyedFormData: KeyedFormDataType<T>[];
+  /** Flag indicating whether any of the keyed form data has been updated */
+  updatedKeyedFormData: boolean;
 };
 
 /** Used to generate a unique ID for an element in a row */
@@ -92,11 +95,11 @@ class ArrayField<T = any, F = any> extends Component<
     prevState: Readonly<ArrayFieldState<T>>
   ) {
     // Don't call getDerivedStateFromProps if keyed formdata was just updated.
-    // if (prevState.updatedKeyedFormData) {
-    //   return {
-    //     updatedKeyedFormData: false,
-    //   };
-    // }
+    if (prevState.updatedKeyedFormData) {
+      return {
+        updatedKeyedFormData: false,
+      };
+    }
     const nextFormData = Array.isArray(nextProps.formData)
       ? nextProps.formData
       : [];
@@ -141,12 +144,8 @@ class ArrayField<T = any, F = any> extends Component<
     const keyedFormData = generateKeyedFormData<T>(formData);
     this.state = {
       keyedFormData,
+      updatedKeyedFormData: false,
     };
-  }
-
-  componentDidMount(): void {
-    const { formData } = this.props;
-    if (formData === undefined) this.onSelectChange([]);
   }
 
   /** Returns the default form information for an item based on the schema for that item. Deals with the possibility
@@ -184,6 +183,7 @@ class ArrayField<T = any, F = any> extends Component<
     this.setState(
       {
         keyedFormData: newKeyedFormData,
+        updatedKeyedFormData: true,
       },
       () => onChange(keyedToPlainFormData(newKeyedFormData))
     );
@@ -212,6 +212,7 @@ class ArrayField<T = any, F = any> extends Component<
       this.setState(
         {
           keyedFormData: newKeyedFormData,
+          updatedKeyedFormData: true,
         },
         () => onChange(keyedToPlainFormData(newKeyedFormData))
       );
@@ -247,6 +248,7 @@ class ArrayField<T = any, F = any> extends Component<
       this.setState(
         {
           keyedFormData: newKeyedFormData,
+          updatedKeyedFormData: true,
         },
         () =>
           onChange(
@@ -377,6 +379,7 @@ class ArrayField<T = any, F = any> extends Component<
       autofocus = false,
       required = false,
       registry,
+      onChange,
       onBlur,
       onFocus,
       idPrefix,
@@ -431,7 +434,7 @@ class ArrayField<T = any, F = any> extends Component<
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type}`,
-      disabled: disabled || isNullFormData(rawFormData),
+      disabled,
       idSchema,
       uiSchema,
       onAddClick: this.onAddClick,
@@ -440,10 +443,7 @@ class ArrayField<T = any, F = any> extends Component<
       schema,
       title,
       formContext,
-      formData:
-        isNullFormData(rawFormData) && formData.length === 0
-          ? rawFormData
-          : formData,
+      formData: rawFormData,
       rawErrors,
       registry,
     };
@@ -456,19 +456,31 @@ class ArrayField<T = any, F = any> extends Component<
     return (
       <Flex direction="column">
         <Template {...arrayProps} />
-        {!required && !readonly && (
-          <Checkbox
-            pl={2}
-            isChecked={isNullFormData(rawFormData)}
-            onChange={(e) => {
-              if (e.target.checked) this.onSelectChange(null);
-              else this.onSelectChange([]);
-            }}
-            isDisabled={formData.length > 0}
-          >
-            <Text variant="body3">Send as null</Text>
-          </Checkbox>
-        )}
+        {!readonly &&
+          (isNullFormData(rawFormData) ? (
+            <Button
+              mt={3}
+              variant="outline-primary"
+              onClick={() => onChange([])}
+              leftIcon={<CustomIcon name="plus" />}
+            >
+              Create an empty array
+            </Button>
+          ) : (
+            <Button
+              py={0}
+              height="fit-content"
+              alignSelf="start"
+              variant="outline"
+              size="sm"
+              onClick={() => onChange(null as any)}
+            >
+              <Flex gap={1} alignItems="center" h="fit-content">
+                <CustomIcon name="delete" boxSize={3} color="error.main" />
+                <Text color="error.main">Delete array</Text>
+              </Flex>
+            </Button>
+          ))}
       </Flex>
     );
   }

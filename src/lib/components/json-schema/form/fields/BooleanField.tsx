@@ -8,7 +8,6 @@ import type {
 } from "@rjsf/utils";
 import { getWidget, getUiOptions, optionsList } from "@rjsf/utils";
 import isObject from "lodash/isObject";
-import { useEffect } from "react";
 
 /** The `BooleanField` component is used to render a field in the schema is boolean. It constructs `enumOptions` for the
  * two boolean values based on the various alternatives in the schema.
@@ -36,11 +35,6 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
   const { widgets, formContext } = registry;
   const { widget = "select", ...options } = getUiOptions<T, F>(uiSchema);
   const Widget = getWidget(schema, widget, widgets);
-
-  useEffect(() => {
-    if (formData === undefined) onChange(false as T);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(formData), onChange]);
 
   let enumOptions: EnumOptionsType[] | undefined;
 
@@ -93,6 +87,7 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
   return (
     <Widget
       options={{ ...options, enumOptions }}
+      placeholder={readonly ? undefined : "Select boolean option"}
       schema={schema}
       uiSchema={uiSchema}
       id={idSchema && idSchema.$id}

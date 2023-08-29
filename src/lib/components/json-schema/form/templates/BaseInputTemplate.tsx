@@ -14,7 +14,7 @@ import {
 // import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
 import type { WidgetProps } from "@rjsf/utils";
 import { getInputProps, getTemplate, getUiOptions } from "@rjsf/utils";
-import type { ChangeEvent, FocusEvent } from "react";
+import { type ChangeEvent, type FocusEvent } from "react";
 
 import { isSchemaTypeString } from "../utils";
 
@@ -71,9 +71,9 @@ const getBaseInputPlaceholder = (
   required: boolean,
   isString: boolean
 ) => {
-  if (isString && value === "") return "empty string";
-  if (required || value === "") return "";
-  return `${readonly ? "" : "left empty to send as "}null`;
+  if (isString && value === "") return "Empty string";
+  if (required) return "";
+  return `${readonly ? "" : "Left blank to send as "}null`;
 };
 
 const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
@@ -175,7 +175,6 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
             }
             {...inputProps}
             list={schema.examples ? `examples_${id}` : undefined}
-            isDisabled={isStringType && value === ""}
             _disabled={{
               color: "text.main",
               cursor: "not-allowed",
@@ -195,7 +194,7 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
             isChecked={value === ""}
             onChange={(e) => {
               if (e.target.checked) onChange("" as T);
-              else onChange(null as T);
+              else onChange(undefined as T);
             }}
           >
             <Text variant="body3">Send as empty string</Text>
