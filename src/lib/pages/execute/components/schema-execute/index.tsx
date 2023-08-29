@@ -121,7 +121,10 @@ export const SchemaExecute = ({
                 contractAddress={contractAddress}
                 initialMsg={parsed}
                 initialFunds={
-                  parsed !== getDefaultMsg(msgSchema) ? initialFunds : []
+                  JSON.stringify(parsed) !==
+                  JSON.stringify(getDefaultMsg(msgSchema))
+                    ? initialFunds
+                    : []
                 }
                 opened={expandedIndexes.includes(idx)}
               />
