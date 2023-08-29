@@ -27,12 +27,13 @@ export const Interaction = () => {
   const [tab, setTab] = useState<InteractionTabs>();
 
   useEffect(() => {
-    if (isReady)
+    if (isReady) {
       setTab(
         query.type === "execute"
           ? InteractionTabs.EXECUTE_MODULE
           : InteractionTabs.VIEW_MODULE
       );
+    }
   }, [isReady, query.type]);
 
   return (
