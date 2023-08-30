@@ -66,7 +66,7 @@ export default function ArrayFieldTemplate<T = any, F = any>(
         uiSchema={uiSchema}
         registry={registry}
       />
-      {readonly && items.length === 0 ? (
+      {isNullFormData(formData) || (readonly && items.length === 0) ? (
         <Text
           variant="body3"
           fontWeight={700}
@@ -80,47 +80,43 @@ export default function ArrayFieldTemplate<T = any, F = any>(
           {isNullFormData(formData) ? "NULL" : "Empty"}
         </Text>
       ) : (
-        <>
-          {isNullFormData(formData) ? null : (
-            <Grid
-              key={`array-item-list-${idSchema.$id}`}
-              my={2}
-              gap={4}
-              bgColor="gray.800"
-              borderRadius="8px"
-              p={4}
+        <Grid
+          key={`array-item-list-${idSchema.$id}`}
+          my={2}
+          gap={4}
+          bgColor="gray.800"
+          borderRadius="8px"
+          p={4}
+        >
+          {items.length === 0 ? (
+            <Text
+              textAlign="center"
+              variant="body2"
+              fontWeight={700}
+              color="text.dark"
             >
-              {items.length === 0 ? (
-                <Text
-                  textAlign="center"
-                  variant="body2"
-                  fontWeight={700}
-                  color="text.dark"
-                >
-                  Empty array
-                </Text>
-              ) : (
-                items.map(
-                  ({ key, ...itemProps }: ArrayFieldTemplateItemType<T, F>) => (
-                    <GridItem key={key}>
-                      <ArrayFieldItemTemplate key={key} {...itemProps} />
-                    </GridItem>
-                  )
-                )
-              )}
-              {canAdd && !readonly && (
-                <GridItem display="flex" justifyContent="center">
-                  <AddButton
-                    className="array-item-add"
-                    onClick={onAddClick}
-                    disabled={disabled || readonly}
-                    uiSchema={uiSchema}
-                  />
+              Empty array
+            </Text>
+          ) : (
+            items.map(
+              ({ key, ...itemProps }: ArrayFieldTemplateItemType<T, F>) => (
+                <GridItem key={key}>
+                  <ArrayFieldItemTemplate key={key} {...itemProps} />
                 </GridItem>
-              )}
-            </Grid>
+              )
+            )
           )}
-        </>
+          {canAdd && !readonly && (
+            <GridItem display="flex" justifyContent="center">
+              <AddButton
+                className="array-item-add"
+                onClick={onAddClick}
+                disabled={disabled || readonly}
+                uiSchema={uiSchema}
+              />
+            </GridItem>
+          )}
+        </Grid>
       )}
     </Box>
   );

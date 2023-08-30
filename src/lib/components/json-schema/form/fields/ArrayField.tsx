@@ -459,10 +459,10 @@ class ArrayField<T = any, F = any> extends Component<
         {!readonly &&
           (isNullFormData(rawFormData) ? (
             <Button
-              mt={3}
+              fontSize="12px"
               variant="outline-primary"
               onClick={() => onChange([])}
-              leftIcon={<CustomIcon name="plus" />}
+              leftIcon={<CustomIcon name="plus" boxSize={3} />}
             >
               Create an empty array
             </Button>
