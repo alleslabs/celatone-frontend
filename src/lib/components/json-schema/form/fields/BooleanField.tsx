@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   FieldProps,
@@ -54,7 +55,7 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
   } else {
     // We deprecated enumNames in v5. It's intentionally omitted from RSJFSchema type, so we need to cast here.
     const schemaWithEnumNames = schema as RJSFSchema & { enumNames?: string[] };
-    const enums = schema.enum ?? [true, false];
+    const enums = schema.enum ?? [false, true];
     if (
       !schemaWithEnumNames.enumNames &&
       enums &&
@@ -80,9 +81,13 @@ function BooleanField<T = any, F = any>(props: FieldProps<T, F>) {
     }
   }
 
+  if (!required)
+    enumOptions = [...(enumOptions ?? []), { value: null, label: "null" }];
+
   return (
     <Widget
       options={{ ...options, enumOptions }}
+      placeholder={readonly ? undefined : "Select boolean option"}
       schema={schema}
       uiSchema={uiSchema}
       id={idSchema && idSchema.$id}

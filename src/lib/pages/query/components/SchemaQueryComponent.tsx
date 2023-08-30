@@ -171,6 +171,9 @@ export const SchemaQueryComponent = ({
         >
           {msgSchema.inputRequired && (
             <GridItem>
+              <Text variant="body2" color="text.dark" fontWeight={700}>
+                Query Input
+              </Text>
               <JsonSchemaForm
                 formId={`query-${msgSchema.title}`}
                 schema={msgSchema.schema}
@@ -206,13 +209,12 @@ export const SchemaQueryComponent = ({
           <GridItem>
             <Flex justify="space-between" mb={4}>
               <Flex direction="column">
-                <Text variant="body1" fontWeight={700}>
+                <Text variant="body2" color="text.dark" fontWeight={700}>
                   Return Output
                 </Text>
                 <Text variant="body3" textColor="text.dark">
                   {resSchema.description}
                 </Text>
-                <TimestampText timestamp={timestamp} />
               </Flex>
               <MessageInputSwitch
                 currentTab={resTab}
@@ -228,23 +230,26 @@ export const SchemaQueryComponent = ({
                 </AlertDescription>
               </Alert>
             )}
-            {resTab === OutputMessageTabs.JSON_OUTPUT ? (
-              <JsonReadOnly
-                topic="Return Output"
-                labelBgColor="gray.900"
-                text={res}
-                canCopy={res !== ""}
-              />
-            ) : (
-              <Box bg="gray.800" p={4} borderRadius="8px">
-                <JsonSchemaForm
-                  formId={`response-${msgSchema.title}`}
-                  schema={resSchema.schema}
-                  initialFormData={parseSchemaInitialData(res)}
+            <Flex direction="column" gap={2}>
+              {resTab === OutputMessageTabs.JSON_OUTPUT ? (
+                <JsonReadOnly
+                  topic="Return Output"
+                  labelBgColor="gray.900"
+                  text={res}
+                  canCopy={res !== ""}
                 />
-              </Box>
-            )}
-            {!msgSchema.inputRequired && (
+              ) : (
+                <Box bg="gray.800" p={4} borderRadius="8px">
+                  <JsonSchemaForm
+                    formId={`response-${msgSchema.title}`}
+                    schema={resSchema.schema}
+                    initialFormData={parseSchemaInitialData(res)}
+                  />
+                </Box>
+              )}
+              <TimestampText timestamp={timestamp} />
+            </Flex>
+            {!msgSchema.inputRequired ? (
               <Flex gap={2} justify="flex-start" mt={3}>
                 <CopyButton
                   isDisable={msg === ""}
@@ -277,6 +282,13 @@ export const SchemaQueryComponent = ({
                   </Button>
                 </Flex>
               </Flex>
+            ) : (
+              <CopyButton
+                isDisable={res === "" || Boolean(queryError)}
+                value={res}
+                amptrackSection="query_response"
+                buttonText="Copy Output"
+              />
             )}
           </GridItem>
         </Grid>

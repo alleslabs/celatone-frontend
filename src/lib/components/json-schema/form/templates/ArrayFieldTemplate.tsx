@@ -6,19 +6,22 @@ import type {
 } from "@rjsf/utils";
 import { getTemplate, getUiOptions } from "@rjsf/utils";
 
+import { isNullFormData } from "../utils";
+
 import { FieldTypeTag } from "./FieldTypeTag";
 
 export default function ArrayFieldTemplate<T = any, F = any>(
   props: ArrayFieldTemplateProps<T, F>
 ) {
   const {
+    formData,
     canAdd,
     disabled,
     idSchema,
     uiSchema,
     items,
     onAddClick,
-    readonly,
+    readonly = false,
     registry,
     required,
     schema,
@@ -63,7 +66,7 @@ export default function ArrayFieldTemplate<T = any, F = any>(
         uiSchema={uiSchema}
         registry={registry}
       />
-      {readonly && items.length === 0 ? (
+      {isNullFormData(formData) || (readonly && items.length === 0) ? (
         <Text
           variant="body3"
           fontWeight={700}
@@ -74,7 +77,7 @@ export default function ArrayFieldTemplate<T = any, F = any>(
           bgColor="gray.700"
           borderRadius="8px"
         >
-          Empty
+          {isNullFormData(formData) ? "NULL" : "Empty"}
         </Text>
       ) : (
         <Grid
@@ -85,11 +88,22 @@ export default function ArrayFieldTemplate<T = any, F = any>(
           borderRadius="8px"
           p={4}
         >
-          {items.map(
-            ({ key, ...itemProps }: ArrayFieldTemplateItemType<T, F>) => (
-              <GridItem key={key}>
-                <ArrayFieldItemTemplate key={key} {...itemProps} />
-              </GridItem>
+          {items.length === 0 ? (
+            <Text
+              textAlign="center"
+              variant="body2"
+              fontWeight={700}
+              color="text.dark"
+            >
+              Empty array
+            </Text>
+          ) : (
+            items.map(
+              ({ key, ...itemProps }: ArrayFieldTemplateItemType<T, F>) => (
+                <GridItem key={key}>
+                  <ArrayFieldItemTemplate key={key} {...itemProps} />
+                </GridItem>
+              )
             )
           )}
           {canAdd && !readonly && (
