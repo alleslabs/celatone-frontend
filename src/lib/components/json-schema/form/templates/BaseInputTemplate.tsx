@@ -111,7 +111,7 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
     schemaUtils.getDisplayLabel(schema, uiSchema) &&
     (!!label || !!schema.title);
 
-  const handleOnChange = ({ target }: ChangeEvent<HTMLInputElement>) =>
+  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) =>
     onChange(target.value === "" ? options.emptyValue : target.value);
   const handleOnBlur = ({ target }: FocusEvent<HTMLInputElement>) =>
     onBlur(id, target.value);
@@ -158,7 +158,7 @@ const BaseInputTemplate = <T = any, F = any>(props: WidgetProps<T, F>) => {
             id={id}
             name={id}
             value={value || value === 0 ? value : ""}
-            onChange={handleOnChange}
+            onChange={handleChange}
             onBlur={handleOnBlur}
             onFocus={handleOnFocus}
             autoFocus={autofocus}

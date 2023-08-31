@@ -82,7 +82,7 @@ function fixOneOfKeys(
 
     // if the entry is supposed to be a oneof, then check that it only has one key
     if (valueSchema.oneOf) {
-      console.log("Found oneOf", key, value);
+      // console.log("Found oneOf", key, value);
       deleteExtraneousOneOfKeys(value as Record<string, unknown>);
     }
 
