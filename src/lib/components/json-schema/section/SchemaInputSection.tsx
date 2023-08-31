@@ -17,6 +17,7 @@ interface SchemaSectionProps {
   jsonSchema: Option<CodeSchema>;
   initialFormData?: Record<string, unknown>;
   handleChange: (data: unknown, errors: RJSFValidationError[]) => void;
+  onSchemaSave?: () => void;
 }
 
 export const SchemaInputSection = observer(
@@ -27,6 +28,7 @@ export const SchemaInputSection = observer(
     jsonSchema,
     initialFormData,
     handleChange,
+    onSchemaSave,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const msgSchema = jsonSchema?.[type];
@@ -112,6 +114,7 @@ export const SchemaInputSection = observer(
           onClose={onClose}
           codeHash={codeHash}
           codeId={codeId}
+          onSchemaSave={onSchemaSave}
         />
       </Flex>
     );

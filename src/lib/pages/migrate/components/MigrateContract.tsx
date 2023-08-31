@@ -88,22 +88,26 @@ export const MigrateContract = ({
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [isValidForm, setIsValidForm] = useState(false);
+  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
 
   // ------------------------------------------//
   // ------------------LOGICS------------------//
   // ------------------------------------------//
   const currentInput = tab ? msgInput[tab] : "{}";
   const jsonSchema = getSchemaByCodeHash(codeHash);
-  const enableMigrate = useMemo(
-    () =>
-      !!address &&
-      isCodeId(codeId) &&
-      jsonValidate(currentInput) === null &&
-      status.state === "success" &&
-      isValidForm,
-    [address, codeId, currentInput, isValidForm, status.state]
-  );
+  const enableMigrate = useMemo(() => {
+    const generalChecks =
+      Boolean(address) && isCodeId(codeId) && status.state === "success";
+
+    switch (tab) {
+      case MessageTabs.JSON_INPUT:
+        return generalChecks && jsonValidate(currentInput) === null;
+      case MessageTabs.YOUR_SCHEMA:
+        return generalChecks && isValidJsonInput;
+      default:
+        return false;
+    }
+  }, [address, codeId, currentInput, isValidJsonInput, status.state, tab]);
 
   // ------------------------------------------//
   // ---------------SIMUATE FEE----------------//
@@ -155,9 +159,13 @@ export const MigrateContract = ({
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
   // ------------------------------------------//
+  const resetMsgInputSchema = useCallback(() => {
+    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
+  }, [setValue]);
+
   const handleChange = useCallback(
     (data: unknown, errors: RJSFValidationError[]) => {
-      setIsValidForm(errors.length === 0);
+      setIsValidJsonInput(errors.length === 0);
       setValue(`msgInput.${yourSchemaInputFormKey}`, JSON.stringify(data));
     },
     [setValue]
@@ -192,13 +200,8 @@ export const MigrateContract = ({
   // --------------SIDE EFFECTS----------------//
   // ------------------------------------------//
   useEffect(() => {
-    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
-  }, [jsonSchema]);
-
-  useEffect(() => {
     setValue("codeHash", "");
     setTab(MessageTabs.JSON_INPUT);
-    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
@@ -232,6 +235,10 @@ export const MigrateContract = ({
     return () => {};
   }, [address, codeId, contractAddress, enableMigrate, currentInput]);
 
+  useEffect(() => {
+    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
+  }, [jsonSchema]);
+
   return (
     <>
       <Heading as="h6" variant="h6" mb={4}>
@@ -244,6 +251,7 @@ export const MigrateContract = ({
         error={formErrors.codeId?.message}
         onCodeSelect={(code: string) => {
           setValue("codeId", code);
+          resetMsgInputSchema();
         }}
         setCodeHash={(data: CodeIdInfoResponse) => {
           setValue("codeHash", data.code_info.data_hash.toLowerCase());
@@ -278,6 +286,7 @@ export const MigrateContract = ({
             codeId={codeId}
             jsonSchema={jsonSchema}
             handleChange={handleChange}
+            onSchemaSave={resetMsgInputSchema}
           />
         }
       />
