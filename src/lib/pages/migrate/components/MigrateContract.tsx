@@ -1,7 +1,8 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
+import type { RJSFValidationError } from "@rjsf/utils";
 import Long from "long";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -28,7 +29,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
-import type { ComposedMsg, ContractAddr, HumanAddr, Option } from "lib/types";
+import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -43,33 +44,28 @@ interface MigrateContractProps {
   handleBack: () => void;
 }
 
-const resolveEnable = (
-  address: Option<string>,
-  codeId: string,
-  currentInput: string,
-  status: FormStatus
-) =>
-  !!address &&
-  isCodeId(codeId) &&
-  jsonValidate(currentInput) === null &&
-  status.state === "success";
-
 export const MigrateContract = ({
   contractAddress,
   codeIdParam,
   handleBack,
 }: MigrateContractProps) => {
+  // ------------------------------------------//
+  // ---------------DEPENDENCIES---------------//
+  // ------------------------------------------//
   const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
   const { getSchemaByCodeHash } = useSchemaStore();
 
+  // ------------------------------------------//
+  // ----------------FORM HOOKS----------------//
+  // ------------------------------------------//
   const {
     control,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors: formErrors },
   } = useForm({
     defaultValues: {
       codeId: codeIdParam,
@@ -83,17 +79,35 @@ export const MigrateContract = ({
   });
   const { codeId, codeHash, msgInput } = watch();
 
+  // ------------------------------------------//
+  // ------------------STATES------------------//
+  // ------------------------------------------//
   const [tab, setTab] = useState<MessageTabs>();
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [isValidForm, setIsValidForm] = useState(false);
 
+  // ------------------------------------------//
+  // ------------------LOGICS------------------//
+  // ------------------------------------------//
   const currentInput = tab ? msgInput[tab] : "{}";
   const jsonSchema = getSchemaByCodeHash(codeHash);
-  const enableMigrate = resolveEnable(address, codeId, currentInput, status);
+  const enableMigrate = useMemo(
+    () =>
+      !!address &&
+      isCodeId(codeId) &&
+      jsonValidate(currentInput) === null &&
+      status.state === "success" &&
+      isValidForm,
+    [address, codeId, currentInput, isValidForm, status.state]
+  );
 
+  // ------------------------------------------//
+  // ---------------SIMUATE FEE----------------//
+  // ------------------------------------------//
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
@@ -138,6 +152,17 @@ export const MigrateContract = ({
     },
   });
 
+  // ------------------------------------------//
+  // ----------------CALLBACKS-----------------//
+  // ------------------------------------------//
+  const handleChange = useCallback(
+    (data: unknown, errors: RJSFValidationError[]) => {
+      setIsValidForm(errors.length === 0);
+      setValue(`msgInput.${yourSchemaInputFormKey}`, JSON.stringify(data));
+    },
+    [setValue]
+  );
+
   const proceed = useCallback(async () => {
     AmpTrack(AmpEvent.ACTION_MIGRATE);
     const stream = await migrateTx({
@@ -162,6 +187,13 @@ export const MigrateContract = ({
     broadcast,
     setProcessing,
   ]);
+
+  // ------------------------------------------//
+  // --------------SIDE EFFECTS----------------//
+  // ------------------------------------------//
+  useEffect(() => {
+    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
+  }, [jsonSchema]);
 
   useEffect(() => {
     setValue("codeHash", "");
@@ -193,12 +225,12 @@ export const MigrateContract = ({
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
+
+    // reset estimated fee and error when user change the input
+    setSimulateError("");
+    setEstimatedFee(undefined);
     return () => {};
   }, [address, codeId, contractAddress, enableMigrate, currentInput]);
-
-  useEffect(() => {
-    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
-  }, [jsonSchema]);
 
   return (
     <>
@@ -209,7 +241,7 @@ export const MigrateContract = ({
         name="codeId"
         control={control}
         status={status}
-        error={errors.codeId?.message}
+        error={formErrors.codeId?.message}
         onCodeSelect={(code: string) => {
           setValue("codeId", code);
         }}
@@ -245,9 +277,7 @@ export const MigrateContract = ({
             codeHash={codeHash}
             codeId={codeId}
             jsonSchema={jsonSchema}
-            setSchemaInput={(msg: string) =>
-              setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
-            }
+            handleChange={handleChange}
           />
         }
       />

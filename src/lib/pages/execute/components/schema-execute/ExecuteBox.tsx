@@ -174,7 +174,7 @@ export const ExecuteBox = ({
   // ------------------------------------------//
   // ------------------CALLBACKS---------------//
   // ------------------------------------------//
-  const handleOnChange = useCallback(
+  const handleChange = useCallback(
     (data: unknown, errors: RJSFValidationError[]) => {
       setIsValidForm(errors.length === 0);
       setMsg(JSON.stringify(data));
@@ -314,7 +314,7 @@ export const ExecuteBox = ({
               formId={`execute-${msgSchema.title}`}
               schema={msgSchema.schema}
               initialFormData={initialMsg}
-              onChange={handleOnChange}
+              onChange={handleChange}
             />
             {simulateFeeError && (
               <Alert variant="error" mb={3} alignItems="center">

@@ -1,6 +1,7 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
+import type { RJSFValidationError } from "@rjsf/utils";
 import Long from "long";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -84,15 +85,14 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
   const { user: exampleUserAddress } = useExampleAddresses();
-
   const { address = "" } = useCurrentChain();
-
   const postInstantiateTx = useInstantiateTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
+
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
@@ -102,6 +102,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
   const [tab, setTab] = useState<MessageTabs>();
+  const [isValidForm, setIsValidForm] = useState(false);
+
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
@@ -140,6 +142,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
+  // ------------------------------------------//
+  // ------------------LOGICS------------------//
+  // ------------------------------------------//
   const jsonSchema = getSchemaByCodeHash(codeHash);
   const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
   const enableInstantiate = useMemo(
@@ -148,10 +153,14 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       Boolean(label) &&
       isCodeId(codeId) &&
       jsonValidate(currentInput) === null &&
-      status.state === "success",
-    [address, label, codeId, currentInput, status.state]
+      status.state === "success" &&
+      isValidForm,
+    [address, label, codeId, currentInput, status.state, isValidForm]
   );
 
+  // ------------------------------------------//
+  // ---------------SIMUATE FEE----------------//
+  // ------------------------------------------//
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
@@ -195,8 +204,24 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
 
   // ------------------------------------------//
-  // ----------------FUNCTIONS-----------------//
+  // ----------------CALLBACKS-----------------//
   // ------------------------------------------//
+  const handleChange = useCallback(
+    (data: unknown, errors: RJSFValidationError[]) => {
+      setIsValidForm(errors.length === 0);
+      setValue(`msgInput.${yourSchemaInputFormKey}`, JSON.stringify(data));
+    },
+    [setValue]
+  );
+
+  const validateAdmin = useCallback(
+    (input: string) =>
+      input && !!validateContractAddress(input) && !!validateUserAddress(input)
+        ? "Invalid Address."
+        : undefined,
+    [validateContractAddress, validateUserAddress]
+  );
+
   const proceed = useCallback(async () => {
     AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await postInstantiateTx({
@@ -265,6 +290,11 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
+
+    // reset estimated fee and error when user change the input
+    setSimulateError("");
+    setEstimatedFee(undefined);
+
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -317,14 +347,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   useEffect(() => {
     if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
   }, [router.isReady, msgQuery, codeIdQuery]);
-
-  const validateAdmin = useCallback(
-    (input: string) =>
-      input && !!validateContractAddress(input) && !!validateUserAddress(input)
-        ? "Invalid Address."
-        : undefined,
-    [validateContractAddress, validateUserAddress]
-  );
 
   return (
     <>
@@ -408,10 +430,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                 codeHash={codeHash}
                 codeId={codeId}
                 jsonSchema={jsonSchema}
-                setSchemaInput={(msg: string) =>
-                  setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
-                }
                 initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
+                handleChange={handleChange}
               />
             }
           />
@@ -453,7 +473,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       </WasmPageContainer>
       <Footer
         onInstantiate={proceed}
-        disabled={!enableInstantiate || isSimulating}
+        disabled={!enableInstantiate || !estimatedFee || isSimulating}
         loading={processing}
       />
     </>

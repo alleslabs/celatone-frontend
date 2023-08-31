@@ -1,5 +1,5 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
-import type { RJSFSchema } from "@rjsf/utils";
+import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
 import { capitalize } from "lodash";
 import { observer } from "mobx-react-lite";
 
@@ -16,7 +16,7 @@ interface SchemaSectionProps {
   codeId: string;
   jsonSchema: Option<CodeSchema>;
   initialFormData?: Record<string, unknown>;
-  setSchemaInput: (input: string) => void;
+  handleChange: (data: unknown, errors: RJSFValidationError[]) => void;
 }
 
 export const SchemaInputSection = observer(
@@ -26,7 +26,7 @@ export const SchemaInputSection = observer(
     codeId,
     jsonSchema,
     initialFormData,
-    setSchemaInput,
+    handleChange,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const msgSchema = jsonSchema?.[type];
@@ -61,7 +61,7 @@ export const SchemaInputSection = observer(
                   schema={jsonSchema[type] as RJSFSchema}
                   formId={type}
                   initialFormData={initialFormData}
-                  onChange={(data) => setSchemaInput(JSON.stringify(data))}
+                  onChange={handleChange}
                 />
               </div>
             ) : (
