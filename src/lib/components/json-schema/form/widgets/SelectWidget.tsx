@@ -69,7 +69,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
     );
   };
 
-  const handleChange = (e: any) =>
+  const handleOnChange = (e: any) =>
     onChange(enumOptionsValueForIndex(e.value, enumOptions, emptyValue));
 
   const handleOnBlur = ({ target }: React.FocusEvent<HTMLInputElement>) =>
@@ -142,7 +142,7 @@ const SelectWidget = <T, F>(props: WidgetProps<T, F>) => {
         }
         closeMenuOnSelect={!isMultiple}
         onBlur={handleOnBlur}
-        onChange={isMultiple ? handleOnMultiChange : handleChange}
+        onChange={isMultiple ? handleOnMultiChange : handleOnChange}
         onFocus={handleOnFocus}
         autoFocus={autofocus}
         value={selectedIndex === undefined ? undefined : formValue}
