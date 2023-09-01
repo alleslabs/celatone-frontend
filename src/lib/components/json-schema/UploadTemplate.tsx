@@ -173,12 +173,14 @@ interface UploadTemplateInterface {
   codeHash: string;
   codeId: string;
   closeDrawer: () => void;
+  onSchemaSave?: () => void;
 }
 
 export const UploadTemplate = ({
   codeHash,
   codeId,
   closeDrawer,
+  onSchemaSave,
 }: UploadTemplateInterface) => {
   const { saveNewSchema } = useSchemaStore();
   const [method, setMethod] = useState<Method>(Method.UPLOAD_FILE);
@@ -230,9 +232,18 @@ export const UploadTemplate = ({
     }
     saveNewSchema(codeHash, codeId, JSON.parse(schemaString));
     setUrlLoading(false);
+    onSchemaSave?.();
     closeDrawer();
     return dispatchJsonState({ type: ActionType.RESET, method });
-  }, [closeDrawer, codeHash, codeId, jsonState, method, saveNewSchema]);
+  }, [
+    closeDrawer,
+    codeHash,
+    codeId,
+    jsonState,
+    method,
+    onSchemaSave,
+    saveNewSchema,
+  ]);
 
   const disabledState = useMemo(() => {
     const methodSchemaString = jsonState[method].schemaString;

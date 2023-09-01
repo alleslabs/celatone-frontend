@@ -1,7 +1,8 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
+import type { RJSFValidationError } from "@rjsf/utils";
 import Long from "long";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -28,7 +29,7 @@ import { useTxBroadcast } from "lib/providers/tx-broadcast";
 import { AmpEvent, AmpTrack } from "lib/services/amplitude";
 import type { CodeIdInfoResponse } from "lib/services/code";
 import { useLCDCodeInfo } from "lib/services/codeService";
-import type { ComposedMsg, ContractAddr, HumanAddr, Option } from "lib/types";
+import type { ComposedMsg, ContractAddr, HumanAddr } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -43,33 +44,28 @@ interface MigrateContractProps {
   handleBack: () => void;
 }
 
-const resolveEnable = (
-  address: Option<string>,
-  codeId: string,
-  currentInput: string,
-  status: FormStatus
-) =>
-  !!address &&
-  isCodeId(codeId) &&
-  jsonValidate(currentInput) === null &&
-  status.state === "success";
-
 export const MigrateContract = ({
   contractAddress,
   codeIdParam,
   handleBack,
 }: MigrateContractProps) => {
+  // ------------------------------------------//
+  // ---------------DEPENDENCIES---------------//
+  // ------------------------------------------//
   const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
   const migrateTx = useMigrateTx();
   const fabricateFee = useFabricateFee();
   const { getSchemaByCodeHash } = useSchemaStore();
 
+  // ------------------------------------------//
+  // ----------------FORM HOOKS----------------//
+  // ------------------------------------------//
   const {
     control,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors: formErrors },
   } = useForm({
     defaultValues: {
       codeId: codeIdParam,
@@ -83,17 +79,39 @@ export const MigrateContract = ({
   });
   const { codeId, codeHash, msgInput } = watch();
 
+  // ------------------------------------------//
+  // ------------------STATES------------------//
+  // ------------------------------------------//
   const [tab, setTab] = useState<MessageTabs>();
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
 
+  // ------------------------------------------//
+  // ------------------LOGICS------------------//
+  // ------------------------------------------//
   const currentInput = tab ? msgInput[tab] : "{}";
   const jsonSchema = getSchemaByCodeHash(codeHash);
-  const enableMigrate = resolveEnable(address, codeId, currentInput, status);
+  const enableMigrate = useMemo(() => {
+    const generalChecks =
+      Boolean(address) && isCodeId(codeId) && status.state === "success";
 
+    switch (tab) {
+      case MessageTabs.JSON_INPUT:
+        return generalChecks && jsonValidate(currentInput) === null;
+      case MessageTabs.YOUR_SCHEMA:
+        return generalChecks && isValidJsonInput;
+      default:
+        return false;
+    }
+  }, [address, codeId, currentInput, isValidJsonInput, status.state, tab]);
+
+  // ------------------------------------------//
+  // ---------------SIMUATE FEE----------------//
+  // ------------------------------------------//
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
@@ -138,6 +156,21 @@ export const MigrateContract = ({
     },
   });
 
+  // ------------------------------------------//
+  // ----------------CALLBACKS-----------------//
+  // ------------------------------------------//
+  const resetMsgInputSchema = useCallback(() => {
+    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
+  }, [setValue]);
+
+  const handleChange = useCallback(
+    (data: unknown, errors: RJSFValidationError[]) => {
+      setIsValidJsonInput(errors.length === 0);
+      setValue(`msgInput.${yourSchemaInputFormKey}`, JSON.stringify(data));
+    },
+    [setValue]
+  );
+
   const proceed = useCallback(async () => {
     AmpTrack(AmpEvent.ACTION_MIGRATE);
     const stream = await migrateTx({
@@ -163,10 +196,12 @@ export const MigrateContract = ({
     setProcessing,
   ]);
 
+  // ------------------------------------------//
+  // --------------SIDE EFFECTS----------------//
+  // ------------------------------------------//
   useEffect(() => {
     setValue("codeHash", "");
     setTab(MessageTabs.JSON_INPUT);
-    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
     if (codeId.length) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
@@ -193,6 +228,10 @@ export const MigrateContract = ({
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
+
+    // reset estimated fee and error when user change the input
+    setSimulateError("");
+    setEstimatedFee(undefined);
     return () => {};
   }, [address, codeId, contractAddress, enableMigrate, currentInput]);
 
@@ -209,9 +248,10 @@ export const MigrateContract = ({
         name="codeId"
         control={control}
         status={status}
-        error={errors.codeId?.message}
+        error={formErrors.codeId?.message}
         onCodeSelect={(code: string) => {
           setValue("codeId", code);
+          resetMsgInputSchema();
         }}
         setCodeHash={(data: CodeIdInfoResponse) => {
           setValue("codeHash", data.code_info.data_hash.toLowerCase());
@@ -245,9 +285,8 @@ export const MigrateContract = ({
             codeHash={codeHash}
             codeId={codeId}
             jsonSchema={jsonSchema}
-            setSchemaInput={(msg: string) =>
-              setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
-            }
+            handleChange={handleChange}
+            onSchemaSave={resetMsgInputSchema}
           />
         }
       />

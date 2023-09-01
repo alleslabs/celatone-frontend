@@ -81,7 +81,7 @@ const JsonInput = ({
 }: JsonInputProps) => {
   const [jsonState, setJsonState] = useState<JsonState>({ state: "empty" });
 
-  const handleOnChange = (value: string) => {
+  const handleChange = (value: string) => {
     setJsonState({ state: "loading" });
     setText(value);
   };
@@ -124,7 +124,7 @@ const JsonInput = ({
       >
         <JsonEditor
           value={text}
-          setValue={handleOnChange}
+          setValue={handleChange}
           isValid={isValidJson}
           showLines={showLines}
         />

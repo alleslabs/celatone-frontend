@@ -1,6 +1,7 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
 import type { StdFee } from "@cosmjs/stargate";
+import type { RJSFValidationError } from "@rjsf/utils";
 import Long from "long";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -84,24 +85,26 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const msgQuery = (router.query.msg as string) ?? "";
   const codeIdQuery = (router.query["code-id"] as string) ?? "";
   const { user: exampleUserAddress } = useExampleAddresses();
-
   const { address = "" } = useCurrentChain();
-
   const postInstantiateTx = useInstantiateTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
+
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
+  const [tab, setTab] = useState<MessageTabs>();
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
   const [composedTxMsg, setComposedTxMsg] = useState<ComposedMsg[]>([]);
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [tab, setTab] = useState<MessageTabs>();
+  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
+  const [hasInitMsg, setHasInitMsg] = useState(false);
+
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
@@ -140,18 +143,40 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   });
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
+  // ------------------------------------------//
+  // ------------------LOGICS------------------//
+  // ------------------------------------------//
   const jsonSchema = getSchemaByCodeHash(codeHash);
   const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
-  const enableInstantiate = useMemo(
-    () =>
+  const enableInstantiate = useMemo(() => {
+    const generalChecks =
       Boolean(address) &&
       Boolean(label) &&
       isCodeId(codeId) &&
-      jsonValidate(currentInput) === null &&
-      status.state === "success",
-    [address, label, codeId, currentInput, status.state]
-  );
+      status.state === "success";
 
+    switch (tab) {
+      case MessageTabs.JSON_INPUT:
+        return generalChecks && jsonValidate(currentInput) === null;
+      case MessageTabs.YOUR_SCHEMA:
+        return generalChecks && (hasInitMsg || isValidJsonInput);
+      default:
+        return false;
+    }
+  }, [
+    address,
+    label,
+    codeId,
+    status.state,
+    tab,
+    currentInput,
+    hasInitMsg,
+    isValidJsonInput,
+  ]);
+
+  // ------------------------------------------//
+  // ---------------SIMUATE FEE----------------//
+  // ------------------------------------------//
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
@@ -191,12 +216,36 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     },
     onError() {
       setStatus({ state: "error", message: "This code ID does not exist" });
+      setSimulateError("");
     },
   });
 
   // ------------------------------------------//
-  // ----------------FUNCTIONS-----------------//
+  // ----------------CALLBACKS-----------------//
   // ------------------------------------------//
+  const resetMsgInputSchema = useCallback(() => {
+    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
+  }, [setValue]);
+
+  const handleChange = useCallback(
+    (data: unknown, errors: RJSFValidationError[]) => {
+      setIsValidJsonInput(errors.length === 0);
+      setValue(`msgInput.${yourSchemaInputFormKey}`, JSON.stringify(data));
+
+      // whenever user change the input, we set hasInitMsg to false
+      setHasInitMsg(false);
+    },
+    [setValue]
+  );
+
+  const validateAdmin = useCallback(
+    (input: string) =>
+      input && !!validateContractAddress(input) && !!validateUserAddress(input)
+        ? "Invalid Address."
+        : undefined,
+    [validateContractAddress, validateUserAddress]
+  );
+
   const proceed = useCallback(async () => {
     AmpTrackAction(AmpEvent.ACTION_EXECUTE, funds.length, attachFundsOption);
     const stream = await postInstantiateTx({
@@ -233,51 +282,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ------------------------------------------//
   // --------------SIDE EFFECTS----------------//
   // ------------------------------------------//
-  useEffect(() => {
-    setValue("codeHash", "");
-    setTab(MessageTabs.JSON_INPUT);
-    setValue(`msgInput.${yourSchemaInputFormKey}`, "{}");
-    if (codeId.length) {
-      setStatus({ state: "loading" });
-      const timer = setTimeout(() => {
-        refetch();
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-    setStatus({ state: "init" });
-
-    return () => {};
-  }, [address, codeId, refetch, setValue, setTab]);
-
-  useEffect(() => {
-    if (enableInstantiate) {
-      setSimulateError("");
-      const composedMsg = composeMsg(MsgType.INSTANTIATE, {
-        sender: address as HumanAddr,
-        admin: adminAddress as HumanAddr,
-        codeId: Long.fromString(codeId),
-        label,
-        msg: Buffer.from(currentInput),
-        funds,
-      });
-      const timeoutId = setTimeout(() => {
-        setComposedTxMsg([composedMsg]);
-      }, 1000);
-      return () => clearTimeout(timeoutId);
-    }
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    address,
-    adminAddress,
-    codeId,
-    enableInstantiate,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(funds),
-    currentInput,
-    label,
-  ]);
-
+  /** Remark: parsing initial msg, initial funds from query params */
   useEffect(() => {
     if (codeIdQuery) setValue("codeId", codeIdQuery);
     if (msgQuery) {
@@ -304,6 +309,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           );
           setAssets("attachFundsOption", AttachFundsType.ATTACH_FUNDS_JSON);
         }
+
+        setHasInitMsg(true);
       } catch {
         // comment just to avoid eslint no-empty
       }
@@ -311,20 +318,63 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   }, [codeIdQuery, msgQuery, setAssets, setValue]);
 
   useEffect(() => {
-    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
-  }, [jsonSchema]);
+    setValue("codeHash", "");
+    setTab(MessageTabs.JSON_INPUT);
+    if (codeId.length) {
+      setStatus({ state: "loading" });
+      const timer = setTimeout(() => {
+        refetch();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+    setStatus({ state: "init" });
+
+    return () => {};
+  }, [codeId, refetch, setValue, setTab]);
+
+  useEffect(() => {
+    if (enableInstantiate) {
+      setSimulateError("");
+      const composedMsg = composeMsg(MsgType.INSTANTIATE, {
+        sender: address as HumanAddr,
+        admin: adminAddress as HumanAddr,
+        codeId: Long.fromString(codeId),
+        label,
+        msg: Buffer.from(currentInput),
+        funds,
+      });
+      const timeoutId = setTimeout(() => {
+        setComposedTxMsg([composedMsg]);
+      }, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+
+    // reset estimated fee and error when user change the input
+    setSimulateError("");
+    setEstimatedFee(undefined);
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    address,
+    adminAddress,
+    codeId,
+    enableInstantiate,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(funds),
+    currentInput,
+    label,
+  ]);
+
+  useEffect(() => {
+    if (jsonSchema) {
+      setTab(MessageTabs.YOUR_SCHEMA);
+    }
+  }, [jsonSchema, setValue]);
 
   useEffect(() => {
     if (router.isReady) AmpTrackToInstantiate(!!msgQuery, !!codeIdQuery);
   }, [router.isReady, msgQuery, codeIdQuery]);
-
-  const validateAdmin = useCallback(
-    (input: string) =>
-      input && !!validateContractAddress(input) && !!validateUserAddress(input)
-        ? "Invalid Address."
-        : undefined,
-    [validateContractAddress, validateUserAddress]
-  );
 
   return (
     <>
@@ -345,7 +395,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           control={control}
           status={status}
           error={formErrors.codeId?.message}
-          onCodeSelect={(code: string) => setValue("codeId", code)}
+          onCodeSelect={(code: string) => {
+            setValue("codeId", code);
+            resetMsgInputSchema();
+          }}
           setCodeHash={(data: CodeIdInfoResponse) => {
             setValue("codeHash", data.code_info.data_hash.toLowerCase());
           }}
@@ -408,10 +461,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                 codeHash={codeHash}
                 codeId={codeId}
                 jsonSchema={jsonSchema}
-                setSchemaInput={(msg: string) =>
-                  setValue(`msgInput.${yourSchemaInputFormKey}`, msg)
-                }
                 initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
+                handleChange={handleChange}
+                onSchemaSave={resetMsgInputSchema}
               />
             }
           />
@@ -453,7 +505,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       </WasmPageContainer>
       <Footer
         onInstantiate={proceed}
-        disabled={!enableInstantiate || isSimulating}
+        disabled={!enableInstantiate || !estimatedFee || isSimulating}
         loading={processing}
       />
     </>

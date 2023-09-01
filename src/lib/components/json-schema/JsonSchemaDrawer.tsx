@@ -20,6 +20,7 @@ interface JsonSchemaDrawerProps {
   codeHash: string;
   isOpen: boolean;
   onClose: () => void;
+  onSchemaSave?: () => void;
 }
 
 export const JsonSchemaDrawer = ({
@@ -27,6 +28,7 @@ export const JsonSchemaDrawer = ({
   codeHash,
   isOpen,
   onClose,
+  onSchemaSave,
 }: JsonSchemaDrawerProps) => (
   <Drawer
     isOpen={isOpen}
@@ -67,6 +69,7 @@ export const JsonSchemaDrawer = ({
           codeHash={codeHash}
           codeId={codeId}
           closeDrawer={onClose}
+          onSchemaSave={onSchemaSave}
         />
       </DrawerBody>
     </DrawerContent>

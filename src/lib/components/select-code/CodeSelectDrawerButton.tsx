@@ -100,6 +100,7 @@ export const CodeSelectDrawerButton = ({
               <InputWithIcon
                 placeholder="Search with Code ID or Code Name"
                 value={keyword}
+                autoFocus
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)
                 }
