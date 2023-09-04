@@ -5,6 +5,7 @@ import type {
   ResponseModule,
   ResponseModules,
   InternalModule,
+  HexAddr,
 } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
@@ -33,3 +34,26 @@ export const getAccountModule = async (
   );
   return snakeToCamel(data.module);
 };
+
+interface ModuleVerificationReturn {
+  id: number;
+  module_address: HexAddr;
+  module_name: string;
+  verified_at: string;
+  digest: string;
+  source: string;
+  base64: string;
+  chain_id: string;
+}
+
+export const getModuleVerificationStatus = async (
+  address: AccountAddr,
+  moduleName: string
+): Promise<boolean> =>
+  // TODO: move url to base api route? wait for celatone api implementation?
+  axios
+    .get<ModuleVerificationReturn>(
+      `https://stone-compiler.initia.tech/contracts/${address}/${moduleName}`
+    )
+    .then(() => true)
+    .catch(() => false);

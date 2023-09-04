@@ -3,22 +3,29 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { CustomIcon } from "../icon";
 import type { IndexedModule } from "lib/services/moduleService";
-import type { Option } from "lib/types";
+import { useVerifyModule } from "lib/services/moduleService";
+import type { HumanAddr, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";
 
 interface ModuleCardProps {
+  selectedAddress: HumanAddr;
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
   setSelectedModule: Dispatch<SetStateAction<Option<IndexedModule>>>;
 }
 
 export const ModuleCard = ({
+  selectedAddress,
   module,
   selectedModule,
   setSelectedModule,
 }: ModuleCardProps) => {
-  const noExposedFunctions = !module.parsedAbi.exposed_functions.length;
+  const { data: isVerified } = useVerifyModule({
+    address: selectedAddress,
+    moduleName: module.moduleName,
+  });
+
   return (
     <Grid
       borderRadius={8}
@@ -43,7 +50,7 @@ export const ModuleCard = ({
         <Text className="ellipsis" variant="body2">
           {module.moduleName}
         </Text>
-        {!noExposedFunctions && (
+        {isVerified && (
           <CustomIcon
             name="check-circle-solid"
             color="success.main"

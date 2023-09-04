@@ -14,7 +14,11 @@ import type {
 } from "lib/types";
 import { parseJsonABI, splitViewExecuteFunctions } from "lib/utils/abi";
 
-import { getAccountModule, getAccountModules } from "./module";
+import {
+  getAccountModule,
+  getAccountModules,
+  getModuleVerificationStatus,
+} from "./module";
 
 export interface IndexedModule extends InternalModule {
   parsedAbi: ResponseABI;
@@ -65,3 +69,21 @@ export const useAddressModules = ({
     options
   );
 };
+
+export const useVerifyModule = ({
+  address,
+  moduleName,
+}: {
+  address: AccountAddr;
+  moduleName: string;
+}) =>
+  useQuery(
+    [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, address, moduleName],
+    () => getModuleVerificationStatus(address, moduleName),
+    {
+      enabled: Boolean(address && moduleName),
+      retry: 0,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );

@@ -69,6 +69,7 @@ export const ModuleSelectDrawerTrigger = ({
               />
               {modules ? (
                 <ModuleSelectMainBody
+                  selectedAddress={selectedAddress}
                   mode={mode}
                   modules={modules}
                   handleModuleSelect={handleModuleSelect}

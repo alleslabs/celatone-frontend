@@ -2,7 +2,11 @@ import { Grid, GridItem, Text, Flex, Box, Button } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 import { useMemo, useState } from "react";
 
-import type { DisplayMode, ModuleSelectFunction } from "../types";
+import type {
+  DisplayMode,
+  ModuleSelectFunction,
+  SelectedAddress,
+} from "../types";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge } from "lib/components/module/CountBadge";
 import { ModuleCard } from "lib/components/module/ModuleCard";
@@ -13,6 +17,7 @@ import { ModuleEmptyState } from "./ModuleEmptyState";
 import { ModuleFunctionBody } from "./ModuleFunctionBody";
 
 interface ModuleSelectBodyProps {
+  selectedAddress: SelectedAddress;
   modules: IndexedModule[];
   mode: DisplayMode;
   handleModuleSelect: ModuleSelectFunction;
@@ -20,11 +25,13 @@ interface ModuleSelectBodyProps {
 }
 
 const RenderModules = ({
+  selectedAddress,
   modulesLength,
   filtered,
   selectedModule,
   setSelectedModule,
 }: {
+  selectedAddress: SelectedAddress;
   modulesLength: number;
   filtered: IndexedModule[];
   selectedModule: Option<IndexedModule>;
@@ -44,6 +51,7 @@ const RenderModules = ({
       {filtered.map((module) => (
         <ModuleCard
           key={module.moduleName}
+          selectedAddress={selectedAddress.address}
           module={module}
           selectedModule={selectedModule}
           setSelectedModule={setSelectedModule}
@@ -61,6 +69,7 @@ const RenderModules = ({
 };
 
 export const ModuleSelectMainBody = ({
+  selectedAddress,
   mode,
   modules,
   handleModuleSelect,
@@ -118,6 +127,7 @@ export const ModuleSelectMainBody = ({
           mt={2}
         >
           <RenderModules
+            selectedAddress={selectedAddress}
             modulesLength={modules.length}
             filtered={filteredModules}
             selectedModule={selectedModule}
