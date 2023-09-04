@@ -1,17 +1,19 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { CountBadge } from "lib/components/module/CountBadge";
 import PageContainer from "lib/components/PageContainer";
 import { EmptyState } from "lib/components/state";
+import type { IndexedModule } from "lib/services/moduleService";
+import type { ExposedFunction } from "lib/types";
 
+import { ModuleSelectDrawerTrigger } from "./component/drawer";
 import {
   InteractionTypeSwitch,
   InteractionTabs,
 } from "./component/InteractionTypeSwitch";
-import { ModuleSelectDrawerButton } from "./component/ModuleSelectDrawerButton";
 
 const containerBaseStyle: FlexProps = {
   direction: "column",
@@ -25,6 +27,19 @@ const containerBaseStyle: FlexProps = {
 export const Interaction = () => {
   const { query, isReady } = useRouter();
   const [tab, setTab] = useState<InteractionTabs>();
+  // TODO: Remove when wiring up this page
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [module, setModule] = useState<IndexedModule>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [selectedFn, setSelectedFn] = useState<ExposedFunction>();
+
+  const handleModuleSelect = useCallback(
+    (selectedModule: IndexedModule, fn?: ExposedFunction) => {
+      setModule(selectedModule);
+      setSelectedFn(fn);
+    },
+    []
+  );
 
   useEffect(() => {
     if (isReady) {
@@ -50,7 +65,7 @@ export const Interaction = () => {
         my={8}
       >
         <p>Select module to interact with ...</p>
-        <ModuleSelectDrawerButton />
+        <ModuleSelectDrawerTrigger handleModuleSelect={handleModuleSelect} />
       </Flex>
       <Flex borderTop="1px solid" borderColor="gray.700" py={8} gap={8}>
         {/* Left side */}

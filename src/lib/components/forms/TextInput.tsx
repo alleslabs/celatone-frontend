@@ -23,6 +23,7 @@ import { getResponseMsg, getStatusIcon } from "./FormStatus";
 export interface TextInputProps extends FormControlProps {
   value: string;
   setInputState: Dispatch<SetStateAction<string>>;
+  autoFocus?: boolean;
   label?: string;
   labelBgColor?: string;
   helperText?: string;
@@ -36,6 +37,7 @@ export interface TextInputProps extends FormControlProps {
 export const TextInput = ({
   value,
   setInputState,
+  autoFocus,
   label = "",
   labelBgColor = "background.main",
   helperText,
@@ -62,6 +64,7 @@ export const TextInput = ({
 
     <InputGroup>
       <Input
+        autoFocus={autoFocus}
         size={size}
         placeholder={placeholder}
         type={type}
@@ -78,11 +81,13 @@ export const TextInput = ({
       {error ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
-        <FormHelperText className="helper-text">
+        <FormHelperText className="helper-text" mt={0}>
           {status?.message ? (
             getResponseMsg(status, helperText)
           ) : (
-            <Text color="text.dark">{helperText}</Text>
+            <Text color="text.dark" variant="body3">
+              {helperText}
+            </Text>
           )}
         </FormHelperText>
       )}

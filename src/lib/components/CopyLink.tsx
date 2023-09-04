@@ -1,6 +1,6 @@
 import type { FlexProps, IconProps } from "@chakra-ui/react";
 import { Flex, Text, useClipboard } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useCurrentChain } from "lib/app-provider";
 import { AmpTrackCopier } from "lib/services/amplitude";
@@ -25,7 +25,7 @@ export const CopyLink = ({
   ...flexProps
 }: CopyLinkProps) => {
   const { address } = useCurrentChain();
-  const { onCopy, hasCopied } = useClipboard(value);
+  const { onCopy, hasCopied, setValue } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
 
   // TODO - Refactor
@@ -38,6 +38,10 @@ export const CopyLink = ({
     }
     return undefined;
   }, [showCopyOnHover, isHover]);
+
+  useEffect(() => {
+    setValue(value);
+  }, [value, setValue]);
 
   return (
     <Tooltip

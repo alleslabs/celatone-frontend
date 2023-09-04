@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#515](https://github.com/alleslabs/celatone-frontend/pull/515) Initia select module drawer wireup
 - [#494](https://github.com/alleslabs/celatone-frontend/pull/494) Initia select module drawer UI
 - [#490](https://github.com/alleslabs/celatone-frontend/pull/490) Add initia module interaction page
 - [#488](https://github.com/alleslabs/celatone-frontend/pull/488) Add initia navigation and sidebar
