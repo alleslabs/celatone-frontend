@@ -90,7 +90,9 @@ const Layout = ({ children }: LayoutProps) => {
         </>
       )}
       <GridItem area="main" overflowX="hidden" id="content">
-        <div style={{ minHeight: "calc(100vh - 129px)" }}>{children}</div>
+        <div style={{ minHeight: "calc(100vh - 129px)", position: "relative" }}>
+          {children}
+        </div>
         <Footer />
       </GridItem>
     </Grid>
