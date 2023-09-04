@@ -1,45 +1,16 @@
-import {
-  Flex,
-  Heading,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 
-import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
-import { useContractDetailsTableCounts } from "lib/model/contract";
-import {
-  MigrationTable,
-  RelatedProposalsTable,
-  TxsTable,
-} from "lib/pages/contract-details/components/tables";
-import { useAccountId } from "lib/services/accountService";
-import type { ContractAddr } from "lib/types";
 
 import { ModuleSourceCode } from "./ModuleSourceCode";
 
 interface ModuleInfoProps {
   isVerified?: boolean;
-  contractAddress?: ContractAddr;
 }
 
-export const ModuleInfo = ({
-  isVerified = false,
-  contractAddress = "" as ContractAddr,
-}: ModuleInfoProps) => {
-  const { data: contractAccountId } = useAccountId(contractAddress);
-  const tableHeaderId = "ModuleTxsTableHeader";
-  const {
-    tableCounts,
-    refetchMigration,
-    refetchTransactions,
-    refetchRelatedProposals,
-  } = useContractDetailsTableCounts(contractAddress);
+export const ModuleInfo = ({ isVerified = false }: ModuleInfoProps) => {
   return (
     <Flex flexDirection="column" gap={4}>
       <Flex justifyContent="space-between" alignItems="center" w="full">
@@ -108,61 +79,6 @@ export const ModuleInfo = ({
         </LabelText>
       </Flex>
       <ModuleSourceCode />
-      <Flex flexDirection="column" mt={6}>
-        <Heading
-          as="h6"
-          variant="h6"
-          mb={6}
-          fontWeight={800}
-          id={tableHeaderId}
-        >
-          History
-        </Heading>
-        <Tabs isLazy lazyBehavior="keepMounted">
-          <TabList
-            borderBottom="1px solid"
-            borderColor="gray.700"
-            overflowX={{ base: "scroll", md: "auto" }}
-          >
-            <CustomTab count={tableCounts.transactionsCount}>
-              Transactions
-            </CustomTab>
-            <CustomTab count={tableCounts.migrationCount}>Migrations</CustomTab>
-            <CustomTab
-              count={tableCounts.relatedProposalsCount}
-              whiteSpace="nowrap"
-            >
-              Related Proposals
-            </CustomTab>
-          </TabList>
-          <TabPanels>
-            <TabPanel p={0}>
-              <TxsTable
-                contractAccountId={contractAccountId}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.transactionsCount}
-                refetchCount={refetchTransactions}
-              />
-            </TabPanel>
-            <TabPanel p={0}>
-              <MigrationTable
-                contractAddress={contractAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.migrationCount}
-                refetchCount={refetchMigration}
-              />
-            </TabPanel>
-            <TabPanel p={0}>
-              <RelatedProposalsTable
-                contractAddress={contractAddress}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.relatedProposalsCount}
-                refetchCount={refetchRelatedProposals}
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Flex>
     </Flex>
   );
 };
