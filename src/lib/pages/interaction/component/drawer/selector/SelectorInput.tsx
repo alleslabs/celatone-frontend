@@ -36,7 +36,7 @@ export const ModuleSelectorInput = ({
   setMode,
   closeModal,
 }: ModuleSelectorInputProps) => {
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(selectedAddress.address as string);
   const [error, setError] = useState("");
   const [addr, moduleName] = useMemo(() => keyword.split("::"), [keyword]);
 
